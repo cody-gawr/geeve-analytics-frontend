@@ -8157,3 +8157,7 @@ span.new-feature-popup-close {
   float   : right;
   padding : 2px 10px 0 0;
 }
+
+th.mat-header-cell.cdk-header-cell.cdk-column-status.mat-column-status{
+  width: 15%;
+}

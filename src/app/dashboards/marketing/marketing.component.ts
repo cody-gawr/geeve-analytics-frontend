@@ -1,5 +1,5 @@
 import * as $ from 'jquery';
-import { Component, AfterViewInit, ViewEncapsulation , ViewChild,ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { MarketingService } from './marketing.service';
 import { FinancesService } from '../finances/finances.service';
 import { DentistService } from '../../dentist/dentist.service';
@@ -29,8 +29,8 @@ export interface Dentist {
   encapsulation: ViewEncapsulation.None
 })
 export class MarketingComponent implements AfterViewInit {
-    @ViewChild("myCanvas") canvas2: ElementRef;
-    @ViewChild("revenueRefChart") revenueRefChart: BaseChartDirective;
+  @ViewChild("myCanvas") canvas2: ElementRef;
+  @ViewChild("revenueRefChart") revenueRefChart: BaseChartDirective;
 
   closeResult: string;
   lineChartColors = [
@@ -54,105 +54,105 @@ export class MarketingComponent implements AfterViewInit {
   ];
   predictedChartColors;
   preoceedureChartColors;
-  doughnutChartColors ;
+  doughnutChartColors;
   subtitle: string;
-  public clinic_id:any ={};
-  public dentistCount:any ={};
-  public clinicsData:any[] = [];
+  public clinic_id: any = {};
+  public dentistCount: any = {};
+  public clinicsData: any[] = [];
   public trendText;
   public goalCount = 1;
+  public timeout = 2500;
   public xeroConnect: boolean = true;
   public myobConnect: boolean = true;
-  public connectedwith:any;
+  public connectedwith: any;
   public filteredCountriesMultiple: any[];
-  public selectedAccounts:any[] =[];
-  public Apirequest =0;
+  public selectedAccounts: any[] = [];
+  public Apirequest = 0;
   public newPatientsReferral$ = new BehaviorSubject<number>(0);
   public revenueByReferralCount$ = new BehaviorSubject<number>(0);
-  public charTips:any = [];
-   public userPlan:any = '';
-    chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
+  public charTips: any = [];
+  public userPlan: any = '';
+  chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
   pluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
   revenuePluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
   destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   public doughnutChartPlugins: PluginServiceGlobalRegistrationAndOptions[] = [];
 
-  constructor( private toastr: ToastrService, 
-    private marketingService: MarketingService,  
-    private financesService: FinancesService, 
-    private dentistService: DentistService,  
-    private datePipe: DatePipe,  
-    private route: ActivatedRoute,   
+  constructor(private toastr: ToastrService,
+    private marketingService: MarketingService,
+    private financesService: FinancesService,
+    private dentistService: DentistService,
+    private datePipe: DatePipe,
+    private route: ActivatedRoute,
     private headerService: HeaderService,
-    private _cookieService: CookieService,  
-    private router: Router, 
+    private _cookieService: CookieService,
+    private router: Router,
     public ngxSmartModalService: NgxSmartModalService,
-    private clinicSettingsService: ClinicSettingsService, 
-    public decimalPipe: DecimalPipe, 
+    private clinicSettingsService: ClinicSettingsService,
+    public decimalPipe: DecimalPipe,
     private chartService: ChartService,
     public constants: AppConstants,
     public chartstipsService: ChartstipsService,
     private rolesUsersService: RolesUsersService
-    ) {
-     this.getChartsTips();
-      }
-  
-  private warningMessage: string; 
+  ) {
+    this.getChartsTips();
+  }
+
+  private warningMessage: string;
   private myTemplate: any = "";
   async initiate_clinic() {
-    this.userPlan =  this._cookieService.get("user_plan"); 
-    if(this.userPlan == 'lite')
-    {
-       this.router.navigateByUrl('/login');
+    this.userPlan = this._cookieService.get("user_plan");
+    if (this.userPlan == 'lite') {
+      this.router.navigateByUrl('/login');
     }
     this.getRolesIndividual();
     var val = $('#currentClinic').attr('cid');
-    if(val != undefined && val !='all') {
+    if (val != undefined && val != 'all') {
       this.clinic_id = val;
       await this.clinicGetAccountingPlatform();
-      if(this.connectedwith == 'myob'){
+      if (this.connectedwith == 'myob') {
         this.xeroConnect = false;
         this.checkMyobStatus();
-      }else if(this.connectedwith == 'xero'){
+      } else if (this.connectedwith == 'xero') {
         this.myobConnect = false;
         this.checkXeroStatus();
-      }else{
+      } else {
         this.xeroConnect = false;
         this.myobConnect = false;
       }
       this.filterDate(this.chartService.duration$.value);
     }
   }
-   clinicGetAccountingPlatform(){ 
-   var self = this;
-  return new Promise(function(resolve,reject){
-    self.clinicSettingsService.clinicGetAccountingPlatform(self.clinic_id).subscribe( (res) => {
-      if(res.message == 'success'){
-        if(res.data != '') {
-          self.connectedwith = res.data;
-          resolve(true);         
+  clinicGetAccountingPlatform() {
+    var self = this;
+    return new Promise(function (resolve, reject) {
+      self.clinicSettingsService.clinicGetAccountingPlatform(self.clinic_id).subscribe((res) => {
+        if (res.message == 'success') {
+          if (res.data != '') {
+            self.connectedwith = res.data;
+            resolve(true);
+          } else {
+            self.connectedwith = '';
+            resolve(true);
+          }
         } else {
-          self.connectedwith = ''; 
-           resolve(true);  
+          self.connectedwith = '';
+          resolve(true);
         }
-       } else {
-        self.connectedwith = '';
-         resolve(true);  
-      }
-    }, error => {
-      self.warningMessage = "Please Provide Valid Inputs!";
-      resolve(true);
-    });  
-  });  
+      }, error => {
+        self.warningMessage = "Please Provide Valid Inputs!";
+        resolve(true);
+      });
+    });
 
 
   }
   formatDate(date) {
-    if(date) {
+    if (date) {
       var dateArray = date.split("-")
       const d = new Date();
-      d.setFullYear(+dateArray[2], (+dateArray[1]-1), +dateArray[0])
+      d.setFullYear(+dateArray[2], (+dateArray[1] - 1), +dateArray[0])
       const formattedDate = this.datePipe.transform(d, 'dd MMM yyyy');
       return formattedDate;
     } else return date;
@@ -172,269 +172,152 @@ export class MarketingComponent implements AfterViewInit {
         return this.chartService.beforeDrawChart(revenueCount);
       })
     );*/
-    this.revenuePluginObservable$ =  this.revenueByReferralCount$.pipe(
+    this.revenuePluginObservable$ = this.revenueByReferralCount$.pipe(
       takeUntil(this.destroyed$),
-      map((revenueCount) => {      
+      map((revenueCount) => {
         //return this.chartService.beforeDrawChart(revenueCount, true)
-         this.pieChartOptions.elements.center.text = "$"+revenueCount;
-         return [];
+        this.pieChartOptions.elements.center.text = "$" + revenueCount;
+        return [];
       })
     );
     // end of plugin observable logic
 
-      $('#currentDentist').attr('did','all');
-      //$('.dentist_dropdown').hide();
- this.route.params.subscribe(params => {
-    this.clinic_id = this.route.snapshot.paramMap.get("id");
-       //  this.filterDate('cytd');
-        this.getClinics();
+    $('#currentDentist').attr('did', 'all');
+    //$('.dentist_dropdown').hide();
+    this.route.params.subscribe(params => {
+      this.clinic_id = this.route.snapshot.paramMap.get("id");
+      //  this.filterDate('cytd');
+      this.getClinics();
 
-  //    this.initiate_clinic();
-        
-       //$('#title').html('Marketing');
-        $('.external_clinic').show();
-        //$('.dentist_dropdown').addClass('hide');
-        $('.header_filters').removeClass('hide_header');
-        $('.header_filters').addClass('flex_direct_mar');
-  $('#title').html('<span>Marketing</span>');        
-      $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
-        
-        // $('.external_clinic').show();
-        // $('.external_dentist').show();
-        $(document).on('click', function(e) {
-          if ($(document.activeElement).attr('id') == 'sa_datepicker') {
-             $('.customRange').show();
-          }
-          else if ($(document.activeElement).attr('id') == 'customRange') {
-             $('.customRange').show();
-          } 
-          else {
-              $('.customRange').hide();
-          }
-        })
-     });
+      //    this.initiate_clinic();
 
-let proceedureGradient = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
-proceedureGradient.addColorStop(0, 'rgba(22, 82, 141, 0.8)');
-proceedureGradient.addColorStop(1, 'rgba(12, 209,169,0.9)');
-let proceedureGradient1 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-proceedureGradient1.addColorStop(1, 'rgba(12, 209,169,0.8)');
-proceedureGradient1.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
-let proceedureGradient2 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-proceedureGradient2.addColorStop(1, 'rgba(59, 227,193,0.8');
-proceedureGradient2.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
-let proceedureGradient3 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-proceedureGradient3.addColorStop(1, 'rgba(94, 232,205,0.8)');
-proceedureGradient3.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
-let proceedureGradient4 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-proceedureGradient4.addColorStop(1, 'rgba(148, 240,221,0.8)');
-proceedureGradient4.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
-let proceedureGradient5 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-proceedureGradient5.addColorStop(1, 'rgba(201, 247,238,0.8)');
-proceedureGradient5.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
-this.doughnutChartColors = [ '#6cd8ba','#b0fffa','#abb3ff','#feefb8','#91ADEA','#ffb4b5','#F2C6C6', '#FDC6C0', '#FEEEE1', '#FFDD99','#A8DDDD', '#F4F4A0','#C3DDFF','#9FDBDB', '#CCFDCC', '#B1F2EC', '#BBEBFA', '#BBEBFA', '#D7ECF3', '#BBE7FF','#C8CDF0','#F7C4F5','#6cd8ba','#feefb8'];
-    
-this.preoceedureChartColors = [
-  {
-    backgroundColor: proceedureGradient,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: 'rgba(25,179,148,0.7)'
-  },
-   {
-    backgroundColor: proceedureGradient1,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: 'rgba(25,179,148,0.7)'
+      //$('#title').html('Marketing');
+      $('.external_clinic').show();
+      //$('.dentist_dropdown').addClass('hide');
+      $('.header_filters').removeClass('hide_header');
+      $('.header_filters').addClass('flex_direct_mar');
+      $('#title').html('<span>Marketing</span>');
+      $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate));
 
-  },
-  {
-    backgroundColor: proceedureGradient2,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: 'rgba(25,179,148,0.7)'
+      // $('.external_clinic').show();
+      // $('.external_dentist').show();
+      $(document).on('click', function (e) {
+        if ($(document.activeElement).attr('id') == 'sa_datepicker') {
+          $('.customRange').show();
+        }
+        else if ($(document.activeElement).attr('id') == 'customRange') {
+          $('.customRange').show();
+        }
+        else {
+          $('.customRange').hide();
+        }
+      })
+    });
 
-  },
-   {
-    backgroundColor: proceedureGradient3,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: 'rgba(25,179,148,0.7)'
+    let proceedureGradient = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
+    proceedureGradient.addColorStop(0, 'rgba(22, 82, 141, 0.8)');
+    proceedureGradient.addColorStop(1, 'rgba(12, 209,169,0.9)');
+    let proceedureGradient1 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    proceedureGradient1.addColorStop(1, 'rgba(12, 209,169,0.8)');
+    proceedureGradient1.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
+    let proceedureGradient2 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    proceedureGradient2.addColorStop(1, 'rgba(59, 227,193,0.8');
+    proceedureGradient2.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
+    let proceedureGradient3 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    proceedureGradient3.addColorStop(1, 'rgba(94, 232,205,0.8)');
+    proceedureGradient3.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
+    let proceedureGradient4 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    proceedureGradient4.addColorStop(1, 'rgba(148, 240,221,0.8)');
+    proceedureGradient4.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
+    let proceedureGradient5 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    proceedureGradient5.addColorStop(1, 'rgba(201, 247,238,0.8)');
+    proceedureGradient5.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
+    this.doughnutChartColors = ['#6cd8ba', '#b0fffa', '#abb3ff', '#feefb8', '#91ADEA', '#ffb4b5', '#F2C6C6', '#FDC6C0', '#FEEEE1', '#FFDD99', '#A8DDDD', '#F4F4A0', '#C3DDFF', '#9FDBDB', '#CCFDCC', '#B1F2EC', '#BBEBFA', '#BBEBFA', '#D7ECF3', '#BBE7FF', '#C8CDF0', '#F7C4F5', '#6cd8ba', '#feefb8'];
 
-  },
-  {
-    backgroundColor: proceedureGradient4,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: 'rgba(25,179,148,0.7)'
+    this.preoceedureChartColors = [
+      {
+        backgroundColor: proceedureGradient,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F',
+        borderColor: 'rgba(25,179,148,0.7)'
+      },
+      {
+        backgroundColor: proceedureGradient1,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F',
+        borderColor: 'rgba(25,179,148,0.7)'
 
-  },
-   {
-    backgroundColor: proceedureGradient5,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F'
-  }
-];
+      },
+      {
+        backgroundColor: proceedureGradient2,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F',
+        borderColor: 'rgba(25,179,148,0.7)'
+
+      },
+      {
+        backgroundColor: proceedureGradient3,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F',
+        borderColor: 'rgba(25,179,148,0.7)'
+
+      },
+      {
+        backgroundColor: proceedureGradient4,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F',
+        borderColor: 'rgba(25,179,148,0.7)'
+
+      },
+      {
+        backgroundColor: proceedureGradient5,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F'
+      }
+    ];
     //this.filterDate(this.chartService.duration$.value);
   }
 
   public labelBarmkRevenueByReferralOptionsStacked: any = {
     elements: {
-    point: {
-      radius: 5,
-      hoverRadius: 7,
-      pointStyle:'rectRounded',
-      hoverBorderWidth:7
+      point: {
+        radius: 5,
+        hoverRadius: 7,
+        pointStyle: 'rectRounded',
+        hoverBorderWidth: 7
+      },
     },
-  },
-  scaleShowVerticalLines: false,
-         responsive: true,
-  maintainAspectRatio: false,
-  barThickness: 10,
+    scaleShowVerticalLines: false,
+    responsive: true,
+    maintainAspectRatio: false,
+    barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine'
     },
-  scales: {
-        xAxes: [{ 
-          stacked:true,
-          ticks: {
-              autoSkip: false
-          }
-          }],
-        yAxes: [{ 
-          stacked:true,
-
-          ticks: {
-            userCallback: function(item) {
-                return item;
-              },
-          }, 
-          }],
-      },legend: {
-          display: true
-       },
-   tooltips: {
-          mode: 'x-axis',
-          enabled: false,
-          custom: function(tooltip) {
-          if (!tooltip) return;
-          var tooltipEl = document.getElementById('chartjs-tooltip');
-          if (!tooltipEl) {
-            tooltipEl = document.createElement('div');
-            tooltipEl.id = 'chartjs-tooltip';
-            tooltipEl.style.backgroundColor = "#FFFFFF";
-            tooltipEl.style.borderColor = "#B2BABB";
-            tooltipEl.style.borderWidth = "thin";
-            tooltipEl.style.borderStyle = "solid";
-            tooltipEl.style.zIndex = "999999";
-            tooltipEl.style.backgroundColor = "#000000";
-            tooltipEl.style.color = "#FFFFFF";
-            document.body.appendChild(tooltipEl);
-          }
-          if (tooltip.opacity === 0) {
-            tooltipEl.style.opacity = "0";
-            return;
-          } else {
-            tooltipEl.style.opacity = "0.8";
-          }
-
-           tooltipEl.classList.remove('above', 'below', 'no-transform');
-          if (tooltip.yAlign) {
-            tooltipEl.classList.add(tooltip.yAlign);
-          } else {
-            tooltipEl.classList.add('no-transform');
-          }
-
-            function getBody(bodyItem) {
-            return bodyItem.lines;
-          }
-          if (tooltip.body) {
-            var titleLines = tooltip.title || [];
-            var bodyLines = tooltip.body.map(getBody);
-            var labelColorscustom = tooltip.labelColors;
-            var innerHtml = '<table><thead>';             
-            innerHtml += '</thead><tbody>';
-            titleLines.forEach(function (title) {
-              innerHtml += '<tr><th colspan="2" style="text-align: left;">' + title + '</th></tr>';
-            });
-            bodyLines.forEach(function (body, i) { 
-              var singledata = body[0].split(":");
-              singledata[1] = singledata[1].trim();
-           if(singledata[1] > 0){
-
-            singledata[1] = singledata[1].split(/(?=(?:...)*$)/).join(','); 
-            body[0] = singledata.join(": $");
-              innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:'+labelColorscustom[i].backgroundColor+'"></span></td><td style="padding: 0px">'+body[0]+'</td></tr>';
-             }                
-         });
-            innerHtml += '</tbody></table>';
-            tooltipEl.innerHTML = innerHtml;
-            //tableRoot.innerHTML = innerHtml;
-          }       
-      // disable displaying the color box;
-          var position = this._chart.canvas.getBoundingClientRect();
-          // Display, position, and set styles for font
-          tooltipEl.style.position = 'fixed';
-          tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 50) + 'px';
-          tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 70) + 'px';
-          tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
-          tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
-          tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-          tooltipEl.style.padding = tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
-          tooltipEl.style.pointerEvents = 'none';
-          tooltip.displayColors = false;
-    },
-callbacks: {
-   label: function(tooltipItems, data) { 
-      
-         return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel;
-   },
-   
-}
-}
-};
-
-public labelBarmkPatientByReferralOptionsStacked: any = {
-  elements: {
-  point: {
-    radius: 5,
-    hoverRadius: 7,
-    pointStyle:'rectRounded',
-    hoverBorderWidth:7
-  },
-},
-scaleShowVerticalLines: false,
-       responsive: true,
-maintainAspectRatio: false,
-barThickness: 10,
-  animation: {
-    duration: 500,
-    easing: 'easeOutSine'
-  },
-scales: {
-      xAxes: [{ 
-        stacked:true,
+    scales: {
+      xAxes: [{
+        stacked: true,
         ticks: {
-            autoSkip: false
+          autoSkip: false
         }
-        }],
-      yAxes: [{ 
-        stacked:true,
+      }],
+      yAxes: [{
+        stacked: true,
 
         ticks: {
-          userCallback: function(item) {
-              return item;
-            },
-        }, 
-        }],
-    },legend: {
-        display: true
-     },
- tooltips: {
-        mode: 'x-axis',
-        enabled: false,
-        custom: function(tooltip) {
+          userCallback: function (item) {
+            return item;
+          },
+        },
+      }],
+    }, legend: {
+      display: true
+    },
+    tooltips: {
+      mode: 'x-axis',
+      enabled: false,
+      custom: function (tooltip) {
         if (!tooltip) return;
         var tooltipEl = document.getElementById('chartjs-tooltip');
         if (!tooltipEl) {
@@ -456,40 +339,40 @@ scales: {
           tooltipEl.style.opacity = "0.8";
         }
 
-         tooltipEl.classList.remove('above', 'below', 'no-transform');
+        tooltipEl.classList.remove('above', 'below', 'no-transform');
         if (tooltip.yAlign) {
           tooltipEl.classList.add(tooltip.yAlign);
         } else {
           tooltipEl.classList.add('no-transform');
         }
 
-          function getBody(bodyItem) {
+        function getBody(bodyItem) {
           return bodyItem.lines;
         }
         if (tooltip.body) {
           var titleLines = tooltip.title || [];
           var bodyLines = tooltip.body.map(getBody);
           var labelColorscustom = tooltip.labelColors;
-          var innerHtml = '<table><thead>';             
+          var innerHtml = '<table><thead>';
           innerHtml += '</thead><tbody>';
           titleLines.forEach(function (title) {
             innerHtml += '<tr><th colspan="2" style="text-align: left;">' + title + '</th></tr>';
           });
-             bodyLines.forEach(function (body, i) { 
-               var singledata = body[0].split(":");
-               singledata[1] = singledata[1].trim();
-            if(singledata[1] > 0){
-              
-              singledata[1] = singledata[1].split(/(?=(?:...)*$)/).join(','); 
-              body[0] = singledata.join(": ");
-               innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:'+labelColorscustom[i].backgroundColor+'"></span></td><td style="padding: 0px">'+body[0]+'</td></tr>';
-              }                
+          bodyLines.forEach(function (body, i) {
+            var singledata = body[0].split(":");
+            singledata[1] = singledata[1].trim();
+            if (singledata[1] > 0) {
+
+              singledata[1] = singledata[1].split(/(?=(?:...)*$)/).join(',');
+              body[0] = singledata.join(": $");
+              innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' + labelColorscustom[i].backgroundColor + '"></span></td><td style="padding: 0px">' + body[0] + '</td></tr>';
+            }
           });
           innerHtml += '</tbody></table>';
           tooltipEl.innerHTML = innerHtml;
           //tableRoot.innerHTML = innerHtml;
-        }       
-    // disable displaying the color box;
+        }
+        // disable displaying the color box;
         var position = this._chart.canvas.getBoundingClientRect();
         // Display, position, and set styles for font
         tooltipEl.style.position = 'fixed';
@@ -501,74 +384,191 @@ scales: {
         tooltipEl.style.padding = tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
         tooltipEl.style.pointerEvents = 'none';
         tooltip.displayColors = false;
-  },
-callbacks: {
- label: function(tooltipItems, data) { 
-       return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel;
- },
- 
-}
-}
-};
+      },
+      callbacks: {
+        label: function (tooltipItems, data) {
 
+          return data.datasets[tooltipItems.datasetIndex].label + ": " + tooltipItems.yLabel;
+        },
 
-  public date =new Date();
-    public stackedChartOptions: any = {
-      elements: {
+      }
+    }
+  };
+
+  public labelBarmkPatientByReferralOptionsStacked: any = {
+    elements: {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle:'rectRounded',
-        hoverBorderWidth:7
+        pointStyle: 'rectRounded',
+        hoverBorderWidth: 7
       },
     },
     scaleShowVerticalLines: false,
-           responsive: true,
+    responsive: true,
+    maintainAspectRatio: false,
+    barThickness: 10,
+    animation: {
+      duration: 500,
+      easing: 'easeOutSine'
+    },
+    scales: {
+      xAxes: [{
+        stacked: true,
+        ticks: {
+          autoSkip: false
+        }
+      }],
+      yAxes: [{
+        stacked: true,
+
+        ticks: {
+          userCallback: function (item) {
+            return item;
+          },
+        },
+      }],
+    }, legend: {
+      display: true
+    },
+    tooltips: {
+      mode: 'x-axis',
+      enabled: false,
+      custom: function (tooltip) {
+        if (!tooltip) return;
+        var tooltipEl = document.getElementById('chartjs-tooltip');
+        if (!tooltipEl) {
+          tooltipEl = document.createElement('div');
+          tooltipEl.id = 'chartjs-tooltip';
+          tooltipEl.style.backgroundColor = "#FFFFFF";
+          tooltipEl.style.borderColor = "#B2BABB";
+          tooltipEl.style.borderWidth = "thin";
+          tooltipEl.style.borderStyle = "solid";
+          tooltipEl.style.zIndex = "999999";
+          tooltipEl.style.backgroundColor = "#000000";
+          tooltipEl.style.color = "#FFFFFF";
+          document.body.appendChild(tooltipEl);
+        }
+        if (tooltip.opacity === 0) {
+          tooltipEl.style.opacity = "0";
+          return;
+        } else {
+          tooltipEl.style.opacity = "0.8";
+        }
+
+        tooltipEl.classList.remove('above', 'below', 'no-transform');
+        if (tooltip.yAlign) {
+          tooltipEl.classList.add(tooltip.yAlign);
+        } else {
+          tooltipEl.classList.add('no-transform');
+        }
+
+        function getBody(bodyItem) {
+          return bodyItem.lines;
+        }
+        if (tooltip.body) {
+          var titleLines = tooltip.title || [];
+          var bodyLines = tooltip.body.map(getBody);
+          var labelColorscustom = tooltip.labelColors;
+          var innerHtml = '<table><thead>';
+          innerHtml += '</thead><tbody>';
+          titleLines.forEach(function (title) {
+            innerHtml += '<tr><th colspan="2" style="text-align: left;">' + title + '</th></tr>';
+          });
+          bodyLines.forEach(function (body, i) {
+            var singledata = body[0].split(":");
+            singledata[1] = singledata[1].trim();
+            if (singledata[1] > 0) {
+
+              singledata[1] = singledata[1].split(/(?=(?:...)*$)/).join(',');
+              body[0] = singledata.join(": ");
+              innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' + labelColorscustom[i].backgroundColor + '"></span></td><td style="padding: 0px">' + body[0] + '</td></tr>';
+            }
+          });
+          innerHtml += '</tbody></table>';
+          tooltipEl.innerHTML = innerHtml;
+          //tableRoot.innerHTML = innerHtml;
+        }
+        // disable displaying the color box;
+        var position = this._chart.canvas.getBoundingClientRect();
+        // Display, position, and set styles for font
+        tooltipEl.style.position = 'fixed';
+        tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 50) + 'px';
+        tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 70) + 'px';
+        tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
+        tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
+        tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
+        tooltipEl.style.padding = tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+        tooltipEl.style.pointerEvents = 'none';
+        tooltip.displayColors = false;
+      },
+      callbacks: {
+        label: function (tooltipItems, data) {
+          return data.datasets[tooltipItems.datasetIndex].label + ": " + tooltipItems.yLabel;
+        },
+
+      }
+    }
+  };
+
+
+  public date = new Date();
+  public stackedChartOptions: any = {
+    elements: {
+      point: {
+        radius: 5,
+        hoverRadius: 7,
+        pointStyle: 'rectRounded',
+        hoverBorderWidth: 7
+      },
+    },
+    scaleShowVerticalLines: false,
+    responsive: true,
     maintainAspectRatio: false,
     barThickness: 1,
-      animation: {
-        duration: 500,
-        easing: 'easeOutSine'
-      },
+    animation: {
+      duration: 500,
+      easing: 'easeOutSine'
+    },
     scales: {
-          xAxes: [{ 
-            stacked:true,
-            ticks: {
-                autoSkip: false
+      xAxes: [{
+        stacked: true,
+        ticks: {
+          autoSkip: false
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          beginAtZero: true,
+          userCallback: function (label, index, labels) {
+            // when the floored value is the same as jhgjghe value we have a whole number
+            if (Math.floor(label) === label) {
+              return label;
             }
-            }],
-          yAxes: [{ 
-            ticks: {
-               beginAtZero: true,
-               userCallback: function(label, index, labels) {
-                     // when the floored value is the same as jhgjghe value we have a whole number
-                     if (Math.floor(label) === label) {
-                         return label;
-                     }
 
-                 },
-            }, 
-            }],
-        },legend: {
-            display: true
-         },
-             tooltips: {
-              mode: 'x-axis',
-            custom: function(tooltip) {
+          },
+        },
+      }],
+    }, legend: {
+      display: true
+    },
+    tooltips: {
+      mode: 'x-axis',
+      custom: function (tooltip) {
         if (!tooltip) return;
         // disable displaying the colorg box;
         tooltip.displayColors = false;
       },
-  callbacks: {
-     label: (tooltipItems, data) => { 
-          return tooltipItems.xLabel+": "+ this.decimalPipe.transform(tooltipItems.yLabel);
-     },
-     title: function() {
-       return '';
-     }
-     
-  }
-},
+      callbacks: {
+        label: (tooltipItems, data) => {
+          return tooltipItems.xLabel + ": " + this.decimalPipe.transform(tooltipItems.yLabel);
+        },
+        title: function () {
+          return '';
+        }
+
+      }
+    },
   };
 
   public stackedChartColors: Array<any> = [
@@ -583,75 +583,75 @@ callbacks: {
   public stackedChartLegend = true;
 
   //labels
-  public stackedChartLabels: string[] = [];  
+  public stackedChartLabels: string[] = [];
   public stackedChartLabels1: string[] = [];
 
   //data
   public stackedChartData: any[] = [
-    {data: [], label: 'Crowns'},
-    {data: [], label: 'Splints ' },
-    {data: [], label: 'Root Canals' },
-    {data: [], label: 'Perio Charts' },
-    {data: [], label: 'Surgical Extractions' }  ];
+    { data: [], label: 'Crowns' },
+    { data: [], label: 'Splints ' },
+    { data: [], label: 'Root Canals' },
+    { data: [], label: 'Perio Charts' },
+    { data: [], label: 'Surgical Extractions' }];
 
   public stackedChartData1: any[] = [];
   public stackedChartData2: any[] = [];
   public stackedChartData3: any[] = [];
   public stackedChartData4: any[] = [];
   public stackedChartData5: any[] = [];
-  public duration='';
+  public duration = '';
   // events
- public chartClicked(e: any,labels): void {
-  if (e.active.length > 0) {
-    const chart = e.active[0]._chart;
-    const activePoints = chart.getElementAtEvent(e.event);
-    if ( activePoints.length > 0) {
-      // get the internal index of slice in pie chart
-      const clickedElementIndex = activePoints[0]._index;
-      const label = chart.data.labels[clickedElementIndex];
-      if(labels === 'newPatients') {
-        this.drilldownNewPatients(label);
-      } 
-      if(labels === 'revenue'){
-        this.drilldownRevenueReferral(label);
+  public chartClicked(e: any, labels): void {
+    if (e.active.length > 0) {
+      const chart = e.active[0]._chart;
+      const activePoints = chart.getElementAtEvent(e.event);
+      if (activePoints.length > 0) {
+        // get the internal index of slice in pie chart
+        const clickedElementIndex = activePoints[0]._index;
+        const label = chart.data.labels[clickedElementIndex];
+        if (labels === 'newPatients') {
+          this.drilldownNewPatients(label);
+        }
+        if (labels === 'revenue') {
+          this.drilldownRevenueReferral(label);
+        }
       }
     }
   }
-}
 
- filterCountryMultiple(event) {
-        let query = event.query;
-            this.filteredCountriesMultiple = this.filterCountry(query, this.categories);
+  filterCountryMultiple(event) {
+    let query = event.query;
+    this.filteredCountriesMultiple = this.filterCountry(query, this.categories);
+  }
+  filterCountry(query, categories: any[]): any[] {
+    //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
+    let filtered: any[] = [];
+    for (let i = 0; i < categories.length; i++) {
+      let category = categories[i];
+      if (category.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(category);
+      }
     }
-  filterCountry(query, categories: any[]):any[] {
-        //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
-        let filtered : any[] = [];
-        for(let i = 0; i < categories.length; i++) {
-            let category = categories[i];
-            if(category.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-                filtered.push(category);
-            }
-        }
-        return filtered;
-    }
+    return filtered;
+  }
   public chartHovered(e: any): void {
   }
-  public  gaugeType = "arch";
-  public  gaugeValue = '';
-  public  gaugeLabel = "";
-  public  gaugeThick = "20";
+  public gaugeType = "arch";
+  public gaugeValue = '';
+  public gaugeLabel = "";
+  public gaugeThick = "20";
   public foregroundColor = "#4ccfae";
   public backgroundColor = '#f4f0fa';
-  public  cap= "round";
-  public  size = "250"
-  public gaugePrependText ='$';
-  public startDate ='';
+  public cap = "round";
+  public size = "250"
+  public gaugePrependText = '$';
+  public startDate = '';
   public endDate = '';
-  public selectedValToggle ='off';
+  public selectedValToggle = 'off';
   public selectedDentist;
   public dentists;
   public pieChartType = 'doughnut';
-  
+
   public pieChartColors = [
     {
       backgroundColor: [
@@ -662,7 +662,7 @@ callbacks: {
         // '#fffcac',
         // '#D7F8EF',
         // '#FEEFB8'
-        '#6edbbb','#b0fffa','#abb3ff','#ffb4b5','#fffcac', '#FFE4E4', '#FFD578', '#54D2FF', '#E58DD7', '#A9AABC', '#F2ECFF', '#5689C9', '#F9F871'
+        '#6edbbb', '#b0fffa', '#abb3ff', '#ffb4b5', '#fffcac', '#FFE4E4', '#FFD578', '#54D2FF', '#E58DD7', '#A9AABC', '#F2ECFF', '#5689C9', '#F9F871'
 
       ]
     }
@@ -689,11 +689,11 @@ callbacks: {
         usePointStyle: true,
         padding: 20
       },
-      onClick: function(e) {
+      onClick: function (e) {
         e.stopPropagation();
       }
     },
-    
+
     elements: {
       center: {
         text: ''
@@ -728,7 +728,7 @@ callbacks: {
       }
     }
   };
-    myDateParser(dateStr : string) : string {
+  myDateParser(dateStr: string): string {
     // 2018-01-01T12:12:12.123456; - converting valid date f74ormat like this
 
     let date = dateStr.substring(0, 10);
@@ -740,68 +740,68 @@ callbacks: {
     return validDate
   }
   loadDentist(newValue) {
-  $('#title').html('<span>Marketing</span>');        
-      $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
+    $('#title').html('<span>Marketing</span>');
+    $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate));
 
-    if(newValue == 'all') { 
+    if (newValue == 'all') {
       this.mkNewPatientsByReferral();
       this.mkRevenueByReferral();
       this.fdnewPatientsRatio();
-      this.fdvisitsRatio();      
+      this.fdvisitsRatio();
       this.fdnewPatientsAcq();
-      if(this.connectedwith == 'myob'){
+      if (this.connectedwith == 'myob') {
         this.getMyobAccounts();
-      }else if(this.connectedwith == 'xero'){
+      } else if (this.connectedwith == 'xero') {
         this.getAccounts();
-      }     
+      }
 
       //this.fdWorkTimeAnalysis();
     }
   }
 
-    public newPatientsTimeData: number[] = [];
-    public newPatientsTimeLabels = [];  
-    public newPatientsTimeLabels1 = [];
-    public newPatientsTimeData1 : number[] = [];
-    public newPatientsTimeLabelsl2 = [];  
-    public mkNewPatientsByReferralLoader:any;
-    public mkNewPatientsByReferralAll:any = [];
+  public newPatientsTimeData: number[] = [];
+  public newPatientsTimeLabels = [];
+  public newPatientsTimeLabels1 = [];
+  public newPatientsTimeData1: number[] = [];
+  public newPatientsTimeLabelsl2 = [];
+  public mkNewPatientsByReferralLoader: any;
+  public mkNewPatientsByReferralAll: any = [];
 
   //Items Predictor Analysis 
   private mkNewPatientsByReferral() {
     this.mkNewPatientsByReferralLoader = true;
-    this.newPatientsTimeLabels =[];
+    this.newPatientsTimeLabels = [];
     var user_id;
     var clinic_id;
-  this.marketingService.mkNewPatientsByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-       if(data.message == 'success'){
-      this.mkNewPatientsByReferralAll = data;
-      this.totalNewPatientsReferral = Math.round(data.total);
-         this.newPatientsReferral$.next(this.totalNewPatientsReferral)
-      // this.noNewPatientsByReferralChartOptions.elements.center.text = this.decimalPipe.transform(this.totalNewPatientsReferral);
-         
-            this.newPatientsTimeData1 =[];
-            this.newPatientsTimeLabelsl2 =[];
-            this.newPatientsTimeLabels1 =[];
-            if(data.data.patients_reftype.length >0) {
-              var i=0;
-             data.data.patients_reftype.forEach(res => {
-              if(res.patients_visits>0) {
-               if(i<10) {
-               this.newPatientsTimeData1.push(res.patients_visits);
-               this.newPatientsTimeLabels1.push(res.reftype_name);
+    this.marketingService.mkNewPatientsByReferral(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+      if (data.message == 'success') {
+        this.mkNewPatientsByReferralAll = data;
+        this.totalNewPatientsReferral = Math.round(data.total);
+        this.newPatientsReferral$.next(this.totalNewPatientsReferral)
+        // this.noNewPatientsByReferralChartOptions.elements.center.text = this.decimalPipe.transform(this.totalNewPatientsReferral);
+
+        this.newPatientsTimeData1 = [];
+        this.newPatientsTimeLabelsl2 = [];
+        this.newPatientsTimeLabels1 = [];
+        if (data.data.patients_reftype.length > 0) {
+          var i = 0;
+          data.data.patients_reftype.forEach(res => {
+            if (res.patients_visits > 0) {
+              if (i < 10) {
+                this.newPatientsTimeData1.push(res.patients_visits);
+                this.newPatientsTimeLabels1.push(res.reftype_name);
                 i++;
               }
             }
-             });
+          });
         }
-         this.newPatientsTimeData = this.newPatientsTimeData1;
-         this.newPatientsTimeLabels= this.newPatientsTimeLabels1;
-         var self = this;
-         setTimeout(function(){
-            self.mkNewPatientsByReferralLoader = false;
-         },1000);
-       }
+        this.newPatientsTimeData = this.newPatientsTimeData1;
+        this.newPatientsTimeLabels = this.newPatientsTimeLabels1;
+        var self = this;
+        setTimeout(function () {
+          self.mkNewPatientsByReferralLoader = false;
+        }, this.timeout);
+      }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }
@@ -809,16 +809,16 @@ callbacks: {
   }
 
   private drilldownNewPatients(label) {
-    this.newPatientsTimeData1 =[];
-    this.newPatientsTimeLabels1 =[];
+    this.newPatientsTimeData1 = [];
+    this.newPatientsTimeLabels1 = [];
     this.newPatientsTimeData = [];
-    this.newPatientsTimeLabels= [];
-    this.newPatientsTimeLabelsl2 =[];
-    if(this.mkNewPatientsByReferralAll.data.patients_refname[label].length >0) {
-      var i=0;
+    this.newPatientsTimeLabels = [];
+    this.newPatientsTimeLabelsl2 = [];
+    if (this.mkNewPatientsByReferralAll.data.patients_refname[label].length > 0) {
+      var i = 0;
       let totalVisits = 0;
       this.mkNewPatientsByReferralAll.data.patients_refname[label].forEach(res => {
-        if(i<10) {
+        if (i < 10) {
           totalVisits = totalVisits + parseInt(res.num_referrals);
           this.newPatientsTimeData1.push(res.num_referrals);
           this.newPatientsReferral$.next(totalVisits);
@@ -828,409 +828,412 @@ callbacks: {
       });
     }
     this.newPatientsTimeData = this.newPatientsTimeData1;
-    this.newPatientsTimeLabelsl2= this.newPatientsTimeLabels1;
+    this.newPatientsTimeLabelsl2 = this.newPatientsTimeLabels1;
   }
 
-    public revenueReferralData: number[] = [];
-    public revenueReferralLabels = [];  
-    public revenueReferralLabels1 = [];
-    public revenueReferralData1 : number[] = [];
-    public revenueReferralLabelsl2 = [];  
-    public mkRevenueByReferralLoader:any;
+  public revenueReferralData: number[] = [];
+  public revenueReferralLabels = [];
+  public revenueReferralLabels1 = [];
+  public revenueReferralData1: number[] = [];
+  public revenueReferralLabelsl2 = [];
+  public mkRevenueByReferralLoader: any;
 
-    public reffralAllData:any = [];
+  public reffralAllData: any = [];
 
   //Items Predictor Analysis 
   private mkRevenueByReferral() {
     this.mkRevenueByReferralLoader = true;
     var user_id;
     var clinic_id;
-  this.marketingService.mkRevenueByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-          this.reffralAllData = [];
-          this.revenueReferralData = [];
-          this.revenueReferralLabels= [];         
-       if(data.message == 'success'){
+    this.marketingService.mkRevenueByReferral(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+      this.reffralAllData = [];
+      this.revenueReferralData = [];
+      this.revenueReferralLabels = [];
+      if (data.message == 'success') {
         this.reffralAllData = data;
-          this.totalRevenueByReferral = this.decimalPipe.transform(Math.round(this.reffralAllData.total || 0));
-          this.revenueByReferralCount$.next(Math.round(this.reffralAllData.total || 0));
-          //// this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
-          if (this.revenueRefChart) {
-            this.revenueRefChart.ngOnDestroy();
-            this.revenueRefChart.chart = this.revenueRefChart.getChartBuilder(this.revenueRefChart.ctx);
-          }
-          this.revenueReferralData1 =[];
-          this.revenueReferralLabelsl2 =[];
-          this.revenueReferralLabels1 =[];
-          if(this.reffralAllData.data.patients_reftype.length >0) {
-            var i=0;
-            this.reffralAllData.data.patients_reftype.forEach(res => {
-              if(res.invoice_amount>0) {
-                if(i<10) {
-                  this.revenueReferralData1.push(Math.round(res.invoice_amount));
-                  this.revenueReferralLabels1.push(res.reftype_name);
-                  i++;
-                }
+        this.totalRevenueByReferral = this.decimalPipe.transform(Math.round(this.reffralAllData.total || 0));
+        this.revenueByReferralCount$.next(Math.round(this.reffralAllData.total || 0));
+        //// this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
+        if (this.revenueRefChart) {
+          this.revenueRefChart.ngOnDestroy();
+          this.revenueRefChart.chart = this.revenueRefChart.getChartBuilder(this.revenueRefChart.ctx);
+        }
+        this.revenueReferralData1 = [];
+        this.revenueReferralLabelsl2 = [];
+        this.revenueReferralLabels1 = [];
+        if (this.reffralAllData.data.patients_reftype.length > 0) {
+          var i = 0;
+          this.reffralAllData.data.patients_reftype.forEach(res => {
+            if (res.invoice_amount > 0) {
+              if (i < 10) {
+                this.revenueReferralData1.push(Math.round(res.invoice_amount));
+                this.revenueReferralLabels1.push(res.reftype_name);
+                i++;
               }
-            });
-          }
-          this.revenueReferralData = this.revenueReferralData1;
-          this.revenueReferralLabels= this.revenueReferralLabels1;   
-          var self =  this;
-          setTimeout(function(){
-             self.mkRevenueByReferralLoader = false;
-          },1500);      
-       }
+            }
+          });
+        }
+        
+        this.revenueReferralData = this.revenueReferralData1;
+        this.revenueReferralLabels = this.revenueReferralLabels1;
+        var self = this;
+        
+        setTimeout(function () {
+          self.mkRevenueByReferralLoader = false;
+        }, this.timeout);
+      }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }
     );
   }
 
-public mkRevenueByReferralChartTrend: any[]  = [];
+  public mkRevenueByReferralChartTrend: any[] = [];
 
-public revenueReferralLabelsTrend = [];  
-public revenueReferralLabels1Trend = [];
+  public revenueReferralLabelsTrend = [];
+  public revenueReferralLabels1Trend = [];
 
 
-private mkRevenueByReferralTrend() {
-  this.mkRevenueByReferralLoader = true;
-  this.revenueReferralLabelsTrend=[];
-  this.revenueReferralLabels1Trend=[];
-  this.showTrend = true;
-  this.mkRevenueByReferralChartTrend =[];
+  private mkRevenueByReferralTrend() {
+    this.mkRevenueByReferralLoader = true;
+    this.revenueReferralLabelsTrend = [];
+    this.revenueReferralLabels1Trend = [];
+    this.showTrend = true;
+    this.mkRevenueByReferralChartTrend = [];
     var user_id;
     var clinic_id;
-    this.marketingService.mkRevenueByReferralTrend(this.clinic_id,this.trendValue).subscribe((data) => {
-      this.Apirequest = this.Apirequest -1;
-      if(data.message == 'success'){ 
-          this.mkRevenueByReferralLoader = false;
-                data.data.forEach(res => { 
-                   res.val.forEach((result,key) => { 
-                      if(typeof(this.mkRevenueByReferralChartTrend[key]) == 'undefined'){
-                        this.mkRevenueByReferralChartTrend[key] = { data: [],label: '' };
-                      }
-                      if(typeof(this.mkRevenueByReferralChartTrend[key]['data']) == 'undefined'){
-                        this.mkRevenueByReferralChartTrend[key]['data'] = [];
-                      }
-                      var total = result.invoice_amount;
-                      
-                      this.mkRevenueByReferralChartTrend[key]['data'].push(total);
-                      this.mkRevenueByReferralChartTrend[key]['label'] = result.item_name;
-                      this.mkRevenueByReferralChartTrend[key]['backgroundColor'] = this.doughnutChartColors[key];
-                      this.mkRevenueByReferralChartTrend[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
-                    
-                  });
-                  if(this.trendValue == 'c'){
-                    this.revenueReferralLabels1Trend.push(this.datePipe.transform(res.duration, 'MMM y'));
-                  }
-                  else{
-                    this.revenueReferralLabels1Trend.push(res.duration);
-                  }                                    
-                 });
-                 this.revenueReferralLabelsTrend =this.revenueReferralLabels1Trend;
-              }
+    this.marketingService.mkRevenueByReferralTrend(this.clinic_id, this.trendValue).subscribe((data) => {
+      this.Apirequest = this.Apirequest - 1;
+      if (data.message == 'success') {
+        data.data.forEach(res => {
+          res.val.forEach((result, key) => {
+            if (typeof (this.mkRevenueByReferralChartTrend[key]) == 'undefined') {
+              this.mkRevenueByReferralChartTrend[key] = { data: [], label: '' };
+            }
+            if (typeof (this.mkRevenueByReferralChartTrend[key]['data']) == 'undefined') {
+              this.mkRevenueByReferralChartTrend[key]['data'] = [];
+            }
+            var total = result.invoice_amount;
+
+            this.mkRevenueByReferralChartTrend[key]['data'].push(total);
+            this.mkRevenueByReferralChartTrend[key]['label'] = result.item_name;
+            this.mkRevenueByReferralChartTrend[key]['backgroundColor'] = this.doughnutChartColors[key];
+            this.mkRevenueByReferralChartTrend[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+
+          });
+          if (this.trendValue == 'c') {
+            this.revenueReferralLabels1Trend.push(this.datePipe.transform(res.duration, 'MMM y'));
+          }
+          else {
+            this.revenueReferralLabels1Trend.push(res.duration);
+          }
+        });
+        this.revenueReferralLabelsTrend = this.revenueReferralLabels1Trend;
+        this.mkRevenueByReferralLoader = false;
+      }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
- 
+
     });
   }
 
-  public mkNewPatientsReferralChartTrend: any[]  = [];
+  public mkNewPatientsReferralChartTrend: any[] = [];
 
-  public newPatientsTimeLabelsTrend = [];  
+  public newPatientsTimeLabelsTrend = [];
   public newPatientsTimeLabels1Trend = [];
-  
+
 
   private mkNewPatientsByReferralTrend() {
     this.mkNewPatientsByReferralLoader = true;
-    this.newPatientsTimeLabelsTrend=[];
-    this.newPatientsTimeLabels1Trend=[];
+    this.newPatientsTimeLabelsTrend = [];
+    this.newPatientsTimeLabels1Trend = [];
     this.showTrend = true;
-    this.mkNewPatientsReferralChartTrend =[];
-      var user_id;
-      var clinic_id;
-      this.marketingService.mkNewPatientsByReferralTrend(this.clinic_id,this.trendValue).subscribe((data) => {
-        this.Apirequest = this.Apirequest -1;
-        if(data.message == 'success'){ 
-            this.mkNewPatientsByReferralLoader = false;
-                  data.data.forEach(res => { 
-                     res.val.forEach((result,key) => { 
-                        if(typeof(this.mkNewPatientsReferralChartTrend[key]) == 'undefined'){
-                          this.mkNewPatientsReferralChartTrend[key] = { data: [],label: '' };
-                        }
-                        if(typeof(this.mkNewPatientsReferralChartTrend[key]['data']) == 'undefined'){
-                          this.mkNewPatientsReferralChartTrend[key]['data'] = [];
-                        }
-                        var total = result.num_referrals;
-                        
-                        this.mkNewPatientsReferralChartTrend[key]['data'].push(total);
-                        this.mkNewPatientsReferralChartTrend[key]['label'] = result.item_name;
-                        this.mkNewPatientsReferralChartTrend[key]['backgroundColor'] = this.doughnutChartColors[key];
-                        this.mkNewPatientsReferralChartTrend[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
-                      
-                    });
-                    if(this.trendValue == 'c'){
-                      this.newPatientsTimeLabels1Trend.push(this.datePipe.transform(res.duration, 'MMM y'));
-                    }
-                    else{
-                      this.newPatientsTimeLabels1Trend.push(res.duration);
-                    }                                    
-                   });
-                   this.newPatientsTimeLabelsTrend =this.newPatientsTimeLabels1Trend;
-                }
-      }, error => {
-        this.warningMessage = "Please Provide Valid Inputs!";
-   
-      });
-    }
-    private drilldownRevenueReferral(label) {
+    this.mkNewPatientsReferralChartTrend = [];
     var user_id;
     var clinic_id;
- /* this.marketingService.mkRevenueByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-       if(data.message == 'success'){*/
-      this.revenueReferralData1 =[];
-      this.revenueReferralLabels1 =[];
-      this.revenueReferralData = [];
-      this.revenueReferralLabels= [];
-      this.revenueReferralLabelsl2 =[];
-      if(this.reffralAllData.data.patients_refname[label].length  >0) {
-        var i=0;
-        let totalRevenue = 0;
-        this.reffralAllData.data.patients_refname[label].forEach(res => {
-          totalRevenue = totalRevenue + parseFloat(res.invoice_amount);
-          if(i<10) {
-            this.revenueReferralData1.push(res.invoice_amount);
-            this.revenueReferralLabels1.push(res.referral_name);
-            i++;
+    this.marketingService.mkNewPatientsByReferralTrend(this.clinic_id, this.trendValue).subscribe((data) => {
+      this.Apirequest = this.Apirequest - 1;
+      if (data.message == 'success') {
+        
+        data.data.forEach(res => {
+          res.val.forEach((result, key) => {
+            if (typeof (this.mkNewPatientsReferralChartTrend[key]) == 'undefined') {
+              this.mkNewPatientsReferralChartTrend[key] = { data: [], label: '' };
+            }
+            if (typeof (this.mkNewPatientsReferralChartTrend[key]['data']) == 'undefined') {
+              this.mkNewPatientsReferralChartTrend[key]['data'] = [];
+            }
+            var total = result.num_referrals;
+
+            this.mkNewPatientsReferralChartTrend[key]['data'].push(total);
+            this.mkNewPatientsReferralChartTrend[key]['label'] = result.item_name;
+            this.mkNewPatientsReferralChartTrend[key]['backgroundColor'] = this.doughnutChartColors[key];
+            this.mkNewPatientsReferralChartTrend[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+
+          });
+          if (this.trendValue == 'c') {
+            this.newPatientsTimeLabels1Trend.push(this.datePipe.transform(res.duration, 'MMM y'));
+          }
+          else {
+            this.newPatientsTimeLabels1Trend.push(res.duration);
           }
         });
-        totalRevenue = Math.round(totalRevenue);
-        this.revenueByReferralCount$.next(totalRevenue);
+        this.newPatientsTimeLabelsTrend = this.newPatientsTimeLabels1Trend;
+        this.mkNewPatientsByReferralLoader = false;
       }
-      this.revenueReferralData = this.revenueReferralData1;
-      this.revenueReferralLabelsl2= this.revenueReferralLabels1;
-         
-
-   /*    }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
+
+    });
+  }
+  private drilldownRevenueReferral(label) {
+    var user_id;
+    var clinic_id;
+    /* this.marketingService.mkRevenueByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+          if(data.message == 'success'){*/
+    this.revenueReferralData1 = [];
+    this.revenueReferralLabels1 = [];
+    this.revenueReferralData = [];
+    this.revenueReferralLabels = [];
+    this.revenueReferralLabelsl2 = [];
+    if (this.reffralAllData.data.patients_refname[label].length > 0) {
+      var i = 0;
+      let totalRevenue = 0;
+      this.reffralAllData.data.patients_refname[label].forEach(res => {
+        totalRevenue = totalRevenue + parseFloat(res.invoice_amount);
+        if (i < 10) {
+          this.revenueReferralData1.push(res.invoice_amount);
+          this.revenueReferralLabels1.push(res.referral_name);
+          i++;
+        }
+      });
+      totalRevenue = Math.round(totalRevenue);
+      this.revenueByReferralCount$.next(totalRevenue);
     }
-    );*/
+    this.revenueReferralData = this.revenueReferralData1;
+    this.revenueReferralLabelsl2 = this.revenueReferralLabels1;
+
+
+    /*    }
+     }, error => {
+       this.warningMessage = "Please Provide Valid Inputs!";
+     }
+     );*/
   }
 
-public visitsTotal;
-public visitsPrevTotal;
-public visitsTooltip='down';
+  public visitsTotal;
+  public visitsPrevTotal;
+  public visitsTooltip = 'down';
 
-public fdvisitsRatioLoader:any;
-public visitsGoal:any = 0;
-//Predictor Ratio :
+  public fdvisitsRatioLoader: any;
+  public visitsGoal: any = 0;
+  //Predictor Ratio :
   private fdvisitsRatio() {
-     if(this.duration){
-    this.visitsTotal = 0;      
+    if (this.duration) {
+      this.visitsTotal = 0;
       this.fdvisitsRatioLoader = true;
-       this.visitsTooltip = 'down';
-       var user_id;
-       var clinic_id;
-  this.marketingService.fdvisitsRatio(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-    this.visitsTotal = 0;
+      this.visitsTooltip = 'down';
+      var user_id;
+      var clinic_id;
+      this.marketingService.fdvisitsRatio(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+        this.visitsTotal = 0;
         this.visitsPrevTotal = 0;
         this.fdvisitsRatioLoader = false;
-       if(data.message == 'success'){
+        if (data.message == 'success') {
           this.visitsTotal = data.total;
           this.visitsPrevTotal = data.total_ta;
           this.visitsGoal = data.goals;
-          if(this.visitsTotal >= this.visitsPrevTotal)
+          if (this.visitsTotal >= this.visitsPrevTotal)
             this.visitsTooltip = 'up';
 
           this.visitsGoal = data.goals;
         }
+      }, error => {
+        this.warningMessage = "Please Provide Valid Inputs!";
+      }
+      );
+    }
+  }
+
+  public Accounts = [];
+
+  private getAccounts() {
+    this.marketingService.getAccounts(this.clinic_id).subscribe((data) => {
+      this.Accounts = [];
+      this.selectedAccounts = [];
+      if (data.message == 'success') {
+        for (let key in data.data.categories) {
+          this.Accounts.push(data.data.categories[key]);
+        }
+        for (let key in data.data.selectedCategories) {
+          this.selectedAccounts.push(data.data.selectedCategories[key]);
+        }
+
+      }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }
     );
-    }
   }
 
-  public Accounts=[];
-  
-    private getAccounts() { 
-      this.marketingService.getAccounts(this.clinic_id).subscribe((data) => {
-        this.Accounts=[];
-        this.selectedAccounts=[];
-           if(data.message == 'success'){
-            for (let key in data.data.categories) {
-              this.Accounts.push(data.data.categories[key]);
-            }
-             for (let key in data.data.selectedCategories) {
-              this.selectedAccounts.push(data.data.selectedCategories[key]);
-            }
-    
-            }
-        }, error => {
-          this.warningMessage = "Please Provide Valid Inputs!";
+  private getMyobAccounts() {
+    this.marketingService.getMyobAccounts(this.clinic_id).subscribe((data) => {
+      this.Accounts = [];
+      this.selectedAccounts = [];
+      if (data.message == 'success') {
+        for (let key in data.data.categories) {
+          this.Accounts.push(data.data.categories[key]);
         }
-        );
+        for (let key in data.data.selectedCategories) {
+          this.selectedAccounts.push(data.data.selectedCategories[key]);
         }
 
-   private getMyobAccounts() { 
-          this.marketingService.getMyobAccounts(this.clinic_id).subscribe((data) => {
-            this.Accounts=[];
-            this.selectedAccounts=[];
-               if(data.message == 'success'){
-                for (let key in data.data.categories) {
-                  this.Accounts.push(data.data.categories[key]);
-                }
-                 for (let key in data.data.selectedCategories) {
-                  this.selectedAccounts.push(data.data.selectedCategories[key]);
-                }
-        
-                }
-            }, error => {
-              this.warningMessage = "Please Provide Valid Inputs!";
-            }
-            );
-            }   
-  
-public newPatientsTotal =0;
-public newPatientsPrevTotal =0;
-public newPatientsTooltip='down';
-public newPatientsGoal;
-public fdnewPatientsRatioLoader:any;
-public maxnewPatientsGoal:any=0;
-//Predictor Ratio :
+      }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }
+    );
+  }
+
+  public newPatientsTotal = 0;
+  public newPatientsPrevTotal = 0;
+  public newPatientsTooltip = 'down';
+  public newPatientsGoal;
+  public fdnewPatientsRatioLoader: any;
+  public maxnewPatientsGoal: any = 0;
+  //Predictor Ratio :
   private fdnewPatientsRatio() {
-     if(this.duration){
+    if (this.duration) {
       this.fdnewPatientsRatioLoader = true;
-         this.newPatientsTooltip = 'down';
+      this.newPatientsTooltip = 'down';
       this.newPatientsTotal = 0;
-       var user_id;
-       var clinic_id;
-  this.marketingService.fdnewPatientsRatio(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-          this.newPatientsTotal = 0;
-          this.newPatientsPrevTotal = 0;
-       if(data.message == 'success'){
-        this.fdnewPatientsRatioLoader = false;
-          if(data.total != null)
-          this.newPatientsTotal = data.total;
-          if(data.total_ta != null)
-          this.newPatientsPrevTotal = data.total_ta;
+      var user_id;
+      var clinic_id;
+      this.marketingService.fdnewPatientsRatio(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+        this.newPatientsTotal = 0;
+        this.newPatientsPrevTotal = 0;
+        if (data.message == 'success') {
+          this.fdnewPatientsRatioLoader = false;
+          if (data.total != null)
+            this.newPatientsTotal = data.total;
+          if (data.total_ta != null)
+            this.newPatientsPrevTotal = data.total_ta;
           this.newPatientsGoal = data.goals;
-          if(this.newPatientsTotal>=this.newPatientsPrevTotal)
+          if (this.newPatientsTotal >= this.newPatientsPrevTotal)
             this.newPatientsTooltip = 'up';
 
-           if(this.newPatientsTotal> this.newPatientsGoal)
+          if (this.newPatientsTotal > this.newPatientsGoal)
             this.maxnewPatientsGoal = this.newPatientsTotal;
           else
             this.maxnewPatientsGoal = this.newPatientsGoal;
-          if(this.maxnewPatientsGoal==0)
-            this.maxnewPatientsGoal ='';
+          if (this.maxnewPatientsGoal == 0)
+            this.maxnewPatientsGoal = '';
         }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+      }, error => {
+        this.warningMessage = "Please Provide Valid Inputs!";
+      }
+      );
     }
   }
 
-public expenseData=[];
-public categories=[];
-public fdnewPatientsAcqLoader:any;
-public newAcqValuePrev =0;
-public newAcqValueGoal:any =0;
-public newAcqValueError:boolean =false;
-//Predictor Ratio :
-  private fdnewPatientsAcq() { 
-      this.expenseData =[];
-      this.categories=[];
-      this.newAcqValueGoal='';
-      this.newAcqValuePrev=0;
-      this.expenseDataTrend1=[];
-      this.newAcqValue=0;
-      this.newAcqValueError = false; 
-     if(this.duration && this.connectedwith !=''){
-       var user_id;
-       var clinic_id;
-       this.fdnewPatientsAcqLoader = true; 
-       
-       this.marketingService.categoryExpenses(this.clinic_id,this.startDate,this.endDate,this.duration,this.connectedwith).subscribe((data) => {
-          if(data.message == 'success'){
-            this.fdnewPatientsAcqLoader = false;
-            if(data.goals){
-              this.newAcqValueGoal = data.goals;
-            }
-       // checking if any new account name found in report then we are saving that one in existing accounts
-            this.categories=[];
-            this.expenseData=[];
-            this.Accounts = this.Accounts.concat(data.data_expense_category_report);
-            this.Accounts = this.Accounts.filter((item,index)=>{
-              return (this.Accounts.indexOf(item) == index)
-           })
-           this.Accounts = this.Accounts.filter(x => !this.selectedAccounts.includes(x));
-             
-            data.data.forEach((res,key) => {
-              this.expenseData[res.meta_key] = res.expenses;
-             });
-             if(this.newPatientsPrevTotal>0)
-             this.newAcqValuePrev= Math.round(data.data_ta/this.newPatientsPrevTotal);
-              if(this.selectedAccounts.length>0) 
-                this.load_chart_acq();
-              
-           }
-    }, error => {
-      this.fdnewPatientsAcqLoader = false;
-      this.newAcqValueError = true; 
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
-    }else{
+  public expenseData = [];
+  public categories = [];
+  public fdnewPatientsAcqLoader: any;
+  public newAcqValuePrev = 0;
+  public newAcqValueGoal: any = 0;
+  public newAcqValueError: boolean = false;
+  //Predictor Ratio :
+  private fdnewPatientsAcq() {
+    this.expenseData = [];
+    this.categories = [];
+    this.newAcqValueGoal = '';
+    this.newAcqValuePrev = 0;
+    this.expenseDataTrend1 = [];
+    this.newAcqValue = 0;
+    this.newAcqValueError = false;
+    if (this.duration && this.connectedwith != '') {
+      var user_id;
+      var clinic_id;
+      this.fdnewPatientsAcqLoader = true;
+
+      this.marketingService.categoryExpenses(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((data) => {
+        if (data.message == 'success') {
+          this.fdnewPatientsAcqLoader = false;
+          if (data.goals) {
+            this.newAcqValueGoal = data.goals;
+          }
+          // checking if any new account name found in report then we are saving that one in existing accounts
+          this.categories = [];
+          this.expenseData = [];
+          this.Accounts = this.Accounts.concat(data.data_expense_category_report);
+          this.Accounts = this.Accounts.filter((item, index) => {
+            return (this.Accounts.indexOf(item) == index)
+          })
+          this.Accounts = this.Accounts.filter(x => !this.selectedAccounts.includes(x));
+
+          data.data.forEach((res, key) => {
+            this.expenseData[res.meta_key] = res.expenses;
+          });
+          if (this.newPatientsPrevTotal > 0)
+            this.newAcqValuePrev = Math.round(data.data_ta / this.newPatientsPrevTotal);
+          if (this.selectedAccounts.length > 0)
+            this.load_chart_acq();
+
+        }
+      }, error => {
+        this.fdnewPatientsAcqLoader = false;
+        this.newAcqValueError = true;
+        this.warningMessage = "Please Provide Valid Inputs!";
+      }
+      );
+    } else {
       this.xeroConnect = false;
       this.myobConnect = false;
     }
   }
 
-public currentText;
+  public currentText;
 
   // Filter By Date
   filterDate(duration) {
     this.isDisabled = true;
-     $('.target_filter').removeClass('mat-button-toggle-checked');
+    $('.target_filter').removeClass('mat-button-toggle-checked');
     $('.target_off').addClass('mat-button-toggle-checked');
-    this.showTrend= false;
-     $('.customRange').css('display','none');
-    if(duration == 'w') {
+    this.showTrend = false;
+    $('.customRange').css('display', 'none');
+    if (duration == 'w') {
       this.goalCount = 1;
-      this.trendText= 'Last Week';
-      this.currentText= 'This Week';
+      this.trendText = 'Last Week';
+      this.currentText = 'This Week';
       const now = new Date();
-        if(now.getDay()==0)
-          var day = 7;
-        else
-          var day = now.getDay();
+      if (now.getDay() == 0)
+        var day = 7;
+      else
+        var day = now.getDay();
 
-       var first = now.getDate() - day +1;
-       var last = first + 6; 
-       this.startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'dd-MM-yyyy');
-       var end = new Date();
-        end.setFullYear(now.getFullYear());
-        end.setMonth(now.getMonth()+1);
-        end.setDate(last);
-       this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'dd-MM-yyyy');
-       this.duration='w';
-        this.loadDentist('all');
+      var first = now.getDate() - day + 1;
+      var last = first + 6;
+      this.startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'dd-MM-yyyy');
+      var end = new Date();
+      end.setFullYear(now.getFullYear());
+      end.setMonth(now.getMonth() + 1);
+      end.setDate(last);
+      this.endDate = this.datePipe.transform(new Date(end).toUTCString(), 'dd-MM-yyyy');
+      this.duration = 'w';
+      this.loadDentist('all');
     }
     else if (duration == 'm') {
       this.goalCount = 1;
-      this.trendText= 'Last Month';
-      this.currentText= 'This Month';
+      this.trendText = 'Last Month';
+      this.currentText = 'This Month';
 
 
       var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
-      this.duration='m';
-            this.loadDentist('all');
-        
+      this.duration = 'm';
+      this.loadDentist('all');
+
     }
     else if (duration == 'lm') {
       this.goalCount = 1;
@@ -1240,206 +1243,209 @@ public currentText;
       const date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd-MM-yyyy');
-      this.duration='lm';
-      this.loadDentist('all');  
+      this.duration = 'lm';
+      this.loadDentist('all');
     }
     else if (duration == 'q') {
       this.goalCount = 3;
-      this.trendText= 'Last Quarter';
-      this.currentText= 'This Quarter';
+      this.trendText = 'Last Quarter';
+      this.currentText = 'This Quarter';
 
 
       const now = new Date();
-      var cmonth = now.getMonth()+1;
+      var cmonth = now.getMonth() + 1;
       var cyear = now.getFullYear();
-      if(cmonth >=1 && cmonth <=3) {
+      if (cmonth >= 1 && cmonth <= 3) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
         // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy')
         ;
       }
-      else if(cmonth >=4 && cmonth <=6) {
+      else if (cmonth >= 4 && cmonth <= 6) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
         // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); 
       }
-      else if(cmonth >=7 && cmonth <=9) {
+      else if (cmonth >= 7 && cmonth <= 9) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
         // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy'); 
       }
-      else if(cmonth >=10 && cmonth <=12) {
+      else if (cmonth >= 10 && cmonth <= 12) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
         // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');  
       }
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
-      this.duration='q';
+      this.duration = 'q';
       this.loadDentist('all');
-    
+
     }
     else if (duration == 'lq') {
       this.goalCount = 3;
-      this.trendText= 'Previous Quarter';
-      this.currentText= 'Last Quarter';
+      this.trendText = 'Previous Quarter';
+      this.currentText = 'Last Quarter';
 
 
       const now = new Date();
-      var cmonth = now.getMonth()+1;
+      var cmonth = now.getMonth() + 1;
       var cyear = now.getFullYear();
-     
-      if(cmonth >=1 && cmonth <=3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear() -1, 9, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear()-1, 12, 0), 'dd-MM-yyyy');
+
+      if (cmonth >= 1 && cmonth <= 3) {
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 9, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 12, 0), 'dd-MM-yyyy');
       }
-      else if(cmonth >=4 && cmonth <=6) {
+      else if (cmonth >= 4 && cmonth <= 6) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy'); }
-      else if(cmonth >=7 && cmonth <=9) {
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
+      }
+      else if (cmonth >= 7 && cmonth <= 9) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); }
-      else if(cmonth >=10 && cmonth <=12) {
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy');
+      }
+      else if (cmonth >= 10 && cmonth <= 12) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');  }
-        this.duration='lq';
-            this.loadDentist('all');
-   
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');
+      }
+      this.duration = 'lq';
+      this.loadDentist('all');
+
     }
     else if (duration == 'cytd') {
-      this.trendText= 'Last Year';
-      this.currentText= 'This Year';
+      this.trendText = 'Last Year';
+      this.currentText = 'This Year';
       var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 0, 1).getMonth();
-      this.goalCount = difMonths + 1;    
-      this.duration='cytd';
+      this.goalCount = difMonths + 1;
+      this.duration = 'cytd';
       this.loadDentist('all');
     } else if (duration == 'lcytd') {
-        this.trendText = 'Previous Year';
-        this.currentText = 'Last Year';
-        this.duration = 'lcytd';
-        var date = new Date();
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear() -1, 0, 1), 'dd-MM-yyyy');       
-        this.endDate = this.datePipe.transform(new Date(date.getFullYear() -1, 11, 31), 'dd-MM-yyyy');
-        this.goalCount = 12;
-        this.loadDentist('all');
-      }
-     else if (duration == 'fytd') {
-      this.trendText= 'Last Financial Year';
-      this.currentText= 'This Financial Year';
+      this.trendText = 'Previous Year';
+      this.currentText = 'Last Year';
+      this.duration = 'lcytd';
+      var date = new Date();
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 0, 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 11, 31), 'dd-MM-yyyy');
+      this.goalCount = 12;
+      this.loadDentist('all');
+    }
+    else if (duration == 'fytd') {
+      this.trendText = 'Last Financial Year';
+      this.currentText = 'This Financial Year';
       var date = new Date();
       if ((date.getMonth() + 1) <= 6) {
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, 6, 1), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 6, 1), 'dd-MM-yyyy');
       } else {
         this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
       }
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
       if ((date.getMonth() + 1) <= 6) {
-        this.goalCount =this.monthDiff(new Date(date.getFullYear() -1, 6, 1), new Date());
+        this.goalCount = this.monthDiff(new Date(date.getFullYear() - 1, 6, 1), new Date());
       } else {
-        this.goalCount =this.monthDiff(new Date(date.getFullYear(), 6, 1), new Date());
-      }     
+        this.goalCount = this.monthDiff(new Date(date.getFullYear(), 6, 1), new Date());
+      }
       //var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 6, 1).getMonth();
       //this.goalCount = Math.abs(difMonths + 1);
-      this.duration='fytd';
+      this.duration = 'fytd';
       this.loadDentist('all');
-    }    else if (duration == 'lfytd') {
-        this.trendText = 'Previous Financial Year';
-        this.currentText = 'Last Financial Year';
-        this.duration = 'lfytd'
-        this.goalCount = 12;
-        var date = new Date();
-         if ((date.getMonth() + 1) <= 6) {
-          this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'dd-MM-yyyy');
-        } else {
-          this.startDate = this.datePipe.transform(new Date(date.getFullYear() -1, 6, 1), 'dd-MM-yyyy');
-        }
-        if ((date.getMonth() + 1) <= 6) {          
-         this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'dd-MM-yyyy');
-        } else {
-          this.endDate = this.datePipe.transform(new Date(date.getFullYear(), 5, 30), 'dd-MM-yyyy');
-        }
-/*        this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'dd-MM-yyyy');   */    
-        this.loadDentist('all');
+    } else if (duration == 'lfytd') {
+      this.trendText = 'Previous Financial Year';
+      this.currentText = 'Last Financial Year';
+      this.duration = 'lfytd'
+      this.goalCount = 12;
+      var date = new Date();
+      if ((date.getMonth() + 1) <= 6) {
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'dd-MM-yyyy');
+      } else {
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 6, 1), 'dd-MM-yyyy');
       }
-     else if (duration == 'custom') {
-      this.trendText= '';
-      this.duration='custom';
-      this.currentText= '';
+      if ((date.getMonth() + 1) <= 6) {
+        this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'dd-MM-yyyy');
+      } else {
+        this.endDate = this.datePipe.transform(new Date(date.getFullYear(), 5, 30), 'dd-MM-yyyy');
+      }
+      /*        this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'dd-MM-yyyy');
+              this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'dd-MM-yyyy');   */
+      this.loadDentist('all');
+    }
+    else if (duration == 'custom') {
+      this.trendText = '';
+      this.duration = 'custom';
+      this.currentText = '';
       let selectedDate = this.chartService.customSelectedDate$.value;
-     this.startDate = this.datePipe.transform(selectedDate.startDate, 'dd-MM-yyyy');
-     this.endDate = this.datePipe.transform(selectedDate.endDate, 'dd-MM-yyyy');
-     this.loadDentist('all');
-     $('.customRange').css('display','block');
+      this.startDate = this.datePipe.transform(selectedDate.startDate, 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(selectedDate.endDate, 'dd-MM-yyyy');
+      this.loadDentist('all');
+      $('.customRange').css('display', 'block');
     }
     $('.filter').removeClass('active');
-    $('.filter_'+duration).addClass("active");
-      // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
-      
+    $('.filter_' + duration).addClass("active");
+    // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
+
 
   }
-   
-    choosedDate(val) {
-      val = (val.chosenLabel);
-      var val= val.toString().split(' - ');
-        this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
-        this.duration = 'custom';
-        this.loadDentist('all');
-        
-        // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
-       $('.customRange').css('display','none');
 
+  choosedDate(val) {
+    val = (val.chosenLabel);
+    var val = val.toString().split(' - ');
+    this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
+    this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
+    this.duration = 'custom';
+    this.loadDentist('all');
+
+    // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
+    $('.customRange').css('display', 'none');
+
+  }
+
+  toggleFilter(val) {
+    $('.target_filter').removeClass('mat-button-toggle-checked');
+    $('.target_' + val).addClass('mat-button-toggle-checked');
+    $('.filter').removeClass('active');
+    this.Apirequest = 0;
+    var date = new Date();
+    this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+    if (val == 'current') {
+      this.toggleChecked = true;
+      this.trendValue = 'c';
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, date.getMonth(), 1), 'dd-MM-yyyy');
+
+      this.toggleChangeProcess();
     }
+    else if (val == 'historic') {
+      this.toggleChecked = true;
+      this.trendValue = 'h';
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 10, date.getMonth(), 1), 'dd-MM-yyyy');
 
-    toggleFilter(val) {
-        $('.target_filter').removeClass('mat-button-toggle-checked');
-        $('.target_'+val).addClass('mat-button-toggle-checked');
-        $('.filter').removeClass('active');
-        this.Apirequest = 0;
-        var date = new Date();
-        this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
-        if(val == 'current') {
-         this.toggleChecked = true;
-         this.trendValue = 'c';
-         this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, date.getMonth(), 1), 'dd-MM-yyyy');
-
-         this.toggleChangeProcess();
-        }
-        else if(val == 'historic') {
-           this.toggleChecked = true;
-           this.trendValue = 'h';
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear()-10, date.getMonth(), 1), 'dd-MM-yyyy');
-
-           this.toggleChangeProcess();
-        }
-        else if(val == 'off') {
-          this.showTrend = false;
-        }
+      this.toggleChangeProcess();
     }
-   
-    private getClinics() { 
-      this.headerService.getClinics().subscribe((res) => {
-        if(res.message == 'success'){
-          this.clinicsData = res.data;
-        }
-      }, error => {});
+    else if (val == 'off') {
+      this.showTrend = false;
     }
+  }
 
-    initiate_dentist() {
-      var val = $('.internal_dentist').val();
-      this.loadDentist(val);
-    }
+  private getClinics() {
+    this.headerService.getClinics().subscribe((res) => {
+      if (res.message == 'success') {
+        this.clinicsData = res.data;
+      }
+    }, error => { });
+  }
 
-    toggleChecked = false;
-    trendValue ='';
-    isDisabled =true;
-    isChecked =true;
-    mode='Internal';
-    showTrend= false;
-    toggleChangeProcess(){
+  initiate_dentist() {
+    var val = $('.internal_dentist').val();
+    this.loadDentist(val);
+  }
+
+  toggleChecked = false;
+  trendValue = '';
+  isDisabled = true;
+  isChecked = true;
+  mode = 'Internal';
+  showTrend = false;
+  toggleChangeProcess() {
     this.Apirequest = 4;
     this.showTrend = true;
-    if(this.connectedwith != ''){
+    if (this.connectedwith != '') {
       this.Apirequest = 5;
     }
     this.mkNewPatientsByReferralTrend();
@@ -1455,135 +1461,137 @@ public currentText;
   }
 
 
- public visitsChartTrend: any[]  = [
-    {data: [], label: '',  shadowOffsetX: 3,
-    backgroundColor: [
-      this.chartService.colors.odd,
-      this.chartService.colors.even,
-      this.chartService.colors.odd,
-      this.chartService.colors.even,
-      this.chartService.colors.odd,
-      this.chartService.colors.even,
-      this.chartService.colors.odd,
-      this.chartService.colors.even,
-      this.chartService.colors.odd,
-      this.chartService.colors.even,
-      this.chartService.colors.odd,
-      this.chartService.colors.even,
-      this.chartService.colors.odd,
-  ],
-            shadowOffsetY: 2,
-            shadowBlur: 3,
-            // hoverBackgroundColor: 'rgba(0, 0, 0, 0.6)',
-            shadowColor: 'rgba(0, 0, 0, 0.3)',
-            pointBevelWidth: 2,
-            pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-            pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-            pointShadowOffsetX: 3,
-            pointShadowOffsetY: 3,
-            pointShadowBlur: 10,
-            pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-            backgroundOverlayMode: 'multiply'}];
-    public visitsChartTrend1=[];
-  public visitsChartTrendLabels =[];
-  public visitsChartTrendLabels1 =[];
-public fdvisitsRatioTrendLoader:any;
+  public visitsChartTrend: any[] = [
+    {
+      data: [], label: '', shadowOffsetX: 3,
+      backgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+      ],
+      shadowOffsetY: 2,
+      shadowBlur: 3,
+      // hoverBackgroundColor: 'rgba(0, 0, 0, 0.6)',
+      shadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointBevelWidth: 2,
+      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointShadowOffsetX: 3,
+      pointShadowOffsetY: 3,
+      pointShadowBlur: 10,
+      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+      backgroundOverlayMode: 'multiply'
+    }];
+  public visitsChartTrend1 = [];
+  public visitsChartTrendLabels = [];
+  public visitsChartTrendLabels1 = [];
+  public fdvisitsRatioTrendLoader: any;
 
   private fdvisitsRatioTrend() {
-  this.visitsChartTrendLabels1=[];
-  this.visitsChartTrendLabels=[];
-  this.fdvisitsRatioTrendLoader = true;
-  this.visitsChartTrend1=[];  
+    this.visitsChartTrendLabels1 = [];
+    this.visitsChartTrendLabels = [];
+    this.fdvisitsRatioTrendLoader = true;
+    this.visitsChartTrend1 = [];
     var user_id;
     var clinic_id;
-    this.marketingService.mkTotalVisitsTrend(this.clinic_id,this.trendValue).subscribe((data) => {
-      this.Apirequest = this.Apirequest -1;
-      this.visitsChartTrend1=[];  
+    this.marketingService.mkTotalVisitsTrend(this.clinic_id, this.trendValue).subscribe((data) => {
+      this.Apirequest = this.Apirequest - 1;
+      this.visitsChartTrend1 = [];
       this.visitsChartTrendLabels = [];
-      this.visitsChartTrendLabels1 = [];     
+      this.visitsChartTrendLabels1 = [];
       this.visitsChartTrend[0]['data'] = [];
       this.fdvisitsRatioTrendLoader = false;
-       if(data.message == 'success'){
-                data.data.forEach(res => {  
-                     this.visitsChartTrend1.push(res.num_visits);
-                   if(this.trendValue == 'c')
-                   this.visitsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-                    else
-                   this.visitsChartTrendLabels1.push(res.year);
-                 });
-                 this.visitsChartTrend[0]['data'] = this.visitsChartTrend1;
+      if (data.message == 'success') {
+        data.data.forEach(res => {
+          this.visitsChartTrend1.push(res.num_visits);
+          if (this.trendValue == 'c')
+            this.visitsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+          else
+            this.visitsChartTrendLabels1.push(res.year);
+        });
+        this.visitsChartTrend[0]['data'] = this.visitsChartTrend1;
 
-                 this.visitsChartTrendLabels =this.visitsChartTrendLabels1; 
-       }
+        this.visitsChartTrendLabels = this.visitsChartTrendLabels1;
+      }
     }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!"; 
+      this.warningMessage = "Please Provide Valid Inputs!";
     });
   }
 
- public newPatientsChartTrend: any[]  = 
- [
-  {
-    data: [],
-    label: '',
-    shadowOffsetX: 3,
-    backgroundColor: 
+  public newPatientsChartTrend: any[] =
     [
-      this.chartService.colors.odd,
-      this.chartService.colors.even,
-      this.chartService.colors.odd,
-      this.chartService.colors.even,
-      this.chartService.colors.odd,
-      this.chartService.colors.even,
-      this.chartService.colors.odd,
-      this.chartService.colors.even,
-      this.chartService.colors.odd,
-      this.chartService.colors.even,
-      this.chartService.colors.odd,
-      this.chartService.colors.even,
-      this.chartService.colors.odd
-    ],
-    shadowOffsetY: 2,
-    shadowBlur: 3,
-    shadowColor: 'rgba(0, 0, 0, 0.3)',
-    pointBevelWidth: 2,
-    pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-    pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-    pointShadowOffsetX: 3,
-    pointShadowOffsetY: 3,
-    pointShadowBlur: 10,
-    pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-    backgroundOverlayMode: 'multiply'
-  }
-];
-  
-  public newPatientsChartTrend1=[];
-  public newPatientsChartTrendLabels =[];
-  public newPatientsChartTrendLabels1 =[];
-  public newPatientsChartTemp=[];
-  private mkNoNewPatientsTrend() { 
-    this.newPatientsChartTrendLabels1=[];
-    this.newPatientsChartTrend1=[];
-    this.fdnewPatientsRatioLoader =  true;
-     this.fdnewPatientsAcqLoader= true; 
-    this.marketingService.mkNoNewPatientsTrend(this.clinic_id,this.trendValue).subscribe((data) => {      
-      this.fdnewPatientsRatioLoader =  false;
-      this.fdnewPatientsAcqLoader= false; 
-      this.newPatientsChartTrend1=[];
-      this.newPatientsChartTrendLabels1=[];
-      this.newPatientsChartTrendLabels=[];
+      {
+        data: [],
+        label: '',
+        shadowOffsetX: 3,
+        backgroundColor:
+          [
+            this.chartService.colors.odd,
+            this.chartService.colors.even,
+            this.chartService.colors.odd,
+            this.chartService.colors.even,
+            this.chartService.colors.odd,
+            this.chartService.colors.even,
+            this.chartService.colors.odd,
+            this.chartService.colors.even,
+            this.chartService.colors.odd,
+            this.chartService.colors.even,
+            this.chartService.colors.odd,
+            this.chartService.colors.even,
+            this.chartService.colors.odd
+          ],
+        shadowOffsetY: 2,
+        shadowBlur: 3,
+        shadowColor: 'rgba(0, 0, 0, 0.3)',
+        pointBevelWidth: 2,
+        pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+        pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+        pointShadowOffsetX: 3,
+        pointShadowOffsetY: 3,
+        pointShadowBlur: 10,
+        pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+        backgroundOverlayMode: 'multiply'
+      }
+    ];
+
+  public newPatientsChartTrend1 = [];
+  public newPatientsChartTrendLabels = [];
+  public newPatientsChartTrendLabels1 = [];
+  public newPatientsChartTemp = [];
+  private mkNoNewPatientsTrend() {
+    this.newPatientsChartTrendLabels1 = [];
+    this.newPatientsChartTrend1 = [];
+    this.fdnewPatientsRatioLoader = true;
+    this.fdnewPatientsAcqLoader = true;
+    this.marketingService.mkNoNewPatientsTrend(this.clinic_id, this.trendValue).subscribe((data) => {
+      this.fdnewPatientsRatioLoader = false;
+      this.fdnewPatientsAcqLoader = false;
+      this.newPatientsChartTrend1 = [];
+      this.newPatientsChartTrendLabels1 = [];
+      this.newPatientsChartTrendLabels = [];
       this.newPatientsChartTrend[0]['data'] = [];
-      this.Apirequest = this.Apirequest -1;
-      if(data.message == 'success'){
+      this.Apirequest = this.Apirequest - 1;
+      if (data.message == 'success') {
         this.newPatientsChartTemp = data.data;
-        data.data.forEach(res => {  
+        data.data.forEach(res => {
           this.newPatientsChartTrend1.push(res.new_patients);
-          if(this.trendValue == 'c')
+          if (this.trendValue == 'c')
             this.newPatientsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
           else
             this.newPatientsChartTrendLabels1.push(res.year);
         });
         this.newPatientsChartTrend[0]['data'] = this.newPatientsChartTrend1;
-        this.newPatientsChartTrendLabels =this.newPatientsChartTrendLabels1;
+        this.newPatientsChartTrendLabels = this.newPatientsChartTrendLabels1;
         this.fdnewPatientsAcqTrend();
       }
     }, error => {
@@ -1591,235 +1599,236 @@ public fdvisitsRatioTrendLoader:any;
     });
   }
 
-public barChartOptions: any = {
+  public barChartOptions: any = {
     scaleShowVerticalLines: false,
     cornerRadius: 60,
     curvature: 1,
     animation: {
-        duration: 1500,
-        easing: 'easeOutSine'
-      },
-       responsive: true,
+      duration: 1500,
+      easing: 'easeOutSine'
+    },
+    responsive: true,
     maintainAspectRatio: false,
-        scales: {
-          xAxes: [{ 
-            gridLines: { display: true },
-            ticks: {
-                  autoSkip: false
-              }
-            }],
-          yAxes: [{  
-            ticks: {
-             suggestedMin:0,
-              userCallback: (label, index, labels)=> {
-                     // when the floored value is the same as the value we have a whole number
-                     if (Math.floor(label) === label) {
-                         return '$'+this.decimalPipe.transform(label);
-                     }
-                 },
-            }, 
-            }],
+    scales: {
+      xAxes: [{
+        gridLines: { display: true },
+        ticks: {
+          autoSkip: false
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          suggestedMin: 0,
+          userCallback: (label, index, labels) => {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              return '$' + this.decimalPipe.transform(label);
+            }
+          },
         },
+      }],
+    },
     tooltips: {
       mode: 'x-axis',
-            custom: function(tooltip) {
+      custom: function (tooltip) {
         if (!tooltip) return;
         // disable displaying the color box;
         tooltip.displayColors = false;
       },
-  callbacks: {
-     label: (tooltipItems, data) => { 
-          return tooltipItems.xLabel+": $"+ this.decimalPipe.transform(tooltipItems.yLabel);
-     },
-     title: function() {
-       return '';
-     }
-     
-  }
-},
-         legend: {
-        position: 'top',
-        onClick: function(e, legendItem) {
-          var index = legendItem.datasetIndex;
-          var ci = this.chart; 
-          if(index ==0)
-          {
-                ci.getDatasetMeta(1).hidden = true;
-                ci.getDatasetMeta(index).hidden = false;
-          }
-          else if(index== 1) {
-                ci.getDatasetMeta(0).hidden = true;
-                ci.getDatasetMeta(index).hidden = false;
-          } 
-          ci.update();
+      callbacks: {
+        label: (tooltipItems, data) => {
+          return tooltipItems.xLabel + ": $" + this.decimalPipe.transform(tooltipItems.yLabel);
         },
-      }  , 
+        title: function () {
+          return '';
+        }
+
+      }
+    },
+    legend: {
+      position: 'top',
+      onClick: function (e, legendItem) {
+        var index = legendItem.datasetIndex;
+        var ci = this.chart;
+        if (index == 0) {
+          ci.getDatasetMeta(1).hidden = true;
+          ci.getDatasetMeta(index).hidden = false;
+        }
+        else if (index == 1) {
+          ci.getDatasetMeta(0).hidden = true;
+          ci.getDatasetMeta(index).hidden = false;
+        }
+        ci.update();
+      },
+    },
   };
- public expenseDataTrend: any[]  = [
-    {data: [], label: '',  shadowOffsetX: 3,
-    backgroundColor: [
-      this.chartService.colors.odd,
-      this.chartService.colors.even,
-      this.chartService.colors.odd,
-      this.chartService.colors.even,
-      this.chartService.colors.odd,
-      this.chartService.colors.even,
-      this.chartService.colors.odd,
-      this.chartService.colors.even,
-      this.chartService.colors.odd,
-      this.chartService.colors.even,
-      this.chartService.colors.odd,
-      this.chartService.colors.even
-  ],
-            shadowOffsetY: 2,
-            shadowBlur: 3,
-            shadowColor: 'rgba(0, 0, 0, 0.3)',
-            pointBevelWidth: 2,
-            pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-            pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-            pointShadowOffsetX: 3,
-            pointShadowOffsetY: 3,
-            pointShadowBlur: 10,
-            pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-            backgroundOverlayMode: 'multiply'}];
-public expenseDataTrend1=[];
-public expenseDataTrendLabels1=[];
-public expenseDataTrendLabels=[];
-public dataY:any=0;
-//Predictor Ratio :
+  public expenseDataTrend: any[] = [
+    {
+      data: [], label: '', shadowOffsetX: 3,
+      backgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even
+      ],
+      shadowOffsetY: 2,
+      shadowBlur: 3,
+      shadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointBevelWidth: 2,
+      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointShadowOffsetX: 3,
+      pointShadowOffsetY: 3,
+      pointShadowBlur: 10,
+      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+      backgroundOverlayMode: 'multiply'
+    }];
+  public expenseDataTrend1 = [];
+  public expenseDataTrendLabels1 = [];
+  public expenseDataTrendLabels = [];
+  public dataY: any = 0;
+  //Predictor Ratio :
   private fdnewPatientsAcqTrend() {
-    this.expenseData =[];
-    this.categories=[];
-    this.newAcqValueGoal='';
-    this.newAcqValuePrev=0;
-    this.expenseDataTrend1=[];
-    this.expenseDataTrendLabels1=[];
-    this.fdnewPatientsAcqLoader= true;    
-    this.newAcqValueError= false;    
-    if(this.duration && this.connectedwith !=''){
-       var user_id;
-       var clinic_id;
-       this.marketingService.categoryExpensesTrend(this.clinic_id,this.trendValue,this.connectedwith).subscribe((data) => {
-        this.fdnewPatientsAcqLoader= false; 
-        this.Apirequest = this.Apirequest -1;   
-          if(data.message == 'success'){
-            
-            this.expenseDataTrend1=[];
-            this.expenseDataTrendLabels1=[];
-           this.newPatientsChartTemp.forEach((res,key) => {
-             data.data.forEach((res1,key1) => {
-                if(this.trendValue == 'c' && res1.duration == res.year_month ) {
-                  let dataX:number=0;
-                  this.dataY=0;
-                  let percent:any =0;
-                  if(res1.val != undefined) {
-                    res1.val.forEach((res2,key2) => {
-                      if(res2.meta_key != 'Total Operating Expenses')
+    this.expenseData = [];
+    this.categories = [];
+    this.newAcqValueGoal = '';
+    this.newAcqValuePrev = 0;
+    this.expenseDataTrend1 = [];
+    this.expenseDataTrendLabels1 = [];
+    this.fdnewPatientsAcqLoader = true;
+    this.newAcqValueError = false;
+    if (this.duration && this.connectedwith != '') {
+      var user_id;
+      var clinic_id;
+      this.marketingService.categoryExpensesTrend(this.clinic_id, this.trendValue, this.connectedwith).subscribe((data) => {
+        this.fdnewPatientsAcqLoader = false;
+        this.Apirequest = this.Apirequest - 1;
+        if (data.message == 'success') {
+
+          this.expenseDataTrend1 = [];
+          this.expenseDataTrendLabels1 = [];
+          this.newPatientsChartTemp.forEach((res, key) => {
+            data.data.forEach((res1, key1) => {
+              if (this.trendValue == 'c' && res1.duration == res.year_month) {
+                let dataX: number = 0;
+                this.dataY = 0;
+                let percent: any = 0;
+                if (res1.val != undefined) {
+                  res1.val.forEach((res2, key2) => {
+                    if (res2.meta_key != 'Total Operating Expenses')
                       this.dataY = parseInt(this.dataY) + parseInt(res2.expenses);
-                     });
-                  }
-
-                  if(res.val != '') {
-                    dataX = res.new_patients;
-                  }
-
-                  if(dataX != 0) 
-                    percent = this.dataY/dataX;
-
-                  this.expenseDataTrend1.push(Math.round(percent));
-                   this.expenseDataTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-                   
-                }else if(this.trendValue == 'h' && res1.duration == res.year){
-                  let dataX:number=0;
-                  this.dataY=0;
-                  let percent:any =0;
-                  if(res1.val != undefined) {
-                    res1.val.forEach((res2,key2) => {
-                      if(res2.meta_key != 'Total Operating Expenses')
-                      this.dataY = parseInt(this.dataY) + parseInt(res2.expenses);
-                     });
-                  }
-
-                  if(res.val != '') {
-                    dataX = res.new_patients;
-                  }
-
-                  if(dataX != 0) 
-                    percent = this.dataY/dataX;
-
-                  this.expenseDataTrend1.push(Math.round(percent));
-                   this.expenseDataTrendLabels1.push(res.year);
+                  });
                 }
-             });
 
-             });   
-              this.expenseDataTrend[0]['data'] = this.expenseDataTrend1;
-              this.expenseDataTrendLabels =this.expenseDataTrendLabels1;
-           }
-    }, error => {
-      this.newAcqValueError= true;    
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
-    }else{
-      this.xeroConnect=false;
-      this.myobConnect=false;
+                if (res.val != '') {
+                  dataX = res.new_patients;
+                }
+
+                if (dataX != 0)
+                  percent = this.dataY / dataX;
+
+                this.expenseDataTrend1.push(Math.round(percent));
+                this.expenseDataTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+
+              } else if (this.trendValue == 'h' && res1.duration == res.year) {
+                let dataX: number = 0;
+                this.dataY = 0;
+                let percent: any = 0;
+                if (res1.val != undefined) {
+                  res1.val.forEach((res2, key2) => {
+                    if (res2.meta_key != 'Total Operating Expenses')
+                      this.dataY = parseInt(this.dataY) + parseInt(res2.expenses);
+                  });
+                }
+
+                if (res.val != '') {
+                  dataX = res.new_patients;
+                }
+
+                if (dataX != 0)
+                  percent = this.dataY / dataX;
+
+                this.expenseDataTrend1.push(Math.round(percent));
+                this.expenseDataTrendLabels1.push(res.year);
+              }
+            });
+
+          });
+          this.expenseDataTrend[0]['data'] = this.expenseDataTrend1;
+          this.expenseDataTrendLabels = this.expenseDataTrendLabels1;
+        }
+      }, error => {
+        this.newAcqValueError = true;
+        this.warningMessage = "Please Provide Valid Inputs!";
+      }
+      );
+    } else {
+      this.xeroConnect = false;
+      this.myobConnect = false;
     }
   }
 
-save_account() {   
-var selectedAccounts=JSON.stringify(Object.assign({}, this.selectedAccounts)); 
-if(this.connectedwith == 'myob'){
-  this.marketingService.mkSaveAcctMyob(this.clinic_id,escape(selectedAccounts)).subscribe((data) => {
-    if(data.message == 'success'){
-      this.load_chart_acq();
-      this.fdnewPatientsAcq();
-    }
-  }); 
-}else if(this.connectedwith == 'xero'){
-   this.marketingService.saveSelectedCategories(this.clinic_id,escape(selectedAccounts)).subscribe((data) => {
-        if(data.message == 'success'){
+  save_account() {
+    var selectedAccounts = JSON.stringify(Object.assign({}, this.selectedAccounts));
+    if (this.connectedwith == 'myob') {
+      this.marketingService.mkSaveAcctMyob(this.clinic_id, escape(selectedAccounts)).subscribe((data) => {
+        if (data.message == 'success') {
           this.load_chart_acq();
           this.fdnewPatientsAcq();
         }
-    });
-} 
-                    
-  
-}
+      });
+    } else if (this.connectedwith == 'xero') {
+      this.marketingService.saveSelectedCategories(this.clinic_id, escape(selectedAccounts)).subscribe((data) => {
+        if (data.message == 'success') {
+          this.load_chart_acq();
+          this.fdnewPatientsAcq();
+        }
+      });
+    }
 
-  public newAcqValue:any=0;
-  public newAcqValueMax:any= 35;
-load_chart_acq() {
-  var totalY=0;                                             
-    this.selectedAccounts.forEach((res,key) => {
-      if(this.expenseData[res])
-      totalY = totalY+parseInt(this.expenseData[res]);
+
+  }
+
+  public newAcqValue: any = 0;
+  public newAcqValueMax: any = 35;
+  load_chart_acq() {
+    var totalY = 0;
+    this.selectedAccounts.forEach((res, key) => {
+      if (this.expenseData[res])
+        totalY = totalY + parseInt(this.expenseData[res]);
     });
     this.newAcqValue = 0;
-    if(totalY != undefined && this.newPatientsTotal>0)
-    this.newAcqValue = (totalY/this.newPatientsTotal).toFixed(0);
-    if(parseFloat(this.newAcqValueGoal) >= parseFloat(this.newAcqValue) ){
-      this.newAcqValueMax =  parseFloat(this.newAcqValueGoal);
-    } else if( parseFloat(this.newAcqValueGoal) < parseFloat(this.newAcqValue) ){
-      this.newAcqValueMax =  parseFloat(this.newAcqValue);
+    if (totalY != undefined && this.newPatientsTotal > 0)
+      this.newAcqValue = (totalY / this.newPatientsTotal).toFixed(0);
+    if (parseFloat(this.newAcqValueGoal) >= parseFloat(this.newAcqValue)) {
+      this.newAcqValueMax = parseFloat(this.newAcqValueGoal);
+    } else if (parseFloat(this.newAcqValueGoal) < parseFloat(this.newAcqValue)) {
+      this.newAcqValueMax = parseFloat(this.newAcqValue);
     }
     $('.close_modal').click();
-}
+  }
 
   public changeLevel(val) {
-    if(val == 'newPatient') {
+    if (val == 'newPatient') {
       this.newPatientsTimeLabelsl2 = [];
       this.totalNewPatientsReferral = Math.round(this.mkNewPatientsByReferralAll.total);
       this.newPatientsReferral$.next(this.totalNewPatientsReferral);
-      this.newPatientsTimeData1 =[];
-      this.newPatientsTimeLabelsl2 =[];
-      this.newPatientsTimeLabels1 =[];
-      if(this.mkNewPatientsByReferralAll.data.patients_reftype.length >0) {
-        var i=0;
+      this.newPatientsTimeData1 = [];
+      this.newPatientsTimeLabelsl2 = [];
+      this.newPatientsTimeLabels1 = [];
+      if (this.mkNewPatientsByReferralAll.data.patients_reftype.length > 0) {
+        var i = 0;
         this.mkNewPatientsByReferralAll.data.patients_reftype.forEach(res => {
-          if(res.patients_visits > 0) {
-            if(i < 10) {
+          if (res.patients_visits > 0) {
+            if (i < 10) {
               this.newPatientsTimeData1.push(res.patients_visits);
               this.newPatientsTimeLabels1.push(res.reftype_name);
               i++;
@@ -1828,113 +1837,113 @@ load_chart_acq() {
         });
       }
       this.newPatientsTimeData = this.newPatientsTimeData1;
-      this.newPatientsTimeLabels= this.newPatientsTimeLabels1;
+      this.newPatientsTimeLabels = this.newPatientsTimeLabels1;
       //   this.mkNewPatientsByReferral();
-    }  else if(val == 'revenue') {
+    } else if (val == 'revenue') {
       this.revenueReferralLabelsl2 = [];
-      this.mkRevenueByReferralLoader = false;
-        this.totalRevenueByReferral = this.decimalPipe.transform(Math.round(this.reffralAllData.total || 0));
-        this.revenueByReferralCount$.next(Math.round(this.reffralAllData.total || 0));
-        // this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
-        if (this.revenueRefChart) {
-          this.revenueRefChart.ngOnDestroy();
-          this.revenueRefChart.chart = this.revenueRefChart.getChartBuilder(this.revenueRefChart.ctx);
-        }
-        this.revenueReferralData1 =[];
-        this.revenueReferralLabelsl2 =[];
-        this.revenueReferralLabels1 =[];
-        if(this.reffralAllData.data.patients_reftype.length >0) {
-          var i=0;
-          this.reffralAllData.data.patients_reftype.forEach(res => {
-            if(res.invoice_amount>0) {
-              if(i<10) {
-                this.revenueReferralData1.push(Math.round(res.invoice_amount));
-                this.revenueReferralLabels1.push(res.reftype_name);
-                i++;
-              }
+      
+      this.totalRevenueByReferral = this.decimalPipe.transform(Math.round(this.reffralAllData.total || 0));
+      this.revenueByReferralCount$.next(Math.round(this.reffralAllData.total || 0));
+      // this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
+      if (this.revenueRefChart) {
+        this.revenueRefChart.ngOnDestroy();
+        this.revenueRefChart.chart = this.revenueRefChart.getChartBuilder(this.revenueRefChart.ctx);
+      }
+      this.revenueReferralData1 = [];
+      this.revenueReferralLabelsl2 = [];
+      this.revenueReferralLabels1 = [];
+      if (this.reffralAllData.data.patients_reftype.length > 0) {
+        var i = 0;
+        this.reffralAllData.data.patients_reftype.forEach(res => {
+          if (res.invoice_amount > 0) {
+            if (i < 10) {
+              this.revenueReferralData1.push(Math.round(res.invoice_amount));
+              this.revenueReferralLabels1.push(res.reftype_name);
+              i++;
             }
-          });
-        }
-        this.revenueReferralData = this.revenueReferralData1;
-        this.revenueReferralLabels= this.revenueReferralLabels1; 
+          }
+        });
+      }
+      this.revenueReferralData = this.revenueReferralData1;
+      this.revenueReferralLabels = this.revenueReferralLabels1;
+      this.mkRevenueByReferralLoader = false;
     }
   }
 
   add_account(index) {
-    if(!this.selectedAccounts.includes(this.Accounts[index]))
-    this.selectedAccounts.push(this.Accounts[index]);
+    if (!this.selectedAccounts.includes(this.Accounts[index]))
+      this.selectedAccounts.push(this.Accounts[index]);
     this.Accounts.splice(index, 1);
   }
   remove_account(index) {
-    if(!this.Accounts.includes(this.selectedAccounts[index]))
-    this.Accounts.push(this.selectedAccounts[index]);
+    if (!this.Accounts.includes(this.selectedAccounts[index]))
+      this.Accounts.push(this.selectedAccounts[index]);
     this.selectedAccounts.splice(index, 1);
   }
 
- checkXeroStatus(){ 
-     this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe((res) => {
-      if(res.message == 'success'){
-        if(res.data.xero_connect == 1) {
+  checkXeroStatus() {
+    this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe((res) => {
+      if (res.message == 'success') {
+        if (res.data.xero_connect == 1) {
           this.xeroConnect = true;
         } else {
-          this.xeroConnect = false; 
+          this.xeroConnect = false;
         }
-       } else {
+      } else {
         this.xeroConnect = false;
       }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
-    });  
- }
-  checkMyobStatus(){
-   this.clinicSettingsService.checkMyobStatus(this.clinic_id).subscribe((res) => {
-    if(res.message == 'success'){
-      if(res.data.myob_connect == 1) {
-        this.myobConnect = true;
+    });
+  }
+  checkMyobStatus() {
+    this.clinicSettingsService.checkMyobStatus(this.clinic_id).subscribe((res) => {
+      if (res.message == 'success') {
+        if (res.data.myob_connect == 1) {
+          this.myobConnect = true;
+        } else {
+          this.myobConnect = false;
+        }
       } else {
-        this.myobConnect = false; 
+        this.myobConnect = false;
       }
-     } else {
-      this.myobConnect = false;
-    }
-  }, error => {
-    this.warningMessage = "Please Provide Valid Inputs!";
-  });  
-}
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });
+  }
 
-monthDiff(d1, d2) {
+  monthDiff(d1, d2) {
     var months;
     months = (d2.getFullYear() - d1.getFullYear()) * 12;
     months -= d1.getMonth();
     months += d2.getMonth();
     return months <= 0 ? 0 : months;
-}
+  }
 
   getChartsTips() {
     this.chartstipsService.getCharts(4).subscribe((data) => {
-       if(data.message == 'success'){         
+      if (data.message == 'success') {
         this.charTips = data.data;
-       }
-    }, error => {});
+      }
+    }, error => { });
   }
 
 
-  public showAccountsButton:boolean = false;
-  getRolesIndividual(){
-      this.showAccountsButton = false;
-      if(this._cookieService.get("user_type") == '2'){
-        this.showAccountsButton = true;
-      } else {
-        this.rolesUsersService.getRolesIndividual().subscribe((res) => {
-          if(res.message == 'success'){    
-            if(res.data.indexOf('profilesettings') >= 0)
-            {       
-               this.showAccountsButton = true;
-            }
-          }      
-        }); 
-      }   
-       
+  public showAccountsButton: boolean = false;
+  getRolesIndividual() {
+    this.showAccountsButton = false;
+    if (this._cookieService.get("user_type") == '2') {
+      this.showAccountsButton = true;
+    } else {
+      this.rolesUsersService.getRolesIndividual().subscribe((res) => {
+        if (res.message == 'success') {
+          if (res.data.indexOf('profilesettings') >= 0) {
+            this.showAccountsButton = true;
+          }
+        }
+      });
+    }
+
   }
 
 }
