@@ -223,12 +223,16 @@
                 <span *ngIf="proCollShow == 1">Production</span>
                 <span *ngIf="proCollShow == 2">Collection</span>
               </div>
-              <div class="info-icon-container" *ngIf="proCollShow == 1">
-                <img [tooltip]="charTips['1']" src="../assets/images/info-icon.png" alt="info-icon"
+              
+              <div class="info-icon-container" >
+                <!-- top values Ions -->
+              <i  style="margin-right: 10px;" class="far fa-chart-bar" ></i>
+              <!-- <i  style="margin-right: 10px; color: #1aa591;" *ngIf="showTopVlaues  && !showUtiTable && !showTrend" class="far fa-chart-bar greenIcon" (click) = "setTopValues()"></i> -->
+              <!-- top values Ions -->
+                <img *ngIf="proCollShow == 1" [tooltip]="charTips['1']" src="../assets/images/info-icon.png" alt="info-icon"
                   class="info-icon" />
-              </div>
-              <div class="info-icon-container" *ngIf="proCollShow == 2">
-                <img [tooltip]="charTips['49']" src="../assets/images/info-icon.png" alt="info-icon"
+              
+                <img *ngIf="proCollShow == 2" [tooltip]="charTips['49']" src="../assets/images/info-icon.png" alt="info-icon"
                   class="info-icon" />
               </div>
             </mat-card-title>
