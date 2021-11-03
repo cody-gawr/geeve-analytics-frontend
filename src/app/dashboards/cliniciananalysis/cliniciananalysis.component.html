@@ -239,10 +239,12 @@
 
               <div class="info-icon-container">
                 <!-- top values Ions -->
-                <i style="margin-right: 10px;" class="fas fa-calendar-week" *ngIf="showTrendChart == false"
-                  (click)="setWeeklyTrend()"></i>
-                <i style="margin-right: 10px; color: #1aa591;" class="fas fa-calendar-week"
-                  *ngIf="showTrendChart == true" (click)="setWeeklyTrend()"></i>
+                
+                  <i style="margin-right: 10px;" class="fas fa-calendar-week" *ngIf="showTrendChart == false && showWeekTrend == false"
+                    (click)="setWeeklyTrend()"></i>
+                  <i style="margin-right: 10px; color: #1aa591;" class="fas fa-calendar-week"
+                    *ngIf="showWeekTrend == true && showTrendChart == false" (click)="setWeeklyTrend()"></i>
+                
                 <!-- <i  style="margin-right: 10px; color: #1aa591;" *ngIf="showTopVlaues  && !showUtiTable && !showTrend" class="far fa-chart-bar greenIcon" (click) = "setTopValues()"></i> -->
                 <!-- top values Ions -->
                 <img *ngIf="proCollShow == 1" [tooltip]="charTips['1']" src="../assets/images/info-icon.png"
@@ -254,7 +256,7 @@
             </mat-card-title>
 
             <div class="card-body">
-              <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+              <div *ngIf="!showWeekTrend" fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                 <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''"
                     (click)="changeProduction('1')">Production</small>
@@ -269,7 +271,7 @@
 
               <div *ngIf="proCollShow == 1">
                 <div class="chart" fxLayout="row" fxLayoutAlign="start center" style="height: 306px"
-                  *ngIf="showTrendChart == false && gaugeValue > 0 && !buildChartDentistLoader">
+                  *ngIf="showTrendChart == false && showWeekTrend == false && gaugeValue > 0 && !buildChartDentistLoader">
                   <ngx-gauge [type]="gaugeType" [value]="gaugeValue" [label]="gaugeLabel" [thick]="gaugeThick"
                     [backgroundColor]="backgroundColor" [foregroundColor]="foregroundColor" [max]="maxProductionGoal"
                     [cap]="cap" [duration]="gaugeDuration" [prepend]="gaugePrependText" [size]="size">
@@ -300,11 +302,34 @@
               </div>
               <!-- Collection Chart end dentist -->
 
+              <!-- Production Chart weekly trend -->
+              <div
+                *ngIf="proCollShow == 1 && showTrendChart == false && showWeekTrend == true && dentistProductionWeeklyTrendLabels.length > 0 && !dentistProductionTrendLoader"
+                style="height: 306px">
+                test
+                <canvas #myCanvas id="dentistProductionWeeklyTrend" baseChart [datasets]="dentistProductionWeeklyTrend"
+                  [labels]="dentistProductionWeeklyTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
+                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
+                  (chartClick)="chartClicked($event)">
+                </canvas>
+
+              </div>
+
+              <div
+                *ngIf="dentistProductionTrendLoader && proCollShow == 1 && showTrendChart == false && showWeekTrend == true"
+                class="loader_container loader_container_middle">
+                <img class="loader_ico" src="../assets/images/720.gif">
+                <div class="loader-text">Calculating...</div>
+              </div>
+              <!--Production Chart weekly trend-->
+
+
 
               <!-- Production Chart start trend -->
               <div
                 *ngIf="proCollShow == 1 && showTrendChart == true && dentistProductionTrendLabels.length > 0 && !dentistProductionTrendLoader"
                 style="height: 306px">
+
                 <canvas #myCanvas id="dentistProductionTrend" baseChart [datasets]="dentistProdTrend"
                   [labels]="dentistProductionTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                   (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
@@ -312,11 +337,13 @@
                 </canvas>
 
               </div>
+
               <div *ngIf="dentistProductionTrendLoader && proCollShow == 1 && showTrendChart == true"
                 class="loader_container loader_container_middle">
                 <img class="loader_ico" src="../assets/images/720.gif">
                 <div class="loader-text">Calculating...</div>
               </div>
+
               <div
                 *ngIf="proCollShow == 2 &&  showTrendChart == true && dentistCollectionTrendLabels.length > 0 && !dentistCollectionTrendLoader"
                 style="height: 306px">
@@ -326,6 +353,7 @@
                   (chartClick)="chartClicked($event)">
                 </canvas>
               </div>
+
               <div *ngIf="dentistCollectionTrendLoader && proCollShow == 2 && showTrendChart == true"
                 class="loader_container loader_container_middle">
                 <img class="loader_ico" src="../assets/images/720.gif">
@@ -334,14 +362,14 @@
               <!-- Production Chart start trend -->
             </div>
             <div class="no-data-placeholder"
-              *ngIf="((showTrendChart == false && gaugeValue <= 0 )|| (showTrendChart == true && dentistProductionTrendLabels.length <= 0)) && !buildChartDentistLoader && !dentistProductionTrendLoader">
+              *ngIf="((showTrendChart == false && gaugeValue <= 0 ) || (showTrendChart == true &&  dentistProductionTrendLabels.length <= 0) || ( showWeekTrend == true && dentistProductionWeeklyTrendLabels.length <= 0)) && !buildChartDentistLoader && !dentistProductionTrendLoader">
               <div class="sa_nodata_div">
               </div>
               <p class="chart-placeholder-text">trend You have no production in the selected period</p>
             </div>
 
             <!-- Production Chart start trend -->
-            <div class="card-footer" *ngIf="proCollShow == 1 && !averageToggle">
+            <div class="card-footer" *ngIf="proCollShow == 1 && !averageToggle && !showWeekTrend">
               <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
                 fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
@@ -366,7 +394,7 @@
             </div>
             <!-- Production Chart end trend -->
             <!-- Collection Chart start trend -->
-            <div class="card-footer" *ngIf="proCollShow == 2 && !averageToggle">
+            <div class="card-footer" *ngIf="proCollShow == 2 && !averageToggle  && !showWeekTrend">
               <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
                 fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">

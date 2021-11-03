@@ -941,8 +941,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     if (this._cookieService.get("dentistid"))
       this.childid = this._cookieService.get("dentistid");
     if (newValue == 'all') {
-      this.dentistVal = 'all';
-      this.showWeekTrend = false;
+      this.dentistVal = 'all';      
       this.showTrend = false;
       this.toggleChecked = false;
       this.showTrendChart = false;
@@ -973,15 +972,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     } else {
       this.dentistVal = newValue;
       this.showTrend = true;
-      this.showWeekTrend = true;
       this.selectedDentist = newValue;
+      this.dentistProductionTrend('w');
       if (this.toggleChecked) {
         this.toggleChangeProcess();
         this.showTrendChart = true;
 
       } else {
         this.showTrendChart = false;
-        this.dentistProductionTrend('w');
         //this.toggleFilter('off');
         this.buildChartDentist();
         this.collectionDentist();
@@ -2961,6 +2959,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     $('.target_' + val).addClass('mat-button-toggle-checked');
     $('.filter').removeClass('active');
     this.Apirequest = 0;
+    this.showWeekTrend=false
     if (val == 'current') {
       this.toggleChecked = true;
       this.showTrendChart = true;
@@ -3043,6 +3042,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
     }];
+
+  public dentistProductionWeeklyTrend = [];
+  public dentistProductionWeeklyTrendLabels = [];
   public dentistProductionTrend1 = [];
   public dentistProductionTrendLabels = [];
   public dentistProductionTrendLabels1 = [];
@@ -3064,7 +3066,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       let dynamicColors = [];
       this.Apirequest = this.Apirequest - 1;
       if (data && data.message == 'success') {
-        this.dentistProductionTrendLoader = false;
+
         if (data.data.total > 0) {
           data.data.data.forEach(res => {
             if (res.production)
@@ -3090,13 +3092,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           if (this.dentistProductionTrendLabels.length <= 0) {
             this.gaugeValue = '0';
           }
+          if (mode == 'w') {
+            this.dentistProductionWeeklyTrend = this.dentistProdTrend
+            this.dentistProductionWeeklyTrendLabels = this.dentistProductionTrendLabels
+          }
         } else {
           this.dentistProductionTrendLabels = [];
         }
-
+        this.dentistProductionTrendLoader = false;
       }
-      console.log('this.dentistProductionTrendLabels', this.dentistProductionTrendLabels);
-      console.log('this.trendValue', this.dentistProdTrend);
+      console.log('this.dentistProductionWeeklyTrend', this.dentistProductionWeeklyTrend);
     }, error => {
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -3744,12 +3749,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   }
 
   setWeeklyTrend() {
-    if (this.showTrendChart) {
-      this.showTrendChart = false
+    if (this.showWeekTrend) {
+      this.showWeekTrend = false
     } else {
-      this.showTrendChart = true
-      this.dentistProductionTrend('w');
+      this.showWeekTrend = true
+      this.showTrendChart = false
+      // this.dentistProductionTrend('w');
     }
+    console.log('dentistProductionWeeklyTrend', this.dentistProductionWeeklyTrend)
   }
 
   toggleChangeProcess() {
