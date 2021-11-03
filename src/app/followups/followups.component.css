@@ -815,3 +815,8 @@ table.history td.notes {padding-right: 2%;text-align: right;}
 div.mat-chip-list-wrapper .custom-tooltip {
     max-width: 650px;
 } 
+
+.InternalReferrals .mat-column-status {
+    flex: 0 0 15% !important;
+    width: 15% !important;
+}
