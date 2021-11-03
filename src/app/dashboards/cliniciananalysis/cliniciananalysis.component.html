@@ -360,14 +360,20 @@
               </div>
               <!-- Production Chart start trend -->
             </div>
-          
+
             <div class="no-data-placeholder"
-              *ngIf="((showTrendChart == false && gaugeValue <= 0 ) || (showTrendChart == true  && showWeekTrend == false && dentistProductionTrendLabels.length <= 0) || ( showWeekTrend == true && dentistProductionWeeklyTrendLabels.length <= 0)) && !buildChartDentistLoader && !dentistProductionTrendLoader">
+              *ngIf="((showTrendChart == false && gaugeValue <= 0 ) || (showTrendChart == true  && dentistProductionTrendLabels.length <= 0)) && !buildChartDentistLoader && !dentistProductionTrendLoader && showWeekTrend == false">
               <div class="sa_nodata_div">
               </div>
               <p class="chart-placeholder-text">You have no production in the selected period</p>
             </div>
 
+            <div class="no-data-placeholder"
+              *ngIf="showWeekTrend == true  && dentistProductionWeeklyTrendLabels.length <= 0">
+              <div class="sa_nodata_div">
+              </div>
+              <p class="chart-placeholder-text">You have no production in the selected period</p>
+            </div>
             <!-- Production Chart start trend -->
             <div class="card-footer" *ngIf="proCollShow == 1 && !averageToggle && !showWeekTrend">
               <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
