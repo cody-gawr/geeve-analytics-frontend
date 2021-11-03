@@ -712,7 +712,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     },
     responsive: true,
     maintainAspectRatio: false,
-    scales: {
+    scales: { 
       xAxes: [{
         gridLines: { display: true },
         ticks: {
