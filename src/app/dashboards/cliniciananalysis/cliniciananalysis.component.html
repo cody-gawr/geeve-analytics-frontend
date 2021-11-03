@@ -239,12 +239,12 @@
 
               <div class="info-icon-container">
                 <!-- top values Ions -->
-                
-                  <i style="margin-right: 10px;" class="fas fa-calendar-week" *ngIf="showTrendChart == false && showWeekTrend == false"
-                    (click)="setWeeklyTrend()"></i>
-                  <i style="margin-right: 10px; color: #1aa591;" class="fas fa-calendar-week"
-                    *ngIf="showWeekTrend == true && showTrendChart == false" (click)="setWeeklyTrend()"></i>
-                
+
+                <i style="margin-right: 10px;" class="fas fa-calendar-week"
+                  *ngIf="showTrendChart == false && showWeekTrend == false" (click)="setWeeklyTrend()"></i>
+                <i style="margin-right: 10px; color: #1aa591;" class="fas fa-calendar-week"
+                  *ngIf="showWeekTrend == true && showTrendChart == false" (click)="setWeeklyTrend()"></i>
+
                 <!-- <i  style="margin-right: 10px; color: #1aa591;" *ngIf="showTopVlaues  && !showUtiTable && !showTrend" class="far fa-chart-bar greenIcon" (click) = "setTopValues()"></i> -->
                 <!-- top values Ions -->
                 <img *ngIf="proCollShow == 1" [tooltip]="charTips['1']" src="../assets/images/info-icon.png"
@@ -306,7 +306,6 @@
               <div
                 *ngIf="proCollShow == 1 && showTrendChart == false && showWeekTrend == true && dentistProductionWeeklyTrendLabels.length > 0 && !dentistProductionTrendLoader"
                 style="height: 306px">
-                test
                 <canvas #myCanvas id="dentistProductionWeeklyTrend" baseChart [datasets]="dentistProductionWeeklyTrend"
                   [labels]="dentistProductionWeeklyTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                   (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
@@ -361,11 +360,12 @@
               </div>
               <!-- Production Chart start trend -->
             </div>
+          
             <div class="no-data-placeholder"
-              *ngIf="((showTrendChart == false && gaugeValue <= 0 ) || (showTrendChart == true &&  dentistProductionTrendLabels.length <= 0) || ( showWeekTrend == true && dentistProductionWeeklyTrendLabels.length <= 0)) && !buildChartDentistLoader && !dentistProductionTrendLoader">
+              *ngIf="((showTrendChart == false && gaugeValue <= 0 ) || (showTrendChart == true  && showWeekTrend == false && dentistProductionTrendLabels.length <= 0) || ( showWeekTrend == true && dentistProductionWeeklyTrendLabels.length <= 0)) && !buildChartDentistLoader && !dentistProductionTrendLoader">
               <div class="sa_nodata_div">
               </div>
-              <p class="chart-placeholder-text">trend You have no production in the selected period</p>
+              <p class="chart-placeholder-text">You have no production in the selected period</p>
             </div>
 
             <!-- Production Chart start trend -->

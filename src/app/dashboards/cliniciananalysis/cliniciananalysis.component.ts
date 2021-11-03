@@ -3753,7 +3753,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.showWeekTrend = false
     } else {
       this.showWeekTrend = true
-      this.showTrendChart = false
+      // this.showTrendChart = false
       // this.dentistProductionTrend('w');
     }
     console.log('dentistProductionWeeklyTrend', this.dentistProductionWeeklyTrend)
