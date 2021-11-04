@@ -136,6 +136,47 @@ deploy_dev:
     - aws cloudfront create-invalidation --distribution-id $STAGING_CLOUDFRONT --paths "/*"
   only: ['design']
 
+# Make Pilot Build
+build_pilot: 
+  stage: build
+  script:
+  - npm run build-pilot
+  artifacts:
+    paths:
+    - dist
+    expire_in: 1 day
+  only: ['pilot']
+
+# Deploy Pilot Build
+deploy_pilot:
+  image: python:latest  
+  stage: deploy
+  before_script:
+    - pip install awscli 
+    # install jq
+    - wget -O /usr/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
+    - chmod u+x /usr/bin/jq 
+  script:
+    - echo "Pilot - Update AWS Keys"
+    - export AWS_ACCESS_KEY_ID=$PILOT_AWS_ACCESS_KEY_ID
+    - export AWS_SECRET_ACCESS_KEY=$PILOT_AWS_SECRET_ACCESS_KEY
+    - echo "Pilot - Deploy to S3"    
+    - aws s3api put-public-access-block --bucket $PILOT_S3  --public-access-block-configuration "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false"
+    - aws s3 sync ./dist s3://$PILOT_S3/${CI_JOB_STARTED_AT}_${CI_COMMIT_SHORT_SHA} --acl=public-read --delete
+    - aws s3api put-public-access-block --bucket $PILOT_S3  --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"
+    - echo "Pilot - Update Cloudfront Distribution to point to new deployment"
+    - aws cloudfront get-distribution-config --id $PILOT_CLOUDFRONT > dist.json
+    - JQ_QUERY=".DistributionConfig.Origins.Items[0].OriginPath = \"/${CI_JOB_STARTED_AT}_${CI_COMMIT_SHORT_SHA}\""
+    - /usr/bin/jq "$JQ_QUERY" < dist.json > updated.json
+    - CFDIST_ETAG=$(jq -r '.ETag' < dist.json)
+    - /usr/bin/jq .DistributionConfig < updated.json > new-dist-config.json
+    - cat new-dist-config.json
+    - echo $CFDIST_ETAG
+    - aws cloudfront update-distribution --id $PILOT_CLOUDFRONT --distribution-config file://new-dist-config.json --if-match ${CFDIST_ETAG}
+    - echo "Pilot - Invalidate Cloudfront"
+    - aws cloudfront create-invalidation --distribution-id $PILOT_CLOUDFRONT --paths "/*"
+  only: ['pilot']
+
 # Make Production Build
 build_production: 
   stage: build

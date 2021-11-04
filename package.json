@@ -8,6 +8,7 @@
     "build": "ng build",
     "build-prod": "ng build -c=production",
     "build-prod-non-optimized": "ng build -c=prod-non-optimized",
+    "build-pilot": "ng build -c=pilot",
     "build-test": "ng build -c=test",
     "build-staging": "ng build -c=staging",
     "build-dev": "ng build -c=dev",
