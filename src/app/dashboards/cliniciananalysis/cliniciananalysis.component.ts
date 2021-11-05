@@ -19,6 +19,9 @@ import { map, takeUntil } from 'rxjs/operators';
 import { TooltipLayoutComponent } from '../../shared/tooltip/tooltip-layout.component';
 import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
+import { environment } from "../../../environments/environment";
+
+
 export interface Dentist {
   providerId: string;
   name: string;
@@ -57,6 +60,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public averageToggle = false;
   public childid: string = '';
   public user_type: string = '';
+  private apiUrl = environment.apiUrl;
 
   public proCollShow: number = 1;
   public charTips: any = [];
