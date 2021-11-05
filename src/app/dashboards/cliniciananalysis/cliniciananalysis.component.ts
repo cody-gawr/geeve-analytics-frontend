@@ -60,7 +60,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public averageToggle = false;
   public childid: string = '';
   public user_type: string = '';
-  private apiUrl = environment.apiUrl;
+  public apiUrl = environment.apiUrl;
 
   public proCollShow: number = 1;
   public charTips: any = [];
