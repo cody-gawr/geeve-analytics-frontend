@@ -1858,6 +1858,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public treatmentPrebookDentistLoader: boolean;
 
   //Individual Treatment Prebook Chart
+  public prePrebookMax:any = 0;
   private treatmentPrePrebookDentist() {
     this.treatmentPrebookDentistLoader = true;
     this.treatmentPreValue = '0';
@@ -1870,6 +1871,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.treatmentPreValue = Math.round(data.data[0].reappoint_rate);
           this.treatmentPreLabel = data.data[0].provider_name;
         }
+        this.prePrebookMax = data.goals;
+        if(this.treatmentPreValue > this.prePrebookMax)
+          this.prePrebookMax = this.treatmentPreValue;
+        
+
         this.treatmentPreChartAveragePrev = data.total_ta;
         this.treatmentPreGoal = data.goals;
 
@@ -3108,7 +3114,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         this.dentistProductionTrendLoader = false;
       }
-      console.log('this.dentistProductionWeeklyTrend', this.dentistProductionWeeklyTrend);
     }, error => {
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";

@@ -1215,8 +1215,7 @@
                 fxLayout="row" fxLayoutAlign="start center" style="height: 300px">
                 <ngx-gauge *ngIf="showTrendChart == false && prebook=='treatment' && treatmentPreValue > 0"
                   [type]="gaugeType" [value]="treatmentPreValue" [label]="treatmentPreLabel" [thick]="gaugeThick"
-                  [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="recallGoal" [cap]="cap"
-                  [duration]="gaugeDuration" [append]="gaugeAppendText" [size]="size">
+                  [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="prePrebookMax" [cap]="cap" [duration]="gaugeDuration" [append]="gaugeAppendText" [size]="size">
                 </ngx-gauge>
               </div>
               <div
