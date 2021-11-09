@@ -734,6 +734,17 @@
     <mat-tab label="Front Desk Reminders" *ngIf="user_type != '4'">
 
       <div class="morning-huddle-date">
+         <div *ngIf="clinicDentistsReminders.length > 0">
+          <mat-form-field>
+            <!-- <mat-label>Select Dentist</mat-label> -->
+            <mat-select (selectionChange)="refreshReminderTab($event.value)" id="setPreviousDay3"
+              [(ngModel)]="currentDentistReminder">
+              <mat-option [value]="0">All Dentists</mat-option>
+              <mat-option [value]="dentist.provider_id" *ngFor="let dentist of clinicDentistsReminders">
+                {{ dentist.provider_name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
         <strong>Current Day: {{ remindersRecallsOverdueDate | date:'EEE MMM d':'timezone' }}</strong>
       </div>
       <div class="sa_dentist_graphs_area sa_profit_bar patient-schedule">
@@ -753,7 +764,7 @@
                     <h4>Appointments</h4>
                     <div class="patients-num">
                       <span class="change_value"
-                        *ngIf="!remindersRecallsOverdueLoader">{{ remindersTotal }}</span>
+                        *ngIf="!remindersRecallsOverdueLoader">{{ remindersRecallsOverdue.length }}</span>
                       <!-- <span class="change_value" *ngIf="!remindersRecallsOverdue && !remindersRecallsOverdueLoader">0</span> -->
                       <span class="calculatingSp text" *ngIf="remindersRecallsOverdueLoader">Calculating...</span>
                       <!-- <span class="change_value">{{ todayPatients }}</span> -->
@@ -880,8 +891,8 @@
           <ng-container matColumnDef="start">
             <th mat-header-cell *matHeaderCellDef>Time </th>
             <td id="{{ element.provider_id }}" mat-cell *matCellDef="let element"><span
-                class="newpatient"></span>{{ element.app_date +" " + element.start | date :'h:mm a' }} -
-              {{ endTime(element.app_date,element.start,element.duration) | date :'h:mm a' }}
+                class="newpatient"></span>{{ startDate(element.app_date) +" " + element.start | date :'h:mm a' }} -
+              {{ endTime(startDate(element.app_date),element.start,element.duration) | date :'h:mm a' }}
               <span class="newpatient" *ngIf="element.is_new_patient != 'No'"></span>
               <span class="timeUTA" *ngIf="element.is_uta == '1'">UTA</span>
               <span class="timeFTA" *ngIf="element.is_fta == '1'">FTA </span>
@@ -955,8 +966,8 @@
             <mat-card class="huddle-card" *ngFor="let element of remindersRecallsOverdue">
               <div fxLayout="row" class="huddle-card-row">
                 <div fxFlex="30">Time: </div>
-                <div fxFlex="70"> {{ element.app_date +" " + element.start | date :'h:mm a' }} -
-                  {{ endTime(element.app_date,element.start,element.duration) | date :'h:mm a' }}</div>
+                <div fxFlex="70"> {{ startDate(element.app_date) +" " + element.start | date :'h:mm a' }} -
+                  {{ endTime(startDate(element.app_date),element.start,element.duration) | date :'h:mm a' }}</div>
               </div>
               <div fxLayout="row" class="huddle-card-row">
                 <div fxFlex="30">Dentist: </div>

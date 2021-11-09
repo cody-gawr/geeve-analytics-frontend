@@ -465,26 +465,11 @@ initiate_clinic() {
 
   refreshScheduleTab(event){
     this.appointmentCardsLoaders = true;
-  /*  $('.temP').remove();
-    if(event == 0){
-      this.currentDentist = 'null';
-      $('.DentistListSecRow').find("tr").removeClass('hide');
-    } else {
-     
-      $('.DentistListSecRow table tbody').find("tr").addClass('hide');
-      $('.DentistListSecRow table tbody').find("td[id='"+event+"']").parent().removeClass('hide');
-    }
-    
-    if($('.DentistListSecRow table tbody').find("td[id='"+event+"']").length == 0 && event != 0){
-        $('.DentistListSecRow table tbody').append('<tr class="temP"><td align="center" colspan="4"> No Data found</td></tr>');
-    }
-    */
+
     this.currentDentist = event;
-    //this.getSchedulePatients(this.currentDentist);
     this.getScheduleNewPatients(this.currentDentist);
     this.getScheduleHours(this.currentDentist);
     this.getUnscheduleHours(this.currentDentist);
-    //this.getAppointmentCards(this.currentDentist);
     if(this.currentDentist != 0) {
       var temp = [];
       this.appointmentCardsTemp.forEach(val => {
@@ -499,8 +484,32 @@ initiate_clinic() {
     this.appointmentCardsLoaders = false;
   }
 
+  public currentDentistReminder:any = 0;
+  refreshReminderTab(event){
+    this.remindersRecallsOverdueLoader = true;
+    this.todayUnscheduledBalLoader = true;
+    this.currentDentistReminder = event;
+    this.getScheduleNewPatients(this.currentDentistReminder);
+    this.getTodayUnscheduledBal(this.currentDentistReminder);
+    
+    if(this.currentDentistReminder != 0) {
+      var temp = [];
+      this.remindersRecallsOverdueTemp.forEach(val => {
+        if(parseInt(val.provider_id) == this.currentDentistReminder){
+          temp.push(val);
+        }
+      });
+      this.remindersRecallsOverdue = temp;   
+    } else {
+      this.remindersRecallsOverdue = this.remindersRecallsOverdueTemp;   
+    }
+    this.remindersRecallsOverdueLoader = false;
+  }
+
   /***** Tab 4 ***/
   public remindersTotal:any = 0;
+  public clinicDentistsReminders:any = [];
+  public remindersRecallsOverdueTemp:any = [];
    getReminders(refsh = ''){
     if(refsh == ''){
       this.remindersRecallsOverdueLoader = true;
@@ -509,8 +518,27 @@ initiate_clinic() {
       this.remindersRecallsOverdueLoader = false;
       if(production.status == true) {
         this.remindersTotal = production.total;
+        this.remindersRecallsOverdueTemp = production.data;
         this.remindersRecallsOverdue = production.data;     
-        this.remindersRecallsOverdueDate = production.date;     
+        this.remindersRecallsOverdueDate = production.date;
+        if(this.user_type == '4'){         
+          this.dentistid = this._cookieService.get("dentistid");
+          this.refreshReminderTab(this.dentistid);
+        } else {
+          production.data.forEach(val => {
+            var isExsist = this.clinicDentistsReminders.filter(function (person) { return person.provider_id == val.provider_id });
+            if(isExsist.length <= 0){
+              var nm = (val.jeeve_name != '' && val.jeeve_name)? val.jeeve_name : val.provider_name;
+              var temp = {'provider_id' : val.provider_id, 'provider_name' : nm};
+              this.clinicDentistsReminders.push(temp);  
+            }          
+          });               
+          this.clinicDentistsReminders.sort(function (x, y) {
+              let a = x.provider_name.toUpperCase(),
+              b = y.provider_name.toUpperCase();
+              return a == b ? 0 : a > b ? 1 : -1;
+          });  
+        }
       } else if (production.status == '401') {
           this.handleUnAuthorization();
         }
@@ -1202,6 +1230,9 @@ async getDentistList(){
     return  new Date(currentDate.getTime() + duration*60000);
   }
 
+  startDate(app_date){
+    return  this.datepipe.transform(app_date, 'yyyy-MM-dd');
+  }
   subtractDays(daysToSubtract) {
     let todaysDate = new Date();
     let selectedDate = new Date();

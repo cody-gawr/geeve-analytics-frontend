@@ -3956,7 +3956,7 @@ ul {
 
 .morning-huddle-date .mat-form-field {
   background-color: #fff;
-  max-width       : 270px;
+  max-width       : 270px !important;
   margin          : auto;
   padding         : 0px 20px;
   border-radius   : 5px;
