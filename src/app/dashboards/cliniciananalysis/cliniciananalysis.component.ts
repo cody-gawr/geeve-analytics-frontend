@@ -977,6 +977,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.dentistVal = newValue;
       this.showTrend = true;
       this.selectedDentist = newValue;
+
       this.dentistProductionTrend('w');
       if (this.toggleChecked) {
         this.toggleChangeProcess();
@@ -3067,6 +3068,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.dentistProductionTrend1 = [];
       this.dentistProductionTrendLabels = [];
       this.dentistProductionTrendLabels = [];
+      this.dentistProductionWeeklyTrend = [];
+      this.dentistProductionWeeklyTrendLabels = [];
       let dynamicColors = [];
       this.Apirequest = this.Apirequest - 1;
       if (data && data.message == 'success') {
@@ -3097,8 +3100,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             this.gaugeValue = '0';
           }
           if (mode == 'w') {
-            this.dentistProductionWeeklyTrend = this.dentistProdTrend
-            this.dentistProductionWeeklyTrendLabels = this.dentistProductionTrendLabels
+            this.dentistProductionWeeklyTrend = this.dentistProdTrend;
+            this.dentistProductionWeeklyTrendLabels = this.dentistProductionTrendLabels;
           }
         } else {
           this.dentistProductionTrendLabels = [];
