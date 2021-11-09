@@ -74,7 +74,7 @@ export class FollowupsService {
     }
 
 
-    updateFollowUpStatus(event, pid, cid, type, previousDays, fdate): Observable<any> {
+    updateFollowUpStatus(event, pid, cid, type, previousDays, fdate,treatItem = ''): Observable<any> {
         var header = this.getHeaders();
         const formData = new FormData();
         formData.append('event', event);
@@ -83,6 +83,9 @@ export class FollowupsService {
         formData.append('date', previousDays);
         formData.append('fdate', fdate);
         formData.append('type', type);
+        if(treatItem != '' && type == 'internal-referrals'){
+           formData.append('treat_item', treatItem); 
+        }
         return this.http.post(this.apiUrl + "/Followups/fuUpdateFollowupStatus", formData, header)
             .pipe(map((response: Response) => {
                 return response;
@@ -91,7 +94,7 @@ export class FollowupsService {
     }
 
 
-    updateStatus(event, pid, cid, type, previousDays, fdate): Observable<any> {
+    updateStatus(event, pid, cid, type, previousDays, fdate, treatItem = ''): Observable<any> {
         var header = this.getHeaders();
         const formData = new FormData();
         formData.append('status', event);
@@ -100,6 +103,9 @@ export class FollowupsService {
         formData.append('date', previousDays);
         formData.append('fdate', fdate);
         formData.append('type', type);
+        if(treatItem != '' && type == 'internal-referrals'){
+            formData.append('treat_item', treatItem);
+        }
         return this.http.post(this.apiUrl + "/Followups/fuUpdateStatus", formData, header)
             .pipe(map((response: Response) => {
                 return response;

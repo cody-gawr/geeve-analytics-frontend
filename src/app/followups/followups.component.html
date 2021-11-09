@@ -1196,7 +1196,7 @@
                             <td mat-cell *matCellDef="let element">
                                 <mat-form-field floatLabel="never">
                                     <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote"
-                                        (selectionChange)="updateStatus( $event.value, element.patient_id, element.original_appt_date, element.patients.clinic_id, element.patients.firstname, element.patients.surname, element.original_appt_date, element.followup_date, 'internal-referrals', nextBussinessDay )">
+                                        (selectionChange)="updateStatus( $event.value, element.patient_id, element.original_appt_date, element.patients.clinic_id, element.patients.firstname, element.patients.surname, element.original_appt_date, element.followup_date, 'internal-referrals', nextBussinessDay, element.treat_item )">
                                         <mat-option value="">Select Status</mat-option>
                                         <mat-option value="Booked">Booked</mat-option>
                                         <mat-option value="Already booked">Already booked</mat-option>
@@ -1237,7 +1237,7 @@
                             <th mat-header-cell *matHeaderCellDef>Complete</th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-slide-toggle [checked]="element.is_complete == 0 ? false : true" name="status"
-                                    (change)="toggleUpdate( $event, element.patient_id, element.original_appt_date, element.followup_date, element.patients.clinic_id, 'internal-referrals', element.status ) ">
+                                    (change)="toggleUpdate( $event, element.patient_id, element.original_appt_date, element.followup_date, element.patients.clinic_id, 'internal-referrals', element.status, element.treat_item ) ">
                                 </mat-slide-toggle>
                             </td>
                         </ng-container>

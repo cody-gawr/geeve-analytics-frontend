@@ -122,7 +122,7 @@
                 <div *ngIf="!barChartData[0].data.length && !buildChartLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
-                  <p class="chart-placeholder-text">main You have no production in the selected period</p>
+                  <p class="chart-placeholder-text">You have no production in the selected period</p>
                 </div>
               </div>
               <!-- Production Chart Start -->
@@ -223,11 +223,11 @@
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
               <div>
-                <span *ngIf="trendText && showTrendChart == false && proCollShow ==1"
+                <span *ngIf="trendText && showTrendChart == false && proCollShow ==1 &&  showWeekTrend != true"
                   class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
                   matTooltip="{{trendText}} : $ {{productionTotalPrev| number:'1.0-0'}}"><img class="trend_ico"
                     src="../assets/images/trend_{{productionTooltip}}.png"></span>
-                <span *ngIf="trendText && showTrendChart == false && proCollShow ==2"
+                <span *ngIf="trendText && showTrendChart == false && proCollShow ==2 && showWeekTrend != true"
                   class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
                   matTooltip="{{trendText}} : $ {{collectionDentistTotalPrev| number:'1.0-0'}}"><img class="trend_ico"
                     src="../assets/images/trend_{{collectionTooltip}}.png"></span>

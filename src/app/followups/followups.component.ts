@@ -93,7 +93,7 @@ export class StatusDialogComponent {
     this.nextFollowupHave = false;
   }
   updateNextfollowUp(data) {
-    this.followupsService.updateStatus('Wants another follow-up', data.pid, data.cid, data.type, data.original_appt_date, data.followup_date).subscribe((update: any) => {
+    this.followupsService.updateStatus('Wants another follow-up', data.pid, data.cid, data.type, data.original_appt_date, data.followup_date,data.treatItem).subscribe((update: any) => {
       this.onNoClick();
       if (update.status) {
         this.followupsService.cloneRecord(data.pid, data.cid, data.type, data.followup_date, this.nextDate, data.original_appt_date).subscribe((update: any) => {
@@ -531,7 +531,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
 
 
   //toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Post op Calls')
-  toggleUpdate(event, pid, date, fdate, cid, type, status = 'default') {
+  toggleUpdate(event, pid, date, fdate, cid, type, status = 'default', treatItem = '') {
 
     if (!status || status == '' || status == 'null') {
       event.source.checked = false;
@@ -547,7 +547,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     } else if (type == 'internal-referrals') {
       this.IRLoadingLoading = true;
     }
-    this.followupsService.updateFollowUpStatus(event.checked, pid, cid, type, date, fdate).subscribe((update: any) => {
+    this.followupsService.updateFollowUpStatus(event.checked, pid, cid, type, date, fdate,treatItem).subscribe((update: any) => {
       if (type == 'post-op-calls') {
         this.getFollowupPostOpCalls();
       } else if (type == 'recall-overdue') {
@@ -562,14 +562,14 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     });
   }
 
-  updateStatus(event, pid, date, cid, firstname, surname, original_appt_date, followup_date, type, nextBussinessDay) {
+  updateStatus(event, pid, date, cid, firstname, surname, original_appt_date, followup_date, type, nextBussinessDay,treatItem = '') {
     if (event == 'Wants another follow-up' || event == "Can't be reached" || event == "Can't be reached - left voicemail") {
       let width = '450px';
       if (event == "Can't be reached" || event == "Can't be reached - left voicemail")
         width = '650px';
       const dialogRef = this.dialog.open(StatusDialogComponent, {
         width: width,
-        data: { event, firstname, surname, pid, cid, type, original_appt_date, followup_date, nextBussinessDay }
+        data: { event, firstname, surname, pid, cid, type, original_appt_date, followup_date, nextBussinessDay,treatItem }
       });
       dialogRef.afterClosed().subscribe(result => {
         if (type == 'tick-follower') {
@@ -584,7 +584,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
 
       });
     } else {
-      this.followupsService.updateStatus(event, pid, cid, type, date, followup_date).subscribe((update: any) => {
+      this.followupsService.updateStatus(event, pid, cid, type, date, followup_date,treatItem).subscribe((update: any) => {
         if (type == 'tick-follower') {
           this.getTickFollowups('close');
         } else if (type == 'fta-follower') {
