@@ -598,6 +598,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       callbacks: {
         // use label callback to return the desired label
         label: (tooltipItem, data) => {
+          if(tooltipItem.xLabel.includes('WE ')){
+            return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+          }
           return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
         },
         // remove title
@@ -3087,7 +3090,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             if (mode == 'c') {
               this.dentistProductionTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
             } else if (mode == 'w') {
-              this.dentistProductionTrendLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-M-dd'));
+              this.dentistProductionTrendLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
             }
             else {
               this.dentistProductionTrendLabels1.push(res.year);
