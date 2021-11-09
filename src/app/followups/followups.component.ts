@@ -34,7 +34,7 @@ export class FollowupsDialogComponent {
       return false;
     }
 
-    this.followupsService.notes(data.notes, data.patientId, data.date, data.clinic_id, data.followup_date, data.type).subscribe((res) => {
+    this.followupsService.notes(data.notes, data.patientId, data.date, data.clinic_id, data.followup_date, data.type,data.treatItem).subscribe((res) => {
       if (res.message == 'success') {
         this.dialogRef.close();
       } else if (res.status == '401') {
@@ -96,7 +96,7 @@ export class StatusDialogComponent {
     this.followupsService.updateStatus('Wants another follow-up', data.pid, data.cid, data.type, data.original_appt_date, data.followup_date,data.treatItem).subscribe((update: any) => {
       this.onNoClick();
       if (update.status) {
-        this.followupsService.cloneRecord(data.pid, data.cid, data.type, data.followup_date, this.nextDate, data.original_appt_date).subscribe((update: any) => {
+        this.followupsService.cloneRecord(data.pid, data.cid, data.type, data.followup_date, this.nextDate, data.original_appt_date,data.treatItem).subscribe((update: any) => {
         });
       }
     });
@@ -106,7 +106,7 @@ export class StatusDialogComponent {
     this.nextFollowupHave = false;
     this.followupsService.updateStatus(data.event, data.pid, data.cid, data.type, data.original_appt_date, data.followup_date).subscribe((update: any) => {
       if (update.status && event != 'no') {
-        this.followupsService.cloneRecord(data.pid, data.cid, data.type, data.followup_date, this.nextDate, data.original_appt_date, event).subscribe((clone: any) => {
+        this.followupsService.cloneRecord(data.pid, data.cid, data.type, data.followup_date, this.nextDate, data.original_appt_date,data.treatItem, event).subscribe((clone: any) => {
           if (clone.message == 'already') {
             this.nextDate = clone.$getRecord.followup_date;
             this.nextFollowupHave = true;
@@ -685,10 +685,10 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   }
 
 
-  openNotes(notes, patient_id, original_appt_date, followup_date, type): void {
+  openNotes(notes, patient_id, original_appt_date, followup_date, type,treatItem = ''): void {
     const dialogRef = this.dialog.open(FollowupsDialogComponent, {
       width: '500px',
-      data: { notes: notes, patientId: patient_id, date: original_appt_date, clinic_id: this.clinic_id, old: notes, followup_date: followup_date, type: type }
+      data: { notes: notes, patientId: patient_id, date: original_appt_date, clinic_id: this.clinic_id, old: notes, followup_date: followup_date, type: type,treatItem: treatItem }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (type == 'tick-follower') {

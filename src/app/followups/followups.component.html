@@ -1224,7 +1224,7 @@
                                 <span (mouseover)="historyPos($event)" class="info-icon-container tick historyTip">
                                     <i [tooltip]="{ title: !element.notes ? 'Add Notes' : 'Edit Notes' }"
                                         [ngClass]="!element.notes ? 'red' : 'green'" class="fas fa-book notes"
-                                        (click)=" openNotes( element.notes, element.patient_id, element.original_appt_date, element.followup_date, 'internal-referrals' ) "></i>
+                                        (click)=" openNotes( element.notes, element.patient_id, element.original_appt_date, element.followup_date, 'internal-referrals',element.treat_item ) "></i>
                                 </span>
                                 <div class="historyTip history">
                                     <i (mouseover)="historyPos($event)" [tooltip]="formatHistory(element.history)"
