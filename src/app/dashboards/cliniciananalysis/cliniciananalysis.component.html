@@ -239,9 +239,8 @@
 
               <div class="info-icon-container">
                 <!-- top values Ions -->
-
                 <i style="margin-right: 10px;" class="fas fa-calendar-week"
-                  *ngIf="showTrendChart == false && showWeekTrend == false && selectedDentist !=  'all' && apiUrl.includes('test-')" (click)="setWeeklyTrend()"></i>
+                  *ngIf="showTrendChart == false && showWeekTrend == false && selectedDentist !=  'all'&& selectedDentist !=  'all' && apiUrl.includes('test-')" (click)="setWeeklyTrend()"></i>
                 <i style="margin-right: 10px; color: #1aa591;" class="fas fa-calendar-week"
                   *ngIf="showWeekTrend == true && showTrendChart == false && selectedDentist !=  'all' && apiUrl.includes('test-')" (click)="setWeeklyTrend()"></i>
 

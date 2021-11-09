@@ -211,7 +211,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   initiate_clinic() {
     //$('.internal_dentist').val('all');
     //$('.external_dentist').val('all');
-    
+    this.showWeekTrend = false;
     var val = $('#currentClinic').attr('cid');
     if (this._cookieService.get("dentistid")) {
       this.childid = this._cookieService.get("dentistid");
@@ -224,7 +224,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       }
       this.getDentists();
       this.filterDate(this.chartService.duration$.value);
-      this.showWeekTrend = false;
     }
 
   }
@@ -2734,6 +2733,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   // Get Dentist
   private getDentists() {
     this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
+      this.selectedDentist = 'all';
       if (res.message == 'success') {
         this.dentists = res.data;
         this.dentistCount = res.data.length;
@@ -3770,6 +3770,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.showWeekTrend = false
     } else {
       this.showWeekTrend = true
+      // this.showTrendChart = false
+      // this.dentistProductionTrend('w');
     }
   }
 
