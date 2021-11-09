@@ -514,6 +514,7 @@ initiate_clinic() {
     if(refsh == ''){
       this.remindersRecallsOverdueLoader = true;
     }
+    this.clinicDentistsReminders = [];
     this.morningHuddleService.getReminders( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       this.remindersRecallsOverdueLoader = false;
       if(production.status == true) {
