@@ -78,6 +78,7 @@
         <mat-card class="dentistProduction sa_no_tabs_area">
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
+
               <div>
                 <span *ngIf="trendText && proCollShow == 1"
                   class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
@@ -99,6 +100,7 @@
                   class="info-icon" />
               </div>
             </mat-card-title>
+
             <div class="card-body">
               <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                 <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
@@ -240,9 +242,11 @@
               <div class="info-icon-container">
                 <!-- top values Ions -->
                 <i style="margin-right: 10px;" class="fas fa-calendar-week"
-                  *ngIf="showTrendChart == false && showWeekTrend == false && selectedDentist !=  'all'&& selectedDentist !=  'all' && apiUrl.includes('test-')" (click)="setWeeklyTrend()"></i>
+                  *ngIf="showTrendChart == false && showWeekTrend == false && selectedDentist  && apiUrl.includes('test-')"
+                  (click)="setWeeklyTrend()"></i>
                 <i style="margin-right: 10px; color: #1aa591;" class="fas fa-calendar-week"
-                  *ngIf="showWeekTrend == true && showTrendChart == false && selectedDentist !=  'all' && apiUrl.includes('test-')" (click)="setWeeklyTrend()"></i>
+                  *ngIf="showWeekTrend == true && showTrendChart == false && apiUrl.includes('test-')"
+                  (click)="setWeeklyTrend()"></i>
 
                 <!-- <i  style="margin-right: 10px; color: #1aa591;" *ngIf="showTopVlaues  && !showUtiTable && !showTrend" class="far fa-chart-bar greenIcon" (click) = "setTopValues()"></i> -->
                 <!-- top values Ions -->
@@ -255,7 +259,7 @@
             </mat-card-title>
 
             <div class="card-body">
-              <div *ngIf="!showWeekTrend || showWeekTrend == true" fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+              <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                 <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''"
                     (click)="changeProduction('1')">Production</small>
@@ -281,26 +285,31 @@
                   <div class="loader-text">Calculating...</div>
                 </div>
 
-                <div *ngIf="proCollShow == 1 && showTrendChart == false && showWeekTrend == true && dentistProductionWeeklyTrendLabels.length > 0 && !dentistProductionTrendLoader" style="height: 336px">
-                <canvas #myCanvas id="dentistProductionWeeklyTrend" baseChart [datasets]="dentistProductionWeeklyTrend"
-                  [labels]="dentistProductionWeeklyTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
-                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
-                  (chartClick)="chartClicked($event)">
-                </canvas>
-                <div *ngIf="dentistProductionTrendLoader && proCollShow == 1 && showTrendChart == false && showWeekTrend == true" class="loader_container loader_container_middle">
-                  <img class="loader_ico" src="../assets/images/720.gif">
-                  <div class="loader-text">Calculating...</div>
+                <!-- Production Chart weekly trend -->
+                <div
+                  *ngIf="proCollShow == 1 && showTrendChart == false && showWeekTrend == true && dentistProductionWeeklyTrendLabels.length > 0 && !dentistProductionTrendLoader"
+                  style="height: 336px">
+                  <canvas #myCanvas id="dentistProductionWeeklyTrend" baseChart
+                    [datasets]="dentistProductionWeeklyTrend" [labels]="dentistProductionWeeklyTrendLabels"
+                    [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                    [options]="barChartOptionsTrend" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+                  </canvas>
+                  <div
+                    *ngIf="dentistProductionTrendLoader && proCollShow == 1 && showTrendChart == false && showWeekTrend == true"
+                    class="loader_container loader_container_middle">
+                    <img class="loader_ico" src="../assets/images/720.gif">
+                    <div class="loader-text">Calculating...</div>
+                  </div>
                 </div>
-              </div>
+                <!-- Production Chart weekly trend -->
 
               </div>
               <!-- Production Chart end dentist -->
 
-
               <!-- Collection Chart Start dentist -->
               <div *ngIf="proCollShow == 2">
                 <div class="chart" fxLayout="row" fxLayoutAlign="start center" style="height: 306px"
-                  *ngIf="showTrendChart == false && gaugeValue > 0 && !collectionDentistLoader">
+                  *ngIf="showTrendChart == false && showWeekTrend == false && gaugeValue > 0 && !collectionDentistLoader">
                   <ngx-gauge [type]="gaugeType" [value]="gaugeCollectionValue" [label]="gaugeCollectionLabel"
                     [thick]="gaugeThick" [backgroundColor]="backgroundColor" [foregroundColor]="foregroundColor"
                     [max]="maxCollectionGoal" [cap]="cap" [duration]="gaugeDuration" [prepend]="gaugePrependText"
@@ -311,15 +320,31 @@
                   <img class="loader_ico" src="../assets/images/720.gif">
                   <div class="loader-text">Calculating...</div>
                 </div>
+
+                <!-- Production Chart weekly trend -->
+                <div
+                  *ngIf="proCollShow == 2 && showTrendChart == false && showWeekTrend == true && dentistCollectionWeeklyTrendLabels.length > 0 && !dentistCollectionTrendLoader"
+                  style="height: 336px">
+                  <canvas #myCanvas id="dentistCollectionWeeklyTrend" baseChart
+                    [datasets]="dentistCollectionWeeklyTrend1" [labels]="dentistCollectionWeeklyTrendLabels"
+                    [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                    [options]="barChartOptionsTrend" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+                  </canvas>
+                  <div
+                    *ngIf="dentistCollectionTrendLoader && proCollShow == 2 && showTrendChart == false && showWeekTrend == true"
+                    class="loader_container loader_container_middle">
+                    <img class="loader_ico" src="../assets/images/720.gif">
+                    <div class="loader-text">Calculating...</div>
+                  </div>
+                </div>
+                <!-- Production Chart weekly trend -->
+
+
               </div>
               <!-- Collection Chart end dentist -->
 
-              <!-- Production Chart weekly trend -->            
 
-            
               <!--Production Chart weekly trend-->
-
-
 
               <!-- Production Chart start trend -->
               <div
@@ -359,14 +384,23 @@
             </div>
 
             <div class="no-data-placeholder"
-              *ngIf="((showTrendChart == false && gaugeValue <= 0 ) || (showTrendChart == true  && dentistProductionTrendLabels.length <= 0)) && !buildChartDentistLoader && !dentistProductionTrendLoader && showWeekTrend == false" style="margin: -80px 0 0 0;">
+              *ngIf="((showTrendChart == false && gaugeValue <= 0 ) || (showTrendChart == true  && dentistProductionTrendLabels.length <= 0)) && !buildChartDentistLoader && !dentistProductionTrendLoader && showWeekTrend == false"
+              style="margin: -80px 0 0 0;">
               <div class="sa_nodata_div">
               </div>
               <p class="chart-placeholder-text">You have no production in the selected period</p>
             </div>
-  
+
             <div class="no-data-placeholder"
-              *ngIf="showWeekTrend == true  && dentistProductionWeeklyTrendLabels.length <= 0" style="margin: -155px 0 0 0;">
+              *ngIf="showWeekTrend == true  && dentistProductionWeeklyTrendLabels.length <= 0 && proCollShow == 1"
+              style="margin: -155px 0 0 0;">
+              <div class="sa_nodata_div">
+              </div>
+              <p class="chart-placeholder-text">You have no production in the selected period</p>
+            </div>
+            <div class="no-data-placeholder"
+              *ngIf="showWeekTrend == true  && dentistCollectionWeeklyTrendLabels.length <= 0 && proCollShow == 2"
+              style="margin: -155px 0 0 0;">
               <div class="sa_nodata_div">
               </div>
               <p class="chart-placeholder-text">You have no production in the selected period</p>
@@ -1212,7 +1246,8 @@
                 fxLayout="row" fxLayoutAlign="start center" style="height: 300px">
                 <ngx-gauge *ngIf="showTrendChart == false && prebook=='treatment' && treatmentPreValue > 0"
                   [type]="gaugeType" [value]="treatmentPreValue" [label]="treatmentPreLabel" [thick]="gaugeThick"
-                  [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="prePrebookMax" [cap]="cap" [duration]="gaugeDuration" [append]="gaugeAppendText" [size]="size">
+                  [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="prePrebookMax"
+                  [cap]="cap" [duration]="gaugeDuration" [append]="gaugeAppendText" [size]="size">
                 </ngx-gauge>
               </div>
               <div
@@ -1459,5 +1494,7 @@
       </div>
     </div>
   </div>
-</div> <canvas #myCanvas baseChart [style.display]="'none'" [datasets]="chartData1" [labels]="chartLabels1"
-  [chartType]="barChartType"></canvas>
+</div>
+<canvas #myCanvas baseChart [style.display]="'none'" [datasets]="chartData1" [labels]="chartLabels1"
+  [chartType]="barChartType">
+</canvas>

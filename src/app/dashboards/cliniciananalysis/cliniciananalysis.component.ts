@@ -211,14 +211,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   initiate_clinic() {
     //$('.internal_dentist').val('all');
     //$('.external_dentist').val('all');
-    this.showWeekTrend = false;
+
     var val = $('#currentClinic').attr('cid');
+    this.showWeekTrend = false;
     if (this._cookieService.get("dentistid")) {
       this.childid = this._cookieService.get("dentistid");
       this.selectedDentist = this._cookieService.get("dentistid");
     }
     if (val != undefined && val != 'all') {
       this.clinic_id = val;
+
       if (this.user_type == '4') {
         this.getClinic();
       }
@@ -599,7 +601,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       callbacks: {
         // use label callback to return the desired label
         label: (tooltipItem, data) => {
-          if(tooltipItem.xLabel.includes('WE ')){
+          if (tooltipItem.xLabel.includes('WE ')) {
             return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
           }
           return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
@@ -720,7 +722,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     },
     responsive: true,
     maintainAspectRatio: false,
-    scales: { 
+    scales: {
       xAxes: [{
         gridLines: { display: true },
         ticks: {
@@ -949,7 +951,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     if (this._cookieService.get("dentistid"))
       this.childid = this._cookieService.get("dentistid");
     if (newValue == 'all') {
-      this.dentistVal = 'all';      
+      this.dentistVal = 'all';
       this.showTrend = false;
       this.toggleChecked = false;
       this.showTrendChart = false;
@@ -983,6 +985,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.selectedDentist = newValue;
 
       this.dentistProductionTrend('w');
+      this.dentistCollectionTrend('w');
       if (this.toggleChecked) {
         this.toggleChangeProcess();
         this.showTrendChart = true;
@@ -1862,7 +1865,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public treatmentPrebookDentistLoader: boolean;
 
   //Individual Treatment Prebook Chart
-  public prePrebookMax:any = 0;
+  public prePrebookMax: any = 0;
   private treatmentPrePrebookDentist() {
     this.treatmentPrebookDentistLoader = true;
     this.treatmentPreValue = '0';
@@ -1876,9 +1879,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.treatmentPreLabel = data.data[0].provider_name;
         }
         this.prePrebookMax = data.goals;
-        if(this.treatmentPreValue > this.prePrebookMax)
+        if (this.treatmentPreValue > this.prePrebookMax)
           this.prePrebookMax = this.treatmentPreValue;
-        
+
 
         this.treatmentPreChartAveragePrev = data.total_ta;
         this.treatmentPreGoal = data.goals;
@@ -2975,7 +2978,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     $('.target_' + val).addClass('mat-button-toggle-checked');
     $('.filter').removeClass('active');
     this.Apirequest = 0;
-    this.showWeekTrend=false
+    this.showWeekTrend = false
     if (val == 'current') {
       this.toggleChecked = true;
       this.showTrendChart = true;
@@ -3127,16 +3130,26 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   }
   // Collection Trend mode 
   public dentistCollectionTrend1: any = [];
+  public dentistCollectionWeeklyTrend1: any = [];
   public dentistCollectionTrendLabels: any = [];
+  public dentistCollectionWeeklyTrendLabels: any = [];
   public dentistCollectionTrendLoader: boolean = true;
   public dentistColleTrendLabels1: any = [];
+  public dentistColleWeeklyTrendLabels1: any = [];
 
-  private dentistCollectionTrend() {
+  private dentistCollectionTrend(mode = null) {
+    let activeMode = this.trendValue;
+    if (mode) {
+      activeMode = mode;
+    }
     this.dentistCollectionTrendLoader = true;
-    this.clinic_id && this.cliniciananalysisService.caDentistCollectionTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.caDentistCollectionTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((data: any) => {
       this.dentistColleTrendLabels1 = [];
+      this.dentistColleWeeklyTrendLabels1 = [];
       this.dentistCollectionTrend1 = [];
+      this.dentistCollectionWeeklyTrend1 = [];
       this.dentistCollectionTrendLabels = [];
+      this.dentistCollectionWeeklyTrendLabels = [];
 
       let dynamicColors = [];
       this.Apirequest = this.Apirequest - 1;
@@ -3145,10 +3158,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           data.data.forEach(res => {
             if (res.collection)
               this.dentistCollectionTrend1.push(Math.round(res.collection));
-            if (this.trendValue == 'c')
+            if (activeMode == 'c') {
               this.dentistColleTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-            else
+            } else if (activeMode == 'w') {
+              this.dentistColleTrendLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
+            } else {
               this.dentistColleTrendLabels1.push(res.year);
+            }
           });
           if (this.dentistCollectionTrend1.every((value) => value == 0)) this.dentistCollectionTrend1 = [];
           this.dentistColTrend[0]['data'] = this.dentistCollectionTrend1;
@@ -3158,6 +3174,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }); // This is dynamic array for colors of bars        
           this.dentistColTrend[0].backgroundColor = dynamicColors;
           this.dentistCollectionTrendLabels = this.dentistColleTrendLabels1;
+          if (activeMode == 'w') {
+            this.dentistCollectionWeeklyTrend1 = this.dentistColTrend;
+            this.dentistCollectionWeeklyTrendLabels = this.dentistColleTrendLabels1;
+          }
         } else {
           this.dentistCollectionTrendLabels = [];
         }
@@ -3780,7 +3800,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.Apirequest = 9;
       $('.filter').removeClass('active');
       this.dentistProductionTrend();
-      this.dentistCollectionTrend();
+      this.dentistCollectionTrend();      
       this.treatmentPlanTrend();
       this.patientComplaintsTrend();
       this.fdRecallPrebookRateTrend();
