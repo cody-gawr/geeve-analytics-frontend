@@ -93,6 +93,15 @@ public token_id;
                         return response;
                     })
         );
+    } 
+    //Referral to Other Clinicians Internal / External
+    fdActivePatient(clinic_id, startDate = '', endDate = ''  ): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Marketing/mkActivePatients?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate, header)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
     }
     //Referral to Other Clinicians Internal / External
     mkNoNewPatientsTrend(clinic_id, mode ='' ): Observable<any> {

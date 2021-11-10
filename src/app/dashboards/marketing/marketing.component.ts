@@ -18,6 +18,8 @@ import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
 import { RolesUsersService } from '../../roles-users/roles-users.service';
+import { environment } from "../../../environments/environment";
+
 export interface Dentist {
   providerId: string;
   name: string;
@@ -72,6 +74,8 @@ export class MarketingComponent implements AfterViewInit {
   public revenueByReferralCount$ = new BehaviorSubject<number>(0);
   public charTips: any = [];
   public userPlan: any = '';
+  public apiUrl = environment.apiUrl;
+  public activePatients: boolean = false;
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
   pluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
@@ -747,6 +751,7 @@ export class MarketingComponent implements AfterViewInit {
       this.mkNewPatientsByReferral();
       this.mkRevenueByReferral();
       this.fdnewPatientsRatio();
+      this.fdActivePatient();
       this.fdvisitsRatio();
       this.fdnewPatientsAcq();
       if (this.connectedwith == 'myob') {
@@ -1134,6 +1139,24 @@ export class MarketingComponent implements AfterViewInit {
       }
       );
     }
+  } 
+
+  public fdActivePatientLoader:boolean = true;
+  public fdActivePatients:any = 0;
+  private fdActivePatient() {    
+      this.fdActivePatientLoader = true;
+      this.marketingService.fdActivePatient(this.clinic_id, this.startDate, this.endDate).subscribe((data) => {
+        this.fdActivePatients = 0;
+        this.newPatientsPrevTotal = 0;
+        if (data.message == 'success') {
+          this.fdActivePatientLoader = false;
+          this.fdActivePatients = data.data;
+        }
+      }, error => {
+        this.warningMessage = "Please Provide Valid Inputs!";
+      }
+      );
+
   }
 
   public expenseData = [];
@@ -1946,4 +1969,10 @@ export class MarketingComponent implements AfterViewInit {
 
   }
 
+  activePat(){
+    if(this.activePatients == true)
+      this.activePatients = false;
+    else if(this.activePatients == false)
+      this.activePatients = true;
+  }
 }
