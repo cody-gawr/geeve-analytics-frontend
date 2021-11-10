@@ -192,7 +192,8 @@
                     <mat-card-content class="sa_matcard_content">
                         <mat-card-title class="text-center">
                             <div>
-                                <span *ngIf="showTrend == false  && trendText && activePatients == false" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip="{{trendText}} : {{newPatientsPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{newPatientsTooltip}}.png"></span> No. New Patients
+                                <span *ngIf="showTrend == false  && trendText && activePatients == false" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip="{{trendText}} : {{newPatientsPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
+                                 <span *ngIf="showTrend == false  && trendText && activePatients == true" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip="{{trendText}} : {{newPatientsPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{activePatientsTooltip}}.png"></span> No. New Patients
                             </div>
                             <div class="sa_box_title_right_buttons"></div>
                             <div class="info-icon-container marketing">
@@ -207,7 +208,7 @@
                                     <ngx-gauge  class="singleRatio" [type]="gaugeType" [value]="newPatientsTotal" [thick]="gaugeThick" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [cap]="cap" [max]="maxnewPatientsGoal" [size]="size">
                                     </ngx-gauge>
                                 </div>
-                                <div *ngIf="showTrend == false  && activePatients == true && fdActivePatients > 0 && fdActivePatientLoader == false" style="height: 240px; padding-top: 70px;">
+                                <div *ngIf="showTrend == false  && activePatients == true && fdActivePatients > 0 && fdActivePatientLoader == false" style="height: 190px;">
                                     <ngx-gauge  class="singleRatio" [type]="gaugeType" [value]="fdActivePatients" [thick]="gaugeThick" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [cap]="cap" [max]="fdActivePatient" [size]="size">
                                     </ngx-gauge>
                                 </div>
@@ -259,12 +260,33 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="card-footer" *ngIf="activePatients == true">
+                            <div *ngIf="showTrend == false" fxLayout="row wrap" fxLayoutAlign="center center"
+                                class="m-t-40 sa_chart_details_sec pieChartDetails">
+                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                                    <h3 class="m-0 value-num">{{fdActivePatients | number:'1.0-0'}}</h3>
+                                    <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
+                                    <span class="value-text" *ngIf="currentText == ''">Current</span>
+                                </div>
+                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                                    *ngIf="duration != 'custom'">
+                                    <h3 class="m-0 value-num">{{fdActivePatientsTa | number:'1.0-0'}}</h3>
+                                    <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                                    <span class="value-text" *ngIf="trendText == ''">Previous</span>
+                                </div>
+                            </div>
+                        </div>
                     </mat-card-content>
                 </mat-card>
-                <div *ngIf="fdnewPatientsRatioLoader == true" class="loader_container loader_container_middle"><img
+                <div *ngIf="fdnewPatientsRatioLoader == true && activePatients == false" class="loader_container loader_container_middle"><img
                         class="loader_ico" src="../assets/images/720.gif">
                     <div class="loader-text">Calculating...</div>
                 </div>
+                <div *ngIf="fdActivePatientLoader == true && activePatients == true" class="loader_container loader_container_middle"><img
+                        class="loader_ico" src="../assets/images/720.gif">
+                    <div class="loader-text">Calculating...</div>
+                </div>
+               
             </div>
             <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
                 class="sa_flexbg referral_clinicians">

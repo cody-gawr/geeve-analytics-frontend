@@ -95,9 +95,9 @@ public token_id;
         );
     } 
     //Referral to Other Clinicians Internal / External
-    fdActivePatient(clinic_id, startDate = '', endDate = ''  ): Observable<any> {
+    fdActivePatient(clinic_id, startDate = '', endDate = '',duration=''   ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Marketing/mkActivePatients?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate, header)
+        return this.http.get(this.apiUrl +"/Marketing/mkActivePatients?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
         .pipe(map((response: Response) => {
                         return response;
                     })

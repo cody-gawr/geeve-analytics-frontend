@@ -1143,14 +1143,23 @@ export class MarketingComponent implements AfterViewInit {
 
   public fdActivePatientLoader:boolean = true;
   public fdActivePatients:any = 0;
+  public fdActivePatientsTa:any = 0;
+  public activePatientsTooltip:any = 'down';
   private fdActivePatient() {    
+      this.fdActivePatients = 0;
+      this.fdActivePatientsTa = 0;
       this.fdActivePatientLoader = true;
-      this.marketingService.fdActivePatient(this.clinic_id, this.startDate, this.endDate).subscribe((data) => {
+      this.marketingService.fdActivePatient(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((data) => {
         this.fdActivePatients = 0;
+        this.fdActivePatientsTa = 0;
         this.newPatientsPrevTotal = 0;
         if (data.message == 'success') {
           this.fdActivePatientLoader = false;
-          this.fdActivePatients = data.data;
+          this.fdActivePatients = data.total;
+          this.fdActivePatientsTa = data.total_ta;
+          this.activePatientsTooltip = 'down';
+        if (this.fdActivePatients >= this.fdActivePatientsTa)
+            this.activePatientsTooltip = 'up';
         }
       }, error => {
         this.warningMessage = "Please Provide Valid Inputs!";
