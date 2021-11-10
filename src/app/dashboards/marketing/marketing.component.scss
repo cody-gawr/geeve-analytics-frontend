@@ -14,3 +14,10 @@
    float: right;
    margin-left: 35px;
   }
+
+  .info-icon-container.marketing i{
+   margin-right: 10px
+  }
+  .info-icon-container.marketing i.active{
+   color: #1aa591;
+  }
