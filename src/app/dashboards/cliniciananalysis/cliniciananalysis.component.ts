@@ -3090,15 +3090,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         if (data.data.total > 0) {
           data.data.data.forEach(res => {
-            if (res.production)
+            if (res.production > 0) {
               this.dentistProductionTrend1.push(Math.round(res.production));
-            if (mode == 'c') {
-              this.dentistProductionTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-            } else if (mode == 'w') {
-              this.dentistProductionTrendLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
-            }
-            else {
-              this.dentistProductionTrendLabels1.push(res.year);
+              if (mode == 'c') {
+                this.dentistProductionTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+              } else if (mode == 'w') {
+                this.dentistProductionTrendLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
+              }
+              else {
+                this.dentistProductionTrendLabels1.push(res.year);
+              }
             }
           });
           if (this.dentistProductionTrend1.every((value) => value == 0)) this.dentistProductionTrend1 = [];
@@ -3156,14 +3157,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       if (data && data.message == 'success') {
         if (data.data) {
           data.data.forEach(res => {
-            if (res.collection)
+            if (res.collection > 0) {
               this.dentistCollectionTrend1.push(Math.round(res.collection));
-            if (activeMode == 'c') {
-              this.dentistColleTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-            } else if (activeMode == 'w') {
-              this.dentistColleTrendLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
-            } else {
-              this.dentistColleTrendLabels1.push(res.year);
+              if (activeMode == 'c') {
+                this.dentistColleTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+              } else if (activeMode == 'w') {
+                this.dentistColleTrendLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
+              } else {
+                this.dentistColleTrendLabels1.push(res.year);
+              }
             }
           });
           if (this.dentistCollectionTrend1.every((value) => value == 0)) this.dentistCollectionTrend1 = [];
@@ -3800,7 +3802,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.Apirequest = 9;
       $('.filter').removeClass('active');
       this.dentistProductionTrend();
-      this.dentistCollectionTrend();      
+      this.dentistCollectionTrend();
       this.treatmentPlanTrend();
       this.patientComplaintsTrend();
       this.fdRecallPrebookRateTrend();
