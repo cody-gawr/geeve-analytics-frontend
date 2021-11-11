@@ -1153,7 +1153,6 @@ export class MarketingComponent implements AfterViewInit {
       this.marketingService.fdActivePatient(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((data) => {
         this.fdActivePatients = 0;
         this.fdActivePatientsTa = 0;
-        this.newPatientsPrevTotal = 0;
         if (data.message == 'success') {
           this.fdActivePatientLoader = false;
           this.fdActivePatients = data.total;
