@@ -206,7 +206,9 @@
                                 <!-- <i title="Active Patients" class="fas fa-heartbeat"
                                     [ngClass]="activePatients == true? 'active' : ''"
                                     *ngIf="apiUrl.includes('test-') && showTrend == false" (click)="activePat()"></i> -->
-                                <img [tooltip]="charTips['36']" src="../assets/images/info-icon.png" alt="info-icon"
+                                <img *ngIf="!activePatients" [tooltip]="charTips['36']" src="../assets/images/info-icon.png" alt="info-icon"
+                                    class="info-icon" />
+                                <img *ngIf="activePatients" [tooltip]="{title: 'Active Patients',info: 'No Active Patients' }" src="../assets/images/info-icon.png" alt="info-icon"
                                     class="info-icon" />
                             </div>
                         </mat-card-title>
