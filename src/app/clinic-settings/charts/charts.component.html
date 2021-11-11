@@ -9,7 +9,7 @@
     </div>
     <div class="respopnsive-table-set">
       <h4 class="clinic-settings-form-title">{{ dash1Lable }}</h4>
-      <table mat-table [dataSource]="dash1List" class="mat-elevation-z8" matSort>
+      <table mat-table [dataSource]="dash1List" class="mat-elevation-z8 settingCharts" matSort>
         <!-- ProviderID Column -->
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef>Chart Id</th>
@@ -25,7 +25,9 @@
             {{ element.chart }}
             <div class="info-button">
               <div class="info-icon-container">
-                <img [tooltip]="{
+                <img 
+                (mouseover)="historyPosChips($event)"
+                [tooltip]="{
                     title: element.chart,
                     info: element.description,
                     direction: 'right'
@@ -48,7 +50,8 @@
             Configure
             <div class="info-button">
               <div class="info-icon-container">
-                <img [tooltip]="{
+                <img 
+                [tooltip]="{
                     title: 'Title',
                     info: 'Descript comes here',
                     direction: 'left'
@@ -96,7 +99,7 @@
     </div>
     <div class="respopnsive-table-set">
       <h4 class="clinic-settings-form-title">{{ dash2Lable }}</h4>
-      <table mat-table [dataSource]="dash2List" class="mat-elevation-z8" matSort>
+      <table mat-table [dataSource]="dash2List" class="mat-elevation-z8 settingCharts" matSort>
         <!-- ProviderID Column -->
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef>Chart Id</th>
@@ -112,7 +115,9 @@
             {{ element.chart }}
             <div class="info-button">
               <div class="info-icon-container">
-                <img [tooltip]="{
+                <img 
+                (mouseover)="historyPosChips($event)"
+                [tooltip]="{
                     title: element.chart,
                     info: element.description,
                     direction: 'right'
@@ -134,7 +139,8 @@
             Configure
             <div class="info-button">
               <div class="info-icon-container">
-                <img [tooltip]="{
+                <img 
+                [tooltip]="{
                     title: 'Title',
                     info: 'Descript comes here',
                     direction: 'left'

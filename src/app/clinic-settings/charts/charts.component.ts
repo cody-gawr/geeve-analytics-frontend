@@ -318,4 +318,15 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
 
 
   }
+
+  historyPosChips(event, colour, type= '')
+  {
+    $('.custom-tooltip').css({'visibility': 'hidden','opacity': '1' } );
+    let x= event.clientX;
+    let y= parseInt(event.clientY);
+    setTimeout( function(){
+      $('.custom-tooltip').css({'top': (y +20) , 'left' : (x -200),'visibility': 'visible' ,'opacity': '1'} );
+      
+    },100);
+  }
 }

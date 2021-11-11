@@ -8162,3 +8162,9 @@ span.new-feature-popup-close {
 th.mat-header-cell.cdk-header-cell.cdk-column-status.mat-column-status{
   width: 15%;
 }
+.settingCharts .custom-tooltip-right{
+    position: fixed !important;
+}
+.settingCharts .tooltip-info-text, .settingCharts .tooltip-title{
+    white-space: break-spaces !important;
+}
