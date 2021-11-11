@@ -59,6 +59,7 @@ export class MarketingComponent implements AfterViewInit {
   doughnutChartColors;
   subtitle: string;
   public clinic_id: any = {};
+  public patientText: any ='No. New Patients';
   public dentistCount: any = {};
   public clinicsData: any[] = [];
   public trendText;
@@ -1979,9 +1980,12 @@ export class MarketingComponent implements AfterViewInit {
   }
 
   activePat(){
-    if(this.activePatients == true)
+    if(this.activePatients == true){
       this.activePatients = false;
-    else if(this.activePatients == false)
+      this.patientText = 'No. New Patients';
+    }else if(this.activePatients == false){
       this.activePatients = true;
+      this.patientText = 'No. Active Patients';
+    }
   }
 }

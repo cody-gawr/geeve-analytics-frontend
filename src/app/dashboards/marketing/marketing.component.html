@@ -192,34 +192,65 @@
                     <mat-card-content class="sa_matcard_content">
                         <mat-card-title class="text-center">
                             <div>
-                                <span *ngIf="showTrend == false  && trendText && activePatients == false" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip="{{trendText}} : {{newPatientsPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
-                                 <span *ngIf="showTrend == false  && trendText && activePatients == true" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip="{{trendText}} : {{newPatientsPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{activePatientsTooltip}}.png"></span> No. New Patients
+                                <span *ngIf="showTrend == false  && trendText && activePatients == false"
+                                    class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
+                                    matTooltip="{{trendText}} : {{newPatientsPrevTotal}}"><img class="trend_ico"
+                                        src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
+                                <span *ngIf="showTrend == false  && trendText && activePatients == true"
+                                    class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
+                                    matTooltip="{{trendText}} : {{newPatientsPrevTotal}}"><img class="trend_ico"
+                                        src="../assets/images/trend_{{activePatientsTooltip}}.png"></span> {{patientText}}
                             </div>
                             <div class="sa_box_title_right_buttons"></div>
                             <div class="info-icon-container marketing">
-                                 <i title="Active Patients" class="fas fa-heartbeat" [ngClass]="activePatients == true? 'active' : ''" *ngIf="apiUrl.includes('test-') && showTrend == false" (click)="activePat()" ></i>
+                                <!-- <i title="Active Patients" class="fas fa-heartbeat"
+                                    [ngClass]="activePatients == true? 'active' : ''"
+                                    *ngIf="apiUrl.includes('test-') && showTrend == false" (click)="activePat()"></i> -->
                                 <img [tooltip]="charTips['36']" src="../assets/images/info-icon.png" alt="info-icon"
                                     class="info-icon" />
                             </div>
                         </mat-card-title>
                         <div class="card-body">
+                            <div *ngIf="apiUrl.includes('test-') && showTrend == false" fxLayout="row wrap"
+                                class="sa_tabs_main_sec" fxLayoutAlign="center">
+                                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                                    <small class="sa_tab_btn" [ngClass]="!activePatients? 'active' : ''"
+                                        (click)="activePat()">New Patients</small>
+                                </div>
+                                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                                    <small class="sa_tab_btn" [ngClass]="activePatients? 'active' : ''"
+                                        (click)="activePat()">Active Patients</small>
+                                </div>
+                            </div>
                             <div class="chart py-2">
-                                <div *ngIf="showTrend == false && newPatientsTotal > 0 && fdnewPatientsRatioLoader == false && activePatients == false" style="height: 190px">
-                                    <ngx-gauge  class="singleRatio" [type]="gaugeType" [value]="newPatientsTotal" [thick]="gaugeThick" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [cap]="cap" [max]="maxnewPatientsGoal" [size]="size">
+                                <div *ngIf="showTrend == false && newPatientsTotal > 0 && fdnewPatientsRatioLoader == false && activePatients == false"
+                                    style="height: 190px">
+                                    <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="newPatientsTotal"
+                                        [thick]="gaugeThick" [foregroundColor]="foregroundColor"
+                                        [backgroundColor]="backgroundColor" [cap]="cap" [max]="maxnewPatientsGoal"
+                                        [size]="size">
                                     </ngx-gauge>
                                 </div>
-                                <div *ngIf="showTrend == false  && activePatients == true && fdActivePatients > 0 && fdActivePatientLoader == false" style="height: 190px;">
-                                    <ngx-gauge  class="singleRatio" [type]="gaugeType" [value]="fdActivePatients" [thick]="gaugeThick" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [cap]="cap" [max]="fdActivePatient" [size]="size">
+                                <div *ngIf="showTrend == false  && activePatients == true && fdActivePatients > 0 && fdActivePatientLoader == false"
+                                    style="height: 190px;">
+                                    <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="fdActivePatients"
+                                        [thick]="gaugeThick" [foregroundColor]="foregroundColor"
+                                        [backgroundColor]="backgroundColor" [cap]="cap" [max]="fdActivePatient"
+                                        [size]="size">
                                     </ngx-gauge>
                                 </div>
-                                <div *ngIf="showTrend == false && newPatientsTotal <= 0 && fdnewPatientsRatioLoader == false  && activePatients == false">
+                                <div
+                                    *ngIf="showTrend == false && newPatientsTotal <= 0 && fdnewPatientsRatioLoader == false  && activePatients == false">
                                     <div class="sa_nodata_div"> </div>
-                                    <p class="chart-placeholder-text">You have no new patients in the selected period </p>
+                                    <p class="chart-placeholder-text">You have no new patients in the selected period
+                                    </p>
                                 </div>
 
-                                <div *ngIf="showTrend == false && fdActivePatients <= 0 && fdActivePatientLoader == false  && activePatients == true">
+                                <div
+                                    *ngIf="showTrend == false && fdActivePatients <= 0 && fdActivePatientLoader == false  && activePatients == true">
                                     <div class="sa_nodata_div"> </div>
-                                    <p class="chart-placeholder-text">You have no active patients in the selected period </p>
+                                    <p class="chart-placeholder-text">You have no active patients in the selected period
+                                    </p>
                                 </div>
 
                                 <div *ngIf="showTrend == true && newPatientsChartTrend1.length > 0"
@@ -232,7 +263,8 @@
                                     </canvas>
                                 </div>
 
-                                <div *ngIf="showTrend == true && newPatientsChartTrend1.length <=0 && activePatients == false">
+                                <div
+                                    *ngIf="showTrend == true && newPatientsChartTrend1.length <=0 && activePatients == false">
                                     <div class="sa_nodata_div"></div>
                                     <p class="chart-placeholder-text">You have no new patients in the selected period
                                     </p>
@@ -278,15 +310,17 @@
                         </div>
                     </mat-card-content>
                 </mat-card>
-                <div *ngIf="fdnewPatientsRatioLoader == true && activePatients == false" class="loader_container loader_container_middle"><img
-                        class="loader_ico" src="../assets/images/720.gif">
+                <div *ngIf="fdnewPatientsRatioLoader == true && activePatients == false"
+                    class="loader_container loader_container_middle"><img class="loader_ico"
+                        src="../assets/images/720.gif">
                     <div class="loader-text">Calculating...</div>
                 </div>
-                <div *ngIf="fdActivePatientLoader == true && activePatients == true" class="loader_container loader_container_middle"><img
-                        class="loader_ico" src="../assets/images/720.gif">
+                <div *ngIf="fdActivePatientLoader == true && activePatients == true"
+                    class="loader_container loader_container_middle"><img class="loader_ico"
+                        src="../assets/images/720.gif">
                     <div class="loader-text">Calculating...</div>
                 </div>
-               
+
             </div>
             <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
                 class="sa_flexbg referral_clinicians">
