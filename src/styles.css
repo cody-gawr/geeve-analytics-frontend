@@ -8154,7 +8154,7 @@ span.new-feature-popup-close {
 
 .features-new li {
   list-style   : none;
-  padding      : 10px 0px 10px 15px;
+  padding      : 10px 0px 10px 20px;
 }
 .new-feature-popup ul li p {
     margin: 0px 0 3px 0px;
@@ -8202,7 +8202,7 @@ span.new-feature-popup-close {
 i.fas.fa-heartbeat.features-new-icon {
     position: absolute;
     right: 0;
-    font-size: 55px;
+    font-size: 30px;
     bottom: -10px;
     color: #18a689;
     opacity: .8;
