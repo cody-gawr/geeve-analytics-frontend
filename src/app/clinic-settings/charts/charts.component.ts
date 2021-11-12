@@ -124,7 +124,7 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
   dash1List = new MatTableDataSource([]);
   dash2List = new MatTableDataSource([]);
   dentistListLoading: boolean = false;
-  displayedColumns: string[] = ["id", "chart", "configuration"];
+  displayedColumns: string[] = ["chart", "configuration"];
   jeeveProviderIds: any = [];
   editing = {};
   chartData = {};

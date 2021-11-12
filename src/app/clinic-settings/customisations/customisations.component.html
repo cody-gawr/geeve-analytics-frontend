@@ -30,7 +30,7 @@
                   " class="text-danger support-text" style="float: left; width: 100%">Field is Required.</small>
               </div>
             </div>
-            <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+            <div fxFlex="calc(25% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group">
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['opg_months']"
                   [(ngModel)]="opgMonths" style="width: 70px" />
@@ -51,6 +51,8 @@
                   " class="text-danger support-text" style="float: left; width: 100%">Field is Required.</small>
               </div>
             </div>
+            <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">              
+             </div>
           </div>
           <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
 
@@ -58,7 +60,7 @@
               <div class="sa-form-group">
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_codes1']"
                   [(ngModel)]="recallCode1" style="width: 70px" />
-                <span style="padding: 0 10px">Recall Codes 1
+                <span style="padding: 0 10px">Recall Code 1
 
                   <div class="info-button">
                     <div class="info-icon-container">
@@ -81,7 +83,7 @@
               <div class="sa-form-group">
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_codes2']"
                   [(ngModel)]="recallCode2" style="width: 70px" />
-                <span style="padding: 0 10px">Recall Codes 2
+                <span style="padding: 0 10px">Recall Code 2
                   <div class="info-button">
                     <div class="info-icon-container">
                       <img [tooltip]="{
@@ -103,7 +105,7 @@
               <div class="sa-form-group">
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_codes3']"
                   [(ngModel)]="recallCode3" style="width: 70px" />
-                <span style="padding: 0 10px">Recall Codes 3
+                <span style="padding: 0 10px">Recall Code 3
                   <div class="info-button">
                     <div class="info-icon-container">
                       <img [tooltip]="{
@@ -133,8 +135,19 @@
             fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
 
             <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-              <div class="sa-form-group">
-                <label>New Patients</label>
+              <div class="sa-form-group sa-group">
+                <label>New Patients 
+                  <div class="info-button">
+                  <div class="info-icon-container">
+                    <img [tooltip]="{
+                        title: 'Title comes here',
+                        info: 'Description',
+                        direction: 'right'
+                      }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                  </div>
+                </div>
+              </label> 
+                
                 <select [formControl]="form.controls['new_patients']" [(ngModel)]="newPatients">
                   <option value="1">Main Provider</option>
                   <option value="2">Treatment Provider</option>
@@ -142,17 +155,8 @@
               </div>
             </div>
           </div>
-
-
-
-
-
-          <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="true" name="case_1">Dashboard 1</mat-slide-toggle>
         </div>
       </div>
-
-
-
       <div class="sa-form-group-btn">
         <button class="save-button" type="submit" [disabled]="!form.valid">
           Save
