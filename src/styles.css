@@ -8124,18 +8124,27 @@ span.featureclose {
 }
 
 .features-new li a {
-  color    : #000000;
+  color    :#072002;
   font-size: 14px;
+  margin-left: 4px;
 }
 
 .features-new h4 {
   margin       : 0;
   padding      : 0;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   border-left  : 0px solid;
   font-size    : 21px;
 }
-
+.features-new h4:before {
+    content: '';
+    position: fixed;
+    width: 24px;
+    height: 33px;
+    border-left: 15px solid #18a689; 
+    margin-left: -24px;
+    margin-top: -5px;
+}
 span.new-feature-popup-close {
   position: absolute;
   top     : 0;
@@ -8145,20 +8154,51 @@ span.new-feature-popup-close {
 
 .features-new li {
   list-style   : none;
-  padding      : 10px 5px;
-  background   : #e7e7e7;
-  margin-bottom: 10px;
+  padding      : 10px 0px 10px 15px;
 }
-
+.new-feature-popup ul li p {
+    margin: 0px 0 3px 0px;
+    font-size: 15px;
+}
 .main-container.trailDays .custom_date {
   top: 26px !important;
 }
-
+.features-new li:before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: #18a689;
+    font-size: 15px;
+}
 .info-icon-container.full-section {
   float   : right;
   padding : 2px 10px 0 0;
 }
+.features-new:after {
+    content: '';
+    position: absolute;
+    bottom: -24px;
+    border: 1px solid;
+    right: -24px;
+    border-left: 40px solid transparent;
+    border-top: 30px solid transparent;
+    border-bottom: 13px solid #18a689;
+    border-right: 189px solid #18a689;
+    opacity: 0.3;
+}
 
+.features-new:before {
+    content: '';
+    position: absolute;
+    top: -24px;
+    border: 1px solid;
+    left: -33px;
+    border-left: 86px solid #18a689;
+    border-top: 30px solid #18a689;
+    border-bottom: 13px solid transparent;
+    border-right: 50px solid transparent;
+    opacity: 0.2;
+}
 th.mat-header-cell.cdk-header-cell.cdk-column-status.mat-column-status{
   width: 15%;
 }
