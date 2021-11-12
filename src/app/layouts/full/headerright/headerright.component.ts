@@ -453,17 +453,24 @@ export class AppHeaderrightComponent implements AfterViewInit {
     $("#dentist_initiate").click();
   }
 
-  toggleReffer(){
+  toggleReffer(event){
+    
+    let x= event.clientX;
     this.referFriendNameError= false;
     this.referFriendEmailError = false;
     this.referFriendEmailPError = false;
     this.referFriendName= '';
     this.referFriendEmail = '';
     if( this.referFriend == true ){
+      $('body').find('.referafrndForm').css('opacity', 0);
       this.referFriend = false;
     } else {
-      this.referFriend = true;
+      this.referFriend = true;      
+      setTimeout(function(){
+        $('body').find('.referafrndForm').css({'left' :(x-350), 'opacity' : 1 });
+      },100);
     }
+    
   }
 
   sendReffer(){

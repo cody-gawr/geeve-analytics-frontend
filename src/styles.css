@@ -8212,7 +8212,7 @@ th.mat-header-cell.cdk-header-cell.cdk-column-status.mat-column-status{
     display: block;
     border: 1px solid;
     position: absolute;
-    right: 18px;
+    left: 500px;
     top: 49px;
     padding: 10px 20px;
     z-index: 999;
@@ -8221,6 +8221,7 @@ th.mat-header-cell.cdk-header-cell.cdk-column-status.mat-column-status{
     box-shadow: 2px 4px 10px #000;
     border-radius: 5px;
     margin-top: 10px;
+    opacity: 0;
 }
 .referafrndForm .row {
     margin: 0;

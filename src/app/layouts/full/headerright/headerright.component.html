@@ -1,8 +1,8 @@
 <div class="referafrnd">
-  <i (click)="toggleReffer()" matTooltip="Refer a Friend" [ngClass]="referFriend? 'green' : ''" class="fas fa-user-friends referafriend"></i>
+  <i (click)="toggleReffer($event)" matTooltip="Refer a Friend" [ngClass]="referFriend? 'green' : ''" class="fas fa-user-friends referafriend"></i>
   <div class="referafrndForm" *ngIf="referFriend">
     <h1>Refer a Friend</h1>
-    <span (click)="toggleReffer()" class="referafrndFormClose">X</span>
+    <span (click)="toggleReffer($event)" class="referafrndFormClose">X</span>
     <div class="row">
         <div class="form-group">
           <label for="exampleInputEmail1">Recipient Name</label>
