@@ -54,6 +54,8 @@ export class AppHeaderrightComponent implements AfterViewInit {
   user_type_dentist;
   showCompare: boolean = false;
   showDropDown: boolean = false;
+  referFriend: boolean = false;
+  
   classUrl: string = "";
    @Inject(MAT_DIALOG_DATA) public data: any;
   @Output() newItemEvent = new EventEmitter<Number>();
@@ -444,5 +446,13 @@ export class AppHeaderrightComponent implements AfterViewInit {
     }
     $(".internal_dentist").val(newValue);
     $("#dentist_initiate").click();
+  }
+
+  toggleReffer(){
+    if( this.referFriend == true ){
+      this.referFriend = false;
+    } else {
+      this.referFriend = true;
+    }
   }
 }
