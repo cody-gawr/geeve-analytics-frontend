@@ -2,20 +2,22 @@
   <i (click)="toggleReffer()" matTooltip="Refer a Friend" [ngClass]="referFriend? 'green' : ''" class="fas fa-user-friends referafriend"></i>
   <div class="referafrndForm" *ngIf="referFriend">
     <h1>Refer a Friend</h1>
+    <span (click)="toggleReffer()" class="referafrndFormClose">X</span>
     <div class="row">
         <div class="form-group">
           <label for="exampleInputEmail1">Recipient Name</label>
-          <input type="email" class="form-control" >
-          <small id="emailHelp" class="form-text text-muted">Recipient Name is required</small>
+          <input type="email" class="form-control" [(ngModel)] = "referFriendName">
+          <small *ngIf="referFriendNameError" class="form-text text-muted">Recipient Name is required</small>
         </div>
         <div class="form-group">
           <label for="exampleInputEmail1">Email</label>
-          <input type="email" class="form-control" >
-          <small id="emailHelp" class="form-text text-muted">Email is required</small>
+          <input type="email" class="form-control" [(ngModel)]= "referFriendEmail">
+          <small *ngIf="referFriendEmailError" class="form-text text-muted">Email is required</small>
+          <small *ngIf="referFriendEmailPError" class="form-text text-muted">Enter correct email</small>
         </div>
       </div>
       <div class="row">
-           <button type="submit" class="mat-focus-indicator sa-pull-right mat-raised-button mat-dc m-l-10 mat-button-base">Submit</button>      
+           <button (click) = "sendReffer()" type="submit" class="mat-focus-indicator sa-pull-right mat-raised-button mat-dc m-l-10 mat-button-base">Submit</button>      
       </div>
   </div>
 

@@ -8220,6 +8220,7 @@ th.mat-header-cell.cdk-header-cell.cdk-column-status.mat-column-status{
     border: 1px solid #00a289;
     box-shadow: 2px 4px 10px #000;
     border-radius: 5px;
+    margin-top: 10px;
 }
 .referafrndForm .row {
     margin: 0;
@@ -8233,6 +8234,7 @@ th.mat-header-cell.cdk-header-cell.cdk-column-status.mat-column-status{
     border: 3px solid #00a289;
     margin-left: -20px;
     margin-right: 13px;
+    background: #00a289;
 }
 .referafrndForm label {
     padding: 5px 0;
@@ -8244,11 +8246,11 @@ th.mat-header-cell.cdk-header-cell.cdk-column-status.mat-column-status{
 }
 .referafrndForm:after {
     content: '';
-    border: 14px solid transparent;
-    top: -29px;
+    border: 18px solid transparent;
+    top: -32px;
     position: absolute;
     border-bottom: 14px solid #00a289;
-    left: 91px;
+    left: 86px;
 }
 
 .referafrnd small.form-text.text-muted {
@@ -8259,4 +8261,13 @@ th.mat-header-cell.cdk-header-cell.cdk-column-status.mat-column-status{
     float: left;
     width: 100%;
     margin-bottom: 5px;
+}
+.referafrnd button.mat-focus-indicator {
+    margin-top: 22px;
+}
+span.referafrndFormClose {
+    position: absolute;
+    right: 25px;
+    top: 20px;
+    cursor: pointer;
 }

@@ -55,6 +55,11 @@ export class AppHeaderrightComponent implements AfterViewInit {
   showCompare: boolean = false;
   showDropDown: boolean = false;
   referFriend: boolean = false;
+  referFriendName: any = '';
+  referFriendEmail: any = '';
+  referFriendNameError: boolean = false;
+  referFriendEmailError: boolean = false;
+  referFriendEmailPError: boolean = false;
   
   classUrl: string = "";
    @Inject(MAT_DIALOG_DATA) public data: any;
@@ -449,10 +454,50 @@ export class AppHeaderrightComponent implements AfterViewInit {
   }
 
   toggleReffer(){
+    this.referFriendNameError= false;
+    this.referFriendEmailError = false;
+    this.referFriendEmailPError = false;
+    this.referFriendName= '';
+    this.referFriendEmail = '';
     if( this.referFriend == true ){
       this.referFriend = false;
     } else {
       this.referFriend = true;
     }
+  }
+
+  sendReffer(){
+    this.referFriendNameError= false;
+    this.referFriendEmailError = false;
+    this.referFriendEmailPError = false;
+    if(this.referFriendName.trim() == '' ){
+      this.referFriendNameError= true;      
+    }
+    if(this.referFriendEmail.trim() == '' ){
+      this.referFriendEmailError = true;
+    }
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+     if(!re.test(this.referFriendEmail.trim()) && this.referFriendEmail.trim() != ''){
+      this.referFriendEmailPError = true; 
+     }
+
+    if(this.referFriendEmailError == true || this.referFriendNameError == true || this.referFriendEmailPError){
+      return false;
+    }
+
+     this.clinic_id && this.dentistService.getReferFriend(this.clinic_id, this.referFriendName.trim(), this.referFriendEmail.trim()).subscribe(
+        (res) => {
+          if(res.status == 200){
+             this.referFriend= false;
+             this.referFriendName= '';
+             this.referFriendEmail = '';
+             this.toastr.success("Email send to user successfully");
+          } else{
+            this.toastr.success("Something went wrong");
+          }
+            
+        },
+        (error) => { this.warningMessage = "Please Provide Valid Inputs!";
+        });
   }
 }

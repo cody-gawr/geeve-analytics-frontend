@@ -159,4 +159,19 @@ export class DentistService {
         })
       );
   }
+
+  getReferFriend(clinic_id, referFriendName, referFriendEmail): Observable<any> {
+    const formData = new FormData();
+    formData.append("clinic_id", clinic_id);
+    formData.append("recipient_name", referFriendName);
+    formData.append("recipient_email", referFriendEmail);   
+    var header = this.getHeaders();
+    return this.http
+      .post(this.apiUrl + "/users/userReferFriend", formData, header)
+      .pipe(
+        map((response: Response) => {
+          return response;
+        })
+      );
+  }
 }
