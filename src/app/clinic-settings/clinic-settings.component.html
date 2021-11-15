@@ -667,13 +667,7 @@
             <div class="post-op-codes" style="width: 250px; float: left">
               <!--   <h4 class="clinic-settings-form-title">&nbsp;</h4>   -->
               <div class="sa-form-group clinic-setting-form">
-                <mat-slide-toggle
-                  fxFlex.md="30"
-                  fxFlex.xs="100"
-                  checked="{{ utaEnable }}"
-                  name="utaEnable"
-                  (change)="toggleFlw($event, 'uta')"
-                >
+                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ utaEnable }}" name="utaEnable" (change)="toggleFlw($event, 'uta')">
                   <span *ngIf="utaEnable">Enabled</span>
                   <span *ngIf="!utaEnable">Disabled</span>
                 </mat-slide-toggle>
