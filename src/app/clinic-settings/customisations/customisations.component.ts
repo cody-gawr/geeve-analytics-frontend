@@ -47,7 +47,8 @@ export class CustomisationsComponent
   public recallCode1: any;
   public recallCode2: any;
   public recallCode3: any;
-  public newPatients: any =1;
+  public newPatients: any =0;
+  public recall_rate_default: any =1;
 
   constructor(
     private _cookieService: CookieService,
@@ -69,6 +70,7 @@ export class CustomisationsComponent
       xray_months: [null, Validators.compose([Validators.required])],
       opg_months: [null, Validators.compose([Validators.required])],
       new_patients: [null],
+      recall_rate_default: [null],
     });
     this.getCustomiseSettings();
   }
@@ -133,6 +135,7 @@ export class CustomisationsComponent
               this.xrayMonths = res.data.xray_months;
               this.opgMonths = res.data.opg_months;
               this.newPatients = res.data.new_patients_main;
+              this.recall_rate_default = res.data.recall_rate_default;
             }
           }
         },
@@ -152,7 +155,8 @@ export class CustomisationsComponent
       recall_code1: this.form.value.recall_codes1,
       recall_code2: this.form.value.recall_codes2,
       recall_code3: this.form.value.recall_codes3,
-      new_patients: this.form.value.new_patients
+      new_patients: this.form.value.new_patients,
+      recall_rate_default: this.form.value.recall_rate_default
     };
 
     this.customisationsService.updateCustomiseSettings(data).subscribe(
@@ -186,4 +190,7 @@ export class CustomisationsComponent
     this._cookieService.put("userid", "");
     this.router.navigateByUrl("/login");
   }
+
+
+  
 }

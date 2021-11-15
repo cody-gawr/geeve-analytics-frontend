@@ -12,9 +12,10 @@
           <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0">
             <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group">
+                <label _ngcontent-gxr-c371="">Xray Overdue</label>
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['xray_months']"
                   [(ngModel)]="xrayMonths" style="width: 70px" />
-                <span style="padding: 0 10px">Xray Overdue</span>
+                <span style="padding: 0 10px">months</span>
                 <div class="info-button">
                   <div class="info-icon-container">
                     <img [tooltip]="{
@@ -32,9 +33,10 @@
             </div>
             <div fxFlex="calc(25% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group">
+                <label _ngcontent-gxr-c371="">OPG Overdue</label>
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['opg_months']"
                   [(ngModel)]="opgMonths" style="width: 70px" />
-                <span style="padding: 0 10px">OPG Overdue
+                <span style="padding: 0 10px">months
                   <div class="info-button">
                     <div class="info-icon-container">
                       <img [tooltip]="{
@@ -51,27 +53,25 @@
                   " class="text-danger support-text" style="float: left; width: 100%">Field is Required.</small>
               </div>
             </div>
-            <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">              
-             </div>
+            <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+            </div>
           </div>
           <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
 
             <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group">
-                <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_codes1']"
-                  [(ngModel)]="recallCode1" style="width: 70px" />
-                <span style="padding: 0 10px">Recall Code 1
-
-                  <div class="info-button">
+                <label _ngcontent-gxr-c371="">Recall Code 1 <div class="info-button">
                     <div class="info-icon-container">
                       <img [tooltip]="{
-                          title: 'Title comes here',
-                          info: 'Description',
-                          direction: 'right'
-                        }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                        title: 'Title comes here',
+                        info: 'Description',
+                        direction: 'right'
+                      }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                     </div>
-                  </div>
-                </span>
+                  </div></label>
+                <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_codes1']"
+                  [(ngModel)]="recallCode1" style="width: 70px" />
+
                 <small *ngIf="
                     form.controls['recall_codes1'].hasError('required') &&
                     form.controls['recall_codes1'].touched
@@ -81,19 +81,17 @@
 
             <div fxFlex="calc(25% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group">
-                <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_codes2']"
-                  [(ngModel)]="recallCode2" style="width: 70px" />
-                <span style="padding: 0 10px">Recall Code 2
-                  <div class="info-button">
+                <label _ngcontent-gxr-c371="">Recall Code 2 <div class="info-button">
                     <div class="info-icon-container">
                       <img [tooltip]="{
-                          title: 'Title comes here',
-                          info: 'Description',
-                          direction: 'right'
-                        }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                        title: 'Title comes here',
+                        info: 'Description',
+                        direction: 'right'
+                      }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                     </div>
-                  </div>
-                </span>
+                  </div></label>
+                <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_codes2']"
+                  [(ngModel)]="recallCode2" style="width: 70px" />
                 <small *ngIf="
                     form.controls['recall_codes2'].hasError('required') &&
                     form.controls['recall_codes2'].touched
@@ -103,19 +101,17 @@
 
             <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group">
-                <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_codes3']"
-                  [(ngModel)]="recallCode3" style="width: 70px" />
-                <span style="padding: 0 10px">Recall Code 3
-                  <div class="info-button">
+                <label _ngcontent-gxr-c371="">Recall Code 3 <div class="info-button">
                     <div class="info-icon-container">
                       <img [tooltip]="{
-                          title: 'Title comes here',
-                          info: 'Description',
-                          direction: 'right'
-                        }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                        title: 'Title comes here',
+                        info: 'Description',
+                        direction: 'right'
+                      }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                     </div>
-                  </div>
-                </span>
+                  </div></label>
+                <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_codes3']"
+                  [(ngModel)]="recallCode3" style="width: 70px" />
                 <small *ngIf="
                     form.controls['recall_codes3'].hasError('required') &&
                     form.controls['recall_codes3'].touched
@@ -136,24 +132,42 @@
 
             <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group sa-group">
-                <label>New Patients 
+                <label>New Patients
                   <div class="info-button">
-                  <div class="info-icon-container">
-                    <img [tooltip]="{
+                    <div class="info-icon-container">
+                      <img [tooltip]="{
                         title: 'Title comes here',
                         info: 'Description',
                         direction: 'right'
                       }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                    </div>
                   </div>
-                </div>
-              </label> 
-                
+                </label>
+
                 <select [formControl]="form.controls['new_patients']" [(ngModel)]="newPatients">
+                  <option value="0">Treatment Provider</option>
                   <option value="1">Main Provider</option>
-                  <option value="2">Treatment Provider</option>
                 </select>
               </div>
             </div>
+            <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+              <div class="sa-form-group sa-group">
+                <label>Recall Rate
+                  <div class="info-button">
+                    <div class="info-icon-container">
+                      <img [tooltip]="{ title: 'Title comes here', info: 'Description', direction: 'right' }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                    </div>
+                  </div>
+                </label>
+
+                <select [formControl]="form.controls['recall_rate_default']" [(ngModel)]="recall_rate_default">
+                  <option value="0">Status Code</option>
+                  <option value="1">Default</option>
+                </select>
+              </div>
+            </div>
+
+
           </div>
         </div>
       </div>
