@@ -280,4 +280,33 @@ export class AppConstants {
         now.setTime(now.getTime() + (12*60*60*1000));
         return now;
     }
+
+    // Settings -> follow ups
+    public tipPostOPCallsFollowUps: ITooltipData = {
+        title: 'Post Op Calls', 
+        info: 'Post Op Calls should be entered as comma separated item codes (eg. 311,314). By default this followup list will be populated 2 days later - this can be adjusted below.',
+        direction: 'right'
+    };
+    public tipTickFollowUps: ITooltipData = {
+        title: 'Tick Followups', 
+        info: 'Tick Followups are triggered by entering the code TICK in your PMS software. By default the followup list will be populated 7 days later - this can be adjusted below.',
+        direction: 'right'
+    };
+    public tipRecallFollowUps: ITooltipData = {
+        title: 'Recall Followups', 
+        info: 'Recall Followups are triggered automatically by detecting patients who are overdue for their 6 monthly check-up. By default the followup list will be populated with patients who had their last check-up and clean 30 weeks ago (approx 7 months.) - this can be adjusted below.',
+        direction: 'right'
+    };
+
+    public tipFtaFollowUps: ITooltipData = {
+        title: 'FTA Followups', 
+        info: 'FTA Followups are triggered automatically based on detection of an FTA or UTA in your PMS. By default the followup list will be populated the same day as the FTA/UTA is recorded, for patients who do not have another appointment booked within the next 28 days - this can be adjusted below.',
+        direction: 'right'
+    };
+
+    public tipUtaFollowUps: ITooltipData = {
+        title: 'UTA Followups', 
+        info: 'Discription comes here',
+        direction: 'right'
+    };
 }

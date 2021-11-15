@@ -35,7 +35,7 @@ export class ClinicSettingsService {
         );
     }
        // Get ClinicSettings
-    updateClinicSettings(clinic_id, name, address, contact_name, workingDays,postOpCalls,phoneNo,clinicEmail,ftaUta,postOpCallsMh,recallWeeks,tickDays,ftaFollowupDays, timezone,subtractedAccounts, equipmentList, dailyTasks, compareMode, postOpEnable, tickEnable, recallEnable, ftaEnable): Observable<any> {
+    updateClinicSettings(clinic_id, name, address, contact_name, workingDays,postOpCalls,phoneNo,clinicEmail,ftaUta,postOpCallsMh,recallWeeks,tickDays, timezone,subtractedAccounts, equipmentList, dailyTasks, compareMode, postOpEnable, tickEnable, recallEnable, ftaEnable,utaEnable): Observable<any> {
 
         equipmentList = (equipmentList == true)? 1 :0;
         dailyTasks = (dailyTasks == true)? 1 :0;
@@ -58,7 +58,7 @@ export class ClinicSettingsService {
         formData.append('post_op_days', postOpCallsMh);
         formData.append('recall_weeks', recallWeeks);
         formData.append('tick_days', tickDays);
-        formData.append('fta_followup_days', ftaFollowupDays);
+        // formData.append('fta_followup_days', ftaFollowupDays);
         formData.append('timezone', timezone);
         formData.append('equip_list_enable', equipmentList);
         formData.append('daily_task_enable', dailyTasks);
@@ -67,6 +67,7 @@ export class ClinicSettingsService {
         formData.append('tick_enable', tickEnable);
         formData.append('recall_enable', recallEnable);
         formData.append('fta_enable', ftaEnable);
+        formData.append('uta_enable', utaEnable);
         
     var header = this.getHeaders();
     return this.http.post(this.apiUrl +"/clinics/clinicUpdate", formData, header)
@@ -186,4 +187,37 @@ export class ClinicSettingsService {
             })
         );
     }
+
+    // Get ClinicSettings follow ups
+    getFollowUpSettings(clinic_id): Observable<any> {
+    var header = this.getHeaders();
+    return this.http
+      .get(
+        this.apiUrl + "/clinics/clinicGetSettings?clinic_id=" + clinic_id,
+        header
+      )
+      .pipe(
+        map((response: Response) => {
+          return response;
+        })
+      );
+  }
+  updateFollowUpSettings(clinic_id,ftaFollowupDays,utaFollowupDays,utaFollowupDaysLater,ftaFollowupDaysLater): Observable<any> {
+    var header = this.getHeaders();
+     const formData = new FormData();
+     formData.append('clinic_id', clinic_id);
+     formData.append('fta_followup_days', ftaFollowupDays);
+     formData.append('uta_followup_days', utaFollowupDays);
+     formData.append('uta_days_later', utaFollowupDaysLater);
+     formData.append('fta_days_later', ftaFollowupDaysLater);
+
+     
+    return this.http
+      .post(this.apiUrl + "/clinics/clinicSettingsSave", formData, header)
+      .pipe(
+        map((response: Response) => {
+          return response;
+        })
+      );
+  }
 }

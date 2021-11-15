@@ -36,6 +36,9 @@ export class ClinicSettingsComponent implements OnInit {
   public recallWeeks: any = 0;
   public tickDays: any = 0;
   public ftaFollowupDays: any = 0;
+  public utaFollowupDays: any = 0;
+  public ftaFollowupDaysLater: any = 0;
+  public utaFollowupDaysLater: any = 0;
 
   public ftaUtaStatus: boolean = true;
   public ftaUtaItem: boolean = false;
@@ -68,6 +71,7 @@ export class ClinicSettingsComponent implements OnInit {
   public recallEnable: boolean = true;
   public ftaEnable: boolean = true;
   public userPlan: any = "lite";
+  public utaEnable: boolean = true;
 
   public workingDays: any = {
     sunday: false,
@@ -103,6 +107,7 @@ export class ClinicSettingsComponent implements OnInit {
       $(".header_filters").addClass("flex_direct_mar");
       this.checkXeroStatus();
       this.checkMyobStatus();
+      this.getFollowUpSettings();
     });
 
     this.form = this.fb.group({
@@ -120,6 +125,9 @@ export class ClinicSettingsComponent implements OnInit {
       recall_weeks: [null, Validators.compose([Validators.required])],
       tick_days: [null, Validators.compose([Validators.required])],
       fta_followup_days: [null, Validators.compose([Validators.required])],
+      uta_followup_days: [null, Validators.compose([Validators.required])],
+      fta_followup_days_later: [null, Validators.compose([Validators.required])],
+      uta_followup_days_later: [null, Validators.compose([Validators.required])],
       // unscheduled_patients_days: [null, Validators.compose([Validators.required])],
       // facebook: [null],
       // twitter: [null],
@@ -161,7 +169,7 @@ export class ClinicSettingsComponent implements OnInit {
           this.postOpCallsMh = res.data[0].post_op_days;
           this.recallWeeks = res.data[0].recall_weeks;
           this.tickDays = res.data[0].tick_days;
-          this.ftaFollowupDays = res.data[0].fta_followup_days;
+          // this.ftaFollowupDays = res.data[0].fta_followup_days;
           this.timezone = res.data[0].timezone;
           this.equipmentList =
             res.data[0].equip_list_enable == 1 ? true : false;
@@ -172,6 +180,7 @@ export class ClinicSettingsComponent implements OnInit {
           this.tickEnable = res.data[0].tick_enable == 1 ? true : false;
           this.recallEnable = res.data[0].recall_enable == 1 ? true : false;
           this.ftaEnable = res.data[0].fta_enable == 1 ? true : false;
+          this.utaEnable = res.data[0].uta_enable == 1 ? true : false;
 
           if (this.ftaUta == "") this.ftaUta = "status";
 
@@ -190,6 +199,25 @@ export class ClinicSettingsComponent implements OnInit {
       }
     );
   }
+  getFollowUpSettings() {
+    this.clinicSettingsService
+      .getFollowUpSettings(this.id)
+      .subscribe(
+        (res) => {
+          if (res.message == "success") {
+            if (res.data) {
+              this.ftaFollowupDays = res.data.fta_followup_days;
+              this.utaFollowupDays = res.data.uta_followup_days;
+              this.ftaFollowupDaysLater = res.data.fta_days_later;
+              this.utaFollowupDaysLater = res.data.uta_days_later;
+            }
+          }
+        },
+        (error) => {
+          this.warningMessage = "Please Provide Valid Inputs!";
+        }
+      );
+  }
   //save clinic settings
   onSubmit() {
     $(".ajax-loader").show();
@@ -206,6 +234,9 @@ export class ClinicSettingsComponent implements OnInit {
     this.recallWeeks = this.form.value.recall_weeks;
     this.tickDays = this.form.value.tick_days;
     this.ftaFollowupDays = this.form.value.fta_followup_days;
+    this.utaFollowupDays = this.form.value.uta_followup_days;
+    this.ftaFollowupDaysLater = this.form.value.fta_followup_days_later;
+    this.utaFollowupDaysLater = this.form.value.uta_followup_days_later;
     this.timezone = this.form.value.timezone;
 
     this.clinicSettingsService
@@ -222,7 +253,6 @@ export class ClinicSettingsComponent implements OnInit {
         this.postOpCallsMh,
         this.recallWeeks,
         this.tickDays,
-        this.ftaFollowupDays,
         this.timezone,
         this.subtracted_accounts,
         this.equipmentList,
@@ -231,7 +261,33 @@ export class ClinicSettingsComponent implements OnInit {
         this.postOpEnable,
         this.tickEnable,
         this.recallEnable,
-        this.ftaEnable
+        this.ftaEnable,
+        this.utaEnable,
+      )
+      .subscribe(
+        (res) => {
+          $(".ajax-loader").hide();
+          if (res.message == "success") {
+            this.toastr.success("Clinic Settings Updated");
+          } else if (res.status == "401") {
+            this._cookieService.put("username", "");
+            this._cookieService.put("email", "");
+            this._cookieService.put("userid", "");
+            this.router.navigateByUrl("/login");
+          }
+        },
+        (error) => {
+          this.warningMessage = "Please Provide Valid Inputs!";
+        }
+      );
+
+      this.clinicSettingsService
+      .updateFollowUpSettings(
+        this.id,
+        this.ftaFollowupDays,
+        this.utaFollowupDays,
+        this.utaFollowupDaysLater,
+        this.ftaFollowupDaysLater,
       )
       .subscribe(
         (res) => {
@@ -444,6 +500,9 @@ export class ClinicSettingsComponent implements OnInit {
     } else if (type == "fta") {
       this.ftaEnable = event.checked;
       column = "fta_enable";
+    }else if (type == "uta") {
+      this.utaEnable = event.checked;
+      column = "uta_enable";
     }
     var active = event.checked == true ? 1 : 0;
     this.clinicSettingsService
