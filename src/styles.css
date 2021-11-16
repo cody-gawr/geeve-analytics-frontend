@@ -8272,3 +8272,19 @@ span.referafrndFormClose {
     top: 20px;
     cursor: pointer;
 }
+.lable-set-jeeve-names{
+  width: 20%;
+  float: left; 
+  margin-right: 2%;
+}
+.lable-set-jeeve-names label{
+  padding-top:10px;
+}
+.input-set-jeeve-names{
+  width: 78%;
+  float: left;
+}
+.chart-dentist-list-width{
+  width: 45%;
+  float: left;
+}

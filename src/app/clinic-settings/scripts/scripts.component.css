@@ -75,3 +75,9 @@ span.charLimit {
     color: #b5b0b0;
     font-size: 11px;
 }
+.search-width{
+    width: 70%;
+}
+.addScriptBtn{
+    float: right;
+}

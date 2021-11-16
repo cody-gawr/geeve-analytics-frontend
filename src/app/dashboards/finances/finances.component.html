@@ -286,7 +286,7 @@ expenses_card custom_ngx_cw01">
             </mat-card-title>
             <div class="card-body clinician-center-chart">
               <div class="chart w-100" *ngIf="productionChartData.length > 0 && showInternal == true">
-                <div style="height: 280px; width: 100%;">
+                <div class="clinician-chart">
                   <canvas class="productionPercentage" #myCanvas baseChart [data]="productionChartData"
                     [labels]="productionChartLabels" [chartType]="productionChartType"
                     (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"
@@ -328,7 +328,7 @@ expenses_card custom_ngx_cw01">
                 </div>
               </mat-card-title>
               <div class="card-body clinician-center-chart">
-                <div style="height: 200px; width: 100%;"
+                <div class="chart-per-visit"
                   *ngIf="productionVal > 0 && finProductionPerVisitLoader == false">
                   <ngx-gauge class="productionVisit" [type]="gaugeType" [value]="productionVal" [thick]="gaugeThick"
                     [prepend]="gaugePrependText" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor"
@@ -380,7 +380,7 @@ expenses_card custom_ngx_cw01">
               <div class="card-body chart-spacing">
                 <div class="chart w-100"
                   *ngIf="totalDiscountChartData && totalDiscountChartData.length > 0 && showInternal == true">
-                  <div style="height: 280px; width: 100%;">
+                  <div class="clinician-chart">
                     <canvas class="totalDiscount" #myCanvas baseChart [data]="totalDiscountChartData"
                       [labels]="totalDiscountChartLabels" [chartType]="totalDiscountChartType"
                       (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)" [legend]="false"
@@ -476,7 +476,7 @@ expenses_card custom_ngx_cw01">
                 <div fxLayout="row wrap" fxLayoutGap="20px grid">
                   <div class="ngx-charts-fix " fxFlex.lg="55" fxFlex.xl="55" fxFlex.md="100" fxFlex.sm="100"
                     fxFlex.xs="100" fxFlex="60">
-                    <div style="height: 330px;"
+                    <div class="chart-prod-coll"
                       *ngIf="totalProductionCollectionMax > 0 && finTotalProductionLoader == false">
                       <canvas #myCanvas2 baseChart [datasets]="totalProductionCollection1"
                         [labels]="totalProductionCollectionLabel1" [options]="labelBarOptionsTC" [legend]="false"
@@ -604,7 +604,7 @@ expenses_card custom_ngx_cw01">
                     </div>
                   </div>
                 </div>
-                <div style="height: 280px">
+                <div class="chart-clinician">
                   <canvas
                     *ngIf="netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  > 0 && finNetProfitTrendLoader == false"
                     class="profit1 net_profit" baseChart [datasets]="netProfitPercentChartTrend"
@@ -687,7 +687,7 @@ expenses_card custom_ngx_cw01">
                 </div>
               </mat-card-title>
               <div class="card-body">
-                <div style="height: 320px;">
+                <div class="chart-prod-pr-visit">
                   <canvas #myCanvas2 class="trendproductionVisit" *ngIf="productionVisitChartTrendLabels.length  > 0"
                     baseChart [datasets]="productionVisitChartTrend" [labels]="productionVisitChartTrendLabels"
                     [options]="labelBarOptionsSingleValue" [legend]="false" [chartType]="lineChartType"
@@ -729,7 +729,7 @@ expenses_card custom_ngx_cw01">
               <div *ngIf="(xeroConnect || myobConnect) && expensestrendstats == true && !expensesChartTrendError" class="card-body sa_chart_summary_flip_main">
                 <div class=" sa_chart_summary_flip">
                   <div class="chart sa_chart_flip sa_flip">
-                    <div style="height: 280px;">
+                    <div class="chart-clinician">
                       <canvas #myCanvas2 class="trendProductionPercentage"
                         *ngIf="expensesChartTrendLabels && expensesChartTrendLabels.length  > 0" baseChart
                         [datasets]="expensesChartTrend" [labels]="expensesChartTrendLabels"
@@ -772,7 +772,7 @@ expenses_card custom_ngx_cw01">
                 </div>
               </mat-card-title>
               <div class="card-body">
-                <div style="height: 280px">
+                <div class="chart-clinician">
                   <canvas #myCanvas2 class="trendtotalDiscount"
                     *ngIf="discountsChartTrend1 && discountsChartTrend1.length  > 0 && finTotalDiscountsTrendLoader == false"
                     baseChart [datasets]="discountsChartTrend" [labels]="discountsChartTrendLabels"
@@ -813,7 +813,7 @@ expenses_card custom_ngx_cw01">
 
               </mat-card-title>
               <div class="card-body">
-                <div style="height: 280px">
+                <div class="chart-clinician">
                   <canvas class="trendtotalProduction"
                     *ngIf="totalProductionCollectionLabel && totalProductionCollectionLabel.length  > 0 && (finCollectionTrendLoader == false && finTotalProductionTrendLoader == false )" baseChart
                     [datasets]="totalProductionCollection" [labels]="totalProductionCollectionLabel"
@@ -848,7 +848,7 @@ expenses_card custom_ngx_cw01">
                 </div>
               </mat-card-title>
               <div class="card-body">
-                <div style="height: 280px">
+                <div class="chart-clinician">
                   <canvas #myCanvas2 class="trendProductionPercentage" baseChart
                     *ngIf="productionChartTrendLabels && productionChartTrendLabels.length  > 0 && finProductionByClinicianTrendLoader == false"
                     [datasets]="productionChartTrend" [labels]="productionChartTrendLabels"

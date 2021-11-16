@@ -63,7 +63,7 @@
                             </div>
                         </mat-card-title>
                         <div class="card-body">
-                            <div style="height: 326px; position: relative;">
+                            <div class="chart-new-patients">
                                 <div class="sa_back_btn_holder" *ngIf="newPatientsTimeLabelsl2.length > 0"><span
                                         (click)="changeLevel('newPatient')">Back</span></div>
                                 <canvas
@@ -131,7 +131,7 @@
                             </div>
                         </mat-card-title>
                         <div class="card-body">
-                            <div style="height: 326px;position: relative;">
+                            <div class="chart-new-patients">
                                 <div class="sa_back_btn_holder"
                                     *ngIf="revenueReferralLabelsl2.length > 0  && mkRevenueByReferralLoader == false">
                                     <span (click)="changeLevel('revenue')">Back</span>
@@ -225,16 +225,16 @@
                                 </div>
                             </div>
                             <div class="chart py-2">
-                                <div *ngIf="showTrend == false && newPatientsTotal > 0 && fdnewPatientsRatioLoader == false && activePatients == false"
-                                    style="height: 190px">
+                                <div class="chart-num-patients" *ngIf="showTrend == false && newPatientsTotal > 0 && fdnewPatientsRatioLoader == false && activePatients == false"
+                                    >
                                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="newPatientsTotal"
                                         [thick]="gaugeThick" [foregroundColor]="foregroundColor"
                                         [backgroundColor]="backgroundColor" [cap]="cap" [max]="maxnewPatientsGoal"
                                         [size]="size">
                                     </ngx-gauge>
                                 </div>
-                                <div *ngIf="showTrend == false  && activePatients == true && fdActivePatients > 0 && fdActivePatientLoader == false"
-                                    style="height: 190px;">
+                                <div class="chart-num-patients" *ngIf="showTrend == false  && activePatients == true && fdActivePatients > 0 && fdActivePatientLoader == false"
+                                   >
                                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="fdActivePatients"
                                         [thick]="gaugeThick" [foregroundColor]="foregroundColor"
                                         [backgroundColor]="backgroundColor" [cap]="cap" [max]="fdActivePatient"
@@ -256,7 +256,7 @@
                                 </div>
 
                                 <div *ngIf="showTrend == true && newPatientsChartTrend1.length > 0"
-                                    style="height: 300px">
+                                    class="chart-Trend1-patients">
                                     <canvas #myCanvas baseChart [datasets]="newPatientsChartTrend"
                                         [labels]="newPatientsChartTrendLabels" [options]="stackedChartOptions"
                                         [chartType]="stackedChartType" [colors]="lineChartColors"
@@ -356,7 +356,7 @@
                                 <div>
 
                                     <div *ngIf="showTrend == false && fdnewPatientsAcqLoader ==  false &&  (xeroConnect || myobConnect) && !newAcqValueError"
-                                        style="height: 200px">
+                                        class="chart-trend">
                                         <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="newAcqValue"
                                             [thick]="gaugeThick" [foregroundColor]="foregroundColor"
                                             [backgroundColor]="backgroundColor" [cap]="cap" [prepend]="gaugePrependText"
@@ -370,7 +370,7 @@
                                         <div class="loader-text">Calculating...</div>
                                     </div>
                                     <div *ngIf="showTrend == true && expenseDataTrend1.length > 0 && (xeroConnect || myobConnect) && !newAcqValueError"
-                                        style="height: 300px">
+                                        class="chart-Trend1-patients">
                                         <canvas #myCanvas baseChart [datasets]="expenseDataTrend"
                                             [labels]="expenseDataTrendLabels" [options]="barChartOptions"
                                             [chartType]="stackedChartType" [colors]="lineChartColors"
@@ -440,7 +440,7 @@
                         <div class="card-body">
                             <div class="chart py-2">
 
-                                <div *ngIf="showTrend == false && visitsTotal > 0" style="height: 190px">
+                                <div *ngIf="showTrend == false && visitsTotal > 0" class="chart-num-patients">
                                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="visitsTotal"
                                         [thick]="gaugeThick" [foregroundColor]="foregroundColor"
                                         [backgroundColor]="backgroundColor" [cap]="cap" [size]="size">
@@ -452,7 +452,7 @@
                                     <p class="chart-placeholder-text">You have no visits in the selected period</p>
                                 </div>
 
-                                <div *ngIf="showTrend == true && visitsChartTrend1.length > 0" style="height: 300px">
+                                <div *ngIf="showTrend == true && visitsChartTrend1.length > 0" class="chart-Trend1-patients">
                                     <canvas #myCanvas baseChart [datasets]="visitsChartTrend"
                                         [labels]="visitsChartTrendLabels" [options]="stackedChartOptions"
                                         [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
@@ -531,7 +531,7 @@
 
     </div>
     <button class="mat-raised-button mat-dc float-right" mat-raised-button (click)="save_account()">Save</button>
-    <button (click)="myModal.close()" class="close_modal" style="display:none">Close</button>
+    <button (click)="myModal.close()" class="close_modal close-btn">Close</button>
 </ngx-smart-modal>
 <canvas #myCanvas baseChart [style.display]="'none'" [datasets]="chartData1" [labels]="chartLabels1"
     [chartType]="pieChartType"></canvas>

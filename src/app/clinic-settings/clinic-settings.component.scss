@@ -80,4 +80,58 @@
     margin-bottom: 26px;
     padding: 0 20px;    
 }
-
+.flx-width{
+    width: 100%;
+}
+.op-codes{
+    float: left;
+    width: 100%;
+}
+.op-codes input{
+    float: left;
+    width: 25px;
+}
+.op-codes span{
+    padding: 11px 6px;
+    display: inline-block;
+}
+.fta_uta_set{
+    width: 500px;
+    text-align: center;
+}
+.cli-set-form{
+    text-align: left;
+    width: 240px;
+}
+.PostOpCalls{
+    width: 250px;
+    float: left;
+}
+.PostOpCalls input{
+    width: 70px;
+}
+.PostOpCalls span{
+    padding: 0 10px
+}
+.PostOpCalls small{
+    float: left; 
+    width: 100%;
+}
+.ftaFollowps{
+    width: 250px;
+    float: left;
+    margin-right: 19.8%;
+}
+.xero-mat-card{
+    width: 50%; 
+    float: left; 
+    border-right: 3px dotted #cecee5;
+}
+.xero-from{
+    width: 50%; 
+    float: left; 
+    padding: 5px 40px;
+}
+.npe-padding{
+    padding: 0px;
+}

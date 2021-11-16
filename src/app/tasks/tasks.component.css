@@ -242,3 +242,6 @@ table.card-template-wrap.warning::before {
 .cardDescription {
     min-height: 43px;
 }
+.header-bg-shadow{
+  box-shadow: none !important;
+}

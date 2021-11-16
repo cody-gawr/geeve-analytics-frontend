@@ -45,7 +45,7 @@
             
              <div class="card-body h-100">          
               <div class="relative h-100">
-                <div style="height: 350px; width:100%;">                  
+                <div class="chart-conversion">                  
                    <canvas  *ngIf="conversionLabels.length > 0 && !conversionLoader" #myCanvas baseChart [datasets]="conversionData" [labels]="conversionLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions1" [colors]="colors"></canvas>
                    <div class="no-data-placeholder" *ngIf="conversionLabels <= 0 && !conversionLoader" >
                     <div class="sa_nodata_div"></div>
@@ -100,7 +100,7 @@
             </mat-card-title>
                 <div class="card-body h-100">
               <div class="relative h-100">
-                <div style="height: 350px;">
+                <div class="chart-completion-rate">
                   <canvas #myCanvas *ngIf="completionRateData[0]['data'].length > 0 && !completionRateLoader" baseChart [datasets]="completionRateData" [labels]="completionRateLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions1" [colors]="colors"></canvas>
                   <div class="no-data-placeholder" *ngIf="completionRateData[0]['data'].length <= 0 && !completionRateLoader">
                     <div class="sa_nodata_div"></div>
@@ -141,7 +141,7 @@
         class="sa_flexbg ">
         <mat-card class="hourlyRate sa_no_tabs_area">
           <mat-card-content class="sa_matcard_content">
-            <mat-card-title class="text-center" style="padding-left: 30px;">
+            <mat-card-title class="text-center mt-title-text">
               <div> 
               <!--   <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
                   mat-icon-button matTooltip="{{trendText}} : ${{ outcomePrev | number:'1.0-0'}}"><img
@@ -168,7 +168,7 @@
               </div>
             </div>
               <div class="relative h-100">
-                <div style="height: 260px; text-align: -webkit-center;">
+                <div class="chart-followp-outcome">
                   <ngx-charts-pie-chart *ngIf="outcomeType == '1' && singleTick.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[450, 400]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="35" [results]="singleTick" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
                    <ngx-charts-pie-chart *ngIf="outcomeType =='2' && singleRecall.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[450, 400]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="35" [results]="singleRecall" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
                    <ngx-charts-pie-chart *ngIf="outcomeType =='3' && singleFta.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[450, 400]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="35" [results]="singleFta" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
@@ -259,7 +259,7 @@
               </div>
             </div>
               <div class="relative h-100">
-                <div style="height: 350px">
+                <div class="conver-per-user">
                     <canvas  *ngIf="conversionPerType == '1' && conversionPerUserLabelsTicks.length > 0 && !conversionPerUserLoader" #myCanvas baseChart [datasets]="conversionPerUserDataTicks" [labels]="conversionPerUserLabelsTicks" [legend]="false" [chartType]="'bar'" [options]="barChartOptions1" [colors]="colors"></canvas>
                   <canvas  *ngIf="conversionPerType == '2' && conversionPerUserLabelsRecalls.length > 0 &&  !conversionPerUserLoader" #myCanvas baseChart [datasets]="conversionPerUserDataRecalls" [labels]="conversionPerUserLabelsRecalls" [legend]="false" [chartType]="'bar'" [options]="barChartOptions1" [colors]="colors"></canvas>               
                   <canvas *ngIf="conversionPerType == '3' && conversionPerUserLabelsFta.length > 0 && !conversionPerUserLoader" #myCanvas baseChart [datasets]="conversionPerUserDataFta" [labels]="conversionPerUserLabelsFta" [legend]="false" [chartType]="'bar'" [options]="barChartOptions1" [colors]="colors"></canvas>
@@ -354,7 +354,7 @@
             </mat-card-title>
              <div class="card-body h-100">
               <div class="relative h-100">
-                <div style="height: 400px; width:100%;">
+                <div class="chart-folloup-user">
                   
                   <canvas *ngIf="perUserLabels.length > 0 && !perUserLoader" #myCanvas baseChart [datasets]="perUserData" [labels]="perUserLabels"
                     [options]="stackedChartOptions" [chartType]="'bar'" 
@@ -362,14 +362,14 @@
                   </canvas>
                  <!--  <canvas  #myCanvas baseChart [datasets]="perUserData" [labels]="perUserLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions" [colors]="colors"></canvas> -->
                 
-                  <div class="no-data-placeholder" *ngIf="perUserLabels.length <= 0 && !perUserLoader" style="padding-top: 45px;">
+                  <div class="no-data-placeholder folloup-per-user" *ngIf="perUserLabels.length <= 0 && !perUserLoader">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">No followups were completed in this period</p>
                   </div>
                 </div>
               </div>
             </div>
-           <div class="card-footer" style="">
+           <div class="card-footer">
               <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                   <h3 class="m-0 value-num">{{ perUserTotal | number:'1.0-0'}}</h3>

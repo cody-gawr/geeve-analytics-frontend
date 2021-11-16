@@ -121,3 +121,16 @@ span.charLimit {
 .sa-group label{
     width: 50%;
 }
+.flx-width{
+    width: 100%;
+}
+.mh-align input{
+    width: 70px;
+}
+.mh-align span{
+    padding: 0 10px;
+}
+.mh-error-align{
+    float: left;
+    width: 100%;
+}

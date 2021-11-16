@@ -641,7 +641,7 @@
 
            <ng-container matColumnDef="rebooked">
             <th mat-header-cell *matHeaderCellDef>Rebooked </th>
-            <td mat-cell *matCellDef="let element"> <i *ngIf="element.is_rebooked == 'Yes'" class="fa fa-check" style="color: green;" ></i> </td>
+            <td mat-cell *matCellDef="let element"> <i *ngIf="element.is_rebooked == 'Yes'" class="fa fa-check mh-fa-check"></i> </td>
           </ng-container>
 
 
@@ -714,7 +714,7 @@
               </div>
               <div fxLayout="row" class="huddle-card-row">
                 <div fxFlex="30">Rebooked: </div>
-                <div fxFlex="70">  <i *ngIf="element.is_rebooked == 'Yes'" class="fa fa-check" style="color: green;" ></i>  </div>
+                <div fxFlex="70">  <i *ngIf="element.is_rebooked == 'Yes'" class="fa fa-check  mh-fa-check"></i>  </div>
               </div>
 
             </mat-card>
@@ -946,7 +946,7 @@
           </ng-container>
           <ng-container matColumnDef="rebooked">
             <th mat-header-cell *matHeaderCellDef>Rebooked </th>
-            <td mat-cell *matCellDef="let element"> <i *ngIf="element.is_rebooked == 'Yes'" class="fa fa-check" style="color: green;" ></i> </td>
+            <td mat-cell *matCellDef="let element"> <i *ngIf="element.is_rebooked == 'Yes'" class="fa fa-check  mh-fa-check" ></i> </td>
           </ng-container>
           <ng-container matColumnDef="isDataAvailable">
             <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns11.length">
@@ -1016,7 +1016,7 @@
               </div>
               <div fxLayout="row" class="huddle-card-row">
                 <div fxFlex="30">Rebooked: </div>
-                <div fxFlex="70">  <i *ngIf="element.is_rebooked == 'Yes'" class="fa fa-check" style="color: green;" ></i>  </div>
+                <div fxFlex="70">  <i *ngIf="element.is_rebooked == 'Yes'" class="fa fa-check  mh-fa-check" ></i>  </div>
               </div>
             </mat-card>
           </div>
@@ -1071,7 +1071,7 @@
 
         </mat-card-title>
         <mat-card-content>
-          <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
+          <div class="DentistListSecRow mh-table patient_data-table_responsive mh-fd-followups">
             <div class="card-loading" *ngIf="poLoadingLoading"><img class="tableLoader"
                 src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
@@ -1221,7 +1221,7 @@
 
         </mat-card-title>
         <mat-card-content>
-          <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
+          <div class="DentistListSecRow mh-table patient_data-table_responsive mh-fd-followups">
             <div class="card-loading" *ngIf="recallLoadingLoading"><img class="tableLoader"
                 src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
@@ -1399,7 +1399,7 @@
 
         </mat-card-title>
         <mat-card-content>
-          <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
+          <div class="DentistListSecRow mh-table patient_data-table_responsive mh-fd-followups">
             <div class="card-loading" *ngIf="endTaksLoadingLoading"><img class="tableLoader"
                 src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
@@ -1604,7 +1604,7 @@
             </div>
         </mat-card-title>
         <mat-card-content>
-          <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
+          <div class="DentistListSecRow mh-table patient_data-table_responsive mh-fd-followups">
             <div class="card-loading" *ngIf="ftaTaksLoadingLoading"><img class="tableLoader"
                 src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
@@ -1807,8 +1807,7 @@
           </div>
         </mat-card-title>
         <mat-card-content>
-          <div class="DentistListSecRow mh-table patient_data-table_responsive"
-            style="max-height: 700px; overflow: auto;">
+          <div class="DentistListSecRow mh-table patient_data-table_responsive DentistListSecRow-task">
             <div class="card-loading" *ngIf="endTaksLoading"><img class="tableLoader"
                 src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
@@ -1889,8 +1888,8 @@
           </div> -->
         </mat-card-title>
         <mat-card-content>
-          <div class="DentistListSecRow mh-table patient_data-table_responsive"
-            style="max-height: 2500px; overflow: auto; padding-bottom: 53px;">
+          <div class="DentistListSecRow mh-table patient_data-table_responsive DentistListSecRow-equipment-list"
+            >
             <div class="card-loading" *ngIf="equipmentListLoading">
               <img class="tableLoader" src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->

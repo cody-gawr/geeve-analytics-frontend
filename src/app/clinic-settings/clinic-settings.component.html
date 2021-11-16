@@ -40,11 +40,10 @@
           fxLayoutGap.xs="0"
         >
           <div
-            class="clinic-setting-form"
+            class="clinic-setting-form flx-width"
             fxFlex.md="100"
             fxFlex.sm="100"
             fxFlex.xs="100"
-            style="width: 100%"
           >
             <div
               fxLayout="row wrap"
@@ -309,21 +308,16 @@
             </div>
           </div> -->
 
-        <div class="post-op-codes" style="float: left; width: 100%">
+        <div class="post-op-codes op-codes">
           <h4 class="clinic-settings-form-title">FTA/UTA</h4>
           <div
-            fxLayout="row wrap fta_uta_setting"
-            style="width: 500px; text-align: center"
-          >
+            fxLayout="row wrap fta_uta_setting fta_uta_set">
             <div
-              class="sa-form-group clinic-setting-form"
-              style="text-align: left; width: 240px"
-            >
-              <span style="padding: 11px 6px; display: inline-block"
+              class="sa-form-group clinic-setting-form cli-set-form">
+              <span
                 >Appointment Status</span
               >
               <input
-                style="float: left; width: 25px"
                 type="radio"
                 name="fta_uta"
                 [formControl]="form.controls['fta_uta']"
@@ -332,14 +326,11 @@
               />
             </div>
             <div
-              class="sa-form-group clinic-setting-form"
-              style="text-align: left; width: 240px"
-            >
-              <span style="padding: 11px 6px; display: inline-block"
+              class="sa-form-group clinic-setting-form cli-set-form">
+              <span
                 >Item Codes</span
               >
               <input
-                style="float: left; width: 25px"
                 type="radio"
                 name="fta_uta"
                 [formControl]="form.controls['fta_uta']"
@@ -388,8 +379,8 @@
               </div>
             </div>
           </h4>
-          <div class="gray_area_partision gray">
-            <div class="post-op-codes" style="width: 250px; float: left">
+          <div class="gray_area_partision gray ">
+            <div class="post-op-codes PostOpCalls">
               <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>   -->
               <div class="sa-form-group clinic-setting-form">
                 <mat-slide-toggle
@@ -406,7 +397,7 @@
             </div>
           </div>
           <div class="gray_area_partision gray">
-            <div class="post-op-codes" style="width: 250px; float: left">
+            <div class="post-op-codes PostOpCalls">
               <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>           -->
               <div class="sa-form-group clinic-setting-form">
                 <input
@@ -415,16 +406,14 @@
                   placeholder=""
                   [formControl]="form.controls['post_op_calls_days']"
                   [(ngModel)]="postOpCallsMh"
-                  style="width: 70px"
                 />
-                <span style="padding: 0 10px">Days Later</span>
+                <span>Days Later</span>
                 <small
                   *ngIf="
                     form.controls['post_op_calls_days'].hasError('required') &&
                     form.controls['post_op_calls_days'].touched
                   "
                   class="text-danger support-text"
-                  style="float: left; width: 100%"
                   >Field is Required.</small
                 >
               </div>
@@ -459,7 +448,7 @@
             </div>
           </h4>
           <div class="gray_area_partision gray">
-            <div class="post-op-codes" style="width: 250px; float: left">
+            <div class="post-op-codes PostOpCalls">
               <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>   -->
               <div class="sa-form-group clinic-setting-form">
                 <mat-slide-toggle
@@ -476,7 +465,7 @@
             </div>
           </div>
           <div class="gray_area_partision gray">
-            <div class="post-op-codes" style="width: 250px; float: left">
+            <div class="post-op-codes PostOpCalls">
               <!--    <h4 class="clinic-settings-form-title">&nbsp;</h4>   -->
               <div class="sa-form-group clinic-setting-form">
                 <input
@@ -485,16 +474,14 @@
                   placeholder=""
                   [formControl]="form.controls['tick_days']"
                   [(ngModel)]="tickDays"
-                  style="width: 70px"
                 />
-                <span style="padding: 0 10px">Days Later</span>
+                <span>Days Later</span>
                 <small
                   *ngIf="
                     form.controls['tick_days'].hasError('required') &&
                     form.controls['tick_days'].touched
                   "
                   class="text-danger support-text"
-                  style="float: left; width: 100%"
                   >Field is Required.</small
                 >
               </div>
@@ -517,7 +504,7 @@
             </div>
           </h4>
           <div class="gray_area_partision gray">
-            <div class="post-op-codes" style="width: 250px; float: left">
+            <div class="post-op-codes PostOpCalls">
               <!--  <h4 class="clinic-settings-form-title">&nbsp;</h4>   -->
               <div class="sa-form-group clinic-setting-form">
                 <mat-slide-toggle
@@ -534,7 +521,7 @@
             </div>
           </div>
           <div class="gray_area_partision gray">
-            <div class="post-op-codes" style="width: 250px; float: left">
+            <div class="post-op-codes PostOpCalls">
               <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>      -->
               <div class="sa-form-group clinic-setting-form">
                 <input
@@ -543,16 +530,14 @@
                   placeholder=""
                   [formControl]="form.controls['recall_weeks']"
                   [(ngModel)]="recallWeeks"
-                  style="width: 70px"
                 />
-                <span style="padding: 0 10px">Weeks Later</span>
+                <span>Weeks Later</span>
                 <small
                   *ngIf="
                     form.controls['recall_weeks'].hasError('required') &&
                     form.controls['recall_weeks'].touched
                   "
                   class="text-danger support-text"
-                  style="float: left; width: 100%"
                   >Field is Required.</small
                 >
               </div>
@@ -575,7 +560,7 @@
             </div>
           </h4>
           <div class="gray_area_partision gray">
-            <div class="post-op-codes" style="width: 250px; float: left">
+            <div class="post-op-codes PostOpCalls">
               <!--   <h4 class="clinic-settings-form-title">&nbsp;</h4>   -->
               <div class="sa-form-group clinic-setting-form">
                 <mat-slide-toggle
@@ -593,8 +578,7 @@
           </div>
           <div class="gray_area_partision gray">
             <div
-              class="post-op-codes"
-              style="width: 250px; float: left; margin-right: 19.8%"
+              class="post-op-codes PostOpCalls ftaFollowps"
             >
               <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>           -->
               <div class="sa-form-group clinic-setting-form">
@@ -604,16 +588,14 @@
                   placeholder=""
                   [formControl]="form.controls['fta_followup_days']"
                   [(ngModel)]="ftaFollowupDays"
-                  style="width: 70px"
                 />
-                <span style="padding: 0 10px">Days</span>
+                <span>Days</span>
                 <small
                   *ngIf="
                     form.controls['fta_followup_days'].hasError('required') &&
                     form.controls['fta_followup_days'].touched
                   "
                   class="text-danger support-text"
-                  style="float: left; width: 100%"
                   >Field is Required.</small
                 >
               </div>
@@ -621,8 +603,7 @@
           </div>
           <div class="gray_area_partision gray">
             <div
-              class="post-op-codes"
-              style="width: 250px; float: left; margin-right: 19.8%"
+              class="post-op-codes PostOpCalls ftaFollowps"
             >
               <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>           -->
               <div class="sa-form-group clinic-setting-form">
@@ -632,16 +613,14 @@
                   placeholder=""
                   [formControl]="form.controls['fta_followup_days_later']"
                   [(ngModel)]="ftaFollowupDaysLater"
-                  style="width: 70px"
                 />
-                <span style="padding: 0 10px">Days Later</span>
+                <span>Days Later</span>
                 <small
                   *ngIf="
                     form.controls['fta_followup_days_later'].hasError('required') &&
                     form.controls['fta_followup_days_later'].touched
                   "
                   class="text-danger support-text"
-                  style="float: left; width: 100%"
                   >Field is Required.</small
                 >
               </div>
@@ -664,7 +643,7 @@
             </div>
           </h4>
           <div class="gray_area_partision gray">
-            <div class="post-op-codes" style="width: 250px; float: left">
+            <div class="post-op-codes PostOpCalls">
               <!--   <h4 class="clinic-settings-form-title">&nbsp;</h4>   -->
               <div class="sa-form-group clinic-setting-form">
                 <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ utaEnable }}" name="utaEnable" (change)="toggleFlw($event, 'uta')">
@@ -676,8 +655,7 @@
           </div>
           <div class="gray_area_partision gray">
             <div
-              class="post-op-codes"
-              style="width: 250px; float: left; margin-right: 19.8%"
+              class="post-op-codes PostOpCalls ftaFollowps"
             >
               <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>           -->
               <div class="sa-form-group clinic-setting-form">
@@ -687,16 +665,14 @@
                   placeholder=""
                   [formControl]="form.controls['uta_followup_days']"
                   [(ngModel)]="utaFollowupDays"
-                  style="width: 70px"
                 />
-                <span style="padding: 0 10px">Days</span>
+                <span>Days</span>
                 <small
                   *ngIf="
                     form.controls['uta_followup_days'].hasError('required') &&
                     form.controls['uta_followup_days'].touched
                   "
                   class="text-danger support-text"
-                  style="float: left; width: 100%"
                   >Field is Required.</small
                 >
               </div>
@@ -704,8 +680,7 @@
           </div>
           <div class="gray_area_partision gray">
             <div
-              class="post-op-codes"
-              style="width: 250px; float: left; margin-right: 19.8%"
+              class="post-op-codes PostOpCalls ftaFollowps"
             >
               <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>           -->
               <div class="sa-form-group clinic-setting-form">
@@ -715,16 +690,14 @@
                   placeholder=""
                   [formControl]="form.controls['uta_followup_days_later']"
                   [(ngModel)]="utaFollowupDaysLater"
-                  style="width: 70px"
                 />
-                <span style="padding: 0 10px">Days Later</span>
+                <span>Days Later</span>
                 <small
                   *ngIf="
                     form.controls['uta_followup_days_later'].hasError('required') &&
                     form.controls['uta_followup_days_later'].touched
                   "
                   class="text-danger support-text"
-                  style="float: left; width: 100%"
                   >Field is Required.</small
                 >
               </div>
@@ -775,7 +748,7 @@
       >
     </mat-expansion-panel-header>
     <mat-card-content>
-      <div style="width: 50%; float: left; border-right: 3px dotted #cecee5">
+      <div class="xero-mat-card">
         <div class="text-center">
           <div class="image-container">
             <img src="assets/images/xero_settings.png" alt="" />
@@ -803,7 +776,7 @@
           </div>
         </div>
       </div>
-      <div style="width: 50%; float: left; padding: 5px 40px">
+      <div class="xero-from">
         <form
           [formGroup]="form"
           class="basic-form sa_forms_design"
@@ -811,7 +784,7 @@
         >
           <div class="post-op-codes">
             <h4 class="clinic-settings-form-title">Net Profit Exclusions</h4>
-            <div class="sa-form-group clinic-setting-form" style="padding: 0px">
+            <div class="sa-form-group clinic-setting-form npe-padding">
               <input
                 placeholder=""
                 [formControl]="form.controls['subtracted_accounts']"
