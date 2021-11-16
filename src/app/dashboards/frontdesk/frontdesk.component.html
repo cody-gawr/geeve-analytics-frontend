@@ -68,12 +68,12 @@
                   
 
                   <!-- top values Ions -->
-                  <i  style="margin-right: 10px;" *ngIf="!showTopVlaues && !showUtiTable && !showTrend" class="far fa-chart-bar" (click) = "setTopValues()"></i>
-                  <i  style="margin-right: 10px; color: #1aa591;" *ngIf="showTopVlaues  && !showUtiTable && !showTrend" class="far fa-chart-bar greenIcon" (click) = "setTopValues()"></i>
+                  <i *ngIf="!showTopVlaues && !showUtiTable && !showTrend" class="far fa-chart-bar fa-margin" (click) = "setTopValues()"></i>
+                  <i *ngIf="showTopVlaues  && !showUtiTable && !showTrend" class="far fa-chart-bar greenIcon fa-margin-color" (click) = "setTopValues()"></i>
                   <!-- top values Ions -->             
                   <!-- Show Table -->
-                    <i  style="margin-right: 10px;" *ngIf="!showUtiTable && !showTrend" class="fa fa-table" (click) = "showTable(true)"></i>
-                    <i  style="margin-right: 10px; color: #1aa591;" *ngIf="showUtiTable && !showTrend" class="fa fa-table greenIcon" (click) = "showTable(false)"></i>
+                    <i  *ngIf="!showUtiTable && !showTrend" class="fa fa-table fa-margin" (click) = "showTable(true)"></i>
+                    <i  *ngIf="showUtiTable && !showTrend" class="fa fa-table greenIcon fa-margin-color" (click) = "showTable(false)"></i>
                   <!-- Show Table -->
                   <img [tooltip]="charTips['15']" src="../assets/images/info-icon.png" alt="info-icon"
                     class="info-icon" />
@@ -81,10 +81,10 @@
               </mat-card-title>
               <div class="card-body">
                 <div>
-                  <div style="height: 330px; width: 100%;">
+                  <div class="chart-utilisation-rate" >
 
 
-                    <div style="height: 330px; width: 100%;"  *ngIf="!showTrend && workTimeData1.length > 0 && utilityratemessage == false && !fdWorkTimeAnalysisLoader">
+                    <div class="chart-utilisation-rate"  *ngIf="!showTrend && workTimeData1.length > 0 && utilityratemessage == false && !fdWorkTimeAnalysisLoader">
                       <canvas *ngIf="!showTrend && workTimeData1.length > 0 && utilityratemessage == false && !fdWorkTimeAnalysisLoader && !showUtiTable" #myCanvas
                       baseChart [datasets]="workTimeData" [labels]="workTimeLabels" [options]="stackedChartOptionsUtiDP"
                       [chartType]="'bar'" (chartHover)="chartHovered($event)" [legend]="false"
@@ -205,7 +205,7 @@
 
  
                   <div *ngIf="!showTrend && recallPrebookTotal > 0 && !fdRecallPrebookRateLoader"
-                    style="height: 190px;width: 100%">
+                   class="chart-recall-rate">
                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="recallPrebookTotal" [thick]="gaugeThick"
                       [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [cap]="cap"
                       [max]="maxrecallPrebookGoal" [append]="gaugeAppendText" [size]="size">
@@ -219,7 +219,7 @@
                   </div>
 
                   <div *ngIf="showTrend && recallPrebookChartTrend1.length > 0 && !fdRecallPrebookRateTrendLoader"
-                    style="height: 330px;width: 100%">
+                    class="chart-utilisation-rate">
                     <canvas #myCanvas baseChart [datasets]="recallPrebookChartTrend"
                       [labels]="recallPrebookChartTrendLabels" [options]="stackedChartOptions"
                       [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
@@ -290,7 +290,7 @@
 
 
                   <div *ngIf="!showTrend && treatmentPrebookTotal > 0 && !fdtreatmentPrebookRateLoader"
-                    style="height: 190px;width: 100%">
+                    class="chart-recall-rate">
                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="treatmentPrebookTotal"
                       [thick]="gaugeThick" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor"
                       [cap]="cap" [max]="maxtreatmentPrebookGoal" [append]="gaugeAppendText" [size]="size">
@@ -304,7 +304,7 @@
                   </div>
 
                   <div *ngIf="showTrend && treatmentPrebookChartTrend1.length > 0 && !fdTreatmentPrebookRateTrendLoader"
-                    style="height: 330px;width: 100%">
+                    class="chart-utilisation-rate">
                     <canvas #myCanvas baseChart [datasets]="treatmentPrebookChartTrend"
                       [labels]="treatmentPrebookChartTrendLabels" [options]="stackedChartOptions"
                       [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
@@ -375,7 +375,7 @@
               <div class="card-body">
                 <div class="chart">
 
-                  <div *ngIf="!showTrend && ticksTotal > 0 && !fdNumberOfTicksLoader" style="height: 190px;width: 100%">
+                  <div *ngIf="!showTrend && ticksTotal > 0 && !fdNumberOfTicksLoader" class="chart-recall-rate">
                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="ticksTotal" [thick]="gaugeThick"
                       [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [cap]="cap" [size]="size">
                     </ngx-gauge>
@@ -387,7 +387,7 @@
                   </div>
 
                   <div *ngIf="showTrend && tickChartTrend1.length > 0 && !fdNumberOfTicksTrendLoader"
-                    style="height: 300px;width: 100%">
+                    class="chart-recall-rate-trend">
                     <canvas #myCanvas baseChart [datasets]="tickChartTrend" [labels]="tickChartTrendLabels"
                       [options]="numOfTicksChartOptionsticks" [chartType]="stackedChartType"
                       (chartHover)="chartHovered($event)" [legend]="false" (chartClick)="chartClicked($event)">
@@ -448,7 +448,7 @@
                 <div class="chart">
 
 
-                  <div *ngIf="!showTrend && ftaTotal > 0" style="height: 190px;width: 100%">
+                  <div *ngIf="!showTrend && ftaTotal > 0" class="chart-recall-rate">
                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="ftaTotal" [thick]="gaugeThick"
                       [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [append]="gaugeAppendText"
                       [max]="maxftaGoal" [cap]="cap" [size]="size">
@@ -462,7 +462,7 @@
 
 
                   <div *ngIf="showTrend && ftaChartTrend1.length > 0 && !fdFtaRatioTrendLoader"
-                    style="height: 300px;width: 100%">
+                   class="chart-recall-rate-trend">
                     <canvas #myCanvas baseChart [datasets]="ftaChartTrend" [labels]="ftaChartTrendLabels"
                       [options]="stackedChartOptions" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
                       [legend]="false" [colors]="predictedChartColors" (chartClick)="chartClicked($event)">
@@ -524,7 +524,7 @@
                 <div class="chart">
 
 
-                  <div *ngIf="!showTrend && utaTotal > 0 && !fdUtaRatioLoader" style="height: 190px;width: 100%">
+                  <div *ngIf="!showTrend && utaTotal > 0 && !fdUtaRatioLoader" class="chart-recall-rate">
                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="utaTotal" [thick]="gaugeThick"
                       [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [append]="gaugeAppendText"
                       [max]="maxutaGoal" [cap]="cap" [size]="size">
@@ -537,7 +537,7 @@
                   </div>
 
                   <div *ngIf="showTrend && utaChartTrend1.length > 0 && !fdUtaRatioTrendLoader"
-                    style="height: 300px;width: 100%">
+                   class="chart-recall-rate-trend">
                     <canvas #myCanvas baseChart [datasets]="utaChartTrend" [labels]="utaChartTrendLabels"
                       [options]="stackedChartOptions" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
                       [legend]="false" [colors]="predictedChartColors" (chartClick)="chartClicked($event)">

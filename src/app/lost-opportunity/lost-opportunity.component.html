@@ -1,4 +1,4 @@
-<mat-card class="lost-header-background-remove" style="box-shadow: none !important;">
+<mat-card class="lost-header-background-remove background-shadow">
 	<mat-card-content>
 		<div class="header-section">
 			<div class="header-caption">
@@ -26,7 +26,7 @@
 	</mat-card-content>
 </mat-card>
 
-<mat-card class="oppertunity-background" style="box-shadow: none !important;">
+<mat-card class="oppertunity-background background-shadow">
 	<mat-card-content>
 		<div class="lost-header">
 			<h2>Total Lost Opportunity : <span id="TotalLostOpportunity">${{ lostOpportunity | number:'1.0-0' }}</span>
@@ -43,12 +43,11 @@
 					<div class="production_images opertunity-img">
 						<img src="../assets/images/total-discount-1.png" alt="total-discount" />
 					</div>
-					<div class="production_description oppertunity-description">
+					<div class="production_description oppertunity-description dowan-trend-display">
 						<h4>Total Discounts</h4>
 						<div class="price-section oppertunity-discount">
 							<h2 class="right-lo-content" id="TotalDiscounts">${{ discounts | number:'1.0-0' }}</h2>
-							<span *ngIf="discountsImp" class="dowan-trend" id="TotalDiscountsImprovement"
-								style="float: none !important; font-size: 14px !important; color:#fff !important;">
+							<span *ngIf="discountsImp" class="dowan-trend" id="TotalDiscountsImprovement">
 								+${{ discountsImp | number:'1.0-0' }}</span>
 						</div>
 					</div>
@@ -63,14 +62,13 @@
 					<div class="production_images opertunity-img">
 						<img src="../assets/images/oppertunity-payment.png" alt="oppertunity-payment" />
 					</div>
-					<div class="production_description oppertunity-description">
+					<div class="production_description oppertunity-description dowan-trend-display">
 						<h4>Collection vs Production</h4>
 						<div class="price-section oppertunity-discount">
 							<h2 class="right-lo-content" id="CollectionProduction">
 								${{ collectionProduction | number:'1.0-0' }}</h2>
 							<span *ngIf="collectionProductionImp" class="dowan-trend"
-								id="CollectionProductionImprovement"
-								style="float: none !important; font-size: 14px !important; color:#fff !important;">
+								id="CollectionProductionImprovement">
 								+${{ collectionProductionImp | number:'1.0-0' }}</span>
 						</div>
 					</div>
@@ -85,12 +83,11 @@
 					<div class="production_images opertunity-img">
 						<img src="../assets/images/opertunity-case.png" alt="opertunity-case" />
 					</div>
-					<div class="production_description oppertunity-description">
+					<div class="production_description oppertunity-description dowan-trend-display">
 						<h4>Case Acceptance</h4>
 						<div class="price-section oppertunity-discount">
 							<h2 class="right-lo-content" id="CaseAcceptance">${{ caseAcceptance | number:'1.0-0' }}</h2>
-							<span *ngIf="caseAcceptanceImp" class="dowan-trend" id="CaseAcceptanceImprovement"
-								style="float: none !important; font-size: 14px !important; color:#fff !important;">
+							<span *ngIf="caseAcceptanceImp" class="dowan-trend" id="CaseAcceptanceImprovement">
 								+${{ caseAcceptanceImp | number:'1.0-0' }}</span>
 						</div>
 					</div>
@@ -100,7 +97,7 @@
 	</mat-card-content>
 </mat-card>
 
-<mat-card class="improvement-range" style="box-shadow: none !important;">
+<mat-card class="improvement-range background-shadow">
 	<h4>{{ improvement }}% improvement</h4>
 	<mat-card-content class="range-background">
 		<div class="lo-slider">
@@ -115,17 +112,17 @@
 	<div class="custom-lo-slider">
 		<div class="lo-slider">
 			<ul>
-				<li style="left:0%;">0</li>
-				<li style="left:10%;">10</li>
-				<li style="left:20%;">20</li>
-				<li style="left:30%;">30</li>
-				<li style="left:40%;">40</li>
-				<li style="left:50%;">50</li>
-				<li style="left:60%;">60</li>
-				<li style="left:70%;">70</li>
-				<li style="left:80%;">80</li>
-				<li style="left:90%;">90</li>
-				<li style="left:100%;">100</li>
+				<li class="li-0">0</li>
+				<li class="li-10">10</li>
+				<li class="li-20">20</li>
+				<li class="li-30">30</li>
+				<li class="li-40">40</li>
+				<li class="li-50">50</li>
+				<li class="li-60">60</li>
+				<li class="li-70">70</li>
+				<li class="li-80">80</li>
+				<li class="li-90">90</li>
+				<li class="li-100">100</li>
 			</ul>
 		</div>
 	</div>

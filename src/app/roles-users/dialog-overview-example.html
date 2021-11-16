@@ -1,6 +1,6 @@
 <div class="AddUserPopup">  
 <h1 mat-dialog-title>Add User 
-  <div class="info-icon-container"  style="float: right; z-index: 999;">
+  <div class="info-icon-container addUserTip">
     <img (mouseout)="showtooltip=false" (mouseover)="showtooltip=true" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
   </div>
 </h1>
@@ -36,11 +36,11 @@
     <label>Select Clinics</label>  
       <mat-select #matSelect  [formControl]="selectedClinics" multiple (openedChange)="clinicSelect($event)" class="user_add">
        <mat-option *ngFor="let clinics of data.clinics" [value]="clinics.id">{{clinics.clinicName}}</mat-option>
-       <button class="mat-raised-button mat-dc float-right" (click)="matSelect.close()" style="margin: 0 15px 15px 0;">OK</button>
+       <button class="mat-raised-button mat-dc float-right addUserSelectClinicBtn" (click)="matSelect.close()">OK</button>
      </mat-select>
 </div>
 <div class="sa-form-group" *ngIf="show_dentist == true">
-<div class="selectedClinicProviders"  *ngFor="let clinicProviders of selectedClinicProviders; let i=index" style="margin-bottom:10px;" [ngClass] = "checkColumn(i)" >
+<div class="selectedClinicProviders"  *ngFor="let clinicProviders of selectedClinicProviders; let i=index" [ngClass] = "checkColumn(i)" >
 
   <label>{{clinicProviders.clinicName}}</label>
   <span>  

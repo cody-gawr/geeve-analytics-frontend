@@ -5,9 +5,9 @@
     </mat-panel-title>
   </mat-expansion-panel-header>
 
-  <div class="row" style="display: flow-root;">
+  <div class="row dentists-row">
     
-  <div style="float: left;width: 330px;">
+  <div class="dentists-search">
     <mat-form-field appearance="fill" class="denstist-search-form-field">
       <mat-icon matPrefix>search</mat-icon>
       <input
@@ -20,13 +20,13 @@
     </mat-form-field>
   </div>
  
-  <div class="sa-form-group-btn" style="margin: 7px 0px 0 30px;" *ngIf="userPlan != 'lite'">
+  <div class="sa-form-group-btn toggle-margin" *ngIf="userPlan != 'lite'">
         <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" name="advanced_options" (change)="advanceToggle($event)"> 
           <span><strong>Advanced Options</strong></span>
         </mat-slide-toggle>   
   </div>
    <div class="sa-form-group-btn" *ngIf="advanceOption">
-     <button class="save-button" type="submit" style="margin: 0;" (click) ="openSetJeeveName()">Set Jeeve Names</button>
+     <button class="save-button set-jeeve-btn" type="submit" (click) ="openSetJeeveName()">Set Jeeve Names</button>
   </div>
 
   </div>    

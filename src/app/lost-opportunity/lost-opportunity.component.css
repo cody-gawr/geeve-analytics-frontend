@@ -1,1 +1,44 @@
 .header_filters.lost-opportunity { flex-direction: row-reverse !important }
+
+.background-shadow{
+    box-shadow: none !important;
+}
+
+.dowan-trend-display span{
+    float: none !important;
+    font-size: 14px !important;
+    color:#fff !important;
+  }
+  .li-0{
+    left:0%;
+  }
+  .li-10{
+    left:10%;
+  }
+  .li-20{
+    left:20%;
+  }
+  .li-30{
+    left:30%;
+  }
+  .li-40{
+    left:40%;
+  }
+  .li-50{
+    left:50%;
+  }
+  .li-60{
+    left:60%;
+  }
+  .li-70{
+    left:70%;
+  }
+  .li-80{
+    left:80%;
+  }
+  .li-90{
+    left:90%;
+  }
+  .li-100{
+    left:100%;
+  }

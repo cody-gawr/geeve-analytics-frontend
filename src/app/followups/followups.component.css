@@ -820,3 +820,41 @@ div.mat-chip-list-wrapper .custom-tooltip {
     flex: 0 0 15% !important;
     width: 15% !important;
 }
+.flw-up-status{
+    width: 100%;     
+
+}
+.flw-up-status-button{
+    margin-right: 20px;
+}
+.cnt-reached-btns{
+    width: 90%;
+    float: none; 
+    position: relative;    
+    text-align: left;
+}
+.btn-nxt-business-day{
+    margin-right: 20px;
+}
+.btn-chose-date{
+    position: absolute;
+    top: 0;
+    margin: 25px 0;
+    padding: 20px 36px 20px;
+    right: 100px;
+}
+.btn-no{
+    position: absolute;
+    top: 0;
+    margin: 25px 0;
+    padding: 20px 36px 20px;
+    right: -30px;
+}
+.nextCustomFollowup-align{
+    width: 400px;
+    margin: 25px auto 0;
+}
+.nextCustomFollowup-btn-align{
+    width: 100%; 
+    float: none;
+}

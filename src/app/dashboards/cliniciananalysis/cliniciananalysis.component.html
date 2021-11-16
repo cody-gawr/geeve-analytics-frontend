@@ -115,7 +115,7 @@
 
               <!-- Production Chart Start -->
               <div *ngIf="proCollShow == 1">
-                <div style="height: 306px" *ngIf="barChartData[0].data.length && !buildChartLoader">
+                <div class="div-pro-coll-show" *ngIf="barChartData[0].data.length && !buildChartLoader">
                   <canvas id="dentistProduction" baseChart [datasets]="barChartData" [labels]="barChartLabels"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP1"
                     [colors]="DPcolors">
@@ -131,7 +131,7 @@
 
               <!-- Collection Chart Start -->
               <div *ngIf="proCollShow == 2">
-                <div style="height: 306px" *ngIf="collectionData[0].data.length && !collectionLoader">
+                <div class="div-pro-coll-show" *ngIf="collectionData[0].data.length && !collectionLoader">
                   <canvas id="dentistCollection" baseChart [datasets]="collectionData" [labels]="collectionLabels"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
                     [colors]="DPcolors1">
@@ -238,11 +238,11 @@
 
               <div class="info-icon-container">
                 <!-- top values Ions -->
-                <i style="margin-right: 10px;" class="fas fa-calendar-week"
-                  *ngIf="showTrendChart == false && showWeekTrend == false && selectedDentist  && (apiUrl.includes('test-') || apiUrl.includes('staging-'))"
+                <i class="fas fa-calendar-week fa-fa-icon-margin"
+                  *ngIf="showTrendChart == false && showWeekTrend == false && selectedDentist  && apiUrl.includes('test-')"
                   (click)="setWeeklyTrend()"></i>
-                <i style="margin-right: 10px; color: #1aa591;" class="fas fa-calendar-week"
-                  *ngIf="showWeekTrend == true && showTrendChart == false && (apiUrl.includes('test-') || apiUrl.includes('staging-'))"
+                <i class="fas fa-calendar-week fa-fa-icon-color"
+                  *ngIf="showWeekTrend == true && showTrendChart == false && apiUrl.includes('test-')"
                   (click)="setWeeklyTrend()"></i>
 
                 <!-- <i  style="margin-right: 10px; color: #1aa591;" *ngIf="showTopVlaues  && !showUtiTable && !showTrend" class="far fa-chart-bar greenIcon" (click) = "setTopValues()"></i> -->
@@ -270,7 +270,7 @@
               <!-- Production Chart Start dentist -->
 
               <div *ngIf="proCollShow == 1">
-                <div class="chart" fxLayout="row" fxLayoutAlign="start center" style="height: 306px"
+                <div class="chart div-pro-coll-show" fxLayout="row" fxLayoutAlign="start center" 
                   *ngIf="showTrendChart == false && showWeekTrend == false && gaugeValue > 0 && !buildChartDentistLoader">
                   <ngx-gauge [type]="gaugeType" [value]="gaugeValue" [label]="gaugeLabel" [thick]="gaugeThick"
                     [backgroundColor]="backgroundColor" [foregroundColor]="foregroundColor" [max]="maxProductionGoal"
@@ -283,9 +283,9 @@
                 </div>
 
                 <!-- Production Chart weekly trend -->
-                <div
+                <div class="week-trend-height"
                   *ngIf="proCollShow == 1 && showTrendChart == false && showWeekTrend == true && dentistProductionWeeklyTrendLabels.length > 0 && !dentistProductionTrendLoader"
-                  style="height: 336px">
+                  >
                   <canvas #myCanvas id="dentistProductionWeeklyTrend" baseChart
                     [datasets]="dentistProductionWeeklyTrend" [labels]="dentistProductionWeeklyTrendLabels"
                     [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
@@ -305,7 +305,7 @@
 
               <!-- Collection Chart Start dentist -->
               <div *ngIf="proCollShow == 2">
-                <div class="chart" fxLayout="row" fxLayoutAlign="start center" style="height: 306px"
+                <div class="chart div-pro-coll-show" fxLayout="row" fxLayoutAlign="start center"
                   *ngIf="showTrendChart == false && showWeekTrend == false && gaugeValue > 0 && !collectionDentistLoader">
                   <ngx-gauge [type]="gaugeType" [value]="gaugeCollectionValue" [label]="gaugeCollectionLabel"
                     [thick]="gaugeThick" [backgroundColor]="backgroundColor" [foregroundColor]="foregroundColor"
@@ -319,9 +319,9 @@
                 </div>
 
                 <!-- Production Chart weekly trend -->
-                <div
+                <div class="week-trend-height"
                   *ngIf="proCollShow == 2 && showTrendChart == false && showWeekTrend == true && dentistCollectionWeeklyTrendLabels.length > 0 && !dentistCollectionTrendLoader"
-                  style="height: 336px">
+                  >
                   <canvas #myCanvas id="dentistCollectionWeeklyTrend" baseChart
                     [datasets]="dentistCollectionWeeklyTrend1" [labels]="dentistCollectionWeeklyTrendLabels"
                     [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
@@ -344,9 +344,9 @@
               <!--Production Chart weekly trend-->
 
               <!-- Production Chart start trend -->
-              <div
+              <div class="div-pro-coll-show"
                 *ngIf="proCollShow == 1 && showTrendChart == true && dentistProductionTrendLabels.length > 0 && !dentistProductionTrendLoader"
-                style="height: 306px">
+                >
 
                 <canvas #myCanvas id="dentistProductionTrend" baseChart [datasets]="dentistProdTrend"
                   [labels]="dentistProductionTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
@@ -364,7 +364,7 @@
 
               <div
                 *ngIf="proCollShow == 2 &&  showTrendChart == true && dentistCollectionTrendLabels.length > 0 && !dentistCollectionTrendLoader"
-                style="height: 306px">
+                class="div-pro-coll-show">
                 <canvas #myCanvas id="dentistColTrend" baseChart [datasets]="dentistColTrend"
                   [labels]="dentistCollectionTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                   (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
@@ -380,24 +380,24 @@
               <!-- Production Chart start trend -->
             </div>
 
-            <div class="no-data-placeholder"
+            <div class="no-data-placeholder prod-placeholder"
               *ngIf="((showTrendChart == false && gaugeValue <= 0 ) || (showTrendChart == true  && dentistProductionTrendLabels.length <= 0)) && !buildChartDentistLoader && !dentistProductionTrendLoader && showWeekTrend == false"
-              style="margin: -80px 0 0 0;">
+              >
               <div class="sa_nodata_div">
               </div>
               <p class="chart-placeholder-text">You have no production in the selected period</p>
             </div>
 
-            <div class="no-data-placeholder"
+            <div class="no-data-placeholder coll-placeholder"
               *ngIf="showWeekTrend == true  && dentistProductionWeeklyTrendLabels.length <= 0 && proCollShow == 1"
-              style="margin: -155px 0 0 0;">
+              >
               <div class="sa_nodata_div">
               </div>
               <p class="chart-placeholder-text">You have no production in the selected period</p>
             </div>
-            <div class="no-data-placeholder"
+            <div class="no-data-placeholder coll-placeholder"
               *ngIf="showWeekTrend == true  && dentistCollectionWeeklyTrendLabels.length <= 0 && proCollShow == 2"
-              style="margin: -155px 0 0 0;">
+              >
               <div class="sa_nodata_div">
               </div>
               <p class="chart-placeholder-text">You have no collection in the selected period</p>
@@ -486,7 +486,7 @@
             <div class="card-body h-100">
               <div class="relative h-100">
 
-                <div style="height: 350px">
+                <div class="cl-card-height">
                   <canvas #myCanvas id="HourlyRate" baseChart
                     *ngIf="hourlyRateChartData1.length > 0 && hourlyRateChartLoader == false"
                     [datasets]="hourlyRateChartData" [labels]="hourlyRateChartLabels" [legend]="barChartLegend"
@@ -541,8 +541,8 @@
               </div>
             </mat-card-title>
             <div class="card-body">
-              <div *ngIf="showTrendChart == false && hourlyValue > 0 && hourlyRateDentistLoader == false" class="chart"
-                fxLayout="row" fxLayoutAlign="start center" style="height: 350px">
+              <div *ngIf="showTrendChart == false && hourlyValue > 0 && hourlyRateDentistLoader == false" class="chart cl-card-height"
+                fxLayout="row" fxLayoutAlign="start center">
                 <ngx-gauge [type]="gaugeType" [value]="hourlyValue" [label]="hourlyLabel" [thick]="gaugeThick"
                   [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="maxhourlyGoal"
                   [cap]="cap" [duration]="gaugeDuration" [prepend]="gaugePrependText" [size]="size">
@@ -550,7 +550,7 @@
               </div>
               <div
                 *ngIf="showTrendChart == true && hourlyRateChartTrend1.length > 0 && fdhourlyRateRateTrendLoader == false"
-                style="height: 350px">
+                class="cl-card-height">
                 <canvas #myCanvas id="HourlyRateTrend" baseChart [datasets]="hourlyRateChartTrend"
                   [labels]="hourlyRateChartTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                   (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
@@ -637,7 +637,7 @@
               </div>
               <div fxLayout="row " fxLayoutAlign="center end" class="chart vertical-center-box"
                 *ngIf="newPatientsDataMax > 0">
-                <div *ngIf="showTrendChart == false" style="height: 326px; position: relative; width: 100%;">
+                <div *ngIf="showTrendChart == false" class="trend-chart">
                   <canvas #myCanvas baseChart id="newPatients" class="chart" [data]="newPatientChartData"
                     [labels]="newPatientChartLabels" [legend]="legendSettings" [options]="doughnutChartOptions"
                     [chartType]="doughnutChartType" [plugins]="newPatientPluginObservable$ | async"
@@ -696,7 +696,7 @@
             </mat-card-title>
 
             <div class="card-body">
-              <div fxLayout="row wrap" class="row_Patients" fxLayoutAlign="center center" style="height: 350px"
+              <div fxLayout="row wrap" class="row_Patients" fxLayoutAlign="center center" class="cl-card-height"
                 *ngIf="showTrendChart == false && newPatientValuePatients > 0">
 
                 <div fxFlex.lg="49" fxFlex.md="49" fxFlex.sm="49" fxFlex.xs="49" fxFlex="49">
@@ -711,7 +711,7 @@
                   </div>
                 </div>
               </div>
-              <div *ngIf="showTrendChart == true && newPatientsChartTrend1.length>0" style="height: 350px">
+              <div *ngIf="showTrendChart == true && newPatientsChartTrend1.length>0" class="cl-card-height">
                 <canvas #myCanvas id="newPatientsTrend" baseChart [datasets]="newPatientsChartTrend"
                   [labels]="newPatientsChartTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                   (chartHover)="chartHovered($event)" [options]="barChartOptionstrend" [colors]="lineChartColors"
@@ -780,7 +780,7 @@
                   <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Avg. Completed Fees</small>
                 </div>
               </div>
-              <div style="height: 350px">
+              <div class="cl-card-height">
                 <canvas #myCanvas id="treatmentPlanProposed"
                   *ngIf="tcmain == 1 && buildChartTreatmentLoader == false && planChartData1.length > 0" baseChart
                   class="chart" [datasets]="planChartDataP" [labels]="planChartLabels1" [options]="barChartOptionsTC"
@@ -871,9 +871,9 @@
               </div> -->
 
 
-              <div class="chart"
+              <div class="chart div-height"
                 *ngIf="showTrendChart == false && gaugeValueTreatment > 0 && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader"
-                fxLayout="row" fxLayoutAlign="start center" style="height: 300px">
+                fxLayout="row" fxLayoutAlign="start center">
                 <ngx-gauge [type]="gaugeType" [value]="gaugeValueTreatment" [label]="gaugeLabelTreatment"
                   [thick]="gaugeThick" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor"
                   [cap]="cap" [max]="maxplanTotalGoal" [duration]="gaugeDuration" [prepend]="gaugePrependText"
@@ -882,7 +882,7 @@
               </div>
               <div
                 *ngIf="showTrendChart == true && treatPlanTrend[0]['data'].length > 0 && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader"
-                style="height: 300px">
+                class="div-height">
                 <canvas #myCanvas id="treatmentPlanTrend" baseChart [datasets]="treatPlanTrend"
                   [labels]="treatmentPlanTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                   (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
@@ -959,7 +959,7 @@
                   <small class="sa_tab_btn tcmain2">Avg. Completed Fees</small>
                 </div>
               </div>
-              <div class="chart" fxLayout="row" fxLayoutAlign="center end" style="height: 350px">
+              <div class="chart" fxLayout="row" fxLayoutAlign="center end" class="cl-card-height">
                 <canvas #myCanvas baseChart *ngIf="treatmentChartData1.length > 0 && !treatmentPlanRateLoader"
                   [datasets]="treatmentChartData" [labels]="treatmentChartLabels" [legend]="barChartLegend"
                   [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsTP"
@@ -1025,9 +1025,9 @@
                   <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Avg. Completed Fees</small>
                 </div>
               </div>
-              <div class="chart"
+              <div class="chart div-height"
                 *ngIf="showTrendChart == false && treatmentPlanValue >= 0 && !treatmentPlanRateDentistLoader"
-                fxLayout="row" fxLayoutAlign="start center" style="height: 300px">
+                fxLayout="row" fxLayoutAlign="start center">
                 <ngx-gauge *ngIf="showTrendChart == false && treatmentPlanValue >= 0 && !treatmentPlanRateDentistLoader"
                   [type]="gaugeType" [value]="treatmentPlanValue" [label]="treatmentPlanLabel" [thick]="gaugeThick"
                   [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="maxtreatmentPlanGoal"
@@ -1036,7 +1036,7 @@
               </div>
               <div
                 *ngIf="showTrendChart == true && treatmentPlanChartTrendLabels.length > 0 && !fdtreatmentPlanRateTrendLoader"
-                style="height: 300px">
+                class="div-height">
                 <canvas #myCanvas id="completionRate" baseChart [datasets]="treatmentPlanChartTrend"
                   [labels]="treatmentPlanChartTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                   (chartHover)="chartHovered($event)" [options]="barChartOptionsPercentTrend" [colors]="lineChartColors"
@@ -1128,7 +1128,7 @@
                     Rate</small>
                 </div>
               </div>
-              <div style="height: 300px">
+              <div class="div-height">
                 <canvas id="RecallRate"
                   *ngIf="prebook=='recall' && recallPrebookLoader == false && recallChartData1.length > 0" #myCanvas
                   baseChart [datasets]="recallChartData" [labels]="recallChartLabels" [legend]="barChartLegend"
@@ -1231,16 +1231,16 @@
                     Rate</small>
                 </div>
               </div>
-              <div class="chart" *ngIf="showTrendChart == false && prebook=='recall' && recallValue > 0" fxLayout="row"
-                fxLayoutAlign="start center" style="height: 300px">
+              <div class="chart div-height" *ngIf="showTrendChart == false && prebook=='recall' && recallValue > 0" fxLayout="row"
+                fxLayoutAlign="start center">
                 <ngx-gauge *ngIf="showTrendChart == false && prebook=='recall' && recallValue > 0" [type]="gaugeType"
                   [value]="recallValue" [label]="recallLabel" [thick]="gaugeThick" [foregroundColor]="foregroundColor"
                   [backgroundColor]="backgroundColor" [max]="maxrecallGoal" [cap]="cap" [duration]="gaugeDuration"
                   [append]="gaugeAppendText" [size]="size">
                 </ngx-gauge>
               </div>
-              <div class="chart" *ngIf="showTrendChart == false && prebook=='treatment' && treatmentPreValue > 0"
-                fxLayout="row" fxLayoutAlign="start center" style="height: 300px">
+              <div class="chart div-height" *ngIf="showTrendChart == false && prebook=='treatment' && treatmentPreValue > 0"
+                fxLayout="row" fxLayoutAlign="start center">
                 <ngx-gauge *ngIf="showTrendChart == false && prebook=='treatment' && treatmentPreValue > 0"
                   [type]="gaugeType" [value]="treatmentPreValue" [label]="treatmentPreLabel" [thick]="gaugeThick"
                   [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="prePrebookMax"
@@ -1249,7 +1249,7 @@
               </div>
               <div
                 *ngIf="showTrendChart == true  && prebook=='recall' && !recallPrebookDentistLoader && recallPrebookChartTrend1.length > 0"
-                style="height: 300px">
+                class="div-height">
                 <canvas #myCanvas id="RecallRateTrend" baseChart [datasets]="recallPrebookChartTrend"
                   [labels]="recallPrebookChartTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                   (chartHover)="chartHovered($event)" [options]="barChartOptionsPercentTrend" [colors]="lineChartColors"
@@ -1258,7 +1258,7 @@
               </div>
               <div
                 *ngIf="showTrendChart == true && prebook=='treatment' && !treatmentPlanRateLoader && treatmentPrebookChartTrend1.length > 0"
-                style="height: 300px">
+                class="div-height">
                 <canvas #myCanvas id="PrebookRateTrend" baseChart [datasets]="treatmentPrebookChartTrend"
                   [labels]="treatmentPrebookChartTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                   (chartHover)="chartHovered($event)" [options]="barChartOptionsPercentTrend" [colors]="lineChartColors"
@@ -1365,7 +1365,7 @@
                 </div>
               </div>
               <div class="chart">
-                <div *ngIf="showTrendChart == false && doughnutChartLabels.length > 0" style="height: 300px">
+                <div *ngIf="showTrendChart == false && doughnutChartLabels.length > 0" class="div-height">
                   <canvas #myCanvas id="patientComplaints" baseChart class="chart" [data]="doughnutChartData"
                     [labels]="doughnutChartLabels" [legend]="true" [options]="doughnutChartOptions"
                     [chartType]="doughnutChartType" (chartHover)="chartHovered($event)"
@@ -1431,7 +1431,7 @@
                   <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Avg. Completed Fees</small>
                 </div>
               </div>
-              <div class="chart" fxLayout="row" fxLayoutAlign="start center" style="height: 300px"
+              <div class="chart div-height" fxLayout="row" fxLayoutAlign="start center"
                 *ngIf="showTrendChart == false && gaugeValuePatients > 0">
                 <ngx-gauge [type]="gaugeType" [value]="gaugeValuePatients" [label]="gaugeLabelPatients"
                   [thick]="gaugeThick" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor"
@@ -1439,7 +1439,7 @@
                 </ngx-gauge>
 
               </div>
-              <div *ngIf="showTrendChart == true && patientComplaintsTrend1.length > 0" style="height: 300px">
+              <div *ngIf="showTrendChart == true && patientComplaintsTrend1.length > 0" class="div-height">
                 <canvas #myCanvas id="patientComplaintsTrend" baseChart [datasets]="patientComplaintTrend"
                   [labels]="patientComplaintsTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                   (chartHover)="chartHovered($event)" [options]="barChartOptionstrend" [colors]="lineChartColors"

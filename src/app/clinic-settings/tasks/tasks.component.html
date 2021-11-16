@@ -5,7 +5,7 @@
     </mat-panel-title>
   </mat-expansion-panel-header>
   <div>
-    <mat-form-field appearance="fill" class="denstist-search-form-field"  style="width: 70%;">
+    <mat-form-field appearance="fill" class="denstist-search-form-field denstist-search-width">
       <mat-icon matPrefix>search</mat-icon>
       <input
         matInput
@@ -15,7 +15,7 @@
         (keyup)="doFilter($event.target.value)"
       />     
     </mat-form-field>
-     <button style="float: right;" class="mat-raised-button mat-green" mat-raised-button (click)="openDialog()">Add Task</button>
+     <button class="mat-raised-button mat-green addTaskBtn" mat-raised-button (click)="openDialog()">Add Task</button>
      <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ dailyTaskEnable }}" name="daily_task_enable" (change)="toggleMH($event)">
         <span *ngIf="dailyTaskEnable">Enabled</span>
      <span *ngIf="!dailyTaskEnable">Disabled</span>

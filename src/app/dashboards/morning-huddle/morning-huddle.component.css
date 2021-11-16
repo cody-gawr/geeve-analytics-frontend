@@ -839,3 +839,56 @@ mat-card.followUpsTab4 {
 div.mat-chip-list-wrapper .custom-tooltip {
     max-width: 650px;
 } 
+
+.mh-status-schedule{
+    width: 100%;
+}
+.mh-status-schedule-btn{
+    margin-right: 20px;
+}
+.mh-another-followup{
+    width: 90%; 
+    float: none; 
+    position: relative;    
+    text-align: left;
+}
+.mh-nxt-btn{
+    margin-right: 20px;
+}
+.mh-chose-date-btn{
+    position: absolute;
+    top: 0;
+    margin: 25px 0;
+    padding: 20px 36px 20px;
+    right: 100px;
+}
+.mh-no-btn{
+    position: absolute;
+    top: 0;
+    margin: 25px 0;
+    padding: 20px 36px 20px;
+    right: -30px;
+}
+.mh-nextCustomFollowup{
+    width: 250px;
+    margin: 25px auto 0; 
+}
+.mh-nextCustomFollowup-btn{
+    width: 100%; 
+    float: none; 
+}
+.DentistListSecRow-task{
+    max-height: 700px; 
+    overflow: auto;
+}
+.DentistListSecRow-equipment-list{
+    max-height: 2500px; 
+    overflow: auto; 
+    padding-bottom: 53px;
+}
+.mh-fd-followups{
+    overflow: auto;
+}
+.mh-fa-check{
+    color: green;
+}

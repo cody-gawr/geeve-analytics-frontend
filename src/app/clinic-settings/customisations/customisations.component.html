@@ -8,14 +8,14 @@
     <form [formGroup]="form" class="basic-form sa_forms_design" (ngSubmit)="onSubmit()">
       <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
         <h4 class="clinic-settings-form-title">Morning Huddle</h4>
-        <div class="clinic-setting-form" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" style="width: 100%">
+        <div class="clinic-setting-form flx-width" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100">
           <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0">
             <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-              <div class="sa-form-group">
+              <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Xray Overdue</label>
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['xray_months']"
-                  [(ngModel)]="xrayMonths" style="width: 70px" />
-                <span style="padding: 0 10px">months</span>
+                  [(ngModel)]="xrayMonths"/>
+                <span>months</span>
                 <div class="info-button">
                   <div class="info-icon-container">
                     <img [tooltip]="{
@@ -28,15 +28,15 @@
                 <small *ngIf="
                     form.controls['xray_months'].hasError('required') &&
                     form.controls['xray_months'].touched
-                  " class="text-danger support-text" style="float: left; width: 100%">Field is Required.</small>
+                  " class="text-danger support-text mh-error-align">Field is Required.</small>
               </div>
             </div>
             <div fxFlex="calc(25% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-              <div class="sa-form-group">
+              <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">OPG Overdue</label>
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['opg_months']"
-                  [(ngModel)]="opgMonths" style="width: 70px" />
-                <span style="padding: 0 10px">months
+                  [(ngModel)]="opgMonths" />
+                <span>months
                   <div class="info-button">
                     <div class="info-icon-container">
                       <img [tooltip]="{
@@ -50,7 +50,7 @@
                 <small *ngIf="
                     form.controls['opg_months'].hasError('required') &&
                     form.controls['opg_months'].touched
-                  " class="text-danger support-text" style="float: left; width: 100%">Field is Required.</small>
+                  " class="text-danger support-text mh-error-align">Field is Required.</small>
               </div>
             </div>
             <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
@@ -59,7 +59,7 @@
           <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
 
             <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-              <div class="sa-form-group">
+              <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Recall Code 1 <div class="info-button">
                     <div class="info-icon-container">
                       <img [tooltip]="{
@@ -70,17 +70,17 @@
                     </div>
                   </div></label>
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_codes1']"
-                  [(ngModel)]="recallCode1" style="width: 70px" />
+                  [(ngModel)]="recallCode1"/>
 
                 <small *ngIf="
                     form.controls['recall_codes1'].hasError('required') &&
                     form.controls['recall_codes1'].touched
-                  " class="text-danger support-text" style="float: left; width: 100%">Field is Required.</small>
+                  " class="text-danger support-text mh-error-align">Field is Required.</small>
               </div>
             </div>
 
             <div fxFlex="calc(25% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-              <div class="sa-form-group">
+              <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Recall Code 2 <div class="info-button">
                     <div class="info-icon-container">
                       <img [tooltip]="{
@@ -91,16 +91,16 @@
                     </div>
                   </div></label>
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_codes2']"
-                  [(ngModel)]="recallCode2" style="width: 70px" />
+                  [(ngModel)]="recallCode2"/>
                 <small *ngIf="
                     form.controls['recall_codes2'].hasError('required') &&
                     form.controls['recall_codes2'].touched
-                  " class="text-danger support-text" style="float: left; width: 100%">Field is Required.</small>
+                  " class="text-danger support-text mh-error-align">Field is Required.</small>
               </div>
             </div>
 
             <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-              <div class="sa-form-group">
+              <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Recall Code 3 <div class="info-button">
                     <div class="info-icon-container">
                       <img [tooltip]="{
@@ -111,11 +111,11 @@
                     </div>
                   </div></label>
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_codes3']"
-                  [(ngModel)]="recallCode3" style="width: 70px" />
+                  [(ngModel)]="recallCode3" />
                 <small *ngIf="
                     form.controls['recall_codes3'].hasError('required') &&
                     form.controls['recall_codes3'].touched
-                  " class="text-danger support-text" style="float: left; width: 100%">Field is Required.</small>
+                  " class="text-danger support-text mh-error-align">Field is Required.</small>
               </div>
             </div>
 
