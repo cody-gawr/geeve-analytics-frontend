@@ -390,7 +390,6 @@ table.customWidth.thick, table.customWidth.PostOp {
     width: 10% !important;
     overflow-wrap: break-word;
     word-wrap: break-word;
-    word-break: break-word;
     -ms-hyphens: auto;
     -webkit-hyphens: auto;
     hyphens: auto;
