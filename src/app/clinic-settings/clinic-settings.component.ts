@@ -19,7 +19,7 @@ import { environment } from "../../environments/environment";
  *AUTHOR - Teq Mavens
  */
 export class ClinicSettingsComponent implements OnInit {
-   public apiUrl = environment.apiUrl;
+  public apiUrl = environment.apiUrl;
   public fileToUpload;
   public form: FormGroup;
   public errorLogin = false;
@@ -101,6 +101,7 @@ export class ClinicSettingsComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.id = this.route.snapshot.paramMap.get("id");
       this.getClinicSettings();
+      this.getClinicFollowUPSettings();
       $("#title").html("Clinic Settings");
       $(".external_clinic").show();
       //$('.dentist_dropdown').hide();
@@ -148,8 +149,8 @@ export class ClinicSettingsComponent implements OnInit {
     return this.email.hasError("required")
       ? "You must enter a value"
       : this.email.hasError("email")
-      ? "Not a valid email"
-      : "";
+        ? "Not a valid email"
+        : "";
   }
   //get setting for teh selcted clinic
   getClinicSettings() {
@@ -176,11 +177,11 @@ export class ClinicSettingsComponent implements OnInit {
           this.dailyTasks = res.data[0].daily_task_enable == 1 ? true : false;
           this.compareMode = res.data[0].compare_mode == 1 ? true : false;
 
-          this.postOpEnable = res.data[0].post_op_enable == 1 ? true : false;
-          this.tickEnable = res.data[0].tick_enable == 1 ? true : false;
-          this.recallEnable = res.data[0].recall_enable == 1 ? true : false;
-          this.ftaEnable = res.data[0].fta_enable == 1 ? true : false;
-          this.utaEnable = res.data[0].uta_enable == 1 ? true : false;
+          // this.postOpEnable = res.data[0].post_op_enable == 1 ? true : false;
+          // this.tickEnable = res.data[0].tick_enable == 1 ? true : false;
+          // this.recallEnable = res.data[0].recall_enable == 1 ? true : false;
+          // this.ftaEnable = res.data[0].fta_enable == 1 ? true : false;
+          // this.utaEnable = res.data[0].uta_enable == 1 ? true : false;
 
           if (this.ftaUta == "") this.ftaUta = "status";
 
@@ -199,6 +200,26 @@ export class ClinicSettingsComponent implements OnInit {
       }
     );
   }
+
+  getClinicFollowUPSettings() {
+    this.clinicSettingsService.getClinicFollowUPSettings(this.id).subscribe(
+      (res) => {
+        
+        console.log('res.data',res.data)
+        if (res.message == "success") {
+          this.postOpEnable = res.data.post_op_enable == 1 ? true : false;
+          this.tickEnable = res.data.tick_enable == 1 ? true : false;
+          this.recallEnable = res.data.recall_enable == 1 ? true : false;
+          this.ftaEnable = res.data.fta_enable == 1 ? true : false;
+          this.utaEnable = res.data.uta_enable == 1 ? true : false;
+        }
+      },
+      (error) => {
+        this.warningMessage = "Please Provide Valid Inputs!";
+      }
+    );
+  }
+
   getFollowUpSettings() {
     this.clinicSettingsService
       .getFollowUpSettings(this.id)
@@ -257,12 +278,7 @@ export class ClinicSettingsComponent implements OnInit {
         this.subtracted_accounts,
         this.equipmentList,
         this.dailyTasks,
-        this.compareMode,
-        this.postOpEnable,
-        this.tickEnable,
-        this.recallEnable,
-        this.ftaEnable,
-        this.utaEnable,
+        this.compareMode
       )
       .subscribe(
         (res) => {
@@ -281,7 +297,7 @@ export class ClinicSettingsComponent implements OnInit {
         }
       );
 
-      this.clinicSettingsService
+    this.clinicSettingsService
       .updateFollowUpSettings(
         this.id,
         this.ftaFollowupDays,
@@ -500,20 +516,20 @@ export class ClinicSettingsComponent implements OnInit {
     } else if (type == "fta") {
       this.ftaEnable = event.checked;
       column = "fta_enable";
-    }else if (type == "uta") {
+    } else if (type == "uta") {
       this.utaEnable = event.checked;
       column = "uta_enable";
     }
     var active = event.checked == true ? 1 : 0;
     this.clinicSettingsService
-      .updatePartialSetting(this.id, active, column)
+      .updatePartialClinicSetting(this.id, active, column)
       .subscribe(
         (res) => {
           if (res.message == "success") {
             this.toastr.success("Followups Settings Updated");
           }
         },
-        (error) => {}
+        (error) => { }
       );
   }
 }

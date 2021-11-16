@@ -84,7 +84,7 @@
                   </div>
           </td>
         </ng-container>
-        <ng-container matColumnDef="position" *ngIf="apiUrl.includes('test')">
+        <ng-container matColumnDef="position" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
           <th mat-header-cell *matHeaderCellDef mat-sort-header >Position
             <div class="info-button">
                 <div class="info-icon-container">
@@ -102,7 +102,7 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="position" *ngIf="!apiUrl.includes('test')">
+        <ng-container matColumnDef="position" *ngIf="!apiUrl.includes('test') || !apiUrl.includes('staging-')">
           <th mat-header-cell *matHeaderCellDef mat-sort-header ></th>
           <td mat-cell *matCellDef="let element; let i=index"></td>
         </ng-container>

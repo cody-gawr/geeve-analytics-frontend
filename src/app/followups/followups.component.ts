@@ -211,6 +211,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   public isEnableOR: boolean = false;
   public isEnableTH: boolean = false;
   public isEnableFT: boolean = false;
+  public isEnableUT: boolean = false;
 
   displayedColumns1: string[] = ['name', 'phone', 'code', 'dentist', 'date', 'followup_date', 'status'];
   displayedColumns2: string[] = ['name', 'phone', 'code', 'note', 'followup_date', 'book', 'status'];
@@ -271,14 +272,15 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (val != undefined && val != 'all') {
       this.clinic_id = val;
 
-      this.clinicianAnalysisService.getClinics(this.clinic_id, 'PostOpEnable,RecallEnable,TickEnable,FtaEnable').subscribe((data: any) => {
-        if (data.message == 'success') {
-          this.isEnablePO = (data.data.post_op_enable == 1) ? true : false;
-          this.isEnableOR = (data.data.recall_enable == 1) ? true : false;
-          this.isEnableTH = (data.data.tick_enable == 1) ? true : false;
-          this.isEnableFT = (data.data.fta_enable == 1) ? true : false;
+      this.clinicianAnalysisService.getClinicSettings( this.clinic_id).subscribe((data:any) => {
+        if(data.message == 'success'){
+          this.isEnablePO = (data.data.post_op_enable == 1)? true : false;
+          this.isEnableOR = (data.data.recall_enable == 1)? true : false;
+          this.isEnableTH = (data.data.tick_enable == 1)? true : false;
+          this.isEnableFT = (data.data.fta_enable == 1)? true : false;
+          this.isEnableUT = (data.data.uta_enable == 1)? true : false;
         }
-      });
+      }); 
       $('#title').html('Follow Ups');
 
       this.selectedMonth = this.datepipe.transform(this.selectedMonthYear, 'M');
@@ -290,6 +292,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.getinternalReferrals();
       this.getTickFollowups();
       this.getFtaFollowups();
+      this.getUtaFollowups();
 
     }
   }
@@ -309,6 +312,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     this.getinternalReferrals();
     this.getTickFollowups();
     this.getFtaFollowups();
+    this.getUtaFollowups();
   }
 
 
@@ -530,6 +534,58 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   }
 
 
+  
+  public followupUtaFollowups: any = [];
+  public followupUtaFollowupsInCMP: any = [];
+  public utaTaksLoadingLoading: boolean = false;
+  public showCompleteUta: boolean = false;
+  public tipUtaDoneCode: any = {};
+  public tipUtaFutureDate: any = {};
+  public utTablePages: any = [];
+  public currentUTPage: number = 1;
+
+  getUtaFollowups(evn = '') {
+    if (evn != 'close') {
+      this.utaTaksLoadingLoading = true;
+    }
+    this.followupsService.followupUtaFollowups(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((production: any) => {
+      this.followupUtaFollowupsInCMP = [];
+      this.utaTaksLoadingLoading = false;
+      if (production.message == 'success') {
+        this.nextBussinessDay = production.next_day;
+        if (production.data == '204') {
+
+        } else {
+          this.followupUtaFollowups = production.data;
+          if (this.showCompleteUta == true) {
+            this.followupUtaFollowupsInCMP = this.followupUtaFollowups;
+          } else {
+            this.followupUtaFollowupsInCMP = this.followupUtaFollowups.filter(p => p.is_complete != true);
+          }
+          if (this.followupUtaFollowupsInCMP.length <= ((this.pageSize * this.currentUTPage) - this.pageSize) && this.currentUTPage != 1) {
+            this.currentUTPage = this.currentUTPage - 1;
+          }
+          this.setPaginationButtons(this.followupUtaFollowupsInCMP, 'UT');
+          this.followupUtaFollowupsInCMP = this.setPaginationData(this.followupUtaFollowupsInCMP, 'UT');
+          this.followupUtaFollowups.forEach((tool) => {
+            this.tipUtaDoneCode[tool.patient_id] = {
+              title: 'Outstanding Treatments',
+              info: tool.code
+            };
+            var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
+            this.tipUtaFutureDate[tool.patient_id] = {
+              title: 'Future Appointment',
+              info: date
+            };
+          });
+        }
+
+      }
+    });
+  }
+
+
+
   //toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Post op Calls')
   toggleUpdate(event, pid, date, fdate, cid, type, status = 'default', treatItem = '') {
 
@@ -556,6 +612,8 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         this.getTickFollowups();
       } else if (type == 'fta-follower') {
         this.getFtaFollowups();
+      } else if (type == 'uta-follower') {
+        this.getUtaFollowups();
       } else if (type == 'internal-referrals') {
         this.getinternalReferrals();
       }
@@ -576,6 +634,8 @@ export class FollowupsComponent implements OnInit, OnDestroy {
           this.getTickFollowups('close');
         } else if (type == 'fta-follower') {
           this.getFtaFollowups('close');
+        }else if (type == 'uta-follower') {
+            this.getUtaFollowups('close');
         } else if (type == 'internal-referrals') {
           this.getinternalReferrals('close');
         } else {
@@ -589,6 +649,8 @@ export class FollowupsComponent implements OnInit, OnDestroy {
           this.getTickFollowups('close');
         } else if (type == 'fta-follower') {
           this.getFtaFollowups('close');
+        } else if (type == 'uta-follower') {
+          this.getUtaFollowups('close');
         } else if (type == 'internal-referrals') {
           this.getinternalReferrals('close');
         } else {
@@ -672,6 +734,18 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     this.followupFtaFollowupsInCMP = this.setPaginationData(this.followupFtaFollowupsInCMP, 'FT');
   }
 
+  updateToCompleteUT(event) {
+    this.showCompleteUta = event.checked;
+    if (event.checked == true) {
+      this.followupUtaFollowupsInCMP = this.followupUtaFollowups;
+    } else {
+      this.followupUtaFollowupsInCMP = this.followupUtaFollowups.filter(p => p.is_complete != true);
+    }
+    this.currentUTPage = 1;
+    this.setPaginationButtons(this.followupUtaFollowupsInCMP, 'UT');
+    this.followupFtaFollowupsInCMP = this.setPaginationData(this.followupUtaFollowupsInCMP, 'UT');
+  }
+
   updateToCompleteIR(event) {
     this.showCompleteReferrals = event.checked;
     if (event.checked == true) {
@@ -697,7 +771,9 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         this.getOverdueRecalls('close');
       } else if (type == 'internal-referrals') {
         this.getinternalReferrals('close');
-      } else {
+      } else if (type == 'uta-follower') {
+        this.getUtaFollowups('close');
+      }else {
         this.getFtaFollowups('close');
       }
     });
@@ -758,6 +834,15 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         }
       }
     }
+    if (type == 'UT') {
+      this.utTablePages = [];
+      const totalPages = Math.ceil(totalData.length / this.pageSize);
+      if (totalPages > 1) {
+        for (let i = 0; i < totalPages; i++) {
+          this.utTablePages.push(i + 1);
+        }
+      }
+    }
     if (type == 'IR') {
       this.irTablePages = [];
       const totalPages = Math.ceil(totalData.length / this.pageSize);
@@ -781,6 +866,9 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     }
     if (type == 'FT') {
       var startIndex: number = (this.currentFTPage * this.pageSize) - this.pageSize;
+    }
+    if (type == 'UT') {
+      var startIndex: number = (this.currentUTPage * this.pageSize) - this.pageSize;
     }
     if (type == 'IR') {
       var startIndex: number = (this.currentIRPage * this.pageSize) - this.pageSize;
@@ -832,6 +920,15 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(p => p.is_complete != true);
       }
       this.followupFtaFollowupsInCMP = this.setPaginationData(this.followupFtaFollowupsInCMP, 'FT');
+    }
+    if (type == 'UT') {
+      this.currentUTPage = goPage;
+      if (this.showCompleteUta == true) {
+        this.followupUtaFollowupsInCMP = this.followupUtaFollowups;
+      } else {
+        this.followupUtaFollowupsInCMP = this.followupUtaFollowups.filter(p => p.is_complete != true);
+      }
+      this.followupUtaFollowupsInCMP = this.setPaginationData(this.followupUtaFollowupsInCMP, 'UT');
     }
     if (type == 'IR') {
       this.currentIRPage = goPage;

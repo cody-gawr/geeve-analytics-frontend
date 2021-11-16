@@ -53,6 +53,15 @@ export class FollowupsService {
             );
     }
 
+    followupUtaFollowups(clinic_id, month, year): Observable<any> {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl + "/Followups/fuUtaFollowupsTable?clinic_id=" + clinic_id + "&month=" + month + "&year=" + year, header)
+            .pipe(map((response: Response) => {
+                return response;
+            })
+            );
+    }
+
     followupOverdueRecalls(clinic_id, month, year): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/Followups/fuOverdueRecallsTable?clinic_id=" + clinic_id + "&month=" + month + "&year=" + year, header)
@@ -74,7 +83,7 @@ export class FollowupsService {
     }
 
 
-    updateFollowUpStatus(event, pid, cid, type, previousDays, fdate,treatItem = ''): Observable<any> {
+    updateFollowUpStatus(event, pid, cid, type, previousDays, fdate, treatItem = ''): Observable<any> {
         var header = this.getHeaders();
         const formData = new FormData();
         formData.append('event', event);
@@ -83,8 +92,8 @@ export class FollowupsService {
         formData.append('date', previousDays);
         formData.append('fdate', fdate);
         formData.append('type', type);
-        if(treatItem != '' && type == 'internal-referrals'){
-           formData.append('treat_item', treatItem); 
+        if (treatItem != '' && type == 'internal-referrals') {
+            formData.append('treat_item', treatItem);
         }
         return this.http.post(this.apiUrl + "/Followups/fuUpdateFollowupStatus", formData, header)
             .pipe(map((response: Response) => {
@@ -103,7 +112,7 @@ export class FollowupsService {
         formData.append('date', previousDays);
         formData.append('fdate', fdate);
         formData.append('type', type);
-        if(treatItem != '' && type == 'internal-referrals'){
+        if (treatItem != '' && type == 'internal-referrals') {
             formData.append('treat_item', treatItem);
         }
         return this.http.post(this.apiUrl + "/Followups/fuUpdateStatus", formData, header)
@@ -112,7 +121,7 @@ export class FollowupsService {
             })
             );
     }
-    cloneRecord(pid, cid, type, followup_date, newFollowupDate, original_appt_date,treatItem,  nextReach = ''): Observable<any> {
+    cloneRecord(pid, cid, type, followup_date, newFollowupDate, original_appt_date, treatItem, nextReach = ''): Observable<any> {
         var header = this.getHeaders();
         const formData = new FormData();
         formData.append('new_followup', newFollowupDate);
@@ -122,7 +131,7 @@ export class FollowupsService {
         formData.append('followup_date', followup_date);
         formData.append('type', type);
         formData.append('next_reach', nextReach);
-          if(treatItem != '' && type == 'internal-referrals'){
+        if (treatItem != '' && type == 'internal-referrals') {
             formData.append('treat_item', treatItem);
         }
         return this.http.post(this.apiUrl + "/Followups/fuCloneStatus", formData, header)
@@ -133,7 +142,7 @@ export class FollowupsService {
     }
 
     // Updae tick notes add/update
-    notes(notes, pid, date, cid, fdate, type,treatItem = ''): Observable<any> {
+    notes(notes, pid, date, cid, fdate, type, treatItem = ''): Observable<any> {
         var header = this.getHeaders();
         const formData = new FormData();
         formData.append('notes', notes);
@@ -142,7 +151,7 @@ export class FollowupsService {
         formData.append('date', date);
         formData.append('fdate', fdate);
         formData.append('type', type);
-        if(treatItem != '' && type == 'internal-referrals'){
+        if (treatItem != '' && type == 'internal-referrals') {
             formData.append('treat_item', treatItem);
         }
         return this.http.post(this.apiUrl + "/Followups/fuUpdateStatus", formData, header)

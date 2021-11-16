@@ -111,20 +111,7 @@
                             <td mat-cell *matCellDef="let element">
                                 <mat-form-field floatLabel="never" class="setPreviousDay">
                                     <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote"
-                                        (selectionChange)="
-                      updateStatus(
-                        $event.value,
-                        element.patient_id,
-                        element.original_appt_date,
-                        element.patients.clinic_id,
-                        element.patients.firstname,
-                        element.patients.surname,
-                        element.original_appt_date,
-                        element.followup_date,
-                        'recall-overdue',
-                        nextBussinessDay
-                      )
-                    ">
+                                        (selectionChange)=" updateStatus( $event.value, element.patient_id, element.original_appt_date, element.patients.clinic_id, element.patients.firstname, element.patients.surname, element.original_appt_date, element.followup_date, 'recall-overdue', nextBussinessDay ) ">
                                         <mat-option value="">Select Status</mat-option>
                                         <mat-option value="Booked">Booked</mat-option>
                                         <mat-option value="Already booked">Already booked</mat-option>
@@ -808,7 +795,7 @@
             <div class="follow-up">
                 <mat-card-title>
                     <div class="title-follow-up d-inline-block">
-                        FTA / UTA
+                        FTA
                         <div class="info-icon-container">
                             <img [tooltip]="charTips['52']" src="../assets/images/info-icon.png" alt="info-icon"
                                 class="info-icon" />
@@ -1111,12 +1098,317 @@
 
                 <!-- follow-ups-card view-end--->
             </div>
+            <div class="follow-up">
+                <mat-card-title>
+                    <div class="title-follow-up d-inline-block">
+                        UTA
+                        <div class="info-icon-container">
+                            <img [tooltip]="charTips['52']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                        </div>
+                    </div>
+                    <div class="showComplete" *ngIf="followupUtaFollowups.length > 0">
+                        <mat-checkbox name="status" [checked]="showCompleteUta" (change)="updateToCompleteUT($event)">
+                            Show Complete </mat-checkbox>
+                    </div>
+                    <div class="chipSets" *ngIf="ftaFollowupsScrps.length > 0">
+                        <mat-chip-list class="example-chip">
+                            <mat-chip [tooltip]="{title:chips.script_title, info: chips.script_text }"
+                                (mouseover)="historyPosChips($event,chips.colour)" class="example-box"
+                                *ngFor="let chips of ftaFollowupsScrps" [color]="chips.colour">
+                                <span class="chipText">{{chips.script_title}}</span>
+                            </mat-chip>
+                        </mat-chip-list>
+                    </div>
+                </mat-card-title>
+
+                <div class="card-loading" *ngIf="ftaTaksLoadingLoading">
+                    <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
+                </div>
+                <div class="follow-ups-table table-responsive">
+                    <table mat-table [dataSource]="followupUtaFollowupsInCMP"
+                        class="mat-elevation-z8 customWidth thick">
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef>Patient Name</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{ element.patients.firstname }} {{ element.patients.surname }}
+                            </td>
+                        </ng-container>
+
+                        <!-- Weight Column -->
+                        <ng-container matColumnDef="phone">
+                            <th mat-header-cell *matHeaderCellDef>Phone Number</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div class="phone_align_center">
+                                    <img src="../assets/images/follow-up-call.png" alt="follow-up-call" />
+                                    <span class="phone_no" *ngIf="element.patients.mobile">{{
+                                        formatPhoneNumber(element.patients.mobile) }}</span>
+                                    <span class="phone_no" *ngIf="
+                      !element.patients.mobile && element.patients.phone_work
+                    ">
+                                        {{ formatPhoneNumber(element.patients.phone_work) }}
+                                    </span>
+                                    <span class="phone_no" *ngIf="
+                      !element.patients.mobile && !element.patients.phone_work
+                    ">
+                                        {{ formatPhoneNumber(element.patients.phone_home) }}
+                                    </span>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="code">
+                            <th mat-header-cell *matHeaderCellDef>Treatment Date</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{ element.original_appt_date | date: "MMM d, y":"timezone" }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="dentist">
+                            <th mat-header-cell *matHeaderCellDef>Provider</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{ element.dentists.name}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="followup_date">
+                            <th mat-header-cell *matHeaderCellDef>Follow-Up Date</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{ element.followup_date | date: "MMM d, y":"timezone" }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="note">
+                            <th mat-header-cell *matHeaderCellDef>Status</th>
+                            <td mat-cell *matCellDef="let element">
+                                <mat-form-field floatLabel="never" class="setPreviousDay mb-0">
+                                    <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote2"
+                                        (selectionChange)="
+                      updateStatus(
+                        $event.value,
+                        element.patient_id,
+                        element.original_appt_date,
+                        element.patients.clinic_id,
+                        element.patients.firstname,
+                        element.patients.surname,
+                        element.original_appt_date,
+                        element.followup_date,
+                        'uta-follower',
+                        nextBussinessDay
+                      )
+                    ">
+                                        <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
+                                        <mat-option value="">Select Status</mat-option>
+                                        <mat-option value="Booked">Booked</mat-option>
+                                        <mat-option value="Already booked">Already booked</mat-option>
+                                        <mat-option value="Didn't want to book">Didn't want to book</mat-option>
+                                        <mat-option value="Ineligible">Ineligible</mat-option>
+                                        <mat-option value="Can't be reached">Can't be reached</mat-option>
+                                        <mat-option value="Can't be reached - left voicemail">Can't be reached - left
+                                            voicemail</mat-option>
+                                        <mat-option value="Wants another follow-up">Wants another follow-up</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="book">
+                            <th mat-header-cell *matHeaderCellDef>Notes</th>
+                            <td mat-cell *matCellDef="let element">
+                                <span class="info-icon-container tick historyTip" (mouseover)="historyPos($event)">
+                                    <i [tooltip]="{
+                      title: !element.notes ? 'Add Notes' : 'Edit Notes'
+                    }" [ngClass]="!element.notes ? 'red' : 'green'" class="fas fa-book notes" (click)="
+                      openNotes(
+                        element.notes,
+                        element.patient_id,
+                        element.original_appt_date,
+                        element.followup_date,
+                        'uta-follower'
+                      )
+                    "></i>
+                                </span>
+                                <span (mouseover)="historyPos($event)" *ngIf="element.code != ''"
+                                    class="info-icon-container tick historyTip"><i class="fas fa-notes-medical notes"
+                                        [tooltip]="tipFtaDoneCode[element.patient_id]"></i></span>
+                                <span (mouseover)="historyPos($event)" *ngIf="element.future_date_show"
+                                    class="info-icon-container tick historyTip">
+                                    <i class="fas fa-calendar-check notes"
+                                        [tooltip]="tipFtaFutureDate[element.patient_id]"></i>
+                                </span>
+                                <div class="historyTip history">
+                                    <i (mouseover)="historyPos($event)" [tooltip]="formatHistory(element.history)"
+                                        class="fa fa-history" *ngIf="element.history.length > 0"></i>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="status">
+                            <th mat-header-cell *matHeaderCellDef>Complete</th>
+                            <td mat-cell *matCellDef="let element">
+                                <mat-slide-toggle [checked]="element.is_complete == 0 ? false : true" name="status"
+                                    (change)="
+                    toggleUpdate(
+                      $event,
+                      element.patient_id,
+                      element.original_appt_date,
+                      element.followup_date,
+                      element.patients.clinic_id,
+                      'uta-follower',
+                      element.status
+                    )
+                  ">
+                                </mat-slide-toggle>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="isDataAvailable1">
+                            <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns3.length">
+                                <span *ngIf="isEnableUT && followupUtaFollowups.length <= 0">You have no UTA followups
+                                    for {{ selectedMonthYear }}</span>
+                                <span *ngIf="isEnableUT && followupUtaFollowups.length > 0">All UTA followups have been
+                                    completed for {{ selectedMonthYear }}</span>
+                                <span *ngIf="!isEnableUT">UTA Followup are not enabled - this can be configured in your
+                                    Jeeve Settings menu</span>
+                            </mat-footer-cell>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns3"></tr>
+                        <mat-footer-row *matFooterRowDef="['isDataAvailable1']" [ngClass]="
+                followupFtaFollowupsInCMP.length <= 0 ? 'show' : 'hide'
+              "></mat-footer-row>
+                    </table>
+                </div>
+                <ul class="main_pagination settings-table-pagination followup" *ngIf="utTablePages.length">
+                    <li *ngFor="let page of utTablePages">
+                        <button [ngClass]="{ active: page === currentUTPage, page: true }"
+                            (click)="handlePageChange(page, 'UT')">
+                            {{ page }}
+                        </button>
+                    </li>
+                </ul>
+                <!-- follow-ups-card view-->
+                <div class="follow-ups-card" *ngIf="followupUtaFollowupsInCMP.length">
+                    <mat-card class="huddle-card" *ngFor="let element of followupUtaFollowupsInCMP">
+                        <div fxLayout="row" class="huddle-card-row">
+                            <div fxFlex="40">Patient :</div>
+                            <div fxFlex="60">
+                                {{ element.patients.firstname }} {{ element.patients.surname }}
+                            </div>
+                        </div>
+                        <div fxLayout="row" class="huddle-card-row">
+                            <div fxFlex="40">Phone :</div>
+                            <div fxFlex="60">
+                                {{ formatPhoneNumber(element.patients.mobile) }}
+                            </div>
+                        </div>
+                        <div fxLayout="row" class="huddle-card-row">
+                            <div fxFlex="40">Treatment Date :</div>
+                            <div fxFlex="60">
+                                {{ element.original_appt_date | date: "MMM d, y":"timezone" }}
+                            </div>
+                        </div>
+                        <div fxLayout="row" class="huddle-card-row">
+                            <div fxFlex="40">Provider :</div>
+                            <div fxFlex="60">
+                                {{ element.dentists.name | date: "MMM d, y":"timezone" }}
+                            </div>
+                        </div>
+                        <div fxLayout="row" class="huddle-card-row">
+                            <div fxFlex="40">Status :</div>
+                            <div fxFlex="60">
+                                <mat-form-field floatLabel="never" class="setPreviousDay">
+                                    <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote2"
+                                        (selectionChange)="
+                      updateStatus(
+                        $event.value,
+                        element.patient_id,
+                        element.original_appt_date,
+                        element.patients.clinic_id,
+                        element.patients.firstname,
+                        element.patients.surname,
+                        element.original_appt_date,
+                        element.followup_date,
+                        'uta-follower',
+                        nextBussinessDay
+                      )
+                    ">
+                                        <mat-option value="">Select Status</mat-option>
+                                        <mat-option value="Booked">Booked</mat-option>
+                                        <mat-option value="Already booked">Already booked</mat-option>
+                                        <mat-option value="Didn't want to book">Didn't want to book</mat-option>
+                                        <mat-option value="Ineligible">Ineligible</mat-option>
+                                        <mat-option value="Can't be reached">Can't be reached</mat-option>
+                                        <mat-option value="Can't be reached - left voicemail">Can't be reached - left
+                                            voicemail</mat-option>
+                                        <mat-option value="Wants another follow-up">Wants another follow-up</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div fxLayout="row" class="huddle-card-row">
+                            <div fxFlex="40">Follow-Up Date :</div>
+                            <div fxFlex="60">
+                                {{ element.followup_date | date: "MMM d, y":"timezone" }}
+                            </div>
+                        </div>
+                        <div fxLayout="row" class="huddle-card-row">
+                            <div fxFlex="40">Notes :</div>
+                            <div fxFlex="60">
+                                <span class="info-icon-container tick historyTip" (mouseover)="historyPos($event)">
+                                    <i [tooltip]="{
+                      title: !element.notes ? 'Add Notes' : 'Edit Notes'
+                    }" [ngClass]="!element.notes ? 'red' : 'green'" class="fas fa-book notes" (click)="
+                      openNotes(
+                        element.notes,
+                        element.patient_id,
+                        element.original_appt_date,
+                        element.followup_date,
+                        'uta-follower'
+                      )
+                    "></i>
+                                </span>
+                                <span (mouseover)="historyPos($event)" *ngIf="element.code != ''"
+                                    class="info-icon-container tick historyTip"><i class="fas fa-notes-medical notes"
+                                        [tooltip]="tipFtaDoneCode[element.patient_id]"></i></span>
+                                <span (mouseover)="historyPos($event)" *ngIf="element.future_date_show"
+                                    class="info-icon-container tick historyTip">
+                                    <i class="fas fa-calendar-check notes"
+                                        [tooltip]="tipFtaFutureDate[element.patient_id]"></i>
+                                </span>
+                                <div class="historyTip history">
+                                    <i (mouseover)="historyPos($event)" [tooltip]="formatHistory(element.history)"
+                                        class="fa fa-history" *ngIf="element.history.length > 0"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxLayout="row" class="huddle-card-row">
+                            <div fxFlex="40">Complete :</div>
+                            <div fxFlex="60">
+                                <mat-slide-toggle [checked]="element.is_complete == 0 ? false : true" name="status"
+                                    (change)="
+                    toggleUpdate(
+                      $event,
+                      element.patient_id,
+                      element.original_appt_date,
+                      element.followup_date,
+                      element.patients.clinic_id,
+                      'uta-follower',
+                      element.status
+                    )
+                  ">
+                                </mat-slide-toggle>
+                            </div>
+                        </div>
+                    </mat-card>
+                </div>
+
+                <!-- follow-ups-card view-end--->
+            </div>
         </mat-tab>
         <!-- Dentist Performance Tab -->
 
 
         <!-- Internal Referrals Tab -->
-        <mat-tab label="Internal Referrals" *ngIf="clinic_id == 1 || clinic_id == 2 || clinic_id == 3 || clinic_id == 4 || clinic_id == 86">
+        <mat-tab label="Internal Referrals"
+            *ngIf="clinic_id == 1 || clinic_id == 2 || clinic_id == 3 || clinic_id == 4 || clinic_id == 86">
             <div class="follow-up">
                 <mat-card-title>
                     <div class="title-follow-up d-inline-block">

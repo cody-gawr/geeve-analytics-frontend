@@ -19,7 +19,6 @@ export interface PeriodicElement {
   production: string;
   recall: string;
   treatment: string;
-
   patientname: string;
   dentist : string;
   start: string;
@@ -137,9 +136,6 @@ export class StatusDialogMHComponent {
   }
 
 }
-
-
-
 
 
 @Component({
@@ -262,6 +258,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public isEnableOR: boolean = false;
     public isEnableTH: boolean = false;
     public isEnableFT: boolean = false;
+    public isEnableUT: boolean = false;
     public autoCall: any;
 
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
@@ -361,15 +358,22 @@ initiate_clinic() {
       this.previousDays = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
     }
     this.dailyTabSettLod = false;
+    // clinicGetSettings
     this.clinicianAnalysisService.getClinics( this.clinic_id, 'DailyTaskEnable,EquipListEnable,PostOpEnable,RecallEnable,TickEnable,FtaEnable' ).subscribe((data:any) => {
       this.dailyTabSettLod = true;
       if(data.message == 'success'){
         this.isEnabletasks = (data.data.daily_task_enable == 1)? true : false;
-        this.isEnableEquipList = (data.data.equip_list_enable == 1)? true : false;
+        this.isEnableEquipList = (data.data.equip_list_enable == 1)? true : false;        
+      }
+    }); 
+
+    this.clinicianAnalysisService.getClinicSettings( this.clinic_id).subscribe((data:any) => {
+      if(data.message == 'success'){
         this.isEnablePO = (data.data.post_op_enable == 1)? true : false;
         this.isEnableOR = (data.data.recall_enable == 1)? true : false;
         this.isEnableTH = (data.data.tick_enable == 1)? true : false;
         this.isEnableFT = (data.data.fta_enable == 1)? true : false;
+        this.isEnableUT = (data.data.uta_enable == 1)? true : false;
       }
     }); 
 
@@ -410,6 +414,7 @@ initiate_clinic() {
       this.getOverdueRecalls();
       this.getTickFollowups();
       this.getFtaFollowups();
+      this.getUtaFollowups();
       this.getFollowupScripts();
       /***** Tab 4 ***/     
       }
@@ -455,6 +460,7 @@ initiate_clinic() {
       this.getOverdueRecalls();
       this.getTickFollowups();
       this.getFtaFollowups();
+      this.getUtaFollowups();
       this.getFollowupScripts();
     }
     if(this.user_type != '4'){
@@ -656,8 +662,10 @@ initiate_clinic() {
         this.tickFollowupsScrps = [];
         this.ftaFollowupsScrps = [];
         this.intrFollowupsScrps = [];
+        
         if(scripts.status && scripts.message == 'success'){
           scripts.data.forEach((script) => {
+            
             if(script.followup_type == 'Post Op'){
               this.postOpCallsScrps.push(script);
             } else if(script.followup_type == 'Overdue Recalls'){
@@ -765,6 +773,59 @@ initiate_clinic() {
               };
                var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
               this.tipFtaFutureDate[tool.patient_id] = { 
+                title: 'Future Appointment', 
+                info: date
+              };
+          });
+        }     
+           
+       } else if (production.status == '401') {
+         this.handleUnAuthorization();      
+       }
+    }, error => {
+      this.handleUnAuthorization();      
+    }); 
+  } 
+
+  
+  public followupUtaFollowups:any = [];
+  public followupUtaFollowupsInCMP:any = [];
+  public utaTaksLoadingLoading:boolean = false;  
+  public showCompleteUta:boolean = false;
+  public tipUtaDoneCode:any = {};
+  public tipUtaFutureDate:any={};
+
+  getUtaFollowups(evn = ''){
+    if(evn != 'close'){
+     this.utaTaksLoadingLoading = true;
+    }
+    this.morningHuddleService.followupUtaFollowups( this.clinic_id, this.previousDays,  this.postOpCallsDays).subscribe((production:any) => {
+        this.utaTaksLoadingLoading = false;
+        this.followupUtaFollowupsInCMP = [];
+        this.futureDateTF = '';
+      if(production.message == 'success') {
+        var diffTime:any = this.getDataDiffrences();
+        if(diffTime < 0){
+          this.futureDateTF =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
+        }
+        this.nextBussinessDay = production.next_day;        
+        this.followupsTickFollowupsDate = production.date;  
+        if( production.data == '204'){
+
+        } else {
+          this.followupUtaFollowups = production.data;     
+          if(this.showCompleteUta ==  true){  
+            this.followupUtaFollowupsInCMP = this.followupUtaFollowups;
+          } else {
+            this.followupUtaFollowupsInCMP = this.followupUtaFollowups.filter(p => p.is_complete != true);      
+          }   
+          this.followupUtaFollowups.forEach((tool) => {
+              this.tipUtaDoneCode[tool.patient_id] = { 
+                title: 'Outstanding Treatments', 
+                info: tool.code
+              };
+               var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
+              this.tipUtaFutureDate[tool.patient_id] = { 
                 title: 'Future Appointment', 
                 info: date
               };
@@ -1186,6 +1247,8 @@ async getDentistList(){
         this.getTickFollowups();
       } else if(type == 'fta-follower'){
         this.getFtaFollowups();
+      } else if(type == 'uta-follower'){
+        this.getUtaFollowups();
       }
     });      
   }
@@ -1207,6 +1270,8 @@ async getDentistList(){
           this.getTickFollowups('close');  
         } else if(type == 'fta-follower'){
           this.getFtaFollowups('close');  
+        } else if(type == 'Uta-follower'){
+          this.getUtaFollowups('close');  
         } else {
          this.getOverdueRecalls('close');
        }
@@ -1218,6 +1283,8 @@ async getDentistList(){
           this.getTickFollowups('close');  
         } else if(type == 'fta-follower'){
           this.getFtaFollowups('close');  
+        } else if(type == 'uta-follower'){
+          this.getUtaFollowups('close');  
         } else {
          this.getOverdueRecalls('close');
        }
@@ -1313,12 +1380,22 @@ async getDentistList(){
           this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(p => p.is_complete != true);      
     }
   }
+  
   updateToCompleteFT(event){
     this.showCompleteFta = event.checked;
     if(event.checked ==  true){  
       this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
     } else {
       this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(p => p.is_complete != true);      
+    }
+  }
+
+  updateToCompleteUT(event){
+    this.showCompleteUta = event.checked;
+    if(event.checked ==  true){  
+      this.followupUtaFollowupsInCMP = this.followupUtaFollowups;
+    } else {
+      this.followupUtaFollowupsInCMP = this.followupUtaFollowups.filter(p => p.is_complete != true);      
     }
   }
 
@@ -1335,6 +1412,8 @@ async getDentistList(){
         this.getOverdueRecalls('close');
       } else if(type == 'fta-follower') {
         this.getFtaFollowups('close');
+      } else if(type == 'uta-follower') {
+        this.getUtaFollowups('close');
       }
 
     });
