@@ -79,6 +79,12 @@ export class AppHeaderrightComponent implements AfterViewInit {
     if ( this._cookieService.get("features_dismissed") && this._cookieService.get("features_dismissed") == "0") 
     {
       this.headerService.getNewFeature().subscribe((res) => {
+          for (let linkurl of res.data) {
+            if (!linkurl.link.match(/^[a-zA-Z]+:\/\//))
+              {
+                linkurl.link = 'http://' + linkurl.link;
+              }
+          }
           const dialogRef = this.dialog.open(FeatureDialogComponent, {
             width: "700px",
             data:  res.data,
