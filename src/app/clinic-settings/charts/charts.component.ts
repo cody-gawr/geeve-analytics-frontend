@@ -16,6 +16,7 @@ import {
   MatDialog,
 } from "@angular/material/dialog";
 import { ITooltipData } from "../../shared/tooltip/tooltip.directive";
+import { AppConstants } from "../../app.constants";
 /************* Add Jeeve Names ***********/
 
 @Component({
@@ -139,7 +140,8 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
     private chartsService: ChartsService,
     private router: Router,
     private toastr: ToastrService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public constants: AppConstants
   ) {
     super();
   }

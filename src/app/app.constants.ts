@@ -309,4 +309,65 @@ export class AppConstants {
         info: 'Discription comes here',
         direction: 'right'
     };
+
+    // Settings -> Customisations
+    public tipXrayOverdue: ITooltipData = {
+        title: 'Title comes here', 
+        info: 'Discription comes here',
+        direction: 'right'
+    };
+    public tipOPGOverdue: ITooltipData = {
+        title: 'Title comes here', 
+        info: 'Discription comes here',
+        direction: 'right'
+    };
+    public tipRecallCode1: ITooltipData = {
+        title: 'Title comes here', 
+        info: 'Discription comes here',
+        direction: 'right'
+    };
+    public tipRecallCode2: ITooltipData = {
+        title: 'Title comes here', 
+        info: 'Discription comes here',
+        direction: 'right'
+    };
+    public tipRecallCode3: ITooltipData = {
+        title: 'Title comes here', 
+        info: 'Discription comes here',
+        direction: 'right'
+    };
+    public tipNewPatients: ITooltipData = {
+        title: 'Title comes here', 
+        info: 'Discription comes here',
+        direction: 'right'
+    };
+    public tipCustomisationsRecallRate: ITooltipData = {
+        title: 'Title comes here', 
+        info: 'Discription comes here',
+        direction: 'right'
+    };
+
+    // Settings -> Charts
+    public tipChartsDashboard1Configure: ITooltipData = {
+        title: 'Title', 
+        info: 'Discription comes here',
+        direction: 'left'
+    };
+    public tipChartsDashboard2Configure: ITooltipData = {
+        title: 'Title', 
+        info: 'Discription comes here',
+        direction: 'left'
+    };
+
+    // Settings -> Dentists
+    public tipDentistsPosition: ITooltipData = {
+        title: 'Position', 
+        info: 'Configure whether each provider is a Dentist or OHT',
+        direction: 'left'
+    };
+    public tipDentistsDropdown: ITooltipData = {
+        title: 'Show in Dropdown', 
+        info: 'This setting controls whether the provider is displayed in the dropdown menu on the Clinician dashboards',
+        direction: 'left'
+    };
 }

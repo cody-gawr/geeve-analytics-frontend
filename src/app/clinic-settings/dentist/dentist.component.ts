@@ -12,6 +12,7 @@ import {MatSort} from '@angular/material/sort';
 import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 import { environment } from "../../../environments/environment";
+import { AppConstants } from "../../app.constants";
 
 /************* Add Jeeve Names ***********/
   
@@ -87,6 +88,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
     private router: Router,
     private toastr: ToastrService,
      public dialog: MatDialog,
+     public constants: AppConstants
   ) {
     super();
   }

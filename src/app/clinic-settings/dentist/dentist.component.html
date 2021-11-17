@@ -88,7 +88,7 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header >Position
             <div class="info-button">
                 <div class="info-icon-container">
-                  <img [tooltip]="{title:'Position', info: 'Configure whether each provider is a Dentist or OHT',direction: 'left'}" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                  <img [tooltip]="this.constants.tipDentistsPosition" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>
               </div>
           </th>
@@ -111,7 +111,7 @@
           <th mat-header-cell *matHeaderCellDef>Show in Dropdown
           <div class="info-button">
                 <div class="info-icon-container">
-                  <img [tooltip]="{title:'Show in Dropdown', info: 'This setting controls whether the provider is displayed in the dropdown menu on the Clinician dashboards',direction: 'left'}" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                  <img [tooltip]="this.constants.tipDentistsDropdown" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>
               </div>
           </th>

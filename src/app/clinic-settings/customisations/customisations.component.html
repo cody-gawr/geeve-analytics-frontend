@@ -18,11 +18,7 @@
                 <span>months</span>
                 <div class="info-button">
                   <div class="info-icon-container">
-                    <img [tooltip]="{
-                        title: 'Title comes here',
-                        info: 'Description',
-                        direction: 'right'
-                      }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                    <img [tooltip]="this.constants.tipXrayOverdue" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                   </div>
                 </div>
                 <small *ngIf="
@@ -39,11 +35,7 @@
                 <span>months
                   <div class="info-button">
                     <div class="info-icon-container">
-                      <img [tooltip]="{
-                          title: 'Title comes here',
-                          info: 'Description',
-                          direction: 'right'
-                        }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                      <img [tooltip]="this.constants.tipOPGOverdue" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                     </div>
                   </div>
                 </span>
@@ -62,11 +54,7 @@
               <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Recall Code 1 <div class="info-button">
                     <div class="info-icon-container">
-                      <img [tooltip]="{
-                        title: 'Title comes here',
-                        info: 'Description',
-                        direction: 'right'
-                      }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                      <img [tooltip]="this.constants.tipRecallCode1" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                     </div>
                   </div></label>
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_codes1']"
@@ -83,11 +71,7 @@
               <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Recall Code 2 <div class="info-button">
                     <div class="info-icon-container">
-                      <img [tooltip]="{
-                        title: 'Title comes here',
-                        info: 'Description',
-                        direction: 'right'
-                      }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                      <img [tooltip]="this.constants.tipRecallCode2" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                     </div>
                   </div></label>
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_codes2']"
@@ -103,11 +87,7 @@
               <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Recall Code 3 <div class="info-button">
                     <div class="info-icon-container">
-                      <img [tooltip]="{
-                        title: 'Title comes here',
-                        info: 'Description',
-                        direction: 'right'
-                      }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                      <img [tooltip]="this.constants.tipRecallCode3" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                     </div>
                   </div></label>
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_codes3']"
@@ -135,11 +115,7 @@
                 <label>New Patients
                   <div class="info-button">
                     <div class="info-icon-container">
-                      <img [tooltip]="{
-                        title: 'Title comes here',
-                        info: 'Description',
-                        direction: 'right'
-                      }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                      <img [tooltip]="this.constants.tipNewPatients" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                     </div>
                   </div>
                 </label>
@@ -155,7 +131,7 @@
                 <label>Recall Rate
                   <div class="info-button">
                     <div class="info-icon-container">
-                      <img [tooltip]="{ title: 'Title comes here', info: 'Description', direction: 'right' }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                      <img [tooltip]="this.constants.tipCustomisationsRecallRate" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                     </div>
                   </div>
                 </label>

@@ -24,6 +24,7 @@ import {
 import { ClinicSettingsService } from "../clinic-settings.service";
 import { ClinicianAnalysisService } from "../../dashboards/cliniciananalysis/cliniciananalysis.service";
 import Swal from "sweetalert2";
+import { AppConstants } from "../../app.constants";
 
 @Component({
   selector: "app-customisations-settings",
@@ -55,7 +56,8 @@ export class CustomisationsComponent
     private customisationsService: CustomisationsService,
     private router: Router,
     private fb: FormBuilder,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public constants: AppConstants
   ) {
     super();
     // console.log('test ',this.clinic_id$.value)
