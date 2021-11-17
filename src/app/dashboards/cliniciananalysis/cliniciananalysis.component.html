@@ -239,10 +239,10 @@
               <div class="info-icon-container">
                 <!-- top values Ions -->
                 <i class="fas fa-calendar-week fa-fa-icon-margin"
-                  *ngIf="showTrendChart == false && showWeekTrend == false && selectedDentist  && apiUrl.includes('test-')"
+                  *ngIf="showTrendChart == false && showWeekTrend == false && selectedDentist  && ( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 9 && clinic_id <= 23) )"
                   (click)="setWeeklyTrend()"></i>
                 <i class="fas fa-calendar-week fa-fa-icon-color"
-                  *ngIf="showWeekTrend == true && showTrendChart == false && apiUrl.includes('test-')"
+                  *ngIf="showWeekTrend == true && showTrendChart == false && ( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 9 && clinic_id <= 23) )"
                   (click)="setWeeklyTrend()"></i>
 
                 <!-- <i  style="margin-right: 10px; color: #1aa591;" *ngIf="showTopVlaues  && !showUtiTable && !showTrend" class="far fa-chart-bar greenIcon" (click) = "setTopValues()"></i> -->

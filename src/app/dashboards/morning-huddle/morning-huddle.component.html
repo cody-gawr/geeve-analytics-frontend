@@ -1877,7 +1877,7 @@
         <div class="title-follow-up">
           <div class="TitleCon">
             UTA Followups
-            <div class="info-icon-container"><img [tooltip]="charTips['52']" src="../assets/images/info-icon.png"
+            <div class="info-icon-container"><img [tooltip]="charTips['60']" src="../assets/images/info-icon.png"
                 alt="info-icon" class="info-icon" /></div>
           </div>
 
@@ -1887,12 +1887,12 @@
             </mat-checkbox>
           </div>
         </div>
-        <div class="chipSets mornHuddle" *ngIf="ftaFollowupsScrps.length > 0">
+        <div class="chipSets mornHuddle" *ngIf="utaFollowupsScrps.length > 0">
           <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal"
             (cdkDropListDropped)="drop($event)">
             <mat-chip [tooltip]="{title:chips.script_title, info: chips.script_text }"
               (mouseover)="historyPosChips($event,chips.colour,'fta')" class="example-box"
-              *ngFor="let chips of ftaFollowupsScrps" [color]="chips.colour">
+              *ngFor="let chips of utaFollowupsScrps" [color]="chips.colour">
               <span class="chipText">{{chips.script_title}}</span>
             </mat-chip>
           </mat-chip-list>

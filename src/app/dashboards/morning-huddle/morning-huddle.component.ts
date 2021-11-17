@@ -652,6 +652,7 @@ initiate_clinic() {
   public overdueRecallsScrps:any = [];
   public tickFollowupsScrps:any = [];
   public ftaFollowupsScrps:any = [];
+  public utaFollowupsScrps:any = [];
   public intrFollowupsScrps:any = [];
   /* Get Followups scripts **/
   getFollowupScripts()
@@ -661,6 +662,7 @@ initiate_clinic() {
         this.overdueRecallsScrps = [];
         this.tickFollowupsScrps = [];
         this.ftaFollowupsScrps = [];
+        this.utaFollowupsScrps = [];
         this.intrFollowupsScrps = [];
         
         if(scripts.status && scripts.message == 'success'){
@@ -672,8 +674,10 @@ initiate_clinic() {
               this.overdueRecallsScrps.push(script);
             } else if(script.followup_type == 'Ticks'){
               this.tickFollowupsScrps.push(script);
-            } else if(script.followup_type == 'Cancellations'){
+            } else if(script.followup_type == 'FTA'){
               this.ftaFollowupsScrps.push(script);
+            } else if(script.followup_type == 'UTA'){
+              this.utaFollowupsScrps.push(script);
             } else if(script.followup_type == 'Internal Referrals'){
               this.intrFollowupsScrps.push(script);
             } 

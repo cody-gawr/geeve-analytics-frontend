@@ -320,6 +320,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   public overdueRecallsScrps: any = [];
   public tickFollowupsScrps: any = [];
   public ftaFollowupsScrps: any = [];
+  public utaFollowupsScrps: any = [];
   public intrFollowupsScrps: any = [];
   /* Get Followups scripts **/
   getFollowupScripts() {
@@ -328,6 +329,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.overdueRecallsScrps = [];
       this.tickFollowupsScrps = [];
       this.ftaFollowupsScrps = [];
+      this.utaFollowupsScrps = [];
       this.intrFollowupsScrps = [];
       if (scripts.status && scripts.message == 'success') {
         scripts.data.forEach((script) => {
@@ -337,8 +339,10 @@ export class FollowupsComponent implements OnInit, OnDestroy {
             this.overdueRecallsScrps.push(script);
           } else if (script.followup_type == 'Ticks') {
             this.tickFollowupsScrps.push(script);
-          } else if (script.followup_type == 'Cancellations') {
+          } else if (script.followup_type == 'FTA') {
             this.ftaFollowupsScrps.push(script);
+          } else if (script.followup_type == 'UTA') {
+            this.utaFollowupsScrps.push(script);
           } else if (script.followup_type == 'Internal Referrals') {
             this.intrFollowupsScrps.push(script);
           }

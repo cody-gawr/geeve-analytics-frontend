@@ -1103,18 +1103,18 @@
                     <div class="title-follow-up d-inline-block">
                         UTA
                         <div class="info-icon-container">
-                            <img [tooltip]="charTips['52']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                            <img [tooltip]="charTips['60']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                         </div>
                     </div>
                     <div class="showComplete" *ngIf="followupUtaFollowups.length > 0">
                         <mat-checkbox name="status" [checked]="showCompleteUta" (change)="updateToCompleteUT($event)">
                             Show Complete </mat-checkbox>
                     </div>
-                    <div class="chipSets" *ngIf="ftaFollowupsScrps.length > 0">
+                    <div class="chipSets" *ngIf="utaFollowupsScrps.length > 0">
                         <mat-chip-list class="example-chip">
                             <mat-chip [tooltip]="{title:chips.script_title, info: chips.script_text }"
                                 (mouseover)="historyPosChips($event,chips.colour)" class="example-box"
-                                *ngFor="let chips of ftaFollowupsScrps" [color]="chips.colour">
+                                *ngFor="let chips of utaFollowupsScrps" [color]="chips.colour">
                                 <span class="chipText">{{chips.script_title}}</span>
                             </mat-chip>
                         </mat-chip-list>
