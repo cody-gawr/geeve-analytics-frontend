@@ -469,6 +469,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
     this.referFriendEmail = '';
     if( this.referFriend == true ){
       $('.sa_card.topbar-strip.responsive-top').css('z-index',999);
+      $('.morning-huddle-date.topModel').css('z-index',999);
 
       $('body').find('.referafrndForm').css('opacity', 0);
       this.referFriend = false;
@@ -476,6 +477,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
       this.referFriend = true;      
       setTimeout(function(){
         $('.sa_card.topbar-strip.responsive-top').css('z-index',0);
+        $('.morning-huddle-date.topModel').css('z-index', 0);
         $('body').find('.referafrndForm').css({'left' :(x-850), 'opacity' : 1 });
       },100);
     }
