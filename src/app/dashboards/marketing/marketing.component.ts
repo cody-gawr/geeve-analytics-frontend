@@ -59,10 +59,11 @@ export class MarketingComponent implements AfterViewInit {
   doughnutChartColors;
   subtitle: string;
   public clinic_id: any = {};
-  public patientText: any ='No. New Patients';
+  public patientText: any = 'No. New Patients';
   public dentistCount: any = {};
   public clinicsData: any[] = [];
   public trendText;
+  public showTrendpateint: boolean = false;
   public goalCount = 1;
   public timeout = 2500;
   public xeroConnect: boolean = true;
@@ -879,11 +880,11 @@ export class MarketingComponent implements AfterViewInit {
             }
           });
         }
-        
+
         this.revenueReferralData = this.revenueReferralData1;
         this.revenueReferralLabels = this.revenueReferralLabels1;
         var self = this;
-        
+
         setTimeout(function () {
           self.mkRevenueByReferralLoader = false;
         }, this.timeout);
@@ -960,7 +961,7 @@ export class MarketingComponent implements AfterViewInit {
     this.marketingService.mkNewPatientsByReferralTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
       if (data.message == 'success') {
-        
+
         data.data.forEach(res => {
           res.val.forEach((result, key) => {
             if (typeof (this.mkNewPatientsReferralChartTrend[key]) == 'undefined') {
@@ -1140,31 +1141,31 @@ export class MarketingComponent implements AfterViewInit {
       }
       );
     }
-  } 
+  }
 
-  public fdActivePatientLoader:boolean = true;
-  public fdActivePatients:any = 0;
-  public fdActivePatientsTa:any = 0;
-  public activePatientsTooltip:any = 'down';
-  private fdActivePatient() {    
+  public fdActivePatientLoader: boolean = true;
+  public fdActivePatients: any = 0;
+  public fdActivePatientsTa: any = 0;
+  public activePatientsTooltip: any = 'down';
+  private fdActivePatient() {
+    this.fdActivePatients = 0;
+    this.fdActivePatientsTa = 0;
+    this.fdActivePatientLoader = true;
+    this.marketingService.fdActivePatient(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.fdActivePatients = 0;
       this.fdActivePatientsTa = 0;
-      this.fdActivePatientLoader = true;
-      this.marketingService.fdActivePatient(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((data) => {
-        this.fdActivePatients = 0;
-        this.fdActivePatientsTa = 0;
-        if (data.message == 'success') {
-          this.fdActivePatientLoader = false;
-          this.fdActivePatients = data.total;
-          this.fdActivePatientsTa = data.total_ta;
-          this.activePatientsTooltip = 'down';
+      if (data.message == 'success') {
+        this.fdActivePatientLoader = false;
+        this.fdActivePatients = data.total;
+        this.fdActivePatientsTa = data.total_ta;
+        this.activePatientsTooltip = 'down';
         if (this.fdActivePatients >= this.fdActivePatientsTa)
-            this.activePatientsTooltip = 'up';
-        }
-      }, error => {
-        this.warningMessage = "Please Provide Valid Inputs!";
+          this.activePatientsTooltip = 'up';
       }
-      );
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }
+    );
 
   }
 
@@ -1453,6 +1454,7 @@ export class MarketingComponent implements AfterViewInit {
     else if (val == 'off') {
       this.showTrend = false;
     }
+    this.showTrendpateint = false
   }
 
   private getClinics() {
@@ -1873,7 +1875,7 @@ export class MarketingComponent implements AfterViewInit {
       //   this.mkNewPatientsByReferral();
     } else if (val == 'revenue') {
       this.revenueReferralLabelsl2 = [];
-      
+
       this.totalRevenueByReferral = this.decimalPipe.transform(Math.round(this.reffralAllData.total || 0));
       this.revenueByReferralCount$.next(Math.round(this.reffralAllData.total || 0));
       // this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
@@ -1978,11 +1980,11 @@ export class MarketingComponent implements AfterViewInit {
 
   }
 
-  activePat(){
-    if(this.activePatients == true){
+  activePat() {
+    if (this.activePatients == true) {
       this.activePatients = false;
       this.patientText = 'No. New Patients';
-    }else if(this.activePatients == false){
+    } else if (this.activePatients == false) {
       this.activePatients = true;
       this.patientText = 'No. Active Patients';
     }

@@ -3090,7 +3090,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         if (data.data.total > 0) {
           data.data.data.forEach(res => {
-            if (res.production > 0) {
+            // if (res.production > 0) {
               this.dentistProductionTrend1.push(Math.round(res.production));
               if (mode == 'c') {
                 this.dentistProductionTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -3100,7 +3100,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               else {
                 this.dentistProductionTrendLabels1.push(res.year);
               }
-            }
+            // }
           });
           if (this.dentistProductionTrend1.every((value) => value == 0)) this.dentistProductionTrend1 = [];
           this.dentistProdTrend[0]['data'] = this.dentistProductionTrend1;
@@ -3157,7 +3157,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       if (data && data.message == 'success') {
         if (data.data) {
           data.data.forEach(res => {
-            if (res.collection > 0) {
+            // if (res.collection > 0) {
               this.dentistCollectionTrend1.push(Math.round(res.collection));
               if (activeMode == 'c') {
                 this.dentistColleTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -3166,7 +3166,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               } else {
                 this.dentistColleTrendLabels1.push(res.year);
               }
-            }
+            // }
           });
           if (this.dentistCollectionTrend1.every((value) => value == 0)) this.dentistCollectionTrend1 = [];
           this.dentistColTrend[0]['data'] = this.dentistCollectionTrend1;
