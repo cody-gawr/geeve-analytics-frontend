@@ -63,7 +63,7 @@ export class MarketingComponent implements AfterViewInit {
   public dentistCount: any = {};
   public clinicsData: any[] = [];
   public trendText;
-  public showTrendpateint: boolean = false;
+  public showTrendNewpateint: boolean = true;
   public goalCount = 1;
   public timeout = 2500;
   public xeroConnect: boolean = true;
@@ -1434,6 +1434,7 @@ export class MarketingComponent implements AfterViewInit {
     $('.target_filter').removeClass('mat-button-toggle-checked');
     $('.target_' + val).addClass('mat-button-toggle-checked');
     $('.filter').removeClass('active');
+    this.activePatients = false;
     this.Apirequest = 0;
     var date = new Date();
     this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
@@ -1454,7 +1455,7 @@ export class MarketingComponent implements AfterViewInit {
     else if (val == 'off') {
       this.showTrend = false;
     }
-    this.showTrendpateint = false
+
   }
 
   private getClinics() {
@@ -1488,6 +1489,7 @@ export class MarketingComponent implements AfterViewInit {
     this.mkRevenueByReferralTrend();
 
     this.mkNoNewPatientsTrend();
+    this.mkNoActivePatientsTrend();
     this.fdvisitsRatioTrend();
 
 
@@ -1597,6 +1599,41 @@ export class MarketingComponent implements AfterViewInit {
         backgroundOverlayMode: 'multiply'
       }
     ];
+  public activePatientsChartTrend: any[] =
+    [
+      {
+        data: [],
+        label: '',
+        shadowOffsetX: 3,
+        backgroundColor:
+          [
+            this.chartService.colors.odd,
+            this.chartService.colors.even,
+            this.chartService.colors.odd,
+            this.chartService.colors.even,
+            this.chartService.colors.odd,
+            this.chartService.colors.even,
+            this.chartService.colors.odd,
+            this.chartService.colors.even,
+            this.chartService.colors.odd,
+            this.chartService.colors.even,
+            this.chartService.colors.odd,
+            this.chartService.colors.even,
+            this.chartService.colors.odd
+          ],
+        shadowOffsetY: 2,
+        shadowBlur: 3,
+        shadowColor: 'rgba(0, 0, 0, 0.3)',
+        pointBevelWidth: 2,
+        pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+        pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+        pointShadowOffsetX: 3,
+        pointShadowOffsetY: 3,
+        pointShadowBlur: 10,
+        pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+        backgroundOverlayMode: 'multiply'
+      }
+    ];
 
   public newPatientsChartTrend1 = [];
   public newPatientsChartTrendLabels = [];
@@ -1608,8 +1645,7 @@ export class MarketingComponent implements AfterViewInit {
     this.fdnewPatientsRatioLoader = true;
     this.fdnewPatientsAcqLoader = true;
     this.marketingService.mkNoNewPatientsTrend(this.clinic_id, this.trendValue).subscribe((data) => {
-      this.fdnewPatientsRatioLoader = false;
-      this.fdnewPatientsAcqLoader = false;
+      // this.fdnewPatientsRatioLoader = false;
       this.newPatientsChartTrend1 = [];
       this.newPatientsChartTrendLabels1 = [];
       this.newPatientsChartTrendLabels = [];
@@ -1628,6 +1664,45 @@ export class MarketingComponent implements AfterViewInit {
         this.newPatientsChartTrendLabels = this.newPatientsChartTrendLabels1;
         this.fdnewPatientsAcqTrend();
       }
+      this.fdnewPatientsRatioLoader = false;
+      this.fdnewPatientsAcqLoader = false;
+
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });
+  }
+
+  public activePatientsChartTrend1 = [];
+  public activePatientsChartTrendLabels = [];
+  public activePatientsChartTrendLabels1 = [];
+  public activePatientsChartTemp = [];
+  private mkNoActivePatientsTrend() {
+    this.activePatientsChartTrendLabels1 = [];
+    this.activePatientsChartTrend1 = [];
+    // this.fdnewPatientsRatioLoader = true;
+    this.fdActivePatientLoader = true;
+    this.marketingService.mkNoActivePatientsTrend(this.clinic_id, this.trendValue).subscribe((data) => {
+      // this.fdnewPatientsRatioLoader = false;
+      this.activePatientsChartTrend1 = [];
+      this.activePatientsChartTrendLabels1 = [];
+      this.activePatientsChartTrendLabels = [];
+      this.activePatientsChartTrend[0]['data'] = [];
+      this.Apirequest = this.Apirequest - 1;
+      if (data.message == 'success') {
+        this.activePatientsChartTemp = data.data;
+        data.data.forEach(res => {
+          this.activePatientsChartTrend1.push(res.active_patients);
+          if (this.trendValue == 'c')
+            this.activePatientsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+          else
+            this.activePatientsChartTrendLabels1.push(res.year);
+        });
+        this.activePatientsChartTrend[0]['data'] = this.activePatientsChartTrend1;
+        this.activePatientsChartTrendLabels = this.activePatientsChartTrendLabels1;
+        // this.fdnewPatientsAcqTrend();
+      }
+      this.fdActivePatientLoader = false;
+
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     });

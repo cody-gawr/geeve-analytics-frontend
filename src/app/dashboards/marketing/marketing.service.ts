@@ -113,6 +113,15 @@ public token_id;
         );
     }
 
+    mkNoActivePatientsTrend(clinic_id, mode ='' ): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Marketing/mkActivePatientsTrend?clinic_id="+clinic_id+"&mode="+mode, header)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
      //Get Xero Accounts
    getAccounts(clinic_id,user_id = this._cookieService.get("userid")  ): Observable<any> {
     var header = this.getHeaders(); 

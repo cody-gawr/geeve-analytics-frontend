@@ -199,42 +199,43 @@
                                 <span *ngIf="showTrend == false  && trendText && activePatients == true"
                                     class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
                                     matTooltip="{{trendText}} : {{newPatientsPrevTotal}}"><img class="trend_ico"
-                                        src="../assets/images/trend_{{activePatientsTooltip}}.png"></span> {{patientText}}
+                                        src="../assets/images/trend_{{activePatientsTooltip}}.png"></span>
+                                {{patientText}}
                             </div>
                             <div class="sa_box_title_right_buttons"></div>
                             <div class="info-icon-container marketing">
                                 <!-- <i title="Active Patients" class="fas fa-heartbeat"
                                     [ngClass]="activePatients == true? 'active' : ''"
                                     *ngIf="apiUrl.includes('test-') && showTrend == false" (click)="activePat()"></i> -->
-                                <img *ngIf="!activePatients" [tooltip]="charTips['36']" src="../assets/images/info-icon.png" alt="info-icon"
-                                    class="info-icon" />
-                                <img *ngIf="activePatients" [tooltip]="charTips['61']" src="../assets/images/info-icon.png" alt="info-icon"
-                                    class="info-icon" />
+                                <img *ngIf="!activePatients" [tooltip]="charTips['36']"
+                                    src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                                <img *ngIf="activePatients" [tooltip]="charTips['61']"
+                                    src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                             </div>
                         </mat-card-title>
                         <div class="card-body">
                             <div *ngIf="(apiUrl.includes('test-') || apiUrl.includes('staging-'))" fxLayout="row wrap"
                                 class="sa_tabs_main_sec" fxLayoutAlign="center">
                                 <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                                    <small class="sa_tab_btn" [ngClass]="((!activePatients && !showTrend) || (showTrend && !showTrendpateint))? 'active' : ''"
+                                    <small class="sa_tab_btn" [ngClass]="!activePatients? 'active' : ''"
                                         (click)="activePat()">New Patients</small>
                                 </div>
                                 <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                                    <small class="sa_tab_btn" [ngClass]="((activePatients && !showTrend) || (showTrend && showTrendpateint))? 'active' : ''"
+                                    <small class="sa_tab_btn" [ngClass]="activePatients? 'active' : ''"
                                         (click)="activePat()">Active Patients</small>
                                 </div>
                             </div>
                             <div class="chart py-2">
-                                <div class="chart-num-patients" *ngIf="showTrend == false && newPatientsTotal > 0 && fdnewPatientsRatioLoader == false && activePatients == false"
-                                    >
+                                <div class="chart-num-patients"
+                                    *ngIf="showTrend == false && newPatientsTotal > 0 && fdnewPatientsRatioLoader == false && activePatients == false">
                                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="newPatientsTotal"
                                         [thick]="gaugeThick" [foregroundColor]="foregroundColor"
                                         [backgroundColor]="backgroundColor" [cap]="cap" [max]="maxnewPatientsGoal"
                                         [size]="size">
                                     </ngx-gauge>
                                 </div>
-                                <div class="chart-num-patients" *ngIf="showTrend == false  && activePatients == true && fdActivePatients > 0 && fdActivePatientLoader == false"
-                                   >
+                                <div class="chart-num-patients"
+                                    *ngIf="showTrend == false  && activePatients == true && fdActivePatients > 0 && fdActivePatientLoader == false">
                                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="fdActivePatients"
                                         [thick]="gaugeThick" [foregroundColor]="foregroundColor"
                                         [backgroundColor]="backgroundColor" [cap]="cap" [max]="fdActivePatient"
@@ -255,7 +256,7 @@
                                     </p>
                                 </div>
 
-                                <div *ngIf="showTrend == true && newPatientsChartTrend1.length > 0"
+                                <div *ngIf="showTrend == true && activePatients == false &&  newPatientsChartTrend1.length > 0"
                                     class="chart-Trend1-patients">
                                     <canvas #myCanvas baseChart [datasets]="newPatientsChartTrend"
                                         [labels]="newPatientsChartTrendLabels" [options]="stackedChartOptions"
@@ -265,10 +266,26 @@
                                     </canvas>
                                 </div>
 
+                                <div *ngIf="showTrend == true && activePatients == true && activePatientsChartTrend1.length > 0"
+                                    class="chart-Trend1-patients">
+                                    <canvas #myCanvas baseChart [datasets]="activePatientsChartTrend"
+                                        [labels]="activePatientsChartTrendLabels" [options]="stackedChartOptions"
+                                        [chartType]="stackedChartType" [colors]="lineChartColors"
+                                        (chartHover)="chartHovered($event)" [legend]="false"
+                                        (chartClick)="chartClicked($event)">
+                                    </canvas>
+                                </div>
+
                                 <div
-                                    *ngIf="showTrend == true && newPatientsChartTrend1.length <=0 && activePatients == false">
+                                    *ngIf="showTrend == true  && activePatients == false && newPatientsChartTrend1.length <=0 ">
                                     <div class="sa_nodata_div"></div>
                                     <p class="chart-placeholder-text">You have no new patients in the selected period
+                                    </p>
+                                </div>
+                                <div
+                                    *ngIf="showTrend == true && activePatients == true && newPatientsChartTrend1.length <=0">
+                                    <div class="sa_nodata_div"></div>
+                                    <p class="chart-placeholder-text">You have no active patients in the selected period
                                     </p>
                                 </div>
                             </div>
@@ -452,7 +469,8 @@
                                     <p class="chart-placeholder-text">You have no visits in the selected period</p>
                                 </div>
 
-                                <div *ngIf="showTrend == true && visitsChartTrend1.length > 0" class="chart-Trend1-patients">
+                                <div *ngIf="showTrend == true && visitsChartTrend1.length > 0"
+                                    class="chart-Trend1-patients">
                                     <canvas #myCanvas baseChart [datasets]="visitsChartTrend"
                                         [labels]="visitsChartTrendLabels" [options]="stackedChartOptions"
                                         [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
