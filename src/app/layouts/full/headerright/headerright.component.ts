@@ -473,7 +473,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
     } else {
       this.referFriend = true;      
       setTimeout(function(){
-        $('body').find('.referafrndForm').css({'left' :(x-350), 'opacity' : 1 });
+        $('body').find('.referafrndForm').css({'left' :(x-450), 'opacity' : 1 });
       },100);
     }
     

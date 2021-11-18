@@ -8196,7 +8196,7 @@ th.mat-header-cell.cdk-header-cell.cdk-column-status.mat-column-status{
     float: left;
     display: block;
     width: auto;
-    padding: 5px 0px;
+    padding: 10px 0px 0px;
 }
 .referafrnd i.fas.fa-user-friends.referafriend {
     color: #9b9696;
@@ -8251,7 +8251,7 @@ th.mat-header-cell.cdk-header-cell.cdk-column-status.mat-column-status{
     top: -32px;
     position: absolute;
     border-bottom: 14px solid #00a289;
-    left: 86px;
+    left: 145px;
 }
 
 .referafrnd small.form-text.text-muted {
