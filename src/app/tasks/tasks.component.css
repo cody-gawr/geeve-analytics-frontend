@@ -106,7 +106,7 @@
     position: fixed;
     top: 16px;
     z-index: 9999;
-    right: 20%;
+    left: 30%;
 }
 .content-wrapper.kanban{
     width: 100%;
