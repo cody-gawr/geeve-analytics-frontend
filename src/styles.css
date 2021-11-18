@@ -8126,7 +8126,7 @@ span.featureclose {
 .features-new li a {
   color    :#072002;
   font-size: 14px;
-  margin-left: 4px;
+  /* margin-left: 4px; */
 }
 
 .features-new h4 {
