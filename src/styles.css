@@ -8213,7 +8213,7 @@ th.mat-header-cell.cdk-header-cell.cdk-column-status.mat-column-status{
     border: 1px solid;
     position: absolute;
     left: 500px;
-    top: 49px;
+    top: 0px;
     padding: 10px 20px;
     z-index: 999;
     background: #fff;
@@ -8245,14 +8245,14 @@ th.mat-header-cell.cdk-header-cell.cdk-column-status.mat-column-status{
     border: 1px solid #cecece;
     padding: 3px;
 }
-.referafrndForm:after {
+/*.referafrndForm:after {
     content: '';
     border: 18px solid transparent;
     top: -32px;
     position: absolute;
     border-bottom: 14px solid #00a289;
     left: 145px;
-}
+}*/
 
 .referafrnd small.form-text.text-muted {
     color: red !important;

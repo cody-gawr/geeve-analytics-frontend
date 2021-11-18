@@ -468,12 +468,15 @@ export class AppHeaderrightComponent implements AfterViewInit {
     this.referFriendName= '';
     this.referFriendEmail = '';
     if( this.referFriend == true ){
+      $('.sa_card.topbar-strip.responsive-top').css('z-index',999);
+
       $('body').find('.referafrndForm').css('opacity', 0);
       this.referFriend = false;
     } else {
       this.referFriend = true;      
       setTimeout(function(){
-        $('body').find('.referafrndForm').css({'left' :(x-450), 'opacity' : 1 });
+        $('.sa_card.topbar-strip.responsive-top').css('z-index',0);
+        $('body').find('.referafrndForm').css({'left' :(x-850), 'opacity' : 1 });
       },100);
     }
     
