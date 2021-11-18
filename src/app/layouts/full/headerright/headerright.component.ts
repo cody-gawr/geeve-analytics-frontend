@@ -107,6 +107,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
     this._routerSub = this.router.events
       .filter((event) => event instanceof NavigationEnd)
       .subscribe((value) => {
+        this.referFriend = false;
         this.route = router.url;
         if (this.route == "/dashboards/cliniciananalysis") {
           this.showCompare = true;
@@ -468,7 +469,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
     this.referFriendName= '';
     this.referFriendEmail = '';
     if( this.referFriend == true ){
-      $('.sa_card.topbar-strip.responsive-top').css('z-index',999);
+      $('.sa_card.topbar-strip').css('z-index',999);
       $('.morning-huddle-date.topModel').css('z-index',999);
 
       $('body').find('.referafrndForm').css('opacity', 0);
@@ -476,7 +477,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
     } else {
       this.referFriend = true;      
       setTimeout(function(){
-        $('.sa_card.topbar-strip.responsive-top').css('z-index',0);
+        $('.sa_card.topbar-strip').css('z-index',0);
         $('.morning-huddle-date.topModel').css('z-index', 0);
         $('body').find('.referafrndForm').css({'left' :(x-850), 'opacity' : 1 });
       },100);
