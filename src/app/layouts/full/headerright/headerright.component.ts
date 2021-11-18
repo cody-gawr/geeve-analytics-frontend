@@ -471,7 +471,8 @@ export class AppHeaderrightComponent implements AfterViewInit {
     if( this.referFriend == true ){
       $('.sa_card.topbar-strip').css('z-index',999);
       $('.morning-huddle-date.topModel').css('z-index',999);
-
+      $('.sa-pull-right.kanban').css('z-index',9999);
+      $('.e-card.e-template').css('z-index',999);
       $('body').find('.referafrndForm').css('opacity', 0);
       this.referFriend = false;
     } else {
@@ -479,6 +480,8 @@ export class AppHeaderrightComponent implements AfterViewInit {
       setTimeout(function(){
         $('.sa_card.topbar-strip').css('z-index',0);
         $('.morning-huddle-date.topModel').css('z-index', 0);
+        $('.sa-pull-right.kanban').css('z-index',0);
+        $('.e-card.e-template').css('z-index',0);
         $('body').find('.referafrndForm').css({'left' :(x-850), 'opacity' : 1 });
       },100);
     }
