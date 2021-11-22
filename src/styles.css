@@ -8288,3 +8288,13 @@ span.referafrndFormClose {
   width: 45%;
   float: left;
 }
+.e-kanban-form .md-drppicker.drops-down-auto.ltr.shown {
+    position: absolute;
+    top: -219px !important;
+}
+.e-kanban-form table.table-condensed tr td:first-child {
+    width: 32px !important;
+}
+.e-kanban-form .md-drppicker .calendar td, .e-kanban-form .md-drppicker .calendar th {
+    text-align: center; 
+}
