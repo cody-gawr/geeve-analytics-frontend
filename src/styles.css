@@ -8235,9 +8235,10 @@ th.mat-header-cell.cdk-header-cell.cdk-column-status.mat-column-status{
     opacity: 0.35;
     background-size: 273px 214px;
 }
-.referafrndForm .fas.fa-heartbeat.features-new-icon{
-  left: 51%;
-  top: 12px;
+.referafrndForm .fas.fa-heartbeat.features-new-icon {
+    left: 52%;
+    top: 35px;
+    font-size: 25px;
 }
 .referafrndForm .row {
     margin: 0;
@@ -8288,6 +8289,7 @@ span.referafrndFormClose {
     right: 25px;
     top: 20px;
     cursor: pointer;
+    z-index: 3;
 }
 .lable-set-jeeve-names{
   width: 20%;
