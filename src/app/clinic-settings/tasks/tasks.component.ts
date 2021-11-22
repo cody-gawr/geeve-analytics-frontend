@@ -28,9 +28,7 @@ export class DialogOverviewExampleDialogComponent {
     this.dialogRef.close();
   }
 
-  save(data) {
-    console.log('save data', data)
-    return;
+  save(data) {    
     if ((data.id && data.old == data.task_name) || data.task_name == '') {
       return false;
     }
