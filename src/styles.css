@@ -8207,11 +8207,13 @@ th.mat-header-cell.cdk-header-cell.cdk-column-status.mat-column-status{
     cursor: pointer;
     border: 1px solid;
     padding: 10px;
+    /*  
     background-image: url('/assets/images/invite-a-friend.png');
     background-size: 50px 35px;
     background-repeat: no-repeat;
     background-position: center;
-    background-color: #7c7979;
+    */
+    background-color: #1aa591;
     color: #fff;
     box-shadow: 0px 1px 7px #524b4b;
     border: 1px solid #fff;
