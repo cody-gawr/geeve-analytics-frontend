@@ -8223,6 +8223,22 @@ th.mat-header-cell.cdk-header-cell.cdk-column-status.mat-column-status{
     margin-top: 10px;
     opacity: 0;
 }
+
+.background-con {
+    background-image: url('/assets/images/invite-a-friend.png');
+    background-repeat: no-repeat;
+    background-position: top center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+    opacity: 0.35;
+    background-size: 273px 214px;
+}
+.referafrndForm .fas.fa-heartbeat.features-new-icon{
+  left: 51%;
+  top: 12px;
+}
 .referafrndForm .row {
     margin: 0;
 }
@@ -8244,6 +8260,7 @@ th.mat-header-cell.cdk-header-cell.cdk-column-status.mat-column-status{
 .referafrndForm input {
     border: 1px solid #cecece;
     padding: 3px;
+    box-shadow: 5px 7px 8px #cecece;
 }
 /*.referafrndForm:after {
     content: '';
