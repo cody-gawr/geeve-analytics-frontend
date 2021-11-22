@@ -2,6 +2,7 @@
   <i (click)="toggleReffer($event)" matTooltip="Refer a Friend" [ngClass]="referFriend? 'green' : ''" class="fas fa-user-friends referafriend"> &nbsp;Refer a Friend</i>
    
   <div class="referafrndForm" *ngIf="referFriend">
+    <div class="background-con"></div>
     <h1>Refer a Friend</h1>
     <span (click)="toggleReffer($event)" class="referafrndFormClose">X</span>
     <div class="row">
@@ -18,6 +19,7 @@
         </div>
       </div>
       <div class="row">
+          <i class="fas fa-heartbeat  features-new-icon"></i>
            <button (click) = "sendReffer()" type="submit" class="mat-focus-indicator sa-pull-right mat-raised-button mat-dc m-l-10 mat-button-base">Submit</button>      
       </div>
   </div>
