@@ -1,4 +1,4 @@
-import { AfterViewInit, Inject,Component, Input, ViewChild,ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Inject, Component, Input, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
@@ -8,11 +8,11 @@ import { BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TaskService } from './tasks.service';
 import { BaseComponent } from '../base/base.component';
-import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { ClinicSettingsService } from '../clinic-settings.service';
 import { ClinicianAnalysisService } from '../../dashboards/cliniciananalysis/cliniciananalysis.service';
 import Swal from 'sweetalert2';
-import {MatSort} from '@angular/material/sort';
+import { MatSort } from '@angular/material/sort';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -21,19 +21,21 @@ import {MatSort} from '@angular/material/sort';
 })
 
 
-export class DialogOverviewExampleDialogComponent {    
-  constructor(public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: any,private _cookieService: CookieService, private taskService: TaskService, private router: Router) {}
-  
+export class DialogOverviewExampleDialogComponent {
+  constructor(public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private _cookieService: CookieService, private taskService: TaskService, private router: Router) { }
+
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  save(data){  
-    if( (data.id && data.old == data.task_name) ||  data.task_name == ''){
+  save(data) {
+    console.log('save data', data)
+    return;
+    if ((data.id && data.old == data.task_name) || data.task_name == '') {
       return false;
     }
 
-    this.taskService.addTask(data.id,data.task_name,data.clinic_id).subscribe((res) => {
+    this.taskService.addTask(data.id, data.task_name, data.clinic_id).subscribe((res) => {
       if (res.message == 'success') {
         this.dialogRef.close();
       } else if (res.status == '401') {
@@ -43,7 +45,8 @@ export class DialogOverviewExampleDialogComponent {
       console.log('error', error)
     });
   }
-  validate(){
+
+  validate() {
 
   }
 
@@ -75,11 +78,11 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
   currentPage: number = 1;
   tasksList = new MatTableDataSource([]);
   dentistListLoading: boolean = false;
-  displayedColumns: string[] = ['task_name','active','action'];
+  displayedColumns: string[] = ['task_name', 'active', 'action'];
   editing = {};
-  clinicData:any = [];
+  clinicData: any = [];
   dailyTaskEnable: boolean = false;
-  
+
 
   constructor(
     private _cookieService: CookieService,
@@ -94,13 +97,13 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-      this.tasksList.sort = this.sort;
+    this.tasksList.sort = this.sort;
     this.tasksList.paginator = this.paginator;
     this.clinic_id$.pipe(
       takeUntil(this.destroyed$)
     ).subscribe(id => {
       if (id) {
-         this.getClinic(id);
+        this.getClinic(id);
         this.getTasks(id);
       }
     })
@@ -114,17 +117,15 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
   }
 
   handlePageChange(goPage: number) {
-    if (this.currentPage < goPage)
-    {
-      for(let i = this.currentPage; i < goPage; i++){
+    if (this.currentPage < goPage) {
+      for (let i = this.currentPage; i < goPage; i++) {
         this.paginator.nextPage();
-      }      
+      }
     }
-    else
-    {
-      for(let i = goPage; i < this.currentPage; i++){
+    else {
+      for (let i = goPage; i < this.currentPage; i++) {
         this.paginator.previousPage();
-      }      
+      }
     }
     this.currentPage = goPage; //make the page active by class
   }
@@ -141,18 +142,18 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
     this.tasksList.filter = value.trim().toLocaleLowerCase();
   }
 
-    getClinic(id){
-      this.clinicianAnalysisService.getClinics(id,'DailyTaskEnable').subscribe((data: any) => {
-        if(data.data){
-          this.dailyTaskEnable = (data.data.daily_task_enable == 1)? true : false;
-        }
-      }, error => {});
-    }
+  getClinic(id) {
+    this.clinicianAnalysisService.getClinics(id, 'DailyTaskEnable').subscribe((data: any) => {
+      if (data.data) {
+        this.dailyTaskEnable = (data.data.daily_task_enable == 1) ? true : false;
+      }
+    }, error => { });
+  }
 
   getTasks(id) {
     this.taskService.getTasks(id).subscribe((res) => {
-      if (res.message == 'success') {        
-        this.tasksList.data = res.data;        
+      if (res.message == 'success') {
+        this.tasksList.data = res.data;
         this.setPaginationButtons(res.data.length);
       }
       else if (res.status == '401') {
@@ -163,51 +164,47 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
     });
   }
 
-  updateStatus(event,id,is_default){
-    var active = (event.checked == true)? 1 : 0;
-    this.taskService.updateTaskStatus(active,id,this.clinic_id$.value,is_default).subscribe((update:any) => {
-      
-    });   
+  updateStatus(event, id, is_default) {
+    var active = (event.checked == true) ? 1 : 0;
+    this.taskService.updateTaskStatus(active, id, this.clinic_id$.value, is_default).subscribe((update: any) => {
+
+    });
   }
 
-  openDialog(id= '',name= '',): void {
+  openDialog(id = '', name = '',): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '500px',
-      data: {id: id, task_name: name,clinic_id: this.clinic_id$.value, old: name}
+      data: { id: id, task_name: name, clinic_id: this.clinic_id$.value, old: name }
     });
     dialogRef.afterClosed().subscribe(result => {
       this.getTasks(this.clinic_id$.value);
     });
-    
+
   }
 
-  public toggleMH(event)
-  {
-    var active = (event.checked == true)? 1 : 0;
+  public toggleMH(event) {
+    var active = (event.checked == true) ? 1 : 0;
     this.dailyTaskEnable = event.checked;
-    this.clinicSettingsService.updatePartialSetting(this.clinic_id$.value,active,'daily_task_enable' ).subscribe((res) => {
-      if(res.message == 'success') {}
-    }, error => {});
+    this.clinicSettingsService.updatePartialSetting(this.clinic_id$.value, active, 'daily_task_enable').subscribe((res) => {
+      if (res.message == 'success') { }
+    }, error => { });
   }
 
-  deleteTask(taskId)
-  {
+  deleteTask(taskId) {
     Swal.fire({
       title: 'Are you sure?',
       text: 'You want to delete Task?',
       icon: 'warning',
-      showCancelButton: true, 
+      showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No'
     }).then((result) => {
-      if(result.value)
-      {
-        this.clinicSettingsService.deleteDailyTask(this.clinic_id$.value,taskId ).subscribe((res) => {
-        if(res.message == 'success')
-        {
-          this.getTasks(this.clinic_id$.value);
-        }
-        }, error => {          
+      if (result.value) {
+        this.clinicSettingsService.deleteDailyTask(this.clinic_id$.value, taskId).subscribe((res) => {
+          if (res.message == 'success') {
+            this.getTasks(this.clinic_id$.value);
+          }
+        }, error => {
         });
       }
     });

@@ -54,6 +54,8 @@
 
 <div mat-dialog-actions class="justify-between">
   <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
-  <button (click)="save(data)" [disabled] = "data.type == '' || data.name == '' || data.text == ''" tabindex="2" class="mat-raised-button mat-dc float-right">Save</button>
+  
+  <button *ngIf="!data.id" (click)="save(data)" [disabled] = "data.type == '' || data.name == '' || data.text == ''" tabindex="2" class="mat-raised-button mat-dc float-right">Save</button>
+  <button *ngIf="data.id" (click)="save(data)"  tabindex="2" class="mat-raised-button mat-dc float-right">Update</button>
 </div>
 </div>
