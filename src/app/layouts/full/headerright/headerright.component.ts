@@ -32,11 +32,11 @@ export interface Dentist {
   selector: "feature-overview-limit-example",
   templateUrl: "./feature-overview-limit-example.html",
 })
-export class FeatureDialogComponent{
+export class FeatureDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<FeatureDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-  ) {}
+  ) { }
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -60,9 +60,9 @@ export class AppHeaderrightComponent implements AfterViewInit {
   referFriendNameError: boolean = false;
   referFriendEmailError: boolean = false;
   referFriendEmailPError: boolean = false;
-  
+
   classUrl: string = "";
-   @Inject(MAT_DIALOG_DATA) public data: any;
+  @Inject(MAT_DIALOG_DATA) public data: any;
   @Output() newItemEvent = new EventEmitter<Number>();
 
   constructor(
@@ -76,30 +76,30 @@ export class AppHeaderrightComponent implements AfterViewInit {
     private toastr: ToastrService,
     public dialog: MatDialog
   ) {
-    if ( this._cookieService.get("features_dismissed") && this._cookieService.get("features_dismissed") == "0") 
-    {
+    if (this._cookieService.get("features_dismissed") && this._cookieService.get("features_dismissed") == "0") {
       this.headerService.getNewFeature().subscribe((res) => {
-          for (let linkurl of res.data) {
-            if (!linkurl.link.match(/^[a-zA-Z]+:\/\//))
-              {
-                linkurl.link = 'http://' + linkurl.link;
-              }
+        for (let linkurl of res.data) {
+          if (linkurl.link) {
+            if (!linkurl.link.match(/^[a-zA-Z]+:\/\//)) {
+              linkurl.link = 'http://' + linkurl.link;
+            }
           }
-          const dialogRef = this.dialog.open(FeatureDialogComponent, {
-            width: "700px",
-            data:  res.data,
-          });
-          dialogRef.afterClosed().subscribe(result => {
-            this.headerService.getNewFeatureDisable().subscribe((res) => {
-              if(res.message == 'success'){
-                this._cookieService.put("features_dismissed",'1');
-              }
-            });
-          });
-
-        }, (error) => {
-          this.warningMessage = "Please Provide Valid Inputs!";
+        }
+        const dialogRef = this.dialog.open(FeatureDialogComponent, {
+          width: "700px",
+          data: res.data,
         });
+        dialogRef.afterClosed().subscribe(result => {
+          this.headerService.getNewFeatureDisable().subscribe((res) => {
+            if (res.message == 'success') {
+              this._cookieService.put("features_dismissed", '1');
+            }
+          });
+        });
+
+      }, (error) => {
+        this.warningMessage = "Please Provide Valid Inputs!";
+      });
     }
 
     this.getRoles();
@@ -170,7 +170,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
           this._cookieService.put("user_type", res.type, opts);
         }
       },
-      (error) => {}
+      (error) => { }
     );
   }
   ngOnDestroy() {
@@ -182,7 +182,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
     //Start watching for user inactivity.
     this.userIdle.startWatching();
     // Start watching when user idle is starting.
-    this.userIdle.onTimerStart().subscribe((count) => {});
+    this.userIdle.onTimerStart().subscribe((count) => { });
     // Start watch when time is up.
     this.userIdle.onTimeout().subscribe(() => {
       this.userIdle.stopTimer();
@@ -270,10 +270,10 @@ export class AppHeaderrightComponent implements AfterViewInit {
           this.router.navigateByUrl("/login");
         }
       }
-    );    
+    );
   }
 
-  addNewItem(value: any) {    
+  addNewItem(value: any) {
     this.newItemEvent.emit(value);
   }
 
@@ -342,10 +342,10 @@ export class AppHeaderrightComponent implements AfterViewInit {
   }
 
   loadClinic(newValue) {
-    if (newValue != "undefined") {      
+    if (newValue != "undefined") {
       this.clinicsData.forEach((data) => {
         if (data.id == newValue) {
-          
+
           this.checkTrailEnd(data);
         }
       });
@@ -353,8 +353,8 @@ export class AppHeaderrightComponent implements AfterViewInit {
       if ($("body").find("span#currentClinic").length <= 0) {
         $("body").append(
           '<span id="currentClinic" style="display:none" cid="' +
-            newValue +
-            '"></span>'
+          newValue +
+          '"></span>'
         );
       } else {
         $("#currentClinic").attr("cid", newValue);
@@ -391,7 +391,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
 
   checkTrailEnd(data) {
     if (data.trial_end_date) {
-      
+
       var date1 = new Date();
       var date2 = new Date(data.trial_end_date);
       var Time = date2.getTime() - date1.getTime();
@@ -435,8 +435,8 @@ export class AppHeaderrightComponent implements AfterViewInit {
     if ($("body").find("span#currentDentist").length <= 0) {
       $("body").append(
         '<span id="currentDentist" style="display:none" did="' +
-          newValue +
-          '"></span>'
+        newValue +
+        '"></span>'
       );
     } else {
       $("#currentDentist").attr("did", newValue);
@@ -460,66 +460,67 @@ export class AppHeaderrightComponent implements AfterViewInit {
     $("#dentist_initiate").click();
   }
 
-  toggleReffer(event){
-    
-    let x= event.clientX;
-    this.referFriendNameError= false;
+  toggleReffer(event) {
+
+    let x = event.clientX;
+    this.referFriendNameError = false;
     this.referFriendEmailError = false;
     this.referFriendEmailPError = false;
-    this.referFriendName= '';
+    this.referFriendName = '';
     this.referFriendEmail = '';
-    if( this.referFriend == true ){
-      $('.sa_card.topbar-strip').css('z-index',999);
-      $('.morning-huddle-date.topModel').css('z-index',999);
-      $('.sa-pull-right.kanban').css('z-index',9999);
-      $('.e-card.e-template').css('z-index',999);
+    if (this.referFriend == true) {
+      $('.sa_card.topbar-strip').css('z-index', 999);
+      $('.morning-huddle-date.topModel').css('z-index', 999);
+      $('.sa-pull-right.kanban').css('z-index', 9999);
+      $('.e-card.e-template').css('z-index', 999);
       $('body').find('.referafrndForm').css('opacity', 0);
       this.referFriend = false;
     } else {
-      this.referFriend = true;      
-      setTimeout(function(){
-        $('.sa_card.topbar-strip').css('z-index',0);
+      this.referFriend = true;
+      setTimeout(function () {
+        $('.sa_card.topbar-strip').css('z-index', 0);
         $('.morning-huddle-date.topModel').css('z-index', 0);
-        $('.sa-pull-right.kanban').css('z-index',0);
-        $('.e-card.e-template').css('z-index',0);
-        $('body').find('.referafrndForm').css({'left' :(x-750), 'opacity' : 1 });
-      },100);
+        $('.sa-pull-right.kanban').css('z-index', 0);
+        $('.e-card.e-template').css('z-index', 0);
+        $('body').find('.referafrndForm').css({ 'left': (x - 750), 'opacity': 1 });
+      }, 100);
     }
-    
+
   }
 
-  sendReffer(){
-    this.referFriendNameError= false;
+  sendReffer() {
+    this.referFriendNameError = false;
     this.referFriendEmailError = false;
     this.referFriendEmailPError = false;
-    if(this.referFriendName.trim() == '' ){
-      this.referFriendNameError= true;      
+    if (this.referFriendName.trim() == '') {
+      this.referFriendNameError = true;
     }
-    if(this.referFriendEmail.trim() == '' ){
+    if (this.referFriendEmail.trim() == '') {
       this.referFriendEmailError = true;
     }
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-     if(!re.test(this.referFriendEmail.trim()) && this.referFriendEmail.trim() != ''){
-      this.referFriendEmailPError = true; 
-     }
+    if (!re.test(this.referFriendEmail.trim()) && this.referFriendEmail.trim() != '') {
+      this.referFriendEmailPError = true;
+    }
 
-    if(this.referFriendEmailError == true || this.referFriendNameError == true || this.referFriendEmailPError){
+    if (this.referFriendEmailError == true || this.referFriendNameError == true || this.referFriendEmailPError) {
       return false;
     }
 
-     this.clinic_id && this.dentistService.getReferFriend(this.clinic_id, this.referFriendName.trim(), this.referFriendEmail.trim()).subscribe(
-        (res) => {
-          if(res.status == 200){
-             this.referFriend= false;
-             this.referFriendName= '';
-             this.referFriendEmail = '';
-             this.toastr.success("Email send to user successfully");
-          } else{
-            this.toastr.success("Something went wrong");
-          }
-            
-        },
-        (error) => { this.warningMessage = "Please Provide Valid Inputs!";
-        });
+    this.clinic_id && this.dentistService.getReferFriend(this.clinic_id, this.referFriendName.trim(), this.referFriendEmail.trim()).subscribe(
+      (res) => {
+        if (res.status == 200) {
+          this.referFriend = false;
+          this.referFriendName = '';
+          this.referFriendEmail = '';
+          this.toastr.success("Email send to user successfully");
+        } else {
+          this.toastr.success("Something went wrong");
+        }
+
+      },
+      (error) => {
+        this.warningMessage = "Please Provide Valid Inputs!";
+      });
   }
 }
