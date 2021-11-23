@@ -482,7 +482,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
         $('.morning-huddle-date.topModel').css('z-index', 0);
         $('.sa-pull-right.kanban').css('z-index',0);
         $('.e-card.e-template').css('z-index',0);
-        $('body').find('.referafrndForm').css({'left' :(x-850), 'opacity' : 1 });
+        $('body').find('.referafrndForm').css({'left' :(x-750), 'opacity' : 1 });
       },100);
     }
     
