@@ -95,9 +95,8 @@ export class DialogOverviewTasklistDialogComponent {
   }
 
   updateItem(i) {
-    console.log('update')
+
     let data = this.dialogRef.componentInstance.data.tasksListItems[i];
-    console.log(data)
     if (data) {
       this.taskService.updateTasksItem(data.id, data.list_id, data.task_name, data.clinic_id).subscribe((res) => {
         if (res.message == 'success') {
@@ -112,8 +111,18 @@ export class DialogOverviewTasklistDialogComponent {
     // this.dialogRef.componentInstance.data.tasksListItems[i].readOnly = !this.dialogRef.componentInstance.data.tasksListItems[i].readOnly
   }
   removeItem(i) {
-    console.log('remove')
-    this.dialogRef.componentInstance.data.tasksListItems.splice(i, 1);
+    let data = this.dialogRef.componentInstance.data.tasksListItems[i];
+    if (data) {
+      this.taskService.deleteTasksItem(data.id, data.clinic_id).subscribe((res) => {
+        if (res.message == 'success') {
+          this.dialogRef.componentInstance.data.tasksListItems.splice(i, 1);
+        } else if (res.status == '401') {
+          this.handleUnAuthorization();
+        }
+      }, error => {
+        console.log('error', error)
+      });
+    }
   }
 
   additem() {

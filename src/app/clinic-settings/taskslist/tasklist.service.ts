@@ -72,6 +72,18 @@ export class TasklistService {
             );
     }
 
+    deleteTasksItem(id, clinic_id): Observable<any> {
+        var header = this.getHeaders();
+        const formData = new FormData();
+        formData.append('id', id);        
+        formData.append('clinic_id', clinic_id);
+        return this.http.post(this.apiUrl + "/clinics/clinicDeleteEndDayTasks", formData, header)
+            .pipe(map((response: Response) => {
+                return response;
+            })
+            );
+    }
+
     // update tasks
     updateTaskStatus(event, id, cid, is_default): Observable<any> {
         var header = this.getHeaders();
