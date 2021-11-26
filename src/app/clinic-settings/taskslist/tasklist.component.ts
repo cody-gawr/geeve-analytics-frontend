@@ -110,8 +110,9 @@ export class DialogOverviewTasklistDialogComponent {
     }
     // this.dialogRef.componentInstance.data.tasksListItems[i].readOnly = !this.dialogRef.componentInstance.data.tasksListItems[i].readOnly
   }
+  
   removeItem(i) {
-  let data = this.dialogRef.componentInstance.data.tasksListItems[i];
+    let data = this.dialogRef.componentInstance.data.tasksListItems[i];
     if (data) {
       this.taskService.deleteTasksItem(data.id, data.clinic_id).subscribe((res) => {
         if (res.message == 'success') {
