@@ -110,8 +110,8 @@ export class DialogOverviewTasklistDialogComponent {
     }
     // this.dialogRef.componentInstance.data.tasksListItems[i].readOnly = !this.dialogRef.componentInstance.data.tasksListItems[i].readOnly
   }
+  
   removeItem(i) {
-<<<<<<< HEAD
     let data = this.dialogRef.componentInstance.data.tasksListItems[i];
     if (data) {
       this.taskService.deleteTasksItem(data.id, data.clinic_id).subscribe((res) => {
@@ -124,9 +124,6 @@ export class DialogOverviewTasklistDialogComponent {
         console.log('error', error)
       });
     }
-=======
-    this.dialogRef.componentInstance.data.tasksListItems.splice(i, 1);
->>>>>>> bfed29ac760d2609f7dfd186da0de5152ad5c0f2
   }
 
   additem() {
