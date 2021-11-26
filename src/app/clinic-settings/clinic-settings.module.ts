@@ -5,6 +5,7 @@ import { ClinicSettingsRoutes } from "./clinic-settings.routing";
 import { ClinicSettingsComponent } from "./clinic-settings.component";
 import { ClinicSettingsService } from "./clinic-settings.service";
 import { TaskService } from "./tasks/tasks.service";
+import { TasklistService } from "./taskslist/tasklist.service";
 import { CustomisationsService } from "./customisations/customisations.service";
 import { ChartsService } from "./charts/charts.service";
 import { EquipmentsService } from "./equipments/equipments.service";
@@ -21,6 +22,11 @@ import {
   TasksComponent,
   DialogOverviewExampleDialogComponent,
 } from "./tasks/tasks.component";
+import {
+  TasklistComponent,
+  DialogOverviewTasklistDialogComponent,
+} from "./taskslist/tasklist.component";
+
 import {
   ScriptsComponent,
   AddScriptsComponent,
@@ -48,6 +54,7 @@ import { SharedModule } from "../shared/shared.module";
   providers: [
     ClinicSettingsService,
     TaskService,
+    TasklistService,
     CustomisationsService,
     EquipmentsService,
     ScriptsService,
@@ -59,11 +66,13 @@ import { SharedModule } from "../shared/shared.module";
     DentistComponent,
     AlertsComponent,
     TasksComponent,
+    TasklistComponent,
     ScriptsComponent,
     GoalsComponent,
     CustomisationsComponent,
     AutofocusDirective,
     DialogOverviewExampleDialogComponent,
+    DialogOverviewTasklistDialogComponent,
     AddJeeveNameComponent,
     DialogOverviewExampleComponent,
     AddScriptsComponent,
@@ -73,6 +82,7 @@ import { SharedModule } from "../shared/shared.module";
   ],
   entryComponents: [
     DialogOverviewExampleDialogComponent,
+    DialogOverviewTasklistDialogComponent,
     DialogOverviewExampleComponent,
     AddJeeveNameComponent,
     AddScriptsComponent,
@@ -85,6 +95,7 @@ import { SharedModule } from "../shared/shared.module";
     CustomisationsComponent,
     AlertsComponent,
     TasksComponent,
+    TasklistComponent,
     ScriptsComponent,
     ChartsComponent
   ],
