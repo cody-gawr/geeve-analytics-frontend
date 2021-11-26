@@ -8334,3 +8334,29 @@ span.referafrndFormClose {
 .e-kanban-form .md-drppicker .calendar td, .e-kanban-form .md-drppicker .calendar th {
     text-align: center; 
 }
+table.editTaskList {
+    width: 100%;
+}
+.editTaskList input {
+    padding: 0px;
+}
+.editTaskList input:read-only {
+    border: 0px solid;
+}
+.editTaskList td, .editTaskList th {
+    border-bottom: 1px solid #e1d9d9;
+}
+.AddUserPopup.setting.list h1 {
+    width: auto;
+    float: left;
+}
+.AddUserPopup.setting.list  button.addTaskBtn {
+    float: right;
+}
+.AddUserPopup.setting.list .mat-dialog-content.sa_forms_design {
+    width: 100%;
+    display: block;
+}
+.editTaskList td:last-child, .editTaskList th:last-child {
+    text-align: right;
+}
