@@ -27,7 +27,7 @@
       <img class="tableLoader" src="../../assets/images/loader.gif" />
     </div>
     <div class="respopnsive-table-set">
-      <table mat-table [dataSource]="tasksList" class="mat-elevation-z8" matSort >
+      <table mat-table [dataSource]="tasksList" class="mat-elevation-z8 tasksList" matSort >
           <ng-container matColumnDef="list_name">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>List Name</th>
           <td mat-cell *matCellDef="let element; let i=index">
