@@ -1,4 +1,4 @@
-<div class="referafrnd">
+<div class="referafrnd" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
   <i (click)="toggleReffer($event)" matTooltip="Refer a Friend" [ngClass]="referFriend? 'green' : ''" class="fas fa-user-friends referafriend"> &nbsp;Refer a Friend</i>
    
   <div class="referafrndForm" *ngIf="referFriend">

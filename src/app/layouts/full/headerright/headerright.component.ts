@@ -23,11 +23,13 @@ import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { MatDialogRef } from "@angular/material/dialog";
 import { MatDialog } from "@angular/material/dialog";
 
+import { environment } from "../../../../environments/environment";
+
 export interface Dentist {
   providerId: string;
   name: string;
 }
-
+ 
 @Component({
   selector: "feature-overview-limit-example",
   templateUrl: "./feature-overview-limit-example.html",
@@ -52,6 +54,8 @@ export class AppHeaderrightComponent implements AfterViewInit {
   providerIdDentist;
   isToggleDentistChart: string;
   user_type_dentist;
+  public apiUrl = environment.apiUrl;
+  
   showCompare: boolean = false;
   showDropDown: boolean = false;
   referFriend: boolean = false;
