@@ -112,7 +112,6 @@ export class DialogOverviewTasklistDialogComponent {
     // this.dialogRef.componentInstance.data.tasksListItems[i].readOnly = !this.dialogRef.componentInstance.data.tasksListItems[i].readOnly
   }
   removeItem(i) {
-    console.log('remove')
     this.dialogRef.componentInstance.data.tasksListItems.splice(i, 1);
   }
 
