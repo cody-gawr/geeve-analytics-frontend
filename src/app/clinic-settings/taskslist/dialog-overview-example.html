@@ -1,8 +1,7 @@
 <div class="AddUserPopup setting list">
-  <h1 *ngIf="!data.id" mat-dialog-title>Add Task</h1>
-  <h1 *ngIf="data.id" mat-dialog-title>Edit Task</h1>
-  <button *ngIf="data.id" class="mat-raised-button mat-green addTaskBtn" (click)="additem()" mat-raised-button>Add List
-    Item</button>
+  <h1 *ngIf="!data.list_id" mat-dialog-title>Add Task</h1>
+  <h1 *ngIf="data.list_id" mat-dialog-title>Edit Task</h1>
+
   <div mat-dialog-content class="sa_forms_design">
     <div *ngIf="!showAddItem">
 
@@ -51,16 +50,22 @@
           </tr>
         </ng-container>
         <tr *ngIf="!data.tasksListItems.length">
-          <td>No record exists</td>
+          <td>No taks list exists</td>
+          <td></td>
         </tr>
       </table>
     </div>
   </div>
+  <div mat-dialog-actions class="justify-between">    
+    <div></div>
+    <button *ngIf="data.list_id" class="mat-raised-button mat-green addTaskBtn float-right " (click)="additemNew(data)"
+      mat-raised-button><i class="fa fa-plus m-r-10"></i></button>
+  </div>
   <div mat-dialog-actions class="justify-between">
     <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
-    <button *ngIf="showAddItem" (click)="save(data)" [disabled]="data.list_name == '' || data.assigned_roles == '' "
+    <button *ngIf="data.list_id" (click)="save(data)" [disabled]="data.list_name == '' || data.assigned_roles == '' "
       tabindex="2" class="mat-raised-button mat-dc float-right">Save</button>
-    <button *ngIf="!showAddItem" [disabled]="data.list_name == '' || data.assigned_roles == ''" (click)="save(data)"
+    <button *ngIf="!data.list_id" [disabled]="data.list_name == '' || data.assigned_roles == ''" (click)="save(data)"
       tabindex="2" class="mat-raised-button mat-dc float-right">Update</button>
   </div>
 </div>

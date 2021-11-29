@@ -47,7 +47,7 @@ export class DialogOverviewTasklistDialogComponent {
       data.assigned_roles.splice(index, 1);
     }
     let roles = data.assigned_roles.toString();
-    this.taskService.addTask(data.id, data.list_name, roles, data.clinic_id).subscribe((res) => {
+    this.taskService.addTask(data.list_id, data.list_name, roles, data.clinic_id).subscribe((res) => {
       if (res.message == 'success') {
         this.dialogRef.close();
       } else if (res.status == '401') {
@@ -56,17 +56,17 @@ export class DialogOverviewTasklistDialogComponent {
     }, error => {
       console.log('error', error)
     });
-    if (data.task_name) {
-      this.taskService.addTasksItem(data.id, data.task_name, data.clinic_id).subscribe((res) => {
-        if (res.message == 'success') {
-          this.dialogRef.close();
-        } else if (res.status == '401') {
-          this.handleUnAuthorization();
-        }
-      }, error => {
-        console.log('error', error)
-      });
-    }
+    // if (data.task_name) {
+    //   this.taskService.addTasksItem(data.id, data.task_name, data.clinic_id).subscribe((res) => {
+    //     if (res.message == 'success') {
+    //       this.dialogRef.close();
+    //     } else if (res.status == '401') {
+    //       this.handleUnAuthorization();
+    //     }
+    //   }, error => {
+    //     console.log('error', error)
+    //   });
+    // }
   }
 
   validate() {
@@ -127,13 +127,15 @@ export class DialogOverviewTasklistDialogComponent {
     this.showAddItem = !this.showAddItem
   }
   additemNew(data) {
-    console.log('data',data);
+    console.log('data', data);
 
-    return
-    this.showAddItem = !this.showAddItem
-    this.taskService.updateTasksItem('', data.list_id, 'New task created', data.clinic_id).subscribe((res) => {
-      if (res.message == 'success') {
-        let oldData = this.dialogRef.componentInstance.data.tasksListItems;
+
+    /*this.showAddItem = !this.showAddItem
+
+    
+      this.taskService.addTasksItem(data.list_id, 'New task created', data.clinic_id).subscribe((res) => {
+        if (res.message == 'success') {
+          let oldData = this.dialogRef.componentInstance.data.tasksListItems;
         let newData = res.data;
         if (oldData.length) {
           newData.readOnly = true
@@ -141,7 +143,21 @@ export class DialogOverviewTasklistDialogComponent {
         } else {
           oldData = newData
         }
+        } else if (res.status == '401') {
+          this.handleUnAuthorization();
+        }
+      }, error => {
+        console.log('error', error)
+      });
+    */
 
+
+
+    this.taskService.updateTasksItem('', data.list_id, 'New task created', data.clinic_id).subscribe((res) => {
+      if (res.message == 'success') {
+        let newData = res.data;
+        newData.readOnly = true
+        this.dialogRef.componentInstance.data.tasksListItems.push(newData);
       } else if (res.status == '401') {
         this.handleUnAuthorization();
       }
@@ -249,6 +265,7 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
   getTasks(id) {
     this.taskService.getTasks(id).subscribe((res) => {
       if (res.message == 'success') {
+        console.log('res.data', res.data)
         this.tasksList.data = res.data;
         this.setPaginationButtons(res.data.length);
       }
@@ -258,10 +275,6 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
     }, error => {
       console.log('error', error)
     });
-  }
-
-  getTasksList(clinicId, id) {
-
   }
 
   updateStatus(event, id, is_default) {
@@ -281,7 +294,7 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
           });
           const dialogRef = this.dialog.open(DialogOverviewTasklistDialogComponent, {
             width: '500px',
-            data: { id: id, tasksListItems: res.data.end_of_day_tasks, list_name: name, assigned_roles: assigned_roles.split(","), clinic_id: this.clinic_id$.value, old: name, old_assigned_roles: assigned_roles }
+            data: { list_id: id, tasksListItems: res.data.end_of_day_tasks, list_name: name, assigned_roles: assigned_roles.split(","), clinic_id: this.clinic_id$.value, old: name, old_assigned_roles: assigned_roles }
           });
           dialogRef.afterClosed().subscribe(result => {
             this.getTasks(this.clinic_id$.value);
@@ -297,7 +310,7 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
 
       const dialogRef = this.dialog.open(DialogOverviewTasklistDialogComponent, {
         width: '500px',
-        data: { id: id, tasksListItems: [], list_name: name, assigned_roles: assigned_roles.split(","), clinic_id: this.clinic_id$.value, old: name, old_assigned_roles: assigned_roles }
+        data: { list_id: id, tasksListItems: [], list_name: name, assigned_roles: assigned_roles.split(","), clinic_id: this.clinic_id$.value, old: name, old_assigned_roles: assigned_roles }
       });
       dialogRef.afterClosed().subscribe(result => {
         this.getTasks(this.clinic_id$.value);
