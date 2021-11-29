@@ -8364,3 +8364,30 @@ table.editTaskList {
 .tasksList td:last-child, .tasksList th:last-child {
     text-align: right;
 }
+.tasksList .mat-select {
+    background: none !important;
+    padding-right: 9px !important;
+}
+
+.justify-between.list {
+    display: block;
+    height: 50px;
+    width: 100%;
+    padding: 16px 56px;
+}
+
+.justify-between.list i {
+    float: right;
+    border: 1px solid #428285;
+    padding: 5px;
+    background: #17a5aa;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px #000;
+    cursor: pointer;
+}
+table.editTaskList td[colspan='2'] {
+    text-align: center;
+    padding: 10px 0;
+    font-size: 15px;
+}

@@ -85,14 +85,40 @@ export class TasklistService {
             );
     }
 
+    deleteTaskList(id, clinic_id): Observable<any> {
+        var header = this.getHeaders();
+        const formData = new FormData();
+        formData.append('list_id', id);
+        formData.append('clinic_id', clinic_id);
+        return this.http.post(this.apiUrl + "/clinics/getDeleteTaskList", formData, header)
+            .pipe(map((response: Response) => {
+                return response;
+            })
+            );
+    }
+
     // update tasks
     updateTaskStatus(event, id, cid, is_default): Observable<any> {
         var header = this.getHeaders();
         const formData = new FormData();
-        formData.append('id', id);
+        formData.append('list_id', id);
         formData.append('clinic_id', cid);
         formData.append('is_active', event);
         formData.append('is_default', is_default);
+        return this.http.post(this.apiUrl + "/clinics/getUpdateTaskList", formData, header)
+            .pipe(map((response: Response) => {
+                return response;
+            })
+            );
+    }
+       // update tasks
+    updateTasklist(list_id, clinic_id, list_name, assigned_roles): Observable<any> {
+        var header = this.getHeaders();
+        const formData = new FormData();
+        formData.append('list_id', list_id);
+        formData.append('clinic_id', clinic_id);
+        formData.append('list_name', list_name);
+        formData.append('assigned_roles', assigned_roles);
         return this.http.post(this.apiUrl + "/clinics/getUpdateTaskList", formData, header)
             .pipe(map((response: Response) => {
                 return response;
@@ -103,7 +129,7 @@ export class TasklistService {
     addTask(id, list_name, assigned_roles, clinic_id): Observable<any> {
         var header = this.getHeaders();
         const formData = new FormData();
-        formData.append('id', id);
+        formData.append('list_id', id);
         formData.append('list_name', list_name);
         formData.append('assigned_roles', assigned_roles);
         formData.append('clinic_id', clinic_id);

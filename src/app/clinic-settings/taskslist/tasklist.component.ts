@@ -35,10 +35,6 @@ export class DialogOverviewTasklistDialogComponent {
   }
 
   save(data) {
-    // if (((data.id && data.old == data.list_name) || (data.id && data.old_assigned_roles == data.assigned_roles.toString())) || (data.list_name == '' || data.assigned_roles == '')) {
-    //   return false;
-    // }
-
     if (data.list_name == '' || data.assigned_roles == '' || (data.task_name == '' && this.showAddItem)) {
       return false;
     }
@@ -56,17 +52,26 @@ export class DialogOverviewTasklistDialogComponent {
     }, error => {
       console.log('error', error)
     });
-    // if (data.task_name) {
-    //   this.taskService.addTasksItem(data.id, data.task_name, data.clinic_id).subscribe((res) => {
-    //     if (res.message == 'success') {
-    //       this.dialogRef.close();
-    //     } else if (res.status == '401') {
-    //       this.handleUnAuthorization();
-    //     }
-    //   }, error => {
-    //     console.log('error', error)
-    //   });
-    // }
+  }
+
+  update(data){
+      if (data.list_name == '' || data.assigned_roles == '' || (data.task_name == '' && this.showAddItem)) {
+        return false;
+      }
+      var index = data.assigned_roles.indexOf('0');
+      if (index !== -1) {
+        data.assigned_roles.splice(index, 1);
+      }
+      let roles = data.assigned_roles.toString();
+      this.taskService.updateTasklist(data.list_id,  data.clinic_id, data.list_name, roles).subscribe((res) => {
+        if (res.message == 'success') {
+          this.dialogRef.close();
+        } else if (res.status == '401') {
+          this.handleUnAuthorization();
+        }
+      }, error => {
+        console.log('error', error)
+      });
   }
 
   validate() {
@@ -262,10 +267,11 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
     }, error => { });
   }
 
+  public apiCompleteGet:boolean = true;
   getTasks(id) {
     this.taskService.getTasks(id).subscribe((res) => {
       if (res.message == 'success') {
-        console.log('res.data', res.data)
+        this.apiCompleteGet = false;
         this.tasksList.data = res.data;
         this.setPaginationButtons(res.data.length);
       }
@@ -339,7 +345,7 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
       cancelButtonText: 'No'
     }).then((result) => {
       if (result.value) {
-        this.clinicSettingsService.deleteDailyTask(this.clinic_id$.value, taskId).subscribe((res) => {
+        this.taskService.deleteTaskList(taskId, this.clinic_id$.value).subscribe((res) => {
           if (res.message == 'success') {
             this.getTasks(this.clinic_id$.value);
           }

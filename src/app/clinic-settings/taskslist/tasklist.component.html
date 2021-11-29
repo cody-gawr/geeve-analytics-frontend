@@ -23,7 +23,7 @@
 
   </div>
   <div class="DentistListSecRow mh-table patient_data-table_responsive">
-    <div class="card-loading d-none">
+    <div class="card-loading d-none" *ngIf="apiCompleteGet == true">
       <img class="tableLoader" src="../../assets/images/loader.gif" />
     </div>
     <div class="respopnsive-table-set">
@@ -38,7 +38,7 @@
           <th mat-header-cell *matHeaderCellDef>Enabled</th>
           <td mat-cell *matCellDef="let element; let i=index">            
              <span class="action">
-              <mat-slide-toggle [checked]="element.is_active == 0? false : true" name="status" (change)="updateStatus($event,element.id,0)"></mat-slide-toggle>        
+              <mat-slide-toggle [checked]="element.is_active == 0? false : true" name="status" (change)="updateStatus($event,element.list_id,0)"></mat-slide-toggle>        
               </span>
           </td>
         </ng-container>
@@ -53,8 +53,6 @@
               </span>
           </td>
         </ng-container>
-
-
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
@@ -67,7 +65,7 @@
 
     <ul
       class="main_pagination settings-table-pagination"
-      *ngIf="dentistTablePages.length"
+      *ngIf="dentistTablePages.length > 1"
     >
       <li *ngFor="let page of dentistTablePages">
         <button
@@ -79,20 +77,10 @@
     </ul>
 
     <div class="data-loading-main">
-      <div
-        class="no-data"
-        [ngClass]="
-          tasksList.data.length == 0 && dentistListLoading ? 'show' : 'hide'
-        "
-      >
-        No Data found
+      <div class="no-data" [ngClass]=" tasksList.data.length == 0 && !apiCompleteGet ? 'show' : 'hide'">
+         You have no list yet
       </div>
-      <div
-        class="loader"
-        [ngClass]="
-          tasksList.data.length == 0 && !dentistListLoading ? 'show' : 'hide'
-        "
-      >
+      <div class="loader" [ngClass]=" tasksList.data.length == 0 && apiCompleteGet ? 'show' : 'hide'">
         <img class="tableLoader" src="../../../assets/images/loader.gif" />
       </div>
     </div>
