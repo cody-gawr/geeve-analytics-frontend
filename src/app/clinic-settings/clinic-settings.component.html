@@ -342,20 +342,6 @@
             <div class="post-op-codes PostOpCalls ftaFollowps">
               <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>           -->
               <div class="sa-form-group clinic-setting-form">
-                <input type="number" min="0" placeholder="" [formControl]="form.controls['fta_followup_days']"
-                  [(ngModel)]="ftaFollowupDays" />
-                <span>Days</span>
-                <small *ngIf="
-                    form.controls['fta_followup_days'].hasError('required') &&
-                    form.controls['fta_followup_days'].touched
-                  " class="text-danger support-text">Field is Required.</small>
-              </div>
-            </div>
-          </div>
-          <div class="gray_area_partision gray">
-            <div class="post-op-codes PostOpCalls ftaFollowps">
-              <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>           -->
-              <div class="sa-form-group clinic-setting-form">
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['fta_followup_days_later']"
                   [(ngModel)]="ftaFollowupDaysLater" />
                 <span>Days Later</span>
@@ -366,9 +352,23 @@
               </div>
             </div>
           </div>
+          <div class="gray_area_partision gray">
+            <div class="post-op-codes PostOpCalls ftaFollowps">
+              <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>           -->
+              <div class="sa-form-group clinic-setting-form">
+                <input type="number" min="0" placeholder="" [formControl]="form.controls['fta_followup_days']"
+                  [(ngModel)]="ftaFollowupDays" />
+                <span>Days</span>
+                <small *ngIf="
+                    form.controls['fta_followup_days'].hasError('required') &&
+                    form.controls['fta_followup_days'].touched
+                  " class="text-danger support-text">Field is Required.</small>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="gray_area" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+        <div class="gray_area">
           <h4 class="clinic-settings-form-title">
             UTA Followups
             <div class="info-button">
@@ -394,12 +394,12 @@
             <div class="post-op-codes PostOpCalls ftaFollowps">
               <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>           -->
               <div class="sa-form-group clinic-setting-form">
-                <input type="number" min="0" placeholder="" [formControl]="form.controls['uta_followup_days']"
-                  [(ngModel)]="utaFollowupDays" />
-                <span>Days</span>
+                <input type="number" min="0" placeholder="" [formControl]="form.controls['uta_followup_days_later']"
+                  [(ngModel)]="utaFollowupDaysLater" />
+                <span>Days Later</span>
                 <small *ngIf="
-                    form.controls['uta_followup_days'].hasError('required') &&
-                    form.controls['uta_followup_days'].touched
+                    form.controls['uta_followup_days_later'].hasError('required') &&
+                    form.controls['uta_followup_days_later'].touched
                   " class="text-danger support-text">Field is Required.</small>
               </div>
             </div>
@@ -408,12 +408,12 @@
             <div class="post-op-codes PostOpCalls ftaFollowps">
               <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>           -->
               <div class="sa-form-group clinic-setting-form">
-                <input type="number" min="0" placeholder="" [formControl]="form.controls['uta_followup_days_later']"
-                  [(ngModel)]="utaFollowupDaysLater" />
-                <span>Days Later</span>
+                <input type="number" min="0" placeholder="" [formControl]="form.controls['uta_followup_days']"
+                  [(ngModel)]="utaFollowupDays" />
+                <span>Days</span>
                 <small *ngIf="
-                    form.controls['uta_followup_days_later'].hasError('required') &&
-                    form.controls['uta_followup_days_later'].touched
+                    form.controls['uta_followup_days'].hasError('required') &&
+                    form.controls['uta_followup_days'].touched
                   " class="text-danger support-text">Field is Required.</small>
               </div>
             </div>
