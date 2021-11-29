@@ -4,3 +4,6 @@
 .addTaskBtn{
     float: right;
 }
+.tasksCon {
+    display: block !important;
+}
