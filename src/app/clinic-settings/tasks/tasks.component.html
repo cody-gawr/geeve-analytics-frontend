@@ -15,11 +15,12 @@
         (keyup)="doFilter($event.target.value)"
       />     
     </mat-form-field>
-     <button class="mat-raised-button mat-green addTaskBtn" mat-raised-button (click)="openDialog()">Add Task</button>
      <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ dailyTaskEnable }}" name="daily_task_enable" (change)="toggleMH($event)">
         <span *ngIf="dailyTaskEnable">Enabled</span>
      <span *ngIf="!dailyTaskEnable">Disabled</span>
      </mat-slide-toggle>
+     <button class="mat-raised-button mat-green addTaskBtn" mat-raised-button (click)="openDialog()">Add Task</button>
+
 
   </div>
   <div class="DentistListSecRow mh-table patient_data-table_responsive">
