@@ -162,21 +162,21 @@ export class ClinicSettingsComponent implements OnInit {
           this.contactName = res.data[0].contactName;
           this.address = res.data[0].address;
           this.practice_size = res.data[0].practice_size;
-          this.post_op_calls = res.data[0].post_op_calls;
           this.subtracted_accounts = res.data[0].net_profit_exclusions;
           this.phoneNo = res.data[0].phoneNo;
           this.clinicEmail = res.data[0].clinicEmail;
           this.ftaUta = res.data[0].fta_uta;
-          this.postOpCallsMh = res.data[0].post_op_days;
-          this.recallWeeks = res.data[0].recall_weeks;
-          this.tickDays = res.data[0].tick_days;
-          // this.ftaFollowupDays = res.data[0].fta_followup_days;
           this.timezone = res.data[0].timezone;
           this.equipmentList =
             res.data[0].equip_list_enable == 1 ? true : false;
           this.dailyTasks = res.data[0].daily_task_enable == 1 ? true : false;
           this.compareMode = res.data[0].compare_mode == 1 ? true : false;
 
+          // this.postOpCallsMh = res.data[0].post_op_days;
+          // this.post_op_calls = res.data[0].post_op_calls;
+          // this.tickDays = res.data[0].tick_days;
+          // this.recallWeeks = res.data[0].recall_weeks;
+          // this.ftaFollowupDays = res.data[0].fta_followup_days;
           // this.postOpEnable = res.data[0].post_op_enable == 1 ? true : false;
           // this.tickEnable = res.data[0].tick_enable == 1 ? true : false;
           // this.recallEnable = res.data[0].recall_enable == 1 ? true : false;
@@ -204,8 +204,8 @@ export class ClinicSettingsComponent implements OnInit {
   getClinicFollowUPSettings() {
     this.clinicSettingsService.getClinicFollowUPSettings(this.id).subscribe(
       (res) => {
-        
-        console.log('res.data',res.data)
+
+        console.log('res.data', res.data)
         if (res.message == "success") {
           this.postOpEnable = res.data.post_op_enable == 1 ? true : false;
           this.tickEnable = res.data.tick_enable == 1 ? true : false;
@@ -231,6 +231,10 @@ export class ClinicSettingsComponent implements OnInit {
               this.utaFollowupDays = res.data.uta_followup_days;
               this.ftaFollowupDaysLater = res.data.fta_days_later;
               this.utaFollowupDaysLater = res.data.uta_days_later;
+              this.postOpCallsMh = res.data.post_op_days;
+              this.post_op_calls = res.data.post_op_calls;
+              this.tickDays = res.data.tick_days;
+              this.recallWeeks = res.data.recall_weeks;
             }
           }
         },
@@ -266,14 +270,10 @@ export class ClinicSettingsComponent implements OnInit {
         this.clinicName,
         this.address,
         this.contactName,
-        days,
-        this.post_op_calls,
+        days,        
         this.phoneNo,
         this.clinicEmail,
-        this.ftaUta,
-        this.postOpCallsMh,
-        this.recallWeeks,
-        this.tickDays,
+        this.ftaUta,        
         this.timezone,
         this.subtracted_accounts,
         this.equipmentList,
@@ -300,6 +300,10 @@ export class ClinicSettingsComponent implements OnInit {
     this.clinicSettingsService
       .updateFollowUpSettings(
         this.id,
+        this.post_op_calls,
+        this.tickDays,
+        this.postOpCallsMh,
+        this.recallWeeks,
         this.ftaFollowupDays,
         this.utaFollowupDays,
         this.utaFollowupDaysLater,

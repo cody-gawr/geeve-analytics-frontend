@@ -35,7 +35,6 @@ export class DialogOverviewTasklistDialogComponent {
   }
 
   save(data) {
-
     // if (((data.id && data.old == data.list_name) || (data.id && data.old_assigned_roles == data.assigned_roles.toString())) || (data.list_name == '' || data.assigned_roles == '')) {
     //   return false;
     // }
@@ -108,9 +107,8 @@ export class DialogOverviewTasklistDialogComponent {
         console.log('error', error)
       });
     }
-    // this.dialogRef.componentInstance.data.tasksListItems[i].readOnly = !this.dialogRef.componentInstance.data.tasksListItems[i].readOnly
   }
-  
+
   removeItem(i) {
     let data = this.dialogRef.componentInstance.data.tasksListItems[i];
     if (data) {
@@ -125,9 +123,32 @@ export class DialogOverviewTasklistDialogComponent {
       });
     }
   }
-
   additem() {
-    this.showAddItem = (this.showAddItem) ? false : true
+    this.showAddItem = !this.showAddItem
+  }
+  additemNew(data) {
+    console.log('data',data);
+
+    return
+    this.showAddItem = !this.showAddItem
+    this.taskService.updateTasksItem('', data.list_id, 'New task created', data.clinic_id).subscribe((res) => {
+      if (res.message == 'success') {
+        let oldData = this.dialogRef.componentInstance.data.tasksListItems;
+        let newData = res.data;
+        if (oldData.length) {
+          newData.readOnly = true
+          oldData.push(newData);
+        } else {
+          oldData = newData
+        }
+
+      } else if (res.status == '401') {
+        this.handleUnAuthorization();
+      }
+    }, error => {
+      console.log('error', error)
+    });
+
   }
 
 
