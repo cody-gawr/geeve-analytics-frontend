@@ -1,24 +1,23 @@
 <div class="AddUserPopup setting list">
-  <h1 *ngIf="!data.id" mat-dialog-title>Add Task</h1>
-  <h1 *ngIf="data.id" mat-dialog-title>Edit Task</h1>
-  <button *ngIf="data.id" class="mat-raised-button mat-green addTaskBtn" (click)="additem()" mat-raised-button>Add List
-    Item</button>
+  <h1 *ngIf="!data.list_id" mat-dialog-title>Add Task</h1>
+  <h1 *ngIf="data.list_id" mat-dialog-title>Edit Task</h1>
+
   <div mat-dialog-content class="sa_forms_design">
     <div *ngIf="!showAddItem">
-      
-    <div class="sa-form-group">
-      <label>Task Name</label>
-      <input [(ngModel)]="data.list_name" class="mat-form-control" required="true" placeholder="">
-    </div>
-    <div class="sa-form-group">
-      <label>Assigned Roles</label>
-      <mat-select [(ngModel)]="data.assigned_roles" placeholder="Assigned Roles" [multiple]="true" #multiSelect>
-        <mat-option #allSelected (click)="toggleAllSelection()" [value]="'0'">All</mat-option>
-        <mat-option *ngFor="let user of assigneeData" [value]="user.id">
-          {{user.name}}
-        </mat-option>
-      </mat-select>
-    </div>
+
+      <div class="sa-form-group">
+        <label>Task Name</label>
+        <input [(ngModel)]="data.list_name" class="mat-form-control" required="true" placeholder="">
+      </div>
+      <div class="sa-form-group">
+        <label>Assigned Roles</label>
+        <mat-select [(ngModel)]="data.assigned_roles" placeholder="Assigned Roles" [multiple]="true" #multiSelect>
+          <mat-option #allSelected (click)="toggleAllSelection()" [value]="'0'">All</mat-option>
+          <mat-option *ngFor="let user of assigneeData" [value]="user.id">
+            {{user.name}}
+          </mat-option>
+        </mat-select>
+      </div>
     </div>
     <div *ngIf="showAddItem">
       <div class="sa-form-group">
@@ -27,35 +26,46 @@
       </div>
     </div>
   </div>
-  <div mat-dialog-content class="sa_forms_design" *ngIf="data.tasksListItems.length>0">
+  <div mat-dialog-content class="sa_forms_design">
     <div>
       <table class="editTaskList">
         <tr>
           <th> Item </th>
           <th> Action </th>
         </tr>
-        <tr *ngFor="let item of data.tasksListItems;let i =index;">
-          <td> <input type="text" [readonly]="item.readOnly" [(ngModel)]="item.task_name"> </td>
-          <td>
-            <span class="action">
-              <a *ngIf="item.readOnly" title="Edit" (click)="markRead(i)"  class="action_btn golden ng-star-inserted"><i
-                  class="ti-pencil m-r-10"></i></a>
-              <a *ngIf="!item.readOnly" title="Edit" (click)="updateItem(i)" class="action_btn golden ng-star-inserted"><i
-                  class="ti-save m-r-10"></i></a>
-            </span>
-            <span class="action" (click)="removeItem(i)">
-              <a title="Delete" class="action_btn danger  ng-star-inserted"><i class="ti-trash m-r-10"></i></a>
-            </span>
-          </td>
+        <ng-container *ngIf="data.tasksListItems.length>0">
+          <tr *ngFor="let item of data.tasksListItems;let i =index;">
+            <td> <input type="text" [readonly]="item.readOnly" [(ngModel)]="item.task_name"> </td>
+            <td>
+              <span class="action">
+                <a *ngIf="item.readOnly" title="Edit" (click)="markRead(i)"
+                  class="action_btn golden ng-star-inserted"><i class="ti-pencil m-r-10"></i></a>
+                <a *ngIf="!item.readOnly" title="Edit" (click)="updateItem(i)"
+                  class="action_btn golden ng-star-inserted"><i class="ti-save m-r-10"></i></a>
+              </span>
+              <span class="action" (click)="removeItem(i)">
+                <a title="Delete" class="action_btn danger  ng-star-inserted"><i class="ti-trash m-r-10"></i></a>
+              </span>
+            </td>
+          </tr>
+        </ng-container>
+        <tr *ngIf="!data.tasksListItems.length">
+          <td>No taks list exists</td>
+          <td></td>
         </tr>
       </table>
     </div>
   </div>
+  <div mat-dialog-actions class="justify-between">    
+    <div></div>
+    <button *ngIf="data.list_id" class="mat-raised-button mat-green addTaskBtn float-right " (click)="additemNew(data)"
+      mat-raised-button><i class="fa fa-plus m-r-10"></i></button>
+  </div>
   <div mat-dialog-actions class="justify-between">
     <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
-    <button *ngIf="showAddItem" (click)="save(data)" [disabled]="data.list_name == '' || data.assigned_roles == '' "
+    <button *ngIf="data.list_id" (click)="save(data)" [disabled]="data.list_name == '' || data.assigned_roles == '' "
       tabindex="2" class="mat-raised-button mat-dc float-right">Save</button>
-    <button *ngIf="!showAddItem" [disabled]="data.list_name == '' || data.assigned_roles == ''" (click)="save(data)"
+    <button *ngIf="!data.list_id" [disabled]="data.list_name == '' || data.assigned_roles == ''" (click)="save(data)"
       tabindex="2" class="mat-raised-button mat-dc float-right">Update</button>
   </div>
 </div>
