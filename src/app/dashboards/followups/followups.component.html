@@ -157,14 +157,17 @@
 
              <div class="card-body h-100">
               <div fxLayout="row wrap" class="predictor_ratio_main sa_tabs_main_sec">
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
+              <div fxFlex.gt-sm="25%" fxFlex.gt-xs="25%" fxFlex="100" class="btn-group">
                 <small [ngClass] = "outcomeType == '1'? 'active' : ''"  class="sa_tab_btn prmain1 " (click)="followupOutcomeTab('1')">Ticks</small>
               </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
+              <div fxFlex.gt-sm="25%" fxFlex.gt-xs="25%" fxFlex="100" class="btn-group">
                 <small [ngClass] = "outcomeType == '2'? 'active' : ''"  class="sa_tab_btn prmain2" (click)="followupOutcomeTab('2')">Recalls</small>
               </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
+              <div fxFlex.gt-sm="25%" fxFlex.gt-xs="25%" fxFlex="100" class="btn-group">
                 <small [ngClass] = "outcomeType == '3'? 'active' : ''" class="sa_tab_btn prmain3" (click)="followupOutcomeTab('3')">FTAs</small>
+              </div>
+              <div fxFlex.gt-sm="25%" fxFlex.gt-xs="25%" fxFlex="100" class="btn-group">
+                <small [ngClass] = "outcomeType == '4'? 'active' : ''" class="sa_tab_btn prmain3" (click)="followupOutcomeTab('4')">UTAs</small>
               </div>
             </div>
               <div class="relative h-100">
@@ -172,6 +175,7 @@
                   <ngx-charts-pie-chart *ngIf="outcomeType == '1' && singleTick.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[450, 400]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="35" [results]="singleTick" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
                    <ngx-charts-pie-chart *ngIf="outcomeType =='2' && singleRecall.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[450, 400]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="35" [results]="singleRecall" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
                    <ngx-charts-pie-chart *ngIf="outcomeType =='3' && singleFta.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[450, 400]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="35" [results]="singleFta" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
+                   <ngx-charts-pie-chart *ngIf="outcomeType =='4' && singleUta.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[450, 400]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="35" [results]="singleUta" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
                  <div class="no-data-placeholder" *ngIf="outcomeType == '1' && singleTick.length <= 0 && !outcomeLoader">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">No TICK followups were completed in this period</p>
@@ -183,6 +187,10 @@
                   <div class="no-data-placeholder" *ngIf="outcomeType == '3' && singleFta.length <= 0 && !outcomeLoader">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">No FTA followups were completed in this period</p>
+                  </div>
+                  <div class="no-data-placeholder" *ngIf="outcomeType == '4' && singleUta.length <= 0 && !outcomeLoader">
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">No UTA followups were completed in this period</p>
                   </div>
                 </div>
               </div>
@@ -237,6 +245,9 @@
                 <span *ngIf="trendText && conversionPerType == '3'" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
                   mat-icon-button matTooltip="{{trendText}} : {{ conversionPerUserPrevFta | number:'1.0-0'}}%"><img
                     class="trend_ico" src="../assets/images/trend_{{conversionPerUserStatusFta}}.png"></span> 
+                <span *ngIf="trendText && conversionPerType == '4'" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
+                  mat-icon-button matTooltip="{{trendText}} : {{ conversionPerUserPrevUta | number:'1.0-0'}}%"><img
+                    class="trend_ico" src="../assets/images/trend_{{conversionPerUserStatusUta}}.png"></span> 
                 Followup Conversion Per User
               </div>              
               <div class="info-icon-container">
@@ -248,14 +259,17 @@
 
              <div class="card-body h-100">
               <div fxLayout="row wrap" class="predictor_ratio_main sa_tabs_main_sec" >
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
+              <div fxFlex.gt-sm="25%" fxFlex.gt-xs="25%" fxFlex="100" class="btn-group">
                 <small [ngClass] = "conversionPerType == '1'? 'active' : ''"  class="sa_tab_btn prmain1 " (click)="followupConversionPerTab('1')">Ticks</small>
               </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
+              <div fxFlex.gt-sm="25%" fxFlex.gt-xs="25%" fxFlex="100" class="btn-group">
                 <small [ngClass] = "conversionPerType == '2'? 'active' : ''"  class="sa_tab_btn prmain2" (click)="followupConversionPerTab('2')">Recalls</small>
               </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
+              <div fxFlex.gt-sm="25%" fxFlex.gt-xs="25%" fxFlex="100" class="btn-group">
                 <small [ngClass] = "conversionPerType == '3'? 'active' : ''" class="sa_tab_btn prmain3" (click)="followupConversionPerTab('3')">FTAs</small>
+              </div>
+              <div fxFlex.gt-sm="25%" fxFlex.gt-xs="25%" fxFlex="100" class="btn-group">
+                <small [ngClass] = "conversionPerType == '4'? 'active' : ''" class="sa_tab_btn prmain3" (click)="followupConversionPerTab('4')">UTAs</small>
               </div>
             </div>
               <div class="relative h-100">
@@ -263,6 +277,7 @@
                     <canvas  *ngIf="conversionPerType == '1' && conversionPerUserLabelsTicks.length > 0 && !conversionPerUserLoader" #myCanvas baseChart [datasets]="conversionPerUserDataTicks" [labels]="conversionPerUserLabelsTicks" [legend]="false" [chartType]="'bar'" [options]="barChartOptions1" [colors]="colors"></canvas>
                   <canvas  *ngIf="conversionPerType == '2' && conversionPerUserLabelsRecalls.length > 0 &&  !conversionPerUserLoader" #myCanvas baseChart [datasets]="conversionPerUserDataRecalls" [labels]="conversionPerUserLabelsRecalls" [legend]="false" [chartType]="'bar'" [options]="barChartOptions1" [colors]="colors"></canvas>               
                   <canvas *ngIf="conversionPerType == '3' && conversionPerUserLabelsFta.length > 0 && !conversionPerUserLoader" #myCanvas baseChart [datasets]="conversionPerUserDataFta" [labels]="conversionPerUserLabelsFta" [legend]="false" [chartType]="'bar'" [options]="barChartOptions1" [colors]="colors"></canvas>
+                  <canvas *ngIf="conversionPerType == '4' && conversionPerUserLabelsUta.length > 0 && !conversionPerUserLoader" #myCanvas baseChart [datasets]="conversionPerUserDataUta" [labels]="conversionPerUserLabelsUta" [legend]="false" [chartType]="'bar'" [options]="barChartOptions1" [colors]="colors"></canvas>
                   
                   <div class="no-data-placeholder" *ngIf="conversionPerUserLabelsTicks.length <= 0 && conversionPerType == '1' && !conversionPerUserLoader">
                     <div class="sa_nodata_div"></div>
@@ -275,6 +290,10 @@
                   <div class="no-data-placeholder" *ngIf="conversionPerUserLabelsFta.length <= 0 && conversionPerType == '3' && !conversionPerUserLoader">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">No FTA followups were converted in this period</p>
+                  </div>
+                  <div class="no-data-placeholder" *ngIf="conversionPerUserLabelsUta.length <= 0 && conversionPerType == '4' && !conversionPerUserLoader">
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">No UTA followups were converted in this period</p>
                   </div>
 
                 </div>
@@ -312,6 +331,17 @@
                 </div>
                 <div  *ngIf="conversionPerType == '3' && duration!='custom'" fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                   <h3 class="m-0 value-num">{{ conversionPerUserPrevFta | number:'1.0-0'}}%</h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                  <span class="value-text" *ngIf="trendText == ''">Previous</span>
+                </div>
+
+                <div  *ngIf="conversionPerType == '4'" fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 value-num">{{ conversionPerUserTotalUta | number:'1.0-0'}}%</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Avg</span>
+                  <span class="value-text" *ngIf="currentText == ''">Current</span>
+                </div>
+                <div  *ngIf="conversionPerType == '4' && duration!='custom'" fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 value-num">{{ conversionPerUserPrevUta | number:'1.0-0'}}%</h3>
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
