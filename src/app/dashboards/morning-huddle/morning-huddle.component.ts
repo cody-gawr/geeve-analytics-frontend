@@ -862,13 +862,14 @@ initiate_clinic() {
         else 
         {
           //this.isEnabletasks = true;
-          this.endOfDaysTasks = production.data;  
+          this.endOfDaysTasks = production.data;            
           this.endOfDaysTasksDate = production.date;
           if(this.showComplete == true) {
             this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
           } else {
             this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
           }  
+          console.log('this.endOfDaysTasksInComp',this.endOfDaysTasksInComp.data);
         }        
       } else if (production.status == '401') {
          this.handleUnAuthorization();         
