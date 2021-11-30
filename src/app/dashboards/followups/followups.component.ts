@@ -514,6 +514,7 @@ export class FollowupsComponent implements AfterViewInit {
   public perUserData2:any = [];
   public perUserData3:any = [];
   public perUserData4:any = [];
+  public perUserData5:any = [];
   
 
   getFollowupsPerUser(){
@@ -523,12 +524,14 @@ export class FollowupsComponent implements AfterViewInit {
         {data: [], label: 'Ticks'},
         {data: [], label: 'Post Op' },
         {data: [], label: 'Recall' },
-        {data: [], label: 'Ftas' }
+        {data: [], label: 'Ftas' },
+        {data: [], label: 'Utas' }
       ];
       this.perUserData1 = [];
       this.perUserData2 = [];
       this.perUserData3 = [];
       this.perUserData4 = [];
+      this.perUserData5 = [];
       this.perUserLoader = false;
       this.perUserLabels = [];
       this.perUserTotal = 0;
@@ -540,12 +543,14 @@ export class FollowupsComponent implements AfterViewInit {
           this.perUserData2.push(response.num_postop);
           this.perUserData3.push(response.num_recall);
           this.perUserData4.push(response.num_ftas);
+          this.perUserData5.push(response.num_utas);
           this.perUserLabels.push(response.completed_by);
         });
         this.perUserData[0]['data'] = this.perUserData1;
         this.perUserData[1]['data'] = this.perUserData2;
         this.perUserData[2]['data'] = this.perUserData3;
         this.perUserData[3]['data'] = this.perUserData4;
+        this.perUserData[4]['data'] = this.perUserData5;
         this.perUserTotal = res.total;
         this.perUserPrev = res.total_ta;
         this.perUserStatus = 'up';
@@ -566,6 +571,7 @@ export class FollowupsComponent implements AfterViewInit {
    public singleTick = [];
    public singleRecall = [];
    public singleFta = [];
+   public singleUta = [];
 
   getFollowupOutcome(){
      this.outcomeLoader = true;
@@ -574,6 +580,7 @@ export class FollowupsComponent implements AfterViewInit {
       this.singleTick = [];
       this.singleRecall = [];
       this.singleFta = [];
+      this.singleUta = [];
       this.outcomeTotal = 0;
       this.outcomePrev = 0;
       if(res.message == 'success'){  
@@ -603,6 +610,15 @@ export class FollowupsComponent implements AfterViewInit {
         }        
         /****** recalls ******/
         /****** ftas ******/
+        if(typeof(res.data.utas) != 'undefined')
+        {
+          res.data.utas.forEach( (response) => {
+            if(response.status && response.status_percent > 0 && response.status_percent != null){
+              var temp = { name: response.status,value: response.status_percent};  
+              this.singleUta.push(temp);
+            }
+          });          
+        }
         if(typeof(res.data.ftas) != 'undefined')
         {
           res.data.ftas.forEach( (response) => {
@@ -667,9 +683,16 @@ export class FollowupsComponent implements AfterViewInit {
 
 
   public conversionPerUserDataFta: any[] = [];
-  public conversionPerUserLabelsFta:any = [];
+  public conversionPerUserLabelsFta:any = [];  
   public conversionPerUserTotalFta:number = 0;
   public conversionPerUserPrevFta:number = 0;
+
+  public conversionPerUserDataUta: any[] = [];
+  public conversionPerUserLabelsUta:any = [];  
+  public conversionPerUserTotalUta:number = 0;
+  public conversionPerUserPrevUta:number = 0;
+
+
   public conversionPerUserDataRecalls: any[] = [];
   public conversionPerUserLabelsRecalls:any = [];
   public conversionPerUserTotalRecalls:number = 0;
@@ -681,7 +704,8 @@ export class FollowupsComponent implements AfterViewInit {
   public conversionPerUserStatusTicks:any = 'up';
   public conversionPerUserStatusRecalls:any = 'up';
   public conversionPerUserStatusFta:any = 'up';
-   public conversionPerUserLoader:boolean = true;
+  public conversionPerUserStatusUta:any = 'up';
+  public conversionPerUserLoader:boolean = true;
   public conversionPerType:string = '1';
 
   getConversionPerUser(){
@@ -689,26 +713,36 @@ export class FollowupsComponent implements AfterViewInit {
     this.followupsService.getConversionPerUser(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
       this.conversionPerUserLoader = false;
       this.conversionPerUserDataFta = [{ data: [] }];
+      this.conversionPerUserDataUta = [{ data: [] }];
       this.conversionPerUserDataRecalls = [{ data: [] }];
       this.conversionPerUserDataTicks = [{ data: [] }];
+
       this.conversionPerUserLabelsFta  = [];
+      this.conversionPerUserLabelsUta  = [];
       this.conversionPerUserLabelsRecalls  = [];
       this.conversionPerUserLabelsTicks  = [];
+
       this.conversionPerUserTotalFta = 0;
+      this.conversionPerUserTotalUta = 0;
       this.conversionPerUserTotalRecalls = 0;
       this.conversionPerUserTotalTicks = 0;
+
       this.conversionPerUserPrevTicks = 0;
       this.conversionPerUserPrevRecalls = 0;
       this.conversionPerUserPrevFta = 0;
+      this.conversionPerUserPrevUta = 0;
 
       if(res.message == 'success') {       
         
         this.conversionPerUserTotalFta = res.total_fta;
+        this.conversionPerUserTotalUta = res.total_uta;
         this.conversionPerUserTotalRecalls = res.total_recall;
         this.conversionPerUserTotalTicks = res.total_tick;
+
         this.conversionPerUserPrevTicks = res.total_ta_tick;
         this.conversionPerUserPrevRecalls = res.total_ta_recall;
         this.conversionPerUserPrevFta = res.total_ta_fta;
+        this.conversionPerUserPrevUta = res.total_ta_uta;
 
         if( typeof(res.data.ftas) != 'undefined'){
           var allConversionFtas = [];  
@@ -718,6 +752,16 @@ export class FollowupsComponent implements AfterViewInit {
           });
           this.conversionPerUserDataFta[0]['data'] = allConversionFtas; 
         }
+
+        if( typeof(res.data.utas) != 'undefined'){
+          var allConversionUtas = [];  
+          res.data.utas.forEach( (fta) => {
+            allConversionUtas.push(Math.round(fta.booked_percent));
+            this.conversionPerUserLabelsUta.push(fta.completed_by);
+          });
+          this.conversionPerUserDataUta[0]['data'] = allConversionUtas; 
+        }
+
         if( typeof(res.data.recalls) != 'undefined'){
           var allConversionrecalls = [];  
           res.data.recalls.forEach( (recalls) => {
@@ -747,6 +791,10 @@ export class FollowupsComponent implements AfterViewInit {
         this.conversionPerUserStatusFta = 'up';         
         if(this.conversionPerUserTotalFta < this.conversionPerUserPrevFta){
           this.conversionPerUserStatusFta = 'down';
+        }
+        this.conversionPerUserStatusUta = 'up';         
+        if(this.conversionPerUserTotalUta < this.conversionPerUserPrevUta){
+          this.conversionPerUserStatusUta = 'down';
         }
         /*var allConversionPerUse = [];
         res.data.forEach( (response) => {
@@ -783,7 +831,7 @@ export class FollowupsComponent implements AfterViewInit {
         this.completionRatePrev = res.total_ta;
         this.completionRateGoal = res.goals;
         res.data.forEach( (response) => {
-          if(parseInt(response.completion_rate) > 0){
+          if(parseInt(response.completion_rate) >= 0){
             allCompletionRate.push(response.completion_rate);
             this.completionRateLabels.push(response.type);
           }
