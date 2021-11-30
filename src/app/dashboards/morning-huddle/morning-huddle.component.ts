@@ -268,7 +268,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns4: string[] = ['name', 'phone', 'code','status'];
   displayedColumns5: string[] = ['name', 'phone','code','dentist','date','status'];
   displayedColumns6: string[] = ['start','dentist','name', 'card'];
-  displayedColumns7: string[] = ['name', 'phone', 'code','note','book','status'];
+  displayedColumns7: string[] = ['name', 'phone', 'code','provider','note','book','status'];
   displayedColumns8: string[] = ['name', 'phone', 'code','dentist','note','book','status',];
   displayedColumns9: string[] = ['task_name','completed_by', 'status'];
   displayedColumns10: string[] = ['equip_item', 'quantity','am','pm'];
