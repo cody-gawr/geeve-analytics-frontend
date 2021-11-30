@@ -8391,3 +8391,11 @@ table.editTaskList td[colspan='2'] {
     padding: 10px 0;
     font-size: 15px;
 }
+.mh-table td.mat-cell.clstask {
+    padding-left: 30px !important;
+}
+td.clslist {
+    font-size: 17px !important;
+    font-weight: bold !important;
+    text-decoration: underline;
+}
