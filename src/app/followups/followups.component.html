@@ -1263,7 +1263,7 @@
                             <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns3.length">
                                 <span *ngIf="isEnableUT && followupUtaFollowups.length <= 0">You have no UTA followups
                                     for {{ selectedMonthYear }}</span>
-                                <span *ngIf="isEnableUT && followupUtaFollowups.length > 0">All UTA followups have been
+                                <span *ngIf="isEnableUT && followupUtaFollowups.length <= 0">All UTA followups have been
                                     completed for {{ selectedMonthYear }}</span>
                                 <span *ngIf="!isEnableUT">UTA Followup are not enabled - this can be configured in your
                                     Jeeve Settings menu</span>
