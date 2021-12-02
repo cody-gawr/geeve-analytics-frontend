@@ -34,15 +34,14 @@ import { AppConstants } from "../../app.constants";
 })
 export class CustomisationsComponent
   extends BaseComponent
-  implements AfterViewInit
-{
+  implements AfterViewInit {
   clinic_id$ = new BehaviorSubject<any>(null);
 
   @Input() set clinicId(value: any) {
     this.clinic_id$.next(value);
   }
   public form: FormGroup;
-  
+
   public xrayMonths: number = 24; //default value
   public opgMonths: number = 60; //default value
   public recallCode1: any;
@@ -50,10 +49,14 @@ export class CustomisationsComponent
   public recallCode3: any;
   public labCode1: any;
   public labCode2: any;
-  public newPatients: any =0;
-  public recall_rate_default: any =1;
-  public lab_code1: any ='';
-  public lab_code2: any ='';
+  public newPatients: any = 0;
+  public recall_rate_default: any = 1;
+  public lab_code1: any = '';
+  public lab_code2: any = '';
+  public lab_overdue_enable: boolean = true;
+  public recall_overdue_enable: boolean = true;
+  public xray_overdue_enable: boolean = true;
+  public opg_overdue_enable: boolean = true;
 
   constructor(
     private _cookieService: CookieService,
@@ -69,7 +72,7 @@ export class CustomisationsComponent
   }
 
   ngOnInit() {
-    this.form = this.fb.group({ 
+    this.form = this.fb.group({
       recall_codes1: [null, Validators.compose([Validators.required])],
       recall_codes2: [null],
       recall_codes3: [null],
@@ -81,9 +84,10 @@ export class CustomisationsComponent
       recall_rate_default: [null],
     });
     this.getCustomiseSettings();
+    this.getclinicHuddleNotifications();
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
 
   /********Recall codes code */
   fieldArray = [
@@ -129,6 +133,72 @@ export class CustomisationsComponent
   }
   /********Recall codes code End */
 
+  public toggleMH(event, type) {
+
+    if (type == "recall_overdue_enable") {
+      this.recall_overdue_enable = event.checked;
+    } else if (type == "lab_overdue_enable") {
+      this.lab_overdue_enable = event.checked;
+    } else if (type == "opg_overdue_enable") {
+      this.opg_overdue_enable = event.checked;
+    } else if (type == "xray_overdue_enable") {
+      this.xray_overdue_enable = event.checked;
+    }
+    let val = (event.checked) ? 1 : 0
+    console.log('data', type, val)
+    this.manageOverdue(type, val);
+  }
+
+  manageOverdue(type, value) {
+    $(".ajax-loader").show();
+    let data = {
+      clinic_id: Number(this.clinic_id$.value),
+      type: type,
+      value: value
+    };
+    this.customisationsService.clinicHuddleNotificationsSave(data).subscribe(
+      (res) => {
+        $(".ajax-loader").hide();
+        if (res.message == "success") {
+          if (res.message == "success") {
+            this.toastr.success("Clinic Customisations Updated");
+          } else if (res.status == "401") {
+            this.handleUnAuthorization();
+          }
+        }
+      },
+      (error) => {
+        console.log("error", error);
+        this.toastr.error(error);
+        $(".ajax-loader").hide();
+      }
+    );
+    // console.log("huddles", huddles);
+    // console.log("dashboard", dashboard);
+  }
+
+  getclinicHuddleNotifications() {
+    this.customisationsService
+      .getclinicHuddleNotifications(this.clinic_id$.value)
+      .subscribe(
+        (res) => {
+          $(".ajax-loader").hide();
+          if (res.message == "success") {
+            if (res.data) {
+              this.recall_overdue_enable = (res.data.recall_overdue_enable) ? true : false;
+              this.lab_overdue_enable = (res.data.lab_overdue_enable) ? true : false;
+              this.opg_overdue_enable = (res.data.opg_overdue_enable) ? true : false;
+              this.xray_overdue_enable = (res.data.xray_overdue_enable) ? true : false;
+            }
+          }
+        },
+        (error) => {
+          console.log("error", error);
+          $(".ajax-loader").hide();
+        }
+      );
+  }
+
   getCustomiseSettings() {
     this.customisationsService
       .getCustomiseSettings(this.clinic_id$.value)
@@ -137,11 +207,11 @@ export class CustomisationsComponent
           $(".ajax-loader").hide();
           if (res.message == "success") {
             if (res.data) {
-              this.recallCode1 = res.data.recall_code1;              
-              this.recallCode2 = res.data.recall_code2;              
-              this.recallCode3 = res.data.recall_code3;              
-              this.labCode1 = res.data.lab_code1;              
-              this.labCode2 = res.data.lab_code2;              
+              this.recallCode1 = res.data.recall_code1;
+              this.recallCode2 = res.data.recall_code2;
+              this.recallCode3 = res.data.recall_code3;
+              this.labCode1 = res.data.lab_code1;
+              this.labCode2 = res.data.lab_code2;
               this.xrayMonths = res.data.xray_months;
               this.opgMonths = res.data.opg_months;
               this.newPatients = res.data.new_patients_main;
@@ -158,7 +228,7 @@ export class CustomisationsComponent
       );
   }
 
-  onSubmit() {    
+  onSubmit() {
     $(".ajax-loader").show();
     let data = {
       clinic_id: Number(this.clinic_id$.value),
@@ -197,6 +267,8 @@ export class CustomisationsComponent
     // console.log("huddles", huddles);
     // console.log("dashboard", dashboard);
   }
+
+
   //
   handleUnAuthorization() {
     this._cookieService.put("username", "");
@@ -206,5 +278,5 @@ export class CustomisationsComponent
   }
 
 
-  
+
 }
