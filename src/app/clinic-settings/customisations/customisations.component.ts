@@ -48,6 +48,8 @@ export class CustomisationsComponent
   public recallCode1: any;
   public recallCode2: any;
   public recallCode3: any;
+  public labCode1: any;
+  public labCode2: any;
   public newPatients: any =0;
   public recall_rate_default: any =1;
 
@@ -69,6 +71,8 @@ export class CustomisationsComponent
       recall_codes1: [null, Validators.compose([Validators.required])],
       recall_codes2: [null],
       recall_codes3: [null],
+      lab_code1: [null, Validators.compose([Validators.required]), Validators.max(1)],
+      lab_code2: [null, Validators.compose([Validators.required]), Validators.max(1)],
       xray_months: [null, Validators.compose([Validators.required])],
       opg_months: [null, Validators.compose([Validators.required])],
       new_patients: [null],
@@ -134,6 +138,8 @@ export class CustomisationsComponent
               this.recallCode1 = res.data.recall_code1;              
               this.recallCode2 = res.data.recall_code2;              
               this.recallCode3 = res.data.recall_code3;              
+              this.labCode1 = res.data.lab_code1;              
+              this.labCode2 = res.data.lab_code2;              
               this.xrayMonths = res.data.xray_months;
               this.opgMonths = res.data.opg_months;
               this.newPatients = res.data.new_patients_main;

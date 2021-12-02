@@ -336,6 +336,16 @@ export class AppConstants {
         info: 'To ensure no overdue recall alerts are shown in the morning huddle for patients attending for a recall appointment, ensure your recall codes are set correctly (as per the appointment status code you use for recalls in your PMS). You can define up to 3 codes.',
         direction: 'right'
     };
+     public labCode1: ITooltipData = {
+        title: 'Lab Code 1',
+        info: 'Info Here for lab Code 1',
+        direction: 'right'
+    };
+     public labCode2: ITooltipData = {
+        title: 'Lab Code 2',
+        info: 'Info Here for lab Code 2',
+        direction: 'right'
+    };
     public tipNewPatients: ITooltipData = {
         title: 'New Patients',
         info: 'By default, new patients are associated with the provider listed as the main provider of that patient. This setting allows you to calculate new patients based on the provider who performs the first treatment.',

@@ -101,6 +101,43 @@
 
 
           </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
+
+            <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+              <div class="sa-form-group mh-align">
+                <label _ngcontent-gxr-c371="">Lab Code 1 <div class="info-button">
+                    <div class="info-icon-container">
+                      <img [tooltip]="this.constants.labCode1" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                    </div>
+                  </div></label>
+                <input type="text" max="1"  min="0" placeholder="" [formControl]="form.controls['lab_code1']"
+                  [(ngModel)]="labCode1"/>
+
+                <small *ngIf="
+                    form.controls['lab_code1'].hasError('required') &&
+                    form.controls['lab_code1'].touched
+                  " class="text-danger support-text mh-error-align">Field is Required.</small>
+              </div>
+            </div>
+            <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+              <div class="sa-form-group mh-align">
+                <label _ngcontent-gxr-c371="">Lab Code 2 <div class="info-button">
+                    <div class="info-icon-container">
+                      <img [tooltip]="this.constants.labCode2" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                    </div>
+                  </div></label>
+                <input type="text" min="0" max="1" placeholder="" [formControl]="form.controls['lab_code2']"
+                  [(ngModel)]="labCode2"/>
+
+                <small *ngIf="
+                    form.controls['lab_code2'].hasError('required') &&
+                    form.controls['lab_code2'].touched
+                  " class="text-danger support-text mh-error-align">Field is Required.</small>
+              </div>
+            </div>
+              <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+            </div>
+          </div>
         </div>
       </div>
       <div class="gray_area">
