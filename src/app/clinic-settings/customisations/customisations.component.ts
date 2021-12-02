@@ -52,6 +52,8 @@ export class CustomisationsComponent
   public labCode2: any;
   public newPatients: any =0;
   public recall_rate_default: any =1;
+  public lab_code1: any ='';
+  public lab_code2: any ='';
 
   constructor(
     private _cookieService: CookieService,
@@ -71,8 +73,8 @@ export class CustomisationsComponent
       recall_codes1: [null, Validators.compose([Validators.required])],
       recall_codes2: [null],
       recall_codes3: [null],
-      lab_code1: [null, Validators.compose([Validators.required]), Validators.max(1)],
-      lab_code2: [null, Validators.compose([Validators.required]), Validators.max(1)],
+      lab_code1: [null, Validators.compose([Validators.required])],
+      lab_code2: [null, Validators.compose([Validators.required])],
       xray_months: [null, Validators.compose([Validators.required])],
       opg_months: [null, Validators.compose([Validators.required])],
       new_patients: [null],
@@ -144,6 +146,8 @@ export class CustomisationsComponent
               this.opgMonths = res.data.opg_months;
               this.newPatients = res.data.new_patients_main;
               this.recall_rate_default = res.data.recall_rate_default;
+              this.lab_code1 = res.data.lab_code1;
+              this.lab_code2 = res.data.lab_code2;
             }
           }
         },
@@ -164,7 +168,9 @@ export class CustomisationsComponent
       recall_code2: this.form.value.recall_codes2,
       recall_code3: this.form.value.recall_codes3,
       new_patients: this.form.value.new_patients,
-      recall_rate_default: this.form.value.recall_rate_default
+      recall_rate_default: this.form.value.recall_rate_default,
+      lab_code1: this.form.value.lab_code1,
+      lab_code2: this.form.value.lab_code2
     };
 
     this.customisationsService.updateCustomiseSettings(data).subscribe(

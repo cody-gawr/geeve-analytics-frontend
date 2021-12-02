@@ -54,6 +54,8 @@ export class CustomisationsService {
      formData.append("recall_code3", data.recall_code3);
      formData.append("new_patients_main", data.new_patients);
      formData.append("recall_rate_default", data.recall_rate_default);
+     formData.append("lab_code1", data.lab_code1);
+     formData.append("lab_code2", data.lab_code2);
 
      
     return this.http

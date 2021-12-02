@@ -14,11 +14,12 @@
               <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Xray Overdue</label>
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['xray_months']"
-                  [(ngModel)]="xrayMonths"/>
+                  [(ngModel)]="xrayMonths" />
                 <span>months</span>
                 <div class="info-button">
                   <div class="info-icon-container">
-                    <img [tooltip]="this.constants.tipXrayOverdue" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                    <img [tooltip]="this.constants.tipXrayOverdue" src="../assets/images/info-icon.png" alt="info-icon"
+                      class="info-icon" />
                   </div>
                 </div>
                 <small *ngIf="
@@ -35,7 +36,8 @@
                 <span>months
                   <div class="info-button">
                     <div class="info-icon-container">
-                      <img [tooltip]="this.constants.tipOPGOverdue" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                      <img [tooltip]="this.constants.tipOPGOverdue" src="../assets/images/info-icon.png" alt="info-icon"
+                        class="info-icon" />
                     </div>
                   </div>
                 </span>
@@ -54,11 +56,12 @@
               <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Recall Code 1 <div class="info-button">
                     <div class="info-icon-container">
-                      <img [tooltip]="this.constants.tipRecallCode1" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                      <img [tooltip]="this.constants.tipRecallCode1" src="../assets/images/info-icon.png"
+                        alt="info-icon" class="info-icon" />
                     </div>
                   </div></label>
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_codes1']"
-                  [(ngModel)]="recallCode1"/>
+                  [(ngModel)]="recallCode1" />
 
                 <small *ngIf="
                     form.controls['recall_codes1'].hasError('required') &&
@@ -71,11 +74,12 @@
               <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Recall Code 2 <div class="info-button">
                     <div class="info-icon-container">
-                      <img [tooltip]="this.constants.tipRecallCode2" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                      <img [tooltip]="this.constants.tipRecallCode2" src="../assets/images/info-icon.png"
+                        alt="info-icon" class="info-icon" />
                     </div>
                   </div></label>
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_codes2']"
-                  [(ngModel)]="recallCode2"/>
+                  [(ngModel)]="recallCode2" />
                 <small *ngIf="
                     form.controls['recall_codes2'].hasError('required') &&
                     form.controls['recall_codes2'].touched
@@ -87,7 +91,8 @@
               <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Recall Code 3 <div class="info-button">
                     <div class="info-icon-container">
-                      <img [tooltip]="this.constants.tipRecallCode3" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                      <img [tooltip]="this.constants.tipRecallCode3" src="../assets/images/info-icon.png"
+                        alt="info-icon" class="info-icon" />
                     </div>
                   </div></label>
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_codes3']"
@@ -107,12 +112,12 @@
               <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Lab Code 1 <div class="info-button">
                     <div class="info-icon-container">
-                      <img [tooltip]="this.constants.labCode1" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                      <img [tooltip]="this.constants.labCode1" src="../assets/images/info-icon.png" alt="info-icon"
+                        class="info-icon" />
                     </div>
                   </div></label>
-                <input type="text" max="1"  min="0" placeholder="" [formControl]="form.controls['lab_code1']"
-                  [(ngModel)]="labCode1"/>
-
+                <input type="text" maxlength="1" placeholder="" [formControl]="form.controls['lab_code1']"
+                  [(ngModel)]="labCode1" />
                 <small *ngIf="
                     form.controls['lab_code1'].hasError('required') &&
                     form.controls['lab_code1'].touched
@@ -123,11 +128,12 @@
               <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Lab Code 2 <div class="info-button">
                     <div class="info-icon-container">
-                      <img [tooltip]="this.constants.labCode2" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                      <img [tooltip]="this.constants.labCode2" src="../assets/images/info-icon.png" alt="info-icon"
+                        class="info-icon" />
                     </div>
                   </div></label>
-                <input type="text" min="0" max="1" placeholder="" [formControl]="form.controls['lab_code2']"
-                  [(ngModel)]="labCode2"/>
+                <input type="text" maxlength="1" placeholder="" [formControl]="form.controls['lab_code2']"
+                  [(ngModel)]="labCode2" />
 
                 <small *ngIf="
                     form.controls['lab_code2'].hasError('required') &&
@@ -135,7 +141,7 @@
                   " class="text-danger support-text mh-error-align">Field is Required.</small>
               </div>
             </div>
-              <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+            <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
             </div>
           </div>
         </div>
@@ -152,7 +158,8 @@
                 <label>New Patients
                   <div class="info-button">
                     <div class="info-icon-container">
-                      <img [tooltip]="this.constants.tipNewPatients" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                      <img [tooltip]="this.constants.tipNewPatients" src="../assets/images/info-icon.png"
+                        alt="info-icon" class="info-icon" />
                     </div>
                   </div>
                 </label>
@@ -168,7 +175,8 @@
                 <label>Recall Rate
                   <div class="info-button">
                     <div class="info-icon-container">
-                      <img [tooltip]="this.constants.tipCustomisationsRecallRate" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                      <img [tooltip]="this.constants.tipCustomisationsRecallRate" src="../assets/images/info-icon.png"
+                        alt="info-icon" class="info-icon" />
                     </div>
                   </div>
                 </label>
