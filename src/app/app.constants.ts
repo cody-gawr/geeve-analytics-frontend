@@ -321,29 +321,19 @@ export class AppConstants {
         info: 'If a patient has not had an OPG in the number of months defined, an OPG Overdue notification will be shown in the morning huddle for this patient',
         direction: 'right'
     };
-    public tipRecallCode1: ITooltipData = {
-        title: 'Recall Code 1',
+    public tipRecallCode: ITooltipData = {
+        title: 'Recall Code',
         info: 'To ensure no overdue recall alerts are shown in the morning huddle for patients attending for a recall appointment, ensure your recall codes are set correctly (as per the appointment status code you use for recalls in your PMS). You can define up to 3 codes.',
         direction: 'right'
     };
-    public tipRecallCode2: ITooltipData = {
-        title: 'Recall Code 2',
-        info: 'To ensure no overdue recall alerts are shown in the morning huddle for patients attending for a recall appointment, ensure your recall codes are set correctly (as per the appointment status code you use for recalls in your PMS). You can define up to 3 codes.',
+    public labCode: ITooltipData = {
+        title: 'Lab Code',
+        info: 'Info Here for lab Code',
         direction: 'right'
     };
-    public tipRecallCode3: ITooltipData = {
-        title: 'Recall Code 3',
-        info: 'To ensure no overdue recall alerts are shown in the morning huddle for patients attending for a recall appointment, ensure your recall codes are set correctly (as per the appointment status code you use for recalls in your PMS). You can define up to 3 codes.',
-        direction: 'right'
-    };
-     public labCode1: ITooltipData = {
-        title: 'Lab Code 1',
-        info: 'Info Here for lab Code 1',
-        direction: 'right'
-    };
-     public labCode2: ITooltipData = {
-        title: 'Lab Code 2',
-        info: 'Info Here for lab Code 2',
+    public statusCode: ITooltipData = {
+        title: 'Status Code',
+        info: 'Info Here for status code',
         direction: 'right'
     };
     public tipNewPatients: ITooltipData = {

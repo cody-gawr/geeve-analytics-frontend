@@ -56,6 +56,7 @@ export class CustomisationsComponent
   public lab_overdue_enable: boolean = true;
   public recall_overdue_enable: boolean = true;
   public xray_overdue_enable: boolean = true;
+  public status_codes_enable: boolean = true;
   public opg_overdue_enable: boolean = true;
 
   constructor(
@@ -143,9 +144,10 @@ export class CustomisationsComponent
       this.opg_overdue_enable = event.checked;
     } else if (type == "xray_overdue_enable") {
       this.xray_overdue_enable = event.checked;
+    }else if (type == "status_codes_enable") {
+      this.status_codes_enable = event.checked;
     }
     let val = (event.checked) ? 1 : 0
-    console.log('data', type, val)
     this.manageOverdue(type, val);
   }
 
@@ -189,6 +191,7 @@ export class CustomisationsComponent
               this.lab_overdue_enable = (res.data.lab_overdue_enable) ? true : false;
               this.opg_overdue_enable = (res.data.opg_overdue_enable) ? true : false;
               this.xray_overdue_enable = (res.data.xray_overdue_enable) ? true : false;
+              this.status_codes_enable = (res.data.status_codes_enable) ? true : false;
             }
           }
         },

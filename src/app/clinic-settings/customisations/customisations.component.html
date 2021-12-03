@@ -10,60 +10,61 @@
         <h4 class="clinic-settings-form-title">Morning Huddle</h4>
         <div class="clinic-setting-form flx-width" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100">
           <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0">
-            <div fxFlex="calc(22% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+            <div fxFlex="calc(15% - 10px)" fxFlex.md="calc(29% - 10px)" fxFlex.sm="calc(29% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group mh-align">
-                <label _ngcontent-gxr-c371="">Manage Xray Overdue </label>
-                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ xray_overdue_enable }}" name="xray_overdue_enable"
-                  (change)="toggleMH($event, 'xray_overdue_enable')">
+                <label _ngcontent-gxr-c371="">Xray Overdue <div class="info-button">
+                    <div class="info-icon-container">
+                      <img [tooltip]="this.constants.tipXrayOverdue" src="../assets/images/info-icon.png"
+                        alt="info-icon" class="info-icon" />
+                    </div>
+                  </div></label>
+                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ xray_overdue_enable }}"
+                  name="xray_overdue_enable" (change)="toggleMH($event, 'xray_overdue_enable')">
                   <span *ngIf="xray_overdue_enable"><strong>Enabled</strong></span>
                   <span *ngIf="!xray_overdue_enable"><strong>Disabled</strong></span>
                 </mat-slide-toggle>
               </div>
             </div>
-            <div fxFlex="calc(22% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+            <div fxFlex="calc(15% - 10px)" fxFlex.md="calc(29% - 10px)" fxFlex.sm="calc(29% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group mh-align">
-                <label _ngcontent-gxr-c371="">Xray Overdue</label>
+                <!-- <label _ngcontent-gxr-c371="">Xray Overdue</label> -->
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['xray_months']"
                   [(ngModel)]="xrayMonths" />
                 <span>months</span>
-                <div class="info-button">
-                  <div class="info-icon-container">
-                    <img [tooltip]="this.constants.tipXrayOverdue" src="../assets/images/info-icon.png" alt="info-icon"
-                      class="info-icon" />
-                  </div>
-                </div>
                 <small *ngIf="
                     form.controls['xray_months'].hasError('required') &&
                     form.controls['xray_months'].touched
                   " class="text-danger support-text mh-error-align">Field is Required.</small>
               </div>
             </div>
-             <div fxFlex="calc(22% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100"></div>
-              <div fxFlex="calc(22% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100"></div>
+            <div fxFlex="calc(15% - 10px)" fxFlex.md="calc(29% - 10px)" fxFlex.sm="calc(29% - 10px)" fxFlex.xs="100">
+            </div>
+            <div fxFlex="calc(15% - 10px)" fxFlex.md="calc(29% - 10px)" fxFlex.sm="calc(29% - 10px)" fxFlex.xs="100">
+            </div>
           </div>
-           <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0">
-            <div fxFlex="calc(22% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+          <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0">
+            <div fxFlex="calc(15% - 10px)" fxFlex.md="calc(29% - 10px)" fxFlex.sm="calc(29% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group mh-align">
-                <label _ngcontent-gxr-c371="">Manage OPG Overdue </label>
-                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ opg_overdue_enable }}" name="opg_overdue_enable"
-                  (change)="toggleMH($event, 'opg_overdue_enable')">
+                <label _ngcontent-gxr-c371="">OPG Overdue <div class="info-button">
+                    <div class="info-icon-container">
+                      <img [tooltip]="this.constants.tipOPGOverdue" src="../assets/images/info-icon.png" alt="info-icon"
+                        class="info-icon" />
+                    </div>
+                  </div></label>
+                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ opg_overdue_enable }}"
+                  name="opg_overdue_enable" (change)="toggleMH($event, 'opg_overdue_enable')">
                   <span *ngIf="opg_overdue_enable"><strong>Enabled</strong></span>
                   <span *ngIf="!opg_overdue_enable"><strong>Disabled</strong></span>
                 </mat-slide-toggle>
               </div>
             </div>
-            <div fxFlex="calc(22% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+            <div fxFlex="calc(15% - 10px)" fxFlex.md="calc(29% - 10px)" fxFlex.sm="calc(29% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group mh-align">
-                <label _ngcontent-gxr-c371="">OPG Overdue</label>
+                <!-- <label _ngcontent-gxr-c371="">OPG Overdue</label> -->
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['opg_months']"
                   [(ngModel)]="opgMonths" />
                 <span>months
-                  <div class="info-button">
-                    <div class="info-icon-container">
-                      <img [tooltip]="this.constants.tipOPGOverdue" src="../assets/images/info-icon.png" alt="info-icon"
-                        class="info-icon" />
-                    </div>
-                  </div>
+
                 </span>
                 <small *ngIf="
                     form.controls['opg_months'].hasError('required') &&
@@ -71,16 +72,23 @@
                   " class="text-danger support-text mh-error-align">Field is Required.</small>
               </div>
             </div>
-            <div fxFlex="calc(22% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100"></div>
-            <div fxFlex="calc(22% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100"></div>
-            
+            <div fxFlex="calc(15% - 10px)" fxFlex.md="calc(29% - 10px)" fxFlex.sm="calc(29% - 10px)" fxFlex.xs="100">
+            </div>
+            <div fxFlex="calc(15% - 10px)" fxFlex.md="calc(29% - 10px)" fxFlex.sm="calc(29% - 10px)" fxFlex.xs="100">
+            </div>
+
           </div>
           <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
             <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group mh-align">
-                <label _ngcontent-gxr-c371="">Manage Recall Codes</label>
-                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ recall_overdue_enable }}" name="recall_overdue_enable"
-                  (change)="toggleMH($event, 'recall_overdue_enable')">
+                <label _ngcontent-gxr-c371="">Overdue Recalls <div class="info-button">
+                    <div class="info-icon-container">
+                      <img [tooltip]="this.constants.tipRecallCode" src="../assets/images/info-icon.png" alt="info-icon"
+                        class="info-icon" />
+                    </div>
+                  </div></label>
+                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ recall_overdue_enable }}"
+                  name="recall_overdue_enable" (change)="toggleMH($event, 'recall_overdue_enable')">
                   <span *ngIf="recall_overdue_enable"><strong>Enabled</strong></span>
                   <span *ngIf="!recall_overdue_enable"><strong>Disabled</strong></span>
                 </mat-slide-toggle>
@@ -88,12 +96,7 @@
             </div>
             <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group mh-align">
-                <label _ngcontent-gxr-c371="">Recall Code 1 <div class="info-button">
-                    <div class="info-icon-container">
-                      <img [tooltip]="this.constants.tipRecallCode1" src="../assets/images/info-icon.png"
-                        alt="info-icon" class="info-icon" />
-                    </div>
-                  </div></label>
+                <label _ngcontent-gxr-c371="">Recall Code 1 </label>
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_codes1']"
                   [(ngModel)]="recallCode1" />
 
@@ -106,12 +109,7 @@
 
             <div fxFlex="calc(25% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group mh-align">
-                <label _ngcontent-gxr-c371="">Recall Code 2 <div class="info-button">
-                    <div class="info-icon-container">
-                      <img [tooltip]="this.constants.tipRecallCode2" src="../assets/images/info-icon.png"
-                        alt="info-icon" class="info-icon" />
-                    </div>
-                  </div></label>
+                <label _ngcontent-gxr-c371="">Recall Code 2 </label>
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_codes2']"
                   [(ngModel)]="recallCode2" />
                 <small *ngIf="
@@ -123,12 +121,7 @@
 
             <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group mh-align">
-                <label _ngcontent-gxr-c371="">Recall Code 3 <div class="info-button">
-                    <div class="info-icon-container">
-                      <img [tooltip]="this.constants.tipRecallCode3" src="../assets/images/info-icon.png"
-                        alt="info-icon" class="info-icon" />
-                    </div>
-                  </div></label>
+                <label _ngcontent-gxr-c371="">Recall Code 3</label>
                 <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_codes3']"
                   [(ngModel)]="recallCode3" />
                 <small *ngIf="
@@ -140,13 +133,18 @@
 
 
           </div>
+         
           <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
-
             <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group mh-align">
-                <label _ngcontent-gxr-c371="">Manage Lab Code </label>
-                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ lab_overdue_enable }}" name="lab_overdue_enable"
-                  (change)="toggleMH($event, 'lab_overdue_enable')">
+                <label _ngcontent-gxr-c371="">Overdue Labs <div class="info-button">
+                    <div class="info-icon-container">
+                      <img [tooltip]="this.constants.labCode" src="../assets/images/info-icon.png" alt="info-icon"
+                        class="info-icon" />
+                    </div>
+                  </div></label>
+                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ lab_overdue_enable }}"
+                  name="lab_overdue_enable" (change)="toggleMH($event, 'lab_overdue_enable')">
                   <span *ngIf="lab_overdue_enable"><strong>Enabled</strong></span>
                   <span *ngIf="!lab_overdue_enable"><strong>Disabled</strong></span>
                 </mat-slide-toggle>
@@ -154,12 +152,7 @@
             </div>
             <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group mh-align">
-                <label _ngcontent-gxr-c371="">Lab Code 1 <div class="info-button">
-                    <div class="info-icon-container">
-                      <img [tooltip]="this.constants.labCode1" src="../assets/images/info-icon.png" alt="info-icon"
-                        class="info-icon" />
-                    </div>
-                  </div></label>
+                <label _ngcontent-gxr-c371="">Lab Code 1</label>
                 <input type="text" maxlength="1" placeholder="" [formControl]="form.controls['lab_code1']"
                   [(ngModel)]="labCode1" />
                 <small *ngIf="
@@ -170,15 +163,9 @@
             </div>
             <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group mh-align">
-                <label _ngcontent-gxr-c371="">Lab Code 2 <div class="info-button">
-                    <div class="info-icon-container">
-                      <img [tooltip]="this.constants.labCode2" src="../assets/images/info-icon.png" alt="info-icon"
-                        class="info-icon" />
-                    </div>
-                  </div></label>
+                <label _ngcontent-gxr-c371="">Lab Code 2</label>
                 <input type="text" maxlength="1" placeholder="" [formControl]="form.controls['lab_code2']"
                   [(ngModel)]="labCode2" />
-
                 <small *ngIf="
                     form.controls['lab_code2'].hasError('required') &&
                     form.controls['lab_code2'].touched
@@ -186,6 +173,24 @@
               </div>
             </div>
             <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+            </div>
+
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
+            <div fxFlex="calc(24% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+              <div class="sa-form-group mh-align">
+                <label _ngcontent-gxr-c371="">Status Codes <div class="info-button">
+                    <div class="info-icon-container">
+                      <img [tooltip]="this.constants.statusCode" src="../assets/images/info-icon.png" alt="info-icon"
+                        class="info-icon" />
+                    </div>
+                  </div></label>
+                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ status_codes_enable }}"
+                  name="status_codes_enable" (change)="toggleMH($event, 'status_codes_enable')">
+                  <span *ngIf="status_codes_enable"><strong>Enabled</strong></span>
+                  <span *ngIf="!status_codes_enable"><strong>Disabled</strong></span>
+                </mat-slide-toggle>
+              </div>
             </div>
           </div>
         </div>
