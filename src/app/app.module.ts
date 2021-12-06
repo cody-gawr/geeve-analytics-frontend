@@ -32,7 +32,7 @@ import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.co
 import { TasksComponent } from './tasks/tasks.component';
 import { MorningHuddleComponent,DialogOverviewExampleDialogComponent,StatusDialogMHComponent } from './dashboards/morning-huddle/morning-huddle.component';
 import { SignupComponent } from './signup/signup.component';
-import { FollowupsComponent,FollowupsDialogComponent,StatusDialogComponent } from './followups/followups.component';
+import { FollowupsComponent,FollowupsDialogComponent,StatusDialogComponent,ExportDataDialogComponent } from './followups/followups.component';
 import { StepperHeaderrightComponent } from './layouts/stepper/headerright/headerright.component';
 import { MatMenuModule} from '@angular/material/menu';
 import { ClinicSettingsService } from './clinic-settings/clinic-settings.service';
@@ -66,6 +66,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SignupComponent,
     FollowupsComponent,
     FollowupsDialogComponent,
+    ExportDataDialogComponent,
     StatusDialogComponent,
     StatusDialogMHComponent,
     DialogOverviewExampleDialogComponent,

@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from "@angular/router";
-import { DatePipe } from '@angular/common';
+import { DatePipe, JsonPipe } from '@angular/common';
 import { HeaderService } from '../layouts/full/header/header.service';
 import { MatTabGroup } from '@angular/material/tabs';
 import { ITooltipData } from '../shared/tooltip/tooltip.directive';
@@ -15,6 +15,67 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dial
 import { NgxDaterangepickerMd, DaterangepickerComponent } from 'ngx-daterangepicker-material';
 import { ChartstipsService } from '../shared/chartstips.service';
 import { environment } from "../../environments/environment";
+import * as moment from 'moment';
+
+
+
+@Component({
+  selector: 'export-data-dialog',
+  templateUrl: './export-data.html',
+  encapsulation: ViewEncapsulation.None
+})
+
+export class ExportDataDialogComponent {
+
+  constructor(public dialogRef: MatDialogRef<ExportDataDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private _cookieService: CookieService, private router: Router, private followupsService: FollowupsService, private datePipe: DatePipe) { }
+
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  exportData(data) {
+
+    let endRaw = moment(data.range.end);
+    let startRaw = moment(data.range.start);
+
+    let endDate = this.datePipe.transform(endRaw.toDate(), 'yyyy-MM-dd')
+    let startDate = this.datePipe.transform(startRaw.toDate(), 'yyyy-MM-dd')
+    let clinic_id = data.clinic_id
+    let followuptype = data.followtype
+    let showcompleted = (data.show_completed) ? 1 : 0
+    let filetype = data.type
+
+    this.followupsService.exportFollowUp(clinic_id, startDate, endDate, showcompleted, filetype, followuptype).subscribe((data: File) => {
+      console.log('new data', data)
+      const csvName = 'Library Resources.csv';
+      const blob = new Blob([data], { type: 'text/csv' }); //data is response from BE.
+      //Chrome & Firefox
+      const a = document.createElement('a');
+      const url = window.URL.createObjectURL(blob);
+      a.href = url;
+      a.download = csvName;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+
+    },
+      (error) => {
+        console.log('error', error)
+      });
+
+  }
+
+  handleUnAuthorization() {
+    this._cookieService.put("username", '');
+    this._cookieService.put("email", '');
+    this._cookieService.put("userid", '');
+    this.router.navigateByUrl('/login');
+  }
+
+}
+
+
 @Component({
   selector: 'notes-add-dialog',
   templateUrl: './add-notes.html',
@@ -34,7 +95,7 @@ export class FollowupsDialogComponent {
       return false;
     }
 
-    this.followupsService.notes(data.notes, data.patientId, data.date, data.clinic_id, data.followup_date, data.type,data.treatItem).subscribe((res) => {
+    this.followupsService.notes(data.notes, data.patientId, data.date, data.clinic_id, data.followup_date, data.type, data.treatItem).subscribe((res) => {
       if (res.message == 'success') {
         this.dialogRef.close();
       } else if (res.status == '401') {
@@ -44,6 +105,8 @@ export class FollowupsDialogComponent {
       console.log('error', error)
     });
   }
+
+
   handleUnAuthorization() {
     this._cookieService.put("username", '');
     this._cookieService.put("email", '');
@@ -93,10 +156,10 @@ export class StatusDialogComponent {
     this.nextFollowupHave = false;
   }
   updateNextfollowUp(data) {
-    this.followupsService.updateStatus('Wants another follow-up', data.pid, data.cid, data.type, data.original_appt_date, data.followup_date,data.treatItem).subscribe((update: any) => {
+    this.followupsService.updateStatus('Wants another follow-up', data.pid, data.cid, data.type, data.original_appt_date, data.followup_date, data.treatItem).subscribe((update: any) => {
       this.onNoClick();
       if (update.status) {
-        this.followupsService.cloneRecord(data.pid, data.cid, data.type, data.followup_date, this.nextDate, data.original_appt_date,data.treatItem).subscribe((update: any) => {
+        this.followupsService.cloneRecord(data.pid, data.cid, data.type, data.followup_date, this.nextDate, data.original_appt_date, data.treatItem).subscribe((update: any) => {
         });
       }
     });
@@ -106,7 +169,7 @@ export class StatusDialogComponent {
     this.nextFollowupHave = false;
     this.followupsService.updateStatus(data.event, data.pid, data.cid, data.type, data.original_appt_date, data.followup_date).subscribe((update: any) => {
       if (update.status && event != 'no') {
-        this.followupsService.cloneRecord(data.pid, data.cid, data.type, data.followup_date, this.nextDate, data.original_appt_date,data.treatItem, event).subscribe((clone: any) => {
+        this.followupsService.cloneRecord(data.pid, data.cid, data.type, data.followup_date, this.nextDate, data.original_appt_date, data.treatItem, event).subscribe((clone: any) => {
           if (clone.message == 'already') {
             this.nextDate = clone.$getRecord.followup_date;
             this.nextFollowupHave = true;
@@ -242,6 +305,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     this.matTabGroup.realignInkBar(); // align material tab green shaded color to first tab (on screen resize)
   }
 
+
   ngOnInit() {
     $('#currentDentist').attr('did', 'all');
     this.user_type = this._cookieService.get("user_type");
@@ -272,15 +336,15 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (val != undefined && val != 'all') {
       this.clinic_id = val;
 
-      this.clinicianAnalysisService.getClinicSettings( this.clinic_id).subscribe((data:any) => {
-        if(data.message == 'success'){
-          this.isEnablePO = (data.data.post_op_enable == 1)? true : false;
-          this.isEnableOR = (data.data.recall_enable == 1)? true : false;
-          this.isEnableTH = (data.data.tick_enable == 1)? true : false;
-          this.isEnableFT = (data.data.fta_enable == 1)? true : false;
-          this.isEnableUT = (data.data.uta_enable == 1)? true : false;
+      this.clinicianAnalysisService.getClinicSettings(this.clinic_id).subscribe((data: any) => {
+        if (data.message == 'success') {
+          this.isEnablePO = (data.data.post_op_enable == 1) ? true : false;
+          this.isEnableOR = (data.data.recall_enable == 1) ? true : false;
+          this.isEnableTH = (data.data.tick_enable == 1) ? true : false;
+          this.isEnableFT = (data.data.fta_enable == 1) ? true : false;
+          this.isEnableUT = (data.data.uta_enable == 1) ? true : false;
         }
-      }); 
+      });
       $('#title').html('Follow Ups');
 
       this.selectedMonth = this.datepipe.transform(this.selectedMonthYear, 'M');
@@ -538,7 +602,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   }
 
 
-  
+
   public followupUtaFollowups: any = [];
   public followupUtaFollowupsInCMP: any = [];
   public utaTaksLoadingLoading: boolean = false;
@@ -607,7 +671,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     } else if (type == 'internal-referrals') {
       this.IRLoadingLoading = true;
     }
-    this.followupsService.updateFollowUpStatus(event.checked, pid, cid, type, date, fdate,treatItem).subscribe((update: any) => {
+    this.followupsService.updateFollowUpStatus(event.checked, pid, cid, type, date, fdate, treatItem).subscribe((update: any) => {
       if (type == 'post-op-calls') {
         this.getFollowupPostOpCalls();
       } else if (type == 'recall-overdue') {
@@ -624,22 +688,22 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     });
   }
 
-  updateStatus(event, pid, date, cid, firstname, surname, original_appt_date, followup_date, type, nextBussinessDay,treatItem = '') {
+  updateStatus(event, pid, date, cid, firstname, surname, original_appt_date, followup_date, type, nextBussinessDay, treatItem = '') {
     if (event == 'Wants another follow-up' || event == "Can't be reached" || event == "Can't be reached - left voicemail") {
       let width = '450px';
       if (event == "Can't be reached" || event == "Can't be reached - left voicemail")
         width = '650px';
       const dialogRef = this.dialog.open(StatusDialogComponent, {
         width: width,
-        data: { event, firstname, surname, pid, cid, type, original_appt_date, followup_date, nextBussinessDay,treatItem }
+        data: { event, firstname, surname, pid, cid, type, original_appt_date, followup_date, nextBussinessDay, treatItem }
       });
       dialogRef.afterClosed().subscribe(result => {
         if (type == 'tick-follower') {
           this.getTickFollowups('close');
         } else if (type == 'fta-follower') {
           this.getFtaFollowups('close');
-        }else if (type == 'uta-follower') {
-            this.getUtaFollowups('close');
+        } else if (type == 'uta-follower') {
+          this.getUtaFollowups('close');
         } else if (type == 'internal-referrals') {
           this.getinternalReferrals('close');
         } else {
@@ -648,7 +712,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
 
       });
     } else {
-      this.followupsService.updateStatus(event, pid, cid, type, date, followup_date,treatItem).subscribe((update: any) => {
+      this.followupsService.updateStatus(event, pid, cid, type, date, followup_date, treatItem).subscribe((update: any) => {
         if (type == 'tick-follower') {
           this.getTickFollowups('close');
         } else if (type == 'fta-follower') {
@@ -763,10 +827,24 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   }
 
 
-  openNotes(notes, patient_id, original_appt_date, followup_date, type,treatItem = ''): void {
+  exportreport(type = 'overdue_recalls'): void {
+    let selected = {
+      startDate: null,
+      endRaw: null
+    };
+    const dialogRef = this.dialog.open(ExportDataDialogComponent, {
+      width: '500px',
+      data: { clinic_id: this.clinic_id, range: selected, show_completed: false, type: 'csv', followtype: type }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
+  }
+
+  openNotes(notes, patient_id, original_appt_date, followup_date, type, treatItem = ''): void {
     const dialogRef = this.dialog.open(FollowupsDialogComponent, {
       width: '500px',
-      data: { notes: notes, patientId: patient_id, date: original_appt_date, clinic_id: this.clinic_id, old: notes, followup_date: followup_date, type: type,treatItem: treatItem }
+      data: { notes: notes, patientId: patient_id, date: original_appt_date, clinic_id: this.clinic_id, old: notes, followup_date: followup_date, type: type, treatItem: treatItem }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (type == 'tick-follower') {
@@ -777,7 +855,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         this.getinternalReferrals('close');
       } else if (type == 'uta-follower') {
         this.getUtaFollowups('close');
-      }else {
+      } else {
         this.getFtaFollowups('close');
       }
     });

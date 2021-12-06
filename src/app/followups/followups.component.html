@@ -8,7 +8,7 @@
             class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">
             arrow_forward_ios</mat-icon>
     </div>
-
+    <button *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')" (click)="exportreport()">Export</button>
     <mat-tab-group [selectedIndex]="selectedTab">
         <!-- Patient Schedule Tab start -->
         <mat-tab label="Overdue Recalls">
@@ -1004,7 +1004,8 @@
                         <div fxLayout="row" class="huddle-card-row">
                             <div fxFlex="40">Provider :</div>
                             <div fxFlex="60">
-                                {{ element.dentists.name | date: "MMM d, y":"timezone" }}
+                                <!-- {{ element.dentists.name | date: "MMM d, y":"timezone" }} -->
+                                {{ element.dentists.name }}
                             </div>
                         </div>
                         <div fxLayout="row" class="huddle-card-row">
@@ -1103,7 +1104,8 @@
                     <div class="title-follow-up d-inline-block">
                         UTA
                         <div class="info-icon-container">
-                            <img [tooltip]="charTips['60']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                            <img [tooltip]="charTips['60']" src="../assets/images/info-icon.png" alt="info-icon"
+                                class="info-icon" />
                         </div>
                     </div>
                     <div class="showComplete" *ngIf="followupUtaFollowups.length > 0">
@@ -1308,7 +1310,8 @@
                         <div fxLayout="row" class="huddle-card-row">
                             <div fxFlex="40">Provider :</div>
                             <div fxFlex="60">
-                                {{ element.dentists.name | date: "MMM d, y":"timezone" }}
+                                <!-- {{ element.dentists.name | date: "MMM d, y":"timezone" }} -->
+                                {{ element.dentists.name}}
                             </div>
                         </div>
                         <div fxLayout="row" class="huddle-card-row">

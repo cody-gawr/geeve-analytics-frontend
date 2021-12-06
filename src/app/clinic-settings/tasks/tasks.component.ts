@@ -16,7 +16,6 @@ import { MatSort } from '@angular/material/sort';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
-
   encapsulation: ViewEncapsulation.None
 })
 
