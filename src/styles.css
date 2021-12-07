@@ -8406,3 +8406,16 @@ td.clslist {
     color: #0e3459 !important;
     font-family: 'Gilroy-Regular';
 }
+
+.settingDentists .custom-tooltip .tooltip-info-text {
+    white-space: break-spaces;
+    text-align: left;
+    width: 100%;
+}
+.settingDentists .custom-tooltip::after {
+    border-bottom: 8px solid #1daa96;
+}
+
+.AddUserPopup.users{
+  position: inherit;
+}
