@@ -169,7 +169,7 @@
                   <div class="prodction_main_box_label" fxFlexAlign="start"
                     *ngIf="production_dif && productionstats == true">
                     <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
-                      Last Month: ${{ production_p | number: '1.' }}
+                      {{mtdInnText}} : ${{ production_p | number: '1.' }}
                     </div>
                   </div>
                 </div>
@@ -207,7 +207,7 @@
                   <div class="prodction_main_box_label" fxFlexAlign="start"
                     *ngIf="production_dif && prodpervisitstats == true">
                     <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
-                      Last Month: ${{ productionPrev | number: '1.' }}
+                      {{mtdInnText}} : ${{ productionPrev | number: '1.' }}
                     </div>
                   </div>
                 </div>
@@ -252,7 +252,7 @@
                   <div class="prodction_main_box_label" fxFlexAlign="start"
                     *ngIf="visits_dif && totalvisitstats == true">
                     <div [ngClass]="(visits_dif >= 0) ? 'minus': 'minus'">
-                      Last Month: {{ visits_p | number: '1.' }}
+                      {{mtdInnText}} : {{ visits_p | number: '1.' }}
                     </div>
                   </div>
                 </div>

@@ -55,6 +55,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public productionPrev = 0;
   public health_screen_mtd = 0;
   public mtdText = 'Month To Date';
+  public mtdInnText = 'Last Month';
   public options: any = {
     hasNeedle: false,
     arcColors: ['rgba(166, 178, 255, 1)', 'rgba(166, 178, 255, 0.8)'],
@@ -169,12 +170,14 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
       .subscribe(
         (res) => {          
           if (res.message == "success") {
-            console.log('res.data',res.data)
             if (res.data) {
               if(res.data.health_screen_mtd == 0){
                 this.mtdText = 'Last 30 days';
+                this.mtdInnText = '31-60 days';
               }else{
                 this.mtdText = 'Month To Date';
+                this.mtdInnText = 'Last Month';
+                
               }
             }
           }
@@ -319,7 +322,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
           this.production_c_avg = Math.round(this.production_c / today);
           this.production_dif = Math.round(this.production_c - this.production_p);
           this.production_c_all = { 'title': '', 'info': tooltip_p };
-
+          
           this.visits_p = Math.round(data.data.num_visit_ta);
          
           this.visits_c = 0;
@@ -345,7 +348,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
         } else {
           this.production_c = data.data.production;
           this.production_p = Math.round(data.data.production_ta);
-          this.production_c_avg = Math.round(data.data.production_ta / today);
+          this.production_c_avg = Math.round(this.production_c / today);
           this.production_dif = Math.round(this.production_c - this.production_p);
 
           this.productionVal = (data.data.production_visit) ? data.data.production_visit : 0;
@@ -354,7 +357,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
 
           this.visits_c = Math.round(data.data.num_visit);
           this.visits_p = Math.round(data.data.num_visit_ta);
-          this.visits_c_avg = Math.round(data.data.num_visit_ta / today);
+          this.visits_c_avg = Math.round(data.data.visits_c / today);
           this.visits_dif = Math.round(this.visits_c - this.visits_p);
         }
       }
