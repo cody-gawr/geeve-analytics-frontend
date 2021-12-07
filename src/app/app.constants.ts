@@ -336,6 +336,11 @@ export class AppConstants {
         info: 'Info Here for status code',
         direction: 'right'
     };
+    public tipdateRange: ITooltipData = {
+        title: 'Date Range Title',
+        info: 'Date Rang Description',
+        direction: 'right'
+    };
     public tipNewPatients: ITooltipData = {
         title: 'New Patients',
         info: 'By default, new patients are associated with the provider listed as the main provider of that patient. This setting allows you to calculate new patients based on the provider who performs the first treatment.',

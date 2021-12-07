@@ -255,15 +255,15 @@
                 <label>Date Range
                   <div class="info-button">
                     <div class="info-icon-container">
-                      <img [tooltip]="this.constants.tipNewPatients" src="../assets/images/info-icon.png"
+                      <img [tooltip]="this.constants.tipdateRange" src="../assets/images/info-icon.png"
                         alt="info-icon" class="info-icon" />
                     </div>
                   </div>
                 </label>
 
                 <select [formControl]="form.controls['health_screen_mtd']" [(ngModel)]="health_screen_mtd">
-                  <option value="1">Last 30 Days</option>
-                  <option value="0">Month to Date</option>
+                  <option value="0">Last 30 Days</option>
+                  <option value="1">Month to Date</option>
                 </select>
               </div>
             </div>

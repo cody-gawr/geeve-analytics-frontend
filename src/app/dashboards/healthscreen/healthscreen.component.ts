@@ -5,7 +5,7 @@ import { DentistService } from '../../dentist/dentist.service';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from "@angular/router";
 import { HeaderService } from '../../layouts/full/header/header.service';
-import { CookieService } from "ngx-cookie";
+import { CookieService, CookieOptions } from "ngx-cookie";
 import { ToastrService } from 'ngx-toastr';
 import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
@@ -53,6 +53,8 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public finProductionPerVisit_dif: any = 0;
   public productionVal = 0;
   public productionPrev = 0;
+  public health_screen_mtd = 0;
+  public mtdText = 'Month To Date';
   public options: any = {
     hasNeedle: false,
     arcColors: ['rgba(166, 178, 255, 1)', 'rgba(166, 178, 255, 0.8)'],
@@ -102,8 +104,11 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   ) {
     this.getChartsTips();
   }
+
   private warningMessage: string;
+
   ngAfterViewInit() {
+    this.getCustomiseSettings();
     $('#currentDentist').attr('did', 'all');
     //this.initiate_clinic();
     //$('.external_dentist').hide();
@@ -145,11 +150,40 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
     if (val != undefined) {
+      let opts = this.constants.cookieOpt as CookieOptions;
+      this._cookieService.put(
+        "clinic_id",
+        val,
+        opts
+      );
       this.clinic_id = val;
       this.loadHealthScreen();
-      //this.checkXeroStatus();
+      this.getCustomiseSettings();
+    }
+  }
 
-      //$('.external_dentist').hide();
+  getCustomiseSettings() {    
+    let clinic_id = this._cookieService.get("clinic_id");
+    if(clinic_id != 'all'){
+    this.healthscreenService.getCustomiseSettings(clinic_id)
+      .subscribe(
+        (res) => {          
+          if (res.message == "success") {
+            console.log('res.data',res.data)
+            if (res.data) {
+              if(res.data.health_screen_mtd == 0){
+                this.mtdText = 'Last 30 days';
+              }else{
+                this.mtdText = 'Month To Date';
+              }
+            }
+          }
+        },
+        (error) => {
+          console.log("error", error);
+          $(".ajax-loader").hide();
+        }
+      );
     }
   }
 
