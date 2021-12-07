@@ -8437,3 +8437,23 @@ td.clslist {
     position: relative;
     display: grid;
 }
+.referafrn_1 {
+    width: 40%;
+    display: block;
+    float: left;
+}
+h1.mat-dialog-title span {
+    width: 100%;
+    display: block;
+    font-size: 15px;
+    color: #045241;
+    line-height: 1.2;
+    padding-top: 8px;
+}
+.referafrn_1 img {
+    height: 140px;
+    width: 200px;
+}
+.referafrn_2 input {
+    box-shadow: 2px 2px 4px 0;
+}

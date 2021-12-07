@@ -227,7 +227,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
 
   open() {
     const dialogRef = this.dialog.open(ReferFriendComponent, {
-      width: "650px",
+      width: "700px",
       data: {
         referFriendName: '',
         referFriendEmail: '',
