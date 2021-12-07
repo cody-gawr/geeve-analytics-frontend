@@ -3115,7 +3115,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             this.gaugeValue = '0';
           }
           if (mode == 'w') {
-            this.dentistProductionWeeklyTrend = this.dentistProdTrend;
+            this.dentistProductionWeeklyTrend =  data.data.data;
             this.dentistProductionWeeklyTrendLabels = this.dentistProductionTrendLabels;
           }
         } else {
@@ -3177,7 +3177,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.dentistColTrend[0].backgroundColor = dynamicColors;
           this.dentistCollectionTrendLabels = this.dentistColleTrendLabels1;
           if (activeMode == 'w') {
-            this.dentistCollectionWeeklyTrend1 = this.dentistColTrend;
+            this.dentistCollectionWeeklyTrend1 = data.data;
             this.dentistCollectionWeeklyTrendLabels = this.dentistColleTrendLabels1;
           }
         } else {

@@ -8419,3 +8419,12 @@ td.clslist {
 .AddUserPopup.users{
   position: inherit;
 }
+.DentistProductionTable {
+    width: 100%;
+    height: 423px;
+    overflow: scroll;
+}
+.DentistProductionTable table {
+    width: 100%;
+    text-align: left;
+}

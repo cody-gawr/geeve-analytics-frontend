@@ -284,16 +284,31 @@
 
                 <!-- Production Chart weekly trend -->
                 <div class="week-trend-height"
-                  *ngIf="proCollShow == 1 && showTrendChart == false && showWeekTrend == true && dentistProductionWeeklyTrendLabels.length > 0 && !dentistProductionTrendLoader"
+                  *ngIf="proCollShow == 1 && showTrendChart == false && showWeekTrend == true  && !dentistProductionTrendLoader && dentistProductionWeeklyTrend.length > 0"
                   >
-                  <canvas #myCanvas id="dentistProductionWeeklyTrend" baseChart
+                  <div class="DentistProductionTable">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Week End</th>
+                        <th>Production</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let weekly of dentistProductionWeeklyTrend">
+                        <td>{{ weekly.week_end | date:'yyyy-LL-dd' }}</td>
+                        <td>${{ weekly.production | number:'2.0-0' }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                  <!-- <canvas #myCanvas id="dentistProductionWeeklyTrend" baseChart
                     [datasets]="dentistProductionWeeklyTrend" [labels]="dentistProductionWeeklyTrendLabels"
                     [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
                     [options]="barChartOptionsTrend" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
-                  </canvas>
+                  </canvas> -->
                   <div
-                    *ngIf="dentistProductionTrendLoader && proCollShow == 1 && showTrendChart == false && showWeekTrend == true"
-                    class="loader_container loader_container_middle">
+                    *ngIf="dentistProductionTrendLoader && proCollShow == 1 && showTrendChart == false && showWeekTrend == true" class="loader_container loader_container_middle">
                     <img class="loader_ico" src="../assets/images/720.gif">
                     <div class="loader-text">Calculating...</div>
                   </div>
@@ -322,11 +337,28 @@
                 <div class="week-trend-height"
                   *ngIf="proCollShow == 2 && showTrendChart == false && showWeekTrend == true && dentistCollectionWeeklyTrendLabels.length > 0 && !dentistCollectionTrendLoader"
                   >
-                  <canvas #myCanvas id="dentistCollectionWeeklyTrend" baseChart
+
+                  <div class="DentistProductionTable">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Week End</th>
+                        <th>Collection</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let weekly of dentistCollectionWeeklyTrend1">
+                        <td>{{ weekly.week_end | date:'yyyy-LL-dd' }}</td>
+                        <td>${{ weekly.collection | number:'2.0-0' }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                 <!--  <canvas #myCanvas id="dentistCollectionWeeklyTrend" baseChart
                     [datasets]="dentistCollectionWeeklyTrend1" [labels]="dentistCollectionWeeklyTrendLabels"
                     [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
                     [options]="barChartOptionsTrend" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
-                  </canvas>
+                  </canvas> -->
                   <div
                     *ngIf="dentistCollectionTrendLoader && proCollShow == 2 && showTrendChart == false && showWeekTrend == true"
                     class="loader_container loader_container_middle">
@@ -381,7 +413,7 @@
             </div>
 
             <div class="no-data-placeholder prod-placeholder"
-              *ngIf="((showTrendChart == false && gaugeValue <= 0 ) || (showTrendChart == true  && dentistProductionTrendLabels.length <= 0)) && !buildChartDentistLoader && !dentistProductionTrendLoader && showWeekTrend == false"
+              *ngIf="((showTrendChart == false && gaugeValue <= 0 ) || (showTrendChart == true  && dentistProductionWeeklyTrend.length <= 0)) && !buildChartDentistLoader && !dentistProductionTrendLoader && showWeekTrend == false"
               >
               <div class="sa_nodata_div">
               </div>
