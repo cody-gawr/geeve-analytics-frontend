@@ -4,9 +4,9 @@
   <div mat-dialog-content class="sa_forms_design">
     <div class="sa-form-group">
       <label>Date Range </label>
-      <input class="form-control" placeholder="Select please..." type="text" matInput ngxDaterangepickerMd
-        [showClearButton]="true" [locale]="{applyLabel: 'Done', format: 'DD-MM-YYYY'}" startKey="start" endKey="end"
-        [(ngModel)]="data.range" />
+      <input class="form-control" placeholder="Select" type="text" matInput ngxDaterangepickerMd
+        [showClearButton]="true" [locale]="{applyLabel: 'ok', displayFormat: 'YYYY-MM-DD', firstDay: 1 }" startKey="start" endKey="end"
+        [(ngModel)]="data.range" [showDropdowns]="true" />
       
     </div>
     <div class="sa-form-group">

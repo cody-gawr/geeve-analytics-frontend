@@ -7,8 +7,7 @@
         <mat-icon (click)="setDate('add')" role="img"
             class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">
             arrow_forward_ios</mat-icon>
-    </div>
-    <button *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')" (click)="exportreport()">Export</button>
+    </div>      
     <mat-tab-group [selectedIndex]="selectedTab">
         <!-- Patient Schedule Tab start -->
         <mat-tab label="Overdue Recalls">
@@ -21,11 +20,14 @@
                                 class="info-icon" />
                         </div>
                     </div>
-
+                     <div class="showExport" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+                        <i   class="fas fa-file-export" (click)="exportreport('overdue_recalls')"></i>
+                    </div>
                     <div class="showComplete" *ngIf="followupOverDueRecall.length > 0">
                         <mat-checkbox name="status" [checked]="showCompleteOverdue"
                             (change)="updateToCompleteOR($event)">Show Complete</mat-checkbox>
                     </div>
+                   
                     <div class="chipSets" *ngIf="overdueRecallsScrps.length > 0">
                         <mat-chip-list class="example-chip">
                             <mat-chip [tooltip]="{title:chips.script_title, info: chips.script_text }"
@@ -35,6 +37,7 @@
                             </mat-chip>
                         </mat-chip-list>
                     </div>
+
                 </mat-card-title>
 
                 <div class="card-loading" *ngIf="recallLoadingLoading">
@@ -286,6 +289,10 @@
                             <img [tooltip]="charTips['45']" src="../assets/images/info-icon.png" alt="info-icon"
                                 class="info-icon" />
                         </div>
+                    </div>  
+
+                     <div class="showExport" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+                        <i   class="fas fa-file-export" (click)="exportreport('tick_followups')"></i>
                     </div>
 
                     <div class="showComplete" *ngIf="followupTickFollowups.length > 0">
@@ -601,7 +608,9 @@
                                 class="info-icon" />
                         </div>
                     </div>
-
+                      <div class="showExport" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+                        <i   class="fas fa-file-export" (click)="exportreport('post_op')"></i>
+                    </div>
                     <div class="showComplete" *ngIf="followupPostOpCalls.length > 0">
                         <mat-checkbox name="status" [checked]="postopCallsPostOp" (change)="updateToCompleteOP($event)">
                             Show Complete</mat-checkbox>
@@ -801,7 +810,9 @@
                                 class="info-icon" />
                         </div>
                     </div>
-
+                    <div class="showExport" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+                        <i   class="fas fa-file-export" (click)="exportreport('fta_followups')"></i>
+                    </div>
                     <div class="showComplete" *ngIf="followupFtaFollowups.length > 0">
                         <mat-checkbox name="status" [checked]="showCompleteFta" (change)="updateToCompleteFT($event)">
                             Show Complete </mat-checkbox>
@@ -1107,6 +1118,10 @@
                             <img [tooltip]="charTips['60']" src="../assets/images/info-icon.png" alt="info-icon"
                                 class="info-icon" />
                         </div>
+                    </div>
+
+                    <div class="showExport" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+                        <i   class="fas fa-file-export" (click)="exportreport('uta_followups')"></i>
                     </div>
                     <div class="showComplete" *ngIf="followupUtaFollowups.length > 0">
                         <mat-checkbox name="status" [checked]="showCompleteUta" (change)="updateToCompleteUT($event)">
@@ -1419,6 +1434,9 @@
                         <!--  <div class="info-icon-container">
                             <img [tooltip]="charTips['52']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                         </div> -->
+                    </div>
+                    <div class="showExport" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+                        <i class="fas fa-file-export" (click)="exportreport('internal_referrals')"></i>Export
                     </div>
                     <div class="showComplete" *ngIf="internalReferrals.length > 0">
                         <mat-checkbox name="status" [checked]="showCompleteReferrals"

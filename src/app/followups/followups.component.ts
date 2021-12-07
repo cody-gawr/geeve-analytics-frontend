@@ -47,8 +47,8 @@ export class ExportDataDialogComponent {
     let filetype = data.type
 
     this.followupsService.exportFollowUp(clinic_id, startDate, endDate, showcompleted, filetype, followuptype).subscribe((data: File) => {
-      console.log('new data', data)
-      const csvName = 'Library Resources.csv';
+      
+      const csvName = followuptype + '_' +startDate + '_' +endDate+'.csv';
       const blob = new Blob([data], { type: 'text/csv' }); //data is response from BE.
       //Chrome & Firefox
       const a = document.createElement('a');

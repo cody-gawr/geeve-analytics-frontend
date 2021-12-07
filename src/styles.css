@@ -8399,3 +8399,10 @@ td.clslist {
     font-weight: bold !important;
     text-decoration: underline;
 }
+.showExport {
+    float: right;
+    margin-left: 38px;
+    font-size: 14px;
+    color: #0e3459 !important;
+    font-family: 'Gilroy-Regular';
+}
