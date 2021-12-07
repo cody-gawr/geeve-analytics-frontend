@@ -3,7 +3,7 @@
 		<h4>Recent Updates</h4>
 		<ul>
 			<li *ngFor="let feature of data">
-				<p><strong>{{ feature.date_added | date:'d-M-yyyy' }}:</strong> {{ feature.description }}</p>
+				<p><strong>{{ feature.date_added | date:'dd-MM-yyyy' }}:</strong> {{ feature.description }}</p>
 				<p *ngIf="feature.link"><a target="_blank" href="{{ feature.link }}"><strong>More details</strong></a>
 				</p>
 			</li>

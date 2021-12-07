@@ -10,7 +10,7 @@ import { FullComponent } from './layouts/full/full.component';
 import { AppBlankComponent } from './layouts/blank/blank.component';
 import { AppHeaderComponent } from './layouts/full/header/header.component';
 import { StepperHeaderComponent } from './layouts/stepper/header/header.component';
-import { AppSidebarComponent } from './layouts/full/sidebar/sidebar.component';
+import { AppSidebarComponent , ReferFriendComponent} from './layouts/full/sidebar/sidebar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StepperComponent } from './layouts/stepper/stepper.component';
 import { StepperSidebarComponent } from './layouts/stepper/sidebar/sidebar.component';
@@ -60,6 +60,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AppSidebarComponent,
     AppHeaderrightComponent,
     FeatureDialogComponent,
+    ReferFriendComponent,
     LostOpportunityComponent,
     TasksComponent,
     MorningHuddleComponent,

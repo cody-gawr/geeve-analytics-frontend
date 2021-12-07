@@ -195,6 +195,7 @@
           </div>
         </div>
       </div>
+
       <div class="gray_area">
         <div class="working-days">
           <h4 class="clinic-settings-form-title">Dashboards</h4>
@@ -238,6 +239,35 @@
             </div>
 
 
+          </div>
+        </div>
+      </div>
+      
+      <div class="gray_area">
+        <div class="working-days">
+          <h4 class="clinic-settings-form-title">Health Screen</h4>
+
+          <div class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px"
+            fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
+
+            <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+              <div class="sa-form-group sa-group">
+                <label>Date Range
+                  <div class="info-button">
+                    <div class="info-icon-container">
+                      <img [tooltip]="this.constants.tipNewPatients" src="../assets/images/info-icon.png"
+                        alt="info-icon" class="info-icon" />
+                    </div>
+                  </div>
+                </label>
+
+                <select [formControl]="form.controls['health_screen_mtd']" [(ngModel)]="health_screen_mtd">
+                  <option value="1">Last 30 Days</option>
+                  <option value="0">Month to Date</option>
+                </select>
+              </div>
+            </div>
+            
           </div>
         </div>
       </div>
