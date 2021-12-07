@@ -339,7 +339,7 @@ public stackedChartOptionsUti1: any = {
               let dataK = shortenLargeNumber(num, 1);
               let dataDisplay = `${dataK}%`;
               ctx.font = Chart.helpers.fontString(11, 'normal','Gilroy-Bold');
-              ctx.fillText(dataDisplay, bar._model.x, bar._model.y - 5);
+              ctx.fillText(dataDisplay, bar._model.x, bar._model.y + 2);
 
               function shortenLargeNumber(num, digits) {
                 var units = ['k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'],
