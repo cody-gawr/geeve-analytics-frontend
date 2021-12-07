@@ -102,6 +102,13 @@
             <span fxFlex></span>
         </a>
     </mat-list-item>
+     <mat-list-item appAccordionLink routerLinkActive ="selected" group="string" *ngIf="(user_type == 2 || permisions.indexOf('lostopportunity') >= 0 )">
+         <a class="" appAccordionToggle (click)="open()">
+            <i class="fa-briefcase fas"></i>
+            <span>Referr A Friend</span>
+            <span fxFlex></span>
+        </a>
+    </mat-list-item>
     <!-- <mat-list-item appAccordionLink routerLinkActive ="selected" group="string" *ngIf="apiUrl.includes('test') &&  (permisions.indexOf('tasks') >= 0 || user_type == 2 )"> -->
     <mat-list-item appAccordionLink routerLinkActive ="selected" group="string" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
         <a class="" appAccordionToggle [routerLink]="['/tasks']">

@@ -347,6 +347,12 @@ export class AppHeaderrightComponent implements AfterViewInit {
 
   loadClinic(newValue) {
     if (newValue != "undefined") {
+      let opts = this.constants.cookieOpt as CookieOptions;
+      this._cookieService.put(
+        "clinic_id",
+        newValue,
+        opts
+      );
       this.clinicsData.forEach((data) => {
         if (data.id == newValue) {
 

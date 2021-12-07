@@ -1,0 +1,31 @@
+<div class="AddUserPopup setting">
+  <h1 mat-dialog-title>Refer a Friend</h1>
+
+  <div mat-dialog-content class="sa_forms_design">
+    <div class="sa-form-group">
+      <label>Recipient Name</label>
+      <input [(ngModel)]="data.referFriendName"  class="mat-form-control" required="true" placeholder="">
+      <div *ngIf="referFriendNameError">
+        {{referFriendNameErrorMsg}}
+      </div>
+    </div>
+
+    <div mat-dialog-content class="sa_forms_design">
+      <div class="sa-form-group">
+        <label>Recipient Email</label>
+        <input type="email" [(ngModel)]="data.referFriendEmail" class="mat-form-control" required="true" placeholder="">
+        <div *ngIf="referFriendNameError">
+          {{referFriendNameErrorMsg}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div mat-dialog-actions class="justify-between">
+    <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
+    <!-- <button (click)="save(data)"  tabindex="2"
+      class="mat-raised-button mat-dc float-right">Save</button> -->
+    <button (click)="save(data)" [disabled]="data.referFriendName == '' || data.referFriendEmail == ''" tabindex="2"
+      class="mat-raised-button mat-dc float-right">Save</button>
+  </div>
+</div>

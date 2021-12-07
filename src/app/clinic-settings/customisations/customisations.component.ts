@@ -50,6 +50,7 @@ export class CustomisationsComponent
   public labCode1: any;
   public labCode2: any;
   public newPatients: any = 0;
+  public health_screen_mtd: any = 0;
   public recall_rate_default: any = 1;
   public lab_code1: any = '';
   public lab_code2: any = '';
@@ -82,6 +83,7 @@ export class CustomisationsComponent
       xray_months: [null, Validators.compose([Validators.required])],
       opg_months: [null, Validators.compose([Validators.required])],
       new_patients: [null],
+      health_screen_mtd: [null],
       recall_rate_default: [null],
     });
     this.getCustomiseSettings();
@@ -218,6 +220,7 @@ export class CustomisationsComponent
               this.xrayMonths = res.data.xray_months;
               this.opgMonths = res.data.opg_months;
               this.newPatients = res.data.new_patients_main;
+              this.health_screen_mtd = res.data.health_screen_mtd;
               this.recall_rate_default = res.data.recall_rate_default;
               this.lab_code1 = res.data.lab_code1;
               this.lab_code2 = res.data.lab_code2;
@@ -241,6 +244,7 @@ export class CustomisationsComponent
       recall_code2: this.form.value.recall_codes2,
       recall_code3: this.form.value.recall_codes3,
       new_patients: this.form.value.new_patients,
+      health_screen_mtd: this.form.value.health_screen_mtd,
       recall_rate_default: this.form.value.recall_rate_default,
       lab_code1: this.form.value.lab_code1,
       lab_code2: this.form.value.lab_code2
