@@ -83,27 +83,9 @@ export class FollowupsService {
     }
 
 
-    exportFollowUp(clinic_id, startDate, endDate, showcompleted, filetype, followuptype ): Observable<any> {
-        if (this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2') {
-            this.token_id = this._cookieService.get("childid");
-        } else {
-            this.token_id = this._cookieService.get("userid");
-        }
-        let header = { headers: new HttpHeaders({"Content-Type": "application/octet-stream"}), withCredentials: true };
-        
-        const formData = new FormData();
-        formData.append('startDate', startDate);
-        formData.append('endDate', endDate);
-        formData.append('clinic_id', clinic_id);
-        formData.append('showcompleted', showcompleted);
-        formData.append('filetype', filetype);
-        formData.append('followuptype', followuptype);
-        
-        return this.http.post(this.apiUrl + "/Followups/exportFollowUp", formData, header)
-            .pipe(map((response: Response) => {
-                return response;
-            })
-            );
+    exportFollowUp(clinic_id, startDate, endDate, showcompleted, filetype, followuptype ): any {
+        let header = {headers: new HttpHeaders({'Content-Type':'application/octet-stream'}), withCredentials: true,responseType:'blob' as 'json', };  
+        return this.http.get( this.apiUrl + "/Followups/exportFollowUp?startDate="+startDate+"&endDate="+endDate+"&clinic_id="+clinic_id+"&showcompleted="+showcompleted+"&filetype="+filetype+"&followuptype="+followuptype ,header);
     }
 
     updateFollowUpStatus(event, pid, cid, type, previousDays, fdate, treatItem = ''): Observable<any> {
