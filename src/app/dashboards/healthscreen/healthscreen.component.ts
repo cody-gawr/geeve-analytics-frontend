@@ -275,24 +275,26 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
         // check for all clinic 
         if (this.clinic_id == 'all') {
           this.production_p = Math.round(data.data.production_ta);
-          this.production_c_avg = Math.round(data.data.production_ta / today);
+          
           this.production_c = 0;
           let tooltip_p = '';
           data.data.production.forEach((val) => {
             this.production_c = this.production_c + Math.round(val.production);
             tooltip_p += '<span class="text">' + val.clinic_name + ': $' + Math.round(val.production) + '</span>';
           });
+          this.production_c_avg = Math.round(this.production_c / today);
           this.production_dif = Math.round(this.production_c - this.production_p);
           this.production_c_all = { 'title': '', 'info': tooltip_p };
 
           this.visits_p = Math.round(data.data.num_visit_ta);
-          this.visits_c_avg = Math.round(data.data.num_visit_ta / today);
+         
           this.visits_c = 0;
           let tooltip_v = '';
           data.data.num_visit.forEach((val) => {
             this.visits_c = this.visits_c + Math.round(val.num_visit);
             tooltip_v += '<span class="text">' + val.clinic_name + ': ' + Math.round(val.num_visit) + '</span>';
           });
+          this.visits_c_avg = Math.round( this.visits_c / today);
           this.visits_c_all = { 'title': '', 'info': tooltip_v };
           this.visits_dif = Math.round(this.visits_c - this.visits_p);
 

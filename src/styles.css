@@ -8428,3 +8428,12 @@ td.clslist {
     width: 100%;
     text-align: left;
 }
+.change_value span.daily {
+    font-size: 14px !important;
+    margin-top: 12px;
+    color: #645b5b;
+}
+.change_value.grid {
+    position: relative;
+    display: grid;
+}

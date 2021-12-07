@@ -150,17 +150,22 @@
 
                   <div *ngIf="productionstats == true" class="production_description production_description-grow">
                     <h4>Production</h4>
-                    <span class="change_value">
+                    <span class="change_value grid">
                       {{production_c >= 0 ? ' ' : '- ' }}
                       ${{ (production_c < 0 ? production_c.toString().split('-').join('') : production_c) |
-                        number:'1.0-0'}} </span>
+                        number:'1.0-0'}} 
+                        <span class="daily" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+                           Daily Avg: ${{ production_c_avg | number: '1.' }}
+                      </span>
+                      </span>
+                      
                   </div>
-                  <div class="prodction_main_box_label" fxFlexAlign="start"
+                  <!-- <div class="prodction_main_box_label" fxFlexAlign="start"
                     *ngIf="production_dif && productionstats == true && (apiUrl.includes('test') || apiUrl.includes('staging-'))">
                     <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
                       Daily Avg: ${{ production_c_avg | number: '1.' }}
                     </div>
-                  </div>
+                  </div> -->
                   <div class="prodction_main_box_label" fxFlexAlign="start"
                     *ngIf="production_dif && productionstats == true">
                     <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
@@ -232,14 +237,18 @@
                   </div>
                   <div *ngIf="totalvisitstats == true" class="production_description production_description-grow">
                     <h4>Total Visits</h4>
-                    <span class="change_value">{{visits_c}}</span>
+                    <span class="change_value grid">{{visits_c}}
+                      <span class="daily" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+                           Daily Avg: {{ visits_c_avg | number: '1.' }}
+                      </span>
+                    </span>
                   </div>
-                  <div class="prodction_main_box_label" fxFlexAlign="start"
+                  <!-- <div class="prodction_main_box_label" fxFlexAlign="start"
                     *ngIf="visits_dif && totalvisitstats == true && (apiUrl.includes('test') || apiUrl.includes('staging-'))">
                     <div [ngClass]="(visits_dif >= 0) ? 'minus': 'minus'">
                       Daily Avg: {{ visits_c_avg | number: '1.' }}
                     </div>
-                  </div>
+                  </div> -->
                   <div class="prodction_main_box_label" fxFlexAlign="start"
                     *ngIf="visits_dif && totalvisitstats == true">
                     <div [ngClass]="(visits_dif >= 0) ? 'minus': 'minus'">
