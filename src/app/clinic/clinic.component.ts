@@ -301,7 +301,15 @@ export class ClinicComponent implements AfterViewInit {
 
   navigateMan(id) {
     if (id) {
-      this.router.navigate(['/clinic-settings', id])
+
+    }
+  }
+
+  onActivate(event) {
+    if (event.type == 'click') {
+      if (event.row) {
+        this.router.navigate(['/clinic-settings', event.row.id])
+      }
     }
   }
 
