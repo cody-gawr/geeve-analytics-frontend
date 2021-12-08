@@ -86,7 +86,7 @@ export class ReferFriendComponent {
           this.referFriendNameError = false;
           this.referFriendEmailError = false;
           this.dialogRef.close();
-          this.toastr.success("Email send to user successfully");
+          this.toastr.success("Your invite has been sent!");
         } else {
           this.toastr.success("Something went wrong");
         }
