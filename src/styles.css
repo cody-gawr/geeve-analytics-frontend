@@ -8429,9 +8429,11 @@ td.clslist {
     text-align: left;
 }
 .change_value span.daily {
-    font-size: 14px !important;
-    margin-top: 12px;
-    color: #645b5b;
+  font-size: 13px !important;
+  margin-top: 12px;
+  color: #645b5b;
+  font-weight: 500 !important;
+  font-family: 'Gilroy-Medium';
 }
 .change_value.grid {
     position: relative;
