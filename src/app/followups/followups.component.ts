@@ -45,10 +45,11 @@ export class ExportDataDialogComponent {
     let followuptype = data.followtype
     let showcompleted = (data.show_completed) ? 1 : 0
     let filetype = data.type
+    let filename = followuptype + '_' +startDate + '_' +endDate+'.csv';
 
-    this.followupsService.exportFollowUp(clinic_id, startDate, endDate, showcompleted, filetype, followuptype).subscribe((data: File) => {
+    this.followupsService.exportFollowUp(clinic_id, startDate, endDate, showcompleted, filetype, followuptype,filename).subscribe((data: File) => {
       
-      const csvName = followuptype + '_' +startDate + '_' +endDate+'.csv';
+      const csvName = filename;
       const blob = new Blob([data], { type: 'text/csv' }); //data is response from BE.
       //Chrome & Firefox
       const a = document.createElement('a');
@@ -58,11 +59,17 @@ export class ExportDataDialogComponent {
       a.click();
       window.URL.revokeObjectURL(url);
       a.remove();
-
+      this.dialogRef.close();
     },
       (error) => {
         console.log('error', error)
       });
+
+    this.followupsService.deletefiles(filename).subscribe((res) => {
+    },
+      (error) => {
+        console.log('error', error)
+      });   
 
   }
 
