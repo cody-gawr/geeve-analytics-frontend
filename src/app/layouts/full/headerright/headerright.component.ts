@@ -226,18 +226,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
         if (res.message == "success") {
           this.clinicsData = res.data;
           if (res.data.length > 0) {
-            // if (this.route == "/dashboards/healthscreen") {
-            if (false) {
-              if (this.clinicsData.length > 1) {
-                this.clinic_id = "all";
-                this.selectedClinic = "all";
-                this.placeHolder = "All Clinics";
-              } else {
-                this.clinic_id = res.data[0].id;
-                this.selectedClinic = res.data[0].id;
-                this.placeHolder = res.data[0].clinicName;
-              }
-            } else {
+            
               if (this._cookieService.get("clinic_dentist")) {
                 let dentistclinic = this._cookieService
                   .get("clinic_dentist")
@@ -260,7 +249,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
                 this.selectedClinic = res.data[0].id;
                 this.placeHolder = res.data[0].clinicName;
               }
-            }
+            
             this.title = $("#page_title").val();
             this.loadClinic(this.selectedClinic);
           }
@@ -326,6 +315,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
               this.route == "/dashboards/finances" ||
               this.route == "/morning-huddle" ||
               this.route == "/followups" ||
+              this.route == "/dashboards/healthscreen" ||
               this.route == "/dashboards/followups"
             ) {
               let opts = this.constants.cookieOpt as CookieOptions;
@@ -464,6 +454,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
       this.route == "/dashboards/clinicianproceedures" ||
       this.route == "/dashboards/frontdesk" ||
       this.route == "/dashboards/marketing" ||
+      this.route == "/dashboards/healthscreen" ||
       this.route == "/dashboards/finances"
     ) {
       let opts = this.constants.cookieOpt as CookieOptions;
