@@ -3,7 +3,7 @@
 <!-- ============================================================== -->
 <mat-nav-list appAccordion>
     <div class="sa_sidebar_logo_main fixed-top-sidebar-logo">
-    <div class="sa_sidebar_logo"><img src="assets/images/home/logo.png" alt="homepage" class=""></div>
+        <div class="sa_sidebar_logo"><img src="assets/images/home/logo.png" alt="homepage" class=""></div>
     </div>
 
     <div class="sa_sidebar_usersec">
@@ -12,15 +12,17 @@
     </div>
 
 
-    <mat-list-item appAccordionLink routerLinkActive ="selected" group="string" *ngIf="(user_type == 2) || (permisions.indexOf('healthscreen') >= 0)">
-         <a appAccordionToggle [routerLink]="['/dashboards/healthscreen']">
+    <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
+        *ngIf="(user_type == 2) || (permisions.indexOf('healthscreen') >= 0)">
+        <a appAccordionToggle [routerLink]="['/dashboards/healthscreen']">
             <i class="fa-clinic-medical fas"></i>
             <span *ngIf="user_type != 4">Clinic Health</span>
             <span *ngIf="user_type == 4">Health Screen</span>
             <span fxFlex></span>
         </a>
     </mat-list-item>
-    <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="(user_type == 2) || (permisions.indexOf('morninghuddle') >= 0)">
+    <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
+        *ngIf="(user_type == 2) || (permisions.indexOf('morninghuddle') >= 0)">
         <a class="" appAccordionToggle [routerLink]="['/morning-huddle']">
             <i class="fa-coffee fas"></i>
             <span>Morning Huddle</span>
@@ -28,89 +30,110 @@
         </a>
     </mat-list-item>
 
-     <mat-list-item appAccordionLink routerLinkActive ="selected" group="string" *ngIf="(user_type == 2) || (permisions.indexOf('followups') >= 0)">
-         <a class="" appAccordionToggle  [routerLink]="['/followups']"> 
+    <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
+        *ngIf="(user_type == 2) || (permisions.indexOf('followups') >= 0)">
+        <a class="" appAccordionToggle [routerLink]="['/followups']">
             <i class="fa fa-phone"></i>
             <span>Follow Ups</span>
             <span fxFlex></span>
         </a>
     </mat-list-item>
 
-    <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="user_type == 2 || permisions.indexOf('dashboard') >= 0">
-        <a class="" appAccordionToggle  href="javascript: void(0);" (click)="clickEvent('dashboards')" [ngClass]="status ? 'selected' : ''" >
+    <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
+        *ngIf="((user_type == 2) || (permisions.indexOf('campaigns') >= 0)) && apiUrl.includes('test')">
+        <a class="" appAccordionToggle [routerLink]="['/campaigns']">
+            <i class="fas fa-users"></i>
+            <span>Campaigns</span>
+            <span fxFlex></span>
+        </a>
+    </mat-list-item>
+
+    <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
+        *ngIf="user_type == 2 || permisions.indexOf('dashboard') >= 0">
+        <a class="" appAccordionToggle href="javascript: void(0);" (click)="clickEvent('dashboards')"
+            [ngClass]="status ? 'selected' : ''">
             <i class="fa-chart-area fas"></i>
             <span>Dashboards</span>
-            <span fxFlex></span>            
+            <span fxFlex></span>
             <i *ngIf="nav_open != 'dashboards'" class="fas fa-caret-right"></i>
             <i *ngIf="nav_open == 'dashboards'" class="fas fa-caret-down"></i>
         </a>
-    <ng-template [ngIf]="nav_open == 'dashboards'">
-        <mat-nav-list appAccordion>
-            <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="user_type == 2 || permisions.indexOf('dashboard1') >= 0">
-                <a class="relative" appAccordionToggle [routerLink]="['/dashboards/cliniciananalysis']">
-                    <i></i>
-                    <span>Clinician Analysis</span>
-                    <span fxFlex></span>
-                </a>
-            </mat-list-item>
-            <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="(user_type == 2 || permisions.indexOf('dashboard2') >= 0) && userPlan != 'lite'">
-                <a class="relative" appAccordionToggle [routerLink]="['/dashboards/clinicianproceedures']">
-                    <i></i>
-                    <span>Clinician Procedures & Referrals</span>
-                    <span fxFlex></span>
-                </a>
-            </mat-list-item>
-            <mat-list-item appAccordionLink routerLinkActive= "selected"  group="string" *ngIf="user_type == 2 || permisions.indexOf('dashboard3') >= 0">
-                <a class="" appAccordionToggle [routerLink]="['/dashboards/frontdesk']">
-                    <i></i>
-                    <span>Front Desk</span>
-                    <span fxFlex></span>
-                </a>
-            </mat-list-item>
-            <!-- *ngIf="apiUrl.includes('test') || apiUrl.includes('staging')" -->
-             <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="user_type == 2 || permisions.indexOf('dashboard6') >= 0" > 
-                <a class="" appAccordionToggle [routerLink]="['/dashboards/followups']">
-                    <i></i>
-                    <span>Follow Ups</span>
-                    <span fxFlex></span>
-                </a>
+        <ng-template [ngIf]="nav_open == 'dashboards'">
+            <mat-nav-list appAccordion>
+                <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
+                    *ngIf="user_type == 2 || permisions.indexOf('dashboard1') >= 0">
+                    <a class="relative" appAccordionToggle [routerLink]="['/dashboards/cliniciananalysis']">
+                        <i></i>
+                        <span>Clinician Analysis</span>
+                        <span fxFlex></span>
+                    </a>
+                </mat-list-item>
+                <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
+                    *ngIf="(user_type == 2 || permisions.indexOf('dashboard2') >= 0) && userPlan != 'lite'">
+                    <a class="relative" appAccordionToggle [routerLink]="['/dashboards/clinicianproceedures']">
+                        <i></i>
+                        <span>Clinician Procedures & Referrals</span>
+                        <span fxFlex></span>
+                    </a>
+                </mat-list-item>
+                <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
+                    *ngIf="user_type == 2 || permisions.indexOf('dashboard3') >= 0">
+                    <a class="" appAccordionToggle [routerLink]="['/dashboards/frontdesk']">
+                        <i></i>
+                        <span>Front Desk</span>
+                        <span fxFlex></span>
+                    </a>
+                </mat-list-item>
+                <!-- *ngIf="apiUrl.includes('test') || apiUrl.includes('staging')" -->
+                <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
+                    *ngIf="user_type == 2 || permisions.indexOf('dashboard6') >= 0">
+                    <a class="" appAccordionToggle [routerLink]="['/dashboards/followups']">
+                        <i></i>
+                        <span>Follow Ups</span>
+                        <span fxFlex></span>
+                    </a>
 
-            </mat-list-item>            
-            
-            <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="(user_type == 2 || permisions.indexOf('dashboard4') >= 0) && userPlan !='lite'">
-                <a class="" appAccordionToggle [routerLink]="['/dashboards/marketing']">
-                    <i></i>
-                    <span>Marketing</span>
-                    <span fxFlex></span>
-                </a>
-            </mat-list-item>
-            <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="user_type == 2 || permisions.indexOf('dashboard5') >= 0">
-                <a class="" appAccordionToggle [routerLink]="['/dashboards/finances']">
-                    <i></i>
-                    <span>Finances</span>
-                    <span fxFlex></span>
-                </a>
-            </mat-list-item>
-            
-        </mat-nav-list> 
-    </ng-template>  
-    </mat-list-item> 
-     <mat-list-item appAccordionLink routerLinkActive ="selected" group="string" *ngIf="(user_type == 2 || permisions.indexOf('lostopportunity') >= 0 )">
-         <a class="" appAccordionToggle [routerLink]="['/lost-opportunity']">
-            <i class="fa-briefcase fas"></i>
+                </mat-list-item>
+
+                <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
+                    *ngIf="(user_type == 2 || permisions.indexOf('dashboard4') >= 0) && userPlan !='lite'">
+                    <a class="" appAccordionToggle [routerLink]="['/dashboards/marketing']">
+                        <i></i>
+                        <span>Marketing</span>
+                        <span fxFlex></span>
+                    </a>
+                </mat-list-item>
+                <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
+                    *ngIf="user_type == 2 || permisions.indexOf('dashboard5') >= 0">
+                    <a class="" appAccordionToggle [routerLink]="['/dashboards/finances']">
+                        <i></i>
+                        <span>Finances</span>
+                        <span fxFlex></span>
+                    </a>
+                </mat-list-item>
+
+            </mat-nav-list>
+        </ng-template>
+    </mat-list-item>
+    <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
+        *ngIf="(user_type == 2 || permisions.indexOf('lostopportunity') >= 0 )">
+        <a class="" appAccordionToggle [routerLink]="['/lost-opportunity']">
+            <i class="fas fa-hand-holding-usd"></i>
             <span>Lost Opportunity</span>
             <span fxFlex></span>
         </a>
     </mat-list-item>
-     <mat-list-item appAccordionLink routerLinkActive ="selected" group="string" *ngIf="(user_type == 2 || permisions.indexOf('lostopportunity') >= 0 )">
-         <a class="" appAccordionToggle (click)="open()">
-            <i class="fa-briefcase fas"></i>
+    <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
+        *ngIf="((user_type == 2 || permisions.indexOf('lostopportunity') >= 0 ))  && (apiUrl.includes('test') || apiUrl.includes('staging'))">
+        <a class="" appAccordionToggle (click)="open()">
+            <i class="fas fa-handshake"></i>
             <span>Referr A Friend</span>
             <span fxFlex></span>
         </a>
     </mat-list-item>
     <!-- <mat-list-item appAccordionLink routerLinkActive ="selected" group="string" *ngIf="apiUrl.includes('test') &&  (permisions.indexOf('tasks') >= 0 || user_type == 2 )"> -->
-    <mat-list-item appAccordionLink routerLinkActive ="selected" group="string" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+    <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
+        *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
         <a class="" appAccordionToggle [routerLink]="['/tasks']">
             <i class="fa-briefcase fas"></i>
             <span>Tasks</span>
@@ -118,9 +141,9 @@
         </a>
     </mat-list-item>
 
-   
 
-   <!--  <mat-list-item appAccordionLink routerLinkActive ="selected" group="string">
+
+    <!--  <mat-list-item appAccordionLink routerLinkActive ="selected" group="string">
          <a class="" appAccordionToggle [routerLink]="['/followups']">
             <i class="fas fa-male"></i>
             <span>Follow Ups</span>
@@ -128,56 +151,59 @@
         </a>
     </mat-list-item> -->
 
-    <mat-list-item appAccordionLink routerLinkActive= "selected" group="string">
-        <a class="" appAccordionToggle  href="javascript: void(0);" (click)="clickEvent('setting')" [ngClass]="status ? 'selected' : ''" >
+    <mat-list-item appAccordionLink routerLinkActive="selected" group="string">
+        <a class="" appAccordionToggle href="javascript: void(0);" (click)="clickEvent('setting')"
+            [ngClass]="status ? 'selected' : ''">
             <i class="fa-cog fas"></i>
             <span>Settings</span>
-            <span fxFlex></span>            
+            <span fxFlex></span>
             <i *ngIf="nav_open != 'setting'" class="fas fa-caret-right"></i>
             <i *ngIf="nav_open == 'setting'" class="fas fa-caret-down"></i>
         </a>
-    <ng-template [ngIf]="nav_open == 'setting'">
-        <mat-nav-list appAccordion>
-            <mat-list-item appAccordionLink routerLinkActive= "selected" *ngIf="user_type == 2 || permisions.indexOf('profilesettings') >= 0">
-                <a class="relative" appAccordionToggle [routerLink]="['/clinic']">
-                    <i></i>
-                    <span>Clinics</span>
-                    <span fxFlex></span>
-                </a>
-            </mat-list-item>
-            <mat-list-item appAccordionLink routerLinkActive= "selected" *ngIf="user_type == 2 || permisions.indexOf('profilesettings') >= 0">
-                <a class="relative" appAccordionToggle [routerLink]="['/roles-users']">
-                    <i></i>
-                    <span>Users</span>
-                    <span fxFlex></span>
-                </a>
-            </mat-list-item>
-            <mat-list-item appAccordionLink routerLinkActive= "selected">
-                <a class="" appAccordionToggle [routerLink]="['/profile-settings']">
-                    <i></i>
-                    <span>My Account</span>
-                    <span fxFlex></span>
-                </a>
-            </mat-list-item>           
-        </mat-nav-list> 
-    </ng-template>   
-</mat-list-item>  
-  <mat-list-item appAccordionLink routerLinkActive ="selected" group="string">
-         <a appAccordionToggle href="https://jeeve.crunch.help/jeeve-analytics" target="_blank">
-           <i class="fas fa-question"></i>
+        <ng-template [ngIf]="nav_open == 'setting'">
+            <mat-nav-list appAccordion>
+                <mat-list-item appAccordionLink routerLinkActive="selected"
+                    *ngIf="user_type == 2 || permisions.indexOf('profilesettings') >= 0">
+                    <a class="relative" appAccordionToggle [routerLink]="['/clinic']">
+                        <i></i>
+                        <span>Clinics</span>
+                        <span fxFlex></span>
+                    </a>
+                </mat-list-item>
+                <mat-list-item appAccordionLink routerLinkActive="selected"
+                    *ngIf="user_type == 2 || permisions.indexOf('profilesettings') >= 0">
+                    <a class="relative" appAccordionToggle [routerLink]="['/roles-users']">
+                        <i></i>
+                        <span>Users</span>
+                        <span fxFlex></span>
+                    </a>
+                </mat-list-item>
+                <mat-list-item appAccordionLink routerLinkActive="selected">
+                    <a class="" appAccordionToggle [routerLink]="['/profile-settings']">
+                        <i></i>
+                        <span>My Account</span>
+                        <span fxFlex></span>
+                    </a>
+                </mat-list-item>
+            </mat-nav-list>
+        </ng-template>
+    </mat-list-item>
+    <mat-list-item appAccordionLink routerLinkActive="selected" group="string">
+        <a appAccordionToggle href="https://jeeve.crunch.help/jeeve-analytics" target="_blank">
+            <i class="fas fa-question"></i>
             <span>Help</span>
             <span fxFlex></span>
         </a>
-    </mat-list-item> 
-<div class="sa_logout_icon" (click) = "logout()">
-    <button mat-icon-button >
-        <img class="logout-icon" src="assets/images/logout.png" alt="logout-icon" />Logout
-    </button>
-</div>
+    </mat-list-item>
+    <div class="sa_logout_icon" (click)="logout()">
+        <button mat-icon-button>
+            <img class="logout-icon" src="assets/images/logout.png" alt="logout-icon" />Logout
+        </button>
+    </div>
 </mat-nav-list>
 
 
-    <!-- <mat-list-item appAccordionLink *ngFor="let menuitem of menuItems.getMenuitem()" routerLinkActive="selected" group="{{menuitem.state}}">
+<!-- <mat-list-item appAccordionLink *ngFor="let menuitem of menuItems.getMenuitem()" routerLinkActive="selected" group="{{menuitem.state}}">
         <a class="" appAccordionToggle [routerLink]="['/', menuitem.state]" *ngIf="menuitem.type === 'link' &&  menuitem.role.indexOf(user_type) !== -1 && login_status != 5" >
             <i class="{{ menuitem.icon }}"></i>
             <span>{{ menuitem.name }}</span>
@@ -314,4 +340,3 @@
             <span>{{ menuitem.name }}</span>
         </div>
     </mat-list-item> -->
-   
