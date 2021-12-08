@@ -15,7 +15,7 @@
         <span>Clinic Name</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span title="Double click to edit" (dblclick)="enableEditing(rowIndex,'clinicName')" *ngIf="!editing[rowIndex + '-clinicName']">
+          <span (click)="navigateMan(row.id)" title="Double click to edit" (dblclick)="enableEditing(rowIndex,'clinicName')" *ngIf="!editing[rowIndex + '-clinicName']">
             {{value}}
           </span>
           <input autofocus (blur)="updateValue($event, 'clinicName', rowIndex)" *ngIf="editing[rowIndex+ '-clinicName']" type="text" [value]="value"
@@ -25,7 +25,7 @@
        <ngx-datatable-column name="Address">
        
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span title="Double click to edit" (dblclick)="enableEditing(rowIndex,'address')" *ngIf="!editing[rowIndex + '-address']">
+          <span  (click)="navigateMan(row.id)" title="Double click to edit" (dblclick)="enableEditing(rowIndex,'address')" *ngIf="!editing[rowIndex + '-address']">
             {{value}}
           </span>
           <input autofocus (blur)="updateValue($event, 'address', rowIndex)" *ngIf="editing[rowIndex+ '-address']" type="text" [value]="value" />
@@ -36,7 +36,7 @@
         <span>Contact Name</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span title="Double click to edit" (dblclick)="enableEditing(rowIndex,'contactName')" *ngIf="!editing[rowIndex + '-contactName']">
+          <span (click)="navigateMan(row.id)" title="Double click to edit" (dblclick)="enableEditing(rowIndex,'contactName')" *ngIf="!editing[rowIndex + '-contactName']">
             {{value}}
           </span>
           <input autofocus (blur)="updateValue($event, 'contactName', rowIndex)" *ngIf="editing[rowIndex+ '-contactName']" type="text" [value]="value"
@@ -45,7 +45,7 @@
       </ngx-datatable-column>
       <ngx-datatable-column name="Created">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span>
+          <span (click)="navigateMan(row.id)">
             {{value| date}}
           </span>
         </ng-template>
@@ -55,7 +55,7 @@
         <span>Actions</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" style="width:266px!important;">
-         <a [routerLink]="['/clinic-settings',value]" class="action_btn golden" title= 'Clinic Settings'><i class="ti-settings  m-r-10"></i></a>
+         <a [routerLink]="['/clinic-settings',value]" class="action_btn golden" title= 'Clinic Settings'><i class="ti-pencil m-r-10"></i></a>
       <!--     <button class="action_btn danger" mat-menu-item (click) = "deleteClinic(rowIndex)">
          <i class="ti-trash text-danger"></i></button> -->
         </ng-template>

@@ -111,7 +111,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.getCustomiseSettings();
     $('#currentDentist').attr('did', 'all');
-    //this.initiate_clinic();
+    // this.initiate_clinic();
     //$('.external_dentist').hide();
     $('#title').html('Clinic Health');
     $('.external_clinic').show();
@@ -126,8 +126,9 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     } else {
       $('.external_clinic').val('all');
     }
-    this.clinic_id = cid;
+    // this.clinic_id = cid;
     this.user_type = this._cookieService.get("user_type");
+    this.clinic_id = this._cookieService.get("clinic_id");
     if (this._cookieService.get("childid"))
       this.childid = this._cookieService.get("childid");
     $(document).on('click', function (e) {
@@ -158,36 +159,37 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
         opts
       );
       this.clinic_id = val;
-      this.loadHealthScreen();
       this.getCustomiseSettings();
+      this.loadHealthScreen();
     }
   }
 
-  getCustomiseSettings() {    
+
+  getCustomiseSettings() {
     let clinic_id = this._cookieService.get("clinic_id");
-    if(clinic_id != 'all'){
-    this.healthscreenService.getCustomiseSettings(clinic_id)
-      .subscribe(
-        (res) => {          
-          if (res.message == "success") {
-            if (res.data) {
-              if(res.data.health_screen_mtd == 0){
-                this.mtdText = 'Last 30 days';
-                this.mtdInnText = '31-60 days';
-              }else{
-                this.mtdText = 'Month To Date';
-                this.mtdInnText = 'Last Month';
-                
+    if (clinic_id != 'all') {
+      this.healthscreenService.getCustomiseSettings(clinic_id)
+        .subscribe(
+          (res) => {
+            if (res.message == "success") {
+              if (res.data) {
+                this.health_screen_mtd = parseInt(res.data.health_screen_mtd);
+                if (this.health_screen_mtd == 0) {
+                  this.mtdText = 'Last 30 days';
+                  this.mtdInnText = 'Previous 30 days';
+                } else {
+                  this.mtdText = 'Month To Date';
+                  this.mtdInnText = 'Last Month';
+                }
               }
             }
+          },
+          (error) => {
+            console.log("error", error);
+            $(".ajax-loader").hide();
           }
-        },
-        (error) => {
-          console.log("error", error);
-          $(".ajax-loader").hide();
-        }
-      );
-    }
+        );
+    }    
   }
 
   getShortName(fullName: string) {
@@ -200,8 +202,17 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
 
   public loadHealthScreen() {
     var date = new Date();
-    this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
-    this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    if (this.health_screen_mtd == 0) {
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), date.getDate() - 30), 'yyyy-MM-dd');
+      this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    } else {
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
+      this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    }
+
+    // console.log('this.startDate', this.startDate)
+    // console.log('this.endDate', this.endDate)
+
     this.prodpervisitstats = false;
     this.totalvisitstats = false;
     this.productionstats = false;
@@ -304,7 +315,11 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.productionPrev = 0;
     this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chTopCards').subscribe((data) => {
       if (data.message == 'success') {
-        let today = new Date().getDate()
+        if (this.health_screen_mtd == 1) {
+          var today = new Date().getDate()
+        } else {
+          var today = 30;
+        }
         this.productionstats = true;
         this.totalvisitstats = true;
         this.prodpervisitstats = true;
@@ -312,7 +327,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
         // check for all clinic 
         if (this.clinic_id == 'all') {
           this.production_p = Math.round(data.data.production_ta);
-          
+
           this.production_c = 0;
           let tooltip_p = '';
           data.data.production.forEach((val) => {
@@ -322,16 +337,16 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
           this.production_c_avg = Math.round(this.production_c / today);
           this.production_dif = Math.round(this.production_c - this.production_p);
           this.production_c_all = { 'title': '', 'info': tooltip_p };
-          
+
           this.visits_p = Math.round(data.data.num_visit_ta);
-         
+
           this.visits_c = 0;
           let tooltip_v = '';
           data.data.num_visit.forEach((val) => {
             this.visits_c = this.visits_c + Math.round(val.num_visit);
             tooltip_v += '<span class="text">' + val.clinic_name + ': ' + Math.round(val.num_visit) + '</span>';
           });
-          this.visits_c_avg = Math.round( this.visits_c / today);
+          this.visits_c_avg = Math.round(this.visits_c / today);
           this.visits_c_all = { 'title': '', 'info': tooltip_v };
           this.visits_dif = Math.round(this.visits_c - this.visits_p);
 

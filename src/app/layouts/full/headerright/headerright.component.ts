@@ -29,7 +29,7 @@ export interface Dentist {
   providerId: string;
   name: string;
 }
- 
+
 @Component({
   selector: "feature-overview-limit-example",
   templateUrl: "./feature-overview-limit-example.html",
@@ -55,7 +55,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
   isToggleDentistChart: string;
   user_type_dentist;
   public apiUrl = environment.apiUrl;
-  
+
   showCompare: boolean = false;
   showDropDown: boolean = false;
   referFriend: boolean = false;
@@ -226,7 +226,8 @@ export class AppHeaderrightComponent implements AfterViewInit {
         if (res.message == "success") {
           this.clinicsData = res.data;
           if (res.data.length > 0) {
-            if (this.route == "/dashboards/healthscreen") {
+            // if (this.route == "/dashboards/healthscreen") {
+            if (false) {
               if (this.clinicsData.length > 1) {
                 this.clinic_id = "all";
                 this.selectedClinic = "all";
@@ -334,6 +335,12 @@ export class AppHeaderrightComponent implements AfterViewInit {
                 opts
               );
             }
+            let opts = this.constants.cookieOpt as CookieOptions;
+            this._cookieService.put(
+              "clinic_id",
+              this.clinic_id,
+              opts
+            );
           } else if (res.status == "401") {
             this._cookieService.removeAll();
             this.router.navigateByUrl("/login");
