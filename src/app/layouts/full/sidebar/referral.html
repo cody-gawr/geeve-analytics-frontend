@@ -1,6 +1,6 @@
 <div class="AddUserPopup referafriend">
   <h1 mat-dialog-title>Refer a Friend
-    <span>50% off your Jeeve subscription fees for 2 months for any referral who signs up to Jeeve</span>
+    <span>Get 50% off your Jeeve subscription fees for 2 months for any referral who signs up to Jeeve!</span>
   </h1>
 <div mat-dialog-content class="referafrn_1">
     <img alt="homepage" src="../assets/images/invite-a-friend.png" />
@@ -8,7 +8,7 @@
 <div class="referafrn_2">
   <div mat-dialog-content class="sa_forms_design">
     <div class="sa-form-group">
-      <label>Recipient Name</label>
+      <label>Name</label>
       <input [(ngModel)]="data.referFriendName"  class="mat-form-control" required="true" placeholder="">
       <div *ngIf="referFriendNameError">
         {{referFriendNameErrorMsg}}
@@ -17,7 +17,7 @@
 
     <div mat-dialog-content class="sa_forms_design">
       <div class="sa-form-group">
-        <label>Recipient Email</label>
+        <label>Email</label>
         <input type="email" [(ngModel)]="data.referFriendEmail" class="mat-form-control" required="true" placeholder="">
         <div *ngIf="referFriendNameError">
           {{referFriendNameErrorMsg}}

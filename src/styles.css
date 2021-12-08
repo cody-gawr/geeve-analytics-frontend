@@ -8457,3 +8457,14 @@ h1.mat-dialog-title span {
 .referafrn_2 input {
     box-shadow: 2px 2px 4px 0;
 }
+
+.badge.badge-light-success {
+  background-color: rgba(40,199,111,.12);
+  color: #28c76f!important;
+  margin-left: 5px;
+}
+.badge-pill {
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  border-radius: 10rem;
+}
