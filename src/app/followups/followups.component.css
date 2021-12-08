@@ -857,3 +857,6 @@ div.mat-chip-list-wrapper .custom-tooltip {
     width: 100%; 
     float: none;
 }
+.buttons_input .clear{
+    display: none;
+}
