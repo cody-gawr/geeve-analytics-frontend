@@ -174,13 +174,13 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
             if (res.message == "success") {
               if (res.data) {
                 this.health_screen_mtd = parseInt(res.data.health_screen_mtd);
-                if (this.health_screen_mtd == 0) {
-                  this.mtdText = 'Last 30 days';
-                  this.mtdInnText = 'Previous 30 days';
-                } else {
-                  this.mtdText = 'Month To Date';
-                  this.mtdInnText = 'Last Month';
-                }
+                // if (this.health_screen_mtd == 0) {
+                //   this.mtdText = 'Last 30 days';
+                //   this.mtdInnText = 'Previous 30 days';
+                // } else {
+                //   this.mtdText = 'Month To Date';
+                //   this.mtdInnText = 'Last Month';
+                // }
               }
             }
           },
@@ -315,11 +315,9 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.productionPrev = 0;
     this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chTopCards').subscribe((data) => {
       if (data.message == 'success') {
-        if (this.health_screen_mtd == 1) {
-          var today = new Date().getDate()
-        } else {
-          var today = 30;
-        }
+        this.mtdText = data.data.mtdText;
+        this.mtdInnText= data.data.mtdInnText;
+        var today = parseInt(data.data.today);
         this.productionstats = true;
         this.totalvisitstats = true;
         this.prodpervisitstats = true;
