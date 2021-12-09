@@ -16,6 +16,7 @@ import { NgxDaterangepickerMd, DaterangepickerComponent } from 'ngx-daterangepic
 import { ChartstipsService } from '../shared/chartstips.service';
 import { environment } from "../../environments/environment";
 import * as moment from 'moment';
+import { EventListenerFocusTrapInertStrategy } from '@angular/cdk/a11y';
 
 
 
@@ -45,12 +46,23 @@ export class ExportDataDialogComponent {
     let followuptype = data.followtype
     let showcompleted = (data.show_completed) ? 1 : 0
     let filetype = data.type
-    let filename = followuptype + '_' +startDate + '_' +endDate+'.csv';
+    let filename ='';
+    if(filetype == "csv"){
+      filename = followuptype + '_' +startDate + '_' +endDate+'.csv';
+    }else if(filetype == "pdf"){
+      filename = followuptype + '_' +startDate + '_' +endDate+'.pdf';
+    }
 
     this.followupsService.exportFollowUp(clinic_id, startDate, endDate, showcompleted, filetype, followuptype,filename).subscribe((data: File) => {
       
       const csvName = filename;
-      const blob = new Blob([data], { type: 'text/csv' }); //data is response from BE.
+      let ftype = '';
+      if(filetype == "csv"){
+        ftype = 'text/csv'; 
+      }else if(filetype == "pdf"){
+        ftype = 'application/pdf';
+      }
+      const blob = new Blob([data], { type: ftype }); //data is response from BE.
       //Chrome & Firefox
       const a = document.createElement('a');
       const url = window.URL.createObjectURL(blob);
