@@ -8470,3 +8470,7 @@ h1.mat-dialog-title span {
   padding-left: 0.5rem;
   border-radius: 10rem;
 }
+.badge.badge-light-success.yellow {
+    color: #f9e601!important;
+    font-size: 11px;
+}
