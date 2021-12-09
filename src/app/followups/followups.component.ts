@@ -77,7 +77,7 @@ export class ExportDataDialogComponent {
         console.log('error', error)
       });
 
-    this.followupsService.deletefiles(filename).subscribe((res) => {
+    this.followupsService.deletefiles(filename,filetype).subscribe((res) => {
     },
       (error) => {
         console.log('error', error)

@@ -88,9 +88,9 @@ export class FollowupsService {
         return this.http.get( this.apiUrl + "/Followups/exportFollowUp?startDate="+startDate+"&endDate="+endDate+"&clinic_id="+clinic_id+"&showcompleted="+showcompleted+"&filetype="+filetype+"&followuptype="+followuptype+"&filename="+filename ,header);
     }
 
-    deletefiles(filename): any {
+    deletefiles(filename,filetype): any {
         let header = this.getHeaders();
-        return this.http.get( this.apiUrl + "/Followups/deletefiles?filename="+filename ,header);
+        return this.http.get( this.apiUrl + "/Followups/deletefiles?filename="+filename+"&filetype="+filetype ,header);
     }
 
     updateFollowUpStatus(event, pid, cid, type, previousDays, fdate, treatItem = ''): Observable<any> {
