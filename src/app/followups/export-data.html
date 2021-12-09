@@ -1,7 +1,9 @@
 <div class="ExportDataPopup">
   <h1 mat-dialog-title>Export Options</h1>
-
-  <div mat-dialog-content class="sa_forms_design">
+  <div class="card-loading" *ngIf="loader">
+    <img class="tableLoader" src="../../assets/images/loader.gif">
+  </div>
+  <div *ngIf="!loader"  mat-dialog-content class="sa_forms_design">
     <div class="sa-form-group">
       <label>Date Range </label>
       <input class="form-control" placeholder="Select" type="text" matInput ngxDaterangepickerMd
@@ -24,8 +26,8 @@
       </select>
     </div>
   </div>
-  <div mat-dialog-actions class="justify-between">
+  <div  *ngIf="!loader" mat-dialog-actions class="justify-between">
     <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
-    <button (click)="exportData(data)" tabindex="1" class="mat-raised-button mat-dc float-right">Ok</button>
+    <button (click)="exportData(data)" tabindex="1" class="mat-raised-button mat-dc float-right">Export</button>
   </div>
 </div>

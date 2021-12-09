@@ -30,6 +30,7 @@ export class ExportDataDialogComponent {
 
   constructor(public dialogRef: MatDialogRef<ExportDataDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private _cookieService: CookieService, private router: Router, private followupsService: FollowupsService, private datePipe: DatePipe) { }
 
+  public loader = false
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -46,20 +47,20 @@ export class ExportDataDialogComponent {
     let followuptype = data.followtype
     let showcompleted = (data.show_completed) ? 1 : 0
     let filetype = data.type
-    let filename ='';
-    if(filetype == "csv"){
-      filename = followuptype + '_' +startDate + '_' +endDate+'.csv';
-    }else if(filetype == "pdf"){
-      filename = followuptype + '_' +startDate + '_' +endDate+'.pdf';
+    let filename = '';
+    if (filetype == "csv") {
+      filename = followuptype + '_' + startDate + '_' + endDate + '.csv';
+    } else if (filetype == "pdf") {
+      filename = followuptype + '_' + startDate + '_' + endDate + '.pdf';
     }
+    this.loader = true
+    this.followupsService.exportFollowUp(clinic_id, startDate, endDate, showcompleted, filetype, followuptype, filename).subscribe((data: File) => {
 
-    this.followupsService.exportFollowUp(clinic_id, startDate, endDate, showcompleted, filetype, followuptype,filename).subscribe((data: File) => {
-      
       const csvName = filename;
       let ftype = '';
-      if(filetype == "csv"){
-        ftype = 'text/csv'; 
-      }else if(filetype == "pdf"){
+      if (filetype == "csv") {
+        ftype = 'text/csv';
+      } else if (filetype == "pdf") {
         ftype = 'application/pdf';
       }
       const blob = new Blob([data], { type: ftype }); //data is response from BE.
@@ -77,11 +78,11 @@ export class ExportDataDialogComponent {
         console.log('error', error)
       });
 
-    this.followupsService.deletefiles(filename,filetype).subscribe((res) => {
+    this.followupsService.deletefiles(filename, filetype).subscribe((res) => {
     },
       (error) => {
         console.log('error', error)
-      });   
+      });
 
   }
 
