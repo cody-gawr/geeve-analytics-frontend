@@ -189,7 +189,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
             $(".ajax-loader").hide();
           }
         );
-    }    
+    }
   }
 
   getShortName(fullName: string) {
@@ -202,16 +202,15 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
 
   public loadHealthScreen() {
     var date = new Date();
-    if (this.health_screen_mtd == 0) {
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), date.getDate() - 30), 'yyyy-MM-dd');
-      this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-    } else {
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
-      this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-    }
+    this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
+    this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
 
-    // console.log('this.startDate', this.startDate)
-    // console.log('this.endDate', this.endDate)
+    //managing dates at backedn now
+    // if (this.health_screen_mtd == 0) {
+    //   this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), date.getDate() - 30), 'yyyy-MM-dd');
+    //   this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    // }
+
 
     this.prodpervisitstats = false;
     this.totalvisitstats = false;
@@ -231,12 +230,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
         this.chGetDetistProdHorate();
         this.chGetDetistReappRate();
       }
-
-
     } else {
-      // this.chProduction();
-      //this.chTotalVisits();
-      //this.finProductionPerVisit();  
       this.chTopCards();
       this.chPrebookedVisits();
       this.chUtilisationRate();
@@ -316,7 +310,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chTopCards').subscribe((data) => {
       if (data.message == 'success') {
         this.mtdText = data.data.mtdText;
-        this.mtdInnText= data.data.mtdInnText;
+        this.mtdInnText = data.data.mtdInnText;
         var today = parseInt(data.data.today);
         this.productionstats = true;
         this.totalvisitstats = true;
