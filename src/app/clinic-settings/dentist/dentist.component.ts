@@ -168,7 +168,15 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   getJeeveNames(id) {
     this.dentistService.getJeeveNames(id).subscribe((res) => {
       if (res.message == 'success') {
-        this.jeeveNames = res.data;        
+        for(var i = 1; i <=9; i++ ){
+          if(typeof(res.data[i]) != 'undefined'){
+            this.jeeveNames[i] = res.data[i];        
+          } else {
+            this.jeeveNames[i] = 'undefined';        
+          }
+        }
+
+        
       }
       else if (res.status == '401') {
         this.handleUnAuthorization();
