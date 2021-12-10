@@ -9,7 +9,7 @@
   <div mat-dialog-content class="sa_forms_design">
     <div class="sa-form-group">
       <label>Name</label>
-      <input [(ngModel)]="data.referFriendName"  class="mat-form-control" required="true" placeholder="">
+      <input [(ngModel)]="data.referFriendName"  class="mat-form-control" required="true" placeholder="Recipient Name">
       <div *ngIf="referFriendNameError">
         {{referFriendNameErrorMsg}}
       </div>
@@ -18,7 +18,7 @@
     <div mat-dialog-content class="sa_forms_design">
       <div class="sa-form-group">
         <label>Email</label>
-        <input type="email" [(ngModel)]="data.referFriendEmail" class="mat-form-control" required="true" placeholder="">
+        <input type="email" [(ngModel)]="data.referFriendEmail" class="mat-form-control" required="true" placeholder="Receipient Email">
         <div *ngIf="referFriendNameError">
           {{referFriendNameErrorMsg}}
         </div>
