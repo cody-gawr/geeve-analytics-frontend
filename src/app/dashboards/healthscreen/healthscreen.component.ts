@@ -54,8 +54,8 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public productionVal = 0;
   public productionPrev = 0;
   public health_screen_mtd = 0;
-  public mtdText = 'Month To Date';
-  public mtdInnText = 'Last Month';
+  public mtdText = '';
+  public mtdInnText = '';
   public options: any = {
     hasNeedle: false,
     arcColors: ['rgba(166, 178, 255, 1)', 'rgba(166, 178, 255, 0.8)'],
@@ -79,9 +79,9 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   xeroConnect: boolean = false;
 
 
-  public prodpervisitstats: boolean = true;
-  public totalvisitstats: boolean = true;
-  public productionstats: boolean = true;
+  public prodpervisitstats: boolean = false;
+  public totalvisitstats: boolean = false;
+  public productionstats: boolean = false;
   public prebookedvisitchart: boolean = true;
   public chairutilrate: boolean = true;
   public unscheduledproduction: boolean = true;
@@ -370,7 +370,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
 
           this.visits_c = Math.round(data.data.num_visit);
           this.visits_p = Math.round(data.data.num_visit_ta);
-          this.visits_c_avg = Math.round(data.data.visits_c / today);
+          this.visits_c_avg = Math.round(this.visits_c / today);
           this.visits_dif = Math.round(this.visits_c - this.visits_p);
         }
       }
