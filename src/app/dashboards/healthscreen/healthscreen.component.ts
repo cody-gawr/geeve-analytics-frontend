@@ -282,7 +282,6 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
       if (data.message == 'success') {
         this.mtdText = data.data.mtdText;
         this.mtdInnText = data.data.mtdInnText;
-        var today = parseInt(data.data.today);
         this.productionstats = true;
         this.totalvisitstats = true;
         this.prodpervisitstats = true;
@@ -297,7 +296,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
             this.production_c = this.production_c + Math.round(val.production);
             tooltip_p += '<span class="text">' + val.clinic_name + ': $' + Math.round(val.production) + '</span>';
           });
-          this.production_c_avg = Math.round(this.production_c / today);
+          this.production_c_avg = Math.round(data.data.production_daily_avg);
           this.production_dif = Math.round(this.production_c - this.production_p);
           this.production_c_all = { 'title': '', 'info': tooltip_p };
 
@@ -309,7 +308,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
             this.visits_c = this.visits_c + Math.round(val.num_visit);
             tooltip_v += '<span class="text">' + val.clinic_name + ': ' + Math.round(val.num_visit) + '</span>';
           });
-          this.visits_c_avg = Math.round(this.visits_c / today);
+          this.visits_c_avg = Math.round(data.data.total_visits_avg);
           this.visits_c_all = { 'title': '', 'info': tooltip_v };
           this.visits_dif = Math.round(this.visits_c - this.visits_p);
 
@@ -326,7 +325,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
         } else {
           this.production_c = data.data.production;
           this.production_p = Math.round(data.data.production_ta);
-          this.production_c_avg = Math.round(this.production_c / today);
+          this.production_c_avg = Math.round(data.data.production_daily_avg);
           this.production_dif = Math.round(this.production_c - this.production_p);
 
           this.productionVal = (data.data.production_visit) ? data.data.production_visit : 0;
@@ -335,7 +334,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
 
           this.visits_c = Math.round(data.data.num_visit);
           this.visits_p = Math.round(data.data.num_visit_ta);
-          this.visits_c_avg = Math.round(this.visits_c / today);
+          this.visits_c_avg = Math.round(data.data.total_visits_avg);
           this.visits_dif = Math.round(this.visits_c - this.visits_p);
         }
       }
