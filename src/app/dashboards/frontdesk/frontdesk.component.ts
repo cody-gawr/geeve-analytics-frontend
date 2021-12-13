@@ -12,6 +12,7 @@ import { ChartService } from '../chart.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
+import { environment } from "../../../environments/environment";
 export interface Dentist {
   providerId: string;
   name: string;
@@ -37,6 +38,8 @@ export class FrontDeskComponent implements AfterViewInit {
   public charTips:any = [];
   public showTopVlaues: boolean = false;
   public showUtiTable: boolean = false;
+  public apptCollShow: number = 1;
+  public apiUrl = environment.apiUrl; 
 
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
@@ -583,12 +586,14 @@ public utilityratemessage: boolean = false;
 
     if(newValue == 'all') {
       this.fdWorkTimeAnalysis();
-      
+      this.fdWorkTimeAnalysisByDay();
       this.fdFtaRatio();
       this.fdUtaRatio();
       this.fdNumberOfTicks();
       this.fdRecallPrebookRate();
       this.fdtreatmentPrebookRate();
+      (<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'none';
+      (<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'block';
     }
   }
 
@@ -700,6 +705,96 @@ public fdUtiData:any = [];
               mode: 'horizontal',
               scaleID: 'y-axis-0',
               value: this.workTimeGoal,
+              borderColor: 'red',
+              borderWidth: 2,
+              borderDash: [2, 2],
+              borderDashOffset: 0,
+          },
+         ]
+        }
+       }
+
+          
+       }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+ 
+    }
+    );
+  }
+  }
+
+
+  public workTimeLabelsDay = [];
+  public workTimeLabels1Day = [];
+  public workTimeData1Day = [];
+  public workTimeTotalDay;
+  public workTimeGoalDay;
+  public prevWorkTimeTotalDay;
+  public prevWorkTimeTooltipDay ='down';
+public fdWorkTimeAnalysisByDayLoader:boolean;
+public stackedChartOptionssWTDay:any =this.stackedChartOptions;
+public fdUtiDataDay:any = [];
+  private fdWorkTimeAnalysisByDay() {
+    var user_id;
+    var clinic_id;
+    this.fdWorkTimeAnalysisByDayLoader = true;
+    this.workTimeLabelsDay= [];
+    if(this.DateDiffernce > '365'){
+      this.utilityratemessage = true;
+      this.fdWorkTimeAnalysisByDayLoader = false;
+    }else{
+      this.utilityratemessage = false;
+  this.clinic_id && this.frontdeskService.fdWorkTimeAnalysisByDay(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+      this.fdUtiDataDay = [];
+    if(data.message == 'success'){
+      this.fdWorkTimeAnalysisByDayLoader = false;
+      this.workTimeData1Day =[];
+      this.workTimeLabels1Day =[];
+      this.prevWorkTimeTooltipDay = 'down';
+     if(data.data.length >0) {
+        data.data.forEach(res => {
+          if(res.worked_hour > 0) {
+            var temp =  {
+            'name':  res.day, 
+            'scheduled_hours':  res.planned_hour, 
+            'clinican_hours':  res.worked_hour, 
+            'util_rate':  Math.round(res.util_rate * 100), 
+            };
+            this.fdUtiDataDay.push(temp);
+            this.workTimeData1Day.push(Math.round(res.util_rate * 100));
+            this.workTimeLabels1Day.push(res.day+'--'+res.worked_hour+'--'+res.planned_hour); 
+          }
+        });
+     }
+        this.workTimeData[0]['data'] = this.workTimeData1Day;
+         this.workTimeLabelsDay= this.workTimeLabels1Day;
+         this.workTimeTotalDay = Math.round(data.total);
+         this.prevWorkTimeTotalDay =  Math.round(data.total_ta);
+         this.workTimeGoalDay = data.goals;
+         if(this.workTimeTotalDay>=this.prevWorkTimeTotalDay)
+            this.prevWorkTimeTooltipDay = 'up';
+      this.stackedChartOptionssWTDay.annotation =[];
+          if(this.goalchecked == 'average') {
+           this.stackedChartOptionssWTDay.annotation = {annotations: [{
+              type: 'line',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: this.workTimeTotalDay,
+              borderColor: '#0e3459',
+              borderWidth: 2,
+              borderDash: [2, 2],
+              borderDashOffset: 0,
+          },
+         ]
+        }
+       }
+       else if(this.goalchecked == 'goal') {
+           this.stackedChartOptionssWTDay.annotation = {annotations: [{
+              type: 'line',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: this.workTimeGoalDay,
               borderColor: 'red',
               borderWidth: 2,
               borderDash: [2, 2],
@@ -1138,7 +1233,7 @@ toggleFilter(val) {
        this.toggleChangeProcess();
     }
     else if(val == 'off') {
-      if(this.goalchecked=='average') {
+      if(this.goalchecked=='average' && this.apptCollShow == 1) {
     this.stackedChartOptionssWT.annotation = {annotations: [{
               type: 'line',
               mode: 'horizontal',
@@ -1152,7 +1247,7 @@ toggleFilter(val) {
          ]
         }
       }
-      else if(this.goalchecked=='goal')  {
+      else if(this.goalchecked=='goal' && this.apptCollShow == 1)  {
            this.stackedChartOptionssWT.annotation = {annotations: [{
               type: 'line',
               mode: 'horizontal',
@@ -1166,6 +1261,35 @@ toggleFilter(val) {
          ]
         }
       }
+
+      if(this.goalchecked=='average' && this.apptCollShow == 2) {
+        this.stackedChartOptionssWTDay.annotation = {annotations: [{
+                  type: 'line',
+                  mode: 'horizontal',
+                  scaleID: 'y-axis-0',
+                  value: this.workTimeTotalDay,
+                  borderColor: 'red',
+                  borderWidth: 2,
+                  borderDash: [2, 2],
+                  borderDashOffset: 0,
+              },
+             ]
+            }
+          }
+          else if(this.goalchecked=='goal' && this.apptCollShow == 2)  {
+               this.stackedChartOptionssWTDay.annotation = {annotations: [{
+                  type: 'line',
+                  mode: 'horizontal',
+                  scaleID: 'y-axis-0',
+                  value: this.workTimeGoalDay,
+                  borderColor: 'red',
+                  borderWidth: 2,
+                  borderDash: [2, 2],
+                  borderDashOffset: 0,
+              },
+             ]
+            }
+          }
 
       this.showTrend = false;
     }
@@ -1600,7 +1724,8 @@ toggleChangeProcess(){
   }
   goalToggle(val) {
     this.goalchecked = val;
-    this.fdWorkTimeAnalysis();  
+    this.fdWorkTimeAnalysis(); 
+    this.fdWorkTimeAnalysisByDay(); 
   }
 
     getChartsTips() {
@@ -1624,4 +1749,15 @@ toggleChangeProcess(){
     showTable(val){
       this.showUtiTable = val;
     }
+
+    changeApptBook(val) {
+      console.log(val);
+      if (parseInt(val) == 1) {
+        this.fdWorkTimeAnalysis();
+      } else if (parseInt(val) == 2) {
+        this.fdWorkTimeAnalysisByDay();
+      }
+      this.apptCollShow = parseInt(val);
+    }
+
   }

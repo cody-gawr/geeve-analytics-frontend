@@ -33,6 +33,14 @@ export class FrontDeskService {
                     })
         );
     }
+    fdWorkTimeAnalysisByDay(clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/FrontDesk/fdUtilisationRateByDay?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
 
     // Items Predictor Analysis  
     fdFtaRatio(clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
