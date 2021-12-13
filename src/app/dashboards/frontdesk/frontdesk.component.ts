@@ -789,7 +789,7 @@ public fdUtiData:any = [];
               };
               this.byDayDataTable.push(temp);
               this.byDayDataTemp.push(Math.round(res.util_rate * 100));
-              this.byDayLabelsTemp.push(res.day); 
+              this.byDayLabelsTemp.push(res.day+'--'+res.worked_hour+'--'+res.planned_hour); 
             }
           });        
           this.byTotal=  data.total;
