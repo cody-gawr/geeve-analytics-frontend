@@ -11,6 +11,7 @@ import { Chart } from 'chart.js';
 import { ChartService } from '../chart.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../../app.constants';
+import { environment } from "../../../environments/environment";
 import { ChartstipsService } from '../../shared/chartstips.service';
 export interface Dentist {
   providerId: string;
@@ -37,6 +38,8 @@ export class FrontDeskComponent implements AfterViewInit {
   public charTips:any = [];
   public showTopVlaues: boolean = false;
   public showUtiTable: boolean = false;
+  public utilShow: any = 1;
+  public  apiUrl = environment.apiUrl;
 
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
@@ -301,8 +304,9 @@ this.predictedChartColors = [
                   let lbl = tooltipItems.label.split('--');                
                   hour = lbl[1];
                   phour = lbl[2];
+                  return ['',"Scheduled Hours: "+phour,"Clinical Hours: "+hour];
                 } 
-               return ['',"Scheduled Hours: "+phour,"Clinical Hours: "+hour];
+                return;
               },
               title: function() {
                 return "";
@@ -580,10 +584,9 @@ public utilityratemessage: boolean = false;
  loadDentist(newValue) {
    $('#title').html('<span>Front Desk</span>'); 
        $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
-
-    if(newValue == 'all') {
+    if(newValue == 'all' && this.clinic_id ) {
       this.fdWorkTimeAnalysis();
-      
+      this.fdWorkTimeByDay();  
       this.fdFtaRatio();
       this.fdUtaRatio();
       this.fdNumberOfTicks();
@@ -717,6 +720,87 @@ public fdUtiData:any = [];
     }
     );
   }
+  }
+
+
+
+  public byDayData: any =  [
+    {
+      data: [], 
+      label: '',
+      backgroundColor: [
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+      ],
+      hoverBackgroundColor: [
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+      ]
+    }
+  ];
+
+
+  public byDayDataTemp: any =  [];
+  public byDayLabels: any =  [];
+  public byDayLabelsTemp: any =  [];
+  public byDayDataTable: any =  [];
+  public byDayLoader: boolean =  true;
+  public byTotal: any=  0;
+  public prevByDayTotal: any=  0;
+  // Function for utilisation by day
+  public  fdWorkTimeByDay() {
+    this.byDayLoader = true;   
+    this.frontdeskService.fdWorkTimeAnalysisByDay(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+        this.byDayLoader = false;
+        this.byDayDataTemp = [];
+        this.byDayLabelsTemp = [];
+        this.byDayDataTable = [];
+        this.byTotal=  0;
+          this.prevByDayTotal=  0;
+        if(data.message == 'success')
+        {
+          data.data.forEach(res => {
+            if(res.worked_hour > 0) {
+              var temp =  {
+              'day':  res.day, 
+              'scheduled_hours':  res.planned_hour, 
+              'clinican_hours':  res.worked_hour, 
+              'util_rate':  Math.round(res.util_rate * 100), 
+              };
+              this.byDayDataTable.push(temp);
+              this.byDayDataTemp.push(Math.round(res.util_rate * 100));
+              this.byDayLabelsTemp.push(res.day); 
+            }
+          });        
+          this.byTotal=  data.total;
+          this.prevByDayTotal=  data.total_ta;
+          this.byDayData[0]['data'] = this.byDayDataTemp;
+          this.byDayLabels = this.byDayLabelsTemp;       
+        }
+      }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+ 
+    });
   }
 
 public ftaTotal;
@@ -1623,5 +1707,9 @@ toggleChangeProcess(){
     }
     showTable(val){
       this.showUtiTable = val;
+    }
+
+    changeUtil(val){
+      this.utilShow = val;
     }
   }
