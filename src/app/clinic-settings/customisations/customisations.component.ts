@@ -54,7 +54,7 @@ export class CustomisationsComponent
   public recall_rate_default: any = 1;
   public lab_code1: any = '';
   public lab_code2: any = '';
-  public lab_overdue_enable: boolean = true;
+  public lab_needed_enable: boolean = true;
   public recall_overdue_enable: boolean = true;
   public xray_overdue_enable: boolean = true;
   public status_codes_enable: boolean = true;
@@ -140,8 +140,8 @@ export class CustomisationsComponent
 
     if (type == "recall_overdue_enable") {
       this.recall_overdue_enable = event.checked;
-    } else if (type == "lab_overdue_enable") {
-      this.lab_overdue_enable = event.checked;
+    } else if (type == "lab_needed_enable") {
+      this.lab_needed_enable = event.checked;
     } else if (type == "opg_overdue_enable") {
       this.opg_overdue_enable = event.checked;
     } else if (type == "xray_overdue_enable") {
@@ -190,7 +190,7 @@ export class CustomisationsComponent
           if (res.message == "success") {
             if (res.data) {
               this.recall_overdue_enable = (res.data.recall_overdue_enable) ? true : false;
-              this.lab_overdue_enable = (res.data.lab_overdue_enable) ? true : false;
+              this.lab_needed_enable = (res.data.lab_needed_enable) ? true : false;
               this.opg_overdue_enable = (res.data.opg_overdue_enable) ? true : false;
               this.xray_overdue_enable = (res.data.xray_overdue_enable) ? true : false;
               this.status_codes_enable = (res.data.status_codes_enable) ? true : false;

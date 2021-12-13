@@ -327,18 +327,18 @@ export class AppConstants {
         direction: 'right'
     };
     public labCode: ITooltipData = {
-        title: 'Lab Code',
-        info: 'Info Here for lab Code',
+        title: 'Overdue Labs',
+        info: 'Populate these fields with any Status Codes you use to detect that Lab work is required. If any of these codes are detected on an appointment, a "Lab Needed" alert will be displayed in your Morning Huddle.',
         direction: 'right'
     };
     public statusCode: ITooltipData = {
-        title: 'Status Code',
-        info: 'Info Here for status code',
+        title: 'Status Codes',
+        info: ' Enabling this toggle will show the Status Codes associated with each appointment in your Morning Huddle',
         direction: 'right'
     };
     public tipdateRange: ITooltipData = {
-        title: 'Date Range Title',
-        info: 'Date Rang Description',
+        title: 'Date Range',
+        info: 'By default, your Health Screen will show data for "Month To Date". If you would prefer to see the Last 30 Days worth of data, change this setting accordingly.',
         direction: 'right'
     };
     public tipNewPatients: ITooltipData = {

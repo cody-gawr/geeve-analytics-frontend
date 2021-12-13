@@ -892,3 +892,26 @@ div.mat-chip-list-wrapper .custom-tooltip {
 .mh-fa-check{
     color: green;
 }
+.mh-fa-check.gray {
+    color: #bfbfbf;
+}
+
+.info-icon-container.mhRebook .tooltip-info-text {
+    white-space: break-spaces;
+    text-align: left;
+    color: #000;
+}
+.info-icon-container.mhRebook .tooltip-title-container {
+    display: none;
+}
+.info-icon-container.mhRebook .custom-tooltip {
+    background: #fff;
+    border: 1px solid #000;
+    box-shadow: 2px 2px 3px #000;
+}
+.info-icon-container.mhRebook .custom-tooltip::after {
+    border-bottom: 5px solid #424242;
+}
+.info-icon-container.mhRebook .tooltip-info-text{
+    width: 100%;
+}
