@@ -300,15 +300,17 @@ export class AppConstants {
 
     public tipFtaFollowUps: ITooltipData = {
         title: 'FTA Followups',
-        info: 'FTA Followups are triggered automatically based on detection of an FTA or UTA in your PMS. By default the followup list will be populated the same day as the FTA/UTA is recorded, for patients who do not have another appointment booked within the next 28 days - this can be adjusted below.',
+         info: 'FTA Followups are triggered automatically based on detection of an FTA in your PMS. By default the followup list will be populated the same day as the FTA is recorded, for patients who do not have another appointment booked within the next 28 days - this can be adjusted below.',
         direction: 'right'
+
     };
 
     public tipUtaFollowUps: ITooltipData = {
         title: 'UTA Followups',
-        info: 'Discription comes here',
+        info: 'UTA Followups are triggered automatically based on detection of an UTA in your PMS. By default the followup list will be populated the same day as the UTA is recorded, for patients who do not have another appointment booked within the next 28 days - this can be adjusted below.',
         direction: 'right'
     };
+
 
     // Settings -> Customisations
     public tipXrayOverdue: ITooltipData = {
