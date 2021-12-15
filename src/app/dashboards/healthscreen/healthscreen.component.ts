@@ -278,7 +278,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.visits_dif = 0;
     this.productionVal = 0;
     this.productionPrev = 0;
-    this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chTopCards').subscribe((data) => {
+    this.healthscreenService.commonCall(this.clinic_id, null, null, 'chTopCards').subscribe((data) => {
       if (data.message == 'success') {
         this.mtdText = data.data.mtdText;
         this.mtdInnText = data.data.mtdInnText;
@@ -421,7 +421,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public chGetDetistProdHorate() { // Total Vists top Card
     this.dentistHourlyRateLoader = true;
     this.dentistProductionLoader = true;
-    this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chGetProduHrRate').subscribe((data) => {
+    this.healthscreenService.commonCall(this.clinic_id, null, null, 'chGetProduHrRate').subscribe((data) => {
       this.dentistHourlyRateLoader = false;
       this.dentistProductionLoader = false;
       if (data.message == 'success' && data.data) {
@@ -441,7 +441,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
 
   public chGetDetistReappRate() { // Total Vists top Card
     this.dentistReappointRateLoader = true;
-    this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chGetReappointmentRate').subscribe((data) => {
+    this.healthscreenService.commonCall(this.clinic_id, null, null, 'chGetReappointmentRate').subscribe((data) => {
       this.dentistReappointRateLoader = false;
       if (data.message == 'success' && data.data) {
         this.dentistReappointRate = Math.round(data.data.reappoint_rate);
@@ -546,7 +546,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.hourlyRateChartData = [];
     this.maxHourlyRate = 0;
     let colorCount = 0;
-    this.healthscreenService.hourlyRateChart(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
+    this.healthscreenService.hourlyRateChart(this.clinic_id, null, null, this.duration, this.user_type, this.childid).subscribe((data) => {
       this.hourlyRateChartData = [];
       if (data.message == 'success') {
         this.hourlyRateChartData = data.data;
@@ -582,7 +582,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.newPatientsTimeClinic = [];
     var user_id;
     var clinic_id;
-    this.healthscreenService.mkNewPatientsByReferral(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.healthscreenService.mkNewPatientsByReferral(this.clinic_id, null, null, this.duration).subscribe((data) => {
       if (data.message == 'success') {
         this.newPatientsTimeData = data.data;
         this.refreralleaders = true;

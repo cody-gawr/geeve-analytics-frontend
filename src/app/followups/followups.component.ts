@@ -31,15 +31,15 @@ export class ExportDataDialogComponent {
   constructor(public dialogRef: MatDialogRef<ExportDataDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private _cookieService: CookieService, private router: Router, private followupsService: FollowupsService, private datePipe: DatePipe) { }
 
   public loader = false
+  public noData = false
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   exportData(data) {
-
-    let endRaw = moment(data.range.end);
-    let startRaw = moment(data.range.start);
+    let endRaw = moment(data.end_date.end);
+    let startRaw = moment(data.start_date.start);
 
     let endDate = this.datePipe.transform(endRaw.toDate(), 'yyyy-MM-dd')
     let startDate = this.datePipe.transform(startRaw.toDate(), 'yyyy-MM-dd')
@@ -54,25 +54,33 @@ export class ExportDataDialogComponent {
       filename = followuptype + '_' + startDate + '_' + endDate + '.pdf';
     }
     this.loader = true
-    this.followupsService.exportFollowUp(clinic_id, startDate, endDate, showcompleted, filetype, followuptype, filename).subscribe((data: File) => {
-
-      const csvName = filename;
-      let ftype = '';
-      if (filetype == "csv") {
-        ftype = 'text/csv';
-      } else if (filetype == "pdf") {
-        ftype = 'application/pdf';
+    this.followupsService.exportFollowUp(clinic_id, startDate, endDate, showcompleted, filetype, followuptype, filename).subscribe((data: any) => {
+      
+      if (data.message == 'No records were found in the selected date range') {
+        this.noData = true
+        this.loader = false
+        return
+      } else{
+          this.noData = false
+          const csvName = filename;
+          let ftype = '';
+          if (filetype == "csv") {
+            ftype = 'text/csv';
+          } else if (filetype == "pdf") {
+            ftype = 'application/pdf';
+          }
+          const blob = new Blob([data], { type: ftype }); //data is response from BE.
+          //Chrome & Firefox
+          const a = document.createElement('a');
+          const url = window.URL.createObjectURL(blob);
+          a.href = url;
+          a.download = csvName;
+          a.click();
+          window.URL.revokeObjectURL(url);
+          a.remove();
+          this.dialogRef.close();
       }
-      const blob = new Blob([data], { type: ftype }); //data is response from BE.
-      //Chrome & Firefox
-      const a = document.createElement('a');
-      const url = window.URL.createObjectURL(blob);
-      a.href = url;
-      a.download = csvName;
-      a.click();
-      window.URL.revokeObjectURL(url);
-      a.remove();
-      this.dialogRef.close();
+      
     },
       (error) => {
         console.log('error', error)
@@ -852,9 +860,15 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       startDate: null,
       endRaw: null
     };
+    var selmonth: number  = parseInt(this.datepipe.transform(this.selectedMonthYear, 'M'));
+    var selyear : number = parseInt(this.datepipe.transform(this.selectedMonthYear, 'yyyy'));
+    var selctedEndDate = this.datepipe.transform(new Date(selyear, selmonth, 0), 'yyyy-MM-dd')
+    var selctedStartDate = this.datepipe.transform(this.selectedMonthYear, 'yyyy-MM-dd');
+    let start_date = {start:  moment(selctedStartDate)};
+    let end_date = {end:  moment(selctedEndDate)};
     const dialogRef = this.dialog.open(ExportDataDialogComponent, {
       width: '500px',
-      data: { clinic_id: this.clinic_id, range: selected, show_completed: false, type: 'csv', followtype: type }
+      data: { clinic_id: this.clinic_id, range: selected, show_completed: false, type: 'csv', followtype: type ,start_date: start_date,end_date:end_date}
     });
     dialogRef.afterClosed().subscribe(result => {
 

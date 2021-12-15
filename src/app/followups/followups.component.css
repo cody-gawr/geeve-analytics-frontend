@@ -860,3 +860,7 @@ div.mat-chip-list-wrapper .custom-tooltip {
 .buttons_input .clear{
     display: none;
 }
+.nodata_msg{
+    text-align: center;
+    color: #ca1c1c;
+}

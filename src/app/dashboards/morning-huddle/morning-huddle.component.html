@@ -616,7 +616,7 @@
           </ng-container>
 
           <ng-container matColumnDef="dentist">
-            <th mat-header-cell *matHeaderCellDef>Dentist </th>
+            <th mat-header-cell *matHeaderCellDef>Dentists </th>
             <td mat-cell *matCellDef="let element"> {{element.provider_name }} </td>
           </ng-container>
 
@@ -648,7 +648,7 @@
               </div>
 
               <div class="appointment" *ngIf="element.outstanding_item_value > 0"> <span class="warning"><img
-                    src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Outstanding Treatment
+                    src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Outstanding Tx
                   ${{ element.outstanding_item_value | number:'1.0-0' }}</span></div>
 
               <div class="appointment" *ngIf="element.lab_needed == 'Yes'"> <span class="warning"><img
@@ -669,12 +669,17 @@
           </ng-container>
 
           <ng-container matColumnDef="rebooked">
-            <th mat-header-cell *matHeaderCellDef>Rebooked  <div class="info-icon-container mhRebook"><img [tooltip]="{title:'', info:'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a tick outline' }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" /></div></th>
+            <th mat-header-cell *matHeaderCellDef>Rebooked  <div class="info-icon-container mhRebook"><img [tooltip]="{title:'', info:'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a grey tick' }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" /></div></th>
             <td mat-cell *matCellDef="let element"> 
                <i *ngIf="element.is_rebooked == 'No' && element.has_future_appt == 'Yes' " class="fa fa-check mh-fa-check gray"></i> 
               <i *ngIf="element.is_rebooked == 'Yes'" class="fa fa-check mh-fa-check"></i> 
             </td>
           </ng-container>
+
+          <!-- <ng-container matColumnDef="statuscode">
+            <th mat-header-cell *matHeaderCellDef>Status code </th>
+            <td mat-cell *matCellDef="let element"> {{ element.status_codes }} </td>
+          </ng-container> -->
 
 
           <ng-container matColumnDef="isDataAvailable">
@@ -706,7 +711,7 @@
               <div fxLayout="row" class="huddle-card-row">
                 <div fxFlex="30">Patient: </div>
                 <div fxFlex="70"> {{ element.patient_name }} </div>
-              </div>
+              </div>              
               <div fxLayout="row" class="huddle-card-row">
                 <div fxFlex="30">Notifications: </div>
                 <div fxFlex="70">
@@ -728,7 +733,7 @@
                   </div>
 
                   <div class="appointment" *ngIf="element.outstanding_item_value > 0"> <span class="warning"><img
-                        src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Outstanding Treatment
+                        src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Outstanding Tx
                       ${{ element.outstanding_item_value | number:'1.0-0' }}</span></div>
 
                   <div class="appointment" *ngIf="element.overdue_022 == 'Yes'">
@@ -747,12 +752,16 @@
                 </div>
               </div>
               <div fxLayout="row" class="huddle-card-row">
-                <div fxFlex="30">Rebooked <div class="info-icon-container mhRebook"><img [tooltip]="{title:'', info:'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a tick outline' }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" /></div></div>
+                <div fxFlex="30">Rebooked <div class="info-icon-container mhRebook"><img [tooltip]="{title:'', info:'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a grey tick' }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" /></div></div>
                 <div fxFlex="70">  
                    <i *ngIf="element.is_rebooked == 'No' && element.has_future_appt == 'Yes' " class="fa fa-check mh-fa-check gray"></i> 
               <i *ngIf="element.is_rebooked == 'Yes'" class="fa fa-check mh-fa-check"></i> 
                   </div>
               </div>
+              <!-- <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="30">Status code: </div>
+                <div fxFlex="70"> {{ element.status_codes }} </div>
+              </div> -->
 
             </mat-card>
           </div>
@@ -989,10 +998,16 @@
             </td>
           </ng-container>
           <ng-container matColumnDef="rebooked">
-            <th mat-header-cell *matHeaderCellDef>Rebooked <div class="info-icon-container mhRebook"><img [tooltip]="{title:'', info:'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a tick outline' }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" /></div></th>
+            <th mat-header-cell *matHeaderCellDef>Rebooked <div class="info-icon-container mhRebook"><img [tooltip]="{title:'', info:'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a grey tick' }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" /></div></th>
             <td mat-cell *matCellDef="let element">  <i *ngIf="element.is_rebooked == 'No' && element.has_future_appt == 'Yes' " class="fa fa-check mh-fa-check gray"></i> 
               <i *ngIf="element.is_rebooked == 'Yes'" class="fa fa-check mh-fa-check"></i> </td>
           </ng-container>
+
+          <!-- <ng-container matColumnDef="statuscode">
+            <th mat-header-cell *matHeaderCellDef>Status code </th>
+            <td mat-cell *matCellDef="let element"> {{ element.status_codes }} </td>
+          </ng-container> -->
+
           <ng-container matColumnDef="isDataAvailable">
             <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns11.length">
               You have no Reminders today
@@ -1060,10 +1075,14 @@
                 </div>
               </div>
               <div fxLayout="row" class="huddle-card-row">
-                <div fxFlex="30">Rebooked <div class="info-icon-container mhRebook"><img [tooltip]="{title:'', info:'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a tick outline' }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" /></div></div>
+                <div fxFlex="30">Rebooked <div class="info-icon-container mhRebook"><img [tooltip]="{title:'', info:'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a grey tick' }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" /></div></div>
                 <div fxFlex="70">  <i *ngIf="element.is_rebooked == 'No' && element.has_future_appt == 'Yes' " class="fa fa-check mh-fa-check gray"></i> 
               <i *ngIf="element.is_rebooked == 'Yes'" class="fa fa-check mh-fa-check"></i>   </div>
               </div>
+              <!-- <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="30">Status code: </div>
+                <div fxFlex="70"> {{ element.status_codes }} </div>
+              </div> -->
             </mat-card>
           </div>
           <ng-template #noData>
