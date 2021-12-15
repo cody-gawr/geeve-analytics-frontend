@@ -8477,3 +8477,12 @@ h1.mat-dialog-title span {
 .floatLeft{
   float: left;
 }
+.showExport  i {
+    border: 1px solid #18a689;
+    padding: 6px 15px;
+    background-image: linear-gradient(14deg,#17a5aa,#18a689);
+    color: #fff;
+    box-shadow: 1px 1px 2px  #18a689;
+    border-radius: 4px;
+    cursor: pointer;
+}

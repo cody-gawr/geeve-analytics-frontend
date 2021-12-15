@@ -21,7 +21,7 @@
                         </div>
                     </div>
                      <div class="showExport" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
-                        <i   class="fas fa-file-export" (click)="exportreport('overdue_recalls')"></i>
+                        <i   class="fas fa-file-export" (click)="exportreport('overdue_recalls')"> Export</i>
                     </div>
                     <div class="showComplete" *ngIf="followupOverDueRecall.length > 0">
                         <mat-checkbox name="status" [checked]="showCompleteOverdue"
@@ -292,7 +292,7 @@
                     </div>  
 
                      <div class="showExport" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
-                        <i   class="fas fa-file-export" (click)="exportreport('tick_followups')"></i>
+                        <i   class="fas fa-file-export" (click)="exportreport('tick_followups')"> Export</i>
                     </div>
 
                     <div class="showComplete" *ngIf="followupTickFollowups.length > 0">
@@ -609,7 +609,7 @@
                         </div>
                     </div>
                       <div class="showExport" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
-                        <i   class="fas fa-file-export" (click)="exportreport('post_op')"></i>
+                        <i   class="fas fa-file-export" (click)="exportreport('post_op')"> Export</i>
                     </div>
                     <div class="showComplete" *ngIf="followupPostOpCalls.length > 0">
                         <mat-checkbox name="status" [checked]="postopCallsPostOp" (change)="updateToCompleteOP($event)">
@@ -811,7 +811,7 @@
                         </div>
                     </div>
                     <div class="showExport" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
-                        <i   class="fas fa-file-export" (click)="exportreport('fta_followups')"></i>
+                        <i   class="fas fa-file-export" (click)="exportreport('fta_followups')"> Export</i>
                     </div>
                     <div class="showComplete" *ngIf="followupFtaFollowups.length > 0">
                         <mat-checkbox name="status" [checked]="showCompleteFta" (change)="updateToCompleteFT($event)">
@@ -1121,7 +1121,7 @@
                     </div>
 
                     <div class="showExport" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
-                        <i   class="fas fa-file-export" (click)="exportreport('uta_followups')"></i>
+                        <i   class="fas fa-file-export" (click)="exportreport('uta_followups')"> Export</i>
                     </div>
                     <div class="showComplete" *ngIf="followupUtaFollowups.length > 0">
                         <mat-checkbox name="status" [checked]="showCompleteUta" (change)="updateToCompleteUT($event)">
@@ -1436,7 +1436,7 @@
                         </div> -->
                     </div>
                     <div class="showExport" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
-                        <i class="fas fa-file-export" (click)="exportreport('internal_referrals')"></i>Export
+                        <i class="fas fa-file-export" (click)="exportreport('internal_referrals')"> Export</i>
                     </div>
                     <div class="showComplete" *ngIf="internalReferrals.length > 0">
                         <mat-checkbox name="status" [checked]="showCompleteReferrals"
