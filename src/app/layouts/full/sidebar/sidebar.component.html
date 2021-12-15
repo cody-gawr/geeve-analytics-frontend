@@ -123,8 +123,7 @@
             <span fxFlex></span>
         </a> 
     </mat-list-item>
-    <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
-        *ngIf="((user_type == 2 || permisions.indexOf('lostopportunity') >= 0 ))  && (apiUrl.includes('test') || apiUrl.includes('staging'))">
+    <mat-list-item appAccordionLink routerLinkActive="selected" group="string">
         <a class="" appAccordionToggle (click)="open()">
             <i class="fas fa-handshake"></i>
             <span>Refer A Friend</span>

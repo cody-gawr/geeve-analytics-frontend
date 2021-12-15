@@ -155,7 +155,7 @@
                       {{production_c >= 0 ? ' ' : '- ' }}
                       ${{ (production_c < 0 ? production_c.toString().split('-').join('') : production_c) |
                         number:'1.0-0'}} 
-                        <span class="daily" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+                        <span class="daily">
                            Daily Avg: ${{ production_c_avg | number: '1.' }}
                       </span>
                       </span>
@@ -239,7 +239,7 @@
                   <div *ngIf="totalvisitstats == true" class="production_description production_description-grow">
                     <h4>Total Visits</h4>
                     <span class="change_value grid">{{visits_c}}
-                      <span class="daily" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+                      <span class="daily">
                            Daily Avg: {{ visits_c_avg | number: '1.' }}
                       </span>
                     </span>
