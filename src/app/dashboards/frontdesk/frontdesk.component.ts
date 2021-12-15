@@ -662,7 +662,7 @@ public fdUtiData:any = [];
       this.prevWorkTimeTooltip = 'down';
      if(data.data.length >0) {
         data.data.forEach(res => {
-          if(res.worked_hour > 0) {
+          // if(res.worked_hour > 0) {
             var temp =  {
             'name':  res.app_book_name, 
             'scheduled_hours':  res.planned_hour, 
@@ -672,7 +672,7 @@ public fdUtiData:any = [];
             this.fdUtiData.push(temp);
             this.workTimeData1.push(Math.round(res.util_rate * 100));
             this.workTimeLabels1.push(res.app_book_name+'--'+res.worked_hour+'--'+res.planned_hour); 
-          }
+          // }
         });
      }
         this.workTimeData[0]['data'] = this.workTimeData1;
@@ -780,7 +780,7 @@ public fdUtiData:any = [];
         if(data.message == 'success')
         {
           data.data.forEach(res => {
-            if(res.worked_hour > 0) {
+            // if(res.worked_hour > 0) {
               var temp =  {
               'day':  res.day, 
               'scheduled_hours':  res.planned_hour, 
@@ -790,7 +790,7 @@ public fdUtiData:any = [];
               this.byDayDataTable.push(temp);
               this.byDayDataTemp.push(Math.round(res.util_rate * 100));
               this.byDayLabelsTemp.push(res.day+'--'+res.worked_hour+'--'+res.planned_hour); 
-            }
+            // }
           });        
           this.byTotal=  data.total;
           this.prevByDayTotal=  data.total_ta;
