@@ -28,10 +28,9 @@ import { EventListenerFocusTrapInertStrategy } from '@angular/cdk/a11y';
 
 export class ExportDataDialogComponent {
 
-  constructor(public dialogRef: MatDialogRef<ExportDataDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private _cookieService: CookieService, private router: Router, private followupsService: FollowupsService, private datePipe: DatePipe) { }
+  constructor(public dialogRef: MatDialogRef<ExportDataDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private _cookieService: CookieService, private router: Router, private toastr: ToastrService,private followupsService: FollowupsService, private datePipe: DatePipe) { }
 
   public loader = false
-  public noData = false
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -53,15 +52,10 @@ export class ExportDataDialogComponent {
     } else if (filetype == "pdf") {
       filename = followuptype + '_' + startDate + '_' + endDate + '.pdf';
     }
-    this.loader = true
-    this.followupsService.exportFollowUp(clinic_id, startDate, endDate, showcompleted, filetype, followuptype, filename).subscribe((data: any) => {
-      
-      if (data.message == 'No records were found in the selected date range') {
-        this.noData = true
-        this.loader = false
-        return
-      } else{
-          this.noData = false
+    this.loader = true 
+    this.followupsService.checkExportFollowUpData(clinic_id, startDate, endDate, showcompleted, followuptype).subscribe((res) => {
+      if (res.status == '200') {
+        this.followupsService.exportFollowUp(clinic_id, startDate, endDate, showcompleted, filetype, followuptype, filename).subscribe((data: File) => {
           const csvName = filename;
           let ftype = '';
           if (filetype == "csv") {
@@ -79,19 +73,27 @@ export class ExportDataDialogComponent {
           window.URL.revokeObjectURL(url);
           a.remove();
           this.dialogRef.close();
+          this.toastr.success("File exported successfully!");
+          
+        },
+          (error) => {
+            console.log('error', error)
+          });
+    
+        this.followupsService.deletefiles(filename, filetype).subscribe((res) => {
+        },
+          (error) => {
+            console.log('error', error)
+          });
+      } else if (res.status == '204') {
+        this.toastr.info(res.message);
+          this.loader = false
+          return
       }
-      
     },
       (error) => {
         console.log('error', error)
       });
-
-    this.followupsService.deletefiles(filename, filetype).subscribe((res) => {
-    },
-      (error) => {
-        console.log('error', error)
-      });
-
   }
 
   handleUnAuthorization() {
