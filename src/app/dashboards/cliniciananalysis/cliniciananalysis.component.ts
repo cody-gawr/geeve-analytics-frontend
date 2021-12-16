@@ -247,6 +247,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   splitName(name: string) {
     const regex = /\w+\s\w+(?=\s)|\w+/g;
     return name.toString().trim().match(regex);
+    
+
   }
 
   dentists: Dentist[] = [
@@ -412,10 +414,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         ticks: {
           autoSkip: false,
           userCallback: (label: string) => {
-            const names = this.splitName(label);
-            if (names.length > 1) {
-              return `${names[0][0]} ${names[1]}`
-            } else return `${names[0]}`;
+            if(label != ''){
+              const names = this.splitName(label);
+              if (names.length > 1) {
+                return `${names[0][0]} ${names[1]}`
+              } else return `${names[0]}`;
+            }            
           }
         },
       }],
@@ -445,7 +449,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       // borderColor: '#000',
       callbacks: {
         label: (tooltipItem) => {
-          return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+          if(tooltipItem.xLabel != ''){
+            return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+          }
         },
         // remove title
         title: function () {
