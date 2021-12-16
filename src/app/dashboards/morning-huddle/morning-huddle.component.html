@@ -681,8 +681,8 @@
             <td mat-cell *matCellDef="let element"  [style.display]="'none'"> {{ element.status_codes }} </td>
           </ng-container> -->
           <ng-container matColumnDef="statuscode">
-            <th mat-header-cell *matHeaderCellDef  >Status code </th>
-            <td mat-cell *matCellDef="let element" ><div [innerHTML]="formatStatusCode(element.status_codes)"></div>  </td>
+            <th mat-header-cell *matHeaderCellDef  [ngClass]="showStatusCode? 'show' : 'hide'" >Status code </th>
+            <td mat-cell *matCellDef="let element" [ngClass]="showStatusCode? 'show' : 'hide'"><div [innerHTML]="formatStatusCode(element.status_codes)"></div>  </td>
           </ng-container>
 
 
@@ -762,7 +762,7 @@
               <i *ngIf="element.is_rebooked == 'Yes'" class="fa fa-check mh-fa-check"></i> 
                   </div>
               </div>
-              <div fxLayout="row" class="huddle-card-row" >
+              <div fxLayout="row" class="huddle-card-row"  [ngClass]="showStatusCode? 'show' : 'hide'" >
                 <div fxFlex="30">Status code: </div>
                 <div fxFlex="70"> <div [innerHTML]="formatStatusCode(element.status_codes)"></div> </div>
               </div>
@@ -1008,8 +1008,8 @@
           </ng-container>
 
           <ng-container matColumnDef="statuscode" >
-            <th mat-header-cell *matHeaderCellDef >Status code </th>
-            <td mat-cell *matCellDef="let element"> <div [innerHTML]="formatStatusCode(element.status_codes)"></div> </td>
+            <th mat-header-cell *matHeaderCellDef [ngClass]="showStatusCode? 'show' : 'hide'" >Status code </th>
+            <td mat-cell *matCellDef="let element" [ngClass]="showStatusCode? 'show' : 'hide'" > <div [innerHTML]="formatStatusCode(element.status_codes)"></div> </td>
           </ng-container>
 
           <ng-container matColumnDef="isDataAvailable">
@@ -1083,7 +1083,7 @@
                 <div fxFlex="70">  <i *ngIf="element.is_rebooked == 'No' && element.has_future_appt == 'Yes' " class="fa fa-check mh-fa-check gray"></i> 
               <i *ngIf="element.is_rebooked == 'Yes'" class="fa fa-check mh-fa-check"></i>   </div>
               </div>
-              <div fxLayout="row" class="huddle-card-row">
+              <div fxLayout="row" class="huddle-card-row" [ngClass]="showStatusCode? 'show' : 'hide'" >
                 <div fxFlex="30">Status code: </div>
                 <div fxFlex="70"> <div [innerHTML]="formatStatusCode(element.status_codes)"></div> </div>
               </div>

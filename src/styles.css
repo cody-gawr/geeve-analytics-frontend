@@ -8447,7 +8447,7 @@ td.clslist {
 h1.mat-dialog-title span {
     width: 100%;
     display: block;
-    font-size: 15px;
+    font-size: 14px;
     color: #045241;
     line-height: 1.2;
     padding-top: 8px;
@@ -8486,3 +8486,13 @@ h1.mat-dialog-title span {
     border-radius: 4px;
     cursor: pointer;
 }
+.lower-info {
+    text-align: right;
+    color: #045241;
+    font-size: 12px;
+    padding-top: 10px;
+}
+
+.AddUserPopup.referafriend .mat-dialog-content {
+    padding: 0 3px 0 24px;
+ }

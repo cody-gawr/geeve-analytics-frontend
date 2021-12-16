@@ -1608,9 +1608,9 @@ async getDentistList(){
     let statcodes =  statusCode.split(",");
     // var colors = ['#ff0000', '#00ff00', '#0000ff'];
     // var random_color = colors[Math.floor(Math.random() * colors.length)];
-    let html ='<div>';
+    let html ='<div class="status-code">';
     statcodes.forEach((element) => {
-      html += '<span> [' + element + '] <span>';
+      html += '<span> [ <strong>' + element + '</strong>] </span>';
     });
     
      html +='</div>';
