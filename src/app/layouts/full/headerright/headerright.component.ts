@@ -225,38 +225,34 @@ export class AppHeaderrightComponent implements AfterViewInit {
       (res) => {
         if (res.message == "success") {
           this.clinicsData = res.data;
-          if (res.data.length > 0) {
+          if (res.data.length > 0) {            
             
-              if (this._cookieService.get("clinic_dentist")) {
-                let dentistclinic = this._cookieService
-                  .get("clinic_dentist")
-                  .split("_");
-                this.clinic_id = dentistclinic[0];
-                this.selectedClinic = dentistclinic[0];
-                if (dentistclinic[1] == "all") {
-                  this.selectedDentist = dentistclinic[1];
-                } else {
-                  this.selectedDentist = parseInt(dentistclinic[1]);
-                }
-
-                res.data.forEach((datatemp) => {
-                  if (datatemp.id == this.clinic_id) {
-                    this.placeHolder = datatemp.clinicName;
-                  }
-                });
+            if (this.route == "/dashboards/healthscreen") {          
+              if (this.clinicsData.length > 1) {
+                this.clinic_id = "all";
+                this.selectedClinic = "all";
+                this.placeHolder = "All Clinics";
               } else {
                 this.clinic_id = res.data[0].id;
                 this.selectedClinic = res.data[0].id;
                 this.placeHolder = res.data[0].clinicName;
               }
-            
+            } else {            
+              if (this._cookieService.get("clinic_dentist")) {
+                let dentistclinic = this._cookieService
+                  .get("clinic_dentist")
+                this.selectedClinic = res.data[0].id;
+                this.placeHolder = res.data[0].clinicName;
+              }
+            }            
             this.title = $("#page_title").val();
             this.loadClinic(this.selectedClinic);
-          }
+          }  
         } else if (res.status == "401") {
           this._cookieService.removeAll();
           this.router.navigateByUrl("/login");
         }
+
       },
       (error) => {
         if (error.status == 401) {
@@ -315,7 +311,6 @@ export class AppHeaderrightComponent implements AfterViewInit {
               this.route == "/dashboards/finances" ||
               this.route == "/morning-huddle" ||
               this.route == "/followups" ||
-              this.route == "/dashboards/healthscreen" ||
               this.route == "/dashboards/followups"
             ) {
               let opts = this.constants.cookieOpt as CookieOptions;
