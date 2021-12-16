@@ -290,14 +290,14 @@
                   <table>
                     <thead>
                       <tr>
-                        <th>Week End</th>
+                        <th>Week Ending</th>
                         <th>Production</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr *ngFor="let weekly of dentistProductionWeeklyTrend">
                         <td>{{ weekly.week_end | date:'yyyy-LL-dd' }}</td>
-                        <td>${{ weekly.production | number:'2.0-0' }}</td>
+                        <td>${{ weekly.production | number:'1.0-0' }}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -342,14 +342,14 @@
                   <table>
                     <thead>
                       <tr>
-                        <th>Week End</th>
+                        <th>Week Ending</th>
                         <th>Collection</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr *ngFor="let weekly of dentistCollectionWeeklyTrend1">
                         <td>{{ weekly.week_end | date:'yyyy-LL-dd' }}</td>
-                        <td>${{ weekly.collection | number:'2.0-0' }}</td>
+                        <td>${{ weekly.collection | number:'1.0-0' }}</td>
                       </tr>
                     </tbody>
                   </table>
