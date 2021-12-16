@@ -676,10 +676,14 @@
             </td>
           </ng-container>
 
-          <!-- <ng-container matColumnDef="statuscode">
-            <th mat-header-cell *matHeaderCellDef>Status code </th>
-            <td mat-cell *matCellDef="let element"> {{ element.status_codes }} </td>
+          <!-- <ng-container matColumnDef="statuscode" [ngClass]="showStatusCode? 'hs' : 'not'">
+            <th mat-header-cell *matHeaderCellDef   [style.display]="'none'">Status code </th>
+            <td mat-cell *matCellDef="let element"  [style.display]="'none'"> {{ element.status_codes }} </td>
           </ng-container> -->
+          <ng-container matColumnDef="statuscode">
+            <th mat-header-cell *matHeaderCellDef  >Status code </th>
+            <td mat-cell *matCellDef="let element" ><div [innerHTML]="formatStatusCode(element.status_codes)"></div>  </td>
+          </ng-container>
 
 
           <ng-container matColumnDef="isDataAvailable">
@@ -758,10 +762,10 @@
               <i *ngIf="element.is_rebooked == 'Yes'" class="fa fa-check mh-fa-check"></i> 
                   </div>
               </div>
-              <!-- <div fxLayout="row" class="huddle-card-row">
+              <div fxLayout="row" class="huddle-card-row" >
                 <div fxFlex="30">Status code: </div>
-                <div fxFlex="70"> {{ element.status_codes }} </div>
-              </div> -->
+                <div fxFlex="70"> <div [innerHTML]="formatStatusCode(element.status_codes)"></div> </div>
+              </div>
 
             </mat-card>
           </div>
@@ -1003,10 +1007,10 @@
               <i *ngIf="element.is_rebooked == 'Yes'" class="fa fa-check mh-fa-check"></i> </td>
           </ng-container>
 
-          <!-- <ng-container matColumnDef="statuscode">
-            <th mat-header-cell *matHeaderCellDef>Status code </th>
-            <td mat-cell *matCellDef="let element"> {{ element.status_codes }} </td>
-          </ng-container> -->
+          <ng-container matColumnDef="statuscode" >
+            <th mat-header-cell *matHeaderCellDef >Status code </th>
+            <td mat-cell *matCellDef="let element"> <div [innerHTML]="formatStatusCode(element.status_codes)"></div> </td>
+          </ng-container>
 
           <ng-container matColumnDef="isDataAvailable">
             <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns11.length">
@@ -1079,10 +1083,10 @@
                 <div fxFlex="70">  <i *ngIf="element.is_rebooked == 'No' && element.has_future_appt == 'Yes' " class="fa fa-check mh-fa-check gray"></i> 
               <i *ngIf="element.is_rebooked == 'Yes'" class="fa fa-check mh-fa-check"></i>   </div>
               </div>
-              <!-- <div fxLayout="row" class="huddle-card-row">
+              <div fxLayout="row" class="huddle-card-row">
                 <div fxFlex="30">Status code: </div>
-                <div fxFlex="70"> {{ element.status_codes }} </div>
-              </div> -->
+                <div fxFlex="70"> <div [innerHTML]="formatStatusCode(element.status_codes)"></div> </div>
+              </div>
             </mat-card>
           </div>
           <ng-template #noData>

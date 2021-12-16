@@ -259,8 +259,9 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public isEnableTH: boolean = false;
     public isEnableFT: boolean = false;
     public isEnableUT: boolean = false;
-    public autoCall: any;
-
+    public autoCall: any; 
+    public showStatusCode : boolean = false;
+ 
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
   displayedColumns1: string[] = ['start', 'name', 'dentist',];
   displayedColumns2: string[] = ['start', 'name', 'code'];
@@ -272,7 +273,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns8: string[] = ['name', 'phone', 'code','dentist','note','book','status',];
   displayedColumns9: string[] = ['task_name','completed_by', 'status'];
   displayedColumns10: string[] = ['equip_item', 'quantity','am','pm'];
-  displayedColumns11: string[] = ['start','dentist','name', 'card','rebooked'];
+  displayedColumns11: string[] = ['start','dentist','name','card','rebooked','statuscode'];
 
   public postOPCallChips:any = [
   {'name': 'Test 1','color': 'red','text': 'Test One'},
@@ -524,6 +525,13 @@ initiate_clinic() {
     this.morningHuddleService.getReminders( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       this.remindersRecallsOverdueLoader = false;
       if(production.status == true) {
+        // (<HTMLElement>document.querySelector('.showStatusCodeTh')).style.display = 'none';
+        // (<HTMLElement>document.querySelector('.showStatusCodeTd')).style.display = 'none';
+        // if(production.status_codes_enable == 1){
+        //   (<HTMLElement>document.querySelector('.showStatusCodeTh')).style.display = 'block';
+        //   (<HTMLElement>document.querySelector('.showStatusCodeTd')).style.display = 'block';
+        // }
+
         this.remindersTotal = production.total;
         this.remindersRecallsOverdueTemp = production.data;
         this.remindersRecallsOverdue = production.data;     
@@ -1105,6 +1113,14 @@ initiate_clinic() {
         this.appointmentCards = new MatTableDataSource();
       }
       if(production.status == true) {
+        this.showStatusCode = false;
+        // (<HTMLElement>document.querySelector('.showStatusCodeTh')).style.display = 'none';
+        // (<HTMLElement>document.querySelector('.showStatusCodeTd')).style.display = 'none';
+        if(production.status_codes_enable == 1){
+          this.showStatusCode = true;
+        //   (<HTMLElement>document.querySelector('.showStatusCodeTh')).style.display = 'block';
+        //   (<HTMLElement>document.querySelector('.showStatusCodeTd')).style.display = 'block';
+        }
        this.clinicTotal = production.total;
         this.appointmentCardsTemp = production.data; 
         if(this.user_type == '4'){         
@@ -1118,9 +1134,11 @@ initiate_clinic() {
                 temp.push(val);
               }
             });
-            this.appointmentCards.data = temp;   
+            this.appointmentCards.data = temp; 
+            console.log('this.appointmentCards-temp',this.appointmentCards.data);
           } else {
             this.appointmentCards.data = production.data;
+            console.log('this.appointmentCards-prod',this.appointmentCards.data);
           }
 
 
@@ -1583,5 +1601,19 @@ async getDentistList(){
     this._cookieService.put("email", '');
     this._cookieService.put("userid", '');
     this.router.navigateByUrl('/login');
+  }
+
+  formatStatusCode(statusCode)
+  {
+    let statcodes =  statusCode.split(",");
+    // var colors = ['#ff0000', '#00ff00', '#0000ff'];
+    // var random_color = colors[Math.floor(Math.random() * colors.length)];
+    let html ='<div>';
+    statcodes.forEach((element) => {
+      html += '<span> [' + element + '] <span>';
+    });
+    
+     html +='</div>';
+     return html;
   }
 } 
