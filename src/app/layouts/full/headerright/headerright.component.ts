@@ -465,7 +465,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
       this.route == "/dashboards/clinicianproceedures" ||
       this.route == "/dashboards/frontdesk" ||
       this.route == "/dashboards/marketing" ||
-      this.route == "/dashboards/healthscreen" ||
+      
       this.route == "/dashboards/finances"
     ) {
       let opts = this.constants.cookieOpt as CookieOptions;
