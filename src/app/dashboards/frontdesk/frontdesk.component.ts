@@ -304,7 +304,7 @@ this.predictedChartColors = [
                   let lbl = tooltipItems.label.split('--');                
                   hour = lbl[1];
                   phour = lbl[2];
-                  return ['',"Scheduled Hours: "+phour,"Clinical Hours: "+hour];
+                  return ['',"Available Hours: "+phour,"Used Hours: "+hour];
                 } 
                 return;
               },
