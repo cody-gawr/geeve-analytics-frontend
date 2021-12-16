@@ -8429,6 +8429,9 @@ td.clslist {
     width: 100%;
     text-align: left;
 }
+.DentistProductionTable table td {
+  font-family: monospace;
+}
 .change_value span.daily {
   font-size: 13px !important;
   margin-top: 12px;
