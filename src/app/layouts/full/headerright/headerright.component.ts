@@ -241,6 +241,22 @@ export class AppHeaderrightComponent implements AfterViewInit {
               if (this._cookieService.get("clinic_dentist")) {
                 let dentistclinic = this._cookieService
                   .get("clinic_dentist")
+                  .split("_");
+                this.clinic_id = dentistclinic[0];
+                this.selectedClinic = dentistclinic[0];
+                if (dentistclinic[1] == "all") {
+                  this.selectedDentist = dentistclinic[1];
+                } else {
+                  this.selectedDentist = parseInt(dentistclinic[1]);
+                }
+
+                res.data.forEach((datatemp) => {
+                  if (datatemp.id == this.clinic_id) {
+                    this.placeHolder = datatemp.clinicName;
+                  }
+                });
+              } else {
+                this.clinic_id = res.data[0].id;
                 this.selectedClinic = res.data[0].id;
                 this.placeHolder = res.data[0].clinicName;
               }
