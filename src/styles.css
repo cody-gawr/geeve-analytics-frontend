@@ -8496,3 +8496,9 @@ h1.mat-dialog-title span {
 .AddUserPopup.referafriend .mat-dialog-content {
     padding: 0 3px 0 24px;
  }
+.status-code span:nth-child(odd) strong {
+    color: #18a689;
+}
+.status-code span:nth-child(even) strong {
+  color: #f1600a;
+}
