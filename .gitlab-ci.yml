@@ -1,5 +1,5 @@
 # Node Image for docker on which code will execute
-image: node:15.14.0	
+image: node:16.13.1	
 
 # This is the stages / task to perfom in jobs
 stages:
