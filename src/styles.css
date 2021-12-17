@@ -8506,3 +8506,36 @@ h1.mat-dialog-title span {
 .status-code span:nth-child(even) strong {
   color: #f1600a;
 }
+
+/* datepicker icons */
+.calendar-table th.prev:before {
+  content: '<';
+  position: absolute;
+  font-size: 19px;
+  text-align: center;
+  background: #18a689;
+  border: 1px solid #cecece;
+  box-shadow: 1px 1px 1px;
+  border-radius: 14px;
+  width: 25px;
+  height: 25px;
+  line-height: 1.4;
+  color: #fff;
+  background-image: unset;
+}
+
+.calendar-table th.next:before {
+  content: '<';
+  position: absolute;
+  font-size: 19px;
+  text-align: center;
+  background: #18a689;
+  border: 1px solid #cecece;
+  box-shadow: 1px 1px 1px;
+  border-radius: 14px;
+  width: 25px;
+  height: 25px;
+  line-height: 1.4;
+  color: #fff;
+  background-image: unset;
+}

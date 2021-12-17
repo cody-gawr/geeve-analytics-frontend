@@ -895,7 +895,6 @@ initiate_clinic() {
           } else {
             this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
           }  
-          console.log('this.endOfDaysTasksInComp',this.endOfDaysTasksInComp.data);
         }        
       } else if (production.status == '401') {
          this.handleUnAuthorization();         
@@ -1165,10 +1164,8 @@ initiate_clinic() {
               }
             });
             this.appointmentCards.data = temp; 
-            console.log('this.appointmentCards-temp',this.appointmentCards.data);
           } else {
             this.appointmentCards.data = production.data;
-            console.log('this.appointmentCards-prod',this.appointmentCards.data);
           }
 
 
@@ -1639,10 +1636,11 @@ async getDentistList(){
     // var colors = ['#ff0000', '#00ff00', '#0000ff'];
     // var random_color = colors[Math.floor(Math.random() * colors.length)];
     let html ='<div class="status-code">';
-    statcodes.forEach((element) => {
-      html += '<span> [ <strong>' + element + '</strong>] </span>';
-    });
-    
+    if (statcodes.length > 1) {
+      statcodes.forEach((element) => {
+        html += '<span> [ <strong>' + element + '</strong>] </span>';
+      });
+    }
      html +='</div>';
      return html;
   }
