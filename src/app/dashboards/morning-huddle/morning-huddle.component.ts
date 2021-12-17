@@ -261,6 +261,11 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public isEnableUT: boolean = false;
     public autoCall: any; 
     public showStatusCode : boolean = false;
+    public showXrayOverdue : boolean = false;
+    public OPGOverdue : boolean = false;
+    public OverdueRecalls : boolean = false;
+    public LabNeeded  : boolean = false;
+
  
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
   displayedColumns1: string[] = ['start', 'name', 'dentist',];
@@ -525,13 +530,26 @@ initiate_clinic() {
     this.morningHuddleService.getReminders( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       this.remindersRecallsOverdueLoader = false;
       if(production.status == true) {
-        // (<HTMLElement>document.querySelector('.showStatusCodeTh')).style.display = 'none';
-        // (<HTMLElement>document.querySelector('.showStatusCodeTd')).style.display = 'none';
-        // if(production.status_codes_enable == 1){
-        //   (<HTMLElement>document.querySelector('.showStatusCodeTh')).style.display = 'block';
-        //   (<HTMLElement>document.querySelector('.showStatusCodeTd')).style.display = 'block';
-        // }
-
+        this.showXrayOverdue  = false;
+        this.OPGOverdue = false;
+        this.OverdueRecalls  = false;
+        this.LabNeeded   = false;
+        this.showStatusCode = false;
+        if(production.status_codes_enable == 1){
+          this.showStatusCode = true;
+        }
+        if(production.xray_overdue_enable == 1){
+          this.showXrayOverdue = true;
+        }
+        if(production.opg_overdue_enable == 1){
+          this.OPGOverdue = true;
+        }
+        if(production.recall_overdue_enable == 1){
+          this.OverdueRecalls = true;
+        }
+        if(production.lab_needed_enable == 1){
+          this.LabNeeded = true;
+        }
         this.remindersTotal = production.total;
         this.remindersRecallsOverdueTemp = production.data;
         this.remindersRecallsOverdue = production.data;     
@@ -1113,13 +1131,25 @@ initiate_clinic() {
         this.appointmentCards = new MatTableDataSource();
       }
       if(production.status == true) {
+        this.showXrayOverdue  = false;
+        this.OPGOverdue = false;
+        this.OverdueRecalls  = false;
+        this.LabNeeded   = false;
         this.showStatusCode = false;
-        // (<HTMLElement>document.querySelector('.showStatusCodeTh')).style.display = 'none';
-        // (<HTMLElement>document.querySelector('.showStatusCodeTd')).style.display = 'none';
         if(production.status_codes_enable == 1){
           this.showStatusCode = true;
-        //   (<HTMLElement>document.querySelector('.showStatusCodeTh')).style.display = 'block';
-        //   (<HTMLElement>document.querySelector('.showStatusCodeTd')).style.display = 'block';
+        }
+        if(production.xray_overdue_enable == 1){
+          this.showXrayOverdue = true;
+        }
+        if(production.opg_overdue_enable == 1){
+          this.OPGOverdue = true;
+        }
+        if(production.recall_overdue_enable == 1){
+          this.OverdueRecalls = true;
+        }
+        if(production.lab_needed_enable == 1){
+          this.LabNeeded = true;
         }
        this.clinicTotal = production.total;
         this.appointmentCardsTemp = production.data; 
