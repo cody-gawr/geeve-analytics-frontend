@@ -413,7 +413,7 @@
             </div>
 
             <div class="no-data-placeholder prod-placeholder"
-              *ngIf="((showTrendChart == false && gaugeValue <= 0 ) || (showTrendChart == true  && dentistProductionWeeklyTrend.length <= 0)) && !buildChartDentistLoader && !dentistProductionTrendLoader && showWeekTrend == false"
+              *ngIf="((showTrendChart == false && gaugeValue <= 0 ) || (showTrendChart == true  && dentistProductionWeeklyTrend.length <= 0)) && !buildChartDentistLoader && !dentistProductionTrendLoader && showWeekTrend == false && showTrendChart == false"
               >
               <div class="sa_nodata_div">
               </div>

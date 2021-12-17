@@ -2980,6 +2980,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   }
 
   toggleFilter(val) {
+    if (this._cookieService.get("clinic_dentist")) {
+          var dentistVal1 = this._cookieService.get("clinic_dentist").split('_');
+          this.selectedDentist = dentistVal1[1];
+      }
     $('.target_filter').removeClass('mat-button-toggle-checked');
     $('.target_' + val).addClass('mat-button-toggle-checked');
     $('.filter').removeClass('active');
