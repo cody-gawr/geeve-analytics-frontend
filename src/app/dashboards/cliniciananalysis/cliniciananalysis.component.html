@@ -413,6 +413,13 @@
             </div>
 
             <div class="no-data-placeholder prod-placeholder"
+              *ngIf="((showTrendChart == false && gaugeValue <= 0 ) || (showTrendChart == true  && dentistCollectionTrendLabels.length <= 0)) && !buildChartDentistLoader && !dentistProductionTrendLoader && showWeekTrend == false && showTrendChart == true"
+              >
+              <div class="sa_nodata_div">
+              </div>
+              <p class="chart-placeholder-text">You have no production in the selected period</p>
+            </div>
+             <div class="no-data-placeholder prod-placeholder"
               *ngIf="((showTrendChart == false && gaugeValue <= 0 ) || (showTrendChart == true  && dentistProductionWeeklyTrend.length <= 0)) && !buildChartDentistLoader && !dentistProductionTrendLoader && showWeekTrend == false && showTrendChart == false"
               >
               <div class="sa_nodata_div">
