@@ -406,7 +406,10 @@ getCardDetails() {
                   });
         } else if(res.message == 'error'){
           $('.ajax-loader').hide();
-           Swal.fire('',res.data.message,'error');
+            this.cardNumber.clear();
+            this.cardCvc.clear();
+            this.cardExpiry.clear();
+           Swal.fire('','There was an issue updating your card details - please contact Jeeve support','error');
         }
       });
     } else {
