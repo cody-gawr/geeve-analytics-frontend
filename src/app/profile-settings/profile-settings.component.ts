@@ -404,6 +404,9 @@ getCardDetails() {
                       )
                     }
                   });
+        } else if(res.message == 'error'){
+          $('.ajax-loader').hide();
+           Swal.fire('',res.data.message,'error');
         }
       });
     } else {
