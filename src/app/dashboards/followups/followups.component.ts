@@ -831,7 +831,7 @@ export class FollowupsComponent implements AfterViewInit {
         this.completionRatePrev = res.total_ta;
         this.completionRateGoal = res.goals;
         res.data.forEach( (response) => {
-          if(parseInt(response.completion_rate) >= 0){
+          if(parseInt(response.completion_rate) >= 0 && parseInt(response.num_total) > 0){
             allCompletionRate.push(response.completion_rate);
             this.completionRateLabels.push(response.type);
           }
