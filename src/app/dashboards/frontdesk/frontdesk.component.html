@@ -122,7 +122,7 @@
                     </div>
 
 
-                      <div class="chart-utilisation-rate"  *ngIf="utilShow ==2 && byDayLabels.length > 0 && !byDayLoader">
+                      <div class="chart-utilisation-rate"  *ngIf="utilShow ==2 && byDayLabels.length > 0 && !byDayLoader && !showTrend">
                         <canvas *ngIf="!showUtiTable" #myCanvas baseChart  [datasets]="byDayData" [labels]="byDayLabels" [options]="stackedChartOptionsUtiDP" [chartType]="'bar'" (chartHover)="chartHovered($event)" [legend]="false" (chartClick)="chartClicked($event)"> </canvas>
                          <div *ngIf="byDayData.length > 0 && showUtiTable" class="utiTablecon">
                         <table class="utiTable">
@@ -147,7 +147,7 @@
                       </div> 
                     
 
-                    <canvas *ngIf="showTrend && wtaChartTrend1.length > 0 && utilityratemessage == false && !fdwtaRatioTrendLoader && utilShow ==1" #myCanvas baseChart
+                    <canvas *ngIf="showTrend && wtaChartTrend1.length > 0 && utilityratemessage == false && !fdwtaRatioTrendLoader" #myCanvas baseChart
                       [datasets]="wtaChartTrend" [labels]="wtaChartTrendLabels" [options]="stackedChartOptionsUti"
                       [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
                       (chartClick)="chartClicked($event)">
