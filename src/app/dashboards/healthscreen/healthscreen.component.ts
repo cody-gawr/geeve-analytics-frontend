@@ -367,7 +367,12 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
           this.production_c = data.data.production;
           this.production_p = Math.round(data.data.production_ta);
           // this.production_c_avg = Math.round(data.data.production_daily_avg);
-          this.production_c_avg = Math.round(this.production_c / 30);
+          if(this.health_screen_mtd == 0){
+            this.production_c_avg = Math.round(this.production_c / 30);
+          }else{
+            this.production_c_avg = Math.round(this.production_c / today);
+          }
+          
           this.production_dif = Math.round(this.production_c - this.production_p);
 
           this.productionVal = (data.data.production_visit) ? data.data.production_visit : 0;
@@ -377,7 +382,12 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
           this.visits_c = Math.round(data.data.num_visit);
           this.visits_p = Math.round(data.data.num_visit_ta);
           // this.visits_c_avg = Math.round(data.data.total_visits_avg);
-          this.visits_c_avg = Math.round(this.visits_c / 30);
+          if(this.health_screen_mtd == 0){
+            this.visits_c_avg = Math.round(this.visits_c / 30);
+          }else{
+            this.visits_c_avg = Math.round(this.visits_c / today);
+          }
+         
           this.visits_dif = Math.round(this.visits_c - this.visits_p);
         }
       }
