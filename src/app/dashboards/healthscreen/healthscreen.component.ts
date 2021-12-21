@@ -53,8 +53,9 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public finProductionPerVisit_dif: any = 0;
   public productionVal = 0;
   public productionPrev = 0;  
-  public mtdText = '';
-  public mtdInnText = '';
+  public health_screen_mtd = 1;
+  public mtdText = 'Month To Date';
+  public mtdInnText = 'Last Month';
   public options: any = {
     hasNeedle: false,
     arcColors: ['rgba(166, 178, 255, 1)', 'rgba(166, 178, 255, 0.8)'],
@@ -108,7 +109,10 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   private warningMessage: string;
 
   ngAfterViewInit() {
-    
+    // this.health_screen_mtd = 1;
+    // this.mtdText = 'Month To Date';
+    // this.mtdInnText = 'Last Month';
+   // this.getCustomiseSettings();
     $('#currentDentist').attr('did', 'all');
     // this.initiate_clinic();
     //$('.external_dentist').hide();
@@ -125,9 +129,9 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     } else {
       $('.external_clinic').val('all');
     }
-    // this.clinic_id = cid;
+    this.clinic_id = cid;
     this.user_type = this._cookieService.get("user_type");
-    this.clinic_id = this._cookieService.get("clinic_id");
+   // this.clinic_id = this._cookieService.get("clinic_id");
     if (this._cookieService.get("childid"))
       this.childid = this._cookieService.get("childid");
     $(document).on('click', function (e) {
@@ -158,12 +162,43 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
         opts
       );
       this.clinic_id = val;
+      this.getCustomiseSettings();
       
-      this.loadHealthScreen();
     }
   }
 
-
+  getCustomiseSettings() {
+    let clinic_id = this._cookieService.get("clinic_id");
+    this.health_screen_mtd = 1;
+    this.mtdText = 'Month To Date';
+    this.mtdInnText = 'Last Month';
+    if (clinic_id != 'all') {
+      this.healthscreenService.getCustomiseSettings(clinic_id)
+        .subscribe(
+          (res) => {
+            if (res.message == "success") {
+              if (res.data) {
+                this.health_screen_mtd = parseInt(res.data.health_screen_mtd);
+                if (this.health_screen_mtd == 0) {
+                  this.mtdText = 'Last 30 days';
+                  this.mtdInnText = 'Previous 30 days';
+                } else {
+                  this.mtdText = 'Month To Date';
+                  this.mtdInnText = 'Last Month';
+                }
+                this.loadHealthScreen();
+              }
+            }
+          },
+          (error) => {
+            console.log("error", error);
+            $(".ajax-loader").hide();
+          }
+        );
+    }  else{
+      this.loadHealthScreen();
+    }  
+  }
   getShortName(fullName: string) {
     return $.trim(fullName).charAt(0);
   }
@@ -174,14 +209,17 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
 
   public loadHealthScreen() {
     var date = new Date();
-    this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
-    this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-
-    //managing dates at backedn now
-    // if (this.health_screen_mtd == 0) {
-    //   this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), date.getDate() - 30), 'yyyy-MM-dd');
-    //   this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-    // }
+    if (this.health_screen_mtd == 0) {
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), date.getDate() - 29), 'yyyy-MM-dd');
+      this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    }else{
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
+      this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    }
+    
+    // console.log("startDate:" + this.startDate + " -- End Date: " + this.endDate );
+    // console.log("clinic Id: " + this.clinic_id);
+    // console.log("this.health_screen_mtd: " + this.health_screen_mtd);
 
     this.prodpervisitstats = false;
     this.totalvisitstats = false;
@@ -278,10 +316,11 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.visits_dif = 0;
     this.productionVal = 0;
     this.productionPrev = 0;
-    this.healthscreenService.commonCall(this.clinic_id, null, null, 'chTopCards').subscribe((data) => {
+    this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chTopCards').subscribe((data) => {
       if (data.message == 'success') {
-        this.mtdText = data.data.mtdText;
-        this.mtdInnText = data.data.mtdInnText;
+        let today = new Date().getDate()
+        // this.mtdText = data.data.mtdText;
+        // this.mtdInnText = data.data.mtdInnText;
         this.productionstats = true;
         this.totalvisitstats = true;
         this.prodpervisitstats = true;
@@ -296,7 +335,8 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
             this.production_c = this.production_c + Math.round(val.production);
             tooltip_p += '<span class="text">' + val.clinic_name + ': $' + Math.round(val.production) + '</span>';
           });
-          this.production_c_avg = Math.round(data.data.production_daily_avg);
+          // this.production_c_avg = Math.round(data.data.production_daily_avg);
+          this.production_c_avg = Math.round(this.production_c / today);
           this.production_dif = Math.round(this.production_c - this.production_p);
           this.production_c_all = { 'title': '', 'info': tooltip_p };
 
@@ -308,7 +348,8 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
             this.visits_c = this.visits_c + Math.round(val.num_visit);
             tooltip_v += '<span class="text">' + val.clinic_name + ': ' + Math.round(val.num_visit) + '</span>';
           });
-          this.visits_c_avg = Math.round(data.data.total_visits_avg);
+          // this.visits_c_avg = Math.round(data.data.total_visits_avg);
+          this.visits_c_avg = Math.round(this.visits_c / today);
           this.visits_c_all = { 'title': '', 'info': tooltip_v };
           this.visits_dif = Math.round(this.visits_c - this.visits_p);
 
@@ -325,7 +366,8 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
         } else {
           this.production_c = data.data.production;
           this.production_p = Math.round(data.data.production_ta);
-          this.production_c_avg = Math.round(data.data.production_daily_avg);
+          // this.production_c_avg = Math.round(data.data.production_daily_avg);
+          this.production_c_avg = Math.round(this.production_c / 30);
           this.production_dif = Math.round(this.production_c - this.production_p);
 
           this.productionVal = (data.data.production_visit) ? data.data.production_visit : 0;
@@ -334,7 +376,8 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
 
           this.visits_c = Math.round(data.data.num_visit);
           this.visits_p = Math.round(data.data.num_visit_ta);
-          this.visits_c_avg = Math.round(data.data.total_visits_avg);
+          // this.visits_c_avg = Math.round(data.data.total_visits_avg);
+          this.visits_c_avg = Math.round(this.visits_c / 30);
           this.visits_dif = Math.round(this.visits_c - this.visits_p);
         }
       }
@@ -421,7 +464,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public chGetDetistProdHorate() { // Total Vists top Card
     this.dentistHourlyRateLoader = true;
     this.dentistProductionLoader = true;
-    this.healthscreenService.commonCall(this.clinic_id, null, null, 'chGetProduHrRate').subscribe((data) => {
+    this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chGetProduHrRate').subscribe((data) => {
       this.dentistHourlyRateLoader = false;
       this.dentistProductionLoader = false;
       if (data.message == 'success' && data.data) {
@@ -441,7 +484,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
 
   public chGetDetistReappRate() { // Total Vists top Card
     this.dentistReappointRateLoader = true;
-    this.healthscreenService.commonCall(this.clinic_id, null, null, 'chGetReappointmentRate').subscribe((data) => {
+    this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chGetReappointmentRate').subscribe((data) => {
       this.dentistReappointRateLoader = false;
       if (data.message == 'success' && data.data) {
         this.dentistReappointRate = Math.round(data.data.reappoint_rate);
@@ -546,7 +589,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.hourlyRateChartData = [];
     this.maxHourlyRate = 0;
     let colorCount = 0;
-    this.healthscreenService.hourlyRateChart(this.clinic_id, null, null, this.duration, this.user_type, this.childid).subscribe((data) => {
+    this.healthscreenService.hourlyRateChart(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
       this.hourlyRateChartData = [];
       if (data.message == 'success') {
         this.hourlyRateChartData = data.data;
@@ -582,7 +625,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.newPatientsTimeClinic = [];
     var user_id;
     var clinic_id;
-    this.healthscreenService.mkNewPatientsByReferral(this.clinic_id, null, null, this.duration).subscribe((data) => {
+    this.healthscreenService.mkNewPatientsByReferral(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       if (data.message == 'success') {
         this.newPatientsTimeData = data.data;
         this.refreralleaders = true;
