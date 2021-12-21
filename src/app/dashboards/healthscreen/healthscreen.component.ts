@@ -318,7 +318,9 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.productionPrev = 0;
     this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chTopCards').subscribe((data) => {
       if (data.message == 'success') {
-        let today = new Date().getDate()
+        let today = new Date().getDate();
+        let todayMinusOffdays =  today - data.data.offdays_count;
+        let avgDaysCount = 30 - data.data.offdays_count;
         // this.mtdText = data.data.mtdText;
         // this.mtdInnText = data.data.mtdInnText;
         this.productionstats = true;
@@ -368,9 +370,9 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
           this.production_p = Math.round(data.data.production_ta);
           // this.production_c_avg = Math.round(data.data.production_daily_avg);
           if(this.health_screen_mtd == 0){
-            this.production_c_avg = Math.round(this.production_c / 30);
+            this.production_c_avg = Math.round(this.production_c / avgDaysCount);
           }else{
-            this.production_c_avg = Math.round(this.production_c / today);
+            this.production_c_avg = Math.round(this.production_c / todayMinusOffdays);
           }
           
           this.production_dif = Math.round(this.production_c - this.production_p);
@@ -383,9 +385,9 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
           this.visits_p = Math.round(data.data.num_visit_ta);
           // this.visits_c_avg = Math.round(data.data.total_visits_avg);
           if(this.health_screen_mtd == 0){
-            this.visits_c_avg = Math.round(this.visits_c / 30);
+            this.visits_c_avg = Math.round(this.visits_c / avgDaysCount);
           }else{
-            this.visits_c_avg = Math.round(this.visits_c / today);
+            this.visits_c_avg = Math.round(this.visits_c / todayMinusOffdays);
           }
          
           this.visits_dif = Math.round(this.visits_c - this.visits_p);
