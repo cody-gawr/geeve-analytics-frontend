@@ -41,6 +41,15 @@ export class ClinicianAnalysisService {
             })
             );
     }
+    // Dentist collection Exp Service
+    DentistCollectionExp(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExp?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
+            .pipe(map((response: Response) => {
+                return response;
+            })
+            );
+    }
     // Dentist Production Service
     changeLoginStatus(): Observable<any> {
         var header = this.getHeaders();
@@ -70,6 +79,16 @@ export class ClinicianAnalysisService {
     }
 
     // Dentist Production Single Service
+    DentistCollectionExpSingle(dentist_id, clinic_id = '1', startDate = '', endDate = '', duration = ''): Observable<any> {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExp?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+            })
+            );
+    }
+
+    // Dentist Production Single Service
     caDentistProtectionTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caDentistProductionTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
@@ -81,6 +100,16 @@ export class ClinicianAnalysisService {
     caDentistCollectionTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
+            .pipe(map((response: Response) => {
+                return response;
+            })
+            );
+    }
+
+     // Dentist Production Single Service
+     caDentistCollectionExpTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
             .pipe(map((response: Response) => {
                 return response;
             })

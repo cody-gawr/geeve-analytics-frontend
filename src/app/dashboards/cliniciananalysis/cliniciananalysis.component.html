@@ -88,9 +88,14 @@
                   class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
                   matTooltip="{{trendText}} : $ {{collectionTotalPrev| number:'1.0-0'}}"><img class="trend_ico"
                     src="../assets/images/trend_{{collectionTooltip}}.png"></span>
+                <span *ngIf="trendText && proCollShow == 3"
+                class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
+                matTooltip="{{trendText}} : $ {{collectionExpTotalPrev| number:'1.0-0'}}"><img class="trend_ico"
+                  src="../assets/images/trend_{{collectionExpTooltip}}.png"></span>    
                 Dentist
                 <span *ngIf="proCollShow == 1">Production</span>
                 <span *ngIf="proCollShow == 2">Collection</span>
+                <span *ngIf="proCollShow == 3">Collection - Exp</span>
               </div>
               <div class="info-icon-container" *ngIf="proCollShow == 1">
                 <img [tooltip]="charTips['1']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
@@ -99,17 +104,25 @@
                 <img [tooltip]="charTips['49']" src="../assets/images/info-icon.png" alt="info-icon"
                   class="info-icon" />
               </div>
+              <div class="info-icon-container" *ngIf="proCollShow == 3">
+                <img [tooltip]="charTips['49']" src="../assets/images/info-icon.png" alt="info-icon"
+                  class="info-icon" />
+              </div>
             </mat-card-title>
 
             <div class="card-body">
               <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
-                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                <div fxFlex.gt-sm="30.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''"
                     (click)="changeProduction('1')">Production</small>
                 </div>
-                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                <div fxFlex.gt-sm="30.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''"
                     (click)="changeProduction('2')">Collection</small>
+                </div>
+                <div *ngIf="(apiUrl.includes('test-') || apiUrl.includes('staging-'))" fxFlex.gt-sm="36.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
+                  <small class="sa_tab_btn" [ngClass]="proCollShow ==3? 'active' : ''"
+                    (click)="changeProduction('3')">Collection-Exp</small>
                 </div>
               </div>
 
@@ -144,6 +157,22 @@
                 </div>
               </div>
               <!-- Collection Chart Start -->
+
+              <!-- CollectionExp Chart Start -->
+              <div *ngIf="proCollShow == 3">
+                <div class="div-pro-coll-show" *ngIf="collectionExpData[0].data.length && !collectionExpLoader">
+                  <canvas id="dentistCollection" baseChart [datasets]="collectionExpData" [labels]="collectionLabels"
+                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
+                    [colors]="DPcolors1">
+                  </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div *ngIf="!collectionExpData[0].data.length && !collectionExpLoader" class="no-data-placeholder">
+                  <div class="sa_nodata_div">
+                  </div>
+                  <p class="chart-placeholder-text">You have no Collection in the selected period</p>
+                </div>
+              </div>
+              <!-- CollectionExp Chart Start -->
 
             </div>
 
@@ -199,6 +228,23 @@
               </div>
 
               <!-- Collection Chart Start -->
+              <!-- CollectionExp Chart Start -->
+              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center"
+                *ngIf="proCollShow == 3">
+                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 text-center value-num">${{collectionExpTotal| number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
+                  <span class="value-text" *ngIf="currentText == ''">Current</span>
+                </div>
+                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num">${{collectionExpTotalPrev| number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                  <span class="value-text" *ngIf="trendText == ''">Previous</span>
+                </div>
+              </div>
+
+              <!-- CollectionExp Chart Start -->
             </div>
 
             <!-- Production Chart Start -->
@@ -215,6 +261,13 @@
             </div>
             <!-- Collection Chart Start -->
 
+            <!-- CollectionExp Chart Start -->
+            <div *ngIf="collectionLoader && proCollShow == 3" class="loader_container loader_container_middle">
+              <img class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
+            <!-- CollectionExp Chart Start -->
+
           </mat-card-content>
         </mat-card>
 
@@ -230,10 +283,14 @@
                   class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
                   matTooltip="{{trendText}} : $ {{collectionDentistTotalPrev| number:'1.0-0'}}"><img class="trend_ico"
                     src="../assets/images/trend_{{collectionTooltip}}.png"></span>
-
+                <span *ngIf="trendText && showTrendChart == false && proCollShow ==3 && showWeekTrend != true"
+                  class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
+                  matTooltip="{{trendText}} : $ {{collectionExpTotalPrev| number:'1.0-0'}}"><img class="trend_ico"
+                  src="../assets/images/trend_{{collectionExpTooltip}}.png"></span> 
                 Dentist
                 <span *ngIf="proCollShow == 1">Production</span>
                 <span *ngIf="proCollShow == 2">Collection</span>
+                <span *ngIf="proCollShow == 3">Collection - Exp</span>
               </div>
 
               <div class="info-icon-container">
@@ -252,18 +309,24 @@
 
                 <img *ngIf="proCollShow == 2" [tooltip]="charTips['49']" src="../assets/images/info-icon.png"
                   alt="info-icon" class="info-icon" />
+                <img *ngIf="proCollShow == 3" [tooltip]="charTips['49']" src="../assets/images/info-icon.png"
+                  alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
 
             <div class="card-body">
               <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
-                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                <div fxFlex.gt-sm="30.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''"
                     (click)="changeProduction('1')">Production</small>
                 </div>
-                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                <div fxFlex.gt-sm="30.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''"
                     (click)="changeProduction('2')">Collection</small>
+                </div>
+                <div *ngIf="(apiUrl.includes('test-') || apiUrl.includes('staging-'))" fxFlex.gt-sm="36.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
+                  <small class="sa_tab_btn" [ngClass]="proCollShow ==3? 'active' : ''"
+                    (click)="changeProduction('3')">Collection-Exp</small>
                 </div>
               </div>
 
@@ -372,6 +435,60 @@
               </div>
               <!-- Collection Chart end dentist -->
 
+               <!-- CollectionExp Chart Start dentist -->
+               <div *ngIf="proCollShow == 3">
+                <div class="chart div-pro-coll-show" fxLayout="row" fxLayoutAlign="start center"
+                  *ngIf="showTrendChart == false && showWeekTrend == false && gaugeValue > 0 && !collectionExpDentistLoader">
+                  <ngx-gauge [type]="gaugeType" [value]="gaugeCollectionExpValue" [label]="gaugeCollectionExpLabel"
+                    [thick]="gaugeThick" [backgroundColor]="backgroundColor" [foregroundColor]="foregroundColor"
+                    [max]="maxCollectionExpGoal" [cap]="cap" [duration]="gaugeDuration" [prepend]="gaugePrependText"
+                    [size]="size">
+                  </ngx-gauge>
+                </div>
+                <div *ngIf="collectionExpDentistLoader" class="loader_container loader_container_middle">
+                  <img class="loader_ico" src="../assets/images/720.gif">
+                  <div class="loader-text">Calculating...</div>
+                </div>
+
+                <!-- Production Chart weekly trend -->
+                <div class="week-trend-height"
+                  *ngIf="proCollShow == 3 && showTrendChart == false && showWeekTrend == true && dentistCollectionExpWeeklyTrendLabels.length > 0 && !dentistCollectionExpTrendLoader"
+                  >
+
+                  <div class="DentistProductionTable">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Week Ending</th>
+                        <th>Collection</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let weekly of dentistCollectionExpWeeklyTrend1">
+                        <td>{{ weekly.week_end | date:'yyyy-LL-dd' }}</td>
+                        <td>${{ weekly.collection | number:'1.0-0' }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                 <!--  <canvas #myCanvas id="dentistCollectionWeeklyTrend" baseChart
+                    [datasets]="dentistCollectionWeeklyTrend1" [labels]="dentistCollectionWeeklyTrendLabels"
+                    [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                    [options]="barChartOptionsTrend" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+                  </canvas> -->
+                  <div
+                    *ngIf="dentistCollectionExpTrendLoader && proCollShow == 3 && showTrendChart == false && showWeekTrend == true"
+                    class="loader_container loader_container_middle">
+                    <img class="loader_ico" src="../assets/images/720.gif">
+                    <div class="loader-text">Calculating...</div>
+                  </div>
+                </div>
+                <!-- Production Chart weekly trend -->
+
+
+              </div>
+              <!-- CollectionExp Chart end dentist -->
+
 
               <!--Production Chart weekly trend-->
 
@@ -409,6 +526,22 @@
                 <img class="loader_ico" src="../assets/images/720.gif">
                 <div class="loader-text">Calculating...</div>
               </div>
+
+              <div
+                *ngIf="proCollShow == 3 &&  showTrendChart == true && dentistCollectionExpTrendLabels.length > 0 && !dentistCollectionExpTrendLoader"
+                class="div-pro-coll-show">
+                <canvas #myCanvas id="dentistColExpTrend" baseChart [datasets]="dentistColExpTrend"
+                  [labels]="dentistCollectionExpTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
+                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
+                  (chartClick)="chartClicked($event)">
+                </canvas>
+              </div>
+
+              <div *ngIf="dentistCollectionExpTrendLoader && proCollShow == 3 && showTrendChart == true"
+                class="loader_container loader_container_middle">
+                <img class="loader_ico" src="../assets/images/720.gif">
+                <div class="loader-text">Calculating...</div>
+              </div>
               <!-- Production Chart start trend -->
             </div>
 
@@ -426,6 +559,13 @@
               </div>
               <p class="chart-placeholder-text">You have no production in the selected period</p>
             </div>
+            <!-- <div class="no-data-placeholder prod-placeholder"
+              *ngIf="((showTrendChart == false && gaugeValue <= 0 ) || (showTrendChart == true  && dentistCollectionExpTrendLabels.length <= 0)) && !buildChartDentistLoader && !dentistProductionTrendLoader && showWeekTrend == false && showTrendChart == true"
+              >
+              <div class="sa_nodata_div">
+              </div>
+              <p class="chart-placeholder-text">You have no production in the selected period</p>
+            </div> -->
 
             <div class="no-data-placeholder coll-placeholder"
               *ngIf="showWeekTrend == true  && dentistProductionWeeklyTrendLabels.length <= 0 && proCollShow == 1"
@@ -440,6 +580,13 @@
               <div class="sa_nodata_div">
               </div>
               <p class="chart-placeholder-text">You have no collection in the selected period</p>
+            </div>
+            <div class="no-data-placeholder coll-placeholder"
+              *ngIf="showWeekTrend == true  && dentistCollectionWeeklyTrendLabels.length <= 0 && proCollShow == 3"
+              >
+              <div class="sa_nodata_div">
+              </div>
+              <p class="chart-placeholder-text">You have no collection Exp in the selected period</p>
             </div>
             <!-- Production Chart start trend -->
             <div class="card-footer" *ngIf="proCollShow == 1 && !averageToggle && !showWeekTrend">
@@ -491,6 +638,31 @@
               </div>
             </div>
             <!-- Collection Chart end trend -->
+            <!-- CollectionExp Chart start trend -->
+            <div class="card-footer" *ngIf="proCollShow == 3 && !averageToggle  && !showWeekTrend">
+              <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
+                fxLayoutAlign="center center">
+                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 value-num">${{collectionExpDentistTotal| number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
+                  <span class="value-text" *ngIf="currentText == ''">Current</span>
+                </div>
+                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration != 'custom'">
+                  <h3 class="m-0 value-num">${{collectionExpDentistTotalPrev| number:'1.0-0'}}</h3>
+                  <!-- <small *ngIf="trendText != ''">{{ trendText }} Avg</small> -->
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                  <span class="value-text" *ngIf="trendText == ''">Previous</span>
+                </div>
+                <!--   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num" *ngIf="productionGoal && goalCount">
+                    ${{ (dentistCollectionGoal * goalCount) | number:'1.0-0'}}</h3>
+                  <span class="value-text">Goal</span>
+                </div> -->
+              </div>
+            </div>
+            <!-- CollectionExp Chart end trend -->
 
           </mat-card-content>
         </mat-card>

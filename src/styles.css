@@ -8540,3 +8540,7 @@ h1.mat-dialog-title span {
     background-image: unset;
     margin-left: -12px;
 }
+
+.card-body .sa_tabs_main_sec .btn-group {
+  padding: 0 1px;
+}
