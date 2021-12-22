@@ -56,13 +56,14 @@
           <mat-card-title class="text-center">Procedure Analysis
             <div class="sa_box_title_right_buttons"></div>
             <div class="info-icon-container">
+              <i *ngIf="!showPaTable && !showTrend && !dentistMode && (apiUrl.includes('test-') || apiUrl.includes('staging-'))"class="fa fa-table fa-margin" (click) = "showTable(true)"></i>
+              <i *ngIf="showPaTable && !showTrend && !dentistMode && (apiUrl.includes('test-') || apiUrl.includes('staging-'))" class="fa fa-table greenIcon fa-margin-color" (click) = "showTable(false)"></i>
               <img *ngIf="procedureAnalysisVisibility == 'General'" [tooltip]="charTips['9']" src="../assets/images/info-icon.png" alt="info-icon"
                 class="info-icon" />
-            </div>
-            <div *ngIf="procedureAnalysisVisibility == 'Specialist'" class="info-icon-container">
-              <img [tooltip]="charTips['50']" src="../assets/images/info-icon.png" alt="info-icon"
+              <img *ngIf="procedureAnalysisVisibility == 'Specialist'" [tooltip]="charTips['50']" src="../assets/images/info-icon.png" alt="info-icon"
                 class="info-icon" />
             </div>
+           
           </mat-card-title>
           <div class="card-body">
             <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center center">
@@ -79,15 +80,48 @@
 
             <!--  Procedure Analysis All dentist General-->
             <div class="procedureAnalysisGeneral" *ngIf="procedureAnalysisVisibility == 'General'">
-
+            
               <!--  Procedure Analysis All dentist General-->
-              <div class="Item_Predictor_clinicianproceedures" *ngIf="dentistMode == false">
-                <div class="chart-item-predictor" *ngIf="stackedChartDataMax > 0 && buildChartLoader == false">
+              <div class="Item_Predictor_clinicianproceedures" *ngIf="dentistMode == false ">
+                <div class="chart-item-predictor" *ngIf="stackedChartDataMax > 0 && buildChartLoader == false && !showPaTable">
                   <canvas #myCanvas baseChart [datasets]="stackedChartData" [labels]="stackedChartLabels"
                     [options]="stackedChartOptions" [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
                     [legend]="true" [colors]="IPcolors" (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
+                 <!-- Procedure Analysis General table view -->
+                  <div class="paTablecon" *ngIf="!showTrend  && showPaTable && stackedChartDataMax > 0">
+                    <table class="paTable">
+                      <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Crowns/Onlays</th>
+                        <th>Splints</th>
+                        <th>RCT</th>
+                        <th>Perio</th>
+                        <th>Surg Ext</th>
+                        <th>SS Crowns</th>
+                        <th>Comp Veneers</th>
+                        <th>Whitening </th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let paInfo of paGeneralData">
+                          <td>{{ paInfo.name }}</td> 
+                          <td>{{ paInfo.Crowns_Onlays }}</td>
+                          <td>{{ paInfo.Splints }}</td>
+                          <td>{{ paInfo.RCT }}</td>
+                          <td>{{ paInfo.Perio }}</td>
+                          <td>{{ paInfo.Surg_Ext }}</td>
+                          <td>{{ paInfo.SS_Crowns }}</td>
+                          <td>{{ paInfo.Comp_Veneers }}</td>
+                          <td>{{ paInfo.Whitening }}</td>
+                        </tr>
+                        <tr [innerHTML]="generatePaGeneralTotal(paGeneralData)"></tr> 
+                      </tbody>
+                    </table>
+                  </div>
+                   <!-- Procedure Analysis General table view -->
                 <div *ngIf="stackedChartDataMax <= 0 && buildChartLoader == false" class="fullWidth">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">You have no Crowns, Splints, RCTs, Perio, Stainless Steel Crowns, Composite Veneers, Implant Crowns, Whitening or Extractions in this period</p>
@@ -130,12 +164,43 @@
             <div class="procedureAnalysisSpecialist" *ngIf="procedureAnalysisVisibility == 'Specialist'">
               <!--  Procedure Analysis All dentist Specialist-->
               <div class="Item_Predictor_clinicianproceedures" *ngIf="dentistMode == false">
-                <div class="chart-item-predictor" *ngIf="predictorAnalysisDataMax > 0">
+                <div class="chart-item-predictor" *ngIf="predictorAnalysisDataMax > 0 && !showPaTable">
                   <canvas #myCanvas baseChart [datasets]="stackedChartDataItemSpecial"
                     [labels]="predictorAnalysisLablesSpe" [options]="stackedChartOptions" [chartType]="stackedChartType"
                     (chartHover)="chartHovered($event)" [legend]="true" [colors]="predictorAnalysisChartColors"
                     (chartClick)="chartClicked($event)"></canvas>
                 </div>
+                <!-- Procedure Analysis Specialist table view -->
+                <div class="paTablecon" *ngIf="!showTrend  && showPaTable && predictorAnalysisDataMax > 0">
+                  <table class="paTable">
+                    <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Implant Surg</th>
+                      <th>Braces</th>
+                      <th>Aligners</th>
+                      <th>MAS</th>
+                      <th>Perio Surg</th>
+                      <th>Endo Re-treat</th>
+                      <th>Veneers(indirect)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let paInfo of paSpecialistlData">
+                        <td>{{ paInfo.name }}</td>
+                        <td>{{ paInfo.Implant_Surg }}</td>
+                        <td>{{ paInfo.Braces }}</td>
+                        <td>{{ paInfo.Aligners }}</td>
+                        <td>{{ paInfo.MAS }}</td>
+                        <td>{{ paInfo.Perio_Surg }}</td>
+                        <td>{{ paInfo.Endo_Re_treat }}</td>
+                        <td>{{ paInfo.Veneers_ind }}</td>
+                      </tr>
+                      <tr [innerHTML]="generatePaSpecialTotal(paSpecialistlData)"></tr> 
+                    </tbody>
+                  </table>
+                </div>
+                 <!-- Procedure Analysis Specialist table view -->
                 <div *ngIf="predictorAnalysisDataMax <= 0 && ItemsPredictorAnalysisSpecialStatus == false"
                 class="fullWidth">
                   <div class="sa_nodata_div"> </div>

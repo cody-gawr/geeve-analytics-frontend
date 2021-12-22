@@ -39,3 +39,26 @@
 .chart-trend-show{
     height: 340px;
 }
+.fa-margin{
+    margin-right: 10px;
+}
+.fa-margin-color{
+    margin-right: 10px; color: #1aa591;
+}
+
+.paTablecon {
+    height: 330px;
+    width: 100%;
+    // overflow: hidden; 
+}
+table.paTable {
+    width: 100%;
+}
+.paTable thead tr th {
+    text-align: left;
+    font-size: 13px;
+}
+.paTable tbody tr td {
+    padding: 5px;
+    font-size: 13px;
+}

@@ -14,6 +14,7 @@ import { Chart } from 'chart.js';
 import { ChartService } from '../chart.service';
 import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
+import { environment } from "../../../environments/environment";
 export interface Dentist {
   providerId: string;
   name: string;
@@ -46,7 +47,9 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     public trendText;
     public Apirequest =0;
     public charTips:any = [];
+    public showPaTable: boolean = false;
     public userPlan:any = '';
+    public apiUrl = environment.apiUrl;
     private _routerSub = Subscription.EMPTY;
     chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
@@ -1202,6 +1205,7 @@ if(this._cookieService.get("user_type") == '4'){
   public ipKey;
   public IPcolors;
   public barChartColors;
+  public paGeneralData:any = [];
   //Items Predictor Analysis - All dentist Chart
   private buildChart() {
     this.buildChartLoader =true;
@@ -1234,8 +1238,8 @@ if(this._cookieService.get("user_type") == '4'){
         this.stackedChartLabels1 =[];
         this.stackedChartLabels =[];
         this.stackedChartDataMax = 0;
-       if(data.message == 'success'){   
-
+        this.paGeneralData = [];
+       if(data.message == 'success'){ 
         if(data && data.data && data.data.length <=0) {
 
         }else {
@@ -1258,6 +1262,19 @@ if(this._cookieService.get("user_type") == '4'){
               this.ipKey =i;
              i++;
            }
+           var temp =  {
+            'name':  res.provider_name, 
+            'Crowns_Onlays':  res.crowns, 
+            'Splints':  res.splints, 
+            'RCT':  res.rct, 
+            'Perio':  res.perio, 
+            'Surg_Ext':  res.extract, 
+            'SS_Crowns':  res.imp_crowns, 
+            'Comp_Veneers':  res.comp_veneers, 
+            'Whitening': res.whitening,
+            };
+            this.paGeneralData.push(temp);
+
            }
        //    this.productionTotal = this.productionTotal + parseInt(res.total);
          });
@@ -1322,7 +1339,8 @@ if(this._cookieService.get("user_type") == '4'){
   public predictorAnalysisLablesSpe =[];
   public predictorAnalysisLablesTemp =[];
   public predictorAnalysisDataMax = 0;  
-  public predictorAnalysisChartColors;  
+  public predictorAnalysisChartColors; 
+  public paSpecialistlData:any = []; 
 
   //Items Predictor Analysis special - All dentist Chart
   private predictorAnalysisSpecial() {
@@ -1348,6 +1366,7 @@ if(this._cookieService.get("user_type") == '4'){
         this.predictorAnalysisLablesSpe =[];
         this.predictorAnalysisLablesTemp =[];
         this.predictorAnalysisDataMax = 0;
+        this.paSpecialistlData = [];
        if(data.message == 'success'){   
         if(data && data.data && data.data.length <= 0) {
         } else {
@@ -1370,6 +1389,17 @@ if(this._cookieService.get("user_type") == '4'){
                     currentUser = i;
                     i++;
                 }
+                var temp =  {
+                  'name':  res.provider_name, 
+                  'Implant_Surg':  res.imp_surg, 
+                  'Braces':  res.ortho_fix, 
+                  'Aligners':  res.ortho_align, 
+                  'MAS':  res.sleep, 
+                  'Perio_Surg':  res.perio_surg, 
+                  'Endo_Re_treat':  res.endo_retreat, 
+                  'Veneers_ind':  res.veneers_ind, 
+                  };
+                  this.paSpecialistlData.push(temp);
               }
           });
           this.stackedChartDataItemSpecial[0]['data'] = this.predictorAnalysis1;
@@ -2771,6 +2801,51 @@ toggleChangeProcess(){
       this.showTopVlaues = false;
       this.proceedureChartOptionsDP = this.proceedureChartOptions;
     }
+  }
+  showTable(val){
+    this.showPaTable = val;
+  }
+
+  generatePaGeneralTotal(palData)
+  {    
+    const Crowns_Onlays = palData.map(item => parseInt(item.Crowns_Onlays)).reduce((prev, curr) => prev + curr, 0);
+    const Splints = palData.map(item => parseInt(item.Splints)).reduce((prev, curr) => prev + curr, 0);
+    const RCT = palData.map(item => parseInt(item.RCT)).reduce((prev, curr) => prev + curr, 0);
+    const Perio = palData.map(item => parseInt(item.Perio)).reduce((prev, curr) => prev + curr, 0);
+    const Surg_Ext = palData.map(item => parseInt(item.Surg_Ext)).reduce((prev, curr) => prev + curr, 0);
+    const SS_Crowns = palData.map(item => parseInt(item.SS_Crowns)).reduce((prev, curr) => prev + curr, 0);
+    const Comp_Veneers = palData.map(item => parseInt(item.Comp_Veneers)).reduce((prev, curr) => prev + curr, 0);
+    const Whitening = palData.map(item => parseInt(item.Whitening)).reduce((prev, curr) => prev + curr, 0);
+    let html ='<td> Total </td>';
+        html += '<td>' + Crowns_Onlays + '</td>';
+        html += '<td>' + Splints + '</td>';
+        html += '<td>' + RCT + '</td>';
+        html += '<td>' + Perio + '</td>';
+        html += '<td>' + Surg_Ext + '</td>';
+        html += '<td>' + SS_Crowns + '</td>';
+        html += '<td>' + Comp_Veneers + '</td>';
+        html += '<td>' + Whitening + '</td>';
+     return html;
+  }
+
+  generatePaSpecialTotal(palData)
+  {    
+    const Implant_Surg = palData.map(item => parseInt(item.Implant_Surg)).reduce((prev, curr) => prev + curr, 0);
+    const Braces = palData.map(item => parseInt(item.Braces)).reduce((prev, curr) => prev + curr, 0);
+    const Aligners = palData.map(item => parseFloat(item.Aligners)).reduce((prev, curr) => prev + curr, 0);
+    const MAS = palData.map(item => parseInt(item.MAS)).reduce((prev, curr) => prev + curr, 0);
+    const Perio_Surg = palData.map(item => parseInt(item.Perio_Surg)).reduce((prev, curr) => prev + curr, 0);
+    const Endo_Re_treat = palData.map(item => parseInt(item.Endo_Re_treat)).reduce((prev, curr) => prev + curr, 0);
+    const Veneers_ind = palData.map(item => parseInt(item.Veneers_ind)).reduce((prev, curr) => prev + curr, 0);
+    let html ='<td> Total </td>';
+        html += '<td>' + Implant_Surg + '</td>';
+        html += '<td>' + Braces + '</td>';
+        html += '<td>' + Aligners + '</td>';
+        html += '<td>' + MAS + '</td>';
+        html += '<td>' + Perio_Surg + '</td>';
+        html += '<td>' + Endo_Re_treat + '</td>';
+        html += '<td>' + Veneers_ind + '</td>';
+     return html;
   }
 }
 
