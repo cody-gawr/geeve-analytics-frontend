@@ -1264,14 +1264,14 @@ if(this._cookieService.get("user_type") == '4'){
            }
            var temp =  {
             'name':  res.provider_name, 
-            'Crowns_Onlays':  res.crowns, 
-            'Splints':  res.splints, 
-            'RCT':  res.rct, 
-            'Perio':  res.perio, 
-            'Surg_Ext':  res.extract, 
-            'SS_Crowns':  res.imp_crowns, 
-            'Comp_Veneers':  res.comp_veneers, 
-            'Whitening': res.whitening,
+            'Crowns_Onlays':  parseInt(res.crowns), 
+            'Splints':  parseInt(res.splints), 
+            'RCT':  parseInt(res.rct), 
+            'Perio':  parseInt(res.perio), 
+            'Surg_Ext':  parseInt(res.extract), 
+            'SS_Crowns':  parseInt(res.imp_crowns), 
+            'Comp_Veneers':  parseInt(res.comp_veneers), 
+            'Whitening': parseInt(res.whitening),
             };
             this.paGeneralData.push(temp);
 
@@ -1391,13 +1391,13 @@ if(this._cookieService.get("user_type") == '4'){
                 }
                 var temp =  {
                   'name':  res.provider_name, 
-                  'Implant_Surg':  res.imp_surg, 
-                  'Braces':  res.ortho_fix, 
-                  'Aligners':  res.ortho_align, 
-                  'MAS':  res.sleep, 
-                  'Perio_Surg':  res.perio_surg, 
-                  'Endo_Re_treat':  res.endo_retreat, 
-                  'Veneers_ind':  res.veneers_ind, 
+                  'Implant_Surg':  parseInt(res.imp_surg), 
+                  'Braces':  parseInt(res.ortho_fix), 
+                  'Aligners':  parseInt(res.ortho_align), 
+                  'MAS':  parseInt(res.sleep), 
+                  'Perio_Surg':  parseInt(res.perio_surg), 
+                  'Endo_Re_treat':  parseInt(res.endo_retreat), 
+                  'Veneers_ind':  parseInt(res.veneers_ind), 
                   };
                   this.paSpecialistlData.push(temp);
               }
@@ -2832,7 +2832,7 @@ toggleChangeProcess(){
   {    
     const Implant_Surg = palData.map(item => parseInt(item.Implant_Surg)).reduce((prev, curr) => prev + curr, 0);
     const Braces = palData.map(item => parseInt(item.Braces)).reduce((prev, curr) => prev + curr, 0);
-    const Aligners = palData.map(item => parseFloat(item.Aligners)).reduce((prev, curr) => prev + curr, 0);
+    const Aligners = palData.map(item => parseInt(item.Aligners)).reduce((prev, curr) => prev + curr, 0);
     const MAS = palData.map(item => parseInt(item.MAS)).reduce((prev, curr) => prev + curr, 0);
     const Perio_Surg = palData.map(item => parseInt(item.Perio_Surg)).reduce((prev, curr) => prev + curr, 0);
     const Endo_Re_treat = palData.map(item => parseInt(item.Endo_Re_treat)).reduce((prev, curr) => prev + curr, 0);
