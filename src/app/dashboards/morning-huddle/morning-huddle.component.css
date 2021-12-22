@@ -915,3 +915,7 @@ div.mat-chip-list-wrapper .custom-tooltip {
 .info-icon-container.mhRebook .tooltip-info-text{
     width: 100%;
 }
+.toploader img{
+    max-width: 100%;
+    max-height: 60%;
+}

@@ -252,6 +252,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public dentist_id:any = '';
     public nextBussinessDay:any;
     public userPlan:any = '';
+    public apiSuccessCount:any = 0;
 
 
     public isEnablePO: boolean = false;
@@ -530,6 +531,7 @@ initiate_clinic() {
     this.morningHuddleService.getReminders( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       this.remindersRecallsOverdueLoader = false;
       if(production.status == true) {
+        this.apiSuccessCount += 1;
         this.showXrayOverdue  = false;
         this.OPGOverdue = false;
         this.OverdueRecalls  = false;
@@ -616,6 +618,7 @@ initiate_clinic() {
         }
         this.poLoadingLoading = false;
       if(production.message == 'success') {
+        this.apiSuccessCount += 1;
         this.nextBussinessDay = production.next_day;
         this.followupsPostopCallsDate = production.date;     
         if(production.data == '204'){
@@ -652,6 +655,7 @@ initiate_clinic() {
         this.recallLoadingLoading = false;
 
       if(production.message == 'success') {
+        this.apiSuccessCount += 1;
         this.nextBussinessDay = production.next_day;
         if(production.data == '204'){
         } else {
@@ -692,6 +696,7 @@ initiate_clinic() {
         this.intrFollowupsScrps = [];
         
         if(scripts.status && scripts.message == 'success'){
+          this.apiSuccessCount += 1;
           scripts.data.forEach((script) => {
             
             if(script.followup_type == 'Post Op'){
@@ -731,6 +736,7 @@ initiate_clinic() {
         }
         this.endTaksLoadingLoading = false;
       if(production.message == 'success') {
+        this.apiSuccessCount += 1;
         this.nextBussinessDay = production.next_day;
         this.followupsTickFollowupsDate = production.date;
         if(production.data == '204'){
@@ -781,6 +787,7 @@ initiate_clinic() {
         this.followupFtaFollowupsInCMP = [];
         this.futureDateTF = '';
       if(production.message == 'success') {
+        this.apiSuccessCount += 1;
         var diffTime:any = this.getDataDiffrences();
         if(diffTime < 0){
           this.futureDateTF =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
@@ -834,6 +841,7 @@ initiate_clinic() {
         this.followupUtaFollowupsInCMP = [];
         this.futureDateTF = '';
       if(production.message == 'success') {
+        this.apiSuccessCount += 1;
         var diffTime:any = this.getDataDiffrences();
         if(diffTime < 0){
           this.futureDateTF =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
@@ -882,6 +890,7 @@ initiate_clinic() {
         }
       this.endTaksLoading = false;
       if(production.message == 'success') {
+        this.apiSuccessCount += 1;
         if( production.data == '204' ){
           //this.isEnabletasks = false;
         }
@@ -919,6 +928,7 @@ initiate_clinic() {
        this.amButton = true;
         this.pmButton = true;
       if(production.message == 'success') {
+        this.apiSuccessCount += 1;
         if( production.data == '204' )
         {
           //this.isEnableEquipList = false;
@@ -996,6 +1006,7 @@ initiate_clinic() {
     this.morningHuddleService.getTodayUnscheduledHours( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       this.todayUnscheduledHoursLoader =  false;
       if(production.status == true) {
+        this.apiSuccessCount += 1;
         this.todayUnscheduledHours = production.data.hour;
         this.todayPatientsDate = production.data.date;    
       } else if (production.status == '401') {
@@ -1026,6 +1037,7 @@ initiate_clinic() {
     this.morningHuddleService.getTodayUnscheduledBal( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       this.todayUnscheduledBalLoader = false;
       if(production.status == true) {
+        this.apiSuccessCount += 1;
         this.todayUnscheduledBal = production.data;       
       } else if (production.status == '401') {
         this.handleUnAuthorization();           
@@ -1072,6 +1084,7 @@ initiate_clinic() {
     this.morningHuddleService.getNewPatients( this.clinic_id, dentist,this.previousDays,  this.user_type  ).subscribe((production:any) => {
       this.scheduleNewPatientsLoader = false;
       if(production.status == true) {
+        this.apiSuccessCount += 1;
         this.scheduleNewPatieltd = production.data.patient;
         this.schedulePatielDate = production.data.date;
       } else if (production.status == '401') {
@@ -1089,6 +1102,7 @@ initiate_clinic() {
     this.morningHuddleService.getScheduleHours( this.clinic_id,  dentist, this.previousDays, this.user_type  ).subscribe((production:any) => {
       this.schedulehoursLoader = false;
       if(production.status == true) {
+        this.apiSuccessCount += 1;
         this.schedulehours = production.data;
       } else if (production.status == '401') {
           this._cookieService.put("username", '');
@@ -1105,6 +1119,7 @@ initiate_clinic() {
     this.morningHuddleService.getUnscheduleHours( this.clinic_id, dentist, this.previousDays, this.user_type  ).subscribe((production:any) => {
       this.unschedulehoursLoader = false;
       if(production.status == true) {
+        this.apiSuccessCount += 1;
         this.unSchedulehours = production.data;
       } else if (production.status == '401') {
          this.handleUnAuthorization();      
@@ -1130,6 +1145,7 @@ initiate_clinic() {
         this.appointmentCards = new MatTableDataSource();
       }
       if(production.status == true) {
+        this.apiSuccessCount += 1;
         this.showXrayOverdue  = false;
         this.OPGOverdue = false;
         this.OverdueRecalls  = false;
@@ -1202,6 +1218,7 @@ initiate_clinic() {
   	this.morningHuddleService.dentistProduction( this.clinic_id, this.previousDays, this.user_type,this.dentist_id  ).subscribe((production:any) => {
       this.dentistperformanceLoader = false;
   		if(production.status == true) { 
+        this.apiSuccessCount += 1;
         this.production = production.data;
   		} else if (production.status == '401') {
            this.handleUnAuthorization();      
@@ -1217,6 +1234,7 @@ initiate_clinic() {
   	this.morningHuddleService.recallRate( this.clinic_id, this.previousDays,  this.user_type, this.dentist_id  ).subscribe((recallRate:any) => {
       this.dentistrecallRateLoader = false;
   		if(recallRate.status == true){
+        this.apiSuccessCount += 1;
         this.recallRate = recallRate.data;
   		} else if (recallRate.status == '401') {
         this.handleUnAuthorization();          
@@ -1231,6 +1249,7 @@ initiate_clinic() {
     this.morningHuddleService.reappointRate( this.clinic_id, this.previousDays,  this.user_type, this.dentist_id  ).subscribe((treatmentRate:any) => {
       this.dentistTreatmentRateLoader = false;    
       if(treatmentRate.status == true){
+        this.apiSuccessCount += 1;
          this.treatmentRate = treatmentRate.data;
       } else if (treatmentRate.status == '401') {
          this.handleUnAuthorization();
@@ -1247,6 +1266,7 @@ async getDentistList(){
     this.morningHuddleService.dentistList( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((list:any) => {
       this.dentistListLoading = true;
       if(list.status == true){
+        this.apiSuccessCount += 1;
         this.dentistList.data = list.data;
         this.dentistListTemp = list.data;
       } else if (list.status == '401') {
@@ -1508,7 +1528,10 @@ async getDentistList(){
 
   public showUpDateArrow:boolean = true;
   public showDwDateArrow:boolean = true;
+  public showProcessingText:boolean = false;
   setDate(type){
+    this.apiSuccessCount = 0;
+    this.showProcessingText = true;
     let todaysDate = new Date(this.previousDays);
     let selectedDate = new Date(this.previousDays);
     if(type == 'add'){
@@ -1644,4 +1667,30 @@ async getDentistList(){
      html +='</div>';
      return html;
   }
+  checkSuccessApi(){
+      if(this.user_type == '2' && this.apiSuccessCount == 19 )
+        {      
+          this.showProcessingText = false;
+          return false;     
+        }
+        else if(this.user_type == '3' && this.apiSuccessCount == 19)
+        {
+          this.showProcessingText = false;
+          return false; 
+        }
+        else if(this.user_type == '4' && this.apiSuccessCount == 7)
+        {
+          this.showProcessingText = false;
+          return false; 
+        }
+        else if(this.user_type == '5' && this.apiSuccessCount == 14)
+        {
+          this.showProcessingText = false;
+          return false; 
+        }
+        else{
+          this.showProcessingText = true;
+          return true; 
+        }
+    }
 } 
