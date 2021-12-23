@@ -8544,3 +8544,6 @@ h1.mat-dialog-title span {
 .card-body .sa_tabs_main_sec .btn-group {
   padding: 0 1px;
 }
+.statusCodeList{
+  margin-bottom: 15px !important;
+}

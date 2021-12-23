@@ -1,0 +1,91 @@
+<div class="AddUserPopup setting"> 
+    <h1 mat-dialog-title>Set Colors</h1>
+    <div mat-dialog-content class="sa_forms_design">
+      <div class="sa-form-group">
+        <label>status code</label>
+        <input [(ngModel)]="data.status_code"type="text"  [attr.maxlength]="1" class="mat-form-control" required="true" placeholder="">   
+      </div> 
+      <div class="sa-form-group">
+        <label>Background Color <span class="clour-span-{{data.bgcolour}} clour-span" *ngIf="data.bgcolour"></span></label>
+        <select  [(ngModel)]="data.bgcolour" name="bgcolour" class="colour">
+          <option value="">Default Color</option>
+          <option value="aqua">Aqua</option>
+          <option value="black">Black</option>
+          <option value="blue">Blue</option>
+          <option value="chartreuse">Chartreuse</option>
+          <option value="chocolate">Chocolate</option>
+          <option value="cyan">Cyan</option>
+          <option value="navy">Navy</option>
+          <option value="gray">Gray</option>
+          <option value="green">Green</option>
+          <option value="maroon">Maroon</option>
+          <option value="olive">Olive</option>
+          <option value="orange">Orange</option>
+          <option value="red">Red</option>
+          <option value="silver">Silver</option>
+          <option value="teal">Teal</option>
+          <option value="violet">Violet</option>
+          <option value="white">White</option>
+          <option value="yellow">Yellow</option>                
+        </select>     
+      </div>
+      <div class="sa-form-group">
+        <label>Text Color <span class="clour-span-{{data.colour}} clour-span" *ngIf="data.colour"></span></label>
+        <select  [(ngModel)]="data.colour" name="color" class="colour">
+          <option value="">Default Color</option>
+          <option value="aqua">Aqua</option>
+          <option value="black">Black</option>
+          <option value="blue">Blue</option>
+          <option value="chartreuse">Chartreuse</option>
+          <option value="chocolate">Chocolate</option>
+          <option value="cyan">Cyan</option>
+          <option value="navy">Navy</option>
+          <option value="gray">Gray</option>
+          <option value="green">Green</option>
+          <option value="maroon">Maroon</option>
+          <option value="olive">Olive</option>
+          <option value="orange">Orange</option>
+          <option value="red">Red</option>
+          <option value="silver">Silver</option>
+          <option value="teal">Teal</option>
+          <option value="violet">Violet</option>
+          <option value="white">White</option>
+          <option value="yellow">Yellow</option>                
+        </select>   
+      </div>
+    </div>
+
+    <div mat-dialog-content class="sa_forms_design statusCodeList" *ngIf="data.statusCodeList.length>0">
+        <div>
+          <table class="editTaskList">
+            <tr>
+              <th> Status code </th>
+              <th> Bg Color </th>
+              <th> Text Color </th>
+              <th> Action </th>
+            </tr>
+            <ng-container *ngIf="data.statusCodeList.length>0">
+              <tr *ngFor="let item of data.statusCodeList;let i =index;">
+                <td> {{item.status_code}} </td>
+                <td> <span class="clour-span-{{item.background_colour}} clour-span" *ngIf="item.background_colour"></span> </td>
+                <td> <span class="clour-span-{{item.text_colour}} clour-span" *ngIf="item.text_colour"></span> </td>
+                <td>
+                  <span class="action" (click)="removeItem(i)">
+                    <a title="Delete" class="action_btn danger  ng-star-inserted"><i class="ti-trash m-r-10"></i></a>
+                  </span>
+                </td>
+              </tr>
+            </ng-container>
+            <tr *ngIf="!data.statusCodeList.length">
+              <td colspan="2" align="center">No colors added yet</td>
+              
+            </tr>
+          </table>
+        </div>
+      </div>
+
+    <div mat-dialog-actions class="justify-between">
+      <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
+      <button  (click)="save(data)" [disabled] = "data.status_code == '' " tabindex="2" class="mat-raised-button mat-dc float-right">Save</button>
+    </div>
+    </div>

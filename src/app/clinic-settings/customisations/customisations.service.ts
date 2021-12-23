@@ -109,4 +109,38 @@ export class CustomisationsService {
         })
       );
   }
+    // Get status code list
+    getStatusCodeList(clinic_id): Observable<any> {
+      var header = this.getHeaders();
+      return this.http.get(this.apiUrl + "/clinics/getStatusCode?clinic_id=" + clinic_id, header)
+          .pipe(map((response: Response) => {
+              return response;
+          })
+          );
+    }
+  addStatusColors(clinic_id,statusCode,bgcolour,colour): Observable<any> {
+    var header = this.getHeaders();
+    const formData = new FormData();
+    formData.append('clinic_id', clinic_id);
+    formData.append('status_code', statusCode);
+    formData.append('background_colour', bgcolour);
+    formData.append('text_colour', colour);
+    
+    return this.http.post(this.apiUrl + "/clinics/getAddStatusColors", formData, header)
+        .pipe(map((response: Response) => {
+            return response;
+        })
+        );
+  }
+  deleteStatusCode(clinic_id,statusCode): Observable<any> {
+    var header = this.getHeaders();
+    const formData = new FormData();
+    formData.append('clinic_id', clinic_id);
+    formData.append('status_code', statusCode);    
+    return this.http.post(this.apiUrl + "/clinics/deleteStatusCode", formData, header)
+        .pipe(map((response: Response) => {
+            return response;
+        })
+        );
+  }
 }

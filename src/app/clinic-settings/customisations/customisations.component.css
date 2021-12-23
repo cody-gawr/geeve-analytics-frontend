@@ -134,3 +134,13 @@ span.charLimit {
     float: left;
     width: 100%;
 }
+.topheading{
+    display: inline-block;
+}
+.titleheading{
+    float: left;
+}
+.colorbtnDiv{
+    float: right;
+    margin-left: 685px;
+}

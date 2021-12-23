@@ -25,6 +25,65 @@ import { ClinicSettingsService } from "../clinic-settings.service";
 import { ClinicianAnalysisService } from "../../dashboards/cliniciananalysis/cliniciananalysis.service";
 import Swal from "sweetalert2";
 import { AppConstants } from "../../app.constants";
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
+
+@Component({
+  selector: 'app-dialog-setColors-dialog',
+  templateUrl: './dialog-setColors.html',
+  encapsulation: ViewEncapsulation.None
+})
+
+export class DialogSetColorsDialogComponent {
+  constructor(public dialogRef: MatDialogRef<DialogSetColorsDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private _cookieService: CookieService, private CustomisationsService: CustomisationsService, private router: Router) { }
+  
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  save(data) {
+    if (data.status_code == '') {
+      return false;
+    }
+    this.CustomisationsService.addStatusColors(data.clinic_id,data.status_code, data.bgcolour, data.colour ).subscribe((res) => {
+      if (res.message == 'success') {
+        this.dialogRef.close();
+      } else if (res.status == '401') {
+        this.handleUnAuthorization();
+      }
+    }, error => {
+      console.log('error', error)
+    });
+  }
+  removeItem(i) {
+    
+    let data = this.dialogRef.componentInstance.data.statusCodeList[i];
+    if (data) {
+      this.CustomisationsService.deleteStatusCode(data.clinic_id,data.status_code).subscribe((res) => {
+        if (res.message == 'success') {
+          this.dialogRef.componentInstance.data.statusCodeList.splice(i, 1);
+        } else if (res.status == '401') {
+          this.handleUnAuthorization();
+        }
+      }, error => {
+        console.log('error', error)
+      });
+    }
+  }
+  
+
+  
+
+  handleUnAuthorization() {
+    this._cookieService.put("username", '');
+    this._cookieService.put("email", '');
+    this._cookieService.put("userid", '');
+    this.router.navigateByUrl('/login');
+  }
+
+}
+
+
+
 
 @Component({
   selector: "app-customisations-settings",
@@ -66,7 +125,9 @@ export class CustomisationsComponent
     private router: Router,
     private fb: FormBuilder,
     private toastr: ToastrService,
+    public dialog: MatDialog,
     public constants: AppConstants
+    
   ) {
     super();
     // console.log('test ',this.clinic_id$.value)
@@ -284,6 +345,23 @@ export class CustomisationsComponent
     this.router.navigateByUrl("/login");
   }
 
-
+  openDialog(status_code = '', colour = '', bgcolour = ''): void {
+      this.customisationsService.getStatusCodeList(this.clinic_id$.value).subscribe((res) => {
+        if (res.message == 'success') {
+          const dialogRef = this.dialog.open(DialogSetColorsDialogComponent, {
+            width: '500px',
+            data: {clinic_id: this.clinic_id$.value,statusCodeList: res.data ,status_code:status_code,colour:colour,bgcolour:bgcolour}
+          });
+          dialogRef.afterClosed().subscribe(result => {
+           
+          });
+        }
+        else if (res.status == '401') {
+          this.handleUnAuthorization();
+        }
+      }, error => {
+        console.log('error', error)
+      });
+    } 
 
 }

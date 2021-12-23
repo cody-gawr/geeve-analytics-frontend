@@ -4,9 +4,13 @@
   </mat-expansion-panel-header>
 
   <mat-card-content>
+    <div class="topheading">  
+      <div class="titleheading"><h4 class="clinic-settings-form-title">Morning Huddle</h4></div>  
+      <div class="colorbtnDiv"> <button class="mat-raised-button mat-green" mat-raised-button (click)="openDialog()">Set Colours</button></div>      
+    </div>
     <form [formGroup]="form" class="basic-form sa_forms_design" (ngSubmit)="onSubmit()">
       <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
-        <h4 class="clinic-settings-form-title">Morning Huddle</h4>
+              
         <div class="clinic-setting-form flx-width" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100">
           <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0">
             <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">

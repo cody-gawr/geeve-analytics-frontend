@@ -26,6 +26,9 @@ import {
   TasklistComponent,
   DialogOverviewTasklistDialogComponent,
 } from "./taskslist/tasklist.component";
+import {
+  DialogSetColorsDialogComponent,
+} from "./customisations/customisations.component";
 
 import {
   ScriptsComponent,
@@ -78,6 +81,7 @@ import { SharedModule } from "../shared/shared.module";
     AddScriptsComponent,
     EquipmentComponent,
     ChartsComponent,
+    DialogSetColorsDialogComponent,
     DentisChartComponent
   ],
   entryComponents: [
@@ -86,6 +90,7 @@ import { SharedModule } from "../shared/shared.module";
     DialogOverviewExampleComponent,
     AddJeeveNameComponent,
     AddScriptsComponent,
+    DialogSetColorsDialogComponent,
     DentisChartComponent
   ],
   exports: [
