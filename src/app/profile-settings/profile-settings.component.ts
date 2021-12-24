@@ -472,9 +472,15 @@ public currentPassword;
 public newPassword;
 public repeatPassword;
 public changePasswordError:any = {'required': false,'minlength': false,'pattern': false,'crequired': false};
+public currentPasswordError = {'required': false};
  onSubmitPassword() {
 this.changePasswordError = {'required': false,'minlength': false,'pattern': false,'crequired': false};
- if(this.form.controls['newPassword'].hasError('required')){
+this.currentPasswordError = {'required': false};
+if(this.form.controls['currentPassword'].hasError('required')){
+      this.currentPasswordError.required = true;     
+      return false;      
+    } 
+if(this.form.controls['newPassword'].hasError('required')){
       this.changePasswordError.required = true;     
       return false;      
   }
