@@ -266,7 +266,6 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public OPGOverdue : boolean = false;
     public OverdueRecalls : boolean = false;
     public LabNeeded  : boolean = false;
-    public statusCodeList:any = [];
 
  
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
@@ -385,12 +384,6 @@ initiate_clinic() {
       }
     }); 
 
-    this.clinicianAnalysisService.getStatusCodeList( this.clinic_id).subscribe((data:any) => {
-      this.dailyTabSettLod = true;
-      if(data.message == 'success'){
-        this.statusCodeList = data.data;      
-      }
-    }); 
 
     this.dentist_id = this._cookieService.get("dentistid");
     if(this.user_type != '5'){
@@ -1661,27 +1654,6 @@ async getDentistList(){
     this.router.navigateByUrl('/login');
   }
 
-  formatStatusCode(statusCode)
-  {
-    let arrStatusCode = this.statusCodeList;
-    let statcodes =  statusCode.split(",");
-    let html ='<div class="status-code">';
-    if (statcodes.length > 1) {
-      statcodes.forEach((element) => {
-        arrStatusCode.forEach(elem => {
-          if(elem.status_code == element){
-            $('.status-code-disp').css({'color': elem.text_colour} );
-            $('.status-code-disp').css({'background-color': elem.background_colour} );
-          }
-        });
-       html += '<span class = status-code-disp>' + element + '</span>';
-       // html += '<span> [ <strong>' + element + '</strong>] </span>';
-       
-      });
-    }
-     html +='</div>';
-     return html;
-  }
   checkSuccessApi(){
       if(this.user_type == '2' && this.apiSuccessCount == 19 )
         {      
