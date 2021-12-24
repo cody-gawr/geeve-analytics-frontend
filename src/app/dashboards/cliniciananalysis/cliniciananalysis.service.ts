@@ -378,4 +378,14 @@ export class ClinicianAnalysisService {
         formData.append('clinic_id', clinicId);
         return this.http.post(this.apiUrl + "/clinics/clinicGetSettings", formData, header).pipe(map((response: Response) => { return response; }));
     }
+
+    // Get status code list
+    getStatusCodeList(clinic_id): Observable<any> {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl + "/clinics/getStatusCode?clinic_id=" + clinic_id, header)
+            .pipe(map((response: Response) => {
+                return response;
+            })
+            );
+      }
 }
