@@ -727,7 +727,6 @@
                 <div fxFlex="70">
                   <span class = "status-code-disp" *ngFor="let codes of element.status_codes; let i = index;" style="background-color: {{ codes.background_colour  }};color: {{ codes.text_colour  }}">
                     {{ codes.status_code }}
-                    <br *ngIf="checkGrid(i)">
                   </span>
                 </div>
               </div>             
