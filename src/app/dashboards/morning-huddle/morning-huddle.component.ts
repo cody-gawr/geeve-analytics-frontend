@@ -1708,4 +1708,12 @@ async getDentistList(){
           return true; 
         }
     }
+    checkGrid(i){
+      let ind = parseInt(i)+1;
+      if((ind % 3) == 0){
+        return true;
+      } else {
+        return false;
+      }
+    }
 } 

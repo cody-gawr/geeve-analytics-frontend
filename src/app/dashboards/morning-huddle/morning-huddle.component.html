@@ -633,8 +633,9 @@
             <th mat-header-cell *matHeaderCellDef  [ngClass]="showStatusCode? 'show' : 'hide'" >Status</th>
             <td mat-cell *matCellDef="let element" [ngClass]="showStatusCode? 'show' : 'hide'">
               <div>
-                <span class = "status-code-disp" *ngFor="let codes of element.status_codes" style="background-color: {{ codes.background_colour  }};color: {{ codes.text_colour  }}">
+                <span class = "status-code-disp" *ngFor="let codes of element.status_codes; let i = index;" style="background-color: {{ codes.background_colour  }};color: {{ codes.text_colour  }}">
                   {{ codes.status_code }}
+                  <br *ngIf="checkGrid(i)">
                 </span>
               </div>  </td>
           </ng-container>
