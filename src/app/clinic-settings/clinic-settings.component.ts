@@ -196,7 +196,11 @@ export class ClinicSettingsComponent implements OnInit {
         }
       },
       (error) => {
-        this.warningMessage = "Please Provide Valid Inputs!";
+        if (error.status == 401) {
+          this._cookieService.removeAll();
+          this.router.navigateByUrl("/login");
+        }
+       // this.warningMessage = "Please Provide Valid Inputs!";
       }
     );
   }
