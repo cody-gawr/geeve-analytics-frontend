@@ -67,7 +67,7 @@
                                             <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                 <div class="sa-form-group">
                                                     <label>Current Password</label>
-                                                    <input pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?#&])[A-Za-z\d$@$!%*?&].{8,}$" type="password" placeholder="" [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword"> <small *ngIf="currentPasswordError.required" class="text-danger support-text">You must include current password.</small><small *ngIf="old_password_error" class="text-danger support-text">Wrong current password .</small> </div>
+                                                    <input pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?#&])[A-Za-z\d$@$!%*?&].{10,}$" type="password" placeholder="" [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword"> <small *ngIf="currentPasswordError.required" class="text-danger support-text">You must include current password.</small><small *ngIf="old_password_error" class="text-danger support-text">Wrong current password .</small> </div>
                                             </div>
                                         </div>
                                         <div fxLayout="row wrap" fxLayoutGap="5%">
