@@ -53,7 +53,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public finProductionPerVisit_dif: any = 0;
   public productionVal = 0;
   public productionPrev = 0;  
-  public health_screen_mtd = 1;
+  public health_screen_mtd: any = 1;
   public mtdText = 'Month To Date';
   public mtdInnText = 'Last Month';
   public options: any = {
@@ -109,9 +109,14 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   private warningMessage: string;
 
   ngAfterViewInit() {
-    // this.health_screen_mtd = 1;
-    // this.mtdText = 'Month To Date';
-    // this.mtdInnText = 'Last Month';
+     this.health_screen_mtd = this._cookieService.get("health_screen_mtd");
+     if(this.health_screen_mtd == 1){
+        this.mtdText = 'Month To Date';
+        this.mtdInnText = 'Last Month';
+     }else{
+      this.mtdText = 'Last 30 days';
+      this.mtdInnText = 'Previous 30 days';
+     }
    // this.getCustomiseSettings();
     $('#currentDentist').attr('did', 'all');
     // this.initiate_clinic();
@@ -131,7 +136,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     }
     this.clinic_id = cid;
     this.user_type = this._cookieService.get("user_type");
-   // this.clinic_id = this._cookieService.get("clinic_id");
+   //this.clinic_id = this._cookieService.get("clinic_id");
     if (this._cookieService.get("childid"))
       this.childid = this._cookieService.get("childid");
     $(document).on('click', function (e) {
@@ -143,7 +148,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
         $('.customRange').hide();
       }
     })
-    // this.loadHealthScreen();    
+   // this.loadHealthScreen();    
   }
 
 
@@ -162,43 +167,44 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
         opts
       );
       this.clinic_id = val;
-      this.getCustomiseSettings();
+      // this.getCustomiseSettings();
+      this.loadHealthScreen();  
       
     }
   }
 
-  getCustomiseSettings() {
-    let clinic_id = this._cookieService.get("clinic_id");
-    this.health_screen_mtd = 1;
-    this.mtdText = 'Month To Date';
-    this.mtdInnText = 'Last Month';
-    if (clinic_id != 'all') {
-      this.healthscreenService.getCustomiseSettings(clinic_id)
-        .subscribe(
-          (res) => {
-            if (res.message == "success") {
-              if (res.data) {
-                this.health_screen_mtd = parseInt(res.data.health_screen_mtd);
-                if (this.health_screen_mtd == 0) {
-                  this.mtdText = 'Last 30 days';
-                  this.mtdInnText = 'Previous 30 days';
-                } else {
-                  this.mtdText = 'Month To Date';
-                  this.mtdInnText = 'Last Month';
-                }
-                this.loadHealthScreen();
-              }
-            }
-          },
-          (error) => {
-            console.log("error", error);
-            $(".ajax-loader").hide();
-          }
-        );
-    }  else{
-      this.loadHealthScreen();
-    }  
-  }
+  // getCustomiseSettings() {
+  //   let clinic_id = this._cookieService.get("clinic_id");
+  //   this.health_screen_mtd = 1;
+  //   this.mtdText = 'Month To Date';
+  //   this.mtdInnText = 'Last Month';
+  //   if (clinic_id != 'all') {
+  //     this.healthscreenService.getCustomiseSettings(clinic_id)
+  //       .subscribe(
+  //         (res) => {
+  //           if (res.message == "success") {
+  //             if (res.data) {
+  //               this.health_screen_mtd = parseInt(res.data.health_screen_mtd);
+  //               if (this.health_screen_mtd == 0) {
+  //                 this.mtdText = 'Last 30 days';
+  //                 this.mtdInnText = 'Previous 30 days';
+  //               } else {
+  //                 this.mtdText = 'Month To Date';
+  //                 this.mtdInnText = 'Last Month';
+  //               }
+  //               this.loadHealthScreen();
+  //             }
+  //           }
+  //         },
+  //         (error) => {
+  //           console.log("error", error);
+  //           $(".ajax-loader").hide();
+  //         }
+  //       );
+  //   }  else{
+  //     this.loadHealthScreen();
+  //   }  
+  // }
   getShortName(fullName: string) {
     return $.trim(fullName).charAt(0);
   }
