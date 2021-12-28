@@ -139,6 +139,7 @@ public cvcStyle = {
   public id:any ={};
   public clinicName:any =0;
   public contactName =0;
+  public health_screen_mtd: any = 0;
   // public chartData: any[] = [];
   public address:any = {};
   public practice_size:any ={};
@@ -155,6 +156,7 @@ public cvcStyle = {
   }
     
     ngOnInit() {
+      this.health_screen_mtd = this._cookieService.get("health_screen_mtd");
       this.route.params.subscribe(params => {
         this.id = this.route.snapshot.paramMap.get("id");
         this.displayName = this._cookieService.get("display_name");
@@ -190,6 +192,9 @@ public cvcStyle = {
         email: [null, Validators.compose([Validators.required])],
         displayName: [null, Validators.compose([Validators.required])],
       });
+     this.healthSettings = new FormGroup({
+      health_screen_mtd: new FormControl()
+   });
 
       this.userType = this._cookieService.get("user_type");
     }
@@ -463,11 +468,27 @@ public imageURL:any;
     );
   } 
 
+  onSubmitHealthScreen() {
+     this.health_screen_mtd =  this.healthSettings.value.health_screen_mtd;
+     console.log("dfhgjk");
+     console.log(this.health_screen_mtd);       
+     this.profileSettingsService.updateprofileSettingsHealthScreen(this.health_screen_mtd).subscribe((res) => {
+      if(res.message == 'success'){
+        this._cookieService.put("health_screen_mtd", this.health_screen_mtd);
+        this.toastr.success('Profile Settings Updated .');  
+      }
+      }, error => {
+        this.warningMessage = "Please Provide Valid Inputs!";
+      }    
+      );
+    }
+
 public errorLogin = false;
   public errortext ="";
   public successLogin =false;
   public successtext ="";
   public formSettings: FormGroup;
+  public healthSettings: FormGroup;
 public currentPassword;
 public newPassword;
 public repeatPassword;

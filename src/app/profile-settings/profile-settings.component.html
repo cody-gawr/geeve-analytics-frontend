@@ -197,7 +197,54 @@
                 </div>
         </mat-card-content>
     </mat-expansion-panel>
-    <!-- Update Card Details End -->
+    <!-- Update Card Details End -->   
+    
+     <!-- Health Screen Start -->
+     <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title> Health Screen</mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-card-content>
+            <!-- section Start -->
+            <div class="sa_dentist_graphs_area sa_profile_setting sa_forms_design">
+                <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0">
+                    <mat-card fxFlex.xs="100" fxFlex.sm="100" fxFlex="100%">
+                        <mat-card-content>
+                            <div class="basic_details_form">
+                                <form [formGroup]="healthSettings" (ngSubmit)="onSubmitHealthScreen()">
+                                    <div fxLayout="row wrap" fxLayoutGap="10%">
+                                        <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+                                            <div class="sa-form-group sa-group">
+                                              <label>Date Range
+                                                <div class="info-button">
+                                                  <div class="info-icon-container">
+                                                    <!-- <img [tooltip]="this.constants.tipdateRange" src="../assets/images/info-icon.png"
+                                                      alt="info-icon" class="info-icon" /> -->
+                                                  </div>
+                                                </div>
+                                              </label>
+                              
+                                              <select [formControl]="healthSettings.controls['health_screen_mtd']" formControlName="health_screen_mtd" [(ngModel)]="health_screen_mtd">
+                                                <option value="0">Last 30 Days</option>
+                                                <option value="1">Month to Date</option>
+                                              </select>
+                                            </div>
+                                          </div>
+                                    </div>
+                                    <mat-card-actions class="text-right">
+                                        <button mat-raised-button color="dc" type="button" (click)="onSubmitHealthScreen()">SAVE</button>
+                                    </mat-card-actions>
+                                </form>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+            <!-- section Start -->
+        </mat-card-content>
+    </mat-expansion-panel>
+    <!-- Health screen End --> 
+
 </mat-accordion>
 <!-- <mat-card  fxFlex.xs="100" fxFlex.sm="100" fxFlex="calc(50% - 10px)">
 <mat-card-content fxLayout.lt-lg="column">

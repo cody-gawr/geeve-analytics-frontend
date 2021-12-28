@@ -50,6 +50,19 @@ export class ProfileSettingsService {
                     })
         );
     }
+        // Get updateprofileSettingsHealthScreen
+    updateprofileSettingsHealthScreen(health_screen_mtd): Observable<any> {
+        const formData = new FormData();
+        formData.append('health_screen_mtd', health_screen_mtd);
+
+        var header = this.getHeaders(); 
+
+        return this.http.post(this.apiUrl +"/Users/userUpdateProfile", formData, header)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
        // Get updatePassword
     updatePassword(currentPassword, newPassword): Observable<any> {
             const formData = new FormData();
