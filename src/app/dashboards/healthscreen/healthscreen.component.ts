@@ -343,8 +343,8 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
             this.production_c = this.production_c + Math.round(val.production);
             tooltip_p += '<span class="text">' + val.clinic_name + ': $' + Math.round(val.production) + '</span>';
           });
-          // this.production_c_avg = Math.round(data.data.production_daily_avg);
-          this.production_c_avg = Math.round(this.production_c / today);
+          this.production_c_avg = Math.round(data.data.production_daily_avg);
+         // this.production_c_avg = Math.round(this.production_c / today);
           this.production_dif = Math.round(this.production_c - this.production_p);
           this.production_c_all = { 'title': '', 'info': tooltip_p };
 
@@ -356,8 +356,8 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
             this.visits_c = this.visits_c + Math.round(val.num_visit);
             tooltip_v += '<span class="text">' + val.clinic_name + ': ' + Math.round(val.num_visit) + '</span>';
           });
-          // this.visits_c_avg = Math.round(data.data.total_visits_avg);
-          this.visits_c_avg = Math.round(this.visits_c / today);
+           this.visits_c_avg = Math.round(data.data.total_visits_avg);
+         // this.visits_c_avg = Math.round(this.visits_c / today);
           this.visits_c_all = { 'title': '', 'info': tooltip_v };
           this.visits_dif = Math.round(this.visits_c - this.visits_p);
 
