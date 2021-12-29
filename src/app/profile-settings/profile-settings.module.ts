@@ -10,6 +10,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ProfileSettingsComponent } from './profile-settings.component';
 import { ProfileSettingsService } from './profile-settings.service';
 import { NgxStripeModule } from 'ngx-stripe';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { NgxStripeModule } from 'ngx-stripe';
     MatTreeModule,
     MatDatepickerModule,
     NgxStripeModule.forRoot(''),
+    SharedModule,
   ],
   providers: [
     ProfileSettingsService
