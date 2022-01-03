@@ -2847,7 +2847,7 @@ toggleChangeProcess(){
         html += '<td>' + Perio_Surg + '</td>';
         html += '<td>' + Endo_Re_treat + '</td>';
         html += '<td>' + Veneers_ind + '</td>';
-     return html;
+     return this.sanitized.bypassSecurityTrustHtml(html);
   }
 }
 

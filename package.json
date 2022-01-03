@@ -35,7 +35,7 @@
     "@swimlane/ngx-datatable": "^19.0.0",
     "@syncfusion/ej2-angular-dropdowns": "^19.3.43",
     "@syncfusion/ej2-angular-kanban": "^19.2.60",
-    "@syncfusion/ej2-dropdowns": "19.2.62",
+    "@syncfusion/ej2-dropdowns": "^19.2.62",
     "angular-gauge-chart": "^0.7.2",
     "angular-user-idle": "^2.2.6",
     "chart.js": "^2.9.3",
