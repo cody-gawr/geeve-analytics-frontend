@@ -15,6 +15,7 @@ import { ChartService } from '../chart.service';
 import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
 import { environment } from "../../../environments/environment";
+import { DomSanitizer } from '@angular/platform-browser';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -74,7 +75,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     private numPipe: DecimalPipe,
     private chartService: ChartService,
     public constants: AppConstants,
-    public chartstipsService: ChartstipsService
+    public chartstipsService: ChartstipsService,
+    private sanitized: DomSanitizer
   ){
     this.getChartsTips();
          this._routerSub = this.router.events
@@ -2825,7 +2827,7 @@ toggleChangeProcess(){
         html += '<td>' + SS_Crowns + '</td>';
         html += '<td>' + Comp_Veneers + '</td>';
         html += '<td>' + Whitening + '</td>';
-     return html;
+     return this.sanitized.bypassSecurityTrustHtml(html);
   }
 
   generatePaSpecialTotal(palData)
