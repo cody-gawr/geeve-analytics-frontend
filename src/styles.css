@@ -8372,7 +8372,7 @@ table.editTaskList {
 .justify-between.list {
     display: block;
     height: 50px;
-    width: 100%;
+  /*  width: 100%;*/
     padding: 16px 56px;
 }
 
