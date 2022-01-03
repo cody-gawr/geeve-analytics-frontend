@@ -261,7 +261,7 @@ public cvcStyle = {
 public customer_id;
   public last_invoic_id;
    buy() {
-    const name = this.stripeTest.get('name').value;
+    const name:any = this.stripeTest.get('name').value;
     this.stripeService
     .createToken(this.cardNumber, { name })
     .subscribe(obj => {
@@ -373,11 +373,11 @@ getCardDetails() {
 
 
    setupIntent() {
+    const name = this.stripeTest.get('name').value;
         this.stripeService
     .createToken(this.cardNumber, { name })
     .subscribe(obj => {
     if (obj.token) {
-    const name = this.stripeTest.get('name').value;
       $('.ajax-loader').show();
     this.profileSettingsService.createSetupIntent(this.customer_id).subscribe((res) => {
       if(res.message == 'success'){

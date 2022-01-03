@@ -54,7 +54,8 @@
     "ngx-stripe": "^11.0.0",
     "ngx-toastr": "^13.2.1",
     "sweetalert2": "^9.13.2",
-    "tslib": "^1.10.0"
+    "tslib": "^1.10.0",
+    "zone.js": "^0.11.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.15",
