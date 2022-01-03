@@ -8428,6 +8428,7 @@ td.clslist {
 .DentistProductionTable table {
     width: 100%;
     text-align: left;
+    float: left;
 }
 .DentistProductionTable table td {
   font-family: monospace;
