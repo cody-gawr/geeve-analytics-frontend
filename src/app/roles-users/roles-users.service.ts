@@ -69,9 +69,9 @@ export class RolesUsersService {
     }
 
        // checkUserEmail
-    checkUserEmail( email): Observable<any> {
+    checkUserEmail( email,user_roll =''): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Users/userCheckEmail?email="+email, header)
+        return this.http.get(this.apiUrl +"/Users/userCheckEmail?email="+email+ "&user_roll=" + user_roll , header)
         .pipe(map((response: Response) => {
                         return response;
          })
@@ -120,6 +120,18 @@ export class RolesUsersService {
                     })
         );
     }
+
+    addUserClinicConsultantMap(usrId,selectedClinics): Observable<any> {
+        const formData = new FormData();
+        formData.append('user_id', usrId);
+        formData.append('clinic_id', selectedClinics);     
+        var header = this.getHeaders();     
+        return this.http.post(this.apiUrl +"/Users/userClinicConsultantMap", formData, header)
+            .pipe(map((response: Response) => {
+                            return response;
+                        })
+            );
+        }
 
       // Update Clinic
     updateRoleUser(id,display_name, email, user_type,selectedClinic,selected_dentist): Observable<any> {

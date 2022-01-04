@@ -342,13 +342,22 @@ initiate_clinic() {
         }
         /* Generate Default Password*/
 
-     this.rolesUsersService.checkUserEmail(result.email).subscribe((res) => {
-           if(res.message == 'success'){
-           if(res.data <=0)
-           this.add_user(result.display_name, result.email, result.user_type,result.selectedClinics, password,result.selected_dentist);
-            else
-           this.toastr.error("Email Already Exists!");
+        this.rolesUsersService.checkUserEmail(result.email,result.user_type).subscribe((res) => {
+          if(res.message == 'success'){
+           if(res.data <=0 && res.consultant == null)
+           {
+               this.add_user(result.display_name, result.email, result.user_type,result.selectedClinics, password,result.selected_dentist);
            }
+           else if(res.data > 0 && res.consultant != null && res.consultant != 'another_role')
+           {
+            this.add_clinic_consultant(res.consultant,result.selectedClinics);
+           }
+           else if(res.data > 0  && res.consultant == 'another_role'){
+             this.toastr.error("Cannot add consultant user with email address " +result.email+ " - please contact the Jeeve support team for further information");
+           }else{
+             this.toastr.error("Email Already Exists!");
+           }           
+          }
         }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     });
@@ -465,6 +474,21 @@ initiate_clinic() {
         }    
         );
   }
+  
+  add_clinic_consultant(usrId,selectedClinics) {
+    $('.ajax-loader').show();
+    this.rolesUsersService.addUserClinicConsultantMap(usrId,selectedClinics).subscribe((res) => {
+      $('.ajax-loader').hide();
+         if(res.message == 'success'){
+          this.toastr.success('User has been added successfully!');
+          this.getUsers();
+         } else if(res.message == 'error'){
+            this.toastr.error(res.data.message);
+         }
+      }, error => {
+        this.toastr.error('Please Provide Valid Inputs!');
+      });
+    }
 
   add_user(display_name, email, user_type, selectedClinic, password,selected_dentist) {
   $('.ajax-loader').show();
