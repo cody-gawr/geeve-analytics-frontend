@@ -13,6 +13,7 @@ import { CookieService } from "ngx-cookie";
 import { ITooltipData } from '../shared/tooltip/tooltip.directive';
 import { HeaderService } from '../layouts/full/header/header.service';
 import Swal from 'sweetalert2';
+import { environment } from "../../environments/environment";
 @Component({
   selector: 'app-task-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -21,6 +22,7 @@ import Swal from 'sweetalert2';
 })
 
 export class DialogOverviewExampleDialogComponent {
+  public apiUrl = environment.apiUrl;
    public clinic_id:any ={};
 show_dentist = false;
 showtooltip:boolean= false;
