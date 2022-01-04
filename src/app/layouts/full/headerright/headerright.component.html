@@ -24,13 +24,7 @@
               (ngModelChange)="loadClinic($event)"
               [placeholder]="placeHolder"
             >
-              <mat-option
-                value="all"
-                *ngIf="
-                  route == '/dashboards/healthscreen' && clinicsData.length > 1
-                "
-                >All Clinics</mat-option
-              >
+              <mat-option value="all" *ngIf="route == '/dashboards/healthscreen' && clinicsData.length > 1 && user_type !=7">All Clinics</mat-option>
               <mat-option
                 *ngFor="let clinicData of clinicsData"
                 [value]="clinicData.id"

@@ -112,7 +112,7 @@ onSubmit() {
       this._cookieService.put("features_dismissed", datares['features_dismissed'], opts);
       this._cookieService.put("health_screen_mtd", datares['health_screen_mtd'], opts);
       /*this._cookieService.put("user_image", datares['user_image'], opts);        */
-      if(datares['user_type'] != '2') {
+      if(datares['user_type'] != '2' && datares['user_type'] != '7') {
         this._cookieService.put("userid", datares['parentid'], opts);
         this._cookieService.put("childid", datares['userid'], opts);
         this._cookieService.put("clinicid", datares['clinicid'], opts);

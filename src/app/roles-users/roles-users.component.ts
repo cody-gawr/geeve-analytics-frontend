@@ -236,6 +236,7 @@ public selectedClinicProviders=[];
 
 
 export class RolesOverviewExampleDialogComponent {
+  public apiUrl = environment.apiUrl;
    public clinic_id:any ={};
    public userPlan :any = 'lite';
   constructor(
@@ -266,6 +267,7 @@ const data: any = require('assets/company.json');
    encapsulation: ViewEncapsulation.None
 })
 export class RolesUsersComponent implements AfterViewInit {
+
   display_name: string;
   email: string;
   user_type ='3';

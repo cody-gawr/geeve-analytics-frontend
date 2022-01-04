@@ -64,6 +64,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
   referFriendNameError: boolean = false;
   referFriendEmailError: boolean = false;
   referFriendEmailPError: boolean = false;
+  user_type: any = 0;
 
   classUrl: string = "";
   @Inject(MAT_DIALOG_DATA) public data: any;
@@ -80,6 +81,9 @@ export class AppHeaderrightComponent implements AfterViewInit {
     private toastr: ToastrService,
     public dialog: MatDialog
   ) {
+    if (this._cookieService.get("user_type")) {
+      this.user_type = this._cookieService.get("user_type");
+    }
     if (this._cookieService.get("features_dismissed") && this._cookieService.get("features_dismissed") == "0") {
       this.headerService.getNewFeature().subscribe((res) => {
         for (let linkurl of res.data) {
@@ -228,7 +232,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
           if (res.data.length > 0) {            
             
             if (this.route == "/dashboards/healthscreen") {          
-              if (this.clinicsData.length > 1) {
+              if (this.clinicsData.length > 1 && this.user_type != 7) {
                 this.clinic_id = "all";
                 this.selectedClinic = "all";
                 this.placeHolder = "All Clinics";

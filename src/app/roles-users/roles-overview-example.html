@@ -6,6 +6,7 @@
   <select class="sa_select sa_select_set_roles form-control" name="user_type" [(ngModel)]="data.user_type" (ngModelChange)="loadPermisions($event)">
       <!--<option value ="" selected="true">Select User Type</option>-->
       <option value ="6"  *ngIf="loginUserType == '2'">Owner</option>
+      <option value ="7" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">Consultant</option>
       <option value ="3">Practice Manager</option>
       <option value ="5">Staff</option>
       <option value ="4">Clinician</option>
@@ -28,8 +29,9 @@
     <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['morninghuddle_'+selected_id]">Morning Huddle</mat-checkbox>
     <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['followups_'+selected_id]">Follow Ups</mat-checkbox>
     <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['lostopportunity_'+selected_id]">Lost Opportunity</mat-checkbox>
-    <mat-checkbox class="role_permissions" *ngIf="data.taskVisible" [(ngModel)]="data.selectedRole['tasks_'+selected_id]">Tasks</mat-checkbox>
-    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['profilesettings_'+selected_id]">Settings</mat-checkbox>
+   
+    <mat-checkbox class="role_permissions" *ngIf="data.taskVisible && data.user_type != 7" [(ngModel)]="data.selectedRole['tasks_'+selected_id]">Tasks</mat-checkbox>
+    <mat-checkbox class="role_permissions" *ngIf="data.user_type != 7" [(ngModel)]="data.selectedRole['profilesettings_'+selected_id]">Settings</mat-checkbox>
   <!--   <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['managepermissions_'+selected_id]">Manage Roles</mat-checkbox> -->
   </div>
 
