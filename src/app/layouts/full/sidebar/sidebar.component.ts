@@ -123,6 +123,8 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
   public showMenu: boolean = false;
   public permisions: any = '';
   public permisions_var: any = '';
+  public clinic_id;
+  public userType;
 
   clickEvent(val) {
     this.status = !this.status;
@@ -139,7 +141,18 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
   constructor(public dialog: MatDialog, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,/* public menuItems: MenuItems,*/ private rolesUsersService: RolesUsersService, private headerService: HeaderService, private _cookieService: CookieService, private route: ActivatedRoute, private router: Router, public constants: AppConstants
   ) {
     this.router.events.filter(event => event instanceof NavigationEnd).subscribe((value) => {
-      this.getRoles();
+      this.userType = this._cookieService.get("user_type");
+      this.clinic_id = this._cookieService.get("clinic_id");
+      if( this.userType == 7){
+        if(this.clinic_id != null && typeof (this.clinic_id) != 'undefined'){
+          this.clinic_id = this._cookieService.get("clinic_id");
+          this.getRoles();
+        }else{
+            this.getClinic();
+        }
+      }else{
+          this.getRoles();
+      }
       this.activeRoute = router.url;
       if (this.activeRoute == '/dashboards/cliniciananalysis' || this.activeRoute == '/dashboards/clinicianproceedures' || this.activeRoute == '/dashboards/frontdesk' || this.activeRoute == '/dashboards/marketing' || this.activeRoute == '/dashboards/finances' || this.activeRoute == '/dashboards/followups') {
         this.nav_open = 'dashboards';
@@ -185,7 +198,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
 
   public userPlan: any = '';
   async getRoles() {
-    await this.rolesUsersService.getRolesIndividual().subscribe((res) => {
+    await this.rolesUsersService.getRolesIndividual(this.clinic_id).subscribe((res) => {
       if (res.message == 'success') {
         this.permisions = res.data;
         let opts = this.constants.cookieOpt as CookieOptions;
@@ -220,6 +233,16 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
         }
         // End
 
+      }
+    }, error => {
+    });
+  }
+
+  getClinic() {
+    this.headerService.getClinics().subscribe((res) => {
+      if (res.message == 'success') {
+        this.clinic_id = res.data[0]['id'];
+         this.getRoles();
       }
     }, error => {
     });

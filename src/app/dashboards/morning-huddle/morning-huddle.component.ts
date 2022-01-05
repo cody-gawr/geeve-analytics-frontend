@@ -1669,6 +1669,10 @@ async getDentistList(){
         {
           this.showProcessingText = false;
           return false; 
+        }else if(this.user_type == '7' && this.apiSuccessCount == 7)
+        {
+          this.showProcessingText = false;
+          return false; 
         }
         else if(this.user_type == '5' && this.apiSuccessCount == 14)
         {

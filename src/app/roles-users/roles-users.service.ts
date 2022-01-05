@@ -39,9 +39,9 @@ export class RolesUsersService {
     }
 
     // Get Dentist
-    getRoles(): Observable<any> {
+    getRoles(clinic_id=''): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Roles/rolesGet", header)
+        return this.http.get(this.apiUrl +"/Roles/rolesGet?clinic_id="+clinic_id, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -49,9 +49,9 @@ export class RolesUsersService {
     }
 
     // Get Roles For individual
-    getRolesIndividual(): Observable<any> {
+    getRolesIndividual(clinic_id =''): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Roles/rolesIndividual", header)
+        return this.http.get(this.apiUrl +"/Roles/rolesIndividual?clinic_id="+clinic_id, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -147,6 +147,15 @@ export class RolesUsersService {
      var header = this.getHeaders(); 
     
         return this.http.post(this.apiUrl +"/Users/userUpdate", formData, header)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+    getClinics(): Observable<any> {        
+        var header = this.getHeaders();         
+        return this.http.get(this.apiUrl +"/clinics/clinicGet", header)
         .pipe(map((response: Response) => {
                         return response;
                     })

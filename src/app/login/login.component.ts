@@ -21,42 +21,22 @@ export class LoginComponent implements OnInit {
   public errorforAttmp = false;
   public errorForm = {'email' : false, 'password' : false};
   public apiUrl = environment.apiUrl;
+  public clinic_id ;
+  public userType;
   constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService,private _cookieService: CookieService, private rolesUsersService: RolesUsersService,public constants: AppConstants) {
-  if(this._cookieService.get("userid")){
-     var permision = '';
-     var user_type = this._cookieService.get("user_type");
-        this.rolesUsersService.getRolesIndividual().subscribe((res) => {
-          if(res.message == 'success'){ 
-            permision = res.data;
-            if(permision != '' && user_type != '2'){
-              if(permision.indexOf('healthscreen') >= 0){
-                  this.router.navigate(['/dashboards/healthscreen']);
-              } else if(permision.indexOf('dashboard1') >= 0){
-                this.router.navigate(['/dashboards/cliniciananalysis']);
-              } else if(permision.indexOf('dashboard2') >= 0){
-                  this.router.navigate(['/dashboards/clinicianproceedures']);
-              } else if(permision.indexOf('dashboard3') >= 0 ){
-                  this.router.navigate(['/dashboards/frontdesk']);
-              } else if(permision.indexOf('dashboard4') >= 0 ){
-                 this.router.navigate(['/dashboards/marketing']);
-              } else if(permision.indexOf('dashboard5') >= 0 ){
-                  this.router.navigate(['/dashboards/finances']);
-              } else if(permision.indexOf('morninghuddle') >= 0){
-                  this.router.navigate(['/morning-huddle']);
-              } else if(permision.indexOf('lostopportunity') >= 0 ){
-                  this.router.navigate(['/lost-opportunity']);
-              } else {
-                 this.router.navigate(['/profile-settings']);
-              }
-            } else  if(user_type == '2'){
-              this.router.navigate(['/dashboards/healthscreen']);
-            } else {
-              this.router.navigate(['/profile-settings']);
-            }
-          }      
-        });
-  }
-
+    if(this._cookieService.get("userid")){
+      var user_type = this._cookieService.get("user_type");
+      this.clinic_id = this._cookieService.get("clinic_id");
+      if(user_type  == '7'){
+          if(this.clinic_id != null && typeof (this.clinic_id) != 'undefined'){
+            this.getRolesIndividual()
+          }else{
+            this.getRolesIndividual()
+          }
+        }else{
+          this.getRolesIndividual()
+        } 
+    }
   }
 
   ngOnInit() {
@@ -125,42 +105,22 @@ onSubmit() {
         this.router.navigate(['/setup']);
       } else  if(datares['user_type'] == '2') {
           this.router.navigate(['/dashboards/healthscreen']);
-      } else {       
-        var permision = '';
-        this.rolesUsersService.getRoles().subscribe((res) => {
-          if(res.message == 'success'){ 
-            res.data.forEach((dt) => {
-              if(datares['user_type'] == dt['role_id']){
-                permision = dt['permisions'];                
-              }                
-            });
-            if(res.plan == 'lite'){
-              this.router.navigate(['/dashboards/healthscreen']);
-            } else if(permision != ''){                            
-              if(permision.indexOf('healthscreen') >= 0){
-                  this.router.navigate(['/dashboards/healthscreen']);
-              } else if(permision.indexOf('dashboard1') >= 0){
-                this.router.navigate(['/dashboards/cliniciananalysis']);
-              } else if(permision.indexOf('dashboard2') >= 0){
-                  this.router.navigate(['/dashboards/clinicianproceedures']);
-              } else if(permision.indexOf('dashboard3') >= 0 ){
-                  this.router.navigate(['/dashboards/frontdesk']);
-              } else if(permision.indexOf('dashboard4') >= 0 ){
-                 this.router.navigate(['/dashboards/marketing']);
-              } else if(permision.indexOf('dashboard5') >= 0 ){
-                  this.router.navigate(['/dashboards/finances']);
-              } else if(permision.indexOf('morninghuddle') >= 0){
-                  this.router.navigate(['/morning-huddle']);
-              } else if(permision.indexOf('lostopportunity') >= 0 ){
-                  this.router.navigate(['/lost-opportunity']);
-              } else {
-                 this.router.navigate(['/profile-settings']);
-              }
-            } else{
-              this.router.navigate(['/profile-settings']);
-            }
-          }      
-        });
+      } else {    
+        this.clinic_id = this._cookieService.get("clinic_id");
+        if(datares['user_type']  == '7'){
+          if(this.clinic_id != null && typeof (this.clinic_id) != 'undefined'){
+            this.getRoles()
+          }else{
+              this.rolesUsersService.getClinics().subscribe((res) => {
+                if (res.message == 'success') {
+                  this.clinic_id = res.data[0]['id'];
+                  this.getRoles()
+                }
+              });
+          }
+        }else{
+          this.getRoles()
+        }
       }    
     } else if(res.message == 'error'){
       this.errorLogin  =true;
@@ -172,6 +132,80 @@ onSubmit() {
       this.errorLogin  =true;
     }
   });
+  }
+
+  getRolesIndividual() {
+    var permision = '';
+    var user_type = this._cookieService.get("user_type");
+    this.rolesUsersService.getRolesIndividual(this.clinic_id).subscribe((res) => {
+      if(res.message == 'success'){ 
+        permision = res.data;
+        if(permision != '' && user_type != '2'){
+          if(permision.indexOf('healthscreen') >= 0){
+              this.router.navigate(['/dashboards/healthscreen']);
+          } else if(permision.indexOf('dashboard1') >= 0){
+            this.router.navigate(['/dashboards/cliniciananalysis']);
+          } else if(permision.indexOf('dashboard2') >= 0){
+              this.router.navigate(['/dashboards/clinicianproceedures']);
+          } else if(permision.indexOf('dashboard3') >= 0 ){
+              this.router.navigate(['/dashboards/frontdesk']);
+          } else if(permision.indexOf('dashboard4') >= 0 ){
+             this.router.navigate(['/dashboards/marketing']);
+          } else if(permision.indexOf('dashboard5') >= 0 ){
+              this.router.navigate(['/dashboards/finances']);
+          } else if(permision.indexOf('morninghuddle') >= 0){
+              this.router.navigate(['/morning-huddle']);
+          } else if(permision.indexOf('lostopportunity') >= 0 ){
+              this.router.navigate(['/lost-opportunity']);
+          } else {
+             this.router.navigate(['/profile-settings']);
+          }
+        } else  if(user_type == '2'){
+          this.router.navigate(['/dashboards/healthscreen']);
+        } else {
+          this.router.navigate(['/profile-settings']);
+        }
+      }      
+    });
+  }
+
+  getRoles() {
+    this.userType = this._cookieService.get("user_type");
+    var permision = '';
+    this.rolesUsersService.getRoles(this.clinic_id).subscribe((res) => {
+      if(res.message == 'success'){ 
+        res.data.forEach((dt) => {
+          if(this.userType == dt['role_id']){
+            permision = dt['permisions'];                
+          }                
+        });
+        if(res.plan == 'lite'){
+          this.router.navigate(['/dashboards/healthscreen']);
+        } else if(permision != ''){                            
+          if(permision.indexOf('healthscreen') >= 0){
+              this.router.navigate(['/dashboards/healthscreen']);
+          } else if(permision.indexOf('dashboard1') >= 0){
+            this.router.navigate(['/dashboards/cliniciananalysis']);
+          } else if(permision.indexOf('dashboard2') >= 0){
+              this.router.navigate(['/dashboards/clinicianproceedures']);
+          } else if(permision.indexOf('dashboard3') >= 0 ){
+              this.router.navigate(['/dashboards/frontdesk']);
+          } else if(permision.indexOf('dashboard4') >= 0 ){
+            this.router.navigate(['/dashboards/marketing']);
+          } else if(permision.indexOf('dashboard5') >= 0 ){
+              this.router.navigate(['/dashboards/finances']);
+          } else if(permision.indexOf('morninghuddle') >= 0){
+              this.router.navigate(['/morning-huddle']);
+          } else if(permision.indexOf('lostopportunity') >= 0 ){
+              this.router.navigate(['/lost-opportunity']);
+          } else {
+            this.router.navigate(['/profile-settings']);
+          }
+        } else{
+          this.router.navigate(['/profile-settings']);
+        }
+      }      
+    });
   }
 
 }
