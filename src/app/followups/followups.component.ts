@@ -74,17 +74,13 @@ export class ExportDataDialogComponent {
           a.remove();
           this.dialogRef.close();
           this.toastr.success("File exported successfully!");
-          
+          this.followupsService.deletefiles(filename, filetype).subscribe((res) => {},(error) => {console.log('error', error)});
         },
           (error) => {
             console.log('error', error)
           });
     
-        this.followupsService.deletefiles(filename, filetype).subscribe((res) => {
-        },
-          (error) => {
-            console.log('error', error)
-          });
+       
       } else if (res.status == '204') {
         this.toastr.info(res.message);
           this.loader = false
