@@ -338,6 +338,11 @@ export class AppConstants {
         info: ' Enabling this toggle will show the Status Codes associated with each appointment in your Morning Huddle',
         direction: 'right'
     };
+    public statusColours: ITooltipData = {
+        title: 'Set Status Colours',
+        info: 'Set Status Colours',
+         direction: 'right'
+    };
     public tipdateRange: ITooltipData = {
         title: 'Date Range',
         info: 'By default, your Health Screen will show data for "Month To Date". If you would prefer to see the Last 30 Days worth of data, change this setting accordingly.',

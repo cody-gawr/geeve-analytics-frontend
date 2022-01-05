@@ -93,7 +93,7 @@ table{
   word-wrap: break-word !important;
   white-space: unset !important;
   flex: 0 0 20% !important;
-  width: 15% !important;
+  width: 20% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -102,7 +102,23 @@ table{
   -webkit-hyphens: auto;
   hyphens: auto;
 }
-
+ .mat-column-start  {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 165px !important;
+  width: 165px !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+ .dentistsve .mat-column-name {
+  flex: 0 0 12% !important;
+  width: 12% !important;
+}
 
 .mat-column-phone {
   word-wrap: break-word !important;

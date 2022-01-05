@@ -8549,9 +8549,31 @@ h1.mat-dialog-title span {
 .status-code-disp {
     font-size: 13px;
     padding: 3px 5px;
-    border: 2px solid #403f40;
+    /*border: 2px solid #403f40;*/
     margin-right: 2px;
     width: 20px;
     display: inline-block;
 
+}
+.status-code-disp.haveborder  {
+    border: 1px solid #403f40;
+    padding: 2px 5px;
+}
+.setStausColourButton {
+    font-size: 25px;
+    cursor: pointer;
+    background: linear-gradient(210deg,#088133, #98b112, #EF5762);
+    color: #fffdfd;
+    padding: 4px 17px;
+    border: 1px solid #342828;
+    box-shadow: 3px 4px 6px #054950;
+    border-radius: 5px;
+}
+button.Set-Colours, button.Set-Colours:focus, button.Set-Colours:active {
+    background: #fff !important;
+    color: #088a8a !important;
+    font-size: 14px !important;
+    border: 1px solid #c3bbbb !important;
+    padding: 0px !important;
+    box-shadow: 1px 1px 1px #088a8a !important;
 }

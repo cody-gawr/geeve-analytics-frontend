@@ -792,8 +792,8 @@ public fdUtiData:any = [];
               this.byDayLabelsTemp.push(res.day+'--'+res.worked_hour+'--'+res.planned_hour); 
             // }
           });        
-          this.byTotal=  data.total;
-          this.prevByDayTotal=  data.total_ta;
+          this.byTotal=  Math.round(data.total);
+          this.prevByDayTotal=  Math.round(data.total_ta);
           this.byDayData[0]['data'] = this.byDayDataTemp;
           this.byDayLabels = this.byDayLabelsTemp;       
         }

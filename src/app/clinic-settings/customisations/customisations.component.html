@@ -6,7 +6,7 @@
   <mat-card-content>
     <div class="topheading">  
       <div class="titleheading"><h4 class="clinic-settings-form-title">Morning Huddle</h4></div>  
-      <div class="colorbtnDiv"> <button class="mat-raised-button mat-green" mat-raised-button (click)="openDialog()">Set Colours</button></div>      
+        
     </div>
     <form [formGroup]="form" class="basic-form sa_forms_design" (ngSubmit)="onSubmit()">
       <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
@@ -196,6 +196,26 @@
                   <span *ngIf="!status_codes_enable"><strong>Disabled</strong></span>
                 </mat-slide-toggle>
               </div>
+            </div>
+           <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+              <div class="sa-form-group mh-align">
+                <label _ngcontent-gxr-c371="">
+                  &nbsp;
+                  <!-- Set Status Colours<div class="info-button">
+                    <div class="info-icon-container">
+                      <img [tooltip]="this.constants.statusColours" src="../assets/images/info-icon.png"
+                        alt="info-icon" class="info-icon" />
+                    </div>
+                  </div> -->
+                </label>   
+                <button class="mat-raised-button mat-green Set-Colours mat-elevation-z" mat-raised-button (click)="openDialog()">Set Colours</button>          
+              </div>
+            </div>
+            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">              
+            </div>           
+            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+            </div>
+            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
             </div>
           </div>
         </div>

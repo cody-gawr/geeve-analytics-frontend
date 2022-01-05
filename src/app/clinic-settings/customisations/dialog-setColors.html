@@ -1,14 +1,14 @@
 <div class="AddUserPopup setting"> 
-    <h1 mat-dialog-title>Set Colors</h1>
+    <h1 mat-dialog-title>Set Status Colours</h1>
     <div mat-dialog-content class="sa_forms_design">
       <div class="sa-form-group">
         <label>status code</label>
         <input [(ngModel)]="data.status_code"type="text"  [attr.maxlength]="1" class="mat-form-control" required="true" placeholder="">   
       </div> 
       <div class="sa-form-group">
-        <label>Background Color <span class="clour-span-{{data.bgcolour}} clour-span" *ngIf="data.bgcolour"></span></label>
+        <label>Background Colour <span class="clour-span-{{data.bgcolour}} clour-span" *ngIf="data.bgcolour"></span></label>
         <select  [(ngModel)]="data.bgcolour" name="bgcolour" class="colour">
-          <option value="">Default Color</option>
+          <option value="">Default Colour</option>
           <option value="aqua">Aqua</option>
           <option value="black">Black</option>
           <option value="blue">Blue</option>
@@ -30,9 +30,9 @@
         </select>     
       </div>
       <div class="sa-form-group">
-        <label>Text Color <span class="clour-span-{{data.colour}} clour-span" *ngIf="data.colour"></span></label>
+        <label>Text Colour <span class="clour-span-{{data.colour}} clour-span" *ngIf="data.colour"></span></label>
         <select  [(ngModel)]="data.colour" name="color" class="colour">
-          <option value="">Default Color</option>
+          <option value="">Default Colour</option>
           <option value="aqua">Aqua</option>
           <option value="black">Black</option>
           <option value="blue">Blue</option>
@@ -60,8 +60,8 @@
           <table class="editTaskList">
             <tr>
               <th> Status code </th>
-              <th> Bg Color </th>
-              <th> Text Color </th>
+              <th> Bg Colour </th>
+              <th> Text Colour </th>
               <th> Action </th>
             </tr>
             <ng-container *ngIf="data.statusCodeList.length>0">
@@ -77,7 +77,7 @@
               </tr>
             </ng-container>
             <tr *ngIf="!data.statusCodeList.length">
-              <td colspan="2" align="center">No colors added yet</td>
+              <td colspan="2" align="center">No Colours added yet</td>
               
             </tr>
           </table>

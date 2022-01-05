@@ -189,7 +189,7 @@
               </div>
               <div class="card-footer">
                 <div  fxLayout="row wrap" fxLayoutAlign="center center"
-                  class="m-t-40 predicted_main predicted1 sa_chart_details_sec">
+                  class="m-t-40 predicted_main predicted1 sa_chart_details_sec" *ngIf="!showTrend">
                   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="utilShow ==1 && !showTrend">
                     <!--    <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
                     <h3 class="m-0 value-num">{{( workTimeTotal > 100 ? 100 : workTimeTotal ) | number }}%</h3>
@@ -198,7 +198,7 @@
                   </div>
                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="utilShow ==2">
                     <!--    <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
-                    <h3 class="m-0 value-num">{{( byTotal > 100 ? 100 : workTimeTotal ) | number }}%</h3>
+                    <h3 class="m-0 value-num">{{( byTotal > 100 ? 100 : byTotal ) | number }}%</h3>
                     <small *ngIf="currentText != ''">{{currentText}} Avg</small>
                     <small *ngIf="currentText == ''">Average</small>
                   </div>
@@ -213,7 +213,7 @@
                   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                     *ngIf="duration != 'custom' && utilShow ==2">
                     <!--           <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
-                    <h3 class="m-0 value-num">{{ ( prevByDayTotal > 100 ? 100 : prevWorkTimeTotal) | number }}%</h3>
+                    <h3 class="m-0 value-num">{{ ( prevByDayTotal > 100 ? 100 : prevByDayTotal) | number }}%</h3>
                     <small *ngIf="trendText != ''">{{trendText}} Avg</small>
                     <small *ngIf="trendText == ''">Previous Average</small>
                   </div>
