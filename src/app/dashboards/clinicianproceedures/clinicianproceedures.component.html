@@ -100,6 +100,7 @@
                         <th>RCT</th>
                         <th>Perio</th>
                         <th>Surg Ext</th>
+                        <th>Imp Crowns</th>
                         <th>SS Crowns</th>
                         <th>Comp Veneers</th>
                         <th>Whitening </th>
@@ -113,11 +114,12 @@
                           <td>{{ paInfo.RCT }}</td>
                           <td>{{ paInfo.Perio }}</td>
                           <td>{{ paInfo.Surg_Ext }}</td>
+                          <td>{{ paInfo.Imp_Crowns }}</td>
                           <td>{{ paInfo.SS_Crowns }}</td>
                           <td>{{ paInfo.Comp_Veneers }}</td>
                           <td>{{ paInfo.Whitening }}</td>
                         </tr>
-                        <tr [innerHTML]="generatePaGeneralTotal(paGeneralData)"></tr> 
+                        <tr class="patable-total" [innerHTML]="generatePaGeneralTotal(paGeneralData)"></tr> 
                       </tbody>
                     </table>
                   </div>
@@ -196,7 +198,7 @@
                         <td>{{ paInfo.Endo_Re_treat }}</td>
                         <td>{{ paInfo.Veneers_ind }}</td>
                       </tr>
-                      <tr [innerHTML]="generatePaSpecialTotal(paSpecialistlData)"></tr> 
+                      <tr class="patable-total" [innerHTML]="generatePaSpecialTotal(paSpecialistlData)"></tr> 
                     </tbody>
                   </table>
                 </div>

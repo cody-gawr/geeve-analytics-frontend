@@ -462,11 +462,12 @@ expenses_card custom_ngx_cw01">
     
       </div>
       <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
-        <div fxFlex="calc(100% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+        <div *ngIf="( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 1 && clinic_id <= 4) )"
+          fxFlex="calc(100% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
           class="sa_flexbg predictor_ratio total_val md_mrn custom_ngx_cw05">
           <mat-card class="">
             <mat-card-content class="sa_matcard_content">
-              <mat-card-title class="text-center">Total Production & Collection
+              <mat-card-title class="text-center">Production & Collection
                 <div class="info-icon-container">
                   <img [tooltip]="charTips['33']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>
@@ -801,11 +802,12 @@ expenses_card custom_ngx_cw01">
       </div>
       <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
 
-        <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+        <div *ngIf="( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 1 && clinic_id <= 4) )"
+        fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
           class="sa_flexbg predictor_ratio md_mrn">
           <mat-card class="">
             <mat-card-content class="sa_matcard_content">
-              <mat-card-title class="text-center">Total Production & Collection
+              <mat-card-title class="text-center">Production & Collection
                 <div class="info-icon-container">
                   <img [tooltip]="charTips['33']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>

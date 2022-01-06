@@ -16,6 +16,7 @@ import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.ser
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
+import { environment } from "../../../environments/environment";
 export interface Dentist {
   providerId: string;
   name: string;
@@ -75,6 +76,7 @@ export class FinancesComponent implements AfterViewInit {
   public predictedChartColors;
   public trendText;
   public Apirequest = 0;
+  public apiUrl = environment.apiUrl;
   colorScheme = {
     domain: ['#6edbba', '#abb3ff', '#b0fffa', '#ffb4b5', '#d7f8ef', '#fffdac', '#fef0b8', '#4ccfae']
   };
@@ -1841,7 +1843,7 @@ export class FinancesComponent implements AfterViewInit {
         this.collectionTrendVal = (data.total_ta) ? Math.round(data.total_ta) : 0;
 
         this.totalProductionCollection1[0]['data'].push(this.collectionVal);
-        this.totalProductionCollectionLabel1 = ['Total Production', 'Collection'];
+        this.totalProductionCollectionLabel1 = ['Production', 'Collection'];
         this.totalProductionCollection1[0]['hoverBackgroundColor'] = ['#ffb4b5', '#4ccfae'];
         this.totalProductionCollection1[0]['backgroundColor'] = ['#ffb4b5', '#4ccfae']; //as label are static we can add background color for that particular column as static
         this.totalProductionCollectionMax = Math.max(...this.totalProductionCollection1[0]['data']);
@@ -2254,7 +2256,7 @@ export class FinancesComponent implements AfterViewInit {
     this.toggleChangeProcess();
   }
   public totalProductionCollection: any[] = [
-    { data: [], label: 'Total Production' }, { data: [], label: 'Collection' }];
+    { data: [], label: 'Production' }, { data: [], label: 'Collection' }];
   public totalProductionCollectionLabel = [];
   public netProfitDisplayVal;
 

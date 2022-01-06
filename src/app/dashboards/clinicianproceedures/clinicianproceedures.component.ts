@@ -1270,8 +1270,9 @@ if(this._cookieService.get("user_type") == '4'){
             'Splints':  parseInt(res.splints), 
             'RCT':  parseInt(res.rct), 
             'Perio':  parseInt(res.perio), 
-            'Surg_Ext':  parseInt(res.extract), 
-            'SS_Crowns':  parseInt(res.imp_crowns), 
+            'Surg_Ext':  parseInt(res.extract),
+            'Imp_Crowns':  parseInt(res.imp_crowns), 
+            'SS_Crowns':  parseInt(res.ss_crowns), 
             'Comp_Veneers':  parseInt(res.comp_veneers), 
             'Whitening': parseInt(res.whitening),
             };
@@ -1376,7 +1377,7 @@ if(this._cookieService.get("user_type") == '4'){
           var currentUser = 0;
           data && data.data && data.data.length && data.data.forEach(res => {            
             if(res.provider_name != null){
-              if(parseInt(res.imp_surg) + parseInt(res.ortho_fix) + parseInt(res.sleep) + parseInt(res.ortho_align) + parseInt(res.perio_surg) > 0){
+              if(parseInt(res.imp_surg) + parseInt(res.ortho_fix) + parseInt(res.sleep) + parseInt(res.ortho_align) + parseInt(res.perio_surg) + parseInt(res.veneers_ind)> 0){
 
                 this.predictorAnalysis1.push(res.imp_surg);
                 this.predictorAnalysis2.push(res.ortho_fix);
@@ -1395,7 +1396,7 @@ if(this._cookieService.get("user_type") == '4'){
                   'name':  res.provider_name, 
                   'Implant_Surg':  parseInt(res.imp_surg), 
                   'Braces':  parseInt(res.ortho_fix), 
-                  'Aligners':  parseInt(res.ortho_align), 
+                  'Aligners':  parseFloat(res.ortho_align), 
                   'MAS':  parseInt(res.sleep), 
                   'Perio_Surg':  parseInt(res.perio_surg), 
                   'Endo_Re_treat':  parseInt(res.endo_retreat), 
@@ -2815,6 +2816,7 @@ toggleChangeProcess(){
     const RCT = palData.map(item => parseInt(item.RCT)).reduce((prev, curr) => prev + curr, 0);
     const Perio = palData.map(item => parseInt(item.Perio)).reduce((prev, curr) => prev + curr, 0);
     const Surg_Ext = palData.map(item => parseInt(item.Surg_Ext)).reduce((prev, curr) => prev + curr, 0);
+    const Imp_Crowns = palData.map(item => parseInt(item.Imp_Crowns)).reduce((prev, curr) => prev + curr, 0);
     const SS_Crowns = palData.map(item => parseInt(item.SS_Crowns)).reduce((prev, curr) => prev + curr, 0);
     const Comp_Veneers = palData.map(item => parseInt(item.Comp_Veneers)).reduce((prev, curr) => prev + curr, 0);
     const Whitening = palData.map(item => parseInt(item.Whitening)).reduce((prev, curr) => prev + curr, 0);
@@ -2824,6 +2826,7 @@ toggleChangeProcess(){
         html += '<td>' + RCT + '</td>';
         html += '<td>' + Perio + '</td>';
         html += '<td>' + Surg_Ext + '</td>';
+        html += '<td>' + Imp_Crowns + '</td>';
         html += '<td>' + SS_Crowns + '</td>';
         html += '<td>' + Comp_Veneers + '</td>';
         html += '<td>' + Whitening + '</td>';
@@ -2834,7 +2837,7 @@ toggleChangeProcess(){
   {    
     const Implant_Surg = palData.map(item => parseInt(item.Implant_Surg)).reduce((prev, curr) => prev + curr, 0);
     const Braces = palData.map(item => parseInt(item.Braces)).reduce((prev, curr) => prev + curr, 0);
-    const Aligners = palData.map(item => parseInt(item.Aligners)).reduce((prev, curr) => prev + curr, 0);
+    const Aligners = palData.map(item => parseFloat(item.Aligners)).reduce((prev, curr) => prev + curr, 0);
     const MAS = palData.map(item => parseInt(item.MAS)).reduce((prev, curr) => prev + curr, 0);
     const Perio_Surg = palData.map(item => parseInt(item.Perio_Surg)).reduce((prev, curr) => prev + curr, 0);
     const Endo_Re_treat = palData.map(item => parseInt(item.Endo_Re_treat)).reduce((prev, curr) => prev + curr, 0);
