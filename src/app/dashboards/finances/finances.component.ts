@@ -2334,6 +2334,7 @@ export class FinancesComponent implements AfterViewInit {
 
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });
@@ -2386,6 +2387,7 @@ export class FinancesComponent implements AfterViewInit {
         //console.log(this.discountsChartTrendLabels);
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });
@@ -2435,6 +2437,7 @@ export class FinancesComponent implements AfterViewInit {
         this.overdueChartTrendLabels = this.overdueChartTrendLabels1;
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });
@@ -2496,6 +2499,7 @@ export class FinancesComponent implements AfterViewInit {
         this.finCollectionTrend();
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });
@@ -2550,6 +2554,7 @@ export class FinancesComponent implements AfterViewInit {
         //  this.collectionChartTrendLabels =this.collectionChartTrendLabels1; 
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });
@@ -2602,6 +2607,7 @@ export class FinancesComponent implements AfterViewInit {
         this.productionVisitChartTrendLabels = this.productionVisitChartTrendLabels1;
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });
@@ -2653,6 +2659,7 @@ export class FinancesComponent implements AfterViewInit {
         //this.netProfitChartTrendLabels =this.netProfitChartTrendLabels1; 
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });
@@ -2704,6 +2711,7 @@ export class FinancesComponent implements AfterViewInit {
         this.netProfitPercentChartTrendLabels = this.netProfitPercentChartTrendLabels1;
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });
@@ -2791,6 +2799,7 @@ export class FinancesComponent implements AfterViewInit {
         this.netProfitPercentChartTrendLabels = this.netProfitPercentChartTrendLabels1;
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });
@@ -2827,6 +2836,7 @@ export class FinancesComponent implements AfterViewInit {
         }
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
       this.warningMessage = "Please Provide Valid Inputs!";
     });
   }
@@ -2860,6 +2870,7 @@ export class FinancesComponent implements AfterViewInit {
         this.expensesChartTrendLabels = data.data.duration;
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
       this.expensesChartTrendError = true;
       this.warningMessage = "Please Provide Valid Inputs!";
 
