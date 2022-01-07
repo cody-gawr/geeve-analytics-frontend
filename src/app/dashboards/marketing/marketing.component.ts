@@ -1434,7 +1434,7 @@ export class MarketingComponent implements AfterViewInit {
     $('.target_filter').removeClass('mat-button-toggle-checked');
     $('.target_' + val).addClass('mat-button-toggle-checked');
     $('.filter').removeClass('active');
-    this.activePatients = false;
+    // this.activePatients = false;
     this.Apirequest = 0;
     var date = new Date();
     this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');

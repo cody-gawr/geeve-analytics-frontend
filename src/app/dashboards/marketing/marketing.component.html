@@ -225,7 +225,7 @@
                                         (click)="activePat()">Active Patients</small>
                                 </div>
                             </div>
-                            <div class="chart py-2">
+                            <div class="chart py-2 trendchart">
                                 <div class="chart-num-patients"
                                     *ngIf="showTrend == false && newPatientsTotal > 0 && fdnewPatientsRatioLoader == false && activePatients == false">
                                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="newPatientsTotal"
@@ -257,7 +257,7 @@
                                 </div>
 
                                 <div *ngIf="showTrend == true && activePatients == false &&  newPatientsChartTrend1.length > 0"
-                                    class="chart-Trend1-patients">
+                                    class="chart-Trend1-patients trendH">
                                     <canvas #myCanvas baseChart [datasets]="newPatientsChartTrend"
                                         [labels]="newPatientsChartTrendLabels" [options]="stackedChartOptions"
                                         [chartType]="stackedChartType" [colors]="lineChartColors"
@@ -267,7 +267,7 @@
                                 </div>
 
                                 <div *ngIf="showTrend == true && activePatients == true && activePatientsChartTrend1.length > 0"
-                                    class="chart-Trend1-patients">
+                                    class="chart-Trend1-patients trendH">
                                     <canvas #myCanvas baseChart [datasets]="activePatientsChartTrend"
                                         [labels]="activePatientsChartTrendLabels" [options]="stackedChartOptions"
                                         [chartType]="stackedChartType" [colors]="lineChartColors"

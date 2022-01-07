@@ -56,8 +56,8 @@
           <mat-card-title class="text-center">Procedure Analysis
             <div class="sa_box_title_right_buttons"></div>
             <div class="info-icon-container">
-              <i *ngIf="!showPaTable && !showTrend && !dentistMode && (apiUrl.includes('test-') || apiUrl.includes('staging-'))"class="fa fa-table fa-margin" (click) = "showTable(true)"></i>
-              <i *ngIf="showPaTable && !showTrend && !dentistMode && (apiUrl.includes('test-') || apiUrl.includes('staging-'))" class="fa fa-table greenIcon fa-margin-color" (click) = "showTable(false)"></i>
+              <i *ngIf="!showPaTable && !showTrend && !dentistMode && ( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 1 && clinic_id <= 4) )"class="fa fa-table fa-margin" (click) = "showTable(true)"></i>
+              <i *ngIf="showPaTable && !showTrend && !dentistMode && ( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 1 && clinic_id <= 4) )" class="fa fa-table greenIcon fa-margin-color" (click) = "showTable(false)"></i>
               <img *ngIf="procedureAnalysisVisibility == 'General'" [tooltip]="charTips['9']" src="../assets/images/info-icon.png" alt="info-icon"
                 class="info-icon" />
               <img *ngIf="procedureAnalysisVisibility == 'Specialist'" [tooltip]="charTips['50']" src="../assets/images/info-icon.png" alt="info-icon"
