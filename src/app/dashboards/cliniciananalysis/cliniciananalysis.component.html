@@ -95,7 +95,7 @@
                 Dentist
                 <span *ngIf="proCollShow == 1">Production</span>
                 <span *ngIf="proCollShow == 2">Collection</span>
-                <span *ngIf="proCollShow == 3 && ( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 9 && clinic_id <= 23))">Collection - Exp</span>
+                <span *ngIf="proCollShow == 3">Collection - Exp</span>
               </div>
               <div class="info-icon-container" *ngIf="proCollShow == 1">
                 <img [tooltip]="charTips['1']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
@@ -105,7 +105,7 @@
                   class="info-icon" />
               </div>
               <div class="info-icon-container" *ngIf="proCollShow == 3">
-                <img [tooltip]="charTips['49']" src="../assets/images/info-icon.png" alt="info-icon"
+                <img [tooltip]="charTips['62']" src="../assets/images/info-icon.png" alt="info-icon"
                   class="info-icon" />
               </div>
             </mat-card-title>
@@ -309,7 +309,7 @@
 
                 <img *ngIf="proCollShow == 2" [tooltip]="charTips['49']" src="../assets/images/info-icon.png"
                   alt="info-icon" class="info-icon" />
-                <img *ngIf="proCollShow == 3" [tooltip]="charTips['49']" src="../assets/images/info-icon.png"
+                <img *ngIf="proCollShow == 3" [tooltip]="charTips['62']" src="../assets/images/info-icon.png"
                   alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
@@ -324,7 +324,7 @@
                   <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''"
                     (click)="changeProduction('2')">Collection</small>
                 </div>
-                <div *ngIf="(apiUrl.includes('test-') || apiUrl.includes('staging-'))" fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
+                <div *ngIf="( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 9 && clinic_id <= 23) )" fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn" [ngClass]="proCollShow ==3? 'active' : ''"
                     (click)="changeProduction('3')">Collection-Exp</small>
                 </div>

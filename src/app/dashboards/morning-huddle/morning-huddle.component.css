@@ -105,8 +105,8 @@ table{
  .mat-column-start  {
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 165px !important;
-  width: 165px !important;
+  flex: 0 0 175px !important;
+  width: 175px !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
