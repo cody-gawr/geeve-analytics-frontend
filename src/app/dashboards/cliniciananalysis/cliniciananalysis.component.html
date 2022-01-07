@@ -120,9 +120,9 @@
                   <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''"
                     (click)="changeProduction('2')">Collection</small>
                 </div>
-                <div *ngIf="(apiUrl.includes('test-') || apiUrl.includes('staging-'))" fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
+                <div *ngIf="( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 9 && clinic_id <= 23) )" fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn" [ngClass]="proCollShow ==3? 'active' : ''"
-                    (click)="changeProduction('3')" *ngIf="( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 9 && clinic_id <= 23) )">Collection-Exp</small>
+                    (click)="changeProduction('3')">Collection-Exp</small>
                 </div>
               </div>
 
