@@ -111,20 +111,38 @@
             </mat-card-title>
 
             <div class="card-body">
+              <div *ngIf="( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 9 && clinic_id <= 23) )">
+                <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+                  <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
+                    <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''"
+                      (click)="changeProduction('1')">Production</small>
+                  </div>
+                  <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
+                    <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''"
+                      (click)="changeProduction('2')">Collection</small>
+                  </div>
+                  <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
+                    <small class="sa_tab_btn" [ngClass]="proCollShow ==3? 'active' : ''"
+                      (click)="changeProduction('3')">Collection-Exp</small>
+                  </div>
+                </div>
+            </div>
+            <div *ngIf="(( !apiUrl.includes('test-') && !apiUrl.includes('staging-')) && (clinic_id <= 8 || clinic_id >= 24) )">
               <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
+                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="49%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''"
                     (click)="changeProduction('1')">Production</small>
                 </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
+                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="49%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''"
                     (click)="changeProduction('2')">Collection</small>
                 </div>
-                <div *ngIf="( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 9 && clinic_id <= 23) )" fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
+                <!-- <div *ngIf="( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 9 && clinic_id <= 23) )" fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn" [ngClass]="proCollShow ==3? 'active' : ''"
                     (click)="changeProduction('3')">Collection-Exp</small>
-                </div>
+                </div> -->
               </div>
+            </div>
 
               <!-- Production Chart Start -->
               <div *ngIf="proCollShow == 1">
@@ -315,18 +333,36 @@
             </mat-card-title>
 
             <div class="card-body">
-              <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''"
-                    (click)="changeProduction('1')">Production</small>
+              <div *ngIf="( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 9 && clinic_id <= 23) )">
+                <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+                  <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
+                    <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''"
+                      (click)="changeProduction('1')">Production</small>
+                  </div>
+                  <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
+                    <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''"
+                      (click)="changeProduction('2')">Collection</small>
+                  </div>
+                  <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
+                    <small class="sa_tab_btn" [ngClass]="proCollShow ==3? 'active' : ''"
+                      (click)="changeProduction('3')">Collection-Exp</small>
+                  </div>
                 </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''"
-                    (click)="changeProduction('2')">Collection</small>
-                </div>
-                <div *ngIf="( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 9 && clinic_id <= 23) )" fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn" [ngClass]="proCollShow ==3? 'active' : ''"
-                    (click)="changeProduction('3')">Collection-Exp</small>
+              </div>
+              <div *ngIf="( ( !apiUrl.includes('test-') && !apiUrl.includes('staging-')) && (clinic_id <= 8 || clinic_id >= 24) )">
+                <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+                  <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="49%" fxFlex="100" class="btn-group">
+                    <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''"
+                      (click)="changeProduction('1')">Production</small>
+                  </div>
+                  <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="49%" fxFlex="100" class="btn-group">
+                    <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''"
+                      (click)="changeProduction('2')">Collection</small>
+                  </div>
+                  <!-- <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
+                    <small class="sa_tab_btn" [ngClass]="proCollShow ==3? 'active' : ''"
+                      (click)="changeProduction('3')">Collection-Exp</small>
+                  </div> -->
                 </div>
               </div>
 
