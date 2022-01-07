@@ -92,8 +92,8 @@
                 </div>
               </div>
                 <div>
-                  <div class="chart-utilisation-rate" >
-                    <div class="chart-utilisation-rate"  *ngIf="!showTrend && workTimeData1.length > 0 && utilityratemessage == false && !fdWorkTimeAnalysisLoader && utilShow ==1">
+                  <div class="chart-utilisation-rate utigraph" >
+                    <div class="chart-utilisation-rate utigraph"  *ngIf="!showTrend && workTimeData1.length > 0 && utilityratemessage == false && !fdWorkTimeAnalysisLoader && utilShow ==1">
                       <canvas *ngIf="!showTrend && workTimeData1.length > 0 && utilityratemessage == false && !fdWorkTimeAnalysisLoader && !showUtiTable" #myCanvas
                       baseChart [datasets]="workTimeData" [labels]="workTimeLabels" [options]="stackedChartOptionsUtiDP"
                       [chartType]="'bar'" (chartHover)="chartHovered($event)" [legend]="false"
@@ -146,13 +146,15 @@
                       </div>
                       </div> 
                     
-
-                    <canvas *ngIf="showTrend && wtaChartTrend1.length > 0 && utilityratemessage == false && !fdwtaRatioTrendLoader" #myCanvas baseChart
-                      [datasets]="wtaChartTrend" [labels]="wtaChartTrendLabels" [options]="stackedChartOptionsUti"
-                      [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
-                      (chartClick)="chartClicked($event)">
-                      <!-- [colors]="predictedChartColors"  -->
-                    </canvas>
+                      <div class="chart-utilisation-rate">
+                        <canvas *ngIf="showTrend && wtaChartTrend1.length > 0 && utilityratemessage == false && !fdwtaRatioTrendLoader" #myCanvas baseChart
+                          [datasets]="wtaChartTrend" [labels]="wtaChartTrendLabels" [options]="stackedChartOptionsUti"
+                          [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
+                          (chartClick)="chartClicked($event)">
+                          <!-- [colors]="predictedChartColors"  -->
+                        </canvas>
+                      </div>  
+                   
 
                     <div class="no-data-placeholder"
                       *ngIf="!showTrend && workTimeData1.length <= 0 && utilityratemessage == false && !fdWorkTimeAnalysisLoader">
