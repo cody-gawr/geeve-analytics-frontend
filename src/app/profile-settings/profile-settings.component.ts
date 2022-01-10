@@ -8,6 +8,7 @@ import { Router  } from '@angular/router';
 import { StripeService } from 'ngx-stripe';
 import { CustomValidators } from 'ng2-validation';
 import { AppConstants } from '../app.constants';
+import { environment } from "../../environments/environment";
 import {
   StripeElementsOptions
 } from '@stripe/stripe-js';
@@ -25,11 +26,11 @@ const confirmPasswordValidation = new FormControl('', CustomValidators.equalTo(p
    encapsulation: ViewEncapsulation.None
 })
 export class ProfileSettingsComponent implements OnInit {
-   elementsOptions: StripeElementsOptions = {
+   elementsOptions: StripeElementsOptions = { 
     };
     elements;
     card;
-
+  public apiUrl = environment.apiUrl;
   public cardStyle = {
     base: {
       color: '#fff',
