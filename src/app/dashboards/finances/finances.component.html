@@ -10,7 +10,7 @@
   <div class="sa_card topbar-strip">
     <div class="dashboard-top-header" fxLayout="row wrap" fxLayoutGap="0px" fxLayoutGap.md="0" fxLayoutGap.sm="0"
       fxLayoutGap.xs="0">
-      <div fxFlex>
+      <div fxFlex [ngClass] = "Apirequest <= 0? 'active' : 'disable'" class="topfilter">
         <app-date-menu-bar #dateBar (filter)="filterDate($event)" (changeDate)="choosedDate($event)">
         </app-date-menu-bar>
       </div>
@@ -21,7 +21,7 @@
             class="trendToggle sa_toogle_group2 toggle_switcher" aria-label="Font Style" [disabled]="trendxero">
             <mat-button-toggle checked value="off" class="target_off target_filter" (click)="toggleFilter('off')">
               <span>Off</span>
-            </mat-button-toggle>
+            </mat-button-toggle>           
             <mat-button-toggle value="current" class="target_current target_filter"  [disabled]="Apirequest <= 0?false:true"
             (click)="Apirequest <= 0?toggleFilter('current'):false">
               <span>Monthly</span>

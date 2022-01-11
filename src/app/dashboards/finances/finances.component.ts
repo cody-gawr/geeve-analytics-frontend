@@ -45,6 +45,7 @@ export class FinancesComponent implements AfterViewInit {
   public expensestrendstats: boolean = true;
   public connectedwith: any;
   public charTips: any = [];
+  public Apirequest = 8;
   public pieChartColors = [
     {
       backgroundColor: [
@@ -75,7 +76,6 @@ export class FinancesComponent implements AfterViewInit {
   public duration = 'm';
   public predictedChartColors;
   public trendText;
-  public Apirequest = 0;
   public apiUrl = environment.apiUrl;
   colorScheme = {
     domain: ['#6edbba', '#abb3ff', '#b0fffa', '#ffb4b5', '#d7f8ef', '#fffdac', '#fef0b8', '#4ccfae']
@@ -146,7 +146,7 @@ export class FinancesComponent implements AfterViewInit {
       } else {
         this.xeroConnect = false;
         this.myobConnect = false;
-      }
+      }      
       this.filterDate(this.chartService.duration$.value);
     }
   }
@@ -1433,7 +1433,10 @@ export class FinancesComponent implements AfterViewInit {
 
 
   loadDentist(newValue) {
-
+    this.Apirequest = 5;
+    if (this.connectedwith != '' && this.connectedwith != undefined) {
+      this.Apirequest = 8;
+    }
     $('#title').html('<span>Finances</span>');
     $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate));
     if (newValue == 'all') {
@@ -1558,11 +1561,13 @@ export class FinancesComponent implements AfterViewInit {
     this.netProfitTrendTotal = 0;
     this.netprofitstatsError = false;
     this.financesService.NetProfitPms(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((data) => {
+      this.Apirequest = this.Apirequest - 1;
       if (data.message == 'success') {
         this.netprofitstats = true;
         this.netProfitVal = Math.round(data.data);
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
       this.netprofitstatsError = true;
       this.netprofitstats = true;
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -1577,11 +1582,13 @@ export class FinancesComponent implements AfterViewInit {
     this.netProfitPmsVal = 0;
     this.netprofitPerError = false;
     this.financesService.netProfitPercentage(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((data) => {
+       this.Apirequest = this.Apirequest - 1;
       if (data.message == 'success') {
         this.netprofitpercentstats = true;
         this.netProfitPmsVal = Math.round(data.data);
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
       this.netprofitpercentstats = true;
       this.netprofitPerError = true;
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -1620,6 +1627,7 @@ export class FinancesComponent implements AfterViewInit {
     this.expensescChartTrendTotal = 0;
     this.pieChartLabels = [];
     this.financesService.categoryExpenses(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((data) => {
+      this.Apirequest = this.Apirequest - 1;
       if (data.message == 'success') {
         this.categoryExpensesLoader = false;
 
@@ -1653,6 +1661,7 @@ export class FinancesComponent implements AfterViewInit {
 
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
       this.categoryExpensesError = true;
       this.warningMessage = "Please Provide Valid Inputs!";
 
@@ -1672,6 +1681,7 @@ export class FinancesComponent implements AfterViewInit {
     this.productionChartTotal = 0;
     this.productionChartLabels = [];
     this.financesService.finProductionByClinician(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+      this.Apirequest = this.Apirequest - 1;
       this.productionChartLabelsres = [];
       this.productionChartTotal = 0;
       this.productionChartTrendIcon = "down";
@@ -1695,6 +1705,7 @@ export class FinancesComponent implements AfterViewInit {
         this.productionChartLabels = this.productionChartLabelsres;
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
       this.warningMessage = "Please Provide Valid Inputs!";
 
     }
@@ -1712,6 +1723,7 @@ export class FinancesComponent implements AfterViewInit {
     this.totalDiscountChartData = [];
     this.finTotalDiscountsLoader = true;
     this.financesService.finTotalDiscounts(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+      this.Apirequest = this.Apirequest - 1;
       this.totalDiscountChartDatares = [];
       this.totalDiscountChartLabelsres = [];
       this.totalDiscountChartTotal = 0;
@@ -1745,6 +1757,7 @@ export class FinancesComponent implements AfterViewInit {
         this.totalDiscountChartLabels = this.totalDiscountChartLabelsres;
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
       this.warningMessage = "Please Provide Valid Inputs!";
 
     }
@@ -1773,6 +1786,7 @@ export class FinancesComponent implements AfterViewInit {
     var user_id;
     var clinic_id;
     this.financesService.finTotalProduction(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+      this.Apirequest = this.Apirequest - 1;
       this.finCollection();
       if (data.message == 'success') {
 
@@ -1805,6 +1819,7 @@ export class FinancesComponent implements AfterViewInit {
           this.totalProductionTrendIcon = "up";
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
       this.warningMessage = "Please Provide Valid Inputs!";
 
     }
@@ -1835,6 +1850,7 @@ export class FinancesComponent implements AfterViewInit {
     this.collectionTrendIcon = "down";
     this.collectionTrendVal = 0;
     this.financesService.finCollection(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+      this.Apirequest = this.Apirequest - 1;
       if (data.message == 'success') {
         this.finCollectionLoader = false;
         this.collectionVal = 0;
@@ -1856,6 +1872,7 @@ export class FinancesComponent implements AfterViewInit {
           this.collectionTrendIcon = "up";
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
       this.warningMessage = "Please Provide Valid Inputs!";
 
     }
@@ -1875,6 +1892,7 @@ export class FinancesComponent implements AfterViewInit {
     this.productionTrendIcon = "down";
     this.productionTrendVal = 0;
     this.financesService.finProductionPerVisit(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+      this.Apirequest = this.Apirequest - 1;
       if (data.message == 'success') {
         this.finProductionPerVisitLoader = false;
         this.productionVal = Math.round(data.total);
@@ -1883,6 +1901,7 @@ export class FinancesComponent implements AfterViewInit {
           this.productionTrendIcon = "up";
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
       this.warningMessage = "Please Provide Valid Inputs!";
 
     }
@@ -1926,7 +1945,7 @@ export class FinancesComponent implements AfterViewInit {
 
   public currentText;
 
-  filterDate(duration) {
+  filterDate(duration) {    
     $('.customRange').css('display', 'none');
     if (this.toggleChecked)
       $('.target_off').click();
@@ -2229,7 +2248,7 @@ export class FinancesComponent implements AfterViewInit {
   }
   initiate_dentist() {
     var val = $('.internal_dentist').val();
-    this.loadDentist(val);
+    //this.loadDentist(val);
   }
 
   toggleChecked = false;

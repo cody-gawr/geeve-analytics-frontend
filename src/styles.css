@@ -8577,3 +8577,7 @@ button.Set-Colours, button.Set-Colours:focus, button.Set-Colours:active {
     padding: 0px !important;
     box-shadow: 1px 1px 1px #088a8a !important;
 }
+
+.topfilter.disable .sa_tabs_data span{
+  cursor: none;
+}
