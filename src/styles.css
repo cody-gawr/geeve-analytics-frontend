@@ -8421,8 +8421,8 @@ td.clslist {
 }
 .DentistProductionTable {
     width: 100%;
-    height: 423px;
-    /* overflow: scroll; */
+    max-height: 423px;
+    overflow: scroll;
     margin-left: 12px;
 }
 .DentistProductionTable table {
