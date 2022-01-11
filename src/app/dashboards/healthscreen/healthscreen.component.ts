@@ -53,7 +53,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public finProductionPerVisit_dif: any = 0;
   public productionVal = 0;
   public productionPrev = 0;  
-  public health_screen_mtd: any = 1;
+  public health_screen_mtd: any;
   public mtdText = 'Month To Date';
   public mtdInnText = 'Last Month';
   public options: any = {
@@ -90,7 +90,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public charTips: any = [];
 
 
-  constructor(
+ constructor(
     private healthscreenService: HealthScreenService,
     private dentistService: DentistService,
     private datePipe: DatePipe,
@@ -103,20 +103,13 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     public constants: AppConstants,
     public chartstipsService: ChartstipsService
   ) {
-    this.getChartsTips();
+  this.getChartsTips();
   }
 
   private warningMessage: string;
 
   ngAfterViewInit() {
-     this.health_screen_mtd = this._cookieService.get("health_screen_mtd");
-     if(this.health_screen_mtd == 1){
-        this.mtdText = 'Month To Date';
-        this.mtdInnText = 'Last Month';
-     }else{
-      this.mtdText = 'Last 30 days';
-      this.mtdInnText = 'Previous 30 days';
-     }
+     
    // this.getCustomiseSettings();
     $('#currentDentist').attr('did', 'all');
     // this.initiate_clinic();
@@ -157,7 +150,15 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     $('.sa_heading_bar').removeClass("filter_single"); // added
   }
 
-  initiate_clinic() {
+  async initiate_clinic() {
+    await this.getScreenMTD();
+    if(this.health_screen_mtd == 1){
+        this.mtdText = 'Month To Date';
+        this.mtdInnText = 'Last Month';
+     } else{
+      this.mtdText = 'Last 30 days';
+      this.mtdInnText = 'Previous 30 days';
+     }
     var val = $('#currentClinic').attr('cid');
     if (val != undefined) {
       let opts = this.constants.cookieOpt as CookieOptions;
@@ -171,6 +172,19 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
       this.loadHealthScreen();  
       
     }
+  }
+
+  getScreenMTD(){
+    var self = this;
+    return new Promise(function (resolve, reject) {
+      self.healthscreenService.getSetting().subscribe((data) => {
+          self.health_screen_mtd = data.data;       
+          resolve(true);
+      }, error => {
+        self.health_screen_mtd = this._cookieService.get("health_screen_mtd"); 
+        resolve(true);
+      });
+    }); 
   }
 
   // getCustomiseSettings() {
