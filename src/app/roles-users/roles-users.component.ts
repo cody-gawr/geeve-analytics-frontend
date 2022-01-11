@@ -637,9 +637,17 @@ initiate_clinic() {
     this.table = data;
   }
 
-
   enableEditing(rowIndex, cell) {
     this.editing[rowIndex + '-' + cell] = true;
 
+  }
+
+  onActivate(event) {
+    console.log(event);
+    if (event.type == 'click') {
+      if (event.row) {
+        this.editDialog(  event.row.sr - 1);
+      }
+    }
   }
 }
