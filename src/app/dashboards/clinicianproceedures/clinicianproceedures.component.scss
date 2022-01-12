@@ -47,9 +47,12 @@
 }
 
 .paTablecon {
-    height: 330px;
+    //height: 330px;
+    max-height: 423px;
+    min-height: 415px;
     width: 100%;
-    // overflow: hidden; 
+    overflow: scroll; 
+    margin-left: 12px;
 }
 table.paTable {
     width: 100%;
