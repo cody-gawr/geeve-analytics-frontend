@@ -10,7 +10,7 @@
   <div class="sa_card topbar-strip">
     <div class="dashboard-top-header" fxLayout="row wrap" fxLayoutGap="0px" fxLayoutGap.md="0" fxLayoutGap.sm="0"
       fxLayoutGap.xs="0">
-      <div fxFlex [ngClass] = "Apirequest <= 0? 'active' : 'disable'" class="topfilter">
+      <div fxFlex>
         <app-date-menu-bar #dateBar (filter)="filterDate($event)" (changeDate)="choosedDate($event)">
         </app-date-menu-bar>
       </div>

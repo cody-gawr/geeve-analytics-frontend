@@ -1,38 +1,38 @@
 <div class="sa_tabs_design sa_responsive_tabs">
   <div class="sa_tabs_list" fxHide [fxShow.gt-sm]="true">
     <div class="sa_tabs_data">
-      <span (click)="filterDate('m')" class="filter_m filter sa_filter_span" 
+      <button (click)="filterDate('m')" class="filter_m filter sa_filter_span" 
       [ngClass]="{'active': currentSelectedPeriod==='m'}">
         This Month
-      </span>
-      <span (click)="filterDate('lm')" class="filter_lm filter sa_filter_span"
+      </button>
+      <button (click)="filterDate('lm')" class="filter_lm filter sa_filter_span"
       [ngClass]="{'active': currentSelectedPeriod==='lm'}">
         Last Month
-      </span>
-      <span (click)="filterDate('q')" class="filter_q filter sa_filter_span"
+      </button>
+      <button (click)="filterDate('q')" class="filter_q filter sa_filter_span"
       [ngClass]="{'active': currentSelectedPeriod==='q'}">
         This Quarter
-      </span>
-      <span (click)="filterDate('lq')" class="filter_lq filter sa_filter_span"
+      </button>
+      <button (click)="filterDate('lq')" class="filter_lq filter sa_filter_span"
       [ngClass]="{'active': currentSelectedPeriod==='lq'}">
         Last Quarter
-      </span>
-      <span (click)="filterDate('cytd')" class="filter_cytd filter sa_filter_span"
+      </button>
+      <button (click)="filterDate('cytd')" class="filter_cytd filter sa_filter_span"
       [ngClass]="{'active': currentSelectedPeriod==='cytd'}">
         Calendar Year
-      </span>
-      <span (click)="filterDate('lcytd')" class="filter_lcytd filter sa_filter_span"
+      </button>
+      <button (click)="filterDate('lcytd')" class="filter_lcytd filter sa_filter_span"
       [ngClass]="{'active': currentSelectedPeriod==='lcytd'}">
         Last Calendar Year
-      </span>
-      <span (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span"
+      </button>
+      <button (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span"
       [ngClass]="{'active': currentSelectedPeriod==='fytd'}">
         Financial Year
-      </span>
-      <span (click)="filterDate('lfytd')" class="filter_lfytd filter sa_filter_span"
+      </button>
+      <button (click)="filterDate('lfytd')" class="filter_lfytd filter sa_filter_span"
       [ngClass]="{'active': currentSelectedPeriod==='lfytd'}">
         Last Financial Year
-      </span>
+      </button>
     </div>
   </div>
   <div class="sa_tabs_list" [fxHide.gt-sm]="true">

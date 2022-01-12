@@ -1562,12 +1562,14 @@ export class FinancesComponent implements AfterViewInit {
     this.netprofitstatsError = false;
     this.financesService.NetProfitPms(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         this.netprofitstats = true;
         this.netProfitVal = Math.round(data.data);
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.netprofitstatsError = true;
       this.netprofitstats = true;
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -1583,12 +1585,14 @@ export class FinancesComponent implements AfterViewInit {
     this.netprofitPerError = false;
     this.financesService.netProfitPercentage(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((data) => {
        this.Apirequest = this.Apirequest - 1;
+       this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         this.netprofitpercentstats = true;
         this.netProfitPmsVal = Math.round(data.data);
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.netprofitpercentstats = true;
       this.netprofitPerError = true;
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -1628,6 +1632,7 @@ export class FinancesComponent implements AfterViewInit {
     this.pieChartLabels = [];
     this.financesService.categoryExpenses(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         this.categoryExpensesLoader = false;
 
@@ -1662,6 +1667,7 @@ export class FinancesComponent implements AfterViewInit {
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.categoryExpensesError = true;
       this.warningMessage = "Please Provide Valid Inputs!";
 
@@ -1682,6 +1688,7 @@ export class FinancesComponent implements AfterViewInit {
     this.productionChartLabels = [];
     this.financesService.finProductionByClinician(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.productionChartLabelsres = [];
       this.productionChartTotal = 0;
       this.productionChartTrendIcon = "down";
@@ -1706,6 +1713,7 @@ export class FinancesComponent implements AfterViewInit {
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
 
     }
@@ -1724,6 +1732,7 @@ export class FinancesComponent implements AfterViewInit {
     this.finTotalDiscountsLoader = true;
     this.financesService.finTotalDiscounts(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.totalDiscountChartDatares = [];
       this.totalDiscountChartLabelsres = [];
       this.totalDiscountChartTotal = 0;
@@ -1758,6 +1767,7 @@ export class FinancesComponent implements AfterViewInit {
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
 
     }
@@ -1787,6 +1797,7 @@ export class FinancesComponent implements AfterViewInit {
     var clinic_id;
     this.financesService.finTotalProduction(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.finCollection();
       if (data.message == 'success') {
 
@@ -1820,6 +1831,7 @@ export class FinancesComponent implements AfterViewInit {
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
 
     }
@@ -1851,6 +1863,7 @@ export class FinancesComponent implements AfterViewInit {
     this.collectionTrendVal = 0;
     this.financesService.finCollection(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         this.finCollectionLoader = false;
         this.collectionVal = 0;
@@ -1873,6 +1886,7 @@ export class FinancesComponent implements AfterViewInit {
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
 
     }
@@ -1893,6 +1907,7 @@ export class FinancesComponent implements AfterViewInit {
     this.productionTrendVal = 0;
     this.financesService.finProductionPerVisit(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         this.finProductionPerVisitLoader = false;
         this.productionVal = Math.round(data.total);
@@ -1902,6 +1917,7 @@ export class FinancesComponent implements AfterViewInit {
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
 
     }
@@ -2320,6 +2336,7 @@ export class FinancesComponent implements AfterViewInit {
     var clinic_id;
     this.financesService.finProductionByClinicianTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.finProductionByClinicianTrendLoader = false;
       if (data.message == 'success') {
         data.data.forEach(res => {
@@ -2354,6 +2371,7 @@ export class FinancesComponent implements AfterViewInit {
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });
@@ -2389,6 +2407,7 @@ export class FinancesComponent implements AfterViewInit {
     var clinic_id;
     this.financesService.finTotalDiscountsTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         this.finTotalDiscountsTrendLoader = false;
         data.data.forEach(res => {
@@ -2407,6 +2426,7 @@ export class FinancesComponent implements AfterViewInit {
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });
@@ -2441,6 +2461,7 @@ export class FinancesComponent implements AfterViewInit {
     var clinic_id;
     this.financesService.finOverdueAccountsTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         this.finOverdueAccountsTrendLoader = false;
         data.data.forEach(res => {
@@ -2457,6 +2478,7 @@ export class FinancesComponent implements AfterViewInit {
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });
@@ -2496,6 +2518,7 @@ export class FinancesComponent implements AfterViewInit {
       this.totalProductionChartTrendLabels1 = [];
       this.netProfitPercentChartTrend1 = [];
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         this.finTotalProductionTrendLoader = false;
         this.finNetProfitTrendLoader = false;
@@ -2519,6 +2542,7 @@ export class FinancesComponent implements AfterViewInit {
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });
@@ -2553,6 +2577,7 @@ export class FinancesComponent implements AfterViewInit {
     var clinic_id;
     this.financesService.finCollectionTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         this.finCollectionTrendLoader = false;
         data.data.forEach(res => {
@@ -2574,6 +2599,7 @@ export class FinancesComponent implements AfterViewInit {
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });
@@ -2612,6 +2638,7 @@ export class FinancesComponent implements AfterViewInit {
       this.productionVisitChartTrendLabels1 = [];
       this.finProductionPerVisitTrendLoader = false;
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data && data.message == 'success') {
         data.data.forEach(res => {
           this.productionVisitChartTrend1.push(Math.round(res.production));
@@ -2627,6 +2654,7 @@ export class FinancesComponent implements AfterViewInit {
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });
@@ -2663,6 +2691,7 @@ export class FinancesComponent implements AfterViewInit {
     var clinic_id;
     this.financesService.finNetProfitTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         this.finNetProfitTrendLoader = false;
         data.data.forEach(res => {
@@ -2679,6 +2708,7 @@ export class FinancesComponent implements AfterViewInit {
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });
@@ -2714,6 +2744,7 @@ export class FinancesComponent implements AfterViewInit {
     var clinic_id;
     this.financesService.finNetProfitPercentTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         this.finNetProfitPercentTrendLoader = false;
 
@@ -2731,6 +2762,7 @@ export class FinancesComponent implements AfterViewInit {
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });
@@ -2801,6 +2833,7 @@ export class FinancesComponent implements AfterViewInit {
     this.financesService.finNetProfitPMSTrend(this.clinic_id, this.trendValue, this.connectedwith).subscribe((data) => {
       this.trendxero = false;
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         if (data.data)
           data.data.forEach(res => {
@@ -2819,6 +2852,7 @@ export class FinancesComponent implements AfterViewInit {
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });
@@ -2835,6 +2869,7 @@ export class FinancesComponent implements AfterViewInit {
     this.financesService.finNetProfitPMSPercentTrend(this.clinic_id, this.trendValue, this.connectedwith).subscribe((data) => {
       this.trendxero = false;
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         this.netProfitPmsChartTrend1 = [];
         this.netProfitChartTrendLabels1 = [];
@@ -2856,6 +2891,7 @@ export class FinancesComponent implements AfterViewInit {
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
     });
   }
@@ -2872,6 +2908,7 @@ export class FinancesComponent implements AfterViewInit {
     this.expensesChartTrendError = false;
     this.financesService.finExpensesByCategoryTrend(this.clinic_id, this.trendValue, this.connectedwith).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         this.expensestrendstats = true;
         data.data.expenses.forEach((result, key) => {
@@ -2890,6 +2927,7 @@ export class FinancesComponent implements AfterViewInit {
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.expensesChartTrendError = true;
       this.warningMessage = "Please Provide Valid Inputs!";
 
@@ -2916,6 +2954,14 @@ export class FinancesComponent implements AfterViewInit {
         this.charTips = data.data;
       }
     }, error => { });
+  }
+  enableDiabaleButton(val) {
+    if(val <= 0 ){
+      $('.sa_tabs_data').removeClass('disabledbutton');
+    }else{
+      $('.sa_tabs_data').addClass('disabledbutton');
+     
+    }
   }
 
 }

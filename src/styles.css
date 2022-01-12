@@ -218,6 +218,8 @@
   border-bottom: 2px solid transparent;
   font-size    : 13px;
   cursor       : pointer;
+  border       : 0px;
+  background   : transparent;
 }
 
 .sa_tabs_design .sa_filter_span:first-child {
@@ -8578,6 +8580,12 @@ button.Set-Colours, button.Set-Colours:focus, button.Set-Colours:active {
     box-shadow: 1px 1px 1px #088a8a !important;
 }
 
-.topfilter.disable .sa_tabs_data span{
-  cursor: none;
+
+.disabledbutton {
+  pointer-events: none;
+}
+.sa_tabs_design button.active {
+  color: #119582;
+  border-bottom: 1px solid #119582;
+  background-color: transparent
 }
