@@ -8581,11 +8581,12 @@ button.Set-Colours, button.Set-Colours:focus, button.Set-Colours:active {
 }
 
 
-.disabledbutton {
-  pointer-events: none;
-}
 .sa_tabs_design button.active {
   color: #119582;
   border-bottom: 1px solid #119582;
   background-color: transparent
+}
+
+.sa_tabs_data button.filter.sa_filter_span[disabled] {
+  cursor: progress;
 }

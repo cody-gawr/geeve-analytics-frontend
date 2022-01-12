@@ -1433,6 +1433,7 @@ export class FinancesComponent implements AfterViewInit {
 
 
   loadDentist(newValue) {
+    $('.sa_tabs_data button').prop('disabled',true); 
     this.Apirequest = 5;
     if (this.connectedwith != '' && this.connectedwith != undefined) {
       this.Apirequest = 8;
@@ -2957,10 +2958,9 @@ export class FinancesComponent implements AfterViewInit {
   }
   enableDiabaleButton(val) {
     if(val <= 0 ){
-      $('.sa_tabs_data').removeClass('disabledbutton');
+      $('.sa_tabs_data button').prop('disabled',false);
     }else{
-      $('.sa_tabs_data').addClass('disabledbutton');
-     
+      $('.sa_tabs_data button').prop('disabled',true);     
     }
   }
 
