@@ -1992,6 +1992,7 @@ export class MarketingComponent implements AfterViewInit {
   }
 
   checkXeroStatus() {
+    this.newAcqValueError = false;
     this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe((res) => {
       if (res.message == 'success') {
         if (res.data.xero_connect == 1) {
@@ -2007,6 +2008,7 @@ export class MarketingComponent implements AfterViewInit {
     });
   }
   checkMyobStatus() {
+    this.newAcqValueError = false;
     this.clinicSettingsService.checkMyobStatus(this.clinic_id).subscribe((res) => {
       if (res.message == 'success') {
         if (res.data.myob_connect == 1) {
