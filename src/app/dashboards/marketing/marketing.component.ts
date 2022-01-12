@@ -1191,6 +1191,7 @@ export class MarketingComponent implements AfterViewInit {
 
       this.marketingService.categoryExpenses(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((data) => {
         if (data.message == 'success') {
+          this.newAcqValueError = false;
           this.fdnewPatientsAcqLoader = false;
           if (data.goals) {
             this.newAcqValueGoal = data.goals;
@@ -1821,7 +1822,7 @@ export class MarketingComponent implements AfterViewInit {
         this.fdnewPatientsAcqLoader = false;
         this.Apirequest = this.Apirequest - 1;
         if (data.message == 'success') {
-
+          this.newAcqValueError = false;
           this.expenseDataTrend1 = [];
           this.expenseDataTrendLabels1 = [];
           this.newPatientsChartTemp.forEach((res, key) => {
