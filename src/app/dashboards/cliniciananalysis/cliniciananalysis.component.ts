@@ -1486,6 +1486,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public collectionExpData1: any = [];
   public collectionExpTotalPrev: any = 0;
   public collectionExpTooltip: string = '';
+  public collectionLabelsExp1: any = [];
+  public collectionLabelsExp: any = [];
   public collectionExpData: any[] = [{
     ...this.chartService.baseChartData,
     data: [],
@@ -1495,14 +1497,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   private collectionExpChart() {
     this.collectionExpLoader = true;
     this.collectionExpData1 = [];
-    this.collectionLabels1 = [];
+    this.collectionLabelsExp1 = [];
     this.collectionExpTotal = 0;
-    this.collectionLabels = [];
+    this.collectionLabelsExp = [];
     this.barChartOptionsDP.annotation = [];
     this.clinic_id && this.cliniciananalysisService.DentistCollectionExp(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       this.collectionExpData1 = [];
-      this.collectionLabels1 = [];
-      this.collectionLabels = [];
+      this.collectionLabelsExp1 = [];
+      this.collectionLabelsExp = [];
       this.collectionExpTotal = 0;
       if (data.message == 'success') {
         this.collectionExpLoader = false;
@@ -1511,17 +1513,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var selectedDen: any = 0;
         data.data.forEach(res => {
 
-          if (res.collection > 0) {
+          // if (res.collection > 0) {
             this.collectionExpData1.push(Math.round(res.collection));
             var name = res.provider_name;
             if (res.provider_name != null && res.provider_name != 'Anonymous') {
-              this.collectionLabels1.push(res.provider_name);
+              this.collectionLabelsExp1.push(res.provider_name);
               selectedDen = i;
             } else {
-              this.collectionLabels1.push(res.provider_name);
+              this.collectionLabelsExp1.push(res.provider_name);
             }
             i++;
-          }
+          // }
         });
 
         if (this.user_type == '4' && this.childid != '') {
@@ -1550,13 +1552,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         ]; // this is static array for colors of bars
 
         let dynamicColors = [];
-        this.collectionLabels1.forEach((label, labelIndex) => {
+        this.collectionLabelsExp1.forEach((label, labelIndex) => {
           dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
         }); // This is dynamic array for colors of bars
 
 
         this.collectionExpData[0].backgroundColor = dynamicColors;
-        this.collectionLabels = this.collectionLabels1;
+        this.collectionLabelsExp = this.collectionLabelsExp1;
         this.collectionExpTotal = Math.round(data.total);
         this.collectionTotalAverage = Math.round(data.total_average);
         this.collectionExpTotalPrev = Math.round(data.total_ta);

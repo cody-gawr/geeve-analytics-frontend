@@ -179,7 +179,7 @@
               <!-- CollectionExp Chart Start -->
               <div *ngIf="proCollShow == 3">
                 <div class="div-pro-coll-show" *ngIf="collectionExpData[0].data.length && !collectionExpLoader">
-                  <canvas id="dentistCollection" baseChart [datasets]="collectionExpData" [labels]="collectionLabels"
+                  <canvas id="dentistCollection" baseChart [datasets]="collectionExpData" [labels]="collectionLabelsExp"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
                     [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
@@ -618,7 +618,7 @@
               <p class="chart-placeholder-text">You have no collection in the selected period</p>
             </div>
             <div class="no-data-placeholder coll-placeholder"
-              *ngIf="showWeekTrend == true  && dentistCollectionWeeklyTrendLabels.length <= 0 && proCollShow == 3"
+              *ngIf="showWeekTrend == true  && dentistCollectionExpWeeklyTrendLabels.length <= 0 && proCollShow == 3"
               >
               <div class="sa_nodata_div">
               </div>
