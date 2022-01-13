@@ -9,6 +9,7 @@
     <div
       class="header_first_select"
       *ngIf="
+        route != '/rewards' &&
         route != '/roles-users' &&
         !route.includes('/clinic-settings') &&
         route != '/clinic' &&

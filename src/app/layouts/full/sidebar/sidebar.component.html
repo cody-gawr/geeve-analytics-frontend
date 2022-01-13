@@ -123,6 +123,15 @@
             <span fxFlex></span>
         </a> 
     </mat-list-item>
+    <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
+         *ngIf="apiUrl.includes('test') || apiUrl.includes('staging')">
+        <a class="" appAccordionToggle [routerLink]="['/rewards']">
+            <i class="fas fa-hand-holding-usd"></i>
+            <span>Rewards</span>
+            <span class="badge ml-auto mr-1 badge-light-success badge-pill yellow"> New </span>
+            <span fxFlex></span>
+        </a> 
+    </mat-list-item>
     <mat-list-item appAccordionLink routerLinkActive="selected" group="string">
         <a class="" appAccordionToggle (click)="open()">
             <i class="fas fa-handshake"></i>
