@@ -1,74 +1,75 @@
-.sa_matcard_content .partner-title{
-    font-size: 23px !important;
-    padding: 10px 0;
+.reward-main-container {
+    width: 80%;
+    margin: 0 auto;
 }
-mat-card-content.exclusive-partner-con{
+.top-header-con h2 {
+    text-align: center;
+    padding: 0;
+    margin-bottom: 10px;
+}
+.top-header-con div {
     text-align: center;
 }
-.sa_matcard_content .exclusive-partner-title {
-    font-size: 30px !important;
-    padding: 20px 0 10px;
-    flex-flow: column;
+.rewar-partner-main {
+    padding: 5% 10%;
+    display: block;
+    float: left;
+}
+.rewards-cards {
+    width: 30%;
+    margin-right: 5%;
+    float: left;    
+    margin-top: 30px;
+    display: inline-block;
+ 
+    box-shadow: 0px 0px 7px #cecece;
+    border-radius: 4px;
+    position: relative;
+}
+.Card, .hower-Card {
+    padding: 10% 2% 10% 2%;
+}
+.hower-Card {
+    position: absolute;
+    background: linear-gradient(14deg,#17a5aa,#18a689);
+    top: 0;
+    z-index: 99;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    display: none;
+    cursor: pointer;
 }
 
-.top-logo {
-    width: 90px;
-    height: 60px;
-    margin: 15px auto 0;
-    border: 1px solid #cecece;
-}
-.below-partner-con {
-    padding: 20px  5px;
-    position: relative;
-    box-shadow: 2px 3px 5px  #cecece;
+.rewards-cards:hover .hower-Card{
+    display: block;
 }
 .top-text {
-    font-size: 15px;
-    padding: 10px 0px;
     text-align: center;
+    height: 95px;
+    vertical-align: middle;
+    display: table-cell;
+    width: 250px;
+}
+.rewards-cards.noMargin{
+    margin-right: 0%;
+}
+.rewards-cards .logo {
+    width: 100%;
+    text-align: center;
+    display: block;
+    height: 70px;
 }
 
 .seprator {
-    width: 100%;
-    border-bottom: 1px solid #dfdfdf;
+    border-bottom: 1px solid #cecece;
+    margin-bottom: 20px;
 }
-
-.below-category {
-    font-size: 13px;
+.below-text {
     text-align: center;
-    padding-top: 10px;
 }
-
-.hoover-text-partner {
-    display: none;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #2c605d;
-    top: 0px;
-    left: 0;
-    opacity: 0.95;
-    text-align: justify;
-    padding: 20px;
-    color: #ffffff;
-    cursor: pointer;
-    overflow: hidden;
-}
-.below-partner-con:hover .hoover-text-partner{
-    display: block;
-}
-.below-partner-images {
-    border: 1px solid #cecece;
-    margin-top: 50px;
-}
-
-.mat-card .mat-card-content .partner-con {
-    padding: 18% 0 0 10% !important;
-}
-
-.margintp-0{
-    margin-top: 0px !important;
-}
-.paddingtp-0{
-    padding-top: 0px !important;
+.below-text i.fas.fa-pen {
+    color: #686868;
+    font-size: 12px;
+    padding-right: 5px;
 }

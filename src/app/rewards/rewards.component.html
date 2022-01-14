@@ -1,163 +1,21 @@
-<mat-card class="background-shadow paddingtp-0 margintp-0">
-	<mat-card-content class="paddingtp-0 margintp-0">
-		<div class="container paddingtp-0 margintp-0">
-			<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
-            <div fxFlex="calc(40% - 10px)" fxFlex.md="calc(40% - 10px)" fxFlex.sm="100" fxFlex.xs="100"
-              class="sa_huddle sa_flexbg mh-matcard custom_production_match">
-              <mat-card class="sa_hccard">
-                <mat-card-content class="sa_matcard_content partner-con">
-                  <mat-card-title class="partner-title">Exclusive Jeeve partner benefits</mat-card-title>
-                  Take advantage of your Jeeve subscription and access special offers with our partners.
-                </mat-card-content>
-              </mat-card>    
-            </div>
-            <div fxFlex="calc(40% - 10px)" fxFlex.md="calc(40% - 10px)" fxFlex.sm="100" fxFlex.xs="100"
-              class="sa_huddle sa_flexbg mh-matcard custom_production_match">
-              <mat-card class="sa_hccard">
-                <mat-card-content class="sa_matcard_content">
-                	<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
-                  	<div fxFlex="calc(30% - 10px)" fxFlex.md="calc(30% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="partner-images">
-                  		<img src="https://www.logodesign.net/images/illustration-logo.png" class="rewart-partner">
-                  	</div>
-                  	<div fxFlex="calc(30% - 10px)" fxFlex.md="calc(30% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="partner-images">
-                  		<img src="https://www.logodesign.net/images/illustration-logo.png" class="rewart-partner">
-                  	</div>
-                  	<div fxFlex="calc(30% - 10px)" fxFlex.md="calc(30% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="partner-images">
-                  		<img src="https://www.logodesign.net/images/illustration-logo.png" class="rewart-partner">
-                  	</div>
-                  	</div>
-                  	<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
-                  	<div fxFlex="calc(30% - 10px)" fxFlex.md="calc(30% - 10px)" fxFlex.sm="100" fxFlex.xs="30" class="partner-images">
-                  		<img src="https://www.logodesign.net/images/illustration-logo.png" class="rewart-partner">
-                  	</div>
-                  	<div fxFlex="calc(30% - 10px)" fxFlex.md="calc(30% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="partner-images">
-                  		<img src="https://www.logodesign.net/images/illustration-logo.png" class="rewart-partner">
-                  	</div>
-                  	<div fxFlex="calc(30% - 10px)" fxFlex.md="calc(30% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="partner-images">
-                  		<img src="https://www.logodesign.net/images/illustration-logo.png" class="rewart-partner">
-                  	</div>
-                  	</div>
-                </mat-card-content>
-              </mat-card>    
-            </div>
+<div class="reward-main-container">
+   <div class="top-header-con">
+      <h2>Our exclusive partner rewards</h2>
+      <div>Kick off your business growth or drive business efficiency with a range of our app partners at a discounted price.</div>     
+   </div>
+   <div class="rewar-partner-main">
+      <div class="rewards-cards" *ngFor="let reward of rewards; let i = index;" [ngClass] = "( ((i+1) % 3) == 0)? 'noMargin' : '' ">
+          <div class="Card">
+            <div class="logo"><img src="/assets/images/partners/{{ reward.logo_url }}" /></div>
+            <div class="top-text">{{ reward.top_text }}</div>
+            <div class="seprator"></div>
+            <div class="below-text"><i class="fas fa-pen"></i> {{ reward.category }}</div>
           </div>
-
-          <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
-          		<div fxFlex="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_huddle sa_flexbg mh-matcard custom_production_match">
-              	<mat-card class="sa_hccard">
-                <mat-card-content class="sa_matcard_content exclusive-partner-con">
-                   <mat-card-title class="exclusive-partner-title">Jeeve exclusive partner rewards</mat-card-title>
-                  	Kick off your business growth or drive business efficiency with a range of our app partners at a discounted price.
-                </mat-card-content>
-              </mat-card>    
-            </div>
+          <div class="hower-Card" (click) = "openLink(reward.wordpress_url)" >
+            <div class="logo"><img src="/assets/images/partners/{{ reward.hover_logo_url }}" /></div>
+            <div class="top-text">{{ reward.hover_text }}</div>
+            <div class="below-text">Get Started</div>
           </div>
-          <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
-          		<div fxFlex="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_huddle sa_flexbg mh-matcard custom_production_match">
-              	
-         
-                <mat-card-content class="sa_matcard_content">
-                	<div fxLayout="row wrap"   fxLayoutGap="50px" fxLayoutGap.sm="50px" fxLayoutGap.xs="50px">
-                  	<div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="below-partner-images">
-                  		<div class="below-partner-con">
-                  			<div class="top-logo"><img src="https://www.logodesign.net/images/illustration-logo.png" class="rewart-partner"></div>
-                  			<div class="top-text">Learn how we can help your practice grow</div>
-                  			<div class="seprator"></div>
-                  			<div class="below-category">Dental Consultant</div>
-                  			<div class="hoover-text-partner" (click) ="openLink('https://www.google.com/search?q=jeeve+solutions')">
-                  				Learn how we can help your practice grow
-                  			</div>
-                  		</div>
-                  	</div>
-                  	<div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="below-partner-images">
-                  		<div class="below-partner-con">
-                  			<div class="top-logo"><img src="https://www.logodesign.net/images/illustration-logo.png" class="rewart-partner"></div>
-                  			<div class="top-text">Learn how we can help your practice grow</div>
-                  			<div class="seprator"></div>
-                  			<div class="below-category">Dental Consultant</div>
-                  			<div class="hoover-text-partner" (click) ="openLink('https://www.google.com/search?q=jeeve+solutions')">
-                  				Learn how we can help your practice grow
-                  			</div>
-                  		</div>
-                  		
-                  		
-                  	</div>
-                  	<div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="below-partner-images">
-                  		<div class="below-partner-con">
-                  			<div class="top-logo"><img src="https://www.logodesign.net/images/illustration-logo.png" class="rewart-partner"></div>
-                  			<div class="top-text">Learn how we can help your practice grow</div>
-                  			<div class="seprator"></div>
-                  			<div class="below-category">Dental Consultant</div>
-                  			<div class="hoover-text-partner" (click) ="openLink('https://www.google.com/search?q=jeeve+solutions')">
-                  				Learn how we can help your practice grow
-                  			</div>
-                  		</div>
-                  	</div>
-                  	<div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="below-partner-images">
-                  		<div class="below-partner-con">
-                  			<div class="top-logo"><img src="https://www.logodesign.net/images/illustration-logo.png" class="rewart-partner"></div>
-                  			<div class="top-text">Learn how we can help your practice grow</div>
-                  			<div class="seprator"></div>
-                  			<div class="below-category">Dental Consultant</div>
-                  			<div class="hoover-text-partner" (click) ="openLink('https://www.google.com/search?q=jeeve+solutions')">
-                  				Learn how we can help your practice grow
-                  			</div>
-                  		</div>
-                  	</div>
-                  	</div>
-                  	<div fxLayout="row wrap" fxLayoutGap="50px" fxLayoutGap.sm="50px" fxLayoutGap.xs="50px">
-                  
-                  	<div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="below-partner-images">
-                  		<div class="below-partner-con">
-                  			<div class="top-logo"><img src="https://www.logodesign.net/images/illustration-logo.png" class="rewart-partner"></div>
-                  			<div class="top-text">Learn how we can help your practice grow</div>
-                  			<div class="seprator"></div>
-                  			<div class="below-category">Dental Consultant</div>
-                  			<div class="hoover-text-partner" (click) ="openLink('https://www.google.com/search?q=jeeve+solutions')">
-                  				Learn how we can help your practice grow
-                  			</div>
-                  		</div>              	
-                  	</div>   
-                  	<div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="below-partner-images">
-                  		<div class="below-partner-con">
-                  			<div class="top-logo"><img src="https://www.logodesign.net/images/illustration-logo.png" class="rewart-partner"></div>
-                  			<div class="top-text">Learn how we can help your practice grow</div>
-                  			<div class="seprator"></div>
-                  			<div class="below-category">Dental Consultant</div>
-                  			<div class="hoover-text-partner" (click) ="openLink('https://www.google.com/search?q=jeeve+solutions')">
-                  				Learn how we can help your practice grow
-                  			</div>
-                  		</div>              	
-                  	</div>   
-                  <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="below-partner-images">
-                  		<div class="below-partner-con">
-                  			<div class="top-logo"><img src="https://www.logodesign.net/images/illustration-logo.png" class="rewart-partner"></div>
-                  			<div class="top-text">Learn how we can help your practice grow</div>
-                  			<div class="seprator"></div>
-                  			<div class="below-category">Dental Consultant</div>
-                  			<div class="hoover-text-partner" (click) ="openLink('https://www.google.com/search?q=jeeve+solutions')">
-                  				Learn how we can help your practice grow
-                  			</div>
-                  		</div>              	
-                  	</div> 
-                  <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="below-partner-images">
-                  		<div class="below-partner-con">
-                  			<div class="top-logo"><img src="https://www.logodesign.net/images/illustration-logo.png" class="rewart-partner"></div>
-                  			<div class="top-text">Learn how we can help your practice grow</div>
-                  			<div class="seprator"></div>
-                  			<div class="below-category">Dental Consultant</div>
-                  			<div class="hoover-text-partner" (click) ="openLink('https://www.google.com/search?q=jeeve+solutions')">
-                  				Learn how we can help your practice grow
-                  			</div>
-                  		</div>              	
-                  	</div>                 
-                  	</div>
-                </mat-card-content> 
-           
-
-
-            </div>
-          </div>
-    	</div>
-	</mat-card-content>
-</mat-card>
+      </div>
+   </div>
+</div>

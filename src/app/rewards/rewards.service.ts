@@ -27,9 +27,9 @@ export class RewardsService {
         return headers;
     }
     // clinic Production Service
-    dentistProduction( clinic_id, user_type = this._cookieService.get("user_type") ): Observable<any> {
+    dentistProduction(): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/LostOpportunity/loLostOpportunity?clinic_id="+clinic_id, header)
+        return this.http.get(this.apiUrl +"/Rewards/getRewards", header)
         .pipe(map((response: Response) => {
                         return response;
                     })

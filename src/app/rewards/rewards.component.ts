@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit,ViewEncapsulation } from '@angular/core';
 import { RewardsService } from './rewards.service';
+import { CookieService } from "ngx-cookie";
+import {  Router } from "@angular/router";
 @Component({
   selector: 'app-rewards',
   templateUrl: './rewards.component.html',
@@ -7,21 +9,28 @@ import { RewardsService } from './rewards.service';
   encapsulation: ViewEncapsulation.None
 })
 export class RewardsComponent implements OnInit, OnDestroy {	
-	constructor(public rewardsService: RewardsService ) { 
+	public isLoading:boolean =  true;
+	public rewards:any =  [];
+	constructor(public rewardsService: RewardsService,private _cookieService: CookieService, private router: Router) { 
 		$('#title').html('Rewards');
+		this.dentistProduction();
 	}
 
   ngOnInit() {}
 
 	ngOnDestroy() {
 	}  
-	lostOpportunityData(){
-		/*
+	dentistProduction(){
+		
 		this.isLoading = true;
-		this.lostOpportunityService.dentistProduction(this.clinic_id).subscribe( (data:any) => {
+		this.rewardsService.dentistProduction().subscribe( (data:any) => {
+			if(data.message == 'success'){
+				this.rewards = data.data;
+			}
 		}, error => {
-     		alert('Something Went Wrong.');
-    });*/
+      this._cookieService.removeAll();
+       this.router.navigateByUrl("/login");
+    });
 	}
 
 	openLink(link){
