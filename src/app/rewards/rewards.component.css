@@ -73,3 +73,9 @@
     font-size: 12px;
     padding-right: 5px;
 }
+.Card.bg-card{
+    background-color:#ffffff
+}
+.clor-txt{
+    color:#6c747f
+}
