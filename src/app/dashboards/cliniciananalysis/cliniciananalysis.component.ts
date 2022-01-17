@@ -1203,7 +1203,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
 
         data.data.forEach(res => {
-          if (res.production > 0) {
+          // if (res.production > 0) {
             this.barChartData1.push(Math.round(res.production));
             var name = res.provider_name;
             if (res.provider_name != null && res.provider_name != 'Anonymous') {
@@ -1213,7 +1213,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               this.barChartLabels1.push(res.provider_name);
             }
             i++;
-          }
+          // }
         });
         /********** Add Space to top of graph ****/
         let maxY = Math.max(...this.barChartData1);
@@ -1377,7 +1377,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var selectedDen: any = 0;
         data.data.forEach(res => {
 
-          if (res.collection > 0) {
+          // if (res.collection > 0) {
             this.collectionData1.push(Math.round(res.collection));
             var name = res.provider_name;
             if (res.provider_name != null && res.provider_name != 'Anonymous') {
@@ -1387,7 +1387,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               this.collectionLabels1.push(res.provider_name);
             }
             i++;
-          }
+          // }
         });
 
         if (this.user_type == '4' && this.childid != '') {
