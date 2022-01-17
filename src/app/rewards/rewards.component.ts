@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit,ViewEncapsulation } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { RewardsService } from './rewards.service';
 import { CookieService } from "ngx-cookie";
 import {  Router } from "@angular/router";
@@ -8,17 +9,21 @@ import {  Router } from "@angular/router";
   styleUrls: ['./rewards.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class RewardsComponent implements OnInit, OnDestroy {	
+export class RewardsComponent implements OnInit, OnDestroy {
+	title = 'Rewards & Exclusive Partner Offers | Jeeve Analytics';	
 	public isLoading:boolean =  true;
 	public rewards:any =  [];
-	constructor(public rewardsService: RewardsService,private _cookieService: CookieService, private router: Router) { 
+	constructor(private titleService:Title,public rewardsService: RewardsService,private _cookieService: CookieService, private router: Router) { 
 		$('#title').html('Rewards');
 		this.dentistProduction();
 	}
 
-  ngOnInit() {}
+  ngOnInit() {
+	this.titleService.setTitle(this.title);
+  }
 
 	ngOnDestroy() {
+		this.titleService.setTitle("Jeeve Analytics");
 	}  
 	dentistProduction(){
 		
