@@ -2937,6 +2937,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   private getDentists() {
     this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
       this.selectedDentist = 'all';
+      if (this._cookieService.get("clinic_dentist")) {
+          var dentistVal1 = this._cookieService.get("clinic_dentist").split('_');
+          this.selectedDentist = dentistVal1[1];
+      } 
       if (res.message == 'success') {
         this.dentists = res.data;
         this.dentistCount = res.data.length;
