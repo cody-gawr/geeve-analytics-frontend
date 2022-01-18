@@ -244,7 +244,7 @@
             <ng-container matColumnDef="production">
               <th mat-header-cell *matHeaderCellDef> Production Total </th>
               <td mat-cell *matCellDef="let element">
-                ${{ element.production.total | number:'1.0-0' }}
+                ${{ element.production | number:'1.0-0' }}
                 <!-- <span [ngClass] = "(element.production.total >= element.production.goal)? 'mht-value-up' : 'mht-value-down'">
         </span> -->
                 <!--  <span class="goal custom_goal">Goal: ${{ element.production.goal | number:'1.0-0' }}</span> </td> -->
