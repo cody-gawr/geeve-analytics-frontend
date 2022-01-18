@@ -941,10 +941,17 @@
               </div>
 
             </mat-card-title>
-
+            <div *ngIf="buildChartNewpatientsDentistLoader == true" class="loader_container loader_container_middle"><img
+              class="loader_ico" src="../assets/images/720.gif">
+            <div class="loader-text">Calculating...</div>
+          </div>
+          <div *ngIf="fdnewPatientsRateTrendLoader == true" class="loader_container loader_container_middle"><img
+            class="loader_ico" src="../assets/images/720.gif">
+          <div class="loader-text">Calculating...</div>
+        </div>
             <div class="card-body">
               <div fxLayout="row wrap" class="row_Patients" fxLayoutAlign="center center" class="cl-card-height"
-                *ngIf="showTrendChart == false && newPatientValuePatients > 0">
+                *ngIf="showTrendChart == false && newPatientValuePatients > 0 && buildChartNewpatientsDentistLoader===false">
 
                 <div fxFlex.lg="49" fxFlex.md="49" fxFlex.sm="49" fxFlex.xs="49" fxFlex="49">
                   <div class="chart">
@@ -958,7 +965,7 @@
                   </div>
                 </div>
               </div>
-              <div *ngIf="showTrendChart == true && newPatientsChartTrend1.length>0" class="cl-card-height">
+              <div *ngIf="showTrendChart == true && newPatientsChartTrend1.length > 0 && fdnewPatientsRateTrendLoader=== false" class="cl-card-height">
                 <canvas #myCanvas id="newPatientsTrend" baseChart [datasets]="newPatientsChartTrend"
                   [labels]="newPatientsChartTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                   (chartHover)="chartHovered($event)" [options]="barChartOptionstrend" [colors]="lineChartColors"
