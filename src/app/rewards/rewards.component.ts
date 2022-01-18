@@ -13,6 +13,7 @@ export class RewardsComponent implements OnInit, OnDestroy {
 	title = 'Rewards & Exclusive Partner Offers | Jeeve Analytics';	
 	public isLoading:boolean =  true;
 	public rewards:any =  [];
+	public rewardsCode:any = "";
 	constructor(private titleService:Title,public rewardsService: RewardsService,private _cookieService: CookieService, private router: Router) { 
 		$('#title').html('Rewards');
 		this.dentistProduction();
@@ -31,6 +32,7 @@ export class RewardsComponent implements OnInit, OnDestroy {
 		this.rewardsService.dentistProduction().subscribe( (data:any) => {
 			if(data.message == 'success'){
 				this.rewards = data.data;
+				this.rewardsCode = data.code
 			}
 		}, error => {
       this._cookieService.removeAll();
