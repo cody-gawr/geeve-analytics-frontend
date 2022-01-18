@@ -2963,6 +2963,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public planTotalCompleted = 0;
   // Filter By Date
   filterDate(duration) {
+      this.showWeekTrend = false;
     this.showTrendChart = false;
     this.toggleChecked = false;
     if (this.clinic_id != undefined && this.clinic_id != 'all') {
