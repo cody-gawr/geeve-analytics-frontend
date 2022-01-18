@@ -937,7 +937,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   //Load Dentist Data
   loadDentist(newValue) {
-
+    $('.sa_tabs_data button').prop('disabled',true); 
+    this.Apirequest = 10;
     if (this._cookieService.get("user_type") == '4') {
       if (this._cookieService.get("dentist_toggle") === 'false')
         newValue = this.selectedDentist;
@@ -1198,6 +1199,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.barChartLabels = [];
       this.productionTotal = 0;
       if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         this.buildChartLoader = false;
         this.productionTooltip = 'down';
         var i = 0;
@@ -1330,6 +1333,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
     }
@@ -1371,6 +1376,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.collectionLabels = [];
       this.collectionTotal = 0;
       if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         this.collectionLoader = false;
         this.collectionTooltip = 'down';
         var i = 0;
@@ -1474,6 +1481,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
     }
@@ -1507,6 +1516,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.collectionLabelsExp = [];
       this.collectionExpTotal = 0;
       if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         this.collectionExpLoader = false;
         this.collectionExpTooltip = 'down';
         var i = 0;
@@ -1610,6 +1621,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
     }
@@ -1635,6 +1648,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.productionTotalAverage = 0;
       this.maxProductionGoal = 0;
       if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         this.buildChartDentistLoader = false;
         this.gaugeValue = 0;
         if (data.data != null) {
@@ -1667,6 +1682,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.router.navigateByUrl('/login');
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
     });
@@ -1694,6 +1711,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.gaugeCollectionValue = 0;
       this.collectionDentistLoader = false;
       if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         if (data.data != null) {
           data.data.forEach((res) => {
             if (res.collection)
@@ -1723,6 +1742,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.router.navigateByUrl('/login');
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
     });
@@ -1750,6 +1771,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.gaugeCollectionExpValue = 0;
         this.collectionExpDentistLoader = false;
         if (data.message == 'success') {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
           if (data.data != null) {
             data.data.forEach((res) => {
               if (res.collection)
@@ -1779,6 +1802,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.router.navigateByUrl('/login');
         }
       }, error => {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         this.toastr.error('There was an error retrieving your report data, please contact our support team.');
         this.warningMessage = "Please Provide Valid Inputs!";
       });
@@ -1821,6 +1846,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.recallChartLabels = [];
       this.barChartOptionsRP.annotation = [];
       if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         this.recallPrebookLoader = false;
 
         this.recallChartTooltip = 'down';
@@ -1894,6 +1921,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
     }
@@ -1911,6 +1940,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.maxrecallGoal = 0;
 
       if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         this.recallPrebookDentistLoader = false;
         this.recallValue = '0';
         if (data.data.length > 0) {
@@ -1938,6 +1969,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.router.navigateByUrl('/login');
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
     }
@@ -1985,6 +2018,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.treatmentPreChartLabels = [];
       this.barChartOptionsTPB.annotation = [];
       if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         this.treatmentPrebookLoader = false;
         this.treatmentPreChartTooltip = 'down';
         var i = 0;
@@ -2057,6 +2092,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
     }
@@ -2072,6 +2109,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.treatmentPreLabel = '';
     this.clinic_id && this.cliniciananalysisService.caReappointRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
       if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         this.treatmentPrebookDentistLoader = false;
         this.treatmentPreGoal = data.goals;
         if (data.data.length > 0) {
@@ -2088,6 +2127,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
     }
@@ -2134,6 +2175,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.treatmentChartLabels = [];
       this.barChartOptionsTP.annotation = []
       if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         this.treatmentPlanRateLoader = false;
         this.treatmentChartTooltip = 'down';
         var i = 0;
@@ -2209,6 +2252,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
     }
@@ -2230,6 +2275,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.treatmentChartTooltip = 'down';
     this.clinic_id && this.cliniciananalysisService.TreatmentPlanRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
       if (data && data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         this.treatmentPlanRateDentistLoader = false;
         this.treatmentPlanValue = '0';
         if (data.data.length > 0) {
@@ -2249,6 +2296,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.maxtreatmentPlanGoal = '';
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
     }
     );
@@ -2346,6 +2395,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.planChartLabels = [];
       this.barChartOptionsTC.annotation = [];
       if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         this.buildChartTreatmentLoader = false;
         this.planTotalTooltip = 'down';
         var ia = 0;
@@ -2459,6 +2510,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
     });
@@ -2479,6 +2532,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.clinic_id && this.cliniciananalysisService.TreatmentPlanDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
       this.gaugeValueTreatment = 0;
       if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         this.buildChartTreatmentDentistLoader = false;
         this.gaugeValueTreatmentP = 0;
         this.gaugeValueTreatmentC = 0;
@@ -2520,6 +2575,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
     }
@@ -2533,6 +2590,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.clinic_id && this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
       this.planTotal = 0;
       if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         data.data.forEach(res => {
           if (res.average_cost) {
             this.planChartData1.push(Math.round(res.average_cost));
@@ -2545,6 +2604,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
     }
@@ -2568,6 +2629,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.doughnutTotal = 0;
       this.doughnutChartLabels = [];
       if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         this.buildChartNopatientsLoader = false;
         this.doughnutTotalTooltip = 'up';
         var i = 0;
@@ -2598,6 +2661,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.doughnutTotalTooltip = 'down';
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
     }
@@ -2614,6 +2679,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.doughnutTotal = 0;
       this.maxdoughnutGoals = 0;
       if (data && data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         this.doughnutTotalTooltip = 'up';
         this.buildChartNopatientsDentistLoader = false;
         if (data.data[0]) {
@@ -2641,6 +2708,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.maxdoughnutGoals = '';
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
     }
@@ -2673,6 +2742,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     this.clinic_id && this.cliniciananalysisService.NewPatients(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       if (data && data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         this.buildChartNewpatientsLoader = false;
         this.newPatientTotalTooltip = 'down';
         var i = 0;
@@ -2709,6 +2780,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.newPatientsDataMax = Math.max(...this.newPatientChartData);
       }
     }, error => {
+       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
     }
     );
@@ -2724,6 +2797,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     this.clinic_id && this.cliniciananalysisService.NewPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
       if (data && data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
         this.buildChartNewpatientsDentistLoader = false;
         this.newPatientGoals = data.goals;
         if (data.data != null && data.data[0]) {
@@ -2745,6 +2820,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.maxnewPatientGoal = '';
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
     }
@@ -2790,6 +2867,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.hourlyRateChartLabels = [];
       this.barChartOptionsHR.annotation = [];
       if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
         this.hourlyRateChartLoader = false;
         this.hourlyRateChartTooltip = 'down';
         var i = 0;
@@ -2872,6 +2951,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
     }
@@ -2894,6 +2975,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.clinic_id && this.cliniciananalysisService.hourlyRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
       this.hourlyValue = '0';
       if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
         this.hourlyRateDentistLoader = false;
         this.hourlyValue = '0';
         if (data.data.length > 0) {
@@ -2926,6 +3009,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.maxhourlyGoal = '';
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
     }
@@ -3324,8 +3409,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.dentistProductionWeeklyTrend = [];
       this.dentistProductionWeeklyTrendLabels = [];
       let dynamicColors = [];
-      this.Apirequest = this.Apirequest - 1;
       if (data && data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
 
         if (data.data.total > 0) {
           data.data.data.forEach(res => {
@@ -3363,6 +3449,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.dentistProductionTrendLoader = false;
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
 
@@ -3392,8 +3480,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.dentistCollectionWeeklyTrendLabels = [];
 
       let dynamicColors = [];
-      this.Apirequest = this.Apirequest - 1;
       if (data && data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
         if (data.data) {
           data.data.forEach(res => {
             // if (res.collection > 0) {
@@ -3425,6 +3514,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.dentistCollectionTrendLoader = false;
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
 
@@ -3455,8 +3546,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
      this.dentistCollectionExpWeeklyTrendLabels = [];
 
      let dynamicColors = [];
-     this.Apirequest = this.Apirequest - 1;
      if (data && data.message == 'success') {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
        if (data.data) {
          data.data.forEach(res => {
            // if (res.collection > 0) {
@@ -3488,6 +3580,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
        this.dentistCollectionExpTrendLoader = false;
      }
    }, error => {
+    this.Apirequest = this.Apirequest - 1;
+    this.enableDiabaleButton(this.Apirequest);
      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
      this.warningMessage = "Please Provide Valid Inputs!";
 
@@ -3539,8 +3633,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
       this.treatmentPlanTrend1 = [];
       this.treatmentPlanTrend2 = [];
-      this.Apirequest = this.Apirequest - 1;
       if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
         this.treatmentPlanTrendLoader = false;
         if (data.data) {
           if (data.data.plan_fee_all) {
@@ -3608,6 +3703,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
 
@@ -3658,9 +3755,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.patientComplaintsTrendLabels = [];
       this.patientComplaintsTrendLoader = false;
       this.patientComplaintsTrend1 = [];
-      this.Apirequest = this.Apirequest - 1;
       if (data.message == 'success') {
-
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
         if (data.data) {
           data.data.forEach(res => {
             if (res.num_complaints)
@@ -3687,6 +3784,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
 
@@ -3738,8 +3837,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var user_id;
     var clinic_id;
     this.cliniciananalysisService.cpRecallPrebookRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
-      this.Apirequest = this.Apirequest - 1;
+      
       if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
         this.fdRecallPrebookRateTrendLoader = false;
         this.recallPrebookChartTrendLabels1 = [];
         this.recallPrebookChartTrend1 = [];
@@ -3763,6 +3864,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
 
@@ -3813,8 +3916,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var user_id;
     var clinic_id;
     this.cliniciananalysisService.caReappointRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
-      this.Apirequest = this.Apirequest - 1;
+     
       if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
         this.fdTreatmentPrebookRateTrendLoader = false;
         this.treatmentPrebookChartTrendLabels1 = [];
         this.treatmentPrebookChartTrend1 = [];
@@ -3838,6 +3943,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
 
@@ -3887,8 +3994,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var clinic_id;
     this.clinic_id && this.cliniciananalysisService.cahourlyRateRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
       this.hourlyRateChartTrendLabels = [];
-      this.Apirequest = this.Apirequest - 1;
       if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
         this.fdhourlyRateRateTrendLoader = false;
         this.hourlyRateChartTrendLabels1 = [];
         this.hourlyRateChartTrend1 = [];
@@ -3915,6 +4023,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
 
@@ -3965,8 +4075,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var user_id;
     var clinic_id;
     this.clinic_id && this.cliniciananalysisService.canewPatientsRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
-      this.Apirequest = this.Apirequest - 1;
+     
       if (data != null && data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
         this.fdnewPatientsRateTrendLoader = false;
         this.newPatientsChartTrendLabels1 = [];
         this.newPatientsChartTrend1 = [];
@@ -3997,6 +4109,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
 
@@ -4047,9 +4161,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var clinic_id;
     this.clinic_id && this.cliniciananalysisService.catreatmentPlanRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
       this.fdtreatmentPlanRateTrendLoader = false;
-      this.Apirequest = this.Apirequest - 1;
       if (data.message == 'success') {
-
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
         this.treatmentPlanChartTrendLabels1 = [];
         this.treatmentPlanChartTrend1 = [];
         if (data.data) {
@@ -4082,6 +4196,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
 
@@ -4200,7 +4316,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.barChartOptionsDP1.animation.duration = 1;
     }
   }
-
+  enableDiabaleButton(val) {
+    if(val <= 0 ){
+      $('.sa_tabs_data button').prop('disabled',false);
+    }else{
+      $('.sa_tabs_data button').prop('disabled',true);     
+    }
+  }
 
 }
 
