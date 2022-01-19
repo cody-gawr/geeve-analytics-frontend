@@ -219,7 +219,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
   dentists: Dentist[] = [];
   private warningMessage: string;
   public finalUrl: string;
-  public selectedClinic;
+  public selectedClinic:any;
   public trailDays: Number = 0;
   public selectedDentist;
   public placeHolder = "";
@@ -245,15 +245,21 @@ export class AppHeaderrightComponent implements AfterViewInit {
               if (this._cookieService.get("clinic_dentist")) {
                 let dentistclinic = this._cookieService
                   .get("clinic_dentist")
-                  .split("_");
-                this.clinic_id = dentistclinic[0];
-                this.selectedClinic = dentistclinic[0];
+                  .split(/,|_/);  
                 if (dentistclinic[1] == "all") {
                   this.selectedDentist = dentistclinic[1];
                 } else {
                   this.selectedDentist = parseInt(dentistclinic[1]);
+                }  
+                if (this.route == "/dashboards/finances") {
+                  this.clinic_id = dentistclinic[0];
+                  this.selectedClinic = dentistclinic[0];
+                }else{
+                  if(dentistclinic[0] == "all"){
+                    this.clinic_id =  res.data[0].id;
+                    this.selectedClinic = res.data[0].id;
+                  }
                 }
-
                 res.data.forEach((datatemp) => {
                   if (datatemp.id == this.clinic_id) {
                     this.placeHolder = datatemp.clinicName;
@@ -309,7 +315,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
               if (this._cookieService.get("clinic_dentist")) {
                 let dentistclinic = this._cookieService
                   .get("clinic_dentist")
-                  .split("_");
+                  .split(/,|_/);
                 if (dentistclinic[1] == "all") {
                   this.selectedDentist = dentistclinic[1];
                 } else {
@@ -359,8 +365,36 @@ export class AppHeaderrightComponent implements AfterViewInit {
       );
   }
 
-  loadClinic(newValue) {
+  loadClinic(newValues) {
+    var newValue:any = '';
+    
     if (newValue != "undefined") {
+      if(Array.isArray(newValues)) {
+        if (this.route == "/dashboards/finances") {
+          if(this.clinicsData.length == this.selectedClinic.length){
+            newValue = '';            
+            this.selectedClinic = [];
+          }else{            
+            this.selectedClinic = [];
+            if(newValues.includes("all")){          
+              newValue = 'all';
+              this.selectedClinic.push('all');
+              this.clinicsData.forEach((data)=>{
+                this.selectedClinic.push(data.id);
+              })
+              this.clinic_id = this.selectedClinic;
+             }else{
+              newValue = newValues; 
+              this.selectedClinic = newValue;
+              this.clinic_id = this.selectedClinic;
+             }
+          }
+        }else{
+          newValue = newValues[0];
+        }
+      }else{
+        newValue = newValues;
+      }
       let opts = this.constants.cookieOpt as CookieOptions;
       this._cookieService.put(
         "clinic_id",
@@ -383,8 +417,11 @@ export class AppHeaderrightComponent implements AfterViewInit {
       } else {
         $("#currentClinic").attr("cid", newValue);
       }
-      this.selectedClinic = newValue;
-      this.clinic_id = this.selectedClinic;
+      if (this.route != "/dashboards/finances") {
+        this.selectedClinic = newValue;
+        this.clinic_id = this.selectedClinic;
+      }
+     
 
       this.getDentists();
       $(".internal_clinic").val(newValue);
@@ -395,7 +432,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
         if (this._cookieService.get("clinic_dentist")) {
           let dentistclinic = this._cookieService
             .get("clinic_dentist")
-            .split("_");
+            .split(/,|_/);
           if (dentistclinic[0] !== newValue) {
             this.selectedDentist = "all";
           } else {
@@ -445,7 +482,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
 
   loadDentist(newValue) {
     if (this._cookieService.get("clinic_dentist")) {
-      let dentistclinic = this._cookieService.get("clinic_dentist").split("_");
+      let dentistclinic = this._cookieService.get("clinic_dentist").split(/,|_/);
       if (dentistclinic[1] == "all") {
         this.selectedDentist = dentistclinic[1];
       } else {

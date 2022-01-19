@@ -46,6 +46,7 @@ export class FinancesComponent implements AfterViewInit {
   public connectedwith: any;
   public charTips: any = [];
   public Apirequest = 8;
+  public multipleClinicsSelected: boolean = false;
   public pieChartColors = [
     {
       backgroundColor: [
@@ -134,20 +135,28 @@ export class FinancesComponent implements AfterViewInit {
   private warningMessage: string;
   async initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
-    if (val != undefined && val != 'all') {
-      this.clinic_id = val;
-      await this.clinicGetAccountingPlatform();
-      if (this.connectedwith == 'myob') {
-        this.xeroConnect = false;
-        this.checkMyobStatus();
-      } else if (this.connectedwith == 'xero') {
-        this.myobConnect = false;
-        this.checkXeroStatus();
-      } else {
-        this.xeroConnect = false;
-        this.myobConnect = false;
-      }      
-      this.filterDate(this.chartService.duration$.value);
+    this.clinic_id = val;
+    if (val != undefined && val != 'all' && val != '') {     
+      if( val.indexOf(',') == -1 ){
+        this.multipleClinicsSelected = false;
+        this.clinic_id = val;
+        await this.clinicGetAccountingPlatform();
+        if (this.connectedwith == 'myob') {
+          this.xeroConnect = false;
+          this.checkMyobStatus();
+        } else if (this.connectedwith == 'xero') {
+          this.myobConnect = false;
+          this.checkXeroStatus();
+        } else {
+          this.xeroConnect = false;
+          this.myobConnect = false;
+        }      
+        this.filterDate(this.chartService.duration$.value);
+      }else{
+        this.multipleClinicsSelected = true;
+      }
+    }else{
+      this.multipleClinicsSelected = true;
     }
   }
 
@@ -1436,7 +1445,7 @@ export class FinancesComponent implements AfterViewInit {
     $('.sa_tabs_data button').prop('disabled',true); 
     this.Apirequest = 5;
     if (this.connectedwith != '' && this.connectedwith != undefined) {
-      this.Apirequest = 8;
+      this.Apirequest = 5;
     }
     $('#title').html('<span>Finances</span>');
     $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate));
@@ -1448,7 +1457,7 @@ export class FinancesComponent implements AfterViewInit {
       // this.netProfitPercent();
 
 
-      if (this.connectedwith != '' && this.connectedwith != undefined) {
+      if (this.connectedwith != '' && this.connectedwith != undefined && this.multipleClinicsSelected == false) {
         this.netprofitstats = false;
         this.netprofitpercentstats = false;
         this.productionstats = false;
@@ -1698,13 +1707,15 @@ export class FinancesComponent implements AfterViewInit {
         this.finProductionByClinicianLoader = false;
 
         this.productionChartDatares = [];
-        data.data.forEach(res => {
-          if (res.prod_per_clinician > 0) {
-            this.productionChartDatares.push(Math.round(res.prod_per_clinician));
-            this.productionChartLabelsres.push(res.provider_name);
-            this.productionChartTotal = this.productionChartTotal + parseInt(res.prod_per_clinician);
-          }
-        });
+        if(data.data){
+          data.data.forEach(res => {
+            if (res.prod_per_clinician > 0) {
+              this.productionChartDatares.push(Math.round(res.prod_per_clinician));
+              this.productionChartLabelsres.push(res.provider_name);
+              this.productionChartTotal = this.productionChartTotal + parseInt(res.prod_per_clinician);
+            }
+          });
+        }
         this.productionChartTrendTotal = data.total_ta;
         if (Math.round(this.productionChartTotal) >= Math.round(this.productionChartTrendTotal))
           this.productionChartTrendIcon = "up";
@@ -2304,8 +2315,8 @@ export class FinancesComponent implements AfterViewInit {
       $('.nonTrendMode').hide();
 
 
-      if (this.connectedwith != '' && this.connectedwith != undefined) {
-        this.Apirequest = 8;
+      if (this.connectedwith != '' && this.connectedwith != undefined && this.multipleClinicsSelected == false) {
+        this.Apirequest = 5;
         this.expensestrendstats = false;
         this.finNetProfitPMSTrend();
         this.finNetProfitPMSPercentTrend();

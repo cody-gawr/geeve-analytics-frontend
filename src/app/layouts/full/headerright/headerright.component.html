@@ -16,26 +16,46 @@
         !route.includes('/profile-settings')
       "
     >
-      <div class="vertical_center_header_content">
-        <div class="sa_mat_select_topbar">
-          <mat-form-field floatLabel="never">
-            <mat-select
-              class="external_clinic"
-              [(ngModel)]="selectedClinic"
-              (ngModelChange)="loadClinic($event)"
-              [placeholder]="placeHolder"
+    <div class="vertical_center_header_content">
+      <div class="sa_mat_select_topbar" *ngIf= "route != '/dashboards/finances'">
+        <mat-form-field floatLabel="never" >
+          <mat-select
+            class="external_clinic"
+            [(ngModel)]="selectedClinic"
+            (ngModelChange)="loadClinic($event)"
+            [placeholder]="placeHolder"
+          >
+            <mat-option value="all" *ngIf="route == '/dashboards/healthscreen' && clinicsData.length > 1 && user_type !=7">All Clinics</mat-option>
+            <mat-option
+              *ngFor="let clinicData of clinicsData"
+              [value]="clinicData.id"
             >
-              <mat-option value="all" *ngIf="route == '/dashboards/healthscreen' && clinicsData.length > 1 && user_type !=7">All Clinics</mat-option>
-              <mat-option
-                *ngFor="let clinicData of clinicsData"
-                [value]="clinicData.id"
-              >
-                {{ clinicData.clinicName }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+              {{ clinicData.clinicName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
+      <div class="sa_mat_select_topbar" *ngIf= "route == '/dashboards/finances'">
+        <mat-form-field floatLabel="never" >
+        <mat-select
+          class="external_clinic"
+          [(ngModel)]="selectedClinic"
+          (ngModelChange)="loadClinic($event)"
+          [placeholder]="placeHolder"
+          [multiple]="true"
+          #multiSelect
+        >
+          <mat-option  #allSelected value="all" *ngIf="route == '/dashboards/finances' && clinicsData.length > 1 && user_type !=7">All Clinics</mat-option>
+          <mat-option
+            *ngFor="let clinicData of clinicsData"
+            [value]="clinicData.id"
+          >
+            {{ clinicData.clinicName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    </div>
     </div>
   </div>
   <div fxFlex="50" fxFlex.md="50" fxFlex.sm="50" fxFlex.xs="100">
