@@ -124,7 +124,7 @@
         </a> 
     </mat-list-item>
     <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
-         *ngIf="apiUrl.includes('test') || apiUrl.includes('staging')">
+         *ngIf="apiUrl.includes('test')">
         <a class="" appAccordionToggle [routerLink]="['/rewards']">
             <i class="fas fa-hand-holding-usd"></i>
             <span>Rewards</span>

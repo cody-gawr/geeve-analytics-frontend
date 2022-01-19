@@ -643,8 +643,7 @@ initiate_clinic() {
   }
 
   onActivate(event) {
-    console.log(event);
-    if (event.type == 'click') {
+    if (event.type == 'click' && event.cellIndex != 5) {
       if (event.row) {
         this.editDialog(  event.row.sr - 1);
       }

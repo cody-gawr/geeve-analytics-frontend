@@ -1181,7 +1181,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public productionTooltip = 'down';
   public productionTotalPrev;
   public barChartOptionsDP1: any = this.barChartOptions;
-  public buildChartLoader: boolean = false;
+  public buildChartLoader: boolean = true;
   public dentistKey;
   public DPcolors: any;
   public DPcolors1: any;
