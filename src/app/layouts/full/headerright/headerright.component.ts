@@ -301,24 +301,6 @@ export class AppHeaderrightComponent implements AfterViewInit {
                     }
                   });
                 }
-               /* let dentistclinic = this._cookieService
-                  .get("clinic_dentist")
-                  .split(/,|_/);  
-                
-                if (this.route == "/dashboards/finances") {
-                  this.clinic_id = dentistclinic[0];
-                  this.selectedClinic = dentistclinic[0];
-                }else{
-                  if(dentistclinic[0] == "all"){
-                    this.clinic_id =  res.data[0].id;
-                    this.selectedClinic = res.data[0].id;
-                  }
-                }
-                res.data.forEach((datatemp) => {
-                  if (datatemp.id == this.clinic_id) {
-                    this.placeHolder = datatemp.clinicName;
-                  }
-                });*/
               } else {
 
                 this.clinic_id = res.data[0].id;

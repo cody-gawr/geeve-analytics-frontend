@@ -136,8 +136,8 @@ export class FinancesComponent implements AfterViewInit {
   async initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
     this.clinic_id = val;
-    if (val != undefined && val != 'all' && val != '') {     
-      if( val.indexOf(',') == -1 ){
+    if (val != undefined && val != '') {     
+      if( val.indexOf(',') == -1 && val != 'all'){
         this.multipleClinicsSelected = false;
         this.clinic_id = val;
         await this.clinicGetAccountingPlatform();
@@ -154,6 +154,7 @@ export class FinancesComponent implements AfterViewInit {
         this.filterDate(this.chartService.duration$.value);
       }else{
         this.multipleClinicsSelected = true;
+        this.filterDate(this.chartService.duration$.value);
       }
     }else{
       this.multipleClinicsSelected = true;
