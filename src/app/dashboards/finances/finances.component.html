@@ -78,7 +78,7 @@
           <mat-card-content class="sa_matcard_content">
             <!-- column -->
             <div class="sa_main_grid_dashboard profit-purple d-flex no-block align-items-center">
-              <ng-container *ngIf="( (xeroConnect || myobConnect) && !netprofitstatsError);else NoXeroConnectProfitValuePlaceholder">
+              <ng-container *ngIf="( (xeroConnect || myobConnect) && !netprofitstatsError && multipleClinicsSelected===false);else NoXeroConnectProfitValuePlaceholder">
                 <div class="stats-icon">
                   <img src="../assets/images/net-profit.png" alt />
                   <i class="fas fa-chart-bar"></i>
@@ -121,7 +121,7 @@
           <mat-card-content class="sa_matcard_content">
             <!-- column -->
             <div class="sa_main_grid_dashboard profit-green d-flex no-block align-items-center">
-              <ng-container *ngIf="((xeroConnect || myobConnect) && !netprofitPerError);else NoXeroConnectProfitPlaceholder">
+              <ng-container *ngIf="((xeroConnect || myobConnect) && !netprofitPerError && multipleClinicsSelected===false);else NoXeroConnectProfitPlaceholder">
                 <div class="stats-icon">
                   <img src="../assets/images/net-profit-PMS.png" alt />
                   <i class="fas fa-chart-bar"></i>
@@ -188,7 +188,7 @@ expenses_card custom_ngx_cw01">
                               [explodeSlices]="explodeSlices" [labels]="showLabels" [arcWidth]="arcWidth"
                               [doughnut]="doughnut" [gradient]="gradient" [tooltipDisabled]="tooltipDisabled"
                               [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
-                            <div *ngIf="pieChartLabels && pieChartLabels.length <= 0 && categoryExpensesLoader == false"
+                            <div *ngIf="pieChartLabels && pieChartLabels.length <= 0 && categoryExpensesLoader == false && multipleClinicsSelected===false"
                               class="no-data-placeholder">
                               <div class="sa_nodata_div">
                               </div>

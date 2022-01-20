@@ -243,14 +243,68 @@ export class AppHeaderrightComponent implements AfterViewInit {
               }
             } else {            
               if (this._cookieService.get("clinic_dentist")) {
-                let dentistclinic = this._cookieService
-                  .get("clinic_dentist")
-                  .split(/,|_/);  
-                if (dentistclinic[1] == "all") {
+                let dentistclinic = this._cookieService.get("clinic_dentist").split('_');               
+                if (dentistclinic[1] == "all") { // check dentist data from cookie
                   this.selectedDentist = dentistclinic[1];
                 } else {
                   this.selectedDentist = parseInt(dentistclinic[1]);
-                }  
+                } 
+                if (this.route == "/dashboards/finances") {
+                  this.clinic_id = [];
+                  this.selectedClinic = [];
+                  if(dentistclinic[0].indexOf(',') >= 0){
+                    let tmpcl = [];
+                    let allcookieCl = dentistclinic[0].split(',');
+                    allcookieCl.forEach((cln) => {
+                      if(cln == 'all'){
+                        tmpcl.push(cln);
+                      }else{
+                        tmpcl.push(parseInt(cln));
+                      }                     
+                    });
+                    this.clinic_id = tmpcl; 
+                    this.selectedClinic = tmpcl; 
+                  } else {
+                    if(dentistclinic[0] == 'all'){
+                      this.clinic_id = 'all'; 
+                      this.selectedClinic = ['all']; 
+                      res.data.forEach((datatemp) => { // getting  clinic name as per cookie data
+                        this.selectedClinic.push(datatemp.id);
+                      });
+                    } else {
+                      this.clinic_id.push(parseInt(dentistclinic[0]));
+                      this.selectedClinic.push(parseInt(dentistclinic[0]));
+                    }                   
+                  }
+                } else {  
+                  if(dentistclinic[0].indexOf(',') >= 0){                    
+                    this.clinic_id = dentistclinic[0].split(',')[0]; 
+                    this.selectedClinic = dentistclinic[0].split(',')[0]; 
+                    let opts = this.constants.cookieOpt as CookieOptions;
+                    this._cookieService.put(
+                      "clinic_id",
+                      this.clinic_id,
+                      opts
+                    );
+                    this._cookieService.put(
+                      "clinic_dentist",
+                      this.clinic_id + "_" + dentistclinic[1],
+                      opts
+                    );
+                  } else if(dentistclinic[0] == "all"){ // check clinic data from cookie
+                    this.clinic_id =  res.data[0].id;
+                    this.selectedClinic = res.data[0].id;
+                  }
+                  res.data.forEach((datatemp) => { // getting  clinic name as per cookie data
+                    if (datatemp.id == this.clinic_id) {
+                      this.placeHolder = datatemp.clinicName;
+                    }
+                  });
+                }
+               /* let dentistclinic = this._cookieService
+                  .get("clinic_dentist")
+                  .split(/,|_/);  
+                
                 if (this.route == "/dashboards/finances") {
                   this.clinic_id = dentistclinic[0];
                   this.selectedClinic = dentistclinic[0];
@@ -264,11 +318,13 @@ export class AppHeaderrightComponent implements AfterViewInit {
                   if (datatemp.id == this.clinic_id) {
                     this.placeHolder = datatemp.clinicName;
                   }
-                });
+                });*/
               } else {
+
                 this.clinic_id = res.data[0].id;
                 this.selectedClinic = res.data[0].id;
                 this.placeHolder = res.data[0].clinicName;
+
               }
             }            
             this.title = $("#page_title").val();
@@ -315,7 +371,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
               if (this._cookieService.get("clinic_dentist")) {
                 let dentistclinic = this._cookieService
                   .get("clinic_dentist")
-                  .split(/,|_/);
+                  .split('_');
                 if (dentistclinic[1] == "all") {
                   this.selectedDentist = dentistclinic[1];
                 } else {
@@ -384,6 +440,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
               })
               this.clinic_id = this.selectedClinic;
              }else{
+              this.selectedClinic =[];
               newValue = newValues; 
               this.selectedClinic = newValue;
               this.clinic_id = this.selectedClinic;
@@ -432,7 +489,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
         if (this._cookieService.get("clinic_dentist")) {
           let dentistclinic = this._cookieService
             .get("clinic_dentist")
-            .split(/,|_/);
+            .split('_');
           if (dentistclinic[0] !== newValue) {
             this.selectedDentist = "all";
           } else {
@@ -482,7 +539,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
 
   loadDentist(newValue) {
     if (this._cookieService.get("clinic_dentist")) {
-      let dentistclinic = this._cookieService.get("clinic_dentist").split(/,|_/);
+      let dentistclinic = this._cookieService.get("clinic_dentist").split('_');
       if (dentistclinic[1] == "all") {
         this.selectedDentist = dentistclinic[1];
       } else {
