@@ -459,10 +459,9 @@ export class AppHeaderrightComponent implements AfterViewInit {
       if (this.route != "/dashboards/finances") {
         this.selectedClinic = newValue;
         this.clinic_id = this.selectedClinic;
+        this.getDentists();
       }
-     
-
-      this.getDentists();
+      
       $(".internal_clinic").val(newValue);
       if (this.user_type_dentist != "2" && newValue != "all") {
         this.getChildID(newValue);
