@@ -44,6 +44,7 @@
           (ngModelChange)="changeClinic($event)"
           [placeholder]="placeHolder"
           [multiple]="true"
+          (openedChange)="loadClinicEvent($event)"
           #multiSelect
         >
           <mat-option  #allSelected value="all" *ngIf="route == '/dashboards/finances' && clinicsData.length > 1 && user_type !=7">All Clinics</mat-option>
@@ -53,7 +54,7 @@
           >
             {{ clinicData.clinicName }}
           </mat-option>
-          <button id ="cllclinic" class="mat-raised-button mat-dc float-right " (click)="loadClinic(selectedClinic); multiSelect.close()">OK</button>
+          <button id ="cllclinic" class="mat-raised-button mat-dc float-right" (click)="multiSelect.close()">OK</button>
         </mat-select>
       </mat-form-field>
     </div>

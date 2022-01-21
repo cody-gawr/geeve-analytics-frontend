@@ -656,27 +656,12 @@ export class AppHeaderrightComponent implements AfterViewInit {
       }else{
         newValue = newValues;
       }
-      let opts = this.constants.cookieOpt as CookieOptions;
-      this._cookieService.put(
-        "clinic_id",
-        newValue,
-        opts
-      ); 
-      this._cookieService.put(
-        "clinic_dentist",
-        this.clinic_id + "_" + this.selectedDentist,
-        opts
-      );  
+    }
+  }
 
-      if ($("body").find("span#currentClinic").length <= 0) {
-        $("body").append(
-          '<span id="currentClinic" style="display:none" cid="' +
-          newValue +
-          '"></span>'
-        );
-      } else {
-        $("#currentClinic").attr("cid", newValue);
-      }
+  loadClinicEvent($event){
+    if($event == false){
+      this.loadClinic(this.selectedClinic);
     }
   }
 }
