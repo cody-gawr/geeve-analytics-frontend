@@ -8590,3 +8590,7 @@ button.Set-Colours, button.Set-Colours:focus, button.Set-Colours:active {
 .sa_tabs_data button.filter.sa_filter_span[disabled] {
   cursor: progress;
 }
+
+#cllclinic{
+  margin-right: 10px;
+}

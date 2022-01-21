@@ -38,9 +38,10 @@
       <div class="sa_mat_select_topbar" *ngIf= "route == '/dashboards/finances'">
         <mat-form-field floatLabel="never" >
         <mat-select
+          id="multi_clinic"
           class="external_clinic"
           [(ngModel)]="selectedClinic"
-          (ngModelChange)="loadClinic($event)"
+          (ngModelChange)="changeClinic($event)"
           [placeholder]="placeHolder"
           [multiple]="true"
           #multiSelect
@@ -52,6 +53,7 @@
           >
             {{ clinicData.clinicName }}
           </mat-option>
+          <button id ="cllclinic" class="mat-raised-button mat-dc float-right " (click)="loadClinic(selectedClinic); multiSelect.close()">OK</button>
         </mat-select>
       </mat-form-field>
     </div>

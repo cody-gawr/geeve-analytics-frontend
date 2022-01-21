@@ -624,4 +624,59 @@ export class AppHeaderrightComponent implements AfterViewInit {
         this.warningMessage = "Please Provide Valid Inputs!";
       });
   }
+
+  changeClinic(newValues) {
+    var newValue:any = '';
+    
+    if (newValue != "undefined") {
+      if(Array.isArray(newValues)) {
+        if (this.route == "/dashboards/finances") {
+          if(this.clinicsData.length == this.selectedClinic.length){
+            newValue = '';            
+            this.selectedClinic = [];
+          }else{            
+            this.selectedClinic = [];
+            if(newValues.includes("all")){          
+              newValue = 'all';
+              this.selectedClinic.push('all');
+              this.clinicsData.forEach((data)=>{
+                this.selectedClinic.push(data.id);
+              })
+              this.clinic_id = this.selectedClinic;
+             }else{
+              this.selectedClinic =[];
+              newValue = newValues; 
+              this.selectedClinic = newValue;
+              this.clinic_id = this.selectedClinic;
+             }
+          }
+        }else{
+          newValue = newValues[0];
+        }
+      }else{
+        newValue = newValues;
+      }
+      let opts = this.constants.cookieOpt as CookieOptions;
+      this._cookieService.put(
+        "clinic_id",
+        newValue,
+        opts
+      ); 
+      this._cookieService.put(
+        "clinic_dentist",
+        this.clinic_id + "_" + this.selectedDentist,
+        opts
+      );  
+
+      if ($("body").find("span#currentClinic").length <= 0) {
+        $("body").append(
+          '<span id="currentClinic" style="display:none" cid="' +
+          newValue +
+          '"></span>'
+        );
+      } else {
+        $("#currentClinic").attr("cid", newValue);
+      }
+    }
+  }
 }
