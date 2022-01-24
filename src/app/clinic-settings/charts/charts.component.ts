@@ -37,6 +37,7 @@ export class DentisChartComponent {
     private _cookieService: CookieService,
     private router: Router,
     private chartsService: ChartsService,
+    private toastr: ToastrService,
   ) { }
 
   onNoClick(): void {
@@ -54,7 +55,7 @@ export class DentisChartComponent {
       // this.excludedProviders.push(id)
       // $('#' + val).show()
       //hit save api
-      status = 'exclude';
+      status = 'include';
 
     } else {
       // var index = this.excludedProviders.indexOf(id);
@@ -63,7 +64,7 @@ export class DentisChartComponent {
       // }
       // $('#' + val).hide()
       //hit remove api
-      status = 'include';
+      status = 'exclude';
     }
     this.saveRecord(chart_id, clinic_id, providerId, status);
     
@@ -73,7 +74,11 @@ export class DentisChartComponent {
     this.chartsService.addDentistRecord(chart_id, clinic_id, providerId, status).subscribe(
       (res) => {
         if (res.message == "success") {
-
+          if(status == 'exclude'){
+            this.toastr.success("Provider successfully disabled");
+          }else{
+            this.toastr.success("Provider successfully enabled");
+          }         
         }
       },
       (error) => {
@@ -121,12 +126,16 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
   dentistListData = [];
   dash1Lable = "";
   dash2Lable = "";
+  dash3Lable = "";
   dentistList = new MatTableDataSource([]);
   dash1List = new MatTableDataSource([]);
   dash2List = new MatTableDataSource([]);
+  dash3List = new MatTableDataSource([]);
   dentistListLoading: boolean = false;
   displayedColumns: string[] = ["chart", "configuration"];
   jeeveProviderIds: any = [];
+  dash1ListArray: any = [];
+  dash3ListArray: any = [];
   editing = {};
   chartData = {};
 
@@ -171,6 +180,8 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
       (res) => {
         if (res.message == "success") {
           this.jeeveProviderIds = [];
+          this.dash1ListArray = [];
+          this.dash3ListArray = [];
           for (let i = 1; i <= 9; i++) {
             this.jeeveProviderIds.push({ id: i, name: "Jeeve Provider " + i });
           }
@@ -181,11 +192,27 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
             const element = res.data[index];
             if (index == 0) {
               this.dash1Lable = element.dashboard;
-              this.dash1List.data = element.master_charts;
+              element.master_charts.forEach(ele => {
+               if(ele.id == 7){
+                this.dash1ListArray.push(ele);
+               }
+              });             
+            // this.dash1List.data = element.master_charts;
+            this.dash1List.data =  this.dash1ListArray;
             }
             if (index == 1) {
               this.dash2Lable = element.dashboard;
               this.dash2List.data = element.master_charts;
+            }
+            if (index == 2) {
+              this.dash3Lable = element.dashboard;
+              element.master_charts.forEach(ele => {
+                if(ele.id == 38){
+                 this.dash3ListArray.push(ele);
+                }
+               });             
+              //this.dash3List.data = element.master_charts;
+              this.dash3List.data = this.dash3ListArray;
             }
           }
           
@@ -279,7 +306,7 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
       );
   }
 
-  openSetJeeveName(chartID) {
+  openSetJeeveName(chartID,chartName) {
     let dentistsExclusions = [];
     this.chartsService.getDentistsExclusions(this.clinic_id$.value, chartID).subscribe(
       (res) => {
@@ -291,9 +318,9 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
           this.dentistListData.map(function (data) {
             if (dentistsExclusions.includes(data.id)) {
               // found element
-              data.checked = true
-            } else {
               data.checked = false
+            } else {
+              data.checked = true
             }
             return data;
           });
@@ -304,6 +331,7 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
               chartID: chartID,
               dentistDataList: this.dentistListData,
               dentistsExclusions: dentistsExclusions,
+              chartName: chartName,
             },
           });
           dialogRef.afterClosed().subscribe((result) => {

@@ -1,5 +1,7 @@
 <div class="setJeeveNames">
-  <h1 mat-dialog-title class="mat-dialog-title">List Of Available Dentists</h1>
+  <button (click)="onNoClick()" tabindex="2" class="mat-raised-button mat-gray float-right close-btn">X</button>
+  <h1 mat-dialog-title class="mat-dialog-title">{{data.chartName}} - Enabled Providers</h1>
+  <h5>De-select any providers that you would like to exclude from this calculation</h5>
   <div mat-dialog-content class="sa_forms_design">
     <div *ngFor="let dentist of data.dentistDataList">
       <!-- <div class="sa-form-group" style="width: 20%; float: left; margin-right: 2%">
