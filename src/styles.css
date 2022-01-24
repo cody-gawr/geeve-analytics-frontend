@@ -8596,4 +8596,5 @@ button.Set-Colours, button.Set-Colours:focus, button.Set-Colours:active {
 }
 button.mat-raised-button.mat-gray.float-right.close-btn {
     z-index: 1000 !important;
+    border: none !important;
 }
