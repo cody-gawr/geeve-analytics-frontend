@@ -301,6 +301,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   public isEnableTH: boolean = false;
   public isEnableFT: boolean = false;
   public isEnableUT: boolean = false;
+  public autoCall: any; 
 
   displayedColumns1: string[] = ['name', 'phone', 'code', 'dentist', 'date', 'followup_date', 'status'];
   displayedColumns2: string[] = ['name', 'phone', 'code', 'note', 'followup_date', 'book', 'status'];
@@ -345,6 +346,12 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.matTabGroup.realignInkBar();
     }, 500);
     this.selectedMonthYear = this.datepipe.transform(new Date(), 'MMMM yyyy');
+
+    var self = this;
+   this.autoCall =  setInterval( function()
+    {
+       self.refreshDataAuto();
+    }, 1000 * 60); 
   }
   ngAfterViewInit(): void {
     this.dentistList.paginator = this.paginator;
@@ -354,6 +361,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     //$('.dentist_dropdown').parent().show(); // added
     $('.sa_heading_bar').removeClass("filter_single"); // added
+    clearInterval(this.autoCall);
   }
 
   initiate_clinic() {
@@ -1118,5 +1126,16 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       $('.tooltip-container').addClass('mat-' + colour);
       $('.custom-tooltip').css({ 'top': (y + 20), 'left': (x - 200), 'visibility': 'visible', 'opacity': '1' });
     }, 100);
+  }
+
+  refreshDataAuto()
+  {
+    this.getFollowupPostOpCalls();
+    this.getOverdueRecalls();
+    this.getinternalReferrals();
+    this.getTickFollowups();
+    this.getFtaFollowups();
+    this.getUtaFollowups();
+      
   }
 }
