@@ -33,9 +33,12 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
     marketing: 'Marketing',
     finances: 'Finances'
   }
+  year = new Date().getFullYear();
+  range: any = [];
   tabsOptions: string[] = [];
   selectedGoalCategory$ = new BehaviorSubject<any>('');
   selectedTab: any = 1;
+  selectedYear : any = this.year;
   @Input() set clinicId(value: any) {
     this.clinic_id$.next(value);
   };
@@ -50,6 +53,11 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
     private dentistService: DentistService
   ) {
     super();
+    this.range.push(this.year);
+
+    for (var i = 1; i < 3; i++) {
+        this.range.push(this.year + i);
+    }
   }
 
   ngOnInit() {
@@ -333,15 +341,15 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       ).subscribe(inputs => {
         const [id, selectedGoalCategory] = inputs;
         if (id) {
-          this.getData(id,selectedGoalCategory);
+          this.getData(id,selectedGoalCategory,this.selectedYear);
         }
       });
   }
 
 
-  getData(id,selectedGoalCategory) 
+  getData(id,selectedGoalCategory,selectedYear) 
   {
-    this.clinicGoalsService.getGoalAllData(id,selectedGoalCategory).subscribe((res) => {
+    this.clinicGoalsService.getGoalAllData(id,selectedGoalCategory,selectedYear).subscribe((res) => {
             if (res.message == 'success') {
               this.getGoalsForTabsClinic(res.data);
             } else if (res.status == '401') {
@@ -367,6 +375,22 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
 
   onTabChanged(event) {
     this.selectedTab = event;
+  }
+
+  onTabYearChanged(event) {
+    this.selectedYear = event;
+    combineLatest([
+      this.clinic_id$,
+      this.selectedGoalCategory$
+    ])
+      .pipe(
+        takeUntil(this.destroyed$) 
+      ).subscribe(inputs => {
+        const [id, selectedGoalCategory] = inputs;
+        if (id) {
+          this.getData(id,selectedGoalCategory,this.selectedYear);
+        }
+      });
   }
 
   handleGoalCategorySelection(event) {   
