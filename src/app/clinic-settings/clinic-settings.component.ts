@@ -209,7 +209,7 @@ export class ClinicSettingsComponent implements OnInit {
     this.clinicSettingsService.getClinicFollowUPSettings(this.id).subscribe(
       (res) => {
 
-        console.log('res.data', res.data)
+        
         if (res.message == "success") {
           this.postOpEnable = res.data.post_op_enable == 1 ? true : false;
           this.tickEnable = res.data.tick_enable == 1 ? true : false;

@@ -181,7 +181,7 @@ export class CustomisationsComponent
       // }
       this.newAttribute = { name: "" };
 
-      console.log("this.newAttribute", this.newAttribute);
+     
       this.fieldArray.push(this.newAttribute);
       this.newAttribute = {};
     } else {

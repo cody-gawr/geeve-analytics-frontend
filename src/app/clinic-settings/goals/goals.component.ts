@@ -25,14 +25,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
   dentists: any = [];
   goalsData: any = {};
   clinicAnalysisGoals: any = [];
-  tabs: any = [];
-  tabsConstants = {
-    clinic_analysis: 'Clinician Analysis',
-    clinic_procedure_and_referrals: 'Clinician Procedures & Referrals',
-    front_desk: 'Front Desk',
-    marketing: 'Marketing',
-    finances: 'Finances'
-  }
+  tabs: any = [];  
   year = new Date().getFullYear();
   range: any = [];
   tabsOptions: string[] = [];
@@ -54,279 +47,12 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
   ) {
     super();
     this.range.push(this.year);
-
     for (var i = 1; i < 3; i++) {
         this.range.push(this.year + i);
     }
   }
 
   ngOnInit() {
-/*    this.clinicAnalysisForm = this.fb.group({
-      dentistprod: [null, Validators.compose([Validators.required])],
-      treatmentplan: [null, Validators.compose([Validators.required])],
-      planaverage: [null, Validators.compose([Validators.required])],
-      recallrate: [null, Validators.compose([Validators.required])],
-      rebookrate: [null, Validators.compose([Validators.required])],
-      patientcomplaints: [null, Validators.compose([Validators.required])],
-      newpatients: [null, Validators.compose([Validators.required])],
-      hourlyrate: [null, Validators.compose([Validators.required])]
-    });*/
-
-/*    this.clinicProcedureForm = this.fb.group({
-      itempredictor: [null, Validators.compose([Validators.required])],
-      ratio1: [null, Validators.compose([Validators.required])],
-      ratio2: [null, Validators.compose([Validators.required])],
-      ratio3: [null, Validators.compose([Validators.required])],
-      totalrevenue: [null, Validators.compose([Validators.required])],
-      referralclinician: [null, Validators.compose([Validators.required])]
-    });*/
-/*
-    this.frontDeskForm = this.fb.group({
-      utilisationrate: [null, Validators.compose([Validators.required])],
-      recallprebook: [null, Validators.compose([Validators.required])],
-      treatmentprebook: [null, Validators.compose([Validators.required])],
-      fta: [null, Validators.compose([Validators.required])],
-      uta: [null, Validators.compose([Validators.required])],
-      noticks: [null, Validators.compose([Validators.required])],
-      attendancerate: [null, Validators.compose([Validators.required])]
-    });*/
-
-/*    this.marketingForm = this.fb.group({
-      ƒreferralpatient: [null, Validators.compose([Validators.required])],
-      revenuereferral: [null, Validators.compose([Validators.required])],
-      visits: [null, Validators.compose([Validators.required])],
-      newpatients2: [null, Validators.compose([Validators.required])],
-      patientcost: [null, Validators.compose([Validators.required])]
-    });*/
-
-/*    this.financesForm = this.fb.group({
-      netprofit: [null, Validators.compose([Validators.required])],
-      netprofitxero: [null, Validators.compose([Validators.required])],
-      netprofitpms: [null, Validators.compose([Validators.required])],
-      expenses: [null, Validators.compose([Validators.required])],
-      productionclinician: [null, Validators.compose([Validators.required])],
-      totalproduction: [null, Validators.compose([Validators.required])],
-      collection: [null, Validators.compose([Validators.required])],
-      visitproduction: [null, Validators.compose([Validators.required])],
-      discount: [null, Validators.compose([Validators.required])],
-      overdueaccount: [null, Validators.compose([Validators.required])]
-    });*/
-
-  /*  this.tabs = {*/
-    /*  clinic_analysis: {
-        patchValues: {},
-        label: this.tabsConstants.clinic_analysis,
-        form: this.clinicAnalysisForm,
-        startIndex: 1,
-        endIndex: 8,
-        controls: [
-          {
-            label: 'dentist production',
-            name: 'dentistprod',
-            prefix: '$'
-          },
-          {
-            label: 'treatment plan completion rate',
-            name: 'treatmentplan',
-            postfix: '%'
-          },
-          {
-            label: 'treatment plan average cost',
-            name: 'planaverage'
-          },
-          {
-            label: 'recall prebook rate',
-            name: 'recallrate',
-            postfix: '%'
-          },
-          {
-            label: 'reappointment rate',
-            name: 'rebookrate',
-            postfix: '%'
-          },
-          {
-            label: 'no. patients complaints',
-            name: 'patientcomplaints'
-          },
-          {
-            label: 'hourly rate',
-            name: 'hourlyrate',
-            prefix: '$'
-          },
-          {
-            label: 'no. new patients',
-            name: 'newpatients'
-          }
-        ]
-      },*/
-/*      clinic_procedure_and_referrals: {
-        patchValues: [],
-        label: this.tabsConstants.clinic_procedure_and_referrals,
-        form: this.clinicProcedureForm,
-        startIndex: 9,
-        endIndex: 14,
-        controls: [
-          {
-            label: 'item predictor analysis value',
-            name: 'itempredictor'
-          },
-          {
-            label: 'predictor Ratio 1: (Crown to Large Filling Ratio)',
-            name: 'ratio1'
-          },
-          {
-            label: 'Predictor Ratio 2: (Extraction to RCT Ratio)',
-            name: 'ratio2'
-          },
-          {
-            label: 'Predictor Ratio 3: (RCT Conversion Ratio)',
-            name: 'ratio3'
-          },
-          {
-            label: 'Total Revenue of Clinician Per Procedure value',
-            name: 'totalrevenue',
-            prefix: '$'
-          },
-          {
-            label: 'Referral to Other Clinicians Internal / External value',
-            name: 'referralclinician',
-            prefix: '$'
-          },
-        ]
-      },*/
-/*      front_desk: {
-        patchValues: [],
-        label: this.tabsConstants.front_desk,
-        form: this.frontDeskForm,
-        startIndex: 15,
-        endIndex: 21,
-        controls: [
-          {
-            label: 'Utilisation Rate',
-            name: 'attendancerate',
-            postfix: '%'
-          },
-          {
-            label: 'Recall prebook rate',
-            name: 'recallprebook',
-            postfix: '%'
-          },
-          {
-            label: 'Reappointment Rate',
-            name: 'treatmentprebook',
-            postfix: '%'
-          },
-          {
-            label: 'FTA ratio',
-            name: 'fta',
-            postfix: '%'
-          },
-          {
-            label: 'UTA ratio',
-            name: 'uta',
-            postfix: '%'
-          },
-          {
-            label: 'Number of Ticks',
-            name: 'noticks'
-          },
-          {
-            label: 'Recall Attendance Rate value',
-            name: 'attendancerate',
-            postfix: '%'
-          }
-        ]
-      },*/
-/*      marketing: {
-        patchValues: [],
-        label: this.tabsConstants.marketing,
-        form: this.marketingForm,
-        startIndex: 22,
-        endIndex: 26,
-        controls: [
-          {
-            label: 'No. New Patients By Referral',
-            name: 'ƒreferralpatient'
-          },
-          {
-            label: 'Revenue by Referral',
-            name: 'revenuereferral',
-            prefix: '$'
-          },
-          {
-            label: 'Total Visits',
-            name: 'visits'
-          },
-          {
-            label: 'No. New Patients',
-            name: 'newpatients2'
-          },
-          {
-            label: 'Cost of New Patient Acquisition',
-            name: 'patientcost',
-            prefix: '$'
-          }
-        ]
-      }*/
-      // finances: {
-      //   patchValues: [],
-      //   label: this.tabsConstants.finances,
-      //   form: this.financesForm,
-      //   startIndex: 15,
-      //   endIndex: 36,
-      //   controls: [
-      //     {
-      //       label: 'Net Profit',
-      //       name: 'netprofit',
-      //       prefix: '$'
-      //     },
-      //     {
-      //       label: 'Net Profit % (Xero)',
-      //       name: 'netprofitxero',
-      //       postfix: '%'
-      //     },
-      //     {
-      //       label: 'Net Profit % (PMS)',
-      //       name: 'netprofitpms',
-      //       postfix: '%'
-      //     },
-      //     {
-      //       label: 'Expenses value',
-      //       name: 'expenses',
-      //       prefix: '$'
-      //     },
-      //     {
-      //       label: 'Production % Per Clinician',
-      //       name: 'productionclinician',
-      //       postfix: '%'
-      //     },
-      //     {
-      //       label: 'Total Production',
-      //       name: 'totalproduction',
-      //       prefix: '$'
-      //     },
-      //     {
-      //       label: 'Collection',
-      //       name: 'collection',
-      //       prefix: '$'
-      //     },
-      //     {
-      //       label: 'Production Per Visit',
-      //       name: 'visitproduction'
-      //     },
-      //     {
-      //       label: 'Total Discounts',
-      //       name: 'discount',
-      //       postfix: '%'
-      //     },
-      //     {
-      //       label: 'Overdue Accounts',
-      //       name: 'overdueaccount',
-      //       prefix: '$'
-      //     }
-      //   ]
-      // },
-   /* }*/
     if (this.clinic_id$.value) this.getDentists(this.clinic_id$.value);
 
   }
@@ -400,34 +126,56 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
 
 getGoalsForTabsClinic(allGoals) {
   this.tabs = [];
-  this.goalsData = {};
-  if(allGoals[0]){
-    this.selectedTab = allGoals[0]['id'];    
-  }
+  var temp = {};
+  this.goalsData = {'year': this.selectedYear, 'goals' : {} };
   allGoals.forEach((res)=> {
-    var temp = [];
-    temp['name'] = res.dashboard;
-    temp['id'] = res.id;
-    temp['charts'] = [];
-    res.master_charts.forEach((charts,key) => {
-      var tempChart = [];     
-      tempChart['chart'] = charts.chart;
-      tempChart['control'] = charts.chart;
-      tempChart['id'] = charts.id;
-      tempChart['sign'] = charts.sign;
-      tempChart['value'] = 0;
-      if(typeof(charts.dentist_goal) != 'undefined' && charts.dentist_goal) {
-        tempChart['value'] = charts.dentist_goal.value;
+    temp = {
+     'd_id' : res.id,
+     'd_name' : res.dashboard,
+     'charts' : [],
+   };
+   var chartTemp = {};
+   res.master_charts.forEach( (chart) => {
+      chartTemp = 
+      {
+        'c_id' : chart.id,
+        'c_dashboard_id' : chart.dashboard_id,
+        'c_name' : chart.chart,
+        'sign' : chart.sign,
+        'goals' : []
+      };
+      if( typeof(chart['all_dentist_goals']) != 'undefined' ){
+        chartTemp['goals'] = this.setGoalsPerMonth(chart['all_dentist_goals']);
+        this.goalsData['goals'][chart.id] = this.setGoalsPerMonth(chart['all_dentist_goals']);
+      } else {
+        chartTemp['goals'] = this.setGoalsPerMonth(chart['all_clinic_goals']);
+        this.goalsData['goals'][chart.id] = this.setGoalsPerMonth(chart['all_clinic_goals']);
       }
-      else if(typeof(charts.clinic_goal) != 'undefined' && charts.clinic_goal) {
-        tempChart['value'] = charts.clinic_goal.value;
-      }
-     
-      this.goalsData[parseInt(charts.id)] = tempChart['value'];
-      temp['charts'].push(tempChart);
-    });
-    this.tabs.push(temp);    
+      
+      temp['charts'].push(chartTemp);
+      
+   });
+   this.tabs.push(temp);
   });
+  this.selectedTab = this.tabs[0].d_id;
+}
+
+
+setGoalsPerMonth(chartGoals)
+{  
+  var values= [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1];     
+    chartGoals.forEach( (chardValues) => {
+      for(var i=0; i <= 11; i++ ){
+        var d1 = new Date(this.selectedYear,i,1);
+        var d2 = new Date(chardValues.start_date);
+        if(d1.getMonth() === d2.getMonth())
+        {
+          values[i] = chardValues.value;
+        }
+        
+      }
+    });
+    return values;
 }
 
 
@@ -450,24 +198,10 @@ getGoalsForTabsClinic(allGoals) {
     });
   }
 
-  getFormsData() {
-    let formattedData: any = {};
-    let start = 0;
-    let end = 0;
-    Object.keys(this.tabs).map(key => {
-      start = this.tabs[key].startIndex;
-      end = this.tabs[key].endIndex;
-      let index = 0;
-      for (let i = start; i <= end; i++) {
-        formattedData[i] = this.tabs[key].form.get(this.tabs[key].controls[index].name).value;
-        index++;
-      }
-    });
-    return formattedData;
-  }
+
 
   onSubmit() {
-   // const allFormsData = this.getFormsData();
+
     let myJsonString = JSON.stringify(this.goalsData);
     $('.ajax-loader').show();
     if (this.selectedGoalCategory$.value === '') {
@@ -521,12 +255,12 @@ getGoalsForTabsClinic(allGoals) {
   }
 
   onKeyUp(event){       
-    if(event.keyCode == 45 || (event.keyCode >= 48 && event.keyCode <= 57)){
+    /*if(event.keyCode == 45 || (event.keyCode >= 48 && event.keyCode <= 57)){
       if(event.keyCode == 45){
         if($(event.target).hasClass('sign%')){
-         /* event.preventDefault();
+          event.preventDefault();
           event.stopPropagation();
-          return false;*/
+          return false;
         }
       }
       return true;
@@ -534,19 +268,19 @@ getGoalsForTabsClinic(allGoals) {
       event.preventDefault();
       event.stopPropagation();
       return false;
-    }
+    }*/
   }
-  onBlur(id,val,event){    
+  onBlur(id,val,event,sn){    
+     event.preventDefault();
+      event.stopPropagation();
     if($(event.target).hasClass('sign%') && val > 100){
-      $(event.target).val(100);
       val = 100;
-    } 
-    if(val == ''){
+    }  else if(val == ''){
       val = 0;
     } 
-   this.goalsData[parseInt(id)] =  parseInt(val);
    $(event.target).val(val);  
-       
-    
-  }
+   this.goalsData['goals'][parseInt(id)][parseInt(sn)] =  parseInt(val);
+   
+
+ }
 }

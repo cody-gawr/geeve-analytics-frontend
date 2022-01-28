@@ -44,7 +44,7 @@
           <mat-label class="goals-form-field-label">
           Dashboard </mat-label>
           <mat-select class="external_dentist" [(ngModel)]="selectedTab" (ngModelChange)="onTabChanged($event)" >
-            <mat-option *ngFor="let tab of tabs" [value]="tab.id">{{ updateName(tab.name) }} </mat-option>
+            <mat-option *ngFor="let tab of tabs" [value]="tab.d_id">{{ updateName(tab.d_name) }} </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -67,168 +67,50 @@
       </div>
     </div>
 
-    <!--Dashboard Forms-->
-    <!-- <div fxLayout="row wrap goals-form-container row-width">
-      <div
-        fxFlex.gt-sm="100%"
-        fxFlex="100"
-        class="sa_mattabs_design sa_matforms_design"
-      >
-        <div *ngFor="let tab of tabs">
-          <div class="example-small-box goal">           
-            <form  class="basic-form" *ngIf="selectedTab == tab.id"> 
-              <div class="matInput-form-group">
-                <mat-form-field class="sa-form-group" *ngFor="let control of tab.charts">
-                  <mat-label class="goals-form-field-label">
-                   {{ control.chart }}
-                  </mat-label>
-                 <span matPrefix [ngStyle]="{'opacity': control.sign == '$' ? '1' : '0'}">$ &nbsp;</span>
-                  <input type="text"  class="goals-form-input-field sign{{control.sign}}" matInput value="{{ control.value }}" name="control.control" (keypress)="onKeyUp($event)" (blur)="onBlur(control.id, $event.target.value,$event)" sign="{{ control.sign }}"/>
-                  <span matSuffix *ngIf="control.sign == '%'">&nbsp; %</span>
-                </mat-form-field>                
-              </div>
-            </form>
-          </div>
-        </div>
-        <div class="sa-form-group-btn">
-          <button class="btn save-button" (click)="onSubmit()">Save</button>
-        </div>
-      </div>
-    </div> -->
+
   </mat-card-content>
-  <div mat-dialog-content class="sa_forms_design" *ngIf="selectedTab == '1'">
+  <div mat-dialog-content class="sa_forms_design">
     <div>
       <div *ngFor="let tab of tabs">
-        <form  class="basic-form" *ngIf="selectedTab == tab.id"> 
-      <table class="editTaskList">       
-            <tr>
-              <th>Month</th>
-              <th>Dentist Production</th>
-              <th>Treatment Plan Completion Rate</th>
-              <th>Recall Prebook Rate</th>
-              <th>Reappointment Rate</th>
-              <th>Hourly Rate</th>
-              <th>No. New Patients</th>
+      
+
+    <form  class="basic-form goalsTable" *ngIf="selectedTab == tab.d_id"> 
+      <table class="goalsEditTable">       
+        
+        <thead>       
+          <tr>
+             <th width="20%">&nbsp;</th>
+              <th>January</th>
+              <th>February</th>
+              <th>March</th>
+              <th>April</th>
+              <th>May</th>
+              <th>June</th>
+              <th>July</th>
+              <th>August</th>
+              <th>September</th>
+              <th>October</th>
+              <th>November</th>
+              <th>December</th>
+            </tr>             
+          </thead>
+          <tbody>
+            <tr *ngFor="let charts of tab.charts">
+              <td>{{ charts.c_name }}  <span class="goalSignFix" *ngIf="charts.sign">( {{ charts.sign }} )</span></td>
+              <td *ngFor="let goalsD of charts.goals; let sn =  index;">
+                <div class="goal-value">                 
+                  <input type="text" name="goal{{ charts.c_id }}{{ sn }}" value="{{ goalsD }}" (keypress)="onKeyUp($event)" (focusout)="onBlur(charts.c_id, $event.target.value,$event,sn)" class="sign{{charts.sign}}" />                
+                </div>
+              </td>
             </tr>
-             
-            <ng-container>             
-              <tr>   
-               <td>Jan</td>             
-               <td *ngFor="let control of tab.charts;let i =index;">
-                <!-- <span matPrefix [ngStyle]="{'opacity': control.sign == '$' ? '1' : '0'}">$ &nbsp;</span> -->
-                <input type="text"  class="txt-align goals-form-input-field sign{{control.sign}}" matInput value="{{ control.value }}" name="control.control" (keypress)="onKeyUp($event)" (blur)="onBlur(control.id, $event.target.value,$event)" sign="{{ control.sign }}"/>
-                <!-- <span matSuffix *ngIf="control.sign == '%'">&nbsp; %</span> -->
-               </td>
-                <!-- <td>
-                  <span matPrefix [ngStyle]="{'opacity': control.sign == '$' ? '1' : '0'}">$ &nbsp;</span>
-                  <input type="text"  class="goals-form-input-field sign{{control.sign}}" matInput value="{{ control.value }}" name="control.control" (keypress)="onKeyUp($event)" (blur)="onBlur(control.id, $event.target.value,$event)" sign="{{ control.sign }}"/>
-                  <span matSuffix *ngIf="control.sign == '%'">&nbsp; %</span>
-                </td> -->
-              </tr>
-            </ng-container>         
+          </tbody>          
+      
+          
       </table>
     </form>
   </div>
     </div>
-  </div>
-  <div mat-dialog-content class="sa_forms_design" *ngIf="selectedTab == '3'">
-    <div>
-      <div *ngFor="let tab of tabs">
-        <div *ngIf="selectedTab == tab.id" >
-      <table class="editTaskList">       
-            <tr>
-              <th>Month</th>
-              <th>Utilisation Rate</th>
-              <th>Recall prebook rate (%)</th>
-              <th>Reappointment Rate (%)</th>
-              <th>FTA ratio (%)</th>
-              <th>UTA ratio (%)</th>
-            </tr>
-             
-            <ng-container>             
-              <tr> 
-                <td>Jan</td>                
-               <td *ngFor="let control of tab.charts;let i =index;">
-                <!-- <span matPrefix [ngStyle]="{'opacity': control.sign == '$' ? '1' : '0'}">$ &nbsp;</span> -->
-                <input type="text"  class="txt-align goals-form-input-field sign{{control.sign}}" matInput value="{{ control.value }}" name="control.control" (keypress)="onKeyUp($event)" (blur)="onBlur(control.id, $event.target.value,$event)" sign="{{ control.sign }}"/>
-                <!-- <span matSuffix *ngIf="control.sign == '%'">&nbsp; %</span> -->
-               </td>
-                <!-- <td>
-                  <span matPrefix [ngStyle]="{'opacity': control.sign == '$' ? '1' : '0'}">$ &nbsp;</span>
-                  <input type="text"  class="goals-form-input-field sign{{control.sign}}" matInput value="{{ control.value }}" name="control.control" (keypress)="onKeyUp($event)" (blur)="onBlur(control.id, $event.target.value,$event)" sign="{{ control.sign }}"/>
-                  <span matSuffix *ngIf="control.sign == '%'">&nbsp; %</span>
-                </td> -->
-              </tr>
-            </ng-container>
-         
-      </table>
-    </div>
-      </div>
-    </div>
-  </div>
-  <div mat-dialog-content class="sa_forms_design" *ngIf="selectedTab == '4'">
-    <div>
-      <div *ngFor="let tab of tabs">
-        <div *ngIf="selectedTab == tab.id" >
-      <table class="editTaskList">       
-            <tr>
-              <th>Month</th>
-              <th>Total Visits</th>
-              <th>No. New Patients</th>
-              <th>New Patient Cost</th>
-            </tr>
-             
-            <ng-container>             
-              <tr> 
-                <td>Jan</td>                
-               <td *ngFor="let control of tab.charts;let i =index;">
-                <!-- <span matPrefix [ngStyle]="{'opacity': control.sign == '$' ? '1' : '0'}">$ &nbsp;</span> -->
-                <input type="text"  class="txt-align goals-form-input-field sign{{control.sign}}" matInput value="{{ control.value }}" name="control.control" (keypress)="onKeyUp($event)" (blur)="onBlur(control.id, $event.target.value,$event)" sign="{{ control.sign }}"/>
-                <!-- <span matSuffix *ngIf="control.sign == '%'">&nbsp; %</span> -->
-               </td>
-                <!-- <td>
-                  <span matPrefix [ngStyle]="{'opacity': control.sign == '$' ? '1' : '0'}">$ &nbsp;</span>
-                  <input type="text"  class="goals-form-input-field sign{{control.sign}}" matInput value="{{ control.value }}" name="control.control" (keypress)="onKeyUp($event)" (blur)="onBlur(control.id, $event.target.value,$event)" sign="{{ control.sign }}"/>
-                  <span matSuffix *ngIf="control.sign == '%'">&nbsp; %</span>
-                </td> -->
-              </tr>
-            </ng-container>         
-      </table>
-      </div>
-    </div>
-    </div>
-  </div>
-  <div mat-dialog-content class="sa_forms_design" *ngIf="selectedTab == '9'">
-    <div>
-      <div *ngFor="let tab of tabs">
-        <div *ngIf="selectedTab == tab.id" >
-      <table class="editTaskList">       
-            <tr>
-              <th>Month</th>
-              <th>Followup Conversion</th>
-              <th>Followup Completion Rate</th>
-            </tr>
-             
-            <ng-container>             
-              <tr>   
-                <td>Jan</td>              
-               <td *ngFor="let control of tab.charts;let i =index;">
-                <!-- <span matPrefix [ngStyle]="{'opacity': control.sign == '$' ? '1' : '0'}">$ &nbsp;</span> -->
-                <input type="text"  class="txt-align goals-form-input-field sign{{control.sign}}" matInput value="{{ control.value }}" name="control.control" (keypress)="onKeyUp($event)" (blur)="onBlur(control.id, $event.target.value,$event)" sign="{{ control.sign }}"/>
-                <!-- <span matSuffix *ngIf="control.sign == '%'">&nbsp; %</span> -->
-               </td>
-                <!-- <td>
-                  <span matPrefix [ngStyle]="{'opacity': control.sign == '$' ? '1' : '0'}">$ &nbsp;</span>
-                  <input type="text"  class="goals-form-input-field sign{{control.sign}}" matInput value="{{ control.value }}" name="control.control" (keypress)="onKeyUp($event)" (blur)="onBlur(control.id, $event.target.value,$event)" sign="{{ control.sign }}"/>
-                  <span matSuffix *ngIf="control.sign == '%'">&nbsp; %</span>
-                </td> -->
-              </tr>
-            </ng-container>         
-      </table>
-      </div>
-    </div>
-    </div>
-  </div>
+  </div> 
   <div class="sa-form-group-btn">
     <button class="btn save-button" (click)="onSubmit()">Save</button>
   </div>

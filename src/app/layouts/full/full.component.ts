@@ -58,7 +58,7 @@ export class FullComponent implements OnDestroy, AfterViewInit {
     public constants: AppConstants,
     @Inject(DOCUMENT) private document: any
   ) {
-    console.log("cunst trailInfo", this._cookieService.get("trailInfo"));
+   
 
     if (!this._cookieService.get("trailInfo")) {
       this.showTrail = true
