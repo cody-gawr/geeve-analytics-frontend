@@ -61,6 +61,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public childid: string = '';
   public user_type: string = '';
   public apiUrl = environment.apiUrl;
+  public showGoals: boolean = false;
 
   public proCollShow: number = 1;
   public charTips: any = [];
@@ -3070,6 +3071,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.duration = duration;
       if (duration == 'w') {
         this.goalCount = 1;
+        this.showGoals = false;
         this.duration = 'w';
         this.trendText = 'Last Week';
         this.currentText = 'This Week';
@@ -3091,7 +3093,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       }
       else if (duration == 'm') {
         this.goalCount = 1;
-
+        this.showGoals = true;
         this.trendText = 'Last Month';
         this.currentText = 'This Month';
 
@@ -3103,7 +3105,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       }
       else if (duration == 'lm') {
         this.goalCount = 1;
-
+        this.showGoals = true;
         this.trendText = 'Previous Month';
         this.currentText = 'Last Month';
 
@@ -3116,7 +3118,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       }
       else if (duration == 'q') {
         this.goalCount = 3;
-
+        this.showGoals = false;
         this.trendText = 'Last Quarter';
         this.currentText = 'This Quarter';
 
@@ -3146,7 +3148,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       }
       else if (duration == 'lq') {
         this.goalCount = 3;
-
+        this.showGoals = false;
         this.trendText = 'Previous Quarter';
         this.currentText = 'Last Quarter';
 
@@ -3175,7 +3177,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       else if (duration == 'cytd') {
         this.trendText = 'Last Year';
         this.currentText = 'This Year';
-
+        this.showGoals = false;
         var date = new Date();
         this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
         this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
@@ -3186,7 +3188,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       else if (duration == 'lcytd') {
         this.trendText = 'Previous Year';
         this.currentText = 'Last Year';
-
+        this.showGoals = false;
         var date = new Date();
         this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 0, 1), 'dd-MM-yyyy');
         this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 11, 31), 'dd-MM-yyyy');
@@ -3196,6 +3198,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       else if (duration == 'fytd') {
         this.trendText = 'Last Financial Year';
         this.currentText = 'This Financial Year';
+        this.showGoals = false;
         var date = new Date();
         if ((date.getMonth() + 1) <= 6) {
           this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 6, 1), 'dd-MM-yyyy');
@@ -3215,6 +3218,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       else if (duration == 'lfytd') {
         this.trendText = 'Previous Financial Year';
         this.currentText = 'Last Financial Year';
+        this.showGoals = false;
         var date = new Date();
         if ((date.getMonth() + 1) <= 6) {
           this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'dd-MM-yyyy');
@@ -3238,6 +3242,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         let selectedDate = this.chartService.customSelectedDate$.value;
         this.startDate = this.datePipe.transform(selectedDate.startDate, 'dd-MM-yyyy');
         this.endDate = this.datePipe.transform(selectedDate.endDate, 'dd-MM-yyyy');
+        var selectedMonth = this.datePipe.transform(selectedDate.startDate, 'M');
+        var selectedYear = this.datePipe.transform(selectedDate.startDate, 'yyyy');
+        var selectedStartDate = this.datePipe.transform(selectedDate.startDate, 'd');
+        var selectedEndDate = this.datePipe.transform(selectedDate.endDate, 'd');
+        var LastDay = new Date(parseInt(selectedYear), parseInt(selectedMonth) , 0).getDate();
+        if(parseInt(selectedStartDate) == 1 && parseInt(selectedEndDate) == LastDay){
+          this.showGoals = true;
+        }else{
+          this.showGoals = false;
+        }
         this.loadDentist(dentistVal);
       }
       $('.filter').removeClass('active');

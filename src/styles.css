@@ -8608,7 +8608,8 @@ table.goalsEditTable{
     padding: 0;
     text-align: center;
     border-bottom: 1px solid #cecece;
-    width: 50px;
+    width: 70px;
+    /* border: none; */
 }
 .goalsEditTable td {
     width: 6.5%;
@@ -8635,4 +8636,11 @@ table.goalsEditTable{
 
 .goal-value {
   position: relative;
+  /* display: flex;
+  align-items: center;
+  max-width: 300px;
+  background: #fff;
+  border: 1px solid #a0a0a0;
+  border-radius: 4px;
+  padding-left: 0.5rem; */
 }

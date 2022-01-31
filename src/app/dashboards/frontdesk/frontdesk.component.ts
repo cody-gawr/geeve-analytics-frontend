@@ -40,6 +40,7 @@ export class FrontDeskComponent implements AfterViewInit {
   public showUtiTable: boolean = false;
   public utilShow: any = 1;
   public  apiUrl = environment.apiUrl;
+  public showGoals: boolean = false;
 
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
@@ -1005,6 +1006,7 @@ public currentText;
     this.showTrend= false;
      $('.customRange').css('display','none');
     if(duration == 'w') {
+      this.showGoals = false;
        this.trendText= 'Last Week';
       this.currentText= 'This Week';
       const now = new Date();
@@ -1026,6 +1028,7 @@ public currentText;
         this.loadDentist('all');
     }
     else if (duration == 'm') {
+      this.showGoals = true;
       this.trendText= 'Last Month';
       this.currentText= 'This Month';
 
@@ -1037,6 +1040,7 @@ public currentText;
             this.loadDentist('all');
     }
     else if (duration == 'lm') {
+      this.showGoals = true;
       this.duration = 'lm';
       this.trendText = 'Previous Month';
       this.currentText = 'Last Month';
@@ -1048,6 +1052,7 @@ public currentText;
       this.loadDentist('all');
     }
     else if (duration == 'q') {
+      this.showGoals = false;
       this.trendText= 'Last Quarter';
       this.currentText= 'This Quarter';
 
@@ -1077,6 +1082,7 @@ public currentText;
       this.loadDentist('all');
     }
     else if (duration == 'lq') {
+      this.showGoals = false;
       this.trendText= 'Previous Quarter';
       this.currentText= 'Last Quarter';
 
@@ -1103,6 +1109,7 @@ public currentText;
    
     }
     else if (duration == 'cytd') {
+      this.showGoals = false;
       this.trendText = 'Last Year';
       this.currentText = 'This Year';
       this.duration = 'cytd';
@@ -1113,6 +1120,7 @@ public currentText;
       this.loadDentist('all');
     }
     else if (duration == 'lcytd') {
+      this.showGoals = false;
         this.trendText = 'Previous Year';
         this.currentText = 'Last Year';
         this.duration = 'lcytd';
@@ -1123,6 +1131,7 @@ public currentText;
         this.loadDentist('all');
       }
     else if (duration == 'fytd') {
+      this.showGoals = false;
       this.duration = 'fytd';
       this.trendText = 'Last Financial Year';
       this.currentText = 'This Financial Year';
@@ -1138,6 +1147,7 @@ public currentText;
       this.loadDentist('all');
     }
      else if (duration == 'lfytd') {
+      this.showGoals = false;
         this.trendText = 'Previous Financial Year';
         this.currentText = 'Last Financial Year';
         this.duration = 'lfytd'
@@ -1165,6 +1175,16 @@ public currentText;
      let selectedDate = this.chartService.customSelectedDate$.value;
      this.startDate = this.datePipe.transform(selectedDate.startDate, 'dd-MM-yyyy');
      this.endDate = this.datePipe.transform(selectedDate.endDate, 'dd-MM-yyyy');
+     var selectedMonth = this.datePipe.transform(selectedDate.startDate, 'M');
+      var selectedYear = this.datePipe.transform(selectedDate.startDate, 'yyyy');
+      var selectedStartDate = this.datePipe.transform(selectedDate.startDate, 'd');
+      var selectedEndDate = this.datePipe.transform(selectedDate.endDate, 'd');
+      var LastDay = new Date(parseInt(selectedYear), parseInt(selectedMonth) , 0).getDate();
+      if(parseInt(selectedStartDate) == 1 && parseInt(selectedEndDate) == LastDay){
+        this.showGoals = true;
+      }else{
+        this.showGoals = false;
+      }
 
      var date1:any= new Date(selectedDate.startDate);
      var date2:any= new Date(selectedDate.endDate);

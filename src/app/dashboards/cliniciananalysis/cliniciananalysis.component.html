@@ -213,7 +213,7 @@
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom' && productionGoal >= 0">
+                  *ngIf="productionGoal >= 0 && showGoals == true">
                   <h3 class="m-0 value-num" *ngIf="productionGoal && goalCount">
                     ${{ (productionGoal * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
@@ -641,7 +641,7 @@
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom' && productionGoal >= 0">
+                  *ngIf="productionGoal >= 0 && showGoals == true">
                   <h3 class="m-0 value-num" *ngIf="productionGoal && goalCount">
                     ${{ (productionGoal * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
@@ -763,7 +763,7 @@
                   <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom' && hourlyRateChartGoal >= 0">
+                  *ngIf="hourlyRateChartGoal >= 0 && showGoals == true">
                   <h3 class="m-0 value-num" *ngIf="hourlyRateChartGoal">
                     ${{ hourlyRateChartGoal | number:'1.0-0' }}</h3>
                   <span class="value-text">Goal</span>
@@ -826,7 +826,7 @@
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom' && hourlyGoal >= 0">
+                  *ngIf="hourlyGoal >= 0 && showGoals == true">
                   <h3 class="m-0 value-num" *ngIf="hourlyGoal">${{ hourlyGoal }}</h3>
                   <span class="value-text">Goal</span>
                 </div>
@@ -914,7 +914,7 @@
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom' && newPatientGoals >= 0">
+                  *ngIf="newPatientGoals >= 0 && showGoals == true">
                   <h3 class="m-0 value-num" *ngIf="newPatientGoals && goalCount">
                     {{ (newPatientGoals * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
@@ -994,7 +994,7 @@
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom' && newPatientGoals >= 0">
+                  *ngIf="newPatientGoals >= 0 && showGoals == true">
                   <h3 class="m-0 value-num" *ngIf="newPatientGoals && goalCount">
                     {{ ( newPatientGoals * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
@@ -1245,7 +1245,7 @@
                   <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom' && treatmentChartGoal >= 0">
+                  *ngIf="treatmentChartGoal >= 0 && showGoals == true">
                   <h3 class="m-0 value-num" *ngIf="treatmentChartGoal">
                     {{ (treatmentChartGoal > 100)? 100 : treatmentChartGoal }}%</h3>
                   <span class="value-text">Goal</span>
@@ -1320,7 +1320,7 @@
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom' && treatmentPlanGoal >= 0">
+                  *ngIf="treatmentPlanGoal >= 0 && showGoals == true">
                   <h3 class="m-0 value-num" *ngIf="treatmentPlanGoal">
                     {{ (treatmentPlanGoal > 100)? 100 : treatmentPlanGoal }}</h3>
                   <span class="value-text">Goal</span>
@@ -1423,7 +1423,7 @@
                   <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom' && recallChartGoal >= 0">
+                  *ngIf="recallChartGoal >= 0 && showGoals == true">
                   <h3 class="m-0 value-num" *ngIf="recallChartGoal">
                     {{ (recallChartGoal > 100)? 100 : recallChartGoal }}%</h3>
                   <span class="value-text">Goal</span>
@@ -1447,7 +1447,7 @@
 
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration != 'custom' && treatmentPreChartGoal >= 0">
+                  *ngIf="treatmentPreChartGoal >= 0 && showGoals == true">
                   <h3 class="m-0 value-num" *ngIf="treatmentPreChartGoal && goalCount">
                     {{ treatmentPreChartGoal | number:'1.0-0'}}%</h3>
                   <span class="value-text">Goal</span>
@@ -1547,7 +1547,7 @@
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration != 'custom' && recallGoal >= 0">
+                  *ngIf="recallGoal >= 0 && showGoals == true">
                   <h3 class="m-0 value-num" *ngIf="recallGoal && goalCount">
                     {{ (recallGoal > 100)? 100 : recallGoal }}%</h3>
                   <span class="value-text">Goal</span>
@@ -1567,7 +1567,7 @@
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration != 'custom' && treatmentPreGoal >= 0">
+                  *ngIf="treatmentPreGoal >= 0 && showGoals == true">
                   <h3 class="m-0 value-num" *ngIf="treatmentPreGoal && goalCount">
                     {{ (treatmentPreGoal > 100)? 100 : treatmentPreGoal }}%</h3>
                   <span class="value-text">Goal</span>

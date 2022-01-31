@@ -98,8 +98,10 @@
             <tr *ngFor="let charts of tab.charts">
               <td>{{ charts.c_name }}  <span class="goalSignFix" *ngIf="charts.sign">( {{ charts.sign }} )</span></td>
               <td *ngFor="let goalsD of charts.goals; let sn =  index;">
-                <div class="goal-value">                 
+                <div class="goal-value">
+                  <!-- <span matPrefix  [ngStyle]="{'opacity':  charts.sign == '$' ? '1' : '0'}">$</span>            -->
                   <input type="text" name="goal{{ charts.c_id }}{{ sn }}" value="{{ goalsD }}" (keypress)="onKeyUp($event)" (focusout)="onBlur(charts.c_id, $event.target.value,$event,sn)" class="sign{{charts.sign}}" />                
+                  <!-- <span matSuffix *ngIf=" charts.sign == '%'">%</span> -->
                 </div>
               </td>
             </tr>

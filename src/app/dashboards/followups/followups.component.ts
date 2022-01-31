@@ -22,6 +22,7 @@ export class FollowupsComponent implements AfterViewInit {
   public Apirequest:any = 0; 
   public showTrend:boolean = false; 
   public toggleChecked:boolean = false; 
+  public showGoals: boolean = false;
   public barChartColors: Array<any>;
   public colors: any = [{backgroundColor: '#39acac'}, {backgroundColor: '#48daba'}];
   public colorScheme = {domain: ['#6edbba', '#abb3ff', '#b0fffa', '#ffb4b5', '#d7f8ef', '#fffdac', '#fef0b8', '#4ccfae']};
@@ -335,6 +336,7 @@ export class FollowupsComponent implements AfterViewInit {
     $('.customRange').css('display','none');
     this.showTrend = false;
     if (duration == 'm') {
+      this.showGoals = true;
       this.goalCount = 1;
       this.trendText= 'Last Month';
       this.currentText= 'This Month';
@@ -345,6 +347,7 @@ export class FollowupsComponent implements AfterViewInit {
     }
     else if (duration == 'lm') 
     {
+      this.showGoals = true;
       this.goalCount = 1;
       this.trendText = 'Previous Month';
       this.currentText = 'Last Month';
@@ -355,6 +358,7 @@ export class FollowupsComponent implements AfterViewInit {
     }
     else if (duration == 'q')
     {
+      this.showGoals = false;
       this.goalCount = 3;
       this.trendText= 'Last Quarter';
       this.currentText= 'This Quarter';
@@ -373,6 +377,7 @@ export class FollowupsComponent implements AfterViewInit {
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.duration='q';     
     } else if (duration == 'lq') {
+      this.showGoals = false;
       this.goalCount = 3;
       this.trendText= 'Previous Quarter';
       this.currentText= 'Last Quarter';
@@ -394,6 +399,7 @@ export class FollowupsComponent implements AfterViewInit {
       }
         this.duration='lq';
     } else if (duration == 'cytd') {
+      this.showGoals = false;
       this.trendText= 'Last Year';
       this.currentText= 'This Year';
       var date = new Date();
@@ -403,6 +409,7 @@ export class FollowupsComponent implements AfterViewInit {
       this.goalCount = difMonths + 1;    
       this.duration='cytd';
     } else if (duration == 'lcytd') {
+        this.showGoals = false;
         this.trendText = 'Previous Year';
         this.currentText = 'Last Year';
         this.duration = 'lcytd';
@@ -411,6 +418,7 @@ export class FollowupsComponent implements AfterViewInit {
         this.endDate = this.datePipe.transform(new Date(date.getFullYear() -1, 11, 31), 'dd-MM-yyyy');
         this.goalCount = 12;
     } else if (duration == 'fytd') {
+      this.showGoals = false;
       this.trendText= 'Last Financial Year';
       this.currentText= 'This Financial Year';
       var date = new Date();
@@ -428,6 +436,7 @@ export class FollowupsComponent implements AfterViewInit {
       }     
       this.duration='fytd';
     } else if (duration == 'lfytd') {
+        this.showGoals = false;
         this.trendText = 'Previous Financial Year';
         this.currentText = 'Last Financial Year';
         this.duration = 'lfytd'
@@ -452,6 +461,16 @@ export class FollowupsComponent implements AfterViewInit {
       let selectedDate = this.chartService.customSelectedDate$.value;
       this.startDate = this.datePipe.transform(selectedDate.startDate, 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(selectedDate.endDate, 'dd-MM-yyyy');
+      var selectedMonth = this.datePipe.transform(selectedDate.startDate, 'M');
+      var selectedYear = this.datePipe.transform(selectedDate.startDate, 'yyyy');
+      var selectedStartDate = this.datePipe.transform(selectedDate.startDate, 'd');
+      var selectedEndDate = this.datePipe.transform(selectedDate.endDate, 'd');
+      var LastDay = new Date(parseInt(selectedYear), parseInt(selectedMonth) , 0).getDate();
+      if(parseInt(selectedStartDate) == 1 && parseInt(selectedEndDate) == LastDay){
+        this.showGoals = true;
+      }else{
+        this.showGoals = false;
+      }
       $('.customRange').css('display','block');
     }
     $('.filter').removeClass('active');
