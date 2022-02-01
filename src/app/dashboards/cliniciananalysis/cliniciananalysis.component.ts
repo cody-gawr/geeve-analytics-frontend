@@ -343,6 +343,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public productionTotal = 0;
   public productionTotalAverage = 0;
   public productionGoal = 0;
+  public collectionTotalGoal = 0;
   public planTotal = 0;
   public planTotalAverage = 0;
   public planTotalGoal = 0;
@@ -1360,7 +1361,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   ];
   public collectionTotalAverage: any = 0;
   public collectionTotalPrev: any = 0;
-  public collectionTotalGoal: any = 0;
   public collectionTooltip: string = '';
   public barChartOptionsDP: any = this.barChartOptions;
 
@@ -1369,6 +1369,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionData1 = [];
     this.collectionLabels1 = [];
     this.collectionTotal = 0;
+    this.collectionTotalGoal = 0;
     this.collectionLabels = [];
     this.barChartOptionsDP.annotation = [];
     this.clinic_id && this.cliniciananalysisService.DentistCollection(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
@@ -1376,6 +1377,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.collectionLabels1 = [];
       this.collectionLabels = [];
       this.collectionTotal = 0;
+      this.collectionTotalGoal = 0;
       if (data.message == 'success') {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
@@ -1465,7 +1467,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               type: 'line',
               mode: 'horizontal',
               scaleID: 'y-axis-0',
-              value: this.productionGoal * this.goalCount,
+              value: this.collectionTotalGoal * this.goalCount,
               borderColor: 'red',
               borderWidth: 2,
               borderDash: [2, 2],
@@ -1495,6 +1497,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public collectionExpLoader: boolean = true;
   public collectionExpData1: any = [];
   public collectionExpTotalPrev: any = 0;
+  public collectionTotalExpGoal =0;
   public collectionExpTooltip: string = '';
   public collectionLabelsExp1: any = [];
   public collectionLabelsExp: any = [];
@@ -1574,7 +1577,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.collectionExpTotal = Math.round(data.total);
         this.collectionTotalAverage = Math.round(data.total_average);
         this.collectionExpTotalPrev = Math.round(data.total_ta);
-        this.collectionTotalGoal = data.goals;
+        this.collectionTotalExpGoal = data.goals;
 
         if (this.collectionExpTotal >= this.collectionExpTotalPrev)
           this.collectionExpTooltip = 'up';
@@ -1605,7 +1608,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               type: 'line',
               mode: 'horizontal',
               scaleID: 'y-axis-0',
-              value: this.productionGoal * this.goalCount,
+              value: this.collectionTotalExpGoal * this.goalCount,
               borderColor: 'red',
               borderWidth: 2,
               borderDash: [2, 2],
@@ -1696,7 +1699,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public gaugeCollectionValue: any = 0;
   public collectionDentistTotal: any = 0;
   public collectionDentistTotalPrev: any = 0;
-  public dentistCollectionGoal: any = 0;
+  // public dentistCollectionGoal: any = 0;
   public maxCollectionGoal: any = 0;
 
 
@@ -1710,6 +1713,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.productionTotalAverage = 0;
       this.maxCollectionGoal = 0;
       this.gaugeCollectionValue = 0;
+      this.collectionTotalGoal = 0;
       this.collectionDentistLoader = false;
       if (data.message == 'success') {
         this.Apirequest = this.Apirequest - 1;
@@ -1724,14 +1728,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.collectionDentistTotal = Math.round(data.total);
           this.collectionDentistTotalPrev = Math.round(data.total_ta);
           this.productionTotalAverage = Math.round(data.total_average);
-          this.dentistCollectionGoal = data.goals;
+          this.collectionTotalGoal = data.goals;
           if (this.productionTotal > this.productionTotalPrev) {
             this.collectionTooltip = 'up';
           }
-          if (this.gaugeCollectionValue > this.dentistCollectionGoal)
+          if (this.gaugeCollectionValue > this.collectionTotalGoal)
             this.maxCollectionGoal = this.gaugeValue;
           else
-            this.maxCollectionGoal = this.dentistCollectionGoal;
+            this.maxCollectionGoal = this.collectionTotalGoal;
 
           if (this.maxCollectionGoal == 0)
             this.maxCollectionGoal = '';
@@ -3248,6 +3252,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var selectedEndDate = this.datePipe.transform(selectedDate.endDate, 'd');
         var LastDay = new Date(parseInt(selectedYear), parseInt(selectedMonth) , 0).getDate();
         if(parseInt(selectedStartDate) == 1 && parseInt(selectedEndDate) == LastDay){
+          this.goalCount = 1;
           this.showGoals = true;
         }else{
           this.showGoals = false;
