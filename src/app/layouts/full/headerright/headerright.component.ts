@@ -125,7 +125,8 @@ export class AppHeaderrightComponent implements AfterViewInit {
 
         if (
           this.route == "/dashboards/cliniciananalysis" ||
-          this.route == "/dashboards/clinicianproceedures"
+          this.route == "/dashboards/clinicianproceedures" ||
+          this.route == "/kpi-report"
         ) {
           this.showDropDown = true;
         } else {

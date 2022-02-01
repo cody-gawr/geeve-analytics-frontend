@@ -4,6 +4,7 @@ import { FullComponent } from './layouts/full/full.component';
 import { AppBlankComponent } from './layouts/blank/blank.component';
 import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.component';
 import { RewardsComponent } from './rewards/rewards.component';
+import { KpiReportComponent } from './kpi-report/kpi-report.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { MorningHuddleComponent } from './dashboards/morning-huddle/morning-huddle.component';
 import { FollowupsComponent } from './followups/followups.component';
@@ -67,6 +68,11 @@ export const AppRoutes: Routes = [
       {
         path: 'morning-huddle',
         component: MorningHuddleComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'kpi-report',
+        component: KpiReportComponent,
         canActivate: [AuthGuard]
       },
       {

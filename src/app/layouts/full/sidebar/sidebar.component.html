@@ -116,6 +116,14 @@
         </ng-template>
     </mat-list-item>
     <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
+    *ngIf="(apiUrl.includes('test') || apiUrl.includes('staging'))">
+    <a class="" appAccordionToggle [routerLink]="['/kpi-report']">
+        <i class="fas fa-file"></i>
+        <span>KPI Report</span>
+        <span fxFlex></span>
+    </a> 
+    </mat-list-item>
+    <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
         *ngIf="(user_type == 2 || permisions.indexOf('lostopportunity') >= 0 )">
         <a class="" appAccordionToggle [routerLink]="['/lost-opportunity']">
             <i class="fas fa-hand-holding-usd"></i>
