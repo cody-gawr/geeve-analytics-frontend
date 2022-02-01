@@ -277,7 +277,6 @@ export class AppHeaderrightComponent implements AfterViewInit {
                     }                   
                   }
                 } else {  
-                  console.log(dentistclinic[0]);
                   if(dentistclinic[0].indexOf(',') >= 0){                    
                     this.clinic_id = dentistclinic[0].split(',')[0]; 
                     this.selectedClinic = dentistclinic[0].split(',')[0]; 
