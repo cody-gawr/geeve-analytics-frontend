@@ -277,6 +277,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
                     }                   
                   }
                 } else {  
+                  console.log(dentistclinic[0]);
                   if(dentistclinic[0].indexOf(',') >= 0){                    
                     this.clinic_id = dentistclinic[0].split(',')[0]; 
                     this.selectedClinic = dentistclinic[0].split(',')[0]; 
@@ -294,6 +295,9 @@ export class AppHeaderrightComponent implements AfterViewInit {
                   } else if(dentistclinic[0] == "all"){ // check clinic data from cookie
                     this.clinic_id =  res.data[0].id;
                     this.selectedClinic = res.data[0].id;
+                  }else if(dentistclinic[0] != "all"){
+                    this.clinic_id = dentistclinic[0];
+                    this.selectedClinic = dentistclinic[0];
                   }
                   res.data.forEach((datatemp) => { // getting  clinic name as per cookie data
                     if (datatemp.id == this.clinic_id) {
