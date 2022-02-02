@@ -200,7 +200,7 @@
     <!-- Update Card Details End -->   
     
      <!-- Health Screen Start -->
-     <mat-expansion-panel *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+     <mat-expansion-panel [ngClass] ="showCard? 'show': 'hide'" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
         <mat-expansion-panel-header>
             <mat-panel-title> Customisations </mat-panel-title>
         </mat-expansion-panel-header>

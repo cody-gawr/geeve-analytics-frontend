@@ -169,7 +169,7 @@
     </mat-list-item> -->
 
     <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
-    *ngIf="user_type != 7">
+    >
         <a class="" appAccordionToggle href="javascript: void(0);" (click)="clickEvent('setting')"
             [ngClass]="status ? 'selected' : ''">
             <i class="fa-cog fas"></i>
@@ -189,7 +189,7 @@
                     </a>
                 </mat-list-item>
                 <mat-list-item appAccordionLink routerLinkActive="selected"
-                    *ngIf="user_type == 2 || permisions.indexOf('profilesettings') >= 0">
+                    *ngIf="(user_type == 2 || permisions.indexOf('profilesettings') >= 0) && user_type != 7">
                     <a class="relative" appAccordionToggle [routerLink]="['/roles-users']">
                         <i></i>
                         <span>Users</span>

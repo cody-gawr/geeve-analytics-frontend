@@ -99,12 +99,14 @@ export class ClinicComponent implements AfterViewInit {
   address: string;
   contact_name: string;
   public userPlan: any = '';
+  public user_type: any = '';
   fileInput: any;
   //initialize component
   ngAfterViewInit() {
     this.getUserDetails();
     this.getClinics();
     this.userPlan = this._cookieService.get("user_plan");
+    this.user_type = this._cookieService.get("user_type");
     $('.header_filters').removeClass('hide_header');
     $('.header_filters').removeClass('flex_direct_mar');
 
