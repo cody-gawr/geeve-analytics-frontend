@@ -101,7 +101,7 @@
                 </div>
               </ng-container>
               <ng-template #NoXeroConnectProfitValuePlaceholder>
-                <div *ngIf="(!xeroConnect && !myobConnect) || netprofitstatsError && multipleClinicsSelected===false" class="w-100">
+                <div *ngIf="(!xeroConnect && !myobConnect) && multipleClinicsSelected===false" class="w-100">
                   <div class="sa_nodata_div no-found-data ">
                     <p>Please ensure your Xero/MYOB account is connected</p>
                   </div>
@@ -144,7 +144,7 @@
                 </div>
               </ng-container>
               <ng-template #NoXeroConnectProfitPlaceholder>
-                <div *ngIf="(!xeroConnect && !myobConnect) || netprofitPerError && multipleClinicsSelected===false" class="w-100">
+                <div *ngIf="(!xeroConnect && !myobConnect) && multipleClinicsSelected===false" class="w-100">
                   <div class="sa_nodata_div no-found-data ">
                     <p>Please ensure your Xero/MYOB account is connected</p>
                   </div>
@@ -195,7 +195,7 @@ expenses_card custom_ngx_cw01">
                               [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
                            
                           </div>
-                          <div *ngIf="pieChartLabels && pieChartLabels.length <= 0 && categoryExpensesLoader == false && multipleClinicsSelected===false"
+                          <div *ngIf="((xeroConnect || myobConnect) && pieChartLabels && pieChartLabels.length <= 0 && categoryExpensesLoader == false && multipleClinicsSelected===false)"
                           class="no-data-placeholder">
                           <div class="sa_nodata_div">
                           </div>
@@ -203,7 +203,7 @@ expenses_card custom_ngx_cw01">
                         </div>
 
                           
-                          <div *ngIf="(!xeroConnect && !myobConnect) || categoryExpensesError && multipleClinicsSelected===false" class="w-100">
+                          <div *ngIf="(!xeroConnect && !myobConnect) && multipleClinicsSelected===false" class="w-100">
                             <div class="sa_nodata_div no-found-data ">
                               <p>Please ensure your Xero/MYOB account is connected</p>
                             </div>
@@ -767,7 +767,7 @@ expenses_card custom_ngx_cw01">
             class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
             <div class="loader-text">Calculating...</div>
           </div>
-          <div *ngIf="(!xeroConnect && !myobConnect) || expensesChartTrendError && multipleClinicsSelected==false" class="no-data-placeholder">
+          <div *ngIf="(!xeroConnect && !myobConnect) && multipleClinicsSelected==false" class="no-data-placeholder">
             <div class="sa_nodata_div">
             </div>
             <p class="chart-placeholder-text">Please connect to Xero/MYOB to display this chart</p>
