@@ -47,6 +47,9 @@
           (openedChange)="loadClinicEvent($event)"
           #multiSelect
         >
+        <mat-select-trigger *ngIf="allChecked == true">
+          {{'All Clinics'}}
+        </mat-select-trigger>
           <mat-option  #allSelected value="all" *ngIf="route == '/dashboards/finances' && clinicsData.length > 1 && user_type !=7">All Clinics</mat-option>
           <mat-option
             *ngFor="let clinicData of clinicsData"

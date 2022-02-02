@@ -8593,6 +8593,7 @@ button.Set-Colours, button.Set-Colours:focus, button.Set-Colours:active {
 
 #cllclinic{
   margin-right: 10px;
+  margin-bottom: 10px;
 }
 button.mat-raised-button.mat-gray.float-right.close-btn {
     z-index: 1000 !important;
@@ -8643,4 +8644,8 @@ table.goalsEditTable{
   border: 1px solid #a0a0a0;
   border-radius: 4px;
   padding-left: 0.5rem; */
+}
+
+div#multi_clinic-panel {
+  max-height: 510px;
 }

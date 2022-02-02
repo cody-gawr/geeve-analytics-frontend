@@ -1630,7 +1630,7 @@ export class FinancesComponent implements AfterViewInit {
   public expensescChartTrendIcon;
   public expensescChartTrendTotal;
   public pieChartDataPercentres;
-  public categoryExpensesLoader: any;
+  public categoryExpensesLoader: boolean = false;
   public categoryExpensesError: boolean = false;
   //expenses
   private categoryExpenses() {
@@ -1689,12 +1689,14 @@ export class FinancesComponent implements AfterViewInit {
   public productionChartTrendIcon;
   public productionChartTrendTotal;
   //finProductionByClinician
+  public finProductionByClinicianError: any;
   public finProductionByClinicianLoader: any;
   private finProductionByClinician() {
     var user_id;
     var clinic_id;
     this.productionChartDatares = [];
     this.finProductionByClinicianLoader = true;
+    this.finProductionByClinicianError = false;
     this.productionChartTotal = 0;
     this.productionChartLabels = [];
     this.financesService.finProductionByClinician(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
@@ -1725,8 +1727,10 @@ export class FinancesComponent implements AfterViewInit {
         this.productionChartLabels = this.productionChartLabelsres;
       }
     }, error => {
+      this.finProductionByClinicianError = true;
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
 
     }
@@ -2339,9 +2343,11 @@ export class FinancesComponent implements AfterViewInit {
   public productionChartTrendLabels = [];
   public productionChartTrendLabels1 = [];
   public finProductionByClinicianTrendLoader: any;
+  public finProductionByClinicianTrendError: any;
 
   private finProductionByClinicianTrend() {
     this.finProductionByClinicianTrendLoader = true;
+    this.finProductionByClinicianTrendError = false;
     this.productionChartTrendLabels = [];
     this.productionChartTrendLabels1 = [];
     this.productionChartTrend = [];
@@ -2385,6 +2391,8 @@ export class FinancesComponent implements AfterViewInit {
     }, error => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
+      this.finProductionByClinicianTrendError = true;
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });

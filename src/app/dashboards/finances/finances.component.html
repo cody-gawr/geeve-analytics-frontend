@@ -180,7 +180,12 @@ expenses_card custom_ngx_cw01">
                       <div fxLayout="row wrap">
                         <div class="ngx-charts-fix" fxLayout="row" fxLayoutAlign="space-around center" fxFlex.lg="65"
                           fxFlex.xl="65" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="70">
-                          <ng-container *ngIf="((xeroConnect || myobConnect) && !categoryExpensesError)">
+                          <div *ngIf="(xeroConnect || myobConnect) && categoryExpensesLoader == true && !categoryExpensesError"
+                            class="loader_container">
+                            <img class="loader_ico" src="../assets/images/720.gif">
+                            <div class="loader-text">Calculating...</div>
+                          </div>
+                          <div *ngIf="((xeroConnect || myobConnect) && !categoryExpensesError && multipleClinicsSelected===false && categoryExpensesLoader == false)">
                             <ngx-charts-pie-chart fxFlexAlign="center"
                               *ngIf="pieChartLabels && pieChartLabels.length > 0"
                               class="chart-container sa_chart_custom" [view]="[500, 320]" [scheme]="colorScheme"
@@ -188,19 +193,16 @@ expenses_card custom_ngx_cw01">
                               [explodeSlices]="explodeSlices" [labels]="showLabels" [arcWidth]="arcWidth"
                               [doughnut]="doughnut" [gradient]="gradient" [tooltipDisabled]="tooltipDisabled"
                               [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
-                            <div *ngIf="pieChartLabels && pieChartLabels.length <= 0 && categoryExpensesLoader == false && multipleClinicsSelected===false"
-                              class="no-data-placeholder">
-                              <div class="sa_nodata_div">
-                              </div>
-                              <p class="chart-placeholder-text">No expenses found for the selected period</p>
-                            </div>
-                          </ng-container>
-
-                          <div *ngIf="(xeroConnect || myobConnect) && categoryExpensesLoader == true && !categoryExpensesError"
-                            class="loader_container">
-                            <img class="loader_ico" src="../assets/images/720.gif">
-                            <div class="loader-text">Calculating...</div>
+                           
                           </div>
+                          <div *ngIf="pieChartLabels && pieChartLabels.length <= 0 && categoryExpensesLoader == false && multipleClinicsSelected===false"
+                          class="no-data-placeholder">
+                          <div class="sa_nodata_div">
+                          </div>
+                          <p class="chart-placeholder-text">No expenses found for the selected period</p>
+                        </div>
+
+                          
                           <div *ngIf="(!xeroConnect && !myobConnect) || categoryExpensesError && multipleClinicsSelected===false" class="w-100">
                             <div class="sa_nodata_div no-found-data ">
                               <p>Please ensure your Xero/MYOB account is connected</p>
@@ -299,7 +301,7 @@ expenses_card custom_ngx_cw01">
               </div>
             </mat-card-title>
             <div class="card-body clinician-center-chart">
-              <div class="chart w-100" *ngIf="productionChartData.length > 0 && showInternal == true">
+              <div class="chart w-100" *ngIf="productionChartData.length > 0 && showInternal == true && finProductionByClinicianError == false">
                 <div class="clinician-chart">
                   <canvas class="productionPercentage" #myCanvas baseChart [data]="productionChartData"
                     [labels]="productionChartLabels" [chartType]="productionChartType"
@@ -316,7 +318,7 @@ expenses_card custom_ngx_cw01">
             </div>
           </mat-card-content>
         </mat-card>
-        <div *ngIf="finProductionByClinicianLoader == true" class="loader_container loader_container_middle"><img
+        <div *ngIf="finProductionByClinicianLoader == true && finProductionByClinicianError == false" class="loader_container loader_container_middle"><img
             class="loader_ico" src="../assets/images/720.gif">
           <div class="loader-text">Calculating...</div>
         </div>
@@ -739,8 +741,7 @@ expenses_card custom_ngx_cw01">
                   <img [tooltip]="charTips['28']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>
               </mat-card-title>
-
-              <div *ngIf="(xeroConnect || myobConnect) && expensestrendstats == true && !expensesChartTrendError && multipleClinicsSelected==false" class="card-body sa_chart_summary_flip_main">
+              <div *ngIf="((xeroConnect || myobConnect) && expensestrendstats == true && !expensesChartTrendError && multipleClinicsSelected==false)" class="card-body sa_chart_summary_flip_main">
                 <div class=" sa_chart_summary_flip">
                   <div class="chart sa_chart_flip sa_flip">
                     <div class="chart-clinician">
@@ -751,7 +752,7 @@ expenses_card custom_ngx_cw01">
                         (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"> </canvas>
 
                       <div
-                        *ngIf="expensesChartTrendLabels && expensesChartTrendLabels.length  <=0 && finNetProfitPercentTrendLoader == false"
+                        *ngIf="expensesChartTrendLabels && expensesChartTrendLabels.length  <=0"
                         class="no-data-placeholder">
                         <div class="sa_nodata_div">
                         </div>
@@ -869,7 +870,7 @@ expenses_card custom_ngx_cw01">
               <div class="card-body">
                 <div class="chart-clinician">
                   <canvas #myCanvas2 class="trendProductionPercentage" baseChart
-                    *ngIf="productionChartTrendLabels && productionChartTrendLabels.length  > 0 && finProductionByClinicianTrendLoader == false"
+                    *ngIf="productionChartTrendLabels && productionChartTrendLabels.length  > 0 && finProductionByClinicianTrendLoader == false && finProductionByClinicianTrendError == false"
                     [datasets]="productionChartTrend" [labels]="productionChartTrendLabels"
                     [options]="labelBarPercentOptionsStacked" [legend]="false" [chartType]="stackedChartType"
                     (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"> </canvas>
@@ -884,7 +885,7 @@ expenses_card custom_ngx_cw01">
               </div>
             </mat-card-content>
           </mat-card>
-          <div *ngIf="finProductionByClinicianTrendLoader == true" class="loader_container loader_container_middle"><img
+          <div *ngIf="finProductionByClinicianTrendLoader == true && finProductionByClinicianTrendError == false" class="loader_container loader_container_middle"><img
               class="loader_ico" src="../assets/images/720.gif">
             <div class="loader-text">Calculating...</div>
           </div>

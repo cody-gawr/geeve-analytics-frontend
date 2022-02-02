@@ -225,6 +225,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
   public selectedDentist;
   public placeHolder = "";
   public showAll: boolean = true;
+  public allChecked : boolean = false;
   private getClinics() {
     this.headerService.getClinics().subscribe(
       (res) => {
@@ -251,11 +252,15 @@ export class AppHeaderrightComponent implements AfterViewInit {
                   this.selectedDentist = parseInt(dentistclinic[1]);
                 } 
                 if (this.route == "/dashboards/finances") {
+                  this.allChecked = false;
                   this.clinic_id = [];
                   this.selectedClinic = [];
                   if(dentistclinic[0].indexOf(',') >= 0){
                     let tmpcl = [];
                     let allcookieCl = dentistclinic[0].split(',');
+                    if(allcookieCl[0] == 'all'){
+                      this.allChecked = true;
+                    }
                     allcookieCl.forEach((cln) => {
                       if(cln == 'all'){
                         tmpcl.push(cln);
@@ -267,6 +272,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
                     this.selectedClinic = tmpcl; 
                   } else {
                     if(dentistclinic[0] == 'all'){
+                      this.allChecked = true;
                       this.clinic_id = 'all'; 
                       this.selectedClinic = ['all']; 
                       res.data.forEach((datatemp) => { // getting  clinic name as per cookie data
@@ -278,9 +284,14 @@ export class AppHeaderrightComponent implements AfterViewInit {
                     }                   
                   }
                 } else {  
-                  if(dentistclinic[0].indexOf(',') >= 0){                    
-                    this.clinic_id = dentistclinic[0].split(',')[0]; 
-                    this.selectedClinic = dentistclinic[0].split(',')[0]; 
+                  if(dentistclinic[0].indexOf(',') >= 0){   
+                    if(dentistclinic[0].split(',')[0] == "all"){
+                      this.clinic_id = dentistclinic[0].split(',')[1]; 
+                      this.selectedClinic = dentistclinic[0].split(',')[1]; 
+                    }else{
+                      this.clinic_id = dentistclinic[0].split(',')[0]; 
+                      this.selectedClinic = dentistclinic[0].split(',')[0]; 
+                    }          
                     let opts = this.constants.cookieOpt as CookieOptions;
                     this._cookieService.put(
                       "clinic_id",
@@ -292,7 +303,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
                       this.clinic_id + "_" + dentistclinic[1],
                       opts
                     );
-                  } else if(dentistclinic[0] == "all"){ // check clinic data from cookie
+                  } else if(dentistclinic[0] == "all" || dentistclinic[0] == ""){ // check clinic data from cookie
                     this.clinic_id =  res.data[0].id;
                     this.selectedClinic = res.data[0].id;
                   }else if(dentistclinic[0] != "all"){
@@ -646,7 +657,9 @@ export class AppHeaderrightComponent implements AfterViewInit {
                 this.selectedClinic.push(data.id);
               })
               this.clinic_id = this.selectedClinic;
+              this.allChecked = true;
              }else{
+              this.allChecked = false;
               this.selectedClinic =[];
               newValue = newValues; 
               this.selectedClinic = newValue;
