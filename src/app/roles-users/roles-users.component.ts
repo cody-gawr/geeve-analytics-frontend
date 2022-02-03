@@ -131,6 +131,7 @@ public selectedClinicProviders=[];
 })
 
 export class EditDialogComponent {
+  public apiUrl = environment.apiUrl;
    public clinic_id:any ={};
 show_dentist = false;
 

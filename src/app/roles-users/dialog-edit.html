@@ -8,10 +8,11 @@
   <div class="sa-form-group">
     <label>Select Role</label>
      <select required="true" class="sa_select mat-form-control" name="user_type" [(ngModel)]="userData.user_type" (ngModelChange)="loadDentist($event)">
-      <option value ="6" *ngIf="loginUserType == '2'">Owner</option>
-      <option value ="3">Practice Manager</option>
-      <option value ="4">Clinician</option>
-      <option value ="5">Staff</option>
+      <option value ="6" *ngIf="loginUserType == '2' && userData.user_type != '7'">Owner</option>
+      <option value ="7" *ngIf="(apiUrl.includes('test') || apiUrl.includes('staging-')) && userData.user_type == '7' ">Consultant</option>
+      <option value ="3" *ngIf=" userData.user_type != '7'">Practice Manager</option>
+      <option value ="4" *ngIf=" userData.user_type != '7'">Clinician</option>
+      <option value ="5" *ngIf=" userData.user_type != '7'">Staff</option>
    </select> 
 </div>
  <div class="sa-form-group">
