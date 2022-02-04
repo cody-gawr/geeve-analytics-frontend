@@ -1701,7 +1701,7 @@ async getDentistList(){
       // setTimeout(function() {
       //   newWin.close();
       // }, 600);
-    }
+    } 
 
     printFrontDeskRemindersTab() {
       var divToPrint = document.getElementById('mh-front-desk-reminders-print');
