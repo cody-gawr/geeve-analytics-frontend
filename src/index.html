@@ -25,9 +25,12 @@
         var result = str.replace(regex, "");
         $(this).val(result);
       });
+      function bodyLoad() {
+             alert("Alert from body_onload");
+         }
     </script>
   </head>
-  <body class="main-layout">
+  <body class="main-layout" onload="bodyLoad()">
     <app-root></app-root>
     <div class="ajax-loader">
       <img src="../assets/images/ajax-loading.gif" />

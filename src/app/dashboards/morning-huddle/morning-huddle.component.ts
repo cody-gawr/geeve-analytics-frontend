@@ -305,6 +305,13 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public chartstipsService: ChartstipsService,
     public clinicianAnalysisService: ClinicianAnalysisService
     ) { 
+      $( document ).ready(function() {
+        console.log( "document loaded" );
+    });
+ 
+    $( window ).on( "load", function() {
+        alert("window loaded");
+    });
     this.getChartsTips();
  }
 
