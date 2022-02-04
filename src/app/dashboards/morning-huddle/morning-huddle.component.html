@@ -436,6 +436,7 @@
 
     <!-- Patient Schedule Tab start -->
     <mat-tab label="Dentist Schedule" *ngIf="user_type != '5'">
+      <div id="mh-dentist-schedule-print">
       <div class="morning-huddle-date">
         <div *ngIf="clinicDentists.length > 0 && user_type != '4'">
           <mat-form-field>
@@ -447,6 +448,7 @@
                 {{ dentist.provider_name }}</mat-option>
             </mat-select>
           </mat-form-field>
+          <button id="p-bttom" (click)="printDentistScheduleTab()" tabindex="2" class="mat-raised-button mat-dc float-right"><i class="fa fa-print"></i> Print</button>
         </div>
         <strong> Current Day: {{ schedulePatielDate | date:'EEE MMM d':'timezone' }}</strong>
       </div>
@@ -785,12 +787,14 @@
         </div>
 
       </div>
+    
+    </div>
     </mat-tab>
     <!-- Patient Schedule Tab end -->
 
     <!-- Reminders Tab start -->
     <mat-tab label="Front Desk Reminders" *ngIf="user_type != '4'">
-
+      <div id="mh-front-desk-reminders-print">
       <div class="morning-huddle-date">
         <div *ngIf="clinicDentistsReminders.length > 0">
           <mat-form-field>
@@ -802,6 +806,7 @@
                 {{ dentist.provider_name }}</mat-option>
             </mat-select>
           </mat-form-field>
+          <button id="p-bttom" (click)="printFrontDeskRemindersTab()" tabindex="2" class="mat-raised-button mat-dc float-right"><i class="fa fa-print"></i> Print</button>
         </div>
         <strong>Current Day: {{ remindersRecallsOverdueDate | date:'EEE MMM d':'timezone' }}</strong>
       </div>
@@ -1116,8 +1121,7 @@
         </div>
 
       </div>
-
-
+    </div>
     </mat-tab>
     <!-- Reminders Tab end -->
 
