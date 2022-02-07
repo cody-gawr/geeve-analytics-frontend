@@ -35,12 +35,13 @@
         </tr>
         <ng-container *ngIf="data.tasksListItems.length>0">
           <tr *ngFor="let item of data.tasksListItems;let i =index;">
-            <td> <input type="text" [readonly]="item.readOnly" [(ngModel)]="item.task_name"> </td>
+            <td> 
+                <input type="text" placeholder="New Task" [readonly]="item.readOnly" [(ngModel)]="item.task_name"> </td>              
             <td>
               <span class="action">
-                <a *ngIf="item.readOnly"  (click)="markRead(i)"
+                <a *ngIf="item.readOnly" (click)="markRead(i)"
                   class="action_btn golden ng-star-inserted"><i class="ti-pencil m-r-10"></i></a>
-                <a *ngIf="!item.readOnly"  (click)="updateItem(i)"
+                <a *ngIf="!item.readOnly"  (window:keypress)="onKeyPress($event,i)" (click)="updateItem(i)"
                   class="action_btn golden ng-star-inserted"><i class="ti-save m-r-10"></i></a>
               </span>
               <span class="action" (click)="removeItem(i)">

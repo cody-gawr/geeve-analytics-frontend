@@ -214,7 +214,7 @@
                             </div>
                         </mat-card-title>
                         <div class="card-body">
-                            <div *ngIf="( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 1 && clinic_id <= 4) )" fxLayout="row wrap"
+                            <div fxLayout="row wrap"
                                 class="sa_tabs_main_sec" fxLayoutAlign="center">
                                 <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
                                     <small class="sa_tab_btn" [ngClass]="!activePatients? 'active' : ''"

@@ -33,6 +33,11 @@ export class DialogOverviewTasklistDialogComponent {
   onNoClick(): void {
     this.dialogRef.close();
   }
+  onKeyPress(event,i){
+    if(event.keyCode===13){
+     this.updateItem(i);
+    }
+  }
 
   save(data) {
     if (data.list_name == '' || data.assigned_roles == '' || (data.task_name == '' && this.showAddItem)) {
@@ -158,10 +163,11 @@ export class DialogOverviewTasklistDialogComponent {
 
 
 
-    this.taskService.updateTasksItem('', data.list_id, 'New task created', data.clinic_id).subscribe((res) => {
+    this.taskService.updateTasksItem('', data.list_id, 'New Task', data.clinic_id).subscribe((res) => {
       if (res.message == 'success') {
         let newData = res.data;
-        newData.readOnly = true
+        newData.readOnly = false
+        newData.task_name = '';
         this.dialogRef.componentInstance.data.tasksListItems.push(newData);
       } else if (res.status == '401') {
         this.handleUnAuthorization();
