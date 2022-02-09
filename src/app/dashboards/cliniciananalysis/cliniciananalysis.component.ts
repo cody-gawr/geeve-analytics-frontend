@@ -578,16 +578,31 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     },
     responsive: true,
     maintainAspectRatio: false,
+    scaleStartValue : 0,
     scales: {
       xAxes: [{
-        gridLines: { display: true },
-        ticks: {
-          autoSkip: false,
+      // id: "x-axis-target",
+       stacked: true,
+
+      },
+      {
+          gridLines: { 
+            display: true , 
+            offsetGridLines: true
+          },
+          ticks: {
+            autoSkip: false,
+          },
+          display: false,
+          offset: true,
+          stacked: true,
+         // id: "x-axis-actual",
         }
-      }],
+    ],
       yAxes: [{
-        suggestedMin: 0,
+       suggestedMin: 0,
         ticks: {
+          min:0,
           beginAtZero: true,
           userCallback: (label, index, labels) => {
             // when the floored value is the same as the value we have a whole number
@@ -612,7 +627,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           if (tooltipItem.xLabel.includes('WE ')) {
             return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
           }
-          return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+          const v = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+          let Tlable = data.datasets[tooltipItem.datasetIndex].label;
+          if(Tlable !=''){
+            Tlable = Tlable + ": "
+          }
+         let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+        return  Tlable + this.splitName(tooltipItem.xLabel).join(' ') + ": $" + ylable;
         },
         // remove title
         title: function (tooltipItem, data) {
@@ -3315,39 +3336,26 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   isDisabled = true;
   isChecked = true;
 
+ 
+  public targetData = [];
   public dentistProdTrend: any[] = [
     {
       data: [], label: '', shadowOffsetX: 3,
-      backgroundColor: [
-        this.chartService.colors.odd,
-        this.chartService.colors.even,
-        this.chartService.colors.odd,
-        this.chartService.colors.even,
-        this.chartService.colors.odd,
-        this.chartService.colors.even,
-        this.chartService.colors.odd,
-        this.chartService.colors.even,
-        this.chartService.colors.odd,
-        this.chartService.colors.even,
-        this.chartService.colors.odd,
-        this.chartService.colors.even
-      ],
-      shadowOffsetY: 2,
-      shadowBlur: 3,
-      shadowColor: 'rgba(0, 0, 0, 0.3)',
-      pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-      pointShadowOffsetX: 3,
-      pointShadowOffsetY: 3,
-      pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
-    }];
-
+  //   xAxisID: "x-axis-actual",
+      backgroundColor: 'rgba(0, 0, 255, 0.2)',
+      order: 2,
+    },
+    { 
+      data: [], label: '',
+   //  xAxisID: "x-axis-target",
+      backgroundColor: 'rgba(255, 14, 68, 1)',
+      order: 1,
+      minHeight: 5,
+    }
+  ];
   public dentistColTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,
+      data: [], label: '', shadowOffsetX: 3,order: 2,
       backgroundColor: [
         this.chartService.colors.odd,
         this.chartService.colors.even,
@@ -3373,6 +3381,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
+    }, { 
+      data: [], label: '',
+      backgroundColor: 'rgba(255, 14, 68, 1)',
+      order: 1,
     }];
 
     public dentistColExpTrend: any[] = [
@@ -3428,6 +3440,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.dentistProductionWeeklyTrend = [];
       this.dentistProductionWeeklyTrendLabels = [];
       let dynamicColors = [];
+      this.targetData=[];
       if (data && data.message == 'success') {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
@@ -3437,6 +3450,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             // if (res.production > 0) {
               this.dentistProductionTrend1.push(Math.round(res.production));
               if (mode == 'c') {
+                this.targetData.push(res.goals);                
                 this.dentistProductionTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
               } else if (mode == 'w') {
                 this.dentistProductionTrendLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
@@ -3448,6 +3462,26 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           });
           if (this.dentistProductionTrend1.every((value) => value == 0)) this.dentistProductionTrend1 = [];
           this.dentistProdTrend[0]['data'] = this.dentistProductionTrend1;
+          let maxVal = Math.max(...this.dentistProductionTrend1);
+          var subVal = 1;
+          if(maxVal >= 5000){
+            subVal = 100;
+          }else if(maxVal < 5000 && maxVal > 2000){
+            subVal = 50;
+          }else if(maxVal < 2000 && maxVal > 500){
+            subVal = 10;
+          }
+          if(mode == 'c'){
+            this.dentistProdTrend[0]['label'] = 'Actual';
+            this.dentistProdTrend[1]['label'] = 'Target';
+            //this.targetData = [1510, 1650, 5400, 25000, 2000, 910, 970,4000,1020,1511,1809,1500];
+           this.dentistProdTrend[1]['data'] =  this.targetData.map(v => [v - subVal, v + subVal]);
+          }else{
+            this.dentistProdTrend[0]['label'] = '';
+            this.dentistProdTrend[1]['label'] = '';
+            this.dentistProdTrend[1]['data'] =  [];
+          }
+         
 
           this.dentistProductionTrendLabels1.forEach((label, labelIndex) => {
             dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
@@ -3483,6 +3517,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public dentistCollectionTrendLoader: boolean = true;
   public dentistColleTrendLabels1: any = [];
   public dentistColleWeeklyTrendLabels1: any = [];
+  public collectiontargetData = [];
 
   private dentistCollectionTrend(mode = null) {
     let activeMode = this.trendValue;
@@ -3497,6 +3532,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.dentistCollectionWeeklyTrend1 = [];
       this.dentistCollectionTrendLabels = [];
       this.dentistCollectionWeeklyTrendLabels = [];
+      this.collectiontargetData=[];
 
       let dynamicColors = [];
       if (data && data.message == 'success') {
@@ -3506,6 +3542,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           data.data.forEach(res => {
             // if (res.collection > 0) {
               this.dentistCollectionTrend1.push(Math.round(res.collection));
+              this.collectiontargetData.push(res.goals); 
               if (activeMode == 'c') {
                 this.dentistColleTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
               } else if (activeMode == 'w') {
@@ -3517,6 +3554,25 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           });
           if (this.dentistCollectionTrend1.every((value) => value == 0)) this.dentistCollectionTrend1 = [];
           this.dentistColTrend[0]['data'] = this.dentistCollectionTrend1;
+
+          let maxVal = Math.max(...this.dentistCollectionTrend1);
+            var subVal = 1;
+            if(maxVal >= 5000){
+              subVal = 100;
+            }else if(maxVal < 5000 && maxVal > 2000){
+              subVal = 50;
+            }else if(maxVal < 2000 && maxVal > 500){
+              subVal = 10;
+            }
+          if(activeMode == 'c'){
+            this.dentistColTrend[0]['label'] = 'Actual';
+            this.dentistColTrend[1]['label'] = 'Target';
+            this.dentistColTrend[1]['data'] =  this.collectiontargetData.map(v => [v - subVal, v + subVal]);
+          }else{
+            this.dentistColTrend[0]['label'] = '';
+            this.dentistColTrend[1]['label'] = '';
+            this.dentistColTrend[1]['data'] =  [];
+          }
 
           this.dentistColleTrendLabels1.forEach((label, labelIndex) => {
             dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
@@ -3974,7 +4030,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   public hourlyRateChartTrend: any[] = [
     {
-      data: [],
+      data: [], order:2,
       backgroundColor: [
         this.chartService.colors.odd,
         this.chartService.colors.even,
@@ -4001,16 +4057,21 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
-    }];
+    },{
+      data: [], order:1, label: '', shadowOffsetX: 3,  backgroundColor: 'rgba(255, 14, 68, 1)',
+    }
+  ];
   public hourlyRateChartTrend1 = [];
   public hourlyRateChartTrendLabels = [];
   public hourlyRateChartTrendLabels1 = [];
   public fdhourlyRateRateTrendLoader: any;
+  public hourlytargetData = [];
   //Trend Mode for Hourly Rate chart
   private fdhourlyRateRateTrend() {
     this.fdhourlyRateRateTrendLoader = true;
     var user_id;
     var clinic_id;
+    this.hourlytargetData =[];
     this.clinic_id && this.cliniciananalysisService.cahourlyRateRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
       this.hourlyRateChartTrendLabels = [];
       if (data.message == 'success') {
@@ -4022,12 +4083,36 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         data.data.forEach(res => {
           if (res.hourly_rate >= 0) {
             this.hourlyRateChartTrend1.push(Math.round(res.hourly_rate));
+            if(res.goals == -1 || res.goals == null || res.goals == ''){
+              this.hourlytargetData.push(null);
+            }else{
+              this.hourlytargetData.push(res.goals); 
+            }              
             if (this.trendValue == 'c')
               this.hourlyRateChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
             else
               this.hourlyRateChartTrendLabels1.push(res.year);
           }
         });
+
+        let maxVal = Math.max(...this.hourlyRateChartTrend1);
+          var subVal = 1;
+          if(maxVal >= 5000){
+            subVal = 100;
+          }else if(maxVal < 5000 && maxVal > 2000){
+            subVal = 50;
+          }else if(maxVal < 2000 && maxVal > 1000){
+            subVal = 10;
+          }
+        if(this.trendValue == 'c'){
+          this.hourlyRateChartTrend[0]['label'] = 'Actual';
+          this.hourlyRateChartTrend[1]['label'] = 'Target';
+          this.hourlyRateChartTrend[1]['data'] =  this.hourlytargetData.map(v => [v - subVal, v + subVal]);
+        }else{
+          this.hourlyRateChartTrend[0]['label'] = '';
+          this.hourlyRateChartTrend[1]['label'] = '';
+          this.hourlyRateChartTrend[1]['data'] =  [];
+        }
         this.hourlyRateChartTrend[0]['data'] = this.hourlyRateChartTrend1;
         this.hourlyRateChartTrendLabels = this.hourlyRateChartTrendLabels1;
 
@@ -4036,7 +4121,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
         }); // This is dynamic array for colors of bars        
         this.hourlyRateChartTrend[0].backgroundColor = dynamicColors;
-
         if (this.hourlyRateChartTrendLabels.length <= 0) {
           this.hourlyValue = 0;
         }
