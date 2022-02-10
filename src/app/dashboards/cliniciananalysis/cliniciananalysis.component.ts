@@ -3491,12 +3491,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.dentistProdTrend[0]['data'] = this.dentistProductionTrend1;
           let maxVal = Math.max(...this.dentistProductionTrend1);
           var subVal = 1;
-          if(maxVal >= 5000){
+          if(maxVal >= 20001){
+            subVal = 200;
+          }else if(maxVal > 5000 && maxVal < 20000){
             subVal = 100;
-          }else if(maxVal < 5000 && maxVal > 3000){
+          }else if(maxVal > 3000 && maxVal < 5000){
             subVal = 50;
-          }else if(maxVal < 3000 && maxVal > 2000){
+          }else if(maxVal > 2000 && maxVal < 3000){
             subVal = 10;
+          }else if(maxVal > 100 && maxVal < 2000){
+            subVal = 1;
+          }else if(maxVal > 51 && maxVal < 100){
+            subVal = 0.2;
+          }else if(maxVal <= 50){
+            subVal = 0.1;
           }
 
           var mappedtargetData = [];
@@ -3596,12 +3604,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
           let maxVal = Math.max(...this.dentistCollectionTrend1);
             var subVal = 1;
-            if(maxVal >= 5000){
+            if(maxVal >= 20001){
+              subVal = 200;
+            }else if(maxVal > 5000 && maxVal < 20000){
               subVal = 100;
-            }else if(maxVal < 5000 && maxVal > 3000){
+            }else if(maxVal > 3000 && maxVal < 5000){
               subVal = 50;
-            }else if(maxVal < 3000 && maxVal > 2000){
+            }else if(maxVal > 2000 && maxVal < 3000){
               subVal = 10;
+            }else if(maxVal > 100 && maxVal < 2000){
+              subVal = 1;
+            }else if(maxVal > 51 && maxVal < 100){
+              subVal = 0.2;
+            }else if(maxVal <= 50){
+              subVal = 0.1;
             }
             var mappedcollectiontargetData = [];
             this.collectiontargetData.map(function (v){
@@ -3994,7 +4010,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             if(v == null ){
               mappedfdRecallPrebookRatetargetData.push([v - 0, v + 0]);
             }else{
-              mappedfdRecallPrebookRatetargetData.push([v - 1, v + 1]);
+              mappedfdRecallPrebookRatetargetData.push([v - 0.5, v + 0.5]);
             }
           });
           if(this.trendValue == 'c'){
@@ -4105,7 +4121,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             if(v == null ){
               mappedfdTreatmentPrebookRatetargetData.push([v - 0, v + 0]);
             }else{
-              mappedfdTreatmentPrebookRatetargetData.push([v - 1, v + 1]);
+              mappedfdTreatmentPrebookRatetargetData.push([v - 0.5, v + 0.5]);
             }
           });
           if(this.trendValue == 'c'){
@@ -4206,14 +4222,27 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
         });
 
-        let maxVal = Math.max(...this.hourlyRateChartTrend1);
+        let maxVal1 = Math.max(...this.hourlyRateChartTrend1);
           var subVal = 1;
-          if(maxVal >= 5000){
+          
+          if(maxVal1 >=20000){
             subVal = 100;
-          }else if(maxVal < 5000 && maxVal > 3000){
+          }else if(maxVal1 > 5000 && maxVal1 < 20000){
             subVal = 50;
-          }else if(maxVal < 3000 && maxVal > 2000){
+          }else if(maxVal1 > 3000 && maxVal1 < 5000){
+            subVal = 15;
+          }else if(maxVal1 > 2000 && maxVal1 < 3000){
             subVal = 10;
+          }else if(maxVal1 > 1000 && maxVal1 < 2000){
+            subVal = 5;
+          }else if(maxVal1 > 500 && maxVal1 < 1000){
+            subVal = 3;
+          }else if(maxVal1 > 100 && maxVal1 < 500){
+            subVal = 1;
+          }else if(maxVal1 > 51 && maxVal1 < 100){
+            subVal = 0.2;
+          }else if(maxVal1 <= 50){
+            subVal = 0.1;
           }
          var mappedhourlytargetData = [];
           this.hourlytargetData.map(function (v){
@@ -4335,10 +4364,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           var subVal = 1;
           if(maxVal >= 5000){
             subVal = 100;
-          }else if(maxVal < 5000 && maxVal > 3000){
+          }else if(maxVal > 3000 && maxVal < 5000){
             subVal = 50;
-          }else if(maxVal < 3000 && maxVal > 2000){
+          }else if(maxVal > 2000 && maxVal < 3000){
             subVal = 10;
+          }else if(maxVal > 100 && maxVal < 2000){
+            subVal = 1;
+          }else if(maxVal > 51 && maxVal < 100){
+            subVal = 0.2;
+          }else if(maxVal <= 50){
+            subVal = 0.1;
           }
 
           var mappednewPatientstargetData = [];
@@ -4474,7 +4509,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             if(v == null ){
               mappedfdtreatmentPlanRatetargetData.push([v - 0, v + 0]);
             }else{
-              mappedfdtreatmentPlanRatetargetData.push([v - 1, v + 1]);
+              mappedfdtreatmentPlanRatetargetData.push([v - 0.5, v + 0.5]);
             }
           });
           if(this.trendValue == 'c'){

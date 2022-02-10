@@ -1466,7 +1466,7 @@ toggleChangeProcess(){
                     if(v == null ){
                       mappedtargetData.push([v - 0, v + 0]);
                     }else{
-                      mappedtargetData.push([v - 1, v + 1]);
+                      mappedtargetData.push([v - 0.5, v + 0.5]);
                     }
                   });
                   if(this.trendValue == 'c'){
@@ -1693,7 +1693,7 @@ toggleChangeProcess(){
                     if(v == null ){
                       mappedfdRecallPrebookRatetargetData.push([v - 0, v + 0]);
                     }else{
-                      mappedfdRecallPrebookRatetargetData.push([v - 1, v + 1]);
+                      mappedfdRecallPrebookRatetargetData.push([v - 0.5, v + 0.5]);
                     }
                   });
                   if(this.trendValue == 'c'){
@@ -1796,7 +1796,7 @@ toggleChangeProcess(){
                     if(v == null ){
                       mappedtargetDataPrebookRatetargetData.push([v - 0, v + 0]);
                     }else{
-                      mappedtargetDataPrebookRatetargetData.push([v - 1, v + 1]);
+                      mappedtargetDataPrebookRatetargetData.push([v - 0.5, v + 0.5]);
                     }
                   });
                   if(this.trendValue == 'c'){
