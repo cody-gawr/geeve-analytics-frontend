@@ -581,7 +581,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     scaleStartValue : 0,
     scales: {
       xAxes: [{
-      // id: "x-axis-target",
        stacked: true,
 
       },
@@ -596,7 +595,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           display: false,
           offset: true,
           stacked: true,
-         // id: "x-axis-actual",
         }
     ],
       yAxes: [{
@@ -633,7 +631,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             Tlable = Tlable + ": "
           }
          let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-        return  Tlable + this.splitName(tooltipItem.xLabel).join(' ') + ": $" + ylable;
+         if(ylable == 0 && Tlable =='Target: '){
+            //return  Tlable + this.splitName(tooltipItem.xLabel).join(' ');
+         }else{
+            return  Tlable + this.splitName(tooltipItem.xLabel).join(' ') + ": $" + ylable;
+         }
         },
         // remove title
         title: function (tooltipItem, data) {
@@ -756,7 +758,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         gridLines: { display: true },
         ticks: {
           autoSkip: false
-        }
+        },
+        stacked:true,
       }],
       yAxes: [{
         suggestedMin: 0,
@@ -789,7 +792,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       callbacks: {
         // use label callback to return the desired label
         label: function (tooltipItem, data) {
-          return tooltipItem.xLabel + ": " + tooltipItem.yLabel + "%";
+          const v = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+          let Tlable = data.datasets[tooltipItem.datasetIndex].label;
+          if(Tlable !=''){
+            Tlable = Tlable + ": "
+          }
+         let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+         if(ylable == 0 && Tlable =='Target: '){
+         }else{
+          return Tlable + tooltipItem.xLabel + ": " + ylable + "%";
+         }
+          
         },
         // remove title
         title: function (tooltipItem, data) {
@@ -832,7 +845,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         gridLines: { display: true },
         ticks: {
           autoSkip: false
-        }
+        },
+        stacked: true,
       }],
       yAxes: [{
         suggestedMin: 0,
@@ -857,7 +871,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       callbacks: {
         // use label callback to return the desired label
         label: function (tooltipItem, data) {
-          return tooltipItem.xLabel + ": " + tooltipItem.yLabel;
+          const v = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+          let Tlable = data.datasets[tooltipItem.datasetIndex].label;
+          if(Tlable !=''){
+            Tlable = Tlable + ": "
+          }
+         let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+         if(ylable == 0 && Tlable =='Target: '){
+         }else{
+            return Tlable + tooltipItem.xLabel + ": " + ylable;
+         }
         },
         // remove title
         title: function (tooltipItem, data) {
@@ -3449,8 +3472,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           data.data.data.forEach(res => {
             // if (res.production > 0) {
               this.dentistProductionTrend1.push(Math.round(res.production));
-              if (mode == 'c') {
-                this.targetData.push(res.goals);                
+              if(res.goals == -1 || res.goals == null || res.goals == ''){
+                this.targetData.push(null);
+              }else{
+                this.targetData.push(res.goals);    
+              }       
+              if (mode == 'c') {                            
                 this.dentistProductionTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
               } else if (mode == 'w') {
                 this.dentistProductionTrendLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
@@ -3466,16 +3493,24 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           var subVal = 1;
           if(maxVal >= 5000){
             subVal = 100;
-          }else if(maxVal < 5000 && maxVal > 2000){
+          }else if(maxVal < 5000 && maxVal > 3000){
             subVal = 50;
-          }else if(maxVal < 2000 && maxVal > 500){
+          }else if(maxVal < 3000 && maxVal > 2000){
             subVal = 10;
           }
+
+          var mappedtargetData = [];
+          this.targetData.map(function (v){
+            if(v == null ){
+              mappedtargetData.push([v - 0, v + 0]);
+            }else{
+              mappedtargetData.push([v - subVal, v + subVal]);
+            }
+          });
           if(mode == 'c'){
             this.dentistProdTrend[0]['label'] = 'Actual';
             this.dentistProdTrend[1]['label'] = 'Target';
-            //this.targetData = [1510, 1650, 5400, 25000, 2000, 910, 970,4000,1020,1511,1809,1500];
-           this.dentistProdTrend[1]['data'] =  this.targetData.map(v => [v - subVal, v + subVal]);
+           this.dentistProdTrend[1]['data'] =  mappedtargetData;//this.targetData.map(v => [v - subVal, v + subVal]);
           }else{
             this.dentistProdTrend[0]['label'] = '';
             this.dentistProdTrend[1]['label'] = '';
@@ -3542,7 +3577,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           data.data.forEach(res => {
             // if (res.collection > 0) {
               this.dentistCollectionTrend1.push(Math.round(res.collection));
-              this.collectiontargetData.push(res.goals); 
+              if(res.goals == -1 || res.goals == null || res.goals == ''){
+                this.collectiontargetData.push(null);
+              }else{
+                this.collectiontargetData.push(res.goals); 
+              }  
               if (activeMode == 'c') {
                 this.dentistColleTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
               } else if (activeMode == 'w') {
@@ -3559,15 +3598,23 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             var subVal = 1;
             if(maxVal >= 5000){
               subVal = 100;
-            }else if(maxVal < 5000 && maxVal > 2000){
+            }else if(maxVal < 5000 && maxVal > 3000){
               subVal = 50;
-            }else if(maxVal < 2000 && maxVal > 500){
+            }else if(maxVal < 3000 && maxVal > 2000){
               subVal = 10;
             }
+            var mappedcollectiontargetData = [];
+            this.collectiontargetData.map(function (v){
+              if(v == null ){
+                mappedcollectiontargetData.push([v - 0, v + 0]);
+              }else{
+                mappedcollectiontargetData.push([v - subVal, v + subVal]);
+              }
+            });
           if(activeMode == 'c'){
             this.dentistColTrend[0]['label'] = 'Actual';
             this.dentistColTrend[1]['label'] = 'Target';
-            this.dentistColTrend[1]['data'] =  this.collectiontargetData.map(v => [v - subVal, v + subVal]);
+            this.dentistColTrend[1]['data'] =  mappedcollectiontargetData;//this.collectiontargetData.map(v => [v - subVal, v + subVal]);
           }else{
             this.dentistColTrend[0]['label'] = '';
             this.dentistColTrend[1]['label'] = '';
@@ -3873,6 +3920,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     {
       data: [],
       label: '',
+      order: 2,
       backgroundColor: [
         this.chartService.colors.odd,
         this.chartService.colors.even,
@@ -3899,16 +3947,24 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
-    }];
+    },
+    { 
+      data: [], label: '',
+      shadowOffsetX: 3,
+      backgroundColor: 'rgba(255, 14, 68, 1)',
+      order: 1,
+    }
+  ];
   public recallPrebookChartTrend1 = [];
   public recallPrebookChartTrendLabels = [];
   public recallPrebookChartTrendLabels1 = [];
   public fdRecallPrebookRateTrendLoader: boolean;
+  public fdRecallPrebookRatetargetData = [];
   //Recall Prebook Rate Chart trend mode
   private fdRecallPrebookRateTrend() {
     this.fdRecallPrebookRateTrendLoader = true;
     this.recallPrebookChartTrendLabels = [];
-
+    this.fdRecallPrebookRatetargetData=[];
     var user_id;
     var clinic_id;
     this.cliniciananalysisService.cpRecallPrebookRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
@@ -3921,12 +3977,44 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.recallPrebookChartTrend1 = [];
         data.data.forEach(res => {
           this.recallPrebookChartTrend1.push(Math.round(res.recall_percent));
+          if(res.goals == -1 || res.goals == null || res.goals == ''){
+            this.fdRecallPrebookRatetargetData.push(null);
+          }else{
+            this.fdRecallPrebookRatetargetData.push(res.goals);    
+          }
           if (this.trendValue == 'c')
             this.recallPrebookChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
           else
             this.recallPrebookChartTrendLabels1.push(res.year);
 
         });
+        let maxVal = Math.max(...this.recallPrebookChartTrend1);
+          var subVal = 1;
+          if(maxVal >= 5000){
+            subVal = 100;
+          }else if(maxVal < 5000 && maxVal > 3000){
+            subVal = 50;
+          }else if(maxVal < 3000 && maxVal > 2000){
+            subVal = 10;
+          }
+
+          var mappedfdRecallPrebookRatetargetData = [];
+          this.fdRecallPrebookRatetargetData.map(function (v){
+            if(v == null ){
+              mappedfdRecallPrebookRatetargetData.push([v - 0, v + 0]);
+            }else{
+              mappedfdRecallPrebookRatetargetData.push([v - subVal, v + subVal]);
+            }
+          });
+          if(this.trendValue == 'c'){
+            this.recallPrebookChartTrend[0]['label'] = 'Actual';
+            this.recallPrebookChartTrend[1]['label'] = 'Target';
+           this.recallPrebookChartTrend[1]['data'] =  mappedfdRecallPrebookRatetargetData;//this.targetData.map(v => [v - subVal, v + subVal]);
+          }else{
+            this.recallPrebookChartTrend[0]['label'] = '';
+            this.recallPrebookChartTrend[1]['label'] = '';
+            this.recallPrebookChartTrend[1]['data'] =  [];
+          }	
         this.recallPrebookChartTrend[0]['data'] = this.recallPrebookChartTrend1;
 
         this.recallPrebookChartTrendLabels = this.recallPrebookChartTrendLabels1;
@@ -3952,6 +4040,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     {
       data: [],
       label: '',
+      order:2,
       backgroundColor: [
         this.chartService.colors.odd,
         this.chartService.colors.even,
@@ -3978,16 +4067,24 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
-    }];
+    },
+    { 
+      data: [], label: '',
+      shadowOffsetX: 3,
+      backgroundColor: 'rgba(255, 14, 68, 1)',
+      order: 1,
+    }
+  ];
   public treatmentPrebookChartTrend1 = [];
   public treatmentPrebookChartTrendLabels = [];
   public treatmentPrebookChartTrendLabels1 = [];
   public fdTreatmentPrebookRateTrendLoader: any;
+  public fdTreatmentPrebookRatetargetData = [];
   //Trend Mode for Treatment Prebook RAte
   private fdTreatmentPrebookRateTrend() {
     this.fdTreatmentPrebookRateTrendLoader = true;
     this.treatmentPrebookChartTrendLabels = [];
-
+    this.fdTreatmentPrebookRatetargetData=[];
     var user_id;
     var clinic_id;
     this.cliniciananalysisService.caReappointRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
@@ -4000,12 +4097,44 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.treatmentPrebookChartTrend1 = [];
         data.data.forEach(res => {
           this.treatmentPrebookChartTrend1.push(Math.round(res.reappoint_rate));
+          if(res.goals == -1 || res.goals == null || res.goals == ''){
+            this.fdTreatmentPrebookRatetargetData.push(null);
+          }else{
+            this.fdTreatmentPrebookRatetargetData.push(res.goals);    
+          }  
           if (this.trendValue == 'c')
             this.treatmentPrebookChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
           else
             this.treatmentPrebookChartTrendLabels1.push(res.year);
 
         });
+        let maxVal = Math.max(...this.treatmentPrebookChartTrend1);
+          var subVal = 1;
+          if(maxVal >= 5000){
+            subVal = 100;
+          }else if(maxVal < 5000 && maxVal > 3000){
+            subVal = 50;
+          }else if(maxVal < 3000 && maxVal > 2000){
+            subVal = 10;
+          }
+
+          var mappedfdTreatmentPrebookRatetargetData = [];
+          this.fdTreatmentPrebookRatetargetData.map(function (v){
+            if(v == null ){
+              mappedfdTreatmentPrebookRatetargetData.push([v - 0, v + 0]);
+            }else{
+              mappedfdTreatmentPrebookRatetargetData.push([v - subVal, v + subVal]);
+            }
+          });
+          if(this.trendValue == 'c'){
+            this.treatmentPrebookChartTrend[0]['label'] = 'Actual';
+            this.treatmentPrebookChartTrend[1]['label'] = 'Target';
+           this.treatmentPrebookChartTrend[1]['data'] =  mappedfdTreatmentPrebookRatetargetData;//this.targetData.map(v => [v - subVal, v + subVal]);
+          }else{
+            this.treatmentPrebookChartTrend[0]['label'] = '';
+            this.treatmentPrebookChartTrend[1]['label'] = '';
+            this.treatmentPrebookChartTrend[1]['data'] =  [];
+          }			  
         this.treatmentPrebookChartTrend[0]['data'] = this.treatmentPrebookChartTrend1;
 
         this.treatmentPrebookChartTrendLabels = this.treatmentPrebookChartTrendLabels1;
@@ -4099,15 +4228,23 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           var subVal = 1;
           if(maxVal >= 5000){
             subVal = 100;
-          }else if(maxVal < 5000 && maxVal > 2000){
+          }else if(maxVal < 5000 && maxVal > 3000){
             subVal = 50;
-          }else if(maxVal < 2000 && maxVal > 1000){
+          }else if(maxVal < 3000 && maxVal > 2000){
             subVal = 10;
           }
+         var mappedhourlytargetData = [];
+          this.hourlytargetData.map(function (v){
+            if(v == null ){
+              mappedhourlytargetData.push([v - 0, v + 0]);
+            }else{
+              mappedhourlytargetData.push([v - subVal, v + subVal]);
+            }
+          });
         if(this.trendValue == 'c'){
           this.hourlyRateChartTrend[0]['label'] = 'Actual';
           this.hourlyRateChartTrend[1]['label'] = 'Target';
-          this.hourlyRateChartTrend[1]['data'] =  this.hourlytargetData.map(v => [v - subVal, v + subVal]);
+          this.hourlyRateChartTrend[1]['data'] =  mappedhourlytargetData; //this.hourlytargetData.map(v => [v - subVal, v + subVal]);
         }else{
           this.hourlyRateChartTrend[0]['label'] = '';
           this.hourlyRateChartTrend[1]['label'] = '';
@@ -4140,6 +4277,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       data: [],
       label: '',
       shadowOffsetX: 3,
+      order: 2,
       backgroundColor: [
         this.chartService.colors.odd,
         this.chartService.colors.even,
@@ -4165,16 +4303,24 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
-    }];
+    },
+    { 
+      data: [], label: '',
+      shadowOffsetX: 3,
+      backgroundColor: 'rgba(255, 14, 68, 1)',
+      order: 1,
+    }
+  ];
   public newPatientsChartTrend1 = [];
   public newPatientsChartTrendLabels = [];
   public newPatientsChartTrendLabels1 = [];
   public fdnewPatientsRateTrendLoader: any;
+  public newPatientstargetData = [];
   //Trend Mode for New Patient 
   private fdnewPatientsRateTrend() {
     this.fdnewPatientsRateTrendLoader = true;
     this.newPatientsChartTrendLabels = [];
-
+    this.newPatientstargetData=[];
     var user_id;
     var clinic_id;
     this.clinic_id && this.cliniciananalysisService.canewPatientsRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
@@ -4191,12 +4337,46 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           else
             this.newPatientsChartTrend1.push(0);
 
+          if(res.goals == -1 || res.goals == null || res.goals == ''){
+            this.newPatientstargetData.push(null);
+          }else{
+            this.newPatientstargetData.push(res.goals);    
+          }   
           if (this.trendValue == 'c')
             this.newPatientsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
           else
             this.newPatientsChartTrendLabels1.push(res.year);
 
         });
+
+        let maxVal = Math.max(...this.newPatientsChartTrend1);
+          var subVal = 1;
+          if(maxVal >= 5000){
+            subVal = 100;
+          }else if(maxVal < 5000 && maxVal > 3000){
+            subVal = 50;
+          }else if(maxVal < 3000 && maxVal > 2000){
+            subVal = 10;
+          }
+
+          var mappednewPatientstargetData = [];
+          this.newPatientstargetData.map(function (v){
+            if(v == null ){
+              mappednewPatientstargetData.push([v - 0, v + 0]);
+            }else{
+              mappednewPatientstargetData.push([v - subVal, v + subVal]);
+            }
+          });
+          if(this.trendValue == 'c'){
+            this.newPatientsChartTrend[0]['label'] = 'Actual';
+            this.newPatientsChartTrend[1]['label'] = 'Target';
+           this.newPatientsChartTrend[1]['data'] =  mappednewPatientstargetData;//this.targetData.map(v => [v - subVal, v + subVal]);
+          }else{
+            this.newPatientsChartTrend[0]['label'] = '';
+            this.newPatientsChartTrend[1]['label'] = '';
+            this.newPatientsChartTrend[1]['data'] =  [];
+          }			  
+
         this.newPatientsChartTrend[0]['data'] = this.newPatientsChartTrend1;
 
         this.newPatientsChartTrendLabels = this.newPatientsChartTrendLabels1;
@@ -4224,6 +4404,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     {
       data: [],
       label: '',
+      order: 2,
       backgroundColor: [
         this.chartService.colors.odd,
         this.chartService.colors.even,
@@ -4250,15 +4431,24 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
-    }];
+    },
+    { 
+      data: [], label: '',
+      shadowOffsetX: 3,
+      backgroundColor: 'rgba(255, 14, 68, 1)',
+      order: 1,
+    }
+  ];
   public treatmentPlanChartTrend1 = [];
   public treatmentPlanChartTrendLabels = [];
   public treatmentPlanChartTrendLabels1 = [];
   public fdtreatmentPlanRateTrendLoader: any;
+  public fdtreatmentPlanRatetargetData = [];
   //Trend Mode for Treatment plan Rate chart
   private fdtreatmentPlanRateTrend() {
     this.fdtreatmentPlanRateTrendLoader = true;
     this.treatmentPlanChartTrendLabels = [];
+    this.fdtreatmentPlanRatetargetData =[];
 
     var user_id;
     var clinic_id;
@@ -4274,6 +4464,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             if (res.treatment_per_plan_percentage) {
               if (res.treatment_per_plan_percentage)
                 this.treatmentPlanChartTrend1.push(Math.round(res.treatment_per_plan_percentage));
+                if(res.goals == -1 || res.goals == null || res.goals == ''){
+                  this.fdtreatmentPlanRatetargetData.push(null);
+                }else{
+                  this.fdtreatmentPlanRatetargetData.push(res.goals);    
+                }    
               if (this.trendValue == 'c')
                 this.treatmentPlanChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
               else
@@ -4285,7 +4480,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if (sumpercantagevalue > 0) {
 
           this.treatmentPlanChartTrend[0]['data'] = this.treatmentPlanChartTrend1;
-
           this.treatmentPlanChartTrendLabels = this.treatmentPlanChartTrendLabels1;
 
           let dynamicColors = [];
@@ -4293,6 +4487,34 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
           }); // This is dynamic array for colors of bars        
           this.treatmentPlanChartTrend[0].backgroundColor = dynamicColors;
+          let maxVal = Math.max(...this.treatmentPlanChartTrend1);
+          var subVal = 1;
+          if(maxVal >= 5000){
+            subVal = 100;
+          }else if(maxVal < 5000 && maxVal > 3000){
+            subVal = 50;
+          }else if(maxVal < 3000 && maxVal > 2000){
+            subVal = 10;
+          }
+
+          var mappedfdtreatmentPlanRatetargetData = [];
+          this.fdtreatmentPlanRatetargetData.map(function (v){
+            if(v == null ){
+              mappedfdtreatmentPlanRatetargetData.push([v - 0, v + 0]);
+            }else{
+              mappedfdtreatmentPlanRatetargetData.push([v - subVal, v + subVal]);
+            }
+          });
+          if(this.trendValue == 'c'){
+            this.treatmentPlanChartTrend[0]['label'] = 'Actual';
+            this.treatmentPlanChartTrend[1]['label'] = 'Target';
+           this.treatmentPlanChartTrend[1]['data'] =  mappedfdtreatmentPlanRatetargetData;//this.targetData.map(v => [v - subVal, v + subVal]);
+          }else{
+            this.treatmentPlanChartTrend[0]['label'] = '';
+            this.treatmentPlanChartTrend[1]['label'] = '';
+            this.treatmentPlanChartTrend[1]['data'] =  [];
+          }	
+          console.log(this.treatmentPlanChartTrend);
         } else {
           this.treatmentPlanChartTrendLabels = [];
         }

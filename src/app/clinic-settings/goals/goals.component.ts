@@ -46,6 +46,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
     private dentistService: DentistService
   ) {
     super();
+    this.range.push(this.year - 1);
     this.range.push(this.year);
     for (var i = 1; i < 3; i++) {
         this.range.push(this.year + i);
