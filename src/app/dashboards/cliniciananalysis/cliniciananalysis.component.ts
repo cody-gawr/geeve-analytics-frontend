@@ -3371,7 +3371,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     { 
       data: [], label: '',
    //  xAxisID: "x-axis-target",
-      backgroundColor: 'rgba(255, 14, 68, 1)',
+      backgroundColor: 'rgba(255, 0, 128, 1)',
       order: 1,
       minHeight: 5,
     }
@@ -3406,7 +3406,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       backgroundOverlayMode: 'multiply'
     }, { 
       data: [], label: '',
-      backgroundColor: 'rgba(255, 14, 68, 1)',
+      backgroundColor: 'rgba(255, 0, 128, 1)',
       order: 1,
     }];
 
@@ -3951,7 +3951,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     { 
       data: [], label: '',
       shadowOffsetX: 3,
-      backgroundColor: 'rgba(255, 14, 68, 1)',
+      backgroundColor: 'rgba(255, 0, 128, 1)',
       order: 1,
     }
   ];
@@ -3988,22 +3988,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             this.recallPrebookChartTrendLabels1.push(res.year);
 
         });
-        let maxVal = Math.max(...this.recallPrebookChartTrend1);
-          var subVal = 1;
-          if(maxVal >= 5000){
-            subVal = 100;
-          }else if(maxVal < 5000 && maxVal > 3000){
-            subVal = 50;
-          }else if(maxVal < 3000 && maxVal > 2000){
-            subVal = 10;
-          }
-
+       
           var mappedfdRecallPrebookRatetargetData = [];
           this.fdRecallPrebookRatetargetData.map(function (v){
             if(v == null ){
               mappedfdRecallPrebookRatetargetData.push([v - 0, v + 0]);
             }else{
-              mappedfdRecallPrebookRatetargetData.push([v - subVal, v + subVal]);
+              mappedfdRecallPrebookRatetargetData.push([v - 1, v + 1]);
             }
           });
           if(this.trendValue == 'c'){
@@ -4071,7 +4062,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     { 
       data: [], label: '',
       shadowOffsetX: 3,
-      backgroundColor: 'rgba(255, 14, 68, 1)',
+      backgroundColor: 'rgba(255, 0, 128, 1)',
       order: 1,
     }
   ];
@@ -4108,22 +4099,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             this.treatmentPrebookChartTrendLabels1.push(res.year);
 
         });
-        let maxVal = Math.max(...this.treatmentPrebookChartTrend1);
-          var subVal = 1;
-          if(maxVal >= 5000){
-            subVal = 100;
-          }else if(maxVal < 5000 && maxVal > 3000){
-            subVal = 50;
-          }else if(maxVal < 3000 && maxVal > 2000){
-            subVal = 10;
-          }
-
+        
           var mappedfdTreatmentPrebookRatetargetData = [];
           this.fdTreatmentPrebookRatetargetData.map(function (v){
             if(v == null ){
               mappedfdTreatmentPrebookRatetargetData.push([v - 0, v + 0]);
             }else{
-              mappedfdTreatmentPrebookRatetargetData.push([v - subVal, v + subVal]);
+              mappedfdTreatmentPrebookRatetargetData.push([v - 1, v + 1]);
             }
           });
           if(this.trendValue == 'c'){
@@ -4187,7 +4169,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
     },{
-      data: [], order:1, label: '', shadowOffsetX: 3,  backgroundColor: 'rgba(255, 14, 68, 1)',
+      data: [], order:1, label: '', shadowOffsetX: 3,  backgroundColor: 'rgba(255, 0, 128, 1)',
     }
   ];
   public hourlyRateChartTrend1 = [];
@@ -4307,7 +4289,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     { 
       data: [], label: '',
       shadowOffsetX: 3,
-      backgroundColor: 'rgba(255, 14, 68, 1)',
+      backgroundColor: 'rgba(255, 0, 128, 1)',
       order: 1,
     }
   ];
@@ -4435,7 +4417,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     { 
       data: [], label: '',
       shadowOffsetX: 3,
-      backgroundColor: 'rgba(255, 14, 68, 1)',
+      backgroundColor: 'rgba(255, 0, 128, 1)',
       order: 1,
     }
   ];
@@ -4487,22 +4469,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
           }); // This is dynamic array for colors of bars        
           this.treatmentPlanChartTrend[0].backgroundColor = dynamicColors;
-          let maxVal = Math.max(...this.treatmentPlanChartTrend1);
-          var subVal = 1;
-          if(maxVal >= 5000){
-            subVal = 100;
-          }else if(maxVal < 5000 && maxVal > 3000){
-            subVal = 50;
-          }else if(maxVal < 3000 && maxVal > 2000){
-            subVal = 10;
-          }
-
           var mappedfdtreatmentPlanRatetargetData = [];
           this.fdtreatmentPlanRatetargetData.map(function (v){
             if(v == null ){
               mappedfdtreatmentPlanRatetargetData.push([v - 0, v + 0]);
             }else{
-              mappedfdtreatmentPlanRatetargetData.push([v - subVal, v + subVal]);
+              mappedfdtreatmentPlanRatetargetData.push([v - 1, v + 1]);
             }
           });
           if(this.trendValue == 'c'){

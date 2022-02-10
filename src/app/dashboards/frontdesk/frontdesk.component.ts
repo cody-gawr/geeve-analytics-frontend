@@ -200,7 +200,7 @@ this.predictedChartColors = [
       fill:false,
     scales: {
           xAxes: [{ 
-            // stacked:true,
+            stacked:true,
             ticks: {
                 autoSkip: false
             }
@@ -228,9 +228,18 @@ this.predictedChartColors = [
       },
   callbacks: {
      label: function(tooltipItems, data) { 
-
       let total = tooltipItems.yLabel > 100 ? 100 : tooltipItems.yLabel;
-        return tooltipItems.xLabel+": "+ total + "%";
+      const v = data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index];
+      let Tlable = data.datasets[tooltipItems.datasetIndex].label;
+      if(Tlable !=''){
+        Tlable = Tlable + ": "
+      }
+     let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+     if(ylable == 0 && Tlable =='Target: '){
+      }else{
+        return Tlable + tooltipItems.xLabel+": "+ ylable + "%";
+      }
+        
      },
      title: function() {
        return "";
@@ -267,7 +276,8 @@ this.predictedChartColors = [
             }
             return value;
           }
-        }
+        },
+        stacked:true,
       }],
           yAxes: [{ 
             // stacked:true,
@@ -295,13 +305,23 @@ this.predictedChartColors = [
                 if(tooltipItems.xLabel.indexOf('--') >= 0){
                   let lbl = tooltipItems.xLabel.split('--');
                   tooltipItems.xLabel = lbl[0];
-                }        
-                return tooltipItems.xLabel+": "+ total + '%';
+                }  
+                const v = data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index];
+                  let Tlable = data.datasets[tooltipItems.datasetIndex].label;
+                  if(Tlable !=''){
+                    Tlable = Tlable + ": "
+                  }
+                let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;   
+                if(ylable == 0 && Tlable =='Target: '){
+               }else{
+                return Tlable + tooltipItems.xLabel+": "+ ylable + '%';
+               }   
+                
               },
               afterLabel: function(tooltipItems, data) {
                 let hour = 0;
                 let phour = 0;
-                if(tooltipItems.label.indexOf('--') >= 0){
+                if(tooltipItems.label.indexOf('--') >= 0 && tooltipItems.datasetIndex == 0){
                   let lbl = tooltipItems.label.split('--');                
                   hour = lbl[1];
                   phour = lbl[2];
@@ -1357,7 +1377,7 @@ toggleChangeProcess(){
   }
 
   public wtaChartTrend: any[]  = [
-    {data: [], label: '',  
+    {data: [], label: '',  order: 2, 
     backgroundColor: [
       this.chartService.colors.odd,
       this.chartService.colors.even,
@@ -1391,18 +1411,27 @@ toggleChangeProcess(){
             pointShadowOffsetY: 3,
             pointShadowBlur: 10,
             pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-            backgroundOverlayMode: 'multiply'}];
-    public wtaChartTrend1=[];
+            backgroundOverlayMode: 'multiply'
+  },
+  { 
+    data: [], label: '',
+    shadowOffsetX: 3,
+    backgroundColor: 'rgba(255, 0, 128, 1)',
+    order: 1,
+  }
+];
+  public wtaChartTrend1=[];
   public wtaChartTrendLabels =[];
   public wtaChartTrendLabels1 =[];
   public fdwtaRatioTrendLoader:boolean;
-  
+  public targetData = [];
   private fdwtaRatioTrend() {
     this.fdwtaRatioTrendLoader =true;
   this.wtaChartTrendLabels=[];
  
   this.wtaChartTrendLabels1=[];
   this.wtaChartTrend1=[];
+  this.targetData=[];
     var user_id;
     var clinic_id;
     if(this.trendValue == 'h' ){ // utilisation rate showing messageif more than 12 months
@@ -1419,12 +1448,36 @@ toggleChangeProcess(){
         this.fdwtaRatioTrendLoader =false;
                 data.data.forEach(res => {  
                      this.wtaChartTrend1.push(Math.round(res.util_rate * 100));
+                     if(res.goals == -1 || res.goals == null || res.goals == ''){
+                      this.targetData.push(null);
+                    }else{
+                      this.targetData.push(res.goals);    
+                    }   
                    if(this.trendValue == 'c')
                    this.wtaChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y')+'--'+res.worked_hour+'--'+res.planned_hour);
                     else
                    this.wtaChartTrendLabels1.push(res.year+'--'+res.worked_hour+'--'+res.planned_hour);
                   
                  });
+                 
+
+                  var mappedtargetData = [];
+                  this.targetData.map(function (v){
+                    if(v == null ){
+                      mappedtargetData.push([v - 0, v + 0]);
+                    }else{
+                      mappedtargetData.push([v - 1, v + 1]);
+                    }
+                  });
+                  if(this.trendValue == 'c'){
+                    this.wtaChartTrend[0]['label'] = 'Actual';
+                    this.wtaChartTrend[1]['label'] = 'Target';
+                  this.wtaChartTrend[1]['data'] =  mappedtargetData;
+                  }else{
+                    this.wtaChartTrend[0]['label'] = '';
+                    this.wtaChartTrend[1]['label'] = '';
+                    this.wtaChartTrend[1]['data'] =  [];
+                  }	
                  this.wtaChartTrend[0]['data'] = this.wtaChartTrend1;
 
                  this.wtaChartTrendLabels =this.wtaChartTrendLabels1; 
@@ -1561,7 +1614,7 @@ toggleChangeProcess(){
 
 
  public recallPrebookChartTrend: any[]  = [
-    {data: [], label: '',  shadowOffsetX: 3,
+    {data: [], label: '',  shadowOffsetX: 3,order: 2,
     backgroundColor: [
       this.chartService.colors.odd,
       this.chartService.colors.even,
@@ -1583,28 +1636,36 @@ toggleChangeProcess(){
       this.chartService.colors.even,
       this.chartService.colors.odd,
   ],
-            shadowOffsetY: 2,
-            shadowBlur: 3,
-            shadowColor: 'rgba(0, 0, 0, 0.3)',
-            pointBevelWidth: 2,
-            pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-            pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-            pointShadowOffsetX: 3,
-            pointShadowOffsetY: 3,
-            pointShadowBlur: 10,
-            pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-            backgroundOverlayMode: 'multiply'}];
+    shadowOffsetY: 2,
+    shadowBlur: 3,
+    shadowColor: 'rgba(0, 0, 0, 0.3)',
+    pointBevelWidth: 2,
+    pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+    pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+    pointShadowOffsetX: 3,
+    pointShadowOffsetY: 3,
+    pointShadowBlur: 10,
+    pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+    backgroundOverlayMode: 'multiply'
+  },{ 
+      data: [], label: '',
+      shadowOffsetX: 3,
+      backgroundColor: 'rgba(255, 0, 128, 1)',
+      order: 1,
+    }
+  ];
     public recallPrebookChartTrend1=[];
   public recallPrebookChartTrendLabels =[];
   public recallPrebookChartTrendLabels1 =[];
   public fdRecallPrebookRateTrendLoader:boolean;
-
+  public fdRecallPrebookRatetargetData = [];
   private fdRecallPrebookRateTrend() {
     this.fdRecallPrebookRateTrendLoader = true;
   this.recallPrebookChartTrendLabels=[];
 
   this.recallPrebookChartTrendLabels1=[];
   this.recallPrebookChartTrend1=[];
+  this.fdRecallPrebookRatetargetData =[];
     var user_id;
     var clinic_id;
    this.clinic_id && this.frontdeskService.frontdeskdRecallPrebookRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
@@ -1615,12 +1676,35 @@ toggleChangeProcess(){
           this.recallPrebookChartTrend1=[];
           data.data.forEach(res => {  
             this.recallPrebookChartTrend1.push(Math.round(res.recall_percent));
+            if(res.goals == -1 || res.goals == null || res.goals == ''){
+              this.fdRecallPrebookRatetargetData.push(null);
+            }else{
+              this.fdRecallPrebookRatetargetData.push(res.goals);    
+            }      
              if(this.trendValue == 'c')
                     this.recallPrebookChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
                    this.recallPrebookChartTrendLabels1.push(res.year);
                   
                  });
+
+                 var mappedfdRecallPrebookRatetargetData = [];
+                  this.fdRecallPrebookRatetargetData.map(function (v){
+                    if(v == null ){
+                      mappedfdRecallPrebookRatetargetData.push([v - 0, v + 0]);
+                    }else{
+                      mappedfdRecallPrebookRatetargetData.push([v - 1, v + 1]);
+                    }
+                  });
+                  if(this.trendValue == 'c'){
+                    this.recallPrebookChartTrend[0]['label'] = 'Actual';
+                    this.recallPrebookChartTrend[1]['label'] = 'Target';
+                  this.recallPrebookChartTrend[1]['data'] =  mappedfdRecallPrebookRatetargetData;
+                  }else{
+                    this.recallPrebookChartTrend[0]['label'] = '';
+                    this.recallPrebookChartTrend[1]['label'] = '';
+                    this.recallPrebookChartTrend[1]['data'] =  [];
+                  }	
                  this.recallPrebookChartTrend[0]['data'] = this.recallPrebookChartTrend1;
 
                  this.recallPrebookChartTrendLabels =this.recallPrebookChartTrendLabels1; 
@@ -1633,7 +1717,7 @@ toggleChangeProcess(){
 
 
  public treatmentPrebookChartTrend: any[]  = [
-    {data: [], label: '',  shadowOffsetX: 3,
+    {data: [], label: '',  shadowOffsetX: 3, order: 2,
     backgroundColor: [
       this.chartService.colors.odd,
       this.chartService.colors.even,
@@ -1665,11 +1749,19 @@ toggleChangeProcess(){
             pointShadowOffsetY: 3,
             pointShadowBlur: 10,
             pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-            backgroundOverlayMode: 'multiply'}];
+            backgroundOverlayMode: 'multiply'},
+            { 
+              data: [], label: '',
+              shadowOffsetX: 3,
+              backgroundColor: 'rgba(255, 0, 128, 1)',
+              order: 1,
+            }
+          ];
     public treatmentPrebookChartTrend1=[];
   public treatmentPrebookChartTrendLabels =[];
   public treatmentPrebookChartTrendLabels1 =[];
   public fdTreatmentPrebookRateTrendLoader:boolean = false;
+  public fdTreatmentPrebookRatetargetData = [];
 
   private fdTreatmentPrebookRateTrend() {
     this.fdTreatmentPrebookRateTrendLoader = true;
@@ -1677,6 +1769,7 @@ toggleChangeProcess(){
   this.treatmentPrebookChartTrendLabels=[];
 
   this.treatmentPrebookChartTrend1=[];
+  this.fdTreatmentPrebookRatetargetData=[];
     var user_id;
     var clinic_id;
    this.clinic_id && this.frontdeskService.fdReappointRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
@@ -1687,12 +1780,34 @@ toggleChangeProcess(){
           this.treatmentPrebookChartTrend1=[];
                 data.data.forEach(res => {  
                      this.treatmentPrebookChartTrend1.push(Math.round(res.reappoint_rate));
+                     if(res.goals == -1 || res.goals == null || res.goals == ''){
+                      this.fdTreatmentPrebookRatetargetData.push(null);
+                    }else{
+                      this.fdTreatmentPrebookRatetargetData.push(res.goals);    
+                    } 
                    if(this.trendValue == 'c')
                    this.treatmentPrebookChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
                    this.treatmentPrebookChartTrendLabels1.push(res.year);
                   
                  });
+                 var mappedtargetDataPrebookRatetargetData = [];
+                  this.fdTreatmentPrebookRatetargetData.map(function (v){
+                    if(v == null ){
+                      mappedtargetDataPrebookRatetargetData.push([v - 0, v + 0]);
+                    }else{
+                      mappedtargetDataPrebookRatetargetData.push([v - 1, v + 1]);
+                    }
+                  });
+                  if(this.trendValue == 'c'){
+                    this.treatmentPrebookChartTrend[0]['label'] = 'Actual';
+                    this.treatmentPrebookChartTrend[1]['label'] = 'Target';
+                  this.treatmentPrebookChartTrend[1]['data'] =  mappedtargetDataPrebookRatetargetData;
+                  }else{
+                    this.treatmentPrebookChartTrend[0]['label'] = '';
+                    this.treatmentPrebookChartTrend[1]['label'] = '';
+                    this.treatmentPrebookChartTrend[1]['data'] =  [];
+                  }	
                  this.treatmentPrebookChartTrend[0]['data'] = this.treatmentPrebookChartTrend1;
 
                  this.treatmentPrebookChartTrendLabels =this.treatmentPrebookChartTrendLabels1; 
