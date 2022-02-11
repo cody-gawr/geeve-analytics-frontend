@@ -74,8 +74,9 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   currentPage: number = 1;
   dentistList = new MatTableDataSource([]);
   dentistListLoading: boolean = false;
-  displayedColumns: string[] = ['providerId', 'name','jeeve_id','position', 'is_active'];
+  displayedColumns: string[] = ['providerId', 'name','jeeve_id','position', 'appbook','is_active'];
   jeeveProviderIds: any = [];
+  appBooks: any = [];
   editing = {};
   
   public userPlan:any = 'lite';
@@ -144,9 +145,45 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
     this.dentistList.filter = value.trim().toLocaleLowerCase();
   }
 
+  getAppBook(id,dentData) {
+    this.dentistService.getAppbook(id).subscribe((res) => {
+      var temp = {};
+      var dData =[];
+      if (res.message == 'success') {
+        dentData.forEach((element) => {
+            if(element.app_book_id != '' && element.app_book_id != null){
+              temp = {
+                  'app_book_id': element.app_book_id,
+                  'disabled': true,
+                }
+                dData.push(temp);
+            }else{
+              temp = {
+                'app_book_id': element.app_book_id,
+                'disabled': false,
+              }
+              dData.push(temp);
+            }
+        });
+        
+        var result = res.data.map(ele => {
+          let disableFlag = dData.find(appBookid => appBookid["app_book_id"] === ele["app_book_id"])        
+          return { ...ele,...disableFlag };
+        });
+        this.appBooks = result;
+      }
+      else if (res.status == '401') {
+        this.handleUnAuthorization();
+      }
+    }, error => {
+      console.log('error', error)
+    });
+  }
+
   getDentists(id) {
     this.dentistService.getDentists(id,1).subscribe((res) => {
       if (res.message == 'success') {
+        this.getAppBook(id, res.data);
         this.jeeveProviderIds = [];
         for(let i = 1; i <= 9; i++){
           this.jeeveProviderIds.push({'id':i, 'name': 'Jeeve Provider '+i});
@@ -217,7 +254,11 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
     {
       jeeveId =  event.target.value;           
     }
-
+    var appBookId = '';
+    if(column == 'appBookId')
+    {
+      appBookId =  event.target.value;           
+    }
     var isActive = null;
     if(column == 'is_active')
     {
@@ -236,7 +277,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
         isActive = 1;
       }
     }
-    this.dentistService.updateDentists(providerId, updatedValue, this.clinic_id$.value, isActive,jeeveId,updatedColumn)
+    this.dentistService.updateDentists(providerId, updatedValue, this.clinic_id$.value, isActive,jeeveId,updatedColumn,appBookId)
       .pipe(
         takeUntil(this.destroyed$)
       )

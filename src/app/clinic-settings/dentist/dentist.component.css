@@ -24,3 +24,28 @@
 .set-jeeve-btn{
    margin: 0;
 }
+.mh-table td.mat-cell{
+    padding: 7px 4px !important;
+}
+tr.mat-row{
+    text-align: left;
+}
+th.mat-header-cell{
+    text-align: left;
+}
+
+td.mat-cell.cdk-cell.cdk-column-providerId.mat-column-providerId.ng-star-inserted {
+    text-align: center;
+}
+
+th.mat-header-cell.cdk-header-cell.cdk-column-providerId.mat-column-providerId.ng-star-inserted {
+    text-align: center;
+}
+
+
+td.mat-cell.cdk-cell.cdk-column-is_active.mat-column-is_active.ng-star-inserted {
+    text-align: center;
+}
+th.mat-header-cell.cdk-header-cell.cdk-column-is_active.mat-column-is_active.ng-star-inserted {
+    text-align: center;
+}

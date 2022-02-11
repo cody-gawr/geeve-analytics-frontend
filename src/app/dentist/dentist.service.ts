@@ -62,6 +62,20 @@ export class DentistService {
         })
       );
   }
+// get Appbook
+  getAppbook(clinic_id): Observable<any> {
+      var header = this.getHeaders();
+      return this.http
+        .get(
+          this.apiUrl + "/Dentists/getAppbook?clinic_id=" + clinic_id,
+          header
+        )
+        .pipe(
+          map((response: Response) => {
+            return response;
+          })
+        );
+    }
 
   // Delete Dentist
   deleteDentists(dentist_id): Observable<any> {
@@ -86,7 +100,8 @@ export class DentistService {
     clinic_id,
     isActive = null,
     jeeveId = "",
-    updatedColumn = ""
+    updatedColumn = "",
+    appBookId =""
   ): Observable<any> {
     const formData = new FormData();
 
@@ -96,6 +111,10 @@ export class DentistService {
     if (jeeveId != "") {
       jeeveId = jeeveId == "null" ? "" : jeeveId;
       formData.append("jeeve_id", jeeveId);
+    }
+    if (appBookId != "") {
+      appBookId = appBookId == "null" ? "" : appBookId;
+      formData.append("app_book_id", appBookId);
     }
     if (updatedColumn != "") {
       formData.append(updatedColumn, value);
