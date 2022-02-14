@@ -46,7 +46,15 @@ export class DialogSetColorsDialogComponent {
     }
     this.CustomisationsService.addStatusColors(data.clinic_id,data.status_code, data.bgcolour, data.colour ).subscribe((res) => {
       if (res.message == 'success') {
-        this.dialogRef.close();
+        this.CustomisationsService.getStatusCodeList(data.clinic_id).subscribe((res) => {
+          if (res.message == 'success') {
+            this.dialogRef.componentInstance.data.status_code = "";
+            this.dialogRef.componentInstance.data.bgcolour = "";
+            this.dialogRef.componentInstance.data.colour = "";
+            this.dialogRef.componentInstance.data.statusCodeList = res.data;
+          }
+        });
+        //this.dialogRef.close();
       } else if (res.status == '401') {
         this.handleUnAuthorization();
       }

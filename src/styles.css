@@ -8649,3 +8649,8 @@ table.goalsEditTable{
 div#multi_clinic-panel {
   max-height: 510px;
 }
+
+
+ul.ngx-pagination.ng-star-inserted {
+  padding-inline-start: 0px !important;
+}

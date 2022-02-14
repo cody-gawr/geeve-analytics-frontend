@@ -44,6 +44,7 @@ import { ChartsComponent,DentisChartComponent } from "./charts/charts.component"
 import { AutofocusDirective } from "./auto-focus.directive";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "../shared/shared.module";
+import { NgxPaginationModule } from 'ngx-pagination';
 @NgModule({
   imports: [
     CommonModule,
@@ -53,6 +54,7 @@ import { SharedModule } from "../shared/shared.module";
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
+    NgxPaginationModule,
   ],
   providers: [
     ClinicSettingsService,

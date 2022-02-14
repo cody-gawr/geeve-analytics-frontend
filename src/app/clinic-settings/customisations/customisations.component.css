@@ -68,7 +68,7 @@
 .colour option{
     font-size: 18px;
 }
-.clour-span {height: 10px;width: 50px;display: inline-block;border: 1px solid #000;margin-left: 10px;}
+.clour-span {height: 10px;width: 40px;display: inline-block;border: 1px solid #000;margin-left: 2px;}
 span.charLimit {
     float: right;
     margin-right: 5px;
@@ -143,4 +143,10 @@ span.charLimit {
 .colorbtnDiv{
     float: right;
     margin-left: 685px;
+}
+
+.color-setting-form {
+    background-color: #f8fafc;
+    padding: 10px 11px;
+    margin-bottom: 5px;
 }

@@ -1,57 +1,75 @@
 <div class="AddUserPopup setting"> 
     <h1 mat-dialog-title>Set Status Colours</h1>
     <div mat-dialog-content class="sa_forms_design">
-      <div class="sa-form-group">
-        <label>status code</label>
-        <input [(ngModel)]="data.status_code"type="text"  [attr.maxlength]="1" class="mat-form-control" required="true" placeholder="">   
-      </div> 
-      <div class="sa-form-group">
-        <label>Background Colour <span class="clour-span-{{data.bgcolour}} clour-span" *ngIf="data.bgcolour"></span></label>
-        <select  [(ngModel)]="data.bgcolour" name="bgcolour" class="colour">
-          <option value="">Default Colour</option>
-          <option value="aqua">Aqua</option>
-          <option value="black">Black</option>
-          <option value="blue">Blue</option>
-          <option value="chartreuse">Chartreuse</option>
-          <option value="chocolate">Chocolate</option>
-          <option value="cyan">Cyan</option>
-          <option value="navy">Navy</option>
-          <option value="gray">Gray</option>
-          <option value="green">Green</option>
-          <option value="maroon">Maroon</option>
-          <option value="olive">Olive</option>
-          <option value="orange">Orange</option>
-          <option value="red">Red</option>
-          <option value="silver">Silver</option>
-          <option value="teal">Teal</option>
-          <option value="violet">Violet</option>
-          <option value="white">White</option>
-          <option value="yellow">Yellow</option>                
-        </select>     
-      </div>
-      <div class="sa-form-group">
-        <label>Text Colour <span class="clour-span-{{data.colour}} clour-span" *ngIf="data.colour"></span></label>
-        <select  [(ngModel)]="data.colour" name="color" class="colour">
-          <option value="">Default Colour</option>
-          <option value="aqua">Aqua</option>
-          <option value="black">Black</option>
-          <option value="blue">Blue</option>
-          <option value="chartreuse">Chartreuse</option>
-          <option value="chocolate">Chocolate</option>
-          <option value="cyan">Cyan</option>
-          <option value="navy">Navy</option>
-          <option value="gray">Gray</option>
-          <option value="green">Green</option>
-          <option value="maroon">Maroon</option>
-          <option value="olive">Olive</option>
-          <option value="orange">Orange</option>
-          <option value="red">Red</option>
-          <option value="silver">Silver</option>
-          <option value="teal">Teal</option>
-          <option value="violet">Violet</option>
-          <option value="white">White</option>
-          <option value="yellow">Yellow</option>                
-        </select>   
+      <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
+        <div class="color-setting-form" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" style="width: 100%">
+          <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0">
+            <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(33% - 10px)" fxFlex.sm="calc(33% - 10px)" fxFlex.xs="100">
+              <div class="sa-form-group">
+                <label>status code</label>
+                <input [(ngModel)]="data.status_code"type="text"  [attr.maxlength]="1" class="mat-form-control" required="true" placeholder="">   
+              </div> 
+            </div> 
+            <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(33% - 10px)" fxFlex.sm="calc(33% - 10px)" fxFlex.xs="100"> 
+              <div class="sa-form-group">
+                <label>Background Colour <span class="clour-span-{{data.bgcolour}} clour-span" *ngIf="data.bgcolour"></span></label>
+                <select  [(ngModel)]="data.bgcolour" name="bgcolour" class="colour">
+                  <option value="">Default Colour</option>
+                  <option value="aqua">Aqua</option>
+                  <option value="black">Black</option>
+                  <option value="blue">Blue</option>
+                  <option value="chartreuse">Chartreuse</option>
+                  <option value="chocolate">Chocolate</option>
+                  <option value="cyan">Cyan</option>
+                  <option value="navy">Navy</option>
+                  <option value="gray">Gray</option>
+                  <option value="green">Green</option>
+                  <option value="maroon">Maroon</option>
+                  <option value="olive">Olive</option>
+                  <option value="orange">Orange</option>
+                  <option value="red">Red</option>
+                  <option value="silver">Silver</option>
+                  <option value="teal">Teal</option>
+                  <option value="violet">Violet</option>
+                  <option value="white">White</option>
+                  <option value="yellow">Yellow</option>                
+                </select>     
+              </div>
+            </div>
+            <div fxFlex="calc(30% - 10px)" fxFlex.md="calc(33% - 10px)" fxFlex.sm="calc(33% - 10px)" fxFlex.xs="100"> 
+              <div class="sa-form-group">
+                <label>Text Colour <span class="clour-span-{{data.colour}} clour-span" *ngIf="data.colour"></span></label>
+                <select  [(ngModel)]="data.colour" name="color" class="colour">
+                  <option value="">Default Colour</option>
+                  <option value="aqua">Aqua</option>
+                  <option value="black">Black</option>
+                  <option value="blue">Blue</option>
+                  <option value="chartreuse">Chartreuse</option>
+                  <option value="chocolate">Chocolate</option>
+                  <option value="cyan">Cyan</option>
+                  <option value="navy">Navy</option>
+                  <option value="gray">Gray</option>
+                  <option value="green">Green</option>
+                  <option value="maroon">Maroon</option>
+                  <option value="olive">Olive</option>
+                  <option value="orange">Orange</option>
+                  <option value="red">Red</option>
+                  <option value="silver">Silver</option>
+                  <option value="teal">Teal</option>
+                  <option value="violet">Violet</option>
+                  <option value="white">White</option>
+                  <option value="yellow">Yellow</option>                
+                </select>   
+              </div>
+            </div>
+            <div fxFlex="calc(34% - 10px)" fxFlex.md="calc(33% - 10px)" fxFlex.sm="calc(33% - 10px)" fxFlex.xs="100">
+              <div class="sa-form-group">
+                <label>&nbsp;</label>
+                <button  (click)="save(data)" [disabled] = "data.status_code == '' "  class="mat-raised-button mat-dc">Add</button>
+              </div> 
+            </div>  
+          </div>
+         </div>
       </div>
     </div>
 
@@ -86,6 +104,6 @@
 
     <div mat-dialog-actions class="justify-between">
       <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
-      <button  (click)="save(data)" [disabled] = "data.status_code == '' " tabindex="2" class="mat-raised-button mat-dc float-right">Save</button>
+      <button  (click)="onNoClick()" tabindex="2" class="mat-raised-button mat-dc float-right">Save</button>
     </div>
     </div>

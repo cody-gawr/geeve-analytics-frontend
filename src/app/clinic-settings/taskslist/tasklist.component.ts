@@ -29,14 +29,22 @@ export class DialogOverviewTasklistDialogComponent {
     { id: '5', name: "Staff" },
     { id: '6', name: "Owner" },
   ];
+  public maxSize: number = 7;
+  public labels: any = {
+    previousLabel: '',
+    nextLabel: ''
+};
   public showAddItem = false;
   onNoClick(): void {
     this.dialogRef.close();
   }
-  onKeyPress(event,i){
-    if(event.keyCode===13){
-     this.updateItem(i);
+  onKeyPress(event,index,itemsPerPage,currPage){
+    if(event.keyCode===13 || event.charCode === 13){
+     this.updateItem(index,itemsPerPage,currPage);
     }
+  }
+  pageChanged(event){
+    this.dialogRef.componentInstance.data.currPage = event;
   }
 
   save(data) {
@@ -99,12 +107,14 @@ export class DialogOverviewTasklistDialogComponent {
 
   }
 
-  markRead(i) {
+  markRead(index,itemsPerPage,currPage) {
+    let i = itemsPerPage * (currPage - 1) + index;
     this.dialogRef.componentInstance.data.tasksListItems[i].readOnly = !this.dialogRef.componentInstance.data.tasksListItems[i].readOnly
+    this.dialogRef.componentInstance.data.currPage = currPage;
   }
 
-  updateItem(i) {
-
+  updateItem(index,itemsPerPage,currPage) {
+    let i = itemsPerPage * (currPage - 1) + index;
     let data = this.dialogRef.componentInstance.data.tasksListItems[i];
     if (data) {
       this.taskService.updateTasksItem(data.id, data.list_id, data.task_name, data.clinic_id).subscribe((res) => {
@@ -119,12 +129,14 @@ export class DialogOverviewTasklistDialogComponent {
     }
   }
 
-  removeItem(i) {
+  removeItem(index,itemsPerPage,currPage) {
+    let i = itemsPerPage * (currPage - 1) + index;
     let data = this.dialogRef.componentInstance.data.tasksListItems[i];
     if (data) {
       this.taskService.deleteTasksItem(data.id, data.clinic_id).subscribe((res) => {
         if (res.message == 'success') {
           this.dialogRef.componentInstance.data.tasksListItems.splice(i, 1);
+          this.dialogRef.componentInstance.data.totalRecords = this.dialogRef.componentInstance.data.tasksListItems.length;
         } else if (res.status == '401') {
           this.handleUnAuthorization();
         }
@@ -138,6 +150,7 @@ export class DialogOverviewTasklistDialogComponent {
   }
   additemNew(data) {
     console.log('data', data);
+    this.dialogRef.componentInstance.data.currPage = 1;
 
 
     /*this.showAddItem = !this.showAddItem
@@ -169,6 +182,8 @@ export class DialogOverviewTasklistDialogComponent {
         newData.readOnly = false
         newData.task_name = '';
         this.dialogRef.componentInstance.data.tasksListItems.push(newData);
+        data.tasksListItems.sort((a, b) => parseInt(b.id) - parseInt(a.id));
+        this.dialogRef.componentInstance.data.totalRecords = this.dialogRef.componentInstance.data.tasksListItems.length;
       } else if (res.status == '401') {
         this.handleUnAuthorization();
       }
@@ -205,7 +220,10 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
   editing = {};
   clinicData: any = [];
   dailyTaskEnable: boolean = false;
-
+  dataTaskArray:any =[];
+  totalRecords: string;
+  currPage: number = 1;
+  itemsPerPage: number =  10;
 
   constructor(
     private _cookieService: CookieService,
@@ -216,7 +234,7 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
     private clinicSettingsService: ClinicSettingsService,
     private clinicianAnalysisService: ClinicianAnalysisService
   ) {
-    super();
+    super();   
   }
 
   ngAfterViewInit() {
@@ -303,10 +321,13 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
           res.data.end_of_day_tasks.forEach(e => {
             e.readOnly = true;
             e.clinic_id = this.clinic_id$.value;
-          });
+          }); 
+          this.dataTaskArray = res.data.end_of_day_tasks;
+          this.totalRecords = this.dataTaskArray.length;  
+          res.data.end_of_day_tasks.sort((a, b) => parseInt(b.id) - parseInt(a.id));     
           const dialogRef = this.dialog.open(DialogOverviewTasklistDialogComponent, {
             width: '500px',
-            data: { list_id: id, tasksListItems: res.data.end_of_day_tasks, list_name: name, assigned_roles: assigned_roles.split(","), clinic_id: this.clinic_id$.value, old: name, old_assigned_roles: assigned_roles }
+            data: { list_id: id, tasksListItems: res.data.end_of_day_tasks, list_name: name, assigned_roles: assigned_roles.split(","), clinic_id: this.clinic_id$.value, old: name, old_assigned_roles: assigned_roles , totalRecords: this.totalRecords, currPage:this.currPage ,itemsPerPage: this.itemsPerPage}
           });
           dialogRef.afterClosed().subscribe(result => {
             this.getTasks(this.clinic_id$.value);
