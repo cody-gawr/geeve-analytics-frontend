@@ -91,11 +91,30 @@
                 <span *ngIf="trendText && proCollShow == 3"
                 class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
                 matTooltip="{{trendText}} : $ {{collectionExpTotalPrev| number:'1.0-0'}}"><img class="trend_ico"
-                  src="../assets/images/trend_{{collectionExpTooltip}}.png"></span>    
-                Dentist
-                <span *ngIf="proCollShow == 1">Production</span>
-                <span *ngIf="proCollShow == 2">Collection</span>
-                <span *ngIf="proCollShow == 3">Collection - Exp</span>
+                  src="../assets/images/trend_{{collectionExpTooltip}}.png"></span>                 
+                <span *ngIf="proCollShow == 1 && !apiUrl.includes('test-')"> Dentist Production</span>
+                <span *ngIf="proCollShow == 2 && !apiUrl.includes('test-')"> Dentist Collection</span>
+                <span *ngIf="proCollShow == 3 && !apiUrl.includes('test-')"> Dentist Collection - Exp</span>
+                  
+                <select class="proSelect" *ngIf="proCollShow == 1 && apiUrl.includes('test-')"
+                (change)="changeProSelect($event.target.value)">
+                    <option value="production_all">Production - All</option>
+                    <option value="production_dentists">Production - Dentists</option>
+                    <option value="production_oht">Production - OHT</option>
+                </select>
+                <select class="proSelect" *ngIf="proCollShow == 2 && apiUrl.includes('test-')"
+                (change)="changeProSelect($event.target.value)">
+                  <option value="collection_all">Collection - All</option>
+                  <option value="collection_dentists">Collection - Dentists</option>
+                  <option value="collection_oht">Collection - OHT</option>
+                </select>
+                <select class="proSelect" *ngIf="proCollShow == 3 && apiUrl.includes('test-')"
+                (change)="changeProSelect($event.target.value)">
+                  <option value="collection_exp_all">Collection-Exp - All</option>
+                  <option value="collection_exp_dentists">Collection-Exp - Dentists</option>
+                  <option value="collection_exp_oht">Collection-Exp - OHT</option>
+               </select>
+
               </div>
               <div class="info-icon-container" *ngIf="proCollShow == 1">
                 <img [tooltip]="charTips['1']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
@@ -145,7 +164,7 @@
             </div>
 
               <!-- Production Chart Start -->
-              <div *ngIf="proCollShow == 1">
+              <div *ngIf="proCollShow == 1 && proSelectShow =='production_all'">
                 <div class="div-pro-coll-show" *ngIf="barChartData[0].data.length && !buildChartLoader">
                   <canvas id="dentistProduction" baseChart [datasets]="barChartData" [labels]="barChartLabels"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP1"
@@ -158,10 +177,36 @@
                   <p class="chart-placeholder-text">You have no production in the selected period</p>
                 </div>
               </div>
+              <div *ngIf="proCollShow == 1 && proSelectShow =='production_dentists'">
+                <div class="div-pro-coll-show" *ngIf="barChartDataDentists[0].data.length && !buildChartDentistsLoader">
+                  <canvas id="dentistProduction" baseChart [datasets]="barChartDataDentists" [labels]="barChartDentistLabels"
+                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP1"
+                    [colors]="DPcolors">
+                  </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div *ngIf="!barChartDataDentists[0].data.length && !buildChartDentistsLoader" class="no-data-placeholder">
+                  <div class="sa_nodata_div">
+                  </div>
+                  <p class="chart-placeholder-text">You have no production in the selected period</p>
+                </div>
+              </div>
+              <div *ngIf="proCollShow == 1  && proSelectShow =='production_oht'">
+                <div class="div-pro-coll-show" *ngIf="barChartDataOht[0].data.length && !buildChartOhtLoader">
+                  <canvas id="dentistProduction" baseChart [datasets]="barChartDataOht" [labels]="barChartOhtLabels"
+                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP1"
+                    [colors]="DPcolors">
+                  </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div *ngIf="!barChartDataOht[0].data.length && !buildChartOhtLoader" class="no-data-placeholder">
+                  <div class="sa_nodata_div">
+                  </div>
+                  <p class="chart-placeholder-text">You have no production in the selected period</p>
+                </div>
+              </div>
               <!-- Production Chart Start -->
 
               <!-- Collection Chart Start -->
-              <div *ngIf="proCollShow == 2">
+              <div *ngIf="proCollShow == 2 && proSelectShow =='collection_all'">
                 <div class="div-pro-coll-show" *ngIf="collectionData[0].data.length && !collectionLoader">
                   <canvas id="dentistCollection" baseChart [datasets]="collectionData" [labels]="collectionLabels"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
@@ -174,10 +219,36 @@
                   <p class="chart-placeholder-text">You have no Collection in the selected period</p>
                 </div>
               </div>
+              <div *ngIf="proCollShow == 2 && proSelectShow =='collection_dentists'">
+                <div class="div-pro-coll-show" *ngIf="collectionDentistsData[0].data.length && !collectionDentistsLoader">
+                  <canvas id="dentistCollection" baseChart [datasets]="collectionDentistsData" [labels]="collectionDentistsLabels"
+                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
+                    [colors]="DPcolors1">
+                  </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div *ngIf="!collectionDentistsData[0].data.length && !collectionDentistsLoader" class="no-data-placeholder">
+                  <div class="sa_nodata_div">
+                  </div>
+                  <p class="chart-placeholder-text">You have no Collection in the selected period</p>
+                </div>
+              </div>
+              <div *ngIf="proCollShow == 2  && proSelectShow =='collection_oht'">
+                <div class="div-pro-coll-show" *ngIf="collectionOhtData[0].data.length && !collectionOhtLoader">
+                  <canvas id="dentistCollection" baseChart [datasets]="collectionOhtData" [labels]="collectionOhtLabels"
+                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
+                    [colors]="DPcolors1">
+                  </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div *ngIf="!collectionOhtData[0].data.length && !collectionOhtLoader" class="no-data-placeholder">
+                  <div class="sa_nodata_div">
+                  </div>
+                  <p class="chart-placeholder-text">You have no Collection in the selected period</p>
+                </div>
+              </div>
               <!-- Collection Chart Start -->
 
               <!-- CollectionExp Chart Start -->
-              <div *ngIf="proCollShow == 3">
+              <div *ngIf="proCollShow == 3 && proSelectShow =='collection_exp_all'">
                 <div class="div-pro-coll-show" *ngIf="collectionExpData[0].data.length && !collectionExpLoader">
                   <canvas id="dentistCollection" baseChart [datasets]="collectionExpData" [labels]="collectionLabelsExp"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
@@ -190,6 +261,32 @@
                   <p class="chart-placeholder-text">You have no Collection in the selected period</p>
                 </div>
               </div>
+              <div *ngIf="proCollShow == 3 && proSelectShow =='collection_exp_dentists'">
+                <div class="div-pro-coll-show" *ngIf="collectionExpDentistsData[0].data.length && !collectionExpDentistsLoader">
+                  <canvas id="dentistCollection" baseChart [datasets]="collectionExpDentistsData" [labels]="collectionLabelsDentistsExp"
+                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
+                    [colors]="DPcolors1">
+                  </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div *ngIf="!collectionExpDentistsData[0].data.length && !collectionExpDentistsLoader" class="no-data-placeholder">
+                  <div class="sa_nodata_div">
+                  </div>
+                  <p class="chart-placeholder-text">You have no Collection in the selected period</p>
+                </div>
+              </div>
+              <div *ngIf="proCollShow == 3 && proSelectShow =='collection_exp_oht'">
+                <div class="div-pro-coll-show" *ngIf="collectionExpOhtData[0].data.length && !collectionExpOhtLoader">
+                  <canvas id="dentistCollection" baseChart [datasets]="collectionExpOhtData" [labels]="collectionLabelsOhtExp"
+                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
+                    [colors]="DPcolors1">
+                  </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div *ngIf="!collectionExpOhtData[0].data.length && !collectionExpOhtLoader" class="no-data-placeholder">
+                  <div class="sa_nodata_div">
+                  </div>
+                  <p class="chart-placeholder-text">You have no Collection in the selected period</p>
+                </div>
+              </div>
               <!-- CollectionExp Chart Start -->
 
             </div>
@@ -197,7 +294,7 @@
             <div class="card-footer" *ngIf="!averageToggle">
               <!-- Production Chart Start -->
               <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center"
-                *ngIf="proCollShow == 1">
+                *ngIf="proCollShow == 1 && proSelectShow =='production_all'">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                   <h3 class="m-0 text-center value-num">${{productionTotal| number:'1.0-0'}}</h3>
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
@@ -219,10 +316,56 @@
                   <span class="value-text">Goal</span>
                 </div>
               </div>
+              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center"
+                *ngIf="proCollShow == 1 && proSelectShow =='production_dentists'">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 text-center value-num">${{productionDentistsTotal| number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
+                  <span class="value-text" *ngIf="currentText == ''">Current</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num">${{productionDentistsTotalPrev| number:'1.0-0'}}</h3>
+
+                  <!--  <small *ngIf="trendText != ''">{{trendText}} Avg</small> -->
+
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                  <span class="value-text" *ngIf="trendText == ''">Previous</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom' && productionGoal >= 0">
+                  <h3 class="m-0 value-num" *ngIf="productionGoal && goalCount">
+                    ${{ (productionGoal * goalCount) | number:'1.0-0'}}</h3>
+                  <span class="value-text">Goal</span>
+                </div>
+              </div>
+              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center"
+                *ngIf="proCollShow == 1 && proSelectShow =='production_oht'">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 text-center value-num">${{productionOhtTotal| number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
+                  <span class="value-text" *ngIf="currentText == ''">Current</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num">${{productionOhtTotalPrev| number:'1.0-0'}}</h3>
+
+                  <!--  <small *ngIf="trendText != ''">{{trendText}} Avg</small> -->
+
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                  <span class="value-text" *ngIf="trendText == ''">Previous</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom' && productionGoal >= 0">
+                  <h3 class="m-0 value-num" *ngIf="productionGoal && goalCount">
+                    ${{ (productionGoal * goalCount) | number:'1.0-0'}}</h3>
+                  <span class="value-text">Goal</span>
+                </div>
+              </div>
               <!-- Production Chart Start -->
               <!-- Collection Chart Start -->
               <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center"
-                *ngIf="proCollShow == 2">
+                *ngIf="proCollShow == 2  && proSelectShow =='collection_all'">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                   <h3 class="m-0 text-center value-num">${{collectionTotal| number:'1.0-0'}}</h3>
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
@@ -237,18 +380,64 @@
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
-                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="collectionTotalGoal >= 0 && collectionTotalGoal !=null &&showGoals == true">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="collectionTotalGoal >= 0 && collectionTotalGoal !=null && showGoals == true">
                   <h3 class="m-0 value-num" *ngIf="collectionTotalGoal && goalCount">
                     ${{ (collectionTotalGoal * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
+                </div>              
+              </div>
+              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center"
+                *ngIf="proCollShow == 2 && proSelectShow =='collection_dentists'">
+                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 text-center value-num">${{collectionDentistsTotal| number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
+                  <span class="value-text" *ngIf="currentText == ''">Current</span>
                 </div>
+                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num">${{collectionDentistsTotalPrev| number:'1.0-0'}}</h3>
+
+                  <!--  <small *ngIf="trendText != ''">{{trendText}} Avg</small> -->
+
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                  <span class="value-text" *ngIf="trendText == ''">Previous</span>
+                </div>
+                <!--  <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num" *ngIf="productionGoal && goalCount">
+                    ${{ (collectionTotalGoal * goalCount) | number:'1.0-0'}}</h3>
+                  <span class="value-text">Goal</span>
+                </div> -->
+              </div>
+              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center"
+                *ngIf="proCollShow == 2 && proSelectShow =='collection_oht'">
+                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 text-center value-num">${{collectionOhtTotal| number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
+                  <span class="value-text" *ngIf="currentText == ''">Current</span>
+                </div>
+                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num">${{collectionOhtTotalPrev| number:'1.0-0'}}</h3>
+
+                  <!--  <small *ngIf="trendText != ''">{{trendText}} Avg</small> -->
+
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                  <span class="value-text" *ngIf="trendText == ''">Previous</span>
+                </div>
+                <!--  <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num" *ngIf="productionGoal && goalCount">
+                    ${{ (collectionTotalGoal * goalCount) | number:'1.0-0'}}</h3>
+                  <span class="value-text">Goal</span>
+                </div> -->
               </div>
 
               <!-- Collection Chart Start -->
               <!-- CollectionExp Chart Start -->
               <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center"
-                *ngIf="proCollShow == 3">
+                *ngIf="proCollShow == 3  && proSelectShow =='collection_exp_all'">
                 <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                   <h3 class="m-0 text-center value-num">${{collectionExpTotal| number:'1.0-0'}}</h3>
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
@@ -257,6 +446,34 @@
                 <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
                   <h3 class="m-0 value-num">${{collectionExpTotalPrev| number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                  <span class="value-text" *ngIf="trendText == ''">Previous</span>
+                </div>
+              </div>
+              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center"
+                *ngIf="proCollShow == 3  && proSelectShow =='collection_exp_dentists'">
+                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 text-center value-num">${{collectionExpDentistsTotal| number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
+                  <span class="value-text" *ngIf="currentText == ''">Current</span>
+                </div>
+                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num">${{collectionExpDentistsTotalPrev| number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                  <span class="value-text" *ngIf="trendText == ''">Previous</span>
+                </div>
+              </div>
+              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center"
+                *ngIf="proCollShow == 3  && proSelectShow =='collection_exp_oht'">
+                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 text-center value-num">${{collectionExpOhtTotal| number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
+                  <span class="value-text" *ngIf="currentText == ''">Current</span>
+                </div>
+                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num">${{collectionExpOhtTotalPrev| number:'1.0-0'}}</h3>
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
@@ -270,6 +487,14 @@
               <img class="loader_ico" src="../assets/images/720.gif">
               <div class="loader-text">Calculating...</div>
             </div>
+            <div *ngIf="buildChartDentistsLoader && proCollShow == 1" class="loader_container loader_container_middle">
+              <img class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
+            <div *ngIf="buildChartOhtLoader && proCollShow == 1" class="loader_container loader_container_middle">
+              <img class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
             <!-- Production Chart Start -->
 
             <!-- Collection Chart Start -->
@@ -277,10 +502,26 @@
               <img class="loader_ico" src="../assets/images/720.gif">
               <div class="loader-text">Calculating...</div>
             </div>
+            <div *ngIf="collectionDentistsLoader && proCollShow == 2" class="loader_container loader_container_middle">
+              <img class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
+            <div *ngIf="collectionOhtLoader && proCollShow == 2" class="loader_container loader_container_middle">
+              <img class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
             <!-- Collection Chart Start -->
 
             <!-- CollectionExp Chart Start -->
-            <div *ngIf="collectionLoader && proCollShow == 3" class="loader_container loader_container_middle">
+            <div *ngIf="collectionExpLoader && proCollShow == 3" class="loader_container loader_container_middle">
+              <img class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
+            <div *ngIf="collectionExpDentistsLoader && proCollShow == 3" class="loader_container loader_container_middle">
+              <img class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
+            <div *ngIf="collectionExpOhtLoader && proCollShow == 3" class="loader_container loader_container_middle">
               <img class="loader_ico" src="../assets/images/720.gif">
               <div class="loader-text">Calculating...</div>
             </div>
@@ -305,10 +546,29 @@
                   class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
                   matTooltip="{{trendText}} : $ {{collectionExpTotalPrev| number:'1.0-0'}}"><img class="trend_ico"
                   src="../assets/images/trend_{{collectionExpTooltip}}.png"></span> 
-                Dentist
-                <span *ngIf="proCollShow == 1">Production</span>
-                <span *ngIf="proCollShow == 2">Collection</span>
-                <span *ngIf="proCollShow == 3">Collection - Exp</span>
+                <span *ngIf="proCollShow == 1"> Dentist Production</span>
+                <span *ngIf="proCollShow == 2"> Dentist Collection</span>
+                <span *ngIf="proCollShow == 3"> Dentist Collection - Exp</span>
+                  
+                <!-- <select class="proSelect" *ngIf="proCollShow == 1 && apiUrl.includes('test-')"
+                (change)="changeProSelect($event.target.value)">
+                    <option value="production_all">Production - All</option>
+                    <option value="production_dentists">Production - Dentists</option>
+                    <option value="production_oht">Production - OHT</option>
+                </select>
+                <select class="proSelect" *ngIf="proCollShow == 2 && apiUrl.includes('test-')"
+                (change)="changeProSelect($event.target.value)">
+                  <option value="collection_all">Collection - All</option>
+                  <option value="collection_dentists">Collection - Dentists</option>
+                  <option value="collection_oht">Collection - OHT</option>
+                </select>
+                <select class="proSelect" *ngIf="proCollShow == 3 && apiUrl.includes('test-')"
+                (change)="changeProSelect($event.target.value)">
+                  <option value="collection_exp_all">Collection-Exp - All</option>
+                  <option value="collection_exp_dentists">Collection-Exp - Dentists</option>
+                  <option value="collection_exp_oht">Collection-Exp - OHT</option>
+               </select> -->
+
               </div>
 
               <div class="info-icon-container">
@@ -401,11 +661,6 @@
                     </tbody>
                   </table>
                 </div>
-                  <!-- <canvas #myCanvas id="dentistProductionWeeklyTrend" baseChart
-                    [datasets]="dentistProductionWeeklyTrend" [labels]="dentistProductionWeeklyTrendLabels"
-                    [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
-                    [options]="barChartOptionsTrend" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
-                  </canvas> -->
                   <div
                     *ngIf="dentistProductionTrendLoader && proCollShow == 1 && showTrendChart == false && showWeekTrend == true" class="loader_container loader_container_middle">
                     <img class="loader_ico" src="../assets/images/720.gif">
@@ -413,8 +668,7 @@
                   </div>
                 </div>
                 <!-- Production Chart weekly trend -->
-
-              </div>
+              </div>              
               <!-- Production Chart end dentist -->
 
               <!-- Collection Chart Start dentist -->
@@ -530,25 +784,46 @@
 
               <!-- Production Chart start trend -->
               <div class="div-pro-coll-show"
-                *ngIf="proCollShow == 1 && showTrendChart == true && dentistProductionTrendLabels.length > 0 && !dentistProductionTrendLoader"
-                >
-
+                *ngIf="proCollShow == 1 && showTrendChart == true && dentistProductionTrendLabels.length > 0 && !dentistProductionTrendLoader">
                 <canvas #myCanvas id="dentistProductionTrend" baseChart [datasets]="dentistProdTrend"
                   [labels]="dentistProductionTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                   (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
                   (chartClick)="chartClicked($event)">
                 </canvas>
-
               </div>
-
               <div *ngIf="dentistProductionTrendLoader && proCollShow == 1 && showTrendChart == true"
                 class="loader_container loader_container_middle">
                 <img class="loader_ico" src="../assets/images/720.gif">
                 <div class="loader-text">Calculating...</div>
               </div>
+              <!-- <div class="div-pro-coll-show"
+                *ngIf="proCollShow == 1 && proSelectShow =='production_dentists' && showTrendChart == true && dentistProductionTrendDentistsLabels.length > 0 && !dentistProductionTrendDentistsLoader">
+                <canvas #myCanvas id="dentistProdDentistsTrend" baseChart [datasets]="dentistProdDentistsTrend"
+                  [labels]="dentistProductionTrendDentistsLabels" [legend]="barChartLegend" [chartType]="barChartType"
+                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
+                  (chartClick)="chartClicked($event)">
+                </canvas>
+              </div>
+              <div *ngIf="dentistProductionTrendDentistsLoader && proCollShow == 1  && proSelectShow =='production_dentists' && showTrendChart == true"
+                class="loader_container loader_container_middle">
+                <img class="loader_ico" src="../assets/images/720.gif">
+                <div class="loader-text">Calculating...</div>
+              </div> -->
+              <!-- <div class="div-pro-coll-show"
+                *ngIf="proCollShow == 1 && proSelectShow =='production_oht'  && showTrendChart == true && dentistProductionTrendOhtLabels.length > 0 && !dentistProductionTrendOhtLoader">
+                <canvas #myCanvas id="dentistProdOhtTrend" baseChart [datasets]="dentistProdOhtTrend"
+                  [labels]="dentistProductionTrendOhtLabels" [legend]="barChartLegend" [chartType]="barChartType"
+                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
+                  (chartClick)="chartClicked($event)">
+                </canvas>
+              </div>
+              <div *ngIf="dentistProductionTrendOhtLoader && proCollShow == 1  && proSelectShow =='production_oht' && showTrendChart == true"
+                class="loader_container loader_container_middle">
+                <img class="loader_ico" src="../assets/images/720.gif">
+                <div class="loader-text">Calculating...</div>
+              </div> -->
 
-              <div
-                *ngIf="proCollShow == 2 &&  showTrendChart == true && dentistCollectionTrendLabels.length > 0 && !dentistCollectionTrendLoader"
+              <div *ngIf="proCollShow == 2 &&  showTrendChart == true && dentistCollectionTrendLabels.length > 0 && !dentistCollectionTrendLoader"
                 class="div-pro-coll-show">
                 <canvas #myCanvas id="dentistColTrend" baseChart [datasets]="dentistColTrend"
                   [labels]="dentistCollectionTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
@@ -556,15 +831,39 @@
                   (chartClick)="chartClicked($event)">
                 </canvas>
               </div>
-
               <div *ngIf="dentistCollectionTrendLoader && proCollShow == 2 && showTrendChart == true"
                 class="loader_container loader_container_middle">
                 <img class="loader_ico" src="../assets/images/720.gif">
                 <div class="loader-text">Calculating...</div>
               </div>
+              <!-- <div *ngIf="proCollShow == 2 && proSelectShow =='collection_dentists' &&  showTrendChart == true && dentistCollectionDentistsTrendLabels.length > 0 && !dentistCollectionDentistsTrendLoader"
+                class="div-pro-coll-show">
+                <canvas #myCanvas id="dentistColDentistsTrend" baseChart [datasets]="dentistColDentistsTrend"
+                  [labels]="dentistCollectionDentistsTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
+                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
+                  (chartClick)="chartClicked($event)">
+                </canvas>
+              </div>
+              <div *ngIf="dentistCollectionDentistsTrendLoader && proCollShow == 2 && proSelectShow =='collection_dentists' && showTrendChart == true"
+                class="loader_container loader_container_middle">
+                <img class="loader_ico" src="../assets/images/720.gif">
+                <div class="loader-text">Calculating...</div>
+              </div> -->
+              <!-- <div *ngIf="proCollShow == 2 && proSelectShow =='collection_oht' &&  showTrendChart == true && dentistCollectionOhtTrendLabels.length > 0 && !dentistCollectionOhtTrendLoader"
+                class="div-pro-coll-show">
+                <canvas #myCanvas id="dentistColOhtTrend" baseChart [datasets]="dentistColOhtTrend"
+                  [labels]="dentistCollectionOhtTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
+                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
+                  (chartClick)="chartClicked($event)">
+                </canvas>
+              </div>
+              <div *ngIf="dentistCollectionOhtTrendLoader && proCollShow == 2 && proSelectShow =='collection_oht' && showTrendChart == true"
+                class="loader_container loader_container_middle">
+                <img class="loader_ico" src="../assets/images/720.gif">
+                <div class="loader-text">Calculating...</div>
+              </div> -->
 
-              <div
-                *ngIf="proCollShow == 3 &&  showTrendChart == true && dentistCollectionExpTrendLabels.length > 0 && !dentistCollectionExpTrendLoader"
+              <div *ngIf="proCollShow == 3  &&  showTrendChart == true && dentistCollectionExpTrendLabels.length > 0 && !dentistCollectionExpTrendLoader"
                 class="div-pro-coll-show">
                 <canvas #myCanvas id="dentistColExpTrend" baseChart [datasets]="dentistColExpTrend"
                   [labels]="dentistCollectionExpTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
@@ -572,12 +871,37 @@
                   (chartClick)="chartClicked($event)">
                 </canvas>
               </div>
-
               <div *ngIf="dentistCollectionExpTrendLoader && proCollShow == 3 && showTrendChart == true"
                 class="loader_container loader_container_middle">
                 <img class="loader_ico" src="../assets/images/720.gif">
                 <div class="loader-text">Calculating...</div>
               </div>
+              <!-- <div *ngIf="proCollShow == 3 && proSelectShow =='collection_exp_dentists'  &&  showTrendChart == true && dentistCollectionExpDentistsTrendLabels.length > 0 && !dentistCollectionExpDentistsTrendLoader"
+                class="div-pro-coll-show">
+                <canvas #myCanvas id="dentistColExpDentistsTrend" baseChart [datasets]="dentistColExpDentistsTrend"
+                  [labels]="dentistCollectionExpDentistsTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
+                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
+                  (chartClick)="chartClicked($event)">
+                </canvas>
+              </div>
+              <div *ngIf="dentistCollectionExpDentistsTrendLoader && proCollShow == 3 && proSelectShow =='collection_exp_dentists' && showTrendChart == true"
+                class="loader_container loader_container_middle">
+                <img class="loader_ico" src="../assets/images/720.gif">
+                <div class="loader-text">Calculating...</div>
+              </div> -->
+              <!-- <div *ngIf="proCollShow == 3 && proSelectShow =='collection_exp_oht'  &&  showTrendChart == true && dentistCollectionExpOhtTrendLabels.length > 0 && !dentistCollectionExpOhtTrendLoader"
+                class="div-pro-coll-show">
+                <canvas #myCanvas id="dentistColExpOhtTrend" baseChart [datasets]="dentistColExpOhtTrend"
+                  [labels]="dentistCollectionExpOhtTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
+                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
+                  (chartClick)="chartClicked($event)">
+                </canvas>
+              </div>
+              <div *ngIf="dentistCollectionExpOhtTrendLoader && proCollShow == 3 && proSelectShow =='collection_exp_oht' && showTrendChart == true"
+                class="loader_container loader_container_middle">
+                <img class="loader_ico" src="../assets/images/720.gif">
+                <div class="loader-text">Calculating...</div>
+              </div> -->
               <!-- Production Chart start trend -->
             </div>
 
@@ -692,8 +1016,8 @@
                 </div>
                 <!--   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num" *ngIf="productionGoal && goalCount">
-                    ${{ (dentistCollectionGoal * goalCount) | number:'1.0-0'}}</h3>
+                  <h3 class="m-0 value-num" *ngIf="collectionTotalExpGoal && goalCount">
+                    ${{ (collectionTotalExpGoal * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
                 </div> -->
               </div>
@@ -715,7 +1039,13 @@
                 <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
                   mat-icon-button matTooltip="{{trendText}} : ${{hourlyRateChartAveragePrev| number:'1.0-0'}}"><img
                     class="trend_ico" src="../assets/images/trend_{{hourlyRateChartTooltip}}.png"></span>
-                Hourly Rate
+                    <span *ngIf="!apiUrl.includes('test-')">Hourly Rate</span>                  
+                    <select class="proSelect" *ngIf="apiUrl.includes('test-')"
+                    (change)="changeHourlyRateSelect($event.target.value)">
+                        <option value="hr_all">Hourly Rate - All</option>
+                        <option value="hr_dentists">Hourly Rate - Dentists</option>
+                        <option value="hr_oht">Hourly Rate - OHT</option>
+                    </select>
               </div>
               <!--   <div class="sa_box_title_right_buttons">
                   <button mat-icon-button ><i class="fas fa-expand"></i></button>
@@ -732,8 +1062,7 @@
             </mat-card-title>
             <div class="card-body h-100">
               <div class="relative h-100">
-
-                <div class="cl-card-height">
+                <div class="cl-card-height" *ngIf="hrSelectShow =='hr_all'">
                   <canvas #myCanvas id="HourlyRate" baseChart
                     *ngIf="hourlyRateChartData1.length > 0 && hourlyRateChartLoader == false"
                     [datasets]="hourlyRateChartData" [labels]="hourlyRateChartLabels" [legend]="barChartLegend"
@@ -747,10 +1076,38 @@
                     <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
                   </div>
                 </div>
+                <div class="cl-card-height" *ngIf="hrSelectShow =='hr_dentists'">
+                  <canvas #myCanvas id="HourlyRate" baseChart
+                    *ngIf="hourlyRateChartDesntistsData1.length > 0 && hourlyRateChartDentistsLoader == false"
+                    [datasets]="hourlyRateChartDentistsData" [labels]="hourlyRateChartDesntistsLabels" [legend]="barChartLegend"
+                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
+                    [colors]="HRcolors" (chartClick)="chartClicked($event)">
+                  </canvas>
+                  <div class="no-data-placeholder"
+                    *ngIf="hourlyRateChartDesntistsData1.length <= 0 && hourlyRateChartDentistsLoader===false">
+                    <div class="sa_nodata_div">
+                    </div>
+                    <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
+                  </div>
+                </div>
+                <div class="cl-card-height" *ngIf="hrSelectShow =='hr_oht'">
+                  <canvas #myCanvas id="HourlyRate" baseChart
+                    *ngIf="hourlyRateChartOhtData1.length > 0 && hourlyRateChartOhtLoader == false"
+                    [datasets]="hourlyRateChartOhtData" [labels]="hourlyRateChartOhtLabels" [legend]="barChartLegend"
+                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
+                    [colors]="HRcolors" (chartClick)="chartClicked($event)">
+                  </canvas>
+                  <div class="no-data-placeholder"
+                    *ngIf="hourlyRateChartOhtData1.length <= 0 && hourlyRateChartOhtLoader===false">
+                    <div class="sa_nodata_div">
+                    </div>
+                    <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="card-footer" *ngIf="!averageToggle">
-              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
+              <div *ngIf="hrSelectShow =='hr_all'" fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                   <h3 class="m-0 value-num">${{hourlyRateChartAverage| number:'1.0-0'}}</h3>
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}} Avg</span>
@@ -763,7 +1120,45 @@
                   <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="hourlyRateChartGoal >= 0 && showGoals == true">
+                  *ngIf="duration!='custom' && hourlyRateChartGoal >= 0">
+                  <h3 class="m-0 value-num" *ngIf="hourlyRateChartGoal">
+                    ${{ hourlyRateChartGoal | number:'1.0-0' }}</h3>
+                  <span class="value-text">Goal</span>
+                </div>
+              </div>
+              <div *ngIf="hrSelectShow =='hr_dentists'" fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 value-num">${{hourlyRateChartDesntistsAverage| number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Avg</span>
+                  <span class="value-text" *ngIf="currentText == ''">Current Average</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num">${{hourlyRateChartDesntistsAveragePrev| number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}} Avg</span>
+                  <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom' && hourlyRateChartGoal >= 0">
+                  <h3 class="m-0 value-num" *ngIf="hourlyRateChartGoal">
+                    ${{ hourlyRateChartGoal | number:'1.0-0' }}</h3>
+                  <span class="value-text">Goal</span>
+                </div>
+              </div>
+              <div *ngIf="hrSelectShow =='hr_oht'" fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 value-num">${{hourlyRateChartOhtAverage| number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Avg</span>
+                  <span class="value-text" *ngIf="currentText == ''">Current Average</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num">${{hourlyRateChartOhtAveragePrev| number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}} Avg</span>
+                  <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom' && hourlyRateChartGoal >= 0">
                   <h3 class="m-0 value-num" *ngIf="hourlyRateChartGoal">
                     ${{ hourlyRateChartGoal | number:'1.0-0' }}</h3>
                   <span class="value-text">Goal</span>
@@ -781,7 +1176,14 @@
                   class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
                   matTooltip="{{trendText}} : ${{hourlyRateChartAveragePrev| number:'1.0-0'}}"><img class="trend_ico"
                     src="../assets/images/trend_{{hourlyRateChartTooltip}}.png"></span>
-                Hourly Rate
+                
+                <span>Hourly Rate</span>                  
+                <!-- <select class="proSelect" *ngIf="apiUrl.includes('test-')"
+                (change)="changeHourlyRateSelect($event.target.value)">
+                    <option value="hr_all">Hourly Rate - All</option>
+                    <option value="hr_dentists">Hourly Rate - Dentists</option>
+                    <option value="hr_oht">Hourly Rate - OHT</option>
+                </select> -->
               </div>
               <div class="info-icon-container">
                 <img [tooltip]="charTips['7']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
@@ -795,8 +1197,21 @@
                   [cap]="cap" [duration]="gaugeDuration" [prepend]="gaugePrependText" [size]="size">
                 </ngx-gauge>
               </div>
-              <div
-                *ngIf="showTrendChart == true && hourlyRateChartTrend1.length > 0 && fdhourlyRateRateTrendLoader == false"
+              <!-- <div *ngIf="showTrendChart == false && hrSelectShow =='hr_dentists' && hourlyValueSingleDentists > 0 && hourlyRateSingleDentistsLoader == false" class="chart cl-card-height"
+                fxLayout="row" fxLayoutAlign="start center">
+                <ngx-gauge [type]="gaugeType" [value]="hourlyValueSingleDentists" [label]="hourlyLabelSingleDentists" [thick]="gaugeThick"
+                  [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="maxhourlyGoalSingleDentists"
+                  [cap]="cap" [duration]="gaugeDuration" [prepend]="gaugePrependText" [size]="size">
+                </ngx-gauge>
+              </div>
+              <div *ngIf="showTrendChart == false && hrSelectShow =='hr_oht' && hourlyValueSingleOht > 0 && hourlyRateSingleOhtLoader == false" class="chart cl-card-height"
+                fxLayout="row" fxLayoutAlign="start center">
+                <ngx-gauge [type]="gaugeType" [value]="hourlyValueSingleOht" [label]="hourlyLabelSingleOht" [thick]="gaugeThick"
+                  [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="maxhourlyGoalSingleOht"
+                  [cap]="cap" [duration]="gaugeDuration" [prepend]="gaugePrependText" [size]="size">
+                </ngx-gauge>
+              </div> -->
+              <div *ngIf="showTrendChart == true && hourlyRateChartTrend1.length > 0 && fdhourlyRateRateTrendLoader == false"
                 class="cl-card-height">
                 <canvas #myCanvas id="HourlyRateTrend" baseChart [datasets]="hourlyRateChartTrend"
                   [labels]="hourlyRateChartTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
@@ -804,6 +1219,22 @@
                   (chartClick)="chartClicked($event)">
                 </canvas>
               </div>
+              <!-- <div *ngIf="showTrendChart == true && hrSelectShow =='hr_dentists' && hourlyRateChartDentistsTrend1.length > 0 && fdhourlyRateRateDentistsTrendLoader == false"
+                class="cl-card-height">
+                <canvas #myCanvas id="HourlyRateTrend" baseChart [datasets]="hourlyRateChartDentistsTrend"
+                  [labels]="hourlyRateChartDentistsTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
+                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
+                  (chartClick)="chartClicked($event)">
+                </canvas>
+              </div> -->
+              <!-- <div *ngIf="showTrendChart == true && hrSelectShow =='hr_oht' && hourlyRateChartOhtTrend1.length > 0 && fdhourlyRateRateOhtTrendLoader == false"
+                class="cl-card-height">
+                <canvas #myCanvas id="HourlyRateTrend" baseChart [datasets]="hourlyRateChartOhtTrend"
+                  [labels]="hourlyRateChartOhtTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
+                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
+                  (chartClick)="chartClicked($event)">
+                </canvas>
+              </div> -->
               <div class="no-data-placeholder"
                 *ngIf="((showTrendChart == false && hourlyValue <= 0 && hourlyRateDentistLoader===false) || (showTrendChart == true && hourlyRateChartTrend1.length <= 0 && fdhourlyRateRateTrendLoader == false)) ">
                 <div class="sa_nodata_div">
@@ -837,6 +1268,14 @@
         <div *ngIf="hourlyRateChartLoader == true" class="loader_container loader_container_middle"><img
             class="loader_ico" src="../assets/images/720.gif">
           <div class="loader-text">Calculating...</div>
+        </div>
+        <div *ngIf="hourlyRateChartDentistsLoader == true" class="loader_container loader_container_middle"><img
+          class="loader_ico" src="../assets/images/720.gif">
+        <div class="loader-text">Calculating...</div>
+        </div>
+        <div *ngIf="hourlyRateChartOhtLoader == true" class="loader_container loader_container_middle"><img
+          class="loader_ico" src="../assets/images/720.gif">
+        <div class="loader-text">Calculating...</div>
         </div>
         <div *ngIf="hourlyRateDentistLoader == true" class="loader_container loader_container_middle"><img
             class="loader_ico" src="../assets/images/720.gif">

@@ -64,6 +64,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public showGoals: boolean = false;
 
   public proCollShow: number = 1;
+  public proSelectShow: any = 'production_all';
+  public hrSelectShow: any = "hr_all";
   public charTips: any = [];
   public userPlan: any = 'lite';
 
@@ -1009,14 +1011,22 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.toggleChecked = false;
       this.showTrendChart = false;
       this.buildChart();
-      this.collectionChart()
-      this.collectionExpChart()
+      this.buildChartDentists();
+      this.buildChartOht();
+      this.collectionChart();
+      this.collectionChartDentists();
+      this.collectionChartOht();
+      this.collectionExpChart();
+      this.collectionExpChartDentists();
+      this.collectionExpChartOht();
       this.buildChartTreatment();
       this.buildChartNopatients();
       this.buildChartNewpatients();
       this.recallPrebook();
       this.treatmentPrePrebook();
       this.hourlyRateChart();
+      this.hourlyRateChartDesntists();
+      this.hourlyRateChartOht();
       this.treatmentPlanRate();
       (<HTMLElement>document.querySelector('.dentistProductionSingle')).style.display = 'none';
       (<HTMLElement>document.querySelector('.dentistProduction')).style.display = 'block';
@@ -1039,8 +1049,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.selectedDentist = newValue;
 
       this.dentistProductionTrend('w');
+    //  this.dentistProductionDentistsTrend('w');
+      // this.dentistProductionOhtTrend('w');
       this.dentistCollectionTrend('w');
+      // this.dentistCollectionDentistsTrend('w');
+      // this.dentistCollectionOhtTrend('w');
       this.dentistCollectionExpTrend('w');
+      // this.dentistCollectionExpDentistsTrend('w');
+      // this.dentistCollectionExpOhtTrend('w');
       if (this.toggleChecked) {
         this.toggleChangeProcess();
         this.showTrendChart = true;
@@ -1049,8 +1065,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.showTrendChart = false;
         //this.toggleFilter('off');
         this.buildChartDentist();
+        // this.buildChartSingleDentist();
+        // this.buildChartSingleOht();
         this.collectionDentist();
+        // this.collectionSingleDentist();
+        // this.collectionSingleOht();
         this.collectionExpDentist();
+        // this.collectionExpSingleDentist();
+        // this.collectionExpSingleOht();
         (<HTMLElement>document.querySelector('.dentistProductionSingle')).style.display = 'block';
         (<HTMLElement>document.querySelector('.dentistProduction')).style.display = 'none';
         this.buildChartTreatmentDentist();
@@ -1070,6 +1092,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         (<HTMLElement>document.querySelector('.newPatientsSingle')).style.display = 'block';
         (<HTMLElement>document.querySelector('.newPatients')).style.display = 'none';
         this.hourlyRateDentist();
+       // this.hourlyRateSingleDentists();
+       // this.hourlyRateSingleOht();
         this.treatmentPlanRateDentist();
 
         (<HTMLElement>document.querySelector('.hourlyRateSingle')).style.display = 'block';
@@ -1389,6 +1413,280 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     );
   }
 
+  public productionDentists1Tooltip = 'down';
+  public productionDentistsTotalPrev;
+  public productionDentistsTotal;
+  public barChartDentistsData1;
+  public barChartDentistsLabels1;
+  public barChartDentistLabels;
+  public productionDentistTotalAverage;
+  public buildChartDentistsLoader: boolean = true;
+  public barChartDataDentists: any[] = [
+    {
+      ...this.chartService.baseChartData,
+      data: [],
+    }
+  ];
+  private buildChartDentists() {
+    this.buildChartDentistsLoader = true;
+    this.barChartDentistsData1 = [];
+    this.barChartDentistsLabels1 = [];
+    this.productionDentistsTotal = 0;
+    this.barChartDentistLabels = [];
+    this.barChartOptionsDP1.annotation = [];
+    this.clinic_id && this.cliniciananalysisService.DentistProductionDentist(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+      this.barChartDentistsData1 = [];
+      this.barChartDentistsLabels1 = [];
+      this.barChartDentistLabels = [];
+      this.productionDentistsTotal = 0;
+      if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
+        this.buildChartDentistsLoader = false;
+        this.productionDentists1Tooltip = 'down';
+        var i = 0;
+
+        data.data.forEach(res => {
+          // if (res.production > 0) {
+            this.barChartDentistsData1.push(Math.round(res.production));
+            var name = res.provider_name;
+            if (res.provider_name != null && res.provider_name != 'Anonymous') {
+              this.barChartDentistsLabels1.push(res.provider_name);
+              this.dentistKey = i;
+            } else {
+              this.barChartDentistsLabels1.push(res.provider_name);
+            }
+            i++;
+          // }
+        });
+        if (this.user_type == '4' && this.childid != '') {
+          this.barChartColors = [
+            {
+              backgroundColor: [],
+              hoverBorderColor: '#000'
+            }
+          ];
+          this.barChartColors[0].backgroundColor[this.dentistKey] = '#1CA49F';
+          this.DPcolors = this.barChartColors;
+        }
+        else
+          this.DPcolors = this.lineChartColors;
+        this.barChartDataDentists[0]['data'] = this.barChartDentistsData1;
+        const colors = [
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd
+        ]; // this is static array for colors of bars
+
+        let dynamicColors = [];
+        this.barChartDentistsLabels1.forEach((label, labelIndex) => {
+          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+        }); // This is dynamic array for colors of bars
+
+        this.barChartDataDentists[0].backgroundColor = dynamicColors;
+        this.barChartDentistLabels = this.barChartDentistsLabels1;
+        this.productionDentistsTotal = Math.round(data.total);
+        this.productionDentistTotalAverage = Math.round(data.total_average);
+        this.productionDentistsTotalPrev = Math.round(data.total_ta);
+        this.productionGoal = data.goals;
+
+        if (this.productionDentistsTotal >= this.productionDentistsTotalPrev)
+          this.productionDentists1Tooltip = 'up';
+        this.barChartOptionsDP1.annotation = [];
+        if (this.goalchecked == 'average') {
+          this.barChartOptionsDP1.annotation = {
+            drawTime: 'afterDatasetsDraw',
+            annotations: [{
+              drawTime: 'afterDraw',
+              type: 'line',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: this.productionDentistTotalAverage,
+              borderColor: '#0e3459',
+              borderWidth: 2,
+              borderDash: [2, 2],
+              borderDashOffset: 0,
+            },
+            ]
+          }
+        }
+        else if (this.goalchecked == 'goal') {
+
+          this.barChartOptionsDP1.annotation = {
+            drawTime: 'afterDatasetsDraw',
+            annotations: [{
+              drawTime: 'afterDraw',
+              type: 'line',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: this.productionGoal * this.goalCount,
+              borderColor: 'red',
+              borderWidth: 2,
+              borderDash: [2, 2],
+              borderDashOffset: 0,
+            }]
+          }
+
+        }
+        else if (data.status == '401') {
+          this._cookieService.put("username", '');
+          this._cookieService.put("email", '');
+          this._cookieService.put("userid", '');
+          this.router.navigateByUrl('/login');
+        }
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }
+
+
+    );
+  }
+
+  public productionOhtTooltip = 'down';
+  public productionOhtTotalPrev;
+  public productionOhtTotal;
+  public barChartOhtData1;
+  public barChartOhtLabels1;
+  public barChartOhtLabels;
+  public productionOhtTotalAverage;
+  public buildChartOhtLoader: boolean = true;
+  public barChartDataOht: any[] = [
+    {
+      ...this.chartService.baseChartData,
+      data: [],
+    }
+  ];
+  private buildChartOht() {
+    this.buildChartOhtLoader = true;
+    this.barChartOhtData1 = [];
+    this.barChartOhtLabels1 = [];
+    this.productionOhtTotal = 0;
+    this.barChartOhtLabels = [];
+    this.barChartOptionsDP1.annotation = [];
+    this.clinic_id && this.cliniciananalysisService.DentistProductionOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+      this.barChartOhtData1 = [];
+      this.barChartOhtLabels1 = [];
+      this.barChartOhtLabels = [];
+      this.productionOhtTotal = 0;
+      if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
+        this.buildChartOhtLoader = false;
+        this.productionOhtTooltip = 'down';
+        var i = 0;
+
+        data.data.forEach(res => {
+          // if (res.production > 0) {
+            this.barChartOhtData1.push(Math.round(res.production));
+            var name = res.provider_name;
+            if (res.provider_name != null && res.provider_name != 'Anonymous') {
+              this.barChartOhtLabels1.push(res.provider_name);
+              this.dentistKey = i;
+            } else {
+              this.barChartOhtLabels1.push(res.provider_name);
+            }
+            i++;
+          // }
+        });
+        if (this.user_type == '4' && this.childid != '') {
+          this.barChartColors = [
+            {
+              backgroundColor: [],
+              hoverBorderColor: '#000'
+            }
+          ];
+          this.barChartColors[0].backgroundColor[this.dentistKey] = '#1CA49F';
+          this.DPcolors = this.barChartColors;
+        }
+        else
+          this.DPcolors = this.lineChartColors;
+        this.barChartDataOht[0]['data'] = this.barChartOhtData1;
+        const colors = [
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd
+        ]; // this is static array for colors of bars
+
+        let dynamicColors = [];
+        this.barChartOhtLabels1.forEach((label, labelIndex) => {
+          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+        }); // This is dynamic array for colors of bars
+
+        this.barChartDataOht[0].backgroundColor = dynamicColors;
+        this.barChartOhtLabels = this.barChartOhtLabels1;
+        this.productionOhtTotal = Math.round(data.total);
+        this.productionOhtTotalAverage = Math.round(data.total_average);
+        this.productionOhtTotalPrev = Math.round(data.total_ta);
+        this.productionGoal = data.goals;
+
+        if (this.productionOhtTotal >= this.productionOhtTotalPrev)
+          this.productionOhtTooltip = 'up';
+        this.barChartOptionsDP1.annotation = [];
+        if (this.goalchecked == 'average') {
+          this.barChartOptionsDP1.annotation = {
+            drawTime: 'afterDatasetsDraw',
+            annotations: [{
+              drawTime: 'afterDraw',
+              type: 'line',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: this.productionOhtTotalAverage,
+              borderColor: '#0e3459',
+              borderWidth: 2,
+              borderDash: [2, 2],
+              borderDashOffset: 0,
+            },
+            ]
+          }
+        }
+        else if (this.goalchecked == 'goal') {
+
+          this.barChartOptionsDP1.annotation = {
+            drawTime: 'afterDatasetsDraw',
+            annotations: [{
+              drawTime: 'afterDraw',
+              type: 'line',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: this.productionGoal * this.goalCount,
+              borderColor: 'red',
+              borderWidth: 2,
+              borderDash: [2, 2],
+              borderDashOffset: 0,
+            }]
+          }
+
+        }
+        else if (data.status == '401') {
+          this._cookieService.put("username", '');
+          this._cookieService.put("email", '');
+          this._cookieService.put("userid", '');
+          this.router.navigateByUrl('/login');
+        }
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }
+
+
+    );
+  }
+
 
 
 
@@ -1405,6 +1703,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   ];
   public collectionTotalAverage: any = 0;
   public collectionTotalPrev: any = 0;
+  // public collectionTotalGoal: any = 0;
   public collectionTooltip: string = '';
   public barChartOptionsDP: any = this.barChartOptions;
 
@@ -1512,6 +1811,293 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               mode: 'horizontal',
               scaleID: 'y-axis-0',
               value: this.collectionTotalGoal * this.goalCount,
+              borderColor: 'red',
+              borderWidth: 2,
+              borderDash: [2, 2],
+              borderDashOffset: 0,
+            }]
+          }
+
+        }
+        else if (data.status == '401') {
+          this._cookieService.put("username", '');
+          this._cookieService.put("email", '');
+          this._cookieService.put("userid", '');
+          this.router.navigateByUrl('/login');
+        }
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }
+
+
+    );
+  }
+
+
+  public collectionDentistsLoader: boolean = true;
+  public collectionDentistsData1: any = [];
+  public collectionDentistsLabels1: any = [];
+  public collectionDentistsTotal: any = 0;
+  public collectionDentistsLabels: any = [];
+  public collectionDentistsData: any[] = [{
+    ...this.chartService.baseChartData,
+    data: [],
+  }
+  ];
+  public collectionDentistsTotalAverage: any = 0;
+  public collectionDentistsTotalPrev: any = 0;
+  public collectionDentistsTotalGoal: any = 0;
+  public collectionDentistsTooltip: string = '';
+
+  private collectionChartDentists() {
+    this.collectionDentistsLoader = true;
+    this.collectionDentistsData1 = [];
+    this.collectionDentistsLabels1 = [];
+    this.collectionDentistsTotal = 0;
+    this.collectionDentistsLabels = [];
+    this.barChartOptionsDP.annotation = [];
+    this.clinic_id && this.cliniciananalysisService.DentistCollectionDentists(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+      this.collectionDentistsData1 = [];
+      this.collectionDentistsLabels1 = [];
+      this.collectionDentistsLabels = [];
+      this.collectionDentistsTotal = 0;
+      if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
+        this.collectionDentistsLoader = false;
+        this.collectionDentistsTooltip = 'down';
+        var i = 0;
+        var selectedDen: any = 0;
+        data.data.forEach(res => {
+
+          // if (res.collection > 0) {
+            this.collectionDentistsData1.push(Math.round(res.collection));
+            var name = res.provider_name;
+            if (res.provider_name != null && res.provider_name != 'Anonymous') {
+              this.collectionDentistsLabels1.push(res.provider_name);
+              selectedDen = i;
+            } else {
+              this.collectionDentistsLabels1.push(res.provider_name);
+            }
+            i++;
+          // }
+        });
+
+        if (this.user_type == '4' && this.childid != '') {
+          this.barChartColors1 = [
+            {
+              backgroundColor: [],
+              hoverBorderColor: '#000'
+            }
+          ];
+          this.barChartColors1[0].backgroundColor[selectedDen] = '#1CA49F';
+          this.DPcolors1 = this.barChartColors1;
+        } else {
+          this.DPcolors1 = this.lineChartColors;
+        }
+
+
+        this.collectionDentistsData[0]['data'] = this.collectionDentistsData1;
+        const colors = [
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd
+        ]; // this is static array for colors of bars
+
+        let dynamicColors = [];
+        this.collectionDentistsLabels1.forEach((label, labelIndex) => {
+          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+        }); // This is dynamic array for colors of bars
+
+
+        this.collectionDentistsData[0].backgroundColor = dynamicColors;
+        this.collectionDentistsLabels = this.collectionDentistsLabels1;
+        this.collectionDentistsTotal = Math.round(data.total);
+        this.collectionDentistsTotalAverage = Math.round(data.total_average);
+        this.collectionDentistsTotalPrev = Math.round(data.total_ta);
+        this.collectionDentistsTotalGoal = data.goals;
+
+        if (this.collectionDentistsTotal >= this.collectionDentistsTotalPrev)
+          this.collectionDentistsTooltip = 'up';
+        this.barChartOptionsDP.annotation = [];
+        if (this.goalchecked == 'average') {
+          this.barChartOptionsDP.annotation = {
+            drawTime: 'afterDatasetsDraw',
+            annotations: [{
+              drawTime: 'afterDraw',
+              type: 'line',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: this.collectionDentistsTotalAverage,
+              borderColor: '#0e3459',
+              borderWidth: 2,
+              borderDash: [2, 2],
+              borderDashOffset: 0,
+            },
+            ]
+          }
+        }
+        else if (this.goalchecked == 'goal') {
+
+          this.barChartOptionsDP.annotation = {
+            drawTime: 'afterDatasetsDraw',
+            annotations: [{
+              drawTime: 'afterDraw',
+              type: 'line',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: this.productionGoal * this.goalCount,
+              borderColor: 'red',
+              borderWidth: 2,
+              borderDash: [2, 2],
+              borderDashOffset: 0,
+            }]
+          }
+
+        }
+        else if (data.status == '401') {
+          this._cookieService.put("username", '');
+          this._cookieService.put("email", '');
+          this._cookieService.put("userid", '');
+          this.router.navigateByUrl('/login');
+        }
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }
+
+
+    );
+  }
+
+  public collectionOhtLoader: boolean = true;
+  public collectionOhtData1: any = [];
+  public collectionOhtLabels1: any = [];
+  public collectionOhtTotal: any = 0;
+  public collectionOhtLabels: any = [];
+  public collectionOhtData: any[] = [{
+    ...this.chartService.baseChartData,
+    data: [],
+  }
+  ];
+  public collectionOhtTotalAverage: any = 0;
+  public collectionOhtTotalPrev: any = 0;
+  public collectionOhtTotalGoal: any = 0;
+  public collectionOhtTooltip: string = '';
+
+  private collectionChartOht() {
+    this.collectionOhtLoader = true;
+    this.collectionOhtData1 = [];
+    this.collectionOhtLabels1 = [];
+    this.collectionOhtTotal = 0;
+    this.collectionOhtLabels = [];
+    this.barChartOptionsDP.annotation = [];
+    this.clinic_id && this.cliniciananalysisService.DentistCollectionOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+      this.collectionOhtData1 = [];
+      this.collectionOhtLabels1 = [];
+      this.collectionOhtLabels = [];
+      this.collectionOhtTotal = 0;
+      if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
+        this.collectionOhtLoader = false;
+        this.collectionOhtTooltip = 'down';
+        var i = 0;
+        var selectedDen: any = 0;
+        data.data.forEach(res => {
+
+          // if (res.collection > 0) {
+            this.collectionOhtData1.push(Math.round(res.collection));
+            var name = res.provider_name;
+            if (res.provider_name != null && res.provider_name != 'Anonymous') {
+              this.collectionOhtLabels1.push(res.provider_name);
+              selectedDen = i;
+            } else {
+              this.collectionOhtLabels1.push(res.provider_name);
+            }
+            i++;
+          // }
+        });
+
+        if (this.user_type == '4' && this.childid != '') {
+          this.barChartColors1 = [
+            {
+              backgroundColor: [],
+              hoverBorderColor: '#000'
+            }
+          ];
+          this.barChartColors1[0].backgroundColor[selectedDen] = '#1CA49F';
+          this.DPcolors1 = this.barChartColors1;
+        } else {
+          this.DPcolors1 = this.lineChartColors;
+        }
+
+
+        this.collectionOhtData[0]['data'] = this.collectionOhtData1;
+        const colors = [
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd
+        ]; // this is static array for colors of bars
+
+        let dynamicColors = [];
+        this.collectionOhtLabels1.forEach((label, labelIndex) => {
+          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+        }); // This is dynamic array for colors of bars
+
+
+        this.collectionOhtData[0].backgroundColor = dynamicColors;
+        this.collectionOhtLabels = this.collectionOhtLabels1;
+        this.collectionOhtTotal = Math.round(data.total);
+        this.collectionOhtTotalAverage = Math.round(data.total_average);
+        this.collectionOhtTotalPrev = Math.round(data.total_ta);
+        this.collectionOhtTotalGoal = data.goals;
+
+        if (this.collectionOhtTotal >= this.collectionOhtTotalPrev)
+          this.collectionOhtTooltip = 'up';
+        this.barChartOptionsDP.annotation = [];
+        if (this.goalchecked == 'average') {
+          this.barChartOptionsDP.annotation = {
+            drawTime: 'afterDatasetsDraw',
+            annotations: [{
+              drawTime: 'afterDraw',
+              type: 'line',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: this.collectionOhtTotalAverage,
+              borderColor: '#0e3459',
+              borderWidth: 2,
+              borderDash: [2, 2],
+              borderDashOffset: 0,
+            },
+            ]
+          }
+        }
+        else if (this.goalchecked == 'goal') {
+
+          this.barChartOptionsDP.annotation = {
+            drawTime: 'afterDatasetsDraw',
+            annotations: [{
+              drawTime: 'afterDraw',
+              type: 'line',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: this.productionGoal * this.goalCount,
               borderColor: 'red',
               borderWidth: 2,
               borderDash: [2, 2],
@@ -1680,6 +2266,290 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   }
 
 
+  public collectionExpDentistsLoader: boolean = true;
+  public collectionExpDentistsData1: any = [];
+  public collectionExpDentistsTotalPrev: any = 0;
+  public collectionExpDentistsTooltip: string = '';
+  public collectionLabelsDentistsExp1: any = [];
+  public collectionLabelsDentistsExp: any = [];
+  public collectionExpDentistsData: any[] = [{
+    ...this.chartService.baseChartData,
+    data: [],
+  }
+  ];
+  public collectionExpDentistsTotal: any = 0;
+  public collectionTotalExpDentistsAverage:any= 0;
+  private collectionExpChartDentists() {
+    this.collectionExpDentistsLoader = true;
+    this.collectionExpDentistsData1 = [];
+    this.collectionLabelsDentistsExp1 = [];
+    this.collectionExpDentistsTotal = 0;
+    this.collectionLabelsDentistsExp = [];
+    this.barChartOptionsDP.annotation = [];
+    this.clinic_id && this.cliniciananalysisService.DentistCollectionExpDentists(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+      this.collectionExpDentistsData1 = [];
+      this.collectionLabelsDentistsExp1 = [];
+      this.collectionLabelsDentistsExp = [];
+      this.collectionExpDentistsTotal = 0;
+      if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
+        this.collectionExpDentistsLoader = false;
+        this.collectionExpDentistsTooltip = 'down';
+        var i = 0;
+        var selectedDen: any = 0;
+        data.data.forEach(res => {
+
+          // if (res.collection > 0) {
+            this.collectionExpDentistsData1.push(Math.round(res.collection));
+            var name = res.provider_name;
+            if (res.provider_name != null && res.provider_name != 'Anonymous') {
+              this.collectionLabelsDentistsExp1.push(res.provider_name);
+              selectedDen = i;
+            } else {
+              this.collectionLabelsDentistsExp1.push(res.provider_name);
+            }
+            i++;
+          // }
+        });
+
+        if (this.user_type == '4' && this.childid != '') {
+          this.barChartColors1 = [
+            {
+              backgroundColor: [],
+              hoverBorderColor: '#000'
+            }
+          ];
+          this.barChartColors1[0].backgroundColor[selectedDen] = '#1CA49F';
+          this.DPcolors1 = this.barChartColors1;
+        } else {
+          this.DPcolors1 = this.lineChartColors;
+        }
+
+
+        this.collectionExpDentistsData[0]['data'] = this.collectionExpDentistsData1;
+        const colors = [
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd
+        ]; // this is static array for colors of bars
+
+        let dynamicColors = [];
+        this.collectionLabelsDentistsExp1.forEach((label, labelIndex) => {
+          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+        }); // This is dynamic array for colors of bars
+
+
+        this.collectionExpDentistsData[0].backgroundColor = dynamicColors;
+        this.collectionLabelsDentistsExp = this.collectionLabelsDentistsExp1;
+        this.collectionExpDentistsTotal = Math.round(data.total);
+        this.collectionTotalExpDentistsAverage = Math.round(data.total_average);
+        this.collectionExpDentistsTotalPrev = Math.round(data.total_ta);
+        this.collectionTotalExpGoal = data.goals;
+
+        if (this.collectionExpDentistsTotal >= this.collectionExpDentistsTotalPrev)
+          this.collectionExpDentistsTooltip = 'up';
+        this.barChartOptionsDP.annotation = [];
+        if (this.goalchecked == 'average') {
+          this.barChartOptionsDP.annotation = {
+            drawTime: 'afterDatasetsDraw',
+            annotations: [{
+              drawTime: 'afterDraw',
+              type: 'line',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: this.collectionTotalExpDentistsAverage,
+              borderColor: '#0e3459',
+              borderWidth: 2,
+              borderDash: [2, 2],
+              borderDashOffset: 0,
+            },
+            ]
+          }
+        }
+        else if (this.goalchecked == 'goal') {
+
+          this.barChartOptionsDP.annotation = {
+            drawTime: 'afterDatasetsDraw',
+            annotations: [{
+              drawTime: 'afterDraw',
+              type: 'line',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: this.collectionTotalExpGoal * this.goalCount,
+              borderColor: 'red',
+              borderWidth: 2,
+              borderDash: [2, 2],
+              borderDashOffset: 0,
+            }]
+          }
+
+        }
+        else if (data.status == '401') {
+          this._cookieService.put("username", '');
+          this._cookieService.put("email", '');
+          this._cookieService.put("userid", '');
+          this.router.navigateByUrl('/login');
+        }
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }
+
+
+    );
+  }
+
+
+  public collectionExpOhtLoader: boolean = true;
+  public collectionExpOhtData1: any = [];
+  public collectionExpOhtTotalPrev: any = 0;
+  public collectionExpOhtTooltip: string = '';
+  public collectionLabelsOhtExp1: any = [];
+  public collectionLabelsOhtExp: any = [];
+  public collectionExpOhtData: any[] = [{
+    ...this.chartService.baseChartData,
+    data: [],
+  }
+  ];
+  public collectionExpOhtTotal: any = 0;
+  public collectionTotalExpOhtAverage:any= 0;
+  private collectionExpChartOht() {
+    this.collectionExpOhtLoader = true;
+    this.collectionExpOhtData1 = [];
+    this.collectionLabelsOhtExp1 = [];
+    this.collectionExpOhtTotal = 0;
+    this.collectionLabelsOhtExp = [];
+    this.barChartOptionsDP.annotation = [];
+    this.clinic_id && this.cliniciananalysisService.DentistCollectionExpOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+      this.collectionExpOhtData1 = [];
+      this.collectionLabelsOhtExp1 = [];
+      this.collectionLabelsOhtExp = [];
+      this.collectionExpOhtTotal = 0;
+      if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
+        this.collectionExpOhtLoader = false;
+        this.collectionExpOhtTooltip = 'down';
+        var i = 0;
+        var selectedDen: any = 0;
+        data.data.forEach(res => {
+
+          // if (res.collection > 0) {
+            this.collectionExpOhtData1.push(Math.round(res.collection));
+            var name = res.provider_name;
+            if (res.provider_name != null && res.provider_name != 'Anonymous') {
+              this.collectionLabelsOhtExp1.push(res.provider_name);
+              selectedDen = i;
+            } else {
+              this.collectionLabelsOhtExp1.push(res.provider_name);
+            }
+            i++;
+          // }
+        });
+
+        if (this.user_type == '4' && this.childid != '') {
+          this.barChartColors1 = [
+            {
+              backgroundColor: [],
+              hoverBorderColor: '#000'
+            }
+          ];
+          this.barChartColors1[0].backgroundColor[selectedDen] = '#1CA49F';
+          this.DPcolors1 = this.barChartColors1;
+        } else {
+          this.DPcolors1 = this.lineChartColors;
+        }
+
+
+        this.collectionExpOhtData[0]['data'] = this.collectionExpOhtData1;
+        const colors = [
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd
+        ]; // this is static array for colors of bars
+
+        let dynamicColors = [];
+        this.collectionLabelsOhtExp1.forEach((label, labelIndex) => {
+          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+        }); // This is dynamic array for colors of bars
+
+
+        this.collectionExpOhtData[0].backgroundColor = dynamicColors;
+        this.collectionLabelsOhtExp = this.collectionLabelsOhtExp1;
+        this.collectionExpOhtTotal = Math.round(data.total);
+        this.collectionTotalExpOhtAverage = Math.round(data.total_average);
+        this.collectionExpOhtTotalPrev = Math.round(data.total_ta);
+        this.collectionTotalGoal = data.goals;
+
+        if (this.collectionExpOhtTotal >= this.collectionExpOhtTotalPrev)
+          this.collectionExpOhtTooltip = 'up';
+        this.barChartOptionsDP.annotation = [];
+        if (this.goalchecked == 'average') {
+          this.barChartOptionsDP.annotation = {
+            drawTime: 'afterDatasetsDraw',
+            annotations: [{
+              drawTime: 'afterDraw',
+              type: 'line',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: this.collectionTotalExpOhtAverage,
+              borderColor: '#0e3459',
+              borderWidth: 2,
+              borderDash: [2, 2],
+              borderDashOffset: 0,
+            },
+            ]
+          }
+        }
+        else if (this.goalchecked == 'goal') {
+
+          this.barChartOptionsDP.annotation = {
+            drawTime: 'afterDatasetsDraw',
+            annotations: [{
+              drawTime: 'afterDraw',
+              type: 'line',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: this.productionGoal * this.goalCount,
+              borderColor: 'red',
+              borderWidth: 2,
+              borderDash: [2, 2],
+              borderDashOffset: 0,
+            }]
+          }
+
+        }
+        else if (data.status == '401') {
+          this._cookieService.put("username", '');
+          this._cookieService.put("email", '');
+          this._cookieService.put("userid", '');
+          this.router.navigateByUrl('/login');
+        }
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }
+
+
+    );
+  }
+
+
 
 
 
@@ -1722,6 +2592,124 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
           if (this.maxProductionGoal == 0)
             this.maxProductionGoal = '';
+        }
+      } else if (data.status == '401') {
+        this._cookieService.put("username", '');
+        this._cookieService.put("email", '');
+        this._cookieService.put("userid", '');
+        this.router.navigateByUrl('/login');
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });
+  }
+
+  public buildChartsingleDentistLoader: boolean;
+  public maxProductionSingleDentistGoal: any = 0;
+  public gaugeSingleDentistLabel: any = '';
+  public gaugeSingleDentistValue: any = 0;
+  public productionSingleDentistTotal: any = 0;
+  public productionSingleDentistTotalPrev: any = 0;
+  public productionSingleDentistGoal: any = 0;
+  //Individual Dentist Production Chart
+  private buildChartSingleDentist() {
+    this.buildChartsingleDentistLoader = true;
+    this.gaugeSingleDentistLabel = '';
+    this.productionTooltip = 'down';
+    this.clinic_id && this.cliniciananalysisService.DentistProductionDentistSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+      this.productionSingleDentistTotal = 0;
+      this.productionSingleDentistTotalPrev = 0;
+      this.productionTotalAverage = 0;
+      this.maxProductionSingleDentistGoal = 0;
+      if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
+        this.buildChartsingleDentistLoader = false;
+        this.gaugeSingleDentistValue = 0;
+        if (data.data != null) {
+          data.data.forEach((res) => {
+            if (res.production)
+              this.gaugeSingleDentistValue = Math.round(res.production);
+
+            this.gaugeSingleDentistLabel = res.provider_name;
+            this.gaugeSingleDentistLabel = res.provider_name;
+          });
+          this.productionSingleDentistTotal = Math.round(data.total);
+          this.productionSingleDentistTotalPrev = Math.round(data.total_ta);
+          this.productionTotalAverage = Math.round(data.total_average);
+          this.productionSingleDentistGoal = data.goals;
+          if (this.productionSingleDentistTotal > this.productionSingleDentistTotalPrev) {
+            this.productionTooltip = 'up';
+          }
+          if (this.gaugeSingleDentistValue > this.productionSingleDentistGoal)
+            this.maxProductionSingleDentistGoal = this.gaugeSingleDentistValue;
+          else
+            this.maxProductionSingleDentistGoal = this.productionSingleDentistGoal;
+
+          if (this.maxProductionSingleDentistGoal == 0)
+            this.maxProductionSingleDentistGoal = '';
+        }
+      } else if (data.status == '401') {
+        this._cookieService.put("username", '');
+        this._cookieService.put("email", '');
+        this._cookieService.put("userid", '');
+        this.router.navigateByUrl('/login');
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });
+  }
+
+  public buildChartsingleOhtLoader: boolean;
+  public maxProductionSingleOhtGoal: any = 0;
+  public gaugeSingleOhtLabel: any = '';
+  public gaugeSingleOhtValue: any = 0;
+  public productionSingleOhtTotal: any = 0;
+  public productionSingleOhtTotalPrev: any = 0;
+  public productionSingleOhtGoal: any = 0;
+  //Individual Dentist Production Chart
+  private buildChartSingleOht() {
+    this.buildChartsingleOhtLoader = true;
+    this.gaugeSingleOhtLabel = '';
+    this.productionTooltip = 'down';
+    this.clinic_id && this.cliniciananalysisService.DentistProductionOhtSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+      this.productionSingleOhtTotal = 0;
+      this.productionSingleOhtTotalPrev = 0;
+      this.productionTotalAverage = 0;
+      this.maxProductionSingleOhtGoal = 0;
+      if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
+        this.buildChartsingleOhtLoader = false;
+        this.gaugeSingleOhtValue = 0;
+        if (data.data != null) {
+          data.data.forEach((res) => {
+            if (res.production)
+              this.gaugeSingleOhtValue = Math.round(res.production);
+
+            this.gaugeSingleOhtLabel = res.provider_name;
+            this.gaugeSingleOhtLabel = res.provider_name;
+          });
+          this.productionSingleOhtTotal = Math.round(data.total);
+          this.productionSingleOhtTotalPrev = Math.round(data.total_ta);
+          this.productionTotalAverage = Math.round(data.total_average);
+          this.productionSingleOhtGoal = data.goals;
+          if (this.productionSingleOhtTotal > this.productionSingleOhtTotalPrev) {
+            this.productionTooltip = 'up';
+          }
+          if (this.gaugeSingleOhtValue > this.productionSingleOhtGoal)
+            this.maxProductionSingleOhtGoal = this.gaugeSingleOhtValue;
+          else
+            this.maxProductionSingleOhtGoal = this.productionSingleOhtGoal;
+
+          if (this.maxProductionSingleOhtGoal == 0)
+            this.maxProductionSingleOhtGoal = '';
         }
       } else if (data.status == '401') {
         this._cookieService.put("username", '');
@@ -1798,6 +2786,124 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  public collectionSingleDentistLoader: boolean = true;
+  public gaugeCollectionSingleDentistLabel: any = '';
+  public gaugeCollectionSingleDentistValue: any = 0;
+  public collectionSingleDentistTotal: any = 0;
+  public collectionSingleDentistTotalPrev: any = 0;
+  public dentistCollectionSingleDentistGoal: any = 0;
+  public maxCollectionSingleDentistGoal: any = 0;
+
+
+  private collectionSingleDentist() {
+    this.collectionSingleDentistLoader = true;
+    this.gaugeCollectionSingleDentistLabel = '';
+    this.collectionTooltip = 'down';
+    this.clinic_id && this.cliniciananalysisService.DentistCollectionDentistsSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+      this.collectionSingleDentistTotal = 0;
+      this.collectionSingleDentistTotalPrev = 0;
+      this.productionTotalAverage = 0;
+      this.maxCollectionSingleDentistGoal = 0;
+      this.gaugeCollectionSingleDentistValue = 0;
+      this.collectionSingleDentistLoader = false;
+      if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
+        if (data.data != null) {
+          data.data.forEach((res) => {
+            if (res.collection)
+              this.gaugeCollectionSingleDentistValue = Math.round(res.collection);
+
+            this.gaugeCollectionSingleDentistLabel = res.provider_name;
+          });
+          this.collectionSingleDentistTotal = Math.round(data.total);
+          this.collectionSingleDentistTotalPrev = Math.round(data.total_ta);
+          this.productionTotalAverage = Math.round(data.total_average);
+          this.dentistCollectionSingleDentistGoal = data.goals;
+          if (this.productionTotal > this.productionTotalPrev) {
+            this.collectionTooltip = 'up';
+          }
+          if (this.gaugeCollectionSingleDentistValue > this.dentistCollectionSingleDentistGoal)
+            this.maxCollectionSingleDentistGoal = this.gaugeValue;
+          else
+            this.maxCollectionSingleDentistGoal = this.dentistCollectionSingleDentistGoal;
+
+          if (this.maxCollectionSingleDentistGoal == 0)
+            this.maxCollectionSingleDentistGoal = '';
+        }
+      } else if (data.status == '401') {
+        this._cookieService.put("username", '');
+        this._cookieService.put("email", '');
+        this._cookieService.put("userid", '');
+        this.router.navigateByUrl('/login');
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });
+  }
+
+  public collectionSingleOhtLoader: boolean = true;
+  public gaugeCollectionSingleOhtLabel: any = '';
+  public gaugeCollectionSingleOhtValue: any = 0;
+  public collectionSingleOhtTotal: any = 0;
+  public collectionSingleOhtTotalPrev: any = 0;
+  public dentistCollectionSingleOhtGoal: any = 0;
+  public maxCollectionSingleOhtGoal: any = 0;
+
+
+  private collectionSingleOht() {
+    this.collectionSingleOhtLoader = true;
+    this.gaugeCollectionSingleOhtLabel = '';
+    this.collectionTooltip = 'down';
+    this.clinic_id && this.cliniciananalysisService.DentistCollectionOhtSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+      this.collectionSingleOhtTotal = 0;
+      this.collectionSingleOhtTotalPrev = 0;
+      this.productionTotalAverage = 0;
+      this.maxCollectionSingleOhtGoal = 0;
+      this.gaugeCollectionSingleOhtValue = 0;
+      this.collectionSingleOhtLoader = false;
+      if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
+        if (data.data != null) {
+          data.data.forEach((res) => {
+            if (res.collection)
+              this.gaugeCollectionSingleOhtValue = Math.round(res.collection);
+
+            this.gaugeCollectionSingleOhtLabel = res.provider_name;
+          });
+          this.collectionSingleOhtTotal = Math.round(data.total);
+          this.collectionSingleOhtTotalPrev = Math.round(data.total_ta);
+          this.productionTotalAverage = Math.round(data.total_average);
+          this.dentistCollectionSingleOhtGoal = data.goals;
+          if (this.productionTotal > this.productionTotalPrev) {
+            this.collectionTooltip = 'up';
+          }
+          if (this.gaugeCollectionSingleOhtValue > this.dentistCollectionSingleOhtGoal)
+            this.maxCollectionSingleOhtGoal = this.gaugeValue;
+          else
+            this.maxCollectionSingleOhtGoal = this.dentistCollectionSingleOhtGoal;
+
+          if (this.maxCollectionSingleOhtGoal == 0)
+            this.maxCollectionSingleOhtGoal = '';
+        }
+      } else if (data.status == '401') {
+        this._cookieService.put("username", '');
+        this._cookieService.put("email", '');
+        this._cookieService.put("userid", '');
+        this.router.navigateByUrl('/login');
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });
+  }
+
     // Dentist collection exp data
     public collectionExpDentistLoader: boolean = true;
     public gaugeCollectionExpLabel: any = '';
@@ -1843,6 +2949,124 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   
             if (this.maxCollectionExpGoal == 0)
               this.maxCollectionExpGoal = '';
+          }
+        } else if (data.status == '401') {
+          this._cookieService.put("username", '');
+          this._cookieService.put("email", '');
+          this._cookieService.put("userid", '');
+          this.router.navigateByUrl('/login');
+        }
+      }, error => {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
+        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+        this.warningMessage = "Please Provide Valid Inputs!";
+      });
+    }
+
+    public collectionExpSingleDentistLoader: boolean = true;
+    public gaugeCollectionExpSingleDentistLabel: any = '';
+    public gaugeCollectionExpSingleDentistValue: any = 0;
+    public collectionExpSingleDentistTotal: any = 0;
+    public collectionExpSingleDentistTotalPrev: any = 0;
+    public dentistCollectionExpSingleDentistGoal: any = 0;
+    public maxCollectionExpSingleDentistGoal: any = 0;
+  
+  
+    private collectionExpSingleDentist() {
+      this.collectionExpSingleDentistLoader = true;
+      this.gaugeCollectionExpSingleDentistLabel = '';
+      this.collectionTooltip = 'down';
+      this.clinic_id && this.cliniciananalysisService.DentistCollectionExpDentistsSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+        this.collectionExpSingleDentistTotal = 0;
+        this.collectionExpSingleDentistTotalPrev = 0;
+        this.productionTotalAverage = 0;
+        this.maxCollectionExpSingleDentistGoal = 0;
+        this.gaugeCollectionExpSingleDentistValue = 0;
+        this.collectionExpSingleDentistLoader = false;
+        if (data.message == 'success') {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (data.data != null) {
+            data.data.forEach((res) => {
+              if (res.collection)
+                this.gaugeCollectionExpSingleDentistValue = Math.round(res.collection);
+  
+              this.gaugeCollectionExpSingleDentistLabel = res.provider_name;
+            });
+            this.collectionExpSingleDentistTotal = Math.round(data.total);
+            this.collectionExpSingleDentistTotalPrev = Math.round(data.total_ta);
+            this.productionTotalAverage = Math.round(data.total_average);
+            this.dentistCollectionExpSingleDentistGoal = data.goals;
+            if (this.productionTotal > this.productionTotalPrev) {
+              this.collectionTooltip = 'up';
+            }
+            if (this.gaugeCollectionExpSingleDentistValue > this.dentistCollectionExpSingleDentistGoal)
+              this.maxCollectionExpSingleDentistGoal = this.gaugeValue;
+            else
+              this.maxCollectionExpSingleDentistGoal = this.dentistCollectionExpSingleDentistGoal;
+  
+            if (this.maxCollectionExpSingleDentistGoal == 0)
+              this.maxCollectionExpSingleDentistGoal = '';
+          }
+        } else if (data.status == '401') {
+          this._cookieService.put("username", '');
+          this._cookieService.put("email", '');
+          this._cookieService.put("userid", '');
+          this.router.navigateByUrl('/login');
+        }
+      }, error => {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
+        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+        this.warningMessage = "Please Provide Valid Inputs!";
+      });
+    }
+
+    public collectionExpSingleOhtLoader: boolean = true;
+    public gaugeCollectionExpSingleOhtLabel: any = '';
+    public gaugeCollectionExpSingleOhtValue: any = 0;
+    public collectionExpSingleOhtTotal: any = 0;
+    public collectionExpSingleOhtTotalPrev: any = 0;
+    public dentistCollectionExpSingleOhtGoal: any = 0;
+    public maxCollectionExpSingleOhtGoal: any = 0;
+  
+  
+    private collectionExpSingleOht() {
+      this.collectionExpSingleOhtLoader = true;
+      this.gaugeCollectionExpSingleOhtLabel = '';
+      this.collectionTooltip = 'down';
+      this.clinic_id && this.cliniciananalysisService.DentistCollectionExpOhtSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+        this.collectionExpSingleOhtTotal = 0;
+        this.collectionExpSingleOhtTotalPrev = 0;
+        this.productionTotalAverage = 0;
+        this.maxCollectionExpSingleOhtGoal = 0;
+        this.gaugeCollectionExpSingleOhtValue = 0;
+        this.collectionExpSingleOhtLoader = false;
+        if (data.message == 'success') {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (data.data != null) {
+            data.data.forEach((res) => {
+              if (res.collection)
+                this.gaugeCollectionExpSingleOhtValue = Math.round(res.collection);
+  
+              this.gaugeCollectionExpSingleOhtLabel = res.provider_name;
+            });
+            this.collectionExpSingleOhtTotal = Math.round(data.total);
+            this.collectionExpSingleOhtTotalPrev = Math.round(data.total_ta);
+            this.productionTotalAverage = Math.round(data.total_average);
+            this.dentistCollectionExpSingleOhtGoal = data.goals;
+            if (this.productionTotal > this.productionTotalPrev) {
+              this.collectionTooltip = 'up';
+            }
+            if (this.gaugeCollectionExpSingleOhtValue > this.dentistCollectionExpSingleOhtGoal)
+              this.maxCollectionExpSingleOhtGoal = this.gaugeValue;
+            else
+              this.maxCollectionExpSingleOhtGoal = this.dentistCollectionExpSingleOhtGoal;
+  
+            if (this.maxCollectionExpSingleOhtGoal == 0)
+              this.maxCollectionExpSingleOhtGoal = '';
           }
         } else if (data.status == '401') {
           this._cookieService.put("username", '');
@@ -3008,6 +4232,247 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     );
   }
 
+  public hourlyRateChartDentistsData: any[] = [
+    {
+      ...this.chartService.baseChartData,
+      data: [],
+    }
+  ];
+  public hourlyRateChartDesntistsData1: any[] = [];
+  public hourlyRateChartDesntistsLabels1 = [];
+  public hourlyRateChartDesntistsAverage;
+  public hourlyRateChartDesntistsAveragePrev;
+  public hourlyRateChartDesntistsTooltip = 'down';
+  public hourlyRateChartDentistsLoader: any;
+  public hourlyRateChartDesntistsLabels :any;
+  //All dentist Hourly ratechart
+  private hourlyRateChartDesntists() {
+    this.hourlyRateChartDentistsLoader = true;
+    this.hourlyRateChartDesntistsData1 = [];
+    this.hourlyRateChartDesntistsLabels1 = [];
+
+    this.hourlyRateChartDesntistsLabels = [];
+    this.barChartOptionsHR.annotation = [];
+    this.clinic_id && this.cliniciananalysisService.hourlyRateChartDesntists(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+      this.hourlyRateChartDesntistsData1 = [];
+      this.hourlyRateChartDesntistsLabels1 = [];
+
+      this.hourlyRateChartDesntistsLabels = [];
+      this.barChartOptionsHR.annotation = [];
+      if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+        this.hourlyRateChartDentistsLoader = false;
+        this.hourlyRateChartDesntistsTooltip = 'down';
+        var i = 0;
+        data.data.forEach(res => {
+          if (res.hourly_rate > 0) {
+            this.hourlyRateChartDesntistsData1.push(Math.round(res.hourly_rate));
+            if (res.provider_name != null && res.provider_name != 'Anonymous') {
+              if (res.provider_name.includes(',')) {
+                let namet: any = res.provider_name.split(',');
+                var name: any = namet[1] + " " + namet[0];
+              } else {
+                var name: any = res.provider_name;
+              }
+              this.hourlyRateChartDesntistsLabels1.push(name);
+              this.hrKey = i;
+            }
+            else
+              this.hourlyRateChartDesntistsLabels1.push(res.provider_name);
+            i++;
+          }
+
+        });
+
+        this.hourlyRateChartDentistsData[0]['data'] = this.hourlyRateChartDesntistsData1;
+        this.hourlyRateChartDesntistsLabels = this.hourlyRateChartDesntistsLabels1;
+        this.hourlyRateChartDesntistsAverage = Math.round(data.total);
+        this.hourlyRateChartDesntistsAveragePrev = Math.round(data.total_ta);
+        this.hourlyRateChartGoal = data.goals;
+        if (this.user_type == '4' && this.childid != '') {
+          this.barChartColors = [
+            { backgroundColor: [] }
+          ];
+          this.barChartColors[0].backgroundColor[this.hrKey] = '#1CA49F';
+          this.HRcolors = this.barChartColors;
+        }
+        else {
+          this.HRcolors = this.lineChartColors;
+          let dynamicColors = [];
+          this.hourlyRateChartDesntistsLabels.forEach((label, labelIndex) => {
+            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+          }); // This is dynamic array for colors of bars        
+          this.hourlyRateChartDentistsData[0].backgroundColor = dynamicColors;
+        }
+
+        if (this.hourlyRateChartDesntistsAverage >= this.hourlyRateChartDesntistsAveragePrev)
+          this.hourlyRateChartDesntistsTooltip = 'up';
+
+
+        if (this.goalchecked == 'average') {
+          this.barChartOptionsHR.annotation = {
+            annotations: [{
+              type: 'line',
+              drawTime: 'afterDatasetsDraw',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: this.hourlyRateChartDesntistsAverage,
+              borderColor: '#0e3459',
+              borderWidth: 2,
+              borderDash: [2, 2],
+              borderDashOffset: 0,
+            },
+            ]
+          }
+        }
+        else if (this.goalchecked == 'goal') {
+          this.barChartOptionsHR.annotation = {
+            annotations: [{
+              type: 'line',
+              drawTime: 'afterDatasetsDraw',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: this.hourlyRateChartGoal * this.goalCount,
+              borderColor: 'red',
+              borderWidth: 2,
+              borderDash: [2, 2],
+              borderDashOffset: 0,
+            },
+            ]
+          }
+        }
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }
+    );
+  }
+
+
+  public hourlyRateChartOhtData: any[] = [
+    {
+      ...this.chartService.baseChartData,
+      data: [],
+    }
+  ];
+  public hourlyRateChartOhtLabels1 = [];
+  public hourlyRateChartOhtAverage;
+  public hourlyRateChartOhtAveragePrev;
+  public hourlyRateChartOhtTooltip = 'down';
+  public hourlyRateChartOhtLoader: any;
+  public hourlyRateChartOhtData1: any[] = [];
+  public hourlyRateChartOhtLabels:any;
+  //All dentist Hourly ratechart
+  private hourlyRateChartOht() {
+    this.hourlyRateChartOhtLoader = true;
+    this.hourlyRateChartOhtData1 = [];
+    this.hourlyRateChartOhtLabels1 = [];
+
+    this.hourlyRateChartOhtLabels = [];
+    this.barChartOptionsHR.annotation = [];
+    this.clinic_id && this.cliniciananalysisService.hourlyRateChartOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+      this.hourlyRateChartOhtData1 = [];
+      this.hourlyRateChartOhtLabels1 = [];
+
+      this.hourlyRateChartOhtLabels = [];
+      this.barChartOptionsHR.annotation = [];
+      if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+        this.hourlyRateChartOhtLoader = false;
+        this.hourlyRateChartOhtTooltip = 'down';
+        var i = 0;
+        data.data.forEach(res => {
+          if (res.hourly_rate > 0) {
+            this.hourlyRateChartOhtData1.push(Math.round(res.hourly_rate));
+            if (res.provider_name != null && res.provider_name != 'Anonymous') {
+              if (res.provider_name.includes(',')) {
+                let namet: any = res.provider_name.split(',');
+                var name: any = namet[1] + " " + namet[0];
+              } else {
+                var name: any = res.provider_name;
+              }
+              this.hourlyRateChartOhtLabels1.push(name);
+              this.hrKey = i;
+            }
+            else
+              this.hourlyRateChartOhtLabels1.push(res.provider_name);
+            i++;
+          }
+
+        });
+
+        this.hourlyRateChartOhtData[0]['data'] = this.hourlyRateChartOhtData1;
+        this.hourlyRateChartOhtLabels = this.hourlyRateChartOhtLabels1;
+        this.hourlyRateChartOhtAverage = Math.round(data.total);
+        this.hourlyRateChartOhtAveragePrev = Math.round(data.total_ta);
+        this.hourlyRateChartGoal = data.goals;
+        if (this.user_type == '4' && this.childid != '') {
+          this.barChartColors = [
+            { backgroundColor: [] }
+          ];
+          this.barChartColors[0].backgroundColor[this.hrKey] = '#1CA49F';
+          this.HRcolors = this.barChartColors;
+        }
+        else {
+          this.HRcolors = this.lineChartColors;
+          let dynamicColors = [];
+          this.hourlyRateChartOhtLabels.forEach((label, labelIndex) => {
+            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+          }); // This is dynamic array for colors of bars        
+          this.hourlyRateChartOhtData[0].backgroundColor = dynamicColors;
+        }
+
+        if (this.hourlyRateChartOhtAverage >= this.hourlyRateChartOhtAveragePrev)
+          this.hourlyRateChartOhtTooltip = 'up';
+
+
+        if (this.goalchecked == 'average') {
+          this.barChartOptionsHR.annotation = {
+            annotations: [{
+              type: 'line',
+              drawTime: 'afterDatasetsDraw',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: this.hourlyRateChartOhtAverage,
+              borderColor: '#0e3459',
+              borderWidth: 2,
+              borderDash: [2, 2],
+              borderDashOffset: 0,
+            },
+            ]
+          }
+        }
+        else if (this.goalchecked == 'goal') {
+          this.barChartOptionsHR.annotation = {
+            annotations: [{
+              type: 'line',
+              drawTime: 'afterDatasetsDraw',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: this.hourlyRateChartGoal * this.goalCount,
+              borderColor: 'red',
+              borderWidth: 2,
+              borderDash: [2, 2],
+              borderDashOffset: 0,
+            },
+            ]
+          }
+        }
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }
+    );
+  }
+
 
   public hourlyValue: any = 0;
   public hourlyLabel = '';
@@ -3065,6 +4530,122 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     }
     );
   }
+
+  public hourlyValueSingleDentists: any = 0;
+  public hourlyLabelSingleDentists = '';
+  public hourlyGoalSingleDentists;
+  public hourlyRateSingleDentistsLoader: any;
+  public maxhourlyGoalSingleDentists: any = 0;
+  //Individual Dentist Hourly Rate chart
+  private hourlyRateSingleDentists() {
+    this.hourlyRateSingleDentistsLoader = true;
+    this.hourlyRateChartAveragePrev = 0;
+    this.hourlyRateChartAverage = 0;
+    this.hourlyRateChartTooltip = 'down';
+    this.hourlyLabelSingleDentists = '';
+    this.clinic_id && this.cliniciananalysisService.hourlyRateDentistsSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+      this.hourlyValueSingleDentists = '0';
+      if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+        this.hourlyRateSingleDentistsLoader = false;
+        this.hourlyValueSingleDentists = '0';
+        if (data.data.length > 0) {
+          this.hourlyValueSingleDentists = Math.round(data.data[0].hourly_rate);
+          var name = data.data[0].provider_name;
+          if (name != null && name != '') {
+            name = name.split(')');
+            if (name.length > 0 && name[1] != undefined) {
+              name = name[1].split(',');
+              if (name.length > 0)
+                name = name[1] + " " + name[0];
+            }
+            this.hourlyLabelSingleDentists = name;
+          }
+          else
+            this.hourlyLabelSingleDentists = data.data[0].provider;
+
+        }
+        this.hourlyGoalSingleDentists = data.goals;
+        this.hourlyRateChartAveragePrev = data.total_ta;
+        this.hourlyRateChartAverage = data.total;
+        if (this.hourlyValueSingleDentists >= this.hourlyRateChartAveragePrev)
+          this.hourlyRateChartTooltip = 'up';
+        if (this.hourlyValueSingleDentists > this.hourlyGoalSingleDentists)
+          this.maxhourlyGoalSingleDentists = this.hourlyValueSingleDentists;
+        else
+          this.maxhourlyGoalSingleDentists = this.hourlyGoalSingleDentists;
+
+        if (this.maxhourlyGoalSingleDentists == 0)
+          this.maxhourlyGoalSingleDentists = '';
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }
+    );
+  }
+
+
+  public hourlyValueSingleOht: any = 0;
+  public hourlyLabelSingleOht = '';
+  public hourlyGoalSingleOht;
+  public hourlyRateSingleOhtLoader: any;
+  public maxhourlyGoalSingleOht: any = 0;
+  //Individual Dentist Hourly Rate chart
+  private hourlyRateSingleOht() {
+    this.hourlyRateSingleOhtLoader = true;
+    this.hourlyRateChartAveragePrev = 0;
+    this.hourlyRateChartAverage = 0;
+    this.hourlyRateChartTooltip = 'down';
+    this.hourlyLabelSingleOht = '';
+    this.clinic_id && this.cliniciananalysisService.hourlyRateOhtSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+      this.hourlyValueSingleOht = '0';
+      if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+        this.hourlyRateSingleOhtLoader = false;
+        this.hourlyValueSingleOht = '0';
+        if (data.data.length > 0) {
+          this.hourlyValueSingleOht = Math.round(data.data[0].hourly_rate);
+          var name = data.data[0].provider_name;
+          if (name != null && name != '') {
+            name = name.split(')');
+            if (name.length > 0 && name[1] != undefined) {
+              name = name[1].split(',');
+              if (name.length > 0)
+                name = name[1] + " " + name[0];
+            }
+            this.hourlyLabelSingleOht = name;
+          }
+          else
+            this.hourlyLabelSingleOht = data.data[0].provider;
+
+        }
+        this.hourlyGoalSingleOht = data.goals;
+        this.hourlyRateChartAveragePrev = data.total_ta;
+        this.hourlyRateChartAverage = data.total;
+        if (this.hourlyValueSingleOht >= this.hourlyRateChartAveragePrev)
+          this.hourlyRateChartTooltip = 'up';
+        if (this.hourlyValueSingleOht > this.hourlyGoalSingleOht)
+          this.maxhourlyGoalSingleOht = this.hourlyValueSingleOht;
+        else
+          this.maxhourlyGoalSingleOht = this.hourlyGoalSingleOht;
+
+        if (this.maxhourlyGoalSingleOht == 0)
+          this.maxhourlyGoalSingleOht = '';
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }
+    );
+  }
+
 
 
   // Get Dentist
@@ -3552,6 +5133,159 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     });
   }
+
+  public dentistProdDentistsTrend: any[] = [
+    {
+      data: [], label: '', shadowOffsetX: 3
+      
+    }];
+  public dentistProductionWeeklyDentistsTrend = [];
+  public dentistProductionWeeklyTrendDentistsLabels = [];
+  public dentistProductionDentistsTrend1 = [];
+  public dentistProductionTrendDentistsLabels = [];
+  public dentistProductionTrendDentistsLabels1 = [];
+  public dentistProductionTrendDentistsLoader: boolean;
+  //Trend mode for dentist Production
+  private dentistProductionDentistsTrend(mode = null) {
+    this.dentistProductionTrendDentistsLoader = true;
+    var user_id;
+    var clinic_id;
+    if (!mode) {
+      mode = this.trendValue
+    }
+
+    this.clinic_id && this.cliniciananalysisService.caDentistProtectionDentistsTrend(this.selectedDentist, this.clinic_id, mode).subscribe((data: any) => {
+      this.dentistProductionTrendDentistsLabels1 = [];
+      this.dentistProductionDentistsTrend1 = [];
+      this.dentistProductionTrendDentistsLabels = [];
+      this.dentistProductionTrendDentistsLabels = [];
+      this.dentistProductionWeeklyDentistsTrend = [];
+      this.dentistProductionWeeklyTrendDentistsLabels = [];
+      let dynamicColors = [];
+      if (data && data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+
+        if (data.data.total > 0) {
+          data.data.data.forEach(res => {
+            // if (res.production > 0) {
+              this.dentistProductionDentistsTrend1.push(Math.round(res.production));
+              if (mode == 'c') {
+                this.dentistProductionTrendDentistsLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+              } else if (mode == 'w') {
+                this.dentistProductionTrendDentistsLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
+              }
+              else {
+                this.dentistProductionTrendDentistsLabels1.push(res.year);
+              }
+            // }
+          });
+          if (this.dentistProductionDentistsTrend1.every((value) => value == 0)) this.dentistProductionDentistsTrend1 = [];
+          this.dentistProdDentistsTrend[0]['data'] = this.dentistProductionDentistsTrend1;
+
+          this.dentistProductionTrendDentistsLabels1.forEach((label, labelIndex) => {
+            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+          }); // This is dynamic array for colors of bars        
+          this.dentistProdDentistsTrend[0].backgroundColor = dynamicColors;
+
+          this.dentistProductionTrendDentistsLabels = this.dentistProductionTrendDentistsLabels1;
+          if (this.dentistProductionTrendDentistsLabels.length <= 0) {
+            this.gaugeValue = '0';
+          }
+          if (mode == 'w') {
+            this.dentistProductionWeeklyDentistsTrend =  data.data.data;
+            this.dentistProductionWeeklyTrendDentistsLabels = this.dentistProductionTrendDentistsLabels;
+          }
+        } else {
+          this.dentistProductionTrendDentistsLabels = [];
+        }
+        this.dentistProductionTrendDentistsLoader = false;
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+
+    });
+  }
+
+  public dentistProdOhtTrend: any[] = [
+    {
+      data: [], label: '', shadowOffsetX: 3
+      
+    }];
+  public dentistProductionWeeklyOhtTrend = [];
+  public dentistProductionWeeklyTrendOhtLabels = [];
+  public dentistProductionOhtTrend1 = [];
+  public dentistProductionTrendOhtLabels = [];
+  public dentistProductionTrendOhtLabels1 = [];
+  public dentistProductionTrendOhtLoader: boolean;
+  //Trend mode for dentist Production
+  private dentistProductionOhtTrend(mode = null) {
+    this.dentistProductionTrendOhtLoader = true;
+    var user_id;
+    var clinic_id;
+    if (!mode) {
+      mode = this.trendValue
+    }
+
+    this.clinic_id && this.cliniciananalysisService.caDentistProtectionOhtTrend(this.selectedDentist, this.clinic_id, mode).subscribe((data: any) => {
+      this.dentistProductionTrendOhtLabels1 = [];
+      this.dentistProductionOhtTrend1 = [];
+      this.dentistProductionTrendOhtLabels = [];
+      this.dentistProductionTrendOhtLabels = [];
+      this.dentistProductionWeeklyOhtTrend = [];
+      this.dentistProductionWeeklyTrendOhtLabels = [];
+      let dynamicColors = [];
+      if (data && data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+
+        if (data.data.total > 0) {
+          data.data.data.forEach(res => {
+            // if (res.production > 0) {
+              this.dentistProductionOhtTrend1.push(Math.round(res.production));
+              if (mode == 'c') {
+                this.dentistProductionTrendOhtLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+              } else if (mode == 'w') {
+                this.dentistProductionTrendOhtLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
+              }
+              else {
+                this.dentistProductionTrendOhtLabels1.push(res.year);
+              }
+            // }
+          });
+          if (this.dentistProductionOhtTrend1.every((value) => value == 0)) this.dentistProductionOhtTrend1 = [];
+          this.dentistProdOhtTrend[0]['data'] = this.dentistProductionOhtTrend1;
+
+          this.dentistProductionTrendOhtLabels1.forEach((label, labelIndex) => {
+            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+          }); // This is dynamic array for colors of bars        
+          this.dentistProdOhtTrend[0].backgroundColor = dynamicColors;
+
+          this.dentistProductionTrendOhtLabels = this.dentistProductionTrendOhtLabels1;
+          if (this.dentistProductionTrendOhtLabels.length <= 0) {
+            this.gaugeValue = '0';
+          }
+          if (mode == 'w') {
+            this.dentistProductionWeeklyOhtTrend =  data.data.data;
+            this.dentistProductionWeeklyTrendOhtLabels = this.dentistProductionTrendOhtLabels;
+          }
+        } else {
+          this.dentistProductionTrendOhtLabels = [];
+        }
+        this.dentistProductionTrendOhtLoader = false;
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+
+    });
+  }
+
   // Collection Trend mode 
   public dentistCollectionTrend1: any = [];
   public dentistCollectionWeeklyTrend1: any = [];
@@ -3660,6 +5394,144 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  public dentistColDentistsTrend: any[] = [
+    {
+      data: [], label: '', shadowOffsetX: 3
+    }];
+  public dentistCollectionDentistsTrend1: any = [];
+  public dentistCollectionWeeklyDentistsTrend1: any = [];
+  public dentistCollectionDentistsTrendLabels: any = [];
+  public dentistCollectionWeeklyDentistsTrendLabels: any = [];
+  public dentistCollectionDentistsTrendLoader: boolean = true;
+  public dentistColleTrendDentistsLabels1: any = [];
+  public dentistColleWeeklyTrendDentistsLabels1: any = [];
+
+  private dentistCollectionDentistsTrend(mode = null) {
+    let activeMode = this.trendValue;
+    if (mode) {
+      activeMode = mode;
+    }
+    this.dentistCollectionDentistsTrendLoader = true;
+    this.clinic_id && this.cliniciananalysisService.caDentistCollectionDentistsTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((data: any) => {
+      this.dentistColleTrendDentistsLabels1 = [];
+      this.dentistColleWeeklyTrendDentistsLabels1 = [];
+      this.dentistCollectionDentistsTrend1 = [];
+      this.dentistCollectionWeeklyDentistsTrend1 = [];
+      this.dentistCollectionDentistsTrendLabels = [];
+      this.dentistCollectionWeeklyDentistsTrendLabels = [];
+
+      let dynamicColors = [];
+      if (data && data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+        if (data.data) {
+          data.data.forEach(res => {
+            // if (res.collection > 0) {
+              this.dentistCollectionDentistsTrend1.push(Math.round(res.collection));
+              if (activeMode == 'c') {
+                this.dentistColleTrendDentistsLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+              } else if (activeMode == 'w') {
+                this.dentistColleTrendDentistsLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
+              } else {
+                this.dentistColleTrendDentistsLabels1.push(res.year);
+              }
+            // }
+          });
+          if (this.dentistCollectionDentistsTrend1.every((value) => value == 0)) this.dentistCollectionDentistsTrend1 = [];
+          this.dentistColDentistsTrend[0]['data'] = this.dentistCollectionDentistsTrend1;
+
+          this.dentistColleTrendDentistsLabels1.forEach((label, labelIndex) => {
+            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+          }); // This is dynamic array for colors of bars        
+          this.dentistColDentistsTrend[0].backgroundColor = dynamicColors;
+          this.dentistCollectionDentistsTrendLabels = this.dentistColleTrendDentistsLabels1;
+          if (activeMode == 'w') {
+            this.dentistCollectionWeeklyDentistsTrend1 = data.data;
+            this.dentistCollectionWeeklyDentistsTrendLabels = this.dentistColleTrendDentistsLabels1;
+          }
+        } else {
+          this.dentistCollectionDentistsTrendLabels = [];
+        }
+        this.dentistCollectionDentistsTrendLoader = false;
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+
+    });
+  }
+
+  public dentistColOhtTrend: any[] = [
+    {
+      data: [], label: '', shadowOffsetX: 3
+    }];
+  public dentistCollectionOhtTrend1: any = [];
+  public dentistCollectionWeeklyOhtTrend1: any = [];
+  public dentistCollectionOhtTrendLabels: any = [];
+  public dentistCollectionWeeklyOhtTrendLabels: any = [];
+  public dentistCollectionOhtTrendLoader: boolean = true;
+  public dentistColleTrendOhtLabels1: any = [];
+  public dentistColleWeeklyTrendOhtLabels1: any = [];
+
+  private dentistCollectionOhtTrend(mode = null) {
+    let activeMode = this.trendValue;
+    if (mode) {
+      activeMode = mode;
+    }
+    this.dentistCollectionOhtTrendLoader = true;
+    this.clinic_id && this.cliniciananalysisService.caDentistCollectionOhtTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((data: any) => {
+      this.dentistColleTrendOhtLabels1 = [];
+      this.dentistColleWeeklyTrendOhtLabels1 = [];
+      this.dentistCollectionOhtTrend1 = [];
+      this.dentistCollectionWeeklyOhtTrend1 = [];
+      this.dentistCollectionOhtTrendLabels = [];
+      this.dentistCollectionWeeklyOhtTrendLabels = [];
+
+      let dynamicColors = [];
+      if (data && data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+        if (data.data) {
+          data.data.forEach(res => {
+            // if (res.collection > 0) {
+              this.dentistCollectionOhtTrend1.push(Math.round(res.collection));
+              if (activeMode == 'c') {
+                this.dentistColleTrendOhtLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+              } else if (activeMode == 'w') {
+                this.dentistColleTrendOhtLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
+              } else {
+                this.dentistColleTrendOhtLabels1.push(res.year);
+              }
+            // }
+          });
+          if (this.dentistCollectionOhtTrend1.every((value) => value == 0)) this.dentistCollectionOhtTrend1 = [];
+          this.dentistColOhtTrend[0]['data'] = this.dentistCollectionOhtTrend1;
+
+          this.dentistColleTrendOhtLabels1.forEach((label, labelIndex) => {
+            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+          }); // This is dynamic array for colors of bars        
+          this.dentistColOhtTrend[0].backgroundColor = dynamicColors;
+          this.dentistCollectionOhtTrendLabels = this.dentistColleTrendOhtLabels1;
+          if (activeMode == 'w') {
+            this.dentistCollectionWeeklyOhtTrend1 = data.data;
+            this.dentistCollectionWeeklyOhtTrendLabels = this.dentistColleTrendOhtLabels1;
+          }
+        } else {
+          this.dentistCollectionOhtTrendLabels = [];
+        }
+        this.dentistCollectionOhtTrendLoader = false;
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+
+    });
+  }
+
  // Collection Exp Trend mode 
  public dentistCollectionExpTrend1: any = [];
  public dentistCollectionExpWeeklyTrend1: any = [];
@@ -3716,6 +5588,144 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
          this.dentistCollectionExpTrendLabels = [];
        }
        this.dentistCollectionExpTrendLoader = false;
+     }
+   }, error => {
+    this.Apirequest = this.Apirequest - 1;
+    this.enableDiabaleButton(this.Apirequest);
+     this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+     this.warningMessage = "Please Provide Valid Inputs!";
+
+   });
+ }
+
+ public dentistColExpDentistsTrend: any[] = [
+  {
+    data: [], label: '', shadowOffsetX: 3
+  }];
+ public dentistCollectionExpDentistsTrend1: any = [];
+ public dentistCollectionExpWeeklyDentistsTrend1: any = [];
+ public dentistCollectionExpDentistsTrendLabels: any = [];
+ public dentistCollectionExpWeeklyDentistsTrendLabels: any = [];
+ public dentistCollectionExpDentistsTrendLoader: boolean = true;
+ public dentistColleExpDentistsTrendLabels1: any = [];
+ public dentistColleExpWeeklyDentistsTrendLabels1: any = [];
+
+ private dentistCollectionExpDentistsTrend(mode = null) {
+   let activeMode = this.trendValue;
+   if (mode) {
+     activeMode = mode;
+   }
+   this.dentistCollectionExpDentistsTrendLoader = true;
+   this.clinic_id && this.cliniciananalysisService.caDentistCollectionExpDentistsTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((data: any) => {
+     this.dentistColleExpDentistsTrendLabels1 = [];
+     this.dentistColleExpWeeklyDentistsTrendLabels1 = [];
+     this.dentistCollectionExpDentistsTrend1 = [];
+     this.dentistCollectionExpWeeklyDentistsTrend1 = [];
+     this.dentistCollectionExpDentistsTrendLabels = [];
+     this.dentistCollectionExpWeeklyDentistsTrendLabels = [];
+
+     let dynamicColors = [];
+     if (data && data.message == 'success') {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+       if (data.data) {
+         data.data.forEach(res => {
+           // if (res.collection > 0) {
+             this.dentistCollectionExpDentistsTrend1.push(Math.round(res.collection));
+             if (activeMode == 'c') {
+               this.dentistColleExpDentistsTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+             } else if (activeMode == 'w') {
+               this.dentistColleExpDentistsTrendLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
+             } else {
+               this.dentistColleExpDentistsTrendLabels1.push(res.year);
+             }
+           // }
+         });
+         if (this.dentistCollectionExpDentistsTrend1.every((value) => value == 0)) this.dentistCollectionExpDentistsTrend1 = [];
+         this.dentistColExpDentistsTrend[0]['data'] = this.dentistCollectionExpDentistsTrend1;
+
+         this.dentistColleExpDentistsTrendLabels1.forEach((label, labelIndex) => {
+           dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+         }); // This is dynamic array for colors of bars        
+         this.dentistColExpDentistsTrend[0].backgroundColor = dynamicColors;
+         this.dentistCollectionExpDentistsTrendLabels = this.dentistColleExpDentistsTrendLabels1;
+         if (activeMode == 'w') {
+           this.dentistCollectionExpWeeklyDentistsTrend1 = data.data;
+           this.dentistCollectionExpWeeklyDentistsTrendLabels = this.dentistColleExpDentistsTrendLabels1;
+         }
+       } else {
+         this.dentistCollectionExpDentistsTrendLabels = [];
+       }
+       this.dentistCollectionExpDentistsTrendLoader = false;
+     }
+   }, error => {
+    this.Apirequest = this.Apirequest - 1;
+    this.enableDiabaleButton(this.Apirequest);
+     this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+     this.warningMessage = "Please Provide Valid Inputs!";
+
+   });
+ }
+
+ public dentistColExpOhtTrend: any[] = [
+  {
+    data: [], label: '', shadowOffsetX: 3
+  }];
+ public dentistCollectionExpOhtTrend1: any = [];
+ public dentistCollectionExpWeeklyOhtTrend1: any = [];
+ public dentistCollectionExpOhtTrendLabels: any = [];
+ public dentistCollectionExpWeeklyOhtTrendLabels: any = [];
+ public dentistCollectionExpOhtTrendLoader: boolean = true;
+ public dentistColleExpOhtTrendLabels1: any = [];
+ public dentistColleExpWeeklyOhtTrendLabels1: any = [];
+
+ private dentistCollectionExpOhtTrend(mode = null) {
+   let activeMode = this.trendValue;
+   if (mode) {
+     activeMode = mode;
+   }
+   this.dentistCollectionExpOhtTrendLoader = true;
+   this.clinic_id && this.cliniciananalysisService.caDentistCollectionExpOhtTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((data: any) => {
+     this.dentistColleExpOhtTrendLabels1 = [];
+     this.dentistColleExpWeeklyOhtTrendLabels1 = [];
+     this.dentistCollectionExpOhtTrend1 = [];
+     this.dentistCollectionExpWeeklyOhtTrend1 = [];
+     this.dentistCollectionExpOhtTrendLabels = [];
+     this.dentistCollectionExpWeeklyOhtTrendLabels = [];
+
+     let dynamicColors = [];
+     if (data && data.message == 'success') {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+       if (data.data) {
+         data.data.forEach(res => {
+           // if (res.collection > 0) {
+             this.dentistCollectionExpOhtTrend1.push(Math.round(res.collection));
+             if (activeMode == 'c') {
+               this.dentistColleExpOhtTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+             } else if (activeMode == 'w') {
+               this.dentistColleExpOhtTrendLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
+             } else {
+               this.dentistColleExpOhtTrendLabels1.push(res.year);
+             }
+           // }
+         });
+         if (this.dentistCollectionExpOhtTrend1.every((value) => value == 0)) this.dentistCollectionExpOhtTrend1 = [];
+         this.dentistColExpOhtTrend[0]['data'] = this.dentistCollectionExpOhtTrend1;
+
+         this.dentistColleExpOhtTrendLabels1.forEach((label, labelIndex) => {
+           dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+         }); // This is dynamic array for colors of bars        
+         this.dentistColExpOhtTrend[0].backgroundColor = dynamicColors;
+         this.dentistCollectionExpOhtTrendLabels = this.dentistColleExpOhtTrendLabels1;
+         if (activeMode == 'w') {
+           this.dentistCollectionExpWeeklyOhtTrend1 = data.data;
+           this.dentistCollectionExpWeeklyOhtTrendLabels = this.dentistColleExpOhtTrendLabels1;
+         }
+       } else {
+         this.dentistCollectionExpOhtTrendLabels = [];
+       }
+       this.dentistCollectionExpOhtTrendLoader = false;
      }
    }, error => {
     this.Apirequest = this.Apirequest - 1;
@@ -4283,6 +6293,112 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   }
 
 
+  public hourlyRateChartDentistsTrend: any[] = [
+    {
+      data: [],
+    }];
+  public hourlyRateChartDentistsTrend1 = [];
+  public hourlyRateChartDentistsTrendLabels = [];
+  public hourlyRateChartDentistsTrendLabels1 = [];
+  public fdhourlyRateRateDentistsTrendLoader: any;
+  //Trend Mode for Hourly Rate chart
+  private fdhourlyRateRateDentistsTrend() {
+    this.fdhourlyRateRateDentistsTrendLoader = true;
+    var user_id;
+    var clinic_id;
+    this.clinic_id && this.cliniciananalysisService.cahourlyRateChartDesntistsTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+      this.hourlyRateChartDentistsTrendLabels = [];
+      if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+        this.fdhourlyRateRateDentistsTrendLoader = false;
+        this.hourlyRateChartDentistsTrendLabels1 = [];
+        this.hourlyRateChartDentistsTrend1 = [];
+        data.data.forEach(res => {
+          if (res.hourly_rate >= 0) {
+            this.hourlyRateChartDentistsTrend1.push(Math.round(res.hourly_rate));
+            if (this.trendValue == 'c')
+              this.hourlyRateChartDentistsTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+            else
+              this.hourlyRateChartDentistsTrendLabels1.push(res.year);
+          }
+        });
+        this.hourlyRateChartDentistsTrend[0]['data'] = this.hourlyRateChartDentistsTrend1;
+        this.hourlyRateChartDentistsTrendLabels = this.hourlyRateChartDentistsTrendLabels1;
+
+        let dynamicColors = [];
+        this.hourlyRateChartDentistsTrendLabels.forEach((label, labelIndex) => {
+          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+        }); // This is dynamic array for colors of bars        
+        this.hourlyRateChartDentistsTrend[0].backgroundColor = dynamicColors;
+
+        if (this.hourlyRateChartDentistsTrendLabels.length <= 0) {
+          this.hourlyValue = 0;
+        }
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+
+    });
+  }
+
+
+  public hourlyRateChartOhtTrend: any[] = [
+    {
+      data: [],
+    }];
+  public hourlyRateChartOhtTrend1 = [];
+  public hourlyRateChartOhtTrendLabels = [];
+  public hourlyRateChartOhtTrendLabels1 = [];
+  public fdhourlyRateRateOhtTrendLoader: any;
+  //Trend Mode for Hourly Rate chart
+  private fdhourlyRateRateOhtTrend() {
+    this.fdhourlyRateRateOhtTrendLoader = true;
+    var user_id;
+    var clinic_id;
+    this.clinic_id && this.cliniciananalysisService.cahourlyRateChartOhtTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+      this.hourlyRateChartOhtTrendLabels = [];
+      if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+        this.fdhourlyRateRateOhtTrendLoader = false;
+        this.hourlyRateChartOhtTrendLabels1 = [];
+        this.hourlyRateChartOhtTrend1 = [];
+        data.data.forEach(res => {
+          if (res.hourly_rate >= 0) {
+            this.hourlyRateChartOhtTrend1.push(Math.round(res.hourly_rate));
+            if (this.trendValue == 'c')
+              this.hourlyRateChartOhtTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+            else
+              this.hourlyRateChartOhtTrendLabels1.push(res.year);
+          }
+        });
+        this.hourlyRateChartOhtTrend[0]['data'] = this.hourlyRateChartOhtTrend1;
+        this.hourlyRateChartOhtTrendLabels = this.hourlyRateChartOhtTrendLabels1;
+
+        let dynamicColors = [];
+        this.hourlyRateChartOhtTrendLabels.forEach((label, labelIndex) => {
+          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+        }); // This is dynamic array for colors of bars        
+        this.hourlyRateChartOhtTrend[0].backgroundColor = dynamicColors;
+
+        if (this.hourlyRateChartOhtTrendLabels.length <= 0) {
+          this.hourlyValue = 0;
+        }
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+
+    });
+  }
+
+
   public newPatientsChartTrend: any[] = [
     {
       data: [],
@@ -4520,8 +6636,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             this.treatmentPlanChartTrend[0]['label'] = '';
             this.treatmentPlanChartTrend[1]['label'] = '';
             this.treatmentPlanChartTrend[1]['data'] =  [];
-          }	
-          console.log(this.treatmentPlanChartTrend);
+          } 
         } else {
           this.treatmentPlanChartTrendLabels = [];
         }
@@ -4551,14 +6666,22 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.Apirequest = 9;
       $('.filter').removeClass('active');
       this.dentistProductionTrend();
+     // this.dentistProductionDentistsTrend();
+      // this.dentistProductionOhtTrend();
       this.dentistCollectionTrend();
+      // this.dentistCollectionDentistsTrend();
+      // this.dentistCollectionOhtTrend();
       this.dentistCollectionExpTrend();
+      // this.dentistCollectionExpDentistsTrend();
+      // this.dentistCollectionExpOhtTrend();
       this.treatmentPlanTrend();
       this.patientComplaintsTrend();
       this.fdRecallPrebookRateTrend();
       this.fdTreatmentPrebookRateTrend();
       this.fdnewPatientsRateTrend();
       this.fdhourlyRateRateTrend();
+     // this.fdhourlyRateRateDentistsTrend();
+     // this.fdhourlyRateRateOhtTrend();
       this.fdtreatmentPlanRateTrend();
       this.changeTreatmentCostSingle('1');
       this.changePrebookRate('recall');
@@ -4567,12 +6690,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   goalToggle(val) {
     this.goalchecked = val;
     this.buildChart();
+    this.buildChartDentists();
+    this.buildChartOht();
     this.collectionChart();
+    this.collectionChartDentists();
+    this.collectionChartOht();
     this.collectionExpChart();
+    this.collectionExpChartDentists();
+    this.collectionExpChartOht();
     this.buildChartTreatment();
     this.recallPrebook();
     this.treatmentPrePrebook();
     this.hourlyRateChart();
+    this.hourlyRateChartDesntists();
+    this.hourlyRateChartOht();
     this.treatmentPlanRate();
 
   }
@@ -4626,6 +6757,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.collectionExpChart();
     }
     this.proCollShow = parseInt(val);
+    if(parseInt(val) == 1){
+      this.proSelectShow = "production_all";
+    }else if(parseInt(val) == 2){
+      this.proSelectShow = "collection_all";
+    }else if(parseInt(val) == 3){ 
+      this.proSelectShow ="collection_exp_all";
+    }
   }
 
   getChartsTips() {
@@ -4654,6 +6792,42 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     }else{
       $('.sa_tabs_data button').prop('disabled',true);     
     }
+  }
+
+  changeProSelect(val){
+    if (val == "production_all") {
+      this.buildChart();
+    } else if (val == "production_dentists") {
+     this.buildChartDentists();
+    }else if (val == "production_oht") {
+     this.buildChartOht();
+    }else if (val == "collection_all") {
+      this.collectionChart();
+     }else if (val == "collection_dentists") {
+      this.collectionChartDentists();
+     }else if (val == "collection_oht") {
+      this.collectionChartOht();
+     }else if (val == "collection_exp_all") {
+      this.collectionExpChart();
+     }else if (val == "collection_exp_dentists") {
+      this.collectionExpChartDentists();
+     }else if (val == "collection_exp_oht") {
+      this.collectionExpChartOht();
+     }
+
+     this.proSelectShow = val;
+  }
+
+
+  changeHourlyRateSelect(val){
+    if(val == "hr_all"){
+      this.hourlyRateChart();
+    }else if(val == "hr_dentists"){
+      this.hourlyRateChartDesntists();
+    }else if(val == "hr_oht"){
+      this.hourlyRateChartOht();
+    }
+    this.hrSelectShow = val;
   }
 
 }
