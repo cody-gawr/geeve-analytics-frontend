@@ -639,18 +639,31 @@ export class AppHeaderrightComponent implements AfterViewInit {
       });
   }
 
-  changeClinic(newValues) {
+  changeClinic(newValues,allChecked) {
     var newValue:any = '';
     
     if (newValue != "undefined") {
       if(Array.isArray(newValues)) {
         if (this.route == "/dashboards/finances") {
           if(this.clinicsData.length == this.selectedClinic.length){
-            newValue = '';            
+            if(this.allChecked == true){
+              newValue = '';            
+              this.selectedClinic = [];
+              this.allChecked = false;
+            }else{
+              this.selectedClinic = [];
+              newValue = 'all';
+                this.selectedClinic.push('all');
+                this.clinicsData.forEach((data)=>{
+                  this.selectedClinic.push(data.id);
+                })
+                this.clinic_id = this.selectedClinic;
+                this.allChecked = true;
+              
+            } 
+          }else{                      
             this.selectedClinic = [];
-          }else{            
-            this.selectedClinic = [];
-            if(newValues.includes("all")){          
+            if(newValues.includes("all")){ 
               newValue = 'all';
               this.selectedClinic.push('all');
               this.clinicsData.forEach((data)=>{

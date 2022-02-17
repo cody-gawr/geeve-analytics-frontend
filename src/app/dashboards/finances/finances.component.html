@@ -647,11 +647,16 @@ expenses_card custom_ngx_cw01">
                     </div>
                     <p class="chart-placeholder-text">You have no net profit in the selected period</p>
                   </div>
-                  <div *ngIf="(!xeroConnect && !myobConnect) && netProfitDisplayVal == 2"
+                  <div *ngIf="(!xeroConnect && !myobConnect) && netProfitDisplayVal == 2 && multipleClinicsSelected==false"
                     class="no-data-placeholder">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">Please connect to Xero/MYOB to display this chart</p>
+                  </div>
+                  <div *ngIf="multipleClinicsSelected==true" class="no-data-placeholder">
+                    <div class="sa_nodata_div">
+                    </div>
+                    <p class="chart-placeholder-text">Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
                   </div>
 
                   <canvas *ngIf="(xeroConnect || myobConnect) && netProfitDisplayVal == 3 && netProfitPmsChartTrendLabels.length  > 0" #myCanvas2
@@ -666,12 +671,17 @@ expenses_card custom_ngx_cw01">
                     </div>
                     <p class="chart-placeholder-text">You have no net profit in the selected period</p>
                   </div>
-                  <div *ngIf="(!xeroConnect && !myobConnect) && netProfitDisplayVal == 3"
+                  <div *ngIf="(!xeroConnect && !myobConnect) && netProfitDisplayVal == 3 && multipleClinicsSelected==false"
                     class="no-data-placeholder">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">Please connect to Xero/MYOB to display this chart</p>
                     </div>
+                  <div *ngIf="multipleClinicsSelected==true" class="no-data-placeholder">
+                    <div class="sa_nodata_div">
+                    </div>
+                    <p class="chart-placeholder-text">Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
+                  </div>  
 
                 </div>
               </div>
