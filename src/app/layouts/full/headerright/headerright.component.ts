@@ -251,7 +251,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
                 } else {
                   this.selectedDentist = parseInt(dentistclinic[1]);
                 } 
-                if (this.route == "/dashboards/finances") {
+                if (this.route == "/dashboards/finances" && this.apiUrl.includes('test')) {
                   this.allChecked = false;
                   this.clinic_id = [];
                   this.selectedClinic = [];
@@ -423,7 +423,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
     
     if (newValue != "undefined") {
       if(Array.isArray(newValues)) {
-        if (this.route == "/dashboards/finances") {
+        if (this.route == "/dashboards/finances" && this.apiUrl.includes('test')) {
           if(this.clinicsData.length == this.selectedClinic.length){
             newValue = '';            
             this.selectedClinic = [];
@@ -471,7 +471,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
       } else {
         $("#currentClinic").attr("cid", newValue);
       }
-      if (this.route != "/dashboards/finances") {
+      if ((this.route != "/dashboards/finances" && this.apiUrl.includes('test')) || this.apiUrl.includes('staging') || ( !this.apiUrl.includes('test-') && !this.apiUrl.includes('staging-'))) {
         this.selectedClinic = newValue;
         this.clinic_id = this.selectedClinic;
         this.getDentists();
@@ -644,7 +644,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
     
     if (newValue != "undefined") {
       if(Array.isArray(newValues)) {
-        if (this.route == "/dashboards/finances") {
+        if (this.route == "/dashboards/finances" && this.apiUrl.includes('test')) {
           if(this.clinicsData.length == this.selectedClinic.length){
             if(this.allChecked == true){
               newValue = '';            
