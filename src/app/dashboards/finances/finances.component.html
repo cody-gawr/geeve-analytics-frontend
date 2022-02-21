@@ -295,7 +295,9 @@ expenses_card custom_ngx_cw01">
         class="sa_flexbg predictor_ratio md_mrn  custom_ngx_cw02">
         <mat-card class="sa_no_tabs_area">
           <mat-card-content class="sa_matcard_content">
-            <mat-card-title class="text-center">Production % Per Clinician
+            <mat-card-title class="text-center">
+              <span *ngIf ="showClinicByclinic === false">Production % Per Clinician</span>
+              <span *ngIf ="showClinicByclinic === true">Production % Per Clinic</span>
               <div class="info-icon-container">
                 <img [tooltip]="charTips['30']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>

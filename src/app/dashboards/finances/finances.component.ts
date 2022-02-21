@@ -1789,6 +1789,7 @@ export class FinancesComponent implements AfterViewInit {
   //finProductionByClinician
   public finProductionByClinicianError: any;
   public finProductionByClinicianLoader: any;
+  public showClinicByclinic: boolean = false;
   private finProductionByClinician() {
     var user_id;
     var clinic_id;
@@ -1797,6 +1798,7 @@ export class FinancesComponent implements AfterViewInit {
     this.finProductionByClinicianError = false;
     this.productionChartTotal = 0;
     this.productionChartLabels = [];
+    this.showClinicByclinic = false;
     this.financesService.finProductionByClinician(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
@@ -1805,16 +1807,28 @@ export class FinancesComponent implements AfterViewInit {
       this.productionChartTrendIcon = "down";
       this.productionChartTrendTotal = 0;
       if (data.message == 'success') {
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          this.showClinicByclinic = true;
+        }
         this.finProductionByClinicianLoader = false;
-
         this.productionChartDatares = [];
+        var totalPer = 0;
         if(data.data){
           data.data.forEach(res => {
-            if (res.prod_per_clinician > 0) {
-              this.productionChartDatares.push(Math.round(res.prod_per_clinician));
-              this.productionChartLabelsres.push(res.provider_name);
-              this.productionChartTotal = this.productionChartTotal + parseInt(res.prod_per_clinician);
-            }
+            if(this.showClinicByclinic == true){
+              if (res.production > 0) {
+                totalPer = Math.round(res.production) * 100 / data.total;
+                this.productionChartDatares.push(Math.round(totalPer));
+                this.productionChartLabelsres.push(res.clinic_name);
+                this.productionChartTotal = this.productionChartTotal + Math.round(totalPer);
+              }
+            }else{
+              if (res.prod_per_clinician > 0) {
+                this.productionChartDatares.push(Math.round(res.prod_per_clinician));
+                this.productionChartLabelsres.push(res.provider_name);
+                this.productionChartTotal = this.productionChartTotal + parseInt(res.prod_per_clinician);
+              }
+            }           
           });
         }
         this.productionChartTrendTotal = data.total_ta;
