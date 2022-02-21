@@ -2,7 +2,7 @@ import * as $ from 'jquery';
 import { Component, AfterViewInit, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { FinancesService } from './finances.service';
 import { DentistService } from '../../dentist/dentist.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe} from '@angular/common';
 import { ActivatedRoute, Router } from "@angular/router";
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { CookieService } from "ngx-cookie";
@@ -70,7 +70,8 @@ export class FinancesComponent implements AfterViewInit {
   public netProfitIcon: string = '';
   public netProfitProductionIcon: string = '';
   public netProfitPmsIcon: string = '';
-
+  public barChartType = 'bar';
+  public barChartLegend = false;
   public netProfitVal: any = 0;
   public netProfitProductionVal: any = 0;
   public netProfitPmsVal: any = 0;
@@ -127,7 +128,8 @@ export class FinancesComponent implements AfterViewInit {
     private clinicSettingsService: ClinicSettingsService,
     private chartService: ChartService,
     public constants: AppConstants,
-    public chartstipsService: ChartstipsService
+    public chartstipsService: ChartstipsService,
+    private decimalPipe: DecimalPipe,
   ) {
     this.getChartsTips();
   }
@@ -405,6 +407,102 @@ export class FinancesComponent implements AfterViewInit {
     //this.filterDate(this.chartService.duration$.value);
   }
 
+  splitName(name: string) {
+    const regex = /\w+\s\w+(?=\s)|\w+/g;
+    return name.toString().trim().match(regex);
+    
+
+  }
+  public barChartOptionsTrend: any = {
+    scaleShowVerticalLines: false,
+    cornerRadius: 60,
+    hover: { mode: null },
+    curvature: 1,
+    animation: {
+      duration: 1500,
+      easing: 'easeOutSine'
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    scaleStartValue : 0,
+    scales: {
+      xAxes: [{
+       stacked: true,
+
+      },
+      {
+          gridLines: { 
+            display: true , 
+            offsetGridLines: true
+          },
+          ticks: {
+            autoSkip: false,
+          },
+          display: false,
+          offset: true,
+          stacked: true,
+        }
+    ],
+      yAxes: [{
+       suggestedMin: 0,
+        ticks: {
+          min:0,
+          beginAtZero: true,
+          userCallback: (label, index, labels) => {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              return '$' + this.decimalPipe.transform(label);
+            }
+
+          },
+        },
+      }],
+    },
+    tooltips: {
+      mode: 'x-axis',
+      custom: function (tooltip) {
+        if (!tooltip) return;
+        // disable displaying the color box;
+        tooltip.displayColors = false;
+      },
+      callbacks: {
+        // use label callback to return the desired label
+        label: (tooltipItem, data) => {          
+          const v = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+          let Tlable = data.datasets[tooltipItem.datasetIndex].label;
+          if(Tlable !=''){
+            Tlable = Tlable + ": "
+          }
+         let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+         if(ylable == 0 && Tlable =='Target: '){
+            //return  Tlable + this.splitName(tooltipItem.xLabel).join(' ');
+         }else{
+           return  Tlable + this.splitName(tooltipItem.xLabel).join(' ') + ": $" + ylable;
+         }
+        },
+        // remove title
+        title: function (tooltipItem, data) {
+          return;
+        }
+      }
+    },
+    legend: {
+      position: 'top',
+      onClick: function (e, legendItem) {
+        var index = legendItem.datasetIndex;
+        var ci = this.chart;
+        if (index == 0) {
+          ci.getDatasetMeta(1).hidden = true;
+          ci.getDatasetMeta(index).hidden = false;
+        }
+        else if (index == 1) {
+          ci.getDatasetMeta(0).hidden = true;
+          ci.getDatasetMeta(index).hidden = false;
+        }
+        ci.update();
+      },
+    },
+  };
   public date = new Date();
   public lineChartOptions: any = { responsive: true };
 
@@ -1150,7 +1248,7 @@ export class FinancesComponent implements AfterViewInit {
   public showCombined: boolean = false;
   public stackedChartType = 'bar';
   public stackedChartTypeHorizontal = 'horizontalBar';
-  public stackedChartLegend = true;
+  public stackedChartLegend = true;   
 
   //labels
   public stackedChartLabels: string[] = [];
@@ -1738,29 +1836,50 @@ export class FinancesComponent implements AfterViewInit {
   }
   public totalDiscountChartTrendIcon = "down";
   public totalDiscountChartTrendTotal;
-  public finTotalDiscountsLoader: any;
-
+  public finTotalDiscountsLoader: any;  
+  public clinicsName: any; 
+  public clinicsids: any; 
+  public totalDiscountChartLabelsClinics: any;
+  public totalDiscountChartClinicsData: any;
+  public totalDiscountChartClinicsData1: any;
+  public showClinicBar: boolean = false;
   //finProductionByClinician
   private finTotalDiscounts() {
     var user_id;
     var clinic_id;
     this.totalDiscountChartLabels = [];
+    this.totalDiscountChartLabelsClinics = [];
     this.totalDiscountChartData = [];
+    this.totalDiscountChartClinicsData = [];
+    this.totalDiscountChartClinicsData1 = [];
+    this.showClinicBar = false;
     this.finTotalDiscountsLoader = true;
     this.financesService.finTotalDiscounts(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       this.totalDiscountChartDatares = [];
       this.totalDiscountChartLabelsres = [];
+      this.totalDiscountChartLabelsClinics =[];
+      this.clinicsName =[];
+      this.clinicsids =[];
       this.totalDiscountChartTotal = 0;
       this.totalDiscountChartTrendIcon = "down";
       this.totalDiscountChartTrendTotal = 0;
       if (data.message == 'success') {
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          this.showClinicBar = true;
+        }
+        this.totalDiscountChartClinicsData=[];
+        this.totalDiscountChartClinicsData1 =[];
+        this.clinicsName =[];
+        this.clinicsids =[];
         this.finTotalDiscountsLoader = false;
         this.totalDiscountChartDatares = [];
         this.totalDiscountChartTotal = 0;
         data.data.forEach(res => {
           if (res.total != 0) {
+            this.clinicsName.push(res.clinicName);
+            this.clinicsids.push(res.clinic_id);
             this.totalDiscountChartDatares.push(Math.round(res.discounts));
             var name = '';
             if (res.provider_name != '' && res.provider_name != null) {
@@ -1769,6 +1888,15 @@ export class FinancesComponent implements AfterViewInit {
             this.totalDiscountChartLabelsres.push(name);
           }
         });
+        this.clinicsName = [...new Set(this.clinicsName)];
+        this.clinicsids = [...new Set(this.clinicsids)];
+        this.totalDiscountChartLabelsClinics = this.clinicsName;
+        const sumOfId = (id:any) => data.data.filter(i => i.clinic_id === id).reduce((a, b) => a + Math.round(b.discounts), 0);
+        this.clinicsids.forEach(element => {
+          this.totalDiscountChartClinicsData1.push(sumOfId(element));
+        });
+        this.totalDiscountChartClinicsData = this.totalDiscountChartClinicsData1
+        
         this.totalDiscountChartTotal = Math.round(data.total);
         this.percentOfTotalDiscount$.next(this.totalDiscountChartTotal);
         if (data.total_ta)
@@ -1910,14 +2038,24 @@ export class FinancesComponent implements AfterViewInit {
     );
   }
 
+  public ProdPerVisit: any[] = [
+    {
+      data: [], label: '', shadowOffsetX: 3,
+      backgroundColor: 'rgba(0, 0, 255, 0.2)',
+    }
+  ];
   public productionTrendIcon;
+  public showBar: boolean = false;
   public productionTrendVal;
   public finProductionPerVisitLoader: any;
-
+  public ProductionTrend1 = [];
+  public ProductionTrendLabels1 = [];
   private finProductionPerVisit() {
+    this.showBar = false;
     this.finProductionPerVisitLoader = true;
     this.productionVal = 0;
-
+    this.ProductionTrend1 = [];
+    this.ProductionTrendLabels1 = [];
     var user_id;
     var clinic_id;
     this.productionTrendIcon = "down";
@@ -1926,6 +2064,19 @@ export class FinancesComponent implements AfterViewInit {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
+        this.ProdPerVisit[0]['data'] = [];
+        this.ProductionTrend1 = [];
+        this.ProductionTrendLabels1 = [];       
+        if (data.total > 0) {
+          data.data.forEach(res => { 
+            this.ProductionTrend1.push(Math.round(res.prod_per_visit));
+            this.ProductionTrendLabels1.push(res.clinic_name);
+          });
+        }
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          this.showBar = true;
+        }
+        this.ProdPerVisit[0]['data'] = this.ProductionTrend1;
         this.finProductionPerVisitLoader = false;
         this.productionVal = Math.round(data.total);
         this.productionTrendVal = Math.round(data.total_ta);

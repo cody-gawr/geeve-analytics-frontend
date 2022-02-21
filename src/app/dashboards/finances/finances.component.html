@@ -345,11 +345,17 @@ expenses_card custom_ngx_cw01">
               </mat-card-title>
               <div class="card-body clinician-center-chart">
                 <div class="chart-per-visit"
-                  *ngIf="productionVal > 0 && finProductionPerVisitLoader == false">
+                  *ngIf="productionVal > 0 && finProductionPerVisitLoader == false && showBar === false">
                   <ngx-gauge class="productionVisit" [type]="gaugeType" [value]="productionVal" [thick]="gaugeThick"
                     [prepend]="gaugePrependText" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor"
                     [cap]="cap" [size]="size"> </ngx-gauge>
                 </div>
+                  <canvas *ngIf="productionVal > 0 && finProductionPerVisitLoader == false && showBar === true" 
+                    #myCanvas id="ProdPerVisit" baseChart [datasets]="ProdPerVisit"
+                  [labels]="ProductionTrendLabels1" [legend]="barChartLegend" [chartType]="barChartType"
+                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="barChartColors"
+                  (chartClick)="chartClicked($event)">
+                </canvas>
                 <div *ngIf="productionVal <= 0 && finProductionPerVisitLoader == false" class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
@@ -395,10 +401,20 @@ expenses_card custom_ngx_cw01">
               </mat-card-title>
               <div class="card-body chart-spacing">
                 <div class="chart w-100"
-                  *ngIf="totalDiscountChartData && totalDiscountChartData.length > 0 && showInternal == true">
+                  *ngIf="totalDiscountChartData && totalDiscountChartData.length > 0 && showInternal == true && showClinicBar ===false">
                   <div class="clinician-chart">
                     <canvas class="totalDiscount" #myCanvas baseChart [data]="totalDiscountChartData"
                       [labels]="totalDiscountChartLabels" [chartType]="totalDiscountChartType"
+                      (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)" [legend]="false"
+                      [options]="pieChartOptions2" [plugins]="totalDiscountPluginObservable$ | async"
+                      [colors]="pieChartColors"> </canvas>
+                  </div>
+                </div>
+                <div class="chart w-100"
+                  *ngIf="totalDiscountChartData && totalDiscountChartData.length > 0 && showInternal == true && showClinicBar ===true">
+                  <div class="clinician-chart">
+                    <canvas class="totalDiscount" #myCanvas baseChart [data]="totalDiscountChartClinicsData"
+                      [labels]="totalDiscountChartLabelsClinics" [chartType]="totalDiscountChartType"
                       (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)" [legend]="false"
                       [options]="pieChartOptions2" [plugins]="totalDiscountPluginObservable$ | async"
                       [colors]="pieChartColors"> </canvas>
