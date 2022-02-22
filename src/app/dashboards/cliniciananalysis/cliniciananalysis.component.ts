@@ -258,11 +258,21 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     { providerId: 'all', name: 'All Dentists' },
   ];
   public barChartColors: Array<any>;
+  public barChartColorsDent: Array<any>;
+  public barChartColorsOht: Array<any>;
   public barChartColors1: Array<any>;
+  public barChartColors1Dent: Array<any>;
+  public barChartColors1Oht: Array<any>;
+  public barChartColors2: Array<any>;
+  public barChartColors2Dent: Array<any>;
+  public barChartColors2Oht: Array<any>;
   public barChartType = 'bar';
   public barChartLegend = false;
   public gradient = 'bar';
   public barChartBorder = "#1CA49F";
+  public barChartColorsHrDent: Array<any>;
+  public barChartColorsHrOht: Array<any>;
+  
 
   //labels
   public barChartLabels: string[] = [];
@@ -1254,7 +1264,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public buildChartLoader: boolean = true;
   public dentistKey;
   public DPcolors: any;
+  public DPcolorsDent: any;
+  public DPcolorsOht: any;
   public DPcolors1: any;
+  public DPcolors1Dent: any;
+  public DPcolors1Oht: any;
+  public DPcolors2: any;
+  public DPcolors2Dent: any;
+  public DPcolors2Oht: any;
   //Dentist Production Chart for all Dentist
   private buildChart() {
     this.buildChartLoader = true;
@@ -1269,6 +1286,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.barChartLabels = [];
       this.productionTotal = 0;
       if (data.message == 'success') {
+        this.dentistKey ='';
+        this.barChartData[0]['data'] =[];
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.buildChartLoader = false;
@@ -1427,6 +1446,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       data: [],
     }
   ];
+  public dentistKey1;
   private buildChartDentists() {
     this.buildChartDentistsLoader = true;
     this.barChartDentistsData1 = [];
@@ -1440,6 +1460,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.barChartDentistLabels = [];
       this.productionDentistsTotal = 0;
       if (data.message == 'success') {
+        this.dentistKey1 ='';
+        this.barChartDataDentists[0]['data'] =[];
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.buildChartDentistsLoader = false;
@@ -1452,7 +1474,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             var name = res.provider_name;
             if (res.provider_name != null && res.provider_name != 'Anonymous') {
               this.barChartDentistsLabels1.push(res.provider_name);
-              this.dentistKey = i;
+              this.dentistKey1 = i;
             } else {
               this.barChartDentistsLabels1.push(res.provider_name);
             }
@@ -1460,17 +1482,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           // }
         });
         if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors = [
+          this.barChartColorsDent = [
             {
               backgroundColor: [],
               hoverBorderColor: '#000'
             }
           ];
-          this.barChartColors[0].backgroundColor[this.dentistKey] = '#1CA49F';
-          this.DPcolors = this.barChartColors;
+          this.barChartColorsDent[0].backgroundColor[this.dentistKey1] = '#1CA49F';
+          this.DPcolorsDent = this.barChartColorsDent;
         }
         else
-          this.DPcolors = this.lineChartColors;
+          this.DPcolorsDent = this.lineChartColors;
         this.barChartDataDentists[0]['data'] = this.barChartDentistsData1;
         const colors = [
           this.chartService.colors.odd,
@@ -1564,6 +1586,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       data: [],
     }
   ];
+  public dentistKey2;
   private buildChartOht() {
     this.buildChartOhtLoader = true;
     this.barChartOhtData1 = [];
@@ -1577,6 +1600,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.barChartOhtLabels = [];
       this.productionOhtTotal = 0;
       if (data.message == 'success') {
+        this.dentistKey2='';
+        this.barChartDataOht[0]['data'] =[];
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.buildChartOhtLoader = false;
@@ -1589,7 +1614,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             var name = res.provider_name;
             if (res.provider_name != null && res.provider_name != 'Anonymous') {
               this.barChartOhtLabels1.push(res.provider_name);
-              this.dentistKey = i;
+              this.dentistKey2 = i;
             } else {
               this.barChartOhtLabels1.push(res.provider_name);
             }
@@ -1597,17 +1622,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           // }
         });
         if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors = [
+          this.barChartColorsOht = [
             {
               backgroundColor: [],
               hoverBorderColor: '#000'
             }
           ];
-          this.barChartColors[0].backgroundColor[this.dentistKey] = '#1CA49F';
-          this.DPcolors = this.barChartColors;
+          this.barChartColorsOht[0].backgroundColor[this.dentistKey2] = '#1CA49F';
+          this.DPcolorsOht = this.barChartColorsOht;
         }
         else
-          this.DPcolors = this.lineChartColors;
+          this.DPcolorsOht = this.lineChartColors;
         this.barChartDataOht[0]['data'] = this.barChartOhtData1;
         const colors = [
           this.chartService.colors.odd,
@@ -1888,16 +1913,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         });
 
         if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors1 = [
+          this.barChartColors1Dent = [
             {
               backgroundColor: [],
               hoverBorderColor: '#000'
             }
           ];
-          this.barChartColors1[0].backgroundColor[selectedDen] = '#1CA49F';
-          this.DPcolors1 = this.barChartColors1;
+          this.barChartColors1Dent[0].backgroundColor[selectedDen] = '#1CA49F';
+          this.DPcolors1Dent = this.barChartColors1Dent;
         } else {
-          this.DPcolors1 = this.lineChartColors;
+          this.DPcolors1Dent = this.lineChartColors;
         }
 
 
@@ -2031,16 +2056,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         });
 
         if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors1 = [
+          this.barChartColors1Oht = [
             {
               backgroundColor: [],
               hoverBorderColor: '#000'
             }
           ];
-          this.barChartColors1[0].backgroundColor[selectedDen] = '#1CA49F';
-          this.DPcolors1 = this.barChartColors1;
+          this.barChartColors1Oht[0].backgroundColor[selectedDen] = '#1CA49F';
+          this.DPcolors1Oht = this.barChartColors1Oht;
         } else {
-          this.DPcolors1 = this.lineChartColors;
+          this.DPcolors1Oht = this.lineChartColors;
         }
 
 
@@ -2172,16 +2197,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         });
 
         if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors1 = [
+          this.barChartColors2 = [
             {
               backgroundColor: [],
               hoverBorderColor: '#000'
             }
           ];
-          this.barChartColors1[0].backgroundColor[selectedDen] = '#1CA49F';
-          this.DPcolors1 = this.barChartColors1;
+          this.barChartColors2[0].backgroundColor[selectedDen] = '#1CA49F';
+          this.DPcolors2 = this.barChartColors2;
         } else {
-          this.DPcolors1 = this.lineChartColors;
+          this.DPcolors2 = this.lineChartColors;
         }
 
 
@@ -2314,16 +2339,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         });
 
         if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors1 = [
+          this.barChartColors2Dent = [
             {
               backgroundColor: [],
               hoverBorderColor: '#000'
             }
           ];
-          this.barChartColors1[0].backgroundColor[selectedDen] = '#1CA49F';
-          this.DPcolors1 = this.barChartColors1;
+          this.barChartColors2Dent[0].backgroundColor[selectedDen] = '#1CA49F';
+          this.DPcolors2Dent = this.barChartColors2Dent;
         } else {
-          this.DPcolors1 = this.lineChartColors;
+          this.DPcolors2Dent = this.lineChartColors;
         }
 
 
@@ -2456,16 +2481,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         });
 
         if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors1 = [
+          this.barChartColors2Oht = [
             {
               backgroundColor: [],
               hoverBorderColor: '#000'
             }
           ];
-          this.barChartColors1[0].backgroundColor[selectedDen] = '#1CA49F';
-          this.DPcolors1 = this.barChartColors1;
+          this.barChartColors2Oht[0].backgroundColor[selectedDen] = '#1CA49F';
+          this.DPcolors2Oht = this.barChartColors2Oht;
         } else {
-          this.DPcolors1 = this.lineChartColors;
+          this.DPcolors2Oht = this.lineChartColors;
         }
 
 
@@ -4015,6 +4040,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     this.clinic_id && this.cliniciananalysisService.NewPatients(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       if (data && data.message == 'success') {
+        this.newpKey = '';
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.buildChartNewpatientsLoader = false;
@@ -4125,6 +4151,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public hourlyRateChartLoader: any;
   public hrKey: any;
   public HRcolors: any;
+  public HRcolorsDent: any;
+  public HRcolorsOht: any;
   //All dentist Hourly ratechart
   private hourlyRateChart() {
     this.hourlyRateChartLoader = true;
@@ -4140,6 +4168,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.hourlyRateChartLabels = [];
       this.barChartOptionsHR.annotation = [];
       if (data.message == 'success') {
+        this.hrKey ='';
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
         this.hourlyRateChartLoader = false;
@@ -4260,6 +4289,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.hourlyRateChartDesntistsLabels = [];
       this.barChartOptionsHR.annotation = [];
       if (data.message == 'success') {
+        this.hrKey ='';
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
         this.hourlyRateChartDentistsLoader = false;
@@ -4291,14 +4321,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.hourlyRateChartDesntistsAveragePrev = Math.round(data.total_ta);
         this.hourlyRateChartGoal = data.goals;
         if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors = [
+          this.barChartColorsHrDent = [
             { backgroundColor: [] }
           ];
-          this.barChartColors[0].backgroundColor[this.hrKey] = '#1CA49F';
-          this.HRcolors = this.barChartColors;
+          this.barChartColorsHrDent[0].backgroundColor[this.hrKey] = '#1CA49F';
+          this.HRcolorsDent = this.barChartColorsHrDent;
         }
         else {
-          this.HRcolors = this.lineChartColors;
+          this.HRcolorsDent = this.lineChartColors;
           let dynamicColors = [];
           this.hourlyRateChartDesntistsLabels.forEach((label, labelIndex) => {
             dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
@@ -4381,6 +4411,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.hourlyRateChartOhtLabels = [];
       this.barChartOptionsHR.annotation = [];
       if (data.message == 'success') {
+        this.hrKey ='';
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
         this.hourlyRateChartOhtLoader = false;
@@ -4412,14 +4443,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.hourlyRateChartOhtAveragePrev = Math.round(data.total_ta);
         this.hourlyRateChartGoal = data.goals;
         if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors = [
+          this.barChartColorsHrOht = [
             { backgroundColor: [] }
           ];
-          this.barChartColors[0].backgroundColor[this.hrKey] = '#1CA49F';
-          this.HRcolors = this.barChartColors;
+          this.barChartColorsHrOht[0].backgroundColor[this.hrKey] = '#1CA49F';
+          this.HRcolorsOht = this.barChartColorsHrOht;
         }
         else {
-          this.HRcolors = this.lineChartColors;
+          this.HRcolorsOht = this.lineChartColors;
           let dynamicColors = [];
           this.hourlyRateChartOhtLabels.forEach((label, labelIndex) => {
             dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
@@ -4911,6 +4942,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     if (this._cookieService.get("clinic_dentist")) {
           var dentistVal1 = this._cookieService.get("clinic_dentist").split('_');
           this.selectedDentist = dentistVal1[1];
+      }
+      if (this._cookieService.get("dentistid")) { 
+        this.selectedDentist = this._cookieService.get("dentistid");
       }
     $('.target_filter').removeClass('mat-button-toggle-checked');
     $('.target_' + val).addClass('mat-button-toggle-checked');

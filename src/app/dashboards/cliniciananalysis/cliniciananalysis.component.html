@@ -95,20 +95,24 @@
                 <span *ngIf="proCollShow == 1 && !apiUrl.includes('test-')"> Dentist Production</span>
                 <span *ngIf="proCollShow == 2 && !apiUrl.includes('test-')"> Dentist Collection</span>
                 <span *ngIf="proCollShow == 3 && !apiUrl.includes('test-')"> Dentist Collection - Exp</span>
-                  
-                <select class="proSelect" *ngIf="proCollShow == 1 && apiUrl.includes('test-')"
+
+                <span *ngIf="proCollShow == 1 && apiUrl.includes('test-')  && user_type == '4'"> Dentist Production</span>
+                <span *ngIf="proCollShow == 2 && apiUrl.includes('test-')  && user_type == '4'"> Dentist Collection</span>
+                <span *ngIf="proCollShow == 3 && apiUrl.includes('test-')  && user_type == '4'"> Dentist Collection - Exp</span>
+           
+                <select class="proSelect" *ngIf="proCollShow == 1 && apiUrl.includes('test-') && user_type != '4'"
                 (change)="changeProSelect($event.target.value)">
                     <option value="production_all">Production - All</option>
                     <option value="production_dentists">Production - Dentists</option>
                     <option value="production_oht">Production - OHT</option>
                 </select>
-                <select class="proSelect" *ngIf="proCollShow == 2 && apiUrl.includes('test-')"
+                <select class="proSelect" *ngIf="proCollShow == 2 && apiUrl.includes('test-') && user_type != '4'"
                 (change)="changeProSelect($event.target.value)">
                   <option value="collection_all">Collection - All</option>
                   <option value="collection_dentists">Collection - Dentists</option>
                   <option value="collection_oht">Collection - OHT</option>
                 </select>
-                <select class="proSelect" *ngIf="proCollShow == 3 && apiUrl.includes('test-')"
+                <select class="proSelect" *ngIf="proCollShow == 3 && apiUrl.includes('test-') && user_type != '4'"
                 (change)="changeProSelect($event.target.value)">
                   <option value="collection_exp_all">Collection-Exp - All</option>
                   <option value="collection_exp_dentists">Collection-Exp - Dentists</option>
@@ -1039,8 +1043,9 @@
                 <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
                   mat-icon-button matTooltip="{{trendText}} : ${{hourlyRateChartAveragePrev| number:'1.0-0'}}"><img
                     class="trend_ico" src="../assets/images/trend_{{hourlyRateChartTooltip}}.png"></span>
-                    <span *ngIf="!apiUrl.includes('test-')">Hourly Rate</span>                  
-                    <select class="proSelect" *ngIf="apiUrl.includes('test-')"
+                    <span *ngIf="!apiUrl.includes('test-')">Hourly Rate</span>     
+                    <span *ngIf="apiUrl.includes('test-') && user_type == '4'">Hourly Rate</span>             
+                    <select class="proSelect" *ngIf="apiUrl.includes('test-') && user_type != '4'"
                     (change)="changeHourlyRateSelect($event.target.value)">
                         <option value="hr_all">Hourly Rate - All</option>
                         <option value="hr_dentists">Hourly Rate - Dentists</option>
