@@ -2894,7 +2894,9 @@ export class FinancesComponent implements AfterViewInit {
   public productionVisitChartTrendLabels = [];
   public productionVisitChartTrendLabels1 = [];
   public finProductionPerVisitTrendLoader: any;
-
+  public VMonthRange;
+  public VYearRange; 
+  public clinicIds;
   private finProductionPerVisitTrend() {
     this.finProductionPerVisitTrendLoader = true;
     this.productionVisitChartTrendLabels1 = [];
@@ -2902,6 +2904,9 @@ export class FinancesComponent implements AfterViewInit {
     this.productionVisitChartTrend1 = [];
     var user_id;
     var clinic_id;
+    this.VMonthRange=[];
+    this.VYearRange =[];
+    this.clinicIds =[];
     this.financesService.finProductionPerVisitTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       this.productionVisitChartTrendLabels = [];
       this.productionVisitChartTrendLabels1 = [];
@@ -2909,14 +2914,36 @@ export class FinancesComponent implements AfterViewInit {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       if (data && data.message == 'success') {
+        data.data.sort((a, b)=> a.year - b.year);
         data.data.forEach(res => {
-          this.productionVisitChartTrend1.push(Math.round(res.production));
-          if (this.trendValue == 'c')
-            this.productionVisitChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-          else
-            this.productionVisitChartTrendLabels1.push(res.year);
+          this.VMonthRange.push(res.year_month);
+          this.VYearRange.push(res.year);
+          this.clinicIds.push(res.clinic_id);
+          // this.productionVisitChartTrend1.push(Math.round(res.production));
+          // if (this.trendValue == 'c')
+          //   this.productionVisitChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+          // else
+          //   this.productionVisitChartTrendLabels1.push(res.year);
 
         });
+
+        const vsumClinics = (range:any) => data.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.production), 0);
+        const vsumClinics1 = (range:any) => data.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.production), 0);
+       
+        this.VMonthRange = [...new Set(this.VMonthRange)];
+        this.VYearRange = [...new Set(this.VYearRange)];
+        this.clinicIds = [...new Set(this.clinicIds)];
+        if (this.trendValue == 'c') {
+          this.VMonthRange.forEach(ele => {
+            this.productionVisitChartTrend1.push(vsumClinics(ele) / this.clinicIds.length);
+            this.productionVisitChartTrendLabels1.push(this.datePipe.transform(ele, 'MMM y'));
+          });
+        }else{
+          this.VYearRange.forEach(ele => {
+            this.productionVisitChartTrend1.push(vsumClinics1(ele) / this.clinicIds.length);
+            this.productionVisitChartTrendLabels1.push(ele);
+          });
+        }	
         this.productionVisitChartTrend[0]['data'] = this.productionVisitChartTrend1;
 
         this.productionVisitChartTrendLabels = this.productionVisitChartTrendLabels1;
