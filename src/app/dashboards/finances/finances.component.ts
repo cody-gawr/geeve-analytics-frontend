@@ -2690,7 +2690,10 @@ export class FinancesComponent implements AfterViewInit {
   public totalProductionChartTrendLabels = [];
   public totalProductionChartTrendLabels1 = [];
   public finTotalProductionTrendLoader: any;
-
+  public PMonthRange;
+  public PYearRange;
+  public cName;
+  public cids;
   private finTotalProductionTrend() {
     this.finTotalProductionTrendLoader = true;
     this.finNetProfitTrendLoader = true;
@@ -2702,26 +2705,55 @@ export class FinancesComponent implements AfterViewInit {
       this.netProfitChartTrendLabels = [];
       this.netProfitChartTrendLabels1 = [];
       this.totalProductionChartTrendLabels1 = [];
-      this.netProfitPercentChartTrend1 = [];
+      this.netProfitPercentChartTrend1 = [];      
+      this.PMonthRange =[];
+      this.PYearRange =[];
+      this.cName =[];
+      this.cids =[];
+
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         this.finTotalProductionTrendLoader = false;
         this.finNetProfitTrendLoader = false;
+        data.data.sort((a, b)=> a.year - b.year);
         data.data.forEach(res => {
-          this.totalProductionChartTrend1.push(Math.round(res.production));
+          this.PMonthRange.push(res.year_month);
+          this.PYearRange.push(res.year);
+          this.cName.push(res.clinic_name);
+          this.cids.push(res.clinic_id);
+         // this.totalProductionChartTrend1.push(Math.round(res.production));
           this.netProfitPercentChartTrend1.push(Math.round(res.production));
           if (this.trendValue == 'c') {
-            this.totalProductionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+            //this.totalProductionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
             this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
           } else {
-            this.totalProductionChartTrendLabels1.push(res.year);
+           // this.totalProductionChartTrendLabels1.push(res.year);
             this.netProfitChartTrendLabels1.push(res.year);
           }
 
         });
-        this.netProfitPercentChartTrend[0]['data'] = this.netProfitPercentChartTrend1;
-        this.netProfitChartTrendLabels = this.netProfitChartTrendLabels1;
+        const sumClinics = (range:any) => data.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.production), 0);
+        const sumClinics1 = (range:any) => data.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.production), 0);
+        this.cName = [...new Set(this.cName)];
+        this.cids = [...new Set(this.cids)];
+        this.PMonthRange = [...new Set(this.PMonthRange)];
+        this.PYearRange = [...new Set(this.PYearRange)];
+        if (this.trendValue == 'c') {
+          this.PMonthRange.forEach(ele => {
+            this.totalProductionChartTrend1.push(sumClinics(ele));
+            this.totalProductionChartTrendLabels1.push(this.datePipe.transform(ele, 'MMM y'));
+          });
+        }else{
+          this.PYearRange.forEach(ele => {
+            this.totalProductionChartTrend1.push(sumClinics1(ele));
+            this.totalProductionChartTrendLabels1.push(ele);
+          });
+        }
+       
+        this.netProfitPercentChartTrend[0]['data'] = this.totalProductionChartTrend1 ;//this.netProfitPercentChartTrend1;
+        this.netProfitPercentChartTrend[0]['label'] = this.cName;
+        this.netProfitChartTrendLabels = this.totalProductionChartTrendLabels1; //this.netProfitChartTrendLabels1;
         this.totalProductionChartTrend[0]['data'] = this.totalProductionChartTrend1;
         this.totalProductionChartTrendLabels = this.totalProductionChartTrendLabels1;
         this.finCollectionTrend();
@@ -2754,7 +2786,8 @@ export class FinancesComponent implements AfterViewInit {
   public collectionChartTrendLabels = [];
   public collectionChartTrendLabels1 = [];
   public finCollectionTrendLoader: any;
-
+  public CMonthRange;
+  public CYearRange;
   private finCollectionTrend() {
     this.finCollectionTrendLoader = true;
     this.collectionChartTrendLabels1 = [];
@@ -2764,16 +2797,39 @@ export class FinancesComponent implements AfterViewInit {
     this.financesService.finCollectionTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
+      this.CMonthRange =[];
+      this.CYearRange =[];
       if (data.message == 'success') {
-        this.finCollectionTrendLoader = false;
+        this.finCollectionTrendLoader = false;   
+        data.data.sort((a, b)=> a.year - b.year);    
         data.data.forEach(res => {
-          this.collectionChartTrend1.push(Math.round(res.collection));
-          if (this.trendValue == 'c')
-            this.collectionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-          else
-            this.collectionChartTrendLabels1.push(res.year);
+          this.CMonthRange.push(res.year_month);
+          this.CYearRange.push(res.year);
+          // this.collectionChartTrend1.push(Math.round(res.collection));
+          // if (this.trendValue == 'c')
+          //   this.collectionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+          // else
+          //   this.collectionChartTrendLabels1.push(res.year);
 
         });
+
+        const CsumClinics = (range:any) => data.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.collection), 0);
+        const CsumClinics1 = (range:any) => data.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.collection), 0);
+      
+        this.CMonthRange = [...new Set(this.CMonthRange)];
+        this.CYearRange = [...new Set(this.CYearRange)];
+        if (this.trendValue == 'c') {
+          this.CMonthRange.forEach(ele => {
+            this.collectionChartTrend1.push(CsumClinics(ele));
+            this.collectionChartTrendLabels1.push(this.datePipe.transform(ele, 'MMM y'));
+          });
+        }else{
+          this.CYearRange.forEach(ele => {
+            this.collectionChartTrend1.push(CsumClinics1(ele));
+            this.collectionChartTrendLabels1.push(ele);
+          });
+        }
+       
         this.totalProductionCollection[0]['data'] = this.totalProductionChartTrend1;
         this.totalProductionCollection[1]['data'] = this.collectionChartTrend1;
         this.totalProductionCollectionLabel = this.totalProductionChartTrendLabels1;
