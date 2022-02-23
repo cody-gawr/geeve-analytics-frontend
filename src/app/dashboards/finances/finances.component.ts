@@ -2583,11 +2583,16 @@ export class FinancesComponent implements AfterViewInit {
   public discountsChartTrendLabels = [];
   public discountsChartTrendLabels1 = [];
   public finTotalDiscountsTrendLoader: any;
-
+  public DMonthRange;
+  public DYearRange;
+  public cliName;
   private finTotalDiscountsTrend() {
     this.discountsChartTrendLabels = [];
     this.discountsChartTrendLabels1 = [];
     this.discountsChartTrend1 = [];
+    this.DMonthRange=[];
+    this.DYearRange =[];
+    this.cliName =[];
     this.finTotalDiscountsTrendLoader = true;
     var user_id;
     var clinic_id;
@@ -2595,15 +2600,37 @@ export class FinancesComponent implements AfterViewInit {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
+        data.data.sort((a, b)=> a.year - b.year);
         this.finTotalDiscountsTrendLoader = false;
         data.data.forEach(res => {
-          this.discountsChartTrend1.push(Math.round(res.discounts));
-          if (this.trendValue == 'c')
-            this.discountsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-          else
-            this.discountsChartTrendLabels1.push(res.year);
+          this.DMonthRange.push(res.year_month);
+          this.DYearRange.push(res.year);
+          this.cliName.push(res.clinicName);
+          // this.discountsChartTrend1.push(Math.round(res.discounts));
+          // if (this.trendValue == 'c')
+          //   this.discountsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+          // else
+          //   this.discountsChartTrendLabels1.push(res.year);
 
         });
+        const sumClinics = (range:any) => data.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.discounts), 0);
+        const sumClinics1 = (range:any) => data.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.discounts), 0);
+        this.cliName = [...new Set(this.cliName)];
+        this.DMonthRange = [...new Set(this.DMonthRange)];
+        this.DYearRange = [...new Set(this.DYearRange)];
+        if (this.trendValue == 'c') {
+          this.DMonthRange.forEach(ele => {
+            this.discountsChartTrend1.push(sumClinics(ele));
+            this.discountsChartTrendLabels1.push(this.datePipe.transform(ele, 'MMM y'));
+            this.discountsChartTrend[0]['label'] = this.cliName;
+          });
+        }else{
+          this.DYearRange.forEach(ele => {
+            this.discountsChartTrend1.push(sumClinics1(ele));
+            this.discountsChartTrendLabels1.push(ele);
+            this.discountsChartTrend[0]['label'] = this.cliName;
+          });
+        }		
         if (this.discountsChartTrend1.every((item) => item == 0)) this.discountsChartTrend1 = [];
         this.discountsChartTrend[0]['data'] = this.discountsChartTrend1;
 

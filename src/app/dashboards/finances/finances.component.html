@@ -824,7 +824,7 @@ expenses_card custom_ngx_cw01">
                   <canvas #myCanvas2 class="trendtotalDiscount"
                     *ngIf="discountsChartTrend1 && discountsChartTrend1.length  > 0 && finTotalDiscountsTrendLoader == false"
                     baseChart [datasets]="discountsChartTrend" [labels]="discountsChartTrendLabels"
-                    [options]="labelBarOptionsSingleValue" [legend]="false" [chartType]="lineChartType"
+                    [options]="stackedChartOptions" [legend]="false" [chartType]="stackedChartType"
                     (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"> </canvas>
                   <div
