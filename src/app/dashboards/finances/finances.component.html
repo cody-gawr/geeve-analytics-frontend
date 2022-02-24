@@ -648,7 +648,7 @@ expenses_card custom_ngx_cw01">
                     <canvas
                     *ngIf="finNetProfitTrendLoader == false && showProdByclinic == true"
                     class="profit1 net_profit" baseChart [datasets]="netProfitPercentChartTrendMulti"
-                    [labels]="netProfitChartTrendLabelsMulti" [options]="stackedChartOptions" [legend]="false"
+                    [labels]="netProfitChartTrendLabelsMulti" [options]="stackedChartOptionsDiscount" [legend]="false"
                     [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
                     (chartClick)="chartClicked($event)"> </canvas>
                   <div

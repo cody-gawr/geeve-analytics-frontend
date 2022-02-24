@@ -823,7 +823,6 @@ export class FinancesComponent implements AfterViewInit {
           currency = currency.split(".");
           currency[0] = currency[0].split('-').join('').split(/(?=(?:...)*$)/).join(',');
           currency = currency.join(".");
-
           return data.datasets[tooltipItems.datasetIndex].label + `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`;;
         },
 
@@ -2786,6 +2785,7 @@ export class FinancesComponent implements AfterViewInit {
     var user_id;
     var clinic_id;
     this.showByclinic = false;
+    this.discountsChartTrendMulti =[];
     this.financesService.finTotalDiscountsTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
@@ -2934,7 +2934,7 @@ export class FinancesComponent implements AfterViewInit {
       this.PYearRange =[];
       this.cName =[];
       this.cids =[];
-
+      this.netProfitPercentChartTrendMulti =[];
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
@@ -3002,7 +3002,7 @@ export class FinancesComponent implements AfterViewInit {
           });
           this.netProfitChartTrendLabelsMulti = this.totalProductionChartTrendLabels1;
         }
-
+        
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
