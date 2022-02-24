@@ -42,7 +42,7 @@
           class="external_clinic"
           [(ngModel)]="selectedClinic"
           (ngModelChange)="changeClinic($event,allChecked)"
-        
+          [placeholder]="placeHolder"
           [multiple]="true"
           (openedChange)="loadClinicEvent($event)"
           #multiSelect

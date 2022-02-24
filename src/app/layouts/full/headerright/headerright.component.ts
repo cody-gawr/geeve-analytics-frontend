@@ -650,6 +650,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
               newValue = '';            
               this.selectedClinic = [];
               this.allChecked = false;
+              this.placeHolder = "";
             }else{
               this.selectedClinic = [];
               newValue = 'all';
