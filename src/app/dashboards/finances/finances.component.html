@@ -646,10 +646,10 @@ expenses_card custom_ngx_cw01">
                     [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"> </canvas>
                     <canvas
-                    *ngIf="netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  > 0 && finNetProfitTrendLoader == false && showProdByclinic == true"
-                    class="profit1 net_profit" baseChart [datasets]="netProfitPercentChartTrend"
-                    [labels]="netProfitChartTrendLabels" [options]="stackedChartOptions" [legend]="false"
-                    [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar"
+                    *ngIf="finNetProfitTrendLoader == false && showProdByclinic == true"
+                    class="profit1 net_profit" baseChart [datasets]="netProfitPercentChartTrendMulti"
+                    [labels]="netProfitChartTrendLabelsMulti" [options]="stackedChartOptions" [legend]="false"
+                    [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
                     (chartClick)="chartClicked($event)"> </canvas>
                   <div
                     *ngIf="netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  <= 0 && finNetProfitTrendLoader == false"

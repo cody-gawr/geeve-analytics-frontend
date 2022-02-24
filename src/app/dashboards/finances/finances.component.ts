@@ -2793,7 +2793,6 @@ export class FinancesComponent implements AfterViewInit {
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           this.showByclinic = true;
         }
-        data.data.sort((a, b)=> a.year - b.year);
         this.finTotalDiscountsTrendLoader = false;
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           data.data.forEach(res => { 
@@ -2906,6 +2905,8 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
     }];
+    public netProfitPercentChartTrendMulti: any[] = [
+      { data: [], label: '' },{ data: [], label: '' },{ data: [], label: '' },{ data: [], label: '' },{ data: [], label: '' },{ data: [], label: '' },{ data: [], label: '' },{ data: [], label: '' } ];  
   public totalProductionChartTrend1 = [];
   public totalProductionChartTrendLabels = [];
   public totalProductionChartTrendLabels1 = [];
@@ -2914,6 +2915,7 @@ export class FinancesComponent implements AfterViewInit {
   public PYearRange;
   public cName;
   public cids;
+  public netProfitChartTrendLabelsMulti =[];
   public showProdByclinic: boolean = false;
   private finTotalProductionTrend() {
     this.finTotalProductionTrendLoader = true;
@@ -2982,6 +2984,25 @@ export class FinancesComponent implements AfterViewInit {
         this.totalProductionChartTrend[0]['data'] = this.totalProductionChartTrend1;
         this.totalProductionChartTrendLabels = this.totalProductionChartTrendLabels1;
         this.finCollectionTrend();
+        
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.dataMulti.forEach(res => {
+            res.val.forEach((result, key) => {
+              if (typeof (this.netProfitPercentChartTrendMulti[key]) == 'undefined') {
+                this.netProfitPercentChartTrendMulti[key] = { data: [], label: '' };
+              }
+              if (typeof (this.netProfitPercentChartTrendMulti[key]['data']) == 'undefined') {
+                this.netProfitPercentChartTrendMulti[key]['data'] = [];
+              }
+              this.netProfitPercentChartTrendMulti[key]['data'].push(Math.round(result.production));
+              this.netProfitPercentChartTrendMulti[key]['label'] = result.clinic_name;
+              this.netProfitPercentChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
+              this.netProfitPercentChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+            });
+          });
+          this.netProfitChartTrendLabelsMulti = this.totalProductionChartTrendLabels1;
+        }
+
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
