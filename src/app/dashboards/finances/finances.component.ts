@@ -1081,7 +1081,7 @@ export class FinancesComponent implements AfterViewInit {
       },
       callbacks: {
         label: function (tooltipItems, data) {
-          return data.datasets[tooltipItems.datasetIndex].label + ": " + tooltipItems.yLabel + "%";
+          return data.datasets[tooltipItems.datasetIndex].label + ": " + (tooltipItems.yLabel).toFixed(1) + "%";
         },
 
       }
@@ -2509,7 +2509,7 @@ export class FinancesComponent implements AfterViewInit {
   public productionChartTrendLabels1 = [];
   public finProductionByClinicianTrendLoader: any;
   public finProductionByClinicianTrendError: any;
-
+  public showClinic:boolean =false;  
   private finProductionByClinicianTrend() {
     this.finProductionByClinicianTrendLoader = true;
     this.finProductionByClinicianTrendError = false;
@@ -2521,9 +2521,12 @@ export class FinancesComponent implements AfterViewInit {
     this.financesService.finProductionByClinicianTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
+      this.showClinic = false;
       this.finProductionByClinicianTrendLoader = false;
-      if (data.message == 'success') {
+      if (data.message == 'success') {        
+        data.data.sort((a, b)=> a.duration - b.duration);
         data.data.forEach(res => {
+          const sumProd = res.val.reduce((accumulator, current) => accumulator + Number(current['production']), 0)
           res.val.forEach((result, key) => {
 
             if (typeof (this.productionChartTrend[key]) == 'undefined') {
@@ -2532,15 +2535,39 @@ export class FinancesComponent implements AfterViewInit {
             if (typeof (this.productionChartTrend[key]['data']) == 'undefined') {
               this.productionChartTrend[key]['data'] = [];
             }
-            // console.log(`key`, this.doughnutChartColors[key]) var total = result.prod_per_clinician;
-            var total = result.prod_per_clinician;
-            if (result.prod_per_clinician > 0 && result.prod_per_clinician.toString().includes('.')) {
-              var num_parts = result.prod_per_clinician.split(".");
-              num_parts[1] = num_parts[1].charAt(0);
-              total = num_parts.join(".");
+            if(this.clinic_id.indexOf(',') >= 0){
+              this.showClinic = true;
+                var total = result.production;
+                if (result.production > 0 && result.production.toString().includes('.')) {
+                  var num_parts = result.production.split(".");
+                  num_parts[1] = num_parts[1].charAt(0);
+                  total = num_parts.join(".");
+                }
+                this.productionChartTrend[key]['data'].push(parseFloat(total) / sumProd * 100);
+                this.productionChartTrend[key]['label'] = result.clinic_name;
+            }else{
+              if(this.clinic_id == 'all'){
+                this.showClinic = true;
+                var total1 = result.production;
+                if (result.production > 0 && result.production.toString().includes('.')) {
+                  var num_parts = result.production.split(".");
+                  num_parts[1] = num_parts[1].charAt(0);
+                  total1 = num_parts.join(".");
+                }
+                this.productionChartTrend[key]['data'].push(parseFloat(total1)  / sumProd * 100 );
+                this.productionChartTrend[key]['label'] = result.clinic_name;  
+              }else{
+                this.showClinic = false;
+                var total2 = result.prod_per_clinician;
+                if (result.prod_per_clinician > 0 && result.prod_per_clinician.toString().includes('.')) {
+                  var num_parts = result.prod_per_clinician.split(".");
+                  num_parts[1] = num_parts[1].charAt(0);
+                  total2 = num_parts.join(".");
+                }
+                this.productionChartTrend[key]['data'].push(parseFloat(total2));
+                this.productionChartTrend[key]['label'] = result.provider_name;
+              }
             }
-            this.productionChartTrend[key]['data'].push(parseFloat(total));
-            this.productionChartTrend[key]['label'] = result.provider_name;
             this.productionChartTrend[key]['backgroundColor'] = this.doughnutChartColors[key];
             this.productionChartTrend[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
 
@@ -2586,6 +2613,7 @@ export class FinancesComponent implements AfterViewInit {
   public DMonthRange;
   public DYearRange;
   public cliName;
+  public showByclinic : boolean =false;
   private finTotalDiscountsTrend() {
     this.discountsChartTrendLabels = [];
     this.discountsChartTrendLabels1 = [];
@@ -2596,10 +2624,15 @@ export class FinancesComponent implements AfterViewInit {
     this.finTotalDiscountsTrendLoader = true;
     var user_id;
     var clinic_id;
+    this.showByclinic = false;
     this.financesService.finTotalDiscountsTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          this.showByclinic = true;
+        }
+
         data.data.sort((a, b)=> a.year - b.year);
         this.finTotalDiscountsTrendLoader = false;
         data.data.forEach(res => {
@@ -2721,6 +2754,7 @@ export class FinancesComponent implements AfterViewInit {
   public PYearRange;
   public cName;
   public cids;
+  public showProdByclinic: boolean = false;
   private finTotalProductionTrend() {
     this.finTotalProductionTrendLoader = true;
     this.finNetProfitTrendLoader = true;
@@ -2728,6 +2762,7 @@ export class FinancesComponent implements AfterViewInit {
     this.totalProductionChartTrend1 = [];
     var user_id;
     var clinic_id;
+    this.showProdByclinic = false;
     this.financesService.finTotalProductionTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       this.netProfitChartTrendLabels = [];
       this.netProfitChartTrendLabels1 = [];
@@ -2741,6 +2776,9 @@ export class FinancesComponent implements AfterViewInit {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          this.showProdByclinic = true;
+        }
         this.finTotalProductionTrendLoader = false;
         this.finNetProfitTrendLoader = false;
         data.data.sort((a, b)=> a.year - b.year);
