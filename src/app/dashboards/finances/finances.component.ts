@@ -2935,12 +2935,12 @@ export class FinancesComponent implements AfterViewInit {
         this.clinicIds = [...new Set(this.clinicIds)];
         if (this.trendValue == 'c') {
           this.VMonthRange.forEach(ele => {
-            this.productionVisitChartTrend1.push(vsumClinics(ele) / this.clinicIds.length);
+            this.productionVisitChartTrend1.push(Math.round(vsumClinics(ele) / this.clinicIds.length));
             this.productionVisitChartTrendLabels1.push(this.datePipe.transform(ele, 'MMM y'));
           });
         }else{
           this.VYearRange.forEach(ele => {
-            this.productionVisitChartTrend1.push(vsumClinics1(ele) / this.clinicIds.length);
+            this.productionVisitChartTrend1.push(Math.round(vsumClinics1(ele) / this.clinicIds.length));
             this.productionVisitChartTrendLabels1.push(ele);
           });
         }	
