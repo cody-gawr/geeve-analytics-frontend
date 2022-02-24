@@ -834,10 +834,10 @@ expenses_card custom_ngx_cw01">
                     (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"> </canvas>
                   <canvas #myCanvas2 class="trendtotalDiscount"
-                    *ngIf="discountsChartTrend1 && discountsChartTrend1.length  > 0 && finTotalDiscountsTrendLoader == false && showByclinic == true"
-                    baseChart [datasets]="discountsChartTrend" [labels]="discountsChartTrendLabels"
-                    [options]="stackedChartOptions" [legend]="false" [chartType]="stackedChartType"
-                    (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar"
+                    *ngIf="finTotalDiscountsTrendLoader == false && showByclinic == true"
+                    baseChart [datasets]="discountsChartTrendMulti" [labels]="discountsChartTrendMultiLabels1"
+                    [options]="stackedChartOptionsDiscount" [legend]="false" [chartType]="stackedChartType"
+                    (chartHover)="chartHovered($event)" 
                     (chartClick)="chartClicked($event)"> </canvas>
                   <div
                     *ngIf="discountsChartTrend1 && discountsChartTrend1.length <=0 && finTotalDiscountsTrendLoader == false"
