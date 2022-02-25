@@ -1241,7 +1241,7 @@ export class FinancesComponent implements AfterViewInit {
       },
       callbacks: {
         label: function (tooltipItems, data) {
-          return data.datasets[tooltipItems.datasetIndex].label + ": " + (tooltipItems.yLabel).toFixed(1) + "%";
+          return data.datasets[tooltipItems.datasetIndex].label + ": " + Math.round(tooltipItems.yLabel) + "%";
         },
 
       }
@@ -2697,24 +2697,24 @@ export class FinancesComponent implements AfterViewInit {
             }
             if(this.clinic_id.indexOf(',') >= 0){
               this.showClinic = true;
-                var total = result.production;
+                var total = Math.trunc(result.production);
                 if (result.production > 0 && result.production.toString().includes('.')) {
                   var num_parts = result.production.split(".");
                   num_parts[1] = num_parts[1].charAt(0);
                   total = num_parts.join(".");
                 }
-                this.productionChartTrend[key]['data'].push(parseFloat(total) / sumProd * 100);
+                this.productionChartTrend[key]['data'].push(total / sumProd * 100);
                 this.productionChartTrend[key]['label'] = result.clinic_name;
             }else{
               if(this.clinic_id == 'all'){
                 this.showClinic = true;
-                var total1 = result.production;
+                var total1 = Math.trunc(result.production);
                 if (result.production > 0 && result.production.toString().includes('.')) {
                   var num_parts = result.production.split(".");
                   num_parts[1] = num_parts[1].charAt(0);
                   total1 = num_parts.join(".");
                 }
-                this.productionChartTrend[key]['data'].push(parseFloat(total1)  / sumProd * 100 );
+                this.productionChartTrend[key]['data'].push(total1  / sumProd * 100 );
                 this.productionChartTrend[key]['label'] = result.clinic_name;  
               }else{
                 this.showClinic = false;
