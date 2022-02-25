@@ -220,13 +220,14 @@ export class AppHeaderrightComponent implements AfterViewInit {
   dentists: Dentist[] = [];
   private warningMessage: string;
   public finalUrl: string;
-  public selectedClinic:any;
+  public selectedClinic:any = [];
   public trailDays: Number = 0;
   public selectedDentist;
   public placeHolder = "";
   public showAll: boolean = true;
   public allChecked : boolean = false;
   private getClinics() {
+    this.selectedClinic = [];
     this.headerService.getClinics().subscribe(
       (res) => {
         if (res.message == "success") {
@@ -317,11 +318,14 @@ export class AppHeaderrightComponent implements AfterViewInit {
                   });
                 }
               } else {
-
-                this.clinic_id = res.data[0].id;
-                this.selectedClinic = res.data[0].id;
-                this.placeHolder = res.data[0].clinicName;
-
+                if (this.route == "/dashboards/finances" && this.apiUrl.includes('test')) {
+                  this.selectedClinic = [];
+                  this.selectedClinic.push(res.data[0].id);
+                }else{
+                  this.clinic_id = res.data[0].id;
+                  this.selectedClinic = res.data[0].id;
+                  this.placeHolder = res.data[0].clinicName;
+                }
               }
             }            
             this.title = $("#page_title").val();
