@@ -252,7 +252,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
                 } else {
                   this.selectedDentist = parseInt(dentistclinic[1]);
                 } 
-                if (this.route == "/dashboards/finances" && this.apiUrl.includes('test')) {
+                if ((this.route == "/dashboards/finances" || this.route == "/dashboards/cliniciananalysis") && this.apiUrl.includes('test')) {
                   this.allChecked = false;
                   this.clinic_id = [];
                   this.selectedClinic = [];
@@ -284,6 +284,11 @@ export class AppHeaderrightComponent implements AfterViewInit {
                       this.selectedClinic.push(parseInt(dentistclinic[0]));
                     }                   
                   }
+                  if( this.selectedClinic[0].toString() != 'NaN' && this.selectedClinic[0] !='all' && this.selectedClinic.length == 1 && this.route == "/dashboards/cliniciananalysis"){
+                    this.showDropDown = true; 
+                   }else{
+                    this.showDropDown = false; 
+                   }
                 } else {  
                   if(dentistclinic[0].indexOf(',') >= 0){   
                     if(dentistclinic[0].split(',')[0] == "all"){
@@ -318,7 +323,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
                   });
                 }
               } else {
-                if (this.route == "/dashboards/finances" && this.apiUrl.includes('test')) {
+                if ((this.route == "/dashboards/finances"  || this.route == "/dashboards/cliniciananalysis") && this.apiUrl.includes('test')) {
                   this.selectedClinic = [];
                   this.selectedClinic.push(res.data[0].id);
                 }else{
@@ -427,7 +432,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
     
     if (newValue != "undefined") {
       if(Array.isArray(newValues)) {
-        if (this.route == "/dashboards/finances" && this.apiUrl.includes('test')) {
+        if ((this.route == "/dashboards/finances"  || this.route == "/dashboards/cliniciananalysis") && this.apiUrl.includes('test')) {
           if(this.clinicsData.length == this.selectedClinic.length){
             newValue = '';            
             this.selectedClinic = [];
@@ -475,9 +480,12 @@ export class AppHeaderrightComponent implements AfterViewInit {
       } else {
         $("#currentClinic").attr("cid", newValue);
       }
-      if ((this.route != "/dashboards/finances" && this.apiUrl.includes('test')) || this.apiUrl.includes('staging') || ( !this.apiUrl.includes('test-') && !this.apiUrl.includes('staging-'))) {
+      if (((this.route != "/dashboards/finances"  && this.route != "/dashboards/cliniciananalysis" ) && this.apiUrl.includes('test')) || this.apiUrl.includes('staging') || ( !this.apiUrl.includes('test-') && !this.apiUrl.includes('staging-'))) {
         this.selectedClinic = newValue;
         this.clinic_id = this.selectedClinic;
+        this.getDentists();
+      }
+      if(this.route == "/dashboards/cliniciananalysis"){
         this.getDentists();
       }
       
@@ -648,13 +656,14 @@ export class AppHeaderrightComponent implements AfterViewInit {
     
     if (newValue != "undefined") {
       if(Array.isArray(newValues)) {
-        if (this.route == "/dashboards/finances" && this.apiUrl.includes('test')) {
+        if ((this.route == "/dashboards/finances"  || this.route == "/dashboards/cliniciananalysis") && this.apiUrl.includes('test')) {
           if(this.clinicsData.length == this.selectedClinic.length){
             if(this.allChecked == true){
               newValue = '';            
               this.selectedClinic = [];
               this.allChecked = false;
               this.placeHolder = "";
+              this.showDropDown = false;
             }else{
               this.selectedClinic = [];
               newValue = 'all';
@@ -664,7 +673,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
                 })
                 this.clinic_id = this.selectedClinic;
                 this.allChecked = true;
-              
+                this.showDropDown = false;              
             } 
           }else{                      
             this.selectedClinic = [];
@@ -676,12 +685,18 @@ export class AppHeaderrightComponent implements AfterViewInit {
               })
               this.clinic_id = this.selectedClinic;
               this.allChecked = true;
+              this.showDropDown = false; 
              }else{
+               if(newValues.length == 1 && this.route == "/dashboards/cliniciananalysis"){
+                this.showDropDown = true; 
+               }else{
+                this.showDropDown = false; 
+               }
               this.allChecked = false;
               this.selectedClinic =[];
               newValue = newValues; 
               this.selectedClinic = newValue;
-              this.clinic_id = this.selectedClinic;
+              this.clinic_id = this.selectedClinic;              
              }
           }
         }else{

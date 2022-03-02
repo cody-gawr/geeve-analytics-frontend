@@ -169,11 +169,31 @@
 
               <!-- Production Chart Start -->
               <div *ngIf="proCollShow == 1 && proSelectShow =='production_all'">
-                <div class="div-pro-coll-show" *ngIf="barChartData[0].data.length && !buildChartLoader">
+                <div class="div-pro-coll-show" *ngIf="showprodAllTbl === false && barChartData[0].data.length && !buildChartLoader">
                   <canvas id="dentistProduction" baseChart [datasets]="barChartData" [labels]="barChartLabels"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP1"
                     [colors]="DPcolors">
-                  </canvas> <!-- dynamic colors of bar -->
+                  </canvas> <!-- dynamic colors of bar -->  
+                </div>
+                <div class="Prod-tbl-height" *ngIf="showprodAllTbl === true">
+                  <div class="DentistProductionTable">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <!-- <th>Clinic</th> -->
+                          <th>Production</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let protbl of dentistProductiontbl">
+                          <td>{{ protbl.provider_name }}</td>
+                          <!-- <td>{{ protbl.clinic_name }}</td> -->
+                          <td>${{ protbl.production | number:'1.0-0' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
                 <div *ngIf="!barChartData[0].data.length && !buildChartLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
@@ -182,11 +202,31 @@
                 </div>
               </div>
               <div *ngIf="proCollShow == 1 && proSelectShow =='production_dentists'">
-                <div class="div-pro-coll-show" *ngIf="barChartDataDentists[0].data.length && !buildChartDentistsLoader">
+                <div class="div-pro-coll-show" *ngIf=" showprodDentAllTbl === false && barChartDataDentists[0].data.length && !buildChartDentistsLoader">
                   <canvas id="dentistProduction" baseChart [datasets]="barChartDataDentists" [labels]="barChartDentistLabels"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP1"
                     [colors]="DPcolors">
                   </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div class="Prod-tbl-height" *ngIf="showprodDentAllTbl === true">
+                  <div class="DentistProductionTable">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <!-- <th>Clinic</th> -->
+                          <th>Production</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let protbl of dentistProductionDentisttbl">
+                          <td>{{ protbl.provider_name }}</td>
+                          <!-- <td>{{ protbl.clinic_name }}</td> -->
+                          <td>${{ protbl.production | number:'1.0-0' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
                 <div *ngIf="!barChartDataDentists[0].data.length && !buildChartDentistsLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
@@ -195,11 +235,31 @@
                 </div>
               </div>
               <div *ngIf="proCollShow == 1  && proSelectShow =='production_oht'">
-                <div class="div-pro-coll-show" *ngIf="barChartDataOht[0].data.length && !buildChartOhtLoader">
+                <div class="div-pro-coll-show" *ngIf="showprodOhtAllTbl === false && barChartDataOht[0].data.length && !buildChartOhtLoader">
                   <canvas id="dentistProduction" baseChart [datasets]="barChartDataOht" [labels]="barChartOhtLabels"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP1"
                     [colors]="DPcolors">
                   </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div class="Prod-tbl-height" *ngIf="showprodOhtAllTbl === true">
+                  <div class="DentistProductionTable">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <!-- <th>Clinic</th> -->
+                          <th>Production</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let protbl of dentistProductionOhttbl">
+                          <td>{{ protbl.provider_name }}</td>
+                          <!-- <td>{{ protbl.clinic_name }}</td> -->
+                          <td>${{ protbl.production | number:'1.0-0' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
                 <div *ngIf="!barChartDataOht[0].data.length && !buildChartOhtLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
@@ -211,11 +271,31 @@
 
               <!-- Collection Chart Start -->
               <div *ngIf="proCollShow == 2 && proSelectShow =='collection_all'">
-                <div class="div-pro-coll-show" *ngIf="collectionData[0].data.length && !collectionLoader">
+                <div class="div-pro-coll-show" *ngIf="showCollAllTbl === false && collectionData[0].data.length && !collectionLoader">
                   <canvas id="dentistCollection" baseChart [datasets]="collectionData" [labels]="collectionLabels"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
                     [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div class="Prod-tbl-height" *ngIf="showCollAllTbl === true">
+                  <div class="DentistProductionTable">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <!-- <th>Clinic</th> -->
+                          <th>Collection</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let protbl of dentistCollectiontbl">
+                          <td>{{ protbl.provider_name }}</td>
+                          <!-- <td>{{ protbl.clinic_name }}</td> -->
+                          <td>${{ protbl.collection | number:'1.0-0' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
                 <div *ngIf="!collectionData[0].data.length && !collectionLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
@@ -224,11 +304,31 @@
                 </div>
               </div>
               <div *ngIf="proCollShow == 2 && proSelectShow =='collection_dentists'">
-                <div class="div-pro-coll-show" *ngIf="collectionDentistsData[0].data.length && !collectionDentistsLoader">
+                <div class="div-pro-coll-show" *ngIf="showCollDentTbl === false && collectionDentistsData[0].data.length && !collectionDentistsLoader">
                   <canvas id="dentistCollection" baseChart [datasets]="collectionDentistsData" [labels]="collectionDentistsLabels"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
                     [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div class="Prod-tbl-height" *ngIf="showCollDentTbl === true">
+                  <div class="DentistProductionTable">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <!-- <th>Clinic</th> -->
+                          <th>Collection</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let protbl of dentistCollectionDenttbl">
+                          <td>{{ protbl.provider_name }}</td>
+                          <!-- <td>{{ protbl.clinic_name }}</td> -->
+                          <td>${{ protbl.collection | number:'1.0-0' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
                 <div *ngIf="!collectionDentistsData[0].data.length && !collectionDentistsLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
@@ -237,11 +337,31 @@
                 </div>
               </div>
               <div *ngIf="proCollShow == 2  && proSelectShow =='collection_oht'">
-                <div class="div-pro-coll-show" *ngIf="collectionOhtData[0].data.length && !collectionOhtLoader">
+                <div class="div-pro-coll-show" *ngIf="showCollOhtTbl === false && collectionOhtData[0].data.length && !collectionOhtLoader">
                   <canvas id="dentistCollection" baseChart [datasets]="collectionOhtData" [labels]="collectionOhtLabels"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
                     [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div class="Prod-tbl-height" *ngIf="showCollOhtTbl === true">
+                  <div class="DentistProductionTable">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <!-- <th>Clinic</th> -->
+                          <th>Collection</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let protbl of dentistCollectionOhttbl">
+                          <td>{{ protbl.provider_name }}</td>
+                          <!-- <td>{{ protbl.clinic_name }}</td> -->
+                          <td>${{ protbl.collection | number:'1.0-0' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
                 <div *ngIf="!collectionOhtData[0].data.length && !collectionOhtLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
@@ -253,11 +373,31 @@
 
               <!-- CollectionExp Chart Start -->
               <div *ngIf="proCollShow == 3 && proSelectShow =='collection_exp_all'">
-                <div class="div-pro-coll-show" *ngIf="collectionExpData[0].data.length && !collectionExpLoader">
+                <div class="div-pro-coll-show" *ngIf="showCollExpTbl === false && collectionExpData[0].data.length && !collectionExpLoader">
                   <canvas id="dentistCollection" baseChart [datasets]="collectionExpData" [labels]="collectionLabelsExp"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
                     [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div class="Prod-tbl-height" *ngIf="showCollExpTbl === true">
+                  <div class="DentistProductionTable">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <!-- <th>Clinic</th> -->
+                          <th>Collection</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let protbl of dentistCollectionExptbl">
+                          <td>{{ protbl.provider_name }}</td>
+                          <!-- <td>{{ protbl.clinic_name }}</td> -->
+                          <td>${{ protbl.collection | number:'1.0-0' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
                 <div *ngIf="!collectionExpData[0].data.length && !collectionExpLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
@@ -266,11 +406,31 @@
                 </div>
               </div>
               <div *ngIf="proCollShow == 3 && proSelectShow =='collection_exp_dentists'">
-                <div class="div-pro-coll-show" *ngIf="collectionExpDentistsData[0].data.length && !collectionExpDentistsLoader">
+                <div class="div-pro-coll-show" *ngIf="showCollExpDentTbl === false && collectionExpDentistsData[0].data.length && !collectionExpDentistsLoader">
                   <canvas id="dentistCollection" baseChart [datasets]="collectionExpDentistsData" [labels]="collectionLabelsDentistsExp"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
                     [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div class="Prod-tbl-height" *ngIf="showCollExpDentTbl === true">
+                  <div class="DentistProductionTable">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <!-- <th>Clinic</th> -->
+                          <th>Collection</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let protbl of dentistCollectionExpDenttbl">
+                          <td>{{ protbl.provider_name }}</td>
+                          <!-- <td>{{ protbl.clinic_name }}</td> -->
+                          <td>${{ protbl.collection | number:'1.0-0' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
                 <div *ngIf="!collectionExpDentistsData[0].data.length && !collectionExpDentistsLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
@@ -279,11 +439,31 @@
                 </div>
               </div>
               <div *ngIf="proCollShow == 3 && proSelectShow =='collection_exp_oht'">
-                <div class="div-pro-coll-show" *ngIf="collectionExpOhtData[0].data.length && !collectionExpOhtLoader">
+                <div class="div-pro-coll-show" *ngIf="showCollExpOhtTbl === false && collectionExpOhtData[0].data.length && !collectionExpOhtLoader">
                   <canvas id="dentistCollection" baseChart [datasets]="collectionExpOhtData" [labels]="collectionLabelsOhtExp"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
                     [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div class="Prod-tbl-height" *ngIf="showCollExpOhtTbl === true">
+                  <div class="DentistProductionTable">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <!-- <th>Clinic</th> -->
+                          <th>Collection</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let protbl of dentistCollectionExpOhttbl">
+                          <td>{{ protbl.provider_name }}</td>
+                          <!-- <td>{{ protbl.clinic_name }}</td> -->
+                          <td>${{ protbl.collection | number:'1.0-0' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
                 <div *ngIf="!collectionExpOhtData[0].data.length && !collectionExpOhtLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
@@ -1069,11 +1249,31 @@
               <div class="relative h-100">
                 <div class="cl-card-height" *ngIf="hrSelectShow =='hr_all'">
                   <canvas #myCanvas id="HourlyRate" baseChart
-                    *ngIf="hourlyRateChartData1.length > 0 && hourlyRateChartLoader == false"
+                    *ngIf="showHrTbl === false && hourlyRateChartData1.length > 0 && hourlyRateChartLoader == false"
                     [datasets]="hourlyRateChartData" [labels]="hourlyRateChartLabels" [legend]="barChartLegend"
                     [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
                     [colors]="HRcolors" (chartClick)="chartClicked($event)">
                   </canvas>
+                  <div class="hr-tbl-height" *ngIf="showHrTbl === true">
+                    <div class="DentistProductionTable">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <!-- <th>Clinic</th> -->
+                            <th>Hourly Rate</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let protbl of hourlyRatetbl">
+                            <td>{{ protbl.provider_name }}</td>
+                            <!-- <td>{{ protbl.clinic_name }}</td> -->
+                            <td>${{ protbl.hourly_rate | number:'1.0-0' }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                   <div class="no-data-placeholder"
                     *ngIf="hourlyRateChartData1.length <= 0 && hourlyRateChartLoader===false">
                     <div class="sa_nodata_div">
@@ -1083,11 +1283,31 @@
                 </div>
                 <div class="cl-card-height" *ngIf="hrSelectShow =='hr_dentists'">
                   <canvas #myCanvas id="HourlyRate" baseChart
-                    *ngIf="hourlyRateChartDesntistsData1.length > 0 && hourlyRateChartDentistsLoader == false"
+                    *ngIf="showHrDentTbl === false && hourlyRateChartDesntistsData1.length > 0 && hourlyRateChartDentistsLoader == false"
                     [datasets]="hourlyRateChartDentistsData" [labels]="hourlyRateChartDesntistsLabels" [legend]="barChartLegend"
                     [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
                     [colors]="HRcolors" (chartClick)="chartClicked($event)">
                   </canvas>
+                  <div class="hr-tbl-height" *ngIf="showHrDentTbl === true">
+                    <div class="DentistProductionTable">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <!-- <th>Clinic</th> -->
+                            <th>Hourly Rate</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let protbl of hourlyRateDenttbl">
+                            <td>{{ protbl.provider_name }}</td>
+                            <!-- <td>{{ protbl.clinic_name }}</td> -->
+                            <td>${{ protbl.hourly_rate | number:'1.0-0' }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                   <div class="no-data-placeholder"
                     *ngIf="hourlyRateChartDesntistsData1.length <= 0 && hourlyRateChartDentistsLoader===false">
                     <div class="sa_nodata_div">
@@ -1097,11 +1317,31 @@
                 </div>
                 <div class="cl-card-height" *ngIf="hrSelectShow =='hr_oht'">
                   <canvas #myCanvas id="HourlyRate" baseChart
-                    *ngIf="hourlyRateChartOhtData1.length > 0 && hourlyRateChartOhtLoader == false"
+                    *ngIf="showHrOhtTbl === false && hourlyRateChartOhtData1.length > 0 && hourlyRateChartOhtLoader == false"
                     [datasets]="hourlyRateChartOhtData" [labels]="hourlyRateChartOhtLabels" [legend]="barChartLegend"
                     [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
                     [colors]="HRcolors" (chartClick)="chartClicked($event)">
                   </canvas>
+                  <div class="hr-tbl-height" *ngIf="showHrOhtTbl === true">
+                    <div class="DentistProductionTable">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <!-- <th>Clinic</th> -->
+                            <th>Hourly Rate</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let protbl of hourlyRateOhttbl">
+                            <td>{{ protbl.provider_name }}</td>
+                            <!-- <td>{{ protbl.clinic_name }}</td> -->
+                            <td>${{ protbl.hourly_rate | number:'1.0-0' }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                   <div class="no-data-placeholder"
                     *ngIf="hourlyRateChartOhtData1.length <= 0 && hourlyRateChartOhtLoader===false">
                     <div class="sa_nodata_div">
@@ -1125,7 +1365,7 @@
                   <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom' && hourlyRateChartGoal >= 0">
+                  *ngIf="hourlyRateChartGoal >= 0 && showGoals == true">
                   <h3 class="m-0 value-num" *ngIf="hourlyRateChartGoal">
                     ${{ hourlyRateChartGoal | number:'1.0-0' }}</h3>
                   <span class="value-text">Goal</span>
@@ -1144,7 +1384,7 @@
                   <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom' && hourlyRateChartGoal >= 0">
+                  *ngIf="hourlyRateChartGoal >= 0 && showGoals == true">
                   <h3 class="m-0 value-num" *ngIf="hourlyRateChartGoal">
                     ${{ hourlyRateChartGoal | number:'1.0-0' }}</h3>
                   <span class="value-text">Goal</span>
@@ -1163,7 +1403,7 @@
                   <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom' && hourlyRateChartGoal >= 0">
+                  *ngIf="hourlyRateChartGoal >= 0 && showGoals == true">
                   <h3 class="m-0 value-num" *ngIf="hourlyRateChartGoal">
                     ${{ hourlyRateChartGoal | number:'1.0-0' }}</h3>
                   <span class="value-text">Goal</span>
@@ -1324,16 +1564,36 @@
             <div class="card-body h-100">
               <div fxLayout="row wrap" fxLayoutAlign="center center"
                 class="prebook_rate sa_tabs_main_sec btn-right hide-item"
-                *ngIf="newPatientChartData.length<=0 && buildChartNewpatientsLoader===false">
+                *ngIf="newPatientChartData.length<=0 && buildChartNewpatientsLoader===false && shownewPatientTbl === false">
               </div>
               <div fxLayout="row " fxLayoutAlign="center end" class="chart vertical-center-box"
-                *ngIf="newPatientsDataMax > 0">
+                *ngIf="newPatientsDataMax > 0 && shownewPatientTbl === false">
                 <div *ngIf="showTrendChart == false" class="trend-chart">
                   <canvas #myCanvas baseChart id="newPatients" class="chart" [data]="newPatientChartData"
                     [labels]="newPatientChartLabels" [legend]="legendSettings" [options]="doughnutChartOptions"
                     [chartType]="doughnutChartType" [plugins]="newPatientPluginObservable$ | async"
                     (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"
                     [colors]="newpColors"></canvas>
+                </div>
+              </div>
+              <div class="hr-tbl-height" *ngIf="shownewPatientTbl === true">
+                <div class="DentistProductionTable">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <!-- <th>Clinic</th> -->
+                        <th>New Patients</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let protbl of newPatienttbl">
+                        <td>{{ protbl.provider_name }}</td>
+                        <!-- <td>{{ protbl.clinic_name }}</td> -->
+                        <td>{{ protbl.new_patients | number:'1.0-0' }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
               <div *ngIf="newPatientChartData.length<=0 && buildChartNewpatientsLoader===false"
@@ -1480,15 +1740,55 @@
               </div>
               <div class="cl-card-height">
                 <canvas #myCanvas id="treatmentPlanProposed"
-                  *ngIf="tcmain == 1 && buildChartTreatmentLoader == false && planChartData1.length > 0" baseChart
+                  *ngIf="showplanChartPTbl === false && tcmain == 1 && buildChartTreatmentLoader == false && planChartData1.length > 0" baseChart
                   class="chart" [datasets]="planChartDataP" [labels]="planChartLabels1" [options]="barChartOptionsTC"
                   [legend]="false" [chartType]="barChartType" (chartHover)="chartHovered($event)"
                   (chartClick)="chartClicked($event)" [colors]="TPACAcolors"></canvas>
                 <canvas #myCanvas id="treatmentPlanCompleted"
-                  *ngIf="tcmain == 2 && buildChartTreatmentLoader == false && planChartData2.length > 0" baseChart
+                  *ngIf="showplanChartCTbl === false && tcmain == 2 && buildChartTreatmentLoader == false && planChartData2.length > 0" baseChart
                   class="chart" [datasets]="planChartDataC" [labels]="planChartLabels2" [options]="barChartOptionsTC"
                   [legend]="false" [chartType]="barChartType" (chartHover)="chartHovered($event)"
                   (chartClick)="chartClicked($event)" [colors]="TPACCcolors"></canvas>
+                <div class="hr-tbl-height" *ngIf="showplanChartPTbl === true && tcmain == 1">
+                  <div class="DentistProductionTable">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <!-- <th>Clinic</th> -->
+                          <th>Processed fees</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let protbl of planChartPtbl">
+                          <td>{{ protbl.provider_name }}</td>
+                          <!-- <td>{{ protbl.clinic_name }}</td> -->
+                          <td>${{ protbl.average_fees | number:'1.0-0' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="hr-tbl-height" *ngIf="showplanChartCTbl === true && tcmain == 2">
+                  <div class="DentistProductionTable">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <!-- <th>Clinic</th> -->
+                          <th>Completed fees</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let protbl of planChartPtbl">
+                          <td>{{ protbl.provider_name }}</td>
+                          <!-- <td>{{ protbl.clinic_name }}</td> -->
+                          <td>${{ protbl.average_fees | number:'1.0-0' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>  
                 <div *ngIf="planChartData1.length <= 0 && buildChartTreatmentLoader===false && tcmain == 1"
                   class="no-data-placeholder">
                   <div class="sa_nodata_div">
@@ -1658,11 +1958,31 @@
                 </div>
               </div>
               <div class="chart" fxLayout="row" fxLayoutAlign="center end" class="cl-card-height">
-                <canvas #myCanvas baseChart *ngIf="treatmentChartData1.length > 0 && !treatmentPlanRateLoader"
+                <canvas #myCanvas baseChart *ngIf="showpTprTbl === false && treatmentChartData1.length > 0 && !treatmentPlanRateLoader"
                   [datasets]="treatmentChartData" [labels]="treatmentChartLabels" [legend]="barChartLegend"
                   [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsTP"
                   [colors]="TPRcolors" (chartClick)="chartClicked($event)">
                 </canvas>
+                <div class="hr-tbl-height" *ngIf="showpTprTbl === true">
+                  <div class="DentistProductionTable">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <!-- <th>Clinic</th> -->
+                          <th>Completion Rate</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let protbl of tprtbl">
+                          <td>{{ protbl.provider_name }}</td>
+                          <!-- <td>{{ protbl.clinic_name }}</td> -->
+                          <td>{{ protbl.treatment_per_plan_percentage | number:'1.0-0' }}%</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
                 <div class="no-data-placeholder"
                   *ngIf="treatmentChartData1.length <= 0 && treatmentPlanRateLoader===false && !treatmentPlanRateLoader">
                   <div class="sa_nodata_div">
@@ -1828,17 +2148,57 @@
               </div>
               <div class="div-height">
                 <canvas id="RecallRate"
-                  *ngIf="prebook=='recall' && recallPrebookLoader == false && recallChartData1.length > 0" #myCanvas
+                  *ngIf="showrecallTbl === false && prebook=='recall' && recallPrebookLoader == false && recallChartData1.length > 0" #myCanvas
                   baseChart [datasets]="recallChartData" [labels]="recallChartLabels" [legend]="barChartLegend"
                   [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsRP"
                   [colors]="RPcolors" (chartClick)="chartClicked($event)">
                 </canvas>
                 <canvas id="PrebookRate"
-                  *ngIf="prebook=='treatment' && recallPrebookLoader == false && treatmentPreChartData1.length > 0"
+                  *ngIf="showreappointTbl === false && prebook=='treatment' && recallPrebookLoader == false && treatmentPreChartData1.length > 0"
                   #myCanvas baseChart [datasets]="treatmentPreChartData" [labels]="treatmentPreChartLabels"
                   [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
                   [options]="barChartOptionsTPB" [colors]="TPcolors" (chartClick)="chartClicked($event)">
                 </canvas>
+                <div class="Prod-tbl-height" *ngIf="showrecallTbl === true && prebook=='recall'">
+                  <div class="DentistProductionTable">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <!-- <th>Clinic</th> -->
+                          <th>Prebook Rate</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let protbl of recalltbl">
+                          <td>{{ protbl.provider_name }}</td>
+                          <!-- <td>{{ protbl.clinic_name }}</td> -->
+                          <td>{{ protbl.recall_percent | number:'1.0-0' }}%</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="Prod-tbl-height" *ngIf="showreappointTbl === true && prebook=='treatment'">
+                  <div class="DentistProductionTable">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <!-- <th>Clinic</th> -->
+                          <th>Reappointment Rate</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let protbl of reappointtbl">
+                          <td>{{ protbl.provider_name }}</td>
+                          <!-- <td>{{ protbl.clinic_name }}</td> -->
+                          <td>{{ protbl.reappoint_rate | number:'1.0-0' }}%</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
                 <div *ngIf="recallChartData1.length <= 0 && prebook=='recall'" class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
@@ -2063,11 +2423,31 @@
                 </div>
               </div>
               <div class="chart">
-                <div *ngIf="showTrendChart == false && doughnutChartLabels.length > 0" class="div-height">
+                <div *ngIf="showpatientCtblTbl === false && showTrendChart == false && doughnutChartLabels.length > 0" class="div-height">
                   <canvas #myCanvas id="patientComplaints" baseChart class="chart" [data]="doughnutChartData"
                     [labels]="doughnutChartLabels" [legend]="true" [options]="doughnutChartOptions"
                     [chartType]="doughnutChartType" (chartHover)="chartHovered($event)"
                     (chartClick)="chartClicked($event)" [colors]="npColors"></canvas>
+                </div>
+                <div class="Prod-tbl-height" *ngIf="showpatientCtblTbl === true">
+                  <div class="DentistProductionTable">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <!-- <th>Clinic</th> -->
+                          <th>Complaints</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let protbl of patientCtbl">
+                          <td>{{ protbl.provider_name }}</td>
+                          <!-- <td>{{ protbl.clinic_name }}</td> -->
+                          <td>{{ protbl.num_complaints | number:'1.0-0' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
               <div class="no-data-placeholder"
