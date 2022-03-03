@@ -1780,10 +1780,10 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let protbl of planChartPtbl">
-                          <td>{{ protbl.provider_name }}</td>
-                          <!-- <td>{{ protbl.clinic_name }}</td> -->
-                          <td>${{ protbl.average_fees | number:'1.0-0' }}</td>
+                        <tr *ngFor="let protblC of planChartCtbl">
+                          <td>{{ protblC.provider_name }}</td>
+                          <!-- <td>{{ protblC.clinic_name }}</td> -->
+                          <td>${{ protblC.average_fees | number:'1.0-0' }}</td>
                         </tr>
                       </tbody>
                     </table>

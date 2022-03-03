@@ -708,9 +708,12 @@ export class AppHeaderrightComponent implements AfterViewInit {
     }
   }
 
-  loadClinicEvent($event){
-    if($event == false){
+  loadClinicEvent($event){    
+    if($event == false && this.selectedClinic !=''){
       this.loadClinic(this.selectedClinic);
+    }
+    if($event == false && this.selectedClinic ==''){
+      this.toastr.error('Please select atleast one clinic');
     }
   }
 }

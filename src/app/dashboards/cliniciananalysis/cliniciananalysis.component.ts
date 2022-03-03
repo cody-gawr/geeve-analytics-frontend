@@ -948,7 +948,35 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       position: 'bottom',
       labels: {
         usePointStyle: true,
-        padding: 5
+        padding: 5,
+        generateLabels: function(chart) {
+          var data = chart.data;
+          if (data.labels.length && data.datasets.length) {
+            return data.labels.map(function(label, i) {
+              var meta = chart.getDatasetMeta(0);
+              var ds = data.datasets[0];              
+              var arc = meta.data[i];
+              var custom = arc && arc.custom || {};
+              const regex = /\w+\s\w+(?=\s)|\w+/g;
+              var names = label.toString().trim().match(regex);
+              var labls ='';
+              if (names.length == 3) {
+                labls = `${names[0]}`
+              } else if (names.length == 2){
+                labls = `${names[0][0]} ${names[1]}`
+              } else {
+                labls = `${names[0]}`;
+              }return { 
+                text: labls,
+                fillStyle: ds.backgroundColor[i],
+                strokeStyle: "#fff",
+                hidden: isNaN(ds.data[i]) || meta.data[i].hidden,
+                index: i
+              };
+            });
+          }
+          return [];
+        }
       },
       onClick: function (e) {
         e.stopPropagation();
@@ -1012,7 +1040,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   //Load Dentist Data
   loadDentist(newValue) {
     $('.sa_tabs_data button').prop('disabled',true); 
-    this.Apirequest = 10;
+    if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+      this.Apirequest = 18;
+    }else{
+      this.Apirequest = 13;
+    }    
     if (this._cookieService.get("user_type") == '4') {
       if (this._cookieService.get("dentist_toggle") === 'false')
         newValue = this.selectedDentist;
@@ -1315,9 +1347,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.buildChartLoader = false;
         this.productionTooltip = 'down';
         var i = 0;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.data.sort((a, b)=> a.production - b.production).reverse();
+        }
         if(data.data.length >= this.numberOfRecords){
           this.dentistProductiontbl = data.data;
-          this.dentistProductiontbl.sort((a, b)=> a.production - b.production).reverse();
           this.showprodAllTbl = true;
         }else{
           this.showprodAllTbl = false;
@@ -1504,9 +1538,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.buildChartDentistsLoader = false;
         this.productionDentists1Tooltip = 'down';
         var i = 0;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.data.sort((a, b)=> a.production - b.production).reverse();
+        }
         if(data.data.length >= this.numberOfRecords){
           this.dentistProductionDentisttbl = data.data;
-          this.dentistProductionDentisttbl.sort((a, b)=> a.production - b.production).reverse();
           this.showprodDentAllTbl = true;
         }else{
           this.showprodDentAllTbl = false;
@@ -1659,9 +1695,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.buildChartOhtLoader = false;
         this.productionOhtTooltip = 'down';
         var i = 0;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.data.sort((a, b)=> a.production - b.production).reverse();
+        }
         if(data.data.length >= this.numberOfRecords){
           this.dentistProductionOhttbl = data.data;
-          this.dentistProductionOhttbl.sort((a, b)=> a.production - b.production).reverse();
           this.showprodOhtAllTbl = true;
         }else{
           this.showprodOhtAllTbl = false;
@@ -1811,6 +1849,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.collectionLabels = [];
       this.collectionTotal = 0;
       this.collectionTotalGoal = 0;
+      this.collectionData[0]['data']=[];
       this.dentistCollectiontbl =[];
       if (data.message == 'success') {
         this.Apirequest = this.Apirequest - 1;
@@ -1819,9 +1858,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.collectionTooltip = 'down';
         var i = 0;
         var selectedDen: any = 0;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.data.sort((a, b)=> a.collection - b.collection).reverse();
+        }
         if(data.data.length >= this.numberOfRecords){
           this.dentistCollectiontbl = data.data;
-          this.dentistCollectiontbl.sort((a, b)=> a.collection - b.collection).reverse();
           this.showCollAllTbl = true;
         }else{
           this.showCollAllTbl = false;
@@ -1971,6 +2012,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.collectionDentistsLabels = [];
       this.collectionDentistsTotal = 0;
       this.dentistCollectionDenttbl =[];
+      this.collectionDentistsData[0]['data'] =[];
       if (data.message == 'success') {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
@@ -1978,9 +2020,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.collectionDentistsTooltip = 'down';
         var i = 0;
         var selectedDen: any = 0;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.data.sort((a, b)=> a.collection - b.collection).reverse();
+        }
         if(data.data.length >= this.numberOfRecords){
           this.dentistCollectionDenttbl = data.data;
-          this.dentistCollectionDenttbl.sort((a, b)=> a.collection - b.collection).reverse();
           this.showCollDentTbl = true;
         }else{
           this.showCollDentTbl = false;
@@ -2129,6 +2173,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.collectionOhtLabels = [];
       this.collectionOhtTotal = 0;
       this.dentistCollectionOhttbl = [];
+      this.collectionOhtData[0]['data']=[];
       if (data.message == 'success') {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
@@ -2136,9 +2181,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.collectionOhtTooltip = 'down';
         var i = 0;
         var selectedDen: any = 0;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.data.sort((a, b)=> a.collection - b.collection).reverse();
+        }
         if(data.data.length >= this.numberOfRecords){
           this.dentistCollectionOhttbl = data.data;
-          this.dentistCollectionOhttbl.sort((a, b)=> a.collection - b.collection).reverse();
           this.showCollOhtTbl = true;
         }else{
           this.showCollOhtTbl = false;
@@ -2286,6 +2333,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.collectionLabelsExp = [];
       this.collectionExpTotal = 0;
       this.dentistCollectionExptbl =[];
+      this.collectionExpData[0]['data']=[];
       if (data.message == 'success') {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
@@ -2293,9 +2341,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.collectionExpTooltip = 'down';
         var i = 0;
         var selectedDen: any = 0;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.data.sort((a, b)=> a.collection - b.collection).reverse();
+        }
         if(data.data.length >= this.numberOfRecords){
           this.dentistCollectionExptbl = data.data;
-          this.dentistCollectionExptbl.sort((a, b)=> a.collection - b.collection).reverse();
           this.showCollExpTbl = true;
         }else{
           this.showCollExpTbl = false;
@@ -2444,6 +2494,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.collectionLabelsDentistsExp = [];
       this.collectionExpDentistsTotal = 0;
       this.dentistCollectionExpDenttbl =[];
+      this.collectionExpDentistsData[0]['data']=[];
       if (data.message == 'success') {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
@@ -2451,9 +2502,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.collectionExpDentistsTooltip = 'down';
         var i = 0;
         var selectedDen: any = 0;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.data.sort((a, b)=> a.collection - b.collection).reverse();
+        }
         if(data.data.length >= this.numberOfRecords){
           this.dentistCollectionExpDenttbl = data.data;
-          this.dentistCollectionExpDenttbl.sort((a, b)=> a.collection - b.collection).reverse();
           this.showCollExpDentTbl = true;
         }else{
           this.showCollExpDentTbl = false;
@@ -2602,6 +2655,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.collectionLabelsOhtExp = [];
       this.collectionExpOhtTotal = 0;
       this.dentistCollectionExpOhttbl =[];
+      this.collectionExpOhtData[0]['data']=[];
       if (data.message == 'success') {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
@@ -2609,9 +2663,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.collectionExpOhtTooltip = 'down';
         var i = 0;
         var selectedDen: any = 0;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.data.sort((a, b)=> a.collection - b.collection).reverse();
+        }
         if(data.data.length >= this.numberOfRecords){
           this.dentistCollectionExpOhttbl = data.data;
-          this.dentistCollectionExpOhttbl.sort((a, b)=> a.collection - b.collection).reverse();
           this.showCollExpOhtTbl = true;
         }else{
           this.showCollExpOhtTbl = false;
@@ -3303,6 +3359,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.recallChartLabels = [];
       this.barChartOptionsRP.annotation = [];
       this.recalltbl =[];
+      this.recallChartData[0]['data']=[];
       if (data.message == 'success') {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
@@ -3310,9 +3367,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         this.recallChartTooltip = 'down';
         var i = 0;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.data.sort((a, b)=> a.recall_percent - b.recall_percent).reverse();
+        }
         if(data.data.length >= this.numberOfRecords){
           this.recalltbl = data.data;
-          this.recalltbl.sort((a, b)=> a.recall_percent - b.recall_percent).reverse();
           this.showrecallTbl = true;
         }else{
           this.showrecallTbl = false;
@@ -3490,15 +3549,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.reappointtbl =[];
       this.treatmentPreChartLabels = [];
       this.barChartOptionsTPB.annotation = [];
+      this.treatmentPreChartData[0]['data']=[];
       if (data.message == 'success') {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.treatmentPrebookLoader = false;
         this.treatmentPreChartTooltip = 'down';
         var i = 0;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.data.sort((a, b)=> a.reappoint_rate - b.reappoint_rate).reverse();
+        }
         if(data.data.length >= this.numberOfRecords){
           this.reappointtbl = data.data;
-          this.reappointtbl.sort((a, b)=> a.reappoint_rate - b.reappoint_rate).reverse();
           this.showreappointTbl = true;
         }else{
           this.showreappointTbl = false;
@@ -3661,16 +3723,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.treatmentChartLabels1 = [];
       this.tprtbl=[];
       this.treatmentChartLabels = [];
-      this.barChartOptionsTP.annotation = []
+      this.barChartOptionsTP.annotation = [];
+      this.treatmentChartData[0]['data'] =[];
       if (data.message == 'success') {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.treatmentPlanRateLoader = false;
         this.treatmentChartTooltip = 'down';
         var i = 0;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.data.sort((a, b)=> a.treatment_per_plan_percentage - b.treatment_per_plan_percentage).reverse();
+        }
         if(data.data.length >= this.numberOfRecords){
           this.tprtbl = data.data;
-          this.tprtbl.sort((a, b)=> a.treatment_per_plan_percentage - b.treatment_per_plan_percentage).reverse();
           this.showpTprTbl = true;
         }else{
           this.showpTprTbl = false;
@@ -3906,6 +3971,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.planChartLabels2 = [];
       this.planTotal = 0;
       this.planChartLabels = [];
+      this.planChartDataP[0]['data'] =[];
+      this.planChartDataC[0]['data'] = [];
       this.barChartOptionsTC.annotation = [];
       if (data.message == 'success') {
         this.Apirequest = this.Apirequest - 1;
@@ -3916,9 +3983,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.treatmentPlanProposedProvidersByInx = [];
         this.planChartCtbl = [];
         this.planChartPtbl = [];
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.data['plan_fee_all'].sort((a, b)=> a.average_fees - b.average_fees).reverse();
+          data.data['plan_fee_completed'].sort((a, b)=> a.average_fees - b.average_fees).reverse();
+        }
         if(data.data.plan_fee_all.length >= this.numberOfRecords){
           this.planChartPtbl = data.data['plan_fee_all'];
-          this.planChartPtbl.sort((a, b)=> a.average_fees - b.average_fees).reverse();
           this.showplanChartPTbl = true;
         }else{
           this.showplanChartPTbl = false;
@@ -3947,7 +4017,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var ic = 0;
         if(data.data.plan_fee_completed.length >= this.numberOfRecords){
           this.planChartCtbl = data.data['plan_fee_completed'];
-          this.planChartCtbl.sort((a, b)=> a.average_fees - b.average_fees).reverse();
           this.showplanChartCTbl = true;
         }else{
           this.showplanChartCTbl = false;
@@ -4166,11 +4235,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.buildChartNopatientsLoader = true;
     this.doughnutTotalPrev = 0;
     this.doughnutTotalAverage = 0;
+    this.doughnutChartData = [];
+    this.doughnutChartLabels = [];
     this.clinic_id && this.cliniciananalysisService.NoPatients(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       this.doughnutChartData1 = [];
       this.doughnutChartLabels1 = [];
       this.doughnutTotal = 0;
-      this.doughnutChartLabels = [];
       this.patientCtbl=[];
       if (data.message == 'success') {
         this.Apirequest = this.Apirequest - 1;
@@ -4178,9 +4248,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.buildChartNopatientsLoader = false;
         this.doughnutTotalTooltip = 'up';
         var i = 0;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.data.sort((a, b)=> a.num_complaints - b.num_complaints).reverse();
+        }
         if(data.data.length >= this.numberOfRecords){
           this.patientCtbl = data.data;
-          this.patientCtbl.sort((a, b)=> a.num_complaints - b.num_complaints).reverse();
           this.showpatientCtblTbl = true;
         }else{
           this.showpatientCtblTbl = false;
@@ -4299,6 +4371,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.newPatientChartLabels = [];
     this.newPatientsDataMax = 0;
     this.newPatienttbl =[];
+    this.newPatientChartData=[];
     this.clinic_id && this.cliniciananalysisService.NewPatients(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       if (data && data.message == 'success') {
         this.newpKey = '';
@@ -4309,9 +4382,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         this.newPatientChartLabels1 = []; // reset on api call
         this.newPatientChartData1 = []; // reset on api call
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.data.sort((a, b)=> a.new_patients - b.new_patients).reverse();
+        }
         if(data.data.length >= this.numberOfRecords){
           this.newPatienttbl = data.data;
-          this.newPatienttbl.sort((a, b)=> a.new_patients - b.new_patients).reverse();
           this.shownewPatientTbl = true;
         }else{
           this.shownewPatientTbl = false;
@@ -4440,10 +4515,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.clinic_id && this.cliniciananalysisService.hourlyRateChart(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       this.hourlyRateChartData1 = [];
       this.hourlyRateChartLabels1 = [];
-
       this.hourlyRateChartLabels = [];
       this.barChartOptionsHR.annotation = [];
       this.hourlyRatetbl = [];
+      this.hourlyRateChartData[0]['data']=[];
       if (data.message == 'success') {
         this.hrKey ='';
         this.Apirequest = this.Apirequest - 1;
@@ -4451,9 +4526,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.hourlyRateChartLoader = false;
         this.hourlyRateChartTooltip = 'down';
         var i = 0;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
+        }
         if(data.data.length >= this.numberOfRecords){
           this.hourlyRatetbl = data.data;
-          this.hourlyRatetbl.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
           this.showHrTbl = true;
         }else{
           this.showHrTbl = false;
@@ -4581,6 +4658,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.hourlyRateChartDesntistsLabels = [];
       this.barChartOptionsHR.annotation = [];
       this.hourlyRateDenttbl =[];
+      this.hourlyRateChartDentistsData[0]['data'] =[];
       if (data.message == 'success') {
         this.hrKey ='';
         this.Apirequest = this.Apirequest - 1;
@@ -4588,9 +4666,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.hourlyRateChartDentistsLoader = false;
         this.hourlyRateChartDesntistsTooltip = 'down';
         var i = 0;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
+        }
         if(data.data.length >= this.numberOfRecords){
           this.hourlyRateDenttbl = data.data;
-          this.hourlyRateDenttbl.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
           this.showHrDentTbl = true;
         }else{
           this.showHrDentTbl = false;
@@ -4718,6 +4798,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.hourlyRateOhttbl =[];
       this.hourlyRateChartOhtLabels = [];
       this.barChartOptionsHR.annotation = [];
+      this.hourlyRateChartOhtData[0]['data']=[];
       if (data.message == 'success') {
         this.hrKey ='';
         this.Apirequest = this.Apirequest - 1;
@@ -4725,9 +4806,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.hourlyRateChartOhtLoader = false;
         this.hourlyRateChartOhtTooltip = 'down';
         var i = 0;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
+        }
         if(data.data.length >= this.numberOfRecords){
           this.hourlyRateOhttbl = data.data;
-          this.hourlyRateOhttbl.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
           this.showHrOhtTbl = true;
         }else{
           this.showHrOhtTbl = false;
