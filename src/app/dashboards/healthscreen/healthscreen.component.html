@@ -196,11 +196,11 @@
                     <img src="../assets/images/profit.png" alt="product-chart" />
                   </div>
                   <div *ngIf="prodpervisitstats == false" class="production_description production_description-grow">
-                    <h4>-Prod. Per Visit</h4>
+                    <h4>+Prod. Per Visit</h4>
                     <b class="loader-text">Calculating...</b>
                   </div>
                   <div *ngIf="prodpervisitstats == true" class="production_description production_description-grow">
-                    <h4>-Prod. Per Visit</h4>
+                    <h4>+Prod. Per Visit</h4>
                     <span class="change_value" *ngIf="productionVal">{{ productionVal >= 0 ? ' ' : '- ' }} ${{
                       productionVal | number:'1.0-0'}}</span>
                     <span class="change_value" *ngIf="!productionVal">$0</span>
