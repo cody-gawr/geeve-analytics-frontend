@@ -17,7 +17,7 @@
       "
     >
     <div class="vertical_center_header_content">
-      <div class="sa_mat_select_topbar" *ngIf= "((route != '/dashboards/finances' && route != '/dashboards/cliniciananalysis') && apiUrl.includes('test')) || apiUrl.includes('staging') || ( !apiUrl.includes('test-') && !apiUrl.includes('staging-')) ">
+      <div class="sa_mat_select_topbar" *ngIf= "((route != '/dashboards/finances' && route != '/dashboards/cliniciananalysis') && apiUrl.includes('test')) || apiUrl.includes('staging') || ( !apiUrl.includes('test-') && !apiUrl.includes('staging-')) || (route == '/dashboards/cliniciananalysis' && user_type ==4) ">
         <mat-form-field floatLabel="never" >
           <mat-select
             class="external_clinic"
@@ -35,7 +35,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="sa_mat_select_topbar" *ngIf= "(route == '/dashboards/finances' || route == '/dashboards/cliniciananalysis') && apiUrl.includes('test')">
+      <div class="sa_mat_select_topbar" *ngIf= "(route == '/dashboards/finances' || route == '/dashboards/cliniciananalysis') && apiUrl.includes('test') && user_type !=4">
         <mat-form-field floatLabel="never" >
         <mat-select
           id="multi_clinic"

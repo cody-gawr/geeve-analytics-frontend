@@ -486,7 +486,9 @@ export class AppHeaderrightComponent implements AfterViewInit {
         this.getDentists();
       }
       if(this.route == "/dashboards/cliniciananalysis"){
-        this.getDentists();
+        if(this.clinic_id.length == 1){
+          this.getDentists();
+        }
       }
       
       $(".internal_clinic").val(newValue);
