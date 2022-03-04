@@ -252,7 +252,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
                 } else {
                   this.selectedDentist = parseInt(dentistclinic[1]);
                 } 
-                if ((this.route == "/dashboards/finances" || this.route == "/dashboards/cliniciananalysis") && this.apiUrl.includes('test')) {
+                if ((this.route == "/dashboards/finances" || (this.route == "/dashboards/cliniciananalysis" && this.user_type !=4)) && this.apiUrl.includes('test')) {
                   this.allChecked = false;
                   this.clinic_id = [];
                   this.selectedClinic = [];
@@ -323,7 +323,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
                   });
                 }
               } else {
-                if ((this.route == "/dashboards/finances"  || this.route == "/dashboards/cliniciananalysis") && this.apiUrl.includes('test')) {
+                if ((this.route == "/dashboards/finances" || (this.route == "/dashboards/cliniciananalysis" && this.user_type !=4)) && this.apiUrl.includes('test')) {
                   this.selectedClinic = [];
                   this.selectedClinic.push(res.data[0].id);
                 }else{
