@@ -5090,6 +5090,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   // Get Dentist
   private getDentists() {
+    this.dentists =[];
     this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
       this.selectedDentist = 'all';
       if (this._cookieService.get("clinic_dentist")) {
