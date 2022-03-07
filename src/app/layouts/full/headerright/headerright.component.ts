@@ -360,11 +360,11 @@ export class AppHeaderrightComponent implements AfterViewInit {
     if (this.clinic_id == "all") {
       return false;
     }
-    this.dentists = [];
     this.clinic_id &&
       this.dentistService.getDentists(this.clinic_id).subscribe(
         (res) => {
           this.showAll = true;
+           this.dentists = [];
           if (res.message == "success") {
             res.data.forEach((data) => {
               if (data.is_active == 1) {
