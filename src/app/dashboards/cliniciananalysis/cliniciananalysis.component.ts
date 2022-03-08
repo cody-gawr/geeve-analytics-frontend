@@ -68,7 +68,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public hrSelectShow: any = "hr_all";
   public charTips: any = [];
   public userPlan: any = 'lite';
-  public numberOfRecords:number = 21;
+  public numberOfRecords:number = 20;
 
   public flag = false;
   private _routerSub = Subscription.EMPTY;
@@ -4390,12 +4390,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           data.data.sort((a, b)=> a.new_patients - b.new_patients).reverse();
         }
-        if(data.data.length >= this.numberOfRecords){
-          this.newPatienttbl = data.data;
-          this.shownewPatientTbl = true;
-        }else{
-          this.shownewPatientTbl = false;
-        }
+        this.newPatienttbl = data.data;
+        // if(data.data.length >= this.numberOfRecords){
+        //   this.shownewPatientTbl = true;
+        // }else{
+        //   this.shownewPatientTbl = false;
+        // }
+        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
         data.data.forEach(res => {
           if (res.new_patients) {
             var pName ='';
@@ -7272,6 +7273,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.hourlyRateChartOht();
     }
     this.hrSelectShow = val;
+  }
+
+  showNPTable(val){
+    this.shownewPatientTbl = val;
   }
 
 }

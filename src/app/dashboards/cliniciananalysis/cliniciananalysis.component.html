@@ -1546,6 +1546,10 @@
                 No. New Patients
               </div>
               <div class="info-icon-container">
+                <!-- Show Table -->
+                <i *ngIf="!shownewPatientTbl" class="fa fa-table fa-margin" (click) = "showNPTable(true)"></i>
+                <i *ngIf="shownewPatientTbl" class="fa fa-table greenIcon fa-margin-color" (click) = "showNPTable(false)"></i>
+              <!-- Show Table -->
                 <img [tooltip]="charTips['8']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
