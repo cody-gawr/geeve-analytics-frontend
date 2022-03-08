@@ -176,7 +176,7 @@
                   </canvas> <!-- dynamic colors of bar -->  
                 </div>
                 <div class="Prod-tbl-height" *ngIf="showprodAllTbl === true">
-                  <div class="DentistProductionTable">
+                  <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
                         <tr>
@@ -209,7 +209,7 @@
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
                 <div class="Prod-tbl-height" *ngIf="showprodDentAllTbl === true">
-                  <div class="DentistProductionTable">
+                  <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
                         <tr>
@@ -242,7 +242,7 @@
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
                 <div class="Prod-tbl-height" *ngIf="showprodOhtAllTbl === true">
-                  <div class="DentistProductionTable">
+                  <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
                         <tr>
@@ -278,7 +278,7 @@
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
                 <div class="Prod-tbl-height" *ngIf="showCollAllTbl === true">
-                  <div class="DentistProductionTable">
+                  <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
                         <tr>
@@ -311,7 +311,7 @@
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
                 <div class="Prod-tbl-height" *ngIf="showCollDentTbl === true">
-                  <div class="DentistProductionTable">
+                  <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
                         <tr>
@@ -344,7 +344,7 @@
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
                 <div class="Prod-tbl-height" *ngIf="showCollOhtTbl === true">
-                  <div class="DentistProductionTable">
+                  <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
                         <tr>
@@ -380,7 +380,7 @@
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
                 <div class="Prod-tbl-height" *ngIf="showCollExpTbl === true">
-                  <div class="DentistProductionTable">
+                  <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
                         <tr>
@@ -413,7 +413,7 @@
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
                 <div class="Prod-tbl-height" *ngIf="showCollExpDentTbl === true">
-                  <div class="DentistProductionTable">
+                  <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
                         <tr>
@@ -446,7 +446,7 @@
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
                 <div class="Prod-tbl-height" *ngIf="showCollExpOhtTbl === true">
-                  <div class="DentistProductionTable">
+                  <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
                         <tr>
@@ -1255,7 +1255,7 @@
                     [colors]="HRcolors" (chartClick)="chartClicked($event)">
                   </canvas>
                   <div class="hr-tbl-height" *ngIf="showHrTbl === true">
-                    <div class="DentistProductionTable">
+                    <div class="DentistProductionTable fstyle">
                       <table>
                         <thead>
                           <tr>
@@ -1289,7 +1289,7 @@
                     [colors]="HRcolors" (chartClick)="chartClicked($event)">
                   </canvas>
                   <div class="hr-tbl-height" *ngIf="showHrDentTbl === true">
-                    <div class="DentistProductionTable">
+                    <div class="DentistProductionTable fstyle">
                       <table>
                         <thead>
                           <tr>
@@ -1323,7 +1323,7 @@
                     [colors]="HRcolors" (chartClick)="chartClicked($event)">
                   </canvas>
                   <div class="hr-tbl-height" *ngIf="showHrOhtTbl === true">
-                    <div class="DentistProductionTable">
+                    <div class="DentistProductionTable fstyle">
                       <table>
                         <thead>
                           <tr>
@@ -1510,15 +1510,15 @@
             </div>
           </mat-card-content>
         </mat-card>
-        <div *ngIf="hourlyRateChartLoader == true" class="loader_container loader_container_middle"><img
+        <div *ngIf="hourlyRateChartLoader == true && hrSelectShow =='hr_all'" class="loader_container loader_container_middle"><img
             class="loader_ico" src="../assets/images/720.gif">
           <div class="loader-text">Calculating...</div>
         </div>
-        <div *ngIf="hourlyRateChartDentistsLoader == true" class="loader_container loader_container_middle"><img
+        <div *ngIf="hourlyRateChartDentistsLoader == true && hrSelectShow =='hr_dentists'" class="loader_container loader_container_middle"><img
           class="loader_ico" src="../assets/images/720.gif">
         <div class="loader-text">Calculating...</div>
         </div>
-        <div *ngIf="hourlyRateChartOhtLoader == true" class="loader_container loader_container_middle"><img
+        <div *ngIf="hourlyRateChartOhtLoader == true && hrSelectShow =='hr_oht'" class="loader_container loader_container_middle"><img
           class="loader_ico" src="../assets/images/720.gif">
         <div class="loader-text">Calculating...</div>
         </div>
@@ -1577,7 +1577,7 @@
                 </div>
               </div>
               <div class="hr-tbl-height" *ngIf="shownewPatientTbl === true">
-                <div class="DentistProductionTable">
+                <div class="DentistProductionTable fstyle">
                   <table>
                     <thead>
                       <tr>
@@ -1750,7 +1750,7 @@
                   [legend]="false" [chartType]="barChartType" (chartHover)="chartHovered($event)"
                   (chartClick)="chartClicked($event)" [colors]="TPACCcolors"></canvas>
                 <div class="hr-tbl-height" *ngIf="showplanChartPTbl === true && tcmain == 1">
-                  <div class="DentistProductionTable">
+                  <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
                         <tr>
@@ -1770,7 +1770,7 @@
                   </div>
                 </div>
                 <div class="hr-tbl-height" *ngIf="showplanChartCTbl === true && tcmain == 2">
-                  <div class="DentistProductionTable">
+                  <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
                         <tr>
@@ -1964,7 +1964,7 @@
                   [colors]="TPRcolors" (chartClick)="chartClicked($event)">
                 </canvas>
                 <div class="hr-tbl-height" *ngIf="showpTprTbl === true">
-                  <div class="DentistProductionTable">
+                  <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
                         <tr>
@@ -2160,7 +2160,7 @@
                   [options]="barChartOptionsTPB" [colors]="TPcolors" (chartClick)="chartClicked($event)">
                 </canvas>
                 <div class="Prod-tbl-height" *ngIf="showrecallTbl === true && prebook=='recall'">
-                  <div class="DentistProductionTable">
+                  <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
                         <tr>
@@ -2180,7 +2180,7 @@
                   </div>
                 </div>
                 <div class="Prod-tbl-height" *ngIf="showreappointTbl === true && prebook=='treatment'">
-                  <div class="DentistProductionTable">
+                  <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
                         <tr>
@@ -2430,7 +2430,7 @@
                     (chartClick)="chartClicked($event)" [colors]="npColors"></canvas>
                 </div>
                 <div class="Prod-tbl-height" *ngIf="showpatientCtblTbl === true">
-                  <div class="DentistProductionTable">
+                  <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
                         <tr>

@@ -4502,7 +4502,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public hourlyRateChartAveragePrev;
   public hourlyRateChartTooltip = 'down';
   public barChartOptionsHR: any = this.barChartOptions;
-  public hourlyRateChartLoader: any;
+  public hourlyRateChartLoader: boolean = true;
   public hrKey: any;
   public HRcolors: any;
   public HRcolorsDent: any;
@@ -4527,7 +4527,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       if (data.message == 'success') {
         this.hrKey ='';
         this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
+        this.enableDiabaleButton(this.Apirequest);
         this.hourlyRateChartLoader = false;
         this.hourlyRateChartTooltip = 'down';
         var i = 0;
@@ -4644,7 +4644,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public hourlyRateChartDesntistsAverage;
   public hourlyRateChartDesntistsAveragePrev;
   public hourlyRateChartDesntistsTooltip = 'down';
-  public hourlyRateChartDentistsLoader: any;
+  public hourlyRateChartDentistsLoader: boolean = true;
   public hourlyRateChartDesntistsLabels :any;
   //All dentist Hourly ratechart
   public hourlyRateDenttbl :any =[];
@@ -4667,7 +4667,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       if (data.message == 'success') {
         this.hrKey ='';
         this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
+        this.enableDiabaleButton(this.Apirequest);
         this.hourlyRateChartDentistsLoader = false;
         this.hourlyRateChartDesntistsTooltip = 'down';
         var i = 0;
@@ -4784,7 +4784,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public hourlyRateChartOhtAverage;
   public hourlyRateChartOhtAveragePrev;
   public hourlyRateChartOhtTooltip = 'down';
-  public hourlyRateChartOhtLoader: any;
+  public hourlyRateChartOhtLoader: boolean = true;
   public hourlyRateChartOhtData1: any[] = [];
   public hourlyRateChartOhtLabels:any;
   //All dentist Hourly ratechart
@@ -4807,7 +4807,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       if (data.message == 'success') {
         this.hrKey ='';
         this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
+        this.enableDiabaleButton(this.Apirequest);
         this.hourlyRateChartOhtLoader = false;
         this.hourlyRateChartOhtTooltip = 'down';
         var i = 0;

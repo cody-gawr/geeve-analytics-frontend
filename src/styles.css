@@ -8434,6 +8434,12 @@ td.clslist {
 }
 .DentistProductionTable table td {
   font-family: monospace;
+  color: rgba(0, 0, 0, 0.87);
+  font-weight: 300;
+  font-size: 13px;
+}
+.DentistProductionTable thead th{
+  font-size: 14px;
 }
 .change_value span.daily {
   font-size: 13px !important;
