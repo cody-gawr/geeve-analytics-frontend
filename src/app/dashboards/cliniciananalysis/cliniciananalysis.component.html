@@ -1755,12 +1755,18 @@
                     class="trend_ico" src="../assets/images/trend_{{planTotalTooltip}}.png"></span>
                 Treatment Plan Average Cost
               </div>
-              <div *ngIf="tcmain == 1" class="info-icon-container">
-                <img [tooltip]="charTips['3']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
-              </div>
-              <div *ngIf="tcmain == 2" class="info-icon-container">
-                <img [tooltip]="charTips['53']" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" />
+              <div class="info-icon-container">
+                <i *ngIf="!showplanChartPTbl && tcmain == 1" class="fa fa-table fa-margin" (click) = "showTpacTable(true)"></i>
+                <i *ngIf="showplanChartPTbl && tcmain == 1" class="fa fa-table greenIcon fa-margin-color" (click) = "showTpacTable(false)"></i>
+                <i *ngIf="!showplanChartCTbl && tcmain == 2" class="fa fa-table fa-margin" (click) = "showTpacTable(true)"></i>
+                <i *ngIf="showplanChartCTbl && tcmain == 2" class="fa fa-table greenIcon fa-margin-color" (click) = "showTpacTable(false)"></i>
+                
+                <span *ngIf="tcmain == 1">
+                  <img [tooltip]="charTips['3']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                </span>
+                <span *ngIf="tcmain == 2">
+                  <img [tooltip]="charTips['53']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                </span>                
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -1783,8 +1789,8 @@
                   class="chart" [datasets]="planChartDataC" [labels]="planChartLabels2" [options]="barChartOptionsTC"
                   [legend]="false" [chartType]="barChartType" (chartHover)="chartHovered($event)"
                   (chartClick)="chartClicked($event)" [colors]="TPACCcolors"></canvas>
-                <div class="hr-tbl-height" *ngIf="showplanChartPTbl === true && tcmain == 1">
-                  <div class="DentistProductionTable fstyle">
+                <div class="hr-tbl-height" *ngIf="planChartData1.length > 0 && showplanChartPTbl === true && tcmain == 1">
+                  <div class="DentistProductionTable fstyle lmargin">
                     <table>
                       <thead>
                         <tr>
@@ -1803,8 +1809,8 @@
                     </table>
                   </div>
                 </div>
-                <div class="hr-tbl-height" *ngIf="showplanChartCTbl === true && tcmain == 2">
-                  <div class="DentistProductionTable fstyle">
+                <div class="hr-tbl-height" *ngIf="planChartData2.length > 0 && showplanChartCTbl === true && tcmain == 2">
+                  <div class="DentistProductionTable fstyle lmargin">
                     <table>
                       <thead>
                         <tr>
@@ -1978,6 +1984,8 @@
                 Treatment Plan Completion Rate (%)
               </div>
               <div class="info-icon-container">
+                <i *ngIf="!showpTprTbl" class="fa fa-table fa-margin" (click) = "showpTprTable(true)"></i>
+                <i *ngIf="showpTprTbl" class="fa fa-table greenIcon fa-margin-color" (click) = "showpTprTable(false)"></i>
                 <img [tooltip]="charTips['2']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
@@ -1997,7 +2005,7 @@
                   [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsTP"
                   [colors]="TPRcolors" (chartClick)="chartClicked($event)">
                 </canvas>
-                <div class="hr-tbl-height" *ngIf="showpTprTbl === true">
+                <div class="hr-tbl-height" *ngIf="treatmentChartData1.length > 0 && showpTprTbl === true">
                   <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
@@ -2162,11 +2170,18 @@
                       <button mat-menu-item>Item 2</button>
                   </mat-menu>
               </div> -->
-              <div *ngIf="prebook=='recall'" class="info-icon-container">
-                <img [tooltip]="charTips['4']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
-              </div>
-              <div *ngIf="prebook=='treatment'" class="info-icon-container">
-                <img [tooltip]="charTips['5']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+              <div class="info-icon-container">
+                <i *ngIf="!showrecallTbl && prebook=='recall'" class="fa fa-table fa-margin" (click) = "showPrateTable(true)"></i>
+                <i *ngIf="showrecallTbl && prebook=='recall'" class="fa fa-table greenIcon fa-margin-color" (click) = "showPrateTable(false)"></i>
+                <i *ngIf="!showreappointTbl && prebook=='treatment'" class="fa fa-table fa-margin" (click) = "showPrateTable(true)"></i>
+                <i *ngIf="showreappointTbl && prebook=='treatment'" class="fa fa-table greenIcon fa-margin-color" (click) = "showPrateTable(false)"></i>
+
+                <span *ngIf="prebook=='recall'">
+                  <img [tooltip]="charTips['4']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                </span>
+                <span *ngIf="prebook=='treatment'">
+                  <img [tooltip]="charTips['5']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                </span>                
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -2193,8 +2208,8 @@
                   [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
                   [options]="barChartOptionsTPB" [colors]="TPcolors" (chartClick)="chartClicked($event)">
                 </canvas>
-                <div class="Prod-tbl-height" *ngIf="showrecallTbl === true && prebook=='recall'">
-                  <div class="DentistProductionTable fstyle">
+                <div class="Prod-tbl-height" *ngIf="recallChartData1.length > 0 && showrecallTbl === true && prebook=='recall'">
+                  <div class="DentistProductionTable fstyle lmargin">
                     <table>
                       <thead>
                         <tr>
@@ -2213,8 +2228,8 @@
                     </table>
                   </div>
                 </div>
-                <div class="Prod-tbl-height" *ngIf="showreappointTbl === true && prebook=='treatment'">
-                  <div class="DentistProductionTable fstyle">
+                <div class="Prod-tbl-height" *ngIf="treatmentPreChartData1.length > 0 && showreappointTbl === true && prebook=='treatment'">
+                  <div class="DentistProductionTable fstyle lmargin">
                     <table>
                       <thead>
                         <tr>
@@ -2444,6 +2459,8 @@
                 No. Patient Complaints
               </div>
               <div class="info-icon-container">
+                <i *ngIf="!showpatientCtblTbl" class="fa fa-table fa-margin" (click) = "showPcomplaintsTable(true)"></i>
+                <i *ngIf="showpatientCtblTbl" class="fa fa-table greenIcon fa-margin-color" (click) = "showPcomplaintsTable(false)"></i>
                 <img [tooltip]="charTips['6']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
@@ -2463,7 +2480,7 @@
                     [chartType]="doughnutChartType" (chartHover)="chartHovered($event)"
                     (chartClick)="chartClicked($event)" [colors]="npColors"></canvas>
                 </div>
-                <div class="Prod-tbl-height" *ngIf="showpatientCtblTbl === true">
+                <div class="Prod-tbl-height" *ngIf="doughnutChartLabels.length > 0 && showpatientCtblTbl === true">
                   <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>

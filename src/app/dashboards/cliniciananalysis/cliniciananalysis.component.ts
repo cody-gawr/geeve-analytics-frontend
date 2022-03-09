@@ -3393,12 +3393,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           data.data.sort((a, b)=> a.recall_percent - b.recall_percent).reverse();
         }
-        if(data.data.length >= this.numberOfRecords){
-          this.recalltbl = data.data;
-          this.showrecallTbl = true;
-        }else{
-          this.showrecallTbl = false;
-        }
+        this.recalltbl = data.data;
+        // if(data.data.length >= this.numberOfRecords){
+        //   this.recalltbl = data.data;
+        //   this.showrecallTbl = true;
+        // }else{
+        //   this.showrecallTbl = false;
+        // }
+        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
         data.data.forEach(res => {
           if (res.recall_percent >= 0) {
             if (res.provider_name != null) {
@@ -3582,12 +3584,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           data.data.sort((a, b)=> a.reappoint_rate - b.reappoint_rate).reverse();
         }
-        if(data.data.length >= this.numberOfRecords){
-          this.reappointtbl = data.data;
-          this.showreappointTbl = true;
-        }else{
-          this.showreappointTbl = false;
-        }
+        this.reappointtbl = data.data;
+        // if(data.data.length >= this.numberOfRecords){
+        //   this.reappointtbl = data.data;
+        //   this.showreappointTbl = true;
+        // }else{
+        //   this.showreappointTbl = false;
+        // }
+        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
         data.data.forEach(res => {
           if (res.reappoint_rate >= 0) {
             if (res.provider_name != null) {
@@ -3757,12 +3761,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           data.data.sort((a, b)=> a.treatment_per_plan_percentage - b.treatment_per_plan_percentage).reverse();
         }
-        if(data.data.length >= this.numberOfRecords){
-          this.tprtbl = data.data;
-          this.showpTprTbl = true;
-        }else{
-          this.showpTprTbl = false;
-        }	
+        this.tprtbl = data.data;
+        // if(data.data.length >= this.numberOfRecords){
+        //   this.tprtbl = data.data;
+        //   this.showpTprTbl = true;
+        // }else{
+        //   this.showpTprTbl = false;
+        // }	
+        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
         data.data.forEach(res => {
           if (res.treatment_per_plan_percentage) {
             this.treatmentChartData1.push(Math.round(res.treatment_per_plan_percentage));
@@ -4010,12 +4016,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           data.data['plan_fee_all'].sort((a, b)=> a.average_fees - b.average_fees).reverse();
           data.data['plan_fee_completed'].sort((a, b)=> a.average_fees - b.average_fees).reverse();
         }
-        if(data.data.plan_fee_all.length >= this.numberOfRecords){
-          this.planChartPtbl = data.data['plan_fee_all'];
-          this.showplanChartPTbl = true;
-        }else{
-          this.showplanChartPTbl = false;
-        }
+        this.planChartPtbl = data.data['plan_fee_all'];
+        // if(data.data.plan_fee_all.length >= this.numberOfRecords){
+        //   this.planChartPtbl = data.data['plan_fee_all'];
+        //   this.showplanChartPTbl = true;
+        // }else{
+        //   this.showplanChartPTbl = false;
+        // }
+        if (data.data.plan_fee_all.length > this.numberOfRecords) data.data.plan_fee_all = data.data.plan_fee_all.slice(0, this.numberOfRecords);
         data.data.plan_fee_all.forEach(res => {
           if (res.average_fees > 0) {
             if (res.provider_name != null) {
@@ -4038,12 +4046,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.planAllTotalTrend = Math.round(data.total_ta_all);
        
         var ic = 0;
-        if(data.data.plan_fee_completed.length >= this.numberOfRecords){
-          this.planChartCtbl = data.data['plan_fee_completed'];
-          this.showplanChartCTbl = true;
-        }else{
-          this.showplanChartCTbl = false;
-        }
+        this.planChartCtbl = data.data['plan_fee_completed'];
+        // if(data.data.plan_fee_completed.length >= this.numberOfRecords){
+        //   this.planChartCtbl = data.data['plan_fee_completed'];
+        //   this.showplanChartCTbl = true;
+        // }else{
+        //   this.showplanChartCTbl = false;
+        // }
+        if (data.data.plan_fee_completed.length > this.numberOfRecords) data.data.plan_fee_completed = data.data.plan_fee_completed.slice(0, this.numberOfRecords);
         data.data.plan_fee_completed.forEach(res => {
           if (res.average_fees) {
              var prName ='';
@@ -4274,12 +4284,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           data.data.sort((a, b)=> a.num_complaints - b.num_complaints).reverse();
         }
-        if(data.data.length >= this.numberOfRecords){
-          this.patientCtbl = data.data;
-          this.showpatientCtblTbl = true;
-        }else{
-          this.showpatientCtblTbl = false;
-        }
+        this.patientCtbl = data.data;
+        // if(data.data.length >= this.numberOfRecords){
+        //   this.patientCtbl = data.data;
+        //   this.showpatientCtblTbl = true;
+        // }else{
+        //   this.showpatientCtblTbl = false;
+        // }
+        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
         data.data.forEach(res => {
           if (res.provider_name != null && res.num_complaints > 0) {
             var pName ='';
@@ -7332,6 +7344,28 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     }else if(this.proSelectShow == "collection_exp_oht" && this.proCollShow == 3){
       this.showCollExpOhtTbl = val;
     }               
+  }
+
+  showTpacTable(val){
+    if(this.tcmain == 1){
+      this.showplanChartPTbl = val;
+    }else if(this.tcmain == 2){
+      this.showplanChartCTbl = val;
+    }    
+  }
+
+  showPrateTable(val){
+    if(this.prebook == "recall"){
+      this.showrecallTbl = val;
+    }else if(this.prebook == "treatment"){
+      this.showreappointTbl = val;
+    }    
+  }
+  showPcomplaintsTable(val){
+    this.showpatientCtblTbl = val;
+  }
+  showpTprTable(val){
+    this.showpTprTbl = val;
   }
 
 }
