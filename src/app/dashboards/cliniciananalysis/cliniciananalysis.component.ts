@@ -110,6 +110,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    $('.multi-clinic-dis').removeClass("disablePointer"); 
+    $('.multi-clinic-pro').removeClass("disablePointerProgress");
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
     $('.topbar-strip').removeClass('responsive-top');
@@ -1047,6 +1049,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     $('.sa_tabs_data button').prop('disabled',true); 
     if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
       this.Apirequest = 18;
+      $('.multi-clinic-dis').addClass("disablePointer");
+      $('.multi-clinic-pro').addClass("disablePointerProgress");
     }else{
       this.Apirequest = 13;
     }    
@@ -5371,7 +5375,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   initiate_dentist() {
     var val = $('#currentDentist').attr('did');
     // var val = $('.internal_dentist').val();
-    this.loadDentist(val);
+    if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+      //this.loadDentist(val);
+    }else{
+      this.loadDentist(val);
+    }
+  
   }
   choosedDate(val) {
     val = (val.chosenLabel);
@@ -7271,7 +7280,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     if(val <= 0 ){
       $('.sa_tabs_data button').prop('disabled',false);
     }else{
-      $('.sa_tabs_data button').prop('disabled',true);     
+      $('.sa_tabs_data button').prop('disabled',true);    
+    }
+    if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+      if(val <= 0 ){
+        $('.multi-clinic-dis').removeClass("disablePointer");
+        $('.multi-clinic-pro').removeClass("disablePointerProgress");
+      }else{
+        $('.multi-clinic-dis').addClass("disablePointer");
+        $('.multi-clinic-pro').addClass("disablePointerProgress");
+      }
+    }else{
+      $('.multi-clinic-dis').removeClass("disablePointer");
+      $('.multi-clinic-pro').removeClass("disablePointerProgress");
     }
   }
 

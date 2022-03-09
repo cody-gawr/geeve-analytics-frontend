@@ -70,4 +70,10 @@ select.proSelect {
 }
 .DentistProductionTable.fstyle.lmargin {
     margin-left: 70px !important;
-    }
+}
+.disablePointer{
+    pointer-events: none;    
+}
+.disablePointerProgress{
+    cursor: progress;
+}
