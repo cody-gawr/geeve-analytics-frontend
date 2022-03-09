@@ -120,16 +120,40 @@
                </select>
 
               </div>
-              <div class="info-icon-container" *ngIf="proCollShow == 1">
-                <img [tooltip]="charTips['1']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
-              </div>
-              <div class="info-icon-container" *ngIf="proCollShow == 2">
-                <img [tooltip]="charTips['49']" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" />
-              </div>
-              <div class="info-icon-container" *ngIf="proCollShow == 3">
-                <img [tooltip]="charTips['62']" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" />
+              <div class="info-icon-container">
+                <!-- production show table view -->
+                <i *ngIf="!showprodAllTbl && proCollShow == 1 && proSelectShow =='production_all'" class="fa fa-table fa-margin" (click) = "showProdColTable(true)"></i>
+                <i *ngIf="showprodAllTbl && proCollShow == 1 && proSelectShow =='production_all'" class="fa fa-table greenIcon fa-margin-color" (click) = "showProdColTable(false)"></i>
+                <i *ngIf="!showprodDentAllTbl && proCollShow == 1 && proSelectShow =='production_dentists'" class="fa fa-table fa-margin" (click) = "showProdColTable(true)"></i>
+                <i *ngIf="showprodDentAllTbl && proCollShow == 1 && proSelectShow =='production_dentists'" class="fa fa-table greenIcon fa-margin-color" (click) = "showProdColTable(false)"></i>
+                <i *ngIf="!showprodOhtAllTbl && proCollShow == 1 && proSelectShow =='production_oht'" class="fa fa-table fa-margin" (click) = "showProdColTable(true)"></i>
+                <i *ngIf="showprodOhtAllTbl && proCollShow == 1 && proSelectShow =='production_oht'" class="fa fa-table greenIcon fa-margin-color" (click) = "showProdColTable(false)"></i>
+                
+                <!-- Collection show table view -->
+                <i *ngIf="!showCollAllTbl && proCollShow == 2 && proSelectShow =='collection_all'" class="fa fa-table fa-margin" (click) = "showProdColTable(true)"></i>
+                <i *ngIf="showCollAllTbl && proCollShow == 2 && proSelectShow =='collection_all'" class="fa fa-table greenIcon fa-margin-color" (click) = "showProdColTable(false)"></i>
+                <i *ngIf="!showCollDentTbl && proCollShow == 2 && proSelectShow =='collection_dentists'" class="fa fa-table fa-margin" (click) = "showProdColTable(true)"></i>
+                <i *ngIf="showCollDentTbl && proCollShow == 2 && proSelectShow =='collection_dentists'" class="fa fa-table greenIcon fa-margin-color" (click) = "showProdColTable(false)"></i>
+                <i *ngIf="!showCollOhtTbl && proCollShow == 2 && proSelectShow =='collection_oht'" class="fa fa-table fa-margin" (click) = "showProdColTable(true)"></i>
+                <i *ngIf="showCollOhtTbl && proCollShow == 2 && proSelectShow =='collection_oht'" class="fa fa-table greenIcon fa-margin-color" (click) = "showProdColTable(false)"></i>
+                
+                <!-- Collection Exp show table view -->
+                <i *ngIf="!showCollExpTbl && proCollShow == 3 && proSelectShow =='collection_exp_all'" class="fa fa-table fa-margin" (click) = "showProdColTable(true)"></i>
+                <i *ngIf="showCollExpTbl && proCollShow == 3 && proSelectShow =='collection_exp_all'" class="fa fa-table greenIcon fa-margin-color" (click) = "showProdColTable(false)"></i>
+                <i *ngIf="!showCollExpDentTbl && proCollShow == 3 && proSelectShow =='collection_exp_dentists'" class="fa fa-table fa-margin" (click) = "showProdColTable(true)"></i>
+                <i *ngIf="showCollExpDentTbl && proCollShow == 3 && proSelectShow =='collection_exp_dentists'" class="fa fa-table greenIcon fa-margin-color" (click) = "showProdColTable(false)"></i>
+                <i *ngIf="!showCollExpOhtTbl && proCollShow == 3 && proSelectShow =='collection_exp_oht'" class="fa fa-table fa-margin" (click) = "showProdColTable(true)"></i>
+                <i *ngIf="showCollExpOhtTbl && proCollShow == 3 && proSelectShow =='collection_exp_oht'" class="fa fa-table greenIcon fa-margin-color" (click) = "showProdColTable(false)"></i>
+                
+                <span *ngIf="proCollShow == 1"> 
+                  <img [tooltip]="charTips['1']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                </span>
+                <span *ngIf="proCollShow == 2"> 
+                  <img [tooltip]="charTips['49']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                </span>
+                <span *ngIf="proCollShow == 3"> 
+                  <img [tooltip]="charTips['62']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                </span>
               </div>
             </mat-card-title>
 
@@ -175,7 +199,7 @@
                     [colors]="DPcolors">
                   </canvas> <!-- dynamic colors of bar -->  
                 </div>
-                <div class="Prod-tbl-height" *ngIf="showprodAllTbl === true">
+                <div class="Prod-tbl-height" *ngIf="barChartData[0].data.length && showprodAllTbl === true">
                   <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
@@ -208,7 +232,7 @@
                     [colors]="DPcolors">
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
-                <div class="Prod-tbl-height" *ngIf="showprodDentAllTbl === true">
+                <div class="Prod-tbl-height" *ngIf="barChartDataDentists[0].data.length && showprodDentAllTbl === true">
                   <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
@@ -241,7 +265,7 @@
                     [colors]="DPcolors">
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
-                <div class="Prod-tbl-height" *ngIf="showprodOhtAllTbl === true">
+                <div class="Prod-tbl-height" *ngIf="barChartDataOht[0].data.length && showprodOhtAllTbl === true">
                   <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
@@ -277,7 +301,7 @@
                     [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
-                <div class="Prod-tbl-height" *ngIf="showCollAllTbl === true">
+                <div class="Prod-tbl-height" *ngIf="collectionData[0].data.length && showCollAllTbl === true">
                   <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
@@ -310,7 +334,7 @@
                     [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
-                <div class="Prod-tbl-height" *ngIf="showCollDentTbl === true">
+                <div class="Prod-tbl-height" *ngIf="collectionDentistsData[0].data.length && showCollDentTbl === true">
                   <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
@@ -343,7 +367,7 @@
                     [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
-                <div class="Prod-tbl-height" *ngIf="showCollOhtTbl === true">
+                <div class="Prod-tbl-height" *ngIf="collectionOhtData[0].data.length && showCollOhtTbl === true">
                   <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
@@ -379,7 +403,7 @@
                     [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
-                <div class="Prod-tbl-height" *ngIf="showCollExpTbl === true">
+                <div class="Prod-tbl-height" *ngIf="collectionExpData[0].data.length && showCollExpTbl === true">
                   <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
@@ -412,7 +436,7 @@
                     [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
-                <div class="Prod-tbl-height" *ngIf="showCollExpDentTbl === true">
+                <div class="Prod-tbl-height" *ngIf="collectionExpDentistsData[0].data.length && showCollExpDentTbl === true">
                   <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
@@ -445,7 +469,7 @@
                     [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
-                <div class="Prod-tbl-height" *ngIf="showCollExpOhtTbl === true">
+                <div class="Prod-tbl-height" *ngIf="collectionExpOhtData[0].data.length && showCollExpOhtTbl === true">
                   <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
@@ -1242,6 +1266,12 @@
               </div> -->
               <!--   <div class="settingsBtn"><button class="mat-raised-button mat-button-sm mat-green-button sa_smtable_btn" mat-raised-button (click)="ngxSmartModalService.getModal('myModal').open()">Settings</button></div> -->
               <div class="info-icon-container">
+                <i *ngIf="!showHrTbl && hrSelectShow =='hr_all'" class="fa fa-table fa-margin" (click) = "showHrTable(true)"></i>
+                <i  *ngIf="showHrTbl && hrSelectShow =='hr_all'" class="fa fa-table greenIcon fa-margin-color" (click) = "showHrTable(false)"></i>
+                <i *ngIf="!showHrDentTbl && hrSelectShow =='hr_dentists'" class="fa fa-table fa-margin" (click) = "showHrTable(true)"></i>
+                <i  *ngIf="showHrDentTbl && hrSelectShow =='hr_dentists'" class="fa fa-table greenIcon fa-margin-color" (click) = "showHrTable(false)"></i>
+                <i *ngIf="!showHrOhtTbl && hrSelectShow =='hr_oht'" class="fa fa-table fa-margin" (click) = "showHrTable(true)"></i>
+                <i  *ngIf="showHrOhtTbl && hrSelectShow =='hr_oht'" class="fa fa-table greenIcon fa-margin-color" (click) = "showHrTable(false)"></i>
                 <img [tooltip]="charTips['7']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
@@ -1254,7 +1284,7 @@
                     [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
                     [colors]="HRcolors" (chartClick)="chartClicked($event)">
                   </canvas>
-                  <div class="hr-tbl-height" *ngIf="showHrTbl === true">
+                  <div class="hr-tbl-height" *ngIf="hourlyRateChartData1.length > 0 && showHrTbl === true">
                     <div class="DentistProductionTable fstyle">
                       <table>
                         <thead>
@@ -1288,7 +1318,7 @@
                     [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
                     [colors]="HRcolors" (chartClick)="chartClicked($event)">
                   </canvas>
-                  <div class="hr-tbl-height" *ngIf="showHrDentTbl === true">
+                  <div class="hr-tbl-height" *ngIf=" hourlyRateChartDesntistsData1.length > 0 && showHrDentTbl === true">
                     <div class="DentistProductionTable fstyle">
                       <table>
                         <thead>
@@ -1322,7 +1352,7 @@
                     [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
                     [colors]="HRcolors" (chartClick)="chartClicked($event)">
                   </canvas>
-                  <div class="hr-tbl-height" *ngIf="showHrOhtTbl === true">
+                  <div class="hr-tbl-height" *ngIf="hourlyRateChartOhtData1.length > 0 && showHrOhtTbl === true">
                     <div class="DentistProductionTable fstyle">
                       <table>
                         <thead>

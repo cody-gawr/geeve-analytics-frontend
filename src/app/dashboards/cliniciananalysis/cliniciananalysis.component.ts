@@ -68,7 +68,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public hrSelectShow: any = "hr_all";
   public charTips: any = [];
   public userPlan: any = 'lite';
-  public numberOfRecords:number = 20;
+  public numberOfRecords:number = 12;
 
   public flag = false;
   private _routerSub = Subscription.EMPTY;
@@ -1355,12 +1355,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           data.data.sort((a, b)=> a.production - b.production).reverse();
         }
-        if(data.data.length >= this.numberOfRecords){
-          this.dentistProductiontbl = data.data;
-          this.showprodAllTbl = true;
-        }else{
-          this.showprodAllTbl = false;
-        }
+        this.dentistProductiontbl = data.data;
+        // if(data.data.length >= this.numberOfRecords){
+        //   this.dentistProductiontbl = data.data;
+        //   this.showprodAllTbl = true;
+        // }else{
+        //   this.showprodAllTbl = false;
+        // }
+        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
         data.data.forEach(res => {
           // if (res.production > 0) {
             this.barChartData1.push(Math.round(res.production));
@@ -1546,12 +1548,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           data.data.sort((a, b)=> a.production - b.production).reverse();
         }
-        if(data.data.length >= this.numberOfRecords){
-          this.dentistProductionDentisttbl = data.data;
-          this.showprodDentAllTbl = true;
-        }else{
-          this.showprodDentAllTbl = false;
-        }
+        this.dentistProductionDentisttbl = data.data;
+        // if(data.data.length >= this.numberOfRecords){
+        //   this.dentistProductionDentisttbl = data.data;
+        //   this.showprodDentAllTbl = true;
+        // }else{
+        //   this.showprodDentAllTbl = false;
+        // }
+        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
         data.data.forEach(res => {
           // if (res.production > 0) {
             this.barChartDentistsData1.push(Math.round(res.production));
@@ -1703,12 +1707,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           data.data.sort((a, b)=> a.production - b.production).reverse();
         }
-        if(data.data.length >= this.numberOfRecords){
-          this.dentistProductionOhttbl = data.data;
-          this.showprodOhtAllTbl = true;
-        }else{
-          this.showprodOhtAllTbl = false;
-        }
+        this.dentistProductionOhttbl = data.data;
+        // if(data.data.length >= this.numberOfRecords){
+        //   this.dentistProductionOhttbl = data.data;
+        //   this.showprodOhtAllTbl = true;
+        // }else{
+        //   this.showprodOhtAllTbl = false;
+        // }
+        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
         data.data.forEach(res => {
           // if (res.production > 0) {
             this.barChartOhtData1.push(Math.round(res.production));
@@ -1866,12 +1872,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           data.data.sort((a, b)=> a.collection - b.collection).reverse();
         }
-        if(data.data.length >= this.numberOfRecords){
-          this.dentistCollectiontbl = data.data;
-          this.showCollAllTbl = true;
-        }else{
-          this.showCollAllTbl = false;
-        }
+        this.dentistCollectiontbl = data.data;
+        // if(data.data.length >= this.numberOfRecords){
+        //   this.dentistCollectiontbl = data.data;
+        //   this.showCollAllTbl = true;
+        // }else{
+        //   this.showCollAllTbl = false;
+        // }
+        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
         data.data.forEach(res => {
 
           // if (res.collection > 0) {
@@ -2028,12 +2036,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           data.data.sort((a, b)=> a.collection - b.collection).reverse();
         }
-        if(data.data.length >= this.numberOfRecords){
-          this.dentistCollectionDenttbl = data.data;
-          this.showCollDentTbl = true;
-        }else{
-          this.showCollDentTbl = false;
-        }
+        this.dentistCollectionDenttbl = data.data;
+        // if(data.data.length >= this.numberOfRecords){
+        //   this.dentistCollectionDenttbl = data.data;
+        //   this.showCollDentTbl = true;
+        // }else{
+        //   this.showCollDentTbl = false;
+        // }
+        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
         data.data.forEach(res => {
 
           // if (res.collection > 0) {
@@ -2189,12 +2199,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           data.data.sort((a, b)=> a.collection - b.collection).reverse();
         }
-        if(data.data.length >= this.numberOfRecords){
-          this.dentistCollectionOhttbl = data.data;
-          this.showCollOhtTbl = true;
-        }else{
-          this.showCollOhtTbl = false;
-        }
+        this.dentistCollectionOhttbl = data.data;
+        // if(data.data.length >= this.numberOfRecords){
+        //   this.dentistCollectionOhttbl = data.data;
+        //   this.showCollOhtTbl = true;
+        // }else{
+        //   this.showCollOhtTbl = false;
+        // }
+        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
         data.data.forEach(res => {
 
           // if (res.collection > 0) {
@@ -2349,12 +2361,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           data.data.sort((a, b)=> a.collection - b.collection).reverse();
         }
-        if(data.data.length >= this.numberOfRecords){
-          this.dentistCollectionExptbl = data.data;
-          this.showCollExpTbl = true;
-        }else{
-          this.showCollExpTbl = false;
-        }
+        this.dentistCollectionExptbl = data.data;
+        // if(data.data.length >= this.numberOfRecords){
+        //   this.dentistCollectionExptbl = data.data;
+        //   this.showCollExpTbl = true;
+        // }else{
+        //   this.showCollExpTbl = false;
+        // }
+        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
         data.data.forEach(res => {
 
           // if (res.collection > 0) {
@@ -2510,12 +2524,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           data.data.sort((a, b)=> a.collection - b.collection).reverse();
         }
-        if(data.data.length >= this.numberOfRecords){
-          this.dentistCollectionExpDenttbl = data.data;
-          this.showCollExpDentTbl = true;
-        }else{
-          this.showCollExpDentTbl = false;
-        }
+        this.dentistCollectionExpDenttbl = data.data;
+        // if(data.data.length >= this.numberOfRecords){
+        //   this.dentistCollectionExpDenttbl = data.data;
+        //   this.showCollExpDentTbl = true;
+        // }else{
+        //   this.showCollExpDentTbl = false;
+        // }
+        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
         data.data.forEach(res => {
 
           // if (res.collection > 0) {
@@ -2671,12 +2687,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           data.data.sort((a, b)=> a.collection - b.collection).reverse();
         }
-        if(data.data.length >= this.numberOfRecords){
-          this.dentistCollectionExpOhttbl = data.data;
-          this.showCollExpOhtTbl = true;
-        }else{
-          this.showCollExpOhtTbl = false;
-        }
+        this.dentistCollectionExpOhttbl = data.data;
+        // if(data.data.length >= this.numberOfRecords){
+        //   this.dentistCollectionExpOhttbl = data.data;
+        //   this.showCollExpOhtTbl = true;
+        // }else{
+        //   this.showCollExpOhtTbl = false;
+        // }
+        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
         data.data.forEach(res => {
 
           // if (res.collection > 0) {
@@ -4535,12 +4553,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
         }
-        if(data.data.length >= this.numberOfRecords){
-          this.hourlyRatetbl = data.data;
-          this.showHrTbl = true;
-        }else{
-          this.showHrTbl = false;
-        }
+        this.hourlyRatetbl = data.data;
+        // if(data.data.length >= this.numberOfRecords){
+        //   this.hourlyRatetbl = data.data;
+        //   this.showHrTbl = true;
+        // }else{
+        //   this.showHrTbl = false;
+        // }
+        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
         data.data.forEach(res => {
           if (res.hourly_rate > 0) {
             this.hourlyRateChartData1.push(Math.round(res.hourly_rate));
@@ -4675,12 +4695,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
         }
-        if(data.data.length >= this.numberOfRecords){
-          this.hourlyRateDenttbl = data.data;
-          this.showHrDentTbl = true;
-        }else{
-          this.showHrDentTbl = false;
-        }
+        this.hourlyRateDenttbl = data.data;
+        // if(data.data.length >= this.numberOfRecords){
+        //   this.hourlyRateDenttbl = data.data;
+        //   this.showHrDentTbl = true;
+        // }else{
+        //   this.showHrDentTbl = false;
+        // }
+        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
         data.data.forEach(res => {
           if (res.hourly_rate > 0) {
             var pName ='';
@@ -4815,12 +4837,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
         }
-        if(data.data.length >= this.numberOfRecords){
-          this.hourlyRateOhttbl = data.data;
-          this.showHrOhtTbl = true;
-        }else{
-          this.showHrOhtTbl = false;
-        }
+        this.hourlyRateOhttbl = data.data;
+        // if(data.data.length >= this.numberOfRecords){
+        //   this.hourlyRateOhttbl = data.data;
+        //   this.showHrOhtTbl = true;
+        // }else{
+        //   this.showHrOhtTbl = false;
+        // }
+        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
         data.data.forEach(res => {
           if (res.hourly_rate > 0) {
             this.hourlyRateChartOhtData1.push(Math.round(res.hourly_rate));
@@ -7277,6 +7301,37 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   showNPTable(val){
     this.shownewPatientTbl = val;
+  }
+  showHrTable(val){
+    if(this.hrSelectShow == "hr_all"){ 
+      this.showHrTbl = val;
+    }else if(this.hrSelectShow == "hr_dentists"){
+      this.showHrDentTbl = val;
+    }else if(this.hrSelectShow == "hr_oht"){
+      this.showHrOhtTbl = val;
+    }    
+  }
+
+  showProdColTable(val){
+    if(this.proSelectShow == "production_all" && this.proCollShow == 1){ 
+      this.showprodAllTbl = val;
+    }else if(this.proSelectShow == "production_dentists" && this.proCollShow == 1){
+      this.showprodDentAllTbl = val;
+    }else if(this.proSelectShow == "production_oht" && this.proCollShow == 1){
+      this.showprodOhtAllTbl = val;
+    }else if(this.proSelectShow == "collection_all" && this.proCollShow == 2){
+      this.showCollAllTbl = val;
+    }else if(this.proSelectShow == "collection_dentists" && this.proCollShow == 2){
+      this.showCollDentTbl = val;
+    }else if(this.proSelectShow == "collection_oht" && this.proCollShow == 2){
+      this.showCollOhtTbl = val;
+    }else if(this.proSelectShow == "collection_exp_all" && this.proCollShow == 3){
+      this.showCollExpTbl = val;
+    }else if(this.proSelectShow == "collection_exp_dentists" && this.proCollShow == 3){
+      this.showCollExpDentTbl = val;
+    }else if(this.proSelectShow == "collection_exp_oht" && this.proCollShow == 3){
+      this.showCollExpOhtTbl = val;
+    }               
   }
 
 }
