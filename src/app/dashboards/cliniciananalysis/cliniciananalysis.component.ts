@@ -5399,9 +5399,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           var dentistVal1 = this._cookieService.get("clinic_dentist").split('_');
           this.selectedDentist = dentistVal1[1];
       }
-      if (this._cookieService.get("dentistid")) { 
+      if (this._cookieService.get("dentistid") && this.user_type == '4') { 
         this.selectedDentist = this._cookieService.get("dentistid");
-      }
+        }
     $('.target_filter').removeClass('mat-button-toggle-checked');
     $('.target_' + val).addClass('mat-button-toggle-checked');
     $('.filter').removeClass('active');
