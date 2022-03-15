@@ -79,6 +79,7 @@ export class MarketingComponent implements AfterViewInit {
   public apiUrl = environment.apiUrl;
   public showGoals: boolean = false;
   public activePatients: boolean = false;
+  public multipleClinicsSelected: boolean = false;
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
   pluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
@@ -115,20 +116,30 @@ export class MarketingComponent implements AfterViewInit {
     }
     this.getRolesIndividual();
     var val = $('#currentClinic').attr('cid');
-    if (val != undefined && val != 'all') {
-      this.clinic_id = val;
-      await this.clinicGetAccountingPlatform();
-      if (this.connectedwith == 'myob') {
-        this.xeroConnect = false;
-        this.checkMyobStatus();
-      } else if (this.connectedwith == 'xero') {
-        this.myobConnect = false;
-        this.checkXeroStatus();
-      } else {
-        this.xeroConnect = false;
-        this.myobConnect = false;
+    this.clinic_id = val;
+    if (val != undefined) {
+      if( val.indexOf(',') == -1 && val != 'all'){
+        this.multipleClinicsSelected = false;
+        this.clinic_id = val;
+        await this.clinicGetAccountingPlatform();
+        if (this.connectedwith == 'myob') {
+          this.xeroConnect = false;
+          this.checkMyobStatus();
+        } else if (this.connectedwith == 'xero') {
+          this.myobConnect = false;
+          this.checkXeroStatus();
+        } else {
+          this.xeroConnect = false;
+          this.myobConnect = false;
+        }
+        this.filterDate(this.chartService.duration$.value);
+      }else{
+        this.multipleClinicsSelected = true;
+        this.filterDate(this.chartService.duration$.value);
       }
-      this.filterDate(this.chartService.duration$.value);
+      
+    }else{
+      this.multipleClinicsSelected = true;
     }
   }
   clinicGetAccountingPlatform() {
@@ -578,6 +589,144 @@ export class MarketingComponent implements AfterViewInit {
     },
   };
 
+  public stackedChartOptionsMulti: any = {
+    elements: {
+      point: {
+        radius: 5,
+        hoverRadius: 7,
+        pointStyle: 'rectRounded',
+        hoverBorderWidth: 7
+      },
+    },
+    scaleShowVerticalLines: false,
+    responsive: true,
+    maintainAspectRatio: false,
+    barThickness: 10,
+    animation: {
+      duration: 500,
+      easing: 'easeOutSine'
+    },
+    scales: {
+      xAxes: [{
+        stacked: true,
+        ticks: {
+          autoSkip: false
+        }
+      }],
+      yAxes: [{
+        stacked: true,
+        ticks: {
+          userCallback: function (item) {
+            return item;
+          },
+        },
+      }],
+    }, legend: {
+      display: true
+    },
+    tooltips: {
+      mode: 'x-axis',
+      enabled: false,
+      custom: function (tooltip) {
+        if (!tooltip) return;
+        var tooltipEl = document.getElementById('chartjs-tooltip');
+        if (!tooltipEl) {
+          tooltipEl = document.createElement('div');
+          tooltipEl.id = 'chartjs-tooltip';
+          tooltipEl.style.backgroundColor = "#FFFFFF";
+          tooltipEl.style.borderColor = "#B2BABB";
+          tooltipEl.style.borderWidth = "thin";
+          tooltipEl.style.borderStyle = "solid";
+          tooltipEl.style.zIndex = "999999";
+          tooltipEl.style.backgroundColor = "#000000";
+          tooltipEl.style.color = "#FFFFFF";
+          document.body.appendChild(tooltipEl);
+        }
+        if (tooltip.opacity === 0) {
+          tooltipEl.style.opacity = "0";
+          return;
+        } else {
+          tooltipEl.style.opacity = "0.8";
+        }
+
+        tooltipEl.classList.remove('above', 'below', 'no-transform');
+        if (tooltip.yAlign) {
+          tooltipEl.classList.add(tooltip.yAlign);
+        } else {
+          tooltipEl.classList.add('no-transform');
+        }
+
+        function getBody(bodyItem) {
+          return bodyItem.lines;
+        }
+        var bodyLineCont = 0;
+        if (tooltip.body) {
+          var titleLines = tooltip.title || [];
+          var bodyLines = tooltip.body.map(getBody);
+          var labelColorscustom = tooltip.labelColors;
+          var innerHtml = '<table><thead>';
+          innerHtml += '</thead><tbody>';
+          let total: any = 0;
+          bodyLines.forEach(function (body, i) {
+            if (!body[0].includes("0")) {
+              var singleval = body[0].split(':');
+              if (singleval[1].includes("-")) {
+                var temp = singleval[1];
+                var amount = temp;
+                total -= parseFloat(amount);
+              } else {
+                var temp = singleval[1];
+                var amount = temp;
+                total += parseFloat(amount);
+              }
+
+            }
+          });
+          total = Math.round(total);
+          if (total != 0) {
+            var num_parts = total.toString().split(".");
+            num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            total = num_parts.join(".");
+          }
+          titleLines.forEach(function (title) {
+            innerHtml += '<tr><th colspan="2" style="text-align: left;">' + title + ': ' + total + '</th></tr>';
+          });
+          bodyLines.forEach(function (body, i) {
+            if (body[0].includes("100%")) {
+              innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' + labelColorscustom[i].backgroundColor + '"></span></td><td style="padding: 0px">' + body[0] + '</td></tr>';
+              bodyLineCont = bodyLineCont + 1;
+            } else if (!body[0].includes("0%")) {
+              innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' + labelColorscustom[i].backgroundColor + '"></span></td><td style="padding: 0px">' + body[0] + '</td></tr>';
+              bodyLineCont = bodyLineCont + 1;
+            }
+          });
+          innerHtml += '</tbody></table>';
+          tooltipEl.innerHTML = innerHtml;
+          //tableRoot.innerHTML = innerHtml;
+        }
+        // disable displaying the color box;
+        var position = this._chart.canvas.getBoundingClientRect();
+        // Display, position, and set styles for font
+        tooltipEl.style.position = 'fixed';
+        tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 80) + 'px';
+        tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - (70 + (bodyLineCont * 15))) + 'px';
+        tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
+        tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
+        tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
+        tooltipEl.style.padding = tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+        tooltipEl.style.pointerEvents = 'none';
+        tooltip.displayColors = false;
+      },
+      callbacks: {
+        label: function (tooltipItems, data) {
+          return data.datasets[tooltipItems.datasetIndex].label + ": " + Math.round(tooltipItems.yLabel);
+        },
+
+      }
+    }
+  };
+
+
   public stackedChartColors: Array<any> = [
     { backgroundColor: '#119682' },
     { backgroundColor: '#6BE6EF' },
@@ -757,9 +906,9 @@ export class MarketingComponent implements AfterViewInit {
       this.fdActivePatient();
       this.fdvisitsRatio();
       this.fdnewPatientsAcq();
-      if (this.connectedwith == 'myob') {
+      if (this.connectedwith == 'myob' && this.multipleClinicsSelected == false) {
         this.getMyobAccounts();
-      } else if (this.connectedwith == 'xero') {
+      } else if (this.connectedwith == 'xero' && this.multipleClinicsSelected == false) {
         this.getAccounts();
       }
 
@@ -1032,11 +1181,46 @@ export class MarketingComponent implements AfterViewInit {
   public visitsTotal;
   public visitsPrevTotal;
   public visitsTooltip = 'down';
-
+  public totalvisit: any[] = [
+    {
+      data: [], label: '', shadowOffsetX: 3,
+      backgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+      ],
+      shadowOffsetY: 2,
+      shadowBlur: 3,
+      // hoverBackgroundColor: 'rgba(0, 0, 0, 0.6)',
+      shadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointBevelWidth: 2,
+      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointShadowOffsetX: 3,
+      pointShadowOffsetY: 3,
+      pointShadowBlur: 10,
+      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+      backgroundOverlayMode: 'multiply'
+    }
+  ];
+  public TvisitTrend1 = [];
+  public TvisitTrendLabels1 = [];
   public fdvisitsRatioLoader: any;
   public visitsGoal: any = 0;
+  public showBar: boolean = false;
   //Predictor Ratio :
   private fdvisitsRatio() {
+    this.showBar = false;
     if (this.duration) {
       this.visitsTotal = 0;
       this.fdvisitsRatioLoader = true;
@@ -1048,6 +1232,21 @@ export class MarketingComponent implements AfterViewInit {
         this.visitsPrevTotal = 0;
         this.fdvisitsRatioLoader = false;
         if (data.message == 'success') {
+          this.totalvisit[0]['data'] = [];
+          this.TvisitTrend1 = [];
+          this.TvisitTrendLabels1 = [];  
+
+          if (data.total > 0) {
+            data.data.forEach(res => { 
+              this.TvisitTrend1.push(Math.round(res.num_visits));
+              this.TvisitTrendLabels1.push(res.clinic_name);
+            });
+          }
+          if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+            this.showBar = true;
+          }
+          this.totalvisit[0]['data'] = this.TvisitTrend1;
+
           this.visitsTotal = data.total;
           this.visitsPrevTotal = data.total_ta;
           this.visitsGoal = data.goals;
@@ -1103,6 +1302,42 @@ export class MarketingComponent implements AfterViewInit {
     );
   }
 
+  public newPativentbr: any[] = [
+    {
+      data: [], label: '', shadowOffsetX: 3,
+      backgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+      ],
+      shadowOffsetY: 2,
+      shadowBlur: 3,
+      // hoverBackgroundColor: 'rgba(0, 0, 0, 0.6)',
+      shadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointBevelWidth: 2,
+      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointShadowOffsetX: 3,
+      pointShadowOffsetY: 3,
+      pointShadowBlur: 10,
+      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+      backgroundOverlayMode: 'multiply'
+    }
+  ];
+  public newPTrend1 = [];
+  public newPTrendLabels1 = [];
+  public showNPBar: boolean = false;
+
   public newPatientsTotal = 0;
   public newPatientsPrevTotal = 0;
   public newPatientsTooltip = 'down';
@@ -1111,6 +1346,7 @@ export class MarketingComponent implements AfterViewInit {
   public maxnewPatientsGoal: any = 0;
   //Predictor Ratio :
   private fdnewPatientsRatio() {
+    this.showNPBar = false;
     if (this.duration) {
       this.fdnewPatientsRatioLoader = true;
       this.newPatientsTooltip = 'down';
@@ -1122,6 +1358,20 @@ export class MarketingComponent implements AfterViewInit {
         this.newPatientsPrevTotal = 0;
         if (data.message == 'success') {
           this.fdnewPatientsRatioLoader = false;
+          this.newPativentbr[0]['data'] = [];
+          this.newPTrend1 = [];
+          this.newPTrendLabels1 = [];
+          if (data.total > 0) {
+            data.data.forEach(res => { 
+              this.newPTrend1.push(Math.round(res.new_patients));
+              this.newPTrendLabels1.push(res.clinic_name);
+            });
+          }
+          if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+            this.showNPBar = true;
+          }
+          this.newPativentbr[0]['data'] = this.newPTrend1;
+
           if (data.total != null)
             this.newPatientsTotal = data.total;
           if (data.total_ta != null)
@@ -1488,7 +1738,11 @@ export class MarketingComponent implements AfterViewInit {
 
   initiate_dentist() {
     var val = $('.internal_dentist').val();
-    this.loadDentist(val);
+    if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+      //this.loadDentist(val);
+    }else{
+      this.loadDentist(val);
+    }    
   }
 
   toggleChecked = false;
@@ -1500,7 +1754,7 @@ export class MarketingComponent implements AfterViewInit {
   toggleChangeProcess() {
     this.Apirequest = 4;
     this.showTrend = true;
-    if (this.connectedwith != '') {
+    if (this.connectedwith != '' && this.multipleClinicsSelected == false) {
       this.Apirequest = 5;
     }
     this.mkNewPatientsByReferralTrend();
@@ -1552,7 +1806,11 @@ export class MarketingComponent implements AfterViewInit {
   public visitsChartTrendLabels = [];
   public visitsChartTrendLabels1 = [];
   public fdvisitsRatioTrendLoader: any;
-
+  public totavisitTrendMulti: any[] = [
+    { data: [], label: '' }];
+  public showByclinic : boolean =false;
+  public totalVisitMultiLabels =[];
+  public totalVisitMultiLabels1 =[];
   private fdvisitsRatioTrend() {
     this.visitsChartTrendLabels1 = [];
     this.visitsChartTrendLabels = [];
@@ -1560,6 +1818,10 @@ export class MarketingComponent implements AfterViewInit {
     this.visitsChartTrend1 = [];
     var user_id;
     var clinic_id;
+    this.showByclinic = false;
+    this.totavisitTrendMulti =[];
+    this.totalVisitMultiLabels =[];
+    this.totalVisitMultiLabels1 =[];
     this.marketingService.mkTotalVisitsTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
       this.visitsChartTrend1 = [];
@@ -1568,16 +1830,45 @@ export class MarketingComponent implements AfterViewInit {
       this.visitsChartTrend[0]['data'] = [];
       this.fdvisitsRatioTrendLoader = false;
       if (data.message == 'success') {
-        data.data.forEach(res => {
-          this.visitsChartTrend1.push(res.num_visits);
-          if (this.trendValue == 'c')
-            this.visitsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-          else
-            this.visitsChartTrendLabels1.push(res.year);
-        });
-        this.visitsChartTrend[0]['data'] = this.visitsChartTrend1;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          this.showByclinic = true;
+        }
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.data.sort((a, b)=> a.duration - b.duration);
+          data.data.forEach(res => { 
+            res.val.forEach((reslt, key) => {
+              if (typeof (this.totavisitTrendMulti[key]) == 'undefined') {
+                this.totavisitTrendMulti[key] = { data: [], label: '' };
+              }
+              if (typeof (this.totavisitTrendMulti[key]['data']) == 'undefined') {
+                this.totavisitTrendMulti[key]['data'] = [];
+              }
+              
+                this.totavisitTrendMulti[key]['data'].push(Math.round(reslt.num_visits));
+                this.totavisitTrendMulti[key]['label'] = reslt.clinic_name;
+                this.totavisitTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
+                this.totavisitTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+             }); 
+             if (this.trendValue == 'c')
+              this.totalVisitMultiLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+            else
+              this.totalVisitMultiLabels1.push(res.duration);
+          });
+          this.totalVisitMultiLabels = this.totalVisitMultiLabels1;
 
-        this.visitsChartTrendLabels = this.visitsChartTrendLabels1;
+        }else{
+            data.data.forEach(res => {
+              this.visitsChartTrend1.push(res.num_visits);
+              if (this.trendValue == 'c')
+                this.visitsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+              else
+                this.visitsChartTrendLabels1.push(res.year);
+            });
+            this.visitsChartTrend[0]['data'] = this.visitsChartTrend1;
+    
+            this.visitsChartTrendLabels = this.visitsChartTrendLabels1;
+        }
+        
       }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -1654,7 +1945,11 @@ export class MarketingComponent implements AfterViewInit {
         backgroundOverlayMode: 'multiply'
       }
     ];
-
+  public newPatientsTrendMulti: any[] = [
+    { data: [], label: '' }];  
+  public showNPclinic : boolean =false;
+  public newPatientsMultiLabels =[];
+  public newPatientsMultiLabels1 =[];  
   public newPatientsChartTrend1 = [];
   public newPatientsChartTrendLabels = [];
   public newPatientsChartTrendLabels1 = [];
@@ -1670,19 +1965,50 @@ export class MarketingComponent implements AfterViewInit {
       this.newPatientsChartTrendLabels1 = [];
       this.newPatientsChartTrendLabels = [];
       this.newPatientsChartTrend[0]['data'] = [];
+      this.showNPclinic = false;
+      this.newPatientsTrendMulti =[];
+      this.newPatientsMultiLabels =[];
+      this.newPatientsMultiLabels1 =[];
       this.Apirequest = this.Apirequest - 1;
       if (data.message == 'success') {
-        this.newPatientsChartTemp = data.data;
-        data.data.forEach(res => {
-          this.newPatientsChartTrend1.push(res.new_patients);
-          if (this.trendValue == 'c')
-            this.newPatientsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-          else
-            this.newPatientsChartTrendLabels1.push(res.year);
-        });
-        this.newPatientsChartTrend[0]['data'] = this.newPatientsChartTrend1;
-        this.newPatientsChartTrendLabels = this.newPatientsChartTrendLabels1;
-        this.fdnewPatientsAcqTrend();
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          this.showNPclinic = true;
+        }
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+            data.data.sort((a, b)=> a.duration - b.duration);
+            data.data.forEach(res => { 
+              res.val.forEach((reslt, key) => {
+                if (typeof (this.newPatientsTrendMulti[key]) == 'undefined') {
+                  this.newPatientsTrendMulti[key] = { data: [], label: '' };
+                }
+                if (typeof (this.newPatientsTrendMulti[key]['data']) == 'undefined') {
+                  this.newPatientsTrendMulti[key]['data'] = [];
+                }
+                
+                  this.newPatientsTrendMulti[key]['data'].push(Math.round(reslt.new_patients));
+                  this.newPatientsTrendMulti[key]['label'] = reslt.clinic_name;
+                  this.newPatientsTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
+                  this.newPatientsTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+              }); 
+              if (this.trendValue == 'c')
+                this.newPatientsMultiLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+              else
+                this.newPatientsMultiLabels1.push(res.duration);
+            });
+            this.newPatientsMultiLabels = this.newPatientsMultiLabels1;
+        }else{
+          this.newPatientsChartTemp = data.data;
+          data.data.forEach(res => {
+            this.newPatientsChartTrend1.push(res.new_patients);
+            if (this.trendValue == 'c')
+              this.newPatientsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+            else
+              this.newPatientsChartTrendLabels1.push(res.year);
+          });
+          this.newPatientsChartTrend[0]['data'] = this.newPatientsChartTrend1;
+          this.newPatientsChartTrendLabels = this.newPatientsChartTrendLabels1;
+          this.fdnewPatientsAcqTrend();
+        }
       }
       this.fdnewPatientsRatioLoader = false;
       this.fdnewPatientsAcqLoader = false;

@@ -227,13 +227,23 @@
                             </div>
                             <div class="chart py-2 trendchart">
                                 <div class="chart-num-patients"
-                                    *ngIf="showTrend == false && newPatientsTotal > 0 && fdnewPatientsRatioLoader == false && activePatients == false">
+                                    *ngIf="showNPBar == false && showTrend == false && newPatientsTotal > 0 && fdnewPatientsRatioLoader == false && activePatients == false">
                                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="newPatientsTotal"
                                         [thick]="gaugeThick" [foregroundColor]="foregroundColor"
                                         [backgroundColor]="backgroundColor" [cap]="cap" [max]="maxnewPatientsGoal"
                                         [size]="size">
                                     </ngx-gauge>
                                 </div>
+                                <div class="chart-Trend1-patients trendH"
+                                    *ngIf="showNPBar == true && showTrend == false && newPatientsTotal > 0 && fdnewPatientsRatioLoader == false && activePatients == false">
+                                    <canvas #myCanvas baseChart [datasets]="newPativentbr"
+                                        [labels]="newPTrendLabels1" [options]="stackedChartOptions"
+                                        [chartType]="stackedChartType" [colors]="lineChartColors"
+                                        (chartHover)="chartHovered($event)" [legend]="false"
+                                        (chartClick)="chartClicked($event)">
+                                    </canvas>   
+                                </div>
+                                
                                 <div class="chart-num-patients"
                                     *ngIf="showTrend == false  && activePatients == true && fdActivePatients > 0 && fdActivePatientLoader == false">
                                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="fdActivePatients"
@@ -256,10 +266,19 @@
                                     </p>
                                 </div>
 
-                                <div *ngIf="showTrend == true && activePatients == false &&  newPatientsChartTrend1.length > 0"
+                                <div *ngIf="showTrend == true && activePatients == false &&  newPatientsChartTrend1.length > 0 && showNPclinic == false"
                                     class="chart-Trend1-patients trendH">
                                     <canvas #myCanvas baseChart [datasets]="newPatientsChartTrend"
                                         [labels]="newPatientsChartTrendLabels" [options]="stackedChartOptions"
+                                        [chartType]="stackedChartType" [colors]="lineChartColors"
+                                        (chartHover)="chartHovered($event)" [legend]="false"
+                                        (chartClick)="chartClicked($event)">
+                                    </canvas>
+                                </div>
+                                <div *ngIf="showTrend == true && activePatients == false &&  newPatientsMultiLabels1.length > 0 && showNPclinic == true"
+                                    class="chart-Trend1-patients trendH">
+                                    <canvas #myCanvas baseChart [datasets]="newPatientsTrendMulti"
+                                        [labels]="newPatientsMultiLabels" [options]="stackedChartOptionsMulti"
                                         [chartType]="stackedChartType" [colors]="lineChartColors"
                                         (chartHover)="chartHovered($event)" [legend]="false"
                                         (chartClick)="chartClicked($event)">
@@ -277,7 +296,7 @@
                                 </div>
 
                                 <div
-                                    *ngIf="showTrend == true  && activePatients == false && newPatientsChartTrend1.length <=0 ">
+                                    *ngIf="showTrend == true  && activePatients == false && newPatientsChartTrend1.length <=0 &&  newPatientsMultiLabels1.length <=0">
                                     <div class="sa_nodata_div"></div>
                                     <p class="chart-placeholder-text">You have no new patients in the selected period
                                     </p>
@@ -381,7 +400,7 @@
                                         </ngx-gauge>
 
                                     </div>
-                                    <div *ngIf="fdnewPatientsAcqLoader == true && (xeroConnect || myobConnect) && !newAcqValueError"
+                                    <div *ngIf="fdnewPatientsAcqLoader == true && (xeroConnect || myobConnect) && !newAcqValueError && multipleClinicsSelected===false"
                                         class="loader_container loader_container_middle"><img class="loader_ico"
                                             src="../assets/images/720.gif">
                                         <div class="loader-text">Calculating...</div>
@@ -402,11 +421,16 @@
                                         <p class="chart-placeholder-text">Unable to determine your cost of new patients
                                             for this period</p>
                                     </div>
-                                    <div *ngIf="(!xeroConnect && !myobConnect) || newAcqValueError">
+                                    <div *ngIf="((!xeroConnect && !myobConnect) || newAcqValueError) && multipleClinicsSelected===false">
                                         <div class="sa_nodata_div">
                                         </div>
                                         <p class="chart-placeholder-text">Please ensure your Xero/MYOB account is
                                             connected</p>
+                                    </div>
+                                    <div *ngIf="multipleClinicsSelected===true">
+                                        <div class="sa_nodata_div">
+                                        </div>
+                                        <p class="chart-placeholder-text">Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
                                     </div>
                                 </div>
                             </div>
@@ -457,19 +481,26 @@
                         <div class="card-body">
                             <div class="chart py-2">
 
-                                <div *ngIf="showTrend == false && visitsTotal > 0" class="chart-num-patients">
-                                    <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="visitsTotal"
+                                <div class="chart-num-patients" *ngIf="showTrend == false && visitsTotal > 0 && showBar === false">
+                                    <ngx-gauge  class="singleRatio" [type]="gaugeType" [value]="visitsTotal"
                                         [thick]="gaugeThick" [foregroundColor]="foregroundColor"
                                         [backgroundColor]="backgroundColor" [cap]="cap" [size]="size">
-                                    </ngx-gauge>
-                                </div>
+                                    </ngx-gauge>                    
+                                </div> 
+                                <div class="chart-Trend1-patients" *ngIf="showTrend == false && visitsTotal > 0 && showBar === true">
+                                    <canvas #myCanvas baseChart [datasets]="totalvisit"
+                                    [labels]="TvisitTrendLabels1" [options]="stackedChartOptions"
+                                    [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
+                                    [legend]="false" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+                                </canvas>  
+                                </div>                                  
                                 <div *ngIf="showTrend == false && visitsTotal <= 0 && fdvisitsRatioLoader == false">
                                     <div class="sa_nodata_div">
                                     </div>
                                     <p class="chart-placeholder-text">You have no visits in the selected period</p>
                                 </div>
 
-                                <div *ngIf="showTrend == true && visitsChartTrend1.length > 0"
+                                <div *ngIf="showTrend == true && visitsChartTrend1.length > 0 && showByclinic == false"
                                     class="chart-Trend1-patients">
                                     <canvas #myCanvas baseChart [datasets]="visitsChartTrend"
                                         [labels]="visitsChartTrendLabels" [options]="stackedChartOptions"
@@ -477,9 +508,17 @@
                                         [legend]="false" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
                                     </canvas>
                                 </div>
+                                <div *ngIf="showTrend == true && totalVisitMultiLabels1.length > 0 && showByclinic == true"
+                                    class="chart-Trend1-patients">
+                                    <canvas #myCanvas baseChart [datasets]="totavisitTrendMulti"
+                                        [labels]="totalVisitMultiLabels" [options]="stackedChartOptionsMulti"
+                                        [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
+                                        [legend]="false" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+                                    </canvas>
+                                </div>
 
                             </div>
-                            <div *ngIf="showTrend == true && fdvisitsRatioTrendLoader == false && visitsChartTrend1.length <=0"
+                            <div *ngIf="showTrend == true && fdvisitsRatioTrendLoader == false && visitsChartTrend1.length <=0 && totalVisitMultiLabels1.length <=0"
                                 class="no-data-placeholder">
                                 <div class="sa_nodata_div">
                                 </div>
