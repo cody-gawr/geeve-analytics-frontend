@@ -67,7 +67,7 @@
                                 <div class="sa_back_btn_holder" *ngIf="newPatientsTimeLabelsl2.length > 0"><span
                                         (click)="changeLevel('newPatient')">Back</span></div>
                                 <canvas
-                                    *ngIf="showTrend == false && newPatientsTimeLabels.length > 0 && mkNewPatientsByReferralLoader == false"
+                                    *ngIf="showTrend == false && newPatientsTimeLabels.length > 0 && mkNewPatientsByReferralLoader == false && showmulticlinicNewPatients == false"
                                     #myCanvas2 baseChart [data]="newPatientsTimeData" [labels]="newPatientsTimeLabels"
                                     [chartType]="pieChartType" (chartHover)="chartHovered($event)"
                                     [plugins]="pluginObservable$ | async"
@@ -75,15 +75,22 @@
                                     [options]="noNewPatientsByReferralChartOptions" [colors]="pieChartColors">
                                 </canvas>
                                 <canvas
-                                    *ngIf="showTrend == false && newPatientsTimeLabelsl2.length > 0 && mkNewPatientsByReferralLoader == false"
+                                    *ngIf="showTrend == false && newPatientsTimeLabelsl2.length > 0 && mkNewPatientsByReferralLoader == false && showmulticlinicNewPatients == false"
                                     #myCanvas2 baseChart [data]="newPatientsTimeData" [labels]="newPatientsTimeLabelsl2"
                                     [chartType]="pieChartType" (chartHover)="chartHovered($event)"
                                     [plugins]="pluginObservable$ | async"
                                     [options]="noNewPatientsByReferralChartOptions" [colors]="pieChartColors">
                                 </canvas>
+                                <canvas 
+                                    *ngIf="showTrend == false && showmulticlinicNewPatients == true && mkNewPatientsByReferralLoader == false "
+                                    #myCanvas2 class="trendProductionPercentage" baseChart
+                                    [datasets]="mkNewPatientsByReferalMulti" [labels]="mkNewPatientsByReferalLabels"
+                                    [options]="stackedChartOptionsMulti" [legend]="false" [chartType]="stackedChartType"
+                                    (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"> 
+                                </canvas>
 
                                 <div class="no-data-placeholder"
-                                    *ngIf="showTrend == false && newPatientsTimeLabels.length <= 0 && newPatientsTimeLabelsl2.length <= 0 && mkNewPatientsByReferralLoader == false">
+                                    *ngIf="showTrend == false && newPatientsTimeLabels.length <= 0 && newPatientsTimeLabelsl2.length <= 0 && mkNewPatientsByReferralLoader == false && mkNewPatientsByReferalLabels  <= 0">
                                     <div class="sa_nodata_div">
                                     </div>
                                     <p class="chart-placeholder-text">You have no new patients from referral sources in
@@ -105,6 +112,15 @@
                                 </div>
 
 
+                            </div>
+                        </div>
+                        <div class="card-footer" *ngIf="activePatients == false">
+                            <div *ngIf="showTrend == false && showmulticlinicNewPatients == true" fxLayout="row wrap" fxLayoutAlign="center center"
+                                class="m-t-40 sa_chart_details_sec pieChartDetails">
+                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                                    <h3 class="m-0 value-num">{{totalNewPatientsReferral | number:'1.0-0'}}</h3>
+                                    <span class="value-text">Total</span>
+                                </div>
                             </div>
                         </div>
                     </mat-card-content>
@@ -137,7 +153,7 @@
                                     <span (click)="changeLevel('revenue')">Back</span>
                                 </div>
                                 <canvas #revenueRefChart="base-chart"
-                                    *ngIf="showTrend == false && revenueReferralLabels.length > 0 && mkRevenueByReferralLoader == false"
+                                    *ngIf="showTrend == false && revenueReferralLabels.length > 0 && mkRevenueByReferralLoader == false && showmulticlinicNewPatientsRev == false"
                                     baseChart [data]="revenueReferralData" [labels]="revenueReferralLabels"
                                     [chartType]="pieChartType" (chartHover)="chartHovered($event)"
                                     (chartClick)="chartClicked($event,'revenue')"
@@ -145,14 +161,21 @@
                                     [colors]="pieChartColors">
                                 </canvas>
                                 <canvas #revenueRefChart="base-chart"
-                                    *ngIf="showTrend == false && revenueReferralLabelsl2.length > 0  && mkRevenueByReferralLoader == false"
+                                    *ngIf="showTrend == false && revenueReferralLabelsl2.length > 0  && mkRevenueByReferralLoader == false && showmulticlinicNewPatientsRev == false"
                                     baseChart [data]="revenueReferralData" [labels]="revenueReferralLabelsl2"
                                     [chartType]="pieChartType" (chartHover)="chartHovered($event)"
                                     [plugins]="revenuePluginObservable$ | async" [options]="pieChartOptions"
                                     [colors]="pieChartColors">
                                 </canvas>
+                                <canvas 
+                                    *ngIf="showTrend == false && mkRevenueByReferralLoader == false  && showmulticlinicNewPatientsRev == true"
+                                    #myCanvas2 class="trendProductionPercentage" baseChart
+                                    [datasets]="mkNewPatientsByReferalRevMulti" [labels]="mkNewPatientsByReferalRevLabels"
+                                    [options]="stackedChartOptionsRev" [legend]="false" [chartType]="stackedChartType"
+                                    (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"> 
+                                </canvas>
                                 <div class="no-data-placeholder"
-                                    *ngIf="showTrend == false && revenueReferralLabels.length <= 0 && revenueReferralLabelsl2.length <= 0 && mkRevenueByReferralLoader == false">
+                                    *ngIf="showTrend == false && revenueReferralLabels.length <= 0 && mkNewPatientsByReferalRevLabels.length <= 0 && revenueReferralLabelsl2.length <= 0 && mkRevenueByReferralLoader == false">
                                     <div class="sa_nodata_div">
                                     </div>
                                     <p class="chart-placeholder-text">You have no revenue from referral sources in the
@@ -174,6 +197,15 @@
                                         selected period</p>
                                 </div>
 
+                            </div>
+                        </div>
+                        <div class="card-footer" *ngIf="activePatients == false">
+                            <div *ngIf="showTrend == false && showmulticlinicNewPatientsRev == true" fxLayout="row wrap" fxLayoutAlign="center center"
+                                class="m-t-40 sa_chart_details_sec pieChartDetails">
+                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                                    <h3 class="m-0 value-num">${{totalNewPatientsReferralRev | number:'1.0-0'}}</h3>
+                                    <span class="value-text">Total</span>
+                                </div>
                             </div>
                         </div>
                     </mat-card-content>

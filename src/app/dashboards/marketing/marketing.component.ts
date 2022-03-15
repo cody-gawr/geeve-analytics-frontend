@@ -726,6 +726,165 @@ export class MarketingComponent implements AfterViewInit {
     }
   };
 
+  public stackedChartOptionsRev: any = {
+    elements: {
+      point: {
+        radius: 5,
+        hoverRadius: 7,
+        pointStyle: 'rectRounded',
+        hoverBorderWidth: 7
+      },
+    },
+    scaleShowVerticalLines: false,
+    responsive: true,
+    maintainAspectRatio: false,
+    barThickness: 10,
+    animation: {
+      duration: 500,
+      easing: 'easeOutSine'
+    },
+    scales: {
+      xAxes: [{
+        stacked: true,
+        ticks: {
+          autoSkip: false
+        }
+      }],
+      yAxes: [{
+        stacked: true,
+        ticks: {
+          userCallback: function (label, index, labels) {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              let currency = label < 0 ? label.toString().split('-').join('') : label.toString();
+              currency = currency.split(/(?=(?:...)*$)/).join(',');
+              return `${label < 0 ? '- $' : '$'}${currency}`;
+            }
+          },
+        },
+      }],
+    }, legend: {
+      display: true
+    },
+    tooltips: {
+      mode: 'x-axis',
+      enabled: false,
+      custom: function (tooltip) {
+        if (!tooltip) return;
+        var tooltipEl = document.getElementById('chartjs-tooltip');
+        if (!tooltipEl) {
+          tooltipEl = document.createElement('div');
+          tooltipEl.id = 'chartjs-tooltip';
+          tooltipEl.style.backgroundColor = "#FFFFFF";
+          tooltipEl.style.borderColor = "#B2BABB";
+          tooltipEl.style.borderWidth = "thin";
+          tooltipEl.style.borderStyle = "solid";
+          tooltipEl.style.zIndex = "999999";
+          tooltipEl.style.backgroundColor = "#000000";
+          tooltipEl.style.color = "#FFFFFF";
+          document.body.appendChild(tooltipEl);
+        }
+        if (tooltip.opacity === 0) {
+          tooltipEl.style.opacity = "0";
+          return;
+        } else {
+          tooltipEl.style.opacity = "0.8";
+        }
+
+        tooltipEl.classList.remove('above', 'below', 'no-transform');
+        if (tooltip.yAlign) {
+          tooltipEl.classList.add(tooltip.yAlign);
+        } else {
+          tooltipEl.classList.add('no-transform');
+        }
+
+        function getBody(bodyItem) {
+          return bodyItem.lines;
+        }
+        if (tooltip.body) {
+          var titleLines = tooltip.title || [];
+          var bodyLines = tooltip.body.map(getBody);
+          var labelColorscustom = tooltip.labelColors;
+          var innerHtml = '<table><thead>';
+          innerHtml += '</thead><tbody>';
+
+          let total: any = 0;
+          bodyLines.forEach(function (body, i) {
+            if (!body[0].includes("$0")) {
+              var singleval = body[0].split(':');
+              if (singleval[1].includes("-")) {
+                var temp = singleval[1].split('$');
+                var amount = temp[1].replace(/,/g, '');
+                total -= parseFloat(amount);
+              } else {
+                var temp = singleval[1].split('$');
+                var amount = temp[1].replace(/,/g, '');
+                total += parseFloat(amount);
+              }
+
+            }
+          });
+          total = Math.round(total);
+          if (total != 0) {
+            var num_parts = total.toString().split(".");
+            num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            total = num_parts.join(".");
+          }
+          titleLines.forEach(function (title) {
+            innerHtml += '<tr><th colspan="2" style="text-align: left;">' + title + ': $' + total + '</th></tr>';
+
+          });
+          bodyLines.forEach(function (body, i) {
+            if (!body[0].includes("$0")) {
+              var body_custom = body[0];
+              body_custom = body_custom.split(":");
+              if (body_custom[1].includes("-")) {
+                var temp_ = body_custom[1].split('$');
+                temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
+                temp_[1] = temp_[1].toString();
+                temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
+                body_custom[1] = temp_.join("$");
+              } else {
+                var temp_ = body_custom[1].split('$');
+                temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
+                temp_[1] = temp_[1].toString();
+                temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
+                body_custom[1] = temp_.join("$");
+              }
+
+              body[0] = body_custom.join(":");
+              innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' + labelColorscustom[i].backgroundColor + '"></span></td><td style="padding: 0px">' + body[0] + '</td></tr>';
+            }
+          });
+          innerHtml += '</tbody></table>';
+          tooltipEl.innerHTML = innerHtml;
+          //tableRoot.innerHTML = innerHtml;
+        }
+        // disable displaying the color box;
+        var position = this._chart.canvas.getBoundingClientRect();
+        // Display, position, and set styles for font
+        tooltipEl.style.position = 'fixed';
+        tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 20) + 'px';
+        tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 70) + 'px';
+        tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
+        tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
+        tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
+        tooltipEl.style.padding = tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+        tooltipEl.style.pointerEvents = 'none';
+        tooltip.displayColors = false;
+      },
+      callbacks: {
+        label: function (tooltipItems, data) {
+          let currency = tooltipItems.yLabel.toString();
+          currency = currency.split(".");
+          currency[0] = currency[0].split('-').join('').split(/(?=(?:...)*$)/).join(',');
+          currency = currency.join(".");
+          return data.datasets[tooltipItems.datasetIndex].label + `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`;;
+        },
+
+      }
+    }
+  };
 
   public stackedChartColors: Array<any> = [
     { backgroundColor: '#119682' },
@@ -923,41 +1082,73 @@ export class MarketingComponent implements AfterViewInit {
   public newPatientsTimeLabelsl2 = [];
   public mkNewPatientsByReferralLoader: any;
   public mkNewPatientsByReferralAll: any = [];
-
+  public mkNewPatientsByReferalMulti: any[] = [
+    { data: [], label: '' }];
+  public showmulticlinicNewPatients:boolean = false;
+  public mkNewPatientsByReferalLabels:any=[];
   //Items Predictor Analysis 
   private mkNewPatientsByReferral() {
     this.mkNewPatientsByReferralLoader = true;
     this.newPatientsTimeLabels = [];
     var user_id;
     var clinic_id;
+    this.mkNewPatientsByReferalMulti = [];
+    this.showmulticlinicNewPatients = false;
+    this.mkNewPatientsByReferalLabels = [];
     this.marketingService.mkNewPatientsByReferral(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       if (data.message == 'success') {
-        this.mkNewPatientsByReferralAll = data;
-        this.totalNewPatientsReferral = Math.round(data.total);
-        this.newPatientsReferral$.next(this.totalNewPatientsReferral)
-        // this.noNewPatientsByReferralChartOptions.elements.center.text = this.decimalPipe.transform(this.totalNewPatientsReferral);
-
-        this.newPatientsTimeData1 = [];
-        this.newPatientsTimeLabelsl2 = [];
-        this.newPatientsTimeLabels1 = [];
-        if (data.data.patients_reftype.length > 0) {
-          var i = 0;
-          data.data.patients_reftype.forEach(res => {
-            if (res.patients_visits > 0) {
-              if (i < 10) {
-                this.newPatientsTimeData1.push(res.patients_visits);
-                this.newPatientsTimeLabels1.push(res.reftype_name);
-                i++;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          this.totalNewPatientsReferral = Math.round(data.total);
+          this.showmulticlinicNewPatients = true;
+          data.data.forEach(res => {
+            res.val.forEach((result, key) => {
+              if (typeof (this.mkNewPatientsByReferalMulti[key]) == 'undefined') {
+                this.mkNewPatientsByReferalMulti[key] = { data: [], label: '' };
               }
-            }
+              if (typeof (this.mkNewPatientsByReferalMulti[key]['data']) == 'undefined') {
+                this.mkNewPatientsByReferalMulti[key]['data'] = [];
+              }
+              var total = Math.trunc(result.num_referrals);
+              if (result.production > 0 && result.production.toString().includes('.')) {
+                var num_parts = result.production.split(".");
+                num_parts[1] = num_parts[1].charAt(0);
+                total = num_parts.join(".");
+              }
+              this.mkNewPatientsByReferalMulti[key]['data'].push(total);
+              this.mkNewPatientsByReferalMulti[key]['label'] = result.reftype_name;
+             });
+             this.mkNewPatientsByReferalLabels.push(res.clinic_name);
           });
+          this.mkNewPatientsByReferralLoader = false;
+        }else{
+          this.mkNewPatientsByReferralAll = data;
+          this.totalNewPatientsReferral = Math.round(data.total);
+          this.newPatientsReferral$.next(this.totalNewPatientsReferral)
+          // this.noNewPatientsByReferralChartOptions.elements.center.text = this.decimalPipe.transform(this.totalNewPatientsReferral);
+
+          this.newPatientsTimeData1 = [];
+          this.newPatientsTimeLabelsl2 = [];
+          this.newPatientsTimeLabels1 = [];
+          if (data.data.patients_reftype.length > 0) {
+            var i = 0;
+            data.data.patients_reftype.forEach(res => {
+              if (res.patients_visits > 0) {
+                if (i < 10) {
+                  this.newPatientsTimeData1.push(res.patients_visits);
+                  this.newPatientsTimeLabels1.push(res.reftype_name);
+                  i++;
+                }
+              }
+            });
+          }
+          this.newPatientsTimeData = this.newPatientsTimeData1;
+          this.newPatientsTimeLabels = this.newPatientsTimeLabels1;
+          var self = this;
+          setTimeout(function () {
+            self.mkNewPatientsByReferralLoader = false;
+          }, this.timeout);
         }
-        this.newPatientsTimeData = this.newPatientsTimeData1;
-        this.newPatientsTimeLabels = this.newPatientsTimeLabels1;
-        var self = this;
-        setTimeout(function () {
-          self.mkNewPatientsByReferralLoader = false;
-        }, this.timeout);
+        
       }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -996,48 +1187,82 @@ export class MarketingComponent implements AfterViewInit {
   public mkRevenueByReferralLoader: any;
 
   public reffralAllData: any = [];
-
+  public mkNewPatientsByReferalRevMulti: any[] = [
+    { data: [], label: '' }];
+  public showmulticlinicNewPatientsRev:boolean = false;
+  public mkNewPatientsByReferalRevLabels:any=[];
+  public totalNewPatientsReferralRev:any=0;
   //Items Predictor Analysis 
   private mkRevenueByReferral() {
     this.mkRevenueByReferralLoader = true;
     var user_id;
     var clinic_id;
+    this.mkNewPatientsByReferalRevMulti = [];
+    this.showmulticlinicNewPatientsRev = false;
+    this.mkNewPatientsByReferalRevLabels = [];
+    this.totalNewPatientsReferralRev =0;
     this.marketingService.mkRevenueByReferral(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.reffralAllData = [];
       this.revenueReferralData = [];
       this.revenueReferralLabels = [];
       if (data.message == 'success') {
-        this.reffralAllData = data;
-        this.totalRevenueByReferral = this.decimalPipe.transform(Math.round(this.reffralAllData.total || 0));
-        this.revenueByReferralCount$.next(Math.round(this.reffralAllData.total || 0));
-        //// this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
-        if (this.revenueRefChart) {
-          this.revenueRefChart.ngOnDestroy();
-          this.revenueRefChart.chart = this.revenueRefChart.getChartBuilder(this.revenueRefChart.ctx);
-        }
-        this.revenueReferralData1 = [];
-        this.revenueReferralLabelsl2 = [];
-        this.revenueReferralLabels1 = [];
-        if (this.reffralAllData.data.patients_reftype.length > 0) {
-          var i = 0;
-          this.reffralAllData.data.patients_reftype.forEach(res => {
-            if (res.invoice_amount > 0) {
-              if (i < 10) {
-                this.revenueReferralData1.push(Math.round(res.invoice_amount));
-                this.revenueReferralLabels1.push(res.reftype_name);
-                i++;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          this.totalNewPatientsReferralRev = Math.round(data.total);
+          this.showmulticlinicNewPatientsRev = true;
+          data.data.forEach(res => {
+            res.val.forEach((result, key) => {
+              if (typeof (this.mkNewPatientsByReferalRevMulti[key]) == 'undefined') {
+                this.mkNewPatientsByReferalRevMulti[key] = { data: [], label: '' };
               }
-            }
+              if (typeof (this.mkNewPatientsByReferalRevMulti[key]['data']) == 'undefined') {
+                this.mkNewPatientsByReferalRevMulti[key]['data'] = [];
+              }
+              var total = Math.trunc(result.invoice_amount);
+              if (result.production > 0 && result.production.toString().includes('.')) {
+                var num_parts = result.production.split(".");
+                num_parts[1] = num_parts[1].charAt(0);
+                total = num_parts.join(".");
+              }
+              this.mkNewPatientsByReferalRevMulti[key]['data'].push(total);
+              this.mkNewPatientsByReferalRevMulti[key]['label'] = result.reftype_name;
+             });
+             this.mkNewPatientsByReferalRevLabels.push(res.clinic_name);
           });
+          this.mkRevenueByReferralLoader = false;
+        }else{
+            this.reffralAllData = data;
+            this.totalRevenueByReferral = this.decimalPipe.transform(Math.round(this.reffralAllData.total || 0));
+            this.revenueByReferralCount$.next(Math.round(this.reffralAllData.total || 0));
+            //// this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
+            if (this.revenueRefChart) {
+              this.revenueRefChart.ngOnDestroy();
+              this.revenueRefChart.chart = this.revenueRefChart.getChartBuilder(this.revenueRefChart.ctx);
+            }
+            this.revenueReferralData1 = [];
+            this.revenueReferralLabelsl2 = [];
+            this.revenueReferralLabels1 = [];
+            if (this.reffralAllData.data.patients_reftype.length > 0) {
+              var i = 0;
+              this.reffralAllData.data.patients_reftype.forEach(res => {
+                if (res.invoice_amount > 0) {
+                  if (i < 10) {
+                    this.revenueReferralData1.push(Math.round(res.invoice_amount));
+                    this.revenueReferralLabels1.push(res.reftype_name);
+                    i++;
+                  }
+                }
+              });
+            }
+
+            this.revenueReferralData = this.revenueReferralData1;
+            this.revenueReferralLabels = this.revenueReferralLabels1;
+            var self = this;
+
+            setTimeout(function () {
+              self.mkRevenueByReferralLoader = false;
+            }, this.timeout);
         }
-
-        this.revenueReferralData = this.revenueReferralData1;
-        this.revenueReferralLabels = this.revenueReferralLabels1;
-        var self = this;
-
-        setTimeout(function () {
-          self.mkRevenueByReferralLoader = false;
-        }, this.timeout);
+        
       }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
