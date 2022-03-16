@@ -85,7 +85,7 @@
                                     *ngIf="showTrend == false && showmulticlinicNewPatients == true && mkNewPatientsByReferralLoader == false "
                                     #myCanvas2 class="trendProductionPercentage" baseChart
                                     [datasets]="mkNewPatientsByReferalMulti" [labels]="mkNewPatientsByReferalLabels"
-                                    [options]="stackedChartOptionsMulti" [legend]="false" [chartType]="stackedChartType"
+                                    [options]="stackedChartOptionsRef" [legend]="false" [chartType]="stackedChartType"
                                     (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"> 
                                 </canvas>
 

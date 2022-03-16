@@ -492,7 +492,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
       }
       
       $(".internal_clinic").val(newValue);
-      if (this.user_type_dentist != "2" && newValue != "all") {
+      if (this.user_type_dentist != "2" && newValue != "all" && this.clinic_id.length == 1) {
         this.getChildID(newValue);
       } else {
         $("#clinic_initiate").click();
