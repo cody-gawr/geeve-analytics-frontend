@@ -1117,7 +1117,7 @@ export class MarketingComponent implements AfterViewInit {
   public foregroundColor = "#4ccfae";
   public backgroundColor = '#f4f0fa';
   public cap = "round";
-  public size = "250"
+  public size = "250"  
   public gaugePrependText = '$';
   public startDate = '';
   public endDate = '';
