@@ -114,15 +114,7 @@
 
                             </div>
                         </div>
-                        <div class="card-footer" *ngIf="activePatients == false">
-                            <div *ngIf="showTrend == false && showmulticlinicNewPatients == true" fxLayout="row wrap" fxLayoutAlign="center center"
-                                class="m-t-40 sa_chart_details_sec pieChartDetails">
-                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                                    <h3 class="m-0 value-num">{{totalNewPatientsReferral | number:'1.0-0'}}</h3>
-                                    <span class="value-text">Total</span>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </mat-card-content>
                 </mat-card>
                 <div *ngIf="mkNewPatientsByReferralLoader == true" class="loader_container loader_container_middle"><img
@@ -199,15 +191,7 @@
 
                             </div>
                         </div>
-                        <div class="card-footer" *ngIf="activePatients == false">
-                            <div *ngIf="showTrend == false && showmulticlinicNewPatientsRev == true" fxLayout="row wrap" fxLayoutAlign="center center"
-                                class="m-t-40 sa_chart_details_sec pieChartDetails">
-                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                                    <h3 class="m-0 value-num">${{totalNewPatientsReferralRev | number:'1.0-0'}}</h3>
-                                    <span class="value-text">Total</span>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </mat-card-content>
                 </mat-card>
                 <div *ngIf="mkRevenueByReferralLoader == true" class="loader_container loader_container_middle"><img
@@ -459,7 +443,7 @@
                                         <p class="chart-placeholder-text">Please ensure your Xero/MYOB account is
                                             connected</p>
                                     </div>
-                                    <div *ngIf="multipleClinicsSelected===true">
+                                    <div>
                                         <div class="sa_nodata_div">
                                         </div>
                                         <p class="chart-placeholder-text">Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
