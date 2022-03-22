@@ -252,7 +252,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
                 } else {
                   this.selectedDentist = parseInt(dentistclinic[1]);
                 } 
-                if ((this.route == "/dashboards/finances" || this.route == "/dashboards/marketing" || (this.route == "/dashboards/cliniciananalysis" && this.user_type !=4)) && this.apiUrl.includes('test')) {
+                if ((this.route == "/dashboards/finances" || this.route == "/dashboards/marketing" || this.route == "/dashboards/frontdesk" || (this.route == "/dashboards/cliniciananalysis" && this.user_type !=4) || (this.route == "/dashboards/clinicianproceedures" && this.user_type !=4)) && this.apiUrl.includes('test')) {
                   this.allChecked = false;
                   this.clinic_id = [];
                   this.selectedClinic = [];
@@ -284,7 +284,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
                       this.selectedClinic.push(parseInt(dentistclinic[0]));
                     }                   
                   }
-                  if( this.selectedClinic[0].toString() != 'NaN' && this.selectedClinic[0] !='all' && this.selectedClinic.length == 1 && this.route == "/dashboards/cliniciananalysis"){
+                  if( this.selectedClinic[0].toString() != 'NaN' && this.selectedClinic[0] !='all' && this.selectedClinic.length == 1 && (this.route == "/dashboards/cliniciananalysis" || this.route == "/dashboards/clinicianproceedures")){
                     this.showDropDown = true; 
                    }else{
                     this.showDropDown = false; 
@@ -323,7 +323,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
                   });
                 }
               } else {
-                if ((this.route == "/dashboards/finances" || this.route == "/dashboards/marketing" || (this.route == "/dashboards/cliniciananalysis" && this.user_type !=4)) && this.apiUrl.includes('test')) {
+                if ((this.route == "/dashboards/finances" || this.route == "/dashboards/marketing" || this.route == "/dashboards/frontdesk" || (this.route == "/dashboards/cliniciananalysis" && this.user_type !=4) || (this.route == "/dashboards/clinicianproceedures" && this.user_type !=4)) && this.apiUrl.includes('test')) {
                   this.selectedClinic = [];
                   this.selectedClinic.push(res.data[0].id);
                 }else{
@@ -432,7 +432,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
     
     if (newValue != "undefined") {
       if(Array.isArray(newValues)) {
-        if ((this.route == "/dashboards/finances"  || this.route == "/dashboards/marketing"  || this.route == "/dashboards/cliniciananalysis") && this.apiUrl.includes('test')) {
+        if ((this.route == "/dashboards/finances"  || this.route == "/dashboards/marketing" || this.route == "/dashboards/frontdesk" || this.route == "/dashboards/cliniciananalysis" || this.route == "/dashboards/clinicianproceedures") && this.apiUrl.includes('test')) {
           if(this.clinicsData.length == this.selectedClinic.length){
             newValue = '';            
             this.selectedClinic = [];
@@ -480,12 +480,12 @@ export class AppHeaderrightComponent implements AfterViewInit {
       } else {
         $("#currentClinic").attr("cid", newValue);
       }
-      if (((this.route != "/dashboards/finances"  && this.route != "/dashboards/marketing"  && this.route != "/dashboards/cliniciananalysis" ) && this.apiUrl.includes('test')) || this.apiUrl.includes('staging') || ( !this.apiUrl.includes('test-') && !this.apiUrl.includes('staging-'))) {
+      if (((this.route != "/dashboards/finances"  && this.route != "/dashboards/marketing" && this.route != "/dashboards/frontdesk" && this.route != "/dashboards/cliniciananalysis" && this.route != "/dashboards/clinicianproceedures") && this.apiUrl.includes('test')) || this.apiUrl.includes('staging') || ( !this.apiUrl.includes('test-') && !this.apiUrl.includes('staging-'))) {
         this.selectedClinic = newValue;
         this.clinic_id = this.selectedClinic;
         this.getDentists();
       }
-      if(this.route == "/dashboards/cliniciananalysis"){
+      if(this.route == "/dashboards/cliniciananalysis" || this.route == "/dashboards/clinicianproceedures"){
         if(this.clinic_id.length == 1){
           this.getDentists();
         }
@@ -658,7 +658,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
     
     if (newValue != "undefined") {
       if(Array.isArray(newValues)) {
-        if ((this.route == "/dashboards/finances"  || this.route == "/dashboards/marketing"  || this.route == "/dashboards/cliniciananalysis") && this.apiUrl.includes('test')) {
+        if ((this.route == "/dashboards/finances"  || this.route == "/dashboards/marketing" || this.route == "/dashboards/frontdesk" || this.route == "/dashboards/cliniciananalysis" || this.route == "/dashboards/clinicianproceedures") && this.apiUrl.includes('test')) {
           if(this.clinicsData.length == this.selectedClinic.length){
             if(this.allChecked == true){
               newValue = '';            
@@ -689,7 +689,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
               this.allChecked = true;
               this.showDropDown = false; 
              }else{
-               if(newValues.length == 1 && this.route == "/dashboards/cliniciananalysis"){
+               if(newValues.length == 1 && (this.route == "/dashboards/cliniciananalysis" || this.route == "/dashboards/clinicianproceedures")){
                 this.showDropDown = true; 
                }else{
                 this.showDropDown = false; 

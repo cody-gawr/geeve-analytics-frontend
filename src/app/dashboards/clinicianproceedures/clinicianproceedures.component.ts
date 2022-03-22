@@ -43,6 +43,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     public clinic_id:any ={};
     public dentistCount:any ={};
     public clinicsData:any[] = [];
+    public multiclinic:boolean = false;
     public user_type;
     public childid='';
     public trendText;
@@ -115,15 +116,21 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
        this.router.navigateByUrl('/login');
     }
     var val = $('#currentClinic').attr('cid');
-     if(val != undefined && val !='all') {
-    this.clinic_id = val;
- if( this._cookieService.get("dentistid")) {
-             this.childid = this._cookieService.get("childid");
-             this.dentistid = this._cookieService.get("dentistid");
-           }
-    this.getDentists();   
-    this.filterDate(this.chartService.duration$.value);
-   }
+     if(val != undefined ) {
+        this.clinic_id = val;
+        if( this._cookieService.get("dentistid")) {
+            this.childid = this._cookieService.get("childid");
+            this.dentistid = this._cookieService.get("dentistid");
+          } 
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          // this.getDentists();
+          this.multiclinic = true;
+        }else{
+          this.multiclinic = false;
+          this.getDentists();
+        }  
+        this.filterDate(this.chartService.duration$.value);
+     }
   }
   myDateParser(dateStr : string) : string {
     // 2018-01-01T12:12:12.123456; - converting valid date format like this
@@ -550,7 +557,80 @@ this.preoceedureChartColors = [
 }
 
   };
-  
+  public stackedChartOptionsmulti: any = {
+    hover: { 
+      mode: null
+  },
+    elements: {
+    point: {
+      radius: 5,
+      hoverRadius: 7,
+      pointStyle:'rectRounded',
+      hoverBorderWidth:7
+    },
+  },
+  scaleShowVerticalLines: false,
+         responsive: true,
+  maintainAspectRatio: false,
+  barThickness: 10,
+    animation: {
+      duration: 500,
+      easing: 'easeOutSine'
+    },
+  scales: {
+        xAxes: [{ 
+          stacked:true,
+          ticks: {
+              autoSkip: false
+          }
+          }],
+        yAxes: [{ 
+        stacked:true, 
+          ticks: {
+            userCallback: function(label, index, labels) {
+                   // when the floored value is the same as the value we have a whole number
+                   if (Math.floor(label) === label) {
+                       return label;
+                   }
+               },
+          }, 
+          }],
+      },
+      legend: {
+          display: true,
+          position: 'top',
+          ...this.legendLabelOptions,
+       },
+        tooltips: {
+          mode: 'x-axis',
+          custom: function(tooltip) {
+      if (!tooltip) return;
+      // disable displaying the color box;
+      tooltip.displayColors = true;
+    },
+callbacks: {
+   label: function(tooltipItems, data) { 
+     if(tooltipItems.yLabel > 0 && data.datasets[tooltipItems.datasetIndex].label != ''){
+      if(data.datasets[tooltipItems.datasetIndex].label.indexOf('DentistMode-') >= 0){
+        return tooltipItems.label+": "+tooltipItems.yLabel;
+      } else {
+        return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel;          
+      }
+      
+     }
+   },
+   title : function(tooltip, data){
+    if( data.datasets[0].label.indexOf('DentistMode-') >= 0){
+        var dentist = data.datasets[0].label.split('Mode-');
+        return dentist[1];
+    } else {
+      return tooltip[0].label;
+    }
+   }
+}
+}
+
+};
    public lineChartColors1: Array<any> = [
     {
       // grey
@@ -1344,10 +1424,16 @@ if(this._cookieService.get("user_type") == '4'){
   public predictorAnalysisDataMax = 0;  
   public predictorAnalysisChartColors; 
   public paSpecialistlData:any = []; 
-
+  public ItemsPredictorAnalysisMulti: any[] = [
+    { data: [], label: '' }];
+  public showmulticlinicItemsPredictor:boolean = false;
+  public ItemsPredictorAnalysisLabels:any=[];
   //Items Predictor Analysis special - All dentist Chart
   private predictorAnalysisSpecial() {
     this.ItemsPredictorAnalysisSpecialStatus =true;
+    this.ItemsPredictorAnalysisMulti = [];
+    this.showmulticlinicItemsPredictor = false;
+    this.ItemsPredictorAnalysisLabels = [];
     this.stackedChartDataItemSpecial = [
       {data: [], label: 'Implant Surg'},
       {data: [], label: 'Braces' },
@@ -1373,69 +1459,94 @@ if(this._cookieService.get("user_type") == '4'){
        if(data.message == 'success'){   
         if(data && data.data && data.data.length <= 0) {
         } else {
-          var i=0
-          var currentUser = 0;
-          data && data.data && data.data.length && data.data.forEach(res => {            
-            if(res.provider_name != null){
-              if(parseInt(res.imp_surg) + parseInt(res.ortho_fix) + parseInt(res.sleep) + parseInt(res.ortho_align) + parseInt(res.perio_surg) + parseInt(res.veneers_ind)> 0){
-
-                this.predictorAnalysis1.push(res.imp_surg);
-                this.predictorAnalysis2.push(res.ortho_fix);
-                this.predictorAnalysis3.push(res.ortho_align);
-                this.predictorAnalysis4.push(res.sleep);
-                this.predictorAnalysis5.push(res.perio_surg);
-                this.predictorAnalysis6.push(res.endo_retreat);
-                this.predictorAnalysis7.push(res.veneers_ind);
-
-                this.predictorAnalysisLablesTemp.push(res.provider_name);
-                if(res.provider_name != 'Anonymous')
-                    currentUser = i;
-                    i++;
+          if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+            this.showmulticlinicItemsPredictor = true;
+            data.data.forEach(res => {
+              res.val.forEach((result, key) => {
+                if (typeof (this.ItemsPredictorAnalysisMulti[key]) == 'undefined') {
+                  this.ItemsPredictorAnalysisMulti[key] = { data: [], label: '' };
                 }
-                var temp =  {
-                  'name':  res.provider_name, 
-                  'Implant_Surg':  parseInt(res.imp_surg), 
-                  'Braces':  parseInt(res.ortho_fix), 
-                  'Aligners':  parseFloat(res.ortho_align), 
-                  'MAS':  parseInt(res.sleep), 
-                  'Perio_Surg':  parseInt(res.perio_surg), 
-                  'Endo_Re_treat':  parseInt(res.endo_retreat), 
-                  'Veneers_ind':  parseInt(res.veneers_ind), 
-                  };
-                  this.paSpecialistlData.push(temp);
-              }
-          });
-          this.stackedChartDataItemSpecial[0]['data'] = this.predictorAnalysis1;
-          this.stackedChartDataItemSpecial[1]['data'] = this.predictorAnalysis2;
-          this.stackedChartDataItemSpecial[2]['data'] = this.predictorAnalysis3;
-          this.stackedChartDataItemSpecial[3]['data'] = this.predictorAnalysis4;
-          this.stackedChartDataItemSpecial[4]['data'] = this.predictorAnalysis5;
-          this.stackedChartDataItemSpecial[5]['data'] = this.predictorAnalysis6;
-          this.stackedChartDataItemSpecial[6]['data'] = this.predictorAnalysis7;
-
-          this.predictorAnalysisLablesSpe = this.predictorAnalysisLablesTemp;
-          if(this.user_type == '4' && this.childid != '') {
-            this.predictorAnalysisChartColors = [
-              { backgroundColor: ['#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7'] },
-              { backgroundColor: ['#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7'] },
-              { backgroundColor: ['#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7'] },
-              { backgroundColor: ['#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD'] },
-              { backgroundColor: ['#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE'] },
-              { backgroundColor: ['#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7'] },
-              { backgroundColor: ['#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7'] },
-            ];
-            this.predictorAnalysisChartColors[0].backgroundColor[currentUser] = '#1CA49F';
-            this.predictorAnalysisChartColors[1].backgroundColor[currentUser] = '#1fd6b1';
-            this.predictorAnalysisChartColors[2].backgroundColor[currentUser] = '#09b391';
-            this.predictorAnalysisChartColors[3].backgroundColor[currentUser] = '#82EDD8';
-            this.predictorAnalysisChartColors[4].backgroundColor[currentUser] = 'rgba(22, 82, 141, 1)';
-            this.predictorAnalysisChartColors[5].backgroundColor[currentUser] = '#1Cb410';
-            this.predictorAnalysisChartColors[6].backgroundColor[currentUser] = '#09c250';
-          } else
-            this.predictorAnalysisChartColors = this.ItemPredictorSpecialColors;
-
-          this.predictorAnalysisDataMax = Math.max(...this.stackedChartDataItemSpecial[0]['data'])+Math.max(...this.stackedChartDataItemSpecial[1]['data'])+Math.max(...this.stackedChartDataItemSpecial[2]['data'])+Math.max(...this.stackedChartDataItemSpecial[3]['data'])+Math.max(...this.stackedChartDataItemSpecial[4]['data'])+Math.max(...this.stackedChartDataItemSpecial[5]['data'])+Math.max(...this.stackedChartDataItemSpecial[6]['data']);
-          //this.productionTotalAverage = this.productionTotal/this.barChartData1.length;
+                if (typeof (this.ItemsPredictorAnalysisMulti[key]['data']) == 'undefined') {
+                  this.ItemsPredictorAnalysisMulti[key]['data'] = [];
+                }
+                var total = Math.trunc(result.total);
+                if (result.production > 0 && result.production.toString().includes('.')) {
+                  var num_parts = result.production.split(".");
+                  num_parts[1] = num_parts[1].charAt(0);
+                  total = num_parts.join(".");
+                }
+                this.ItemsPredictorAnalysisMulti[key]['data'].push(total);
+                this.ItemsPredictorAnalysisMulti[key]['label'] = result.provider_name;
+               });
+               this.ItemsPredictorAnalysisLabels.push(res.clinicName);
+            });
+            console.log(this.ItemsPredictorAnalysisLabels);
+            console.log(this.ItemsPredictorAnalysisMulti);
+          }else{
+            var i=0
+            var currentUser = 0;
+            data && data.data && data.data.length && data.data.forEach(res => {            
+              if(res.provider_name != null){
+                if(parseInt(res.imp_surg) + parseInt(res.ortho_fix) + parseInt(res.sleep) + parseInt(res.ortho_align) + parseInt(res.perio_surg) + parseInt(res.veneers_ind)> 0){
+  
+                  this.predictorAnalysis1.push(res.imp_surg);
+                  this.predictorAnalysis2.push(res.ortho_fix);
+                  this.predictorAnalysis3.push(res.ortho_align);
+                  this.predictorAnalysis4.push(res.sleep);
+                  this.predictorAnalysis5.push(res.perio_surg);
+                  this.predictorAnalysis6.push(res.endo_retreat);
+                  this.predictorAnalysis7.push(res.veneers_ind);
+  
+                  this.predictorAnalysisLablesTemp.push(res.provider_name);
+                  if(res.provider_name != 'Anonymous')
+                      currentUser = i;
+                      i++;
+                  }
+                  var temp =  {
+                    'name':  res.provider_name, 
+                    'Implant_Surg':  parseInt(res.imp_surg), 
+                    'Braces':  parseInt(res.ortho_fix), 
+                    'Aligners':  parseFloat(res.ortho_align), 
+                    'MAS':  parseInt(res.sleep), 
+                    'Perio_Surg':  parseInt(res.perio_surg), 
+                    'Endo_Re_treat':  parseInt(res.endo_retreat), 
+                    'Veneers_ind':  parseInt(res.veneers_ind), 
+                    };
+                    this.paSpecialistlData.push(temp);
+                }
+            });
+            this.stackedChartDataItemSpecial[0]['data'] = this.predictorAnalysis1;
+            this.stackedChartDataItemSpecial[1]['data'] = this.predictorAnalysis2;
+            this.stackedChartDataItemSpecial[2]['data'] = this.predictorAnalysis3;
+            this.stackedChartDataItemSpecial[3]['data'] = this.predictorAnalysis4;
+            this.stackedChartDataItemSpecial[4]['data'] = this.predictorAnalysis5;
+            this.stackedChartDataItemSpecial[5]['data'] = this.predictorAnalysis6;
+            this.stackedChartDataItemSpecial[6]['data'] = this.predictorAnalysis7;
+  
+            this.predictorAnalysisLablesSpe = this.predictorAnalysisLablesTemp;
+            if(this.user_type == '4' && this.childid != '') {
+              this.predictorAnalysisChartColors = [
+                { backgroundColor: ['#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7'] },
+                { backgroundColor: ['#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7'] },
+                { backgroundColor: ['#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7'] },
+                { backgroundColor: ['#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD'] },
+                { backgroundColor: ['#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE'] },
+                { backgroundColor: ['#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7'] },
+                { backgroundColor: ['#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7'] },
+              ];
+              this.predictorAnalysisChartColors[0].backgroundColor[currentUser] = '#1CA49F';
+              this.predictorAnalysisChartColors[1].backgroundColor[currentUser] = '#1fd6b1';
+              this.predictorAnalysisChartColors[2].backgroundColor[currentUser] = '#09b391';
+              this.predictorAnalysisChartColors[3].backgroundColor[currentUser] = '#82EDD8';
+              this.predictorAnalysisChartColors[4].backgroundColor[currentUser] = 'rgba(22, 82, 141, 1)';
+              this.predictorAnalysisChartColors[5].backgroundColor[currentUser] = '#1Cb410';
+              this.predictorAnalysisChartColors[6].backgroundColor[currentUser] = '#09c250';
+            } else
+              this.predictorAnalysisChartColors = this.ItemPredictorSpecialColors;
+  
+            this.predictorAnalysisDataMax = Math.max(...this.stackedChartDataItemSpecial[0]['data'])+Math.max(...this.stackedChartDataItemSpecial[1]['data'])+Math.max(...this.stackedChartDataItemSpecial[2]['data'])+Math.max(...this.stackedChartDataItemSpecial[3]['data'])+Math.max(...this.stackedChartDataItemSpecial[4]['data'])+Math.max(...this.stackedChartDataItemSpecial[5]['data'])+Math.max(...this.stackedChartDataItemSpecial[6]['data']);
+            //this.productionTotalAverage = this.productionTotal/this.barChartData1.length;
+          }          
         }
       }
     }, error => {
@@ -2346,7 +2457,11 @@ toggleFilter(val) {
   initiate_dentist() {
     var val = $('#currentDentist').attr('did');
     //var val = $('.internal_dentist').val();
-    this.loadDentist(val);
+    if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+      //this.loadDentist(val);
+    }else{
+      this.loadDentist(val);
+    }
   }
 
   toggleChecked = false;

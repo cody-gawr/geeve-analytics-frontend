@@ -146,14 +146,22 @@
                       </div>
                       </div> 
                     
-                      <div class="chart-utilisation-rate" *ngIf="showTrend && wtaChartTrend1.length > 0 && utilityratemessage == false && !fdwtaRatioTrendLoader">
-                        <canvas *ngIf="showTrend && wtaChartTrend1.length > 0 && utilityratemessage == false && !fdwtaRatioTrendLoader" #myCanvas baseChart
+                      <div class="chart-utilisation-rate" *ngIf="showByclinicUR== false && showTrend && wtaChartTrend1.length > 0 && utilityratemessage == false && !fdwtaRatioTrendLoader">
+                        <canvas *ngIf="showByclinicUR== false && showTrend && wtaChartTrend1.length > 0 && utilityratemessage == false && !fdwtaRatioTrendLoader" #myCanvas baseChart
                           [datasets]="wtaChartTrend" [labels]="wtaChartTrendLabels" [options]="stackedChartOptionsUti"
                           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
                           (chartClick)="chartClicked($event)">
                           <!-- [colors]="predictedChartColors"  -->
                         </canvas>
                       </div>  
+                      <div class="chart-utilisation-rate" *ngIf="showByclinicUR== true && showTrend && uRChartTrendMultiLabels1.length > 0 && utilityratemessage == false && !fdwtaRatioTrendLoader">
+                        <canvas *ngIf="showByclinicUR== true && showTrend && uRChartTrendMultiLabels1.length > 0 && utilityratemessage == false && !fdwtaRatioTrendLoader" #myCanvas baseChart
+                          [datasets]="uRChartTrendMulti" [labels]="uRChartTrendMultiLabels" [options]="stackedChartOptionsTC"
+                          [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
+                          (chartClick)="chartClicked($event)">
+                          <!-- [colors]="predictedChartColors"  -->
+                        </canvas>
+                      </div>
                    
 
                     <div class="no-data-placeholder"
@@ -175,7 +183,7 @@
                     </div>
 
                     <div class="no-data-placeholder"
-                      *ngIf="showTrend && wtaChartTrend1.length <= 0 && !fdwtaRatioTrendLoader && utilityratemessage == false">
+                      *ngIf="showTrend && uRChartTrendMultiLabels1.length<=0 && wtaChartTrend1.length <= 0 && !fdwtaRatioTrendLoader && utilityratemessage == false">
                       <div class="sa_nodata_div">
                       </div>
                       <p class="chart-placeholder-text">You have no appointments in the selected period</p>
@@ -260,13 +268,18 @@
                 <div class="chart">
 
  
-                  <div *ngIf="!showTrend && recallPrebookTotal > 0 && !fdRecallPrebookRateLoader"
+                  <div *ngIf="showmulticlinicPrebook == false && !showTrend && recallPrebookTotal > 0 && !fdRecallPrebookRateLoader"
                    class="chart-recall-rate">
                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="recallPrebookTotal" [thick]="gaugeThick"
                       [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [cap]="cap"
                       [max]="maxrecallPrebookGoal" [append]="gaugeAppendText" [size]="size">
                     </ngx-gauge>
                   </div>
+                  <canvas *ngIf="showmulticlinicPrebook == true && !showTrend && recallPrebookTotal > 0 && !fdRecallPrebookRateLoader" #myCanvas
+                    baseChart [datasets]="fdPrebookRateMulti" [labels]="fdPrebookRateLabels" [options]="stackedChartOptionsUtiDP"
+                    [chartType]="'bar'" (chartHover)="chartHovered($event)" [legend]="false"
+                    (chartClick)="chartClicked($event)">
+                  </canvas>
 
                   <div *ngIf="!showTrend && recallPrebookTotal <= 0 && !fdRecallPrebookRateLoader">
                     <div class="sa_nodata_div">
@@ -274,7 +287,7 @@
                     <p class="chart-placeholder-text">You have no recall prebookings in the selected period</p>
                   </div>
 
-                  <div *ngIf="showTrend && recallPrebookChartTrend1.length > 0 && !fdRecallPrebookRateTrendLoader"
+                  <div *ngIf="showByclinicRP== false && showTrend && recallPrebookChartTrend1.length > 0 && !fdRecallPrebookRateTrendLoader"
                     class="chart-utilisation-rate">
                     <canvas #myCanvas baseChart [datasets]="recallPrebookChartTrend"
                       [labels]="recallPrebookChartTrendLabels" [options]="stackedChartOptions"
@@ -283,8 +296,17 @@
                       <!-- [colors]="predictedChartColors"  -->
                     </canvas>
                   </div>
+                  <div *ngIf="showByclinicRP== true && showTrend && rPChartTrendMultiLabels1.length > 0 && !fdRecallPrebookRateTrendLoader"
+                    class="chart-utilisation-rate">
+                    <canvas #myCanvas baseChart [datasets]="rPChartTrendMulti"
+                      [labels]="rPChartTrendMultiLabels" [options]="stackedChartOptionsTC"
+                      [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
+                      (chartClick)="chartClicked($event)">
+                      <!-- [colors]="predictedChartColors"  -->
+                    </canvas>
+                  </div>
 
-                  <div *ngIf="showTrend && recallPrebookChartTrend1.length <=0 && !fdRecallPrebookRateTrendLoader">
+                  <div *ngIf="showTrend && rPChartTrendMultiLabels1.length <= 0 && recallPrebookChartTrend1.length <=0 && !fdRecallPrebookRateTrendLoader">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">You have no recall prebookings in the selected period</p>
@@ -306,7 +328,7 @@
                     <small *ngIf="trendText == ''">Previous</small>
                   </div>
                   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                    *ngIf="recallPrebookGoal >= 0 && showGoals == true">
+                    *ngIf="recallPrebookGoal >= 0 && showGoals == true && showmulticlinicPrebook == false" >
                     <h3 class="m-0 value-num" *ngIf="recallPrebookGoal">
                       {{ (recallPrebookGoal > 100)? 100 : recallPrebookGoal }}%</h3>
                     <small>Goal</small>
@@ -345,13 +367,18 @@
                 <div class="chart">
 
 
-                  <div *ngIf="!showTrend && treatmentPrebookTotal > 0 && !fdtreatmentPrebookRateLoader"
+                  <div *ngIf="showmulticlinicReappointRate == false && !showTrend && treatmentPrebookTotal > 0 && !fdtreatmentPrebookRateLoader"
                     class="chart-recall-rate">
                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="treatmentPrebookTotal"
                       [thick]="gaugeThick" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor"
                       [cap]="cap" [max]="maxtreatmentPrebookGoal" [append]="gaugeAppendText" [size]="size">
                     </ngx-gauge>
                   </div>
+                  <canvas *ngIf="showmulticlinicReappointRate == true && !showTrend && treatmentPrebookTotal > 0 && !fdtreatmentPrebookRateLoader" #myCanvas
+                    baseChart [datasets]="fdReappointRateMulti" [labels]="fdReappointRateLabels" [options]="stackedChartOptionsUtiDP"
+                    [chartType]="'bar'" (chartHover)="chartHovered($event)" [legend]="false"
+                    (chartClick)="chartClicked($event)">
+                  </canvas>
 
                   <div *ngIf="!showTrend && treatmentPrebookTotal <= 0 && !fdtreatmentPrebookRateLoader">
                     <div class="sa_nodata_div">
@@ -359,7 +386,7 @@
                     <p class="chart-placeholder-text">You have no reappointments in the selected period</p>
                   </div>
 
-                  <div *ngIf="showTrend && treatmentPrebookChartTrend1.length > 0 && !fdTreatmentPrebookRateTrendLoader"
+                  <div *ngIf="showByclinic == false && showTrend && treatmentPrebookChartTrend1.length > 0 && !fdTreatmentPrebookRateTrendLoader"
                     class="chart-utilisation-rate">
                     <canvas #myCanvas baseChart [datasets]="treatmentPrebookChartTrend"
                       [labels]="treatmentPrebookChartTrendLabels" [options]="stackedChartOptions"
@@ -368,10 +395,19 @@
                       <!-- [colors]="predictedChartColors" -->
                     </canvas>
                   </div>
+                  <div *ngIf="showByclinic == true && showTrend && tPChartTrendMultiLabels1.length > 0 && !fdTreatmentPrebookRateTrendLoader"
+                    class="chart-utilisation-rate">
+                    <canvas #myCanvas baseChart [datasets]="tPChartTrendMulti"
+                      [labels]="tPChartTrendMultiLabels" [options]="stackedChartOptionsTC"
+                      [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
+                      (chartClick)="chartClicked($event)">
+                      <!-- [colors]="predictedChartColors" -->
+                    </canvas>
+                  </div>
 
 
                   <div
-                    *ngIf="showTrend && treatmentPrebookChartTrend1.length <= 0 && !fdTreatmentPrebookRateTrendLoader">
+                    *ngIf="showTrend && tPChartTrendMultiLabels1.length <= 0 && treatmentPrebookChartTrend1.length <= 0 && !fdTreatmentPrebookRateTrendLoader">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">You have no reappointments in the selected period</p>
@@ -393,7 +429,7 @@
                     <small *ngIf="trendText == ''">Previous</small>
                   </div>
                   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                    *ngIf="treatmentPrebookGoal >= 0 && showGoals == true">
+                    *ngIf="treatmentPrebookGoal >= 0 && showGoals == true && showmulticlinicReappointRate == false">
                     <h3 class="m-0 value-num" *ngIf="treatmentPrebookGoal">
                       {{(treatmentPrebookGoal > 100) ? 100 : treatmentPrebookGoal}}%</h3>
                     <small>Goal</small>
