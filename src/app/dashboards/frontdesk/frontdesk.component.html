@@ -123,7 +123,10 @@
 
 
                       <div class="chart-utilisation-rate utigraph"  *ngIf="utilShow ==2 && byDayLabels.length > 0 && !byDayLoader && !showTrend">
-                        <canvas *ngIf="!showUtiTable" #myCanvas baseChart  [datasets]="byDayData" [labels]="byDayLabels" [options]="stackedChartOptionsUtiDP" [chartType]="'bar'" (chartHover)="chartHovered($event)" [legend]="false" (chartClick)="chartClicked($event)"> </canvas>
+                      <canvas *ngIf="!showUtiTable" #myCanvas baseChart  [datasets]="byDayData" [labels]="byDayLabels" 
+                        [options]="stackedChartOptionsUtiDP" [chartType]="'bar'" (chartHover)="chartHovered($event)" 
+                        [legend]="false" (chartClick)="chartClicked($event)"> 
+                      </canvas>
                          <div *ngIf="byDayData.length > 0 && showUtiTable" class="utiTablecon">
                         <table class="utiTable">
                           <thead>
@@ -229,7 +232,7 @@
                   </div>
 
                   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                    *ngIf="workTimeGoal >= 0 && utilShow ==1 && !showTrend && showGoals == true ">
+                    *ngIf="workTimeGoal >= 0 && utilShow ==1 && !showTrend && showGoals == true && showMultiClinicUR == false ">
                     <!--           <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
                     <h3 class="m-0 value-num" *ngIf="workTimeGoal">
                       {{ ( workTimeGoal > 100 ? 100 : workTimeGoal ) | number }}%</h3>
@@ -276,7 +279,7 @@
                     </ngx-gauge>
                   </div>
                   <canvas *ngIf="showmulticlinicPrebook == true && !showTrend && recallPrebookTotal > 0 && !fdRecallPrebookRateLoader" #myCanvas
-                    baseChart [datasets]="fdPrebookRateMulti" [labels]="fdPrebookRateLabels" [options]="stackedChartOptionsUtiDP"
+                    baseChart [datasets]="fdPrebookRateMulti" [labels]="fdPrebookRateLabels" [options]="stackedChartOptionsUti"
                     [chartType]="'bar'" (chartHover)="chartHovered($event)" [legend]="false"
                     (chartClick)="chartClicked($event)">
                   </canvas>
@@ -375,7 +378,7 @@
                     </ngx-gauge>
                   </div>
                   <canvas *ngIf="showmulticlinicReappointRate == true && !showTrend && treatmentPrebookTotal > 0 && !fdtreatmentPrebookRateLoader" #myCanvas
-                    baseChart [datasets]="fdReappointRateMulti" [labels]="fdReappointRateLabels" [options]="stackedChartOptionsUtiDP"
+                    baseChart [datasets]="fdReappointRateMulti" [labels]="fdReappointRateLabels" [options]="stackedChartOptionsUti"
                     [chartType]="'bar'" (chartHover)="chartHovered($event)" [legend]="false"
                     (chartClick)="chartClicked($event)">
                   </canvas>
@@ -467,18 +470,23 @@
               <div class="card-body">
                 <div class="chart">
 
-                  <div *ngIf="!showTrend && ticksTotal > 0 && !fdNumberOfTicksLoader" class="chart-recall-rate">
+                  <div *ngIf="showmulticlinicticks == false && !showTrend && ticksTotal > 0 && !fdNumberOfTicksLoader" class="chart-recall-rate">
                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="ticksTotal" [thick]="gaugeThick"
                       [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [cap]="cap" [size]="size">
                     </ngx-gauge>
                   </div>
+                  <canvas *ngIf="showmulticlinicticks == true && !showTrend && ticksTotal > 0 && !fdNumberOfTicksLoader" #myCanvas
+                    baseChart [datasets]="ticksMulti" [labels]="ticksLabels" [options]="stackedChartOptionsT"
+                    [chartType]="'bar'" (chartHover)="chartHovered($event)" [legend]="false"
+                    (chartClick)="chartClicked($event)">
+                  </canvas>
                   <div *ngIf="!showTrend && ticksTotal <= 0 && !fdNumberOfTicksLoader">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">You have no TICKs in the selected period</p>
                   </div>
 
-                  <div *ngIf="showTrend && tickChartTrend1.length > 0 && !fdNumberOfTicksTrendLoader"
+                  <div *ngIf="showByclinictic == false && showTrend && tickChartTrend1.length > 0 && !fdNumberOfTicksTrendLoader"
                     class="chart-recall-rate-trend">
                     <canvas #myCanvas baseChart [datasets]="tickChartTrend" [labels]="tickChartTrendLabels"
                       [options]="numOfTicksChartOptionsticks" [chartType]="stackedChartType"
@@ -486,7 +494,15 @@
                       <!-- [colors]="predictedChartColors" -->
                     </canvas>
                   </div>
-                  <div *ngIf="showTrend && tickChartTrend1.length <= 0 && !fdNumberOfTicksTrendLoader">
+                  <div *ngIf="showByclinictic == true && showTrend && ticPChartTrendMultiLabels1.length > 0 && !fdNumberOfTicksTrendLoader"
+                    class="chart-recall-rate-trend">
+                    <canvas #myCanvas baseChart [datasets]="ticChartTrendMulti" [labels]="ticChartTrendMultiLabels"
+                      [options]="stackedChartOptionsTic" [chartType]="stackedChartType"
+                      (chartHover)="chartHovered($event)" [legend]="false" (chartClick)="chartClicked($event)">
+                      <!-- [colors]="predictedChartColors" -->
+                    </canvas>
+                  </div>
+                  <div *ngIf="showTrend && tickChartTrend1.length <= 0 && ticPChartTrendMultiLabels1.length <= 0 && !fdNumberOfTicksTrendLoader">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">You have no TICKs in the selected period</p>
@@ -540,12 +556,17 @@
                 <div class="chart">
 
 
-                  <div *ngIf="!showTrend && ftaTotal > 0" class="chart-recall-rate">
+                  <div *ngIf="showmulticlinicFta == false && !showTrend && ftaTotal > 0" class="chart-recall-rate">
                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="ftaTotal" [thick]="gaugeThick"
                       [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [append]="gaugeAppendText"
                       [max]="maxftaGoal" [cap]="cap" [size]="size">
                     </ngx-gauge>
                   </div>
+                  <canvas *ngIf="showmulticlinicFta == true && !showTrend && ftaTotal > 0" #myCanvas
+                    baseChart [datasets]="ftaMulti" [labels]="ftaLabels" [options]="stackedChartOptionsUti"
+                    [chartType]="'bar'" (chartHover)="chartHovered($event)" [legend]="false"
+                    (chartClick)="chartClicked($event)">
+                  </canvas>
                   <div *ngIf="!showTrend && ftaTotal <= 0">
                     <div class="sa_nodata_div">
                     </div>
@@ -582,7 +603,7 @@
                     <small *ngIf="trendText == ''">Previous</small>
                   </div>
                   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                    *ngIf="ftaGoal >= 0 && showGoals == true">
+                    *ngIf="ftaGoal >= 0 && showGoals == true && showmulticlinicFta == false">
                     <h3 class="m-0 value-num" *ngIf="ftaGoal">{{ (ftaGoal > 100 ? 100 : ftaGoal) | number:'1.0-1'}}%
                     </h3>
                     <small>Goal</small>
@@ -616,12 +637,17 @@
                 <div class="chart">
 
 
-                  <div *ngIf="!showTrend && utaTotal > 0 && !fdUtaRatioLoader" class="chart-recall-rate">
+                  <div *ngIf="showmulticlinicUta == false && !showTrend && utaTotal > 0 && !fdUtaRatioLoader" class="chart-recall-rate">
                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="utaTotal" [thick]="gaugeThick"
                       [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [append]="gaugeAppendText"
                       [max]="maxutaGoal" [cap]="cap" [size]="size">
                     </ngx-gauge>
                   </div>
+                  <canvas *ngIf="showmulticlinicUta == true && !showTrend && utaTotal > 0 && !fdUtaRatioLoader" #myCanvas
+                    baseChart [datasets]="utaMulti" [labels]="utaLabels" [options]="stackedChartOptionsUti"
+                    [chartType]="'bar'" (chartHover)="chartHovered($event)" [legend]="false"
+                    (chartClick)="chartClicked($event)">
+                  </canvas>
                   <div *ngIf="!showTrend && utaTotal <= 0 && !fdUtaRatioLoader">
                     <div class="sa_nodata_div">
                     </div>
@@ -657,7 +683,7 @@
                     <small *ngIf="trendText == ''">Previous</small>
                   </div>
                   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                    *ngIf="utaGoal >= 0 && showGoals == true">
+                    *ngIf="utaGoal >= 0 && showGoals == true && showmulticlinicUta == false">
                     <h3 class="m-0 value-num" *ngIf="utaGoal">{{ (utaGoal > 100 ? 100 : utaGoal) | number:'1.0-1'}}%
                     </h3>
                     <small>Goal</small>

@@ -41,6 +41,7 @@ export class FrontDeskComponent implements AfterViewInit {
   public utilShow: any = 1;
   public  apiUrl = environment.apiUrl;
   public showGoals: boolean = false;
+  public numberOfRecords:number = 12;
 
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
@@ -308,8 +309,152 @@ this.predictedChartColors = [
             display: true
          }
   };
+  public stackedChartOptionsTic: any = {
+    //   elements: {
+    //   point: {
+    //     radius: 5,
+    //     hoverRadius: 7,
+    //     pointStyle:'rectRounded',
+    //     hoverBorderWidth:7
+    //   },
+    // },
+    scaleShowVerticalLines: false,
+    responsive: true,
+    maintainAspectRatio: false,
+    // barThickness: 10,
+      animation: {
+        duration: 500,
+        easing: 'easeOutSine'
+      },
+      fill:false,
+    scales: {
+          xAxes: [{ 
+            stacked:true,
+            ticks: {
+                autoSkip: false
+            }
+            }],
+          yAxes: [{ 
+            // stacked:true,
+            ticks: {
+              min:0,
+             // max:100,
+              userCallback: function(label, index, labels) {
+                     // when the floored value is the same as the value we have a whole number
+                     if (Math.floor(label) === label) {
+                         return label;
+                     }
+                 },
+            },
+            }],
+        },
+    tooltips: {
+      mode: 'x-axis',
+            custom: function(tooltip) {
+      if (!tooltip) return;
+      // disable displaying the color box;
+      tooltip.displayColors = false;
+    },
+    callbacks: {
+      label: function (tooltipItems, data) {
+        return data.datasets[tooltipItems.datasetIndex].label + ": " + Math.round(tooltipItems.yLabel);
+      },
 
+    }
+},
+  legend: {
+            display: true
+         }
+  };
 
+  public stackedChartOptionsT: any = {
+
+    scaleShowVerticalLines: false,
+    responsive: true,
+    maintainAspectRatio: false,
+    // barThickness: 10,
+      animation: {
+        duration: 1,
+        easing: 'linear'
+      },
+      fill:false,
+    scales: {
+      xAxes: [{ 
+        ticks: {
+          autoSkip: false,
+          callback: function (value, index, values) {
+            if(value.indexOf('--') >= 0){
+              let lbl = value.split('--');
+              value = lbl[0];
+            }
+            return value;
+          }
+        },
+        stacked:true,
+      }],
+          yAxes: [{ 
+            // stacked:true,
+            ticks: {
+              min:0,
+             // max:100,
+              userCallback: function(label, index, labels) {
+                     // when the floored value is the same as the value we have a whole number
+                     if (Math.floor(label) === label) {
+                         return label;
+                     }
+                 },
+            },
+            }],
+        },
+        tooltips: {
+          mode: 'x-axis',
+          custom: function(tooltip) {
+            if (!tooltip) return;
+              tooltip.displayColors = false;
+            },
+            callbacks: {
+              label: function(tooltipItems, data) { 
+                let total = tooltipItems.yLabel > 100 ? 100 : tooltipItems.yLabel;    
+                if(tooltipItems.xLabel.indexOf('--') >= 0){
+                  let lbl = tooltipItems.xLabel.split('--');
+                  if(lbl[3] === 'undefined'){
+                    tooltipItems.xLabel = lbl[0];
+                  }else{
+                    tooltipItems.xLabel = lbl[0]+' - '+lbl[3];
+                  }                  
+                }  
+                const v = data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index];
+                  let Tlable = data.datasets[tooltipItems.datasetIndex].label;
+                  if(Tlable !=''){
+                    Tlable = Tlable + ": "
+                  }
+                let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;   
+                if(ylable == 0 && Tlable =='Target: '){
+               }else{
+                return Tlable + tooltipItems.xLabel+": "+ ylable;
+               }   
+                
+              },
+              afterLabel: function(tooltipItems, data) {
+                let hour = 0;
+                let phour = 0;
+                if(tooltipItems.label.indexOf('--') >= 0 && tooltipItems.datasetIndex == 0){
+                  let lbl = tooltipItems.label.split('--');                
+                  hour = lbl[1];
+                  phour = lbl[2];
+                  return ['',"Available Hours: "+phour,"Used Hours: "+hour];
+                } 
+                return;
+              },
+              title: function() {
+                return "";
+            }
+          }
+        },
+        legend: {
+            display: true
+         }
+      };
   public stackedChartOptionsUti: any = {
 
     scaleShowVerticalLines: false,
@@ -360,7 +505,11 @@ this.predictedChartColors = [
                 let total = tooltipItems.yLabel > 100 ? 100 : tooltipItems.yLabel;    
                 if(tooltipItems.xLabel.indexOf('--') >= 0){
                   let lbl = tooltipItems.xLabel.split('--');
-                  tooltipItems.xLabel = lbl[0];
+                  if(lbl[3] === 'undefined'){
+                    tooltipItems.xLabel = lbl[0];
+                  }else{
+                    tooltipItems.xLabel = lbl[0]+' - '+lbl[3];
+                  }                  
                 }  
                 const v = data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index];
                   let Tlable = data.datasets[tooltipItems.datasetIndex].label;
@@ -717,6 +866,7 @@ public utilityratemessage: boolean = false;
   public goalchecked='off';
     public stackedChartOptionssWT:any =this.stackedChartOptions;
 public fdWorkTimeAnalysisLoader:boolean;
+public showMultiClinicUR:boolean = false;
 public fdUtiData:any = [];
 
   //Items Predictor Analysis 
@@ -725,6 +875,7 @@ public fdUtiData:any = [];
     var clinic_id;
     this.fdWorkTimeAnalysisLoader = true;
     this.workTimeLabels= [];
+    this.showMultiClinicUR = false;
     if(this.DateDiffernce > '365'){
       this.utilityratemessage = true;
       this.fdWorkTimeAnalysisLoader = false;
@@ -738,18 +889,23 @@ public fdUtiData:any = [];
       this.workTimeLabels1 =[];
       this.prevWorkTimeTooltip = 'down';
      if(data.data.length >0) {
-        data.data.forEach(res => {
-          // if(res.worked_hour > 0) {
-            var temp =  {
-            'name':  res.app_book_name, 
-            'scheduled_hours':  res.planned_hour, 
-            'clinican_hours':  res.worked_hour, 
-            'util_rate':  Math.round(res.util_rate * 100), 
-            };
-            this.fdUtiData.push(temp);
+      data.data.forEach(res => {
+        var temp =  {
+          'name':  res.app_book_name, 
+          'scheduled_hours':  res.planned_hour, 
+          'clinican_hours':  res.worked_hour, 
+          'util_rate':  Math.round(res.util_rate * 100), 
+          };
+          this.fdUtiData.push(temp);
+       });
+       if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
+        data.data.forEach(res => {            
             this.workTimeData1.push(Math.round(res.util_rate * 100));
-            this.workTimeLabels1.push(res.app_book_name+'--'+res.worked_hour+'--'+res.planned_hour); 
-          // }
+            if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+              this.showMultiClinicUR = true;
+            }
+            this.workTimeLabels1.push(res.app_book_name+'--'+res.worked_hour+'--'+res.planned_hour +'--'+res.clinic_name); 
+          
         });
      }
         this.workTimeData[0]['data'] = this.workTimeData1;
@@ -880,6 +1036,42 @@ public fdUtiData:any = [];
     });
   }
 
+  public showmulticlinicFta:boolean = false;
+  public ftaLabels:any=[];
+  public ftaLabels1:any=[];				  
+  public ftaMulti: any[] = [
+    { data: [], 
+      label: '',
+      backgroundColor: [
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+      ],
+      hoverBackgroundColor: [
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+      ]
+    }
+  ];				    
 public ftaTotal;
 public ftaPrevTotal;
 public ftaTooltip='up';
@@ -896,11 +1088,26 @@ public fdFtaRatioLoader:any;
 
        var user_id;
        var clinic_id;
+  this.showmulticlinicFta = false;
   this.clinic_id && this.frontdeskService.fdFtaRatio(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
     this.ftaTotal = 0;
           this.ftaPrevTotal = 0;
        if(data.message == 'success'){
         this.fdFtaRatioLoader = false;
+        this.ftaMulti[0]['data'] = [];        
+        this.ftaLabels=[];
+        this.ftaLabels1=[];	
+        if (data.total > 0) {
+          data.data.forEach(res => { 
+            this.ftaLabels1.push(Math.round(res.fta_ratio));
+            this.ftaLabels.push(res.clinic_name);
+          });
+        }
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          this.showmulticlinicFta = true;
+        }
+        this.ftaMulti[0]['data'] = this.ftaLabels1;
+
           if(data.total>100)
             data.total =100;
           if(data.total_ta>100)
@@ -924,7 +1131,42 @@ public fdFtaRatioLoader:any;
     }
   }
 
-
+  public showmulticlinicUta:boolean = false;
+  public utaLabels:any=[];
+  public utaLabels1:any=[];				  
+  public utaMulti: any[] = [
+    { data: [], 
+      label: '',
+      backgroundColor: [
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+      ],
+      hoverBackgroundColor: [
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+      ]
+    }
+  ];
 public utaTotal;
 public utaPrevTotal;
 public utaTooltip='up';
@@ -939,11 +1181,26 @@ public maxutaGoal:any=0;
 
        var user_id;
        var clinic_id;
+       this.showmulticlinicUta = false;
   this.clinic_id && this.frontdeskService.fdUtaRatio(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
      this.utaTotal = 0;
           this.utaPrevTotal = 0;
        if(data.message == 'success'){
         this.fdUtaRatioLoader = false;
+        this.utaMulti[0]['data'] = [];        
+        this.utaLabels=[];
+        this.utaLabels1=[];	
+        if (data.total > 0) {
+          data.data.forEach(res => { 
+            this.utaLabels1.push(Math.round(res.uta_ratio));
+            this.utaLabels.push(res.clinic_name);
+          });
+        }
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          this.showmulticlinicUta = true;
+        }
+        this.utaMulti[0]['data'] = this.utaLabels1;
+
           if(data.total>100)
             data.total =100;
           if(data.total_ta>100)
@@ -967,6 +1224,42 @@ public maxutaGoal:any=0;
     }
   }
 
+  public ticksMulti: any[] = [
+    { data: [], 
+      label: '',
+      backgroundColor: [
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+      ],
+      hoverBackgroundColor: [
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+      ]
+    }
+  ];
+  public showmulticlinicticks:boolean = false;
+  public ticksLabels:any=[];
+  public ticksLabels1:any=[];		
 public ticksTotal;
 public ticksPrevTotal;
 public ticksTooltip='down';
@@ -977,12 +1270,27 @@ public fdNumberOfTicksLoader:boolean;
      if(this.duration){
       this.fdNumberOfTicksLoader = true;
           this.ticksPrevTotal = 0;
-
+          this.showmulticlinicticks = false;	
        var user_id;
        var clinic_id;
     this.clinic_id &&  this.frontdeskService.fdNumberOfTicks(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-       if(data.message == 'success'){
+      this.ticksMulti[0]['data'] = [];        
+      this.ticksLabels = [];
+      this.ticksLabels1 = [];  
+      if(data.message == 'success'){
         this.fdNumberOfTicksLoader = false;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          this.showmulticlinicticks = true;          
+        if (data.total > 0 && data.multiC[0]) {
+          data.multiC[0].forEach(res => {
+            if(res.clinic_id){
+              this.ticksLabels1.push(Math.round(res.num_ticks));
+              this.ticksLabels.push(res.clinic_name);
+            } 
+          });
+        }       
+        this.ticksMulti[0]['data'] = this.ticksLabels1;
+        }
         this.ticksPrevTotal = 0;
         this.ticksTotal = 0;
         if(data.data.length > 0)
@@ -1781,7 +2089,11 @@ toggleChangeProcess(){
   public tickChartTrendLabels =[];
   public tickChartTrendLabels1 =[];
   public fdNumberOfTicksTrendLoader:boolean;
-
+  public ticChartTrendMulti: any[] = [
+    { data: [], label: '' }];
+public ticChartTrendMultiLabels = [];
+  public ticPChartTrendMultiLabels1 = [];  
+  public showByclinictic : boolean =false;
   private fdNumberOfTicksTrend() {
     this.fdNumberOfTicksTrendLoader = true;
   this.tickChartTrendLabels=[];
@@ -1789,23 +2101,52 @@ toggleChangeProcess(){
   this.tickChartTrend1=[];
     var user_id;
     var clinic_id;
+    this.showByclinictic = false;
+  this.ticChartTrendMulti =[];
+  this.ticChartTrendMultiLabels =[];
+  this.ticPChartTrendMultiLabels1 =[];
    this.clinic_id && this.frontdeskService.fdNumberOfTicksTrend(this.clinic_id,this.trendValue).subscribe((data) => {
       this.tickChartTrendLabels1=[];
   this.tickChartTrend1=[];
   this.Apirequest = this.Apirequest -1;
        if(data.message == 'success'){
         this.fdNumberOfTicksTrendLoader = false;
-                data.data.forEach(res => {  
-                     this.tickChartTrend1.push(res.num_ticks);
-                   if(this.trendValue == 'c')
-                   this.tickChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-                    else
-                   this.tickChartTrendLabels1.push(res.year);
-                  
-                 });
-                 this.tickChartTrend[0]['data'] = this.tickChartTrend1;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          this.showByclinictic = true;
+          data.data.forEach(res => { 
+            res.val.forEach((reslt, key) => {
+              if (typeof (this.ticChartTrendMulti[key]) == 'undefined') {
+                this.ticChartTrendMulti[key] = { data: [], label: '' };
+              }
+              if (typeof (this.ticChartTrendMulti[key]['data']) == 'undefined') {
+                this.ticChartTrendMulti[key]['data'] = [];
+              }
+              
+                this.ticChartTrendMulti[key]['data'].push(Math.round(reslt.num_ticks));
+                this.ticChartTrendMulti[key]['label'] = reslt.clinic_name;
+                this.ticChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
+                this.ticChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+             }); 
+             if (this.trendValue == 'c')
+              this.ticPChartTrendMultiLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+            else
+              this.ticPChartTrendMultiLabels1.push(res.duration);
+          });
+          this.ticChartTrendMultiLabels = this.ticPChartTrendMultiLabels1;
+        }else{
+          data.data.forEach(res => {  
+            this.tickChartTrend1.push(res.num_ticks);
+          if(this.trendValue == 'c')
+          this.tickChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+           else
+          this.tickChartTrendLabels1.push(res.year);
+         
+          });
+          this.tickChartTrend[0]['data'] = this.tickChartTrend1;
 
-                 this.tickChartTrendLabels =this.tickChartTrendLabels1; 
+          this.tickChartTrendLabels =this.tickChartTrendLabels1; 
+        }
+                
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -2024,11 +2365,9 @@ toggleChangeProcess(){
     this.Apirequest = this.Apirequest -1;   
     if(data.message == 'success'){
       data.data.sort((a, b)=> a.duration - b.duration);
-      if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
-        this.showByclinic = true;
-      }
         this.fdTreatmentPrebookRateTrendLoader = false;
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          this.showByclinic = true;
           data.data.forEach(res => { 
             res.val.forEach((reslt, key) => {
               if (typeof (this.tPChartTrendMulti[key]) == 'undefined') {

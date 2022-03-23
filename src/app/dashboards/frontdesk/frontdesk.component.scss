@@ -3,7 +3,9 @@
 .utiTablecon {
     height: 330px;
     width: 100%;
-    overflow: hidden; 
+    overflow: scroll;
+    overflow-x: hidden;
+    // overflow: hidden; 
 }
 table.utiTable {
     width: 100%;
