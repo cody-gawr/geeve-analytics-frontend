@@ -417,8 +417,8 @@ this.predictedChartColors = [
                 let total = tooltipItems.yLabel > 100 ? 100 : tooltipItems.yLabel;    
                 if(tooltipItems.xLabel.indexOf('--') >= 0){
                   let lbl = tooltipItems.xLabel.split('--');
-                  if(lbl[3] === 'undefined'){
-                    tooltipItems.xLabel = lbl[0];
+                  if(typeof lbl[3] === 'undefined'){
+                    tooltipItems.xLabel = lbl[0];                    
                   }else{
                     tooltipItems.xLabel = lbl[0]+' - '+lbl[3];
                   }                  
@@ -505,8 +505,8 @@ this.predictedChartColors = [
                 let total = tooltipItems.yLabel > 100 ? 100 : tooltipItems.yLabel;    
                 if(tooltipItems.xLabel.indexOf('--') >= 0){
                   let lbl = tooltipItems.xLabel.split('--');
-                  if(lbl[3] === 'undefined'){
-                    tooltipItems.xLabel = lbl[0];
+                  if(typeof lbl[3] === 'undefined'){
+                    tooltipItems.xLabel = lbl[0];                    
                   }else{
                     tooltipItems.xLabel = lbl[0]+' - '+lbl[3];
                   }                  
@@ -1010,25 +1010,42 @@ public fdUtiData:any = [];
         this.byDayDataTable = [];
         this.byTotal=  0;
           this.prevByDayTotal=  0;
-        if(data.message == 'success')
-        {
-          data.data.forEach(res => {
-            // if(res.worked_hour > 0) {
-              var temp =  {
-              'day':  res.day, 
-              'scheduled_hours':  res.planned_hour, 
-              'clinican_hours':  res.worked_hour, 
-              'util_rate':  Math.round(res.util_rate * 100), 
-              };
-              this.byDayDataTable.push(temp);
-              this.byDayDataTemp.push(Math.round(res.util_rate * 100));
-              this.byDayLabelsTemp.push(res.day+'--'+res.worked_hour+'--'+res.planned_hour); 
-            // }
-          });        
+        if(data.message == 'success'){
+          if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+            data.multiC.forEach(res => { 
+              res.val.forEach((reslt, key) => { 
+                var temp =  {
+                  'day':  res.duration, 
+                  'scheduled_hours':  reslt.planned_hour, 
+                  'clinican_hours':  reslt.worked_hour, 
+                  'util_rate':  Math.round(reslt.util_rate * 100 / data.cCount), 
+                  };
+                  this.byDayDataTable.push(temp);
+                  this.byDayDataTemp.push(Math.round(reslt.util_rate * 100 / data.cCount ));
+                  this.byDayLabelsTemp.push(res.duration+'--'+reslt.worked_hour+'--'+reslt.planned_hour);
+              });
+            });
+            this.byDayData[0]['data'] = this.byDayDataTemp;
+            this.byDayLabels = this.byDayLabelsTemp;
+          }else{
+            data.data.forEach(res => {
+              // if(res.worked_hour > 0) {
+                var temp =  {
+                'day':  res.day, 
+                'scheduled_hours':  res.planned_hour, 
+                'clinican_hours':  res.worked_hour, 
+                'util_rate':  Math.round(res.util_rate * 100), 
+                };
+                this.byDayDataTable.push(temp);
+                this.byDayDataTemp.push(Math.round(res.util_rate * 100));
+                this.byDayLabelsTemp.push(res.day+'--'+res.worked_hour+'--'+res.planned_hour); 
+              // }
+            });
+            this.byDayData[0]['data'] = this.byDayDataTemp;
+            this.byDayLabels = this.byDayLabelsTemp;
+          } 
           this.byTotal=  Math.round(data.total);
-          this.prevByDayTotal=  Math.round(data.total_ta);
-          this.byDayData[0]['data'] = this.byDayDataTemp;
-          this.byDayLabels = this.byDayLabelsTemp;       
+          this.prevByDayTotal=  Math.round(data.total_ta);                
         }
       }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
