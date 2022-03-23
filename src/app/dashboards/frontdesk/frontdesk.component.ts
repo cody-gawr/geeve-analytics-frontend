@@ -1814,6 +1814,11 @@ toggleChangeProcess(){
   public ftaChartTrendLabels =[];
   public ftaChartTrendLabels1 =[];
   public fdFtaRatioTrendLoader:boolean;
+  public ftaChartTrendMulti: any[] = [
+    { data: [], label: '' }];
+public ftaTrendMultiLabels = [];
+  public ftaChartTrendMultiLabels1 = [];  
+  public showByclinicfta : boolean =false;
   private fdFtaRatioTrend() {
     this.fdFtaRatioTrendLoader =true;
   this.ftaChartTrendLabels=[];
@@ -1822,24 +1827,53 @@ toggleChangeProcess(){
   this.ftaChartTrend1=[];
     var user_id;
     var clinic_id;
+    this.showByclinicfta = false;
+  this.ftaChartTrendMulti =[];
+  this.ftaTrendMultiLabels =[];
+  this.ftaChartTrendMultiLabels1 =[];  
    this.clinic_id && this.frontdeskService.fdFtaRatioTrend(this.clinic_id,this.trendValue).subscribe((data) => {
       this.ftaChartTrendLabels1=[];
   this.ftaChartTrend1=[];
   this.Apirequest = this.Apirequest -1;
        if(data.message == 'success'){
         this.fdFtaRatioTrendLoader =false;
-                data.data.forEach(res => {  
-                  if(res.val>100)
-                    res.val =100;
-                     this.ftaChartTrend1.push(Math.round(res.fta_ratio * 10) /10);
-                   if(this.trendValue == 'c')
-                   this.ftaChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-                    else
-                   this.ftaChartTrendLabels1.push(res.year);
-                  
-                 });
-                 this.ftaChartTrend[0]['data'] = this.ftaChartTrend1;
-                 this.ftaChartTrendLabels =this.ftaChartTrendLabels1; 
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          this.showByclinicfta = true;
+          data.data.forEach(res => { 
+            res.val.forEach((reslt, key) => {
+              if (typeof (this.ftaChartTrendMulti[key]) == 'undefined') {
+                this.ftaChartTrendMulti[key] = { data: [], label: '' };
+              }
+              if (typeof (this.ftaChartTrendMulti[key]['data']) == 'undefined') {
+                this.ftaChartTrendMulti[key]['data'] = [];
+              }
+              
+                this.ftaChartTrendMulti[key]['data'].push(Math.round(reslt.fta_ratio));
+                this.ftaChartTrendMulti[key]['label'] = reslt.clinic_name;
+                this.ftaChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
+                this.ftaChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+             }); 
+             if (this.trendValue == 'c')
+              this.ftaChartTrendMultiLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+            else
+              this.ftaChartTrendMultiLabels1.push(res.duration);
+          });
+          this.ftaTrendMultiLabels = this.ftaChartTrendMultiLabels1;
+        }else{
+          data.data.forEach(res => {  
+            if(res.val>100)
+              res.val =100;
+               this.ftaChartTrend1.push(Math.round(res.fta_ratio * 10) /10);
+             if(this.trendValue == 'c')
+             this.ftaChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+              else
+             this.ftaChartTrendLabels1.push(res.year);
+            
+           });
+           this.ftaChartTrend[0]['data'] = this.ftaChartTrend1;
+           this.ftaChartTrendLabels =this.ftaChartTrendLabels1; 
+        }
+                
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -2016,7 +2050,11 @@ toggleChangeProcess(){
   public utaChartTrendLabels =[];
   public utaChartTrendLabels1 =[];
   public fdUtaRatioTrendLoader:boolean;
-
+  public utaChartTrendMulti: any[] = [
+    { data: [], label: '' }];
+public utaTrendMultiLabels = [];
+  public utaChartTrendMultiLabels1 = [];  
+  public showByclinicUta : boolean =false;
   private fdUtaRatioTrend() {
     this.fdUtaRatioTrendLoader = true;
   this.utaChartTrendLabels1=[];
@@ -2025,25 +2063,54 @@ toggleChangeProcess(){
   this.utaChartTrend1=[];
     var user_id;
     var clinic_id;
+    this.showByclinicUta = false;
+  this.utaChartTrendMulti =[];
+  this.utaTrendMultiLabels =[];
+  this.utaChartTrendMultiLabels1 =[]; 
    this.clinic_id && this.frontdeskService.fdUtaRatioTrend(this.clinic_id,this.trendValue).subscribe((data) => {
       this.utaChartTrendLabels1=[];
   this.utaChartTrend1=[];
   this.Apirequest = this.Apirequest -1;
        if(data.message == 'success'){
         this.fdUtaRatioTrendLoader = false;
-                data.data.forEach(res => {  
-                  if(res.val>100)
-                    res.val =100;
-                     this.utaChartTrend1.push(Math.round(res.uta_ratio * 10) /10 );
-                   if(this.trendValue == 'c')
-                   this.utaChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-                    else
-                   this.utaChartTrendLabels1.push(res.year);
-                  
-                 });
-                 this.utaChartTrend[0]['data'] = this.utaChartTrend1;
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          this.showByclinicUta = true;
+          data.data.forEach(res => { 
+            res.val.forEach((reslt, key) => {
+              if (typeof (this.utaChartTrendMulti[key]) == 'undefined') {
+                this.utaChartTrendMulti[key] = { data: [], label: '' };
+              }
+              if (typeof (this.utaChartTrendMulti[key]['data']) == 'undefined') {
+                this.utaChartTrendMulti[key]['data'] = [];
+              }
+              
+                this.utaChartTrendMulti[key]['data'].push(Math.round(reslt.uta_ratio));
+                this.utaChartTrendMulti[key]['label'] = reslt.clinic_name;
+                this.utaChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
+                this.utaChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+             }); 
+             if (this.trendValue == 'c')
+              this.utaChartTrendMultiLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+            else
+              this.utaChartTrendMultiLabels1.push(res.duration);
+          });
+          this.utaTrendMultiLabels = this.utaChartTrendMultiLabels1;
+        }else{
+          data.data.forEach(res => {  
+            if(res.val>100)
+              res.val =100;
+               this.utaChartTrend1.push(Math.round(res.uta_ratio * 10) /10 );
+             if(this.trendValue == 'c')
+             this.utaChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+              else
+             this.utaChartTrendLabels1.push(res.year);
+            
+           });
+           this.utaChartTrend[0]['data'] = this.utaChartTrend1;
 
-                 this.utaChartTrendLabels =this.utaChartTrendLabels1; 
+           this.utaChartTrendLabels =this.utaChartTrendLabels1;
+        }
+                 
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";

@@ -574,14 +574,22 @@
                   </div>
 
 
-                  <div *ngIf="showTrend && ftaChartTrend1.length > 0 && !fdFtaRatioTrendLoader"
+                  <div *ngIf="showByclinicfta == false && showTrend && ftaChartTrend1.length > 0 && !fdFtaRatioTrendLoader"
                    class="chart-recall-rate-trend">
                     <canvas #myCanvas baseChart [datasets]="ftaChartTrend" [labels]="ftaChartTrendLabels"
                       [options]="stackedChartOptions" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
                       [legend]="false" [colors]="predictedChartColors" (chartClick)="chartClicked($event)">
                     </canvas>
                   </div>
-                  <div *ngIf="showTrend && ftaChartTrend1.length <= 0 && !fdFtaRatioTrendLoader">
+                  <div *ngIf="showByclinicfta == true && showTrend && ftaChartTrendMultiLabels1.length > 0 && !fdTreatmentPrebookRateTrendLoader"
+                    class="chart-utilisation-rate">
+                    <canvas #myCanvas baseChart [datasets]="ftaChartTrendMulti"
+                      [labels]="ftaTrendMultiLabels" [options]="stackedChartOptionsTC"
+                      [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
+                      (chartClick)="chartClicked($event)">
+                    </canvas>
+                  </div>
+                  <div *ngIf="showTrend && ftaChartTrend1.length <= 0 && ftaChartTrendMultiLabels1.length<=0 && !fdFtaRatioTrendLoader">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">You have no FTA's in the selected period</p>
@@ -654,14 +662,22 @@
                     <p class="chart-placeholder-text">You have no UTA's in the selected period</p>
                   </div>
 
-                  <div *ngIf="showTrend && utaChartTrend1.length > 0 && !fdUtaRatioTrendLoader"
+                  <div *ngIf="showByclinicUta == false && showTrend && utaChartTrend1.length > 0 && !fdUtaRatioTrendLoader"
                    class="chart-recall-rate-trend">
                     <canvas #myCanvas baseChart [datasets]="utaChartTrend" [labels]="utaChartTrendLabels"
                       [options]="stackedChartOptions" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
                       [legend]="false" [colors]="predictedChartColors" (chartClick)="chartClicked($event)">
                     </canvas>
                   </div>
-                  <div *ngIf="showTrend && utaChartTrend1.length <= 0 && !fdUtaRatioTrendLoader">
+                  <div *ngIf="showByclinicUta == true && showTrend && utaChartTrendMultiLabels1.length > 0 && !fdUtaRatioTrendLoader"
+                    class="chart-utilisation-rate">
+                    <canvas #myCanvas baseChart [datasets]="utaChartTrendMulti"
+                      [labels]="utaTrendMultiLabels" [options]="stackedChartOptionsTC"
+                      [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
+                      (chartClick)="chartClicked($event)">
+                    </canvas>
+                  </div>
+                  <div *ngIf="showTrend && utaChartTrend1.length <= 0 && utaChartTrendMultiLabels1.length<=0  && !fdUtaRatioTrendLoader">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">You have no UTA's in the selected period</p>
