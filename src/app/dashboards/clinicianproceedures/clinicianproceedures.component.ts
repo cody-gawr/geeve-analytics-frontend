@@ -631,6 +631,7 @@ callbacks: {
 }
 
 };
+
    public lineChartColors1: Array<any> = [
     {
       // grey
@@ -1282,6 +1283,10 @@ if(this._cookieService.get("user_type") == '4'){
   }
   }
 
+  public ItemsPredictorAnalysisGenMulti: any[] = [
+    { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }];
+  public showmulticlinicGenPredictor:boolean = false;
+  public ItemsPredictorAnalysisGenLabels:any=[];
   public stackedChartDataMax;
   public buildChartLoader:any;
   public ipKey;
@@ -1308,6 +1313,9 @@ if(this._cookieService.get("user_type") == '4'){
 
   this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysis(this.clinic_id,this.startDate,this.endDate,this.user_type,this.childid).subscribe((data) => {   
         this.buildChartLoader =false;
+        this.ItemsPredictorAnalysisGenMulti = [];
+        this.showmulticlinicGenPredictor = false;
+        this.ItemsPredictorAnalysisGenLabels = [];
         this.stackedChartData1 = [];
         this.stackedChartData2 = [];
         this.stackedChartData3 = [];
@@ -1325,84 +1333,104 @@ if(this._cookieService.get("user_type") == '4'){
         if(data && data.data && data.data.length <=0) {
 
         }else {
-          var i=0
-       data && data.data && data.data.length && data.data.forEach(res => {
-          if(res.provider_name != null){
-            if( (parseInt(res.crowns) + parseInt(res.splints) + parseInt(res.rct) + parseInt(res.perio) + parseInt(res.extract)  + parseInt(res.ss_crowns)  + parseInt(res.comp_veneers)  + parseInt(res.imp_crowns) ) > 0){
+          if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+            this.showmulticlinicGenPredictor = true;
+            data.data.forEach(res => {
+              res.val.forEach((result, key) => {
+                if (typeof (this.ItemsPredictorAnalysisGenMulti[key]) == 'undefined') {
+                  this.ItemsPredictorAnalysisGenMulti[key] = { data: [], label: '' };
+                }
+                if (typeof (this.ItemsPredictorAnalysisGenMulti[key]['data']) == 'undefined') {
+                  this.ItemsPredictorAnalysisGenMulti[key]['data'] = [];
+                }
+                var total = Math.trunc(result.total);                
+                this.ItemsPredictorAnalysisGenMulti[key]['data'].push(total);
+                this.ItemsPredictorAnalysisGenMulti[key]['label'] = result.provider_name;
+               });
+               this.ItemsPredictorAnalysisGenLabels.push(res.clinic_name);
+            });
+          }else{
+                var i=0
+          data && data.data && data.data.length && data.data.forEach(res => {
+              if(res.provider_name != null){
+                if( (parseInt(res.crowns) + parseInt(res.splints) + parseInt(res.rct) + parseInt(res.perio) + parseInt(res.extract)  + parseInt(res.ss_crowns)  + parseInt(res.comp_veneers)  + parseInt(res.imp_crowns) ) > 0){
+              
+                this.stackedChartData1.push(res.crowns);
+                this.stackedChartData2.push(res.splints);
+                this.stackedChartData3.push(res.rct);
+                this.stackedChartData4.push(res.perio);
+                this.stackedChartData5.push(res.extract);             
+                this.stackedChartData6.push(res.ss_crowns);
+                this.stackedChartData7.push(res.comp_veneers);
+                this.stackedChartData8.push(res.imp_crowns);
+                this.stackedChartData9.push(res.whitening);
+                this.stackedChartLabels1.push(res.provider_name);
+                if(res.provider_name != 'Anonymous')
+                  this.ipKey =i;
+                i++;
+              }
+              var temp =  {
+                'name':  res.provider_name, 
+                'Crowns_Onlays':  parseInt(res.crowns), 
+                'Splints':  parseInt(res.splints), 
+                'RCT':  parseInt(res.rct), 
+                'Perio':  parseInt(res.perio), 
+                'Surg_Ext':  parseInt(res.extract),
+                'Imp_Crowns':  parseInt(res.imp_crowns), 
+                'SS_Crowns':  parseInt(res.ss_crowns), 
+                'Comp_Veneers':  parseInt(res.comp_veneers), 
+                'Whitening': parseInt(res.whitening),
+                };
+                this.paGeneralData.push(temp);
+
+              }
+          //    this.productionTotal = this.productionTotal + parseInt(res.total);
+            });
+          this.stackedChartData[0]['data'] = this.stackedChartData1;
+          this.stackedChartData[1]['data'] = this.stackedChartData2;
+          this.stackedChartData[2]['data'] = this.stackedChartData3;
+          this.stackedChartData[3]['data'] = this.stackedChartData4;
+          this.stackedChartData[4]['data'] = this.stackedChartData5;
+          this.stackedChartData[5]['data'] = this.stackedChartData6;
+          this.stackedChartData[6]['data'] = this.stackedChartData7;
+          this.stackedChartData[7]['data'] = this.stackedChartData8;
+          this.stackedChartData[8]['data'] = this.stackedChartData9;
+          this.stackedChartLabels = this.stackedChartLabels1;
           
-             this.stackedChartData1.push(res.crowns);
-             this.stackedChartData2.push(res.splints);
-             this.stackedChartData3.push(res.rct);
-             this.stackedChartData4.push(res.perio);
-             this.stackedChartData5.push(res.extract);             
-             this.stackedChartData6.push(res.ss_crowns);
-             this.stackedChartData7.push(res.comp_veneers);
-             this.stackedChartData8.push(res.imp_crowns);
-             this.stackedChartData9.push(res.whitening);
-             this.stackedChartLabels1.push(res.provider_name);
-             if(res.provider_name != 'Anonymous')
-              this.ipKey =i;
-             i++;
-           }
-           var temp =  {
-            'name':  res.provider_name, 
-            'Crowns_Onlays':  parseInt(res.crowns), 
-            'Splints':  parseInt(res.splints), 
-            'RCT':  parseInt(res.rct), 
-            'Perio':  parseInt(res.perio), 
-            'Surg_Ext':  parseInt(res.extract),
-            'Imp_Crowns':  parseInt(res.imp_crowns), 
-            'SS_Crowns':  parseInt(res.ss_crowns), 
-            'Comp_Veneers':  parseInt(res.comp_veneers), 
-            'Whitening': parseInt(res.whitening),
-            };
-            this.paGeneralData.push(temp);
+            if(this.user_type == '4' && this.childid != '') {
+              this.barChartColors = [
+                { backgroundColor: ['#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7'] },
+                { backgroundColor: ['#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7'] },
+                { backgroundColor: ['#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7'] },
+                { backgroundColor: ['#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD'] },
+                { backgroundColor: ['#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE'] },
+                { backgroundColor: ['#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7'] },
+                { backgroundColor: ['#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7'] },
+                { backgroundColor: ['#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE'] },
+                { backgroundColor: ['#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE'] }
+            ];
+            this.barChartColors[0].backgroundColor[this.ipKey] = '#1CA49F';
+            this.barChartColors[1].backgroundColor[this.ipKey] = '#1fd6b1';
+            this.barChartColors[2].backgroundColor[this.ipKey] = '#09b391';
+            this.barChartColors[3].backgroundColor[this.ipKey] = '#82EDD8';
+            this.barChartColors[4].backgroundColor[this.ipKey] = 'rgba(22, 82, 141, 1)';
+            this.barChartColors[6].backgroundColor[this.ipKey] = '#1fd6b1';
+            this.barChartColors[5].backgroundColor[this.ipKey] = '#1CA49F';
+            this.barChartColors[7].backgroundColor[this.ipKey] = '#09b391';
+            this.barChartColors[8].backgroundColor[this.ipKey] = '#D5D7D7';
+            
 
-           }
-       //    this.productionTotal = this.productionTotal + parseInt(res.total);
-         });
-       this.stackedChartData[0]['data'] = this.stackedChartData1;
-       this.stackedChartData[1]['data'] = this.stackedChartData2;
-       this.stackedChartData[2]['data'] = this.stackedChartData3;
-       this.stackedChartData[3]['data'] = this.stackedChartData4;
-       this.stackedChartData[4]['data'] = this.stackedChartData5;
-       this.stackedChartData[5]['data'] = this.stackedChartData6;
-       this.stackedChartData[6]['data'] = this.stackedChartData7;
-       this.stackedChartData[7]['data'] = this.stackedChartData8;
-       this.stackedChartData[8]['data'] = this.stackedChartData9;
-       this.stackedChartLabels = this.stackedChartLabels1;
-      
-         if(this.user_type == '4' && this.childid != '') {
-          this.barChartColors = [
-            { backgroundColor: ['#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7'] },
-            { backgroundColor: ['#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7'] },
-            { backgroundColor: ['#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7'] },
-            { backgroundColor: ['#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD'] },
-            { backgroundColor: ['#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE'] },
-            { backgroundColor: ['#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7'] },
-            { backgroundColor: ['#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7'] },
-            { backgroundColor: ['#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE'] },
-            { backgroundColor: ['#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE'] }
-         ];
-        this.barChartColors[0].backgroundColor[this.ipKey] = '#1CA49F';
-        this.barChartColors[1].backgroundColor[this.ipKey] = '#1fd6b1';
-        this.barChartColors[2].backgroundColor[this.ipKey] = '#09b391';
-        this.barChartColors[3].backgroundColor[this.ipKey] = '#82EDD8';
-        this.barChartColors[4].backgroundColor[this.ipKey] = 'rgba(22, 82, 141, 1)';
-        this.barChartColors[6].backgroundColor[this.ipKey] = '#1fd6b1';
-        this.barChartColors[5].backgroundColor[this.ipKey] = '#1CA49F';
-        this.barChartColors[7].backgroundColor[this.ipKey] = '#09b391';
-        this.barChartColors[8].backgroundColor[this.ipKey] = '#D5D7D7';
-        
+            this.IPcolors= this.barChartColors;
+          }
+          else
+            this.IPcolors= this.ItemPredictorColors;
+          
+          this.stackedChartDataMax = Math.max(...this.stackedChartData[0]['data'])+Math.max(...this.stackedChartData[1]['data'])+Math.max(...this.stackedChartData[2]['data'])+Math.max(...this.stackedChartData[3]['data'])+Math.max(...this.stackedChartData[4]['data'])+Math.max(...this.stackedChartData[5]['data'])+Math.max(...this.stackedChartData[6]['data'])+Math.max(...this.stackedChartData[7]['data']);
+          //this.productionTotalAverage = this.productionTotal/this.barChartData1.length;
+          }
 
-        this.IPcolors= this.barChartColors;
-      }
-      else
-        this.IPcolors= this.ItemPredictorColors;
-      
-       this.stackedChartDataMax = Math.max(...this.stackedChartData[0]['data'])+Math.max(...this.stackedChartData[1]['data'])+Math.max(...this.stackedChartData[2]['data'])+Math.max(...this.stackedChartData[3]['data'])+Math.max(...this.stackedChartData[4]['data'])+Math.max(...this.stackedChartData[5]['data'])+Math.max(...this.stackedChartData[6]['data'])+Math.max(...this.stackedChartData[7]['data']);
-       //this.productionTotalAverage = this.productionTotal/this.barChartData1.length;
-     }
+          
+         }
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -1480,8 +1508,6 @@ if(this._cookieService.get("user_type") == '4'){
                });
                this.ItemsPredictorAnalysisLabels.push(res.clinicName);
             });
-            console.log(this.ItemsPredictorAnalysisLabels);
-            console.log(this.ItemsPredictorAnalysisMulti);
           }else{
             var i=0
             var currentUser = 0;

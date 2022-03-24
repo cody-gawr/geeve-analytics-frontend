@@ -83,11 +83,17 @@
             
               <!--  Procedure Analysis All dentist General-->
               <div class="Item_Predictor_clinicianproceedures" *ngIf="dentistMode == false ">
-                <div class="chart-item-predictor" *ngIf="stackedChartDataMax > 0 && buildChartLoader == false && !showPaTable">
+                <div class="chart-item-predictor" *ngIf="stackedChartDataMax > 0 && buildChartLoader == false && !showPaTable  && showmulticlinicGenPredictor == false">
                   <canvas #myCanvas baseChart [datasets]="stackedChartData" [labels]="stackedChartLabels"
                     [options]="stackedChartOptions" [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
                     [legend]="true" [colors]="IPcolors" (chartClick)="chartClicked($event)">
                   </canvas>
+                </div>
+                <div class="chart-item-predictor" *ngIf="!showPaTable && showmulticlinicGenPredictor == true">
+                  <canvas #myCanvas baseChart [datasets]="ItemsPredictorAnalysisGenMulti"
+                    [labels]="ItemsPredictorAnalysisGenLabels" [options]="stackedChartOptionsmulti" [chartType]="stackedChartType"
+                    (chartHover)="chartHovered($event)" [legend]="false" [colors]="predictorAnalysisChartColors"
+                    (chartClick)="chartClicked($event)"></canvas>
                 </div>
                  <!-- Procedure Analysis General table view -->
                   <div class="paTablecon" *ngIf="!showTrend  && showPaTable && stackedChartDataMax > 0">
@@ -124,7 +130,7 @@
                     </table>
                   </div>
                    <!-- Procedure Analysis General table view -->
-                <div *ngIf="stackedChartDataMax <= 0 && buildChartLoader == false" class="fullWidth">
+                <div *ngIf="ItemsPredictorAnalysisGenLabels <= 0 && stackedChartDataMax <= 0 && buildChartLoader == false" class="fullWidth">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">You have no Crowns, Splints, RCTs, Perio, Stainless Steel Crowns, Composite Veneers, Implant Crowns, Whitening or Extractions in this period</p>
                 </div>
