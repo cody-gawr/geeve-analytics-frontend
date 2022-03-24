@@ -277,12 +277,21 @@
                                 </div>
                                 
                                 <div class="chart-num-patients"
-                                    *ngIf="showTrend == false  && activePatients == true && fdActivePatients > 0 && fdActivePatientLoader == false">
+                                    *ngIf="showAPBar == false && showTrend == false  && activePatients == true && fdActivePatients > 0 && fdActivePatientLoader == false">
                                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="fdActivePatients"
                                         [thick]="gaugeThick" [foregroundColor]="foregroundColor"
                                         [backgroundColor]="backgroundColor" [cap]="cap" [max]="fdActivePatient"
                                         [size]="size">
                                     </ngx-gauge>
+                                </div>
+                                <div class="chart-Trend1-patients trendH"
+                                    *ngIf="showAPBar == true && showTrend == false  && activePatients == true && fdActivePatients > 0 && fdActivePatientLoader == false">
+                                    <canvas #myCanvas baseChart [datasets]="newAPativentbr"
+                                        [labels]="newAPTrendLabels1" [options]="stackedChartOptions"
+                                        [chartType]="stackedChartType" [colors]="lineChartColors"
+                                        (chartHover)="chartHovered($event)" [legend]="false"
+                                        (chartClick)="chartClicked($event)">
+                                    </canvas>   
                                 </div>
                                 <div
                                     *ngIf="showTrend == false && newPatientsTotal <= 0 && fdnewPatientsRatioLoader == false  && activePatients == false">
@@ -326,6 +335,15 @@
                                         (chartClick)="chartClicked($event)">
                                     </canvas>
                                 </div>
+                                <div *ngIf="showTrend == true && activePatients == true && newAPatientsMultiLabels1.length > 0 && showAPclinic == true"
+                                    class="chart-Trend1-patients trendH">
+                                    <canvas #myCanvas baseChart [datasets]="newAPatientsTrendMulti"
+                                        [labels]="newAPatientsMultiLabels" [options]="stackedChartOptionsMulti"
+                                        [chartType]="stackedChartType" [colors]="lineChartColors"
+                                        (chartHover)="chartHovered($event)" [legend]="false"
+                                        (chartClick)="chartClicked($event)">
+                                    </canvas>
+                                </div>
 
                                 <div
                                     *ngIf="showTrend == true  && activePatients == false && newPatientsChartTrend1.length <=0 &&  newPatientsMultiLabels1.length <=0">
@@ -334,7 +352,7 @@
                                     </p>
                                 </div>
                                 <div
-                                    *ngIf="showTrend == true && activePatients == true && newPatientsChartTrend1.length <=0">
+                                    *ngIf="showTrend == true && activePatients == true && newAPatientsMultiLabels1<=0  && newPatientsChartTrend1.length <=0">
                                     <div class="sa_nodata_div"></div>
                                     <p class="chart-placeholder-text">You have no active patients in the selected period
                                     </p>
@@ -447,7 +465,7 @@
                                         </canvas>
                                     </div>
                                     <div
-                                        *ngIf="fdnewPatientsAcqLoader ==false && showTrend == true && expenseDataTrend1.length<=0 && (xeroConnect || myobConnect)  && !newAcqValueError">
+                                        *ngIf="fdnewPatientsAcqLoader ==false && showTrend == true && expenseDataTrend1.length<=0 && (xeroConnect || myobConnect)  && !newAcqValueError && multipleClinicsSelected===false">
                                         <div class="sa_nodata_div">
                                         </div>
                                         <p class="chart-placeholder-text">Unable to determine your cost of new patients

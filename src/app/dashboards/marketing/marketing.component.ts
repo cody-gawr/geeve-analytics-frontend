@@ -1778,6 +1778,41 @@ export class MarketingComponent implements AfterViewInit {
     }
   }
 
+  public newAPativentbr: any[] = [
+    {
+      data: [], label: '', shadowOffsetX: 3,
+      backgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+      ],
+      shadowOffsetY: 2,
+      shadowBlur: 3,
+      // hoverBackgroundColor: 'rgba(0, 0, 0, 0.6)',
+      shadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointBevelWidth: 2,
+      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointShadowOffsetX: 3,
+      pointShadowOffsetY: 3,
+      pointShadowBlur: 10,
+      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+      backgroundOverlayMode: 'multiply'
+    }
+  ];
+  public newAPTrend1 = [];
+  public newAPTrendLabels1 = [];
+  public showAPBar: boolean = false;
   public fdActivePatientLoader: boolean = true;
   public fdActivePatients: any = 0;
   public fdActivePatientsTa: any = 0;
@@ -1786,11 +1821,24 @@ export class MarketingComponent implements AfterViewInit {
     this.fdActivePatients = 0;
     this.fdActivePatientsTa = 0;
     this.fdActivePatientLoader = true;
+    this.showAPBar = false;
     this.marketingService.fdActivePatient(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.fdActivePatients = 0;
       this.fdActivePatientsTa = 0;
       if (data.message == 'success') {
+        this.newAPativentbr[0]['data'] = [];
+        this.newAPTrend1 = [];
+        this.newAPTrendLabels1 = [];
         this.fdActivePatientLoader = false;
+        data.data.forEach(res => { 
+          this.newAPTrend1.push(Math.round(res.active_patients));
+          this.newAPTrendLabels1.push(res.clinicName);
+        });
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          this.showAPBar = true;
+        }
+        this.newAPativentbr[0]['data'] = this.newAPTrend1;
+
         this.fdActivePatients = data.total;
         this.fdActivePatientsTa = data.total_ta;
         this.activePatientsTooltip = 'down';
@@ -2357,8 +2405,6 @@ export class MarketingComponent implements AfterViewInit {
       if (data.message == 'success') {
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           this.showNPclinic = true;
-        }
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
             data.data.sort((a, b)=> a.duration - b.duration);
             data.data.forEach(res => { 
               res.val.forEach((reslt, key) => {
@@ -2406,11 +2452,20 @@ export class MarketingComponent implements AfterViewInit {
   public activePatientsChartTrendLabels = [];
   public activePatientsChartTrendLabels1 = [];
   public activePatientsChartTemp = [];
+  public newAPatientsTrendMulti: any[] = [
+    { data: [], label: '' }];  
+  public showAPclinic : boolean =false;
+  public newAPatientsMultiLabels =[];
+  public newAPatientsMultiLabels1 =[];
   private mkNoActivePatientsTrend() {
     this.activePatientsChartTrendLabels1 = [];
     this.activePatientsChartTrend1 = [];
     // this.fdnewPatientsRatioLoader = true;
     this.fdActivePatientLoader = true;
+    this.showAPclinic = false;
+      this.newAPatientsTrendMulti =[];
+      this.newAPatientsMultiLabels =[];
+      this.newAPatientsMultiLabels1 =[];
     this.marketingService.mkNoActivePatientsTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       // this.fdnewPatientsRatioLoader = false;
       this.activePatientsChartTrend1 = [];
@@ -2419,19 +2474,47 @@ export class MarketingComponent implements AfterViewInit {
       this.activePatientsChartTrend[0]['data'] = [];
       this.Apirequest = this.Apirequest - 1;
       if (data.message == 'success') {
-        this.activePatientsChartTemp = data.data;
-        data.data.forEach(res => {
-          this.activePatientsChartTrend1.push(res.active_patients);
-          if (this.trendValue == 'c')
-            this.activePatientsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-          else
-            this.activePatientsChartTrendLabels1.push(res.year);
-        });
-        this.activePatientsChartTrend[0]['data'] = this.activePatientsChartTrend1;
-        this.activePatientsChartTrendLabels = this.activePatientsChartTrendLabels1;
+        
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          this.showAPclinic = true;
+          data.data.sort((a, b)=> a.duration - b.duration);
+          data.data.forEach(res => { 
+            res.val.forEach((reslt, key) => {
+            if (typeof (this.newAPatientsTrendMulti[key]) == 'undefined') {
+              this.newAPatientsTrendMulti[key] = { data: [], label: '' };
+            }
+            if (typeof (this.newAPatientsTrendMulti[key]['data']) == 'undefined') {
+              this.newAPatientsTrendMulti[key]['data'] = [];
+            }
+            
+              this.newAPatientsTrendMulti[key]['data'].push(Math.round(reslt.active_patients));
+              this.newAPatientsTrendMulti[key]['label'] = reslt.clinic_name;
+              this.newAPatientsTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
+              this.newAPatientsTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+            }); 
+            if (this.trendValue == 'c')
+            this.newAPatientsMultiLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+            else
+            this.newAPatientsMultiLabels1.push(res.duration);
+          });
+          this.newAPatientsMultiLabels = this.newAPatientsMultiLabels1;
+        }else{
+          this.activePatientsChartTemp = data.data;
+          data.data.forEach(res => {
+            this.activePatientsChartTrend1.push(res.active_patients);
+            if (this.trendValue == 'c')
+              this.activePatientsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+            else
+              this.activePatientsChartTrendLabels1.push(res.year);
+          });
+          this.activePatientsChartTrend[0]['data'] = this.activePatientsChartTrend1;
+          this.activePatientsChartTrendLabels = this.activePatientsChartTrendLabels1;
         // this.fdnewPatientsAcqTrend();
+        }
+        this.fdActivePatientLoader = false;
       }
-      this.fdActivePatientLoader = false;
+        
+      
 
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
