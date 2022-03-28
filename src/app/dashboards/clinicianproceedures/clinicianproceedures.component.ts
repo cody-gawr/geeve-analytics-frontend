@@ -1999,29 +1999,53 @@ public doughnutChartColors1;
         this.pieChartExternalPrevTooltip = 'down';
         this.pieChartCombinedPrevTooltip = 'down';
       if (data.message == 'success' && data.data && data.data.length) {
-        var i=0;
-        data.data.forEach(res => {
-          if(res.internal > 0) {
-           this.pieChartDatares1.push(res.internal);
-           this.pieChartLabelsres1.push(res.treat_item_name);
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.dataMulti.forEach(res => {
+            res.val.forEach((result, key) => {
+              if(result.internal > 0) {
+                  this.pieChartDatares1.push(result.internal);
+                  this.pieChartLabelsres1.push(result.treat_item_name);
+                }
+              if(result.external>0) {
+                this.pieChartDatares2.push(result.external);
+                this.pieChartLabelsres2.push(result.treat_item_name);
+              } 
+              if(result.total>0) {
+                this.pieChartDatares3.push(result.total);
+                this.pieChartLabelsres3.push(result.treat_item_name);
+    
+              }
+              this.pieChartInternalTotal = this.pieChartInternalTotal + parseInt(result.internal);
+              this.pieChartExternalTotal = this.pieChartExternalTotal + parseInt(result.external);
+              this.pieChartCombinedTotal = this.pieChartCombinedTotal + parseInt(result.total);
+            });
+          });
+        }else{
+          var i=0;
+          data.data.forEach(res => {
+            if(res.internal > 0) {
+            this.pieChartDatares1.push(res.internal);
+            this.pieChartLabelsres1.push(res.treat_item_name);
+            }
+            if(res.external>0) {
+            this.pieChartDatares2.push(res.external);
+            this.pieChartLabelsres2.push(res.treat_item_name);
           }
-          if(res.external>0) {
-           this.pieChartDatares2.push(res.external);
-           this.pieChartLabelsres2.push(res.treat_item_name);
-         }
-         if(res.total>0) {
-           this.pieChartDatares3.push(res.total);
-           this.pieChartLabelsres3.push(res.treat_item_name);
+          if(res.total>0) {
+            this.pieChartDatares3.push(res.total);
+            this.pieChartLabelsres3.push(res.treat_item_name);
 
-         }
-           this.pieChartInternalTotal = this.pieChartInternalTotal + parseInt(res.internal);
-           this.pieChartExternalTotal = this.pieChartExternalTotal + parseInt(res.external);
-           this.pieChartCombinedTotal = this.pieChartCombinedTotal + parseInt(res.total);
-           if(res.label != 'Anonymous')
-            this.crKey= i;
-            i++;
-          
-        });
+          }
+            this.pieChartInternalTotal = this.pieChartInternalTotal + parseInt(res.internal);
+            this.pieChartExternalTotal = this.pieChartExternalTotal + parseInt(res.external);
+            this.pieChartCombinedTotal = this.pieChartCombinedTotal + parseInt(res.total);
+            if(res.label != 'Anonymous')
+              this.crKey= i;
+              i++;
+            
+          });
+        }
+        
         this.pieChartInternalPrevTotal = this.pieChartInternalPrevTotal + parseInt(data.total_ta.internal);
         this.pieChartExternalPrevTotal = this.pieChartExternalPrevTotal + parseInt(data.total_ta.external);
         this.pieChartCombinedPrevTotal = this.pieChartCombinedPrevTotal + parseInt(data.total_ta.total);
