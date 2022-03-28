@@ -92,7 +92,7 @@
                 <div class="chart-item-predictor" *ngIf="!showPaTable && showmulticlinicGenPredictor == true">
                   <canvas #myCanvas baseChart [datasets]="ItemsPredictorAnalysisGenMulti"
                     [labels]="ItemsPredictorAnalysisGenLabels" [options]="stackedChartOptionsmulti" [chartType]="stackedChartType"
-                    (chartHover)="chartHovered($event)" [legend]="false" [colors]="predictorAnalysisChartColors"
+                    (chartHover)="chartHovered($event)" [legend]="true" [colors]="predictorAnalysisChartColors"
                     (chartClick)="chartClicked($event)"></canvas>
                 </div>
                  <!-- Procedure Analysis General table view -->
@@ -181,7 +181,7 @@
                 <div class="chart-item-predictor" *ngIf="showmulticlinicItemsPredictor == true && !showPaTable">
                   <canvas #myCanvas baseChart [datasets]="ItemsPredictorAnalysisMulti"
                     [labels]="ItemsPredictorAnalysisLabels" [options]="stackedChartOptionsmulti" [chartType]="stackedChartType"
-                    (chartHover)="chartHovered($event)" [legend]="false" [colors]="predictorAnalysisChartColors"
+                    (chartHover)="chartHovered($event)" [legend]="true" [colors]="predictorAnalysisChartColors"
                     (chartClick)="chartClicked($event)"></canvas>
                 </div>
                 <!-- Procedure Analysis Specialist table view -->

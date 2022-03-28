@@ -1336,7 +1336,7 @@ if(this._cookieService.get("user_type") == '4'){
           if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
             this.showmulticlinicGenPredictor = true;
             data.data.forEach(res => {
-              res.val.forEach((result, key) => {
+              res.proval.forEach((result, key) => {
                 if (typeof (this.ItemsPredictorAnalysisGenMulti[key]) == 'undefined') {
                   this.ItemsPredictorAnalysisGenMulti[key] = { data: [], label: '' };
                 }
@@ -1345,7 +1345,7 @@ if(this._cookieService.get("user_type") == '4'){
                 }
                 var total = Math.trunc(result.total);                
                 this.ItemsPredictorAnalysisGenMulti[key]['data'].push(total);
-                this.ItemsPredictorAnalysisGenMulti[key]['label'] = result.provider_name;
+                this.ItemsPredictorAnalysisGenMulti[key]['label'] = result.desc;
                });
                this.ItemsPredictorAnalysisGenLabels.push(res.clinic_name);
             });
@@ -1490,7 +1490,7 @@ if(this._cookieService.get("user_type") == '4'){
           if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
             this.showmulticlinicItemsPredictor = true;
             data.data.forEach(res => {
-              res.val.forEach((result, key) => {
+              res.proval.forEach((result, key) => {
                 if (typeof (this.ItemsPredictorAnalysisMulti[key]) == 'undefined') {
                   this.ItemsPredictorAnalysisMulti[key] = { data: [], label: '' };
                 }
@@ -1504,9 +1504,9 @@ if(this._cookieService.get("user_type") == '4'){
                   total = num_parts.join(".");
                 }
                 this.ItemsPredictorAnalysisMulti[key]['data'].push(total);
-                this.ItemsPredictorAnalysisMulti[key]['label'] = result.provider_name;
+                this.ItemsPredictorAnalysisMulti[key]['label'] = result.desc;
                });
-               this.ItemsPredictorAnalysisLabels.push(res.clinicName);
+               this.ItemsPredictorAnalysisLabels.push(res.clinic_name);
             });
           }else{
             var i=0
