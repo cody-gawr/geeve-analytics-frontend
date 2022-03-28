@@ -419,6 +419,43 @@
             </div>
           </div>
         </div>
+        <div class="gray_area">
+          <h4 class="clinic-settings-form-title">
+            Internal Referral Followups
+            <div class="info-button">
+              <div class="info-icon-container">
+                <img [tooltip]="this.constants.tipInternalReferralFollowups" src="../assets/images/info-icon.png" alt="info-icon"
+                  class="info-icon" />
+              </div>
+            </div>
+          </h4>
+          <div class="gray_area_partision gray">
+            <div class="post-op-codes PostOpCalls">
+              <!--  <h4 class="clinic-settings-form-title">&nbsp;</h4>   -->
+              <div class="sa-form-group clinic-setting-form">
+                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ internalReferralEnable }}" name="internalReferralEnable"
+                  (change)="toggleFlw($event, 'internalReferral')">
+                  <span *ngIf="internalReferralEnable">Enabled</span>
+                  <span *ngIf="!internalReferralEnable">Disabled</span>
+                </mat-slide-toggle>
+              </div>
+            </div>
+          </div>
+          <div class="gray_area_partision gray">
+            <div class="post-op-codes PostOpCalls">
+              <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>      -->
+              <div class="sa-form-group clinic-setting-form">
+                <input type="number" min="0" placeholder="" [formControl]="form.controls['referral_weeks']"
+                  [(ngModel)]="referralWeeks" />
+                <span>Weeks Later</span>
+                <small *ngIf="
+                    form.controls['referral_weeks'].hasError('required') &&
+                    form.controls['referral_weeks'].touched
+                  " class="text-danger support-text">Field is Required.</small>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- 
           <div class="post-op-codes">
             <h4 class="clinic-settings-form-title">Post Op Calls Codes</h4>          

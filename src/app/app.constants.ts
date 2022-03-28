@@ -310,6 +310,11 @@ export class AppConstants {
         info: 'UTA Followups are triggered automatically based on detection of an UTA in your PMS. By default the followup list will be populated the same day as the UTA is recorded, for patients who do not have another appointment booked within the next 28 days - this can be adjusted below.',
         direction: 'right'
     };
+    public tipInternalReferralFollowups: ITooltipData = {
+        title: 'Internal Referral Followups',
+        info: 'Description here',
+        direction: 'right'
+    };
 
 
     // Settings -> Customisations

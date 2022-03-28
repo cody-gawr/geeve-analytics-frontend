@@ -34,6 +34,7 @@ export class ClinicSettingsComponent implements OnInit {
   public postOpCallsMh: any = 1;
   public unscheduledPatientsMh: any = 0;
   public recallWeeks: any = 0;
+  public referralWeeks: any = 0;
   public tickDays: any = 0;
   public ftaFollowupDays: any = 0;
   public utaFollowupDays: any = 0;
@@ -72,6 +73,7 @@ export class ClinicSettingsComponent implements OnInit {
   public ftaEnable: boolean = true;
   public userPlan: any = "lite";
   public utaEnable: boolean = true;
+  public internalReferralEnable: boolean = true;
 
   public workingDays: any = {
     sunday: false,
@@ -129,6 +131,7 @@ export class ClinicSettingsComponent implements OnInit {
       uta_followup_days: [null, Validators.compose([Validators.required])],
       fta_followup_days_later: [null, Validators.compose([Validators.required])],
       uta_followup_days_later: [null, Validators.compose([Validators.required])],
+      referral_weeks: [null, Validators.compose([Validators.required])],
       // unscheduled_patients_days: [null, Validators.compose([Validators.required])],
       // facebook: [null],
       // twitter: [null],
@@ -216,6 +219,7 @@ export class ClinicSettingsComponent implements OnInit {
           this.recallEnable = res.data.recall_enable == 1 ? true : false;
           this.ftaEnable = res.data.fta_enable == 1 ? true : false;
           this.utaEnable = res.data.uta_enable == 1 ? true : false;
+          this.internalReferralEnable = res.data.referral_enable == 1 ? true : false;
         }
       },
       (error) => {
@@ -239,6 +243,7 @@ export class ClinicSettingsComponent implements OnInit {
               this.post_op_calls = res.data.post_op_calls;
               this.tickDays = res.data.tick_days;
               this.recallWeeks = res.data.recall_weeks;
+              this.referralWeeks = res.data.referral_weeks;
             }
           }
         },
@@ -261,6 +266,7 @@ export class ClinicSettingsComponent implements OnInit {
     this.ftaUta = this.form.value.fta_uta;
     this.postOpCallsMh = this.form.value.post_op_calls_days;
     this.recallWeeks = this.form.value.recall_weeks;
+    this.referralWeeks = this.form.value.referral_weeks;
     this.tickDays = this.form.value.tick_days;
     this.ftaFollowupDays = this.form.value.fta_followup_days;
     this.utaFollowupDays = this.form.value.uta_followup_days;
@@ -312,6 +318,7 @@ export class ClinicSettingsComponent implements OnInit {
         this.utaFollowupDays,
         this.utaFollowupDaysLater,
         this.ftaFollowupDaysLater,
+        this.referralWeeks,
       )
       .subscribe(
         (res) => {
@@ -527,6 +534,9 @@ export class ClinicSettingsComponent implements OnInit {
     } else if (type == "uta") {
       this.utaEnable = event.checked;
       column = "uta_enable";
+    }else if (type == "internalReferral") {
+      this.internalReferralEnable = event.checked;
+      column = "referral_enable";
     }
     var active = event.checked == true ? 1 : 0;
     this.clinicSettingsService

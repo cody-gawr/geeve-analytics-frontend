@@ -207,7 +207,7 @@ export class ClinicSettingsService {
             );
     }
 
-    updateFollowUpSettings(clinic_id, post_op_calls, tickDays, postOpCallsMh, recallWeeks, ftaFollowupDays, utaFollowupDays, utaFollowupDaysLater, ftaFollowupDaysLater): Observable<any> {
+    updateFollowUpSettings(clinic_id, post_op_calls, tickDays, postOpCallsMh, recallWeeks, ftaFollowupDays, utaFollowupDays, utaFollowupDaysLater, ftaFollowupDaysLater,referralWeeks): Observable<any> {
         var header = this.getHeaders();
         const formData = new FormData();
         formData.append('clinic_id', clinic_id);
@@ -219,6 +219,7 @@ export class ClinicSettingsService {
         formData.append('uta_followup_days', utaFollowupDays);
         formData.append('uta_days_later', utaFollowupDaysLater);
         formData.append('fta_days_later', ftaFollowupDaysLater);
+        formData.append('referral_weeks', referralWeeks);
 
 
         return this.http
