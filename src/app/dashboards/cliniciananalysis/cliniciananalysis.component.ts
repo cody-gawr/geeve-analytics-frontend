@@ -206,7 +206,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     let namedChartAnnotation = ChartAnnotation;
     namedChartAnnotation["id"] = "annotation";
     Chart.pluginService.register(namedChartAnnotation);
-
     if (this._cookieService.get("dentist_toggle") === 'true') {
       this.averageToggle = true;
       this.showTrend = false;
@@ -417,6 +416,456 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public treatmentPreLabel = "";
   public treatmentPreGoal = 0;
   public barChartOptions: any = {
+    borderRadius: 50,
+    hover: { mode: null },
+    scaleShowVerticalLines: false,
+    cornerRadius: 60,
+    curvature: 1,
+    animation: {
+      duration: 1500,
+      easing: 'easeOutSine'
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      xAxes: [{
+        gridLines: {
+          display: true
+        },
+        ticks: {
+          autoSkip: false,
+          userCallback: (label: string) => {
+            if(label != ''){
+              const names = this.splitName(label);
+              // if (names.length > 1) {
+              //   return `${names[0][0]} ${names[1]}`
+              // } else return `${names[0]}`;
+              if (names.length == 3) {
+                return `${names[0]}`
+              } else if (names.length == 2){
+                return `${names[0][0]} ${names[1]}`
+              } else {
+                return `${names[0]}`;
+              }
+            }            
+          }
+        },
+      }],
+      yAxes: [{
+        ticks: {
+          suggestedMin: 0,
+          userCallback: (label, index, labels) => {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              return '$' + this.decimalPipe.transform(label);
+            }
+
+          },
+        },
+        gridLines: {
+          // color: '#fbfbfc'
+        }
+      }],
+    },
+    tooltips: {
+      mode: 'x-axis',
+      bodyFontFamily: 'Gilroy-Regular',
+      cornerRadius: 0,
+      // backgroundColor: '#fff',
+      // titleFontColor: '#000',
+      // bodyFontColor: '#000',
+      // borderColor: '#000',
+      callbacks: {
+        label: (tooltipItem) => {
+          if(tooltipItem.xLabel != ''){
+          //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+            return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+          }
+        },
+        // remove title
+        title: function () {
+          return;
+        }
+      }
+    },
+    // legend: {
+    //   position: 'top',
+    //   onClick: function (e, legendItem) {
+    //     var index = legendItem.datasetIndex;
+    //     var ci = this.chart;
+    //     if (index == 0) {
+    //       ci.getDatasetMeta(1).hidden = true;
+    //       ci.getDatasetMeta(index).hidden = false;
+    //     }
+    //     else if (index == 1) {
+    //       ci.getDatasetMeta(0).hidden = true;
+    //       ci.getDatasetMeta(index).hidden = false;
+    //     }
+    //     ci.update();
+    //   },
+    // },
+  };
+  public barChartOptions2: any = {
+    borderRadius: 50,
+    hover: { mode: null },
+    scaleShowVerticalLines: false,
+    cornerRadius: 60,
+    curvature: 1,
+    animation: {
+      duration: 1500,
+      easing: 'easeOutSine'
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      xAxes: [{
+        gridLines: {
+          display: true
+        },
+        ticks: {
+          autoSkip: false,
+          userCallback: (label: string) => {
+            if(label != ''){
+              const names = this.splitName(label);
+              // if (names.length > 1) {
+              //   return `${names[0][0]} ${names[1]}`
+              // } else return `${names[0]}`;
+              if (names.length == 3) {
+                return `${names[0]}`
+              } else if (names.length == 2){
+                return `${names[0][0]} ${names[1]}`
+              } else {
+                return `${names[0]}`;
+              }
+            }            
+          }
+        },
+      }],
+      yAxes: [{
+        ticks: {
+          suggestedMin: 0,
+          userCallback: (label, index, labels) => {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              return '$' + this.decimalPipe.transform(label);
+            }
+
+          },
+        },
+        gridLines: {
+          // color: '#fbfbfc'
+        }
+      }],
+    },
+    tooltips: {
+      mode: 'x-axis',
+      bodyFontFamily: 'Gilroy-Regular',
+      cornerRadius: 0,
+      // backgroundColor: '#fff',
+      // titleFontColor: '#000',
+      // bodyFontColor: '#000',
+      // borderColor: '#000',
+      callbacks: {
+        label: (tooltipItem) => {
+          if(tooltipItem.xLabel != ''){
+          //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+            return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+          }
+        },
+        // remove title
+        title: function () {
+          return;
+        }
+      }
+    },
+    // legend: {
+    //   position: 'top',
+    //   onClick: function (e, legendItem) {
+    //     var index = legendItem.datasetIndex;
+    //     var ci = this.chart;
+    //     if (index == 0) {
+    //       ci.getDatasetMeta(1).hidden = true;
+    //       ci.getDatasetMeta(index).hidden = false;
+    //     }
+    //     else if (index == 1) {
+    //       ci.getDatasetMeta(0).hidden = true;
+    //       ci.getDatasetMeta(index).hidden = false;
+    //     }
+    //     ci.update();
+    //   },
+    // },
+  };
+  public barChartOptions3: any = {
+    borderRadius: 50,
+    hover: { mode: null },
+    scaleShowVerticalLines: false,
+    cornerRadius: 60,
+    curvature: 1,
+    animation: {
+      duration: 1500,
+      easing: 'easeOutSine'
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      xAxes: [{
+        gridLines: {
+          display: true
+        },
+        ticks: {
+          autoSkip: false,
+          userCallback: (label: string) => {
+            if(label != ''){
+              const names = this.splitName(label);
+              // if (names.length > 1) {
+              //   return `${names[0][0]} ${names[1]}`
+              // } else return `${names[0]}`;
+              if (names.length == 3) {
+                return `${names[0]}`
+              } else if (names.length == 2){
+                return `${names[0][0]} ${names[1]}`
+              } else {
+                return `${names[0]}`;
+              }
+            }            
+          }
+        },
+      }],
+      yAxes: [{
+        ticks: {
+          suggestedMin: 0,
+          userCallback: (label, index, labels) => {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              return '$' + this.decimalPipe.transform(label);
+            }
+
+          },
+        },
+        gridLines: {
+          // color: '#fbfbfc'
+        }
+      }],
+    },
+    tooltips: {
+      mode: 'x-axis',
+      bodyFontFamily: 'Gilroy-Regular',
+      cornerRadius: 0,
+      // backgroundColor: '#fff',
+      // titleFontColor: '#000',
+      // bodyFontColor: '#000',
+      // borderColor: '#000',
+      callbacks: {
+        label: (tooltipItem) => {
+          if(tooltipItem.xLabel != ''){
+          //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+            return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+          }
+        },
+        // remove title
+        title: function () {
+          return;
+        }
+      }
+    },
+    // legend: {
+    //   position: 'top',
+    //   onClick: function (e, legendItem) {
+    //     var index = legendItem.datasetIndex;
+    //     var ci = this.chart;
+    //     if (index == 0) {
+    //       ci.getDatasetMeta(1).hidden = true;
+    //       ci.getDatasetMeta(index).hidden = false;
+    //     }
+    //     else if (index == 1) {
+    //       ci.getDatasetMeta(0).hidden = true;
+    //       ci.getDatasetMeta(index).hidden = false;
+    //     }
+    //     ci.update();
+    //   },
+    // },
+  };
+  public barChartOptions4: any = {
+    borderRadius: 50,
+    hover: { mode: null },
+    scaleShowVerticalLines: false,
+    cornerRadius: 60,
+    curvature: 1,
+    animation: {
+      duration: 1500,
+      easing: 'easeOutSine'
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      xAxes: [{
+        gridLines: {
+          display: true
+        },
+        ticks: {
+          autoSkip: false,
+          userCallback: (label: string) => {
+            if(label != ''){
+              const names = this.splitName(label);
+              // if (names.length > 1) {
+              //   return `${names[0][0]} ${names[1]}`
+              // } else return `${names[0]}`;
+              if (names.length == 3) {
+                return `${names[0]}`
+              } else if (names.length == 2){
+                return `${names[0][0]} ${names[1]}`
+              } else {
+                return `${names[0]}`;
+              }
+            }            
+          }
+        },
+      }],
+      yAxes: [{
+        ticks: {
+          suggestedMin: 0,
+          userCallback: (label, index, labels) => {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              return '$' + this.decimalPipe.transform(label);
+            }
+
+          },
+        },
+        gridLines: {
+          // color: '#fbfbfc'
+        }
+      }],
+    },
+    tooltips: {
+      mode: 'x-axis',
+      bodyFontFamily: 'Gilroy-Regular',
+      cornerRadius: 0,
+      // backgroundColor: '#fff',
+      // titleFontColor: '#000',
+      // bodyFontColor: '#000',
+      // borderColor: '#000',
+      callbacks: {
+        label: (tooltipItem) => {
+          if(tooltipItem.xLabel != ''){
+          //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+            return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+          }
+        },
+        // remove title
+        title: function () {
+          return;
+        }
+      }
+    },
+    // legend: {
+    //   position: 'top',
+    //   onClick: function (e, legendItem) {
+    //     var index = legendItem.datasetIndex;
+    //     var ci = this.chart;
+    //     if (index == 0) {
+    //       ci.getDatasetMeta(1).hidden = true;
+    //       ci.getDatasetMeta(index).hidden = false;
+    //     }
+    //     else if (index == 1) {
+    //       ci.getDatasetMeta(0).hidden = true;
+    //       ci.getDatasetMeta(index).hidden = false;
+    //     }
+    //     ci.update();
+    //   },
+    // },
+  };
+  public barChartOptions5: any = {
+    borderRadius: 50,
+    hover: { mode: null },
+    scaleShowVerticalLines: false,
+    cornerRadius: 60,
+    curvature: 1,
+    animation: {
+      duration: 1500,
+      easing: 'easeOutSine'
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      xAxes: [{
+        gridLines: {
+          display: true
+        },
+        ticks: {
+          autoSkip: false,
+          userCallback: (label: string) => {
+            if(label != ''){
+              const names = this.splitName(label);
+              // if (names.length > 1) {
+              //   return `${names[0][0]} ${names[1]}`
+              // } else return `${names[0]}`;
+              if (names.length == 3) {
+                return `${names[0]}`
+              } else if (names.length == 2){
+                return `${names[0][0]} ${names[1]}`
+              } else {
+                return `${names[0]}`;
+              }
+            }            
+          }
+        },
+      }],
+      yAxes: [{
+        ticks: {
+          suggestedMin: 0,
+          userCallback: (label, index, labels) => {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              return '$' + this.decimalPipe.transform(label);
+            }
+
+          },
+        },
+        gridLines: {
+          // color: '#fbfbfc'
+        }
+      }],
+    },
+    tooltips: {
+      mode: 'x-axis',
+      bodyFontFamily: 'Gilroy-Regular',
+      cornerRadius: 0,
+      // backgroundColor: '#fff',
+      // titleFontColor: '#000',
+      // bodyFontColor: '#000',
+      // borderColor: '#000',
+      callbacks: {
+        label: (tooltipItem) => {
+          if(tooltipItem.xLabel != ''){
+          //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+            return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+          }
+        },
+        // remove title
+        title: function () {
+          return;
+        }
+      }
+    },
+    // legend: {
+    //   position: 'top',
+    //   onClick: function (e, legendItem) {
+    //     var index = legendItem.datasetIndex;
+    //     var ci = this.chart;
+    //     if (index == 0) {
+    //       ci.getDatasetMeta(1).hidden = true;
+    //       ci.getDatasetMeta(index).hidden = false;
+    //     }
+    //     else if (index == 1) {
+    //       ci.getDatasetMeta(0).hidden = true;
+    //       ci.getDatasetMeta(index).hidden = false;
+    //     }
+    //     ci.update();
+    //   },
+    // },
+  };
+  public barChartOptions6: any = {
     borderRadius: 50,
     hover: { mode: null },
     scaleShowVerticalLines: false,
@@ -1317,7 +1766,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   public productionTooltip = 'down';
   public productionTotalPrev;
+  public barChartOptionsDP: any = this.barChartOptions2;
   public barChartOptionsDP1: any = this.barChartOptions;
+  public barChartOptionsDP2: any = this.barChartOptions;
+  public barChartOptionsDP3: any = this.barChartOptions;
+  public barChartOptionsDP4: any = this.barChartOptions2;
+  public barChartOptionsDP5: any = this.barChartOptions2;
+  public barChartOptionsDP6: any = this.barChartOptions3;
+  public barChartOptionsDP7: any = this.barChartOptions3;
+  public barChartOptionsDP8: any = this.barChartOptions3;
+  public barChartOptionsHR: any = this.barChartOptions4;
+  public barChartOptionsHR1: any = this.barChartOptions5;
+  public barChartOptionsHR2: any = this.barChartOptions6;
   public buildChartLoader: boolean = true;
   public dentistKey;
   public DPcolors: any;
@@ -1338,7 +1798,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.barChartLabels1 = [];
     this.productionTotal = 0;
     this.barChartLabels = [];
-    this.barChartOptionsDP1.annotation = [];
+    this.barChartOptionsDP.annotation = [];
     this.clinic_id && this.cliniciananalysisService.DentistProduction(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       this.barChartData1 = [];
       this.barChartLabels1 = [];
@@ -1457,9 +1917,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         if (this.productionTotal >= this.productionTotalPrev)
           this.productionTooltip = 'up';
-        this.barChartOptionsDP1.annotation = [];
+        this.barChartOptionsDP.annotation = [];
         if (this.goalchecked == 'average') {
-          this.barChartOptionsDP1.annotation = {
+          this.barChartOptionsDP.annotation = {
             drawTime: 'afterDatasetsDraw',
             annotations: [{
               drawTime: 'afterDraw',
@@ -1477,7 +1937,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else if (this.goalchecked == 'goal') {
 
-          this.barChartOptionsDP1.annotation = {
+          this.barChartOptionsDP.annotation = {
             drawTime: 'afterDatasetsDraw',
             annotations: [{
               drawTime: 'afterDraw',
@@ -1534,7 +1994,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.barChartDentistsLabels1 = [];
     this.productionDentistsTotal = 0;
     this.barChartDentistLabels = [];
-    this.barChartOptionsDP1.annotation = [];
+    this.barChartOptionsDP2.annotation = [];
     this.clinic_id && this.cliniciananalysisService.DentistProductionDentist(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       this.barChartDentistsData1 = [];
       this.barChartDentistsLabels1 = [];
@@ -1616,9 +2076,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         if (this.productionDentistsTotal >= this.productionDentistsTotalPrev)
           this.productionDentists1Tooltip = 'up';
-        this.barChartOptionsDP1.annotation = [];
+        this.barChartOptionsDP2.annotation = [];
         if (this.goalchecked == 'average') {
-          this.barChartOptionsDP1.annotation = {
+          this.barChartOptionsDP2.annotation = {
             drawTime: 'afterDatasetsDraw',
             annotations: [{
               drawTime: 'afterDraw',
@@ -1636,7 +2096,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else if (this.goalchecked == 'goal') {
 
-          this.barChartOptionsDP1.annotation = {
+          this.barChartOptionsDP2.annotation = {
             drawTime: 'afterDatasetsDraw',
             annotations: [{
               drawTime: 'afterDraw',
@@ -1693,7 +2153,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.barChartOhtLabels1 = [];
     this.productionOhtTotal = 0;
     this.barChartOhtLabels = [];
-    this.barChartOptionsDP1.annotation = [];
+    this.barChartOptionsDP3.annotation = [];
     this.clinic_id && this.cliniciananalysisService.DentistProductionOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       this.barChartOhtData1 = [];
       this.barChartOhtLabels1 = [];
@@ -1775,9 +2235,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         if (this.productionOhtTotal >= this.productionOhtTotalPrev)
           this.productionOhtTooltip = 'up';
-        this.barChartOptionsDP1.annotation = [];
+        this.barChartOptionsDP3.annotation = [];
         if (this.goalchecked == 'average') {
-          this.barChartOptionsDP1.annotation = {
+          this.barChartOptionsDP3.annotation = {
             drawTime: 'afterDatasetsDraw',
             annotations: [{
               drawTime: 'afterDraw',
@@ -1795,7 +2255,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else if (this.goalchecked == 'goal') {
 
-          this.barChartOptionsDP1.annotation = {
+          this.barChartOptionsDP3.annotation = {
             drawTime: 'afterDatasetsDraw',
             annotations: [{
               drawTime: 'afterDraw',
@@ -1846,8 +2306,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public collectionTotalAverage: any = 0;
   public collectionTotalPrev: any = 0;
   // public collectionTotalGoal: any = 0;
-  public collectionTooltip: string = '';
-  public barChartOptionsDP: any = this.barChartOptions;
+  public collectionTooltip: string = '';  
   public dentistCollectiontbl:any =[];
   public showCollAllTbl :boolean =false;
   private collectionChart() {
@@ -2022,7 +2481,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionDentistsLabels1 = [];
     this.collectionDentistsTotal = 0;
     this.collectionDentistsLabels = [];
-    this.barChartOptionsDP.annotation = [];
+    this.barChartOptionsDP4.annotation = [];
     this.clinic_id && this.cliniciananalysisService.DentistCollectionDentists(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       this.collectionDentistsData1 = [];
       this.collectionDentistsLabels1 = [];
@@ -2109,9 +2568,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         if (this.collectionDentistsTotal >= this.collectionDentistsTotalPrev)
           this.collectionDentistsTooltip = 'up';
-        this.barChartOptionsDP.annotation = [];
+        this.barChartOptionsDP4.annotation = [];
         if (this.goalchecked == 'average') {
-          this.barChartOptionsDP.annotation = {
+          this.barChartOptionsDP4.annotation = {
             drawTime: 'afterDatasetsDraw',
             annotations: [{
               drawTime: 'afterDraw',
@@ -2129,7 +2588,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else if (this.goalchecked == 'goal') {
 
-          this.barChartOptionsDP.annotation = {
+          this.barChartOptionsDP4.annotation = {
             drawTime: 'afterDatasetsDraw',
             annotations: [{
               drawTime: 'afterDraw',
@@ -2185,7 +2644,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionOhtLabels1 = [];
     this.collectionOhtTotal = 0;
     this.collectionOhtLabels = [];
-    this.barChartOptionsDP.annotation = [];
+    this.barChartOptionsDP5.annotation = [];
     this.clinic_id && this.cliniciananalysisService.DentistCollectionOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       this.collectionOhtData1 = [];
       this.collectionOhtLabels1 = [];
@@ -2272,9 +2731,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         if (this.collectionOhtTotal >= this.collectionOhtTotalPrev)
           this.collectionOhtTooltip = 'up';
-        this.barChartOptionsDP.annotation = [];
+        this.barChartOptionsDP5.annotation = [];
         if (this.goalchecked == 'average') {
-          this.barChartOptionsDP.annotation = {
+          this.barChartOptionsDP5.annotation = {
             drawTime: 'afterDatasetsDraw',
             annotations: [{
               drawTime: 'afterDraw',
@@ -2292,7 +2751,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else if (this.goalchecked == 'goal') {
 
-          this.barChartOptionsDP.annotation = {
+          this.barChartOptionsDP5.annotation = {
             drawTime: 'afterDatasetsDraw',
             annotations: [{
               drawTime: 'afterDraw',
@@ -2347,7 +2806,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionLabelsExp1 = [];
     this.collectionExpTotal = 0;
     this.collectionLabelsExp = [];
-    this.barChartOptionsDP.annotation = [];
+    this.barChartOptionsDP6.annotation = [];
     this.clinic_id && this.cliniciananalysisService.DentistCollectionExp(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       this.collectionExpData1 = [];
       this.collectionLabelsExp1 = [];
@@ -2434,9 +2893,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         if (this.collectionExpTotal >= this.collectionExpTotalPrev)
           this.collectionExpTooltip = 'up';
-        this.barChartOptionsDP.annotation = [];
+        this.barChartOptionsDP6.annotation = [];
         if (this.goalchecked == 'average') {
-          this.barChartOptionsDP.annotation = {
+          this.barChartOptionsDP6.annotation = {
             drawTime: 'afterDatasetsDraw',
             annotations: [{
               drawTime: 'afterDraw',
@@ -2454,7 +2913,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else if (this.goalchecked == 'goal') {
 
-          this.barChartOptionsDP.annotation = {
+          this.barChartOptionsDP6.annotation = {
             drawTime: 'afterDatasetsDraw',
             annotations: [{
               drawTime: 'afterDraw',
@@ -2510,7 +2969,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionLabelsDentistsExp1 = [];
     this.collectionExpDentistsTotal = 0;
     this.collectionLabelsDentistsExp = [];
-    this.barChartOptionsDP.annotation = [];
+    this.barChartOptionsDP7.annotation = [];
     this.clinic_id && this.cliniciananalysisService.DentistCollectionExpDentists(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       this.collectionExpDentistsData1 = [];
       this.collectionLabelsDentistsExp1 = [];
@@ -2597,9 +3056,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         if (this.collectionExpDentistsTotal >= this.collectionExpDentistsTotalPrev)
           this.collectionExpDentistsTooltip = 'up';
-        this.barChartOptionsDP.annotation = [];
+        this.barChartOptionsDP7.annotation = [];
         if (this.goalchecked == 'average') {
-          this.barChartOptionsDP.annotation = {
+          this.barChartOptionsDP7.annotation = {
             drawTime: 'afterDatasetsDraw',
             annotations: [{
               drawTime: 'afterDraw',
@@ -2617,7 +3076,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else if (this.goalchecked == 'goal') {
 
-          this.barChartOptionsDP.annotation = {
+          this.barChartOptionsDP7.annotation = {
             drawTime: 'afterDatasetsDraw',
             annotations: [{
               drawTime: 'afterDraw',
@@ -2673,7 +3132,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionLabelsOhtExp1 = [];
     this.collectionExpOhtTotal = 0;
     this.collectionLabelsOhtExp = [];
-    this.barChartOptionsDP.annotation = [];
+    this.barChartOptionsDP8.annotation = [];
     this.clinic_id && this.cliniciananalysisService.DentistCollectionExpOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       this.collectionExpOhtData1 = [];
       this.collectionLabelsOhtExp1 = [];
@@ -2760,9 +3219,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         if (this.collectionExpOhtTotal >= this.collectionExpOhtTotalPrev)
           this.collectionExpOhtTooltip = 'up';
-        this.barChartOptionsDP.annotation = [];
+        this.barChartOptionsDP8.annotation = [];
         if (this.goalchecked == 'average') {
-          this.barChartOptionsDP.annotation = {
+          this.barChartOptionsDP8.annotation = {
             drawTime: 'afterDatasetsDraw',
             annotations: [{
               drawTime: 'afterDraw',
@@ -2780,7 +3239,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else if (this.goalchecked == 'goal') {
 
-          this.barChartOptionsDP.annotation = {
+          this.barChartOptionsDP8.annotation = {
             drawTime: 'afterDatasetsDraw',
             annotations: [{
               drawTime: 'afterDraw',
@@ -4535,8 +4994,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public hourlyRateChartAverage;
   public hourlyRateChartGoal;
   public hourlyRateChartAveragePrev;
-  public hourlyRateChartTooltip = 'down';
-  public barChartOptionsHR: any = this.barChartOptions;
+  public hourlyRateChartTooltip = 'down'; 
   public hourlyRateChartLoader: boolean = true;
   public hrKey: any;
   public HRcolors: any;
@@ -4692,13 +5150,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.hourlyRateChartDesntistsLabels1 = [];
 
     this.hourlyRateChartDesntistsLabels = [];
-    this.barChartOptionsHR.annotation = [];
+    this.barChartOptionsHR1.annotation = [];
     this.clinic_id && this.cliniciananalysisService.hourlyRateChartDesntists(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       this.hourlyRateChartDesntistsData1 = [];
       this.hourlyRateChartDesntistsLabels1 = [];
 
       this.hourlyRateChartDesntistsLabels = [];
-      this.barChartOptionsHR.annotation = [];
+      this.barChartOptionsHR1.annotation = [];
       this.hourlyRateDenttbl =[];
       this.hourlyRateChartDentistsData[0]['data'] =[];
       if (data.message == 'success') {
@@ -4771,7 +5229,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
 
         if (this.goalchecked == 'average') {
-          this.barChartOptionsHR.annotation = {
+          this.barChartOptionsHR1.annotation = {
             annotations: [{
               type: 'line',
               drawTime: 'afterDatasetsDraw',
@@ -4787,7 +5245,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
         }
         else if (this.goalchecked == 'goal') {
-          this.barChartOptionsHR.annotation = {
+          this.barChartOptionsHR1.annotation = {
             annotations: [{
               type: 'line',
               drawTime: 'afterDatasetsDraw',
@@ -4835,14 +5293,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.hourlyRateChartOhtLabels1 = [];
 
     this.hourlyRateChartOhtLabels = [];
-    this.barChartOptionsHR.annotation = [];
+    this.barChartOptionsHR2.annotation = [];
     this.clinic_id && this.cliniciananalysisService.hourlyRateChartOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       this.hourlyRateChartOhtData1 = [];
       this.hourlyRateChartOhtLabels1 = [];
       this.hourlyRateOhttbl =[];
       this.hourlyRateChartOhtLabels = [];
-      this.barChartOptionsHR.annotation = [];
+      this.barChartOptionsHR2.annotation = [];
       this.hourlyRateChartOhtData[0]['data']=[];
+      this.hourlyRateChartOhtAverage =0;
       if (data.message == 'success') {
         this.hrKey ='';
         this.Apirequest = this.Apirequest - 1;
@@ -4913,7 +5372,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
 
         if (this.goalchecked == 'average') {
-          this.barChartOptionsHR.annotation = {
+          this.barChartOptionsHR2.annotation = {
             annotations: [{
               type: 'line',
               drawTime: 'afterDatasetsDraw',
@@ -4929,7 +5388,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
         }
         else if (this.goalchecked == 'goal') {
-          this.barChartOptionsHR.annotation = {
+          this.barChartOptionsHR2.annotation = {
             annotations: [{
               type: 'line',
               drawTime: 'afterDatasetsDraw',
@@ -7177,25 +7636,134 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.changePrebookRate('recall');
     }
   }
+
+  public showAvg: boolean =false;
   goalToggle(val) {
     this.goalchecked = val;
-    this.buildChart();
-    this.buildChartDentists();
-    this.buildChartOht();
-    this.collectionChart();
-    this.collectionChartDentists();
-    this.collectionChartOht();
-    this.collectionExpChart();
-    this.collectionExpChartDentists();
-    this.collectionExpChartOht();
-    this.buildChartTreatment();
-    this.recallPrebook();
-    this.treatmentPrePrebook();
-    this.hourlyRateChart();
-    this.hourlyRateChartDesntists();
-    this.hourlyRateChartOht();
-    this.treatmentPlanRate();
+    if(val == 'average'){
+      this.showAvg = true;
+      if(this.productionTotalAverage > 0 ){
+        this.ChartsAvg(this.productionTotalAverage,this.barChartOptionsDP1);
+      }
+      if(this.productionDentistTotalAverage > 0){
+        this.ChartsAvg(this.productionDentistTotalAverage,this.barChartOptionsDP2);
+      }
+      if(this.productionOhtTotalAverage > 0){
+        this.ChartsAvg(this.productionOhtTotalAverage,this.barChartOptionsDP3);
+      }
+      if(this.collectionTotalAverage > 0){
+        this.ChartsAvg(this.collectionTotalAverage,this.barChartOptionsDP);
+      }
+      if(this.collectionDentistsTotalAverage > 0){
+        this.ChartsAvg(this.collectionDentistsTotalAverage,this.barChartOptionsDP4);
+      }
+      if(this.collectionOhtTotalAverage > 0){
+        this.ChartsAvg(this.collectionOhtTotalAverage,this.barChartOptionsDP5);
+      }
+      if(this.collectionTotalAverage > 0){
+        this.ChartsAvg(this.collectionTotalAverage,this.barChartOptionsDP6);
+      }
+      if(this.collectionTotalExpDentistsAverage > 0){
+        this.ChartsAvg(this.collectionTotalExpDentistsAverage,this.barChartOptionsDP7);
+      }
+      if(this.collectionTotalExpOhtAverage > 0){
+        this.ChartsAvg(this.collectionTotalExpOhtAverage,this.barChartOptionsDP8);
+      }
+      if(this.hourlyRateChartAverage > 0){
+        this.ChartsAvg(this.hourlyRateChartAverage,this.barChartOptionsHR);
+      }
+      if(this.hourlyRateChartDesntistsAverage > 0){
+        this.ChartsAvg(this.hourlyRateChartDesntistsAverage,this.barChartOptionsHR1);
+      }
+      if(this.hourlyRateChartOhtAverage > 0){
+        this.ChartsAvg(this.hourlyRateChartOhtAverage,this.barChartOptionsHR2);
+      }
+      if(this.planTotalAverage > 0){
+        this.ChartsAvg(this.planTotalAverage,this.barChartOptionsTC);
+      }
+      if(this.treatmentPreChartAverage > 0){
+        this.ChartsAvg(this.treatmentPreChartAverage,this.barChartOptionsTPB);
+      }
+      if(this.recallChartAverage > 0){
+        this.ChartsAvg(this.recallChartAverage,this.barChartOptionsRP);
+      }
+      if(this.treatmentChartAverage > 0){
+        this.ChartsAvg(this.treatmentChartAverage,this.barChartOptionsTP);
+      }
+    
+    }else{
+      this.showAvg = false;
+      this.ChartsAvgOff(this.productionTotalAverage,this.barChartOptionsDP1);
+      this.ChartsAvgOff(this.productionDentistTotalAverage,this.barChartOptionsDP2);
+      this.ChartsAvgOff(this.productionOhtTotalAverage,this.barChartOptionsDP3);
+      this.ChartsAvgOff(this.collectionTotalAverage,this.barChartOptionsDP);
+      this.ChartsAvgOff(this.collectionDentistsTotalAverage,this.barChartOptionsDP4);
+      this.ChartsAvgOff(this.collectionOhtTotalAverage,this.barChartOptionsDP5);
+      this.ChartsAvgOff(this.collectionTotalAverage,this.barChartOptionsDP6);
+      this.ChartsAvgOff(this.collectionTotalExpDentistsAverage,this.barChartOptionsDP7);
+      this.ChartsAvgOff(this.collectionTotalExpOhtAverage,this.barChartOptionsDP8);
+      this.ChartsAvgOff(this.hourlyRateChartAverage,this.barChartOptionsHR);
+      this.ChartsAvgOff(this.hourlyRateChartDesntistsAverage,this.barChartOptionsHR1);
+      this.ChartsAvgOff(this.hourlyRateChartOhtAverage,this.barChartOptionsHR2);
+      this.ChartsAvgOff(this.planTotalAverage,this.barChartOptionsTC);
+      this.ChartsAvgOff(this.treatmentPreChartAverage,this.barChartOptionsTPB);
+      this.ChartsAvgOff(this.recallChartAverage,this.barChartOptionsRP);
+      this.ChartsAvgOff(this.treatmentChartAverage,this.barChartOptionsTP);
+    }
+    
+  // this.buildChart();
+  // this.buildChartDentists();
+  // this.buildChartOht();
+  // this.collectionChart();
+  // this.collectionChartDentists();
+  // this.collectionChartOht();
+  // this.collectionExpChart();
+  // this.collectionExpChartDentists();
+  // this.collectionExpChartOht();
+  // this.buildChartTreatment();
+  // this.recallPrebook();
+  // this.treatmentPrePrebook();
+  // this.hourlyRateChart();
+  // this.hourlyRateChartDesntists();
+  // this.hourlyRateChartOht();
+  // this.treatmentPlanRate();
 
+  }
+  
+  private ChartsAvg(AvgVal,annota) {
+    annota.annotation = {
+     drawTime: 'afterDatasetsDraw',
+      annotations: [{
+       drawTime: 'afterDraw',
+        type: 'line',
+        mode: 'horizontal',
+        scaleID: 'y-axis-0',
+        value: AvgVal,
+        borderColor: '#0e3459',
+        borderWidth: 2,
+        borderDash: [2, 2],
+        borderDashOffset: 0,
+      },
+      ]
+    }
+  }
+
+  private ChartsAvgOff(AvgVal,annota) {
+    annota.annotation = {
+     drawTime: 'afterDatasetsDraw',
+      annotations: [{
+       drawTime: 'afterDraw',
+        type: '',
+        mode: 'horizontal',
+        scaleID: 'y-axis-0',
+        value: AvgVal,
+        borderColor: '#0e3459',
+        borderWidth: 2,
+        borderDash: [2, 2],
+        borderDashOffset: 0,
+      },
+      ]
+    }
   }
   changePrebookRate(val) {
     if (val == 'recall' && this.goalchecked == 'average') {

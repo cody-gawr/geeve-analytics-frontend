@@ -193,7 +193,13 @@
 
               <!-- Production Chart Start -->
               <div *ngIf="proCollShow == 1 && proSelectShow =='production_all'">
-                <div class="div-pro-coll-show" *ngIf="showprodAllTbl === false && barChartData[0].data.length && !buildChartLoader">
+                <div class="div-pro-coll-show" *ngIf="showAvg === false && showprodAllTbl === false && barChartData[0].data.length && !buildChartLoader">
+                  <canvas id="dentistProduction" baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP1"
+                    [colors]="DPcolors">
+                  </canvas> <!-- dynamic colors of bar -->  
+                </div>
+                <div class="div-pro-coll-show" *ngIf="showAvg === true && showprodAllTbl === false && barChartData[0].data.length && !buildChartLoader">
                   <canvas id="dentistProduction" baseChart [datasets]="barChartData" [labels]="barChartLabels"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP1"
                     [colors]="DPcolors">
@@ -226,7 +232,13 @@
                 </div>
               </div>
               <div *ngIf="proCollShow == 1 && proSelectShow =='production_dentists'">
-                <div class="div-pro-coll-show" *ngIf=" showprodDentAllTbl === false && barChartDataDentists[0].data.length && !buildChartDentistsLoader">
+                <div class="div-pro-coll-show" *ngIf=" showAvg === false && showprodDentAllTbl === false && barChartDataDentists[0].data.length && !buildChartDentistsLoader">
+                  <canvas id="dentistProduction" baseChart [datasets]="barChartDataDentists" [labels]="barChartDentistLabels"
+                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP1"
+                    [colors]="DPcolors">
+                  </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div class="div-pro-coll-show" *ngIf="  showAvg === true && showprodDentAllTbl === false && barChartDataDentists[0].data.length && !buildChartDentistsLoader">
                   <canvas id="dentistProduction" baseChart [datasets]="barChartDataDentists" [labels]="barChartDentistLabels"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP1"
                     [colors]="DPcolors">
@@ -259,7 +271,13 @@
                 </div>
               </div>
               <div *ngIf="proCollShow == 1  && proSelectShow =='production_oht'">
-                <div class="div-pro-coll-show" *ngIf="showprodOhtAllTbl === false && barChartDataOht[0].data.length && !buildChartOhtLoader">
+                <div class="div-pro-coll-show" *ngIf="showAvg === false && showprodOhtAllTbl === false && barChartDataOht[0].data.length && !buildChartOhtLoader">
+                  <canvas id="dentistProduction" baseChart [datasets]="barChartDataOht" [labels]="barChartOhtLabels"
+                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP1"
+                    [colors]="DPcolors">
+                  </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div class="div-pro-coll-show" *ngIf="showAvg === true && showprodOhtAllTbl === false && barChartDataOht[0].data.length && !buildChartOhtLoader">
                   <canvas id="dentistProduction" baseChart [datasets]="barChartDataOht" [labels]="barChartOhtLabels"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP1"
                     [colors]="DPcolors">
@@ -295,7 +313,13 @@
 
               <!-- Collection Chart Start -->
               <div *ngIf="proCollShow == 2 && proSelectShow =='collection_all'">
-                <div class="div-pro-coll-show" *ngIf="showCollAllTbl === false && collectionData[0].data.length && !collectionLoader">
+                <div class="div-pro-coll-show" *ngIf="showAvg === false && showCollAllTbl === false && collectionData[0].data.length && !collectionLoader">
+                  <canvas id="dentistCollection" baseChart [datasets]="collectionData" [labels]="collectionLabels"
+                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
+                    [colors]="DPcolors1">
+                  </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div class="div-pro-coll-show" *ngIf="showAvg === true && showCollAllTbl === false && collectionData[0].data.length && !collectionLoader">
                   <canvas id="dentistCollection" baseChart [datasets]="collectionData" [labels]="collectionLabels"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
                     [colors]="DPcolors1">
@@ -328,7 +352,13 @@
                 </div>
               </div>
               <div *ngIf="proCollShow == 2 && proSelectShow =='collection_dentists'">
-                <div class="div-pro-coll-show" *ngIf="showCollDentTbl === false && collectionDentistsData[0].data.length && !collectionDentistsLoader">
+                <div class="div-pro-coll-show" *ngIf="showAvg === false && showCollDentTbl === false && collectionDentistsData[0].data.length && !collectionDentistsLoader">
+                  <canvas id="dentistCollection" baseChart [datasets]="collectionDentistsData" [labels]="collectionDentistsLabels"
+                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
+                    [colors]="DPcolors1">
+                  </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div class="div-pro-coll-show" *ngIf="showAvg === true && showCollDentTbl === false && collectionDentistsData[0].data.length && !collectionDentistsLoader">
                   <canvas id="dentistCollection" baseChart [datasets]="collectionDentistsData" [labels]="collectionDentistsLabels"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
                     [colors]="DPcolors1">
@@ -361,7 +391,13 @@
                 </div>
               </div>
               <div *ngIf="proCollShow == 2  && proSelectShow =='collection_oht'">
-                <div class="div-pro-coll-show" *ngIf="showCollOhtTbl === false && collectionOhtData[0].data.length && !collectionOhtLoader">
+                <div class="div-pro-coll-show" *ngIf="showAvg === false && showCollOhtTbl === false && collectionOhtData[0].data.length && !collectionOhtLoader">
+                  <canvas id="dentistCollection" baseChart [datasets]="collectionOhtData" [labels]="collectionOhtLabels"
+                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
+                    [colors]="DPcolors1">
+                  </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div class="div-pro-coll-show" *ngIf="showAvg === true && showCollOhtTbl === false && collectionOhtData[0].data.length && !collectionOhtLoader">
                   <canvas id="dentistCollection" baseChart [datasets]="collectionOhtData" [labels]="collectionOhtLabels"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
                     [colors]="DPcolors1">
@@ -397,7 +433,13 @@
 
               <!-- CollectionExp Chart Start -->
               <div *ngIf="proCollShow == 3 && proSelectShow =='collection_exp_all'">
-                <div class="div-pro-coll-show" *ngIf="showCollExpTbl === false && collectionExpData[0].data.length && !collectionExpLoader">
+                <div class="div-pro-coll-show" *ngIf="showAvg === false && showCollExpTbl === false && collectionExpData[0].data.length && !collectionExpLoader">
+                  <canvas id="dentistCollection" baseChart [datasets]="collectionExpData" [labels]="collectionLabelsExp"
+                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
+                    [colors]="DPcolors1">
+                  </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div class="div-pro-coll-show" *ngIf="showAvg === true && showCollExpTbl === false && collectionExpData[0].data.length && !collectionExpLoader">
                   <canvas id="dentistCollection" baseChart [datasets]="collectionExpData" [labels]="collectionLabelsExp"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
                     [colors]="DPcolors1">
@@ -430,7 +472,13 @@
                 </div>
               </div>
               <div *ngIf="proCollShow == 3 && proSelectShow =='collection_exp_dentists'">
-                <div class="div-pro-coll-show" *ngIf="showCollExpDentTbl === false && collectionExpDentistsData[0].data.length && !collectionExpDentistsLoader">
+                <div class="div-pro-coll-show" *ngIf="showAvg === false && showCollExpDentTbl === false && collectionExpDentistsData[0].data.length && !collectionExpDentistsLoader">
+                  <canvas id="dentistCollection" baseChart [datasets]="collectionExpDentistsData" [labels]="collectionLabelsDentistsExp"
+                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
+                    [colors]="DPcolors1">
+                  </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div class="div-pro-coll-show" *ngIf="showAvg === true && showCollExpDentTbl === false && collectionExpDentistsData[0].data.length && !collectionExpDentistsLoader">
                   <canvas id="dentistCollection" baseChart [datasets]="collectionExpDentistsData" [labels]="collectionLabelsDentistsExp"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
                     [colors]="DPcolors1">
@@ -463,7 +511,13 @@
                 </div>
               </div>
               <div *ngIf="proCollShow == 3 && proSelectShow =='collection_exp_oht'">
-                <div class="div-pro-coll-show" *ngIf="showCollExpOhtTbl === false && collectionExpOhtData[0].data.length && !collectionExpOhtLoader">
+                <div class="div-pro-coll-show" *ngIf="showAvg === false && showCollExpOhtTbl === false && collectionExpOhtData[0].data.length && !collectionExpOhtLoader">
+                  <canvas id="dentistCollection" baseChart [datasets]="collectionExpOhtData" [labels]="collectionLabelsOhtExp"
+                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
+                    [colors]="DPcolors1">
+                  </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div class="div-pro-coll-show" *ngIf="showAvg === true && showCollExpOhtTbl === false && collectionExpOhtData[0].data.length && !collectionExpOhtLoader">
                   <canvas id="dentistCollection" baseChart [datasets]="collectionExpOhtData" [labels]="collectionLabelsOhtExp"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
                     [colors]="DPcolors1">
@@ -1279,7 +1333,13 @@
               <div class="relative h-100">
                 <div class="cl-card-height" *ngIf="hrSelectShow =='hr_all'">
                   <canvas #myCanvas id="HourlyRate" baseChart
-                    *ngIf="showHrTbl === false && hourlyRateChartData1.length > 0 && hourlyRateChartLoader == false"
+                    *ngIf="showAvg === false && showHrTbl === false && hourlyRateChartData1.length > 0 && hourlyRateChartLoader == false"
+                    [datasets]="hourlyRateChartData" [labels]="hourlyRateChartLabels" [legend]="barChartLegend"
+                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
+                    [colors]="HRcolors" (chartClick)="chartClicked($event)">
+                  </canvas>
+                  <canvas #myCanvas id="HourlyRate" baseChart
+                    *ngIf="showAvg === true && showHrTbl === false && hourlyRateChartData1.length > 0 && hourlyRateChartLoader == false"
                     [datasets]="hourlyRateChartData" [labels]="hourlyRateChartLabels" [legend]="barChartLegend"
                     [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
                     [colors]="HRcolors" (chartClick)="chartClicked($event)">
@@ -1313,7 +1373,13 @@
                 </div>
                 <div class="cl-card-height" *ngIf="hrSelectShow =='hr_dentists'">
                   <canvas #myCanvas id="HourlyRate" baseChart
-                    *ngIf="showHrDentTbl === false && hourlyRateChartDesntistsData1.length > 0 && hourlyRateChartDentistsLoader == false"
+                    *ngIf="showAvg === false && showHrDentTbl === false && hourlyRateChartDesntistsData1.length > 0 && hourlyRateChartDentistsLoader == false"
+                    [datasets]="hourlyRateChartDentistsData" [labels]="hourlyRateChartDesntistsLabels" [legend]="barChartLegend"
+                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
+                    [colors]="HRcolors" (chartClick)="chartClicked($event)">
+                  </canvas>
+                  <canvas #myCanvas id="HourlyRate" baseChart
+                    *ngIf="showAvg === true && showHrDentTbl === false && hourlyRateChartDesntistsData1.length > 0 && hourlyRateChartDentistsLoader == false"
                     [datasets]="hourlyRateChartDentistsData" [labels]="hourlyRateChartDesntistsLabels" [legend]="barChartLegend"
                     [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
                     [colors]="HRcolors" (chartClick)="chartClicked($event)">
@@ -1347,7 +1413,13 @@
                 </div>
                 <div class="cl-card-height" *ngIf="hrSelectShow =='hr_oht'">
                   <canvas #myCanvas id="HourlyRate" baseChart
-                    *ngIf="showHrOhtTbl === false && hourlyRateChartOhtData1.length > 0 && hourlyRateChartOhtLoader == false"
+                    *ngIf="showAvg === false && showHrOhtTbl === false && hourlyRateChartOhtData1.length > 0 && hourlyRateChartOhtLoader == false"
+                    [datasets]="hourlyRateChartOhtData" [labels]="hourlyRateChartOhtLabels" [legend]="barChartLegend"
+                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
+                    [colors]="HRcolors" (chartClick)="chartClicked($event)">
+                  </canvas>
+                  <canvas #myCanvas id="HourlyRate" baseChart
+                    *ngIf="showAvg === true && showHrOhtTbl === false && hourlyRateChartOhtData1.length > 0 && hourlyRateChartOhtLoader == false"
                     [datasets]="hourlyRateChartOhtData" [labels]="hourlyRateChartOhtLabels" [legend]="barChartLegend"
                     [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
                     [colors]="HRcolors" (chartClick)="chartClicked($event)">
@@ -1780,15 +1852,25 @@
               </div>
               <div class="cl-card-height">
                 <canvas #myCanvas id="treatmentPlanProposed"
-                  *ngIf="showplanChartPTbl === false && tcmain == 1 && buildChartTreatmentLoader == false && planChartData1.length > 0" baseChart
+                  *ngIf="showAvg === false && showplanChartPTbl === false && tcmain == 1 && buildChartTreatmentLoader == false && planChartData1.length > 0" baseChart
                   class="chart" [datasets]="planChartDataP" [labels]="planChartLabels1" [options]="barChartOptionsTC"
                   [legend]="false" [chartType]="barChartType" (chartHover)="chartHovered($event)"
                   (chartClick)="chartClicked($event)" [colors]="TPACAcolors"></canvas>
+                <canvas #myCanvas id="treatmentPlanProposed"
+                *ngIf="showAvg === true && showplanChartPTbl === false && tcmain == 1 && buildChartTreatmentLoader == false && planChartData1.length > 0" baseChart
+                class="chart" [datasets]="planChartDataP" [labels]="planChartLabels1" [options]="barChartOptionsTC"
+                [legend]="false" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)" [colors]="TPACAcolors"></canvas>
                 <canvas #myCanvas id="treatmentPlanCompleted"
-                  *ngIf="showplanChartCTbl === false && tcmain == 2 && buildChartTreatmentLoader == false && planChartData2.length > 0" baseChart
+                  *ngIf="showAvg === false && showplanChartCTbl === false && tcmain == 2 && buildChartTreatmentLoader == false && planChartData2.length > 0" baseChart
                   class="chart" [datasets]="planChartDataC" [labels]="planChartLabels2" [options]="barChartOptionsTC"
                   [legend]="false" [chartType]="barChartType" (chartHover)="chartHovered($event)"
                   (chartClick)="chartClicked($event)" [colors]="TPACCcolors"></canvas>
+                <canvas #myCanvas id="treatmentPlanCompleted"
+                *ngIf="showAvg === true && showplanChartCTbl === false && tcmain == 2 && buildChartTreatmentLoader == false && planChartData2.length > 0" baseChart
+                class="chart" [datasets]="planChartDataC" [labels]="planChartLabels2" [options]="barChartOptionsTC"
+                [legend]="false" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)" [colors]="TPACCcolors"></canvas>
                 <div class="hr-tbl-height" *ngIf="planChartData1.length > 0 && showplanChartPTbl === true && tcmain == 1">
                   <div class="DentistProductionTable fstyle lmargin">
                     <table>
@@ -2000,7 +2082,12 @@
                 </div>
               </div>
               <div class="chart" fxLayout="row" fxLayoutAlign="center end" class="cl-card-height">
-                <canvas #myCanvas baseChart *ngIf="showpTprTbl === false && treatmentChartData1.length > 0 && !treatmentPlanRateLoader"
+                <canvas #myCanvas baseChart *ngIf="showAvg === false && showpTprTbl === false && treatmentChartData1.length > 0 && !treatmentPlanRateLoader"
+                  [datasets]="treatmentChartData" [labels]="treatmentChartLabels" [legend]="barChartLegend"
+                  [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsTP"
+                  [colors]="TPRcolors" (chartClick)="chartClicked($event)">
+                </canvas>
+                <canvas #myCanvas baseChart *ngIf="showAvg === true && showpTprTbl === false && treatmentChartData1.length > 0 && !treatmentPlanRateLoader"
                   [datasets]="treatmentChartData" [labels]="treatmentChartLabels" [legend]="barChartLegend"
                   [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsTP"
                   [colors]="TPRcolors" (chartClick)="chartClicked($event)">
@@ -2197,13 +2284,25 @@
               </div>
               <div class="div-height">
                 <canvas id="RecallRate"
-                  *ngIf="showrecallTbl === false && prebook=='recall' && recallPrebookLoader == false && recallChartData1.length > 0" #myCanvas
+                  *ngIf="showAvg === false && showrecallTbl === false && prebook=='recall' && recallPrebookLoader == false && recallChartData1.length > 0" #myCanvas
+                  baseChart [datasets]="recallChartData" [labels]="recallChartLabels" [legend]="barChartLegend"
+                  [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsRP"
+                  [colors]="RPcolors" (chartClick)="chartClicked($event)">
+                </canvas>
+                <canvas id="RecallRate"
+                  *ngIf="showAvg === true && showrecallTbl === false && prebook=='recall' && recallPrebookLoader == false && recallChartData1.length > 0" #myCanvas
                   baseChart [datasets]="recallChartData" [labels]="recallChartLabels" [legend]="barChartLegend"
                   [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsRP"
                   [colors]="RPcolors" (chartClick)="chartClicked($event)">
                 </canvas>
                 <canvas id="PrebookRate"
-                  *ngIf="showreappointTbl === false && prebook=='treatment' && recallPrebookLoader == false && treatmentPreChartData1.length > 0"
+                  *ngIf="showAvg === false && showreappointTbl === false && prebook=='treatment' && recallPrebookLoader == false && treatmentPreChartData1.length > 0"
+                  #myCanvas baseChart [datasets]="treatmentPreChartData" [labels]="treatmentPreChartLabels"
+                  [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                  [options]="barChartOptionsTPB" [colors]="TPcolors" (chartClick)="chartClicked($event)">
+                </canvas>
+                <canvas id="PrebookRate"
+                  *ngIf="showAvg === true && showreappointTbl === false && prebook=='treatment' && recallPrebookLoader == false && treatmentPreChartData1.length > 0"
                   #myCanvas baseChart [datasets]="treatmentPreChartData" [labels]="treatmentPreChartLabels"
                   [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
                   [options]="barChartOptionsTPB" [colors]="TPcolors" (chartClick)="chartClicked($event)">
