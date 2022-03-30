@@ -31,6 +31,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
   tabsOptions: string[] = [];
   selectedGoalCategory$ = new BehaviorSubject<any>('');
   selectedTab: any = 1;
+  Cconsultant:any ='';
   selectedYear : any = this.year;
   @Input() set clinicId(value: any) {
     this.clinic_id$.next(value);
@@ -76,15 +77,26 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
 
   getData(id,selectedGoalCategory,selectedYear) 
   {
-    this.clinicGoalsService.getGoalAllData(id,selectedGoalCategory,selectedYear).subscribe((res) => {
+    this.dentistService.getClinicSettings(this.clinic_id$.value).subscribe((res) => {
+      if (res.message == 'success') {
+        this.Cconsultant = res.data[0]['consultant'];
+          this.clinicGoalsService.getGoalAllData(id,selectedGoalCategory,selectedYear).subscribe((res) => {
             if (res.message == 'success') {
               this.getGoalsForTabsClinic(res.data);
             } else if (res.status == '401') {
               this.handleUnAuthorization();
             }
-          }, error => {
-            console.log('error', error)
-          });
+        }, error => {
+          console.log('error', error)
+        });
+      }
+      else if (res.status == '401') {
+        this.handleUnAuthorization();
+      }
+    }, error => {
+      console.log('error', error)
+    });
+    
   }
 
   getDentists(clinicID) {
@@ -99,6 +111,20 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       console.log('error', error)
     });
   }
+
+  // getClinicSettings(clinicID) {
+  //   this.dentistService.getClinicSettings(clinicID).subscribe((res) => {
+  //     if (res.message == 'success') {
+  //       this.Cconsultant = res.data[0]['consultant'];
+  //       console.log(this.Cconsultant);
+  //     }
+  //     else if (res.status == '401') {
+  //       this.handleUnAuthorization();
+  //     }
+  //   }, error => {
+  //     console.log('error', error)
+  //   });
+  // }
 
   onTabChanged(event) {
     this.selectedTab = event;
@@ -158,7 +184,13 @@ getGoalsForTabsClinic(allGoals) {
    });
    this.tabs.push(temp);
   });
-  this.selectedTab = this.tabs[0].d_id;
+
+  if(this.Cconsultant != 'prime'){
+    this.selectedTab = this.tabs[0].d_id;
+  }else{
+    this.selectedTab = 10; // Kpi report
+  }
+  
 }
 
 
@@ -207,6 +239,7 @@ setGoalsPerMonth(chartGoals)
     $('.ajax-loader').show();
     if (this.selectedGoalCategory$.value === '') {
       this.updateClinicGoals(myJsonString);
+      this.getData(this.clinic_id$.value,this.selectedGoalCategory$.value,this.selectedYear);
     } else {
       this.updateDentistGoals(myJsonString);
     }
