@@ -16,7 +16,7 @@
           <mat-label class="goals-form-field-label">
             Monthly Goals
           </mat-label>
-          <mat-select class="external_dentist" [ngModel]="selectedGoalCategory$.value" (ngModelChange)="handleGoalCategorySelection($event)"  *ngIf="selectedTab == 1">
+          <mat-select class="external_dentist" [ngModel]="selectedGoalCategory$.value" (ngModelChange)="handleGoalCategorySelection($event)"  *ngIf="selectedTab == 1 || selectedTab == 10">
             <mat-option value="">Clinic Total</mat-option>
             <mat-option
               *ngFor="let dentist of dentists"
@@ -26,7 +26,7 @@
               <span *ngIf="!dentist.jeeve_name">{{dentist.name}}</span>
             </mat-option>
           </mat-select>
-          <mat-select class="external_dentist" [ngModel]="selectedGoalCategory$.value" (ngModelChange)="handleGoalCategorySelection($event)"  *ngIf="selectedTab != 1">
+          <mat-select class="external_dentist" [ngModel]="selectedGoalCategory$.value" (ngModelChange)="handleGoalCategorySelection($event)"  *ngIf="selectedTab != 1 && selectedTab != 10">
             <mat-option value="">Clinic Total</mat-option>            
           </mat-select>
         </mat-form-field>
