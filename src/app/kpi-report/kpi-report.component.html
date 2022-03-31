@@ -1,32 +1,47 @@
+<select class="sa_select internal_dentist" [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)"
+  [style.display]="'none'">
+  <option value="all">All Dentist</option>
+  <option *ngFor="let dentist of dentists" [value]="dentist.providerId"> {{dentist.name}}</option>
+</select>
 <input type="button" id="clinic_initiate" (click)="initiate_clinic()" [style.display]="'none'" />
-<div class="sa_dashboard_inner_content morning-huddle side">
-   <div class="morning-huddle-date topModel followuppage matwdth">
+<input type="button" id="dentist_initiate" (click)="initiate_dentist()" [style.display]="'none'">
+<div id="notAuth" class="unAutho consult">
+   <span >selected clinic is not Authorised</span>
+</div>
+<div id="kpireport" class="sa_dashboard_inner_content morning-huddle side">   
+   <!-- <div class="morning-huddle-date topModel followuppage matwdth">
        <mat-icon (click)="setDate('subtract')" role="img"
            class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectLeft" aria-hidden="true">
            arrow_back_ios</mat-icon>{{ selectedYear }}
        <mat-icon (click)="setDate('add')" role="img"
            class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">
            arrow_forward_ios</mat-icon>
+   </div> -->
+   <div class="morning-huddle-date topModel followuppage matwdth monthyear">
+      <mat-form-field>
+         <mat-select class="external_dentist" [(ngModel)]="selectedMonthYear" (ngModelChange)="onTabChanged($event)" >
+           <mat-option *ngFor="let yearRange of range" [value]="yearRange">{{ yearRange }} </mat-option>
+         </mat-select>
+         <span class="infotxt">and previous 11 months</span>
+       </mat-form-field>
+       
    </div>
-
    <div class="top-header-con">
       <h2>KPI Report</h2>
    </div>
-
-   <table class="report-table-main align">
+   <div *ngIf="reportloader == true"
+      class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+      <div class="loader-text">Calculating...</div>
+   </div>
+   <table class="report-table-main align" *ngIf="reportloader == false">
    <tr>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
-      <td class="align">JUL, 2021</td>
-      <td class="align">AUG, 2021</td>
-      <td class="align">SEP, 2021</td>
-      <td class="align">OCT, 2021</td>
-      <td class="align">NOV, 2021</td>
-      <td class="align">DEC, 2021</td>
-      <td class="align">YTD</td>
+      <td class="align" *ngFor="let reportM of reportMonths['months']">{{ reportM }}</td>
+      <td class="align">Total</td>
    </tr>
-   <tr>
-         <td>Dentist Production</td>
+   <tr *ngFor="let reportD of reportData">
+         <td>{{ reportD.kpi_type }} </td>
          <td> 
             <table class=" report-table-main report-table">
             <tr>
@@ -40,20 +55,20 @@
             </tr>
          </table>
          </td>
-         <td>
+         <td *ngFor="let reportVal of reportD['val']">
             <table class=" report-table-main report-table">
                <tr>
-                     <td>$0</td>
+                     <td>{{ reportVal.goal }}</td>
                </tr>
                <tr>
-                     <td>$0</td>
+                     <td>{{ reportVal.actual | number:'1.0-0'}}</td>
                </tr>
                <tr>
-                     <td>0%</td>
+                     <td>{{ reportVal.goal_percent }}</td>
                </tr>
             </table>
          </td>
-         <td>
+         <!-- <td>
          <table class="report-table-main report-table">
                <tr>
                <td>$70,200</td>
@@ -130,9 +145,9 @@
                <td>84.25%</td>
             </tr>
          </table>
-      </td>
+      </td> -->
    </tr>
-   <tr>
+   <!-- <tr>
          <td> Dentist Days </td>  
          <td> 
             <table class=" report-table-main report-table">
@@ -238,8 +253,8 @@
             </tr>
          </table>
       </td>
-   </tr>
-   <tr>
+   </tr> -->
+   <!-- <tr>
       <td>Dentist Production / Days</td>
       <td> 
          <table class=" report-table-main report-table">
@@ -345,8 +360,8 @@
             </tr>
          </table>
       </td>
-   </tr>
-   <tr>
+   </tr> -->
+   <!-- <tr>
    <td> Time Available Time Worked </td>
    <td> 
       <table class=" report-table-main report-table">
@@ -452,8 +467,8 @@
       </tr>
    </table>
 </td>
-   </tr>
-   <tr>
+   </tr> -->
+   <!-- <tr>
       <td>Dentist Production / HR</td>
       <td> 
          <table class=" report-table-main report-table">
@@ -511,8 +526,8 @@
          </tr>
       </table>
    </td>
-   </tr>  
-   <tr>
+   </tr>   -->
+   <!-- <tr>
       <td> Total No. of New Patients </td>
       <td> 
          <table class=" report-table-main report-table">
@@ -618,7 +633,7 @@
          </tr>
       </table>
    </td>
-</tr> 
+</tr>  -->
      
   </table>
    

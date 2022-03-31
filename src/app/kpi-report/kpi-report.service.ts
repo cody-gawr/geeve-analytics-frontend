@@ -26,6 +26,24 @@ export class KpiReportService {
         let headers =  {headers: new HttpHeaders(), withCredentials: true};
         return headers;
     }
+
+    getKpiReport(clinic_id, startDate = '', endDate = '', clinician=''  ): Observable<any> {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl + "/Kpi/getKpiReport?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+clinician, header)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+     // Get ClinicSettings
+    getClinicSettings(clinic_id): Observable<any> {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl + "/clinics/clinicGet?clinic_id=" + clinic_id, header)
+            .pipe(map((response: Response) => {
+                return response;
+            })
+            );
+    }
    
     
 }

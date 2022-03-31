@@ -6,7 +6,13 @@ import {  Router } from "@angular/router";
 import { DatePipe, JsonPipe } from '@angular/common';
 import { MatTabGroup } from '@angular/material/tabs';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator'
+import { ToastrService } from 'ngx-toastr';
+import { DentistService } from '../dentist/dentist.service';
+export interface Dentist {
+	providerId: string;
+	name: string;
+  }
 @Component({
   selector: 'app-kpi-report',
   templateUrl: './kpi-report.component.html',
@@ -17,18 +23,40 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 	public user_type: any = '';
 	public clinic_id: any = '';
 	public clinicName: any = '';
+	public Cconsultant:any ='';
 	public selectedDay: string = new Date().getDate().toString();
-	public selectedMonth: string = new Date().getMonth().toString();
-  	public selectedYear: string = new Date().getFullYear().toString();
+	public selectedMonth: any = '';
+  	public selectedYear: any = '';
+	public selectedMonthYear: any = '';
+	private warningMessage: string;	
+	public selectedDentist: string;
+	public childid: string = '';
+	public startDate: any = '';
+	public endDate: any = '';
+	public range: any = [];
+	public dentistCount:any ={};
+	dentists: Dentist[] = [
+		{ providerId: 'all', name: 'All Dentists' },
+	   ];
 
 	constructor( private datepipe: DatePipe,
-		private titleService:Title,public KpiReportService: KpiReportService,private _cookieService: CookieService, private router: Router) { 
+		private titleService:Title,private dentistService: DentistService,public KpiReportService: KpiReportService,private _cookieService: CookieService,private toastr: ToastrService, private router: Router) { 
 		$('#title').html('KPI Report');
-	console.log(this.selectedYear);
+		this.selectedMonthYear = this.datepipe.transform(new Date(), 'MMMM-yyyy');
+		this.range.push(this.selectedMonthYear);
+		for (var i = 1; i < 20; i++) {
+			let todaysDate = new Date('01' + this.selectedMonthYear);
+    		let selectedDate = new Date('01' + this.selectedMonthYear);
+			selectedDate.setMonth(todaysDate.getMonth() - 1);
+			this.selectedMonthYear = this.datepipe.transform(selectedDate, 'MMMM-yyyy');
+			this.range.push(this.selectedMonthYear);
+		}
+		this.selectedMonthYear = this.datepipe.transform(new Date(), 'MMMM-yyyy');
 	}
 
-  ngOnInit() {
-  }
+	ngOnInit() {
+
+	}
 
 	ngOnDestroy() {
 		this.titleService.setTitle("Jeeve Analytics");
@@ -40,32 +68,140 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 	initiate_clinic() {
 		this.user_type = this._cookieService.get("user_type");
 		var val = $('#currentClinic').attr('cid');
-		console.log(val);
+		if (this._cookieService.get("dentistid")) {
+			this.childid = this._cookieService.get("dentistid");
+			this.selectedDentist = this._cookieService.get("dentistid");
+		  }
 		if (val != undefined && val != 'all') {
-		  this.clinic_id = val;
-	
-		//   this.clinicianAnalysisService.getClinicSettings(this.clinic_id).subscribe((data: any) => {
-		// 	if (data.message == 'success') {
-		// 	  this.isEnablePO = (data.data.post_op_enable == 1) ? true : false;
-		// 	  this.isEnableOR = (data.data.recall_enable == 1) ? true : false;
-		// 	  this.isEnableTH = (data.data.tick_enable == 1) ? true : false;
-		// 	  this.isEnableFT = (data.data.fta_enable == 1) ? true : false;
-		// 	  this.isEnableUT = (data.data.uta_enable == 1) ? true : false;
-		// 	}
-		//   });
-	
-	
-	
+			this.clinic_id = val;
+			this.getDentists();
+			this.KpiReportService.getClinicSettings(this.clinic_id).subscribe((res) => {
+				if (res.message == 'success') {
+				this.Cconsultant = res.data[0]['consultant'];
+					if(this.Cconsultant == 'prime'){
+						$("#kpireport").removeClass('consult');
+						$("#notAuth").addClass('consult');
+						this.filterDate();
+					}else{
+						$("#kpireport").addClass('consult');
+						$("#notAuth").removeClass('consult');
+					}
+				}
+				else if (res.status == '401') {
+				this.handleUnAuthorization();
+				}
+			}, error => {
+				console.log('error', error)
+			});
+				
+			
 		}
 	  }
+	initiate_dentist() {
+		var val = $('#currentDentist').attr('did');
+		this.loadDentist(val);
+		if(this.Cconsultant == 'prime'){
+			this.filterDate();
+		}
+		
+	}
 
-	setDate(type) {
-		if (type == 'add') {
-			var setDate = new Date(parseInt(this.selectedYear) + 1, parseInt(this.selectedMonth), parseInt(this.selectedDay));
-		 	this.selectedYear = this.datepipe.transform(setDate, 'yyyy');
-		} else {
-			var setDate = new Date(parseInt(this.selectedYear) - 1, parseInt(this.selectedMonth), parseInt(this.selectedDay));
-		 	this.selectedYear = this.datepipe.transform(setDate, 'yyyy');
+	 //Load Dentist Data
+	 loadDentist(newValue) {
+		if (newValue == '') {
+		  return false;
 		}
+	 }
+	 filterDate() {
+		this.selectedMonth = this.datepipe.transform(this.selectedMonthYear, 'M');
+		this.selectedYear = this.datepipe.transform(this.selectedMonthYear, 'yyyy');
+		this.endDate = this.datepipe.transform(new Date(this.selectedYear, this.selectedMonth, 0), 'yyyy-MM-dd');
+		let currentdate = new Date(this.endDate);
+		let sDate = new Date(currentdate.setMonth(currentdate.getMonth()-12)).toISOString().slice(0, 10);
+		let sMonth : any = this.datepipe.transform(sDate, 'M');
+		let sYear: any  = this.datepipe.transform(sDate, 'yyyy');
+		this.startDate  = this.datepipe.transform(new Date(sYear, sMonth), 'yyyy-MM-dd');
+		var dentistVal;
+		if ($('.internal_dentist').val())
+       		 dentistVal = $('.internal_dentist').val();
+     	else
+        dentistVal = $('.external_dentist').val();
+			if (dentistVal == '') {
+				if (this._cookieService.get("clinic_dentist")) {
+				var dentistVal1 = this._cookieService.get("clinic_dentist").split('_');
+				dentistVal = dentistVal1[1];
+				}
+			}
+		if(dentistVal =='all'){
+			this.selectedDentist = '';
+		}else{
+			this.selectedDentist = dentistVal;
+		}			
+		this.getKpiReport();
+	 }
+
+	handleUnAuthorization() {
+	this._cookieService.put("username", '');
+	this._cookieService.put("email", '');
+	this._cookieService.put("userid", '');
+	this.router.navigateByUrl('/login');
+	}  
+
+	onTabChanged(event) {
+		this.selectedMonth = this.datepipe.transform(event, 'M');
+		this.selectedYear = this.datepipe.transform(event, 'yyyy');
+		this.endDate = this.datepipe.transform(new Date(this.selectedYear, this.selectedMonth, 0), 'yyyy-MM-dd');
+		let currentdate = new Date(this.endDate);
+		let sDate = new Date(currentdate.setMonth(currentdate.getMonth()-12)).toISOString().slice(0, 10);
+		let sMonth : any = this.datepipe.transform(sDate, 'M');
+		let sYear: any  = this.datepipe.transform(sDate, 'yyyy');
+		this.startDate  = this.datepipe.transform(new Date(sYear, sMonth), 'yyyy-MM-dd');
+		this.getKpiReport();
 	  }
+	// setDate(type) {
+	// 	if (type == 'add') {
+	// 		var setDate = new Date(parseInt(this.selectedYear) + 1, parseInt(this.selectedMonth), parseInt(this.selectedDay));
+	// 	 	this.selectedYear = this.datepipe.transform(setDate, 'yyyy');
+	// 	} else {
+	// 		var setDate = new Date(parseInt(this.selectedYear) - 1, parseInt(this.selectedMonth), parseInt(this.selectedDay));
+	// 	 	this.selectedYear = this.datepipe.transform(setDate, 'yyyy');
+	// 	}
+	//   }
+
+	public reportData:any =[];
+	public reportMonths:any =[];
+	public reportloader:boolean = true;
+	private getKpiReport() {
+		this.reportloader = true;
+		this.KpiReportService.getKpiReport(this.clinic_id,this.startDate,this.endDate,this.selectedDentist).subscribe((data: any) => {
+			if (data.message == 'success') {
+				this.reportData = data.data;
+				this.reportMonths = data.months;
+				this.reportloader = false;
+			}
+		}, error => {
+		// this.warningMessage = "Please Provide Valid Inputs!";
+		// this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+		}
+		);
+	}
+	
+	// Get Dentist
+    getDentists() {
+		this.clinic_id && this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
+			 if(res.message == 'success'){
+				this.dentists= res.data;
+				this.dentistCount= res.data.length;
+			 }
+			 else if(res.status == '401'){
+				this._cookieService.put("username",'');
+				this._cookieService.put("email", '');              
+				this._cookieService.put("userid", '');
+				this.router.navigateByUrl('/login');
+			 }
+		  }, error => {
+			this.warningMessage = "Please Provide Valid Inputs!";
+		  }    
+		  );
+	}
 }

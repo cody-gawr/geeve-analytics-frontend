@@ -681,3 +681,23 @@ table.report-table tr td {
 table.report-table-main.align > tr > td {
     border: 1px solid;
 }
+.consult{
+    display:none;
+}
+.unAutho{
+    text-align: center;
+    font-size: 18px;
+    color: red;
+}
+.monthyear .mat-form-field {
+    /* background-color:#f7f7f7 !important; */
+    max-width: 165px !important;
+    margin: auto;
+    padding: 0px 20px;
+    border-radius: 5px;
+    height: 45px;
+}
+.infotxt{
+    font-size: 10px;
+    color: #a1a8a9;
+}
