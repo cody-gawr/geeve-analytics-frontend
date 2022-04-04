@@ -485,7 +485,7 @@
   <app-scripts-settings [clinicId]="id"></app-scripts-settings>
   <app-goals-settings [clinicId]="id"></app-goals-settings>
   <app-dentist-settings [clinicId]="id"></app-dentist-settings>
-  <app-tasks-settings [clinicId]="id"></app-tasks-settings>
+  <!-- <app-tasks-settings [clinicId]="id"></app-tasks-settings> -->
   <app-tasklist-settings [clinicId]="id" *ngIf="( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 1 && clinic_id <= 4) )"></app-tasklist-settings>
   <app-equipment-settings [clinicId]="id"></app-equipment-settings>
   <app-alerts-settings *ngIf="false" [clinicId]="id"></app-alerts-settings>

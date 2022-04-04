@@ -102,19 +102,19 @@
            
                 <select class="proSelect" *ngIf="proCollShow == 1 && apiUrl.includes('test-') && user_type != '4'"
                 (change)="changeProSelect($event.target.value)">
-                    <option value="production_all">Production - All</option>
+                    <option value="production_all">Production</option>
                     <option value="production_dentists">Production - Dentists</option>
                     <option value="production_oht">Production - OHT</option>
                 </select>
                 <select class="proSelect" *ngIf="proCollShow == 2 && apiUrl.includes('test-') && user_type != '4'"
                 (change)="changeProSelect($event.target.value)">
-                  <option value="collection_all">Collection - All</option>
+                  <option value="collection_all">Collection</option>
                   <option value="collection_dentists">Collection - Dentists</option>
                   <option value="collection_oht">Collection - OHT</option>
                 </select>
                 <select class="proSelect" *ngIf="proCollShow == 3 && apiUrl.includes('test-') && user_type != '4'"
                 (change)="changeProSelect($event.target.value)">
-                  <option value="collection_exp_all">Collection-Exp - All</option>
+                  <option value="collection_exp_all">Collection-Exp</option>
                   <option value="collection_exp_dentists">Collection-Exp - Dentists</option>
                   <option value="collection_exp_oht">Collection-Exp - OHT</option>
                </select>
@@ -267,7 +267,7 @@
                 <div *ngIf="!barChartDataDentists[0].data.length && !buildChartDentistsLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
-                  <p class="chart-placeholder-text">You have no production in the selected period</p>
+                  <p class="chart-placeholder-text">You have no Dentist production for the selected period. Have you configured your Dentists in Settings -> Dentists?</p>
                 </div>
               </div>
               <div *ngIf="proCollShow == 1  && proSelectShow =='production_oht'">
@@ -306,7 +306,7 @@
                 <div *ngIf="!barChartDataOht[0].data.length && !buildChartOhtLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
-                  <p class="chart-placeholder-text">You have no production in the selected period</p>
+                  <p class="chart-placeholder-text">You have no OHT production for the selected period. Have you configured your OHTs in Settings -> Dentists?</p>
                 </div>
               </div>
               <!-- Production Chart Start -->
@@ -387,7 +387,7 @@
                 <div *ngIf="!collectionDentistsData[0].data.length && !collectionDentistsLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
-                  <p class="chart-placeholder-text">You have no Collection in the selected period</p>
+                  <p class="chart-placeholder-text">You have no Dentist Collection for the selected period. Have you configured your Dentists in Settings -> Dentists?</p>
                 </div>
               </div>
               <div *ngIf="proCollShow == 2  && proSelectShow =='collection_oht'">
@@ -426,7 +426,7 @@
                 <div *ngIf="!collectionOhtData[0].data.length && !collectionOhtLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
-                  <p class="chart-placeholder-text">You have no Collection in the selected period</p>
+                  <p class="chart-placeholder-text">You have no OHT Collection for the selected period. Have you configured your OHTs in Settings -> Dentists?</p>
                 </div>
               </div>
               <!-- Collection Chart Start -->
@@ -507,7 +507,7 @@
                 <div *ngIf="!collectionExpDentistsData[0].data.length && !collectionExpDentistsLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
-                  <p class="chart-placeholder-text">You have no Collection in the selected period</p>
+                  <p class="chart-placeholder-text">You have no Dentist Collection for the selected period. Have you configured your Dentists in Settings -> Dentists?</p>
                 </div>
               </div>
               <div *ngIf="proCollShow == 3 && proSelectShow =='collection_exp_oht'">
@@ -546,7 +546,7 @@
                 <div *ngIf="!collectionExpOhtData[0].data.length && !collectionExpOhtLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
-                  <p class="chart-placeholder-text">You have no Collection in the selected period</p>
+                  <p class="chart-placeholder-text">You have no OHT Collection for the selected period. Have you configured your OHTs in Settings -> Dentists?</p>
                 </div>
               </div>
               <!-- CollectionExp Chart Start -->
@@ -1305,7 +1305,7 @@
                     <span *ngIf="apiUrl.includes('test-') && user_type == '4'">Hourly Rate</span>             
                     <select class="proSelect" *ngIf="apiUrl.includes('test-') && user_type != '4'"
                     (change)="changeHourlyRateSelect($event.target.value)">
-                        <option value="hr_all">Hourly Rate - All</option>
+                        <option value="hr_all">Hourly Rate</option>
                         <option value="hr_dentists">Hourly Rate - Dentists</option>
                         <option value="hr_oht">Hourly Rate - OHT</option>
                     </select>
@@ -1408,7 +1408,7 @@
                     *ngIf="hourlyRateChartDesntistsData1.length <= 0 && hourlyRateChartDentistsLoader===false">
                     <div class="sa_nodata_div">
                     </div>
-                    <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
+                    <p class="chart-placeholder-text">You have no Dentist hourly rates for the selected period. Have you configured your Dentists in Settings -> Dentists?</p>
                   </div>
                 </div>
                 <div class="cl-card-height" *ngIf="hrSelectShow =='hr_oht'">
@@ -1448,7 +1448,7 @@
                     *ngIf="hourlyRateChartOhtData1.length <= 0 && hourlyRateChartOhtLoader===false">
                     <div class="sa_nodata_div">
                     </div>
-                    <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
+                    <p class="chart-placeholder-text">You have no OHT hourly rates for the selected period. Have you configured your OHTs in Settings -> Dentists?</p>
                   </div>
                 </div>
               </div>
