@@ -691,7 +691,7 @@ table.report-table-main.align > tr > td {
 }
 .monthyear .mat-form-field {
     /* background-color:#f7f7f7 !important; */
-    max-width: 165px !important;
+    max-width: 135px !important;
     margin: auto;
     padding: 0px 20px;
     border-radius: 5px;
@@ -700,4 +700,32 @@ table.report-table-main.align > tr > td {
 .infotxt{
     font-size: 10px;
     color: #a1a8a9;
+}
+
+
+.morning-huddle-date.followuppage.monthyear {
+    text-align: center;
+    display: grid;
+    /* position: relative; */
+    width: 200px;
+    margin: 0px auto;
+    display: grid;
+    position: absolute;
+    z-index: 9999;
+    left: calc(40% - 100px);
+    top: 20px;
+}
+.monthRange .mat-form-field {
+    /* background-color:#f7f7f7 !important; */
+    max-width: 75px !important;
+    margin: auto;
+    padding: 0px 20px;
+    border-radius: 5px;
+    height: 45px;
+}
+.table.report-table.alignUr  tr td{
+    text-align: center !important;
+}
+.strong{
+    font-weight: 700;
 }
