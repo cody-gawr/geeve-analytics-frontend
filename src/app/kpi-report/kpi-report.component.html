@@ -30,7 +30,7 @@
          <mat-select class="external_dentist" [(ngModel)]="selectedMonthRange" (ngModelChange)="onMonthRangeChange($event)" >
            <mat-option *ngFor="let mRange of monthrange" [value]="mRange">{{ mRange }} </mat-option>
          </mat-select>
-         <!-- <span class="infotxt">previous months</span> -->
+         <span class="infotxt">months</span>
        </mat-form-field>  
    </div>
    <div class="top-header-con">
