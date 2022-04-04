@@ -366,6 +366,9 @@ initiate_clinic() {
     {
       this.previousDays = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
     }
+    console.log(this.previousDays);
+    let testDate = this.datepipe.transform(new Date().toISOString(), 'yyyy-MM-dd');
+    console.log(testDate);
     this.dailyTabSettLod = false;
     // clinicGetSettings
     this.clinicianAnalysisService.getClinics( this.clinic_id, 'DailyTaskEnable,EquipListEnable,PostOpEnable,RecallEnable,TickEnable,FtaEnable' ).subscribe((data:any) => {
