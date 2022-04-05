@@ -8,10 +8,6 @@
     </mat-icon>{{ previousDays | date:'EEEE, MMMM d, y':'timezone' }}
 
 
-  <div id="print-section">
-  Your html stuff that you want to print
-</div>
-<button printSectionId="print-section" ngxPrint>print</button> 
     <!--        <mat-form-field floatLabel="never" class="setPreviousDay">
           <mat-select [(value)]="previousDays"  id="setPreviousDay" disabled>          
             <mat-option [value]="addDays(7) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ addDays(7) | date:'MMM d, y':'timezone'}}</mat-option>
@@ -454,7 +450,8 @@
                 {{ dentist.provider_name }}</mat-option>
             </mat-select>
           </mat-form-field>
-          <button id="p-bttom" (click)="printDentistScheduleTab()" tabindex="2" class="mat-raised-button mat-dc float-right"><i class="fa fa-print"></i> Print</button>
+          <button [useExistingCss]="true" printSectionId="mh-dentist-schedule-print" ngxPrint tabindex="2" class="mat-raised-button mat-dc float-right"><i class="fa fa-print"></i> Print</button>
+          <!-- <button id="p-bttom" (click)="printDentistScheduleTab()" tabindex="2" class="mat-raised-button mat-dc float-right"><i class="fa fa-print"></i> Print</button> -->
         </div>
         <strong> Current Day: {{ schedulePatielDate | date:'EEE MMM d':'timezone' }}</strong>
       </div>
@@ -812,7 +809,8 @@
                 {{ dentist.provider_name }}</mat-option>
             </mat-select>
           </mat-form-field>
-          <button id="p-bttom" (click)="printFrontDeskRemindersTab()" tabindex="2" class="mat-raised-button mat-dc float-right"><i class="fa fa-print"></i> Print</button>
+          <button id="p-bttom" [useExistingCss]="true" printSectionId="mh-front-desk-reminders-print" ngxPrint tabindex="2" class="mat-raised-button mat-dc float-right"><i class="fa fa-print"></i> Print</button>
+          <!-- <button id="p-bttom" (click)="printFrontDeskRemindersTab()" tabindex="2" class="mat-raised-button mat-dc float-right"><i class="fa fa-print"></i> Print</button> -->
         </div>
         <strong>Current Day: {{ remindersRecallsOverdueDate | date:'EEE MMM d':'timezone' }}</strong>
       </div>
