@@ -700,6 +700,7 @@ table.report-table-main.align > tr > td {
 .infotxt{
     font-size: 10px;
     color: #a1a8a9;
+    margin-top: 12px;
 }
 
 
@@ -712,14 +713,14 @@ table.report-table-main.align > tr > td {
     display: grid;
     position: absolute;
     z-index: 9999;
-    left: calc(40% - 100px);
+    left: calc(33% - 100px);
     top: 20px;
 }
 .monthRange .mat-form-field {
     /* background-color:#f7f7f7 !important; */
-    max-width: 75px !important;
+    max-width: 35px !important;
     margin: auto;
-    padding: 0px 20px;
+    padding: 0px 0px;
     border-radius: 5px;
     height: 45px;
 }
@@ -728,4 +729,41 @@ table.report-table-main.align > tr > td {
 }
 .strong{
     font-weight: 700;
+}
+
+.morning-huddle-date.followuppage.textw {
+    text-align: center;
+    display: grid;
+    /* position: relative; */
+    width: 200px;
+    margin: 0px auto;
+    display: grid;
+    position: absolute;
+    z-index: 9999;
+    left: calc(40% - 100px);
+    top: 20px;
+}
+.morning-huddle-date.followuppage.monthali {
+    text-align: center;
+    display: grid;
+    /* position: relative; */
+    width: 200px;
+    margin: 0px auto;
+    display: grid;
+    position: absolute;
+    z-index: 9999;
+    left: calc(46% - 100px);
+    top: 20px;
+}
+.morning-huddle-date.followuppage.textmonth {
+    text-align: center;
+    display: grid;
+    /* position: relative; */
+    width: 200px;
+    margin: 0px auto;
+    display: grid;
+    position: absolute;
+    z-index: 9999;
+    left: calc(50% - 100px);
+    top: 20px;
 }

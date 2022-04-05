@@ -54,7 +54,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 			this.range.push(this.selectedMonthYear);
 		}
 		this.selectedMonthYear = this.datepipe.transform(new Date(), 'MMMM-yyyy');	
-		for (var i = 1; i < 13; i++) {
+		for (var i = 1; i < 12; i++) {
 			this.monthrange.push(i);
 		}
 		this.selectedMonthRange = 3;
@@ -123,7 +123,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 		this.selectedYear = this.datepipe.transform(this.selectedMonthYear, 'yyyy');
 		this.endDate = this.datepipe.transform(new Date(this.selectedYear, this.selectedMonth, 0), 'yyyy-MM-dd');
 		let currentdate = new Date(this.endDate);
-		let subMonths = this.selectedMonthRange;
+		let subMonths = this.selectedMonthRange + 1;
 		let sDate = new Date(currentdate.setMonth(currentdate.getMonth()- subMonths)).toISOString().slice(0, 10);
 		let sMonth : any = this.datepipe.transform(sDate, 'M');
 		let sYear: any  = this.datepipe.transform(sDate, 'yyyy');
@@ -160,7 +160,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 		this.selectedYear = this.datepipe.transform(event, 'yyyy');
 		this.endDate = this.datepipe.transform(new Date(this.selectedYear, this.selectedMonth, 0), 'yyyy-MM-dd');
 		let currentdate = new Date(this.endDate);
-		let subMonths = this.selectedMonthRange;
+		let subMonths = this.selectedMonthRange + 1;
 		let sDate = new Date(currentdate.setMonth(currentdate.getMonth()- subMonths)).toISOString().slice(0, 10);
 		let sMonth : any = this.datepipe.transform(sDate, 'M');
 		let sYear: any  = this.datepipe.transform(sDate, 'yyyy');
@@ -173,7 +173,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 	this.selectedYear = this.datepipe.transform(this.selectedMonthYear, 'yyyy');
 	this.endDate = this.datepipe.transform(new Date(this.selectedYear, this.selectedMonth, 0), 'yyyy-MM-dd');
 	let currentdate = new Date(this.endDate);
-	let subMonths = this.selectedMonthRange;
+	let subMonths = this.selectedMonthRange + 1;
 	let sDate = new Date(currentdate.setMonth(currentdate.getMonth()- subMonths)).toISOString().slice(0, 10);
 	let sMonth : any = this.datepipe.transform(sDate, 'M');
 	let sYear: any  = this.datepipe.transform(sDate, 'yyyy');

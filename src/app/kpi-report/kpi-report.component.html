@@ -22,16 +22,22 @@
          <mat-select class="external_dentist" [(ngModel)]="selectedMonthYear" (ngModelChange)="onTabChanged($event)" >
            <mat-option *ngFor="let yearRange of range" [value]="yearRange">{{ yearRange }} </mat-option>
          </mat-select>
-         <!-- <span class="infotxt">and previous 11 months</span> -->
+         
        </mat-form-field>  
    </div>
-   <div class="morning-huddle-date topModel followuppage matwdth monthRange">
+   <div class="morning-huddle-date topModel followuppage matwdth textw">
+      <span class="infotxt">and previous</span> 
+   </div>
+   <div class="morning-huddle-date topModel followuppage matwdth monthRange monthali">
       <mat-form-field>
          <mat-select class="external_dentist" [(ngModel)]="selectedMonthRange" (ngModelChange)="onMonthRangeChange($event)" >
            <mat-option *ngFor="let mRange of monthrange" [value]="mRange">{{ mRange }} </mat-option>
          </mat-select>
-         <span class="infotxt">months</span>
+        
        </mat-form-field>  
+   </div>
+   <div class="morning-huddle-date topModel followuppage matwdth textmonth">
+      <span class="infotxt">months</span>
    </div>
    <div class="top-header-con">
       <h2>KPI Report</h2>
@@ -91,24 +97,34 @@
          <td *ngFor="let reportVal of reportD['val']">
             <table class=" report-table-main report-table" *ngIf="reportD.kpi_type != 'Utilisation Rate'">
                <tr >
-                     <td>{{ reportVal.goal | number:'1.0-0'}}</td>
+                     <td *ngIf="reportD.kpi_type == 'Production' || reportD.kpi_type == 'Collection' || reportD.kpi_type == 'Dentist Production Per Day' || reportD.kpi_type == 'Hourly Rate' || reportD.kpi_type == 'Discount'">
+                           ${{ reportVal.goal | number:'1.0-0'}}
+                        </td>
+                     <td *ngIf="reportD.kpi_type == 'Dentist Days' || reportD.kpi_type == 'Production Units' || reportD.kpi_type == 'New patients'">
+                           {{ reportVal.goal | number:'1.0-0'}}
+                        </td>
                </tr>
                <tr>
-                     <td>{{ reportVal.actual | number:'1.0-0'}}</td>
+                     <td *ngIf="reportD.kpi_type == 'Production' || reportD.kpi_type == 'Collection' || reportD.kpi_type == 'Dentist Production Per Day' || reportD.kpi_type == 'Hourly Rate' || reportD.kpi_type == 'Discount'">
+                           ${{ reportVal.actual | number:'1.0-0'}}
+                        </td>
+                     <td *ngIf="reportD.kpi_type == 'Dentist Days' || reportD.kpi_type == 'Production Units' || reportD.kpi_type == 'New patients'">
+                           {{ reportVal.actual | number:'1.0-0'}}
+                        </td>   
                </tr>
                <tr>
-                     <td>{{ reportVal.goal_percent | number:'1.0-0'}} %</td>
+                     <td>{{ reportVal.goal_percent | number:'1.0-0'}}%</td>
                </tr>
             </table>
             <table class=" report-table-main report-table" *ngIf="reportD.kpi_type == 'Utilisation Rate'">
                <tr >
-                     <td>{{ reportVal.available_hours | number:'1.0-0'}}</td>
+                     <td>{{ reportVal.available_hours | number:'1.0-0'}} Hours</td>
                </tr>
                <tr>
-                     <td>{{ reportVal.used_hours | number:'1.0-0'}}</td>
+                     <td>{{ reportVal.used_hours | number:'1.0-0'}} Hours</td>
                </tr>
                <tr>
-                     <td>{{ reportVal.hours_percent | number:'1.0-0'}} %</td>
+                     <td>{{ reportVal.hours_percent | number:'1.0-0'}}%</td>
                </tr>
             </table>
          </td>
