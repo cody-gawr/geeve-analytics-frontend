@@ -2175,6 +2175,9 @@
       <div class="morning-huddle-date">
         <strong>Current Day: {{ endOfDaysTasksDate | date:'EEE MMM d':'timezone' }} </strong>
       </div>
+      <div class="loader_container mainloader" *ngIf="equipmentListLoading && endTaksLoading ">
+        <img src="../../assets/images/logo-icon.gif">
+      </div>
       <div class="showComplete dailytsk" *ngIf="isEnabletasks && tasklistArray.length > 0">
         <mat-checkbox name="status" [checked]="showComplete" (change)="updateToComplete($event)">Show Complete
         </mat-checkbox>
@@ -2273,124 +2276,126 @@
         </mat-card>
       </div>
       
-
-      <mat-card class="table-card post_call_responsive_border">
-        <mat-card-title>
-          <div class="title-follow-up">
-            <span>Equipment List</span>
-            <!-- <span *ngIf="!isEnableEquipList">Equipment List is disabled. Please check your Jeeve settings to enable this</span> -->
-          </div>
-          <!--     <div class="info-icon-container"><img [tooltip]="tooltipData" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon"/></div> -->
-          <!--     <div class="showComplete showAMPm">
-           <span class="AM">AM</span> <mat-slide-toggle [checked]="showELPm" name="showelpm" (change)="showAMPm($event)"></mat-slide-toggle> <span  class="PM">PM </span>
-          </div> -->
-        </mat-card-title>
-        <mat-card-content>
-          <div class="DentistListSecRow mh-table patient_data-table_responsive DentistListSecRow-equipment-list"
-            >
-            <div class="card-loading" *ngIf="equipmentListLoading">
-              <img class="tableLoader" src="../../assets/images/logo-icon.gif">
-              <!-- <div class="loader-text">Calculating...</div> -->
+      <div *ngIf="equipmentListLoading == false && endTaksLoading == false">
+        <mat-card class="table-card post_call_responsive_border">
+          <mat-card-title>
+            <div class="title-follow-up">
+              <span>Equipment List</span>
+              <!-- <span *ngIf="!isEnableEquipList">Equipment List is disabled. Please check your Jeeve settings to enable this</span> -->
             </div>
-            <table #sort2="matSort" mat-table matSort [dataSource]="lquipmentList" class="mat-elevation-z8"
-              [ngClass]="(lquipmentList.data.length == 0)? 'noDataTableClass' : ''" matSortDisableClear>
-              <!-- Name Column -->
-              <ng-container matColumnDef="equip_item">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Item </th>
-                <td mat-cell *matCellDef="let element; let i=index"> {{element.equip_item }} </td>
-              </ng-container>
-              <ng-container matColumnDef="quantity">
-                <th mat-header-cell *matHeaderCellDef> Quantity </th>
-                <td mat-cell *matCellDef="let element"> {{element.list.quantity }} </td>
-              </ng-container>
-              <ng-container matColumnDef="am">
-                <th mat-header-cell *matHeaderCellDef>AM &nbsp; <i class="fa fa-check" *ngIf="!amButton"></i></th>
-                <!-- [ngClass]="!showELPm? 'show' : 'hide'" -->
-                <td mat-cell *matCellDef="let element;  let i=index">
-                  <!--  [ngClass]="showELPm? 'show' : 'hide'" -->
-                  <input type="number" class="small-number" [ngClass]="!amButton? 'complt' : 'notCmplt' "
-                    [(ngModel)]="lquipmentListAm[element.id].am" (blur)="listUpdate('am',element.id)">
-                  <div *ngIf="(i+1) == lquipmentList.data.length" class="ListButton">
-                    <button (click)="saveQuantity('am')" mat-raised-button color="dc"
-                      class="btn-block btn-lg text-center">
-                      <span *ngIf="amButton">Save</span>
-                      <span *ngIf="!amButton">Update</span>
-                    </button>
-                  </div>
-
-
-                </td>
-              </ng-container>
-              <ng-container matColumnDef="pm">
-                <th mat-header-cell *matHeaderCellDef>PM &nbsp; <i class="fa fa-check" *ngIf="!pmButton"></i></th>
-                <td mat-cell *matCellDef="let element;  let i=index">
-                  <input type="number" class="small-number" [ngClass]="!pmButton? 'complt' : 'notCmplt' "
-                    [(ngModel)]="lquipmentListAm[element.id].pm" (blur)="listUpdate('pm',element.id)">
-                  <div *ngIf="(i+1) == lquipmentList.data.length" class="ListButton">
-                    <button (click)="saveQuantity('pm')" mat-raised-button color="dc"
-                      class="btn-block btn-lg text-center mr-0">
-                      <span *ngIf="pmButton">Save</span>
-                      <span *ngIf="!pmButton">Update</span>
-                    </button>
-                  </div>
-                </td>
-              </ng-container>
-              <ng-container matColumnDef="isDataAvailable9">
-                <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns10.length">
-                  <span *ngIf="isEnableEquipList && futureDateEL == ''">No equipment list has been generated for
-                    today</span>
-                  <span *ngIf="isEnableEquipList && futureDateEL != ''">Equipment List will be populated on
-                    {{futureDateEL}}</span>
-                  <span *ngIf="!isEnableEquipList">Equipment List is not enabled - this can be configured in your Jeeve
-                    Settings menu</span>
-                </mat-footer-cell>
-              </ng-container>
-              <tr mat-header-row *matHeaderRowDef="displayedColumns10"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns10;"></tr>
-              <mat-footer-row *matFooterRowDef="['isDataAvailable9']"
-                [ngClass]="(lquipmentList.data.length <= 0)? 'show' : 'hide'"></mat-footer-row>
-            </table>
-            <table class="ListButtons" *ngIf="lquipmentList.data.length > 0">
-              <tr>
-                <td width="24%"></td>
-                <td width="15%"></td>
-                <td width="25%">
-
-                </td>
-                <td width="25%">
-
-
-                </td>
-              </tr>
-            </table>
-            <!-- responsive table - frontdesk followup (Post op calls)  -->
-            <!--    <div fxHide.gt-sm>
-              <div *ngIf="lquipmentList.length;else noPostOpCalls">
-                <mat-card class="huddle-card" *ngFor="let element of lquipmentList">
-                  <div fxLayout="row" class="huddle-card-row">
-                    <div fxFlex="30">Task Name: </div>
-                    <div fxFlex="70"> {{ element.task.task_name }}</div>
-                  </div>
-
-                  <div fxLayout="row" class="huddle-card-row">
-                    <div fxFlex="30">Complete </div>
-                    <div fxFlex="70">
-                      <mat-slide-toggle [checked]="element.is_complete == 1? true : false" name="status"
-                        (change)="updateTask($event,element.task.id,element.id,element.task.clinic_id)">
-                      </mat-slide-toggle>
-                    </div>
-                  </div>
-                </mat-card>
-              </div>
-              <ng-template #noPostOpCalls>
-                <mat-card class="huddle-card">
-                  <h6> You have no end of days tasks today</h6>
-                </mat-card>
-              </ng-template>
+            <!--     <div class="info-icon-container"><img [tooltip]="tooltipData" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon"/></div> -->
+            <!--     <div class="showComplete showAMPm">
+             <span class="AM">AM</span> <mat-slide-toggle [checked]="showELPm" name="showelpm" (change)="showAMPm($event)"></mat-slide-toggle> <span  class="PM">PM </span>
             </div> -->
-          </div>
-        </mat-card-content>
-      </mat-card>
+          </mat-card-title>
+          <mat-card-content>
+            <div class="DentistListSecRow mh-table patient_data-table_responsive DentistListSecRow-equipment-list"
+              >
+              <div class="card-loading" *ngIf="equipmentListLoading">
+                <img class="tableLoader" src="../../assets/images/logo-icon.gif">
+                <!-- <div class="loader-text">Calculating...</div> -->
+              </div>
+              <table #sort2="matSort" mat-table matSort [dataSource]="lquipmentList" class="mat-elevation-z8"
+                [ngClass]="(lquipmentList.data.length == 0)? 'noDataTableClass' : ''" matSortDisableClear>
+                <!-- Name Column -->
+                <ng-container matColumnDef="equip_item">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Item </th>
+                  <td mat-cell *matCellDef="let element; let i=index"> {{element.equip_item }} </td>
+                </ng-container>
+                <ng-container matColumnDef="quantity">
+                  <th mat-header-cell *matHeaderCellDef> Quantity </th>
+                  <td mat-cell *matCellDef="let element"> {{element.list.quantity }} </td>
+                </ng-container>
+                <ng-container matColumnDef="am">
+                  <th mat-header-cell *matHeaderCellDef>AM &nbsp; <i class="fa fa-check" *ngIf="!amButton"></i></th>
+                  <!-- [ngClass]="!showELPm? 'show' : 'hide'" -->
+                  <td mat-cell *matCellDef="let element;  let i=index">
+                    <!--  [ngClass]="showELPm? 'show' : 'hide'" -->
+                    <input type="number" class="small-number" [ngClass]="!amButton? 'complt' : 'notCmplt' "
+                      [(ngModel)]="lquipmentListAm[element.id].am" (blur)="listUpdate('am',element.id)">
+                    <div *ngIf="(i+1) == lquipmentList.data.length" class="ListButton">
+                      <button (click)="saveQuantity('am')" mat-raised-button color="dc"
+                        class="btn-block btn-lg text-center">
+                        <span *ngIf="amButton">Save</span>
+                        <span *ngIf="!amButton">Update</span>
+                      </button>
+                    </div>
+  
+  
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="pm">
+                  <th mat-header-cell *matHeaderCellDef>PM &nbsp; <i class="fa fa-check" *ngIf="!pmButton"></i></th>
+                  <td mat-cell *matCellDef="let element;  let i=index">
+                    <input type="number" class="small-number" [ngClass]="!pmButton? 'complt' : 'notCmplt' "
+                      [(ngModel)]="lquipmentListAm[element.id].pm" (blur)="listUpdate('pm',element.id)">
+                    <div *ngIf="(i+1) == lquipmentList.data.length" class="ListButton">
+                      <button (click)="saveQuantity('pm')" mat-raised-button color="dc"
+                        class="btn-block btn-lg text-center mr-0">
+                        <span *ngIf="pmButton">Save</span>
+                        <span *ngIf="!pmButton">Update</span>
+                      </button>
+                    </div>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="isDataAvailable9">
+                  <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns10.length">
+                    <span *ngIf="isEnableEquipList && futureDateEL == ''">No equipment list has been generated for
+                      today</span>
+                    <span *ngIf="isEnableEquipList && futureDateEL != ''">Equipment List will be populated on
+                      {{futureDateEL}}</span>
+                    <span *ngIf="!isEnableEquipList">Equipment List is not enabled - this can be configured in your Jeeve
+                      Settings menu</span>
+                  </mat-footer-cell>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns10"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns10;"></tr>
+                <mat-footer-row *matFooterRowDef="['isDataAvailable9']"
+                  [ngClass]="(lquipmentList.data.length <= 0)? 'show' : 'hide'"></mat-footer-row>
+              </table>
+              <table class="ListButtons" *ngIf="lquipmentList.data.length > 0">
+                <tr>
+                  <td width="24%"></td>
+                  <td width="15%"></td>
+                  <td width="25%">
+  
+                  </td>
+                  <td width="25%">
+  
+  
+                  </td>
+                </tr>
+              </table>
+              <!-- responsive table - frontdesk followup (Post op calls)  -->
+              <!--    <div fxHide.gt-sm>
+                <div *ngIf="lquipmentList.length;else noPostOpCalls">
+                  <mat-card class="huddle-card" *ngFor="let element of lquipmentList">
+                    <div fxLayout="row" class="huddle-card-row">
+                      <div fxFlex="30">Task Name: </div>
+                      <div fxFlex="70"> {{ element.task.task_name }}</div>
+                    </div>
+  
+                    <div fxLayout="row" class="huddle-card-row">
+                      <div fxFlex="30">Complete </div>
+                      <div fxFlex="70">
+                        <mat-slide-toggle [checked]="element.is_complete == 1? true : false" name="status"
+                          (change)="updateTask($event,element.task.id,element.id,element.task.clinic_id)">
+                        </mat-slide-toggle>
+                      </div>
+                    </div>
+                  </mat-card>
+                </div>
+                <ng-template #noPostOpCalls>
+                  <mat-card class="huddle-card">
+                    <h6> You have no end of days tasks today</h6>
+                  </mat-card>
+                </ng-template>
+              </div> -->
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      
 
 
 

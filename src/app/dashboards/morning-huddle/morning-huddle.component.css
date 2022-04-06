@@ -942,3 +942,6 @@ tr.mat-row.cdk-row.ng-star-inserted:empty {
 .showComplete.dailytsk{
     float:right !important;
 }
+.loader_container.mainloader{
+    height:20px !important;
+}
