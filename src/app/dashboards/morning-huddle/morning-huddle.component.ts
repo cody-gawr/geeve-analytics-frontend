@@ -882,9 +882,11 @@ initiate_clinic() {
   } 
 
   public isEnabletasks:boolean = false;
+  public tasklistArray:any=[];
   getEndOfDays(){
     this.endTaksLoading = true;
     this.futureDateDT = '';
+    this.tasklistArray= [];
     this.morningHuddleService.getEndOfDays( this.clinic_id, this.previousDays).subscribe((production:any) => {
     this.endOfDaysTasksInComp  =   new MatTableDataSource([]);
         var diffTime:any = this.getDataDiffrences();
@@ -908,6 +910,11 @@ initiate_clinic() {
             this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
           }  
         }        
+        production.data.forEach(res => {
+          if(res.type == "list"){
+            this.tasklistArray.push(res);
+          }
+        });      
       } else if (production.status == '401') {
          this.handleUnAuthorization();         
       }
