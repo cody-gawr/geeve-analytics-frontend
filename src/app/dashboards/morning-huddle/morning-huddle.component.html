@@ -5,7 +5,7 @@
     
     <mat-icon *ngIf="showDwDateArrow && !showProcessingText" (click)="setDate('subtract')" role="img"
       class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectLeft" aria-hidden="true">arrow_back_ios
-    </mat-icon>{{ previousDays | date:'EEEE, MMMM d, y':'timezone' }}
+    </mat-icon>{{ validDateFormat(previousDays) | date:'EEEE, MMMM d, y':'timezone' }}
 
 
     <!--        <mat-form-field floatLabel="never" class="setPreviousDay">

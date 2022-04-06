@@ -1724,5 +1724,14 @@ async getDentistList(){
         newWin.close();
       }, 2000);
     }
+
+    validDateFormat(dateString) {
+      if(dateString) {
+        return dateString.replace(/\s/, 'T');
+      }
+    
+      return null;
+    
+    }
 } 
 
