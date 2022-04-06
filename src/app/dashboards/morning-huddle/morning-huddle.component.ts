@@ -364,8 +364,9 @@ initiate_clinic() {
     $('#title').html('Morning Huddle');
     if(this.previousDays  == '')
     {
-      this.previousDays = this.datepipe.transform(new Date(), 'yyyy-MM-dd H:m:s');
+      this.previousDays = this.datepipe.transform(new Date(), 'yyyy-MM-dd H:m:s').replace(/\s/, 'T');
     }
+    // console.log(this.previousDays);
     this.dailyTabSettLod = false;
     // clinicGetSettings
     this.clinicianAnalysisService.getClinics( this.clinic_id, 'DailyTaskEnable,EquipListEnable,PostOpEnable,RecallEnable,TickEnable,FtaEnable' ).subscribe((data:any) => {
@@ -1549,7 +1550,7 @@ async getDentistList(){
     } else {
       selectedDate.setDate(todaysDate.getDate() - 1);
     }
-    this.previousDays =  this.datepipe.transform(selectedDate, 'yyyy-MM-dd H:m:s');
+    this.previousDays =  this.datepipe.transform(selectedDate, 'yyyy-MM-dd H:m:s').replace(/\s/, 'T');
     this.refreshPerformanceTab();
 
     var diffTime:any = this.getDataDiffrences();
