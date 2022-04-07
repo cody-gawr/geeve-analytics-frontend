@@ -170,6 +170,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public followupsPostopCallsDate:any = '';
     public schedulePatieltd:any = 0;
     public schedulePatielDate:any = '';
+    public productionDate:any = '';
     public scheduleNewPatieltd:any = 0;
     public schedulehours:any = 0;
     public unSchedulehours:any = 0;
@@ -558,7 +559,7 @@ initiate_clinic() {
         this.remindersTotal = production.total;
         this.remindersRecallsOverdueTemp = production.data;
         this.remindersRecallsOverdue = production.data;     
-        this.remindersRecallsOverdueDate = production.date;
+        this.remindersRecallsOverdueDate = this.datepipe.transform( production.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
         if(this.user_type == '4'){         
           this.dentistid = this._cookieService.get("dentistid");
           this.refreshReminderTab(this.dentistid);
@@ -903,7 +904,7 @@ initiate_clinic() {
         {
           //this.isEnabletasks = true;
           this.endOfDaysTasks = production.data;            
-          this.endOfDaysTasksDate = production.date;
+          this.endOfDaysTasksDate = this.datepipe.transform( production.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
           if(this.showComplete == true) {
             this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
           } else {
@@ -1096,8 +1097,8 @@ initiate_clinic() {
       if(production.status == true) {
         this.apiSuccessCount += 1;
         this.scheduleNewPatieltd = production.data.patient;
-        this.schedulePatielDate = production.data.date;
-      } else if (production.status == '401') {
+        this.schedulePatielDate = this.datepipe.transform( production.data.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
+        } else if (production.status == '401') {
          this.handleUnAuthorization();      
       }
     }, error => {
@@ -1230,7 +1231,8 @@ initiate_clinic() {
   		if(production.status == true) { 
         this.apiSuccessCount += 1;
         this.production = production.data;
-  		} else if (production.status == '401') {
+        this.productionDate = this.datepipe.transform( this.production.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
+      } else if (production.status == '401') {
            this.handleUnAuthorization();      
         }
   	}, error => {

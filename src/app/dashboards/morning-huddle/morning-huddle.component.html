@@ -39,7 +39,7 @@
   <mat-tab-group [selectedIndex]="selectedTab">
     <!-- Dentist Performance Tab -->
     <mat-tab label="Dentist Performance" *ngIf="user_type != '5'">
-      <div class="morning-huddle-date"><strong>Previous Day: {{ production.date | date:'EEE MMM d':'timezone'
+      <div class="morning-huddle-date"><strong>Previous Day: {{ productionDate | date:'EEE MMM d':'timezone'
           }}</strong></div>
       <!-- Top Cards -->
       <div>
@@ -343,7 +343,7 @@
             </div>
             <ng-template #noData>
               <mat-card class="huddle-card">
-                <h6> No data found for {{ production.date | date:'EEE MMM d':'timezone' }}
+                <h6> No data found for {{ productionDate | date:'EEE MMM d':'timezone' }}
                 </h6>
               </mat-card>
             </ng-template>
@@ -359,7 +359,7 @@
 
         <div fxHide fxShow.gt-sm class="data-loading-main">
           <div class="no-data" [ngClass]="(dentistList.data.length == 0 && dentistListLoading)? 'show' : 'hide'">
-            No data found for {{ production.date | date:'EEE MMM d':'timezone' }}
+            No data found for {{ productionDate | date:'EEE MMM d':'timezone' }}
           </div>
           <div class="loader" [ngClass]="(dentistList.data.length == 0 && !dentistListLoading)? 'show' : 'hide'">
             <img class="tableLoader" src="../../../assets/images/logo-icon.gif">
