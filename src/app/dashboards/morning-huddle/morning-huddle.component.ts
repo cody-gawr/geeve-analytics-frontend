@@ -1377,7 +1377,7 @@ async getDentistList(){
   endTime(app_date, start, duration){
     var date = app_date + " "+start;
     var currentDate = new Date(date);
-    return  new Date(currentDate.getTime() + duration*60000)
+    return  new Date(currentDate.getTime() + duration*60000).toUTCString();
   }
 
   startDate(app_date){
