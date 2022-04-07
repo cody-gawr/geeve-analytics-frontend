@@ -615,7 +615,7 @@
           <ng-container matColumnDef="start">
             <th mat-header-cell *matHeaderCellDef>Time </th>
             <td id="{{ element.provider_id }}" mat-cell *matCellDef="let element">
-              <span class="newpatient"></span> {{ element.app_date +" " + element.start | date :'h:mm a' }} -
+              <span class="newpatient"></span> {{ element.app_date +"T" + element.start | date :'h:mm a' }} -
               {{ endTime(element.app_date,element.start,element.duration) | date :'h:mm a' }}
 
               <span class="timeUTA" *ngIf="element.is_uta == '1'">UTA</span>
@@ -715,7 +715,7 @@
             <mat-card class="huddle-card" *ngFor="let element of appointmentCards.data">
               <div fxLayout="row" class="huddle-card-row">
                 <div fxFlex="30">Time: </div>
-                <div fxFlex="70"> {{ element.app_date +" " + element.start | date :'h:mm a' }} -
+                <div fxFlex="70"> {{ element.app_date +"T" + element.start | date :'h:mm a' }} -
                   {{ endTime(element.app_date,element.start,element.duration) | date :'h:mm a' }}</div>
               </div>
               <div fxLayout="row" class="huddle-card-row">
@@ -965,7 +965,7 @@
           <ng-container matColumnDef="start">
             <th mat-header-cell *matHeaderCellDef>Time </th>
             <td id="{{ element.provider_id }}" mat-cell *matCellDef="let element"><span class="newpatient"></span>{{
-              startDate(element.app_date) +" " + element.start | date :'h:mm a' }} -
+              startDate(element.app_date) +"T" + element.start | date :'h:mm a' }} -
               {{ endTime(startDate(element.app_date),element.start,element.duration) | date :'h:mm a' }}
               <span class="newpatient" *ngIf="element.is_new_patient != 'No'"></span>
               <span class="timeUTA" *ngIf="element.is_uta == '1'">UTA</span>
@@ -1053,7 +1053,7 @@
             <mat-card class="huddle-card" *ngFor="let element of remindersRecallsOverdue">
               <div fxLayout="row" class="huddle-card-row">
                 <div fxFlex="30">Time: </div>
-                <div fxFlex="70"> {{ startDate(element.app_date) +" " + element.start | date :'h:mm a' }} -
+                <div fxFlex="70"> {{ startDate(element.app_date) +"T" + element.start | date :'h:mm a' }} -
                   {{ endTime(startDate(element.app_date),element.start,element.duration) | date :'h:mm a' }}</div>
               </div>
               <div fxLayout="row" class="huddle-card-row">

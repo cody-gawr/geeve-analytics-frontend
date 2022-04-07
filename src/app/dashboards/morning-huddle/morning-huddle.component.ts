@@ -618,7 +618,7 @@ initiate_clinic() {
        this.followupPostOpCallsInComp = [];
         var diffTime:any = this.getDataDiffrences();
         if(diffTime < 0){
-          this.futureDateOP =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
+          this.futureDateOP =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
         }
         this.poLoadingLoading = false;
       if(production.message == 'success') {
@@ -654,7 +654,7 @@ initiate_clinic() {
       this.followupOverDueRecallInCMP  =[];
         var diffTime:any = this.getDataDiffrences();
         if(diffTime < 0){
-          this.futureDateOR =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
+          this.futureDateOR =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
         }
         this.recallLoadingLoading = false;
 
@@ -736,7 +736,7 @@ initiate_clinic() {
        this.followupTickFollowupsInCMP = [];
         var diffTime:any = this.getDataDiffrences();
         if(diffTime < 0){
-          this.futureDateTH =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
+          this.futureDateTH =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
         }
         this.endTaksLoadingLoading = false;
       if(production.message == 'success') {
@@ -794,7 +794,7 @@ initiate_clinic() {
         this.apiSuccessCount += 1;
         var diffTime:any = this.getDataDiffrences();
         if(diffTime < 0){
-          this.futureDateTF =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
+          this.futureDateTF =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
         }
         this.nextBussinessDay = production.next_day;        
         this.followupsTickFollowupsDate = production.date;  
@@ -848,7 +848,7 @@ initiate_clinic() {
         this.apiSuccessCount += 1;
         var diffTime:any = this.getDataDiffrences();
         if(diffTime < 0){
-          this.futureDateTF =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
+          this.futureDateTF =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
         }
         this.nextBussinessDay = production.next_day;        
         this.followupsTickFollowupsDate = production.date;  
@@ -892,7 +892,7 @@ initiate_clinic() {
     this.endOfDaysTasksInComp  =   new MatTableDataSource([]);
         var diffTime:any = this.getDataDiffrences();
         if(diffTime < 0){
-          this.futureDateDT =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
+          this.futureDateDT =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
         }
       this.endTaksLoading = false;
       if(production.message == 'success') {
@@ -932,7 +932,7 @@ initiate_clinic() {
       this.lquipmentList =  new MatTableDataSource([]);
       var diffTime:any = this.getDataDiffrences();
       if(diffTime < 0){
-       this.futureDateEL =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
+       this.futureDateEL =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
       }
       this.equipmentListLoading = false;
     //  this.lquipmentList.data = [];
@@ -1377,7 +1377,7 @@ async getDentistList(){
   endTime(app_date, start, duration){
     var date = app_date + " "+start;
     var currentDate = new Date(date);
-    return  new Date(currentDate.getTime() + duration*60000);
+    return  new Date(currentDate.getTime() + duration*60000).toISOString();
   }
 
   startDate(app_date){
