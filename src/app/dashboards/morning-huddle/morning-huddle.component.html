@@ -1233,7 +1233,7 @@
                     calls today</span>
                   <span *ngIf="isEnablePO && futureDateOP == '' && followupPostOpCalls.length > 0">All post op calls
                     have been completed</span>
-                  <span *ngIf="isEnablePO && futureDateOP != ''">Post Op calls will be populated on {{ futureDateOP
+                  <span *ngIf="isEnablePO && futureDateOP != ''">Post Op calls will be populated on {{ futureDateOP | date:'MMM d, y':'timezone'
                     }}</span>
                   <span *ngIf="!isEnablePO">Post Op calls are not enabled - this can be configured in your Jeeve
                     Settings menu</span>
@@ -1418,7 +1418,7 @@
                     recalls today</span>
                   <span *ngIf="isEnableOR && futureDateOR =='' && followupOverDueRecall.length > 0">All overdue recalls
                     been completed</span>
-                  <span *ngIf="isEnableOR && futureDateOR !=''">Overdue Recalls will be populated on {{ futureDateOR
+                  <span *ngIf="isEnableOR && futureDateOR !=''">Overdue Recalls will be populated on {{ futureDateOR | date:'MMM d, y':'timezone'
                     }}</span>
                   <span *ngIf="!isEnableOR">Overdue Recalls are not enabled - this can be configured in your Jeeve
                     Settings menu</span>
@@ -1630,7 +1630,7 @@
                   <span *ngIf="isEnableTH && futureDateTH == '' && followupTickFollowups.length > 0">All tick followups
                     have been completed</span>
                   <span *ngIf="isEnableTH && futureDateTH != ''">Tick Followup calls will be populated on {{
-                    futureDateTH }}</span>
+                    futureDateTH | date:'MMM d, y':'timezone' }}</span>
                   <span *ngIf="!isEnableTH">Tick Followup are not enabled - this can be configured in your Jeeve
                     Settings menu</span>
                 </mat-footer-cell>
@@ -1852,7 +1852,7 @@
                     followups today</span>
                   <span *ngIf="isEnableFT && futureDateTF == ''  && followupFtaFollowups.length > 0">All FTA followups
                     have been completed</span>
-                  <span *ngIf="isEnableFT && futureDateTF != ''">FTA Followup calls will be populated on {{ futureDateTH
+                  <span *ngIf="isEnableFT && futureDateTF != ''">FTA Followup calls will be populated on {{ futureDateTH | date:'MMM d, y':'timezone'
                     }}</span>
                   <span *ngIf="!isEnableFT">FTA Followup are not enabled - this can be configured in your Jeeve Settings
                     menu</span>
@@ -2077,7 +2077,7 @@
                   followups today</span>
                 <span *ngIf="isEnableUT && futureDateTF == ''  && followupUtaFollowups.length > 0">All UTA followups
                   have been completed</span>
-                <span *ngIf="isEnableUT && futureDateTF != ''">UTA Followup calls will be populated on {{ futureDateTH
+                <span *ngIf="isEnableUT && futureDateTF != ''">UTA Followup calls will be populated on {{ futureDateTH | date:'MMM d, y':'timezone'
                   }}</span>
                 <span *ngIf="!isEnableUT">UTA Followup are not enabled - this can be configured in your Jeeve Settings
                   menu</span>
@@ -2235,7 +2235,7 @@
                 <ng-container matColumnDef="isDataAvailable9">
                   <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns9.length">
                     <span *ngIf="isEnabletasks && futureDateDT == ''">No task list has been generated for today</span>
-                    <span *ngIf="isEnabletasks && futureDateDT != ''">Daily Tasks will be populated on {{ futureDateDT
+                    <span *ngIf="isEnabletasks && futureDateDT != ''">Daily Tasks will be populated on {{ futureDateDT | date:'MMM d, y':'timezone'
                       }}</span>
                     <span *ngIf="!isEnabletasks">Daily Tasks are not enabled - this can be configured in your Jeeve
                       Settings menu</span>
@@ -2343,7 +2343,7 @@
                     <span *ngIf="isEnableEquipList && futureDateEL == ''">No equipment list has been generated for
                       today</span>
                     <span *ngIf="isEnableEquipList && futureDateEL != ''">Equipment List will be populated on
-                      {{futureDateEL}}</span>
+                      {{futureDateEL | date:'MMM d, y':'timezone'}}</span>
                     <span *ngIf="!isEnableEquipList">Equipment List is not enabled - this can be configured in your Jeeve
                       Settings menu</span>
                   </mat-footer-cell>

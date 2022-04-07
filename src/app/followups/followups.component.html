@@ -3,7 +3,7 @@
     <div class="morning-huddle-date topModel followuppage">
         <mat-icon (click)="setDate('subtract')" role="img"
             class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectLeft" aria-hidden="true">
-            arrow_back_ios</mat-icon>{{ selectedMonthYear }}
+            arrow_back_ios</mat-icon>{{ selectedMonthYear | date:'MMMM y':'timezone'}}
         <mat-icon (click)="setDate('add')" role="img"
             class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">
             arrow_forward_ios</mat-icon>
@@ -149,9 +149,9 @@
                         <ng-container matColumnDef="isDataAvailable1">
                             <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns2.length">
                                 <span *ngIf="isEnableOR && followupOverDueRecall.length <= 0">You have no overdue
-                                    recalls for {{ selectedMonthYear }}</span>
+                                    recalls for {{ selectedMonthYear | date:'MMMM y':'timezone'}}</span>
                                 <span *ngIf="isEnableOR && followupOverDueRecall.length > 0">All overdue recalls have
-                                    been completed for {{ selectedMonthYear }}</span>
+                                    been completed for {{ selectedMonthYear | date:'MMMM y':'timezone' }}</span>
                                 <span *ngIf="!isEnableOR">Overdue Recalls are not enabled - this can be configured in
                                     your Jeeve Settings menu</span>
                             </mat-footer-cell>
@@ -454,9 +454,9 @@
                         <ng-container matColumnDef="isDataAvailable1">
                             <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns3.length">
                                 <span *ngIf="isEnableTH && followupTickFollowups.length <= 0">You have no tick followups
-                                    for {{ selectedMonthYear }}</span>
+                                    for {{ selectedMonthYear | date:'MMMM y':'timezone' }}</span>
                                 <span *ngIf="isEnableTH && followupTickFollowups.length > 0">All tick followups have
-                                    been completed for {{ selectedMonthYear }}</span>
+                                    been completed for {{ selectedMonthYear | date:'MMMM y':'timezone' }}</span>
                                 <span *ngIf="!isEnableTH">Tick Followup are not enabled - this can be configured in your
                                     Jeeve Settings menu</span>
                             </mat-footer-cell>
@@ -707,9 +707,9 @@
                         <ng-container matColumnDef="isDataAvailable1">
                             <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns1.length">
                                 <span *ngIf="isEnablePO && followupPostOpCalls.length <= 0">You have no post op calls
-                                    for {{ selectedMonthYear }}</span>
+                                    for {{ selectedMonthYear | date:'MMMM y':'timezone'}}</span>
                                 <span *ngIf="isEnablePO && followupPostOpCalls.length > 0">All post op calls have been
-                                    completed for {{ selectedMonthYear }}</span>
+                                    completed for {{ selectedMonthYear | date:'MMMM y':'timezone'}}</span>
                                 <span *ngIf="!isEnablePO">Post Op calls are not enabled - this can be configured in your
                                     Jeeve Settings menu</span>
                             </mat-footer-cell>
@@ -969,9 +969,9 @@
                         <ng-container matColumnDef="isDataAvailable1">
                             <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns3.length">
                                 <span *ngIf="isEnableFT && followupFtaFollowups.length <= 0">You have no FTA followups
-                                    for {{ selectedMonthYear }}</span>
+                                    for {{ selectedMonthYear | date:'MMMM y':'timezone'}}</span>
                                 <span *ngIf="isEnableFT && followupFtaFollowups.length > 0">All FTA followups have been
-                                    completed for {{ selectedMonthYear }}</span>
+                                    completed for {{ selectedMonthYear | date:'MMMM y':'timezone'}}</span>
                                 <span *ngIf="!isEnableFT">FTA Followup are not enabled - this can be configured in your
                                     Jeeve Settings menu</span>
                             </mat-footer-cell>
@@ -1279,9 +1279,9 @@
                         <ng-container matColumnDef="isDataAvailable1">
                             <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns3.length">
                                 <span *ngIf="isEnableUT && followupUtaFollowups.length <= 0">You have no UTA followups
-                                    for {{ selectedMonthYear }}</span>
+                                    for {{ selectedMonthYear | date:'MMMM y':'timezone'}}</span>
                                 <span *ngIf="isEnableUT && followupUtaFollowups.length <= 0">All UTA followups have been
-                                    completed for {{ selectedMonthYear }}</span>
+                                    completed for {{ selectedMonthYear | date:'MMMM y':'timezone'}}</span>
                                 <span *ngIf="!isEnableUT">UTA Followup are not enabled - this can be configured in your
                                     Jeeve Settings menu</span>
                             </mat-footer-cell>
@@ -1557,7 +1557,7 @@
                         <ng-container matColumnDef="isDataAvailable1">
                             <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns4.length">
                                 <span *ngIf="internalReferrals.length <= 0">You have no internal
-                                    referrals for {{ selectedMonthYear }}</span>
+                                    referrals for {{ selectedMonthYear | date:'MMMM y':'timezone'}}</span>
                             </mat-footer-cell>
                         </ng-container>
                         <tr mat-header-row *matHeaderRowDef="displayedColumns4"></tr>

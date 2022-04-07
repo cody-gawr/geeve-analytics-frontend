@@ -345,7 +345,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.matTabGroup.realignInkBar();
     }, 500);
-    this.selectedMonthYear = this.datepipe.transform(new Date(), 'MMMM yyyy');
+    this.selectedMonthYear = this.datepipe.transform(new Date(), 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
 
     var self = this;
    this.autoCall =  setInterval( function()
@@ -1065,14 +1065,16 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   }
 
   setDate(type) {
-    let todaysDate = new Date('01' + this.selectedMonthYear);
-    let selectedDate = new Date('01' + this.selectedMonthYear);
+    // let todaysDate = new Date('01' + this.selectedMonthYear);
+    let todaysDate = new Date(this.selectedMonthYear);
+    // let selectedDate = new Date('01' + this.selectedMonthYear);
+    let selectedDate = new Date(this.selectedMonthYear);
     if (type == 'add') {
       selectedDate.setMonth(todaysDate.getMonth() + 1);
     } else {
       selectedDate.setMonth(todaysDate.getMonth() - 1);
     }
-    this.selectedMonthYear = this.datepipe.transform(selectedDate, 'MMMM yyyy');
+    this.selectedMonthYear = this.datepipe.transform(selectedDate, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
     this.refreshPerformanceTab();
   }
 
