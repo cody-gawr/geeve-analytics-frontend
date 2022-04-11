@@ -102,19 +102,19 @@
            
                 <select class="proSelect" *ngIf="proCollShow == 1 && apiUrl.includes('test-') && user_type != '4'"
                 (change)="changeProSelect($event.target.value)">
-                    <option value="production_all">Production</option>
+                    <option value="production_all">Production - All</option>
                     <option value="production_dentists">Production - Dentists</option>
                     <option value="production_oht">Production - OHT</option>
                 </select>
                 <select class="proSelect" *ngIf="proCollShow == 2 && apiUrl.includes('test-') && user_type != '4'"
                 (change)="changeProSelect($event.target.value)">
-                  <option value="collection_all">Collection</option>
+                  <option value="collection_all">Collection - All</option>
                   <option value="collection_dentists">Collection - Dentists</option>
                   <option value="collection_oht">Collection - OHT</option>
                 </select>
                 <select class="proSelect" *ngIf="proCollShow == 3 && apiUrl.includes('test-') && user_type != '4'"
                 (change)="changeProSelect($event.target.value)">
-                  <option value="collection_exp_all">Collection-Exp</option>
+                  <option value="collection_exp_all">Collection-Exp - All</option>
                   <option value="collection_exp_dentists">Collection-Exp - Dentists</option>
                   <option value="collection_exp_oht">Collection-Exp - OHT</option>
                </select>
@@ -1305,7 +1305,7 @@
                     <span *ngIf="apiUrl.includes('test-') && user_type == '4'">Hourly Rate</span>             
                     <select class="proSelect" *ngIf="apiUrl.includes('test-') && user_type != '4'"
                     (change)="changeHourlyRateSelect($event.target.value)">
-                        <option value="hr_all">Hourly Rate</option>
+                        <option value="hr_all">Hourly Rate - All</option>
                         <option value="hr_dentists">Hourly Rate - Dentists</option>
                         <option value="hr_oht">Hourly Rate - OHT</option>
                     </select>
