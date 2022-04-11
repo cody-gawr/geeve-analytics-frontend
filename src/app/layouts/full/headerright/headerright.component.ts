@@ -487,14 +487,44 @@ export class AppHeaderrightComponent implements AfterViewInit {
         this.getDentists();
       }
       if(this.route == "/dashboards/cliniciananalysis" || this.route == "/dashboards/clinicianproceedures"){
-        if(this.clinic_id.length == 1){
+        if(Array.isArray(this.clinic_id)){
+          if(this.clinic_id.length == 1){
+            this.getDentists();
+          }
+        }else{
           this.getDentists();
-        }
+        }      
       }
       
       $(".internal_clinic").val(newValue);
-      if (this.user_type_dentist != "2" && newValue != "all" && this.clinic_id.length == 1) {
-        this.getChildID(newValue);
+      if (this.user_type_dentist != "2" && newValue != "all") {
+       // this.getChildID(newValue);
+        if(Array.isArray(this.clinic_id)){
+          if(this.clinic_id.length == 1){
+            this.getChildID(newValue);
+          }else{
+              $("#clinic_initiate").click();
+              if (this._cookieService.get("clinic_dentist")) {
+                let dentistclinic = this._cookieService
+                  .get("clinic_dentist")
+                  .split('_');
+                if (dentistclinic[0] !== newValue) {
+                  this.selectedDentist = "all";
+                } else {
+                  if (dentistclinic[1] == "all") {
+                    this.selectedDentist = dentistclinic[1];
+                  } else {
+                    this.selectedDentist = parseInt(dentistclinic[1]);
+                  }
+                }
+              } else {
+                this.selectedDentist = "all";
+              }
+              this.loadDentist(this.selectedDentist);
+          }
+        }else{
+          this.getChildID(newValue);
+        }
       } else {
         $("#clinic_initiate").click();
         if (this._cookieService.get("clinic_dentist")) {
@@ -538,7 +568,9 @@ export class AppHeaderrightComponent implements AfterViewInit {
       this.dentistService.getChildID(clinic_id).subscribe(
         (res) => {
           let opts = this.constants.cookieOpt as CookieOptions;
-          this._cookieService.put("dentistid", res.data, opts);
+          if(res.data !=0){
+            this._cookieService.put("dentistid", res.data, opts);
+          }          
           this.providerIdDentist = res.data;
           $("#clinic_initiate").click();
         },
