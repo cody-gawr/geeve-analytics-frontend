@@ -1697,7 +1697,7 @@ public predictedTotal0;
 public predictedTotal;
 public predictedTP:any=[];
 public predictorRatioTab;
-public buildChartPredictorLoader:any;
+public buildChartPredictorLoader:boolean=false;
 public prKey:any[] =[];
 public PRcolors;
    public predictedstackedChartData = [
@@ -1723,9 +1723,9 @@ public PRcolors;
   private buildChartPredictor() {
     if(this.clinic_id == null || this.clinic_id == 'null')
       return true;
-    this.buildChartLoader = true;
+    this.buildChartPredictorLoader = true;
     this.clinicianproceeduresService.PredictorRatio(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
-      this.buildChartLoader = false;
+      
       this.predictedstackedChartData1 = [{data: [], label: 'Indirect Restorations'},{data: [], label: 'Large Direct Restorations' } ];
       this.predictedstackedChartData2 = [{data: [], label: 'RCT'},{data: [], label: 'Extractions' } ];
       this.predictedstackedChartData3 = [{data: [], label: "RCT's Started" },{data: [], label: "RCT's Completed" } ];
@@ -1763,6 +1763,7 @@ public PRcolors;
             this.predictedstackedChartLabels3.push(provider);
           } 
         });
+        this.buildChartPredictorLoader = false;
         this.changeDentistPredictorMain('1')
         // this.predictorRatioTab = '1';
         // this.predictedstackedChartData= this.predictedstackedChartData1;

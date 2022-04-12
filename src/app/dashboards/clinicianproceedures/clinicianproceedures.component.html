@@ -506,7 +506,7 @@
                 <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
               </div>
             </div>
-            <div fxLayout="row wrap" fxLayoutAlign="center center"
+            <div fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="buildChartPredictorLoader == false"
               class="m-t-40 predicted_main predicted2 sa_chart_details_sec" [style.display]="'none'">
               <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
                 <h3 class="m-0 value-num">{{ predictedstackedChartAvr }}</h3>
@@ -519,7 +519,7 @@
                 <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
               </div>
             </div>
-            <div fxLayout="row wrap" fxLayoutAlign="center center"
+            <div fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="buildChartPredictorLoader == false"
               class="m-t-40 predicted_main predicted3 sa_chart_details_sec" [style.display]="'none'">
               <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
                 <h3 class="m-0 value-num">{{ predictedstackedChartAvr }}</h3>
@@ -534,10 +534,10 @@
             </div>
           </div>
 
-          <div *ngIf="buildChartPredictorLoader" class="loader_container loader_container_middle"><img
+          <!-- <div *ngIf="buildChartPredictorLoader" class="loader_container loader_container_middle"><img
               class="loader_ico" src="../assets/images/720.gif">
             <div class="loader-text">Calculating...</div>
-          </div>
+          </div> -->
 
         </mat-card-content>
       </mat-card>
