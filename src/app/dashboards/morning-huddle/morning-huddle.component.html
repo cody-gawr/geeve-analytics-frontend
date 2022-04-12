@@ -450,8 +450,8 @@
                 {{ dentist.provider_name }}</mat-option>
             </mat-select>
           </mat-form-field>
-          <button [useExistingCss]="true" printSectionId="mh-dentist-schedule-print" ngxPrint tabindex="2" class="mat-raised-button mat-dc float-right"><i class="fa fa-print"></i> Print</button>
-          <!-- <button id="p-bttom" (click)="printDentistScheduleTab()" tabindex="2" class="mat-raised-button mat-dc float-right"><i class="fa fa-print"></i> Print</button> -->
+          <!-- <button [useExistingCss]="true" printSectionId="mh-dentist-schedule-print" ngxPrint tabindex="2" class="mat-raised-button mat-dc float-right"><i class="fa fa-print"></i> Print</button> -->
+          <button id="p-bttom" (click)="printDentistScheduleTab()" tabindex="2" class="mat-raised-button mat-dc float-right"><i class="fa fa-print"></i> Print</button>
         </div>
         <strong> Current Day: {{ schedulePatielDate | date:'EEE MMM d':'timezone' }}</strong>
       </div>
