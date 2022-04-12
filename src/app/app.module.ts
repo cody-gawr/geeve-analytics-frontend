@@ -46,7 +46,6 @@ import { DashboardDurationTabsComponent } from './dashboards/dashboard-duration-
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { KanbanAllModule,KanbanModule, KanbanComponent,KanbanModel  } from '@syncfusion/ej2-angular-kanban';
 import { DropDownListAllModule } from '@syncfusion/ej2-angular-dropdowns';
-import {NgxPrintModule} from 'ngx-print';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
   wheelSpeed: 2,
@@ -88,7 +87,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   imports: [
     UserIdleModule.forRoot({idle: 14400, timeout: 10, ping: 10}),
     MatMenuModule,
-    NgxPrintModule,
     DemoMaterialModule,
     BrowserModule,
     BrowserAnimationsModule,
