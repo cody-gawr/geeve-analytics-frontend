@@ -1853,6 +1853,7 @@ public ftaTrendMultiLabels = [];
   this.ftaChartTrend1=[];
   this.Apirequest = this.Apirequest -1;
        if(data.message == 'success'){
+        data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         this.fdFtaRatioTrendLoader =false;
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           this.showByclinicfta = true;
@@ -1977,7 +1978,7 @@ public ftaTrendMultiLabels = [];
     this.wtaChartTrend1=[];
     this.Apirequest = this.Apirequest -1;
        if(data.message == 'success'){
-        data.data.sort((a, b)=> a.duration - b.duration);
+        data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           this.showByclinicUR = true;
         }
@@ -2089,6 +2090,7 @@ public utaTrendMultiLabels = [];
   this.utaChartTrend1=[];
   this.Apirequest = this.Apirequest -1;
        if(data.message == 'success'){
+        data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         this.fdUtaRatioTrendLoader = false;
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           this.showByclinicUta = true;
@@ -2194,6 +2196,7 @@ public ticChartTrendMultiLabels = [];
   this.tickChartTrend1=[];
   this.Apirequest = this.Apirequest -1;
        if(data.message == 'success'){
+        data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         this.fdNumberOfTicksTrendLoader = false;
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           this.showByclinictic = true;
@@ -2308,7 +2311,7 @@ public ticChartTrendMultiLabels = [];
    this.clinic_id && this.frontdeskService.frontdeskdRecallPrebookRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
     this.Apirequest = this.Apirequest -1;  
     if(data.message == 'success'){
-      data.data.sort((a, b)=> a.duration - b.duration);
+      data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
       if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
         this.showByclinicRP = true;
       }
@@ -2448,7 +2451,7 @@ public ticChartTrendMultiLabels = [];
    this.clinic_id && this.frontdeskService.fdReappointRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
     this.Apirequest = this.Apirequest -1;   
     if(data.message == 'success'){
-      data.data.sort((a, b)=> a.duration - b.duration);
+      data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         this.fdTreatmentPrebookRateTrendLoader = false;
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           this.showByclinic = true;

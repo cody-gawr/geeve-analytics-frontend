@@ -2684,7 +2684,7 @@ export class FinancesComponent implements AfterViewInit {
       this.showClinic = false;
       this.finProductionByClinicianTrendLoader = false;
       if (data.message == 'success') {        
-        data.data.sort((a, b)=> a.duration - b.duration);
+        data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         data.data.forEach(res => {
           const sumProd = res.val.reduce((accumulator, current) => accumulator + Number(current['production']), 0)
           res.val.forEach((result, key) => {
@@ -2790,6 +2790,7 @@ export class FinancesComponent implements AfterViewInit {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
+        data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           this.showByclinic = true;
         }

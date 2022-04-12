@@ -668,7 +668,7 @@ export class MarketingComponent implements AfterViewInit {
           innerHtml += '</thead><tbody>';
           let total: any = 0;
           bodyLines.forEach(function (body, i) {
-            if (!body[0].includes("0")) {
+           // if (!body[0].includes("0")) {
               var singleval = body[0].split(':');
               if (singleval[1].includes("-")) {
                 var temp = singleval[1];
@@ -680,7 +680,7 @@ export class MarketingComponent implements AfterViewInit {
                 total += parseFloat(amount);
               }
 
-            }
+          //  }
           });
           total = Math.round(total);
           if (total != 0) {
@@ -1256,6 +1256,8 @@ export class MarketingComponent implements AfterViewInit {
     this.mkNewPatientsByReferalLabels = [];
     this.marketingService.mkNewPatientsByReferral(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       if (data.message == 'success') {
+        this.mkNewPatientsByReferalMulti = [];
+        this.mkNewPatientsByReferalLabels = [];
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           this.totalNewPatientsReferral = Math.round(data.total);
           this.showmulticlinicNewPatients = true;
@@ -1365,6 +1367,8 @@ export class MarketingComponent implements AfterViewInit {
       this.revenueReferralData = [];
       this.revenueReferralLabels = [];
       if (data.message == 'success') {
+        this.mkNewPatientsByReferalRevMulti = [];
+        this.mkNewPatientsByReferalRevLabels = [];
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           this.totalNewPatientsReferralRev = Math.round(data.total);
           this.showmulticlinicNewPatientsRev = true;
@@ -2266,7 +2270,7 @@ export class MarketingComponent implements AfterViewInit {
           this.showByclinic = true;
         }
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
-          data.data.sort((a, b)=> a.duration - b.duration);
+          data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
           data.data.forEach(res => { 
             res.val.forEach((reslt, key) => {
               if (typeof (this.totavisitTrendMulti[key]) == 'undefined') {
@@ -2405,7 +2409,7 @@ export class MarketingComponent implements AfterViewInit {
       if (data.message == 'success') {
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           this.showNPclinic = true;
-            data.data.sort((a, b)=> a.duration - b.duration);
+            data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
             data.data.forEach(res => { 
               res.val.forEach((reslt, key) => {
                 if (typeof (this.newPatientsTrendMulti[key]) == 'undefined') {
@@ -2477,7 +2481,7 @@ export class MarketingComponent implements AfterViewInit {
         
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           this.showAPclinic = true;
-          data.data.sort((a, b)=> a.duration - b.duration);
+          data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
           data.data.forEach(res => { 
             res.val.forEach((reslt, key) => {
             if (typeof (this.newAPatientsTrendMulti[key]) == 'undefined') {
