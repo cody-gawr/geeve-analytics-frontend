@@ -96,10 +96,11 @@
                                     <p class="chart-placeholder-text">You have no new patients from referral sources in
                                         the selected period</p>
                                 </div>
+                                <!-- labelBarmkPatientByReferralOptionsStacked -->
                                 <canvas #myCanvas2 class="trendProductionPercentage" baseChart
                                     *ngIf="showTrend == true && newPatientsTimeLabelsTrend && newPatientsTimeLabelsTrend.length  > 0 && mkNewPatientsByReferralLoader == false"
                                     [datasets]="mkNewPatientsReferralChartTrend" [labels]="newPatientsTimeLabelsTrend"
-                                    [options]="labelBarmkPatientByReferralOptionsStacked" [legend]="false"
+                                    [options]="stackedChartOptionsRef" [legend]="false"
                                     [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
                                     (chartClick)="chartClicked($event)">
                                 </canvas>
@@ -185,10 +186,11 @@
                                 <canvas #myCanvas2 class="trendProductionPercentage" baseChart
                                     *ngIf="showTrend == true && revenueReferralLabelsTrend && revenueReferralLabelsTrend.length  > 0 && mkRevenueByReferralLoader == false"
                                     [datasets]="mkRevenueByReferralChartTrend" [labels]="revenueReferralLabelsTrend"
-                                    [options]="labelBarmkRevenueByReferralOptionsStacked" [legend]="false"
+                                    [options]="stackedChartOptionsRev" [legend]="false"
                                     [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
                                     (chartClick)="chartClicked($event)">
                                 </canvas>
+                                <!-- labelBarmkRevenueByReferralOptionsStacked -->
                                 <div class="no-data-placeholder"
                                     *ngIf="showTrend == true && revenueReferralLabelsTrend.length <= 0 && mkRevenueByReferralLoader == false">
                                     <div class="sa_nodata_div">

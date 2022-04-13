@@ -492,7 +492,7 @@
           </div>
           <div class="card-footer">
             <div fxLayout="row wrap" class="m-t-40 predicted_main predicted1 sa_chart_details_sec"
-              fxLayoutAlign="center center">
+              fxLayoutAlign="center center" *ngIf="buildChartPredictorLoader == false && predictorRatioTab == '1'">
               <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
                 <!--    <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
                 <h3 class="m-0 value-num">{{ predictedstackedChartAvr }}</h3>
@@ -506,7 +506,7 @@
                 <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
               </div>
             </div>
-            <div fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="buildChartPredictorLoader == false"
+            <div fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="buildChartPredictorLoader == false && predictorRatioTab == '2'"
               class="m-t-40 predicted_main predicted2 sa_chart_details_sec" [style.display]="'none'">
               <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
                 <h3 class="m-0 value-num">{{ predictedstackedChartAvr }}</h3>
@@ -519,7 +519,7 @@
                 <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
               </div>
             </div>
-            <div fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="buildChartPredictorLoader == false"
+            <div fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="buildChartPredictorLoader == false && predictorRatioTab == '3'"
               class="m-t-40 predicted_main predicted3 sa_chart_details_sec" [style.display]="'none'">
               <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
                 <h3 class="m-0 value-num">{{ predictedstackedChartAvr }}</h3>

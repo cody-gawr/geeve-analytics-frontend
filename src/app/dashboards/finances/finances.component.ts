@@ -2987,6 +2987,7 @@ export class FinancesComponent implements AfterViewInit {
         this.finCollectionTrend();
         
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          data.dataMulti.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
           data.dataMulti.forEach(res => {
             res.val.forEach((result, key) => {
               if (typeof (this.netProfitPercentChartTrendMulti[key]) == 'undefined') {
@@ -3148,19 +3149,21 @@ export class FinancesComponent implements AfterViewInit {
         });
 
         const vsumClinics = (range:any) => data.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.production), 0);
+        const vsumClinicsVisits = (range:any) => data.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.num_visits), 0);
         const vsumClinics1 = (range:any) => data.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.production), 0);
+        const vsumClinics1Visits = (range:any) => data.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.num_visits), 0);
        
         this.VMonthRange = [...new Set(this.VMonthRange)];
         this.VYearRange = [...new Set(this.VYearRange)];
         this.clinicIds = [...new Set(this.clinicIds)];
         if (this.trendValue == 'c') {
           this.VMonthRange.forEach(ele => {
-            this.productionVisitChartTrend1.push(Math.round(vsumClinics(ele) / this.clinicIds.length));
+            this.productionVisitChartTrend1.push(Math.round(vsumClinics(ele) / vsumClinicsVisits(ele)));
             this.productionVisitChartTrendLabels1.push(this.datePipe.transform(ele, 'MMM y'));
           });
         }else{
           this.VYearRange.forEach(ele => {
-            this.productionVisitChartTrend1.push(Math.round(vsumClinics1(ele) / this.clinicIds.length));
+            this.productionVisitChartTrend1.push(Math.round(vsumClinics1(ele) / vsumClinics1Visits(ele)));
             this.productionVisitChartTrendLabels1.push(ele);
           });
         }	
