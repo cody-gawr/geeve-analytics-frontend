@@ -74,7 +74,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   currentPage: number = 1;
   dentistList = new MatTableDataSource([]);
   dentistListLoading: boolean = false;
-  displayedColumns: string[] = ['providerId', 'name','jeeve_id','position', 'appbook','is_active'];
+  displayedColumns: string[] = ['providerId', 'name','position', 'appbook','jeeve_id','is_active'];
   jeeveProviderIds: any = [];
   appBooks: any = [];
   editing = {};

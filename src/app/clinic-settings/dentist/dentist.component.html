@@ -71,19 +71,6 @@
             />
           </td>
         </ng-container>
-
-         <ng-container matColumnDef="jeeve_id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header  [ngClass] =" advanceOption ? '' : 'hide' ">Jeeve Provider ID</th>
-          <td mat-cell *matCellDef="let element; let i=index"  [ngClass] =" advanceOption ? '' : 'hide' ">            
-             <div class="jeeveProviderIdDrop sa_forms_design">
-                    <select placeholder="None"  id="setNote"
-                      (change)="updateValue($event, 'jeeve_id', i,element.providerId,element.name)">
-                      <option value="null">None</option>
-                      <option [selected]="element.jeeve_id == jeeveProviderId.id" value="{{jeeveProviderId.id}}" *ngFor="let jeeveProviderId of jeeveProviderIds">{{jeeveProviderId.name}}</option>
-                    </select>
-                  </div>
-          </td>
-        </ng-container>
         <ng-container matColumnDef="position">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Position
             <div class="info-button">
@@ -101,7 +88,6 @@
                   </div>
           </td>
         </ng-container>
-
         <ng-container matColumnDef="appbook">
           <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass] =" advanceOption ? '' : 'hide' " >App Book
             <!-- <div class="info-button">
@@ -116,6 +102,18 @@
                      (change)="updateValue($event, 'appBookId', i,element.providerId,element.name)">
                       <option value="null">None</option>
                       <option [disabled] = "appBook.disabled" [selected]="element.app_book_id == appBook.app_book_id" value="{{appBook.app_book_id}}" *ngFor="let appBook of appBooks">{{appBook.app_book_name}}</option>
+                    </select>
+                  </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="jeeve_id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header  [ngClass] =" advanceOption ? '' : 'hide' ">Jeeve Provider ID</th>
+          <td mat-cell *matCellDef="let element; let i=index"  [ngClass] =" advanceOption ? '' : 'hide' ">            
+             <div class="jeeveProviderIdDrop sa_forms_design">
+                    <select placeholder="None"  id="setNote"
+                      (change)="updateValue($event, 'jeeve_id', i,element.providerId,element.name)">
+                      <option value="null">None</option>
+                      <option [selected]="element.jeeve_id == jeeveProviderId.id" value="{{jeeveProviderId.id}}" *ngFor="let jeeveProviderId of jeeveProviderIds">{{jeeveProviderId.name}}</option>
                     </select>
                   </div>
           </td>
