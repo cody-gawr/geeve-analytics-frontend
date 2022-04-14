@@ -431,10 +431,11 @@ initiate_clinic() {
       }
 
       if(this.user_type != '4'){
-        this.getEndOfDays();
+        // this.getEndOfDays();
         this.getEquipmentList();
       }
     }
+    this.getEndOfDays();
   }
 
   
@@ -475,9 +476,10 @@ initiate_clinic() {
       this.getFollowupScripts();
     }
     if(this.user_type != '4'){
-      this.getEndOfDays();
+     // this.getEndOfDays();
       this.getEquipmentList();
     }
+    this.getEndOfDays();
   }
 
   refreshScheduleTab(event){

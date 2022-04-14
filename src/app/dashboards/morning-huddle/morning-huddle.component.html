@@ -2170,7 +2170,7 @@
     </mat-tab>
     <!-- UTA Followups Tab end -->
 
-    <!-- End of Day Tasks -->
+    <!-- End of Day Tasks if user type not dentist-->
     <mat-tab label="Daily Tasks" *ngIf="user_type != '4'">
       <div class="morning-huddle-date">
         <strong>Current Day: {{ endOfDaysTasksDate | date:'EEE MMM d':'timezone' }} </strong>
@@ -2400,7 +2400,112 @@
 
 
     </mat-tab>
-    <!-- End of Day Tasks end -->
+    <!-- End of Day Tasks end if user type not dentist -->
+
+    <!-- End of Day Tasks if user type dentist-->
+    <mat-tab label="Daily Tasks" *ngIf="user_type == '4' && tasklistArray.length > 0">
+      <div class="morning-huddle-date">
+        <strong>Current Day: {{ endOfDaysTasksDate | date:'EEE MMM d':'timezone' }} </strong>
+      </div>
+      <div class="showComplete dailytsk" *ngIf="isEnabletasks && tasklistArray.length > 0">
+        <mat-checkbox name="status" [checked]="showComplete" (change)="updateToComplete($event)">Show Complete
+        </mat-checkbox>
+      </div>
+      <div *ngFor="let list of tasklistArray">
+        <mat-card class="table-card post_call_responsive_border">
+          <mat-card-title class="morngHuddle">
+            <div class="title-follow-up">
+              <span>Daily Tasks - {{list.name}}</span>
+              <!-- <span *ngIf="!isEnabletasks">Daily Task feature is currently disabled. Please check your Jeeve settings to enable this feature.</span> -->
+            </div>
+            <!--    <div class="info-icon-container"><img [tooltip]="tooltipData" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon"/></div> -->
+            
+          </mat-card-title>
+          <mat-card-content>
+            <div class="DentistListSecRow mh-table patient_data-table_responsive DentistListSecRow-task">
+              <div class="card-loading" *ngIf="endTaksLoading"><img class="tableLoader"
+                  src="../../assets/images/logo-icon.gif">
+                <!-- <div class="loader-text">Calculating...</div> -->
+              </div>
+              <table #sort1="matSort" mat-table matSort [dataSource]="endOfDaysTasksInComp"
+                class="mat-elevation-z8 daily-task"
+                [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''" matSortDisableClear>
+                <!-- Name Column -->
+                <ng-container matColumnDef="task_name" >
+                  <th mat-header-cell mat-sort-header *matHeaderCellDef> Task Name </th>
+                  <ng-container *matCellDef="let element">
+                  <td mat-cell *ngIf="list.list_id == element.list_id && element.type =='task'">                    
+                      {{element.name }}                     
+                   </td>
+                  </ng-container>
+                </ng-container>
+  
+                <ng-container matColumnDef="completed_by">
+                  <th mat-header-cell *matHeaderCellDef [ngClass]="showComplete? '' : 'hide' "> Completed
+                    By </th>
+                    <ng-container *matCellDef="let element">
+                      <td mat-cell *ngIf="list.list_id == element.list_id && element.type =='task'" [ngClass]=" showComplete ? '' : 'hide' ">                        
+                          <span *ngIf="element.display_name">{{element.display_name }}</span>
+                          <span *ngIf="!element.display_name">{{element.email }}</span>
+                      </td>
+                  </ng-container>
+                </ng-container>
+  
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef>Complete</th>
+                  <ng-container *matCellDef="let element">
+                  <td mat-cell *ngIf="list.list_id == element.list_id && element.type =='task' "  [hidden]="element.type == 'list'">
+                      <mat-slide-toggle [checked]="element.is_complete == 1? true : false" name="status"
+                      (change)="updateTask($event,element.task_id,element.history_id,element.clinic_id)"></mat-slide-toggle>
+                  </td>
+                </ng-container>
+                </ng-container>
+  
+                <ng-container matColumnDef="isDataAvailable9">
+                  <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns9.length">
+                    <span *ngIf="isEnabletasks && futureDateDT == ''">No task list has been generated for today</span>
+                    <span *ngIf="isEnabletasks && futureDateDT != ''">Daily Tasks will be populated on {{ futureDateDT | date:'MMM d, y':'timezone'
+                      }}</span>
+                    <span *ngIf="!isEnabletasks">Daily Tasks are not enabled - this can be configured in your Jeeve
+                      Settings menu</span>
+                  </mat-footer-cell>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns9"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns9;"></tr>
+                <mat-footer-row *matFooterRowDef="['isDataAvailable9']"
+                  [ngClass]="(endOfDaysTasksInComp.data.length <= 0)? 'show' : 'hide'"></mat-footer-row>
+              </table>
+              <!-- responsive table - frontdesk followup (Post op calls)  -->
+              <div fxHide.gt-sm>
+                <div *ngIf="endOfDaysTasksInComp.length;else noPostOpCalls">
+                  <mat-card class="huddle-card" *ngFor="let element of endOfDaysTasksInComp">
+                    <div fxLayout="row" class="huddle-card-row">
+                      <div fxFlex="30">Task Name: </div>
+                      <div fxFlex="70"> {{ element.name }}</div>
+                    </div>
+  
+                    <div fxLayout="row" class="huddle-card-row">
+                      <div fxFlex="30">Complete </div>
+                      <div fxFlex="70">
+                        <mat-slide-toggle [checked]="element.is_complete == 1? true : false" name="status"
+                          (change)="updateTask($event,element.task_id,element.history_id,element.clinic_id)">
+                        </mat-slide-toggle>
+                      </div>
+                    </div>
+                  </mat-card>
+                </div>
+                <ng-template #noPostOpCalls>
+                  <mat-card class="huddle-card">
+                    <h6> You have no daily tasks today</h6>
+                  </mat-card>
+                </ng-template>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-tab>
+    <!-- End of Day Tasks end if user type dentist -->
 
 
 
