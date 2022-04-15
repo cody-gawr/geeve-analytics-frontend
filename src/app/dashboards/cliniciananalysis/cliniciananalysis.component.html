@@ -1512,6 +1512,18 @@
                 </div>
               </div>
             </div>
+            <div *ngIf="hourlyRateChartLoader == true && hrSelectShow =='hr_all'" class="loader_container loader_container_middle"><img
+              class="loader_ico" src="../assets/images/720.gif">
+            <div class="loader-text">Calculating.....</div>
+            </div>
+            <div *ngIf="hourlyRateChartDentistsLoader == true && hrSelectShow =='hr_dentists'" class="loader_container loader_container_middle"><img
+              class="loader_ico" src="../assets/images/720.gif">
+            <div class="loader-text">Calculating...</div>
+            </div>
+            <div *ngIf="hourlyRateChartOhtLoader == true && hrSelectShow =='hr_oht'" class="loader_container loader_container_middle"><img
+              class="loader_ico" src="../assets/images/720.gif">
+            <div class="loader-text">Calculating...</div>
+            </div>
           </mat-card-content>
         </mat-card>
 
@@ -1610,28 +1622,17 @@
                 </div>
               </div>
             </div>
+            <div *ngIf="hourlyRateDentistLoader == true" class="loader_container loader_container_middle"><img
+              class="loader_ico" src="../assets/images/720.gif">
+            <div class="loader-text">Calculating...</div>
+            </div> 
+            <div *ngIf="fdhourlyRateRateTrendLoader == true" class="loader_container loader_container_middle"><img
+                class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
           </mat-card-content>
         </mat-card>
-        <div *ngIf="hourlyRateChartLoader == true && hrSelectShow =='hr_all'" class="loader_container loader_container_middle"><img
-            class="loader_ico" src="../assets/images/720.gif">
-          <div class="loader-text">Calculating...</div>
-        </div>
-        <div *ngIf="hourlyRateChartDentistsLoader == true && hrSelectShow =='hr_dentists'" class="loader_container loader_container_middle"><img
-          class="loader_ico" src="../assets/images/720.gif">
-        <div class="loader-text">Calculating...</div>
-        </div>
-        <div *ngIf="hourlyRateChartOhtLoader == true && hrSelectShow =='hr_oht'" class="loader_container loader_container_middle"><img
-          class="loader_ico" src="../assets/images/720.gif">
-        <div class="loader-text">Calculating...</div>
-        </div>
-        <div *ngIf="hourlyRateDentistLoader == true" class="loader_container loader_container_middle"><img
-            class="loader_ico" src="../assets/images/720.gif">
-          <div class="loader-text">Calculating...</div>
-        </div>
-        <div *ngIf="fdhourlyRateRateTrendLoader == true" class="loader_container loader_container_middle"><img
-            class="loader_ico" src="../assets/images/720.gif">
-          <div class="loader-text">Calculating...</div>
-        </div>
+        
 
 
       </div>
