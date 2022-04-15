@@ -419,7 +419,7 @@
             </div>
           </div>
         </div>
-        <div class="gray_area">
+        <div class="gray_area" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
           <h4 class="clinic-settings-form-title">
             Internal Referral Followups
             <div class="info-button">

@@ -113,31 +113,60 @@ export class ClinicSettingsComponent implements OnInit {
       this.getFollowUpSettings();
     });
 
-    this.form = this.fb.group({
-      clinicName: [null, Validators.compose([Validators.required])],
-      contactName: [null],
-      phoneNo: [null],
-      clinicEmail: [null, [Validators.email]],
-      address: [null],
-      timezone: [null],
-      // practice_size: [null, Validators.compose([Validators.required])],
-      post_op_calls: [null],
-      subtracted_accounts: [null],
-      fta_uta: [null, Validators.compose([Validators.required])],
-      post_op_calls_days: [null, Validators.compose([Validators.required])],
-      recall_weeks: [null, Validators.compose([Validators.required])],
-      tick_days: [null, Validators.compose([Validators.required])],
-      fta_followup_days: [null, Validators.compose([Validators.required])],
-      uta_followup_days: [null, Validators.compose([Validators.required])],
-      fta_followup_days_later: [null, Validators.compose([Validators.required])],
-      uta_followup_days_later: [null, Validators.compose([Validators.required])],
-      referral_weeks: [null, Validators.compose([Validators.required])],
-      // unscheduled_patients_days: [null, Validators.compose([Validators.required])],
-      // facebook: [null],
-      // twitter: [null],
-      // linkedin: [null],
-      // instagram: [null],
-    });
+    if(this.apiUrl.includes('test') || this.apiUrl.includes('staging-')){
+      this.form = this.fb.group({
+        clinicName: [null, Validators.compose([Validators.required])],
+        contactName: [null],
+        phoneNo: [null],
+        clinicEmail: [null, [Validators.email]],
+        address: [null],
+        timezone: [null],
+        // practice_size: [null, Validators.compose([Validators.required])],
+        post_op_calls: [null],
+        subtracted_accounts: [null],
+        fta_uta: [null, Validators.compose([Validators.required])],
+        post_op_calls_days: [null, Validators.compose([Validators.required])],
+        recall_weeks: [null, Validators.compose([Validators.required])],
+        tick_days: [null, Validators.compose([Validators.required])],
+        fta_followup_days: [null, Validators.compose([Validators.required])],
+        uta_followup_days: [null, Validators.compose([Validators.required])],
+        fta_followup_days_later: [null, Validators.compose([Validators.required])],
+        uta_followup_days_later: [null, Validators.compose([Validators.required])],
+        referral_weeks: [null, Validators.compose([Validators.required])],
+        // unscheduled_patients_days: [null, Validators.compose([Validators.required])],
+        // facebook: [null],
+        // twitter: [null],
+        // linkedin: [null],
+        // instagram: [null],
+      });
+    }else{
+      this.form = this.fb.group({
+        clinicName: [null, Validators.compose([Validators.required])],
+        contactName: [null],
+        phoneNo: [null],
+        clinicEmail: [null, [Validators.email]],
+        address: [null],
+        timezone: [null],
+        // practice_size: [null, Validators.compose([Validators.required])],
+        post_op_calls: [null],
+        subtracted_accounts: [null],
+        fta_uta: [null, Validators.compose([Validators.required])],
+        post_op_calls_days: [null, Validators.compose([Validators.required])],
+        recall_weeks: [null, Validators.compose([Validators.required])],
+        tick_days: [null, Validators.compose([Validators.required])],
+        fta_followup_days: [null, Validators.compose([Validators.required])],
+        uta_followup_days: [null, Validators.compose([Validators.required])],
+        fta_followup_days_later: [null, Validators.compose([Validators.required])],
+        uta_followup_days_later: [null, Validators.compose([Validators.required])],
+      //  referral_weeks: [null, Validators.compose([Validators.required])],
+        // unscheduled_patients_days: [null, Validators.compose([Validators.required])],
+        // facebook: [null],
+        // twitter: [null],
+        // linkedin: [null],
+        // instagram: [null],
+      });
+    }
+    
 
     this.userPlan = this._cookieService.get("user_plan");
   }
@@ -266,7 +295,11 @@ export class ClinicSettingsComponent implements OnInit {
     this.ftaUta = this.form.value.fta_uta;
     this.postOpCallsMh = this.form.value.post_op_calls_days;
     this.recallWeeks = this.form.value.recall_weeks;
-    this.referralWeeks = this.form.value.referral_weeks;
+    if(this.apiUrl.includes('test') || this.apiUrl.includes('staging-')){
+      this.referralWeeks = this.form.value.referral_weeks;
+    }else{
+      this.referralWeeks = 0;
+    }
     this.tickDays = this.form.value.tick_days;
     this.ftaFollowupDays = this.form.value.fta_followup_days;
     this.utaFollowupDays = this.form.value.uta_followup_days;
