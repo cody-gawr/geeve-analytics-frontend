@@ -362,10 +362,10 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
     }, error => { });
   }
 
-  deleteTask(taskId) {
+  deleteTask(taskId,listname) {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'You want to delete Task?',
+      text: 'Are you sure you want to delete the task list: '+ listname,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes',
