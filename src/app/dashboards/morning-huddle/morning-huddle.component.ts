@@ -925,7 +925,6 @@ initiate_clinic() {
       this.handleUnAuthorization();      
     }); 
   } 
-
   public isEnableEquipList: boolean = false;
   getEquipmentList() {
     this.equipmentListLoading = true;
@@ -1427,7 +1426,8 @@ async getDentistList(){
   updateTask(event,tid,thid,cid){    
     this.endTaksLoading = true;
     this.morningHuddleService.updateEndStatus(event.checked,tid,thid,cid,this.previousDays).subscribe((update:any) => {
-      this.getEndOfDays();
+      // this.getEndOfDays();
+      this.endTaksLoading = false;
     }); 
   }
 
@@ -1526,7 +1526,8 @@ async getDentistList(){
       var dataJson = JSON.stringify(data);
       this.equipmentListLoading = true;
       this.morningHuddleService.updateEquimentList(dataJson,this.clinic_id,this.previousDays).subscribe((update:any) => {
-        this.getEndOfDays();
+        // this.getEndOfDays();
+        this.endTaksLoading = false;
         this.getEquipmentList();
       });    
     }
