@@ -41,7 +41,7 @@ export class FrontDeskComponent implements AfterViewInit {
   public utilShow: any = 1;
   public  apiUrl = environment.apiUrl;
   public showGoals: boolean = false;
-  public numberOfRecords:number = 12;
+  public numberOfRecords:number = 50;
 
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
