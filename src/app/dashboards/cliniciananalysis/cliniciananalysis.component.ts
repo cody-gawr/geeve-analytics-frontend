@@ -1504,9 +1504,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.Apirequest = 13;
     }    
     if (this._cookieService.get("user_type") == '4') {
-      if (this._cookieService.get("dentist_toggle") === 'false')
-        newValue = this.selectedDentist;
-      else {
+      if (this._cookieService.get("dentist_toggle") === 'false'){
+        newValue =this._cookieService.get("dentistid");
+      }else{
         newValue = 'all';
       }
     }
