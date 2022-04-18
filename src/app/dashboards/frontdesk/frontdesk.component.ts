@@ -230,13 +230,27 @@ this.predictedChartColors = [
   callbacks: {
      label: function(tooltipItems, data) { 
       let total = tooltipItems.yLabel > 100 ? 100 : tooltipItems.yLabel;
+      var Targetlable = '';   
       const v = data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index];
       let Tlable = data.datasets[tooltipItems.datasetIndex].label;
       if(Tlable !=''){
         Tlable = Tlable + ": "
+        Targetlable = Tlable
       }
      let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-     if(ylable == 0 && Tlable =='Target: '){
+     var tlab = 0; 
+         if(typeof data.datasets[1] === 'undefined') {
+          }
+          else {
+            const tval  = data.datasets[1].data[tooltipItems.index];
+            if(Array.isArray(tval)){
+              tlab =  Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
+              if(tlab == 0){
+                Tlable = '';
+              }
+             }
+          } 
+     if(tlab == 0 && Targetlable =='Target: '){
       }else{
         return Tlable + tooltipItems.xLabel+": "+ ylable + "%";
       }
@@ -690,14 +704,28 @@ public stackedChartOptionsTic: any = {
                   }else{
                     tooltipItems.xLabel = lbl[0]+' - '+lbl[3];
                   }                  
-                }  
+                } 
+                var Targetlable = '';   
                 const v = data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index];
                   let Tlable = data.datasets[tooltipItems.datasetIndex].label;
                   if(Tlable !=''){
                     Tlable = Tlable + ": "
+                    Targetlable = Tlable
                   }
-                let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;   
-                if(ylable == 0 && Tlable =='Target: '){
+                let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;  
+                var tlab = 0; 
+                if(typeof data.datasets[1] === 'undefined') {
+                  }
+                  else {
+                    const tval  = data.datasets[1].data[tooltipItems.index];
+                    if(Array.isArray(tval)){
+                      tlab =  Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
+                      if(tlab == 0){
+                        Tlable = '';
+                      }
+                    }
+                  } 
+                if(tlab == 0 && Targetlable =='Target: '){
                }else{
                 return Tlable + tooltipItems.xLabel+": "+ ylable;
                }   
@@ -779,13 +807,27 @@ public stackedChartOptionsTic: any = {
                     tooltipItems.xLabel = lbl[0]+' - '+lbl[3];
                   }                  
                 }  
+                var Targetlable = '';  
                 const v = data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index];
                   let Tlable = data.datasets[tooltipItems.datasetIndex].label;
                   if(Tlable !=''){
                     Tlable = Tlable + ": "
+                    Targetlable = Tlable
                   }
-                let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;   
-                if(ylable == 0 && Tlable =='Target: '){
+                let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v; 
+                var tlab = 0; 
+                if(typeof data.datasets[1] === 'undefined') {
+                  }
+                  else {
+                    const tval  = data.datasets[1].data[tooltipItems.index];
+                    if(Array.isArray(tval)){
+                      tlab =  Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
+                      if(tlab == 0){
+                        Tlable = '';
+                      }
+                    }
+                  }  
+                if(tlab == 0 && Targetlable =='Target: '){
                }else{
                 return Tlable + tooltipItems.xLabel+": "+ ylable + '%';
                }   

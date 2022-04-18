@@ -1101,17 +1101,31 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         label: (tooltipItem, data) => {
           if (tooltipItem.xLabel.includes('WE ')) {
             return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
-          }
+          } 
+          var Targetlable = '';       
           const v = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
           let Tlable = data.datasets[tooltipItem.datasetIndex].label;
           if(Tlable !=''){
             Tlable = Tlable + ": "
+            Targetlable = Tlable
           }
-         let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-         if(ylable == 0 && Tlable =='Target: '){
+         let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;  
+         var tlab = 0; 
+         if(typeof data.datasets[1] === 'undefined') {
+          }
+          else {
+            const tval  = data.datasets[1].data[tooltipItem.index];
+            if(Array.isArray(tval)){
+              tlab =  Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
+              if(tlab == 0){
+                Tlable = '';
+              }
+             }
+          }  
+         if(tlab == 0 && Targetlable =='Target: '){
             //return  Tlable + this.splitName(tooltipItem.xLabel).join(' ');
          }else{
-            return  Tlable + this.splitName(tooltipItem.xLabel).join(' ') + ": $" + ylable;
+            return  Tlable + this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(ylable);
          }
         },
         // remove title
@@ -1276,13 +1290,27 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       callbacks: {
         // use label callback to return the desired label
         label: function (tooltipItem, data) {
+          var Targetlable = '';  
           const v = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
           let Tlable = data.datasets[tooltipItem.datasetIndex].label;
           if(Tlable !=''){
             Tlable = Tlable + ": "
+            Targetlable = Tlable
           }
          let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-         if(ylable == 0 && Tlable =='Target: '){
+         var tlab = 0; 
+         if(typeof data.datasets[1] === 'undefined') {
+          }
+          else {
+            const tval  = data.datasets[1].data[tooltipItem.index];
+            if(Array.isArray(tval)){
+              tlab =  Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
+              if(tlab == 0){
+                Tlable = '';
+              }
+             }
+          } 
+         if(tlab == 0 && Targetlable =='Target: '){
          }else{
           return Tlable + tooltipItem.xLabel + ": " + ylable + "%";
          }
@@ -1355,13 +1383,27 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       callbacks: {
         // use label callback to return the desired label
         label: function (tooltipItem, data) {
+          var Targetlable = '';   
           const v = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
           let Tlable = data.datasets[tooltipItem.datasetIndex].label;
           if(Tlable !=''){
             Tlable = Tlable + ": "
+            Targetlable = Tlable
           }
          let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-         if(ylable == 0 && Tlable =='Target: '){
+         var tlab = 0; 
+         if(typeof data.datasets[1] === 'undefined') {
+          }
+          else {
+            const tval  = data.datasets[1].data[tooltipItem.index];
+            if(Array.isArray(tval)){
+              tlab =  Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
+              if(tlab == 0){
+                Tlable = '';
+              }
+             }
+          }
+         if(tlab == 0 && Targetlable =='Target: '){
          }else{
             return Tlable + tooltipItem.xLabel + ": " + ylable;
          }

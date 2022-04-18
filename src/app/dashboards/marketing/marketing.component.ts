@@ -194,7 +194,7 @@ export class MarketingComponent implements AfterViewInit {
       takeUntil(this.destroyed$),
       map((revenueCount) => {
         //return this.chartService.beforeDrawChart(revenueCount, true)
-        this.pieChartOptions.elements.center.text = "$" + revenueCount;
+        this.pieChartOptions.elements.center.text = "$" + this.decimalPipe.transform(revenueCount);
         return [];
       })
     );
@@ -692,12 +692,13 @@ export class MarketingComponent implements AfterViewInit {
             innerHtml += '<tr><th colspan="2" style="text-align: left;">' + title + ': ' + total + '</th></tr>';
           });
           bodyLines.forEach(function (body, i) {
-            if (body[0].includes("100%")) {
+            var singledata = body[0].split(":");
+            singledata[1] = singledata[1].trim();
+            if (singledata[1] > 0) {
+
+              singledata[1] = singledata[1].split(/(?=(?:...)*$)/).join(',');
+              body[0] = singledata.join(": ");
               innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' + labelColorscustom[i].backgroundColor + '"></span></td><td style="padding: 0px">' + body[0] + '</td></tr>';
-              bodyLineCont = bodyLineCont + 1;
-            } else if (!body[0].includes("0%")) {
-              innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' + labelColorscustom[i].backgroundColor + '"></span></td><td style="padding: 0px">' + body[0] + '</td></tr>';
-              bodyLineCont = bodyLineCont + 1;
             }
           });
           innerHtml += '</tbody></table>';
