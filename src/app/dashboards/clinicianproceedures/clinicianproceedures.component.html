@@ -453,15 +453,46 @@
               </div>
             </div>
 
+            <div class="chart-predicted-stacked" *ngIf="predictorLabels1.length > 0 && predictorRatioTab == 1 && showmulticlinicPredictor == true">
+              <canvas #myCanvas baseChart [datasets]="predictedMulti1"
+                [labels]="predictorLabels1" [options]="stackedChartOptionsmulti" [chartType]="stackedChartType"
+                (chartHover)="chartHovered($event)" [legend]="true" [colors]="predictorAnalysisChartColors"
+                (chartClick)="chartClicked($event)"></canvas>
+            </div>
+            <div *ngIf="showmulticlinicPredictor == true &&  predictorLabels1.length <= 0 && predictorRatioTab == '1'"  class="no-data-placeholder">
+              <div class="sa_nodata_div">
+              </div><p class="chart-placeholder-text">You have no indirect or large direct fillings in the selected period</p>
+            </div>
+            <div class="chart-predicted-stacked" *ngIf="predictorLabels2.length > 0 && predictorRatioTab == 2 && showmulticlinicPredictor == true">
+              <canvas #myCanvas baseChart [datasets]="predictedMulti2"
+                [labels]="predictorLabels3" [options]="stackedChartOptionsmulti" [chartType]="stackedChartType"
+                (chartHover)="chartHovered($event)" [legend]="true" [colors]="predictorAnalysisChartColors"
+                (chartClick)="chartClicked($event)"></canvas>
+            </div>
+            <div *ngIf="showmulticlinicPredictor == true &&  predictorLabels2.length <= 0 && predictorRatioTab == '2'"  class="no-data-placeholder">
+              <div class="sa_nodata_div">
+              </div><p class="chart-placeholder-text">You have no RCTs or extractions in the selected period</p>
+            </div>
+            <div class="chart-predicted-stacked" *ngIf="predictorLabels3.length > 0 && predictorRatioTab == 3 && showmulticlinicPredictor == true">
+              <canvas #myCanvas baseChart [datasets]="predictedMulti3"
+                [labels]="predictorLabels3" [options]="stackedChartOptionsmulti" [chartType]="stackedChartType"
+                (chartHover)="chartHovered($event)" [legend]="true" [colors]="predictorAnalysisChartColors"
+                (chartClick)="chartClicked($event)"></canvas>
+            </div>
+            <div *ngIf="showmulticlinicPredictor == true &&  predictorLabels3.length <= 0 && predictorRatioTab == '3'"  class="no-data-placeholder">
+              <div class="sa_nodata_div">
+              </div><p class="chart-placeholder-text">You have no RCTs in the selected period</p>
+            </div>
+
             <div class="chart-predicted-stacked"
-              *ngIf="predictedstackedChartData[0]['data'].length > 0 || predictedstackedChartData[1]['data'].length > 0">
+              *ngIf="showmulticlinicPredictor == false && predictedstackedChartData[0]['data'].length > 0 || predictedstackedChartData[1]['data'].length > 0">
               <canvas baseChart class="chart" [datasets]="predictedstackedChartData"
                 [labels]="predictedstackedChartLabels" [options]="stackedChartOptions" [chartType]="stackedChartType"
                 (chartHover)="chartHovered($event)" [colors]="predictorRatioColors"
                 (chartClick)="chartClicked($event)"></canvas>
             </div>
             <div
-              *ngIf="(predictedstackedChartData1[0]['data'].length <= 0 && predictedstackedChartData1[1]['data'].length <= 0) && predictorRatioTab == '1'"
+              *ngIf="showmulticlinicPredictor == false && (predictedstackedChartData1[0]['data'].length <= 0 && predictedstackedChartData1[1]['data'].length <= 0) && predictorRatioTab == '1'"
               class="no-data-placeholder">
               <div class="sa_nodata_div">
               </div>
@@ -470,7 +501,7 @@
             </div>
 
             <div
-              *ngIf="(predictedstackedChartData2[0]['data'].length <= 0 && predictedstackedChartData2[1]['data'].length <= 0) && predictorRatioTab == '2'"
+              *ngIf="showmulticlinicPredictor == false && (predictedstackedChartData2[0]['data'].length <= 0 && predictedstackedChartData2[1]['data'].length <= 0) && predictorRatioTab == '2'"
               class="no-data-placeholder">
               <div class="sa_nodata_div">
               </div>
@@ -478,7 +509,7 @@
             </div>
 
             <div
-              *ngIf="(predictedstackedChartData3[0]['data'].length <= 0 && predictedstackedChartData3[1]['data'].length <= 0) && predictorRatioTab == '3'"
+              *ngIf="showmulticlinicPredictor == false && (predictedstackedChartData3[0]['data'].length <= 0 && predictedstackedChartData3[1]['data'].length <= 0) && predictorRatioTab == '3'"
               class="no-data-placeholder">
               <div class="sa_nodata_div">
               </div>
@@ -495,7 +526,8 @@
               fxLayoutAlign="center center" *ngIf="buildChartPredictorLoader == false && predictorRatioTab == '1'">
               <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
                 <!--    <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
-                <h3 class="m-0 value-num">{{ predictedstackedChartAvr }}</h3>
+                <h3 *ngIf="showmulticlinicPredictor == false " class="m-0 value-num">{{ predictedstackedChartAvr }}</h3>
+                <h3 *ngIf="showmulticlinicPredictor == true" class="m-0 value-num">{{ multifulratio1 }}</h3>
                 <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
                 <span class="value-text" *ngIf="currentText == ''">Average</span>
               </div>
@@ -509,7 +541,8 @@
             <div fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="buildChartPredictorLoader == false && predictorRatioTab == '2'"
               class="m-t-40 predicted_main predicted2 sa_chart_details_sec" [style.display]="'none'">
               <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                <h3 class="m-0 value-num">{{ predictedstackedChartAvr }}</h3>
+                <h3 *ngIf="showmulticlinicPredictor == false " class="m-0 value-num">{{ predictedstackedChartAvr }}</h3>
+                <h3 *ngIf="showmulticlinicPredictor == true" class="m-0 value-num">{{ multifulratio2 }}</h3>
                 <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
                 <span class="value-text" *ngIf="currentText == ''">Average</span>
               </div>
@@ -522,7 +555,8 @@
             <div fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="buildChartPredictorLoader == false && predictorRatioTab == '3'"
               class="m-t-40 predicted_main predicted3 sa_chart_details_sec" [style.display]="'none'">
               <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                <h3 class="m-0 value-num">{{ predictedstackedChartAvr }}</h3>
+                <h3  *ngIf="showmulticlinicPredictor == false "class="m-0 value-num">{{ predictedstackedChartAvr }}</h3>
+                <h3 *ngIf="showmulticlinicPredictor == true" class="m-0 value-num">{{ multifulratio3 }}</h3>
                 <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
                 <span class="value-text" *ngIf="currentText == ''">Average</span>
               </div>

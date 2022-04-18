@@ -1685,9 +1685,17 @@ if(this._cookieService.get("user_type") == '4'){
 
 /********Procedure Special**********/
 
+public predictedMulti1: any[] = [
+  { data: [], label: '' }, { data: [], label: '' }];
+public predictedMulti2: any[] = [
+{ data: [], label: '' }, { data: [], label: '' }];
+public predictedMulti3: any[] = [
+{ data: [], label: '' }, { data: [], label: '' }];  
 
-
-
+public showmulticlinicPredictor:boolean = false;
+public predictorLabels1:any=[];
+public predictorLabels2:any=[];
+public predictorLabels3:any=[];
 
 
 public predictedChartD:any[] =[];
@@ -1718,6 +1726,16 @@ public PRcolors;
   public predictedstackedChartLabels2AvrPre = 0;
   public predictedstackedChartLabels3AvrPre = 0;    
   public predictedstackedChartAvr:any = '0:0';    
+  public ratio1 :any =0;
+  public ratio2 :any =0;
+  public ratio3 :any =0;
+  public ratio4 :any =0;
+  public ratio5 :any =0;
+  public ratio6 :any =0;
+  public multifulratio1:any;
+  public multifulratio2:any;
+  public multifulratio3:any;
+
 
   //Predictor Ratio :All Dentist
   private buildChartPredictor() {
@@ -1738,37 +1756,124 @@ public PRcolors;
       this.predictedstackedChartLabels1AvrPre = 0;
       this.predictedstackedChartLabels2AvrPre = 0;
       this.predictedstackedChartLabels3AvrPre = 0; 
+
+      this.predictedMulti1 = [];
+      this.predictedMulti2 = [];
+      this.predictedMulti3 = [];
+      this.showmulticlinicPredictor = false;
+      this.predictorLabels1 = [];
+      this.predictorLabels2 = [];
+      this.predictorLabels3 = [];
+      this.multifulratio1 ='';
+      this.multifulratio2 ='';
+      this.multifulratio3 ='';
+      this.ratio1 =0;
+      this.ratio2 =0;
+      this.ratio3 =0;
+      this.ratio4 =0;
+      this.ratio5 =0;
+      this.ratio6 =0;
+
       if(data.message == 'success'){        
         this.predictedstackedChartLabels1AvrPre = data.total_ta[0];
         this.predictedstackedChartLabels2AvrPre = data.total_ta[1];
         this.predictedstackedChartLabels3AvrPre = data.total_ta[2]; 
-        data.data.forEach((res,key) => {
-          var provider = res.provider_name;
-          if(!provider)
-            provider = '';
-          if(key == 0) {
-            this.predictedstackedChartData1[0]['data'].push(parseInt(res.first_value));
-            this.predictedstackedChartData1[1]['data'].push(parseInt(res.second_value));
-            this.predictedstackedChartLabels1Avr = res.ratio;
-            this.predictedstackedChartLabels1.push(provider);            
-          } else if(key == 1) {
-            this.predictedstackedChartData2[0]['data'].push(parseInt(res.first_value));
-            this.predictedstackedChartData2[1]['data'].push(parseInt(res.second_value));
-            this.predictedstackedChartLabels2Avr = res.ratio;
-            this.predictedstackedChartLabels2.push(provider);
-          } else if(key == 2) {
-            this.predictedstackedChartData3[0]['data'].push(parseInt(res.first_value));
-            this.predictedstackedChartData3[1]['data'].push(parseInt(res.second_value));
-            this.predictedstackedChartLabels3Avr = res.ratio;
-            this.predictedstackedChartLabels3.push(provider);
-          } 
-        });
-        this.buildChartPredictorLoader = false;
+
+        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          this.showmulticlinicPredictor = true;
+          data.data_crown_large.forEach(res => {
+            res.proval.forEach((result, key) => {
+              if (typeof (this.predictedMulti1[key]) == 'undefined') {
+                this.predictedMulti1[key] = { data: [], label: '' };
+              }
+              if (typeof (this.predictedMulti1[key]['data']) == 'undefined') {
+                this.predictedMulti1[key]['data'] = [];
+              }
+              var total = Math.trunc(result.total);                
+              this.predictedMulti1[key]['data'].push(total);
+              this.predictedMulti1[key]['label'] = result.desc;
+              if(key == 0){
+                this.ratio1 = this.ratio1 + total;
+              }
+              if(key == 1){
+                this.ratio2 =  this.ratio2 + total;
+              }
+              console.log(this.ratio1);
+              console.log(this.ratio2);
+             });
+             this.multifulratio1 = this.ratio1 +':'+ this.ratio2;
+             console.log(this.multifulratio1);
+             this.predictorLabels1.push(res.clinic_name);
+          });
+          data.data_rct_ext.forEach(res => {
+            res.proval.forEach((result, key) => {
+              if (typeof (this.predictedMulti2[key]) == 'undefined') {
+                this.predictedMulti2[key] = { data: [], label: '' };
+              }
+              if (typeof (this.predictedMulti2[key]['data']) == 'undefined') {
+                this.predictedMulti2[key]['data'] = [];
+              }
+              var total = Math.trunc(result.total);                
+              this.predictedMulti2[key]['data'].push(total);
+              this.predictedMulti2[key]['label'] = result.desc;
+              if(key == 0){
+                this.ratio3 = this.ratio3 + total;
+              }
+              if(key == 1){
+                this.ratio4 =  this.ratio4 + total;
+              }
+             });
+             this.multifulratio2 = this.ratio3 +':'+ this.ratio4;
+             this.predictorLabels2.push(res.clinic_name);
+          });
+          data.data_rctsta_comp.forEach(res => {
+            res.proval.forEach((result, key) => {
+              if (typeof (this.predictedMulti3[key]) == 'undefined') {
+                this.predictedMulti3[key] = { data: [], label: '' };
+              }
+              if (typeof (this.predictedMulti3[key]['data']) == 'undefined') {
+                this.predictedMulti3[key]['data'] = [];
+              }
+              var total = Math.trunc(result.total);                
+              this.predictedMulti3[key]['data'].push(total);
+              this.predictedMulti3[key]['label'] = result.desc;
+              if(key == 0){
+                this.ratio5 = this.ratio5 + total;
+              }
+              if(key == 1){
+                this.ratio6 =  this.ratio6 + total;
+              }
+             });
+             this.multifulratio3 = this.ratio5 +':'+ this.ratio6;
+             this.predictorLabels3.push(res.clinic_name);
+          });          
+          this.buildChartPredictorLoader = false;
+        }else{
+          data.data.forEach((res,key) => {
+            var provider = res.provider_name;
+            if(!provider)
+              provider = '';
+            if(key == 0) {
+              this.predictedstackedChartData1[0]['data'].push(parseInt(res.first_value));
+              this.predictedstackedChartData1[1]['data'].push(parseInt(res.second_value));
+              this.predictedstackedChartLabels1Avr = res.ratio;
+              this.predictedstackedChartLabels1.push(provider);            
+            } else if(key == 1) {
+              this.predictedstackedChartData2[0]['data'].push(parseInt(res.first_value));
+              this.predictedstackedChartData2[1]['data'].push(parseInt(res.second_value));
+              this.predictedstackedChartLabels2Avr = res.ratio;
+              this.predictedstackedChartLabels2.push(provider);
+            } else if(key == 2) {
+              this.predictedstackedChartData3[0]['data'].push(parseInt(res.first_value));
+              this.predictedstackedChartData3[1]['data'].push(parseInt(res.second_value));
+              this.predictedstackedChartLabels3Avr = res.ratio;
+              this.predictedstackedChartLabels3.push(provider);
+            } 
+          });
+          this.buildChartPredictorLoader = false;
+        }	
+        
         this.changeDentistPredictorMain('1')
-        // this.predictorRatioTab = '1';
-        // this.predictedstackedChartData= this.predictedstackedChartData1;
-        // this.predictedstackedChartLabels= this.predictedstackedChartLabels1;
-        // this.predictedstackedChartAvr = this.predictedstackedChartLabels1Avr;
       }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
