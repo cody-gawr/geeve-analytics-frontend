@@ -36,7 +36,7 @@
         <ng-container *ngIf="data.tasksListItems.length>0">
           <tr *ngFor="let item of data.tasksListItems | paginate: { itemsPerPage: data.itemsPerPage, currentPage: data.currPage ,totalItems: data.totalRecords};let i =index;">
             <td> 
-                <input type="text" placeholder="New Task" [readonly]="item.readOnly" [(ngModel)]="item.task_name"> </td>              
+                <input type="text" autoFocus placeholder="New Task" [readonly]="item.readOnly" [(ngModel)]="item.task_name"> </td>              
             <td>
               <span class="action">
                 <a *ngIf="item.readOnly" (click)="markRead(i,data.itemsPerPage,data.currPage)"
@@ -62,7 +62,8 @@
     </div>
   </div>
   <div mat-dialog-actions class="justify-between list">   
-    <i *ngIf="data.list_id" class="fa fa-plus m-r-10" (click)="additemNew(data)"></i>
+    <!-- <i *ngIf="data.list_id" class="fa fa-plus m-r-10" (click)="additemNew(data)"></i> -->
+    <button *ngIf="data.list_id" (click)="additemNew(data)" class="mat-raised-button mat-dc float-right">Add Task</button>
   </div>
   <div mat-dialog-actions class="justify-between">
     <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
