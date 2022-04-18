@@ -925,6 +925,41 @@ initiate_clinic() {
       this.handleUnAuthorization();      
     }); 
   } 
+
+  getEndOfDaysUpdatelist(){
+    this.endTaksLoading = true;
+    this.futureDateDT = '';
+    this.morningHuddleService.getEndOfDays( this.clinic_id, this.previousDays).subscribe((production:any) => {
+        var diffTime:any = this.getDataDiffrences();
+        if(diffTime < 0){
+          this.futureDateDT =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
+        }
+      this.endTaksLoading = false;
+      if(production.message == 'success') {
+        this.endOfDaysTasks = [];
+        this.endOfDaysTasksInComp.data =[];
+        this.apiSuccessCount += 1;
+        if( production.data == '204' ){
+          //this.isEnabletasks = false;
+        }
+        else 
+        {
+          this.endOfDaysTasks = production.data;            
+          this.endOfDaysTasksDate = this.datepipe.transform( production.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
+          if(this.showComplete == true) {
+           this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
+          } else {
+            this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
+          }  
+        }       
+      } else if (production.status == '401') {
+         this.handleUnAuthorization();         
+      }
+    }, error => {
+      this.handleUnAuthorization();      
+    }); 
+  }
+
   public isEnableEquipList: boolean = false;
   getEquipmentList() {
     this.equipmentListLoading = true;
@@ -1427,7 +1462,7 @@ async getDentistList(){
     this.endTaksLoading = true;
     this.morningHuddleService.updateEndStatus(event.checked,tid,thid,cid,this.previousDays).subscribe((update:any) => {
       // this.getEndOfDays();
-      this.endTaksLoading = false;
+      this.getEndOfDaysUpdatelist();
     }); 
   }
 
@@ -1527,7 +1562,7 @@ async getDentistList(){
       this.equipmentListLoading = true;
       this.morningHuddleService.updateEquimentList(dataJson,this.clinic_id,this.previousDays).subscribe((update:any) => {
         // this.getEndOfDays();
-        this.endTaksLoading = false;
+       // this.getEndOfDaysUpdatelist();
         this.getEquipmentList();
       });    
     }
