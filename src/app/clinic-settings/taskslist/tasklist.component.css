@@ -8,3 +8,7 @@
 .tasksCon {
     display: block !important;
 }
+
+.task-add-error{
+    color: red;
+}

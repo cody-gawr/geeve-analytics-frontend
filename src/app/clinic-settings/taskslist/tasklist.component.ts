@@ -1,4 +1,4 @@
-import { AfterViewInit, Inject, Component, Input, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Inject, Component, Input, ViewChild, ViewEncapsulation, ElementRef, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
@@ -16,12 +16,16 @@ import { MatSort } from '@angular/material/sort';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
+  styleUrls :['./tasklist.component.css'],
   encapsulation: ViewEncapsulation.None
 })
 
 
 export class DialogOverviewTasklistDialogComponent {
   @ViewChild('allSelected') private allSelected
+  addTaskInput: boolean = false;
+  taskAddErr: boolean = false;
+  @ViewChild('task') task: ElementRef;
   constructor(public dialogRef: MatDialogRef<DialogOverviewTasklistDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private _cookieService: CookieService, private taskService: TaskService, private router: Router) { }
   public assigneeData: { [key: string]: Object }[] = [
     { id: '3', name: "Practice Manager" },
@@ -148,6 +152,29 @@ export class DialogOverviewTasklistDialogComponent {
   additem() {
     this.showAddItem = !this.showAddItem
   }
+
+  // add task with the input  field
+
+  addTaskIn(data) {
+    let task_name = this.task.nativeElement.value; 
+    if (task_name) {
+      this.taskService.addTasksItem(data.list_id, task_name, data.clinic_id).subscribe((res) => {
+        if (res.message == 'success') {
+        this.addTaskInput = false;
+        let newData = res.data;
+        newData.readOnly = true
+        newData.task_name = task_name;
+        this.dialogRef.componentInstance.data.tasksListItems.push(newData);
+        data.tasksListItems.sort((a, b) => parseInt(b.id) - parseInt(a.id));
+        this.dialogRef.componentInstance.data.totalRecords = this.dialogRef.componentInstance.data.tasksListItems.length;
+        }
+      });
+      this.taskAddErr = false;
+    }
+    else
+      this.taskAddErr = true;
+  }
+
   additemNew(data) {
     console.log('data', data);
     this.dialogRef.componentInstance.data.currPage = 1;

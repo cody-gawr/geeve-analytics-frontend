@@ -33,37 +33,62 @@
           <th> Item </th>
           <th> Action </th>
         </tr>
+        <ng-container *ngIf="addTaskInput">
+          <tr>
+            <td>
+              <input (keydown.enter)="addTaskIn(data)" type="text" #task required autoFocus placeholder="New Task">
+              <div class="alert alert-danger task-add-error">
+                <small *ngIf="taskAddErr">Task name required.</small>
+              </div>
+            </td>
+            <td>
+              <span class="action">
+                <a (click)="addTaskIn(data)" class="action_btn golden ng-star-inserted"><i class="ti-save m-r-10"></i></a>
+                <a (click)="addTaskInput = false" class="action_btn danger ng-star-inserted"><i class="ti-trash m-r-10"></i></a>
+              </span>
+            </td>
+          </tr>
+        </ng-container>
         <ng-container *ngIf="data.tasksListItems.length>0">
-          <tr *ngFor="let item of data.tasksListItems | paginate: { itemsPerPage: data.itemsPerPage, currentPage: data.currPage ,totalItems: data.totalRecords};let i =index;">
-            <td> 
-                <input type="text" autoFocus placeholder="New Task" [readonly]="item.readOnly" [(ngModel)]="item.task_name"> </td>              
+          <tr
+            *ngFor="let item of data.tasksListItems | paginate: { itemsPerPage: data.itemsPerPage, currentPage: data.currPage ,totalItems: data.totalRecords};let i =index;">
+            <td>
+              <input type="text" autoFocus placeholder="New Task" [readonly]="item.readOnly"
+                [(ngModel)]="item.task_name">
+            </td>
             <td>
               <span class="action">
                 <a *ngIf="item.readOnly" (click)="markRead(i,data.itemsPerPage,data.currPage)"
                   class="action_btn golden ng-star-inserted"><i class="ti-pencil m-r-10"></i></a>
-                <a *ngIf="!item.readOnly"  (window:keypress)="onKeyPress($event,i,data.itemsPerPage,data.currPage)" (click)="updateItem(i,data.itemsPerPage,data.currPage)"
-                  class="action_btn golden ng-star-inserted"><i class="ti-save m-r-10"></i></a>
+                <a *ngIf="!item.readOnly" (window:keypress)="onKeyPress($event,i,data.itemsPerPage,data.currPage)"
+                  (click)="updateItem(i,data.itemsPerPage,data.currPage)" class="action_btn golden ng-star-inserted"><i
+                    class="ti-save m-r-10"></i></a>
               </span>
               <span class="action" (click)="removeItem(i,data.itemsPerPage,data.currPage)">
-                <a title="Delete" class="action_btn danger  ng-star-inserted"><i class="ti-trash m-r-10"></i></a>
+                <a title="Delete" class="action_btn danger ng-star-inserted"><i class="ti-trash m-r-10"></i></a>
               </span>
             </td>
           </tr>
         </ng-container>
         <tr *ngIf="!data.tasksListItems.length">
           <td colspan="2" align="center">No task list items added yet</td>
-          
+
         </tr>
       </table>
       <div *ngIf="data.totalRecords > 10">
-        <pagination-controls  [maxSize]="maxSize" [autoHide]="autoHide" (pageChange)="pageChanged($event)"></pagination-controls>
+        <pagination-controls [maxSize]="maxSize" [autoHide]="autoHide" (pageChange)="pageChanged($event)">
+        </pagination-controls>
       </div>
        
     </div>
   </div>
-  <div mat-dialog-actions class="justify-between list">   
-    <!-- <i *ngIf="data.list_id" class="fa fa-plus m-r-10" (click)="additemNew(data)"></i> -->
-    <button *ngIf="data.list_id" (click)="additemNew(data)" class="mat-raised-button mat-dc float-right">Add Task</button>
+  <div mat-dialog-actions class="justify-between list">
+    <!-- <i *ngIf="data.list_id" class="fa fa-plus m-r-10" (click)="additemNew(data)">Add Task</i> -->
+    <button *ngIf="!addTaskInput && data.list_id" class="mat-raised-button mat-dc float-right ng-star-inserted"
+      (click)="addTaskInput = true">Add Task</button>
+    <button *ngIf="addTaskInput && data.list_id" class="mat-raised-button mat-dc float-right ng-star-inserted"
+      (click)="addTaskIn(data)">Add Task</button>
+    <!-- <i *ngIf="data.list_id" (click)="additemNew(data)">Add Task</i> -->
   </div>
   <div mat-dialog-actions class="justify-between">
     <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
