@@ -319,7 +319,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   }
 
  ngOnInit(){
-    console.log(this.homeUrl + "assets/js/jquery.min.js");
+    //console.log(this.homeUrl + "assets/js/jquery.min.js");
     /*this.dataSource1.sort = this.sort1;
     this.dataSource2.sort = this.sort2;*/
     $('#currentDentist').attr('did','all');

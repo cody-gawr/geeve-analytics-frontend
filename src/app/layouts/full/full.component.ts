@@ -171,7 +171,7 @@ export class FullComponent implements OnDestroy, AfterViewInit {
   }
 
   addItem(newItem: number) {
-    console.log("full layout", newItem);
+    // console.log("full layout", newItem);
     this.trailDays = newItem;
   }
 

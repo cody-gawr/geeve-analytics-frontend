@@ -604,17 +604,20 @@ if(this.form.controls['newPassword'].hasError('required')){
  
  /********* Check Length****************/ 
  checkLenth(event,type){
+  let key = event.keyCode || event.which;
    if(event.target.value.length >= 50 && type == 'title'){
-      event.preventDefault();
-      event.stopPropagation();
-      return false;
-    } else if(event.target.value.length >= 400 && type == 'discription'){{
-      event.preventDefault();
-      event.stopPropagation();
-      return false;
-    }
-    
-  }
+      if(key != 8){
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+      }     
+    } else if(event.target.value.length >= 400 && type == 'discription'){
+      if(key != 8){
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+      }
+   }
 
  }
  /********* Check Length****************/ 

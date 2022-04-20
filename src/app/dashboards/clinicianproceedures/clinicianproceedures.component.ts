@@ -1798,11 +1798,8 @@ public PRcolors;
               if(key == 1){
                 this.ratio2 =  this.ratio2 + total;
               }
-              console.log(this.ratio1);
-              console.log(this.ratio2);
              });
              this.multifulratio1 = this.ratio1 +':'+ this.ratio2;
-             console.log(this.multifulratio1);
              this.predictorLabels1.push(res.clinic_name);
           });
           data.data_rct_ext.forEach(res => {
