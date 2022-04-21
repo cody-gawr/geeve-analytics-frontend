@@ -50,7 +50,7 @@
         <mat-select-trigger *ngIf="allChecked == true">
           {{'All Clinics'}}
         </mat-select-trigger>
-          <mat-option value="all" *ngIf="(route == '/dashboards/finances' || route == '/dashboards/marketing' || route == '/dashboards/frontdesk' || route == '/dashboards/cliniciananalysis' || route == '/dashboards/clinicianproceedures' ) && clinicsData.length > 1 && user_type !=7">All Clinics</mat-option>
+          <mat-option value="all" *ngIf="(route == '/dashboards/finances' || route == '/dashboards/marketing' || route == '/dashboards/frontdesk' || route == '/dashboards/cliniciananalysis' || route == '/dashboards/clinicianproceedures' ) && clinicsData.length > 1">All Clinics</mat-option>
           <mat-option
             *ngFor="let clinicData of clinicsData"
             [value]="clinicData.id"
