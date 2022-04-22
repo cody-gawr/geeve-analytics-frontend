@@ -1728,6 +1728,11 @@ async getDentistList(){
           this.showProcessingText = false;
           return false; 
         }
+        else if(this.user_type == '6' && this.apiSuccessCount == 19)
+        {
+          this.showProcessingText = false;
+          return false; 
+        }
         else{
           this.showProcessingText = true;
           return true; 
