@@ -487,6 +487,7 @@ initiate_clinic() {
             this.toastr.error(res.data.message);
          }
       }, error => {
+        $('.ajax-loader').hide();
         this.toastr.error('Please Provide Valid Inputs!');
       });
     }
@@ -502,6 +503,7 @@ initiate_clinic() {
           this.toastr.error(res.data.message);
        }
     }, error => {
+      $('.ajax-loader').hide();
       this.toastr.error('Please Provide Valid Inputs!');
     });
   }
@@ -517,6 +519,7 @@ initiate_clinic() {
           this.toastr.error(res.data.message);
        }
     }, error => {
+      $('.ajax-loader').hide();
       this.toastr.error('Please Provide Valid Inputs!');
     });
   }
