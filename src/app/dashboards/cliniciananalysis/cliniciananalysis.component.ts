@@ -1539,7 +1539,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   loadDentist(newValue) {
     $('.sa_tabs_data button').prop('disabled',true); 
     if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
-      this.Apirequest = 18;
+      this.Apirequest = 16;
       $('.multi-clinic-dis').addClass("disablePointer");
       $('.multi-clinic-pro').addClass("disablePointerProgress");
     }else{
@@ -1564,6 +1564,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     if (this._cookieService.get("dentistid"))
       this.childid = this._cookieService.get("dentistid");
     if (newValue == 'all') {
+      console.log(this.hrSelectShow);
       this.dentistVal = 'all';
       this.showTrend = false;
       this.toggleChecked = false;
@@ -1582,9 +1583,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.buildChartNewpatients();
       this.recallPrebook();
       this.treatmentPrePrebook();
-      this.hourlyRateChart();
-      this.hourlyRateChartDesntists();
-      this.hourlyRateChartOht();
+      if(this.hrSelectShow == "hr_all"){ 
+        this.hourlyRateChart();
+      }else if(this.hrSelectShow == "hr_dentists"){
+        this.hourlyRateChartDesntists();
+      }else if(this.hrSelectShow == "hr_oht"){
+        this.hourlyRateChartOht();
+      }
       this.treatmentPlanRate();
       (<HTMLElement>document.querySelector('.dentistProductionSingle')).style.display = 'none';
       (<HTMLElement>document.querySelector('.dentistProduction')).style.display = 'block';
