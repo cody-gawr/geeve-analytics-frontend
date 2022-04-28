@@ -2202,10 +2202,9 @@
                   src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
               </div>
-              <table #sort1="matSort" mat-table matSort [dataSource]="endOfDaysTasksInComp"
+              <!-- <table #sort1="matSort" mat-table matSort [dataSource]="endOfDaysTasksInComp"
                 class="mat-elevation-z8 daily-task"
                 [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''" matSortDisableClear>
-                <!-- Name Column -->
                 <ng-container matColumnDef="task_name" >
                   <th mat-header-cell mat-sort-header *matHeaderCellDef> Task Name </th>
                   <ng-container *matCellDef="let element">
@@ -2249,6 +2248,41 @@
                 <tr mat-row *matRowDef="let row; columns: displayedColumns9;"></tr>
                 <mat-footer-row *matFooterRowDef="['isDataAvailable9']"
                   [ngClass]="(endOfDaysTasksInComp.data.length <= 0)? 'show' : 'hide'"></mat-footer-row>
+              </table> -->
+              <!-- using custom directive to sort the table -->
+              <table class="mat-table cdk-table mat-sort mat-elevation-z8 daily-task" style="overflow-x:auto;" [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''" id="MH-table">
+                <thead>
+                  <tr >
+                    <th [appSort]="endOfDaysTasksInComp.data" data-order="desc" data-name="name" scope="col">Task Name
+                      <i class="fa fa-fw fa-sort"></i></th>
+                    <th [ngClass]="showComplete? '' : 'hide' ">Completed By</th>
+                    <th class="Complete">Complete</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="endOfDaysTasksInComp.data.length > 0">
+                  <tr class="mat-row cdk-row ng-star-inserted" *ngFor="let element of endOfDaysTasksInComp.data" >
+                    <td *ngIf="list.list_id == element.list_id && element.type =='task'"> {{element.name}}</td>
+                    <td *ngIf="list.list_id == element.list_id && element.type =='task'"
+                      [ngClass]=" showComplete ? '' : 'hide' ">
+                      <span *ngIf="element.display_name">{{element.display_name }}</span>
+                      <span *ngIf="!element.display_name">{{element.email }}</span>
+                    </td>
+                    <td class="toggle" *ngIf="list.list_id == element.list_id && element.type =='task' "
+                      [hidden]="element.type == 'list'">
+                      <mat-slide-toggle [checked]="element.is_complete == 1? true : false" name="status"
+                        (change)="updateTask($event,element.task_id,element.history_id,element.clinic_id)">
+                      </mat-slide-toggle>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot *ngIf="endOfDaysTasksInComp.data.length == 0">
+                  <span *ngIf="isEnabletasks && futureDateDT == ''">No task list has been generated for today</span>
+                  <span *ngIf="isEnabletasks && futureDateDT != ''">Daily Tasks will be populated on {{ futureDateDT |
+                    date:'MMM d, y':'timezone'
+                    }}</span>
+                  <span *ngIf="!isEnabletasks">Daily Tasks are not enabled - this can be configured in your Jeeve
+                    Settings menu</span>
+                </tfoot>
               </table>
               <!-- responsive table - frontdesk followup (Post op calls)  -->
               <div fxHide.gt-sm>

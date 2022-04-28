@@ -712,7 +712,7 @@ table.report-table-main.align > tr > td {
     margin: 0px auto;
     display: grid;
     position: absolute;
-    z-index: 999999 !important;
+    z-index: 9999 !important;
     left: calc(33% - 100px);
     top: 20px;
 }

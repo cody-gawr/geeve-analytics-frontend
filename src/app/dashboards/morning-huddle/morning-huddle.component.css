@@ -950,3 +950,28 @@ tr.mat-row.cdk-row.ng-star-inserted:empty {
     background-color: #f5f5fb !important;
     max-width: 75%;
 }  
+
+#MH-table{
+    table-layout: fixed;
+}
+#MH-table td, #MH-table th{
+    padding: 8px;
+}
+
+#MH-table tr:nth-child(even){background-color: #f2f2f2;}
+
+#MH-table tr:hover {background-color: #ddd;}
+
+#MH-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #2d8b7c;
+  color: white;
+}
+.Complete{
+    width: 100px;
+}
+.toggle{
+    width: 100px;
+}
