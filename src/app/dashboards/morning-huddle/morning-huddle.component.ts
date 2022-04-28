@@ -15,6 +15,7 @@ import { NgxDaterangepickerMd, DaterangepickerComponent } from 'ngx-daterangepic
 import { ChartstipsService } from '../../shared/chartstips.service';
 import {MatSort} from '@angular/material/sort';
 import { environment } from "../../../environments/environment";
+import * as moment from 'moment';
 export interface PeriodicElement {
   name: string;
   production: string;
@@ -289,7 +290,9 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   {'name': 'Test 2','color': 'green','text': 'Test Two'},
   {'name': 'Test 3','color': 'blue','text': 'Test Three'},
   ];
-
+  selected: any;
+  minDate: any;
+  maxDate: any;
 
   timezone: string = '+1000';
   
@@ -308,7 +311,10 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public chartstipsService: ChartstipsService,
     public clinicianAnalysisService: ClinicianAnalysisService
     ) { 
-    this.getChartsTips();
+    this.getChartsTips(); 
+    this.selected = {start:  moment()};
+    this.minDate = moment().subtract(7, 'days');  
+    this.maxDate = moment().add(7, 'days');  
  }
 
   @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
@@ -1601,6 +1607,11 @@ async getDentistList(){
     if(parseInt(diffTime) >= 7 && type == 'subtract'){
       this. showDwDateArrow = false;
     }    
+  }
+
+  setDateChange(event){
+     this.previousDays =  this.datepipe.transform(event.startDate.toDate(), 'yyyy-MM-dd');  
+    this.refreshPerformanceTab();
   }
 
   getDataDiffrences(){ // Function to get days diffrence from selected date

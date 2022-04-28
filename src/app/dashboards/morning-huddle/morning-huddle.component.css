@@ -945,3 +945,8 @@ tr.mat-row.cdk-row.ng-star-inserted:empty {
 .loader_container.mainloader{
     height:20px !important;
 }
+
+.mat-input-element.sa_datepicker.Mhdatepic{
+    background-color: #f5f5fb !important;
+    max-width: 75%;
+}  
