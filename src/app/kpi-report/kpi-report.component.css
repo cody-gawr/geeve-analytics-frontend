@@ -12,7 +12,7 @@
 .huddle-card-row .appointment {
     margin-top: 0;
 }
-.header_filters.flex_direct_mar { flex-direction: row-reverse !important }
+/* .header_filters.flex_direct_mar { flex-direction: row-reverse !important } */
 
 .daysAgo {
     font-size: 12px;
@@ -712,7 +712,7 @@ table.report-table-main.align > tr > td {
     margin: 0px auto;
     display: grid;
     position: absolute;
-    z-index: 9999;
+    z-index: 999999 !important;
     left: calc(33% - 100px);
     top: 20px;
 }
@@ -751,7 +751,7 @@ table.report-table-main.align > tr > td {
     margin: 0px auto;
     display: grid;
     position: absolute;
-    z-index: 9999;
+    z-index: 999999 !important;
     left: calc(46% - 100px);
     top: 20px;
 }

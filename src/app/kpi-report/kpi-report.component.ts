@@ -61,7 +61,8 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-
+		$('.header_filters').removeClass('hide_header');
+		$('.header_filters').removeClass('flex_direct_mar ');
 	}
 
 	ngOnDestroy() {
@@ -174,10 +175,14 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 	this.endDate = this.datepipe.transform(new Date(this.selectedYear, this.selectedMonth, 0), 'yyyy-MM-dd');
 	let currentdate = new Date(this.endDate);
 	let subMonths = this.selectedMonthRange + 1;
-	let sDate = new Date(currentdate.setMonth(currentdate.getMonth()- subMonths)).toISOString().slice(0, 10);
+	let sDate = new Date(currentdate.setMonth(currentdate.getMonth()- subMonths));
 	let sMonth : any = this.datepipe.transform(sDate, 'M');
 	let sYear: any  = this.datepipe.transform(sDate, 'yyyy');
-	this.startDate  = this.datepipe.transform(new Date(sYear, sMonth), 'yyyy-MM-dd');
+	if(this.selectedMonthRange === 1){
+		this.startDate  = this.datepipe.transform(new Date(sYear, (sMonth-1), 1), 'yyyy-MM-dd');
+	}else{
+		this.startDate  = this.datepipe.transform(new Date(sYear, sMonth), 'yyyy-MM-dd');
+	}
 	this.getKpiReport();
 	}  
 	// setDate(type) {
