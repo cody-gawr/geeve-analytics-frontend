@@ -903,6 +903,8 @@ initiate_clinic() {
           this.futureDateDT =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
         }
       this.endTaksLoading = false;
+       this.tasklistArray= [];
+       this.endOfDaysTasksInComp.data =[];
       if(production.message == 'success') {
         this.apiSuccessCount += 1;
         if( production.data == '204' ){
