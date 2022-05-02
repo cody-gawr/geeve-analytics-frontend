@@ -1610,8 +1610,10 @@ async getDentistList(){
   }
 
   setDateChange(event){
-     this.previousDays =  this.datepipe.transform(event.startDate.toDate(), 'yyyy-MM-dd');  
-    this.refreshPerformanceTab();
+    if (typeof(event.startDate) !== 'undefined') {
+      this.previousDays =  this.datepipe.transform(event.startDate.toDate(), 'yyyy-MM-dd');  
+      this.refreshPerformanceTab();
+    }
   }
 
   getDataDiffrences(){ // Function to get days diffrence from selected date

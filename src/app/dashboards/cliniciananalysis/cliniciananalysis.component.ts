@@ -1564,7 +1564,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     if (this._cookieService.get("dentistid"))
       this.childid = this._cookieService.get("dentistid");
     if (newValue == 'all') {
-      console.log(this.hrSelectShow);
       this.dentistVal = 'all';
       this.showTrend = false;
       this.toggleChecked = false;
