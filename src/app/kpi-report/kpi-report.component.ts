@@ -162,10 +162,9 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 		this.endDate = this.datepipe.transform(new Date(this.selectedYear, this.selectedMonth, 0), 'yyyy-MM-dd');
 		let currentdate = new Date(this.endDate);
 		let subMonths = this.selectedMonthRange + 1;
-		let sDate = new Date(currentdate.setMonth(currentdate.getMonth()- subMonths)).toISOString().slice(0, 10);
-		let sMonth : any = this.datepipe.transform(sDate, 'M');
-		let sYear: any  = this.datepipe.transform(sDate, 'yyyy');
-		this.startDate  = this.datepipe.transform(new Date(sYear, sMonth), 'yyyy-MM-dd');
+		currentdate.setDate(1);
+		currentdate.setMonth((currentdate.getMonth() + 1) - subMonths);
+		this.startDate  = this.datepipe.transform(new Date(currentdate), 'yyyy-MM-dd');
 		this.getKpiReport();
 	  }
 	onMonthRangeChange(event) {
@@ -173,16 +172,11 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 	this.selectedMonth = this.datepipe.transform(this.selectedMonthYear, 'M');
 	this.selectedYear = this.datepipe.transform(this.selectedMonthYear, 'yyyy');
 	this.endDate = this.datepipe.transform(new Date(this.selectedYear, this.selectedMonth, 0), 'yyyy-MM-dd');
-	let currentdate = new Date(this.endDate);
 	let subMonths = this.selectedMonthRange + 1;
-	let sDate = new Date(currentdate.setMonth(currentdate.getMonth()- subMonths));
-	let sMonth : any = this.datepipe.transform(sDate, 'M');
-	let sYear: any  = this.datepipe.transform(sDate, 'yyyy');
-	if(this.selectedMonthRange === 1){
-		this.startDate  = this.datepipe.transform(new Date(sYear, (sMonth-1), 1), 'yyyy-MM-dd');
-	}else{
-		this.startDate  = this.datepipe.transform(new Date(sYear, sMonth), 'yyyy-MM-dd');
-	}
+	let currentdate = new Date(this.endDate);
+	currentdate.setDate(1);
+	currentdate.setMonth((currentdate.getMonth() + 1) - subMonths);
+	this.startDate  = this.datepipe.transform(new Date(currentdate), 'yyyy-MM-dd');
 	this.getKpiReport();
 	}  
 	// setDate(type) {
