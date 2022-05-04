@@ -252,7 +252,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
                 } else {
                   this.selectedDentist = parseInt(dentistclinic[1]);
                 } 
-                if ((this.route == "/dashboards/finances" || this.route == "/dashboards/marketing" || this.route == "/dashboards/frontdesk" || (this.route == "/dashboards/cliniciananalysis" && this.user_type !=4) || (this.route == "/dashboards/clinicianproceedures" && this.user_type !=4)) && this.apiUrl.includes('test')) {
+                if (((this.route == "/dashboards/finances" && this.user_type != 7) || (this.route == "/dashboards/marketing" && this.user_type != 7) || (this.route == "/dashboards/frontdesk" && this.user_type != 7) || (this.route == "/dashboards/cliniciananalysis" && this.user_type !=4  && this.user_type != 7) || (this.route == "/dashboards/clinicianproceedures" && this.user_type !=4  && this.user_type != 7)) && this.apiUrl.includes('test')) {
                   this.allChecked = false;
                   this.clinic_id = [];
                   this.selectedClinic = [];
@@ -323,7 +323,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
                   });
                 }
               } else {
-                if ((this.route == "/dashboards/finances" || this.route == "/dashboards/marketing" || this.route == "/dashboards/frontdesk" || (this.route == "/dashboards/cliniciananalysis" && this.user_type !=4) || (this.route == "/dashboards/clinicianproceedures" && this.user_type !=4)) && this.apiUrl.includes('test')) {
+                if (((this.route == "/dashboards/finances" && this.user_type != 7) || (this.route == "/dashboards/marketing" && this.user_type != 7) || (this.route == "/dashboards/frontdesk" && this.user_type != 7) || (this.route == "/dashboards/cliniciananalysis" && this.user_type !=4  && this.user_type != 7) || (this.route == "/dashboards/clinicianproceedures" && this.user_type !=4  && this.user_type != 7)) && this.apiUrl.includes('test')) {
                   this.selectedClinic = [];
                   this.selectedClinic.push(res.data[0].id);
                 }else{
