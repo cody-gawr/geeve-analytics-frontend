@@ -975,3 +975,7 @@ tr.mat-row.cdk-row.ng-star-inserted:empty {
 .toggle{
     width: 100px;
 }
+
+.available.today.ng-star-inserted{
+    background-color: #cccccc;
+}
