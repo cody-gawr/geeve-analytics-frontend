@@ -1140,4 +1140,4 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     this.getUtaFollowups();
       
   }
-}
+} 
