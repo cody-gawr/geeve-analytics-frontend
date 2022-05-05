@@ -12,7 +12,7 @@
 .huddle-card-row .appointment {
     margin-top: 0;
 }
-/* .header_filters.flex_direct_mar { flex-direction: row-reverse !important } */
+.header_filters.flex_direct_mar { flex-direction: row-reverse !important }
 
 .daysAgo {
     font-size: 12px;
@@ -102,19 +102,6 @@ table.customWidth.thick, table.customWidth.PostOp {
 }
 .selectLeft {
     left: 0;
-}
-.morning-huddle-date.followuppage {
-    text-align: center;
-    display: grid;
-    /* position: relative; */
-    width: 200px;
-    margin: 0px auto;
-    display: grid;
-    position: absolute;
-    z-index: 9999;
-    left: calc(50% - 100px);
-    top: 20px;
-
 }
 .date-area-spac{
     height: 30px;
@@ -652,9 +639,9 @@ div.mat-chip-list-wrapper .custom-tooltip {
     width: 100%; 
     float: none;
 }
-
 .morning-huddle-date.topModel.followuppage.matwdth {
-    width: 130px !important;
+    margin-right: 20px;
+    margin-bottom: 10px;
 }
 
 .top-header-con h2 {
@@ -668,10 +655,9 @@ div.mat-chip-list-wrapper .custom-tooltip {
 table.report-table-main {
     width: 100%;
     border-spacing: 0px;
+    border-radius: 5px;
+    overflow: hidden;
     /* border: 1px solid; */
-}
-table.report-table tr td {
-    text-align: right;
 }
 
 .align{
@@ -679,7 +665,7 @@ table.report-table tr td {
 }
 
 table.report-table-main.align > tr > td {
-    border: 1px solid;
+    border: 1px solid #ebebeb;
 }
 .consult{
     display:none;
@@ -698,29 +684,13 @@ table.report-table-main.align > tr > td {
     height: 45px;
 }
 .infotxt{
-    font-size: 10px;
-    color: #a1a8a9;
-    margin-top: 12px;
-}
-
-
-.morning-huddle-date.followuppage.monthyear {
-    text-align: center;
-    display: grid;
-    /* position: relative; */
-    width: 200px;
-    margin: 0px auto;
-    display: grid;
-    position: absolute;
-    z-index: 9999 !important;
-    left: calc(33% - 100px);
-    top: 20px;
+    font-size: 14px;
+    color: #4e4e4e;
 }
 .monthRange .mat-form-field {
-    /* background-color:#f7f7f7 !important; */
-    max-width: 35px !important;
+    max-width: 80px!important;
     margin: auto;
-    padding: 0px 0px;
+    padding: 0 15px;
     border-radius: 5px;
     height: 45px;
 }
@@ -730,40 +700,101 @@ table.report-table-main.align > tr > td {
 .strong{
     font-weight: 700;
 }
-
-.morning-huddle-date.followuppage.textw {
-    text-align: center;
-    display: grid;
-    /* position: relative; */
-    width: 200px;
-    margin: 0px auto;
-    display: grid;
-    position: absolute;
-    z-index: 9999;
-    left: calc(40% - 100px);
-    top: 20px;
+#kpireport {
+    padding: 20px;
 }
-.morning-huddle-date.followuppage.monthali {
-    text-align: center;
-    display: grid;
-    /* position: relative; */
-    width: 200px;
-    margin: 0px auto;
-    display: grid;
-    position: absolute;
-    z-index: 999999 !important;
-    left: calc(46% - 100px);
-    top: 20px;
+.kpi-date-filter {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
 }
-.morning-huddle-date.followuppage.textmonth {
+.report-table-main thead th {
+    padding: 15px;
+    background-color: #109582;
+    color: #fff;
+    position: relative;
+    font-size: 15px;
+}
+.report-table-main thead th.align:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    height: 20px;
+    width: 1px;
+    background-color: #d1d1d1;
+    transform: translateY(-50%);
+}
+.report-table-main > tbody > tr > td {
+    padding: 15px;
+    background-color: #fff;
+    border-right: 1px solid #efefef;
+    border-bottom: 1px solid #efefef;
+    font-size: 15px;
+}
+.report-table-main > tbody > tr > td:first-child {
+    text-align: left;
+    font-family: "Gilroy-Medium";
+    border-right: 0;
+}
+.report-table-main > tbody > tr > td:nth-child(2) {
+    border-right: 0;
+}
+.kpi-date-filter .morning-huddle-date .mat-form-field .mat-form-field-wrapper {
+    height: 100%;
+}
+.kpi-date-filter .mat-form-field-flex {
+    height: 100%;
+    align-items: center;
+}
+.report-table-main td {
+    padding: 7px 0;
+}
+.report-table-main .result span {
+    background-color: #fff1ad;
+    border-radius: 30px;
+    padding: 10px 20px;
+}
+#kpireport .table-responsive > .report-table-main {
+    min-width: 750px;
+}
+.prime-logo {
     text-align: center;
-    display: grid;
-    /* position: relative; */
     width: 200px;
-    margin: 0px auto;
+    margin: 0 auto;
     display: grid;
     position: absolute;
     z-index: 9999;
     left: calc(50% - 100px);
     top: 20px;
+}
+.kpi-date-filter .sa_mat_select_topbar {
+    background-color: #fff;
+    margin: 0 20px 10px 0;
+    height: 44px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
+
+@media screen and (max-width: 991px) {
+    #kpireport {
+        padding: 0;
+    }
+    .kpi-date-filter .sa_mat_select_topbar {
+        width: 100%;
+        margin: 0 0px 10px 0;
+    }
+}
+@media screen and (max-width: 767px) {
+    #kpireport {
+        position: relative;
+        padding: 50px 0 0 0;
+    }
+    .prime-logo {
+        top: 5px;
+        z-index: 99;
+    }
 }

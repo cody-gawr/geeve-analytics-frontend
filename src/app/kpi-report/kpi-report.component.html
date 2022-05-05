@@ -1,13 +1,13 @@
-<select class="sa_select internal_dentist" [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)"
-  [style.display]="'none'">
-  <option value="all">All Dentist</option>
-  <option *ngFor="let dentist of dentists" [value]="dentist.providerId"> {{dentist.name}}</option>
-</select>
 <input type="button" id="clinic_initiate" (click)="initiate_clinic()" [style.display]="'none'" />
-<input type="button" id="dentist_initiate" (click)="initiate_dentist()" [style.display]="'none'">
-<div id="notAuth" class="unAutho consult">
+<!-- <input type="button" id="dentist_initiate" (click)="initiate_dentist()" [style.display]="'none'"> -->
+<!-- <div id="notAuth" class="unAutho consult">
    <span >Selected clinic is not authorised</span>
-</div>
+</div> -->
+<!-- <select class="sa_select internal_dentist" [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)"
+   [style.display]="'none'">
+   <option value="all">All Dentist</option>
+   <option *ngFor="let dentist of dentists" [value]="dentist.providerId"> {{dentist.name}}</option>
+</select> -->
 <div id="kpireport" class="sa_dashboard_inner_content morning-huddle side">   
    <!-- <div class="morning-huddle-date topModel followuppage matwdth">
        <mat-icon (click)="setDate('subtract')" role="img"
@@ -17,118 +17,147 @@
            class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">
            arrow_forward_ios</mat-icon>
    </div> -->
-   <div class="morning-huddle-date topModel followuppage matwdth monthyear">
-      <mat-form-field>
-         <mat-select class="external_dentist" [(ngModel)]="selectedMonthYear" (ngModelChange)="onTabChanged($event)" >
-           <mat-option *ngFor="let yearRange of range" [value]="yearRange">{{ yearRange }} </mat-option>
+   <div class="prime-logo">
+      <img src="../../assets/images/prime-practice.png" alt="prime-practice"/>
+   </div>
+   <div class="kpi-date-filter">
+      <div class="sa_mat_select_topbar">
+      <mat-form-field floatLabel="never">
+         <mat-select
+            class="external_dentist"
+            [(ngModel)]="selectedDentist"
+            (ngModelChange)="loadDentist($event)"
+         >
+            <mat-option value="all" *ngIf="showAll">All Dentists</mat-option>
+            <mat-option
+            *ngFor="let dentist of dentists"
+            [value]="dentist.providerId"
+            >
+            <span *ngIf="dentist.jeeve_name">{{ dentist.jeeve_name }}</span>
+            <span *ngIf="!dentist.jeeve_name">{{ dentist.name }}</span>
+            </mat-option>
          </mat-select>
-         
-       </mat-form-field>  
+      </mat-form-field>
+      </div>
+      <div class="morning-huddle-date topModel followuppage matwdth monthyear">
+         <mat-form-field>
+            <mat-select class="external_dentist" [(ngModel)]="selectedMonthYear" (ngModelChange)="onTabChanged($event)" >
+              <mat-option *ngFor="let yearRange of range" [value]="yearRange">{{ yearRange }} </mat-option>
+            </mat-select>
+          </mat-form-field>  
+      </div>
+      <div class="morning-huddle-date topModel followuppage matwdth textw">
+         <span class="infotxt">and previous</span> 
+      </div>
+      <div class="morning-huddle-date topModel followuppage matwdth monthRange monthali">
+         <mat-form-field>
+            <mat-select class="external_dentist" [(ngModel)]="selectedMonthRange" (ngModelChange)="onMonthRangeChange($event)" >
+              <mat-option *ngFor="let mRange of monthrange" [value]="mRange">{{ mRange }} </mat-option>
+            </mat-select>
+           
+          </mat-form-field>  
+      </div>
+      <div class="morning-huddle-date topModel followuppage matwdth textmonth">
+         <span class="infotxt">months</span>
+      </div>
+      <button class="mat-raised-button mat-dc m-b-10" mat-raised-button>Ok</button>
    </div>
-   <div class="morning-huddle-date topModel followuppage matwdth textw">
-      <span class="infotxt">and previous</span> 
-   </div>
-   <div class="morning-huddle-date topModel followuppage matwdth monthRange monthali">
-      <mat-form-field>
-         <mat-select class="external_dentist" [(ngModel)]="selectedMonthRange" (ngModelChange)="onMonthRangeChange($event)" >
-           <mat-option *ngFor="let mRange of monthrange" [value]="mRange">{{ mRange }} </mat-option>
-         </mat-select>
-        
-       </mat-form-field>  
-   </div>
-   <div class="morning-huddle-date topModel followuppage matwdth textmonth">
-      <span class="infotxt">months</span>
-   </div>
-   <div class="top-header-con">
+   <!-- <div class="top-header-con">
       <h2>KPI Report</h2>
-   </div>
+   </div> -->
    <div *ngIf="reportloader == true"
       class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
       <div class="loader-text">Calculating...</div>
    </div>
-   <table class="report-table-main align" *ngIf="reportloader == false">
-   <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td class="align strong" *ngFor="let reportM of reportMonths['months']">{{ reportM }}</td>
-      <td class="align strong">TOTAL</td>
-   </tr>
-   <tr *ngFor="let reportD of reportData">
-         <td class="strong" *ngIf="reportD.kpi_type != 'Utilisation Rate'">{{ reportD.kpi_type }} </td>
-         <td *ngIf="reportD.kpi_type == 'Utilisation Rate'">
-            <table class=" report-table-main alignUr">
-               <tr>
-                     <td class="strong">Time Available</td>
-               </tr>
-               <tr>
-                     <td class="strong">Time Worked</td>
-               </tr>
-               <tr>
-                  <td>&nbsp;</td>
-            </tr>
-            </table>
-         </td>
-         <td *ngIf="reportD.kpi_type != 'Utilisation Rate'"> 
-            <table class=" report-table-main report-table">
+   <div class="table-responsive">
+      <table class="report-table-main align" *ngIf="reportloader == false">
+         <thead>
             <tr>
-                  <td>Goal</td>
+               <th>&nbsp;</th>
+               <th>&nbsp;</th>
+               <th class="align strong" *ngFor="let reportM of reportMonths['months']">{{ reportM }}</th>
+               <th class="align strong">TOTAL</th>
             </tr>
-            <tr>
-                  <td>Actual</td>
+         </thead>
+         <tbody>
+            <tr *ngFor="let reportD of reportData">
+                  <td class="strong" *ngIf="reportD.kpi_type != 'Utilisation Rate'">{{ reportD.kpi_type }} </td>
+                  <td *ngIf="reportD.kpi_type == 'Utilisation Rate'">
+                     <table class=" report-table-main alignUr">
+                        <tr>
+                              <td class="strong">Time Available</td>
+                        </tr>
+                        <tr>
+                              <td class="strong">Time Worked</td>
+                        </tr>
+                        <tr>
+                           <td>&nbsp;</td>
+                     </tr>
+                     </table>
+                  </td>
+                  <td *ngIf="reportD.kpi_type != 'Utilisation Rate'"> 
+                     <table class=" report-table-main report-table">
+                     <tr>
+                           <td>Goal</td>
+                     </tr>
+                     <tr>
+                           <td>Actual</td>
+                     </tr>
+                     <tr>
+                           <td class="result"><span>Result</span></td>
+                     </tr>
+                  </table>
+                  </td>
+                  <td *ngIf="reportD.kpi_type == 'Utilisation Rate'"> 
+                     <table class="report-table-main report-table">
+                     <tr>
+                           <td>Actual</td>
+                     </tr>
+                     <tr>
+                           <td>Actual</td>
+                     </tr>
+                     <tr>
+                           <td>Result</td>
+                     </tr>
+                  </table>
+                  </td>
+                  <td *ngFor="let reportVal of reportD['val']">
+                     <table class=" report-table-main report-table" *ngIf="reportD.kpi_type != 'Utilisation Rate'">
+                        <tr >
+                              <td *ngIf="reportD.kpi_type == 'Production' || reportD.kpi_type == 'Collection' || reportD.kpi_type == 'Dentist Production Per Day' || reportD.kpi_type == 'Hourly Rate' || reportD.kpi_type == 'Discount'">
+                                    ${{ reportVal.goal | number:'1.0-0'}}
+                                 </td>
+                              <td *ngIf="reportD.kpi_type == 'Dentist Days' || reportD.kpi_type == 'Production Units' || reportD.kpi_type == 'New patients'">
+                                    {{ reportVal.goal | number:'1.0-0'}}
+                                 </td>
+                        </tr>
+                        <tr>
+                              <td *ngIf="reportD.kpi_type == 'Production' || reportD.kpi_type == 'Collection' || reportD.kpi_type == 'Dentist Production Per Day' || reportD.kpi_type == 'Hourly Rate' || reportD.kpi_type == 'Discount'">
+                                    ${{ reportVal.actual | number:'1.0-0'}}
+                                 </td>
+                              <td *ngIf="reportD.kpi_type == 'Dentist Days' || reportD.kpi_type == 'Production Units' || reportD.kpi_type == 'New patients'">
+                                    {{ reportVal.actual | number:'1.0-0'}}
+                                 </td>   
+                        </tr>
+                        <tr>
+                              <td  [ngClass]="reportVal.goal_percent === 100 ? 'complete' : ''">{{ reportVal.goal_percent | number:'1.0-0'}}%</td>
+                        </tr>
+                     </table>
+                     <table class=" report-table-main report-table" *ngIf="reportD.kpi_type == 'Utilisation Rate'">
+                        <tr >
+                              <td>{{ reportVal.available_hours | number:'1.0-0'}} Hours</td>
+                        </tr>
+                        <tr>
+                              <td>{{ reportVal.used_hours | number:'1.0-0'}} Hours</td>
+                        </tr>
+                        <tr>
+                              <td [ngClass]="reportVal.goal_percent === 100 ? 'complete' : ''">{{ reportVal.hours_percent | number:'1.0-0'}}%</td>
+                        </tr>
+                     </table>
+                  </td>
             </tr>
-            <tr>
-                  <td>Result</td>
-            </tr>
-         </table>
-         </td>
-         <td *ngIf="reportD.kpi_type == 'Utilisation Rate'"> 
-            <table class="report-table-main report-table">
-            <tr>
-                  <td>Actual</td>
-            </tr>
-            <tr>
-                  <td>Actual</td>
-            </tr>
-            <tr>
-                  <td>Result</td>
-            </tr>
-         </table>
-         </td>
-         <td *ngFor="let reportVal of reportD['val']">
-            <table class=" report-table-main report-table" *ngIf="reportD.kpi_type != 'Utilisation Rate'">
-               <tr >
-                     <td *ngIf="reportD.kpi_type == 'Production' || reportD.kpi_type == 'Collection' || reportD.kpi_type == 'Dentist Production Per Day' || reportD.kpi_type == 'Hourly Rate' || reportD.kpi_type == 'Discount'">
-                           ${{ reportVal.goal | number:'1.0-0'}}
-                        </td>
-                     <td *ngIf="reportD.kpi_type == 'Dentist Days' || reportD.kpi_type == 'Production Units' || reportD.kpi_type == 'New patients'">
-                           {{ reportVal.goal | number:'1.0-0'}}
-                        </td>
-               </tr>
-               <tr>
-                     <td *ngIf="reportD.kpi_type == 'Production' || reportD.kpi_type == 'Collection' || reportD.kpi_type == 'Dentist Production Per Day' || reportD.kpi_type == 'Hourly Rate' || reportD.kpi_type == 'Discount'">
-                           ${{ reportVal.actual | number:'1.0-0'}}
-                        </td>
-                     <td *ngIf="reportD.kpi_type == 'Dentist Days' || reportD.kpi_type == 'Production Units' || reportD.kpi_type == 'New patients'">
-                           {{ reportVal.actual | number:'1.0-0'}}
-                        </td>   
-               </tr>
-               <tr>
-                     <td>{{ reportVal.goal_percent | number:'1.0-0'}}%</td>
-               </tr>
-            </table>
-            <table class=" report-table-main report-table" *ngIf="reportD.kpi_type == 'Utilisation Rate'">
-               <tr >
-                     <td>{{ reportVal.available_hours | number:'1.0-0'}} Hours</td>
-               </tr>
-               <tr>
-                     <td>{{ reportVal.used_hours | number:'1.0-0'}} Hours</td>
-               </tr>
-               <tr>
-                     <td>{{ reportVal.hours_percent | number:'1.0-0'}}%</td>
-               </tr>
-            </table>
-         </td>
-   </tr>
-  </table>
+         </tbody>
+     </table>
+   </div>
    
 </div>
