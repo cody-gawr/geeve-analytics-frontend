@@ -1610,9 +1610,14 @@ async getDentistList(){
       this. showDwDateArrow = false;
     }    
   }
-
+  public dateRangeFired:boolean = false;
   setDateChange(event){
     if (typeof(event.startDate) !== 'undefined') {
+      if(this.dateRangeFired){
+        this.dateRangeFired = false;
+         return;
+      }
+      this.dateRangeFired = true;
       this.previousDays =  this.datepipe.transform(event.startDate.toDate(), 'yyyy-MM-dd');  
       this.refreshPerformanceTab();
     }
