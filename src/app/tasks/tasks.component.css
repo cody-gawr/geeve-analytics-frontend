@@ -268,7 +268,7 @@ table.card-template-wrap.warning::before {
 }
 .task-info-wrap .header-template-wrap {
   padding: 25px 30px;
-  background-image: url('../../assets/images/task-card-bg.png');
+  background-image: url('/assets/images/task-card-bg.png');
   background-position: right center;
   background-repeat: no-repeat;
   width: 100%;
@@ -277,7 +277,7 @@ table.card-template-wrap.warning::before {
 }
 .task-info-wrap .header-template-wrap.Open:before {
   content: "";
-  background-image: url('../../assets/images/todo-list.png');
+  background-image: url('/assets/images/todo-list.png');
   background-position: bottom center;
   background-repeat: no-repeat;
   position: absolute;
@@ -288,7 +288,7 @@ table.card-template-wrap.warning::before {
 }
 .task-info-wrap .header-template-wrap.InProgress:before {
   content: "";
-  background-image: url('../../assets/images/in-progress.png');
+  background-image: url('/assets/images/in-progress.png');
   background-position: center center;
   background-repeat: no-repeat;
   position: absolute;
@@ -299,7 +299,7 @@ table.card-template-wrap.warning::before {
 }
 .task-info-wrap .header-template-wrap.Done:before {
   content: "";
-  background-image: url('../../assets/images/Done.png');
+  background-image: url('/assets/images/Done.png');
   background-position: center center;
   background-repeat: no-repeat;
   position: absolute;
