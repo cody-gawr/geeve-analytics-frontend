@@ -1,7 +1,7 @@
 .clour-span-aqua,.colour option[value="aqua"], .mat-select.aqua .mat-select-value {
     background-color: #54D2FF;
 }
-.clour-span-aqua,.colour option[value="black"], .mat-select.black .mat-select-value {
+.clour-span-black ,.colour option[value="black"], .mat-select.black .mat-select-value {
     background-color: #000000;
 }
 .colour option[value="black"],.colour option[value="maroon"], .colour option[value="blue"], .colour option[value="navy"]{
