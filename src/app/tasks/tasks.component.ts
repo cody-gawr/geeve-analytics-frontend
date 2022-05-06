@@ -16,6 +16,7 @@ import {
   ActionEventArgs,
   CardRenderedEventArgs,
   DialogEventArgs,
+  ColumnsModel,
 } from "@syncfusion/ej2-angular-kanban";
 import { DataManager, UrlAdaptor, Query } from "@syncfusion/ej2-data";
 import { TasksService } from "./tasks.service";
@@ -132,6 +133,11 @@ export class TasksComponent implements AfterViewInit, OnInit {
     this.getClinics();
     // this.date1 =new FormControl(moment("10-20-2020", "MM-DD-YYYY"));
   }
+  public columns: ColumnsModel[] = [
+    { headerText: 'To Do', keyField: 'Open', },
+    { headerText: 'In Progress', keyField: 'InProgress' },
+    { headerText: 'Done', keyField: 'Done' }
+  ];
   ngOnInit() {} //
   ngAfterViewInit() {
     // This is for the topbar search
@@ -153,7 +159,7 @@ export class TasksComponent implements AfterViewInit, OnInit {
       this.clinic_id = val;
       this.getDatamanger();
     }
-    $("#title").html("Tasks");
+    $("#title").html("Task Manager");
   }
 
   dialogOpen(args: DialogEventArgs): void {
