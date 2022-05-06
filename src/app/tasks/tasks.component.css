@@ -1,3 +1,9 @@
+.task-manager-wrap {
+  min-height: -moz-calc(100vh - 67px);
+  min-height: -webkit-calc(100vh - 67px);
+  min-height: calc(100vh - 67px);
+  margin: -15px
+}
 .header_filters.tasks {
   flex-direction: row-reverse !important;
 }
@@ -106,11 +112,15 @@
     position: fixed;
     top: 16px;
     z-index: 9999;
-    left: 45%;
+    right: 15%;
 }
-.content-wrapper.kanban{
-    width: 100%;
-    float: left;
+.sa-pull-right.kanban button.mat-gray {
+  text-transform: capitalize !important;
+}
+#addNew img {
+  max-width: 14px;
+  vertical-align: -2px;
+  margin-left: 15px;
 }
 .e-dlg-container.e-dlg-center-center {
   z-index: 10 !important;
@@ -190,7 +200,9 @@ tr.Due_Date {
 .e-content-row td.e-content-cells {
     background: #ebebeb !important;    
 }
-
+.task-info-wrap .e-kanban {
+  background: #f5f5fb;
+}
 .e-kanban .e-kanban-table .e-header-cells {
     background-color: #ebebeb;
     border-radius: 0;
@@ -222,14 +234,13 @@ table.card-template-wrap.warning::before {
     width: 0;
     height: 0;
     position: absolute;
-    top: 0;
+    bottom: 0;
     z-index: 999999999;
     content: '';
     right: 0;
-    border-top: 10px solid red;
-    border-left: 10px solid transparent;
-    border-right: 10px solid red;
-    border-bottom: 10px solid transparent;
+    border-style: solid;
+    border-width: 0 0 10px 10px;
+    border-color: transparent transparent #ff8686 transparent;
 }
 
 .e-card-content td h3 {
@@ -239,9 +250,161 @@ table.card-template-wrap.warning::before {
     font-size: 17px;
     font-weight: bold;
 }
-.cardDescription {
-    min-height: 43px;
-}
 .header-bg-shadow{
   box-shadow: none !important;
+}
+.task-info-wrap .e-kanban .e-kanban-table .e-header-cells {
+  background-color: transparent;
+  padding: 0;
+}
+.task-info-wrap .header-template-wrap.Open {
+  background-color: #796eff;
+}
+.task-info-wrap .header-template-wrap.InProgress {
+  background-color: #fdc027;
+}
+.task-info-wrap .header-template-wrap.Done {
+  background-color: #0d8e7f;
+}
+.task-info-wrap .header-template-wrap {
+  padding: 25px 30px;
+  background-image: url('../../assets/images/task-card-bg.png');
+  background-position: right center;
+  background-repeat: no-repeat;
+  width: 100%;
+  border-radius: 4px;
+  position: relative;
+}
+.task-info-wrap .header-template-wrap.Open:before {
+  content: "";
+  background-image: url('../../assets/images/todo-list.png');
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  position: absolute;
+  right: 20px;
+  bottom: 0;
+  height: 108px;
+  width: 134px;
+}
+.task-info-wrap .header-template-wrap.InProgress:before {
+  content: "";
+  background-image: url('../../assets/images/in-progress.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  position: absolute;
+  right: 20px;
+  bottom: 0;
+  height: 108px;
+  width: 134px;
+}
+.task-info-wrap .header-template-wrap.Done:before {
+  content: "";
+  background-image: url('../../assets/images/Done.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  position: absolute;
+  right: 20px;
+  bottom: 0;
+  height: 108px;
+  width: 134px;
+}
+.task-info-wrap .header-task-count {
+  color: #fff;
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+.task-info-wrap .header-text {
+  color: #fff;
+  font-size: 16px;
+  font-weight: normal;
+}
+.task-info-wrap .e-kanban .e-swimlane .e-kanban-table.e-content-table {
+  border-spacing: 0;
+  padding: 10px;
+}
+.task-info-wrap .e-content-row td.e-content-cells {
+  background: #f6fafb!important;
+  position: relative;
+}
+.task-info-wrap .e-kanban-header,
+.task-info-wrap .e-kanban .e-kanban-content {
+  background-color: #fff;
+}
+.task-info-wrap .e-kanban .e-kanban-content .e-content-row.e-swimlane-row .e-content-cells .e-swimlane-header .e-icons {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  -moz-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+.task-info-wrap .e-kanban .e-kanban-content .e-content-row.e-swimlane-row .e-content-cells {
+  background-color: #fff !important;
+  padding-bottom: 10px;
+  position: relative;
+  border-radius: 10px;
+}
+.task-info-wrap .e-kanban .e-kanban-content .e-content-row.e-swimlane-row .e-content-cells .e-swimlane-header {
+  padding: 12px 20px;
+  background-color: #f6fafb;
+  border-radius: 8px;
+  position: relative;
+}
+.task-info-wrap  .e-kanban .e-kanban-content .e-content-row.e-swimlane-row .e-content-cells .e-swimlane-header .e-item-count {
+  display: none;
+}
+.task-info-wrap .e-kanban-content .e-card.e-template.e-droppable.e-lib.e-draggable {
+  border: 0 !important;
+  box-shadow: 0 10px 21px rgb(64 120 113 / 14%) !important;
+  border-radius: 0;
+  margin-bottom: 10px;
+}
+.task-info-wrap .e-kanban .e-kanban-content .e-content-row:not(.e-swimlane-row) .e-content-cells {
+  border: 0;
+  padding: 0;
+}
+.task-info-wrap .e-kanban .e-kanban-content .e-content-row .e-content-cells .e-card-wrapper {
+  padding: 15px 10px 0;
+}
+.task-info-wrap .e-kanban-content .e-card.e-template.e-droppable.e-lib.e-draggable[data-key="Open"] {
+  border-top: 4px solid #796eff !important;
+}
+.task-info-wrap .e-kanban-content .e-card.e-template.e-droppable.e-lib.e-draggable[data-key="InProgress"] {
+  border-top: 4px solid #fdc027 !important;
+}
+.task-info-wrap .e-kanban-content .e-card.e-template.e-droppable.e-lib.e-draggable[data-key="Done"] {
+  border-top: 4px solid #0d8e7f !important;
+}
+.task-info-wrap .e-kanban .e-kanban-content .e-content-row:not(.e-swimlane-row) .e-content-cells:first-child {
+  padding-left: 5px;
+}
+.task-info-wrap .e-kanban .e-kanban-content .e-content-row:not(.e-swimlane-row) .e-content-cells:last-child {
+  padding-right: 5px;
+}
+.task-info-wrap .e-kanban-content .e-content-row .e-content-cells .e-card-wrapper .e-card .e-card-content {
+  padding: 0;
+}
+.card-template-header {
+  padding: 10px 15px;
+  border-bottom: 1px solid #ebebeb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card-template-header h3 {
+  margin: 0;
+  font-size: 16px;
+  text-transform: capitalize;
+  color: #000;
+  font-family: 'Gilroy-Medium';
+  line-height: normal;
+}
+.task-info-wrap .e-kanban-content .e-card.e-template.e-droppable.e-lib.e-draggable .e-card-content .cardDescription {
+  padding: 10px 15px;
+  color: #454545;
+}
+.task-info-wrap .e-empty-card {
+  text-align: center;
+  display: block !important;
+  width: 100%;
 }

@@ -5,21 +5,21 @@
   [style.display]="'none'"
 />
 <mat-card
-  class="lost-header-background-remove header-bg-shadow"
+  class="task-manager-wrap header-bg-shadow"
 >
   <div class="sa-pull-right kanban" *ngIf="user_type == 2">
     <button
       ejs-button
       id="addNew"
-      class="e-dialog-add mat-raised-button mat-green"
+      class="e-dialog-add mat-raised-button mat-gray"
       (click)="addClick()"
     >
-      + Create Task
+      Create Task <img src="../../assets/images/add-button.png" alt="plus-icon"/>
     </button>
   </div>
   <mat-card-content>
     <div class="control-section">
-      <div class="content-wrapper kanban">
+      <div class="content-wrapper kanban task-info-wrap">
         <ejs-kanban
           #kanbanObj
           keyField="status"
@@ -30,43 +30,29 @@
           (dialogOpen)="dialogOpen($event)"
           [swimlaneSettings]="swimlaneSettings"
         >
-          <!--  [swimlaneSettings]='swimlaneSettings'  -->
           <e-columns>
-            <e-column headerText="To do" keyField="Open"></e-column>
-            <e-column headerText="In Progress" keyField="InProgress"></e-column>
-            <e-column headerText="Done" keyField="Done"></e-column>
+            <e-column *ngFor="let column of columns;" headerText={{column.headerText}} keyField='{{column.keyField}}'>
+                <ng-template #template let-data>
+                    <div class="header-template-wrap {{data.keyField}}">
+                        <div class="header-task-count">2</div>
+                        <div class="header-text">{{data.headerText}}</div>
+                    </div>
+                </ng-template>
+            </e-column>
           </e-columns>
 
           <ng-template #cardSettingsTemplate let-data>
-            <div class="e-card-content">
-              <table
-                class="card-template-wrap {{ checkIdOverdue(data) }}"
-                width="100%"
-              >
-                <tbody>
-                  <tr>
-                    <td colspan="2">
-                      <h3>{{ data.title }}</h3>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <div class="cardDescription">
-                        {{
-                          (data.description | slice: 0:100) +
-                            (data.description.length > 100 ? "..." : "")
-                        }}
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td width="50%"></td>
-                    <td align="right">
-                      <div class="cardTaskID">Task-{{ data.id }}</div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="e-card-content {{ checkIdOverdue(data) }}">
+              <div class="card-template-header">
+                <h3>{{ data.title }}</h3>
+                <img src="../../assets/images/drag-dots.png" alt=""/>
+              </div>
+              <div class="cardDescription">
+                {{
+                  (data.description | slice: 0:100) +
+                    (data.description.length > 100 ? "..." : "")
+                }}
+              </div>
             </div>
           </ng-template>
 
