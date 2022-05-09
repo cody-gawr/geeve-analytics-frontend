@@ -28,6 +28,9 @@ export class KpiReportService {
     }
 
     getKpiReport(clinic_id, startDate = '', endDate = '', clinician=''  ): Observable<any> {
+        if(clinician == 'all'){
+            clinician = '';
+        }
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/Kpi/getKpiReport?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+clinician, header)
         .pipe(map((response: Response) => {

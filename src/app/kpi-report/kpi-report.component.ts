@@ -80,21 +80,24 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 		$('.header_filters').addClass('flex_direct_mar');
 		if (this._cookieService.get("dentistid")) {
 			this.childid = this._cookieService.get("dentistid");
-			this.selectedDentist = this._cookieService.get("dentistid");
+		//	this.selectedDentist = this._cookieService.get("dentistid");
 		}
 		if (val != undefined && val != 'all') {
 			this.clinic_id = val;
 			this.getDentists();
+			this.selectedDentist = 'all';
 			this.KpiReportService.getClinicSettings(this.clinic_id).subscribe((res) => {
 				if (res.message == 'success') {
 					this.Cconsultant = res.data[0]['consultant'];
 					if (this.Cconsultant == 'prime') {
 						$("#kpireport").removeClass('consult');
 						$("#notAuth").addClass('consult');
+						$('.prime-logo').removeClass('displogo');
 						this.filterDate();
 					} else {
 						$("#kpireport").addClass('consult');
 						$("#notAuth").removeClass('consult');
+						$('.prime-logo').addClass('displogo');
 					}
 				}
 				else if (res.status == '401') {
@@ -117,27 +120,27 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 	}
 
 	loadDentist(newValue) {
-		if (this._cookieService.get("clinic_dentist")) {
-			let dentistclinic = this._cookieService.get("clinic_dentist").split('_');
-			if (dentistclinic[1] == "all") {
-				this.selectedDentist = dentistclinic[1];
-			} else {
-				this.selectedDentist = parseInt(dentistclinic[1]);
-			}
-			if (newValue == null && newValue !== this.selectedDentist) {
-				newValue = this.selectedDentist;
-			}
-		}
+		// if (this._cookieService.get("clinic_dentist")) {
+		// 	let dentistclinic = this._cookieService.get("clinic_dentist").split('_');
+		// 	if (dentistclinic[1] == "all") {
+		// 		this.selectedDentist = dentistclinic[1];
+		// 	} else {
+		// 		this.selectedDentist = parseInt(dentistclinic[1]);
+		// 	}
+		// 	if (newValue == null && newValue !== this.selectedDentist) {
+		// 		newValue = this.selectedDentist;
+		// 	}
+		// }
 
-		if ($("body").find("span#currentDentist").length <= 0) {
-			$("body").append(
-				'<span id="currentDentist" style="display:none" did="' +
-				newValue +
-				'"></span>'
-			);
-		} else {
-			$("#currentDentist").attr("did", newValue);
-		}
+		// if ($("body").find("span#currentDentist").length <= 0) {
+		// 	$("body").append(
+		// 		'<span id="currentDentist" style="display:none" did="' +
+		// 		newValue +
+		// 		'"></span>'
+		// 	);
+		// } else {
+		// 	$("#currentDentist").attr("did", newValue);
+		// }
 		this.selectedDentist = newValue;
 		// if (
 		// 	this.route == "/dashboards/cliniciananalysis" ||
@@ -156,7 +159,12 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 		// 	);
 		// }
 		$(".internal_dentist").val(newValue);
-		$("#dentist_initiate").click();
+		var val = $('#currentDentist').attr('did');
+		//this.loadDentist(val);
+		if (this.Cconsultant == 'prime') {
+			this.filterDate();
+		}
+		//$("#dentist_initiate").click();
 	}
 
 	filterDate() {
@@ -170,21 +178,21 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 		let sYear: any = this.datepipe.transform(sDate, 'yyyy');
 		this.startDate = this.datepipe.transform(new Date(sYear, sMonth), 'yyyy-MM-dd');
 		var dentistVal;
-		if ($('.internal_dentist').val())
-			dentistVal = $('.internal_dentist').val();
-		else
-			dentistVal = $('.external_dentist').val();
-		if (dentistVal == '') {
-			if (this._cookieService.get("clinic_dentist")) {
-				var dentistVal1 = this._cookieService.get("clinic_dentist").split('_');
-				dentistVal = dentistVal1[1];
-			}
-		}
-		if (dentistVal == 'all') {
-			this.selectedDentist = '';
-		} else {
-			this.selectedDentist = dentistVal;
-		}
+		// if ($('.internal_dentist').val())
+		// 	dentistVal = $('.internal_dentist').val();
+		// else
+		// 	dentistVal = $('.external_dentist').val();
+		// if (dentistVal == '') {
+		// 	if (this._cookieService.get("clinic_dentist")) {
+		// 		var dentistVal1 = this._cookieService.get("clinic_dentist").split('_');
+		// 		dentistVal = dentistVal1[1];
+		// 	}
+		// }
+		// if (dentistVal == 'all') {
+		// 	this.selectedDentist = '';
+		// } else {
+		// 	this.selectedDentist = dentistVal;
+		// }
 		this.getKpiReport();
 	}
 

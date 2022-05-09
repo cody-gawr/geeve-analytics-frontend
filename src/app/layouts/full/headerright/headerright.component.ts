@@ -401,8 +401,8 @@ export class AppHeaderrightComponent implements AfterViewInit {
               this.route == "/followups" ||
               this.route == "/dashboards/followups" ||
               this.route == "/tasks" ||
-              this.route == "/campaigns"||
-              this.route == "/kpi-report"
+              this.route == "/campaigns"
+              // || this.route == "/kpi-report"
             ) {
               let opts = this.constants.cookieOpt as CookieOptions;
               this._cookieService.put(
@@ -608,7 +608,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
       this.route == "/dashboards/clinicianproceedures" ||
       this.route == "/dashboards/frontdesk" ||
       this.route == "/dashboards/marketing" ||
-      this.route == "/kpi-report" ||
+      // this.route == "/kpi-report" ||
       
       this.route == "/dashboards/finances"
     ) {

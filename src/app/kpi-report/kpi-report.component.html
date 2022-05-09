@@ -17,9 +17,9 @@
            class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">
            arrow_forward_ios</mat-icon>
    </div> -->
-   <div class="prime-logo">
+   <!-- <div class="prime-logo">
       <img src="../../assets/images/prime-practice.png" alt="prime-practice"/>
-   </div>
+   </div> -->
    <div class="kpi-date-filter">
       <div class="sa_mat_select_topbar">
       <mat-form-field floatLabel="never">
@@ -39,17 +39,17 @@
          </mat-select>
       </mat-form-field>
       </div>
-      <div class="morning-huddle-date topModel followuppage matwdth monthyear">
-         <mat-form-field>
+      <div class="sa_mat_select_topbar matwdth monthyear">
+         <mat-form-field >
             <mat-select class="external_dentist" [(ngModel)]="selectedMonthYear" (ngModelChange)="onTabChanged($event)" >
               <mat-option *ngFor="let yearRange of range" [value]="yearRange">{{ yearRange }} </mat-option>
             </mat-select>
           </mat-form-field>  
       </div>
-      <div class="morning-huddle-date topModel followuppage matwdth textw">
+      <div class=" matwdth textw">
          <span class="infotxt">and previous</span> 
       </div>
-      <div class="morning-huddle-date topModel followuppage matwdth monthRange monthali">
+      <div class="sa_mat_select_topbar  matwdth monthRange monthali">
          <mat-form-field>
             <mat-select class="external_dentist" [(ngModel)]="selectedMonthRange" (ngModelChange)="onMonthRangeChange($event)" >
               <mat-option *ngFor="let mRange of monthrange" [value]="mRange">{{ mRange }} </mat-option>
@@ -57,10 +57,10 @@
            
           </mat-form-field>  
       </div>
-      <div class="morning-huddle-date topModel followuppage matwdth textmonth">
+      <div class=" matwdth textmonth">
          <span class="infotxt">months</span>
       </div>
-      <button class="mat-raised-button mat-dc m-b-10" mat-raised-button>Ok</button>
+      <!-- <button class="mat-raised-button mat-dc m-b-10" mat-raised-button>Ok</button> -->
    </div>
    <!-- <div class="top-header-con">
       <h2>KPI Report</h2>
@@ -117,7 +117,7 @@
                            <td>Actual</td>
                      </tr>
                      <tr>
-                           <td>Result</td>
+                           <td class="result"><span>Result</span></td>
                      </tr>
                   </table>
                   </td>
