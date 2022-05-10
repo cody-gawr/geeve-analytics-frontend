@@ -245,6 +245,8 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 		this.KpiReportService.getKpiReport(this.clinic_id, this.startDate, this.endDate, this.selectedDentist).subscribe((data: any) => {
 			if (data.message == 'success') {
 				this.reportData = data.data;
+				this.reportData[8]['kpi_type'] = 'Discounts';
+				this.reportData[5]['kpi_type'] = 'Dentist Production Per Hr';
 				this.reportMonths = data.months;
 				this.reportloader = false;
 			}

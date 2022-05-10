@@ -677,9 +677,9 @@ table.report-table-main.align > tr > td {
 }
 .monthyear .mat-form-field {
     /* background-color:#f7f7f7 !important; */
-    max-width: 120px !important;
+    /* max-width: 150px !important; */
     margin: auto;
-    padding: 9px 20px;
+    padding: 9px 0px;
     border-radius: 5px;
     height: 45px;
 }
@@ -688,7 +688,7 @@ table.report-table-main.align > tr > td {
     color: #4e4e4e;
 }
 .monthRange .mat-form-field {
-    max-width: 82px!important;
+    /* max-width: 82px!important; */
     margin: auto;
     padding: 9px 0px;
     border-radius: 5px;
@@ -808,4 +808,8 @@ table.report-table-main.align > tr > td {
 .complete{
     color: #12cf43;
     font-weight: 900;
+}
+
+.mat-select-value.ng-tns-c141-5 {
+    max-width: none;
 }

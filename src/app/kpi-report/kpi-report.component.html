@@ -70,7 +70,7 @@
       <div class="loader-text">Calculating...</div>
    </div>
    <div class="table-responsive">
-      <table class="report-table-main align" *ngIf="reportloader == false">
+      <table class="report-table-main align report-tbl" *ngIf="reportloader == false">
          <thead>
             <tr>
                <th>&nbsp;</th>
@@ -95,7 +95,7 @@
                      </tr>
                      </table>
                   </td>
-                  <td *ngIf="reportD.kpi_type != 'Utilisation Rate'"> 
+                  <td *ngIf="reportD.kpi_type != 'Utilisation Rate' && reportD.kpi_type != 'Discounts'"> 
                      <table class=" report-table-main report-table">
                      <tr>
                            <td>Goal</td>
@@ -121,10 +121,17 @@
                      </tr>
                   </table>
                   </td>
+                  <td *ngIf="reportD.kpi_type == 'Discounts'"> 
+                     <table class="report-table-main report-table">
+                     <tr>
+                           <td>Actual</td>
+                     </tr>
+                  </table>
+                  </td>
                   <td *ngFor="let reportVal of reportD['val']">
-                     <table class=" report-table-main report-table" *ngIf="reportD.kpi_type != 'Utilisation Rate'">
+                     <table class=" report-table-main report-table" *ngIf="reportD.kpi_type != 'Utilisation Rate' && reportD.kpi_type != 'Discounts'">
                         <tr >
-                              <td *ngIf="reportD.kpi_type == 'Production' || reportD.kpi_type == 'Collection' || reportD.kpi_type == 'Dentist Production Per Day' || reportD.kpi_type == 'Hourly Rate' || reportD.kpi_type == 'Discount'">
+                              <td *ngIf="reportD.kpi_type == 'Production' || reportD.kpi_type == 'Collection' || reportD.kpi_type == 'Dentist Production Per Day' || reportD.kpi_type == 'Dentist Production Per Hr'">
                                     ${{ reportVal.goal | number:'1.0-0'}}
                                  </td>
                               <td *ngIf="reportD.kpi_type == 'Dentist Days' || reportD.kpi_type == 'Production Units' || reportD.kpi_type == 'New patients'">
@@ -132,7 +139,7 @@
                                  </td>
                         </tr>
                         <tr>
-                              <td *ngIf="reportD.kpi_type == 'Production' || reportD.kpi_type == 'Collection' || reportD.kpi_type == 'Dentist Production Per Day' || reportD.kpi_type == 'Hourly Rate' || reportD.kpi_type == 'Discount'">
+                              <td *ngIf="reportD.kpi_type == 'Production' || reportD.kpi_type == 'Collection' || reportD.kpi_type == 'Dentist Production Per Day' || reportD.kpi_type == 'Dentist Production Per Hr'">
                                     ${{ reportVal.actual | number:'1.0-0'}}
                                  </td>
                               <td *ngIf="reportD.kpi_type == 'Dentist Days' || reportD.kpi_type == 'Production Units' || reportD.kpi_type == 'New patients'">
@@ -140,7 +147,7 @@
                                  </td>   
                         </tr>
                         <tr>
-                              <td *ngIf="reportVal.goal == 0">N/A</td>
+                              <td *ngIf="reportVal.goal == 0 ">N/A</td>
                               <td  *ngIf="reportVal.goal > 0" [ngClass]="reportVal.goal_percent >= 100 ? 'complete' : ''">{{ reportVal.goal_percent | number:'1.0-0'}}%</td>
                         </tr>
                      </table>
@@ -154,6 +161,11 @@
                         <tr>
                               <td [ngClass]="reportVal.hours_percent >= 100 ? 'complete' : ''">{{ reportVal.hours_percent | number:'1.0-0'}}%</td>
                         </tr>
+                     </table>
+                     <table class=" report-table-main report-table" *ngIf="reportD.kpi_type == 'Discounts'">                        
+                        <td>
+                           ${{ reportVal.actual | number:'1.0-0'}}
+                        </td>
                      </table>
                   </td>
             </tr>
