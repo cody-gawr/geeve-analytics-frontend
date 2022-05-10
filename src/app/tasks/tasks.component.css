@@ -426,6 +426,9 @@ table .e-card-wrapper .warning::before {
 .task-modal .sa_forms_design .mat-select, .task-modal .sa_forms_design input, .task-modal .sa_forms_design select, .task-modal .sa_forms_design textarea {
   border: 2px solid #eeeeee;
 }
+.task-modal .sa_forms_design .mat-select:focus, .task-modal .sa_forms_design input:focus, .task-modal .sa_forms_design select:focus, .task-modal .sa_forms_design textarea:focus {
+  border-color: rgb(13 142 127 / 50%);
+}
 .file-upload {
   padding: 20px 10px;
   text-align: center;
