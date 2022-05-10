@@ -94,6 +94,8 @@ export class TasksComponent implements AfterViewInit, OnInit {
     ],
   };
 
+  public step: number = 1;
+
   public dataManager: DataManager;
   /**** Dialog Setting ***/
   /**** Data Manager Setting ***/

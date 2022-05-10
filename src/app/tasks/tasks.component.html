@@ -57,35 +57,36 @@
           </ng-template>
 
           <ng-template #dialogSettingsTemplate let-data>
-            <div class="mat-dialog-content sa_forms_design">
+            <div class="mat-dialog-content sa_forms_design" *ngIf="step === 1">
               <div class="sa-form-group">
                 <input tabindex="1" class="form-control-dialog" placeholder="All Clinic in our Jeeve account">
               </div>
               <div class="sa-form-group">
-                <select required="true" class="sa_select mat-form-control" name="user_type">
+                <select required="true" class="sa_select mat-form-control" name="staff">
                   <option value ="3">Select Staff Member</option>
                   <option value ="4">Clinician</option>
                   <option value ="5">Staff</option>
                </select> 
               </div>
               <div class="sa-form-group">
-                <select required="true" class="sa_select mat-form-control" name="user_type">
+                <select required="true" class="sa_select mat-form-control" name="clinic">
                   <option value ="1">Select Clinic</option>
                   <option value ="2">Clinician</option>
                   <option value ="3">Staff</option>
                </select> 
               </div>
               <div class="sa-form-group">
-                <select required="true" class="sa_select mat-form-control" name="user_type">
-                  <option value ="1">Select Group</option>
-                  <option value ="2">Clinician</option>
-                  <option value ="3">Staff</option>
+                <select required="true" class="sa_select mat-form-control" name="assign">
+                  <option 
+                    *ngFor="let option of assigneeGroup"
+                    value="{{ option.id }}">{{ option.name }}</option>
                </select> 
               </div>
-              <button class="mat-raised-button mat-dc" type="submit" (click)="next()">Next</button>
-              <button class="mat-raised-button mat-gray" type="submit" mat-button>Cancel</button>
+              <div class="text-right">
+                <button class="mat-raised-button mat-dc" type="submit" (click)="step = step + 1">Next</button>
               </div>
-            <div class="mat-dialog-content sa_forms_design next-section">
+            </div>
+            <div class="mat-dialog-content sa_forms_design"  *ngIf="step === 2">
               <div class="sa-form-group">
                  <label>Title</label>
                 <input class="form-control-dialog" placeholder="Enter here.">
@@ -183,6 +184,10 @@
                   <option value ="2">Monthly</option>
                   <option value ="3">Yearly</option>
                </select> 
+              </div>
+              <div class="d-flex justify-between">
+                <button class="mat-raised-button mat-dc" type="submit" (click)="step = step - 1">Back</button>
+                <button class="mat-raised-button mat-dc" type="submit">Create Task</button>
               </div>
             </div>
           </ng-template>

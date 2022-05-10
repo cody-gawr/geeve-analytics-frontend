@@ -112,7 +112,7 @@
     position: fixed;
     top: 16px;
     z-index: 9999;
-    right: 15%;
+    right: 15.5%;
 }
 .sa-pull-right.kanban button.mat-gray {
   text-transform: capitalize !important;
@@ -406,6 +406,8 @@ table.card-template-wrap.warning::before {
 .task-modal {
   overflow: hidden;
   border-radius: 5px;
+  max-width: 90%;
+  max-height: 95% !important;
 }
 .task-modal .sa_datepicker {
   background-color: transparent;
@@ -498,7 +500,7 @@ table.card-template-wrap.warning::before {
   height: 7px;
   width: 100%;
   border-radius: 4px;
-  background-color: #d0d0d0;
+  background-color: #d3ebe8;
   position: relative;
 
 }
@@ -510,7 +512,7 @@ table.card-template-wrap.warning::before {
   top: 0;
   left: 0;
   border-radius: 4px;
-  background-color: #4c97cb;
+  background-color: #33a59e;
   transition: 0.5s all;
 }
 .task-modal .e-footer-content {
@@ -519,4 +521,48 @@ table.card-template-wrap.warning::before {
 
 .show{
   display: block;
+}
+
+@media screen and (max-width: 1919px) {
+  .sa-pull-right.kanban {
+    right: 17%;
+  }
+}
+@media screen and (max-width: 1280px) {
+  .sa-pull-right.kanban {
+    right: 18%;
+  }
+}
+@media screen and (max-width: 960px) {
+  .task-manager-wrap {
+    position: relative;
+  }
+  .sa-pull-right.kanban {
+    top: 60px;
+    left: 265px;
+    right: auto;
+  }
+}
+@media screen and (max-width: 767px) {
+  .sa-pull-right.kanban {
+    top: 30px;
+    left: 20px;
+    position: absolute;
+    z-index: 9;
+  }
+  .task-manager-wrap.mat-card {
+    padding-top: 70px;
+  }
+  .task-manager-wrap.mat-card .mat-card-content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+@media screen and (max-width: 575px) {
+  .task-info-wrap .e-kanban.e-device .e-swimlane-header .e-swimlane-header-toolbar {
+    margin-bottom: 15px;
+  }
+  .task-info-wrap .e-kanban {
+    background: transparent;
+  }
 }
