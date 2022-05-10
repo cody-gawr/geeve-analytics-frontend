@@ -184,7 +184,10 @@ getGoalsForTabsClinic(allGoals) {
    });
    this.tabs.push(temp);
   });
-
+  var order = [1,49,63,64,15,66,65,8];
+  this.tabs[4].charts.sort(function(a, b) {
+    return order.indexOf(a.c_id) - order.indexOf(b.c_id);
+  })
   if(this.Cconsultant != 'prime'){
     this.selectedTab = this.tabs[0].d_id;
   }else{
@@ -250,6 +253,7 @@ setGoalsPerMonth(chartGoals)
       $('.ajax-loader').hide();
       if (res.message == 'success') {
         this.toastr.success('Clinic Goals Updated');
+        this.getData(this.clinic_id$.value,this.selectedGoalCategory$.value,this.selectedYear);
       }
       else if (res.status == '401') {
         this.handleUnAuthorization();
@@ -265,6 +269,7 @@ setGoalsPerMonth(chartGoals)
       $('.ajax-loader').hide();
       if (res.message == 'success') {
         this.toastr.success('Dentist Goals Updated');
+        this.getData(this.clinic_id$.value,this.selectedGoalCategory$.value,this.selectedYear);
       } else if (res.status == '401') {
         this.handleUnAuthorization();
       }
@@ -310,7 +315,7 @@ setGoalsPerMonth(chartGoals)
     if($(event.target).hasClass('sign%') && val > 100){
       val = 100;
     }  else if(val == ''){
-      val = 0;
+      val = '';
     } 
    $(event.target).val(val);  
    this.goalsData['goals'][parseInt(id)][parseInt(sn)] =  parseInt(val);

@@ -813,3 +813,7 @@ table.report-table-main.align > tr > td {
 .mat-select-value.ng-tns-c141-5 {
     max-width: none;
 }
+
+.report-table-main > tbody > tr > td:last-child {
+    background-color:#fff1ad;
+}
