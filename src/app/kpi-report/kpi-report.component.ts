@@ -56,7 +56,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 			this.range.push(this.selectedMonthYear);
 		}
 		this.selectedMonthYear = this.datepipe.transform(new Date(), 'MMMM-yyyy');
-		for (var i = 1; i < 12; i++) {
+		for (var i = 0; i < 12; i++) {
 			this.monthrange.push(i);
 		}
 		this.selectedMonthRange = 3;

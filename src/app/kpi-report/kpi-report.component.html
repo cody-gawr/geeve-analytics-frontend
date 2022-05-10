@@ -140,7 +140,8 @@
                                  </td>   
                         </tr>
                         <tr>
-                              <td  [ngClass]="reportVal.goal_percent === 100 ? 'complete' : ''">{{ reportVal.goal_percent | number:'1.0-0'}}%</td>
+                              <td *ngIf="reportVal.goal == 0">N/A</td>
+                              <td  *ngIf="reportVal.goal > 0" [ngClass]="reportVal.goal_percent >= 100 ? 'complete' : ''">{{ reportVal.goal_percent | number:'1.0-0'}}%</td>
                         </tr>
                      </table>
                      <table class=" report-table-main report-table" *ngIf="reportD.kpi_type == 'Utilisation Rate'">
@@ -151,7 +152,7 @@
                               <td>{{ reportVal.used_hours | number:'1.0-0'}} Hours</td>
                         </tr>
                         <tr>
-                              <td [ngClass]="reportVal.goal_percent === 100 ? 'complete' : ''">{{ reportVal.hours_percent | number:'1.0-0'}}%</td>
+                              <td [ngClass]="reportVal.hours_percent >= 100 ? 'complete' : ''">{{ reportVal.hours_percent | number:'1.0-0'}}%</td>
                         </tr>
                      </table>
                   </td>

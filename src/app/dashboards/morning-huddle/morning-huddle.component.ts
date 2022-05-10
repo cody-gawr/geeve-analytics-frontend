@@ -344,7 +344,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
    this.autoCall =  setInterval( function()
     {
        self.refreshDataAuto();
-    }, 1000 * 60);    
+    }, 1000 * 300);    
  }
 ngAfterViewInit(): void {
   this.endOfDaysTasksInComp.sort = this.sort1; 
