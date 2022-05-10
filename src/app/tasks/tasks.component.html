@@ -69,11 +69,21 @@
                </select> 
               </div>
               <div class="sa-form-group">
-                <select required="true" class="sa_select mat-form-control" name="clinic">
-                  <option value ="1">Select Clinic</option>
-                  <option value ="2">Clinician</option>
-                  <option value ="3">Staff</option>
-               </select> 
+                <select
+                      [disabled]="user_type != 2"
+                      id="Clinics"
+                      class="e-field"
+                      name="clinic_id"
+                      ngModel="{{ data.clinic_id }}"
+                    >
+                      <option [value]="null">All Clinic</option>
+                      <option
+                        *ngFor="let clinicData of clinicsData"
+                        value="{{ clinicData.id }}"
+                      >
+                        {{ clinicData.clinicName }}
+                      </option>
+                    </select>
               </div>
               <div class="sa-form-group">
                 <select required="true" class="sa_select mat-form-control" name="assign">
@@ -83,7 +93,7 @@
                </select> 
               </div>
               <div class="text-right">
-                <button class="mat-raised-button mat-dc" type="submit" (click)="step = step + 1">Next</button>
+                <button class="mat-raised-button mat-dc" type="submit" (click)="nextToStep()">Next</button>
               </div>
             </div>
             <div class="mat-dialog-content sa_forms_design"  *ngIf="step === 2">
@@ -186,7 +196,7 @@
                </select> 
               </div>
               <div class="d-flex justify-between">
-                <button class="mat-raised-button mat-dc" type="submit" (click)="step = step - 1">Back</button>
+                <button class="mat-raised-button mat-dc" type="submit" (click)="backToStep()">Back</button>
                 <button class="mat-raised-button mat-dc" type="submit">Create Task</button>
               </div>
             </div>

@@ -241,6 +241,7 @@ export class TasksComponent implements AfterViewInit, OnInit {
   }
 
   dialogOpen(args: DialogEventArgs): void {
+    this.step = 1;
     if (args.requestType == "Edit") {
       $(".e-dlg-header").text("Edit Task");
       if (args.data.assignee_group != null) {
@@ -252,10 +253,20 @@ export class TasksComponent implements AfterViewInit, OnInit {
       } else {
         this.assignTo = 2;
       }
-    } else {
-      $(".e-dlg-header").text("Add Task");
+    } else if(args.requestType === 'Add'){
+      $(".e-dlg-header").text("Who is this task for?");
       this.assignTo = 1;
     }
+  }
+  nextToStep(){
+    this.step = this.step + 1;
+    $(".e-dlg-header").text("Add task");
+    this.assignTo = 2;
+  }
+  backToStep(){
+    this.step = this.step - 1;
+    $(".e-dlg-header").text("Who is this task for?");
+    this.assignTo = 1;
   }
 
   getUsers() {
