@@ -225,7 +225,7 @@ button.e-control.e-btn.e-lib.e-flat.e-dialog-cancel {
 .e-tooltip-wrap.e-popup {
     background-color: #f5f4f4;
 }
-table.card-template-wrap.warning::before {
+table .e-card-wrapper .warning::before {
     width: 0;
     height: 0;
     position: absolute;
