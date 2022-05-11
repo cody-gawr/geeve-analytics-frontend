@@ -112,7 +112,7 @@
     position: fixed;
     top: 16px;
     z-index: 9999;
-    right: 15%;
+    right: 15.5%;
 }
 .sa-pull-right.kanban button.mat-gray {
   text-transform: capitalize !important;
@@ -154,7 +154,9 @@ table.editaddpopup select {
     border: 0px solid;
     border-bottom: 1px solid #767070;
 }
-
+.sa-form-group {
+  position: relative;
+}
 .e-popup.e-popup-open .e-footer-content button{
     font-size: 16px;
     text-transform: uppercase;
@@ -167,11 +169,7 @@ table.editaddpopup select {
     height: 35px;
 }
 .e-dialog .e-dlg-header-content {
-    border-bottom: none;
-    padding: 5px 10px 0 0;
-    padding-left: 0;
-    border-left: 5px solid #18a689;
-    margin: 8px 0 0 0;
+    border-bottom: 1px solid #c0c0c0;
 }
 div.e-dlg-header {
     padding-left: 15px;
@@ -218,9 +216,6 @@ div.groupSelect label {
     padding: 5px;
     cursor: pointer;
 }
-.e-dlg-closeicon-btn {
-  display: none;
-}
 button.e-control.e-btn.e-lib.e-flat.e-dialog-delete {
     float: right;
 }
@@ -230,7 +225,7 @@ button.e-control.e-btn.e-lib.e-flat.e-dialog-cancel {
 .e-tooltip-wrap.e-popup {
     background-color: #f5f4f4;
 }
-table.card-template-wrap.warning::before {
+table .e-card-wrapper .warning::before {
     width: 0;
     height: 0;
     position: absolute;
@@ -407,4 +402,170 @@ table.card-template-wrap.warning::before {
   text-align: center;
   display: block !important;
   width: 100%;
+}
+.task-modal {
+  overflow: hidden;
+  border-radius: 5px;
+  max-width: 90%;
+  max-height: 95% !important;
+}
+.task-modal .sa_datepicker {
+  background-color: transparent;
+  margin-left: 0;
+} 
+.input-icon {
+  position: absolute;
+  right: 15px;
+  bottom: 10px;
+  max-width: 18px;
+  pointer-events: none;
+}
+.task-modal .sa_forms_design label {
+  color: #616161;
+}
+.task-modal .sa_forms_design .mat-select, .task-modal .sa_forms_design input, .task-modal .sa_forms_design select, .task-modal .sa_forms_design textarea {
+  border: 2px solid #eeeeee;
+}
+.task-modal .sa_forms_design .mat-select:focus, .task-modal .sa_forms_design input:focus, .task-modal .sa_forms_design select:focus, .task-modal .sa_forms_design textarea:focus {
+  border-color: rgb(13 142 127 / 50%);
+}
+.file-upload {
+  padding: 20px 10px;
+  text-align: center;
+  border: 1px dashed #0d8e7f;
+  position: relative;
+  background-color: #f7fbfe;
+  border-radius: 5px;
+}
+.file-upload input {
+  opacity: 0;
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+.task-modal .file-upload label {
+  display: inline-block;
+  width: auto;
+  padding: 0;
+  color: #2b8e7f;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.file-upload p {
+  font-size: 14px;
+  color: #616161;
+  margin: 0;
+}
+.files-list {
+  margin-top: 10px;
+}
+.files-list .single-file {
+  display: flex;
+  padding: 0.5rem;
+  justify-content: space-between;
+  align-items: center;
+  border: dashed 1px #979797;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-grow: 1;
+}
+.files-list .single-file .delete {
+  display: flex;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  align-self: flex-end;
+}
+.files-list .single-file .name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #353f4a;
+  margin: 0;
+}
+.files-list .single-file .size {
+  font-size: 12px;
+  font-weight: 500;
+  color: #a4a4a4;
+  margin: 0;
+  margin-bottom: 0.25rem;
+}
+.files-list .single-file .info {
+  width: 100%;
+}
+.file-icon i {
+  font-size: 42px;
+  margin-right: 15px;
+  color: #d0d0d0;
+}
+.progress-cont {
+  height: 7px;
+  width: 100%;
+  border-radius: 4px;
+  background-color: #d3ebe8;
+  position: relative;
+
+}
+.progress {
+  width: 0;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  border-radius: 4px;
+  background-color: #33a59e;
+  transition: 0.5s all;
+}
+.task-modal .e-footer-content {
+  display: none;
+}
+
+.show{
+  display: block;
+}
+
+@media screen and (max-width: 1919px) {
+  .sa-pull-right.kanban {
+    right: 17%;
+  }
+}
+@media screen and (max-width: 1280px) {
+  .sa-pull-right.kanban {
+    right: 18%;
+  }
+}
+@media screen and (max-width: 960px) {
+  .task-manager-wrap {
+    position: relative;
+  }
+  .sa-pull-right.kanban {
+    top: 60px;
+    left: 265px;
+    right: auto;
+  }
+}
+@media screen and (max-width: 767px) {
+  .sa-pull-right.kanban {
+    top: 30px;
+    left: 20px;
+    position: absolute;
+    z-index: 9;
+  }
+  .task-manager-wrap.mat-card {
+    padding-top: 70px;
+  }
+  .task-manager-wrap.mat-card .mat-card-content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+@media screen and (max-width: 575px) {
+  .task-info-wrap .e-kanban.e-device .e-swimlane-header .e-swimlane-header-toolbar {
+    margin-bottom: 15px;
+  }
+  .task-info-wrap .e-kanban {
+    background: transparent;
+  }
 }
