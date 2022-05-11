@@ -21,7 +21,8 @@
     height: 306px;
 }
 .cl-card-height{
-    height: 350px;
+    // height: 350px;
+    height: 306px;
 }
 .div-height{
     height: 300px;
@@ -79,4 +80,13 @@ select.proSelect {
 }
 .disablePointerProgress{
     cursor: progress;
+}
+.hr-placeholder{
+    margin: -42px 0 0 0;
+}
+.hr-all-placeholder{
+    margin: -25px 0 0 0;
+}
+.cl-card-height-new{
+    height: 350px;
 }
