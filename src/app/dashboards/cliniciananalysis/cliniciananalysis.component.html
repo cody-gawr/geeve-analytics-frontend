@@ -162,15 +162,15 @@
                 <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                     <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''"
-                      (click)="changeProduction('1')">Production</small>
+                      (click)="changeProduction('1','all')">Production</small>
                   </div>
                   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                     <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''"
-                      (click)="changeProduction('2')">Collection</small>
+                      (click)="changeProduction('2' ,'all')">Collection</small>
                   </div>
                   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                     <small class="sa_tab_btn" [ngClass]="proCollShow ==3? 'active' : ''"
-                      (click)="changeProduction('3')">Collection-Exp</small>
+                      (click)="changeProduction('3' ,'all')">Collection-Exp</small>
                   </div>
                 </div>
             </div>
@@ -178,11 +178,11 @@
               <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                 <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="49%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''"
-                    (click)="changeProduction('1')">Production</small>
+                    (click)="changeProduction('1' ,'all')">Production</small>
                 </div>
                 <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="49%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''"
-                    (click)="changeProduction('2')">Collection</small>
+                    (click)="changeProduction('2' ,'all')">Collection</small>
                 </div>
                 <!-- <div *ngIf="( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 9 && clinic_id <= 23) )" fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn" [ngClass]="proCollShow ==3? 'active' : ''"
@@ -745,45 +745,45 @@
             </div>
 
             <!-- Production Chart Start -->
-            <div *ngIf="buildChartLoader && proCollShow == 1" class="loader_container loader_container_middle">
+            <div *ngIf="buildChartLoader && proSelectShow == 'production_all' && proCollShow == 1" class="loader_container loader_container_middle">
               <img class="loader_ico" src="../assets/images/720.gif">
               <div class="loader-text">Calculating...</div>
             </div>
-            <div *ngIf="buildChartDentistsLoader && proCollShow == 1" class="loader_container loader_container_middle">
+            <div *ngIf="buildChartDentistsLoader  && proSelectShow == 'production_dentists' && proCollShow == 1" class="loader_container loader_container_middle">
               <img class="loader_ico" src="../assets/images/720.gif">
               <div class="loader-text">Calculating...</div>
             </div>
-            <div *ngIf="buildChartOhtLoader && proCollShow == 1" class="loader_container loader_container_middle">
+            <div *ngIf="buildChartOhtLoader && proSelectShow == 'production_oht' && proCollShow == 1" class="loader_container loader_container_middle">
               <img class="loader_ico" src="../assets/images/720.gif">
               <div class="loader-text">Calculating...</div>
             </div>
             <!-- Production Chart Start -->
 
             <!-- Collection Chart Start -->
-            <div *ngIf="collectionLoader && proCollShow == 2" class="loader_container loader_container_middle">
+            <div *ngIf="collectionLoader && proSelectShow == 'collection_all' && proCollShow == 2" class="loader_container loader_container_middle">
               <img class="loader_ico" src="../assets/images/720.gif">
               <div class="loader-text">Calculating...</div>
             </div>
-            <div *ngIf="collectionDentistsLoader && proCollShow == 2" class="loader_container loader_container_middle">
+            <div *ngIf="collectionDentistsLoader && proSelectShow == 'collection_dentists' && proCollShow == 2" class="loader_container loader_container_middle">
               <img class="loader_ico" src="../assets/images/720.gif">
               <div class="loader-text">Calculating...</div>
             </div>
-            <div *ngIf="collectionOhtLoader && proCollShow == 2" class="loader_container loader_container_middle">
+            <div *ngIf="collectionOhtLoader && proSelectShow == 'collection_oht' && proCollShow == 2" class="loader_container loader_container_middle">
               <img class="loader_ico" src="../assets/images/720.gif">
               <div class="loader-text">Calculating...</div>
             </div>
             <!-- Collection Chart Start -->
 
             <!-- CollectionExp Chart Start -->
-            <div *ngIf="collectionExpLoader && proCollShow == 3" class="loader_container loader_container_middle">
+            <div *ngIf="collectionExpLoader && proSelectShow == 'collection_exp_all' && proCollShow == 3" class="loader_container loader_container_middle">
               <img class="loader_ico" src="../assets/images/720.gif">
               <div class="loader-text">Calculating...</div>
             </div>
-            <div *ngIf="collectionExpDentistsLoader && proCollShow == 3" class="loader_container loader_container_middle">
+            <div *ngIf="collectionExpDentistsLoader && proSelectShow =='collection_exp_dentists' && proCollShow == 3" class="loader_container loader_container_middle">
               <img class="loader_ico" src="../assets/images/720.gif">
               <div class="loader-text">Calculating...</div>
             </div>
-            <div *ngIf="collectionExpOhtLoader && proCollShow == 3" class="loader_container loader_container_middle">
+            <div *ngIf="collectionExpOhtLoader && proSelectShow == 'collection_exp_oht' && proCollShow == 3" class="loader_container loader_container_middle">
               <img class="loader_ico" src="../assets/images/720.gif">
               <div class="loader-text">Calculating...</div>
             </div>
@@ -859,15 +859,15 @@
                 <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                     <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''"
-                      (click)="changeProduction('1')">Production</small>
+                      (click)="changeProduction('1' ,'single')">Production</small>
                   </div>
                   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                     <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''"
-                      (click)="changeProduction('2')">Collection</small>
+                      (click)="changeProduction('2','single')">Collection</small>
                   </div>
                   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                     <small class="sa_tab_btn" [ngClass]="proCollShow ==3? 'active' : ''"
-                      (click)="changeProduction('3')">Collection-Exp</small>
+                      (click)="changeProduction('3','single')">Collection-Exp</small>
                   </div>
                 </div>
               </div>
@@ -875,11 +875,11 @@
                 <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                   <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="49%" fxFlex="100" class="btn-group">
                     <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''"
-                      (click)="changeProduction('1')">Production</small>
+                      (click)="changeProduction('1','single')">Production</small>
                   </div>
                   <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="49%" fxFlex="100" class="btn-group">
                     <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''"
-                      (click)="changeProduction('2')">Collection</small>
+                      (click)="changeProduction('2','single')">Collection</small>
                   </div>
                   <!-- <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                     <small class="sa_tab_btn" [ngClass]="proCollShow ==3? 'active' : ''"
