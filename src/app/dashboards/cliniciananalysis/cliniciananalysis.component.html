@@ -1372,15 +1372,15 @@
                   <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                       <small class="sa_tab_btn" [ngClass]="hrCollShow ==1? 'active' : ''"
-                        (click)="changeHrPro('1')">Production</small>
+                        (click)="changeHrPro('1','all')">Production</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                       <small class="sa_tab_btn" [ngClass]="hrCollShow ==2? 'active' : ''"
-                        (click)="changeHrPro('2')">Collection</small>
+                        (click)="changeHrPro('2','all')">Collection</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                       <small class="sa_tab_btn" [ngClass]="hrCollShow ==3? 'active' : ''"
-                        (click)="changeHrPro('3')">Collection-Exp</small>
+                        (click)="changeHrPro('3','all')">Collection-Exp</small>
                     </div>
                   </div>
                 </div>
@@ -2002,15 +2002,15 @@
                 <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                     <small class="sa_tab_btn" [ngClass]="hrCollShow ==1? 'active' : ''"
-                      (click)="changeHrPro('1')">Production</small>
+                      (click)="changeHrPro('1','single')">Production</small>
                   </div>
                   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                     <small class="sa_tab_btn" [ngClass]="hrCollShow ==2? 'active' : ''"
-                      (click)="changeHrPro('2')">Collection</small>
+                      (click)="changeHrPro('2','single')">Collection</small>
                   </div>
                   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                     <small class="sa_tab_btn" [ngClass]="hrCollShow ==3? 'active' : ''"
-                      (click)="changeHrPro('3')">Collection-Exp</small>
+                      (click)="changeHrPro('3','single')">Collection-Exp</small>
                   </div>
                 </div>
               </div>
@@ -2143,14 +2143,30 @@
                 </div> -->
               </div>
             </div>
-            <div *ngIf="hourlyRateDentistLoader == true" class="loader_container loader_container_middle"><img
+            <div *ngIf="hourlyRateDentistLoader == true && hrCollShow == 1" class="loader_container loader_container_middle"><img
               class="loader_ico" src="../assets/images/720.gif">
             <div class="loader-text">Calculating...</div>
             </div> 
-            <div *ngIf="fdhourlyRateRateTrendLoader == true" class="loader_container loader_container_middle"><img
+            <div *ngIf="collhourlyRateDentistLoader == true && hrCollShow == 2" class="loader_container loader_container_middle"><img
+              class="loader_ico" src="../assets/images/720.gif">
+            <div class="loader-text">Calculating...</div>
+            </div>
+            <div *ngIf="collExphourlyRateDentistLoader == true && hrCollShow == 3" class="loader_container loader_container_middle"><img
+              class="loader_ico" src="../assets/images/720.gif">
+            <div class="loader-text">Calculating...</div>
+            </div>
+            <div *ngIf="fdhourlyRateRateTrendLoader == true && hrCollShow == 1" class="loader_container loader_container_middle"><img
                 class="loader_ico" src="../assets/images/720.gif">
               <div class="loader-text">Calculating...</div>
             </div>
+            <div *ngIf="collhourlyRateRateTrendLoader == true && hrCollShow == 2" class="loader_container loader_container_middle"><img
+              class="loader_ico" src="../assets/images/720.gif">
+            <div class="loader-text">Calculating...</div>
+          </div>
+          <div *ngIf="collExphourlyRateRateTrendLoader == true && hrCollShow == 3" class="loader_container loader_container_middle"><img
+            class="loader_ico" src="../assets/images/720.gif">
+          <div class="loader-text">Calculating...</div>
+        </div>
           </mat-card-content>
         </mat-card>
         

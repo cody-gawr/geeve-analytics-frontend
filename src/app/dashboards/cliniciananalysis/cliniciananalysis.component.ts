@@ -1583,27 +1583,31 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.buildChartNewpatients();
       this.recallPrebook();
       this.treatmentPrePrebook();
-      this.hourlyRateChart();
-      this.collectionHourlyRate();
-      this.collectionExpHourlyRate();
-      if(this.hrSelectShow == "hr_all"){ 
+      if(this.user_type != '4'){
+        if(this.hrSelectShow == "hr_all"){ 
+          this.hourlyRateChart();
+        }else if(this.hrSelectShow == "hr_dentists"){
+          this.hourlyRateChartDesntists();
+        }else if(this.hrSelectShow == "hr_oht"){
+          this.hourlyRateChartOht();
+        }else if(this.hrSelectShow == "hr_collection_all"){
+          this.collectionHourlyRate();
+        }else if(this.hrSelectShow == "hr_collection_dentists"){
+          this.collectionHourlyRateDentist();
+        }else if(this.hrSelectShow == "hr_collection_oht"){
+          this.collectionHourlyRateOht();
+        }else if(this.hrSelectShow == "hr_collection_exp_all"){
+          this.collectionExpHourlyRate();
+        }else if(this.hrSelectShow == "hr_collection_exp_dentists"){
+          this.collectionExpHourlyRateDentist();
+        }else if(this.hrSelectShow == "hr_collection_exp_oht"){
+          this.collectionExpHourlyRateOht();
+        }
+      }      
+      if(this.user_type == '4'){
         this.hourlyRateChart();
-      }else if(this.hrSelectShow == "hr_dentists"){
-        this.hourlyRateChartDesntists();
-      }else if(this.hrSelectShow == "hr_oht"){
-        this.hourlyRateChartOht();
-      }else if(this.hrSelectShow == "hr_collection_all"){
         this.collectionHourlyRate();
-      }else if(this.hrSelectShow == "hr_collection_dentists"){
-        this.collectionHourlyRateDentist();
-      }else if(this.hrSelectShow == "hr_collection_oht"){
-        this.collectionHourlyRateOht();
-      }else if(this.hrSelectShow == "hr_collection_exp_all"){
         this.collectionExpHourlyRate();
-      }else if(this.hrSelectShow == "hr_collection_exp_dentists"){
-        this.collectionExpHourlyRateDentist();
-      }else if(this.hrSelectShow == "hr_collection_exp_oht"){
-        this.collectionExpHourlyRateOht();
       }
       this.treatmentPlanRate();
       (<HTMLElement>document.querySelector('.dentistProductionSingle')).style.display = 'none';
@@ -1669,11 +1673,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         (<HTMLElement>document.querySelector('.treatmentPlanRate')).style.display = 'none';
         (<HTMLElement>document.querySelector('.newPatientsSingle')).style.display = 'block';
         (<HTMLElement>document.querySelector('.newPatients')).style.display = 'none';
-        this.hourlyRateDentist();
-       // this.hourlyRateSingleDentists();
-       // this.hourlyRateSingleOht();
-       this.collectionHourlyRateSingle();
-       this.collectionExpHourlyRateSingle();
+
+        if(this.hrCollShow == 1 && this.user_type != '4'){
+          this.hourlyRateDentist();
+        }else if(this.hrCollShow == 2 && this.user_type != '4'){
+          this.collectionHourlyRateSingle();
+        }else if(this.hrCollShow == 3 && this.user_type != '4'){
+          this.collectionExpHourlyRateSingle();
+        }
+        if(this.user_type == '4'){
+          this.hourlyRateDentist();
+          this.collectionHourlyRateSingle();
+          this.collectionExpHourlyRateSingle();
+        }
         this.treatmentPlanRateDentist();
 
         (<HTMLElement>document.querySelector('.hourlyRateSingle')).style.display = 'block';
@@ -8898,11 +8910,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.fdRecallPrebookRateTrend();
       this.fdTreatmentPrebookRateTrend();
       this.fdnewPatientsRateTrend();
-      this.fdhourlyRateRateTrend();
-     // this.fdhourlyRateRateDentistsTrend();
-     // this.fdhourlyRateRateOhtTrend();
-      this.collectionHourlyRateTrend();
-      this.collectionExpHourlyRateTrend();
+      if(this.hrCollShow == 1 && this.user_type != '4'){
+        this.fdhourlyRateRateTrend();
+      }else if(this.hrCollShow == 2 && this.user_type != '4'){
+        this.collectionHourlyRateTrend();
+      }else if(this.hrCollShow == 3 && this.user_type != '4'){
+        this.collectionExpHourlyRateTrend();
+      }
+      if(this.user_type == '4'){
+        this.fdhourlyRateRateTrend();
+        this.collectionHourlyRateTrend();
+        this.collectionExpHourlyRateTrend();
+      }
+      // this.fdhourlyRateRateDentistsTrend();
+     // this.fdhourlyRateRateOhtTrend();     
       this.fdtreatmentPlanRateTrend();
       this.changeTreatmentCostSingle('1');
       this.changePrebookRate('recall');
@@ -9096,13 +9117,22 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     }
   }  
 
-  changeHrPro(val){
-    if (parseInt(val) == 1 && this.goalchecked == 'average') {
+  changeHrPro(val,dentType){
+    if (parseInt(val) == 1 && dentType == "all" && this.user_type != '4') {
       this.hourlyRateChart();
-    }else if(parseInt(val) == 2 && this.goalchecked == 'average'){
+    }else if(parseInt(val) == 2 && dentType == "all" && this.user_type != '4'){
       this.collectionHourlyRate();
-    }else if(parseInt(val) == 3 && this.goalchecked == 'average'){
+    }else if(parseInt(val) == 3 && dentType == "all" && this.user_type != '4'){
       this.collectionExpHourlyRate();
+    }else if(parseInt(val) == 1 && dentType == "single" && this.user_type != '4'){
+      this.hourlyRateDentist();
+      this.fdhourlyRateRateTrend();
+    }else if(parseInt(val) == 2 && dentType == "single" && this.user_type != '4'){
+      this.collectionHourlyRateSingle();
+      this.collectionHourlyRateTrend();
+    }else if(parseInt(val) == 3 && dentType == "single" && this.user_type != '4'){
+      this.collectionExpHourlyRateSingle();
+      this.collectionExpHourlyRateTrend();
     }
     this.hrCollShow = parseInt(val);
     if(parseInt(val) == 1){
