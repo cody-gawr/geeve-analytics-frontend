@@ -1313,21 +1313,21 @@
                     </select> -->
                     <select class="proSelect" *ngIf="hrCollShow == 1 && apiUrl.includes('test-') && user_type != '4'"
                       (change)="changeHourlyRateSelect($event.target.value)">
-                        <option value="hr_all">HR (Production) - All</option>
-                        <option value="hr_dentists">HR (Production) - Dentists</option>
-                        <option value="hr_oht">HR (Production) - OHT</option>
+                        <option value="hr_all">Hourly Rate - All</option>
+                        <option value="hr_dentists">Hourly Rate - Dentists</option>
+                        <option value="hr_oht">Hourly Rate - OHT</option>
                       </select>
                       <select class="proSelect" *ngIf="hrCollShow == 2 && apiUrl.includes('test-') && user_type != '4'"
                       (change)="changeHourlyRateSelect($event.target.value)">
-                        <option value="hr_collection_all">HR (Collection) - All</option>
-                        <option value="hr_collection_dentists">HR (Collection) - Dentists</option>
-                        <option value="hr_collection_oht">HR (Collection) - OHT</option>
+                        <option value="hr_collection_all">Hourly Rate - All</option>
+                        <option value="hr_collection_dentists">Hourly Rate - Dentists</option>
+                        <option value="hr_collection_oht">Hourly Rate - OHT</option>
                       </select>
                       <select class="proSelect" *ngIf="hrCollShow == 3 && apiUrl.includes('test-') && user_type != '4'"
                       (change)="changeHourlyRateSelect($event.target.value)">
-                        <option value="hr_collection_exp_all">HR (Collection-Exp) - All</option>
-                        <option value="hr_collection_exp_dentists">HR (Collection-Exp) - Dentists</option>
-                        <option value="hr_collection_exp_oht">HR (Collection-Exp) - OHT</option>
+                        <option value="hr_collection_exp_all">Hourly Rate - All</option>
+                        <option value="hr_collection_exp_dentists">Hourly Rate - Dentists</option>
+                        <option value="hr_collection_exp_oht">Hourly Rate - OHT</option>
                     </select>
               </div>
               <!--   <div class="sa_box_title_right_buttons">
@@ -1982,9 +1982,10 @@
                   class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
                   matTooltip="{{trendText}} : ${{hourlyRateChartAveragePrev| number:'1.0-0'}}"><img class="trend_ico"
                     src="../assets/images/trend_{{hourlyRateChartTooltip}}.png"></span>
-                <span *ngIf="hrCollShow == 1"> Hourly Rate Production</span>
-                <span *ngIf="hrCollShow == 2"> Hourly Rate Collection</span>
-                <span *ngIf="hrCollShow == 3"> Hourly Rate Collection - Exp</span>                
+                    <span> Hourly Rate</span>
+                <!-- <span *ngIf="hrCollShow == 1"> Hourly Rate Production</span> -->
+                <!-- <span *ngIf="hrCollShow == 2"> Hourly Rate Collection</span>
+                <span *ngIf="hrCollShow == 3"> Hourly Rate Collection - Exp</span>                 -->
                 <!-- <select class="proSelect" *ngIf="apiUrl.includes('test-')"
                 (change)="changeHourlyRateSelect($event.target.value)">
                     <option value="hr_all">Hourly Rate - All</option>
