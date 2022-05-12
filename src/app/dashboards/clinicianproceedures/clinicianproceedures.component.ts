@@ -1235,10 +1235,10 @@ if(this._cookieService.get("user_type") == '4'){
     //(<HTMLElement>document.querySelector('.itemsPredictorSpecial')).style.display = 'block';    
     this.buildChart();
     this.predictorAnalysisSpecial();
-    this.buildChartPredictor(); 
-    if(this.childid == '') {      
-      this.buildChartReferral();      
+     
+    if(this.childid == '') {           
       this.buildChartProceedure();
+      this.buildChartReferral();
       $('.revenueProceedureSingle').hide();
       $('.revenueProceedure').show();
     } else {
@@ -1248,6 +1248,7 @@ if(this._cookieService.get("user_type") == '4'){
       $('.revenueProceedureSingle').show();
       $('.revenueProceedure').hide();
     }
+    this.buildChartPredictor();
 
   } else {
     this.selectedDentist = newValue;
