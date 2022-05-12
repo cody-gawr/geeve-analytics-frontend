@@ -29,6 +29,7 @@
           (actionComplete)="OnActionComplete($event)"
           (dialogOpen)="dialogOpen($event)"
           [swimlaneSettings]="swimlaneSettings"
+          (drag)="onKanbanBDrag($event)"
         >
           <e-columns>
             <e-column *ngFor="let column of columns;" headerText={{column.headerText}} keyField='{{column.keyField}}'>

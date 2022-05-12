@@ -18,6 +18,7 @@ import {
   CardRenderedEventArgs,
   DialogEventArgs,
   ColumnsModel,
+  DragEventArgs,
 } from "@syncfusion/ej2-angular-kanban";
 import { DataManager, UrlAdaptor, Query } from "@syncfusion/ej2-data";
 import { TasksService } from "./tasks.service";
@@ -333,5 +334,12 @@ export class TasksComponent implements AfterViewInit, OnInit {
       return "warning";
     }
     return "";
+  }
+
+  onKanbanBDrag(args : DragEventArgs){
+    $(window).on("mousemove",function(e){
+      $('.e-cloned-card').offset({top:e.clientY-50,left:e.clientX-150});
+    });
+
   }
 }
