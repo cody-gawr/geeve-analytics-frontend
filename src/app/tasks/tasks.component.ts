@@ -310,7 +310,6 @@ export class TasksComponent implements AfterViewInit, OnInit {
   }
 
   OnActionComplete(args: ActionEventArgs): void {
-    console.log("ActionEventArgs", args);
     if (
       args.requestType === "cardCreated" ||
       args.requestType === "cardChanged" ||
@@ -337,7 +336,7 @@ export class TasksComponent implements AfterViewInit, OnInit {
   }
 
   onKanbanBDrag(args : DragEventArgs){
-    $(window).on("mousemove",function(e){
+    $(window).one("mousemove",function(e){
       $('.e-cloned-card').offset({top:e.clientY-50,left:e.clientX-150});
     });
 
