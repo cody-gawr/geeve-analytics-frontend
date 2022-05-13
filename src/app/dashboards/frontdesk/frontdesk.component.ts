@@ -1123,11 +1123,11 @@ public utilityratemessage: boolean = false;
     if(newValue == 'all' && this.clinic_id ) {
       this.fdWorkTimeAnalysis();
       this.fdWorkTimeByDay();  
-      this.fdFtaRatio();
-      this.fdUtaRatio();
-      this.fdNumberOfTicks();
       this.fdRecallPrebookRate();
       this.fdtreatmentPrebookRate();
+      this.fdNumberOfTicks();
+      this.fdFtaRatio();
+      this.fdUtaRatio();
     }
   }
 
@@ -2117,11 +2117,11 @@ toggleChangeProcess(){
   this.Apirequest = 6;
       this.showTrend = true;
       this.fdwtaRatioTrend();
-      this.fdFtaRatioTrend();
-      this.fdUtaRatioTrend();
-      this.fdNumberOfTicksTrend();
       this.fdRecallPrebookRateTrend();
       this.fdTreatmentPrebookRateTrend();
+      this.fdNumberOfTicksTrend();
+      this.fdFtaRatioTrend();
+      this.fdUtaRatioTrend();
 }
 
  public ftaChartTrend: any[]  = [

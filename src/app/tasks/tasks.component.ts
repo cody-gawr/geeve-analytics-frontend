@@ -316,10 +316,10 @@ export class TasksComponent implements AfterViewInit, OnInit {
       args.requestType === "cardRemoved"
     ) {
       this.assignTo = 1;
-      var kanbanInstance = this.kanbanObj;
-      setTimeout(function () {
-        kanbanInstance.refresh();
-      }, 600);
+      // var kanbanInstance = this.kanbanObj;
+      // setTimeout(function () {
+      //   kanbanInstance.refresh();
+      // }, 600);
     }
   }
 

@@ -1726,11 +1726,11 @@ export class FinancesComponent implements AfterViewInit {
       }
 
       this.finProductionByClinician();
+      this.finProductionPerVisit();
       this.finTotalDiscounts();
       // this.finOverdueAccounts();
 
       // this.finCollection();
-      this.finProductionPerVisit();
       /*
           (<HTMLElement>document.querySelector('.treatmentPlanSingle')).style.display = 'none';
           (<HTMLElement>document.querySelector('.treatmentPlan')).style.display = 'block';
@@ -2644,7 +2644,7 @@ export class FinancesComponent implements AfterViewInit {
       $('.trendMode').css('display', 'block');
       $('.nonTrendMode').hide();
 
-
+      this.finTotalProductionTrend();
       if (this.connectedwith != '' && this.connectedwith != undefined && this.multipleClinicsSelected == false) {
         this.Apirequest = 5;
         this.expensestrendstats = false;
@@ -2653,11 +2653,9 @@ export class FinancesComponent implements AfterViewInit {
         this.finExpensesByCategoryTrend();
       }
 
-
-      this.finProductionByClinicianTrend();
-      this.finTotalDiscountsTrend();
-      this.finTotalProductionTrend();
       this.finProductionPerVisitTrend();
+      this.finTotalDiscountsTrend(); 
+      this.finProductionByClinicianTrend();
       this.netProfitDisplayVal = '1';
     }
   }

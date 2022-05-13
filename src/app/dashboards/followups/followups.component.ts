@@ -476,11 +476,11 @@ export class FollowupsComponent implements AfterViewInit {
     $('.filter').removeClass('active');
     $('.filter_'+duration).addClass("active");
     $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
-    this.getFollowupsPerUser();
-    this.getFollowupOutcome();
     this.getConversion();
-    this.getConversionPerUser();
     this.getCompletionRate();
+    this.getFollowupOutcome();
+    this.getConversionPerUser();
+    this.getFollowupsPerUser();
   }
 
   monthDiff(d1, d2) {

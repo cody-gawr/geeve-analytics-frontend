@@ -1223,8 +1223,8 @@ export class MarketingComponent implements AfterViewInit {
       this.mkRevenueByReferral();
       this.fdnewPatientsRatio();
       this.fdActivePatient();
-      this.fdvisitsRatio();
       this.fdnewPatientsAcq();
+      this.fdvisitsRatio();
       if (this.connectedwith == 'myob' && this.multipleClinicsSelected == false) {
         this.getMyobAccounts();
       } else if (this.connectedwith == 'xero' && this.multipleClinicsSelected == false) {
