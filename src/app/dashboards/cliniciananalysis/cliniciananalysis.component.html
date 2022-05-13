@@ -2812,11 +2812,11 @@
             <div class="card-body">
               <div fxLayout="row wrap" fxLayoutAlign="center center" class="prebook_rate sa_tabs_main_sec btn-right">
                 <div fxFlex.gt-sm="40.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn pr_recall active" (click)="changePrebookRate('recall')">Recall Prebook
+                  <small class="sa_tab_btn pr_recall active" (click)="changePrebookRate('recall','all')">Recall Prebook
                     Rate</small>
                 </div>
                 <div fxFlex.gt-sm="40.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn pr_treatment" (click)="changePrebookRate('treatment')">Reappointment
+                  <small class="sa_tab_btn pr_treatment" (click)="changePrebookRate('treatment','all')">Reappointment
                     Rate</small>
                 </div>
               </div>
@@ -2834,13 +2834,13 @@
                   [colors]="RPcolors" (chartClick)="chartClicked($event)">
                 </canvas>
                 <canvas id="PrebookRate"
-                  *ngIf="showAvg === false && showreappointTbl === false && prebook=='treatment' && recallPrebookLoader == false && treatmentPreChartData1.length > 0"
+                  *ngIf="showAvg === false && showreappointTbl === false && prebook=='treatment' && treatmentPrebookLoader == false && treatmentPreChartData1.length > 0"
                   #myCanvas baseChart [datasets]="treatmentPreChartData" [labels]="treatmentPreChartLabels"
                   [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
                   [options]="barChartOptionsTPB" [colors]="TPcolors" (chartClick)="chartClicked($event)">
                 </canvas>
                 <canvas id="PrebookRate"
-                  *ngIf="showAvg === true && showreappointTbl === false && prebook=='treatment' && recallPrebookLoader == false && treatmentPreChartData1.length > 0"
+                  *ngIf="showAvg === true && showreappointTbl === false && prebook=='treatment' && treatmentPrebookLoader == false && treatmentPreChartData1.length > 0"
                   #myCanvas baseChart [datasets]="treatmentPreChartData" [labels]="treatmentPreChartLabels"
                   [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
                   [options]="barChartOptionsTPB" [colors]="TPcolors" (chartClick)="chartClicked($event)">
@@ -2946,6 +2946,10 @@
             </div>
           </mat-card-content>
         </mat-card>
+        <div *ngIf=" treatmentPrebookLoader && prebook=='treatment' "
+          class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+          <div class="loader-text">Calculating...</div>
+        </div>
 
         <mat-card class="recallPrebookSingle" [style.display]="'none'">
           <mat-card-content class="sa_matcard_content">
@@ -2967,11 +2971,11 @@
             <div class="card-body">
               <div fxLayout="row wrap" fxLayoutAlign="center center" class="prebook_rate sa_tabs_main_sec btn-right">
                 <div fxFlex.gt-sm="40.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn pr_recall active" (click)="changePrebookRate('recall')">Recall Prebook
+                  <small class="sa_tab_btn pr_recall active" (click)="changePrebookRate('recall','single')">Recall Prebook
                     Rate</small>
                 </div>
                 <div fxFlex.gt-sm="40.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn pr_treatment" (click)="changePrebookRate('treatment')">Reappointment
+                  <small class="sa_tab_btn pr_treatment" (click)="changePrebookRate('treatment','single')">Reappointment
                     Rate</small>
                 </div>
               </div>

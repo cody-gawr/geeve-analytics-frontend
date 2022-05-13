@@ -1540,11 +1540,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   loadDentist(newValue) {
     $('.sa_tabs_data button').prop('disabled',true); 
     if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
-      this.Apirequest = 8;
+      this.Apirequest = 7;
       $('.multi-clinic-dis').addClass("disablePointer");
       $('.multi-clinic-pro').addClass("disablePointerProgress");
     }else{
-      this.Apirequest = 8;
+      this.Apirequest = 7;
     }    
     if (this._cookieService.get("user_type") == '4') {
       if (this._cookieService.get("dentist_toggle") === 'false'){
@@ -1561,7 +1561,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     $('#title').html('<span> Clinician Analysis </span>');
     $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate));
-    this.changePrebookRate('recall');
+    //this.changePrebookRate('recall','all');
     if (this._cookieService.get("dentistid"))
       this.childid = this._cookieService.get("dentistid");
     if (newValue == 'all') {
@@ -1621,9 +1621,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.buildChartNewpatients();
       this.buildChartTreatment();
       this.treatmentPlanRate();
-      this.recallPrebook();
+      if(this.user_type != '4'){
+        if(this.prebook =="recall"){
+          this.recallPrebook();
+        }else if(this.prebook =="treatment"){
+          this.treatmentPrePrebook();
+        }
+      }
+      if(this.user_type == '4'){
+        this.recallPrebook();
+        this.treatmentPrePrebook();
+      }
       this.buildChartNopatients();
-      this.treatmentPrePrebook();
       (<HTMLElement>document.querySelector('.dentistProductionSingle')).style.display = 'none';
       (<HTMLElement>document.querySelector('.dentistProduction')).style.display = 'block';
       (<HTMLElement>document.querySelector('.treatmentPlanSingle')).style.display = 'none';
@@ -1698,8 +1707,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         (<HTMLElement>document.querySelector('.noPatientsSingle')).style.display = 'block';
         (<HTMLElement>document.querySelector('.noPatients')).style.display = 'none';
-        this.recallPrebookDentist();
-        this.treatmentPrePrebookDentist();
+        if(this.user_type != '4'){
+          if(this.prebook =="recall"){
+            this.recallPrebookDentist();
+          }else if(this.prebook =="treatment"){
+            this.treatmentPrePrebookDentist();
+          }
+        }       
+        if(this.user_type == '4'){
+          this.recallPrebookDentist();
+          this.treatmentPrePrebookDentist();          
+        }
+
         (<HTMLElement>document.querySelector('.recallPrebookSingle')).style.display = 'block';
         (<HTMLElement>document.querySelector('.recallPrebook')).style.display = 'none';
         (<HTMLElement>document.querySelector('.treatmentPlanRateSingle')).style.display = 'block';
@@ -8917,7 +8936,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   toggleChangeProcess() {
     if (this.toggleChecked) {
-      this.Apirequest = 8;
+      this.Apirequest = 7;
       $('.filter').removeClass('active');
       // this.dentistProductionTrend();
      // this.dentistProductionDentistsTrend();
@@ -8958,17 +8977,24 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.fdnewPatientsRateTrend();
       this.treatmentPlanTrend();
       this.fdtreatmentPlanRateTrend();
-      this.fdRecallPrebookRateTrend();
+      if(this.user_type != '4'){
+        if(this.prebook =="recall"){
+          this.fdRecallPrebookRateTrend();
+        }else if(this.prebook =="treatment"){
+          this.fdTreatmentPrebookRateTrend();
+        }
+      }      
+      if(this.user_type == '4'){
+        this.fdRecallPrebookRateTrend();
+        this.fdTreatmentPrebookRateTrend();
+      }
       this.patientComplaintsTrend();
-     
-      this.fdTreatmentPrebookRateTrend();
-     
       
       // this.fdhourlyRateRateDentistsTrend();
      // this.fdhourlyRateRateOhtTrend();     
       
       this.changeTreatmentCostSingle('1');
-      this.changePrebookRate('recall');
+     // this.changePrebookRate('recall','single');
     }
   }
 
@@ -9100,11 +9126,28 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       ]
     }
   }
-  changePrebookRate(val) {
-    if (val == 'recall' && this.goalchecked == 'average') {
+  changePrebookRate(val,dentType) {
+    // if (val == 'recall' && this.goalchecked == 'average') {
+    //   this.recallPrebook();
+    // } else if (val == 'treatment' && this.goalchecked == 'average') {
+    //   this.treatmentPrePrebook();
+    // }
+    if (val == 'recall' && dentType == 'all' && this.user_type != '4') {
       this.recallPrebook();
-    } else if (val == 'treatment' && this.goalchecked == 'average') {
+    } else if (val == 'treatment'  && dentType == 'all' && this.user_type != '4') {
       this.treatmentPrePrebook();
+    }else if (val == 'recall'  && dentType == 'single' && this.user_type != '4') {
+      if(this.showTrendChart){
+        this.fdRecallPrebookRateTrend();
+      }else{
+        this.recallPrebookDentist();
+      }
+    }else if (val == 'treatment'  && dentType == 'single' && this.user_type != '4') {
+      if(this.showTrendChart){
+        this.fdTreatmentPrebookRateTrend();
+      }else{
+        this.treatmentPrePrebookDentist();
+      }
     }
     $('.prebook_rate .sa_tab_btn').removeClass('active');
     this.prebook = val;
