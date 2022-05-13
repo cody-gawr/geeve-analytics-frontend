@@ -1221,8 +1221,11 @@ export class MarketingComponent implements AfterViewInit {
     if (newValue == 'all') {
       this.mkNewPatientsByReferral();
       this.mkRevenueByReferral();
-      this.fdnewPatientsRatio();
-      this.fdActivePatient();
+      if(this.activePatients){
+        this.fdActivePatient();
+      }else{        
+        this.fdnewPatientsRatio();
+      }
       this.fdnewPatientsAcq();
       this.fdvisitsRatio();
       if (this.connectedwith == 'myob' && this.multipleClinicsSelected == false) {
@@ -2192,15 +2195,19 @@ export class MarketingComponent implements AfterViewInit {
     this.Apirequest = 4;
     this.showTrend = true;
     if (this.connectedwith != '' && this.multipleClinicsSelected == false) {
-      this.Apirequest = 5;
+      this.Apirequest = 4;
     }
     this.mkNewPatientsByReferralTrend();
     //this.mkNewPatientsByReferralTrend();
     //this.mkRevenueByReferral();
     this.mkRevenueByReferralTrend();
-
-    this.mkNoNewPatientsTrend();
-    this.mkNoActivePatientsTrend();
+    if(this.activePatients){
+      this.mkNoActivePatientsTrend();
+    }else{        
+      this.mkNoNewPatientsTrend();
+    }
+    this.totalRevenueByReferral
+    
     this.fdvisitsRatioTrend();
 
 
@@ -2878,10 +2885,20 @@ export class MarketingComponent implements AfterViewInit {
   activePat() {
     if (this.activePatients == true) {
       this.activePatients = false;
-      this.patientText = 'No. New Patients';
+      this.patientText = 'No. New Patients';     
+      if(this.showTrend){
+        this.mkNoNewPatientsTrend();
+      }else{
+        this.fdnewPatientsRatio();
+      }      
     } else if (this.activePatients == false) {
       this.activePatients = true;
-      this.patientText = 'No. Active Patients';
+      this.patientText = 'No. Active Patients';     
+      if(this.showTrend){
+        this.mkNoActivePatientsTrend();
+      }else{
+        this.fdActivePatient();
+      }     
     }
   }
 }

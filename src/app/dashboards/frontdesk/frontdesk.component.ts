@@ -1121,8 +1121,11 @@ public utilityratemessage: boolean = false;
    $('#title').html('<span>Front Desk</span>'); 
        $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
     if(newValue == 'all' && this.clinic_id ) {
-      this.fdWorkTimeAnalysis();
-      this.fdWorkTimeByDay();  
+      if(this.utilShow == 1){
+        this.fdWorkTimeAnalysis();
+      }else if(this.utilShow == 2){
+        this.fdWorkTimeByDay(); 
+      }  
       this.fdRecallPrebookRate();
       this.fdtreatmentPrebookRate();
       this.fdNumberOfTicks();
@@ -2857,6 +2860,11 @@ public ticChartTrendMultiLabels = [];
     }
 
     changeUtil(val){
+      if(parseInt(val) == 1){
+        this.fdWorkTimeAnalysis();
+      }else if(parseInt(val) == 2){
+        this.fdWorkTimeByDay();
+      }
       this.utilShow = val;
     }
   }

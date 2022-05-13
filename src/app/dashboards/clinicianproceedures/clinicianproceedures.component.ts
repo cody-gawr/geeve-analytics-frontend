@@ -1233,8 +1233,11 @@ if(this._cookieService.get("user_type") == '4'){
 
     //(<HTMLElement>document.querySelector('.itemsPredictorSpecialSingle')).style.display = 'none';
     //(<HTMLElement>document.querySelector('.itemsPredictorSpecial')).style.display = 'block';    
-    this.buildChart();
-    this.predictorAnalysisSpecial();
+    if(this.procedureAnalysisVisibility == "General"){
+      this.buildChart();
+    }else if(this.procedureAnalysisVisibility == "Specialist"){
+      this.predictorAnalysisSpecial();
+    }
      
     if(this.childid == '') {           
       this.buildChartProceedure();
@@ -1257,8 +1260,11 @@ if(this._cookieService.get("user_type") == '4'){
     if(this.toggleChecked ) {
       this.toggleChangeProcess()
     } else {
-      this.buildChartDentist();
-      this.procedureAnalysisSpecialDentist();
+      if( this.procedureAnalysisVisibility == "General"){
+        this.buildChartDentist();
+      }else if( this.procedureAnalysisVisibility == "Specialist"){
+        this.procedureAnalysisSpecialDentist();
+      }
       this.dentistMode = true;
       if(!this.toggleChecked) {
         /*(<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'block';
@@ -2626,11 +2632,13 @@ toggleFilter(val) {
 
 toggleChangeProcess(){
   if(this.toggleChecked){
-    this.Apirequest =4;
+    this.Apirequest =3;
     $('.filter').removeClass('active');
-
-    this.predictorTrendSingle();
-    this.predictorSpecialTrendSingle();
+    if(this.procedureAnalysisVisibility == "General"){
+      this.predictorTrendSingle();
+    }else if(this.procedureAnalysisVisibility == "Specialist"){
+      this.predictorSpecialTrendSingle();
+    }
     this.mode='Combined';
     this.changePieReferral('Combined');
     (<HTMLElement>document.querySelector('.ratioPredictorSingle')).style.display = 'block';
@@ -3053,6 +3061,25 @@ toggleChangeProcess(){
     //Added by Hanney Shrma on 22-04-2021
     changeProcedureAnalysis(typeVisible)
     {
+      if(typeVisible == "General"){
+        if(this.dentistMode && this.showTrend == false){
+          this.buildChartDentist();          
+        }else if(this.dentistMode == false && this.showTrend == false){
+          this.buildChart();
+        }else if(this.dentistMode && this.showTrend){
+          this.predictorTrendSingle();
+        }
+        
+      }else if(typeVisible == "Specialist"){
+        if(this.dentistMode && this.showTrend == false){
+          this.procedureAnalysisSpecialDentist();
+        }else if(this.dentistMode == false && this.showTrend == false){
+          this.predictorAnalysisSpecial();
+        }else if(this.dentistMode && this.showTrend){
+          this.predictorSpecialTrendSingle();
+        }
+        
+      }
       this.procedureAnalysisVisibility = typeVisible;
       return true;
     } 

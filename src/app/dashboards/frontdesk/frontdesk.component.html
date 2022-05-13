@@ -232,7 +232,7 @@
                   </div>
 
                   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                    *ngIf="workTimeGoal >= 0 && utilShow ==1 && !showTrend && showGoals == true && showMultiClinicUR == false ">
+                    *ngIf="workTimeGoal > 0 && utilShow ==1 && !showTrend && showGoals == true && showMultiClinicUR == false ">
                     <!--           <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
                     <h3 class="m-0 value-num" *ngIf="workTimeGoal">
                       {{ ( workTimeGoal > 100 ? 100 : workTimeGoal ) | number }}%</h3>
@@ -242,8 +242,10 @@
               </div>
             </mat-card-content>
           </mat-card>
-          <div *ngIf="fdWorkTimeAnalysisLoader || byDayLoader" class="loader_container loader_container_middle"><img class="loader_ico"
+          <div *ngIf="fdWorkTimeAnalysisLoader && utilShow == 1" class="loader_container loader_container_middle"><img class="loader_ico"
               src="../assets/images/720.gif"></div>
+          <div *ngIf="byDayLoader  && utilShow == 2" class="loader_container loader_container_middle"><img class="loader_ico"
+            src="../assets/images/720.gif"></div>    
           <div *ngIf="fdwtaRatioTrendLoader" class="loader_container loader_container_middle"><img class="loader_ico"
               src="../assets/images/720.gif"></div>
         </div>
