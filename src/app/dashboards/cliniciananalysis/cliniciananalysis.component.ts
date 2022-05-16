@@ -9192,12 +9192,24 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     // }else if (parseInt(val) == 3 && this.goalchecked == 'average') {
     //   this.collectionExpChart();
     // }
-    if (parseInt(val) == 1 && dentType == "all"  && this.user_type != '4') {
+    if (parseInt(val) == 1 && this.proSelectShow.includes('all') && dentType == "all"  && this.user_type != '4') {
       this.buildChart();
-    } else if (parseInt(val) == 2 && dentType == "all"  && this.user_type != '4') {
+    }else if (parseInt(val) == 1 && this.proSelectShow.includes('dentists') && dentType == "all"  && this.user_type != '4') {
+      this.buildChartDentists();
+    }else if (parseInt(val) == 1 && this.proSelectShow.includes('oht') && dentType == "all"  && this.user_type != '4') {
+      this.buildChartOht();
+    }else if (parseInt(val) == 2 && this.proSelectShow.includes('all') && dentType == "all"  && this.user_type != '4') {
       this.collectionChart();
-    }else if (parseInt(val) == 3 && dentType == "all"  && this.user_type != '4') {
+    }else if (parseInt(val) == 2 && this.proSelectShow.includes('dentists') && dentType == "all"  && this.user_type != '4') {
+      this.collectionChartDentists();
+    }else if (parseInt(val) == 2 && this.proSelectShow.includes('oht') && dentType == "all"  && this.user_type != '4') {
+      this.collectionChartOht();
+    }else if (parseInt(val) == 3 && this.proSelectShow.includes('all') && dentType == "all"  && this.user_type != '4') {
       this.collectionExpChart();
+    }else if (parseInt(val) == 3 && this.proSelectShow.includes('dentists') && dentType == "all"  && this.user_type != '4') {
+      this.collectionExpChartDentists();
+    }else if (parseInt(val) == 3 && this.proSelectShow.includes('oht') && dentType == "all"  && this.user_type != '4') {
+      this.collectionExpChartOht();
     }else if (parseInt(val) == 1 && dentType == "single"  && this.user_type != '4') {
       this.buildChartDentist();      
       if(this.toggleChecked){
@@ -9221,22 +9233,47 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       }     
     }
     this.proCollShow = parseInt(val);
-    if(parseInt(val) == 1){
+    if(parseInt(val) == 1 && this.proSelectShow.includes('all')){
       this.proSelectShow = "production_all";
-    }else if(parseInt(val) == 2){
+    }else if(parseInt(val) == 1 && this.proSelectShow.includes('dentists')){
+      this.proSelectShow = "production_dentists";
+    }else if(parseInt(val) == 1 && this.proSelectShow.includes('oht')){
+      this.proSelectShow = "production_oht";
+    }else if(parseInt(val) == 2 && this.proSelectShow.includes('all')){
       this.proSelectShow = "collection_all";
-    }else if(parseInt(val) == 3){ 
+    }else if(parseInt(val) == 2 && this.proSelectShow.includes('dentists')){
+      this.proSelectShow = "collection_dentists";
+    }else if(parseInt(val) == 2 && this.proSelectShow.includes('oht')){
+      this.proSelectShow = "collection_oht";
+    }else if(parseInt(val) == 3 && this.proSelectShow.includes('all')){ 
       this.proSelectShow ="collection_exp_all";
+    }else if(parseInt(val) == 3 && this.proSelectShow.includes('dentists')){
+      this.proSelectShow = "collection_exp_dentists";
+    }else if(parseInt(val) == 3 && this.proSelectShow.includes('oht')){
+      this.proSelectShow = "collection_exp_oht";
     }
   }  
 
+  
   changeHrPro(val,dentType){
-    if (parseInt(val) == 1 && dentType == "all" && this.user_type != '4') {
+    if (parseInt(val) == 1 && this.hrSelectShow.includes('all') && dentType == "all" && this.user_type != '4') {
       this.hourlyRateChart();
-    }else if(parseInt(val) == 2 && dentType == "all" && this.user_type != '4'){
+    }else if(parseInt(val) == 1 && this.hrSelectShow.includes('dentists') && dentType == "all" && this.user_type != '4'){
+      this.hourlyRateChartDesntists();
+    }else if(parseInt(val) == 1 && this.hrSelectShow.includes('oht') && dentType == "all" && this.user_type != '4'){
+      this.hourlyRateChartOht();
+    }else if(parseInt(val) == 2 && this.hrSelectShow.includes('all') && dentType == "all" && this.user_type != '4'){
       this.collectionHourlyRate();
-    }else if(parseInt(val) == 3 && dentType == "all" && this.user_type != '4'){
+    }else if(parseInt(val) == 2 && this.hrSelectShow.includes('dentists') && dentType == "all" && this.user_type != '4'){
+      this.collectionHourlyRateDentist();
+    }else if(parseInt(val) == 2 && this.hrSelectShow.includes('oht') && dentType == "all" && this.user_type != '4'){
+      this.collectionHourlyRateOht();
+    }else if(parseInt(val) == 3 && this.hrSelectShow.includes('all') && dentType == "all" && this.user_type != '4'){
       this.collectionExpHourlyRate();
+    }else if(parseInt(val) == 3 && this.hrSelectShow.includes('dentists') && dentType == "all" && this.user_type != '4'){
+      this.collectionExpHourlyRateDentist();
+    }else if(parseInt(val) == 3 && this.hrSelectShow.includes('oht') && dentType == "all" && this.user_type != '4'){
+      this.collectionExpHourlyRateOht();
     }else if(parseInt(val) == 1 && dentType == "single" && this.user_type != '4'){
       this.hourlyRateDentist();
       this.fdhourlyRateRateTrend();
@@ -9248,12 +9285,24 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.collectionExpHourlyRateTrend();
     }
     this.hrCollShow = parseInt(val);
-    if(parseInt(val) == 1){
-      this.hrSelectShow = "hr_all";
-    }else if(parseInt(val) == 2){
+    if(parseInt(val) == 1 && this.hrSelectShow.includes('all')){
+      this.hrSelectShow = "hr_all";      
+    }else if(parseInt(val) == 1 && this.hrSelectShow.includes('dentists')){
+      this.hrSelectShow = "hr_dentists";
+    }else if(parseInt(val) == 1 && this.hrSelectShow.includes('oht')){
+      this.hrSelectShow = "hr_oht";
+    }else if(parseInt(val) == 2 && this.hrSelectShow.includes('all')){
       this.hrSelectShow = "hr_collection_all";
-    }else if(parseInt(val) == 3){ 
+    }else if(parseInt(val) == 2 && this.hrSelectShow.includes('dentists')){
+      this.hrSelectShow = "hr_collection_dentists";
+    }else if(parseInt(val) == 2 && this.hrSelectShow.includes('oht')){
+      this.hrSelectShow = "hr_collection_oht";
+    }else if(parseInt(val) == 3 && this.hrSelectShow.includes('all')){ 
       this.hrSelectShow ="hr_collection_exp_all";
+    }else if(parseInt(val) == 3 && this.hrSelectShow.includes('dentists')){
+      this.hrSelectShow = "hr_collection_exp_dentists";
+    }else if(parseInt(val) == 3 && this.hrSelectShow.includes('oht')){
+      this.hrSelectShow = "hr_collection_exp_oht";
     }
   }
 

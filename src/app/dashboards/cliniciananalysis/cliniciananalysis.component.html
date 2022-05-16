@@ -102,21 +102,21 @@
            
                 <select class="proSelect" *ngIf="proCollShow == 1 && apiUrl.includes('test-') && user_type != '4'"
                 (change)="changeProSelect($event.target.value)">
-                    <option value="production_all">Production - All</option>
-                    <option value="production_dentists">Production - Dentists</option>
-                    <option value="production_oht">Production - OHT</option>
+                    <option [selected]="proSelectShow == 'production_all'" value="production_all">Production - All</option>
+                    <option [selected]="proSelectShow == 'production_dentists'" value="production_dentists">Production - Dentists</option>
+                    <option [selected]="proSelectShow == 'production_oht'" value="production_oht">Production - OHT</option>
                 </select>
                 <select class="proSelect" *ngIf="proCollShow == 2 && apiUrl.includes('test-') && user_type != '4'"
                 (change)="changeProSelect($event.target.value)">
-                  <option value="collection_all">Collection - All</option>
-                  <option value="collection_dentists">Collection - Dentists</option>
-                  <option value="collection_oht">Collection - OHT</option>
+                  <option [selected]="proSelectShow == 'collection_all'" value="collection_all">Collection - All</option>
+                  <option [selected]="proSelectShow == 'collection_dentists'" value="collection_dentists">Collection - Dentists</option>
+                  <option [selected]="proSelectShow == 'collection_oht'" value="collection_oht">Collection - OHT</option>
                 </select>
                 <select class="proSelect" *ngIf="proCollShow == 3 && apiUrl.includes('test-') && user_type != '4'"
                 (change)="changeProSelect($event.target.value)">
-                  <option value="collection_exp_all">Collection-Exp - All</option>
-                  <option value="collection_exp_dentists">Collection-Exp - Dentists</option>
-                  <option value="collection_exp_oht">Collection-Exp - OHT</option>
+                  <option [selected]="proSelectShow == 'collection_exp_all'" value="collection_exp_all">Collection-Exp - All</option>
+                  <option [selected]="proSelectShow == 'collection_exp_dentists'" value="collection_exp_dentists">Collection-Exp - Dentists</option>
+                  <option [selected]="proSelectShow == 'collection_exp_oht'" value="collection_exp_oht">Collection-Exp - OHT</option>
                </select>
 
               </div>
@@ -1311,23 +1311,23 @@
                         <option value="hr_dentists">Hourly Rate - Dentists</option>
                         <option value="hr_oht">Hourly Rate - OHT</option>
                     </select> -->
-                    <select class="proSelect" *ngIf="hrCollShow == 1 && apiUrl.includes('test-') && user_type != '4'"
+                    <select id="proSelect1" class="proSelect" *ngIf="hrCollShow == 1 && apiUrl.includes('test-') && user_type != '4'"
                       (change)="changeHourlyRateSelect($event.target.value)">
-                        <option value="hr_all">Hourly Rate - All</option>
-                        <option value="hr_dentists">Hourly Rate - Dentists</option>
-                        <option value="hr_oht">Hourly Rate - OHT</option>
+                        <option [selected]="hrSelectShow == 'hr_all'" value="hr_all">Hourly Rate - All</option>
+                        <option [selected]="hrSelectShow == 'hr_dentists'" value="hr_dentists">Hourly Rate - Dentists</option>
+                        <option [selected]="hrSelectShow == 'hr_oht'" value="hr_oht">Hourly Rate - OHT</option>
                       </select>
-                      <select class="proSelect" *ngIf="hrCollShow == 2 && apiUrl.includes('test-') && user_type != '4'"
+                      <select id="proSelect2" class="proSelect" *ngIf="hrCollShow == 2 && apiUrl.includes('test-') && user_type != '4'"
                       (change)="changeHourlyRateSelect($event.target.value)">
-                        <option value="hr_collection_all">Hourly Rate - All</option>
-                        <option value="hr_collection_dentists">Hourly Rate - Dentists</option>
-                        <option value="hr_collection_oht">Hourly Rate - OHT</option>
+                        <option  [selected]="hrSelectShow == 'hr_collection_all'" value="hr_collection_all">Hourly Rate - All</option>
+                        <option  [selected]="hrSelectShow == 'hr_collection_dentists'" value="hr_collection_dentists">Hourly Rate - Dentists</option>
+                        <option  [selected]="hrSelectShow == 'hr_collection_oht'" value="hr_collection_oht">Hourly Rate - OHT</option>
                       </select>
-                      <select class="proSelect" *ngIf="hrCollShow == 3 && apiUrl.includes('test-') && user_type != '4'"
+                      <select id="proSelect3" class="proSelect" *ngIf="hrCollShow == 3 && apiUrl.includes('test-') && user_type != '4'"
                       (change)="changeHourlyRateSelect($event.target.value)">
-                        <option value="hr_collection_exp_all">Hourly Rate - All</option>
-                        <option value="hr_collection_exp_dentists">Hourly Rate - Dentists</option>
-                        <option value="hr_collection_exp_oht">Hourly Rate - OHT</option>
+                        <option [selected]="hrSelectShow == 'hr_collection_exp_all'"value="hr_collection_exp_all">Hourly Rate - All</option>
+                        <option [selected]="hrSelectShow == 'hr_collection_exp_dentists'" value="hr_collection_exp_dentists">Hourly Rate - Dentists</option>
+                        <option [selected]="hrSelectShow == 'hr_collection_exp_oht'" value="hr_collection_exp_oht">Hourly Rate - OHT</option>
                     </select>
               </div>
               <!--   <div class="sa_box_title_right_buttons">
