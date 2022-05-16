@@ -167,7 +167,9 @@ expenses_card custom_ngx_cw01">
             <mat-card-content class="sa_matcard_content">
               <mat-card-title class="text-center"> Expenses
                 <div class="info-icon-container">
-
+                  <button *ngIf="single.length > 15" class="mat-button-sm mat-green-button" style="margin-right: 10px;"
+                  (click)="ngxModalService.getModal('show_more').open()"
+                  >Show More</button>
                   <img [tooltip]="charTips['29']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 
                 </div>
@@ -189,7 +191,7 @@ expenses_card custom_ngx_cw01">
                             <ngx-charts-pie-chart fxFlexAlign="center"
                               *ngIf="pieChartLabels && pieChartLabels.length > 0"
                               class="chart-container sa_chart_custom" [view]="[500, 320]" [scheme]="colorScheme"
-                              [trimLabels]="true" [maxLabelLength]="15" [results]="single" [legend]="false"
+                              [trimLabels]="true" [maxLabelLength]="15" [results]="selectedData" [legend]="false"
                               [explodeSlices]="explodeSlices" [labels]="showLabels" [arcWidth]="arcWidth"
                               [doughnut]="doughnut" [gradient]="gradient" [tooltipDisabled]="tooltipDisabled"
                               [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
@@ -941,3 +943,36 @@ expenses_card custom_ngx_cw01">
   [chartType]="productionChartType"></canvas>
 <canvas #myCanvas baseChart [style.display]="'none'" [datasets]="chartData1" [labels]="chartLabels1"
   [chartType]="productionChartType"></canvas>
+
+
+<ngx-smart-modal #show_more identifier="show_more">
+    <h4 class="mt-0">Select Expenses</h4>
+    <div fxLayout="row wrap" class="row_sc" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0"
+        fxLayoutGap.xs="0">
+        <div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="50" fxFlex.xs="50"
+            class="SelectCategories sa_flexbg referral_clinicians">
+            <h5 class="mt-0">Selected Expenses</h5>
+            <ul *ngIf="unSelectedData.length >= 0" class="list-categories">
+                <li *ngFor="let category of selectedData; let i = index">
+                    <span (click)="removeFromSelected(i)"><i class="fa fa-times"></i></span>
+                    <span>{{category.name.split('--')[0]}}</span>
+                </li>
+            </ul>
+
+        </div>
+        <div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="50" fxFlex.xs="50"
+            class="SelectCategories sa_flexbg referral_clinicians">
+            <h5 class="mt-0">Other Expenses</h5>
+            <ul *ngIf="unSelectedData.length >= 0" class="list-categories">
+                <li *ngFor="let category of unSelectedData; let i = index">
+                  <span (click)="addToSelected(i)"><i class="fa fa-plus"></i></span>
+                    <span>{{category.name.split('--')[0]}}</span>
+                </li>
+            </ul>
+
+        </div>
+
+    </div><br>
+    <button class="mat-raised-button mat-dc float-right" mat-raised-button (click)="refreshFinanceChart()">Ok</button>
+    <button (click)="show_more.close()" class="mat-raised-button mat-dc close_modal">Close</button>
+</ngx-smart-modal>

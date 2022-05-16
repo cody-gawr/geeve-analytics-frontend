@@ -17,6 +17,7 @@ import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
 import { environment } from "../../../environments/environment";
+import { NgxSmartModalService } from 'ngx-smart-modal';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -47,6 +48,12 @@ export class FinancesComponent implements AfterViewInit {
   public charTips: any = [];
   public Apirequest = 8;
   public multipleClinicsSelected: boolean = false;
+  public selectedData = [];
+  public unSelectedData = [];
+  public upperLimit = 20;
+  public lowerLimit = 1;
+
+
   public pieChartColors = [
     {
       backgroundColor: [
@@ -128,6 +135,7 @@ export class FinancesComponent implements AfterViewInit {
     private clinicSettingsService: ClinicSettingsService,
     private chartService: ChartService,
     public constants: AppConstants,
+    public ngxModalService: NgxSmartModalService,
     public chartstipsService: ChartstipsService,
     private decimalPipe: DecimalPipe,
   ) {
@@ -1907,6 +1915,8 @@ export class FinancesComponent implements AfterViewInit {
 
         this.pieChartLabelsres = [];
         this.single = [];
+        this.selectedData = [];
+        this.unSelectedData = [];
         this.pieChartDatares = [];
         this.pieChartDataPercentres = [];
         var i = 0;
@@ -1927,6 +1937,8 @@ export class FinancesComponent implements AfterViewInit {
             i++;
           }
         });
+        this.selectedDataFilter();
+        this.unSelectedDataFilter();
         this.expensescChartTrendTotal = data.data_ta;
         if (Math.round(this.pieChartTotal) >= Math.round(this.expensescChartTrendTotal))
           this.expensescChartTrendIcon = "up";
@@ -3479,5 +3491,55 @@ export class FinancesComponent implements AfterViewInit {
       $('.sa_tabs_data button').prop('disabled',true);     
     }
   }
+
+
+// ------------------------------------------------------
+  selectedDataFilter(){
+    let length = this.single.length;
+    if(length > 15){
+      length = 15;
+    }
+     for(let i=0; i<length; i++){
+       this.selectedData.push(this.single[i]);
+     }
+  }
+ 
+  unSelectedDataFilter(){
+   for(let i=15; i<this.single.length; i++){
+     this.unSelectedData.push(this.single[i]);
+   }
+  }
+ 
+  removeFromSelected(index){
+    if(this.selectedData.length <= this.lowerLimit){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops....',
+        text: 'Atleast '+this.lowerLimit+' account will remains selected',
+      })
+    }else{
+      this.unSelectedData.push(this.selectedData[index]);
+      this.selectedData.splice(index,1);
+    }
+   
+  }
+  addToSelected(index){
+   if(this.selectedData.length >= this.upperLimit){
+     Swal.fire({
+       icon: 'error',
+       title: 'Oops....',
+       text: 'You can select '+ this.upperLimit +' account only',
+     })
+   }else{
+     this.selectedData.push(this.unSelectedData[index]);
+     this.unSelectedData.splice(index,1);
+   }
+  }
+ 
+  refreshFinanceChart(){
+   Object.assign(this, {selectedData: [...this.selectedData]});
+   $('.close_modal').click();
+  }
+ // -----------------------------------
 
 }
