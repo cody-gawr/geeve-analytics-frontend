@@ -121,10 +121,12 @@ export class RolesUsersService {
         );
     }
 
-    addUserClinicConsultantMap(usrId,selectedClinics): Observable<any> {
+    addUserClinicConsultantMap(usrId,selectedClinics,display_name,email): Observable<any> {
         const formData = new FormData();
         formData.append('id', usrId);
-        formData.append('clinic_id', selectedClinics);     
+        formData.append('clinic_id', selectedClinics);
+        formData.append('display_name', display_name);
+        formData.append('email', email);     
         var header = this.getHeaders();     
         return this.http.post(this.apiUrl +"/Users/userClinicConsultantMap", formData, header)
             .pipe(map((response: Response) => {

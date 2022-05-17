@@ -351,7 +351,7 @@ initiate_clinic() {
            }
            else if(res.data > 0 && res.consultant != null && res.consultant != 'another_role')
            {
-            this.add_clinic_consultant(res.consultant,result.selectedClinics);
+            this.add_clinic_consultant(res.consultant,result.selectedClinics,result.display_name, result.email);
            }
            else if(res.data > 0  && res.consultant == 'another_role'){
              this.toastr.error("Cannot add consultant user with email address " +result.email+ " - please contact the Jeeve support team for further information");
@@ -476,9 +476,9 @@ initiate_clinic() {
         );
   }
   
-  add_clinic_consultant(usrId,selectedClinics) {
+  add_clinic_consultant(usrId,selectedClinics,display_name,email) {
     $('.ajax-loader').show();
-    this.rolesUsersService.addUserClinicConsultantMap(usrId,selectedClinics).subscribe((res) => {
+    this.rolesUsersService.addUserClinicConsultantMap(usrId,selectedClinics,display_name,email).subscribe((res) => {
       $('.ajax-loader').hide();
          if(res.message == 'success'){
           this.toastr.success('User has been added successfully!');
