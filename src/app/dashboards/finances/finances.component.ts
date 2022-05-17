@@ -3515,7 +3515,7 @@ export class FinancesComponent implements AfterViewInit {
       Swal.fire({
         icon: 'error',
         title: 'Oops....',
-        text: 'Atleast '+this.lowerLimit+' account will remains selected',
+        text: 'Minimum '+this.lowerLimit+' expense account will remain selected',
       })
     }else{
       this.unSelectedData.push(this.selectedData[index]);
@@ -3528,7 +3528,7 @@ export class FinancesComponent implements AfterViewInit {
      Swal.fire({
        icon: 'error',
        title: 'Oops....',
-       text: 'You can select '+ this.upperLimit +' account only',
+       text: 'You can select a maximum of '+ this.upperLimit +' expense accounts at a time',
      })
    }else{
      this.selectedData.push(this.unSelectedData[index]);
