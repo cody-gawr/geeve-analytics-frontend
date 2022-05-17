@@ -1,5 +1,5 @@
 <mat-accordion class="settings-table-card clinic-expansion-panel" multi="false">
-  <mat-expansion-panel>
+  <mat-expansion-panel *ngIf="userType != 7">
     <mat-expansion-panel-header>
       <mat-panel-title> Clinic </mat-panel-title>
     </mat-expansion-panel-header>
@@ -181,11 +181,11 @@
       </form>
     </mat-card-content>
   </mat-expansion-panel>
-  <app-customisations-settings [clinicId]="id" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+  <app-customisations-settings [clinicId]="id" *ngIf="(apiUrl.includes('test') || apiUrl.includes('staging-')) && userType != 7">
   </app-customisations-settings>
-  <app-charts-settings [clinicId]="id" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+  <app-charts-settings [clinicId]="id" *ngIf="(apiUrl.includes('test') || apiUrl.includes('staging-')) && userType != 7">
   </app-charts-settings>
-  <mat-expansion-panel>
+  <mat-expansion-panel *ngIf="userType != 7">
     <mat-expansion-panel-header>
       <mat-panel-title> Followups</mat-panel-title>
     </mat-expansion-panel-header>
@@ -482,16 +482,16 @@
     </mat-card-content>
   </mat-expansion-panel>
 
-  <app-scripts-settings [clinicId]="id"></app-scripts-settings>
+  <app-scripts-settings [clinicId]="id" *ngIf="userType != 7"></app-scripts-settings>
   <app-goals-settings [clinicId]="id"></app-goals-settings>
   <app-dentist-settings [clinicId]="id"></app-dentist-settings>
   <!-- <app-tasks-settings [clinicId]="id"></app-tasks-settings> -->
-  <app-tasklist-settings [clinicId]="id"></app-tasklist-settings>
-  <app-equipment-settings [clinicId]="id"></app-equipment-settings>
+  <app-tasklist-settings [clinicId]="id" *ngIf="userType != 7"></app-tasklist-settings>
+  <app-equipment-settings [clinicId]="id" *ngIf="userType != 7"></app-equipment-settings>
   <app-alerts-settings *ngIf="false" [clinicId]="id"></app-alerts-settings>
 
   <!-- XERO section start -->
-  <mat-expansion-panel>
+  <mat-expansion-panel *ngIf="userType != 7">
     <mat-expansion-panel-header>
       <mat-panel-title>
         Xero
@@ -541,7 +541,7 @@
   <!-- XERO end -->
 
   <!-- MYOB section start -->
-  <mat-expansion-panel>
+  <mat-expansion-panel *ngIf="userType != 7">
     <mat-expansion-panel-header>
       <mat-panel-title>
         MYOB

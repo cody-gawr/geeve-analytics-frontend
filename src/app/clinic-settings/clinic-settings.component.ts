@@ -74,7 +74,7 @@ export class ClinicSettingsComponent implements OnInit {
   public userPlan: any = "lite";
   public utaEnable: boolean = true;
   public internalReferralEnable: boolean = true;
-
+  public userType;
   public workingDays: any = {
     sunday: false,
     monday: true,
@@ -93,6 +93,7 @@ export class ClinicSettingsComponent implements OnInit {
     private router: Router,
     public constants: AppConstants
   ) {
+    this.userType = this._cookieService.get("user_type");
     this.options = fb.group({
       hideRequired: false,
       floatLabel: "auto",
