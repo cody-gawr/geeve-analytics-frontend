@@ -40,7 +40,6 @@
 
           <ng-template #dialogSettingsTemplate let-data>
             <div class="mat-dialog-content sa_forms_design" *ngIf="step === 1">
-              <!-- <input id="Id" name="Id" type="text" class="e-field" value="{{ data.id }}" disabled /> -->
               <div class="sa-form-group group_buttons">
                 <button type="button"
                   [ngClass]=" isIndividual ? 'mat-raised-button mat-dc' : 'mat-focus-indicator mat-raised-button mat-gray'"
@@ -54,8 +53,9 @@
               </div>
               <div class="sa-form-group task-body">
                 <div [hidden]="true">
-                  <input [hidden]="true" class="e-field" id="{{ assignTo }}" name="assignTo" value="{{ assignTo }}" />
+                  <input [hidden]="true" class="e-field" id="{{ assignTo }}" name="assign_to" value="{{ assignTo }}" />
                 </div>
+                <input id="Id" name="Id" type="text" class="e-field" value="{{ data.id }}"  [hidden]="true" disabled />
                 <div class="sa-form-group">
                   <label>Title</label>
                   <!-- <input id="Title" name="title" type="text" class="form-control-dialog" value="{{ data.title }}" [readonly]="user_type != 2" /> -->
