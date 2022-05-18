@@ -1,44 +1,24 @@
-<input
-  type="button"
-  id="clinic_initiate"
-  (click)="initiate_clinic()"
-  [style.display]="'none'"
-/>
-<mat-card
-  class="task-manager-wrap header-bg-shadow"
->
+<input type="button" id="clinic_initiate" (click)="initiate_clinic()" [style.display]="'none'" />
+<mat-card class="task-manager-wrap header-bg-shadow">
   <div class="sa-pull-right kanban" *ngIf="user_type == 2">
-    <button
-      ejs-button
-      id="addNew"
-      class="e-dialog-add mat-raised-button mat-gray"
-      (click)="addClick()"
-    >
-      Create Task <img src="../../assets/images/add-button.png" alt="plus-icon"/>
+    <button ejs-button id="addNew" class="e-dialog-add mat-raised-button mat-gray" (click)="addClick()">
+      Create Task <img src="../../assets/images/add-button.png" alt="plus-icon" />
     </button>
   </div>
   <mat-card-content>
     <div class="control-section">
       <div class="content-wrapper kanban task-info-wrap">
-        <ejs-kanban
-          #kanbanObj
-          keyField="status"
-          [dataSource]="dataManager"
-          [cardSettings]="cardSettings"
-          [dialogSettings]="dialogSettings"
-          (actionComplete)="OnActionComplete($event)"
-          (dialogOpen)="dialogOpen($event)"
-          [swimlaneSettings]="swimlaneSettings"
-          (drag)="onKanbanBDrag($event)"
-        >
+        <ejs-kanban #kanbanObj keyField="status" [dataSource]="dataManager" [cardSettings]="cardSettings"
+          [dialogSettings]="dialogSettings" (actionComplete)="OnActionComplete($event)"
+          (dialogOpen)="dialogOpen($event)" [swimlaneSettings]="swimlaneSettings" (drag)="onKanbanBDrag($event)">
           <e-columns>
             <e-column *ngFor="let column of columns;" headerText={{column.headerText}} keyField='{{column.keyField}}'>
-                <ng-template #template let-data>
-                    <div class="header-template-wrap {{data.keyField}}">
-                        <div class="header-task-count">{{data.count}}</div>
-                        <div class="header-text">{{data.headerText}}</div>
-                    </div>
-                </ng-template>
+              <ng-template #template let-data>
+                <div class="header-template-wrap {{data.keyField}}">
+                  <div class="header-task-count">{{data.count}}</div>
+                  <div class="header-text">{{data.headerText}}</div>
+                </div>
+              </ng-template>
             </e-column>
           </e-columns>
 
@@ -46,161 +26,212 @@
             <div class="e-card-content {{ checkIdOverdue(data) }}">
               <div class="card-template-header">
                 <h3>{{ data.title }}</h3>
-                <img src="../../assets/images/drag-dots.png" alt=""/>
+                <img src="../../assets/images/drag-dots.png" alt="" />
               </div>
               <div class="cardDescription">
                 {{
-                  (data.description | slice: 0:100) +
-                    (data.description.length > 100 ? "..." : "")
+                (data.description | slice: 0:100) +
+                (data.description.length > 100 ? "..." : "")
                 }}
               </div>
+              <!-- <div class="cardTaskID">Task-{{ data.id }}</div> -->
             </div>
           </ng-template>
 
           <ng-template #dialogSettingsTemplate let-data>
             <div class="mat-dialog-content sa_forms_design" *ngIf="step === 1">
-              <div class="sa-form-group">
-                <input tabindex="1" class="form-control-dialog" placeholder="All Clinic in our Jeeve account">
+              <!-- <input id="Id" name="Id" type="text" class="e-field" value="{{ data.id }}" disabled /> -->
+              <div class="sa-form-group group_buttons">
+                <button type="button"
+                  [ngClass]=" isIndividual ? 'mat-raised-button mat-dc' : 'mat-focus-indicator mat-raised-button mat-gray'"
+                  (click)="isEnable('individual')">Individual</button>
+                <button type="button"
+                  [ngClass]="isGroup ? 'mat-raised-button mat-dc' : 'mat-focus-indicator mat-raised-button mat-gray'"
+                  (click)="isEnable('group')">Groups</button>
+                <button type="button"
+                  [ngClass]="isClinic ? 'mat-raised-button mat-dc' : 'mat-focus-indicator mat-raised-button mat-gray'"
+                  (click)="isEnable('clinic')">Clinic</button>
               </div>
-              <div class="sa-form-group">
-                <select required="true" class="sa_select mat-form-control" name="staff">
-                  <option value ="3">Select Staff Member</option>
-                  <option value ="4">Clinician</option>
-                  <option value ="5">Staff</option>
-               </select> 
-              </div>
-              <div class="sa-form-group">
-                <select
-                      [disabled]="user_type != 2"
-                      id="Clinics"
-                      class="e-field"
-                      name="clinic_id"
-                      ngModel="{{ data.clinic_id }}"
-                    >
-                      <option [value]="null">All Clinic</option>
-                      <option
-                        *ngFor="let clinicData of clinicsData"
-                        value="{{ clinicData.id }}"
-                      >
-                        {{ clinicData.clinicName }}
-                      </option>
-                    </select>
-              </div>
-              <div class="sa-form-group">
-                <select required="true" class="sa_select mat-form-control" name="assign">
-                  <option 
-                    *ngFor="let option of assigneeGroup"
-                    value="{{ option.id }}">{{ option.name }}</option>
-               </select> 
-              </div>
-              <div class="text-right">
-                <button class="mat-raised-button mat-dc" type="submit" (click)="nextToStep()">Next</button>
-              </div>
-            </div>
-            <div class="mat-dialog-content sa_forms_design"  *ngIf="step === 2">
-              <div class="sa-form-group">
-                 <label>Title</label>
-                <input class="form-control-dialog" placeholder="Enter here.">
-              </div>
-              <div class="sa-form-group">
-                <label>link</label>
-                <input class="form-control-dialog" placeholder="http://">
-                <img class="input-icon" src="../../assets/images/link-icon.png" alt=""/>
-              </div>
-              <div class="sa-form-group">
-                <label>Attachments</label>
-                <div class="file-upload" appDnd (fileDropped)="onFileDropped($event)">
-                  <input type="file" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event.target.files)" />
-                  <p>Drag & drop or 
-                  <label for="fileDropRef">browse</label></p>
+              <div class="sa-form-group task-body">
+                <div [hidden]="true">
+                  <input [hidden]="true" class="e-field" id="{{ assignTo }}" name="assignTo" value="{{ assignTo }}" />
                 </div>
-                <div class="files-list">
-                  <div class="single-file" *ngFor="let file of files; let i = index">
-                    <div class="file-icon">
-                      <i class="fas fa-file-alt"></i>
-                    </div>
-                    <div class="info">
-                      <h4 class="name">
-                        {{ file?.name }}
-                      </h4>
-                      <p class="size">
-                        {{ formatBytes(file?.size) }}
-                      </p>
-                      <div class="progress-cont">
-                        <div class="progress" [style.width]="file?.progress + '%'">
-                        </div>
-                      </div>
-                    </div>
-                
-                    <div class="delete" (click)="deleteFile(i)"><i class="fa fa-times"></i>
-                    </div>
-                  </div>
+                <div class="sa-form-group">
+                  <label>Title</label>
+                  <!-- <input id="Title" name="title" type="text" class="form-control-dialog" value="{{ data.title }}" [readonly]="user_type != 2" /> -->
+                  <input id="Title" name="title" type="text" class="e-field" value="{{ data.title }}" [readonly]="user_type != 2" />
                 </div>
 
-
-              </div>
-              <div class="sa-form-group">
-                <label>Description</label>
-                <textarea
-                  id="Description"
-                  name="description"
-                  type="text"
-                  class="form-control-dialog"
-                  placeholder="Write here..."
-                  [readonly]="user_type != 2"
-                  >{{ data.description }}</textarea>
-              </div>
-              <div class="sa-form-group">
-                <label>Assignee</label>
-                <select
-                      [disabled]="user_type != 2"
-                      id="AssigneeData"
-                      class="sa_select mat-form-control"
-                      name="assignee_user"
-                      ngModel="{{ data.assignee_user }}"
-                    >
-                      <option
-                        value="{{ user.id }}"
-                        *ngFor="let user of assigneeData"
-                      >
-                        {{ user.name }}
-                      </option>
-                    </select>
-              </div>
-              <div class="sa-form-group">
-                <label>Due Date</label>
-                <input
-                    id="DueDate"
-                    name="due_date"
-                    value="{{ data.due_date | date: 'M/d/y' }}"
-                    class="
+                <div *ngIf="isClinic" class="sa-form-group">
+                  <label>Select Clinic</label>
+                  <select [disabled]="user_type != 2" id="Clinics" class="e-field" name="clinic_id"
+                    ngModel="{{ data.clinic_id }}">
+                    <option [value]="null">All Clinic</option>
+                    <option *ngFor="let clinicData of clinicsData" value="{{ clinicData.id }}">
+                      {{ clinicData.clinicName }}
+                    </option>
+                  </select>
+                </div>
+                <div *ngIf="isGroup" class="sa-form-group">
+                  <label>Assignee Group</label>
+                  <select required="true" class="e-field" name="assignee_group"  ngModel="{{ data.assignee_group }}">
+                    <option *ngFor="let option of assigneeGroupData" value="{{ option.id }}">{{ option.name }}</option>
+                  </select>
+                  <input id="Clinicids" type="hidden" class="e-field" name="clinic_id" [value]="clinic_id" />
+                </div>
+                <div *ngIf="isIndividual" class="sa-form-group">
+                  <label>Assignee</label>
+                  <select [disabled]="user_type != 2" id="AssigneeData" class="e-field"
+                    name="assignee_user" ngModel="{{ data.assignee_user }}">
+                    <option value="{{ user.id }}" *ngFor="let user of assigneeData">
+                      {{ user.name }}
+                    </option>
+                  </select>
+                  <input id="Clinicids" type="hidden" class="e-field" name="clinic_id" [value]="clinic_id" />
+                </div>
+                <div class="sa-form-group">
+                  <label>Description</label>
+                  <!-- <textarea id="Description" name="description" type="text" class="form-control-dialog"
+                    placeholder="Write here..." [readonly]="user_type != 2">{{ data.description }}</textarea> -->
+                    <textarea id="Description" name="description" type="text" class="e-field"
+                        [readonly]="user_type != 2">{{ data.description }}</textarea>
+                </div>
+                <div class="sa-form-group">
+                  <label>Due Date</label>
+                  <input id="DueDate" name="due_date" value="{{ data.due_date | date: 'M/d/y' }}" class="
                     sa_datepicker
                       e-field
                       datepicker-calendar-icon
                       filter_custom filter
-                    "
-                    autocomplete="false"
-                    ngxDaterangepickerMd
-                    [closeOnAutoApply]="true"
-                    [autoApply]="true"
-                    [singleDatePicker]="true"
-                    [linkedCalendars]="true"
-                  />
-                  <img class="input-icon" src="../../assets/images/calendar-icon.png" alt=""/>
-              </div>
-              <div class="sa-form-group">
-                <label>Recurring</label>
-                <select required="true" class="sa_select mat-form-control" name="user_type">
-                  <option value ="1">Weekly</option>
-                  <option value ="2">Monthly</option>
-                  <option value ="3">Yearly</option>
-               </select> 
-              </div>
-              <div class="d-flex justify-between">
-                <button class="mat-raised-button mat-dc" type="submit" (click)="backToStep()">Back</button>
-                <button class="mat-raised-button mat-dc" type="submit">Create Task</button>
+                    " autocomplete="false" ngxDaterangepickerMd [closeOnAutoApply]="true" [autoApply]="true"
+                    [singleDatePicker]="true" [linkedCalendars]="true" />
+                  <img class="input-icon" src="../../assets/images/calendar-icon.png" alt="" />
+                </div>
+                <div class="sa-form-group">
+                  <mat-checkbox [checked]="isRecurring" (change)="toggleIsRuccring()">
+                    Recurring
+                  </mat-checkbox>
+                </div>
+                <div *ngIf="isRecurring" class="sa-form-group">
+                  <label>Recurring</label>
+                  <select required="true" class="e-field" name="user_type">
+                    <option value="{{ recurring.id }}" *ngFor="let recurring of recurringData">
+                      {{ recurring.name }}
+                    </option>
+                  </select>
+                </div>
               </div>
             </div>
+            <!-- <table class="editaddpopup">
+              <tbody>
+                <tr class="hide">
+                  <td class="e-label">ID</td>
+                  <td>
+                    <div class="e-float-input e-control-wrapper">
+                      <input id="Id" name="Id" type="text" class="e-field" value="{{ data.id }}" disabled />
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="e-label">Group</td>
+                  <td>
+                    <div class="groupSelect" *ngFor="let option of assigneeGroup"
+                      [ngClass]="option.id === assignTo ? 'active' : ''">
+                      <label for="{{ option.idval }}">
+                        <input [disabled]="user_type != 2" type="radio" class="e-field" id="{{ option.idval }}"
+                          name="assign" (change)="radioChange($event)" [checked]="option.id === assignTo"
+                          value="{{ option.id }}" />
+                        {{ option.name }}
+                      </label>
+                    </div>
+                    <input id="AssignTo" class="e-field hide" type="hidden" name="assign_to" [value]="assignTo" />
+                  </td>
+                </tr>
+                <tr *ngIf="assignTo === 1">
+                  <td class="e-label">All Clinics</td>
+                  <td>
+                    <select [disabled]="user_type != 2" id="Clinics" class="e-field" name="clinic_id"
+                      ngModel="{{ data.clinic_id }}">
+                      <option [value]="null">All Clinic</option>
+                      <option *ngFor="let clinicData of clinicsData" value="{{ clinicData.id }}">
+                        {{ clinicData.clinicName }}
+                      </option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="e-label">Title</td>
+                  <td>
+                    <div class="e-float-input e-control-wrapper">
+                      <input id="Title" name="title" type="text" class="e-field" value="{{ data.title }}"
+                        [readonly]="user_type != 2" />
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="e-label">Description</td>
+                  <td>
+                    <div class="e-float-input e-control-wrapper">
+                      <textarea id="Description" name="description" type="text" class="e-field"
+                        [readonly]="user_type != 2">{{ data.description }}</textarea>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr *ngIf="assignTo == '3'">
+                  <td class="e-label">Assignee</td>
+                  <td>
+                    <select [disabled]="user_type != 2" id="AssigneeData" class="e-field" name="assignee_user"
+                      ngModel="{{ data.assignee_user }}">
+                      <option value="{{ user.id }}" *ngFor="let user of assigneeData">
+                        {{ user.name }}
+                      </option>
+                    </select>
+                  </td>
+                  <input id="Clinicids" type="hidden" class="e-field" name="clinic_id" [value]="clinic_id" />
+                </tr>
+                <tr *ngIf="assignTo === 4">
+                  <td class="e-label">Assignee Group</td>
+                  <td>
+                    <select [disabled]="user_type != 2" id="AssigneeGroupData" class="e-field" name="assignee_group"
+                      ngModel="{{ data.assignee_group }}">
+                      <option value="{{ grupData.id }}" *ngFor="let grupData of assigneeGroupData">
+                        {{ grupData.name }}
+                      </option>
+                    </select>
+                  </td>
+                  <input id="Clinicids" type="hidden" class="e-field" name="clinic_id" [value]="clinic_id" />
+                </tr>
+                <tr class="Due_Date">
+                  <td class="e-label">Due Date</td>
+                  <td *ngIf="user_type == 2">
+
+                    <input id="DueDate" name="due_date" value="{{ data.due_date | date: 'M/d/y' }}" class="
+                      sa_datepicker
+                        e-field
+                        datepicker-calendar-icon
+                        filter_custom filter
+                      " autocomplete="false" ngxDaterangepickerMd [closeOnAutoApply]="true" [autoApply]="true"
+                      [singleDatePicker]="true" [linkedCalendars]="true" />
+
+                  </td>
+                  <td *ngIf="user_type != 2">
+                    <input id="DateDue" name="due_date" type="text" class="e-field"
+                      value="{{ data.due_date | date: 'M/d/y' }}" readonly />
+                  </td>
+                </tr>
+                <tr [ngClass]="data.id ? '' : 'hide'">
+                  <td class="e-label">Status</td>
+                  <td>
+                    <select id="Status" class="e-field" name="status" ngModel="{{ data.status }}">
+                      <option value="{{ status }}" *ngFor="let status of statusData">
+                        {{ status }}
+                      </option>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table> -->
           </ng-template>
         </ejs-kanban>
       </div>

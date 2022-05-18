@@ -65,17 +65,24 @@ export class TasksComponent implements AfterViewInit, OnInit {
     contentField: "description",
     headerField: "id",
     showHeader: true,
-    footerCssField:"id"
+    // footerCssField:"id"
   };
+  // -----------------------------
+  public isIndividual = false;
+  public isGroup = false;
+  public isClinic = false;
+  public isRecurring = false;
+  // -----------------------------
   /**** Card Setting ***/
   /**** Card Setting ***/
   public dialogSettings: DialogSettingsModel = {
+    
     template: "dialogSettingsTemplate",
-    model: {
-      showCloseIcon: true,
-      cssClass: 'task-modal',
-      width: 670,
-    },
+    // model: {
+    //   showCloseIcon: true,
+    //   cssClass: 'task-modal',
+    //   width: 670,
+    // },
     fields: [
       { text: "ID", key: "Id" },
       // { key: "Status", type: "DropDown" },
@@ -92,7 +99,12 @@ export class TasksComponent implements AfterViewInit, OnInit {
       { key: "title", validationRules: { required: true } },
       { key: "due_date", validationRules: { required: true } },
       { key: "clinic_id" },
+      { key: "assignee_group" },
+      { key: "assignee_user" },
+      { key: "user_type" },
+      
     ],
+    
   };
 
   public step: number = 1;
@@ -129,11 +141,22 @@ export class TasksComponent implements AfterViewInit, OnInit {
     { id: 5, name: "Staff" },
     { id: 6, name: "Owner" },
   ];
+
+  // not in use
   public assigneeGroup: { [key: string]: Object }[] = [
+    { id: 0, name: "-- Select group --", checked: false, idval: "" },
     { id: 1, name: "Clinic", checked: true, idval: "Main1" },
     { id: 2, name: "Account", checked: false, idval: "Main2" },
     { id: 3, name: "User", checked: false, idval: "Main3" },
     { id: 4, name: "Staff", checked: false, idval: "Main4" },
+    { id: 5, name: "St", checked: false, idval: "Main5" },
+  ];
+
+
+  public recurringData: { [key: string]: Object }[] = [
+    { id: 1, name: "Weekly", },
+    { id: 2, name: "Monthly", },
+    { id: 3, name: "Yearly", },
   ];
   public assigneeGroupfields: Object = { text: "name", value: "id" };
   @Input() progress = 0;
@@ -143,6 +166,7 @@ export class TasksComponent implements AfterViewInit, OnInit {
   ) {
     this.getUsers();
     this.getClinics();
+    
     // this.date1 =new FormControl(moment("10-20-2020", "MM-DD-YYYY"));
   }
   public columns: ColumnsModel[] = [
@@ -239,41 +263,67 @@ export class TasksComponent implements AfterViewInit, OnInit {
       this.getDatamanger();
     }
     $("#title").html("Task Manager");
+
   }
 
   dialogOpen(args: DialogEventArgs): void {
+    $('.e-dlg-closeicon-btn').hide();
+    $(".e-dialog-cancel, .e-dialog-add, .e-dialog-edit, .e-dialog-delete").on('click',()=>{
+      this.isIndividual = this.isClinic = this.isGroup = this.isRecurring = false;
+    })
+   
+    var d = document.getElementsByClassName('e-dialog-cancel');
+    $(d).addClass('mat-focus-indicator mat-raised-button mat-gray');
+    
+
     this.step = 1;
     if (args.requestType == "Edit") {
       $(".e-dlg-header").text("Edit Task");
+      
       if (args.data.assignee_group != null) {
         this.assignTo = 4;
+        this.isGroup = true;
       } else if (args.data.assignee_user != null) {
         this.assignTo = 3;
+        this.isIndividual = true;
       } else if (args.data.clinic_id != null) {
         this.assignTo = 1;
+        this.isClinic = true;
       } else {
-        this.assignTo = 2;
+        // this.assignTo = 2;
+        this.isClinic = this.isIndividual = this.isGroup = this.isRecurring = false;
       }
     } else if(args.requestType === 'Add'){
       $(".e-dlg-header").text("Who is this task for?");
-      this.assignTo = 1;
     }
   }
+
+  // not in use
   nextToStep(){
     this.step = this.step + 1;
     $(".e-dlg-header").text("Add task");
     this.assignTo = 2;
   }
+
+  // not in use
   backToStep(){
-    this.step = this.step - 1;
-    $(".e-dlg-header").text("Who is this task for?");
-    this.assignTo = 1;
+    $('.e-dlg-closeicon-btn').click();
+    this.isIndividual = false;
+    this.isClinic = false;
+    this.isGroup = false;
+    // this.step = this.step - 1;
+    // $(".e-dlg-header").text("Who is this task for?");
+    // this.assignTo = 1;
   }
 
   getUsers() {
     this.tasksService.getUsers().subscribe(
       (res) => {
         if (res.message == "success") {
+          this.assigneeData.push({
+            id : null,
+            name : "-- select assignee --"
+          });
           res.data.forEach((user) => {
             if (user["displayName"]) {
               this.assigneeData.push({
@@ -299,33 +349,40 @@ export class TasksComponent implements AfterViewInit, OnInit {
     );
   }
 
+
+
   addClick(): void {
-    // Calls on add button
+    
     const cardIds = this.kanbanObj.kanbanData.map((obj) =>
-      parseInt(obj.id, 10)
+    parseInt(obj.id, 10)
     );
     const cardCount: number = Math.max.apply(Math, cardIds) + 1;
+    
     const cardDetails = { Id: cardCount, status: "Open" };
     this.kanbanObj.openDialog("Add", cardDetails);
   }
 
   OnActionComplete(args: ActionEventArgs): void {
-    if (
-      args.requestType === "cardCreated" ||
-      args.requestType === "cardChanged" ||
-      args.requestType === "cardRemoved"
-    ) {
-      this.assignTo = 1;
-      // var kanbanInstance = this.kanbanObj;
-      // setTimeout(function () {
-      //   kanbanInstance.refresh();
-      // }, 600);
+    
+    if( args.requestType === "cardCreated"){
+      var kanbanInstance = this.kanbanObj;
+      setTimeout(function () {
+        kanbanInstance.refresh();
+      }, 600);
+      
     }
+    // if (
+    //   args.requestType === "cardCreated" ||
+    //   args.requestType === "cardChanged" ||
+    //   args.requestType === "cardRemoved"
+    // ) {
+    //   this.assignTo = 1;
+    //   // var kanbanInstance = this.kanbanObj;
+    //   // setTimeout(function () {
+    //   //   kanbanInstance.refresh();
+    //   // }, 600);
+    // }
   }
-
-  //   OnCardRendered(args: CardRenderedEventArgs): void {
-  //     console.log('Kanban - ' + (args.data as { [key: string]: Object }).Id + ' - <b>Card Rendered</b> event called<hr>');
-  // }
 
   checkIdOverdue(data) {
     var ToDate = new Date();
@@ -341,4 +398,32 @@ export class TasksComponent implements AfterViewInit, OnInit {
     });
 
   }
+  
+  // -------------------------------------
+  isEnable(val){
+    if(val == 'individual'){
+      this.assignTo = 3;
+      this.isIndividual = true;
+      this.isClinic = false;
+      this.isGroup = false;
+    }else if(val == 'group'){
+      this.assignTo = 4;
+      this.isIndividual = false;
+      this.isGroup = true;
+      this.isClinic = false;
+    }else if(val == 'clinic'){
+      this.assignTo = 1;
+      this.isIndividual = false;
+      this.isClinic = true;
+      this.isGroup = false;
+    }
+    
+  }
+
+  toggleIsRuccring(){
+    this.isRecurring = !this.isRecurring;
+  }
+
+  // -------------------------------------
+
 }

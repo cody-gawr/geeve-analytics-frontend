@@ -167,7 +167,16 @@ table.editaddpopup select {
     font-family: 'Gilroy-Medium';
     border-radius: 5px;
     height: 35px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
+.e-dialog-add{
+  color: white !important;
+}
+.e-dialog-edit{
+  color: white !important;
+}
+
 .e-dialog .e-dlg-header-content {
     border-bottom: 1px solid #c0c0c0;
 }
@@ -411,7 +420,7 @@ table .e-card-wrapper .warning::before {
 }
 .task-modal .sa_datepicker {
   background-color: transparent;
-  margin-left: 0;
+  margin-left: -10px;
 } 
 .input-icon {
   position: absolute;
@@ -518,9 +527,10 @@ table .e-card-wrapper .warning::before {
   background-color: #33a59e;
   transition: 0.5s all;
 }
-.task-modal .e-footer-content {
+/* .task-modal .e-footer-content {
   display: none;
-}
+} */
+
 
 .show{
   display: block;
@@ -568,4 +578,28 @@ table .e-card-wrapper .warning::before {
   .task-info-wrap .e-kanban {
     background: transparent;
   }
+}
+
+.group_buttons>button{
+  margin-left: 10px;
+  margin-right: 10px;
+  width: 50%;
+}
+
+.group_buttons{
+  display: flex;
+  justify-content: center;
+}
+
+.sa_datepicker {
+  position: relative;
+  width: auto;
+  display: inline-block;
+  margin-left: 0px;
+  box-shadow: none;
+  border: 0;
+  background-color: #f5f5fb;
+  padding: 3px 10px;
+  height: 30px;
+  border-radius: 4px;
 }
