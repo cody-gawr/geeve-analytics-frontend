@@ -127,9 +127,9 @@
     <div>
       <div class="sa_dentist_graphs_area sa_profit_bar">
         <div *ngIf="productionstats || prodpervisitstats || totalvisitstats"><span class="green_title"><i class="far fa-calendar-alt"></i> {{mtdText}}</span></div>
-        <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.lg="30px" fxLayoutGap.md="16px" fxLayoutGap.sm="0"
+        <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.lg="20px" fxLayoutGap.md="15px" fxLayoutGap.sm="0"
           fxLayoutGap.xs="0">
-          <div fxFlex="calc(33% - 20px)" fxFlex.lg="calc(33% - 20px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+          <div fxFlex="calc(33% - 15px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
             class="sa_flexbg custom-box"
             [ngClass]="{'arrow-up': production_dif>=0, 'arrow-down':production_dif<0, 'hccard-container': true}">
 
@@ -180,7 +180,7 @@
           </div>
           <!-- Column-->
 
-          <div fxFlex="calc(33% - 20px)" fxFlex.lg="calc(33% - 20px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+          <div fxFlex="calc(33% - 15px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
             class="sa_flexbg custom-box"
             [ngClass]="{'arrow-up': production_dif>=0, 'arrow-down':production_dif<0, 'hccard-container': true}">
 
@@ -217,7 +217,7 @@
           </div>
 
           <!-- Column-->
-          <div fxFlex="calc(33% - 20px)" fxFlex.lg="calc(33% - 20px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+          <div fxFlex="calc(33% - 15px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
             class="sa_flexbg last"
             [ngClass]="{'arrow-up': visits_dif>=0, 'arrow-down':visits_dif<=0, 'hccard-container': true}">
 

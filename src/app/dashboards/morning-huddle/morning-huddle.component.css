@@ -378,12 +378,16 @@ span.calculatingSp.text {
 .selectLeft {
     left: 0;
 }
-.morning-huddle-date.topModel{
-    position: absolute;
+.morning-huddle-date.topModel.morning-huddle-datepicker{
+    position: absolute !important;
     z-index: 9999;
-    width: 250px;
-    left: calc(50% - 120px);
-    top: 20px;    
+    width: 170px !important;
+    left: 50% !important;
+    top: 10px !important;   
+    transform: translateX(-50%); 
+}
+.morning-huddle-date.topModel input {
+    width: 140px !important;
 }
 
 input.complt {
@@ -538,6 +542,11 @@ table.history td.notes {padding-right: 2%;text-align: right;}
 .daily-task th.mat-header-cell:last-of-type, .daily-task td.mat-cell:last-of-type, .daily-task td.mat-footer-cell:last-of-type{
     text-align: end;
 }
+@media only screen and (min-width: 600px) and (max-width: 991px) {
+    .filter_single .app-headerright .header_filters.morning-huddle>div {
+        max-width: 50% !important;
+    }
+}
 @media (max-width: 840px){
     /* .morning-huddle .mat-tab-label-container{
         padding-top: 50px;
@@ -548,8 +557,8 @@ table.history td.notes {padding-right: 2%;text-align: right;}
 }
 @media (max-width: 767px){
     
-    .morning-huddle-date.topModel {
-        top: 70px;
+    .morning-huddle-date.topModel.morning-huddle-datepicker {
+        top: 57px !important;
     }
     .date-area-spac{
         height: 30px;
@@ -948,7 +957,6 @@ tr.mat-row.cdk-row.ng-star-inserted:empty {
 
 .mat-input-element.sa_datepicker.Mhdatepic{
     background-color: #f5f5fb !important;
-    max-width: 75%;
 }  
 
 #MH-table{
