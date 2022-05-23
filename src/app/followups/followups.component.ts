@@ -334,6 +334,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    $('.header_filters').removeClass('hide_header');
     $('#currentDentist').attr('did', 'all');
     this.user_type = this._cookieService.get("user_type");
     if (this._cookieService.get("dentistid") && this._cookieService.get("dentistid") != '' && this.user_type == '4') {
