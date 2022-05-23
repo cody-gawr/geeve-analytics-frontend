@@ -8713,9 +8713,39 @@ ul.ngx-pagination.ng-star-inserted {
   color: #000;
   /* display: none; */
 }
-.toast-success.un-auth {
+/* .toast-success.un-auth {
   width: 1250px !important;
   margin: 0px 6px 0px 0px;
+} */
+@media screen and (min-width: 1100px) {
+  .toast-success.un-auth {
+    width: calc(100% + 20%)!important;
+    margin: 0px 0px 0px -20% !important;
+  }  
+}
+@media screen and (min-width: 1200px) {
+  .toast-success.un-auth {
+    width: calc(100% + 30%)!important;
+    margin: 0px 0px 0px -30% !important;
+  }  
+}
+@media screen and (min-width: 1300px) {
+  .toast-success.un-auth {
+    width: calc(100% + 40%)!important;
+    margin: 0px 0px 0px -40% !important;
+  }  
+}
+@media screen and (min-width: 1400px) {
+  .toast-success.un-auth {
+    width: calc(100% * 1.5)!important;
+    margin: 0px 0px 0px -50% !important;
+  }  
+}
+@media screen and (min-width: 1500px) {
+  .toast-success.un-auth {
+    width: calc(100% + 60%)!important;
+    margin: 0px 0px 0px -60% !important;
+  }  
 }
 
 /************ un-auth Toast **********/
