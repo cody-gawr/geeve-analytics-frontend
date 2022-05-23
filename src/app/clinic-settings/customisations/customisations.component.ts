@@ -15,6 +15,7 @@ import { BehaviorSubject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { CustomisationsService } from "./customisations.service";
 import { BaseComponent } from "../base/base.component";
+import { environment } from "../../../environments/environment";
 import {
   FormBuilder,
   FormGroup,
@@ -108,6 +109,7 @@ export class CustomisationsComponent
     this.clinic_id$.next(value);
   }
   public form: FormGroup;
+  public apiUrl = environment.apiUrl;
 
   public xrayMonths: number = 24; //default value
   public opgMonths: number = 60; //default value
@@ -144,7 +146,8 @@ export class CustomisationsComponent
 
   ngOnInit() {
     this.form = this.fb.group({
-      recall_codes1: [null, Validators.compose([Validators.required])],
+      //recall_codes1: [null, Validators.compose([Validators.required])],
+      recall_codes1: [null],
       recall_codes2: [null],
       recall_codes3: [null],
       lab_code1: [null, Validators.compose([Validators.required])],

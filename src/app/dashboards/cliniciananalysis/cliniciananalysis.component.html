@@ -267,7 +267,7 @@
                 <div *ngIf="!barChartDataDentists[0].data.length && !buildChartDentistsLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
-                  <p class="chart-placeholder-text">You have no Dentist production for the selected period. Have you configured your Dentists in Settings -> Dentists?</p>
+                  <p class="chart-placeholder-text">You have no Dentist production for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?</p>
                 </div>
               </div>
               <div *ngIf="proCollShow == 1  && proSelectShow =='production_oht'">
@@ -306,7 +306,7 @@
                 <div *ngIf="!barChartDataOht[0].data.length && !buildChartOhtLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
-                  <p class="chart-placeholder-text">You have no OHT production for the selected period. Have you configured your OHTs in Settings -> Dentists?</p>
+                  <p class="chart-placeholder-text">You have no OHT production for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?</p>
                 </div>
               </div>
               <!-- Production Chart Start -->
@@ -387,7 +387,7 @@
                 <div *ngIf="!collectionDentistsData[0].data.length && !collectionDentistsLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
-                  <p class="chart-placeholder-text">You have no Dentist Collection for the selected period. Have you configured your Dentists in Settings -> Dentists?</p>
+                  <p class="chart-placeholder-text">You have no Dentist Collection for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?</p>
                 </div>
               </div>
               <div *ngIf="proCollShow == 2  && proSelectShow =='collection_oht'">
@@ -426,7 +426,7 @@
                 <div *ngIf="!collectionOhtData[0].data.length && !collectionOhtLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
-                  <p class="chart-placeholder-text">You have no OHT Collection for the selected period. Have you configured your OHTs in Settings -> Dentists?</p>
+                  <p class="chart-placeholder-text">You have no OHT Collection for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?</p>
                 </div>
               </div>
               <!-- Collection Chart Start -->
@@ -507,7 +507,7 @@
                 <div *ngIf="!collectionExpDentistsData[0].data.length && !collectionExpDentistsLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
-                  <p class="chart-placeholder-text">You have no Dentist Collection for the selected period. Have you configured your Dentists in Settings -> Dentists?</p>
+                  <p class="chart-placeholder-text">You have no Dentist Collection for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?</p>
                 </div>
               </div>
               <div *ngIf="proCollShow == 3 && proSelectShow =='collection_exp_oht'">
@@ -546,7 +546,7 @@
                 <div *ngIf="!collectionExpOhtData[0].data.length && !collectionExpOhtLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
-                  <p class="chart-placeholder-text">You have no OHT Collection for the selected period. Have you configured your OHTs in Settings -> Dentists?</p>
+                  <p class="chart-placeholder-text">You have no OHT Collection for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?</p>
                 </div>
               </div>
               <!-- CollectionExp Chart Start -->
@@ -1463,7 +1463,7 @@
                     *ngIf="hourlyRateChartDesntistsData1.length <= 0 && hourlyRateChartDentistsLoader===false">
                     <div class="sa_nodata_div">
                     </div>
-                    <p class="chart-placeholder-text">You have no Dentist hourly rates for the selected period. Have you configured your Dentists in Settings -> Dentists?</p>
+                    <p class="chart-placeholder-text">You have no Dentist hourly rates for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?</p>
                   </div>
                 </div>
                 <div class="cl-card-height" *ngIf="hrSelectShow =='hr_oht' && hrCollShow == 1">
@@ -1503,7 +1503,7 @@
                     *ngIf="hourlyRateChartOhtData1.length <= 0 && hourlyRateChartOhtLoader===false">
                     <div class="sa_nodata_div">
                     </div>
-                    <p class="chart-placeholder-text">You have no OHT hourly rates for the selected period. Have you configured your OHTs in Settings -> Dentists?</p>
+                    <p class="chart-placeholder-text">You have no OHT hourly rates for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?</p>
                   </div>
                 </div>
                 <!-- HR production end -->
@@ -1585,7 +1585,7 @@
                     *ngIf="collhourlyRateChartDesntistsData1.length <= 0 && collhourlyRateChartDentistsLoader===false">
                     <div class="sa_nodata_div">
                     </div>
-                    <p class="chart-placeholder-text">You have no Dentist hourly rates for the selected period. Have you configured your Dentists in Settings -> Dentists?</p>
+                    <p class="chart-placeholder-text">You have no Dentist hourly rates for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?</p>
                   </div>
                 </div>
                 <div class="cl-card-height" *ngIf="hrSelectShow =='hr_collection_oht' && hrCollShow == 2">
@@ -1625,7 +1625,7 @@
                     *ngIf="collhourlyRateChartOhtData1.length <= 0 && collhourlyRateChartOhtLoader===false">
                     <div class="sa_nodata_div">
                     </div>
-                    <p class="chart-placeholder-text">You have no OHT hourly rates for the selected period. Have you configured your OHTs in Settings -> Dentists?</p>
+                    <p class="chart-placeholder-text">You have no OHT hourly rates for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?</p>
                   </div>
                 </div>
                 <!-- Hr collection end -->
@@ -1707,7 +1707,7 @@
                     *ngIf="collExphourlyRateChartDesntistsData1.length <= 0 && collExphourlyRateChartDentistsLoader===false">
                     <div class="sa_nodata_div">
                     </div>
-                    <p class="chart-placeholder-text">You have no Dentist hourly rates for the selected period. Have you configured your Dentists in Settings -> Dentists?</p>
+                    <p class="chart-placeholder-text">You have no Dentist hourly rates for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?</p>
                   </div>
                 </div>
                 <div class="cl-card-height" *ngIf="hrSelectShow =='hr_collection_exp_oht' && hrCollShow == 3">
@@ -1747,7 +1747,7 @@
                     *ngIf="collExphourlyRateChartOhtData1.length <= 0 && collExphourlyRateChartOhtLoader===false">
                     <div class="sa_nodata_div">
                     </div>
-                    <p class="chart-placeholder-text">You have no OHT hourly rates for the selected period. Have you configured your OHTs in Settings -> Dentists?</p>
+                    <p class="chart-placeholder-text">You have no OHT hourly rates for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?</p>
                   </div>
                 </div>
                 <!-- Hr collection Exp end -->
