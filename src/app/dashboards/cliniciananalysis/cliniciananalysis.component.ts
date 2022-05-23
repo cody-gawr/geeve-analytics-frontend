@@ -2081,10 +2081,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     }, error => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
+      if(this.user_type !='7'){
+        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+        this.warningMessage = "Please Provide Valid Inputs!"; 
+      }
     }
-
 
     );
   }
@@ -4059,8 +4060,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     }, error => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
+      if(this.user_type !='7'){
+        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+        this.warningMessage = "Please Provide Valid Inputs!";
+      }
     }
     );
   }
@@ -4430,8 +4433,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     }, error => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
+      if(this.user_type !='7'){
+        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+        this.warningMessage = "Please Provide Valid Inputs!";
+      }
     }
     );
   }
@@ -4736,8 +4741,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     }, error => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
+      if(this.user_type !='7'){
+        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+        this.warningMessage = "Please Provide Valid Inputs!";
+      } 
     });
   }
 
@@ -4830,8 +4837,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     }, error => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
+      if(this.user_type !='7'){
+        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+        this.warningMessage = "Please Provide Valid Inputs!";
+      }
     }
     );
   }
@@ -4908,8 +4917,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     }, error => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
+      if(this.user_type !='7'){
+        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+        this.warningMessage = "Please Provide Valid Inputs!";
+      }  
     }
     );
   }
@@ -5240,8 +5251,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     }, error => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
+      if(this.user_type !='7'){
+        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+        this.warningMessage = "Please Provide Valid Inputs!";
+      }      
     }
     );
   }

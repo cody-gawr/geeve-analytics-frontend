@@ -206,7 +206,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
         this._cookieService.put("user_plan", res.plan, opts);
         this.userPlan = res.plan;
         //Remove apis calls when user have not permission of any page form FE
-        if (res.type != '2') {
+        if (res.type != '2' && res.type != 7) {
           if (this.activeRoute == '/dashboards/healthscreen') {
             this.permisions_var = 'healthscreen';
           } else if (this.activeRoute == '/dashboards/cliniciananalysis') {

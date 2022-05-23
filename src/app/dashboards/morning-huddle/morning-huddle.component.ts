@@ -1078,11 +1078,13 @@ initiate_clinic() {
 
     
       } else if (production.status == '401') {
+        if(this.user_type != '7'){
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
           this.router.navigateByUrl('/login');
         }
+      }
     }); 
   }
    getTodayUnscheduledBal(refsh = ''){
@@ -1160,10 +1162,12 @@ initiate_clinic() {
         this.apiSuccessCount += 1;
         this.schedulehours = production.data;
       } else if (production.status == '401') {
+        if(this.user_type != '7'){
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
           this.router.navigateByUrl('/login');
+        }         
         }
     }); 
   }
@@ -1717,10 +1721,12 @@ async getDentistList(){
   }
 
   handleUnAuthorization() {
-    this._cookieService.put("username", '');
-    this._cookieService.put("email", '');
-    this._cookieService.put("userid", '');
-    this.router.navigateByUrl('/login');
+    if(this.user_type != '7'){
+      this._cookieService.put("username", '');
+      this._cookieService.put("email", '');
+      this._cookieService.put("userid", '');
+      this.router.navigateByUrl('/login');
+    }    
   }
 
   checkSuccessApi(){

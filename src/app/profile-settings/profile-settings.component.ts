@@ -248,7 +248,7 @@ public cvcStyle = {
               this.permisions =result.permisions;
           });
 
-          if(this.permisions,(this.permisions.split(",")).indexOf("profilesettings") >= 0 ){
+          if(this.permisions,(this.permisions.split(",")).indexOf("profilesettings") >= 0 && this.userType !='7'){
             this.showCard= true;
             this.getPaymentDetails();
           }

@@ -96,7 +96,7 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
 				},500);
 			}
 		}, error => {
-     		alert('Something Went Wrong.');
+     		//alert('Something Went Wrong.');
     	});
 	}
 

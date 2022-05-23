@@ -52,6 +52,7 @@ export class FinancesComponent implements AfterViewInit {
   public unSelectedData = [];
   public upperLimit = 20;
   public lowerLimit = 1;
+  public user_type: string = '';
 
 
   public pieChartColors = [
@@ -139,6 +140,7 @@ export class FinancesComponent implements AfterViewInit {
     public chartstipsService: ChartstipsService,
     private decimalPipe: DecimalPipe,
   ) {
+    this.user_type = this._cookieService.get("user_type");
     this.getChartsTips();
   }
 
@@ -2014,9 +2016,10 @@ export class FinancesComponent implements AfterViewInit {
       this.finProductionByClinicianError = true;
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-
+      if(this.user_type !='7'){
+        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+        this.warningMessage = "Please Provide Valid Inputs!";
+      }
     }
     );
   }

@@ -30,6 +30,7 @@ export class FollowupsComponent implements AfterViewInit {
   public arcWidth = 0.75;
   public foregroundColor= "#39acac";
   public backgroundColor = '#f4f0fa';
+  public user_type: string = '';
     private legendLabelOptions = {
     labels: {
       usePointStyle: true,
@@ -262,6 +263,7 @@ export class FollowupsComponent implements AfterViewInit {
       private _cookieService: CookieService,
     )
   {
+    this.user_type = this._cookieService.get("user_type");
    this.getChartsTips();
   }
 
@@ -891,9 +893,11 @@ export class FollowupsComponent implements AfterViewInit {
   }
 
   handleUnAuthorization() {
-    this._cookieService.put("username", '');
-    this._cookieService.put("email", '');
-    this._cookieService.put("userid", '');
-    this.router.navigateByUrl('/login');
+    if(this.user_type !='7'){
+      this._cookieService.put("username", '');
+      this._cookieService.put("email", '');
+      this._cookieService.put("userid", '');
+      this.router.navigateByUrl('/login');
+    }
   }
 }

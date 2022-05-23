@@ -65,6 +65,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
   referFriendEmailError: boolean = false;
   referFriendEmailPError: boolean = false;
   user_type: any = 0;
+  unAuth:boolean = false;
 
   classUrl: string = "";
   @Inject(MAT_DIALOG_DATA) public data: any;
@@ -109,8 +110,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
         this.warningMessage = "Please Provide Valid Inputs!";
       });
     }
-
-    this.getRoles();
+   this.getRoles();
     this.user_type_dentist = this._cookieService.get("user_type");
     this._routerSub = this.router.events
       .filter((event) => event instanceof NavigationEnd)
@@ -168,6 +168,22 @@ export class AppHeaderrightComponent implements AfterViewInit {
       );
     }
     /************** New Features **************/
+  }
+
+  /************** unAuthorised **************/
+  unAuthorisedAlert(clinicName) {
+    
+      this.toastr.success(
+        ``,
+        `You do not have permission to access this page for ${clinicName}. Please contact the clinic owner.`,
+        {
+          closeButton: true,
+          disableTimeOut: true,
+          enableHtml: true,
+          toastClass: "ngx-toastr un-auth",
+        }
+      );
+    /************** unAuthorised **************/
   }
 
   async getRoles() {
@@ -428,9 +444,59 @@ export class AppHeaderrightComponent implements AfterViewInit {
       );
   }
 
+  checkPremissions(Clid){
+    var permision = '';
+    this.rolesUsersService.getRolesIndividual(Clid).subscribe((res) => {
+      if (res.message == 'success') {
+        permision = res.data;
+        if(permision != '' && this.user_type == 7){
+          if(permision.indexOf('healthscreen') >= 0  && this.route == "/dashboards/healthscreen"){
+             this.unAuth = false;
+          } else if(permision.indexOf('dashboard1') >= 0 && this.route == "/dashboards/cliniciananalysis"){
+            this.unAuth = false; 
+          } else if(permision.indexOf('dashboard2') >= 0  && this.route == "/dashboards/clinicianproceedures"){
+            this.unAuth = false;
+          } else if(permision.indexOf('dashboard3') >= 0 && this.route == "/dashboards/frontdesk" ){
+            this.unAuth = false;
+          } else if(permision.indexOf('dashboard4') >= 0 && this.route == "/dashboards/marketing"){
+            this.unAuth = false;
+          } else if(permision.indexOf('dashboard5') >= 0 && this.route == "/dashboards/finances"){
+            this.unAuth = false;
+          } else if(permision.indexOf('morninghuddle') >= 0 && this.route == "/morning-huddle"){
+            this.unAuth = false;
+          } else if(permision.indexOf('dashboard6') >= 0 && this.route == "/dashboards/followups"){
+            this.unAuth = false;
+          } else if(permision.indexOf('followups') >= 0 && this.route == "/followups"){
+            this.unAuth = false;
+          } else if(permision.indexOf('lostopportunity') >= 0 && this.route == "/lost-opportunity"){
+            this.unAuth = false;
+          } else if(permision.indexOf('profilesettings') >= 0 && this.route == "/clinic-settings/"+ Clid){
+            this.unAuth = false;
+          } else if(permision.indexOf('profilesettings') >= 0 && this.route == "/profile-settings"){
+            this.unAuth = false;
+          } else if(this.route == "/kpi-report" || this.route == "/rewards" || this.route == "/clinic"){
+            this.unAuth = false;
+          } else{
+            this.unAuth = true;
+            $('.sa_dashboard_inner_content').addClass('unauth-hide');
+            $('.settings-table-card').addClass('unauth-hide');       
+            $('.page-content').addClass('unauth-hide');      
+          } 
+        } else {
+          this.router.navigate(['/profile-settings']);
+        }
+      }
+    }, error => {
+    });
+  }
+
   loadClinic(newValues) {
+    $(".toast-close-button").click();
+    $('.sa_dashboard_inner_content').removeClass('unauth-hide');
+    $('.settings-table-card').removeClass('unauth-hide');
+    $('.page-content').removeClass('unauth-hide'); 
+    this.unAuth = false;
     var newValue:any = '';
-    
     if (newValue != "undefined") {
       if(Array.isArray(newValues)) {
         if ((this.route == "/dashboards/finances"  || this.route == "/dashboards/marketing" || this.route == "/dashboards/frontdesk" || this.route == "/dashboards/cliniciananalysis" || this.route == "/dashboards/clinicianproceedures") && this.apiUrl.includes('test')) {
@@ -459,6 +525,38 @@ export class AppHeaderrightComponent implements AfterViewInit {
       }else{
         newValue = newValues;
       }
+      if(this.user_type == 7){ 
+        var clid = newValue
+        if(this.route.includes("clinic-settings")){
+          var val = this.route.split('/'); 
+          clid = val[2];
+        }
+        var cliName = '';
+        this.clinicsData.forEach(element => {
+            if(element.id == clid){
+               cliName = element.clinicName;
+            }
+        });
+        var clid = newValue
+        if(this.route.includes("clinic-settings")){
+          var val = this.route.split('/'); 
+          clid = val[2];
+        }
+        var cliName = '';
+        this.clinicsData.forEach(element => {
+            if(element.id == clid){
+               cliName = element.clinicName;
+            }
+        });
+       this.checkPremissions(clid); 
+        setTimeout(() => {
+          if(this.unAuth){
+            this.unAuthorisedAlert(cliName);    
+            return;
+          }
+        }, 2000); 
+      }
+
       let opts = this.constants.cookieOpt as CookieOptions;
       this._cookieService.put(
         "clinic_id",
@@ -492,6 +590,8 @@ export class AppHeaderrightComponent implements AfterViewInit {
             this.getDentists();
           }
         }else{
+          this.selectedClinic = newValue;
+          this.clinic_id = this.selectedClinic;
           this.getDentists();
         }      
       }

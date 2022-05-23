@@ -8673,3 +8673,53 @@ div#multi_clinic-panel {
 ul.ngx-pagination.ng-star-inserted {
   padding-inline-start: 0px !important;
 }
+
+
+
+
+/************ un-auth Toast **********/
+.un-auth.ngx-toastr {
+  background-image: none;
+  padding         : 10px 13px !important;
+  display         : block;
+  background-color: #d61818;
+  color           : #fff !important;
+  /* border          : 1px solid #049d7e; */
+  /* box-shadow      : -1px 1px 4px 1px #298f7c !important; */
+}
+
+.un-auth.ngx-toastr ul {
+  margin : 0px !important;
+  padding: 0;
+}
+
+.un-auth.ngx-toastr li {
+  list-style: none;
+  padding   : 2px 0;
+  margin    : 0;
+  font-size : 15px;
+}
+
+.un-auth .toast-title {
+  font-size    : 17px;
+  margin-bottom: 5px;
+  font-family  : Gilroy-Medium;
+  font-weight  : 500;
+  color        : #fff;
+  text-align   : center;
+}
+
+.un-auth button.toast-close-button {
+  color: #000;
+  /* display: none; */
+}
+.toast-success.un-auth {
+  width: 1250px !important;
+  margin: 0px 6px 0px 0px;
+}
+
+/************ un-auth Toast **********/
+
+.unauth-hide {
+  display: none;
+}

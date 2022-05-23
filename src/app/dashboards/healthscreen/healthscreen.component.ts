@@ -415,7 +415,9 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
       }
     }, error => {
       $('.ajax-loader').hide();
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      if(this.user_type !=7){
+        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      }      
     });
   }
 
@@ -563,7 +565,9 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
       }
     }, error => {
       $('.ajax-loader').hide();
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      if(this.user_type !='7'){
+        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      }      
     });
   }
 
@@ -579,7 +583,9 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
       }
     }, error => {
       $('.ajax-loader').hide();
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      if(this.user_type !='7'){
+        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      }      
     });
   }
 
@@ -595,7 +601,9 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
       }
     }, error => {
       $('.ajax-loader').hide();
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      if(this.user_type !='7'){
+        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      } 
     });
   }
 
