@@ -7502,8 +7502,7 @@ top: 29px;
   }
 
   .production_images {
-    margin-right: 14px;
-    margin-left : 6px;
+    margin-left : 0px;
     padding-top : 10px;
   }
 
@@ -7594,7 +7593,7 @@ top: 29px;
   }
 }
 
-@media (min-width: 992px) and (max-width: 1199px) {
+@media (min-width: 991px) and (max-width: 1199px) {
   .prodction_main_box {
     padding: 15px;
   }
@@ -7704,6 +7703,16 @@ top: 29px;
   }
 }
 
+@media (max-width: 1600px) {
+  .clinic-health-top-icon {
+    margin-left: 0;
+    flex-grow: initial;
+    margin-right: 10px;
+  }
+  .production_description h4 {
+    font-size: 16px;
+  }
+}
 @media (max-width: 1199px) {
   .sa_tabs_design .custom_date input {
     width: 32px;
@@ -7725,9 +7734,6 @@ top: 29px;
     margin: 0 8px;
   }
 
-  .production_description h4 {
-    font-size: 16px;
-  }
 
   .production_description span {
     font-size: 20px !important;
@@ -7889,7 +7895,7 @@ top: 29px;
 
 @media (max-width: 592px) {
   .clinic-health-top-icon {
-    margin-right: 0px;
+    margin-right: 8px;
     margin-left : 0px;
   }
 
@@ -7920,8 +7926,15 @@ top: 29px;
   }
 
   .production_images img {
-    max-width : 64px;
+    max-width : 58px;
     min-height: auto;
+  }
+  .prodction_main_box_label div {
+    font-size: 10.5px;
+    white-space: nowrap;
+  }
+  .production_description h4 {
+    font-size: 13.5px;
   }
 }
 

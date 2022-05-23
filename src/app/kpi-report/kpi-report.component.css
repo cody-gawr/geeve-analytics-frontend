@@ -788,14 +788,39 @@ table.report-table-main.align > tr > td {
         margin: 0 0px 10px 0;
     }
 }
+@media screen and (max-width: 960px) {
+    .prime-logo {
+        left: 20px;
+        top: 60px;
+    }
+}
 @media screen and (max-width: 767px) {
     #kpireport {
         position: relative;
+    }
+    .prime-logo {
+        top: 75px;
+        z-index: 99;
+    }
+    .date-area-spac {
+        display: none !important;
+    }
+}
+@media screen and (max-width: 600px) {
+    #kpireport {
         padding: 50px 0 0 0;
     }
     .prime-logo {
-        top: 5px;
+        top: 120px;
         z-index: 99;
+        right: 0;
+        background-color: #fff;
+        left: 0;
+        width: 100%;
+        padding-bottom: 15px;
+    }
+    .prime-logo img {
+        margin: 0 auto;
     }
 }
 .displogo{
