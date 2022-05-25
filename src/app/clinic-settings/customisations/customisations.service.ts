@@ -55,6 +55,7 @@ export class CustomisationsService {
     formData.append("new_patients_main", data.new_patients);
     // formData.append("health_screen_mtd", data.health_screen_mtd);
     formData.append("recall_rate_default", data.recall_rate_default);
+    formData.append("hourly_rate_appt_hours", data.hourly_rate_appt_hours);
     formData.append("lab_code1", data.lab_code1);
     formData.append("lab_code2", data.lab_code2);
 

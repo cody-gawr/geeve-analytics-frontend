@@ -230,7 +230,7 @@
           <div class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px"
             fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
 
-            <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+            <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
               <div class="sa-form-group sa-group">
                 <label>New Patients
                   <div class="info-button">
@@ -247,7 +247,7 @@
                 </select>
               </div>
             </div>
-            <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+            <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
               <div class="sa-form-group sa-group">
                 <label>Recall Rate
                   <div class="info-button">
@@ -261,6 +261,24 @@
                 <select [formControl]="form.controls['recall_rate_default']" [(ngModel)]="recall_rate_default">
                   <option value="0">Status Code</option>
                   <option value="1">Default</option>
+                </select>
+              </div>
+            </div>
+
+            <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
+              <div class="sa-form-group sa-group">
+                <label>Hourly Rate
+                  <div class="info-button">
+                    <div class="info-icon-container">
+                      <img [tooltip]="this.constants.tipCustomisationsHourlyRate" src="../assets/images/info-icon.png"
+                        alt="info-icon" class="info-icon" />
+                    </div>
+                  </div>
+                </label>
+
+                <select [formControl]="form.controls['hourly_rate_appt_hours']" [(ngModel)]="hourly_rate_appt_hours">
+                  <option value="0">Available Hours</option>
+                  <option value="1">Appointment Hours</option>
                 </select>
               </div>
             </div>

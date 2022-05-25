@@ -116,7 +116,7 @@ span.charLimit {
     margin-top: 0;
 }
 .sa-group select{
-    width: 50%;
+    width: 60%;
 }
 .sa-group label{
     width: 50%;
@@ -149,4 +149,9 @@ span.charLimit {
     background-color: #f8fafc;
     padding: 10px 11px;
     margin-bottom: 5px;
+}
+.custom-tooltip{
+   top: 19px;
+   padding: 3px 20px;
+   width: 370px;
 }
