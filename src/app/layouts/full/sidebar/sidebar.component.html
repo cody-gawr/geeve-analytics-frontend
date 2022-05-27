@@ -116,7 +116,7 @@
         </ng-template>
     </mat-list-item>
     <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
-    *ngIf="(apiUrl.includes('test') || apiUrl.includes('staging')) || user_type == 7">
+    *ngIf="(user_type == 2 || permisions.indexOf('kpireport') >= 0 ) || user_type == 7">
     <a class="" appAccordionToggle [routerLink]="['/kpi-report']">
         <i class="fas fa-file"></i>
         <span>KPI Report</span>

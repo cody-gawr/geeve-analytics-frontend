@@ -409,6 +409,8 @@ initiate_clinic() {
           checkedRoles.push('profilesettings');
         if(result.selectedRole['managepermissions_'+res1.id])
           checkedRoles.push('managepermissions');
+        if(result.selectedRole['kpireport_'+res1.id])
+          checkedRoles.push('kpireport');  
         
         var checkedRoles1 = checkedRoles.join();
         this.rolesUsersService.saveRoles(res1.id, checkedRoles1).subscribe((res) => {
