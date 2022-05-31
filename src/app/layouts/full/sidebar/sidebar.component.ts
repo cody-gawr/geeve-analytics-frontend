@@ -125,6 +125,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
   public permisions_var: any = '';
   public clinic_id;
   public userType;
+  public hasPrimeClinics;
 
   clickEvent(val) {
     this.status = !this.status;
@@ -151,6 +152,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
             this.getClinic();
         }
       }else{
+          this.getClinic();
           this.getRoles();
       }
       this.activeRoute = router.url;
@@ -242,7 +244,8 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     this.headerService.getClinics().subscribe((res) => {
       if (res.message == 'success') {
         this.clinic_id = res.data[0]['id'];
-         this.getRoles();
+        this.hasPrimeClinics = res.hasPrimeClinics;
+        this.getRoles();
       }
     }, error => {
     });

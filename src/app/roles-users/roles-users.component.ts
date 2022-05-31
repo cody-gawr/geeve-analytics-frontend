@@ -369,7 +369,7 @@ initiate_clinic() {
   openRoleDialog(): void {
     const rolesRef = this.dialog.open(RolesOverviewExampleDialogComponent, {
      width: '600px',
-      data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password, roles:this.roles, selectedRole:this.selectedRole, selected_id:this.selected_id,dentists:this.dentists,taskVisible:this.taskVisible}
+      data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password, roles:this.roles, selectedRole:this.selectedRole, selected_id:this.selected_id,dentists:this.dentists,taskVisible:this.taskVisible,hasPrimeClinics:this.hasPrimeClinics}
     });
     const sub = rolesRef.componentInstance.onAdd.subscribe((val) => {
     this.selected_id = val;
@@ -441,11 +441,13 @@ initiate_clinic() {
 
 
   public clinics=[];
+  public hasPrimeClinics = '';
 //Get Clinics
   private getClinics() {
     this.clinicService.getClinics().subscribe((res) => {
       if(res.message == 'success'){
         this.clinics = res.data;
+        this.hasPrimeClinics = res.hasPrimeClinics;
       } else if(res.status == '401'){
         this._cookieService.put("username",'');
         this._cookieService.put("email", '');
