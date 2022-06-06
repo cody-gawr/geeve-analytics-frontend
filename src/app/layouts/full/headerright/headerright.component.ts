@@ -472,11 +472,13 @@ export class AppHeaderrightComponent implements AfterViewInit {
             this.unAuth = false;
           } else if(permision.indexOf('profilesettings') >= 0 && this.route == "/clinic-settings/"+ Clid){
             this.unAuth = false;
-          } else if(permision.indexOf('profilesettings') >= 0 && this.route == "/profile-settings"){
+          } 
+          // else if(permision.indexOf('profilesettings') >= 0 && this.route == "/profile-settings"){
+          //   this.unAuth = false;
+          // } 
+          else if(permision.indexOf('kpireport') >= 0 && this.route == "/kpi-report"){
             this.unAuth = false;
-          } else if(permision.indexOf('kpireport') >= 0 && this.route == "/kpi-report"){
-            this.unAuth = false;
-          } else if(this.route == "/rewards" || this.route == "/clinic"){
+          } else if(this.route == "/rewards" || this.route == "/clinic" || this.route == "/profile-settings"){
             this.unAuth = false;
           } else{
             this.unAuth = true;
