@@ -311,6 +311,11 @@ export class CustomisationsComponent
 
   onSubmit() {
     $(".ajax-loader").show();
+    if(this.apiUrl.includes('test')){
+      this.recall_rate_default =this.form.value.recall_rate_default;
+    }else{
+      this.recall_rate_default = 1;
+    }
     let data = {
       clinic_id: Number(this.clinic_id$.value),
       xray_months: this.form.value.xray_months,
@@ -320,7 +325,7 @@ export class CustomisationsComponent
       recall_code3: this.form.value.recall_codes3,
       new_patients: this.form.value.new_patients,
      // health_screen_mtd: this.form.value.health_screen_mtd,
-      recall_rate_default: this.form.value.recall_rate_default,
+      recall_rate_default: this.recall_rate_default,
       hourly_rate_appt_hours: this.form.value.hourly_rate_appt_hours,
       lab_code1: this.form.value.lab_code1,
       lab_code2: this.form.value.lab_code2

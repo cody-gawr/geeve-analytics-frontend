@@ -92,27 +92,27 @@
                 class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
                 matTooltip="{{trendText}} : $ {{collectionExpTotalPrev| number:'1.0-0'}}"><img class="trend_ico"
                   src="../assets/images/trend_{{collectionExpTooltip}}.png"></span>                 
-                <span *ngIf="proCollShow == 1 && !apiUrl.includes('test-')"> Dentist Production</span>
-                <span *ngIf="proCollShow == 2 && !apiUrl.includes('test-')"> Dentist Collection</span>
-                <span *ngIf="proCollShow == 3 && !apiUrl.includes('test-')"> Dentist Collection - Exp</span>
+                <!-- <span *ngIf="proCollShow == 1 "> Dentist Production</span>
+                <span *ngIf="proCollShow == 2 "> Dentist Collection</span>
+                <span *ngIf="proCollShow == 3 "> Dentist Collection - Exp</span> -->
 
-                <span *ngIf="proCollShow == 1 && apiUrl.includes('test-')  && user_type == '4'"> Dentist Production</span>
-                <span *ngIf="proCollShow == 2 && apiUrl.includes('test-')  && user_type == '4'"> Dentist Collection</span>
-                <span *ngIf="proCollShow == 3 && apiUrl.includes('test-')  && user_type == '4'"> Dentist Collection - Exp</span>
+                <span *ngIf="proCollShow == 1  && user_type == '4'"> Dentist Production</span>
+                <span *ngIf="proCollShow == 2  && user_type == '4'"> Dentist Collection</span>
+                <span *ngIf="proCollShow == 3  && user_type == '4'"> Dentist Collection - Exp</span>
            
-                <select class="proSelect" *ngIf="proCollShow == 1 && apiUrl.includes('test-') && user_type != '4'"
+                <select class="proSelect" *ngIf="proCollShow == 1 && user_type != '4'"
                 (change)="changeProSelect($event.target.value)">
                     <option [selected]="proSelectShow == 'production_all'" value="production_all">Production - All</option>
                     <option [selected]="proSelectShow == 'production_dentists'" value="production_dentists">Production - Dentists</option>
                     <option [selected]="proSelectShow == 'production_oht'" value="production_oht">Production - OHT</option>
                 </select>
-                <select class="proSelect" *ngIf="proCollShow == 2 && apiUrl.includes('test-') && user_type != '4'"
+                <select class="proSelect" *ngIf="proCollShow == 2  && user_type != '4'"
                 (change)="changeProSelect($event.target.value)">
                   <option [selected]="proSelectShow == 'collection_all'" value="collection_all">Collection - All</option>
                   <option [selected]="proSelectShow == 'collection_dentists'" value="collection_dentists">Collection - Dentists</option>
                   <option [selected]="proSelectShow == 'collection_oht'" value="collection_oht">Collection - OHT</option>
                 </select>
-                <select class="proSelect" *ngIf="proCollShow == 3 && apiUrl.includes('test-') && user_type != '4'"
+                <select class="proSelect" *ngIf="proCollShow == 3 && user_type != '4'"
                 (change)="changeProSelect($event.target.value)">
                   <option [selected]="proSelectShow == 'collection_exp_all'" value="collection_exp_all">Collection-Exp - All</option>
                   <option [selected]="proSelectShow == 'collection_exp_dentists'" value="collection_exp_dentists">Collection-Exp - Dentists</option>
@@ -158,7 +158,8 @@
             </mat-card-title>
 
             <div class="card-body">
-              <div *ngIf="( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 9 && clinic_id <= 23) )">
+              <!-- <div *ngIf="( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 9 && clinic_id <= 23) )"> -->
+                <div>
                 <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                     <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''"
@@ -174,7 +175,7 @@
                   </div>
                 </div>
             </div>
-            <div *ngIf="(( !apiUrl.includes('test-') && !apiUrl.includes('staging-')) && (clinic_id <= 8 || clinic_id >= 24) )">
+            <!-- <div *ngIf="(( !apiUrl.includes('test-') && !apiUrl.includes('staging-')) && (clinic_id <= 8 || clinic_id >= 24) )">
               <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                 <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="49%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''"
@@ -184,12 +185,8 @@
                   <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''"
                     (click)="changeProduction('2' ,'all')">Collection</small>
                 </div>
-                <!-- <div *ngIf="( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 9 && clinic_id <= 23) )" fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn" [ngClass]="proCollShow ==3? 'active' : ''"
-                    (click)="changeProduction('3')">Collection-Exp</small>
-                </div> -->
               </div>
-            </div>
+            </div> -->
 
               <!-- Production Chart Start -->
               <div *ngIf="proCollShow == 1 && proSelectShow =='production_all'">
@@ -855,7 +852,8 @@
             </mat-card-title>
 
             <div class="card-body">
-              <div *ngIf="( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 9 && clinic_id <= 23) )">
+              <!-- <div *ngIf="( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 9 && clinic_id <= 23) )"> -->
+                <div>
                 <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                     <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''"
@@ -871,7 +869,7 @@
                   </div>
                 </div>
               </div>
-              <div *ngIf="( ( !apiUrl.includes('test-') && !apiUrl.includes('staging-')) && (clinic_id <= 8 || clinic_id >= 24) )">
+              <!-- <div *ngIf="( ( !apiUrl.includes('test-') && !apiUrl.includes('staging-')) && (clinic_id <= 8 || clinic_id >= 24) )">
                 <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                   <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="49%" fxFlex="100" class="btn-group">
                     <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''"
@@ -881,12 +879,8 @@
                     <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''"
                       (click)="changeProduction('2','single')">Collection</small>
                   </div>
-                  <!-- <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
-                    <small class="sa_tab_btn" [ngClass]="proCollShow ==3? 'active' : ''"
-                      (click)="changeProduction('3')">Collection-Exp</small>
-                  </div> -->
                 </div>
-              </div>
+              </div> -->
 
               <!-- Production Chart Start dentist -->
 
@@ -1301,29 +1295,29 @@
                 <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
                   mat-icon-button matTooltip="{{trendText}} : ${{hourlyRateChartAveragePrev| number:'1.0-0'}}"><img
                     class="trend_ico" src="../assets/images/trend_{{hourlyRateChartTooltip}}.png"></span>
-                    <span *ngIf="!apiUrl.includes('test-')">Hourly Rate</span>
-                    <span *ngIf="hrCollShow == 1 && apiUrl.includes('test-')  && user_type == '4'"> Hourly Rate Production</span>
-                    <span *ngIf="hrCollShow == 2 && apiUrl.includes('test-')  && user_type == '4'"> Hourly Rate Collection</span>
-                    <span *ngIf="hrCollShow == 3 && apiUrl.includes('test-')  && user_type == '4'"> Hourly Rate Collection - Exp</span>            
+                    <!-- <span *ngIf="!apiUrl.includes('test-')">Hourly Rate</span> -->
+                    <span *ngIf="hrCollShow == 1  && user_type == '4'"> Hourly Rate Production</span>
+                    <span *ngIf="hrCollShow == 2  && user_type == '4'"> Hourly Rate Collection</span>
+                    <span *ngIf="hrCollShow == 3 && user_type == '4'"> Hourly Rate Collection - Exp</span>            
                     <!-- <select class="proSelect" *ngIf="apiUrl.includes('test-') && user_type != '4'"
                     (change)="changeHourlyRateSelect($event.target.value)">
                         <option value="hr_all">Hourly Rate - All</option>
                         <option value="hr_dentists">Hourly Rate - Dentists</option>
                         <option value="hr_oht">Hourly Rate - OHT</option>
                     </select> -->
-                    <select id="proSelect1" class="proSelect" *ngIf="hrCollShow == 1 && apiUrl.includes('test-') && user_type != '4'"
+                    <select id="proSelect1" class="proSelect" *ngIf="hrCollShow == 1  && user_type != '4'"
                       (change)="changeHourlyRateSelect($event.target.value)">
                         <option [selected]="hrSelectShow == 'hr_all'" value="hr_all">Hourly Rate - All</option>
                         <option [selected]="hrSelectShow == 'hr_dentists'" value="hr_dentists">Hourly Rate - Dentists</option>
                         <option [selected]="hrSelectShow == 'hr_oht'" value="hr_oht">Hourly Rate - OHT</option>
                       </select>
-                      <select id="proSelect2" class="proSelect" *ngIf="hrCollShow == 2 && apiUrl.includes('test-') && user_type != '4'"
+                      <select id="proSelect2" class="proSelect" *ngIf="hrCollShow == 2  && user_type != '4'"
                       (change)="changeHourlyRateSelect($event.target.value)">
                         <option  [selected]="hrSelectShow == 'hr_collection_all'" value="hr_collection_all">Hourly Rate - All</option>
                         <option  [selected]="hrSelectShow == 'hr_collection_dentists'" value="hr_collection_dentists">Hourly Rate - Dentists</option>
                         <option  [selected]="hrSelectShow == 'hr_collection_oht'" value="hr_collection_oht">Hourly Rate - OHT</option>
                       </select>
-                      <select id="proSelect3" class="proSelect" *ngIf="hrCollShow == 3 && apiUrl.includes('test-') && user_type != '4'"
+                      <select id="proSelect3" class="proSelect" *ngIf="hrCollShow == 3  && user_type != '4'"
                       (change)="changeHourlyRateSelect($event.target.value)">
                         <option [selected]="hrSelectShow == 'hr_collection_exp_all'"value="hr_collection_exp_all">Hourly Rate - All</option>
                         <option [selected]="hrSelectShow == 'hr_collection_exp_dentists'" value="hr_collection_exp_dentists">Hourly Rate - Dentists</option>
@@ -1368,7 +1362,7 @@
               </div>
             </mat-card-title>
             <div class="card-body h-100">
-                <div *ngIf="apiUrl.includes('test-') || apiUrl.includes('staging-')">
+                <div>
                   <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                       <small class="sa_tab_btn" [ngClass]="hrCollShow ==1? 'active' : ''"
@@ -1998,7 +1992,7 @@
               </div>
             </mat-card-title>
             <div class="card-body">
-              <div *ngIf="apiUrl.includes('test-') || apiUrl.includes('staging-') ">
+              <div>
                 <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                     <small class="sa_tab_btn" [ngClass]="hrCollShow ==1? 'active' : ''"

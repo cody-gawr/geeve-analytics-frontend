@@ -247,7 +247,7 @@
                 </select>
               </div>
             </div>
-            <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
+            <div *ngIf="apiUrl.includes('test')" fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
               <div class="sa-form-group sa-group">
                 <label>Recall Rate
                   <div class="info-button">
