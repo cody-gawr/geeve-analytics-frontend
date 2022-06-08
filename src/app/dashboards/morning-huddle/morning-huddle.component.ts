@@ -361,6 +361,7 @@ ngOnDestroy() {
 }
 
 initiate_clinic() {
+  this.selectDentist = 0;
   this.user_type = this._cookieService.get("user_type");
   $('.external_clinic').show();
   //$('.dentist_dropdown').hide();
@@ -589,11 +590,12 @@ initiate_clinic() {
               return a == b ? 0 : a > b ? 1 : -1;
           });  
         }
+        this.refreshReminderTab(this.selectDentist);
       } else if (production.status == '401') {
           this.handleUnAuthorization();
         }
       
-      this.refreshReminderTab(this.selectDentist);
+      
     }, error => {
       this.handleUnAuthorization();      
     }); 
