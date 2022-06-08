@@ -27,7 +27,7 @@
     <label>Select Role</label>
      <select required="true" class="sa_select mat-form-control" name="user_type" [(ngModel)]="data.user_type" (ngModelChange)="loadDentist($event)">
       <option value ="6" *ngIf="loginUserType == '2'">Owner</option>
-      <option value ="7" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">Consultant</option>
+      <option value ="7" >Consultant</option>
       <option value ="3">Practice Manager</option>
       <option value ="4">Clinician</option>
       <option value ="5">Staff</option>
