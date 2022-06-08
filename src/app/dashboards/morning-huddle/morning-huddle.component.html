@@ -119,13 +119,13 @@
 
                           <span class="calculatingSp text" *ngIf="dentistrecallRateLoader">Calculating...</span>
                           <!-- <div class="ttl_value_left">Goal: {{ recallRate.goal}}%</div> -->
-                          <div class="ttl_value_left profit" *ngIf="!recallRate.goal && !dentistrecallRateLoader">0%
-                          </div>
-                          <div
+                          <!-- <div class="ttl_value_left profit" *ngIf="!recallRate.goal && !dentistrecallRateLoader">0%
+                          </div> -->
+                          <!-- <div
                             [ngClass]="(recallRate.rate > recallRate.goal) ? 'profit ttl_value_left' : 'loss ttl_value_left'"
                             *ngIf="recallRate.goal && !dentistrecallRateLoader && recallRate.goal >= 0">
                             Goal: {{ (recallRate.goal > 100)? 100 : recallRate.goal }}%
-                          </div>
+                          </div> -->
                           <img *ngIf="recallRate.rate >= recallRate.goal" src="../assets/images/green-swirl.png"
                             alt="production-chart-1" />
                           <img *ngIf="recallRate.rate < recallRate.goal" src="../assets/images/red-swirl.png"
@@ -183,13 +183,13 @@
                             *ngIf="treatmentRate.total == 'N/A' && !dentistTreatmentRateLoader">{{
                             treatmentRate.total}}</span>
                           <span class="calculatingSp text" *ngIf="dentistTreatmentRateLoader">Calculating...</span>
-                          <div class="ttl_value_left profit"
+                          <!-- <div class="ttl_value_left profit"
                             *ngIf="!treatmentRate.goal  && !dentistTreatmentRateLoader">Goal: 0%</div>
                           <div
                             [ngClass]="(treatmentRate.total >= treatmentRate.goal) ? 'profit ttl_value_left' : 'loss ttl_value_left'"
                             *ngIf="treatmentRate.goal  && !dentistTreatmentRateLoader && treatmentRate.goal >= 0">
                             Goal: {{ (treatmentRate.goal > 100)? 100 : treatmentRate.goal }}%
-                          </div>
+                          </div> -->
                           <img *ngIf="treatmentRate.total >= treatmentRate.goal" src="../assets/images/green-swirl.png"
                             alt="production-chart-1" />
                           <img *ngIf="treatmentRate.total < treatmentRate.goal" src="../assets/images/red-swirl.png"
