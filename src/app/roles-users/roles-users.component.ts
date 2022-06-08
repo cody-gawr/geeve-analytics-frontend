@@ -427,14 +427,14 @@ initiate_clinic() {
   }
 
 
-  editDialog(row): void {
+  editDialog(row,rowData): void {
     const dialogEdit = this.dialog.open(EditDialogComponent, {
        width: '400px',
-      data: { id: this.rows[row]['id'],clinics:this.clinics }
+      data: { id: rowData.id,clinics:this.clinics }
     });
     dialogEdit.afterClosed().subscribe(result => {
        if(result != undefined) {
-           this.update_user(this.rows[row]['id'],result.display_name, result.email, result.user_type,result.selectedClinics,result.selected_dentist);
+           this.update_user(rowData.id,result.display_name, result.email, result.user_type,result.selectedClinics,result.selected_dentist);
            }
     });
   }
@@ -588,7 +588,7 @@ initiate_clinic() {
 
   }
 
-  private deleteUser(row) {
+  private deleteUser(row,rowData) {
     Swal.fire({
       title: 'Are you sure?',
       text: 'You want to  delete user?',
@@ -599,8 +599,8 @@ initiate_clinic() {
     }).then((result) => {
       if(result.value){
           $('.ajax-loader').show();
-          if(this.rows[row]['id']) {
-          this.rolesUsersService.deleteUser(this.rows[row]['id']).subscribe((res) => {
+          if(rowData.id) {
+          this.rolesUsersService.deleteUser(rowData.id).subscribe((res) => {
             $('.ajax-loader').hide();
                if(res.message == 'success'){
                 this.toastr.success('User Removed');
@@ -612,7 +612,7 @@ initiate_clinic() {
             );
             }
             else {
-              this.rows.splice(row, 1);
+              this.rows.splice(rowData.sr-1, 1);
             this.rows = [...this.rows];
 
             }
@@ -653,7 +653,7 @@ initiate_clinic() {
   onActivate(event) {
     if (event.type == 'click' && event.cellIndex != 5) {
       if (event.row) {
-        this.editDialog(  event.row.sr - 1);
+        this.editDialog(event.row.sr - 1,event.row);
       }
     }
   }

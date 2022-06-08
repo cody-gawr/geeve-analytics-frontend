@@ -66,12 +66,12 @@
         <span>Actions</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" style="width:266px!important;"> 
-          <a *ngIf="rows[rowIndex]['usertype'] != 'Owner'" (click) = "editDialog(rowIndex)" class="action_btn golden" title= 'Edit'><i class="ti-pencil  m-r-10"></i></a>
-          <button *ngIf="rows[rowIndex]['usertype'] != 'Owner'" class="action_btn danger" mat-menu-item (click) = "deleteUser(rowIndex)">
+          <a *ngIf="rows[rowIndex]['usertype'] != 'Owner'" (click) = "editDialog(rowIndex,row)" class="action_btn golden" title= 'Edit'><i class="ti-pencil  m-r-10"></i></a>
+          <button *ngIf="rows[rowIndex]['usertype'] != 'Owner'" class="action_btn danger" mat-menu-item (click) = "deleteUser(rowIndex,row)">
          <i class="ti-trash text-danger m-r-10"></i></button>
 
-         <a *ngIf="rows[rowIndex]['usertype'] == 'Owner' && loginUserType == '2'" (click) = "editDialog(rowIndex)" class="action_btn golden" title= 'Edit'><i class="ti-pencil  m-r-10"></i></a>
-          <button *ngIf="rows[rowIndex]['usertype'] == 'Owner' && loginUserType == '2'" class="action_btn danger" mat-menu-item (click) = "deleteUser(rowIndex)">
+         <a *ngIf="rows[rowIndex]['usertype'] == 'Owner' && loginUserType == '2'" (click) = "editDialog(rowIndex,row)" class="action_btn golden" title= 'Edit'><i class="ti-pencil  m-r-10"></i></a>
+          <button *ngIf="rows[rowIndex]['usertype'] == 'Owner' && loginUserType == '2'" class="action_btn danger" mat-menu-item (click) = "deleteUser(rowIndex,row)">
          <i class="ti-trash text-danger m-r-10"></i></button>
         </ng-template>
       </ngx-datatable-column>
