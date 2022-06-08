@@ -803,7 +803,7 @@
                     src="../assets/images/trend_{{collectionTooltip}}.png"></span>
                 <span *ngIf="trendText && showTrendChart == false && proCollShow ==3 && showWeekTrend != true"
                   class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
-                  matTooltip="{{trendText}} : $ {{collectionExpTotalPrev| number:'1.0-0'}}"><img class="trend_ico"
+                  matTooltip="{{trendText}} : $ {{collectionExpDentistTotalPrev| number:'1.0-0'}}"><img class="trend_ico"
                   src="../assets/images/trend_{{collectionExpTooltip}}.png"></span> 
                 <span *ngIf="proCollShow == 1"> Dentist Production</span>
                 <span *ngIf="proCollShow == 2"> Dentist Collection</span>
@@ -1292,9 +1292,40 @@
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
               <div>
-                <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
+                <!--  Hourly Rate Production -->
+                <span *ngIf="trendText && hrCollShow == 1 && hrSelectShow == 'hr_all'" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
                   mat-icon-button matTooltip="{{trendText}} : ${{hourlyRateChartAveragePrev| number:'1.0-0'}}"><img
                     class="trend_ico" src="../assets/images/trend_{{hourlyRateChartTooltip}}.png"></span>
+                <span *ngIf="trendText && hrCollShow == 1 && hrSelectShow == 'hr_dentists'" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
+                    mat-icon-button matTooltip="{{trendText}} : ${{hourlyRateChartDesntistsAveragePrev| number:'1.0-0'}}"><img
+                      class="trend_ico" src="../assets/images/trend_{{hourlyRateChartDesntistsTooltip}}.png"></span>
+                <span *ngIf="trendText && hrCollShow == 1 && hrSelectShow == 'hr_oht'" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
+                    mat-icon-button matTooltip="{{trendText}} : ${{hourlyRateChartOhtAveragePrev| number:'1.0-0'}}"><img
+                      class="trend_ico" src="../assets/images/trend_{{hourlyRateChartOhtTooltip}}.png"></span>
+
+                       <!--  Hourly Rate Collection -->
+                <span *ngIf="trendText && hrCollShow == 2 && hrSelectShow == 'hr_collection_all'" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
+                mat-icon-button matTooltip="{{trendText}} : ${{collectionhourlyRateChartAveragePrev| number:'1.0-0'}}"><img
+                  class="trend_ico" src="../assets/images/trend_{{collhourlyRateChartTooltip}}.png"></span>
+              <span *ngIf="trendText && hrCollShow == 2 && hrSelectShow == 'hr_collection_dentists'" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
+                  mat-icon-button matTooltip="{{trendText}} : ${{collhourlyRateChartDesntistsAveragePrev| number:'1.0-0'}}"><img
+                    class="trend_ico" src="../assets/images/trend_{{collhourlyRateChartDesntistsTooltip}}.png"></span>
+              <span *ngIf="trendText && hrCollShow == 2 && hrSelectShow == 'hr_collection_oht'" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
+                  mat-icon-button matTooltip="{{trendText}} : ${{collhourlyRateChartOhtAveragePrev| number:'1.0-0'}}"><img
+                    class="trend_ico" src="../assets/images/trend_{{collhourlyRateChartOhtTooltip}}.png"></span>
+
+                       <!--  Hourly Rate Collection - Exp -->
+                <span *ngIf="trendText && hrCollShow == 3 && hrSelectShow == 'hr_collection_exp_all'" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
+                mat-icon-button matTooltip="{{trendText}} : ${{collExphourlyRateChartAveragePrev| number:'1.0-0'}}"><img
+                  class="trend_ico" src="../assets/images/trend_{{collExphourlyRateChartTooltip}}.png"></span>
+              <span *ngIf="trendText && hrCollShow == 3 && hrSelectShow == 'hr_collection_exp_dentists'" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
+                  mat-icon-button matTooltip="{{trendText}} : ${{collExphourlyRateChartDesntistsAveragePrev| number:'1.0-0'}}"><img
+                    class="trend_ico" src="../assets/images/trend_{{collExphourlyRateChartDesntistsTooltip}}.png"></span>
+              <span *ngIf="trendText && hrCollShow == 3 && hrSelectShow == 'hr_collection_exp_oht'" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
+                  mat-icon-button matTooltip="{{trendText}} : ${{collExphourlyRateChartOhtAveragePrev| number:'1.0-0'}}"><img
+                    class="trend_ico" src="../assets/images/trend_{{collExphourlyRateChartOhtTooltip}}.png"></span>
+
+                      
                     <!-- <span *ngIf="!apiUrl.includes('test-')">Hourly Rate</span> -->
                     <span *ngIf="hrCollShow == 1  && user_type == '4'"> Hourly Rate Production</span>
                     <span *ngIf="hrCollShow == 2  && user_type == '4'"> Hourly Rate Collection</span>
