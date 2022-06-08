@@ -550,7 +550,7 @@ initiate_clinic() {
 
   private getRoles() {      
     this.showRolesButton = false;
-    this.rolesUsersService.getRoles().subscribe((res) => {    
+    this.rolesUsersService.getRoles().subscribe((res) => { 
        if(res.message == 'success'){ 
         this.roles=[];
         var title = "Roles permissions";

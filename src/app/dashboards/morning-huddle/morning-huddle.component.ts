@@ -270,6 +270,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public OPGOverdue : boolean = false;
     public OverdueRecalls : boolean = false;
     public LabNeeded  : boolean = false;
+    public selectDentist = 0;
 
  
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
@@ -511,6 +512,8 @@ initiate_clinic() {
 
   public currentDentistReminder:any = 0;
   refreshReminderTab(event){
+    this.selectDentist = event;
+    
     this.remindersRecallsOverdueLoader = true;
     this.todayUnscheduledBalLoader = true;
     this.currentDentistReminder = event;
@@ -589,6 +592,8 @@ initiate_clinic() {
       } else if (production.status == '401') {
           this.handleUnAuthorization();
         }
+      
+      this.refreshReminderTab(this.selectDentist);
     }, error => {
       this.handleUnAuthorization();      
     }); 
