@@ -70,7 +70,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public charTips: any = [];
   public userPlan: any = 'lite';
   public numberOfRecords:number = 50;
-
+  public showPreBookReapointRate: boolean = false;
   public flag = false;
   private _routerSub = Subscription.EMPTY;
   newPatientPluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
@@ -5070,7 +5070,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   private buildChartNewpatientsDentist() {
     this.buildChartNewpatientsDentistLoader = true;
     this.newPatientPercent = 0;
-
+    this.newPatientTotal = 0;
     this.clinic_id && this.cliniciananalysisService.NewPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
       if (data && data.message == 'success') {
         this.Apirequest = this.Apirequest - 1;
@@ -9147,8 +9147,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     // }
     if (val == 'recall' && dentType == 'all' && this.user_type != '4') {
       this.recallPrebook();
+      this.showPreBookReapointRate = false;
     } else if (val == 'treatment'  && dentType == 'all' && this.user_type != '4') {
       this.treatmentPrePrebook();
+      this.showPreBookReapointRate = true;
     }else if (val == 'recall'  && dentType == 'single' && this.user_type != '4') {
       if(this.showTrendChart){
         this.fdRecallPrebookRateTrend();
