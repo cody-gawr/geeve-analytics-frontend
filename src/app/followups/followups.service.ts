@@ -84,7 +84,7 @@ export class FollowupsService {
 
     checkExportFollowUpData(clinic_id, startDate, endDate, showcompleted, followuptype): any {
         let header = this.getHeaders();
-        return this.http.get( this.apiUrl + "/Followups/checkExportFollowUpData?startDate="+startDate+"&endDate="+endDate+"&clinic_id="+clinic_id+"&showcompleted="+showcompleted+"&followuptype="+followuptype ,header);
+        return this.http.get( this.apiUrl + "/Followups/fuCheckExportFollowUpData?startDate="+startDate+"&endDate="+endDate+"&clinic_id="+clinic_id+"&showcompleted="+showcompleted+"&followuptype="+followuptype ,header);
     }
     
     exportFollowUp(clinic_id, startDate, endDate, showcompleted, filetype, followuptype ,filename): any {
@@ -94,7 +94,7 @@ export class FollowupsService {
 
     deletefiles(filename,filetype): any {
         let header = this.getHeaders();
-        return this.http.get( this.apiUrl + "/Followups/deletefiles?filename="+filename+"&filetype="+filetype ,header);
+        return this.http.get( this.apiUrl + "/Followups/fuDeletefiles?filename="+filename+"&filetype="+filetype ,header);
     }
 
     updateFollowUpStatus(event, pid, cid, type, previousDays, fdate, treatItem = ''): Observable<any> {

@@ -477,7 +477,7 @@ export class ClinicianAnalysisService {
     // hourly rate collection
     collectionHourlyRate(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/ClinicianAnalysis/collectionHourlyRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionHourlyRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
@@ -485,7 +485,7 @@ export class ClinicianAnalysisService {
     }
     collectionHourlyRateDentist(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/ClinicianAnalysis/collectionHourlyRateDentist?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionHourlyRateDentist?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
@@ -493,7 +493,7 @@ export class ClinicianAnalysisService {
     }
     collectionHourlyRateOht(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/ClinicianAnalysis/collectionHourlyRateOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionHourlyRateOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
@@ -502,7 +502,7 @@ export class ClinicianAnalysisService {
 
     collectionHourlyRateSingle(dentist_id, clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/ClinicianAnalysis/collectionHourlyRate?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionHourlyRate?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
             .pipe(map((response: Response) => {
                 return response;
             })
@@ -511,7 +511,7 @@ export class ClinicianAnalysisService {
 
     collectionHourlyRateTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/ClinicianAnalysis/collectionHourlyRateTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionHourlyRateTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
             .pipe(map((response: Response) => {
                 return response;
             })
@@ -522,7 +522,7 @@ export class ClinicianAnalysisService {
      // hourly rate collection EXP
      collectionExpHourlyRate(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/ClinicianAnalysis/collectionExpHourlyRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpHourlyRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
@@ -530,7 +530,7 @@ export class ClinicianAnalysisService {
     }
     collectionExpHourlyRateDentist(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/ClinicianAnalysis/collectionExpHourlyRateDentist?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpHourlyRateDentist?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
@@ -538,7 +538,7 @@ export class ClinicianAnalysisService {
     }
     collectionExpHourlyRateOht(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/ClinicianAnalysis/collectionExpHourlyRateOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpHourlyRateOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
@@ -547,7 +547,7 @@ export class ClinicianAnalysisService {
 
     collectionExpHourlyRateSingle(dentist_id, clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/ClinicianAnalysis/collectionExpHourlyRate?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpHourlyRate?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
             .pipe(map((response: Response) => {
                 return response;
             })
@@ -556,7 +556,7 @@ export class ClinicianAnalysisService {
 
     collectionExpHourlyRateTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/ClinicianAnalysis/collectionExpHourlyRateTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpHourlyRateTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
             .pipe(map((response: Response) => {
                 return response;
             })

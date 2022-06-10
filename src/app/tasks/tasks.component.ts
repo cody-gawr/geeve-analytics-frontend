@@ -120,7 +120,7 @@ export class TasksComponent implements AfterViewInit, OnInit {
         this.clinic_id,
       insertUrl: environment.apiUrl + "/KanbanTasks/ktSaveTasks",
       updateUrl: environment.apiUrl + "/KanbanTasks/ktSaveTasks",
-      removeUrl: environment.apiUrl + "/KanbanTasks/delete",
+      removeUrl: environment.apiUrl + "/KanbanTasks/ktDelete",
       adaptor: new CustomAdaptor(),
       crossDomain: true,
       offline: false,

@@ -76,7 +76,7 @@ export class HealthScreenService {
     // Added by Hanney Sharma on 01-04-2021    
     getSetting(): Observable<any> { // Top production card service
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/health/getSetting", header)
+        return this.http.get(this.apiUrl + "/health/chGetSetting", header)
             .pipe(map((response: Response) => {
                 return response;
             })
