@@ -140,7 +140,7 @@ onSubmit() {
     this.rolesUsersService.getRolesIndividual(this.clinic_id).subscribe((res) => {
       if(res.message == 'success'){ 
         permision = res.data;
-        if(permision != '' && user_type != '2'){
+        if(permision != '' && user_type != '2' && user_type != '7'){
           if(permision.indexOf('healthscreen') >= 0){
               this.router.navigate(['/dashboards/healthscreen']);
           } else if(permision.indexOf('dashboard1') >= 0){
@@ -160,7 +160,7 @@ onSubmit() {
           } else {
              this.router.navigate(['/profile-settings']);
           }
-        } else  if(user_type == '2'){
+        } else  if(user_type == '2' || user_type == '7'){
           this.router.navigate(['/dashboards/healthscreen']);
         } else {
           this.router.navigate(['/profile-settings']);
@@ -181,7 +181,7 @@ onSubmit() {
         });
         if(res.plan == 'lite'){
           this.router.navigate(['/dashboards/healthscreen']);
-        } else if(permision != ''){                            
+        } else if(permision != '' && this.userType !='7'){                            
           if(permision.indexOf('healthscreen') >= 0){
               this.router.navigate(['/dashboards/healthscreen']);
           } else if(permision.indexOf('dashboard1') >= 0){
@@ -201,6 +201,8 @@ onSubmit() {
           } else {
             this.router.navigate(['/profile-settings']);
           }
+        } else  if(this.userType  == '7'){
+          this.router.navigate(['/dashboards/healthscreen'])
         } else{
           this.router.navigate(['/profile-settings']);
         }

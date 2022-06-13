@@ -486,8 +486,14 @@ export class AppHeaderrightComponent implements AfterViewInit {
             $('.settings-table-card').addClass('unauth-hide');       
             $('.page-content').addClass('unauth-hide');      
           } 
+        }else if(this.route == "/rewards" || this.route == "/clinic" || this.route == "/profile-settings"){
+          this.unAuth = false;
         } else {
-          this.router.navigate(['/profile-settings']);
+          this.unAuth = true;
+          $('.sa_dashboard_inner_content').addClass('unauth-hide');
+          $('.settings-table-card').addClass('unauth-hide');       
+          $('.page-content').addClass('unauth-hide');
+          // this.router.navigate(['/profile-settings']);
         }
       }
     }, error => {
