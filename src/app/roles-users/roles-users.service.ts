@@ -136,7 +136,7 @@ export class RolesUsersService {
         }
 
       // Update Clinic
-    updateRoleUser(id,display_name, email, user_type,selectedClinic,selected_dentist): Observable<any> {
+    updateRoleUser(id,display_name, email, user_type,selectedClinic,selected_dentist,removedClinics): Observable<any> {
     const formData = new FormData();
     var dentist= JSON.stringify(selected_dentist);
     formData.append('id', id);    
@@ -145,6 +145,7 @@ export class RolesUsersService {
     formData.append('usertype', user_type);
     formData.append('selected_dentist', dentist);
     formData.append('clinic_id', selectedClinic);
+    formData.append('removed_ids', removedClinics);
      
      var header = this.getHeaders(); 
     

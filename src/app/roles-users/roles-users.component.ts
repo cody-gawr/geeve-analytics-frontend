@@ -319,6 +319,7 @@ initiate_clinic() {
 
   @ViewChild(RolesUsersComponent) table: RolesUsersComponent;
   constructor(private toastr: ToastrService,private rolesUsersService: RolesUsersService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router, private route: ActivatedRoute, private dentistService: DentistService,private clinicService: ClinicService, private headerService: HeaderService) {
+    this.getClinics();
     this.rows = data;
     this.temp = [...data];
     setTimeout(() => {
@@ -433,8 +434,20 @@ initiate_clinic() {
       data: { id: rowData.id,clinics:this.clinics }
     });
     dialogEdit.afterClosed().subscribe(result => {
+      let removedClinics = [];
+
+      if(result != undefined){
+          const deleteId = new Set(result.selectedClinics);
+          const newArr = this.clinics.filter((name) => {
+            return !deleteId.has(name.id);
+          });
+    
+          newArr.filter((ele,i)=>{
+            removedClinics[i] = ele.id;
+          })
+      }
        if(result != undefined) {
-           this.update_user(rowData.id,result.display_name, result.email, result.user_type,result.selectedClinics,result.selected_dentist);
+           this.update_user(rowData.id,result.display_name, result.email, result.user_type,result.selectedClinics,result.selected_dentist,removedClinics);
            }
     });
   }
@@ -512,9 +525,9 @@ initiate_clinic() {
     });
   }
 
-  update_user(id,display_name, email, user_type, selectedClinic,selected_dentist) {
+  update_user(id,display_name, email, user_type, selectedClinic,selected_dentist,removedClinics) {
   $('.ajax-loader').show();
-  this.rolesUsersService.updateRoleUser(id,display_name, email, user_type, selectedClinic,selected_dentist).subscribe((res) => {
+  this.rolesUsersService.updateRoleUser(id,display_name, email, user_type, selectedClinic,selected_dentist,removedClinics).subscribe((res) => {
     $('.ajax-loader').hide();
        if(res.message == 'success'){
         this.toastr.success('User has been updated successfully!');
@@ -529,7 +542,22 @@ initiate_clinic() {
   }
 
   private getUsers() {
+    let clinics = [];
     this.rolesUsersService.getUsers().subscribe((res) => {
+  
+      this.clinics.forEach(ele=>{
+        clinics.push(ele.clinicName);
+      })
+      res.data.forEach((ele)=>{
+        let cl = [];
+        ele.clinics.split(',').forEach((e)=>{
+          if(clinics.includes(e)){
+            cl.push(e);
+          }
+        })
+        ele['clinics'] = cl.join(',');
+      })
+      
       this.rows=[];
        if(res.message == 'success'){
         this.rows = res.data;
