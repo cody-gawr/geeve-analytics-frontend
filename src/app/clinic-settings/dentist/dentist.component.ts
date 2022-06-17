@@ -143,6 +143,8 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
 
   doFilter = (value: string) => {
     this.dentistList.filter = value.trim().toLocaleLowerCase();
+    let pageNum = this.dentistList.filteredData.length;
+    this.setPaginationButtons(pageNum);
   }
 
   getAppBook(id,dentData) {

@@ -337,7 +337,9 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
   updateStatus(event, id, is_default) {
     var active = (event.checked == true) ? 1 : 0;
     this.taskService.updateTaskStatus(active, id, this.clinic_id$.value, is_default).subscribe((update: any) => {
-
+      if(update.message == "success"){
+        this.toastr.success('Task Updated');
+      }
     });
   }
 
@@ -385,7 +387,9 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
     var active = (event.checked == true) ? 1 : 0;
     this.dailyTaskEnable = event.checked;
     this.clinicSettingsService.updatePartialSetting(this.clinic_id$.value, active, 'daily_task_enable').subscribe((res) => {
-      if (res.message == 'success') { }
+      if (res.message == 'success') {
+        this.toastr.success('Task Updated');
+       }
     }, error => { });
   }
 

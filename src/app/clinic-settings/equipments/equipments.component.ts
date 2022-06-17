@@ -23,7 +23,7 @@ import Swal from 'sweetalert2';
 
 
 export class DialogOverviewExampleComponent { 
-  constructor(public dialogRef: MatDialogRef<DialogOverviewExampleComponent>,@Inject(MAT_DIALOG_DATA) public data: any,private _cookieService: CookieService,private equipmentsService: EquipmentsService, private router: Router) {}
+  constructor(public dialogRef: MatDialogRef<DialogOverviewExampleComponent>,@Inject(MAT_DIALOG_DATA) public data: any,private _cookieService: CookieService,private equipmentsService: EquipmentsService, private router: Router, private toastr: ToastrService) {}
   
   onNoClick(): void {
     this.dialogRef.close();
@@ -36,6 +36,7 @@ export class DialogOverviewExampleComponent {
 
     this.equipmentsService.addItem(data.id,data.item_name,data.quantity,data.clinic_id).subscribe((res) => {
       if (res.message == 'success') {
+        this.toastr.success('Equipment List Updated.');
         this.dialogRef.close();
       } else if (res.status == '401') {
         this.handleUnAuthorization();
@@ -143,6 +144,8 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
 
   doFilter = (value: string) => {
     this.itemList.filter = value.trim().toLocaleLowerCase();
+    let pageNum = this.itemList.filteredData.length;
+    this.setPaginationButtons(pageNum);
   }
 
 
@@ -174,7 +177,9 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
   updateStatus(event,id,is_default){
     var active = (event.checked == true)? 1 : 0;
     this.equipmentsService.updateItemStatus(active,id,this.clinic_id$.value,is_default).subscribe((update:any) => {
-      
+      if(update.message == 'success') {
+        this.toastr.success('Equipment List Updated');
+      }
     });   
   }
 
@@ -194,7 +199,9 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
     var active = (event.checked == true)? 1 : 0;
     this.EquipListEnable = event.checked;
     this.clinicSettingsService.updatePartialSetting(this.clinic_id$.value,active,'equip_list_enable' ).subscribe((res) => {
-      if(res.message == 'success') {}
+      if(res.message == 'success') {
+        this.toastr.success('Equipment List Updated');
+      }
     }, error => {});
   }
 
@@ -213,6 +220,13 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
         this.clinicSettingsService.deleteEqupList(this.clinic_id$.value,listId ).subscribe((res) => {
         if(res.message == 'success')
         {
+          Swal.fire({
+            position: 'top',
+            icon: 'success',
+            title: 'successfully deleted',
+            showConfirmButton: false,
+            timer: 1000
+          })
           this.getItems(this.clinic_id$.value);
         }
         }, error => {          

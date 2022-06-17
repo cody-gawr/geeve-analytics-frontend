@@ -9,6 +9,7 @@ import { ToastrService } from "ngx-toastr";
 import { ITooltipData } from "../shared/tooltip/tooltip.directive";
 import { AppConstants } from "../app.constants";
 import { environment } from "../../environments/environment";
+import { validateBasis } from "@angular/flex-layout";
 @Component({
   selector: "app-formlayout",
   templateUrl: "./clinic-settings.component.html",
@@ -101,6 +102,7 @@ export class ClinicSettingsComponent implements OnInit {
   }
   //initilaize component
   ngOnInit() {
+    let regex = /^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
     this.route.params.subscribe((params) => {
       this.id = this.route.snapshot.paramMap.get("id");
       this.getClinicSettings();
@@ -113,13 +115,13 @@ export class ClinicSettingsComponent implements OnInit {
       this.checkMyobStatus();
       this.getFollowUpSettings();
     });
-
+    
     if(this.apiUrl.includes('test') || this.apiUrl.includes('staging-')){
       this.form = this.fb.group({
         clinicName: [null, Validators.compose([Validators.required])],
         contactName: [null],
-        phoneNo: [null],
-        clinicEmail: [null, [Validators.email]],
+        phoneNo: [null,[Validators.pattern(regex)]],
+        clinicEmail: [null, [Validators.email,Validators.required]],
         address: [null],
         timezone: [null],
         // practice_size: [null, Validators.compose([Validators.required])],

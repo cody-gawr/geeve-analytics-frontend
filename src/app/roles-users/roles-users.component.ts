@@ -179,7 +179,8 @@ show_dentist = false;
     }
     save(userData) {
     $('.mat-form-control').click();
-    if(userData.display_name != undefined && userData.email != undefined && userData.user_type != '' &&  this.selectedClinics.value != ''){
+    let name = userData.display_name.trim();
+    if(userData.display_name != undefined && name != "" && userData.email != undefined && userData.user_type != '' &&  this.selectedClinics.value != ''){
       userData.selectedClinics= this.selectedClinics.value;
       userData.selected_dentist = this.selected_dentist;
       if(this.show_dentist == true)

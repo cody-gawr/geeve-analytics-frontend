@@ -35,7 +35,7 @@
                                         </div>
                                     </div>
                                     <mat-card-actions class="text-right">
-                                        <button mat-raised-button color="dc" type="button" (click)="onSubmitBasic()">SAVE</button>
+                                        <button mat-raised-button color="dc" [disabled]="!formSettings.valid" type="button" (click)="onSubmitBasic()">SAVE</button>
                                     </mat-card-actions>
                                 </form>
                             </div>
