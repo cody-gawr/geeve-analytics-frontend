@@ -629,7 +629,7 @@ initiate_clinic() {
       if(result.value){
           $('.ajax-loader').show();
           if(rowData.id) {
-          this.rolesUsersService.deleteUser(rowData.id).subscribe((res) => {
+          this.rolesUsersService.deleteUser(rowData.id,rowData.usertype).subscribe((res) => {
             $('.ajax-loader').hide();
                if(res.message == 'success'){
                 this.toastr.success('User Removed');

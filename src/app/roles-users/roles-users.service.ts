@@ -79,9 +79,10 @@ export class RolesUsersService {
     }
 
        // Delete Clinic
-    deleteUser(userId): Observable<any> {
+    deleteUser(userId,usertype): Observable<any> {
         const formData = new FormData();
-        formData.append('id', userId);        
+        formData.append('id', userId);  
+        formData.append('del_user_type', usertype);      
         var header = this.getHeaders(); 
         return this.http.post(this.apiUrl +"/Users/userDelete", formData, header)
         .pipe(map((response: Response) => {
