@@ -229,6 +229,10 @@ public selectedClinicProviders=[];
     }, error => {
     });
   }
+
+  changeStatus(userStatus){
+    this.userData.status = userStatus == true ? 1 : 2;
+  }
 }
 
 @Component({
@@ -448,7 +452,7 @@ initiate_clinic() {
           })
       }
        if(result != undefined) {
-           this.update_user(rowData.id,result.display_name, result.email, result.user_type,result.selectedClinics,result.selected_dentist,removedClinics);
+           this.update_user(rowData.id,result.display_name, result.email, result.user_type,result.selectedClinics,result.selected_dentist,removedClinics,result.status);
            }
     });
   }
@@ -526,9 +530,9 @@ initiate_clinic() {
     });
   }
 
-  update_user(id,display_name, email, user_type, selectedClinic,selected_dentist,removedClinics) {
+  update_user(id,display_name, email, user_type, selectedClinic,selected_dentist,removedClinics,status) {
   $('.ajax-loader').show();
-  this.rolesUsersService.updateRoleUser(id,display_name, email, user_type, selectedClinic,selected_dentist,removedClinics).subscribe((res) => {
+  this.rolesUsersService.updateRoleUser(id,display_name, email, user_type, selectedClinic,selected_dentist,removedClinics,status).subscribe((res) => {
     $('.ajax-loader').hide();
        if(res.message == 'success'){
         this.toastr.success('User has been updated successfully!');
@@ -666,7 +670,9 @@ initiate_clinic() {
 
     // filter our data
     const temp = this.temp.filter(function(d) {
-      return d.displayName.toLowerCase().indexOf(val) !== -1 || !val;
+      if(d.displayName != null){
+        return d.displayName.toLowerCase().indexOf(val) !== -1 || !val;
+      }
     });
     // update the rows
     this.rows = temp;

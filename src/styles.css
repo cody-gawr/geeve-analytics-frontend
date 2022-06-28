@@ -573,7 +573,7 @@
 .fixed-top-sidebar-logo {
   position  : sticky;
   top       : 0;
-  width     : 100%;
+  width     : 103%;
   left      : 0;
   background: #fff;
   z-index   : 99;
@@ -8002,9 +8002,9 @@ input[type="checkbox"] {
   cursor: pointer;
 }
 
-mat-sidenav:hover .ps__thumb-y {
+/* mat-sidenav:hover .ps__thumb-y {
   background-color: #e9f1ee !important;
-}
+} */
 
 .ps__thumb-y {
   background-color: transparent !important;
@@ -8752,4 +8752,22 @@ ul.ngx-pagination.ng-star-inserted {
 
 .unauth-hide {
   display: none;
+}
+
+.mat-drawer-inner-container {
+  width: 10px;
+  overflow: auto !important;
+}
+
+.mat-drawer-inner-container::-webkit-scrollbar {
+  width: 10px;
+  background: -moz-linear-gradient(top, #fff 20%, rgba(0, 111, 115, 1) 99%);
+  background: -webkit-linear-gradient(top, #fff 20%, rgba(0, 111, 115, 1) 99%);
+  background: linear-gradient(to bottom, #fff 20%, rgba(0, 111, 115, 1) 99%);
+  background-repeat: no-repeat;
+}
+.mat-drawer-inner-container::-webkit-scrollbar-thumb {
+  background: -moz-linear-gradient(top, #fff 20%, rgba(0, 111, 115, 1) 99%);
+  background: -webkit-linear-gradient(top, #fff 20%, rgba(0, 111, 115, 1) 99%);
+  background: linear-gradient(to bottom, #fff 20%, rgba(0, 111, 115, 1) 99%);
 }
