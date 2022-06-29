@@ -173,15 +173,18 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 		this.endDate = this.datepipe.transform(new Date(this.selectedYear, this.selectedMonth, 0), 'yyyy-MM-dd');
 		let currentdate = new Date(this.endDate);
 		let subMonths = this.selectedMonthRange + 1;
-		let sDate = new Date(currentdate.setMonth(currentdate.getMonth() - subMonths)).toISOString().slice(0, 10);
-		let sMonth: any = this.datepipe.transform(sDate, 'M');
-		let sYear: any = this.datepipe.transform(sDate, 'yyyy');
+		// let sDate = new Date(currentdate.setMonth(currentdate.getMonth() - subMonths)).toISOString().slice(0, 10);
+		// let sMonth: any = this.datepipe.transform(sDate, 'M');
+		// let sYear: any = this.datepipe.transform(sDate, 'yyyy');
 		let selectedMonthYear = this.datepipe.transform(this.selectedMonthYear, 'M');
 		let currenteMonth = this.datepipe.transform(new Date(),'M');
 		if(selectedMonthYear == currenteMonth){
 			this.endDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
 		}
-		this.startDate = this.datepipe.transform(new Date(sYear, sMonth), 'yyyy-MM-dd');
+		currentdate.setDate(1);
+		currentdate.setMonth((currentdate.getMonth() + 1) - subMonths);
+		this.startDate = this.datepipe.transform(new Date(currentdate), 'yyyy-MM-dd');
+		// this.startDate = this.datepipe.transform(new Date(sYear, sMonth), 'yyyy-MM-dd');
 		var dentistVal;
 		// if ($('.internal_dentist').val())
 		// 	dentistVal = $('.internal_dentist').val();
