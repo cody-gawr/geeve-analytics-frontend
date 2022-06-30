@@ -21,7 +21,7 @@
   boolean { 
         if (this._cookieService.get("userid")) {
           let urlActive = this.activatedRoute.path();
-          if(this._cookieService.get("stepper") && parseInt(this._cookieService.get("stepper"))  < 6 && urlActive != '/setup' && urlActive != '/login'){
+          if(this._cookieService.get("stepper") && parseInt(this._cookieService.get("stepper"))  < 4 && urlActive != '/setup' && urlActive != '/login'){
             this.router.navigateByUrl('/login');
             //this.router.navigateByUrl('/setup');  
           } else {
