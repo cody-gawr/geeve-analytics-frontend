@@ -37,6 +37,16 @@ export class SetupService {
         );
     }
 
+    // Get getConnectCoreLink
+    getConnectCoreLink(clinic_id): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/corepractice/getAuthorizeUrl?clinic_id="+clinic_id, header)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
     getPMSLink(): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/users/userGetPMS/token", header)
@@ -112,15 +122,14 @@ export class SetupService {
             );
     }
 
-    addClinic(name,address,phone_no,clinicEmail,displayName,days): Observable<any> {
+    addClinic(name,displayName,days,pms,coreURL): Observable<any> {
     const formData = new FormData();
-
+    // address,phone_no,clinicEmail,
     formData.append('clinicName', name);
-    formData.append('address', address);
-    formData.append('phoneNo', phone_no);
-    formData.append('clinicEmail', clinicEmail);    
     formData.append('display_name', displayName);    
+    formData.append('pms', pms);    
     formData.append('days', days);    
+    formData.append('coreURL', coreURL);    
     /*formData.append('contactName', contact_name);*/
     /*formData.append('facebook', facebook);
     formData.append('twitter', twitter);
@@ -134,5 +143,42 @@ export class SetupService {
                         return response;
                     })
         );
-    }       
+    } 
+    
+    getClinicLocation(clinic_id): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/corepractice/getLocations?clinic_id="+clinic_id, header)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+    saveClinicLocation(clinic_id,location_id): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/corepractice/saveLocation?clinic_id="+clinic_id+"&location_id="+location_id, header)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+    checkCoreStatus(clinic_id): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/corepractice/checkStatus?clinic_id="+clinic_id, header)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+    checkCoreSyncStatus(clinic_id): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/corepractice/checkCoreSyncStatus?clinic_id="+clinic_id, header)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
 }

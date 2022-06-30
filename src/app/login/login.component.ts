@@ -99,9 +99,9 @@ onSubmit() {
         this._cookieService.put("dentist_toggle", 'false', opts);
       }
       var self = this;
-      if(datares['parent_stepper'] != 'no' && parseInt(datares['parent_stepper']) < 6 ) {
+      if(datares['parent_stepper'] != 'no' && parseInt(datares['parent_stepper']) < 4 ) {
         this.router.navigate(['/setup']);
-      } else if(parseInt(datares['stepper_status']) < 6 && datares['user_type'] == '2') {
+      } else if(parseInt(datares['stepper_status']) < 4 && datares['user_type'] == '2') {
         this.router.navigate(['/setup']);
       } else  if(datares['user_type'] == '2') {
           this.router.navigate(['/dashboards/healthscreen']);

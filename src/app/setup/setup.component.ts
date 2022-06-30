@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, Inject, AfterViewInit } from '@angular/core';
 import { SetupService } from './setup.service';
 import { CookieService } from "ngx-cookie";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -8,6 +8,9 @@ import { PlansService } from '../plans/plans.service';
 import { ToastrService } from 'ngx-toastr';
 import { Location } from "@angular/common";
 import { environment } from "../../environments/environment";
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {FormControl} from '@angular/forms';
 import {
   FormBuilder,
   FormGroup,
@@ -15,6 +18,7 @@ import {
   FormArray
 } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
+import { core } from '@angular/compiler';
 
 
 @Component({
@@ -52,9 +56,11 @@ export class SetupComponent implements AfterViewInit {
   stepVal:any = 0;
   public displayName;
   public name;
+  public pms;
   public phone_no;
   public clinicEmail;
   public address;
+  public connectToCoreLink;
 
   public urlPattern=/^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
   public connectedStripe=true;
@@ -68,6 +74,9 @@ export class SetupComponent implements AfterViewInit {
   public userRows= 2;
   public rows:any = [];
   public fileToUpload;
+  public showCorePractice : boolean ;
+
+  public LocationData;
 
 usersArray = new Array(this.userRows);
   omit_special_char(event)
@@ -176,7 +185,7 @@ usersArray = new Array(this.userRows);
   }*/
   minDate = new Date('1990-01-01');
    maxDate = new Date();
-  constructor(private _formBuilder: FormBuilder,private clinicService: ClinicService, private setupService: SetupService, private _cookieService: CookieService, private router: Router, private route: ActivatedRoute,private rolesUsersService: RolesUsersService,private toastr: ToastrService,private plansService: PlansService, private _location: Location){
+  constructor(private _formBuilder: FormBuilder,private clinicService: ClinicService, private setupService: SetupService, private _cookieService: CookieService, private router: Router, private route: ActivatedRoute,private rolesUsersService: RolesUsersService,private toastr: ToastrService,private plansService: PlansService, private _location: Location,  public dialog: MatDialog){
     
   }
 
@@ -201,22 +210,26 @@ usersArray = new Array(this.userRows);
   public reportsStatus:any = [];
   public reportsStatusInfo:boolean = false;
    public workingDays:any = {sunday: false,monday: true,tuesday: true,wednesday: true,thursday: true,friday: true,saturday: true}; 
-
+  public  PMS = [
+    {id:1,pms_name:'D4w'},
+    {id:2,pms_name:'Core Practice'}
+  ];
 
 
   ngOnInit() {
     let currentStep = parseInt(this._cookieService.get("stepper"))
-    if(currentStep > 6){
+    if(currentStep > 5){
       this.router.navigateByUrl('/login');
     }
 
     this.firstFormGroup = this._formBuilder.group({
       name: [null, Validators.compose([Validators.required])],
-      phone_no: [null, Validators.compose([Validators.required])],
-      clinicEmail: [null, Validators.compose([Validators.required, CustomValidators.email])],
-      address: [null, Validators.compose([Validators.required])],  
+      pms: [null, Validators.compose([Validators.required])],
+      // phone_no: [null, Validators.compose([Validators.required])],
+      // clinicEmail: [null, Validators.compose([Validators.required, CustomValidators.email])],
+      // address: [null, Validators.compose([Validators.required])],  
       displayName: [null, Validators.compose([Validators.required])],  
-
+      coreURL: [null, Validators.compose([Validators.pattern(this.urlPattern)])]
      /* facebook: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
       twitter: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
       linkedin: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
@@ -233,7 +246,10 @@ usersArray = new Array(this.userRows);
     this.id = this._cookieService.get("userid");
   }
 
-
+  changePmsSelection(val){
+    this.showCorePractice = val == 'core' ? true : false;
+    
+  }
 
  private getClinics() {
     this.rows=[];
@@ -242,10 +258,12 @@ usersArray = new Array(this.userRows);
           this.rows = res.data;
           if(res.data.length > 0) {
             this.clinic_id = res.data[0]['id'];
+            this.showCorePractice = res.data[0]['pms'] == 'core' ? true : false;
             if(this.clinic_id){
               //this.getClinicSettings();
               this.checkXeroStatus(false);
               this.checkMyobStatus(false);
+              this.getConnectCoreLink();
             }            
           }          
           if(this._cookieService.get("stepper"))
@@ -276,43 +294,31 @@ usersArray = new Array(this.userRows);
   this.step3editable=true;
   this.step4Completed=false;
   this.step4editable=true;
-  this.step5Completed=false;
-  this.step5editable=true;
-  this.step6Completed=false;
-  this.step6editable=true;
 
   if(selectedIndex >= 1) {
     this.step1Completed=true;
     this.step1editable=false;
   }
 
-if(selectedIndex >= 2) {
-    this.step2Completed=true;
-    this.step2editable=false;
- }
-
- if(selectedIndex >= 3) {
-    this.step3Completed=true;
-    this.step3editable=false;
+  if(selectedIndex >= 2) {
+      this.step2Completed=true;
+      this.step2editable=false;
   }
 
- if(selectedIndex >= 4) {
-    this.step4Completed=true;
-    this.step4editable=false;
+  if(selectedIndex >= 3) {
+      this.step3Completed=true;
+      this.step3editable=false;
+    }
+
+  if(selectedIndex >= 4) {
+      this.step4Completed=true;
+      this.step4editable=false;
+    }
+  if(selectedIndex == 2 && this.showCorePractice) {
+    this.coreSyncStatus();
   }
-  if(selectedIndex == 4) {
+  if(selectedIndex == 2 && !this.showCorePractice) {
     this.checkRepotrs();
-  }
-
- if(selectedIndex >= 5) {
-    this.step5Completed=true;
-    this.step5editable=false;
-
-  }
-  if(selectedIndex >= 6) {
-    this.step6Completed=true;
-    this.step6editable=false;
-
   }
   this.selectedIndex = selectedIndex;
 
@@ -321,6 +327,24 @@ if(selectedIndex >= 2) {
     this.setupService.getXeroLink(this.clinic_id).subscribe((res) => {
        if(res.message == 'success'){
         this.xero_link = res.data;
+       }
+        else if(res.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );  
+  }
+
+  getConnectCoreLink(){
+    // this.clinic_id = 186;
+    this.setupService.getConnectCoreLink(this.clinic_id).subscribe((res) => {
+       if(res.message == 'success'){
+         this.connectToCoreLink = res.data;
        }
         else if(res.status == '401'){
             this._cookieService.put("username",'');
@@ -461,11 +485,25 @@ if(selectedIndex >= 2) {
 
 
   saveclinic(stepper) {
-    let name     =this.firstFormGroup.controls.name.value;
-    let phone_no =this.firstFormGroup.controls.phone_no.value;
-    let clinicEmail =this.firstFormGroup.controls.clinicEmail.value;
-    let address  =this.firstFormGroup.controls.address.value;
+    let name =this.firstFormGroup.controls.name.value;
+    // let phone_no =this.firstFormGroup.controls.phone_no.value;
+    // let clinicEmail =this.firstFormGroup.controls.clinicEmail.value;
+    // let address  =this.firstFormGroup.controls.address.value;
     let displayName  =this.firstFormGroup.controls.displayName.value;
+    let pms  =this.firstFormGroup.controls.pms.value;
+    
+    var coreURL = "";
+
+    if(pms == 'core'){
+      let url : string  =this.firstFormGroup.controls.coreURL.value;
+      let https = 'https';
+      if(url.includes(https)){
+        coreURL = url;
+      }else{
+        coreURL = "https://"+url;
+      }
+    }
+
     let days = JSON.stringify(this.workingDays);   
   /*  let facebook =this.firstFormGroup.controls.facebook.value;
     let twitter  =this.firstFormGroup.controls.twitter.value;
@@ -473,13 +511,17 @@ if(selectedIndex >= 2) {
     let instagram =this.firstFormGroup.controls.instagram.value;
 */
       $('.ajax-loader').show();
-       this.setupService.addClinic(name,address,phone_no,clinicEmail,displayName,days ).subscribe((res) => {
+      // address,phone_no,clinicEmail,
+       this.setupService.addClinic(name,displayName,days,pms,coreURL).subscribe((res) => {
        $('.ajax-loader').hide();
         if(res.message == 'success'){
           this.clinic_id = res.data.id;
           this._cookieService.put("display_name", displayName);
-          this.getXeroLink();  
-
+          if(res.data.pms == 'core'){
+            this.getConnectCoreLink();
+          }else{
+            this.getXeroLink();
+          }
           //this.getClinicSettings();
           this.stepVal = 1;
        this.updateStepperStatus(); 
@@ -516,9 +558,6 @@ if(selectedIndex >= 2) {
     this.formArr.removeAt(index);
   }
 
-abc(data) {
-  //console.log(data);
-}
 
 
   checkUserEmail(display_name, email, user_type) { 
@@ -555,16 +594,17 @@ abc(data) {
 
   updateStepperStatus() {
       this.setupService.updateStepperStatus().subscribe((res) => {
+        
        $('.ajax-loader').hide();
         if(res.message == 'success'){
-          if(this.stepVal < 6 ) {
+          if(this.stepVal < 4 ) {
           var stepper1 = parseInt(this.stepVal) + 1;
            this._cookieService.put("stepper", stepper1.toString());
             this.refreshTabs();
 
             
           } else {
-             this._cookieService.put("stepper", "7");
+             this._cookieService.put("stepper", "4");
              this.router.navigateByUrl('/dashboards/cliniciananalysis');
           }
            // console.log(this._cookieService.get("stepper"));
@@ -606,15 +646,54 @@ abc(data) {
     this.updateStepperStatus(); 
   }*/
   skipDownloadSyncUtility() {
-    this.stepVal = 4;
+    this.stepVal = 3;
     this.updateStepperStatus(); 
+  }
+
+  connectToCore(){ 
+    var win = window.open(this.connectToCoreLink, "MsgWindow", "width=1000,height=800");
+    var self = this;
+   var timer = setInterval(function() { 
+      if(win.closed) {
+        self.checkCoreStatus();
+        // self.getClinicLocation(); //--
+        clearTimeout(timer);
+      }
+    }, 1000);
+  }
+  public checkCoreStatus(){
+    this.setupService.checkCoreStatus(this.clinic_id).subscribe((res) => {
+       if(res.message == 'success'){
+         if(res.data.refresh_token && res.data.token)
+            this.getClinicLocation();
+       }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });  
+  }
+
+  public coreSyncStatus(){
+    this.setupService.checkCoreSyncStatus(this.clinic_id).subscribe((res) => {
+      if(res.message == 'success'){
+        if(res.data == 1){
+            this.stepVal = 3;
+            this.updateStepperStatus();
+        }else{
+          setTimeout(() => {
+            this.coreSyncStatus();
+          }, 10000);
+        }
+      }
+   }, error => {
+     this.warningMessage = "Please Provide Valid Inputs!";
+   });  
   }
 
   downloadPMS(){
     this.setupService.getPMSLink().subscribe((res) => {
-        var winP = window.open(this.apiUrl+res.data+this.clinic_id, "_blank");      
-        this.stepVal = 4;
-        this.updateStepperStatus(); 
+        var winP = window.open(this.apiUrl+res.data+this.clinic_id, "_blank");    
+        this.stepVal = 2;
+        this.updateStepperStatus();
       }, error => {
           this.toastr.error('Some Error Occur. Please try later.');
           this._cookieService.put("username",'');
@@ -623,11 +702,9 @@ abc(data) {
           this.router.navigateByUrl('/login');
       }    
     ); 
-
-   
   }
   downloadPMSAgain(){
-     this.stepVal = 3;
+     this.stepVal = 1;
      var stepper1 = parseInt(this.stepVal);
     this._cookieService.put("stepper", stepper1.toString());
      this.updateStepperStatus(); 
@@ -636,13 +713,14 @@ abc(data) {
      },1000);
   }
   finish(){
-     this.stepVal = 6;
+     this.stepVal = 4;
      this.updateStepperStatus(); 
   }
 
   checkRepotrs(){   
      var selfO = this;
      selfO.setupService.checkReportsStatus(selfO.clinic_id).subscribe((res) => {
+       
           let urlActive = this._location.path();
           this.reportsStatusInfo = true;
           if(res.message == 'noStart')
@@ -662,7 +740,7 @@ abc(data) {
               }, 10000);
             }
           } else if(res.message == 'Completed') {            
-            selfO.stepVal = 5;
+            selfO.stepVal = 3;
             selfO.updateStepperStatus(); 
           }
       }, error => {
@@ -706,4 +784,67 @@ abc(data) {
 
   }
 }
+
+openLocationDialog(): void {
+  const dialogRef = this.dialog.open(DialogLocationDialogComponent, {
+    width: '600px',
+    data: { location: this.LocationData }
+  });
+  dialogRef.afterClosed().subscribe(result => {
+
+    if(result != undefined){
+      let location_id = result;
+      this.setupService.saveClinicLocation(this.clinic_id,location_id).subscribe(res=>{
+        if(res.message == 'success'){
+          this.stepVal = 2;
+          this.updateStepperStatus();
+        }
+      })
+    }
+  });
+}
+
+getClinicLocation(){
+  this.setupService.getClinicLocation(this.clinic_id).subscribe(res=>{
+    if(res.message == 'success'){
+      this.LocationData = [...res.data];
+      this.openLocationDialog();
+    }
+  })
+}
+
+}
+
+@Component({
+  selector: 'dialog-location',
+  templateUrl: './dialog-location.html'
+})
+
+export class DialogLocationDialogComponent{
+  public selectedLocation : any = null;
+  constructor(public dialogRef: MatDialogRef<DialogLocationDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: any, setupService : SetupService) 
+  {
+  }
+  public selectLocation=new FormControl();
+
+  onNoClick(){
+    this.dialogRef.close();
+  }
+  save(data) {
+    this.dialogRef.close(data);
+    // $('.mat-form-control').click();
+    // if(data.display_name != undefined && data.email != undefined && data.user_type != '' &&  this.selectedClinics.value != ''){      
+    //   data.selectedClinics= this.selectedClinics.value;
+    //   data.selected_dentist = this.selected_dentist;
+    //   if(this.show_dentist == true)
+    //     this.dialogRef.close(data);
+    //   else if(this.show_dentist == false)
+    //      this.dialogRef.close(data);
+    // }
+  }
+
+  selectLocationChange(e){
+    this.selectedLocation = e;
+  }
+
 }

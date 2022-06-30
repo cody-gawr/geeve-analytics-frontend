@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { SetupComponent } from './setup.component';
+import { DialogLocationDialogComponent, SetupComponent } from './setup.component';
 import { SetupRoutes } from './setup.routing';
 import {MatInputModule} from '@angular/material/input';
 import { DemoMaterialModule } from '../demo-material-module';
@@ -11,7 +11,7 @@ import { ClinicService } from '../clinic/clinic.service';
 import { PlansService } from '../plans/plans.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
 @NgModule({
-  declarations: [SetupComponent],
+  declarations: [SetupComponent,DialogLocationDialogComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(SetupRoutes),
@@ -21,6 +21,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     ReactiveFormsModule,
     FlexLayoutModule
   ],
+  entryComponents: [DialogLocationDialogComponent],
   providers: [
        SetupService,ClinicService,PlansService
   ]
