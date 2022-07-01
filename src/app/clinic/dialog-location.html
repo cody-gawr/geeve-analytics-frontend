@@ -1,0 +1,16 @@
+<div class="AddUserPopup"> 
+    <h1 mat-dialog-title>Select Clininc location</h1>
+    <div mat-dialog-content class="sa_forms_design">
+    <div class="sa-form-group">
+        <label>Select Location</label>
+         <select required="true" class="sa_select mat-form-control" name="clinic_location" [(ngModel)]="selectedLocation" (ngModelChange)="selectLocationChange($event)">
+            <option [ngValue]="null" selected disabled>--- Select Location ---</option>
+            <option *ngFor="let location of data.location" [ngValue]="location.Identifier" [disabled]="checkUserSelection(location)">{{location.LocationName}}</option>
+       </select> 
+    </div>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
+      <button mat-button (click)="save(selectedLocation)"  tabindex="2" class="mat-raised-button mat-dc">Ok</button>
+    </div>
+</div>

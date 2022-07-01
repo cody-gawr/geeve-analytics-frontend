@@ -229,7 +229,7 @@ usersArray = new Array(this.userRows);
       // clinicEmail: [null, Validators.compose([Validators.required, CustomValidators.email])],
       // address: [null, Validators.compose([Validators.required])],  
       displayName: [null, Validators.compose([Validators.required])],  
-      coreURL: [null, Validators.compose([Validators.pattern(this.urlPattern)])]
+      coreURL: [null, '']
      /* facebook: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
       twitter: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
       linkedin: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
@@ -248,7 +248,12 @@ usersArray = new Array(this.userRows);
 
   changePmsSelection(val){
     this.showCorePractice = val == 'core' ? true : false;
-    
+    if(this.showCorePractice)
+      this.form.get('coreURL').setValidators([Validators.required, Validators.pattern(this.urlPattern)]);
+    else{
+      this.form.get('coreURL').clearValidators();
+      this.form.get('coreURL').updateValueAndValidity();
+    }
   }
 
  private getClinics() {
@@ -824,6 +829,7 @@ export class DialogLocationDialogComponent{
   public selectedLocation : any = null;
   constructor(public dialogRef: MatDialogRef<DialogLocationDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: any, setupService : SetupService) 
   {
+    dialogRef.disableClose = true;
   }
   public selectLocation=new FormControl();
 

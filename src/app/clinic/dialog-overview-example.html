@@ -21,9 +21,27 @@
     <small *ngIf="form.controls['contact_name'].hasError('required') && form.controls['contact_name'].touched" class="text-danger support-text">Contact Name is Required.</small>
     <!--  <input type="file" (change)="onChange($event)"> -->
   </div>
-     
+
+  <div class="sa-form-group">
+    <label>Select PMS</label>
+    <select class="form-control" (ngModelChange)="selectPMS($event)" [(ngModel)]="data.pms" [formControl]="form.controls['pms']" required="true" class="sa_select form-control" name="pms">
+      <option value ="d4w">D4w</option>
+      <option value ="core">Core Practice</option>
+  </select> 
+    <small *ngIf="form.controls['pms'].hasError('required') && form.controls['pms'].touched" class="text-danger support-text">PMS is Required.</small>
+  </div>
+
+  <div *ngIf="showConnectButton" class="sa-form-group">
+    <input tabindex="1" name="coreURL" [(ngModel)]="data.coreURL" placeholder="Your Core URL" class="form-control-dialog" [formControl]="form.controls['coreURL']" >
+    <small *ngIf="form.controls['coreURL'].hasError('required') && form.controls['coreURL'].touched" class="text-danger support-text">Core URL is Required.</small>
+      <small *ngIf="form.controls['coreURL'].hasError('pattern') && form.controls['coreURL'].touched" class="text-danger support-text">Core URL must valid !.</small>
+  </div>
+
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
-   <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc"  [disabled]="!form.valid">Ok</button>
+   <button *ngIf="!showConnectButton" mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc"  [disabled]="!form.valid">Ok</button>
+   <button *ngIf="showConnectButton" mat-button class="mat-raised-button mat-dc" (click)="save(data)" [disabled]="!form.valid">
+    CONNECT TO CORE
+  </button>
 </div>

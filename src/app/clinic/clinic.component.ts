@@ -9,10 +9,14 @@ import { ToastrService } from 'ngx-toastr';
 import { HeaderService } from './../layouts/full/header/header.service';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   Validators
 } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { SetupService } from '../setup/setup.service';
+import { identifierName } from '@angular/compiler';
+import { newArray } from '@angular/compiler/src/util';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -24,16 +28,22 @@ import Swal from 'sweetalert2';
 
 export class DialogOverviewExampleDialogComponent {
   public form: FormGroup;
+  public isConnectedCore :boolean = false;
+  public showConnectButton : boolean = false;
+  public urlPattern=/^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+
   constructor(private fb: FormBuilder,
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-
+    dialogRef.disableClose = true;
     this.form = this.fb.group({
       name: [null, Validators.compose([Validators.required])],
       address: [null, Validators.compose([Validators.required])],
       //   patient_dob: [null, Validators.compose([Validators.required])],
-      contact_name: [null, Validators.compose([Validators.required])]
+      contact_name: [null, Validators.compose([Validators.required])],
+      pms: [null, Validators.compose([Validators.required])],
+      coreURL: [null, '']
     });
   }
 
@@ -57,6 +67,18 @@ export class DialogOverviewExampleDialogComponent {
     let files: FileList = target.files;
     this.file = files[0];
     //  this.filedata =this.file;
+  }
+  connectToCore(){
+    this.isConnectedCore = true;
+  }
+  selectPMS(data){
+    this.showConnectButton = (data == 'core') ? true : false;
+    if(this.showConnectButton){
+      this.form.get('coreURL').setValidators([Validators.required, Validators.pattern(this.urlPattern)]);
+    }else{
+      this.form.get('coreURL').clearValidators();
+      this.form.get('coreURL').updateValueAndValidity();
+    }
   }
 }
 
@@ -98,9 +120,13 @@ export class ClinicComponent implements AfterViewInit {
   name: string;
   address: string;
   contact_name: string;
+  pms: string;
+  coreURL: string;
   public userPlan: any = '';
   public user_type: any = '';
   fileInput: any;
+  public availabeLocations;
+
   //initialize component
   ngAfterViewInit() {
     this.getUserDetails();
@@ -127,7 +153,7 @@ export class ClinicComponent implements AfterViewInit {
   columns = [{ prop: 'sr' }, { name: 'clinicName' }, { name: 'address' }, { name: 'contactName' }, { name: 'created' }];
 
   @ViewChild(ClinicComponent) table: ClinicComponent;
-  constructor(private toastr: ToastrService, private clinicService: ClinicService, public dialog: MatDialog, private _cookieService: CookieService, private router: Router, private headerService: HeaderService) {
+  constructor(private toastr: ToastrService, private clinicService: ClinicService, public dialog: MatDialog, private _cookieService: CookieService, private router: Router, private headerService: HeaderService, private setupService : SetupService) {
 
     this.rows = data;
     this.temp = [...data];
@@ -140,20 +166,42 @@ export class ClinicComponent implements AfterViewInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '400px',
-      data: { name: this.name, address: this.address, contact_name: this.contact_name }
+      data: { name: this.name, address: this.address, contact_name: this.contact_name, pms: this.pms, coreURL: this.coreURL }
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.clinicService.addClinic(result.name, result.address, result.contact_name).subscribe((res) => {
-        if (res.message == 'success') {
-          this.toastr.success('Clinic Added!');
-          this.getClinics();
-        } else {
-          this.toastr.error(res.data);
+      if(result != undefined){
+
+        if(result.coreURL == undefined)
+            result.coreURL = "";
+
+        var coreURL = "";
+        if(result.pms == 'core'){
+          let url : string = result.coreURL;
+          let https = 'https';
+          if(url.includes(https)){
+            coreURL = url;
+          }else{
+            coreURL = "https://"+url;
+          }
         }
-      }, error => {
-        this.warningMessage = "Please Provide Valid Inputs!";
+        
+        this.clinicService.addClinic(result.name, result.address, result.contact_name, result.pms, coreURL).subscribe((res) => {
+          if (res.message == 'success') {
+            if(res.data.pms == 'core'){
+              let id = res.data.id;  
+              this.getConnectCoreLink(id);
+            }else{
+              this.toastr.success('Clinic Added!');
+            }
+            this.getClinics();
+          } else {
+            this.toastr.error(res.data);
+          }
+        }, error => {
+          this.warningMessage = "Please Provide Valid Inputs!";
+        }
+        );
       }
-      );
     });
   }
   //open clinic limit dialog
@@ -315,4 +363,105 @@ export class ClinicComponent implements AfterViewInit {
     }
   }
 
+  private getConnectCoreLink(id){
+    this.setupService.getConnectCoreLink(id).subscribe((res) => {
+       if(res.message == 'success'){
+         let connectToCoreLink = res.data;
+         this.connectToCore(connectToCoreLink,id);
+       }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );  
+  }
+  private connectToCore(link,id){ 
+    var win = window.open(link, "MsgWindow", "width=1000,height=800");
+    var self = this;
+   var timer = setInterval(function() { 
+      if(win.closed) {
+        self.checkCoreStatus(id);
+        clearTimeout(timer);
+      }
+    }, 1000);
+  }
+
+  private checkCoreStatus(id){
+    this.setupService.checkCoreStatus(id).subscribe((res) => {
+       if(res.message == 'success'){
+         if(res.data.refresh_token && res.data.token)
+            this.getClinicLocation(id);
+       }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });  
+  }
+  
+  private getClinicLocation(id){
+    this.setupService.getClinicLocation(id).subscribe(res=>{
+      if(res.message == 'success'){
+        this.availabeLocations = [...res.data];
+        this.checkMappedLocations();
+        this.openLocationDialog(id);
+      }
+    })
+  }
+
+openLocationDialog(id): void {
+    const dialogRef = this.dialog.open(DialogLocationDialogComponent, {
+      width: '600px',
+      data: { location: this.availabeLocations }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result != undefined){
+        let location_id = result;
+        this.setupService.saveClinicLocation(id,location_id).subscribe(res=>{
+          if(res.message == 'success'){
+            this.toastr.success('Clinic Added!');
+          }
+        })
+      }
+    });
+  }
+
+  private checkMappedLocations(){
+    this.clinicService.checkMappedLocations().subscribe(res=>{
+      if(res.message == "success"){
+        this.availabeLocations.filter(location=>{
+            res.data.forEach(ele => {
+              if(location.Identifier == ele.location_id){
+                location.DisplayName += "(has)";
+              }
+            });
+        })
+      }  
+    })
+  }
+
+}
+
+
+@Component({
+  selector: 'dialog-location',
+  templateUrl: './dialog-location.html'
+})
+
+export class DialogLocationDialogComponent{
+  public selectedLocation : any = null;
+  constructor(public dialogRef: MatDialogRef<DialogLocationDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: any) 
+  {
+    dialogRef.disableClose = true;
+  }
+  onNoClick(){
+    this.dialogRef.close();
+  }
+  save(data) {
+    this.dialogRef.close(data);
+  }
+  selectLocationChange(e){
+    this.selectedLocation = e;
+  }
+  checkUserSelection(location){
+    let has :string = location.DisplayName +="";
+    return has.includes("(has)");
+  }
 }
