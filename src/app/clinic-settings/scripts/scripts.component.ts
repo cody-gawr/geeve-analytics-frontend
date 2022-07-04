@@ -149,6 +149,8 @@ export class ScriptsComponent extends BaseComponent implements AfterViewInit {
 
   doFilter = (value: string) => {
     this.scriptList.filter = value.trim().toLocaleLowerCase();
+    let pageNum = this.scriptList.filteredData.length;
+    this.setPaginationButtons(pageNum);
   }
 
   public scriptsLoader: boolean = false;

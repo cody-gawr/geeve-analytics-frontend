@@ -308,6 +308,8 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
 
   doFilter = (value: string) => {
     this.tasksList.filter = value.trim().toLocaleLowerCase();
+    let pageNum = this.tasksList.filteredData.length;
+    this.setPaginationButtons(pageNum);
   }
 
   getClinic(id) {

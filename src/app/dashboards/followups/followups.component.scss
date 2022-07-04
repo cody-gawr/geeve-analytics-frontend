@@ -24,3 +24,18 @@
 .folloup-per-user{
     padding-top: 45px;
 }
+.custom-tooltip {
+    position        : absolute;
+    top             : 30px;
+    right           : -6px;
+    width           : 300px;
+    padding         : 8px 20px;
+    box-shadow      : 2px 15px 21px rgba(3, 83, 72, 0.19);
+    border-radius   : 6px;
+    background-color: #1daa96;
+    color           : #fff;
+    opacity         : 0;
+    visibility      : hidden;
+    animation       : tooltipIn 0.5s ease-in-out;
+    z-index         : 999;
+  }

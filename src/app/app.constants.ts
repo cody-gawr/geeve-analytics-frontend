@@ -367,7 +367,7 @@ export class AppConstants {
     public tipCustomisationsHourlyRate: ITooltipData = {
         title: 'Hourly Rate',
         info: 'By Default, the Hourly Rate chart on your Clinician Analysis dashboard is calculated by the number of Appointment Hours booked. This can be changed to calculate hourly rate based on the Available Hours in each appointment book. Note: To ensure accuracy, please ensure you have mapped your providers to their appointment book under the Settings -> Clinics -> Dentists section in Jeeve (choose Advanced Options)',
-        direction: 'right'
+        direction: 'top'
     };
 
     // Settings -> Charts

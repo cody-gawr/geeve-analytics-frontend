@@ -118,7 +118,7 @@ export class ClinicSettingsComponent implements OnInit {
     
     if(this.apiUrl.includes('test') || this.apiUrl.includes('staging-')){
       this.form = this.fb.group({
-        clinicName: [null, Validators.compose([Validators.required])],
+        clinicName: [null, Validators.compose([Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)])],
         contactName: [null],
         phoneNo: [null,[Validators.pattern(regex)]],
         clinicEmail: [null, [Validators.email,Validators.required]],

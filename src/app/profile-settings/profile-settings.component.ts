@@ -191,7 +191,7 @@ public cvcStyle = {
       });
       this.formSettings = this.fb.group({
         email: [null, Validators.compose([Validators.required])],
-        displayName: [null, Validators.compose([Validators.required])],
+        displayName: [null, Validators.compose([Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)])],
       });
      this.healthSettings = new FormGroup({
       health_screen_mtd: new FormControl()

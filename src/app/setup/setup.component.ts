@@ -838,15 +838,6 @@ export class DialogLocationDialogComponent{
   }
   save(data) {
     this.dialogRef.close(data);
-    // $('.mat-form-control').click();
-    // if(data.display_name != undefined && data.email != undefined && data.user_type != '' &&  this.selectedClinics.value != ''){      
-    //   data.selectedClinics= this.selectedClinics.value;
-    //   data.selected_dentist = this.selected_dentist;
-    //   if(this.show_dentist == true)
-    //     this.dialogRef.close(data);
-    //   else if(this.show_dentist == false)
-    //      this.dialogRef.close(data);
-    // }
   }
 
   selectLocationChange(e){
