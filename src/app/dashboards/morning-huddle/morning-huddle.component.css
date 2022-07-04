@@ -935,7 +935,7 @@ div.mat-chip-list-wrapper .custom-tooltip {
     box-shadow: 2px 2px 3px #000;
 }
 .info-icon-container.mhRebook .custom-tooltip::after {
-    border-bottom: 5px solid #424242;
+    border-bottom: 5px solid #424242 !important;
 }
 .info-icon-container.mhRebook .tooltip-info-text{
     width: 100%;

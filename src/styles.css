@@ -3483,7 +3483,7 @@ ul.list-categories {
   margin-left  : -5px;
   border-left  : 8px solid transparent;
   border-right : 8px solid transparent;
-  border-bottom: 8px solid #1daa96;
+  border-bottom: 8px solid #1daa96 !important;
   right        : 8px;
   top          : 0px;
 }
