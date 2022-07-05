@@ -153,10 +153,10 @@
                      </table>
                      <table class=" report-table-main report-table" *ngIf="reportD.kpi_type == 'Utilisation Rate'">
                         <tr >
-                              <td>{{ reportVal.available_hours | number:'1.0-0'}} Hours</td>
+                              <td>{{ reportVal.available_hours | number:'1.0-2'}} Hours</td>
                         </tr>
                         <tr>
-                              <td>{{ reportVal.used_hours | number:'1.0-0'}} Hours</td>
+                              <td>{{ reportVal.used_hours | number:'1.0-2'}} Hours</td>
                         </tr>
                         <tr>
                               <td [ngClass]="reportVal.hours_percent >= 100 ? 'complete' : ''">{{ reportVal.hours_percent | number:'1.0-0'}}%</td>
