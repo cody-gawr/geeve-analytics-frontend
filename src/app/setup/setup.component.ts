@@ -669,7 +669,7 @@ usersArray = new Array(this.userRows);
   public checkCoreStatus(){
     this.setupService.checkCoreStatus(this.clinic_id).subscribe((res) => {
        if(res.message == 'success'){
-         if(res.data.refresh_token && res.data.token)
+         if(res.data.refresh_token && res.data.token && res.data.core_user_id)
             this.getClinicLocation();
        }
     }, error => {
@@ -793,7 +793,7 @@ usersArray = new Array(this.userRows);
 openLocationDialog(): void {
   const dialogRef = this.dialog.open(DialogLocationDialogComponent, {
     width: '600px',
-    data: { location: this.LocationData }
+    data: { location: this.LocationData, display_name : this.name}
   });
   dialogRef.afterClosed().subscribe(result => {
 

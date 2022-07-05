@@ -5361,7 +5361,7 @@ table .label {
   z-index           : 99;
   border            : none !important;
   width             : 50px !important;
-  height            : 470px !important;
+  height            : 230px !important;
   position          : absolute;
   left              : 44px;
   top               : 120px;
@@ -6310,10 +6310,10 @@ top: 29px;
     z-index          : 99;
     border           : none !important;
     width            : 50px !important;
-    height           : 460px !important;
+    height           : 230px !important;
     position         : absolute;
     left             : 44px;
-    top              : 130px;
+    top              : 110px;
   }
 
   .stepper_content .mat-step:nth-of-type(1) .mat-step-header {
@@ -6594,7 +6594,7 @@ top: 29px;
 
   .stepper_content .mat-stepper-vertical::before {
     left  : 31px;
-    height: 340px !important;
+    height: 155px !important;
   }
 
   .stepper_content .intro_title h4 {

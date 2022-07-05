@@ -126,6 +126,7 @@ export class ClinicComponent implements AfterViewInit {
   public user_type: any = '';
   fileInput: any;
   public availabeLocations;
+  public clinicName;
 
   //initialize component
   ngAfterViewInit() {
@@ -170,6 +171,8 @@ export class ClinicComponent implements AfterViewInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result != undefined){
+
+        this.clinicName = result.name;
 
         if(result.coreURL == undefined)
             result.coreURL = "";
@@ -409,7 +412,7 @@ export class ClinicComponent implements AfterViewInit {
 openLocationDialog(id): void {
     const dialogRef = this.dialog.open(DialogLocationDialogComponent, {
       width: '600px',
-      data: { location: this.availabeLocations }
+      data: { location: this.availabeLocations, display_name : this.clinicName }
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result != undefined){
