@@ -38,6 +38,8 @@
                   <small
                     *ngIf=" form.controls['clinicName'].hasError('required') && form.controls['clinicName'].touched "
                     class="text-danger support-text">Clinic Name is Required.</small>
+                    <small *ngIf=" form.controls['clinicName'].hasError('pattern') && form.controls['clinicName'].touched "
+                    class="text-danger support-text">Clinic Name should not be blank.</small>
                 </div>
               </div>
               <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
@@ -52,8 +54,7 @@
                 <div class="sa-form-group">
                   <label>Phone Number</label>
                   <input placeholder="" [formControl]="form.controls['phoneNo']" [(ngModel)]="phoneNo" />
-                  <small
-                  *ngIf=" form.controls['phoneNo'].hasError('pattern') && form.controls['phoneNo'].touched "
+                  <small *ngIf=" form.controls['phoneNo'].hasError('pattern') && form.controls['phoneNo'].touched "
                   class="text-danger support-text">Phone Number must be valid !.</small>
                 </div>
               </div>
@@ -61,8 +62,7 @@
                 <div class="sa-form-group">
                   <label>Contact Email</label>
                   <input placeholder="" [formControl]="form.controls['clinicEmail']" [(ngModel)]="clinicEmail" />
-                  <small
-                  *ngIf=" form.controls['clinicEmail'].hasError('email') && form.controls['clinicEmail'].touched "
+                  <small *ngIf=" form.controls['clinicEmail'].hasError('email') && form.controls['clinicEmail'].touched "
                   class="text-danger support-text">Email must be valid !.</small>
                 </div>
               </div>

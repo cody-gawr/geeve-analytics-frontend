@@ -23,12 +23,17 @@
                                                 <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                     <div class="sa-form-group">
                                                         <label>Display Name</label>
-                                                        <input [formControl]="formSettings.controls['displayName']" formControlName="displayName" placeholder="" id="displayName" [(ngModel)]="displayName"> <small *ngIf="formSettings.controls['displayName'].hasError('required') && formSettings.controls['displayName'].touched" class="text-danger support-text">Display Name Is Required.</small> </div>
+                                                        <input [formControl]="formSettings.controls['displayName']" formControlName="displayName" placeholder="" id="displayName" [(ngModel)]="displayName">
+                                                        <small *ngIf="formSettings.controls['displayName'].hasError('required') && formSettings.controls['displayName'].touched" class="text-danger support-text">Display Name Is Required.</small>
+                                                        <small *ngIf="formSettings.controls['displayName'].hasError('pattern') && formSettings.controls['displayName'].touched" class="text-danger support-text">Display Name should not be blank.</small>
+                                                    </div>
                                                 </div>
                                                 <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10%">
                                                     <div class="sa-form-group">
                                                         <label>Email</label>
-                                                        <input formControlName="email" placeholder="" id="email" [formControl]="formSettings.controls['email']" [(ngModel)]="email" [readonly]="true" class="readonly_form"> <small *ngIf="formSettings.controls['email'].hasError('pattern') && formSettings.controls['email'].touched" class="text-danger support-text">Please enter valid email.</small> </div>
+                                                        <input formControlName="email" placeholder="" id="email" [formControl]="formSettings.controls['email']" [(ngModel)]="email" [readonly]="true" class="readonly_form">
+                                                        <small *ngIf="formSettings.controls['email'].hasError('pattern') && formSettings.controls['email'].touched" class="text-danger support-text">Please enter valid email.</small>
+                                                    </div>
                                                 </div>
                                             </div>
                                  

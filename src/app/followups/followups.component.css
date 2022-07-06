@@ -544,7 +544,7 @@ table.history td.notes {padding-right: 2%;text-align: right;}
 }
 
 .follow-ups-table th.mat-header-cell, td.mat-cell, td.mat-footer-cell{
-    white-space: nowrap;
+    white-space: nowrap !important;
     padding: 0 15px !important;
 }
 
