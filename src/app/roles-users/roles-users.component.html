@@ -54,10 +54,10 @@
           />
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="Created">
+      <ngx-datatable-column name="Status">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
           <span>
-            {{value| date}}
+            {{(value == 1) ? "Active" : "Inactive"}}
           </span>
         </ng-template>
       </ngx-datatable-column>
