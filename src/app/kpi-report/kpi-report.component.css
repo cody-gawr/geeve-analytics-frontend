@@ -842,3 +842,6 @@ table.report-table-main.align > tr > td {
 /* .report-table-main > tbody > tr > td:last-child {
     background-color:#fff1ad;
 } */
+.kpi_report_tip{
+    position: absolute;
+}

@@ -81,14 +81,52 @@
          </thead>
          <tbody>
             <tr *ngFor="let reportD of reportData">
-                  <td class="strong" *ngIf="reportD.kpi_type != 'Utilisation Rate'">{{ reportD.kpi_type }} </td>
+                  <td class="strong" *ngIf="reportD.kpi_type != 'Utilisation Rate'">{{ reportD.kpi_type }} 
+                     <div class="info-icon-container kpi_report_tip" >
+                        <span *ngIf="reportD.kpi_type == 'Production'">
+                           <img [tooltip]="this.constants.tipProductionKpi" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                        </span>
+                        <span *ngIf="reportD.kpi_type == 'Collection'">
+                           <img [tooltip]="this.constants.tipCollectionKpi" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                        </span>
+
+                        <span *ngIf="reportD.kpi_type == 'Dentist Days'">
+                           <img [tooltip]="this.constants.tipDentistDaysKpi" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                        </span>
+                        <span *ngIf="reportD.kpi_type == 'Dentist Production Per Day'">
+                           <img [tooltip]="this.constants.tipDentistProductionPerDayKpi" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                        </span>
+
+                        <span *ngIf="reportD.kpi_type == 'Dentist Production Per Hr'">
+                           <img [tooltip]="this.constants.tipDentistProductionPerHrKpi" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                        </span>
+                        <span *ngIf="reportD.kpi_type == 'Production Units'">
+                           <img [tooltip]="this.constants.tipProductionUnitsKpi" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                        </span>
+
+                        <span *ngIf="reportD.kpi_type == 'New patients'">
+                           <img [tooltip]="this.constants.tipNewPatientsKpi" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                        </span>
+                        <span *ngIf="reportD.kpi_type == 'Discounts'">
+                           <img [tooltip]="this.constants.tipDiscountsKpi" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                        </span>
+                     </div>
+                  </td>
                   <td *ngIf="reportD.kpi_type == 'Utilisation Rate'">
                      <table class=" report-table-main alignUr">
                         <tr>
-                              <td class="strong">Hours Available</td>
+                              <td class="strong">Hours Available
+                                 <div class="info-icon-container info-icon-container kpi_report_tip">
+                                    <img [tooltip]="this.constants.tipHoursAvailableKpi" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                                 </div>
+                              </td>
                         </tr>
                         <tr>
-                              <td class="strong">Hours Worked</td>
+                              <td class="strong">Hours Worked 
+                                 <div class="info-icon-container info-icon-container kpi_report_tip">
+                                    <img [tooltip]="this.constants.tipHoursWorkedKpi" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                                 </div>
+                              </td>
                         </tr>
                         <tr>
                            <td>&nbsp;</td>

@@ -393,4 +393,66 @@ export class AppConstants {
         info: 'This setting controls whether the provider is displayed in the dropdown menu on the Clinician dashboards',
         direction: 'left'
     };
+
+    // kpi report ------------------------------------------------------
+
+    public tipProductionKpi : ITooltipData = {
+        title: 'Production',
+        info: 'Total invoiced amount in the date range',
+        direction: 'right'
+    }
+
+    public tipCollectionKpi : ITooltipData = {
+        title: 'Collection',
+        info: 'Total received amount in the date range',
+        direction: 'right'
+    }
+
+    public tipDentistDaysKpi : ITooltipData = {
+        title: 'Dentist Days',
+        info: 'Number of days worked. Up to 5 hours it counted as half a day. Anything over 5 hours is a full day',
+        direction: 'right'
+    }
+
+    public tipDentistProductionPerDayKpi : ITooltipData = {
+        title: 'Dentist Production Per Day',
+        info: 'Total invoiced amount divided by number of dentist days',
+        direction: 'right'
+    }
+
+    public tipHoursAvailableKpi : ITooltipData = {
+        title: 'Hours Available',
+        info: 'Total worktime hours available for scheduling in the appointment book (excludes any non-worktime such as breaks)',
+        direction: 'right'
+    }
+
+    public tipHoursWorkedKpi : ITooltipData = {
+        title: 'Hours Worked',
+        info: 'Total worktime hours that have been filled by appointments',
+        direction: 'right'
+    }
+
+    public tipDentistProductionPerHrKpi : ITooltipData = {
+        title: 'Dentist Production Per Hr',
+        info: 'Total invoiced amount divided by number of available hours',
+        direction: 'right'
+    }
+
+    public tipProductionUnitsKpi : ITooltipData = {
+        title: 'Production Units',
+        info: 'Number of specific production unit items performed, based on specific Prime treatment codes: 555, 556, 613, 615, 643, 661, 671, 672, 684, 688, 691, 825, 831',
+        direction: 'right'
+    }
+
+    public tipNewPatientsKpi : ITooltipData = {
+        title: 'New Patients',
+        info: 'A patient is counted successfully as a new patient if they have a valid treatment performed on their first visit (Tx Codes 011 to 987 and 88011 to 88943). New patients are allocated to the provider performing the treatment',
+        direction: 'top-right'
+    }
+
+    public tipDiscountsKpi : ITooltipData = {
+        title: 'Discounts',
+        info: 'Total discounts given in the date range',
+        direction: 'top-right'
+    }
 }

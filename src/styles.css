@@ -3432,6 +3432,13 @@ ul.list-categories {
   height: max-content;
 }
 
+.custom-tooltip-top-right {
+  position: relative;
+  top: -172px;
+  left: -56px;
+  height: max-content;
+}
+
 @keyframes tooltipIn {
   from {
     visibility: hidden;
@@ -3501,7 +3508,9 @@ ul.list-categories {
 .custom-tooltip-top::after {
   content: none;
 }
-
+.custom-tooltip-top-right::after {
+  content: none;
+}
 .ur_users_main {
   overflow: hidden;
 }
@@ -8214,6 +8223,9 @@ th.mat-header-cell.cdk-header-cell.cdk-column-status.mat-column-status{
     position: fixed !important;
 }
 .settingCharts .custom-tooltip-top{
+  position: fixed !important;
+}
+.settingCharts .custom-tooltip-top-right{
   position: fixed !important;
 }
 .settingCharts .tooltip-info-text, .settingCharts .tooltip-title{
