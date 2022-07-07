@@ -453,6 +453,6 @@ export class AppConstants {
     public tipDiscountsKpi : ITooltipData = {
         title: 'Discounts',
         info: 'Total discounts given in the date range',
-        direction: 'top-right'
+        direction: 'top-right-discount'
     }
 }

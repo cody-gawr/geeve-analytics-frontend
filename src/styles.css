@@ -3439,6 +3439,13 @@ ul.list-categories {
   height: max-content;
 }
 
+.custom-tooltip-top-right-discount {
+  position: relative;
+  top: -90px;
+  left: -30px;
+  height: max-content;
+}
+
 @keyframes tooltipIn {
   from {
     visibility: hidden;
@@ -3509,6 +3516,9 @@ ul.list-categories {
   content: none;
 }
 .custom-tooltip-top-right::after {
+  content: none;
+}
+.custom-tooltip-top-right-discount::after {
   content: none;
 }
 .ur_users_main {
