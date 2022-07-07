@@ -1491,6 +1491,8 @@ if(this._cookieService.get("user_type") == '4'){
         this.predictorAnalysisLablesTemp =[];
         this.predictorAnalysisDataMax = 0;
         this.paSpecialistlData = [];
+        this.ItemsPredictorAnalysisMulti = [];
+        this.ItemsPredictorAnalysisLabels = [];
        if(data.message == 'success'){   
         if(data && data.data && data.data.length <= 0) {
         } else {
