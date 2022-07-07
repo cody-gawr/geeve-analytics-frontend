@@ -410,7 +410,7 @@ export class AppConstants {
 
     public tipDentistDaysKpi : ITooltipData = {
         title: 'Dentist Days',
-        info: 'Number of days worked. Up to 5 hours it counted as half a day. Anything over 5 hours is a full day',
+        info: 'Number of days worked. Up to 5 hours is counted as half a day. Anything over 5 hours is a full day',
         direction: 'right'
     }
 
