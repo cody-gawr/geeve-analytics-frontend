@@ -322,8 +322,8 @@ export class ClinicSettingsComponent implements OnInit {
         this.ftaUta,        
         this.timezone,
         this.subtracted_accounts,
-        this.equipmentList,
-        this.dailyTasks,
+        // this.equipmentList,
+        // this.dailyTasks,
         this.compareMode
       )
       .subscribe(
