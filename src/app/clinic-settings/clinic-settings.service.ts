@@ -45,10 +45,8 @@ export class ClinicSettingsService {
     }
 
     // Get ClinicSettings
-    updateClinicSettings(clinic_id, name, address, contact_name, workingDays, phoneNo, clinicEmail, ftaUta,  timezone, subtractedAccounts, compareMode): Observable<any> {
+    updateClinicSettings(clinic_id, name, address, contact_name, workingDays, ftaUta,  timezone, subtractedAccounts, compareMode): Observable<any> {
 
-        // equipmentList = (equipmentList == true) ? 1 : 0;
-        // dailyTasks = (dailyTasks == true) ? 1 : 0;
         compareMode = (compareMode == true) ? 1 : 0;
         const formData = new FormData();
         formData.append('clinic_id', clinic_id);
@@ -57,12 +55,8 @@ export class ClinicSettingsService {
         formData.append('contactName', contact_name);
         formData.append('days', workingDays);        
         formData.append('net_profit_exclusions', subtractedAccounts);
-        formData.append('phoneNo', phoneNo);
-        formData.append('clinicEmail', clinicEmail);
         formData.append('fta_uta', ftaUta);        
         formData.append('timezone', timezone);
-        // formData.append('equip_list_enable', equipmentList);
-        // formData.append('daily_task_enable', dailyTasks);
         formData.append('compare_mode', compareMode);
 
         var header = this.getHeaders();

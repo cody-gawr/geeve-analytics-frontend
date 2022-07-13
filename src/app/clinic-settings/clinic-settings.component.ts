@@ -29,8 +29,6 @@ export class ClinicSettingsComponent implements OnInit {
   public id: any = {};
   public clinicName: any = 0;
   public contactName = 0;
-  public phoneNo = 0;
-  public clinicEmail = "";
   public ftaUta: any = "";
   public postOpCallsMh: any = 1;
   public unscheduledPatientsMh: any = 0;
@@ -102,7 +100,6 @@ export class ClinicSettingsComponent implements OnInit {
   }
   //initilaize component
   ngOnInit() {
-    let regex = /^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
     this.route.params.subscribe((params) => {
       this.id = this.route.snapshot.paramMap.get("id");
       this.getClinicSettings();
@@ -120,8 +117,6 @@ export class ClinicSettingsComponent implements OnInit {
       this.form = this.fb.group({
         clinicName: [null, Validators.compose([Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)])],
         contactName: [null],
-        phoneNo: [null,[Validators.pattern(regex)]],
-        clinicEmail: [null, [Validators.email,Validators.required]],
         address: [null],
         timezone: [null],
         // practice_size: [null, Validators.compose([Validators.required])],
@@ -146,8 +141,6 @@ export class ClinicSettingsComponent implements OnInit {
       this.form = this.fb.group({
         clinicName: [null, Validators.compose([Validators.required])],
         contactName: [null],
-        phoneNo: [null],
-        clinicEmail: [null, [Validators.email]],
         address: [null],
         timezone: [null],
         // practice_size: [null, Validators.compose([Validators.required])],
@@ -198,8 +191,6 @@ export class ClinicSettingsComponent implements OnInit {
           this.address = res.data[0].address;
           this.practice_size = res.data[0].practice_size;
           this.subtracted_accounts = res.data[0].net_profit_exclusions;
-          this.phoneNo = res.data[0].phoneNo;
-          this.clinicEmail = res.data[0].clinicEmail;
           this.ftaUta = res.data[0].fta_uta;
           this.timezone = res.data[0].timezone;
           this.equipmentList =
@@ -293,8 +284,6 @@ export class ClinicSettingsComponent implements OnInit {
     let days = JSON.stringify(this.workingDays);
     this.post_op_calls = this.form.value.post_op_calls;
     this.subtracted_accounts = this.form.value.subtracted_accounts;
-    this.phoneNo = this.form.value.phoneNo;
-    this.clinicEmail = this.form.value.clinicEmail;
     this.ftaUta = this.form.value.fta_uta;
     this.postOpCallsMh = this.form.value.post_op_calls_days;
     this.recallWeeks = this.form.value.recall_weeks;
@@ -317,13 +306,9 @@ export class ClinicSettingsComponent implements OnInit {
         this.address,
         this.contactName,
         days,        
-        this.phoneNo,
-        this.clinicEmail,
         this.ftaUta,        
         this.timezone,
         this.subtracted_accounts,
-        // this.equipmentList,
-        // this.dailyTasks,
         this.compareMode
       )
       .subscribe(

@@ -52,24 +52,6 @@
             <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0">
               <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
                 <div class="sa-form-group">
-                  <label>Phone Number</label>
-                  <input placeholder="" [formControl]="form.controls['phoneNo']" [(ngModel)]="phoneNo" />
-                  <small *ngIf=" form.controls['phoneNo'].hasError('pattern') && form.controls['phoneNo'].touched "
-                  class="text-danger support-text">Phone Number must be valid !.</small>
-                </div>
-              </div>
-              <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-                <div class="sa-form-group">
-                  <label>Contact Email</label>
-                  <input placeholder="" [formControl]="form.controls['clinicEmail']" [(ngModel)]="clinicEmail" />
-                  <small *ngIf=" form.controls['clinicEmail'].hasError('email') && form.controls['clinicEmail'].touched "
-                  class="text-danger support-text">Email must be valid !.</small>
-                </div>
-              </div>
-            </div>
-            <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0">
-              <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-                <div class="sa-form-group">
                   <label>Address</label>
                   <input placeholder="" [formControl]="form.controls['address']" [(ngModel)]="address" />
                 </div>
