@@ -25,13 +25,18 @@
           <span><strong>Advanced Options</strong></span>
         </mat-slide-toggle>   
   </div>
+  <div class="sa-form-group-btn toggle-margin" *ngIf="userPlan != 'lite'">
+    <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" name="advanced_options" (change)="showActiveToggle($event)"> 
+      <span><strong>Show Inactive</strong></span>
+    </mat-slide-toggle>   
+</div>
    <div class="sa-form-group-btn" *ngIf="advanceOption">
      <button class="save-button set-jeeve-btn" type="submit" (click) ="openSetJeeveName()">Set Jeeve Names</button>
   </div>
 
   </div>    
   <div class="DentistListSecRow mh-table patient_data-table_responsive">
-    <div class="card-loading d-none">
+    <div class="card-loading" [ngClass]="dentistListLoading ? 'show' : 'd-none'">
       <img class="tableLoader" src="../../assets/images/loader.gif" />
     </div>
     <div class="respopnsive-table-set">

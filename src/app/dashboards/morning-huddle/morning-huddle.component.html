@@ -2,8 +2,8 @@
 <div class="sa_dashboard_inner_content morning-huddle">
 
   <div class="morning-huddle-date topModel custom_date morning-huddle-datepicker">
-   
-    <input id="mhdatepicker" [minDate]="minDate" [maxDate]="maxDate" class="filter_custom filter sa_datepicker Mhdatepic" readonly placeholder="" type="text" matInput ngxDaterangepickerMd
+   <!-- [minDate]="minDate" [maxDate]="maxDate"  -->
+    <input id="mhdatepicker" class="filter_custom filter sa_datepicker Mhdatepic" readonly placeholder="" type="text" matInput ngxDaterangepickerMd
     [singleDatePicker]="true" [locale]="{applyLabel: 'ok', displayFormat: 'DD MMMM, y'}"
     [(ngModel)]="selected"  [autoApply]="true" [showDropdowns]="true" (ngModelChange)="setDateChange($event)"/>
     

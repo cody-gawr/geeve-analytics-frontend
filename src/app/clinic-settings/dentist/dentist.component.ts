@@ -78,6 +78,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   jeeveProviderIds: any = [];
   appBooks: any = [];
   editing = {};
+  public isShowInactive : boolean;
   
   public userPlan:any = 'lite';
   public activeDentist:any = 0;
@@ -183,15 +184,23 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   }
 
   getDentists(id) {
+    this.dentistListLoading = true;
     this.dentistService.getDentists(id,1).subscribe((res) => {
       if (res.message == 'success') {
+        this.dentistListLoading = false;
         this.getAppBook(id, res.data);
         this.jeeveProviderIds = [];
         for(let i = 1; i <= 9; i++){
           this.jeeveProviderIds.push({'id':i, 'name': 'Jeeve Provider '+i});
         }
-
-        this.dentistList.data = res.data;
+        let activeData = [];
+        let inactiveData = [];
+        
+        // isShowInactive 
+        res.data.filter(r=>{
+          r.is_active == 1 ? activeData.push(r) : inactiveData.push(r);
+        });
+        this.dentistList.data = this.isShowInactive ? inactiveData : activeData; 
         this.setPaginationButtons(this.dentistList.data.length);
         let activeDnt:any = res.data.filter(p => p.is_active == 1);  
         this.activeDentist =  activeDnt.length;
@@ -303,5 +312,10 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
       dialogRef.afterClosed().subscribe(result => {
         this.getDentists(this.clinic_id$.value);
       }); 
+    }
+
+    showActiveToggle(e){
+      this.isShowInactive = e.checked;
+      this.getDentists(this.clinic_id$.value);
     }
 }

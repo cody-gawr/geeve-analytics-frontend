@@ -292,8 +292,8 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   {'name': 'Test 3','color': 'blue','text': 'Test Three'},
   ];
   selected: any;
-  minDate: any;
-  maxDate: any;
+  // minDate: any;
+  // maxDate: any;
 
   timezone: string = '+1000';
   
@@ -314,8 +314,8 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     ) { 
     this.getChartsTips(); 
     this.selected = {start:  moment()};
-    this.minDate = moment().subtract(7, 'days');  
-    this.maxDate = moment().add(7, 'days');  
+    // this.minDate = moment().subtract(7, 'days');  
+    // this.maxDate = moment().add(7, 'days');  
  }
 
   @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
