@@ -846,7 +846,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     }
     this.currentUTPage = 1;
     this.setPaginationButtons(this.followupUtaFollowupsInCMP, 'UT');
-    this.followupFtaFollowupsInCMP = this.setPaginationData(this.followupUtaFollowupsInCMP, 'UT');
+    this.followupUtaFollowupsInCMP = this.setPaginationData(this.followupUtaFollowupsInCMP, 'UT');
   }
 
   updateToCompleteIR(event) {
