@@ -38,10 +38,10 @@ export class DialogOverviewExampleDialogComponent {
   ) {
     dialogRef.disableClose = true;
     this.form = this.fb.group({
-      name: [null, Validators.compose([Validators.required])],
-      address: [null, Validators.compose([Validators.required])],
+      name: [null, Validators.compose([Validators.required, Validators.pattern(/\S/)])],
+      address: [null, Validators.compose([Validators.required,Validators.pattern(/\S/) ])],
       //   patient_dob: [null, Validators.compose([Validators.required])],
-      contact_name: [null, Validators.compose([Validators.required])],
+      contact_name: [null, Validators.compose([Validators.required, Validators.pattern(/\S/)])],
       pms: [null, Validators.compose([Validators.required])],
       coreURL: [null, '']
     });

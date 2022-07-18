@@ -5,6 +5,7 @@
     <label>Clinic Name</label>
     <input tabindex="1" [(ngModel)]="data.name" [formControl]="form.controls['name']" class="form-control-dialog" placeholder="" required>
     <small *ngIf="form.controls['name'].hasError('required') && form.controls['name'].touched" class="text-danger support-text">Name is Required.</small>
+    <small *ngIf="form.controls['name'].hasError('pattern') && form.controls['name'].touched" class="text-danger support-text">Invalid Name !</small>
   </div>
 
   
@@ -12,6 +13,7 @@
     <label>Address</label>
     <input tabindex="1" [(ngModel)]="data.address" [formControl]="form.controls['address']" class="form-control-dialog" placeholder="" required>
     <small *ngIf="form.controls['address'].hasError('required') && form.controls['address'].touched" class="text-danger support-text">Address is Required.</small>
+    <small *ngIf="form.controls['address'].hasError('pattern') && form.controls['address'].touched" class="text-danger support-text">Invalid Address !</small>
   </div>
     
   
@@ -19,6 +21,7 @@
     <label>Contact Name</label>
     <input tabindex="1" [(ngModel)]="data.contact_name" [formControl]="form.controls['contact_name']" class="form-control-dialog"  placeholder="" required>
     <small *ngIf="form.controls['contact_name'].hasError('required') && form.controls['contact_name'].touched" class="text-danger support-text">Contact Name is Required.</small>
+    <small *ngIf="form.controls['contact_name'].hasError('pattern') && form.controls['contact_name'].touched" class="text-danger support-text">Invalid Contact Name !</small>
     <!--  <input type="file" (change)="onChange($event)"> -->
   </div>
 
@@ -34,7 +37,7 @@
   <div *ngIf="showConnectButton" class="sa-form-group">
     <input tabindex="1" name="coreURL" [(ngModel)]="data.coreURL" placeholder="Your Core URL" class="form-control-dialog" [formControl]="form.controls['coreURL']" >
     <small *ngIf="form.controls['coreURL'].hasError('required') && form.controls['coreURL'].touched" class="text-danger support-text">Core URL is Required.</small>
-      <small *ngIf="form.controls['coreURL'].hasError('pattern') && form.controls['coreURL'].touched" class="text-danger support-text">Core URL must valid !.</small>
+      <small *ngIf="form.controls['coreURL'].hasError('pattern') && form.controls['coreURL'].touched" class="text-danger support-text">Core URL must valid !</small>
   </div>
 
 </div>

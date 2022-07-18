@@ -2,14 +2,19 @@
   <mat-expansion-panel-header>
     <mat-panel-title> Charts </mat-panel-title>
   </mat-expansion-panel-header>
-
-  <div class="DentistListSecRow mh-table patient_data-table_responsive">
+  <div class="loader" [ngClass]="
+  dentistList.data.length == 0 && !dentistListLoading ? 'show' : 'hide'
+">
+<!-- <img class="tableLoader" src="../../../assets/images/loader.gif" /> -->
+No data available
+</div>
+  <div *ngIf="dentistList.data.length != 0" class="DentistListSecRow mh-table patient_data-table_responsive">
     <div class="card-loading d-none">
       <img class="tableLoader" src="../../assets/images/loader.gif" />
     </div>
-    <div class="respopnsive-table-set">
+    <div  class="respopnsive-table-set">
       <h4 class="clinic-settings-form-title">{{ dash1Lable }}</h4>
-      <table mat-table [dataSource]="dash1List" class="mat-elevation-z8 settingCharts" matSort>
+      <table *ngIf="dentistList.data.length != 0" mat-table [dataSource]="dash1List" class="mat-elevation-z8 settingCharts" matSort>
         <!-- ProviderID Column -->
         <!-- <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef>Chart Id</th>
@@ -84,18 +89,19 @@
       <div class="loader" [ngClass]="
           dentistList.data.length == 0 && !dentistListLoading ? 'show' : 'hide'
         ">
-        <img class="tableLoader" src="../../../assets/images/loader.gif" />
+        <!-- <img class="tableLoader" src="../../../assets/images/loader.gif" /> -->
+        No Data Available
       </div>
     </div>
   </div>
 
-  <div class="DentistListSecRow mh-table patient_data-table_responsive dashmargin">
+  <div *ngIf="dentistList.data.length != 0" class="DentistListSecRow mh-table patient_data-table_responsive dashmargin">
     <div class="card-loading d-none">
       <img class="tableLoader" src="../../assets/images/loader.gif" />
     </div>
     <div class="respopnsive-table-set">
       <h4 class="clinic-settings-form-title">{{ dash2Lable }}</h4>
-      <table mat-table [dataSource]="dash2List" class="mat-elevation-z8 settingCharts" matSort>
+      <table *ngIf="dentistList.data.length != 0" mat-table [dataSource]="dash2List" class="mat-elevation-z8 settingCharts" matSort>
         <!-- ProviderID Column -->
         <!-- <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef>Chart Id</th>
@@ -169,18 +175,19 @@
       <div class="loader" [ngClass]="
           dentistList.data.length == 0 && !dentistListLoading ? 'show' : 'hide'
         ">
-        <img class="tableLoader" src="../../../assets/images/loader.gif" />
+        <!-- <img class="tableLoader" src="../../../assets/images/loader.gif" /> -->
+        No Data Available
       </div>
     </div>
   </div>
 
-  <div class="DentistListSecRow mh-table patient_data-table_responsive dashmargin">
+  <div *ngIf="dentistList.data.length != 0" class="DentistListSecRow mh-table patient_data-table_responsive dashmargin">
     <div class="card-loading d-none">
       <img class="tableLoader" src="../../assets/images/loader.gif" />
     </div>
     <div class="respopnsive-table-set">
       <h4 class="clinic-settings-form-title">{{ dash3Lable }}</h4>
-      <table mat-table [dataSource]="dash3List" class="mat-elevation-z8 settingCharts" matSort>
+      <table *ngIf="dentistList.data.length != 0" mat-table [dataSource]="dash3List" class="mat-elevation-z8 settingCharts" matSort>
         <!-- ProviderID Column -->
         <!-- <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef>Chart Id</th>
@@ -254,7 +261,8 @@
       <div class="loader" [ngClass]="
           dentistList.data.length == 0 && !dentistListLoading ? 'show' : 'hide'
         ">
-        <img class="tableLoader" src="../../../assets/images/loader.gif" />
+        <!-- <img class="tableLoader" src="../../../assets/images/loader.gif" /> -->
+        No Data Available
       </div>
     </div>
   </div>
