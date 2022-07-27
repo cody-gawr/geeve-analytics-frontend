@@ -188,6 +188,9 @@ getGoalsForTabsClinic(allGoals) {
   this.tabs[4].charts.sort(function(a, b) {
     return order.indexOf(a.c_id) - order.indexOf(b.c_id);
   })
+
+  this.swap(this.tabs[4].charts,0,2);
+
   if(this.Cconsultant != 'prime'){
     this.selectedTab = this.tabs[0].d_id;
   }else{
@@ -196,6 +199,11 @@ getGoalsForTabsClinic(allGoals) {
   
 }
 
+swap(arr, i, j){
+  var temp = arr[i];
+  arr[i] = arr[j];
+  arr[j] = temp;
+}
 
 setGoalsPerMonth(chartGoals)
 {  
@@ -293,21 +301,41 @@ setGoalsPerMonth(chartGoals)
     return name;
   }
 
-  onKeyUp(event){       
-    /*if(event.keyCode == 45 || (event.keyCode >= 48 && event.keyCode <= 57)){
-      if(event.keyCode == 45){
-        if($(event.target).hasClass('sign%')){
-          event.preventDefault();
-          event.stopPropagation();
-          return false;
-        }
+
+  dentistProductionPerDay : number;
+  dentistDays : number;
+  currentIndex : number;
+
+  onKeyUp(id,event,index){
+    if(event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode == 8){
+      if(id == 63)
+        this.dentistDays = event.target.value;
+
+      if(id == 64)
+        this.dentistProductionPerDay = event.target.value;
+    }
+
+    if(this.currentIndex != undefined && this.currentIndex != index){
+      this.dentistDays = undefined;
+      this.dentistProductionPerDay = undefined;
+      this.currentIndex = index;
+      if(id === 63){
+        this.dentistDays = event.target.value;;
+        this.dentistProductionPerDay = undefined;
       }
-      return true;
-    } else {
-      event.preventDefault();
-      event.stopPropagation();
-      return false;
-    }*/
+
+      if(id === 64){
+        this.dentistProductionPerDay = event.target.value;
+        this.dentistDays = undefined;
+      }
+    }
+
+    if(this.dentistDays != undefined && this.dentistProductionPerDay != undefined){
+      var dentistProduct = this.dentistDays * this.dentistProductionPerDay;
+      $( "input[name='goal1"+index+"']" ).val(dentistProduct);
+      this.goalsData['goals'][1][index] =  dentistProduct;
+      this.currentIndex = index;
+    }
   }
   onBlur(id,val,event,sn){    
      event.preventDefault();
@@ -319,7 +347,5 @@ setGoalsPerMonth(chartGoals)
     } 
    $(event.target).val(val);  
    this.goalsData['goals'][parseInt(id)][parseInt(sn)] =  parseInt(val);
-   
-
  }
 }
