@@ -188,7 +188,8 @@ getGoalsForTabsClinic(allGoals) {
   this.tabs[4].charts.sort(function(a, b) {
     return order.indexOf(a.c_id) - order.indexOf(b.c_id);
   })
-
+  this.tabs[4].d_name = "Prime KPI Report"
+  
   this.swap(this.tabs[4].charts,0,2);
 
   if(this.Cconsultant != 'prime'){
@@ -307,13 +308,11 @@ setGoalsPerMonth(chartGoals)
   currentIndex : number;
 
   onKeyUp(id,event,index){
-    if(event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode == 8){
-      if(id == 63)
-        this.dentistDays = event.target.value;
+    if(id == 63)
+      this.dentistDays = event.target.value;
 
-      if(id == 64)
-        this.dentistProductionPerDay = event.target.value;
-    }
+    if(id == 64)
+      this.dentistProductionPerDay = event.target.value;
 
     if(this.currentIndex != undefined && this.currentIndex != index){
       this.dentistDays = undefined;
@@ -332,6 +331,9 @@ setGoalsPerMonth(chartGoals)
 
     if(this.dentistDays != undefined && this.dentistProductionPerDay != undefined){
       var dentistProduct = this.dentistDays * this.dentistProductionPerDay;
+      if(isNaN(dentistProduct)){
+        return;  
+      }
       $( "input[name='goal1"+index+"']" ).val(dentistProduct);
       this.goalsData['goals'][1][index] =  dentistProduct;
       this.currentIndex = index;

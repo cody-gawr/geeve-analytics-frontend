@@ -45,7 +45,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 
 	constructor(private datepipe: DatePipe,
 		private titleService: Title, private dentistService: DentistService, public KpiReportService: KpiReportService, private _cookieService: CookieService, private toastr: ToastrService, private router: Router, public constants: AppConstants) {
-		$('#title').html('KPI Report');
+		$('#title').html('Prime KPI Report');
 		this.selectedMonthYear = this.datepipe.transform(new Date(), 'MMMM-yyyy');
 		this.range.push(this.selectedMonthYear);
 		for (var i = 1; i < 20; i++) {
