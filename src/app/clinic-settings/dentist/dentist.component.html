@@ -94,14 +94,14 @@
           </td>
         </ng-container>
         <ng-container matColumnDef="appbook">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass] =" advanceOption ? '' : 'hide' " >App Book
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>App Book
             <!-- <div class="info-button">
                 <div class="info-icon-container">
                   <img [tooltip]="this.constants.tipDentistsPosition" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>
               </div> -->
           </th>
-          <td mat-cell *matCellDef="let element; let i=index" [ngClass] =" advanceOption ? '' : 'hide' ">            
+          <td mat-cell *matCellDef="let element; let i=index">            
              <div class="jeeveProviderIdDrop sa_forms_design" >
                     <select placeholder="None"  id="setNote" name="appbook"
                      (change)="updateValue($event, 'appBookId', i,element.providerId,element.name)">
