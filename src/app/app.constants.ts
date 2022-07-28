@@ -440,7 +440,7 @@ export class AppConstants {
 
     public tipProductionUnitsKpi : ITooltipData = {
         title: 'Production Units',
-        info: 'Number of specific production unit items performed, based on specific Prime treatment codes: 555, 556, 613, 615, 643, 661, 671, 672, 684, 688, 691, 825, 831',
+        info: 'Number of specific production unit items performed, based on specific Prime treatment codes: 415, 416, 417, 418, 555, 556, 613, 615, 643, 661, 671, 672, 684, 688, 691, 825, 831',
         direction: 'right'
     }
 
