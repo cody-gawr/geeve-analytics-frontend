@@ -2181,7 +2181,7 @@ export class MarketingComponent implements AfterViewInit {
     if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
       //this.loadDentist(val);
     }else{
-      this.loadDentist(val);
+      // this.loadDentist(val);
     }    
   }
 
