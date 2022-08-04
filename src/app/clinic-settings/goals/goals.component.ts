@@ -308,12 +308,14 @@ setGoalsPerMonth(chartGoals)
   currentIndex : number;
 
   onKeyUp(id,event,index){
+    if(event.code == "Tab"){
+      return; 
+    }
     if(id == 63)
       this.dentistDays = event.target.value;
 
     if(id == 64)
       this.dentistProductionPerDay = event.target.value;
-
     if(this.currentIndex != undefined && this.currentIndex != index){
       this.dentistDays = undefined;
       this.dentistProductionPerDay = undefined;
