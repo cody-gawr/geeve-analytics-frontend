@@ -260,11 +260,58 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 	public reportData: any = [];
 	public reportMonths: any = [];
 	public reportloader: boolean = true;
+	public totalProductionActual:number ;
+	public totalHoursAvailable:number ;
+	public totalDaysActual:number ;
+	public totalDentistProductionPerDayActual:number ;
+	public totalDentistProductionPerHrActual :number ;
 	private getKpiReport() {
 		this.reportloader = true;
 		this.KpiReportService.getKpiReport(this.clinic_id, this.startDate, this.endDate, this.selectedDentist).subscribe((data: any) => {
 			if (data.message == 'success') {
 				this.reportData = data.data;
+				this.reportData.forEach(element => {
+					if(element.kpi_type == "Production"){
+						element.val.forEach(ele => {
+							if(ele.clinic_id == undefined){
+								this.totalProductionActual = ele.actual;
+							}
+						});
+					}
+					if(element.kpi_type == "Dentist Days"){
+						element.val.forEach(ele => {
+							if(ele.clinic_id == undefined){
+								this.totalDaysActual = ele.actual;
+							}
+						});
+					}
+					if(element.kpi_type == "Utilisation Rate"){
+						element.val.forEach(ele => {
+							if(ele.clinic_id == undefined){
+								this.totalHoursAvailable = ele.available_hours;
+							}
+						});
+					}
+				});
+				this.totalDentistProductionPerDayActual =  this.totalProductionActual / this.totalDaysActual;
+				this.totalDentistProductionPerHrActual = this.totalProductionActual / this.totalHoursAvailable;
+				
+				this.reportData.forEach(element => {
+					if(element.kpi_type == "Dentist Production Per Day"){
+						element.val.forEach(ele => {
+							if(ele.clinic_id == undefined){
+								ele.actual = this.totalDentistProductionPerDayActual;
+							}
+						});
+					}
+					if(element.kpi_type == "Hourly Rate"){
+						element.val.forEach(ele => {
+							if(ele.clinic_id == undefined){
+								ele.actual = this.totalDentistProductionPerHrActual;
+							}
+						});
+					}
+				});
 				this.reportData[8]['kpi_type'] = 'Discounts';
 				this.reportData[5]['kpi_type'] = 'Dentist Production Per Hr';
 				this.reportMonths = data.months;
