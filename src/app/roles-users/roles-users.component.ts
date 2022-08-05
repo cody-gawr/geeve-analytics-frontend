@@ -575,7 +575,11 @@ initiate_clinic() {
         });
         // this.rows = res.data;
         this.rows = this.isShowInactive ? inactiveData : activeData;
-        this.temp = [...res.data];        
+        if(this.isShowInactive){
+          this.temp = [...inactiveData];
+        }else{
+          this.temp = [...activeData];
+        }
         this.table = data;
        }
     }, error => {
