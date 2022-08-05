@@ -927,7 +927,7 @@ div.mat-chip-list-wrapper .custom-tooltip {
     color: #000;
 }
 .mhRebook{
-    position: fixed;
+    /* position: fixed; */
 }
 .info-icon-container.mhRebook .tooltip-title-container {
     display: none;
