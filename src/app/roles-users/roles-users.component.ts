@@ -333,6 +333,7 @@ initiate_clinic() {
   }
   private warningMessage: string;
   public loginUserType = this._cookieService.get("user_type");
+  public isShowInactive : boolean;
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '400px',
@@ -565,7 +566,15 @@ initiate_clinic() {
       
       this.rows=[];
        if(res.message == 'success'){
-        this.rows = res.data;
+        let activeData = [];
+        let inactiveData = [];
+        
+        // isShowInactive 
+        res.data.filter(r=>{
+          r.status == 1 ? activeData.push(r) : inactiveData.push(r);
+        });
+        // this.rows = res.data;
+        this.rows = this.isShowInactive ? inactiveData : activeData;
         this.temp = [...res.data];        
         this.table = data;
        }
@@ -691,5 +700,9 @@ initiate_clinic() {
         this.editDialog(event.row.sr - 1,event.row);
       }
     }
+  }
+  showActiveToggle(e){
+    this.isShowInactive = e.checked;
+    this.getUsers();
   }
 }

@@ -3,7 +3,13 @@
         <mat-card-title>Users           
           <div class="sa-pull-right">
             <button *ngIf="userTypeLogin == 2" class="mat-raised-button mat-gray mr-15" mat-raised-button (click)="openRoleDialog()">Manage Roles</button>
-            <button class="mat-raised-button mat-green" mat-raised-button (click)="openDialog()">Add User</button></div>
+            <button class="mat-raised-button mat-green" mat-raised-button (click)="openDialog()">Add User</button>
+            <div class="usrtoggle">
+              <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" name="advanced_options" (change)="showActiveToggle($event)"> 
+                <span><strong>Show Inactive</strong></span>
+              </mat-slide-toggle>
+            </div>            
+          </div>
            <input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
         </mat-card-title>
         <mat-form-field>
