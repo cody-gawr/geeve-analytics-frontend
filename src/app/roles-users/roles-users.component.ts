@@ -150,7 +150,7 @@ show_dentist = false;
     this.rolesUsersService.getRoleUserDetails(this.data.id).subscribe((res) => {
       if(res.message == 'success'){
         this.userData = res.data;
-        this.userData.users_clinics.forEach(res => {
+        this.userData.config_users_clinics.forEach(res => {
          this.selClinics.push(res.clinic_id);
          this.selectedDentistList.push('clinic'+res.clinic_id+'-'+res.dentist_id);
          this.selected_dentist['clinic'+res.clinic_id]= res.dentist_id;
