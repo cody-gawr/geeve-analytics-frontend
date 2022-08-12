@@ -151,7 +151,9 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   }
 
   async initiate_clinic() {
-    await this.getScreenMTD();
+    if(this.user_type != 7){
+      await this.getScreenMTD();
+    }    
     if(this.health_screen_mtd == 1){
         this.mtdText = 'Month To Date';
         this.mtdInnText = 'Last Month';
