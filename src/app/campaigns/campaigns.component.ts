@@ -287,7 +287,7 @@ export class CampaignsComponent implements OnInit, OnDestroy {
         }
       });
       $('#title').html('Campaigns');
-
+      $('.dynamicDropdown2').addClass("flex_direct_mar"); // added   
       this.selectedMonth = this.datepipe.transform(this.selectedMonthYear, 'M');
       this.selectedYear = this.datepipe.transform(this.selectedMonthYear, 'yyyy');
 
