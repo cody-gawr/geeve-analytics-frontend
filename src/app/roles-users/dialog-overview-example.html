@@ -45,11 +45,11 @@
 
   <label>{{clinicProviders.clinicName}}</label>
   <span>  
-    <select (change)="selectedDentist($event.target.value,i,clinicProviders.id)" class="sa_select sa_select_set_roles mat-form-control" name="dentist_id" required="true" *ngIf="clinicProviders.dentists.length>0">
+    <select (change)="selectedDentist($event.target.value,i,clinicProviders.id)" class="sa_select sa_select_set_roles mat-form-control" name="dentist_id" required="true" *ngIf="clinicProviders.config_dentists.length>0">
       <option value ="0">Select Dentist</option>
-      <option *ngFor="let dentist of clinicProviders.dentists" value ="{{dentist.providerId}}">{{dentist.name}}</option>
+      <option *ngFor="let dentist of clinicProviders.config_dentists" value ="{{dentist.providerId}}">{{dentist.name}}</option>
    </select>
-   <span *ngIf="clinicProviders.dentists.length <= 0"> - No Dentist</span>
+   <span *ngIf="clinicProviders.config_dentists.length <= 0"> - No Dentist</span>
   </span>
 </div>
 </div> 
