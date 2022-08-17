@@ -42,7 +42,7 @@
       <div class="sa_mat_select_topbar matwdth monthyear">
          <mat-form-field >
             <mat-select class="external_dentist" [(ngModel)]="selectedMonthYear" (ngModelChange)="onTabChanged($event)" >
-              <mat-option *ngFor="let yearRange of range" [value]="yearRange">{{ yearRange }} </mat-option>
+              <mat-option *ngFor="let yearRange of range" [value]="yearRange">{{ yearRange | date:'MMMM y':'timezone' }} </mat-option>
             </mat-select>
           </mat-form-field>  
       </div>

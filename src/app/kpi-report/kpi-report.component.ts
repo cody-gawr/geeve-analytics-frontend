@@ -46,16 +46,28 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 	constructor(private datepipe: DatePipe,
 		private titleService: Title, private dentistService: DentistService, public KpiReportService: KpiReportService, private _cookieService: CookieService, private toastr: ToastrService, private router: Router, public constants: AppConstants) {
 		$('#title').html('Prime KPI Report');
-		this.selectedMonthYear = this.datepipe.transform(new Date(), 'MMMM-yyyy');
+		// this.selectedMonthYear = this.datepipe.transform(new Date(), 'MMMM-yyyy');
+		this.selectedMonthYear = this.datepipe.transform(new Date(), 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
+			
 		this.range.push(this.selectedMonthYear);
 		for (var i = 1; i < 20; i++) {
-			let todaysDate = new Date('01' + this.selectedMonthYear);
-			let selectedDate = new Date('01' + this.selectedMonthYear);
+			// let todaysDate = new Date('01' + this.selectedMonthYear);
+			let todaysDate = new Date(this.selectedMonthYear);
+			todaysDate.setDate(1);
+
+			// let selectedDate = new Date('01' + this.selectedMonthYear);
+			let selectedDate = new Date(this.selectedMonthYear);
+			selectedDate.setDate(1);
+
 			selectedDate.setMonth(todaysDate.getMonth() - 1);
-			this.selectedMonthYear = this.datepipe.transform(selectedDate, 'MMMM-yyyy');
+			// this.selectedMonthYear = this.datepipe.transform(selectedDate, 'MMMM-yyyy');
+			this.selectedMonthYear = this.datepipe.transform(selectedDate, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
+
 			this.range.push(this.selectedMonthYear);
 		}
-		this.selectedMonthYear = this.datepipe.transform(new Date(), 'MMMM-yyyy');
+		// this.selectedMonthYear = this.datepipe.transform(new Date(), 'MMMM-yyyy');
+		this.selectedMonthYear = this.datepipe.transform(new Date(), 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
+
 		for (var i = 0; i < 12; i++) {
 			this.monthrange.push(i);
 		}
@@ -170,7 +182,9 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 	filterDate() {
 		this.selectedMonth = this.datepipe.transform(this.selectedMonthYear, 'M');
 		this.selectedYear = this.datepipe.transform(this.selectedMonthYear, 'yyyy');
-		this.endDate = this.datepipe.transform(new Date(this.selectedYear, this.selectedMonth, 0), 'yyyy-MM-dd');
+		// this.endDate = this.datepipe.transform(new Date(this.selectedYear, this.selectedMonth, 0), 'yyyy-MM-dd');
+		this.endDate = this.datepipe.transform(new Date(this.selectedYear, this.selectedMonth, 0), 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
+		
 		let currentdate = new Date(this.endDate);
 		let subMonths = this.selectedMonthRange + 1;
 		// let sDate = new Date(currentdate.setMonth(currentdate.getMonth() - subMonths)).toISOString().slice(0, 10);
@@ -179,11 +193,13 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 		let selectedMonthYear = this.datepipe.transform(this.selectedMonthYear, 'M');
 		let currenteMonth = this.datepipe.transform(new Date(),'M');
 		if(selectedMonthYear == currenteMonth){
-			this.endDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
+			// this.endDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
+			this.endDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
 		}
 		currentdate.setDate(1);
 		currentdate.setMonth((currentdate.getMonth() + 1) - subMonths);
-		this.startDate = this.datepipe.transform(new Date(currentdate), 'yyyy-MM-dd');
+		this.startDate = this.datepipe.transform(new Date(currentdate), 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
+
 		// this.startDate = this.datepipe.transform(new Date(sYear, sMonth), 'yyyy-MM-dd');
 		var dentistVal;
 		// if ($('.internal_dentist').val())

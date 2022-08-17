@@ -259,7 +259,8 @@ export class CampaignsComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.matTabGroup.realignInkBar();
     }, 500);
-    this.selectedMonthYear = this.datepipe.transform(new Date(), 'MMMM yyyy');
+    // this.selectedMonthYear = this.datepipe.transform(new Date(), 'MMMM yyyy');
+    this.selectedMonthYear = this.datepipe.transform(new Date(), 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
   }
   ngAfterViewInit(): void {
     this.dentistList.paginator = this.paginator;
@@ -678,15 +679,19 @@ export class CampaignsComponent implements OnInit, OnDestroy {
   }
 
   setDate(type) {
-    let todaysDate = new Date('01' + this.selectedMonthYear);
-    let selectedDate = new Date('01' + this.selectedMonthYear);
+    // let todaysDate = new Date('01' + this.selectedMonthYear);
+    // let selectedDate = new Date('01' + this.selectedMonthYear);
+    let todaysDate = new Date(this.selectedMonthYear);
+    todaysDate.setDate(1);
+    let selectedDate = new Date(this.selectedMonthYear);
+    selectedDate.setDate(1);
     if (type == 'add') {
       selectedDate.setMonth(todaysDate.getMonth() + 1);
     } else {
       selectedDate.setMonth(todaysDate.getMonth() - 1);
     }
-    this.selectedMonthYear = this.datepipe.transform(selectedDate, 'MMMM yyyy');
-    this.refreshPerformanceTab();
+    // this.selectedMonthYear = this.datepipe.transform(selectedDate, 'MMMM yyyy');
+    this.selectedMonthYear = this.datepipe.transform(selectedDate, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
   }
 
   getChartsTips() {

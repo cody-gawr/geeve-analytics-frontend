@@ -3,7 +3,7 @@
     <div class="morning-huddle-date topModel followuppage">
         <mat-icon (click)="setDate('subtract')" role="img"
             class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectLeft" aria-hidden="true">
-            arrow_back_ios</mat-icon>{{ selectedMonthYear }}
+            arrow_back_ios</mat-icon>{{ selectedMonthYear | date:'MMMM y':'timezone' }}
         <mat-icon (click)="setDate('add')" role="img"
             class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">
             arrow_forward_ios</mat-icon>
@@ -147,9 +147,9 @@
                         <ng-container matColumnDef="isDataAvailable1">
                             <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns2.length">
                                 <span *ngIf="isEnableOR && followupOverDueRecall.length <= 0">You have no private health
-                                    for {{ selectedMonthYear }}</span>
+                                    for {{ selectedMonthYear | date:'MMMM y':'timezone' }}</span>
                                 <span *ngIf="isEnableOR && followupOverDueRecall.length > 0">All private health have
-                                    been completed for {{ selectedMonthYear }}</span>
+                                    been completed for {{ selectedMonthYear | date:'MMMM y':'timezone' }}</span>
                                 <span *ngIf="!isEnableOR">Private Health are not enabled - this can be configured in
                                     your Jeeve Settings menu</span>
                             </mat-footer-cell>
@@ -449,9 +449,9 @@
                             <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns3.length">
                                 <span *ngIf="isEnableTH && followupTickFollowups.length <= 0">You have no medicare
                                     campaigns
-                                    for {{ selectedMonthYear }}</span>
+                                    for {{ selectedMonthYear | date:'MMMM y':'timezone' }}</span>
                                 <span *ngIf="isEnableTH && followupTickFollowups.length > 0">All medicare campaigns have
-                                    been completed for {{ selectedMonthYear }}</span>
+                                    been completed for {{ selectedMonthYear | date:'MMMM y':'timezone' }}</span>
                                 <span *ngIf="!isEnableTH">Medicare Campaigns are not enabled - this can be configured in
                                     your
                                     Jeeve Settings menu</span>
@@ -703,10 +703,10 @@
                         <ng-container matColumnDef="isDataAvailable1">
                             <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns1.length">
                                 <span *ngIf="isEnablePO && followupPostOpCalls.length <= 0">You have no incomplete crown
-                                    for {{ selectedMonthYear }}</span>
+                                    for {{ selectedMonthYear | date:'MMMM y':'timezone' }}</span>
                                 <span *ngIf="isEnablePO && followupPostOpCalls.length > 0">All incomplete crown have
                                     been
-                                    completed for {{ selectedMonthYear }}</span>
+                                    completed for {{ selectedMonthYear | date:'MMMM y':'timezone' }}</span>
                                 <span *ngIf="!isEnablePO">Incomplete Crown are not enabled - this can be configured in
                                     your
                                     Jeeve Settings menu</span>
