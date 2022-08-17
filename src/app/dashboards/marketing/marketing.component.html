@@ -426,7 +426,7 @@
                             </div>
                             <div class="CategoriesBtn CategoriesBtnMarketing">
                                 <button
-                                    *ngIf="showTrend == false && connectedwith && showAccountsButton && !newAcqValueError"
+                                    *ngIf="showTrend == false && connectedwith && showAccountsButton && !newAcqValueError && !multipleClinicsSelected"
                                     class="mat-button-sm mat-green-button"
                                     (click)="ngxSmartModalService.getModal('myModal').open()">Accounts</button>
                                 <div class="info-icon-container float-right-space">
@@ -443,7 +443,7 @@
                             <div class="chart py-2">
                                 <div>
 
-                                    <div *ngIf="showTrend == false && fdnewPatientsAcqLoader ==  false &&  (xeroConnect || myobConnect) && !newAcqValueError"
+                                    <div *ngIf="showTrend == false && fdnewPatientsAcqLoader ==  false &&  (xeroConnect || myobConnect) && !newAcqValueError && !multipleClinicsSelected"
                                         class="chart-trend">
                                         <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="newAcqValue"
                                             [thick]="gaugeThick" [foregroundColor]="foregroundColor"

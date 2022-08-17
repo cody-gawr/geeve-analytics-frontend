@@ -1226,7 +1226,9 @@ export class MarketingComponent implements AfterViewInit {
       }else{        
         this.fdnewPatientsRatio();
       }
-      this.fdnewPatientsAcq();
+      if(!this.multipleClinicsSelected)
+        this.fdnewPatientsAcq();
+
       this.fdvisitsRatio();
       if (this.connectedwith == 'myob' && this.multipleClinicsSelected == false) {
         this.getMyobAccounts();
