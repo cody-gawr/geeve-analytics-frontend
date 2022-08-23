@@ -2212,8 +2212,8 @@
               </div>
               <!-- <table #sort1="matSort" mat-table matSort [dataSource]="endOfDaysTasksInComp"
                 class="mat-elevation-z8 daily-task"
-                [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''" matSortDisableClear>
-                <ng-container matColumnDef="task_name" >
+                [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''">
+                <ng-container matColumnDef="name" >
                   <th mat-header-cell mat-sort-header *matHeaderCellDef> Task Name </th>
                   <ng-container *matCellDef="let element">
                   <td mat-cell *ngIf="list.list_id == element.list_id && element.type =='task'">                    
@@ -2322,7 +2322,7 @@
         </mat-card>
       </div>
       
-      <div *ngIf="equipmentListLoading == false && endTaksLoading == false">
+      <div>
         <mat-card class="table-card post_call_responsive_border">
           <mat-card-title>
             <div class="title-follow-up">
@@ -2342,7 +2342,7 @@
                 <!-- <div class="loader-text">Calculating...</div> -->
               </div>
               <table #sort2="matSort" mat-table matSort [dataSource]="lquipmentList" class="mat-elevation-z8"
-                [ngClass]="(lquipmentList.data.length == 0)? 'noDataTableClass' : ''" matSortDisableClear>
+                [ngClass]="(lquipmentList.data.length == 0)? 'noDataTableClass' : ''" >
                 <!-- Name Column -->
                 <ng-container matColumnDef="equip_item">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> Item </th>
@@ -2366,8 +2366,6 @@
                         <span *ngIf="!amButton">Update</span>
                       </button>
                     </div>
-  
-  
                   </td>
                 </ng-container>
                 <ng-container matColumnDef="pm">
@@ -2478,7 +2476,7 @@
                   class="mat-elevation-z8 daily-task"
                   [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''" matSortDisableClear>
                   <!-- Name Column -->
-                  <ng-container matColumnDef="task_name" >
+                  <ng-container matColumnDef="name" >
                     <th mat-header-cell mat-sort-header *matHeaderCellDef> Task Name </th>
                     <ng-container *matCellDef="let element">
                     <td mat-cell *ngIf="list.list_id == element.list_id && element.type =='task'">                    

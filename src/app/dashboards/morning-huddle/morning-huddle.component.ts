@@ -282,7 +282,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns6: string[] = ['start','dentist','name', 'card'];
   displayedColumns7: string[] = ['name', 'phone', 'code','provider','note','book','status'];
   displayedColumns8: string[] = ['name', 'phone', 'code','dentist','note','book','status',];
-  displayedColumns9: string[] = ['task_name','completed_by', 'status'];
+  displayedColumns9: string[] = ['name','completed_by', 'status'];
   displayedColumns10: string[] = ['equip_item', 'quantity','am','pm'];
   displayedColumns11: string[] = ['start','dentist','name','statuscode','card','rebooked'];
 
@@ -349,7 +349,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
  }
 ngAfterViewInit(): void {
   this.endOfDaysTasksInComp.sort = this.sort1; 
-  this.lquipmentList.sort = this.sort2; 
+  // this.lquipmentList.sort = this.sort2;
     this.dentistList.paginator = this.paginator;
     //$('.dentist_dropdown').parent().hide(); // added
     $('.sa_heading_bar').addClass("filter_single"); // added   
@@ -927,6 +927,7 @@ initiate_clinic() {
           } else {
             this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
           }  
+          // this.endOfDaysTasksInComp.sort = this.sort1; 
         }        
         production.data.forEach(res => {
           if(res.type == "list"){
@@ -966,6 +967,7 @@ initiate_clinic() {
           } else {
             this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
           }  
+          // this.endOfDaysTasksInComp.sort = this.sort1; 
         }       
       } else if (production.status == '401') {
          this.handleUnAuthorization();         
@@ -999,6 +1001,7 @@ initiate_clinic() {
         {
             //this.isEnableEquipList = true;
           this.lquipmentList.data = production.data;       
+          this.lquipmentList.sort = this.sort2; 
           var i=0;
           production.data.forEach((list) => {
             
@@ -1492,6 +1495,7 @@ async getDentistList(){
     } else {
       this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
     }
+    // this.endOfDaysTasksInComp.sort = this.sort1; 
   }
 
   updateToCompleteOP(event){
