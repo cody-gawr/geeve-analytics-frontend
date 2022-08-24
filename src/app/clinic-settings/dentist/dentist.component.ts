@@ -170,7 +170,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
         });
         
         var result = res.data.map(ele => {
-          let disableFlag = dData.find(appBookid => appBookid["app_book_id"] == ele["app_book_id"])        
+          let disableFlag = dData.find(appBookid => appBookid["app_book_id"] === ele["app_book_id"])        
           return { ...ele,...disableFlag };
         });
         this.appBooks = result;
