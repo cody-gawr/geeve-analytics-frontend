@@ -2778,7 +2778,7 @@
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="treatmentPlanGoal >= 0 && showGoals == true">
                   <h3 class="m-0 value-num" *ngIf="treatmentPlanGoal">
-                    {{ (treatmentPlanGoal > 100)? 100 : treatmentPlanGoal }}</h3>
+                    {{ (treatmentPlanGoal > 100)? 100 : treatmentPlanGoal }}%</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -3033,7 +3033,7 @@
                 </canvas>
               </div>
               <div
-                *ngIf="showTrendChart == true && prebook=='treatment' && !treatmentPlanRateLoader && treatmentPrebookChartTrend1.length > 0"
+                *ngIf="showTrendChart == true && prebook=='treatment' && !fdTreatmentPrebookRateTrendLoader && treatmentPrebookChartTrend1.length > 0"
                 class="div-height">
                 <canvas #myCanvas id="PrebookRateTrend" baseChart [datasets]="treatmentPrebookChartTrend"
                   [labels]="treatmentPrebookChartTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
@@ -3099,6 +3099,10 @@
           </mat-card-content>
         </mat-card>
         <div *ngIf="recallPrebookLoader && !fdRecallPrebookRateTrendLoader && !recallPrebookDentistLoader"
+          class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+          <div class="loader-text">Calculating...</div>
+        </div>
+        <div *ngIf="fdTreatmentPrebookRateTrendLoader"
           class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
           <div class="loader-text">Calculating...</div>
         </div>

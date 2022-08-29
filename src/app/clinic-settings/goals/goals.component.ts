@@ -33,6 +33,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
   selectedTab: any = 1;
   Cconsultant:any ='';
   selectedYear : any = this.year;
+  tabChanged :boolean = false;
   @Input() set clinicId(value: any) {
     this.clinic_id$.next(value);
   };
@@ -128,6 +129,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
 
   onTabChanged(event) {
     this.selectedTab = event;
+    this.tabChanged = true;
   }
 
   onTabYearChanged(event) {
@@ -192,12 +194,14 @@ getGoalsForTabsClinic(allGoals) {
   
   this.swap(this.tabs[4].charts,0,2);
 
-  if(this.Cconsultant != 'prime'){
-    this.selectedTab = this.tabs[0].d_id;
-  }else{
-    this.selectedTab = 10; // Kpi report
+  // if(this.Cconsultant != 'prime'){
+  //   this.selectedTab = this.tabs[0].d_id;
+  // }else{
+  //   this.selectedTab = 10; // Kpi report
+  // }
+  if(this.Cconsultant == 'prime' && !this.tabChanged){
+    this.selectedTab = 10;
   }
-  
 }
 
 swap(arr, i, j){
