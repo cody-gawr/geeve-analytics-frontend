@@ -232,7 +232,7 @@
                     (chartClick)="chartClicked($event)"></canvas>
                 </div>
                 <!-- Trend Mode -->
-                <div *ngIf="showTrend == true && stackedChartSpecialDataMax > 0" class="chart-trend">
+                <div *ngIf="showTrend == true && stackedChartSpecialDataMax > 0 && !buildChartDentistSpecLoader" class="chart-trend">
                   <canvas baseChart [datasets]="stackedChartDataItemSpecialTrend" [labels]="stackedChartLabelsSpecTrend"
                     [options]="stackedChartOptions" [legend]="false" [chartType]="stackedChartType"
                     (chartHover)="chartHovered($event)" [colors]="predictorAnalysisChartColors"
@@ -264,6 +264,11 @@
 
           <div
             *ngIf="buildChartLoader || buildChartDentistLoader || ItemsPredictorAnalysisSpecialStatus || procedureSpecialDentistLoader"
+            class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+            <div class="loader-text">Calculating...</div>
+          </div>
+          <div
+            *ngIf="buildChartDentistSpecLoader"
             class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
             <div class="loader-text">Calculating...</div>
           </div>

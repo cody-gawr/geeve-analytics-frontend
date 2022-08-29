@@ -202,7 +202,7 @@
                     [colors]="DPcolors">
                   </canvas> <!-- dynamic colors of bar -->  
                 </div>
-                <div class="Prod-tbl-height" *ngIf="barChartData[0].data.length && showprodAllTbl === true">
+                <div class="Prod-tbl-height" *ngIf="barChartData[0].data.length && showprodAllTbl === true && !buildChartLoader">
                   <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
@@ -241,7 +241,7 @@
                     [colors]="DPcolors">
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
-                <div class="Prod-tbl-height" *ngIf="barChartDataDentists[0].data.length && showprodDentAllTbl === true">
+                <div class="Prod-tbl-height" *ngIf="barChartDataDentists[0].data.length && showprodDentAllTbl === true && !buildChartDentistsLoader">
                   <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
@@ -280,7 +280,7 @@
                     [colors]="DPcolors">
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
-                <div class="Prod-tbl-height" *ngIf="barChartDataOht[0].data.length && showprodOhtAllTbl === true">
+                <div class="Prod-tbl-height" *ngIf="barChartDataOht[0].data.length && showprodOhtAllTbl === true && !buildChartOhtLoader">
                   <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
@@ -322,7 +322,7 @@
                     [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
-                <div class="Prod-tbl-height" *ngIf="collectionData[0].data.length && showCollAllTbl === true">
+                <div class="Prod-tbl-height" *ngIf="collectionData[0].data.length && showCollAllTbl === true && !collectionLoader">
                   <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
@@ -361,7 +361,7 @@
                     [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
-                <div class="Prod-tbl-height" *ngIf="collectionDentistsData[0].data.length && showCollDentTbl === true">
+                <div class="Prod-tbl-height" *ngIf="collectionDentistsData[0].data.length && showCollDentTbl === true && !collectionDentistsLoader">
                   <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
@@ -400,7 +400,7 @@
                     [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
-                <div class="Prod-tbl-height" *ngIf="collectionOhtData[0].data.length && showCollOhtTbl === true">
+                <div class="Prod-tbl-height" *ngIf="collectionOhtData[0].data.length && showCollOhtTbl === true && !collectionOhtLoader">
                   <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
@@ -442,7 +442,7 @@
                     [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
-                <div class="Prod-tbl-height" *ngIf="collectionExpData[0].data.length && showCollExpTbl === true">
+                <div class="Prod-tbl-height" *ngIf="collectionExpData[0].data.length && showCollExpTbl === true && !collectionExpLoader">
                   <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
@@ -481,7 +481,7 @@
                     [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
-                <div class="Prod-tbl-height" *ngIf="collectionExpDentistsData[0].data.length && showCollExpDentTbl === true">
+                <div class="Prod-tbl-height" *ngIf="collectionExpDentistsData[0].data.length && showCollExpDentTbl === true && !collectionExpDentistsLoader">
                   <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
@@ -520,7 +520,7 @@
                     [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
-                <div class="Prod-tbl-height" *ngIf="collectionExpOhtData[0].data.length && showCollExpOhtTbl === true">
+                <div class="Prod-tbl-height" *ngIf="collectionExpOhtData[0].data.length && showCollExpOhtTbl === true && !collectionExpOhtLoader">
                   <div class="DentistProductionTable fstyle">
                     <table>
                       <thead>
@@ -2093,7 +2093,7 @@
                     [cap]="cap" [duration]="gaugeDuration" [prepend]="gaugePrependText" [size]="size">
                   </ngx-gauge>
                 </div>
-                <div *ngIf="showTrendChart == true && collhourlyRateChartTrend1.length > 0 && collhourlyRateRateTrendLoader == false"
+                <div *ngIf="showTrendChart == true && collhourlyRateChartTrend1.length > 0 && collExphourlyRateRateTrendLoader == false"
                   class="cl-card-height">
                   <canvas #myCanvas id="collExpHourlyRateTrend" baseChart [datasets]="collExphourlyRateChartTrend"
                     [labels]="collExphourlyRateChartTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
