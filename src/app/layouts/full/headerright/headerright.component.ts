@@ -610,9 +610,9 @@ export class AppHeaderrightComponent implements AfterViewInit {
       if (this.user_type_dentist != "2" && newValue != "all") {
        // this.getChildID(newValue);
         if(Array.isArray(this.clinic_id)){
-          if(this.clinic_id.length == 1){
-            this.getChildID(newValue);
-          }else{
+          // if(this.clinic_id.length == 1){
+          //   this.getChildID(newValue);
+          // }else{
               $("#clinic_initiate").click();
               if (this._cookieService.get("clinic_dentist")) {
                 let dentistclinic = this._cookieService
@@ -631,7 +631,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
                 this.selectedDentist = "all";
               }
               this.loadDentist(this.selectedDentist);
-          }
+          // }
         }else{
           this.getChildID(newValue);
         }
