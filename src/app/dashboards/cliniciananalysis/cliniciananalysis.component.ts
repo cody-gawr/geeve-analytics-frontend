@@ -1652,7 +1652,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.dentistVal = newValue;
       this.showTrend = true;
       this.selectedDentist = newValue;
-      if(this.user_type != '4'){
+      if(this.user_type != '4' && this.toggleChecked == false){
         if(this.proCollShow == 1){
           this.dentistProductionTrend('w');
         }else if(this.proCollShow == 2 ){
