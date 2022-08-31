@@ -11,6 +11,7 @@ import { FollowupsComponent } from './followups/followups.component';
 import { CampaignsComponent } from './campaigns/campaigns.component';
 import { StepperComponent } from './layouts/stepper/stepper.component';
 import { AuthGuard } from './auth/authguard.service';
+import { StaffMeetingsComponent } from './staff-meetings/staff-meetings.component';
 
 export const AppRoutes: Routes = [
   {
@@ -68,6 +69,11 @@ export const AppRoutes: Routes = [
       {
         path: 'morning-huddle',
         component: MorningHuddleComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'staff-meetings',
+        component: StaffMeetingsComponent,
         canActivate: [AuthGuard]
       },
       {

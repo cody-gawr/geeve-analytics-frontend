@@ -48,6 +48,7 @@ import { DndDirective } from './directive/dnd.directive';
 import { KanbanAllModule,KanbanModule, KanbanComponent,KanbanModel  } from '@syncfusion/ej2-angular-kanban';
 import { DropDownListAllModule } from '@syncfusion/ej2-angular-dropdowns';
 import { SortDirective } from './directive/sort.directive';
+import { StaffMeetingsComponent } from './staff-meetings/staff-meetings.component';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
   wheelSpeed: 2,
@@ -86,7 +87,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     StepperHeaderrightComponent,
     DashboardDurationTabsComponent,
     SortDirective,
-    DndDirective
+    DndDirective,
+    StaffMeetingsComponent
   ],
   imports: [
     UserIdleModule.forRoot({idle: 14400, timeout: 10, ping: 10}),

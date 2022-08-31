@@ -115,6 +115,16 @@
             </mat-nav-list>
         </ng-template>
     </mat-list-item>
+
+    <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
+    *ngIf="apiUrl.includes('test')">
+    <a class="" appAccordionToggle [routerLink]="['/staff-meetings']">
+        <i class="fas fa-id-card"></i>
+        <span>Staff Meetings</span>
+        <span fxFlex></span>
+    </a> 
+    </mat-list-item>
+
     <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
     *ngIf="(hasPrimeClinics == 'yes' && user_type == 2 ) || (hasPrimeClinics == 'yes' && permisions.indexOf('kpireport') >= 0 ) || user_type == 7">
     <a class="" appAccordionToggle [routerLink]="['/kpi-report']">
