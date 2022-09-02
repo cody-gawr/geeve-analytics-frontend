@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {FormControl} from '@angular/forms';
@@ -11,6 +11,7 @@ import {map, startWith} from 'rxjs/operators'
     selector: 'staff-meetings',
     templateUrl : './staff-meetings.component.html',
     styleUrls : ['./staff-meetings.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class StaffMeetingsComponent implements OnInit{
     public showCreateMeetingTab : boolean;
@@ -18,6 +19,7 @@ export class StaffMeetingsComponent implements OnInit{
     public boardMeetingPage : boolean;
     public agenda : boolean = true;
     public create_meeting_form : FormGroup;
+    public create_agenda_form : FormGroup;
     public agendaTab : boolean;
     public created_meeting = [
       {heading : "Jaave Wellness Program Policy 1", start_time:"10:10", end_time:"10:40", link: "example.com", invited:"all",description:"demo tes 1t", id:1},
@@ -35,6 +37,28 @@ export class StaffMeetingsComponent implements OnInit{
       {heading : "Jaave Wellness Program Policy (Invites) ", start_time:"10:10", end_time:"10:40", link: "example.com", id:5}
     ];
 
+    public templates = [
+      {name: "welcome", id:1},
+      {name: "welcome 1", id:2},
+      {name: "welcome 2", id:3}
+    ]
+
+    public agendaList = [
+      {heading : "welcome", items :[
+        {item:"Intoduce new board members"}
+      ]},
+      {heading : "Administration", items :[
+        {item:"Intoduce new board members"},
+        {item:"Intoduce new board members"},
+        {item:"Intoduce new board members"}
+      ]},
+      {heading : "Front Desk", items :[
+        {item:"Intoduce new board members"},
+        {item:"Intoduce new board members"},
+        {item:"Intoduce new board members"}
+      ]},
+    ];
+
     public card_data = {heading : "", start_time:"", end_time:"", link: "", invited:"",description:""};
 
     constructor(private formBuilder : FormBuilder) {
@@ -47,8 +71,16 @@ export class StaffMeetingsComponent implements OnInit{
         heading: [null, Validators.compose([Validators.required])],
         start_time: [null, Validators.compose([Validators.required])],
         end_time: [null, Validators.compose([Validators.required])],
+        template: [null, Validators.compose([Validators.required])]
+      });
+
+      this.create_agenda_form = this.formBuilder.group({
+        heading: [null, Validators.compose([Validators.required])],
+        item: [null, Validators.compose([Validators.required])],
+        person: [null, Validators.compose([Validators.required])],
+        duration: [null, Validators.compose([Validators.required])],
         description: [null, Validators.compose([Validators.required])]
-      })
+      });
     }
 
     initiate_clinic() {
@@ -62,10 +94,10 @@ export class StaffMeetingsComponent implements OnInit{
   selectable = true;
   removable = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  headingFormCtrl = new FormControl();
+  headingFormCtrl = new FormControl('',Validators.required);
   filteredHeadings: Observable<string[]>;
-  headings: string[] = ['Welcome'];
-  allheadings: string[] = ['Administrate', 'Font Desk'];
+  headings: string[] = [];
+  allheadings: string[] = ['Welcome','Administrate', 'Font Desk'];
 
   @ViewChild('headingInput') headingInput: ElementRef<HTMLInputElement>;
   // @ViewChild('card') card: ElementRef<HTMLInputElement>;
@@ -129,13 +161,25 @@ export class StaffMeetingsComponent implements OnInit{
     this.create_meeting.open();
   }
 
-  close(card){
+  close(card, form){
     card.close();
-    this.create_meeting_form.reset();
+    form.reset();
   }
 
   save_meeting(formData){
+    formData.id = this.created_meeting.length+1;
     this.created_meeting.unshift(formData);
+  }
+
+  boardMeeting(){
+    this.boardMeetingPage = true;
+
+    if(this.boardMeetingPage)
+      this.create_meeting.close();
+  }
+
+  save_agenda(formData){
+
   }
   
 }
