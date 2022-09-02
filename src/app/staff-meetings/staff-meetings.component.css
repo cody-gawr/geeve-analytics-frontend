@@ -212,3 +212,30 @@ ol li span{
     font-size: 15px;
     width: 20px;
 }
+
+.agenda div{
+    list-style-type: none;
+}
+  
+.agenda div{
+    counter-increment: css-counter 1;
+    font-size: 18px;
+    line-height: 1.2em;
+}
+
+.agenda div > p:before {
+    content: counter(css-counter) " ";
+    border-radius: 50%;
+    width: 12px;
+    height: 11px;
+    padding-left: 4px;
+    background: #fff;
+    border: 2px solid #666;
+    color: #666;
+    text-align: center;
+    font: 14px Arial, sans-serif;
+}
+
+i{
+    cursor: pointer;
+}

@@ -176,7 +176,6 @@ export class DialogOverviewTasklistDialogComponent {
   }
 
   additemNew(data) {
-    console.log('data', data);
     this.dialogRef.componentInstance.data.currPage = 1;
 
 

@@ -221,12 +221,12 @@
                     </div>
                 </mat-card-title>
                 <mat-card-content class="meeting_card_content">
-                    <div class="agendaListing">
+                    <div class="agenda">
                         <div *ngFor="let agenda of agendaList">
                         <p>&nbsp;&nbsp; <strong>{{agenda.heading}}</strong></p>
                                 <ol>
-                                    <li *ngFor="let item of agenda.items">{{item.item}}<span>John Doe - 5 Mins</span></li>
-                                    <div class="addMore"><span (click)="agenda_drawer.open()"><i class="fas fa-plus"></i></span></div>
+                                    <li *ngFor="let item of agenda.items">{{item.item}} &nbsp;&nbsp; <i class="ti-pencil m-r-10"></i> <span>John Doe - 5 Mins</span></li>
+                                    <section class="addMore"><span (click)="agenda_drawer.open()"><i class="fas fa-plus"></i></span></section>
                                 </ol>
                         </div>
                     </div>
