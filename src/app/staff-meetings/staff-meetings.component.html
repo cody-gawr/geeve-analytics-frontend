@@ -66,6 +66,7 @@
     
     <mat-drawer #drawer class="example-sidenav"  mode="side" position="end">
             <mat-card class="meeting_content">
+                <span class="close-icon float-right" (click)="close(drawer,invites_form)"><i class="ti-close"></i></span>
                 <mat-card-title>
                     <div class="card_header">
                         {{card_data.heading}}
@@ -89,13 +90,46 @@
                     </div>
                     <br>
                     <hr>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <h5>Add Invites</h5>
                         <select class="form-control back_gray" [(ngModel)]="card_data.invited">
                             <option class="staff_invites" value="all" selected>All</option>
                             <option class="staff_invites" value="staff" selected>staff</option>
                         </select>
-                    </div>
+                    </div> -->
+                    <form [formGroup]="invites_form">
+                        <mat-form-field class="example-chip-list" appearance="outline">
+                            <mat-label>Invites</mat-label>
+                            <mat-chip-list #invitesChipList required [formControl]="invites_form.controls['invites']">
+                                <mat-chip
+                                *ngFor="let users of invited_users"
+                                [selectable]="true"
+                                [removable]="true"
+                                (removed)="removeInvites(users.id)">
+                                {{users.name}}
+                                <mat-icon matChipRemove>cancel</mat-icon>
+                                </mat-chip>
+                                <input
+                                id="chip"
+                                placeholder="Select Staff....."
+                                #invitesInput
+                                [formControl]="invites_form.controls['invites']"
+                                [matAutocomplete]="auto"
+                                [matChipInputFor]="invitesChipList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+                            </mat-chip-list>
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedInvites($event)">
+                                <mat-option *ngFor="let user of staff" [value]="user.id">
+                                {{user.name}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            
+                            <mat-error>
+                                Please Select Users for invitation
+                            </mat-error>
+                        </mat-form-field>
+                    </form>
+                    <!-- <small *ngIf="invited_users.length == 0" class="text-danger support-text">Please Select Users for invitation.</small> -->
                     <br>
                     <hr>
                 </mat-card-content>
@@ -103,7 +137,7 @@
                     <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                         <div fxFlex.gt-sm="43.33%" fxFlex.gt-xs="43%" fxFlex="100" class="btn-group">
                           <!-- <small class="sa_tab_btn">Publish Meeting</small> -->
-                          <button class="sa_tab_btn" mat-raised-button color="green" [disabled]="agenda" >Publish Meeting</button>
+                          <button class="sa_tab_btn" mat-raised-button color="green" [disabled]="!invites_form.valid" (click)="save_invites()" >Publish Meeting</button>
                         </div>
                         <div fxFlex.gt-sm="43.33%" fxFlex.gt-xs="43%" fxFlex="100" class="btn-group">
                             <!-- <small class="sa_tab_btn">Open Agenda</small> -->
@@ -153,38 +187,118 @@
                             </div>
                     </div> -->
                     <mat-form-field class="example-full-width" appearance="outline">
-                        <mat-label>Meeting title</mat-label>
-                        <input type="text" matInput [formControl]="create_meeting_form.controls['heading']" required>
-                        <mat-error *ngIf="create_meeting_form.controls['heading'].hasError('required') && create_meeting_form.controls['heading'].touched">
-                            Please Enter meeing title
+                        <mat-label>Meeting Topic</mat-label>
+                        <input type="text" matInput autocomplete="off" [formControl]="create_meeting_form.controls['meeting_topic']" required>
+                        <mat-error *ngIf="create_meeting_form.controls['meeting_topic'].hasError('required') && create_meeting_form.controls['meeting_topic'].touched">
+                            Please Enter meeting topic
                           </mat-error>
                     </mat-form-field>
 
-                    <br>
-
+                    <!-- <br> -->
+                    <!-- <input id="mhdatepicker" class="filter_custom filter sa_datepicker Mhdatepic" readonly placeholder="" type="text" matInput ngxDaterangepickerMd
+                    [singleDatePicker]="true" [locale]="{applyLabel: 'ok', displayFormat: 'DD MMMM, y'}"
+                    [(ngModel)]="selected"  [autoApply]="true" [showDropdowns]="true" /> -->
+                    
+                    
                     <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Select Date</mat-label>
+                        <!-- <input class="filter_custom filter sa_datepicker Mhdatepic"  autocomplete="off" type="text" matInput [formControl]="create_meeting_form.controls['start_date']" required ngxDaterangepickerMd [singleDatePicker]="true" [locale]="{displayFormat: 'DD MMMM, y'}" [autoApply]="true" [showDropdowns]="true" /> -->
+                        <input matInput  [matDatepicker]="picker" autocomplete="off" type="text" [formControl]="create_meeting_form.controls['start_date']" required>
+                        <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error *ngIf="create_meeting_form.controls['start_date'].hasError('required')">
+                            Please Enter Meeting Start Date
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- <mat-form-field class="example-full-width" appearance="outline">
                         <mat-label>Start Time</mat-label>
-                        <input matInput type="time" [formControl]="create_meeting_form.controls['start_time']" required>
+                        <mat-select [formControl]="create_meeting_form.controls['start_time']" [ngModel]="'9:00'">
+                            <mat-option *ngFor="let t of time" [value]="t">
+                              {{t}}
+                            </mat-option>
+                          </mat-select>
                         <mat-error *ngIf="create_meeting_form.controls['start_time'].hasError('required') && create_meeting_form.controls['start_time'].touched">
                             Please Enter Start Time
                           </mat-error>
-                    </mat-form-field>
+                    </mat-form-field> -->
 
-                    <br>
+                    <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+                        <div fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group" >
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Start Time</mat-label>
+                                <mat-select [formControl]="create_meeting_form.controls['start_time']" required>
+                                    <mat-option *ngFor="let t of time" [value]="t">
+                                      {{t}}
+                                    </mat-option>
+                                  </mat-select>
+                                <mat-error *ngIf="create_meeting_form.controls['start_time'].hasError('required') && create_meeting_form.controls['start_time'].touched">
+                                    Please Enter Start Time
+                                  </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-select [ngModel]="'AM'" >
+                                    <mat-option [value]="'AM'">AM</mat-option>
+                                    <mat-option [value]="'PM'">PM</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- <br> -->
+                    <!-- <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Duration (mins)</mat-label>
+                        <input type="number" min="1" autocomplete="off" matInput [formControl]="create_meeting_form.controls['duration']" required>
+                        <mat-error *ngIf="create_meeting_form.controls['duration'].hasError('required') && create_meeting_form.controls['duration'].touched">
+                            Please Enter duration
+                          </mat-error>
+                    </mat-form-field> -->
 
-                    <mat-form-field class="example-full-width" appearance="outline">
+                    <span>Duration</span>
+                    <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+                        <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group" >
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>hr</mat-label>
+                                <mat-select [formControl]="create_meeting_form.controls['duration_hr']" required>
+                                    <mat-option *ngFor="let hr of hrs" [value]="hr">
+                                      {{hr}}
+                                    </mat-option>
+                                  </mat-select>
+                                <mat-error *ngIf="create_meeting_form.controls['duration_hr'].hasError('required') && create_meeting_form.controls['duration_hr'].touched">
+                                    Please Select duration (hr)
+                                  </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>mins</mat-label>
+                                <mat-select [formControl]="create_meeting_form.controls['duration_mins']" required>
+                                    <mat-option *ngFor="let min of mins" [value]="min">
+                                      {{min}}
+                                    </mat-option>
+                                  </mat-select>
+                                <mat-error *ngIf="create_meeting_form.controls['duration_mins'].hasError('required') && create_meeting_form.controls['duration_mins'].touched">
+                                    Please Select duration(mins)
+                                  </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <!-- <mat-form-field class="example-full-width" appearance="outline">
                         <mat-label>End Time</mat-label>
                         <input matInput type="time" [formControl]="create_meeting_form.controls['end_time']" required>
                         <mat-error *ngIf="create_meeting_form.controls['end_time'].hasError('required') && create_meeting_form.controls['end_time'].touched">
                             Please Enter End Time
                           </mat-error>
-                    </mat-form-field>
+                    </mat-form-field> -->
 
-                    <br>
+                    <!-- <br> -->
 
                     <mat-form-field class="example-full-width" appearance="outline">
                         <mat-label>Selec agenda template</mat-label>
-                        <mat-select [formControl]="create_meeting_form.controls['template']" required>
+                        <mat-select [formControl]="create_meeting_form.controls['template']">
                             <mat-option *ngFor="let template of templates" [value]="template.id">
                               {{template.name}}
                             </mat-option>
@@ -225,8 +339,8 @@
                         <div *ngFor="let agenda of agendaList">
                         <p>&nbsp;&nbsp; <strong>{{agenda.heading}}</strong></p>
                                 <ol>
-                                    <li *ngFor="let item of agenda.items">{{item.item}} &nbsp;&nbsp; <i class="ti-pencil m-r-10"></i> <span>John Doe - 5 Mins</span></li>
-                                    <section class="addMore"><span (click)="agenda_drawer.open()"><i class="fas fa-plus"></i></span></section>
+                                    <li *ngFor="let item of agenda.items" (click)="agenda_drawer.open()">{{item.item}} &nbsp;&nbsp; <i class="ti-pencil m-r-10"></i> <span>John Doe - 5 Mins</span></li>
+                                    <section class="addMore"><span (click)="agenda_drawer.open()" ><i class="fas fa-plus"></i></span></section>
                                 </ol>
                         </div>
                     </div>
@@ -252,10 +366,10 @@
                     
                     <form [formGroup]="create_agenda_form">        
                         
-                        <h5>Heading <span class="sub_heading">( Type/Choose one )</span></h5> 
+                        <!-- <h5>Heading <span class="sub_heading">( Type/Choose one )</span></h5>  -->
 
                         <mat-form-field class="example-chip-list" appearance="outline">
-                            <mat-label>Heading <span class="sub_heading">( Type/Choose one )</span></mat-label>
+                            <mat-label>Category</mat-label>
                             <mat-chip-list #chipList>
                               <mat-chip
                                 *ngFor="let heading of headings"
@@ -276,54 +390,47 @@
                                 (matChipInputTokenEnd)="add($event)">
                             </mat-chip-list>
                             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                              <mat-option *ngFor="let headings of filteredHeadings | async" [value]="headings">
+                              <mat-option *ngFor="let headings of filteredHeadings" [value]="headings">
                                 {{headings}}
                               </mat-option>
                             </mat-autocomplete>
 
                             <mat-error *ngIf="headingFormCtrl.hasError('required') && headingFormCtrl.touched">
                                 Please Enter Heading
-                              </mat-error>
+                            </mat-error>
                           </mat-form-field>
+
+                          <!-- <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Category</mat-label>
+                            <input type="text" matInput autocomplete="off" [formControl]="create_agenda_form.controls['heading']" required>
+                            <mat-error *ngIf="create_agenda_form.controls['heading'].hasError('required') && create_agenda_form.controls['heading'].touched">
+                                Category is required.
+                              </mat-error>
+                          </mat-form-field> -->
     
-                        <br>
     
                         <mat-form-field class="example-full-width" appearance="outline">
-                            <mat-label>Item</mat-label>
-                            <mat-select [formControl]="create_agenda_form.controls['item']" required>
-                                <mat-option [value]="1">
-                                    demo
-                                </mat-option>
-                                <mat-option [value]="2">
-                                    demo 1
-                                </mat-option>
-                              </mat-select>
+                            <mat-label>Agenda Item</mat-label>
+                            <input type="text" matInput [formControl]="create_agenda_form.controls['item']" required>
                             <mat-error *ngIf="create_agenda_form.controls['item'].hasError('required') && create_agenda_form.controls['item'].touched">
                                 Please select agenda item
                               </mat-error>
                           </mat-form-field>
 
-                        <br>
 
                         <mat-form-field class="example-full-width" appearance="outline">
-                            <mat-label>Person</mat-label>
-                            <input type="text" matInput [formControl]="create_agenda_form.controls['person']" required>
-                            <mat-error *ngIf="create_agenda_form.controls['person'].hasError('required') && create_agenda_form.controls['person'].touched">
-                                Please Enter person
-                              </mat-error>
+                            <mat-label>Staff Member</mat-label>
+                            <input type="text" matInput [formControl]="create_agenda_form.controls['person']">
                         </mat-form-field>
 
-                        <br>
 
                         <mat-form-field class="example-full-width" appearance="outline">
-                            <mat-label>Duration</mat-label>
-                            <input type="number" matInput [formControl]="create_agenda_form.controls['duration']" required>
+                            <mat-label>Duration (mins)</mat-label>
+                            <input type="number" min="1" matInput [formControl]="create_agenda_form.controls['duration']" required>
                             <mat-error *ngIf="create_agenda_form.controls['duration'].hasError('required') && create_agenda_form.controls['duration'].touched">
                                 Please Enter duration
                               </mat-error>
                         </mat-form-field>
-
-                        <br>
 
                         <mat-form-field class="example-full-width" appearance="outline">
                             <mat-label>Add a description</mat-label>
@@ -334,7 +441,6 @@
                           </mat-form-field>
 
                         </form>
-                        <br>
                     <!-- <mat-form-field class="example-chip-list">
                         <mat-chip-list #chipList>
                           <mat-chip
