@@ -240,7 +240,7 @@
                         </div>
                         <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
                             <mat-form-field class="example-full-width" appearance="outline">
-                                <mat-select [ngModel]="'AM'" >
+                                <mat-select [ngModel]="'AM'" [formControl]="create_meeting_form.controls['day_time']" >
                                     <mat-option [value]="'AM'">AM</mat-option>
                                     <mat-option [value]="'PM'">PM</mat-option>
                                 </mat-select>
@@ -268,7 +268,7 @@
                                   </mat-select>
                                 <mat-error *ngIf="create_meeting_form.controls['duration_hr'].hasError('required') && create_meeting_form.controls['duration_hr'].touched">
                                     Please Select duration (hr)
-                                  </mat-error>
+                                </mat-error>
                             </mat-form-field>
                         </div>
                         <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
@@ -281,7 +281,7 @@
                                   </mat-select>
                                 <mat-error *ngIf="create_meeting_form.controls['duration_mins'].hasError('required') && create_meeting_form.controls['duration_mins'].touched">
                                     Please Select duration(mins)
-                                  </mat-error>
+                                </mat-error>
                             </mat-form-field>
                         </div>
                     </div>
@@ -297,7 +297,7 @@
                     <!-- <br> -->
 
                     <mat-form-field class="example-full-width" appearance="outline">
-                        <mat-label>Selec agenda template</mat-label>
+                        <mat-label>Select agenda template</mat-label>
                         <mat-select [formControl]="create_meeting_form.controls['template']">
                             <mat-option *ngFor="let template of templates" [value]="template.id">
                               {{template.name}}

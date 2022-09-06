@@ -7,6 +7,7 @@ import {MatChipInputEvent, MatChipList} from '@angular/material/chips';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators'
 import { TasksService } from "../tasks/tasks.service";
+import { StaffMeetingService } from "./staff-meetings.service";
 
 @Component({
     selector: 'staff-meetings',
@@ -99,7 +100,7 @@ export class StaffMeetingsComponent implements OnInit{
     ];
 
 
-    constructor(private formBuilder : FormBuilder, private tasksService : TasksService) {
+    constructor(private formBuilder : FormBuilder, private tasksService : TasksService, private staffMeetingService : StaffMeetingService) {
       this.getUsers();
       this.filteredHeadings = this.headingFormCtrl.valueChanges.pipe(
           map((heading: string | null) => heading ? this._filter(heading) : this.allheadings.slice()));
@@ -111,6 +112,7 @@ export class StaffMeetingsComponent implements OnInit{
         start_time: [null, Validators.compose([Validators.required])],
         duration_mins: [null, Validators.compose([Validators.required])],
         duration_hr: [null, Validators.compose([Validators.required])],
+        day_time: [null, Validators.compose([Validators.required])],
         template: [null,]
       });
 
@@ -260,6 +262,10 @@ export class StaffMeetingsComponent implements OnInit{
   }
 
   save_meeting(formData){
+    this.staffMeetingService.createMeeting(formData).subscribe(res=>{
+      
+    });
+
     formData.id = this.created_meeting.length+1;
     this.created_meeting.unshift(formData);
     this.agendaTab = true
