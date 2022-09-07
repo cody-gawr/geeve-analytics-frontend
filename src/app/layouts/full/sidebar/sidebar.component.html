@@ -117,7 +117,8 @@
     </mat-list-item>
 
     <mat-list-item appAccordionLink routerLinkActive="selected" group="string"
-    *ngIf="apiUrl.includes('test')">
+    *ngIf="((user_type == 2) || (permisions.indexOf('staffmeeting') >= 0) || user_type == 7) && apiUrl.includes('test')">
+    <!-- *ngIf="apiUrl.includes('test')"> -->
     <a class="" appAccordionToggle [routerLink]="['/staff-meetings']">
         <i class="fas fa-id-card"></i>
         <span>Staff Meetings</span>
