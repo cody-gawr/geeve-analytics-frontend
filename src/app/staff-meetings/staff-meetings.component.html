@@ -10,70 +10,128 @@
         <br>
         <br>
         <hr>
-        <mat-tab-group>
+        <mat-tab-group (selectedIndexChange) = "changeTab($event)">
             <mat-tab label="Created">
-                <div *ngIf="!showCompletedMeetingTab">
-                    <h5>Today <i class="fas fa-calendar"></i></h5>
-                    <div *ngFor="let head of created_meeting; let i = index;">
+                <div *ngIf="!showCompletedMeetingTab && upcomingMeeting.length > 0">
+                    <!-- <h5>Today <i class="fas fa-calendar"></i></h5> -->
+                    <div *ngFor="let meeting of upcomingMeeting; let i = index;">
                         <mat-card class="meeting_card">
-                            <div #card (click)="drawerToggle(head.id, card)">
+                            <div #card (click)="drawerToggle(meeting.id, card)">
                                 <mat-card-title class="header">
                                     <div class="meeting_card_header">
-                                        {{head.heading}}
+                                        {{meeting.meeting_topic}}
                                     </div>
                                 </mat-card-title>
                                 <mat-card-content class="meeting_card_content">
-                                        <p><i class="fas fa-clock"></i> {{head.start_time}} - {{head.end_time}}</p>
-                                        <p><i class="fas fa-copy copy"></i> {{head.link}}</p>
+                                        <p><i class="fas fa-clock"></i> {{meeting.start_time}} - {{meeting.end_time}}</p>
+                                        <p><i class="fas fa-copy copy"></i> example</p>
                                 </mat-card-content>
                             </div>      
                         </mat-card>
                     </div>
                 </div>
-                <div *ngIf="showCompletedMeetingTab">
+                <div *ngIf="!showCompletedMeetingTab && upcomingMeeting.length <= 0">
+                    No Upcoming meeting is Available.
+                </div>
+                <div *ngIf="showCompletedMeetingTab && completedMeeting.length > 0">
+                    <div *ngFor="let meeting of completedMeeting; let i = index;">
+                        <mat-card class="meeting_card">
+                            <div >
+                                <mat-card-title class="header">
+                                    <div class="meeting_card_header">
+                                        {{meeting.meeting_topic}}
+                                    </div>
+                                </mat-card-title>
+                                <mat-card-content class="meeting_card_content">
+                                        <p><i class="fas fa-clock"></i> {{meeting.start_time}} - {{meeting.end_time}}</p>
+                                        <p><i class="fas fa-copy copy"></i> example</p>
+                                </mat-card-content>
+                            </div>      
+                        </mat-card>
+                    </div>
+                </div>
+                <div *ngIf="showCompletedMeetingTab && completedMeeting.length <= 0">
                     No Completed Data Available.
                 </div>
             </mat-tab>
             <mat-tab label="Invites">
-                <div *ngIf="!showCompletedMeetingTab">
+                <div *ngIf="!showCompletedMeetingTab && invited_meeting.length > 0">
                     <h5>Today <i class="fas fa-calendar"></i></h5>
-                    <div *ngFor="let head of invited_meeting; let i = index;">
+                    <div *ngFor="let meeting of invited_meeting; let i = index;">
                         <mat-card class="meeting_card">
                             <div (click)="boardMeeting()">
                                 <mat-card-title class="header">
                                     <div class="meeting_card_header">
-                                        {{head.heading}}
+                                        {{meeting.meeting_topic}}
                                     </div>
                                 </mat-card-title>
                                 <mat-card-content class="meeting_card_content">
-                                        <p><i class="fas fa-clock"></i> {{head.start_time}} - {{head.end_time}}</p>
-                                        <p><i class="fas fa-copy copy"></i> {{head.link}}</p>
+                                        <p><i class="fas fa-clock"></i> {{meeting.start_time}} - {{meeting.end_time}}</p>
+                                        <p><i class="fas fa-copy copy"></i> example</p>
                                 </mat-card-content>
                             </div>
                         </mat-card>
                     </div>
                 </div>
-                <div *ngIf="showCompletedMeetingTab">
+                <div *ngIf="!showCompletedMeetingTab && invited_meeting.length <= 0">
+                    No Invited meeting Available.
+                </div>
+
+                <div *ngIf="showCompletedMeetingTab && complete_invited_meeting.length > 0">
+                    <h5>Today <i class="fas fa-calendar"></i></h5>
+                    <div *ngFor="let meeting of complete_invited_meeting; let i = index;">
+                        <mat-card class="meeting_card">
+                            <div>
+                                <mat-card-title class="header">
+                                    <div class="meeting_card_header">
+                                        {{meeting.meeting_topic}}
+                                    </div>
+                                </mat-card-title>
+                                <mat-card-content class="meeting_card_content">
+                                        <p><i class="fas fa-clock"></i> {{meeting.start_time}} - {{meeting.end_time}}</p>
+                                        <p><i class="fas fa-copy copy"></i> example</p>
+                                </mat-card-content>
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
+                <div *ngIf="showCompletedMeetingTab && complete_invited_meeting.length <= 0">
                     No Completed Data Available.
                 </div>
             </mat-tab>
+            <mat-tab label="published" *ngIf="!showCompletedMeetingTab">
+                <div>
+                    <div *ngFor="let meeting of published_meeting; let i = index;">
+                        <mat-card class="meeting_card">
+                            <div #card (click)="drawerToggle(meeting.id, card)">
+                                <mat-card-title class="header">
+                                    <div class="meeting_card_header">
+                                        {{meeting.meeting_topic}}
+                                    </div>
+                                </mat-card-title>
+                                <mat-card-content class="meeting_card_content">
+                                        <p><i class="fas fa-clock"></i> {{meeting.start_time}} - {{meeting.end_time}}</p>
+                                        <p><i class="fas fa-copy copy"></i> example</p>
+                                </mat-card-content>
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
+            </mat-tab>
         </mat-tab-group>
-
-        
-
         
     </div>
     
     <mat-drawer #drawer class="example-sidenav"  mode="side" position="end">
-            <mat-card class="meeting_content">
+            <mat-card class="meeting_content" *ngIf="currentTab == 0">
                 <span class="close-icon float-right" (click)="close(drawer,invites_form)"><i class="ti-close"></i></span>
                 <mat-card-title>
                     <div class="card_header">
-                        {{card_data.heading}}
+                        {{meeting_detail.meeting_topic}}
                     </div>
                 </mat-card-title>
                 <mat-card-subtitle>
-                    <p class="header_desc"><i class="fas fa-clock"></i> {{card_data.start_time}} - {{card_data.end_time}}</p>
+                    <p class="header_desc"><i class="fas fa-clock"></i> {{meeting_detail.start_time}} - {{meeting_detail.end_time}}</p>
                 </mat-card-subtitle>
                 <hr>
                 <mat-card-content>
@@ -86,7 +144,7 @@
                     <hr>
                     <div>
                         <h5>Meeting Link</h5>
-                        <div class="back_gray">{{card_data.link}} <i class="fas fa-copy float-right copy"></i> </div>
+                        <div class="back_gray">example <i class="fas fa-copy float-right copy"></i> </div>
                     </div>
                     <br>
                     <hr>
@@ -137,7 +195,7 @@
                     <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                         <div fxFlex.gt-sm="43.33%" fxFlex.gt-xs="43%" fxFlex="100" class="btn-group">
                           <!-- <small class="sa_tab_btn">Publish Meeting</small> -->
-                          <button class="sa_tab_btn" mat-raised-button color="green" [disabled]="!invites_form.valid" (click)="save_invites()" >Publish Meeting</button>
+                          <button class="sa_tab_btn" mat-raised-button color="green" [disabled]="!invites_form.valid" (click)="save_invites(meeting_detail.id)" >Publish Meeting</button>
                         </div>
                         <div fxFlex.gt-sm="43.33%" fxFlex.gt-xs="43%" fxFlex="100" class="btn-group">
                             <!-- <small class="sa_tab_btn">Open Agenda</small> -->
@@ -146,11 +204,50 @@
                     </div>
                 </mat-card-footer>
             </mat-card>
+            
+            <mat-card class="meeting_content" *ngIf="currentTab == 2">
+                <span class="close-icon float-right" (click)="close(drawer,invites_form)"><i class="ti-close"></i></span>
+                <mat-card-title>
+                    <div class="card_header">
+                        {{meeting_detail.meeting_topic}}
+                    </div>
+                </mat-card-title>
+                <mat-card-subtitle>
+                    <p class="header_desc"><i class="fas fa-clock"></i> {{meeting_detail.start_time}} - {{meeting_detail.end_time}}</p>
+                </mat-card-subtitle>
+                <hr>
+                <!-- <mat-card-content>
+                    <hr>
+                    <div>
+                        <h5>Meeting Link</h5>
+                        <div class="back_gray">example <i class="fas fa-copy float-right copy"></i> </div>
+                    </div>
+                    <br>
+                    <hr>
+                        <mat-form-field class="example-chip-list" appearance="outline">
+                            <mat-chip-list #invitesChipList >
+                                <mat-chip
+                                *ngFor="let users of invited_users">
+                                {{users.name}}
+                                </mat-chip>
+                            </mat-chip-list>
+                        </mat-form-field>
+                    <br>
+                    <hr>
+                </mat-card-content> -->
+                <mat-card-footer>
+                    <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+                        <div fxFlex.gt-sm="43.33%" fxFlex.gt-xs="43%" fxFlex="100" class="btn-group">
+                          <button class="sa_tab_btn" mat-raised-button color="green" (click)="markComplete(meeting_detail.id)">Mark Complete</button>
+                        </div>
+                        <div fxFlex.gt-sm="43.33%" fxFlex.gt-xs="43%" fxFlex="100" class="btn-group">
+                            <button class="sa_tab_btn" mat-raised-button color="green" (click)="getMeetingAgenda(meeting_detail.id)">View Agenda</button>
+                        </div>
+                    </div>
+                </mat-card-footer>
+            </mat-card>
+
     </mat-drawer>
-
-
-        
-
 </mat-drawer-container>
 
 <mat-drawer-container>
@@ -300,7 +397,7 @@
                         <mat-label>Select agenda template</mat-label>
                         <mat-select [formControl]="create_meeting_form.controls['template']">
                             <mat-option *ngFor="let template of templates" [value]="template.id">
-                              {{template.name}}
+                              {{template.template_name}}
                             </mat-option>
                           </mat-select>
                         <mat-error *ngIf="create_meeting_form.controls['template'].hasError('required') && create_meeting_form.controls['template'].touched">
@@ -399,21 +496,12 @@
                                 Please Enter Heading
                             </mat-error>
                           </mat-form-field>
-
-                          <!-- <mat-form-field class="example-full-width" appearance="outline">
-                            <mat-label>Category</mat-label>
-                            <input type="text" matInput autocomplete="off" [formControl]="create_agenda_form.controls['heading']" required>
-                            <mat-error *ngIf="create_agenda_form.controls['heading'].hasError('required') && create_agenda_form.controls['heading'].touched">
-                                Category is required.
-                              </mat-error>
-                          </mat-form-field> -->
-    
     
                         <mat-form-field class="example-full-width" appearance="outline">
                             <mat-label>Agenda Item</mat-label>
                             <input type="text" matInput [formControl]="create_agenda_form.controls['item']" required>
                             <mat-error *ngIf="create_agenda_form.controls['item'].hasError('required') && create_agenda_form.controls['item'].touched">
-                                Please select agenda item
+                                Please Enter agenda item
                               </mat-error>
                           </mat-form-field>
 
@@ -603,15 +691,8 @@
             
         </mat-card-content>
 </mat-card>
-<!-- <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
-    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-      <small class="sa_tab_btn">Confirm Meeting Review</small>
-    </div>
-  </div>
-</div> -->
 <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
-      <!-- <small class="sa_tab_btn">Save</small> -->
       <button class="sa_tab_btn" mat-raised-button color="green" >Confirm Meeting Review</button>
     </div>
 </div>
