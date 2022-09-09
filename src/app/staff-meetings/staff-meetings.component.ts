@@ -11,6 +11,7 @@ import { StaffMeetingService } from "./staff-meetings.service";
 import { DatePipe } from "@angular/common";
 import { CookieService } from "ngx-cookie";
 import { relativeTimeRounding } from "moment";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'staff-meetings',
@@ -94,7 +95,7 @@ export class StaffMeetingsComponent implements OnInit{
     public clinic_id;
     public user_id;
     public user_type;
-    constructor(private formBuilder : FormBuilder, private tasksService : TasksService, private staffMeetingService : StaffMeetingService, private datepipe: DatePipe, private _cookieService: CookieService) {
+    constructor(private formBuilder : FormBuilder, private tasksService : TasksService, private staffMeetingService : StaffMeetingService, private datepipe: DatePipe, private _cookieService: CookieService, private toastr: ToastrService,) {
       this.getUsers();
       this.filteredHeadings = this.headingFormCtrl.valueChanges.pipe(
           map((heading: string | null) => heading ? this._filter(heading) : this.allheadings.slice()));
@@ -534,7 +535,7 @@ export class StaffMeetingsComponent implements OnInit{
   confirmMeetingAttend(){
     this.staffMeetingService.saveMeetingAttended(this.meeting_id, this.user_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
-        // will display toast msg
+        this.toastr.success('Thanks for attending the meeting. once the creator of the meeting mark the meeting completed it will be visible in you completed tab. Thankyou !! ');
       }
     });
   }
