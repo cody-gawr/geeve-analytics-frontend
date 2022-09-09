@@ -510,7 +510,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
     if (newValue != "undefined") {
       if(Array.isArray(newValues)) {
         if ((this.route == "/dashboards/finances"  || this.route == "/dashboards/marketing" || this.route == "/dashboards/frontdesk" || this.route == "/dashboards/cliniciananalysis" || this.route == "/dashboards/clinicianproceedures") && this.apiUrl.includes('test')) {
-          if(this.clinicsData.length == this.selectedClinic.length){
+          if(this.clinicsData.length == this.selectedClinic.length && this.selectedClinic[0] =='all'){
             newValue = '';            
             this.selectedClinic = [];
           }else{            
@@ -803,7 +803,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
     if (newValue != "undefined") {
       if(Array.isArray(newValues)) {
         if ((this.route == "/dashboards/finances"  || this.route == "/dashboards/marketing" || this.route == "/dashboards/frontdesk" || this.route == "/dashboards/cliniciananalysis" || this.route == "/dashboards/clinicianproceedures") && this.apiUrl.includes('test')) {
-          if(this.clinicsData.length == this.selectedClinic.length){
+          if(this.clinicsData.length == this.selectedClinic.length && this.selectedClinic[0] =='all'){
             if(this.allChecked == true){
               newValue = '';            
               this.selectedClinic = [];
