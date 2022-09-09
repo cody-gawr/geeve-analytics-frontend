@@ -10,6 +10,7 @@ import { TasksService } from "../tasks/tasks.service";
 import { StaffMeetingService } from "./staff-meetings.service";
 import { DatePipe } from "@angular/common";
 import { CookieService } from "ngx-cookie";
+import { relativeTimeRounding } from "moment";
 
 @Component({
     selector: 'staff-meetings',
@@ -30,7 +31,14 @@ export class StaffMeetingsComponent implements OnInit{
     public completedMeeting = [];
     public published_meeting = [];
     public complete_invited_meeting = [];
+    public view_agenda = [];
     public currentTab = 0;
+    public view_agenda_tab : boolean;
+    public agenda_heading : string;
+    public meeting_details = [];
+    public agenda_tab_has_data : boolean;
+    public isPublished :boolean;
+    public meeting_id;
 
     public created_meeting = [
       {heading : "Jaave Wellness Program Policy 1", start_time:"10:10", end_time:"10:40", link: "example.com", invited:"all",description:"demo tes 1t", id:1},
@@ -42,27 +50,9 @@ export class StaffMeetingsComponent implements OnInit{
 
     public invited_meeting = [];
 
-    public templates = [
-      {template_name: "welcome", id:1},
-      {template_name: "welcome 1", id:2},
-      {template_name: "welcome 2", id:3}
-    ];
+    public templates = [];
 
-    public agendaList = [
-      {heading : "welcome", items :[
-        {item:"Intoduce new board members"}
-      ]},
-      {heading : "Administration", items :[
-        {item:"Intoduce new board members"},
-        {item:"Intoduce new board members"},
-        {item:"Intoduce new board members"}
-      ]},
-      {heading : "Front Desk", items :[
-        {item:"Intoduce new board members"},
-        {item:"Intoduce new board members"},
-        {item:"Intoduce new board members"}
-      ]},
-    ];
+    public agendaList = [];
 
     public meeting_detail = {id:"",meeting_topic : "", start_time:"", end_time:"", link: "",meeting_date:"",agenda_template_id:"", created_date:""};
 
@@ -123,7 +113,7 @@ export class StaffMeetingsComponent implements OnInit{
       this.create_agenda_form = this.formBuilder.group({
         heading: [null, Validators.compose([Validators.required])],
         item: [null, Validators.compose([Validators.required])],
-        person: [null],
+        person: [null, null],
         duration: [null, Validators.compose([Validators.required])],
         description: [null, Validators.compose([Validators.required])]
       });
@@ -271,6 +261,8 @@ export class StaffMeetingsComponent implements OnInit{
       this.staffMeetingService.getMeeting(id,this.clinic_id).subscribe(res=>{
         if(res.status == 200){
           this.meeting_detail = res.data[0];
+          this.agenda_heading = res.data[0].meeting_topic; 
+          this.agenda_tab_has_data = res.data[0].agenda_template_id != null;
           // this.drawer.open();
         }else{
           this.drawer.close();
@@ -354,12 +346,15 @@ export class StaffMeetingsComponent implements OnInit{
     formData.status = 0;
     if(formData.template == null){
       formData.template = "";
+      this.agenda_tab_has_data = false;
+    }else{
+      this.agenda_tab_has_data = false;
     }
     this.staffMeetingService.createMeeting(formData).subscribe(res=>{
       if(res.status == 200){
-        this.getUpcomingMeetings();
+        // this.getUpcomingMeetings();
+        this.getMeetingAgenda(res.meetingId);
         this.create_meeting.close();
-        this.agendaTab = true;
       }
     });
 
@@ -368,9 +363,16 @@ export class StaffMeetingsComponent implements OnInit{
     // this.agendaTab = true
   }
 
-  boardMeeting(){
-    this.boardMeetingPage = true;
-
+  boardMeeting(meeting_id){
+    this.meeting_id = meeting_id;
+    this.staffMeetingService.getMeetingDetails(meeting_id, this.clinic_id).subscribe(res=>{
+      if(res.status == 200){
+        this.boardMeetingPage = true;
+        this.meeting_details = [...res.data];
+        this.isPublished = res.meetingStatus[0].status == 1;
+      }
+    });
+    
     if(this.boardMeetingPage)
       this.create_meeting.close();
   }
@@ -441,8 +443,7 @@ export class StaffMeetingsComponent implements OnInit{
   getAdengaTemplate(){
     this.staffMeetingService.getAdengaTemplate().subscribe(res=>{
       if(res.status == 200){
-        // console.log(res);
-        // this.templates = [...res.data];
+        this.templates = [...res.data];
       }
     },
     error=>{});
@@ -476,28 +477,66 @@ export class StaffMeetingsComponent implements OnInit{
   changeTab(tabIndex){
     this.currentTab = tabIndex;
     this.drawer.close();
+    $(".meeting_card").removeClass("active");
   }
 
 
   getMeetingAgenda(meeting_id){
-    let category = new Set();
-    let result = [new Array()];
-    let agenda_items = [];
     this.staffMeetingService.getMeetingAgenda(meeting_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
-        res.data.forEach(item=>{
-          category.add(item.category);
-          if(category.has(item.category)){
-            item.category = [];
-            result.push(item.category.push(item.agenda_item));
-          }
-        });
-
-        // console.log(result);
-        
-        
+        this.agendaList = [...res.data];
+        this.drawer.close();
+        this.view_agenda_tab = false;
+        this.agenda_tab_has_data = true;
+        this.agendaTab = true;
+   
       }
     });
   }
-  
+
+  viewMeetingAgenda(meeting_id){
+    this.staffMeetingService.getMeetingAgenda(meeting_id, this.clinic_id).subscribe(res=>{
+      if(res.status == 200){
+        this.view_agenda = [...res.data];
+        this.view_agenda_tab = true;
+        this.agendaTab = true;
+        this.drawer.close();
+      }
+    });
+  }
+
+  back_page(tab : string){
+    if(tab == "board_meeting"){
+      this.boardMeetingPage = false;
+    }else if(tab == "agenda_view"){
+      this.agendaTab = false;
+      this.view_agenda_tab = false;
+    }else if(tab == "agenda_add"){
+      this.agendaTab = false;
+    }
+    // this.currentTab = 0;
+    this.refresh();
+  }
+
+  openAgenda(meeting_id){
+    this.staffMeetingService.getMeetingAgenda(meeting_id, this.clinic_id).subscribe(res=>{
+      if(res.status == 200){
+        // console.log(res.data);
+        this.agendaList = [...res.data];
+        this.drawer.close();
+        this.view_agenda_tab = false;
+        this.agendaTab = true;
+      }
+    });
+      
+  }
+
+  confirmMeetingAttend(){
+    this.staffMeetingService.saveMeetingAttended(this.meeting_id, this.user_id, this.clinic_id).subscribe(res=>{
+      if(res.status == 200){
+        // will display toast msg
+      }
+    });
+  }
+
 }

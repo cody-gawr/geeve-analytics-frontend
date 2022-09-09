@@ -10,7 +10,7 @@
         <br>
         <br>
         <hr>
-        <mat-tab-group (selectedIndexChange) = "changeTab($event)">
+        <mat-tab-group [selectedIndex]="currentTab" (selectedIndexChange) = "changeTab($event)">
             <mat-tab label="Created">
                 <div *ngIf="!showCompletedMeetingTab && upcomingMeeting.length > 0">
                     <!-- <h5>Today <i class="fas fa-calendar"></i></h5> -->
@@ -56,10 +56,10 @@
             </mat-tab>
             <mat-tab label="Invites">
                 <div *ngIf="!showCompletedMeetingTab && invited_meeting.length > 0">
-                    <h5>Today <i class="fas fa-calendar"></i></h5>
+                    <!-- <h5>Today <i class="fas fa-calendar"></i></h5> -->
                     <div *ngFor="let meeting of invited_meeting; let i = index;">
                         <mat-card class="meeting_card">
-                            <div (click)="boardMeeting()">
+                            <div (click)="boardMeeting(meeting.id)">
                                 <mat-card-title class="header">
                                     <div class="meeting_card_header">
                                         {{meeting.meeting_topic}}
@@ -195,11 +195,11 @@
                     <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                         <div fxFlex.gt-sm="43.33%" fxFlex.gt-xs="43%" fxFlex="100" class="btn-group">
                           <!-- <small class="sa_tab_btn">Publish Meeting</small> -->
-                          <button class="sa_tab_btn" mat-raised-button color="green" [disabled]="!invites_form.valid" (click)="save_invites(meeting_detail.id)" >Publish Meeting</button>
+                          <button class="sa_tab_btn" mat-raised-button color="green" [disabled]="!invites_form.valid" (click)="save_invites(meeting_detail.id)">Publish Meeting</button>
                         </div>
                         <div fxFlex.gt-sm="43.33%" fxFlex.gt-xs="43%" fxFlex="100" class="btn-group">
                             <!-- <small class="sa_tab_btn">Open Agenda</small> -->
-                            <button class="sa_tab_btn" mat-raised-button color="green" (click)="agendaTab = true">Open Agenda</button>
+                            <button class="sa_tab_btn" mat-raised-button color="green" (click)="openAgenda(meeting_detail.id)">Open Agenda</button>
                         </div>
                     </div>
                 </mat-card-footer>
@@ -216,32 +216,13 @@
                     <p class="header_desc"><i class="fas fa-clock"></i> {{meeting_detail.start_time}} - {{meeting_detail.end_time}}</p>
                 </mat-card-subtitle>
                 <hr>
-                <!-- <mat-card-content>
-                    <hr>
-                    <div>
-                        <h5>Meeting Link</h5>
-                        <div class="back_gray">example <i class="fas fa-copy float-right copy"></i> </div>
-                    </div>
-                    <br>
-                    <hr>
-                        <mat-form-field class="example-chip-list" appearance="outline">
-                            <mat-chip-list #invitesChipList >
-                                <mat-chip
-                                *ngFor="let users of invited_users">
-                                {{users.name}}
-                                </mat-chip>
-                            </mat-chip-list>
-                        </mat-form-field>
-                    <br>
-                    <hr>
-                </mat-card-content> -->
                 <mat-card-footer>
                     <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                         <div fxFlex.gt-sm="43.33%" fxFlex.gt-xs="43%" fxFlex="100" class="btn-group">
                           <button class="sa_tab_btn" mat-raised-button color="green" (click)="markComplete(meeting_detail.id)">Mark Complete</button>
                         </div>
                         <div fxFlex.gt-sm="43.33%" fxFlex.gt-xs="43%" fxFlex="100" class="btn-group">
-                            <button class="sa_tab_btn" mat-raised-button color="green" (click)="getMeetingAgenda(meeting_detail.id)">View Agenda</button>
+                            <button class="sa_tab_btn" mat-raised-button color="green" (click)="viewMeetingAgenda(meeting_detail.id)">View Agenda</button>
                         </div>
                     </div>
                 </mat-card-footer>
@@ -421,12 +402,13 @@
 </mat-drawer-container>
 
 <div *ngIf="agendaTab">
-    <div fxFlex="calc(59% - 10px)" fxFlex.lg="calc(59% - 10px)" fxFlex.md="900" fxFlex.sm="900" fxFlex.xs="900" class="sa_flexbg last headding_meetings">
+
+    <div *ngIf="!view_agenda_tab" fxFlex="calc(59% - 10px)" fxFlex.lg="calc(59% - 10px)" fxFlex.md="900" fxFlex.sm="900" fxFlex.xs="900" class="sa_flexbg last headding_meetings">
         <div class="create_meeting_header">
-            <i class="ti-arrow-circle-left back_click" (click)="agendaTab = false"></i> Jaave Wellness Program Policy
+            <i class="ti-arrow-circle-left back_click" (click)="back_page('agenda_add')"></i> {{agenda_heading}}
         </div>
 
-        <mat-card  class="meeting_card">
+        <mat-card *ngIf="agenda_tab_has_data" class="meeting_card">
                 <mat-card-title class="header">
                     <div class="meeting_card_header">
                     </div>
@@ -434,10 +416,12 @@
                 <mat-card-content class="meeting_card_content">
                     <div class="agenda">
                         <div *ngFor="let agenda of agendaList">
-                        <p>&nbsp;&nbsp; <strong>{{agenda.heading}}</strong></p>
+                        <p>&nbsp;&nbsp; <strong>{{agenda.category}}</strong></p>
                                 <ol>
-                                    <li *ngFor="let item of agenda.items" (click)="agenda_drawer.open()">{{item.item}} &nbsp;&nbsp; <i class="ti-pencil m-r-10"></i> <span>John Doe - 5 Mins</span></li>
-                                    <section class="addMore"><span (click)="agenda_drawer.open()" ><i class="fas fa-plus"></i></span></section>
+                                    <li *ngFor="let item of agenda.agenda_item" (click)="openAgendaDrawer(agenda_drawer, item, 'edit')">{{item.agenda_item}} &nbsp;&nbsp; <i class="ti-pencil m-r-10"></i> 
+                                        <!-- <span>{{item.staff_member}}</span> -->
+                                    </li>
+                                    <section class="addMore"><span (click)="openAgendaDrawer(agenda_drawer, item, 'add')" ><i class="fas fa-plus"></i></span></section>
                                 </ol>
                         </div>
                     </div>
@@ -446,12 +430,62 @@
                 <mat-card-footer>
                       <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                         <div fxFlex.gt-sm="53.33%" fxFlex.gt-xs="53%" fxFlex="100" class="btn-group">
-                          <button class="sa_tab_btn" mat-raised-button color="green" (click)="agenda_drawer.toggle()" >Add New Heading</button>
+                          <button class="sa_tab_btn" mat-raised-button color="green" (click)="addAgendaHeading(agenda_drawer)" >Add New Heading</button>
                         </div>
                     </div>
                 </mat-card-footer>
         </mat-card>
 
+        <mat-card *ngIf="!agenda_tab_has_data" class="meeting_card">
+            <mat-card-title class="header">
+                <div class="meeting_card_header">
+                </div>
+            </mat-card-title>
+            <mat-card-content class="meeting_card_content">
+                <!-- <div class="agenda">
+                    <div *ngFor="let agenda of agendaList">
+                    <p>&nbsp;&nbsp; <strong>{{agenda.heading}}</strong></p>
+                            <ol>
+                                <li *ngFor="let item of agenda.items" (click)="agenda_drawer.open()">{{item.item}} &nbsp;&nbsp; <i class="ti-pencil m-r-10"></i> <span>John Doe - 5 Mins</span></li>
+                                <section class="addMore"><span (click)="agenda_drawer.open()" ><i class="fas fa-plus"></i></span></section>
+                            </ol>
+                    </div>
+                </div> -->
+                
+            </mat-card-content>
+            <mat-card-footer>
+                  <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+                    <div fxFlex.gt-sm="53.33%" fxFlex.gt-xs="53%" fxFlex="100" class="btn-group">
+                      <button class="sa_tab_btn" mat-raised-button color="green" (click)="addAgendaHeading(agenda_drawer)" >Add New Heading</button>
+                    </div>
+                </div>
+            </mat-card-footer>
+    </mat-card>
+    </div>
+
+
+    <div *ngIf="view_agenda_tab" fxFlex="calc(59% - 10px)" fxFlex.lg="calc(59% - 10px)" fxFlex.md="900" fxFlex.sm="900" fxFlex.xs="900" class="sa_flexbg last headding_meetings">
+        <div class="create_meeting_header">
+            <i class="ti-arrow-circle-left back_click" (click)="back_page('agenda_view')"></i> {{agenda_heading}}
+        </div>
+
+        <mat-card  class="meeting_card">
+                <mat-card-title class="header">
+                    <div *ngIf="view_agenda.length <= 0">
+                        No meeting Data
+                    </div>
+                </mat-card-title>
+                <mat-card-content class="meeting_card_content">
+                    <div class="agenda">
+                        <div *ngFor="let agenda of view_agenda">
+                        <p>&nbsp;&nbsp; <strong>{{agenda.category}}</strong></p>
+                                <ol>
+                                    <li *ngFor="let item of agenda.agenda_item">{{item.agenda_item}} &nbsp;&nbsp; <span>John Doe - 5 Mins</span></li>
+                                </ol>
+                        </div>
+                    </div>
+                </mat-card-content>
+        </mat-card>
     </div>
 
     <mat-drawer-container>
@@ -463,8 +497,6 @@
                     
                     <form [formGroup]="create_agenda_form">        
                         
-                        <!-- <h5>Heading <span class="sub_heading">( Type/Choose one )</span></h5>  -->
-
                         <mat-form-field class="example-chip-list" appearance="outline">
                             <mat-label>Category</mat-label>
                             <mat-chip-list #chipList>
@@ -625,7 +657,7 @@
 <div *ngIf="boardMeetingPage">
     <div fxFlex="calc(59% - 10px)" fxFlex.lg="calc(59% - 10px)" fxFlex.md="900" fxFlex.sm="900" fxFlex.xs="900" class="sa_flexbg last headding_meetings">
         <div class="create_meeting_header">
-            <i class="ti-arrow-circle-left back_click" (click)="boardMeetingPage = false"></i> Board Meeting
+            <i class="ti-arrow-circle-left back_click" (click)="back_page('board_meeting')"></i> Board Meeting
         </div>
     <mat-card  class="meeting_card">
         <mat-card-title class="header">
@@ -633,18 +665,15 @@
             </div>
         </mat-card-title>
         <mat-card-content class="meeting_card_content">
-            <div class="agendaListing">
-                <div>
-                    <p>&nbsp;&nbsp; <strong>Welcome</strong> <span class="margintime">John Doe - 5 Mins</span></p>
+            <div class="agenda">
+                <div *ngFor="let meeting of meeting_details">
+                    <p>&nbsp;&nbsp; <strong>{{ meeting.category}}</strong> <span class="margintime">John Doe - 5 Mins</span></p>
                         <ol>
-                            <li>Intoduce new board members 
-                            <div class="medescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-                                molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
-                                numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
-                                optio, eaque rerum! Provident similique accusantium nemo autem.</div>
+                            <li *ngFor="let item of meeting.agenda_item; let i = index">{{item}}
+                            <section class="medescription" >{{meeting.description[i]}}</section>
                             </li>
                         </ol>
-                    <p>&nbsp;&nbsp; <strong>Front Desk</strong> <span class="margintime">John Doe - 5 Mins</span></p>
+                    <!-- <p>&nbsp;&nbsp; <strong>Front Desk</strong> <span class="margintime">John Doe - 5 Mins</span></p>
                     <ol>
                         <li>Recall prebook rate (%)
                              <div class="medescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
@@ -685,15 +714,15 @@
                         <div class="graphimg">
                             <img src="../assets/images/staffImages/newpationtreferal.png" alt="">
                         </div>
-                    </ol>               
+                    </ol>                -->
                 </div>
             </div>
             
         </mat-card-content>
 </mat-card>
-<div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+<div *ngIf="isPublished" fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
-      <button class="sa_tab_btn" mat-raised-button color="green" >Confirm Meeting Review</button>
+      <button class="sa_tab_btn" mat-raised-button color="green" (click)="confirmMeetingAttend()">Confirm Meeting Review</button>
     </div>
 </div>
 </div>
