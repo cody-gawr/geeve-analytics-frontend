@@ -108,7 +108,18 @@ export class StaffMeetingService {
 
     saveMeetingAgenda(data): Observable<any>{
         const formData = new FormData();
-        formData.append("id", data.id);
+        formData.append("clinic_id", data.clinic_id);
+        formData.append("meeting_id", data.meeting_id);
+        formData.append("category", data.category);
+        formData.append("agenda_item", data.item);
+        formData.append("agenda_order", data.agenda_order);
+        formData.append("staff_member", data.person);
+        formData.append("description", data.description);
+        formData.append("duration", data.duration);
+        formData.append("flag", data.flag);
+        if(data.flag == "update"){
+            formData.append("meeting_agenda_id", data.meeting_agenda_id);
+        }
         var header = this.getHeaders();
         return this.http.post(this.apiUrl + "/StaffMeeting/smSaveMeetingAgenda", formData, header)
         .pipe(
@@ -197,10 +208,11 @@ export class StaffMeetingService {
         );
     }
 
-    getMeetingDetails(meeting_id, clinic_id): Observable<any>{
+    getMeetingDetails(meeting_id, clinic_id, user_id): Observable<any>{
         const formData = new FormData();
         formData.append("meeting_id", meeting_id);
         formData.append("clinic_id", clinic_id);
+        formData.append("userId", user_id);
         var header = this.getHeaders();
         return this.http.post(this.apiUrl + "/StaffMeeting/smGetMeetingDetails",formData, header).pipe(
             map((response: Response) => {

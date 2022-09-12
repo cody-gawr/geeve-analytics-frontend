@@ -12,6 +12,7 @@ import { DatePipe } from "@angular/common";
 import { CookieService } from "ngx-cookie";
 import { relativeTimeRounding } from "moment";
 import { ToastrService } from 'ngx-toastr';
+import { RolesUsersService } from "../roles-users/roles-users.service";
 
 @Component({
     selector: 'staff-meetings',
@@ -38,8 +39,17 @@ export class StaffMeetingsComponent implements OnInit{
     public agenda_heading : string;
     public meeting_details = [];
     public agenda_tab_has_data : boolean;
-    public isPublished :boolean;
+    public isAttended :boolean;
     public meeting_id;
+    public agenda_item = "";
+    public agenda_staff_member = "";
+    public agenda_duration : number = null;
+    public agenda_description = "";
+    public agenda_category = "";
+    public agenda_order : number = null;
+    public agenda_flag = "";
+    public hasPermission :boolean;
+    public hasDisable : boolean;
 
     public created_meeting = [
       {heading : "Jaave Wellness Program Policy 1", start_time:"10:10", end_time:"10:40", link: "example.com", invited:"all",description:"demo tes 1t", id:1},
@@ -95,10 +105,8 @@ export class StaffMeetingsComponent implements OnInit{
     public clinic_id;
     public user_id;
     public user_type;
-    constructor(private formBuilder : FormBuilder, private tasksService : TasksService, private staffMeetingService : StaffMeetingService, private datepipe: DatePipe, private _cookieService: CookieService, private toastr: ToastrService,) {
+    constructor(private formBuilder : FormBuilder, private tasksService : TasksService, private staffMeetingService : StaffMeetingService, private datepipe: DatePipe, private _cookieService: CookieService, private toastr: ToastrService, private rolesUsersService : RolesUsersService) {
       this.getUsers();
-      this.filteredHeadings = this.headingFormCtrl.valueChanges.pipe(
-          map((heading: string | null) => heading ? this._filter(heading) : this.allheadings.slice()));
     }
     ngOnInit(): void {
       this.create_meeting_form = this.formBuilder.group({
@@ -112,10 +120,10 @@ export class StaffMeetingsComponent implements OnInit{
       });
 
       this.create_agenda_form = this.formBuilder.group({
-        heading: [null, Validators.compose([Validators.required])],
+        category: [null, Validators.compose([Validators.required])],
         item: [null, Validators.compose([Validators.required])],
         person: [null, null],
-        duration: [null, Validators.compose([Validators.required])],
+        duration: [null, null],
         description: [null, Validators.compose([Validators.required])]
       });
 
@@ -140,7 +148,7 @@ export class StaffMeetingsComponent implements OnInit{
         }else{
           this.user_id = this._cookieService.get("childid");
         }
-
+        this.getRolesIndividual();
         this.refresh();
     }
 
@@ -153,19 +161,25 @@ export class StaffMeetingsComponent implements OnInit{
       this.getCompeleteInvitedMeetings();
     }
 
-  visible = true;
-  selectable = true;
-  removable = true;
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-  headingFormCtrl = new FormControl();
-  public invitesFormCtrl = new FormControl();
-  filteredHeadings: Observable<string[]>;
-  headings: string[] = [];
-  allheadings: string[] = ['Welcome','Administrate', 'Font Desk'];
+
+    getRolesIndividual() {
+      this.hasPermission = false;
+      if (this._cookieService.get("user_type") == '2') {
+        this.hasPermission = true;
+      } else {
+        this.rolesUsersService.getRolesIndividual().subscribe((res) => {
+          if (res.message == 'success') {
+            if (res.data.indexOf('createmeeting') >= 0) {
+              this.hasPermission = true;
+            }
+          }
+        });
+      }
+  
+    }
 
   public invited_users = [];
   public staff = [];
-  
 
   @ViewChild('headingInput') headingInput: ElementRef<HTMLInputElement>;
   @ViewChild('invitesInput') invitesInput: ElementRef<HTMLInputElement>;
@@ -176,41 +190,6 @@ export class StaffMeetingsComponent implements OnInit{
   @ViewChild('agenda_drawer') agenda_drawer;
   // @ViewChild('chipList') chipList : MatChipList;
   
-
-  
-
-  add(event: MatChipInputEvent): void {
-    const input = event.input;
-    const value = event.value;
-
-    // Add our heading
-    if ((value || '').trim()) {
-      this.headings.push(value.trim());
-    }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-
-    this.headingFormCtrl.setValue(null);
-  }
-
-  // addInvites(event: MatChipInputEvent): void { 
-
-  //   const input = event.input;
-  //   const value = event.value;
-
-  //   if ((value || '').trim()) {
-  //     this.headings.push(value.trim());
-  //   }
-
-  //   if (input) {
-  //     input.value = '';
-  //   }
-
-  //   this.headingFormCtrl.setValue(null);
-  // }
 
   removeInvites(user_id): void {
     let removedUsers =  this.invited_users.filter(item=>{
@@ -234,26 +213,6 @@ export class StaffMeetingsComponent implements OnInit{
     });
   }
 
-
-  remove(heading: string): void {
-    const index = this.headings.indexOf(heading);
-
-    if (index >= 0) {
-      this.headings.splice(index, 1);
-    }
-  }
-
-  selected(event: MatAutocompleteSelectedEvent): void {
-    this.headings.push(event.option.viewValue);
-    this.headingInput.nativeElement.value = '';
-    this.headingFormCtrl.setValue(null);
-  }
-
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.allheadings.filter(heading => heading.toLowerCase().indexOf(filterValue) === 0);
-  }
-
   drawerToggle(id, card : ElementRef<HTMLInputElement>){
     if(!this.drawer.opened){
       $(card).parent(".meeting_card").addClass("active");
@@ -264,20 +223,13 @@ export class StaffMeetingsComponent implements OnInit{
           this.meeting_detail = res.data[0];
           this.agenda_heading = res.data[0].meeting_topic; 
           this.agenda_tab_has_data = res.data[0].agenda_template_id != null;
-          // this.drawer.open();
         }else{
           this.drawer.close();
         }
       });
-      // this.staffMeetingService.getInvitedUsers(id, this.clinic_id).subscribe(res=>{
-      //   if(res.status == 200){
-      //       this.invited_users = [...res.data];
-      //   }
-      // });
     }else{
       $(".meeting_card").removeClass("active");
     }
-    // this.drawer.close();
     this.drawer.toggle();
     this.invites_form.reset();
 
@@ -309,6 +261,9 @@ export class StaffMeetingsComponent implements OnInit{
       hr ++;
       min = "00";
     }
+    if(min == 0){
+      min = "00";
+    }
     if(hr < 10){
       hr = "0"+hr;
     }
@@ -335,7 +290,6 @@ export class StaffMeetingsComponent implements OnInit{
     }
 
     let end_time = hr+":"+min+" "+day_time;
-    // let template = formData.template;
     let start_date = this.datepipe.transform(formData.start_date, 'yyyy-MM-dd');
     
     formData.end_time = end_time;
@@ -349,37 +303,37 @@ export class StaffMeetingsComponent implements OnInit{
       formData.template = "";
       this.agenda_tab_has_data = false;
     }else{
-      this.agenda_tab_has_data = false;
+      this.agenda_tab_has_data = true;
     }
     this.staffMeetingService.createMeeting(formData).subscribe(res=>{
       if(res.status == 200){
-        // this.getUpcomingMeetings();
-        this.getMeetingAgenda(res.meetingId);
+        if(this.agenda_tab_has_data){
+          this.getMeetingAgenda(res.meetingId);
+        }else{
+          this.drawer.close();
+          this.view_agenda_tab = false;
+          this.agendaTab = true;
+          this.agenda_heading = formData.meeting_topic;
+          this.agendaList = [];
+        }
         this.create_meeting.close();
       }
     });
 
-    // formData.id = this.created_meeting.length+1;
-    // this.created_meeting.unshift(formData);
-    // this.agendaTab = true
   }
 
   boardMeeting(meeting_id){
     this.meeting_id = meeting_id;
-    this.staffMeetingService.getMeetingDetails(meeting_id, this.clinic_id).subscribe(res=>{
+    this.staffMeetingService.getMeetingDetails(meeting_id, this.clinic_id, this.user_id).subscribe(res=>{
       if(res.status == 200){
         this.boardMeetingPage = true;
         this.meeting_details = [...res.data];
-        this.isPublished = res.meetingStatus[0].status == 1;
+        this.isAttended = res.attended_status.attended == 0;
       }
     });
     
     if(this.boardMeetingPage)
       this.create_meeting.close();
-  }
-
-  save_agenda(formData){
-
   }
 
   getUsers() {
@@ -478,19 +432,24 @@ export class StaffMeetingsComponent implements OnInit{
   changeTab(tabIndex){
     this.currentTab = tabIndex;
     this.drawer.close();
+    this.invited_users = [];
     $(".meeting_card").removeClass("active");
   }
 
 
   getMeetingAgenda(meeting_id){
+    this.meeting_id = meeting_id;
     this.staffMeetingService.getMeetingAgenda(meeting_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
+        this.staffMeetingService.getMeeting(meeting_id,this.clinic_id).subscribe(res=>{
+          if(res.status == 200){
+            this.agenda_heading = res.data[0].meeting_topic;
+          }
+        });
         this.agendaList = [...res.data];
         this.drawer.close();
         this.view_agenda_tab = false;
-        this.agenda_tab_has_data = true;
         this.agendaTab = true;
-   
       }
     });
   }
@@ -502,6 +461,11 @@ export class StaffMeetingsComponent implements OnInit{
         this.view_agenda_tab = true;
         this.agendaTab = true;
         this.drawer.close();
+      }
+    });
+    this.staffMeetingService.getMeeting(meeting_id,this.clinic_id).subscribe(result=>{
+      if(result.status == 200){
+        this.agenda_heading = result.data[0].meeting_topic;
       }
     });
   }
@@ -520,9 +484,9 @@ export class StaffMeetingsComponent implements OnInit{
   }
 
   openAgenda(meeting_id){
+    this.meeting_id = meeting_id;
     this.staffMeetingService.getMeetingAgenda(meeting_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
-        // console.log(res.data);
         this.agendaList = [...res.data];
         this.drawer.close();
         this.view_agenda_tab = false;
@@ -540,4 +504,50 @@ export class StaffMeetingsComponent implements OnInit{
     });
   }
 
+
+  public meeting_agenda_id = null;
+  openAgendaDrawer(agenda_drawer, item, action){
+    agenda_drawer.toggle()
+    if(action == "add"){
+      this.meeting_agenda_id = null;
+      let order = item.agenda_item.length;
+      this.agenda_order = ++order;
+      this.agenda_category = item.category
+      this.agenda_flag = "new";
+      this.hasDisable = true;
+    }else if(action == "edit"){
+      this.meeting_agenda_id = item.id;
+      this.agenda_item = item.agenda_item;
+      this.agenda_staff_member = (item.staff_member == "null") ? "" : item.staff_member;
+      this.agenda_category = item.category
+      this.agenda_duration = item.duration
+      this.agenda_description = item.description
+      this.agenda_order = item.agenda_order;
+      this.hasDisable = true;
+      this.agenda_flag = "update";
+    }
+  }
+
+  addAgendaHeading(agenda_drawer){
+    this.agenda_flag = "new";
+    this.agenda_order = 1;
+    agenda_drawer.open();
+  }
+
+  save_agenda(formData){
+    formData.meeting_id = this.meeting_id;
+    formData.clinic_id = this.clinic_id;
+    formData.flag = this.agenda_flag;
+    formData.agenda_order = this.agenda_order;
+    if(this.agenda_flag == "update")
+      formData.meeting_agenda_id = this.meeting_agenda_id;
+    
+    this.staffMeetingService.saveMeetingAgenda(formData).subscribe(res=>{
+      if(res.status == 200){
+        this.agenda_drawer.close();
+        this.create_agenda_form.reset();
+        this.openAgenda(this.meeting_id);
+      }
+    });
+  }
 }
