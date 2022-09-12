@@ -33,6 +33,7 @@
     <mat-checkbox class="role_permissions" *ngIf="data.taskVisible && data.user_type != 7" [(ngModel)]="data.selectedRole['tasks_'+selected_id]">Tasks</mat-checkbox>
     <mat-checkbox class="role_permissions" *ngIf="data.hasPrimeClinics == 'yes'"[(ngModel)]="data.selectedRole['kpireport_'+selected_id]">Kpi Report</mat-checkbox>
     <mat-checkbox class="role_permissions" *ngIf="data.taskVisible && data.user_type != 7" [(ngModel)]="data.selectedRole['staffmeeting_'+selected_id]">Staff Meeting</mat-checkbox>
+    <mat-checkbox class="role_permissions" *ngIf="data.taskVisible && data.user_type != 7" [(ngModel)]="data.selectedRole['createmeeting_'+selected_id]">Create Meeting</mat-checkbox>
     <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['profilesettings_'+selected_id]">Settings</mat-checkbox>
   <!--   <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['managepermissions_'+selected_id]">Manage Roles</mat-checkbox> -->
   </div>

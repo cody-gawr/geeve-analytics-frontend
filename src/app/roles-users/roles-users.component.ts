@@ -420,6 +420,8 @@ initiate_clinic() {
           checkedRoles.push('kpireport');  
         if(result.selectedRole['staffmeeting_'+res1.id])
           checkedRoles.push('staffmeeting');   
+        if(result.selectedRole['createmeeting_'+res1.id])
+          checkedRoles.push('createmeeting');   
         
         var checkedRoles1 = checkedRoles.join();
         this.rolesUsersService.saveRoles(res1.id, checkedRoles1).subscribe((res) => {
