@@ -489,6 +489,7 @@ export class StaffMeetingsComponent implements OnInit{
     this.currentTab = tabIndex;
     this.drawer.close();
     this.invited_users = [];
+    this.isMeetingCreator = false;
     $(".meeting_card").removeClass("active");
   }
 
