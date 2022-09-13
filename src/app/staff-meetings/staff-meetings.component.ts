@@ -1,23 +1,36 @@
 import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {FormControl} from '@angular/forms';
 import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
-import {MatChipInputEvent, MatChipList} from '@angular/material/chips';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators'
 import { TasksService } from "../tasks/tasks.service";
 import { StaffMeetingService } from "./staff-meetings.service";
 import { DatePipe } from "@angular/common";
 import { CookieService } from "ngx-cookie";
-import { relativeTimeRounding } from "moment";
 import { ToastrService } from 'ngx-toastr';
 import { RolesUsersService } from "../roles-users/roles-users.service";
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material/core";
+import { MatSort } from "@angular/material/sort";
+import { MatTableDataSource } from "@angular/material/table";
+
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
 
 @Component({
     selector: 'staff-meetings',
     templateUrl : './staff-meetings.component.html',
     styleUrls : ['./staff-meetings.component.css'],
+    providers: [
+      { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
+    ],
     encapsulation: ViewEncapsulation.None
 })
 export class StaffMeetingsComponent implements OnInit{
@@ -39,7 +52,7 @@ export class StaffMeetingsComponent implements OnInit{
     public agenda_heading : string;
     public meeting_details = [];
     public agenda_tab_has_data : boolean;
-    public isAttended :boolean;
+    public notAttended :boolean;
     public meeting_id;
     public agenda_item = "";
     public agenda_staff_member = "";
@@ -50,6 +63,9 @@ export class StaffMeetingsComponent implements OnInit{
     public agenda_flag = "";
     public hasPermission :boolean;
     public hasDisable : boolean;
+    public minDate : Date;
+    public isMeetingCreator : boolean;
+    public showAttendees : boolean;
 
     public created_meeting = [
       {heading : "Jaave Wellness Program Policy 1", start_time:"10:10", end_time:"10:40", link: "example.com", invited:"all",description:"demo tes 1t", id:1},
@@ -58,6 +74,8 @@ export class StaffMeetingsComponent implements OnInit{
       {heading : "Jaave Wellness Program Policy 4", start_time:"10:10", end_time:"10:40", link: "example.com", invited:"all",description:"demo test 4", id:4},
       {heading : "Jaave Wellness Program Policy 5", start_time:"10:10", end_time:"10:40", link: "example.com", invited:"all",description:"demo test 5", id:5}
     ];
+
+    public meeting_attendees = [];
 
     public invited_meeting = [];
 
@@ -99,14 +117,27 @@ export class StaffMeetingsComponent implements OnInit{
     ];
 
     public mins = [
-      0,10,20,30,40,50
+      0,15,30,45
     ];
 
     public clinic_id;
     public user_id;
     public user_type;
-    constructor(private formBuilder : FormBuilder, private tasksService : TasksService, private staffMeetingService : StaffMeetingService, private datepipe: DatePipe, private _cookieService: CookieService, private toastr: ToastrService, private rolesUsersService : RolesUsersService) {
+    
+    @ViewChild('headingInput') headingInput: ElementRef<HTMLInputElement>;
+    @ViewChild('invitesInput') invitesInput: ElementRef<HTMLInputElement>;
+    // @ViewChild('card') card: ElementRef<HTMLInputElement>;
+    @ViewChild('auto') matAutocomplete: MatAutocomplete;
+    @ViewChild('drawer') drawer;
+    @ViewChild('create_meeting') create_meeting;
+    @ViewChild('agenda_drawer') agenda_drawer;
+    @ViewChild(MatSort) sort: MatSort;
+    // @ViewChild('chipList') chipList : MatChipList;
+
+    constructor(private formBuilder : FormBuilder, private tasksService : TasksService, private staffMeetingService : StaffMeetingService, private datepipe: DatePipe, private _cookieService: CookieService, private toastr: ToastrService, private rolesUsersService : RolesUsersService, private dateAdapter: DateAdapter<Date>) {
       this.getUsers();
+      this.minDate = new Date();
+      this.dateAdapter.setLocale('en-GB');
     }
     ngOnInit(): void {
       this.create_meeting_form = this.formBuilder.group({
@@ -159,6 +190,12 @@ export class StaffMeetingsComponent implements OnInit{
       this.getPublishedMeeting();
       this.getAdengaTemplate();
       this.getCompeleteInvitedMeetings();
+      // if(this.drawer.opened){
+      //   this.drawer.close();
+      // }
+      if(this.create_meeting.opened){
+        this.create_meeting.close();
+      }
     }
 
 
@@ -180,15 +217,6 @@ export class StaffMeetingsComponent implements OnInit{
 
   public invited_users = [];
   public staff = [];
-
-  @ViewChild('headingInput') headingInput: ElementRef<HTMLInputElement>;
-  @ViewChild('invitesInput') invitesInput: ElementRef<HTMLInputElement>;
-  // @ViewChild('card') card: ElementRef<HTMLInputElement>;
-  @ViewChild('auto') matAutocomplete: MatAutocomplete;
-  @ViewChild('drawer') drawer;
-  @ViewChild('create_meeting') create_meeting;
-  @ViewChild('agenda_drawer') agenda_drawer;
-  // @ViewChild('chipList') chipList : MatChipList;
   
 
   removeInvites(user_id): void {
@@ -220,6 +248,9 @@ export class StaffMeetingsComponent implements OnInit{
 
       this.staffMeetingService.getMeeting(id,this.clinic_id).subscribe(res=>{
         if(res.status == 200){
+          res.data.forEach(item=>{
+            item.meeting_date = this.datepipe.transform(item.meeting_date, 'dd-MM-yyyy');
+          });
           this.meeting_detail = res.data[0];
           this.agenda_heading = res.data[0].meeting_topic; 
           this.agenda_tab_has_data = res.data[0].agenda_template_id != null;
@@ -299,7 +330,7 @@ export class StaffMeetingsComponent implements OnInit{
     formData.user_id = this.user_id;
     formData.clinic_id = this.clinic_id;
     formData.status = 0;
-    if(formData.template == null){
+    if(formData.template == 0){
       formData.template = "";
       this.agenda_tab_has_data = false;
     }else{
@@ -310,13 +341,19 @@ export class StaffMeetingsComponent implements OnInit{
         if(this.agenda_tab_has_data){
           this.getMeetingAgenda(res.meetingId);
         }else{
-          this.drawer.close();
+
+          if(this.drawer.opened)
+            this.drawer.close();
+
           this.view_agenda_tab = false;
           this.agendaTab = true;
           this.agenda_heading = formData.meeting_topic;
           this.agendaList = [];
+          this.meeting_id = res.meetingId;
         }
-        this.create_meeting.close();
+
+        if(this.create_meeting.opened)
+          this.create_meeting.close();
       }
     });
 
@@ -326,19 +363,20 @@ export class StaffMeetingsComponent implements OnInit{
     this.meeting_id = meeting_id;
     this.staffMeetingService.getMeetingDetails(meeting_id, this.clinic_id, this.user_id).subscribe(res=>{
       if(res.status == 200){
+        this.isMeetingCreator = res.meetingCreator == 1;
         this.boardMeetingPage = true;
         this.meeting_details = [...res.data];
-        this.isAttended = res.attended_status.attended == 0;
+        this.notAttended = res.attended_status.attended == 0;
+        this.agenda_heading = res.meetingTopic;
       }
     });
     
-    if(this.boardMeetingPage)
+    if(this.create_meeting.opened)
       this.create_meeting.close();
   }
 
   getUsers() {
-    this.tasksService.getUsers().subscribe(
-      (res) => {
+    this.tasksService.getUsers().subscribe((res) => {
         if (res.message == "success") {
           res.data.forEach((user) => {
             if (user["displayName"]) {
@@ -371,7 +409,11 @@ export class StaffMeetingsComponent implements OnInit{
   getUpcomingMeetings(){
     this.staffMeetingService.getUpcomingMeetings(this.user_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
+        res.data.forEach(item=>{
+          item.meeting_date = this.datepipe.transform(item.meeting_date, 'dd-MM-yyyy');
+        });
         this.upcomingMeeting = [...res.data];
+        
       }
     },
     error=>{});
@@ -380,6 +422,9 @@ export class StaffMeetingsComponent implements OnInit{
   getCompletedMeetings(){
     this.staffMeetingService.getCompletedMeetings(this.user_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
+        res.data.forEach(item=>{
+          item.meeting_date = this.datepipe.transform(item.meeting_date, 'dd-MM-yyyy');
+        });
         this.completedMeeting = [...res.data];
       }
     },
@@ -389,6 +434,9 @@ export class StaffMeetingsComponent implements OnInit{
   getInvitedMeetings(){
     this.staffMeetingService.getInvitedMeetings(this.user_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
+        res.data.forEach(item=>{
+          item.meeting_date = this.datepipe.transform(item.meeting_date, 'dd-MM-yyyy');
+        });
         this.invited_meeting = [...res.data];
       }
     },
@@ -399,6 +447,8 @@ export class StaffMeetingsComponent implements OnInit{
     this.staffMeetingService.getAdengaTemplate().subscribe(res=>{
       if(res.status == 200){
         this.templates = [...res.data];
+        let none = {id:0, template_name:"None"};
+        this.templates.unshift(none);
       }
     },
     error=>{});
@@ -407,6 +457,9 @@ export class StaffMeetingsComponent implements OnInit{
   getPublishedMeeting(){
     this.staffMeetingService.getPublishedMeeting(this.user_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
+        res.data.forEach(item=>{
+          item.meeting_date = this.datepipe.transform(item.meeting_date, 'dd-MM-yyyy');
+        });
         this.published_meeting = [...res.data];
       }
     })
@@ -424,6 +477,9 @@ export class StaffMeetingsComponent implements OnInit{
   getCompeleteInvitedMeetings(){
     this.staffMeetingService.getCompeleteInvitedMeetings(this.user_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
+        res.data.forEach(item=>{
+          item.meeting_date = this.datepipe.transform(item.meeting_date, 'dd-MM-yyyy');
+        });
         this.complete_invited_meeting = [...res.data];
       }
     })
@@ -500,6 +556,7 @@ export class StaffMeetingsComponent implements OnInit{
     this.staffMeetingService.saveMeetingAttended(this.meeting_id, this.user_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
         this.toastr.success('Thanks for attending the meeting. once the creator of the meeting mark the meeting completed it will be visible in you completed tab. Thankyou !! ');
+        this.boardMeeting(this.meeting_id);
       }
     });
   }
@@ -531,6 +588,7 @@ export class StaffMeetingsComponent implements OnInit{
   addAgendaHeading(agenda_drawer){
     this.agenda_flag = "new";
     this.agenda_order = 1;
+    this.hasDisable = false;
     agenda_drawer.open();
   }
 
@@ -549,5 +607,43 @@ export class StaffMeetingsComponent implements OnInit{
         this.openAgenda(this.meeting_id);
       }
     });
+  }
+
+  markCompleteMeeting(){
+    this.staffMeetingService.markMeetingComplete(this.meeting_id, this.clinic_id).subscribe(res=>{
+      if(res.status == 200){
+        this.toastr.success('Thankyou for marking the meeting complete.');
+        // this.drawer.close();
+        this.refresh();
+      }
+    });
+  }
+
+
+  viewMeetingAttendees(meeting_id){
+    this.staffMeetingService.getMeetingDetails(meeting_id, this.clinic_id, this.user_id).subscribe(res=>{
+      if(res.status == 200){
+        this.showAttendees = res.meetingCreator == 1;
+        this.boardMeetingPage = true;
+        this.meeting_details = [...res.data];
+        this.agenda_heading = res.meetingTopic;
+      }
+    });
+
+    this.staffMeetingService.getMeetingAttendees(meeting_id, this.clinic_id).subscribe(res=>{
+      if(res.status == 200){
+        res.data.forEach(item=>{
+          this.staff.forEach(ele=>{
+            if(item.invited_user == ele.id){
+              item.user_name = ele.name;
+            }
+          });
+        })
+        this.meeting_attendees = [...res.data];
+      }
+    });
+    
+    if(this.create_meeting.opened)
+      this.create_meeting.close();
   }
 }

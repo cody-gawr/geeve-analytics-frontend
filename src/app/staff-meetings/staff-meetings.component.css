@@ -11,9 +11,20 @@
 .meeting_card.active{
     border: #279b8e solid 2px;
 }
+
+div.card_meeting_card :hover{
+    background-color: gainsboro;
+}
+
+.meeting_card :hover{
+    cursor: pointer;
+}
+
+
 .meeting_review_details{
     padding-bottom: 20px;
 }
+
 .meeting_review_details span{
     margin-right: 14px;
     padding: 8px;
@@ -244,4 +255,9 @@ i{
     width: 100px;
     float: right;
     top: -20px;
+}
+
+.mat-chip.mat-standard-chip.mat-chip-selected.mat-primary {
+    background-color: #279b8e;
+    color: white;
 }
