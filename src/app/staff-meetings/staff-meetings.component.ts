@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { RolesUsersService } from "../roles-users/roles-users.service";
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material/core";
 import { MatSort } from "@angular/material/sort";
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 
 export const MY_DATE_FORMATS = {
@@ -134,7 +135,6 @@ export class StaffMeetingsComponent implements OnInit{
     // @ViewChild('chipList') chipList : MatChipList;
 
     constructor(private formBuilder : FormBuilder, private tasksService : TasksService, private staffMeetingService : StaffMeetingService, private datepipe: DatePipe, private _cookieService: CookieService, private toastr: ToastrService, private rolesUsersService : RolesUsersService, private dateAdapter: DateAdapter<Date>) {
-      this.getUsers();
       this.minDate = new Date();
       this.dateAdapter.setLocale('en-GB');
     }
@@ -179,6 +179,7 @@ export class StaffMeetingsComponent implements OnInit{
           this.user_id = this._cookieService.get("childid");
         }
         this.getRolesIndividual();
+        this.getUsers();
         this.refresh();
     }
 
@@ -189,9 +190,9 @@ export class StaffMeetingsComponent implements OnInit{
       this.getPublishedMeeting();
       this.getAdengaTemplate();
       this.getCompeleteInvitedMeetings();
-      // if(this.drawer.opened){
-      //   this.drawer.close();
-      // }
+      if(this.drawer.opened){
+        this.drawer.close();
+      }
       if(this.create_meeting.opened){
         this.create_meeting.close();
       }
@@ -359,6 +360,7 @@ export class StaffMeetingsComponent implements OnInit{
   }
 
   boardMeeting(meeting_id){
+    this.meeting_attendees = [];
     this.meeting_id = meeting_id;
     this.staffMeetingService.getMeetingDetails(meeting_id, this.clinic_id, this.user_id).subscribe(res=>{
       if(res.status == 200){
@@ -378,9 +380,10 @@ export class StaffMeetingsComponent implements OnInit{
 
   getUsers() {
     this.tasksService.getUsers().subscribe((res) => {
+      this.staff = [];
         if (res.message == "success") {
           res.data.forEach((user) => {
-            if (user["displayName"]) {
+            if (user["displayName"] && user['id'] != this.user_id) {
               this.staff.push({
                 id: user["id"],
                 name: user["displayName"],
@@ -565,6 +568,7 @@ export class StaffMeetingsComponent implements OnInit{
 
   public meeting_agenda_id = null;
   openAgendaDrawer(agenda_drawer, item, action){
+
     agenda_drawer.toggle()
     if(action == "add"){
       this.meeting_agenda_id = null;
@@ -573,13 +577,18 @@ export class StaffMeetingsComponent implements OnInit{
       this.agenda_category = item.category
       this.agenda_flag = "new";
       this.hasDisable = true;
+      this.agenda_description = "";
+      this.agenda_duration = 0;
+      this.agenda_staff_member = "";
+      this.agenda_item = "";
+      
     }else if(action == "edit"){
       this.meeting_agenda_id = item.id;
       this.agenda_item = item.agenda_item;
       this.agenda_staff_member = (item.staff_member == "null") ? "" : item.staff_member;
-      this.agenda_category = item.category
-      this.agenda_duration = item.duration
-      this.agenda_description = item.description
+      this.agenda_category = item.category;
+      this.agenda_duration = item.duration;
+      this.agenda_description = item.description;
       this.agenda_order = item.agenda_order;
       this.hasDisable = true;
       this.agenda_flag = "update";
@@ -587,6 +596,10 @@ export class StaffMeetingsComponent implements OnInit{
   }
 
   addAgendaHeading(agenda_drawer){
+
+    if(!agenda_drawer.opened)
+      this.create_agenda_form.reset();
+
     this.agenda_flag = "new";
     this.agenda_order = 1;
     this.hasDisable = false;
@@ -647,5 +660,16 @@ export class StaffMeetingsComponent implements OnInit{
     
     if(this.create_meeting.opened)
       this.create_meeting.close();
+  }
+
+  drop(event, item) {
+    moveItemInArray(item.agenda_item, event.previousIndex, event.currentIndex);
+
+    item.agenda_item.filter((item, index)=>{
+      item.agenda_order = ++index;
+    })
+    this.staffMeetingService.changeAgendaItemOrder(JSON.stringify(item.agenda_item)).subscribe(res=>{
+      
+    })
   }
 }

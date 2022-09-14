@@ -49,6 +49,8 @@ import { KanbanAllModule,KanbanModule, KanbanComponent,KanbanModel  } from '@syn
 import { DropDownListAllModule } from '@syncfusion/ej2-angular-dropdowns';
 import { SortDirective } from './directive/sort.directive';
 import { StaffMeetingsComponent } from './staff-meetings/staff-meetings.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
   wheelSpeed: 2,
@@ -114,7 +116,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       closeButton :true,
       progressBar :true
       //tapToDismiss:false
-  })
+  }),
+    DragDropModule
   ],
   providers: [
     AuthGuard, 

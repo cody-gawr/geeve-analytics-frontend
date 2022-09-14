@@ -233,6 +233,15 @@ export class StaffMeetingService {
         );
     }
 
-    
+    changeAgendaItemOrder(agenda_items): Observable<any>{
+        const formData = new FormData();
+        formData.append("agenda_items", agenda_items);
+        var header = this.getHeaders();
+        return this.http.post(this.apiUrl + "/StaffMeeting/smChangeAgendaItemOrder",formData, header).pipe(
+            map((response: Response) => {
+                return response;
+            })
+        );
+    }
     
 }

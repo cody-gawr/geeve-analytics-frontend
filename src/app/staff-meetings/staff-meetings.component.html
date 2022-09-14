@@ -357,9 +357,18 @@
                     <div class="agenda">
                         <div *ngFor="let agenda of agendaList" >
                         <p>&nbsp;&nbsp; <strong>{{agenda.category}}</strong></p>
-                                <ol>
-                                    <li  *ngFor="let item of agenda.agenda_item" (click)="openAgendaDrawer(agenda_drawer, item, 'edit')">{{item.agenda_item}} &nbsp;&nbsp; <i class="ti-pencil m-r-10"></i> 
-                                        <span class="margintime" *ngIf="item.staff_member != 'null' && item.duration != '0'">{{item.staff_member}} - {{item.duration}} Mins</span>
+                                <ol cdkDropList (cdkDropListDropped)="drop($event, agenda)">
+                                    <li 
+                                        cdkDrag 
+                                        cdkDragBoundary="ol" 
+                                        *ngFor="let item of agenda.agenda_item"
+                                        (click)="openAgendaDrawer(agenda_drawer, item, 'edit')">
+                                        {{item.agenda_item}} &nbsp;&nbsp; <i class="ti-pencil m-r-10"></i> 
+                                        <span 
+                                            class="margintime" 
+                                            *ngIf="item.staff_member != 'null' && item.duration != '0'">
+                                            {{item.staff_member}} - {{item.duration}} Mins
+                                        </span>
                                     </li>
                                     <section class="addMore"><span (click)="openAgendaDrawer(agenda_drawer, agenda, 'add')" ><i class="fas fa-plus"></i></span></section>
                                 </ol>
@@ -367,7 +376,7 @@
                     </div>
                 </mat-card-content>
                 <mat-card-footer>
-                      <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+                    <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                         <div fxFlex.gt-sm="53.33%" fxFlex.gt-xs="53%" fxFlex="100" class="btn-group">
                           <button class="sa_tab_btn" mat-raised-button color="green" (click)="addAgendaHeading(agenda_drawer)" >Add New Heading</button>
                         </div>
@@ -496,7 +505,7 @@
       <button class="sa_tab_btn" mat-raised-button color="green" (click)="markCompleteMeeting()">mark complete</button>
     </div>
 </div>
-   <mat-card *ngIf="showAttendees" class="meeting_card">
+   <mat-card *ngIf="showAttendees && meeting_attendees.length > 0" class="meeting_card">
        <mat-card-title class="header">
             <div class="meeting_card_header">
                 Attendees
@@ -504,7 +513,7 @@
         </mat-card-title>
         <hr>
             <mat-card-content >
-                <div *ngIf="meeting_attendees.length > 0">
+                <div>
                     <mat-chip-list
                     class="example-chip"
                     cdkDropListOrientation="horizontal">
