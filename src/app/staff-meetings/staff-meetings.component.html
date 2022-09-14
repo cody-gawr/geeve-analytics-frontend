@@ -30,7 +30,11 @@
                     </div>
                 </div>
                 <div *ngIf="!showCompletedMeetingTab && upcomingMeeting.length <= 0">
-                    No Created Meeting Available.
+                    <mat-card class="meeting_card">
+                        <mat-card-content class="meeting_card_content">
+                            No Created Meeting Available.
+                        </mat-card-content>
+                    </mat-card>
                 </div>
                 <div *ngIf="showCompletedMeetingTab && completedMeeting.length > 0">
                     <div class="card_meeting_card" *ngFor="let meeting of completedMeeting; let i = index;">
@@ -51,7 +55,11 @@
                     </div>
                 </div>
                 <div *ngIf="showCompletedMeetingTab && completedMeeting.length <= 0">
-                    No Created Meeting Available.
+                    <mat-card class="meeting_card">
+                        <mat-card-content class="meeting_card_content">
+                            No Created Meeting Available.
+                        </mat-card-content>
+                    </mat-card>
                 </div>
             </mat-tab>
             <mat-tab label="Invites">
@@ -73,7 +81,11 @@
                     </div>
                 </div>
                 <div *ngIf="!showCompletedMeetingTab && invited_meeting.length <= 0">
-                    No Invited Meeting Available.
+                    <mat-card class="meeting_card">
+                            <mat-card-content class="meeting_card_content">
+                               No Invited Meeting Available.
+                            </mat-card-content>
+                    </mat-card>
                 </div>
 
                 <div *ngIf="showCompletedMeetingTab && complete_invited_meeting.length > 0">
@@ -96,7 +108,11 @@
                     </div>
                 </div>
                 <div *ngIf="showCompletedMeetingTab && complete_invited_meeting.length <= 0">
-                    No Invited Meeting Available.
+                    <mat-card class="meeting_card">
+                        <mat-card-content class="meeting_card_content">
+                           No Invited Meeting Available.
+                        </mat-card-content>
+                    </mat-card>
                 </div>
             </mat-tab>
             <mat-tab label="published" *ngIf="!showCompletedMeetingTab && hasPermission">
@@ -118,7 +134,11 @@
                     </div>
                 </div>
                 <div *ngIf="published_meeting.length <= 0">
-                    No published Meeting Available.
+                    <mat-card class="meeting_card">
+                        <mat-card-content class="meeting_card_content">
+                            No published Meeting Available.
+                        </mat-card-content>
+                    </mat-card>
                 </div>
             </mat-tab>
         </mat-tab-group>
@@ -345,7 +365,6 @@
                                 </ol>
                         </div>
                     </div>
-                    
                 </mat-card-content>
                 <mat-card-footer>
                       <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">

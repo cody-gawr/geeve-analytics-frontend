@@ -9,7 +9,6 @@ import { ToastrService } from 'ngx-toastr';
 import { RolesUsersService } from "../roles-users/roles-users.service";
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material/core";
 import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
 
 
 export const MY_DATE_FORMATS = {
@@ -366,7 +365,9 @@ export class StaffMeetingsComponent implements OnInit{
         this.isMeetingCreator = res.meetingCreator == 1;
         this.boardMeetingPage = true;
         this.meeting_details = [...res.data];
-        this.notAttended = res.attended_status.attended == 0;
+        if(res.attended_status != null){
+          this.notAttended = res.attended_status.attended == 0;
+        }
         this.agenda_heading = res.meetingTopic;
       }
     });
@@ -489,7 +490,6 @@ export class StaffMeetingsComponent implements OnInit{
     this.currentTab = tabIndex;
     this.drawer.close();
     this.invited_users = [];
-    this.isMeetingCreator = false;
     $(".meeting_card").removeClass("active");
   }
 
@@ -624,6 +624,7 @@ export class StaffMeetingsComponent implements OnInit{
   viewMeetingAttendees(meeting_id){
     this.staffMeetingService.getMeetingDetails(meeting_id, this.clinic_id, this.user_id).subscribe(res=>{
       if(res.status == 200){
+        this.isMeetingCreator = res.meetingCreator == 1 && res.meetingStatus == 1;
         this.showAttendees = res.meetingCreator == 1;
         this.boardMeetingPage = true;
         this.meeting_details = [...res.data];
