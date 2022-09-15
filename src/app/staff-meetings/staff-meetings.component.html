@@ -432,8 +432,22 @@
                             <mat-error *ngIf="create_agenda_form.controls['item'].hasError('required') && create_agenda_form.controls['item'].touched">
                                 Please Enter agenda item
                               </mat-error>
-                          </mat-form-field>
+                        </mat-form-field>
+                        
 
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Select Chart</mat-label>
+                            <mat-select #select [(ngModel)]="chart_id" (ngModelChange)="openDateRangePicker(picker_range, select)" [formControl]="create_agenda_form.controls['chart']">
+                                <mat-option *ngFor="let chart of charts" [value]="chart.id">
+                                  {{chart.chart_name}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-date-range-input [rangePicker]="picker_range">
+                                <input [(ngModel)]="chart_start_date" [formControl]="create_agenda_form.controls['start_date']" matStartDate>
+                                <input [(ngModel)]="chart_end_date" [formControl]="create_agenda_form.controls['end_date']" matEndDate>
+                            </mat-date-range-input>
+                            <mat-date-range-picker #picker_range></mat-date-range-picker>
+                        </mat-form-field>
 
                         <mat-form-field class="example-full-width" appearance="outline">
                             <mat-label>Staff Member</mat-label>
@@ -487,6 +501,7 @@
                         <ol>
                             <li *ngFor="let item of meeting.agenda_item; let i = index">{{item.agenda_item}}<span *ngIf="item.staff_member != 'null' && item.duration != '0'" class="margintime">{{item.staff_member}} - {{item.duration}} Mins</span>
                             <section class="medescription" >{{item.description}}</section>
+                            <graphs [item]="item"></graphs>
                             </li>
                         </ol>
                 </div>
@@ -512,19 +527,19 @@
             </div>
         </mat-card-title>
         <hr>
-            <mat-card-content >
-                <div>
-                    <mat-chip-list
-                    class="example-chip"
-                    cdkDropListOrientation="horizontal">
-                    <mat-chip
-                      class="example-box"
-                      *ngFor="let attendees of meeting_attendees" [selected]="attendees.attended == 1">
-                      {{attendees.user_name}}
-                    </mat-chip>
-                  </mat-chip-list>
-                </div>
-            </mat-card-content>
-        </mat-card>
+        <mat-card-content >
+            <div>
+                <mat-chip-list
+                class="example-chip"
+                cdkDropListOrientation="horizontal">
+                <mat-chip
+                    class="example-box"
+                    *ngFor="let attendees of meeting_attendees" [selected]="attendees.attended == 1">
+                    {{attendees.user_name}}
+                </mat-chip>
+                </mat-chip-list>
+            </div>
+        </mat-card-content>
+    </mat-card>
     </div>
 </div>

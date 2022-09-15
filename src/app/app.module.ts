@@ -41,7 +41,7 @@ import { MatMenuModule} from '@angular/material/menu';
 import { ClinicSettingsService } from './clinic-settings/clinic-settings.service';
 import { SharedMatModule } from './shared-mat.module';
 import { DemoMaterialModule } from './demo-material-module';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { DashboardDurationTabsComponent } from './dashboards/dashboard-duration-tabs/dashboard-duration-tabs.component';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { DndDirective } from './directive/dnd.directive';
@@ -50,6 +50,8 @@ import { DropDownListAllModule } from '@syncfusion/ej2-angular-dropdowns';
 import { SortDirective } from './directive/sort.directive';
 import { StaffMeetingsComponent } from './staff-meetings/staff-meetings.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { GraphsComponent } from './graphs/graphs.component';
+import { NgxGaugeModule } from 'ngx-gauge';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -90,7 +92,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     DashboardDurationTabsComponent,
     SortDirective,
     DndDirective,
-    StaffMeetingsComponent
+    StaffMeetingsComponent,
+    GraphsComponent
   ],
   imports: [
     UserIdleModule.forRoot({idle: 14400, timeout: 10, ping: 10}),
@@ -117,7 +120,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       progressBar :true
       //tapToDismiss:false
   }),
-    DragDropModule
+    DragDropModule,
+    NgxGaugeModule
   ],
   providers: [
     AuthGuard, 
@@ -130,7 +134,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
     },
-      DentistService
+      DentistService,
+      DecimalPipe
   ],
   bootstrap: [AppComponent]
 })

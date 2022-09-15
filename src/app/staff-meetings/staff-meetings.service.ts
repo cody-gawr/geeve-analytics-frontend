@@ -116,6 +116,9 @@ export class StaffMeetingService {
         formData.append("staff_member", data.person);
         formData.append("description", data.description);
         formData.append("duration", data.duration);
+        formData.append("agenda_chart_start_date", data.start_date);
+        formData.append("agenda_chart_end_date", data.end_date);
+        formData.append("agenda_chart_id", data.chart);
         formData.append("flag", data.flag);
         if(data.flag == "update"){
             formData.append("meeting_agenda_id", data.meeting_agenda_id);

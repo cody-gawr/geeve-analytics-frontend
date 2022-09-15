@@ -66,14 +66,9 @@ export class StaffMeetingsComponent implements OnInit{
     public minDate : Date;
     public isMeetingCreator : boolean;
     public showAttendees : boolean;
-
-    public created_meeting = [
-      {heading : "Jaave Wellness Program Policy 1", start_time:"10:10", end_time:"10:40", link: "example.com", invited:"all",description:"demo tes 1t", id:1},
-      {heading : "Jaave Wellness Program Policy 2", start_time:"10:10", end_time:"10:40", link: "example.com", invited:"all",description:"demo test 2", id:2},
-      {heading : "Jaave Wellness Program Policy 3", start_time:"10:10", end_time:"10:40", link: "example.com", invited:"all",description:"demo test 3", id:3},
-      {heading : "Jaave Wellness Program Policy 4", start_time:"10:10", end_time:"10:40", link: "example.com", invited:"all",description:"demo test 4", id:4},
-      {heading : "Jaave Wellness Program Policy 5", start_time:"10:10", end_time:"10:40", link: "example.com", invited:"all",description:"demo test 5", id:5}
-    ];
+    public chart_id: number = 0;
+    public chart_start_date = "";
+    public chart_end_date = "";
 
     public meeting_attendees = [];
 
@@ -112,6 +107,15 @@ export class StaffMeetingsComponent implements OnInit{
       "12:30"
     ];
 
+    public charts = [
+      {id: 0, chart_name : "None"},
+      {id: 1, chart_name : "Production"},
+      {id: 7, chart_name : "Hourly Rate"},
+      {id: 16, chart_name : "Recall  Rate"},
+      {id: 17, chart_name : "Reappointment Rate"},
+      {id: 25, chart_name : "Total Visits"}
+    ];
+
     public hrs = [
       0,1,2,3,4,5,6,7,8,9,10,11,12
     ];
@@ -131,6 +135,7 @@ export class StaffMeetingsComponent implements OnInit{
     @ViewChild('drawer') drawer;
     @ViewChild('create_meeting') create_meeting;
     @ViewChild('agenda_drawer') agenda_drawer;
+    @ViewChild('picker_range') picker_range;
     @ViewChild(MatSort) sort: MatSort;
     // @ViewChild('chipList') chipList : MatChipList;
 
@@ -154,7 +159,10 @@ export class StaffMeetingsComponent implements OnInit{
         item: [null, Validators.compose([Validators.required])],
         person: [null, null],
         duration: [null, null],
-        description: [null, Validators.compose([Validators.required])]
+        description: [null, Validators.compose([Validators.required])],
+        chart :[null, null],
+        start_date :[null, null],
+        end_date: [null, null]
       });
 
       this.invites_form = this.formBuilder.group({
@@ -548,7 +556,6 @@ export class StaffMeetingsComponent implements OnInit{
     this.staffMeetingService.getMeetingAgenda(meeting_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
         this.agendaList = [...res.data];
-        this.drawer.close();
         this.view_agenda_tab = false;
         this.agendaTab = true;
       }
@@ -568,7 +575,6 @@ export class StaffMeetingsComponent implements OnInit{
 
   public meeting_agenda_id = null;
   openAgendaDrawer(agenda_drawer, item, action){
-
     agenda_drawer.toggle()
     if(action == "add"){
       this.meeting_agenda_id = null;
@@ -581,6 +587,9 @@ export class StaffMeetingsComponent implements OnInit{
       this.agenda_duration = 0;
       this.agenda_staff_member = "";
       this.agenda_item = "";
+      this.chart_id = 0;
+      this.chart_start_date = "";
+      this.chart_end_date = "";
       
     }else if(action == "edit"){
       this.meeting_agenda_id = item.id;
@@ -592,6 +601,9 @@ export class StaffMeetingsComponent implements OnInit{
       this.agenda_order = item.agenda_order;
       this.hasDisable = true;
       this.agenda_flag = "update";
+      this.chart_id = (item.agenda_chart_id == null) ? 0 : item.agenda_chart_id;
+      this.chart_start_date = item.agenda_chart_start_date;
+      this.chart_end_date = item.agenda_chart_end_date;
     }
   }
 
@@ -599,7 +611,8 @@ export class StaffMeetingsComponent implements OnInit{
 
     if(!agenda_drawer.opened)
       this.create_agenda_form.reset();
-
+      
+    this.chart_id = 0;
     this.agenda_flag = "new";
     this.agenda_order = 1;
     this.hasDisable = false;
@@ -607,6 +620,11 @@ export class StaffMeetingsComponent implements OnInit{
   }
 
   save_agenda(formData){
+    formData.start_date = this.datepipe.transform(formData.start_date, 'yyyy-MM-dd');
+    formData.end_date = this.datepipe.transform(formData.end_date, 'yyyy-MM-dd');
+    if(formData.chart == 0)
+      formData.chart = "";
+
     formData.meeting_id = this.meeting_id;
     formData.clinic_id = this.clinic_id;
     formData.flag = this.agenda_flag;
@@ -671,5 +689,15 @@ export class StaffMeetingsComponent implements OnInit{
     this.staffMeetingService.changeAgendaItemOrder(JSON.stringify(item.agenda_item)).subscribe(res=>{
       
     })
+  }
+
+  openDateRangePicker(picker, select){
+    if(select.panelOpen)
+      picker.open();
+    if(this.chart_id == 0){
+      picker.close();
+      this.create_agenda_form.get('start_date').setValue('');
+      this.create_agenda_form.get('end_date').setValue('');
+    }
   }
 }
