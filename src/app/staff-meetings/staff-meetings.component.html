@@ -251,11 +251,11 @@
                     </mat-form-field>
                     <mat-form-field class="example-full-width" appearance="outline">
                         <mat-label>Select Date</mat-label>
-                        <input matInput [min]="minDate" [matDatepicker]="picker" autocomplete="off" type="text" [formControl]="create_meeting_form.controls['start_date']" required>
+                        <input (click)="picker.open()" matInput [min]="minDate" [matDatepicker]="picker" autocomplete="off" type="text" [formControl]="create_meeting_form.controls['start_date']" required readonly>
                         <!-- <mat-hint>DD/MM/YYYY</mat-hint> -->
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker> <!--touchUi-->
-                        <mat-error *ngIf="create_meeting_form.controls['start_date'].hasError('required')">
+                        <mat-error *ngIf="create_meeting_form.controls['start_date'].hasError('required') && create_meeting_form.controls['start_date'].touched">
                             Please Enter Meeting Start Date
                         </mat-error>
                     </mat-form-field>
@@ -437,16 +437,24 @@
 
                         <mat-form-field class="example-full-width" appearance="outline">
                             <mat-label>Select Chart</mat-label>
-                            <mat-select #select [(ngModel)]="chart_id" (ngModelChange)="openDateRangePicker(picker_range, select)" [formControl]="create_agenda_form.controls['chart']">
+                            <mat-select #select [(ngModel)]="chart_id" (ngModelChange)="openDateRangePicker()" [formControl]="create_agenda_form.controls['chart']">
                                 <mat-option *ngFor="let chart of charts" [value]="chart.id">
                                   {{chart.chart_name}}
                                 </mat-option>
                             </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field *ngIf="show_date_picker" class="example-full-width" appearance="outline">
+                            <mat-label>Select start Date & End Date</mat-label>
                             <mat-date-range-input [rangePicker]="picker_range">
                                 <input [(ngModel)]="chart_start_date" [formControl]="create_agenda_form.controls['start_date']" matStartDate>
                                 <input [(ngModel)]="chart_end_date" [formControl]="create_agenda_form.controls['end_date']" matEndDate>
                             </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker_range"></mat-datepicker-toggle>
                             <mat-date-range-picker #picker_range></mat-date-range-picker>
+                            <mat-error *ngIf="create_agenda_form.controls['start_date'].hasError('required') && create_agenda_form.controls['start_date'].touched || create_agenda_form.controls['end_date'].hasError('required') && create_agenda_form.controls['end_date'].touched">
+                                Please Select start Date & End Date
+                              </mat-error>
                         </mat-form-field>
 
                         <mat-form-field class="example-full-width" appearance="outline">
@@ -467,7 +475,7 @@
                                 Please Enter Description
                               </mat-error>
                           </mat-form-field>
-                        </form>
+                    </form>
                         <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                             <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group" >
                                 <button mat-button (click)="close(agenda_drawer, create_agenda_form)" class="mat-raised-button mat-gray">Cancel</button>

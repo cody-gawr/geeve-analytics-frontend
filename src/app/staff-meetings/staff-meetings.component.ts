@@ -69,6 +69,7 @@ export class StaffMeetingsComponent implements OnInit{
     public chart_id: number = 0;
     public chart_start_date = "";
     public chart_end_date = "";
+    public show_date_picker: boolean;
 
     public meeting_attendees = [];
 
@@ -161,8 +162,8 @@ export class StaffMeetingsComponent implements OnInit{
         duration: [null, null],
         description: [null, Validators.compose([Validators.required])],
         chart :[null, null],
-        start_date :[null, null],
-        end_date: [null, null]
+        start_date :[null, ''],
+        end_date: [null, '']
       });
 
       this.invites_form = this.formBuilder.group({
@@ -207,21 +208,20 @@ export class StaffMeetingsComponent implements OnInit{
     }
 
 
-    getRolesIndividual() {
-      this.hasPermission = false;
-      if (this._cookieService.get("user_type") == '2') {
-        this.hasPermission = true;
-      } else {
-        this.rolesUsersService.getRolesIndividual().subscribe((res) => {
-          if (res.message == 'success') {
-            if (res.data.indexOf('createmeeting') >= 0) {
-              this.hasPermission = true;
-            }
+  getRolesIndividual() {
+    this.hasPermission = false;
+    if (this._cookieService.get("user_type") == '2') {
+      this.hasPermission = true;
+    } else {
+      this.rolesUsersService.getRolesIndividual().subscribe((res) => {
+        if (res.message == 'success') {
+          if (res.data.indexOf('createmeeting') >= 0) {
+            this.hasPermission = true;
           }
-        });
-      }
-  
+        }
+      });
     }
+  }
 
   public invited_users = [];
   public staff = [];
@@ -575,7 +575,7 @@ export class StaffMeetingsComponent implements OnInit{
 
   public meeting_agenda_id = null;
   openAgendaDrawer(agenda_drawer, item, action){
-    agenda_drawer.toggle()
+    agenda_drawer.toggle();
     if(action == "add"){
       this.meeting_agenda_id = null;
       let order = item.agenda_item.length;
@@ -590,7 +590,9 @@ export class StaffMeetingsComponent implements OnInit{
       this.chart_id = 0;
       this.chart_start_date = "";
       this.chart_end_date = "";
-      
+      this.create_agenda_form.get('start_date').clearValidators();
+      this.create_agenda_form.get('end_date').clearValidators();
+
     }else if(action == "edit"){
       this.meeting_agenda_id = item.id;
       this.agenda_item = item.agenda_item;
@@ -604,6 +606,12 @@ export class StaffMeetingsComponent implements OnInit{
       this.chart_id = (item.agenda_chart_id == null) ? 0 : item.agenda_chart_id;
       this.chart_start_date = item.agenda_chart_start_date;
       this.chart_end_date = item.agenda_chart_end_date;
+
+      if(item.agenda_chart_id == null)
+        this.show_date_picker = false;
+
+      if(!agenda_drawer.open)
+        this.create_agenda_form.reset();
     }
   }
 
@@ -616,15 +624,15 @@ export class StaffMeetingsComponent implements OnInit{
     this.agenda_flag = "new";
     this.agenda_order = 1;
     this.hasDisable = false;
-    agenda_drawer.open();
+    agenda_drawer.toggle();
   }
 
   save_agenda(formData){
+    
     formData.start_date = this.datepipe.transform(formData.start_date, 'yyyy-MM-dd');
     formData.end_date = this.datepipe.transform(formData.end_date, 'yyyy-MM-dd');
     if(formData.chart == 0)
       formData.chart = "";
-
     formData.meeting_id = this.meeting_id;
     formData.clinic_id = this.clinic_id;
     formData.flag = this.agenda_flag;
@@ -691,13 +699,18 @@ export class StaffMeetingsComponent implements OnInit{
     })
   }
 
-  openDateRangePicker(picker, select){
-    if(select.panelOpen)
-      picker.open();
+  openDateRangePicker(){
     if(this.chart_id == 0){
-      picker.close();
+      this.show_date_picker = false;
       this.create_agenda_form.get('start_date').setValue('');
       this.create_agenda_form.get('end_date').setValue('');
+      this.create_agenda_form.get('start_date').clearValidators();
+      this.create_agenda_form.get('end_date').clearValidators();
+    }else{
+      this.show_date_picker = true;
+      this.create_agenda_form.get('start_date').setValidators([Validators.required]);
+      this.create_agenda_form.get('end_date').setValidators([Validators.required]);
     }
+   
   }
 }

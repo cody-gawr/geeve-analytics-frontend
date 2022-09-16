@@ -1,37 +1,46 @@
-<div *ngIf="hasGaugeChart">
+<section *ngIf="hasGaugeChart || hasBarChart">
     <mat-card>
         <mat-card-title class="header">
-             <div class="meeting_card_header">
+             <section class="meeting_card_header">
                  {{chart_heading}}
-             </div>
+                 <span class="chart-date-range"><i class="fas fa-calendar"></i> {{showStartDate}} - {{showEndDate}} </span>
+             </section>
          </mat-card-title>
          <hr>
         <mat-card-content >
-            <div class="chart">
-                <div *ngIf="gaugeGraphsTotal > 0 && hasGaugeChart" class="chart-recall-rate">
+            <section class="chart">
+                <section *ngIf="gaugeGraphsTotal > 0 && hasGaugeChart" class="chart-recall-rate">
                      <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="gaugeGraphsTotal" [thick]="gaugeThick"
                        [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [cap]="cap"
                        [append]="(item.agenda_chart_id == 25) ? '' : gaugeAppendText" [size]="size">
                      </ngx-gauge>
-                </div>
-                <!-- <div class="div-pro-coll-show">
-                    <canvas id="dentistProduction" baseChart [datasets]="barChartData" [labels]="barChartLabels"
-                      [legend]="false" [chartType]="'bar'" [options]="barChartOptions"
+                </section>
+               
+                <section *ngIf="productionTotal > 0 && hasBarChart" class="div-pro-coll-show">
+                    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                      [legend]="barChartLegend" [chartType]="'bar'" [options]="barChartOptions"
                       [colors]="barChartColors">
                     </canvas> 
-                </div> -->
-            </div>
+                </section>
+                <section *ngIf="gaugeGraphsTotal <= 0 && hasGaugeChart || productionTotal <= 0 && hasBarChart">
+                  <section class="sa_nodata_div">
+                  </section>
+                  <p class="chart-placeholder-text">{{noDataText}}</p>
+                </section>
+            </section>
         </mat-card-content>
         <mat-card-footer>
-            <div class="card-footer">
-                <div fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 sa_chart_details_sec pieChartDetails">
-                  <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                    <h3 *ngIf="item.agenda_chart_id == 25" class="m-0 value-num">{{gaugeGraphsTotal}}</h3>
-                    <h3 *ngIf="item.agenda_chart_id != 25" class="m-0 value-num">{{gaugeGraphsTotal}}%</h3>
-                    <small >Current</small>
-                  </div>
-                </div>
-              </div>
+            <section class="card-footer">
+                <section fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 sa_chart_details_sec pieChartDetails">
+                  <section fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                    <h3 *ngIf="item.agenda_chart_id == 25 && hasGaugeChart" class="m-0 value-num">{{gaugeGraphsTotal}}</h3>
+                    <h3 *ngIf="item.agenda_chart_id != 25 && hasGaugeChart" class="m-0 value-num">{{gaugeGraphsTotal}}%</h3>
+                    <small *ngIf="hasGaugeChart" >Current</small>
+                    <h3 *ngIf="hasBarChart" class="m-0 value-num">${{productionTotal}}</h3>
+                    <small *ngIf="hasBarChart" >Current Average</small>
+                  </section>
+                </section>
+              </section>
         </mat-card-footer>
     </mat-card>
-</div>
+</section>
