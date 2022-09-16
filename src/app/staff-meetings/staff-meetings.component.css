@@ -223,13 +223,13 @@ ol li span{
     list-style-type: none;
 }
   
-.agenda div{
+.agenda > div{
     counter-increment: css-counter 1;
     font-size: 18px;
     line-height: 1.2em;
 }
 
-.agenda div > p:before {
+.agenda > div > p:before {
     content: counter(css-counter) " ";
     border-radius: 50%;
     width: 12px;
