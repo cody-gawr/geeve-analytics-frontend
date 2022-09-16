@@ -7092,8 +7092,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
 
-        if (data.data.total > 0) {
-          data.data.data.forEach(res => {
+        if (data.total > 0) {
+          data.data.forEach(res => {
             // if (res.production > 0) {
               this.dentistProductionTrend1.push(Math.round(res.production));
               if(res.goals == -1 || res.goals == null || res.goals == ''){
@@ -7160,7 +7160,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             this.gaugeValue = '0';
           }
           if (mode == 'w') {
-            this.dentistProductionWeeklyTrend =  data.data.data;
+            this.dentistProductionWeeklyTrend =  data.data;
             this.dentistProductionWeeklyTrendLabels = this.dentistProductionTrendLabels;
           }
         } else {
@@ -9299,14 +9299,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.collectionExpHourlyRateDentist();
     }else if(parseInt(val) == 3 && this.hrSelectShow.includes('oht') && dentType == "all" && this.user_type != '4'){
       this.collectionExpHourlyRateOht();
-    }else if(parseInt(val) == 1 && dentType == "single" && this.user_type != '4'){
-      this.hourlyRateDentist();
+    }else if(parseInt(val) == 1 && dentType == "single" && this.user_type != '4' && this.showTrendChart == false){
+      this.hourlyRateDentist();     
+    }else if(parseInt(val) == 1 && dentType == "single" && this.user_type != '4' && this.showTrendChart == true){
       this.fdhourlyRateRateTrend();
-    }else if(parseInt(val) == 2 && dentType == "single" && this.user_type != '4'){
+    }else if(parseInt(val) == 2 && dentType == "single" && this.user_type != '4' && this.showTrendChart == false){
       this.collectionHourlyRateSingle();
+    }else if(parseInt(val) == 2 && dentType == "single" && this.user_type != '4' && this.showTrendChart == true){
       this.collectionHourlyRateTrend();
-    }else if(parseInt(val) == 3 && dentType == "single" && this.user_type != '4'){
+    }else if(parseInt(val) == 3 && dentType == "single" && this.user_type != '4' && this.showTrendChart == false){
       this.collectionExpHourlyRateSingle();
+    }else if(parseInt(val) == 3 && dentType == "single" && this.user_type != '4' && this.showTrendChart == true){
       this.collectionExpHourlyRateTrend();
     }
     this.hrCollShow = parseInt(val);
