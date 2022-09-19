@@ -3,8 +3,8 @@
 <mat-drawer-container *ngIf="!agendaTab && !boardMeetingPage" class="example-container" autosize>
     <div fxFlex="calc(39% - 10px)" fxFlex.lg="calc(39% - 10px)" fxFlex.md="900" fxFlex.sm="900" fxFlex.xs="900" class="sa_flexbg last">
         <span class="top_buttons">
-            <button mat-raised-button [ngClass]="(!showCompletedMeetingTab) ? 'btn_active' : ''" (click)="showCompletedMeetingTab = false" >Upcoming</button>
-            <button mat-raised-button [ngClass]="(showCompletedMeetingTab) ? 'btn_active' : ''" (click)="showCompletedMeetingTab = true" >Completed</button>
+            <button mat-raised-button [ngClass]="(!showCompletedMeetingTab) ? 'btn_active' : ''" (click)="changeCompleteTab('Upcoming')" >Upcoming</button>
+            <button mat-raised-button [ngClass]="(showCompletedMeetingTab) ? 'btn_active' : ''" (click)="changeCompleteTab('Completed')" >Completed</button>
         </span>
         <button *ngIf="!drawer.opened && hasPermission" mat-raised-button color="green" (click)="createMeeting()" class="float-right" ><i class="fas fa-plus"></i> Create New Meeting</button>
         <br>
@@ -12,14 +12,16 @@
         <hr>
         <mat-tab-group [selectedIndex]="currentTab" (selectedIndexChange) = "changeTab($event)">
             <mat-tab *ngIf="hasPermission" label="Created">
-                <div *ngIf="!showCompletedMeetingTab && upcomingMeeting.length > 0">
-                    <div class="card_meeting_card" *ngFor="let meeting of upcomingMeeting; let i = index;">
+                <div *ngIf="!showCompletedMeetingTab && meetingCards.length > 0">
+                    <div class="card_meeting_card" *ngFor="let meeting of meetingCards; let i = index;">
+                       
                         <mat-card class="meeting_card">
                             <div #card (click)="drawerToggle(meeting.id, card)">
                                 <mat-card-title class="header">
                                     <div class="meeting_card_header">
                                         {{meeting.meeting_topic}}
                                     </div>
+                                    
                                 </mat-card-title>
                                 <mat-card-content class="meeting_card_content">
                                     <p><i class="fas fa-calendar"></i> {{meeting.meeting_date}}</p>
@@ -28,16 +30,23 @@
                             </div>      
                         </mat-card>
                     </div>
+                    <ul *ngIf="data.length > itemsPerPage" class="main_pagination settings-table-pagination">
+                        <li *ngFor="let page of pages">
+                            <button class="page" [ngClass]="page === currentPage ? 'active':''" (click)="pagination(page)">
+                            {{ page }}
+                            </button>
+                        </li>
+                    </ul>
                 </div>
-                <div *ngIf="!showCompletedMeetingTab && upcomingMeeting.length <= 0">
+                <div *ngIf="!showCompletedMeetingTab && meetingCards.length <= 0">
                     <mat-card class="meeting_card">
                         <mat-card-content class="meeting_card_content">
                             No Created Meeting Available.
                         </mat-card-content>
                     </mat-card>
                 </div>
-                <div *ngIf="showCompletedMeetingTab && completedMeeting.length > 0">
-                    <div class="card_meeting_card" *ngFor="let meeting of completedMeeting; let i = index;">
+                <div *ngIf="showCompletedMeetingTab && meetingCards.length > 0">
+                    <div class="card_meeting_card" *ngFor="let meeting of meetingCards; let i = index;">
                         <mat-card class="meeting_card">
                             <div (click)="viewMeetingAttendees(meeting.id)" >
                                 <mat-card-title class="header">
@@ -53,8 +62,15 @@
                             
                         </mat-card>
                     </div>
+                    <ul class="main_pagination settings-table-pagination">
+                        <li *ngFor="let page of pages">
+                            <button class="page" [ngClass]="page === currentPage ? 'active':''" (click)="pagination(page)">
+                            {{ page }}
+                            </button>
+                        </li>
+                    </ul>
                 </div>
-                <div *ngIf="showCompletedMeetingTab && completedMeeting.length <= 0">
+                <div *ngIf="showCompletedMeetingTab && meetingCards.length <= 0">
                     <mat-card class="meeting_card">
                         <mat-card-content class="meeting_card_content">
                             No Created Meeting Available.
@@ -63,8 +79,8 @@
                 </div>
             </mat-tab>
             <mat-tab label="Invites">
-                <div *ngIf="!showCompletedMeetingTab && invited_meeting.length > 0">
-                    <div class="card_meeting_card" *ngFor="let meeting of invited_meeting; let i = index;">
+                <div *ngIf="!showCompletedMeetingTab && meetingCards.length > 0">
+                    <div class="card_meeting_card" *ngFor="let meeting of meetingCards; let i = index;">
                         <mat-card class="meeting_card">
                             <div (click)="boardMeeting(meeting.id)">
                                 <mat-card-title class="header">
@@ -79,8 +95,15 @@
                             </div>
                         </mat-card>
                     </div>
+                    <ul class="main_pagination settings-table-pagination">
+                        <li *ngFor="let page of pages">
+                            <button class="page" [ngClass]="page === currentPage ? 'active':''" (click)="pagination(page)">
+                            {{ page }}
+                            </button>
+                        </li>
+                    </ul>
                 </div>
-                <div *ngIf="!showCompletedMeetingTab && invited_meeting.length <= 0">
+                <div *ngIf="!showCompletedMeetingTab && meetingCards.length <= 0">
                     <mat-card class="meeting_card">
                             <mat-card-content class="meeting_card_content">
                                No Invited Meeting Available.
@@ -88,9 +111,9 @@
                     </mat-card>
                 </div>
 
-                <div *ngIf="showCompletedMeetingTab && complete_invited_meeting.length > 0">
+                <div *ngIf="showCompletedMeetingTab && meetingCards.length > 0">
                     <!-- <h5>Today <i class="fas fa-calendar"></i></h5> -->
-                    <div class="card_meeting_card" *ngFor="let meeting of complete_invited_meeting; let i = index;">
+                    <div class="card_meeting_card" *ngFor="let meeting of meetingCards; let i = index;">
                         <mat-card class="meeting_card">
                             <div (click)="boardMeeting(meeting.id)">
                                 <mat-card-title class="header">
@@ -106,8 +129,15 @@
                             
                         </mat-card>
                     </div>
+                    <ul class="main_pagination settings-table-pagination">
+                        <li *ngFor="let page of pages">
+                            <button class="page" [ngClass]="page === currentPage ? 'active':''" (click)="pagination(page)">
+                            {{ page }}
+                            </button>
+                        </li>
+                    </ul>
                 </div>
-                <div *ngIf="showCompletedMeetingTab && complete_invited_meeting.length <= 0">
+                <div *ngIf="showCompletedMeetingTab && meetingCards.length <= 0">
                     <mat-card class="meeting_card">
                         <mat-card-content class="meeting_card_content">
                            No Invited Meeting Available.
@@ -116,13 +146,14 @@
                 </div>
             </mat-tab>
             <mat-tab label="published" *ngIf="!showCompletedMeetingTab && hasPermission">
-                <div *ngIf="published_meeting.length > 0">
-                    <div class="card_meeting_card" *ngFor="let meeting of published_meeting; let i = index;">
+                <div *ngIf="meetingCards.length > 0">
+                    <div class="card_meeting_card" *ngFor="let meeting of meetingCards; let i = index;">
                         <mat-card class="meeting_card">
                             <div #card (click)="drawerToggle(meeting.id, card)">
                                 <mat-card-title class="header">
                                     <div class="meeting_card_header">
                                         {{meeting.meeting_topic}}
+                                        <span *ngIf="meeting.showAlert" class="float-right"><i class="fas fa-exclamation"></i></span>
                                     </div>
                                 </mat-card-title>
                                 <mat-card-content class="meeting_card_content">
@@ -132,8 +163,15 @@
                             </div>
                         </mat-card>
                     </div>
+                    <ul class="main_pagination settings-table-pagination">
+                        <li *ngFor="let page of pages">
+                            <button class="page" [ngClass]="page === currentPage ? 'active':''" (click)="pagination(page)">
+                            {{ page }}
+                            </button>
+                        </li>
+                    </ul>
                 </div>
-                <div *ngIf="published_meeting.length <= 0">
+                <div *ngIf="meetingCards.length <= 0">
                     <mat-card class="meeting_card">
                         <mat-card-content class="meeting_card_content">
                             No published Meeting Available.
@@ -142,7 +180,6 @@
                 </div>
             </mat-tab>
         </mat-tab-group>
-        
     </div>
     
     <mat-drawer #drawer class="example-sidenav"  mode="side" position="end">
@@ -178,7 +215,8 @@
                                 [formControl]="invites_form.controls['invites']"
                                 [matAutocomplete]="auto"
                                 [matChipInputFor]="invitesChipList"
-                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                [disabled]="allSelected">
                             </mat-chip-list>
                             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedInvites($event)">
                                 <mat-option *ngFor="let user of staff" [value]="user.id">
@@ -360,7 +398,7 @@
                     <div class="agenda">
                         <div *ngFor="let agenda of agendaList" >
                         <p>&nbsp;&nbsp; <strong>{{agenda.category}}</strong></p>
-                                <ol cdkDropList (cdkDropListDropped)="drop($event, agenda)">
+                                <ol cdkDropList (cdkDropListDropped)="moveAgendaItems($event, agenda)">
                                     <li 
                                         cdkDrag 
                                         cdkDragBoundary="ol" 

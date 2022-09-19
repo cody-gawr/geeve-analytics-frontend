@@ -316,3 +316,7 @@ i{
     margin-left: 5px;
     color: rgba(0, 0, 0, 0.6);
   }
+
+  .fa-exclamation{
+      color: red;
+  }
