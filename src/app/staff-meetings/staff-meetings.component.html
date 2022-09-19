@@ -62,7 +62,7 @@
                             
                         </mat-card>
                     </div>
-                    <ul class="main_pagination settings-table-pagination">
+                    <ul *ngIf="data.length > itemsPerPage" class="main_pagination settings-table-pagination">
                         <li *ngFor="let page of pages">
                             <button class="page" [ngClass]="page === currentPage ? 'active':''" (click)="pagination(page)">
                             {{ page }}
@@ -95,7 +95,7 @@
                             </div>
                         </mat-card>
                     </div>
-                    <ul class="main_pagination settings-table-pagination">
+                    <ul *ngIf="data.length > itemsPerPage" class="main_pagination settings-table-pagination">
                         <li *ngFor="let page of pages">
                             <button class="page" [ngClass]="page === currentPage ? 'active':''" (click)="pagination(page)">
                             {{ page }}
@@ -129,7 +129,7 @@
                             
                         </mat-card>
                     </div>
-                    <ul class="main_pagination settings-table-pagination">
+                    <ul *ngIf="data.length > itemsPerPage" class="main_pagination settings-table-pagination">
                         <li *ngFor="let page of pages">
                             <button class="page" [ngClass]="page === currentPage ? 'active':''" (click)="pagination(page)">
                             {{ page }}
@@ -163,7 +163,7 @@
                             </div>
                         </mat-card>
                     </div>
-                    <ul class="main_pagination settings-table-pagination">
+                    <ul *ngIf="data.length > itemsPerPage" class="main_pagination settings-table-pagination">
                         <li *ngFor="let page of pages">
                             <button class="page" [ngClass]="page === currentPage ? 'active':''" (click)="pagination(page)">
                             {{ page }}
