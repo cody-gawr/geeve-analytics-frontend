@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
 import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
 import { TasksService } from "../tasks/tasks.service";
 import { StaffMeetingService } from "./staff-meetings.service";
@@ -22,6 +22,13 @@ export const MY_DATE_FORMATS = {
     dateA11yLabel: 'LL',
     monthYearA11yLabel: 'MMMM YYYY'
   },
+};
+
+export const notZeroValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  const duration_mins = control.get('duration_mins');
+  const duration_hr = control.get('duration_hr');
+
+  return  duration_mins.value == 0 && duration_hr.value == 0 ? { notZero: true } : null;
 };
 
 @Component({
@@ -153,6 +160,9 @@ export class StaffMeetingsComponent implements OnInit{
         duration_hr: [null, Validators.compose([Validators.required])],
         day_time: [null, Validators.compose([Validators.required])],
         template: [null,]
+      },
+      {
+        validator: notZeroValidator
       });
 
       this.create_agenda_form = this.formBuilder.group({

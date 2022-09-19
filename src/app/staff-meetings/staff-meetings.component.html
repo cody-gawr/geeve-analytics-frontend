@@ -284,7 +284,7 @@
                         </div>
                     </div>
 
-                    <span>Duration</span>
+                    <span>Duration</span> <small class="note"> (*Both Hours and Minutes should not be zero)</small>
                     <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                         <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group" >
                             <mat-form-field class="example-full-width" appearance="outline">
@@ -345,7 +345,10 @@
 
     <div *ngIf="!view_agenda_tab" fxFlex="calc(59% - 10px)" fxFlex.lg="calc(59% - 10px)" fxFlex.md="900" fxFlex.sm="900" fxFlex.xs="900" class="sa_flexbg last headding_meetings">
         <div class="create_meeting_header">
-            <i class="ti-arrow-circle-left back_click" (click)="back_page('agenda_add')"></i> {{agenda_heading}}
+            {{agenda_heading}}
+            <span class="float-right">
+               <button class="sa_tab_btn" mat-raised-button color="green" (click)="back_page('agenda_add')" >Back</button>
+           </span>
         </div>
 
         <mat-card  class="meeting_card">
@@ -388,8 +391,11 @@
 
     <div *ngIf="view_agenda_tab" fxFlex="calc(59% - 10px)" fxFlex.lg="calc(59% - 10px)" fxFlex.md="900" fxFlex.sm="900" fxFlex.xs="900" class="sa_flexbg last headding_meetings">
         <div class="create_meeting_header">
-            <i class="ti-arrow-circle-left back_click" (click)="back_page('agenda_view')"></i> {{agenda_heading}}
-        </div>
+            {{agenda_heading}}
+            <span class="float-right">
+               <button class="sa_tab_btn" mat-raised-button color="green"(click)="back_page('agenda_view')" >Back</button>
+           </span>
+       </div>
 
         <mat-card  class="meeting_card">
                 <mat-card-title class="header">
@@ -495,13 +501,18 @@
 <div *ngIf="boardMeetingPage">
     <div fxFlex="calc(59% - 10px)" fxFlex.lg="calc(59% - 10px)" fxFlex.md="900" fxFlex.sm="900" fxFlex.xs="900" class="sa_flexbg last headding_meetings">
         <div class="create_meeting_header">
-            <i class="ti-arrow-circle-left back_click" (click)="back_page('board_meeting')"></i> {{agenda_heading}}
+             {{agenda_heading}}
+             <span class="float-right">
+                <button class="sa_tab_btn" mat-raised-button color="green" (click)="back_page('board_meeting')" >Back</button>
+            </span>
         </div>
     <mat-card  class="meeting_card">
         <!-- <mat-card-title class="header">
             <div class="meeting_card_header">
+                {{agenda_heading}}
             </div>
-        </mat-card-title> -->
+        </mat-card-title>
+        <hr> -->
         <mat-card-content class="meeting_card_content">
             <div class="agenda">
                 <div *ngFor="let meeting of meeting_details">

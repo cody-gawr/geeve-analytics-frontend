@@ -114,8 +114,9 @@ button{
 }
 
 .btn_active{
-    background-color: #f8f9fd;
+    background-color: #279b8e;
     box-shadow: 0px 4px 16px -7px #7a7a7a !important;
+    color: white;
 }
 
 .btn_create{
@@ -306,3 +307,12 @@ i{
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
   }
   
+  .mat-button-disabled span:hover{
+    cursor: none;
+  }
+
+  .note{
+    font-size: 10px;
+    margin-left: 5px;
+    color: rgba(0, 0, 0, 0.6);
+  }
