@@ -119,6 +119,7 @@
                                 <mat-card-title class="header">
                                     <div class="meeting_card_header">
                                         {{meeting.meeting_topic}}
+                                        <span title="mark pending review" *ngIf="meeting.attended == 0" class="float-right"><i class="fas fa-exclamation"></i></span>
                                     </div>
                                 </mat-card-title>
                                 <mat-card-content class="meeting_card_content">
@@ -153,7 +154,7 @@
                                 <mat-card-title class="header">
                                     <div class="meeting_card_header">
                                         {{meeting.meeting_topic}}
-                                        <span *ngIf="meeting.showAlert" class="float-right"><i class="fas fa-exclamation"></i></span>
+                                        <span title="mark complete pending" *ngIf="meeting.showAlert" class="float-right"><i class="fas fa-exclamation"></i></span>
                                     </div>
                                 </mat-card-title>
                                 <mat-card-content class="meeting_card_content">
@@ -258,13 +259,16 @@
                 <hr>
                 <mat-card-footer>
                     <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
-                        <div fxFlex.gt-sm="43.33%" fxFlex.gt-xs="43%" fxFlex="100" class="btn-group">
+                        <div fxFlex.gt-sm="40%" fxFlex.gt-xs="40%" fxFlex="100" class="btn-group">
                           <!-- <button class="sa_tab_btn" mat-raised-button color="green" (click)="markComplete(meeting_detail.id)">Mark Complete</button> -->
                           <button class="sa_tab_btn" mat-raised-button color="green" (click)="boardMeeting(meeting_detail.id)">view meeting</button>
                         </div>
-                        <div fxFlex.gt-sm="43.33%" fxFlex.gt-xs="43%" fxFlex="100" class="btn-group">
+                        <div fxFlex.gt-sm="40%" fxFlex.gt-xs="40%" fxFlex="100" class="btn-group">
                             <!-- <button class="sa_tab_btn" mat-raised-button color="green" (click)="viewMeetingAgenda(meeting_detail.id)">View Agenda</button> -->
                             <button class="sa_tab_btn" mat-raised-button color="green" (click)="openAgenda(meeting_detail.id)">Open Agenda</button>
+                        </div>
+                        <div fxFlex.gt-sm="15.33%" fxFlex.gt-xs="15%" fxFlex="100" class="btn-group" title="send reminder">
+                            <button class="sa_tab_btn" mat-raised-button color="green" (click)="sendMeetingReminder(meeting_detail.id)"><i class="fa fa-envelope" aria-hidden="true"></i></button>
                         </div>
                     </div>
                 </mat-card-footer>
@@ -544,7 +548,7 @@
                 <button class="sa_tab_btn" mat-raised-button color="green" (click)="back_page('board_meeting')" >Back</button>
             </span>
         </div>
-    <mat-card  class="meeting_card">
+    <mat-card >
         <!-- <mat-card-title class="header">
             <div class="meeting_card_header">
                 {{agenda_heading}}
@@ -558,7 +562,9 @@
                         <ol>
                             <li *ngFor="let item of meeting.agenda_item; let i = index">{{item.agenda_item}}<span *ngIf="item.staff_member != 'null' && item.duration != '0'" class="margintime">{{item.staff_member}} - {{item.duration}} Mins</span>
                             <section class="medescription" >{{item.description}}</section>
-                            <graphs [item]="item"></graphs>
+                            <!-- <div class=""> -->
+                                <graphs [item]="item"></graphs>
+                            <!-- </div> -->
                             </li>
                         </ol>
                 </div>

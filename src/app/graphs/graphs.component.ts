@@ -46,6 +46,8 @@ export class GraphsComponent{
 
     public user_type;
     public childid;
+    public hasPercentBarChart: boolean;
+
     constructor(private frontdeskService : FrontDeskService, private datepipe : DatePipe, private chartService: ChartService, private decimalPipe : DecimalPipe, private cliniciananalysisService : ClinicianAnalysisService,private _cookieService: CookieService, private marketingService : MarketingService, private router : Router){
         
     }
@@ -87,6 +89,20 @@ export class GraphsComponent{
             this.chart_heading = "Hourly Rate";
             this.hourlyRateChart();
             this.noDataText = "You have no hourly rates for the selected period";
+        }
+        // Recall Prebook Rate
+        else if(this.item.agenda_chart_id == 4){
+          this.hasPercentBarChart = true;
+          this.chart_heading = "Recall Prebook Rate";
+          this.recallPrebook();
+          this.noDataText = "You have no recall prebookings in the selected period";
+        }
+        // Reappointment Rate
+        else if(this.item.agenda_chart_id == 5){
+          this.hasPercentBarChart = true;
+          this.chart_heading = "Reappointment Rate";
+          this.reappointRate();
+          this.noDataText = "You have no reappointments in the selected period";
         }
     }
 
@@ -136,6 +152,91 @@ export class GraphsComponent{
         const regex = /\w+\s\w+(?=\s)|\w+/g;
         return name.toString().trim().match(regex);
     }
+
+    public barChartOptionsPercent: any = {
+      scaleShowVerticalLines: false,
+      cornerRadius: 60,
+      hover: { mode: null },
+      curvature: 1,
+      animation: {
+        duration: 1500,
+        easing: 'easeOutSine'
+      },
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        xAxes: [{
+          gridLines: { display: true },
+          ticks: {
+            autoSkip: false,
+            userCallback: (label: any) => {
+              if(label != '' && label != undefined){
+                const names = this.splitName(label);
+                 if (names.length == 3) {
+                    return `${names[0]}`
+                  } else if (names.length == 2){
+                    return `${names[0][0]} ${names[1]}`
+                  } else {
+                    return `${names[0]}`;
+                  } 
+              }
+            }
+          }
+        }],
+        yAxes: [{
+          suggestedMin: 0,
+          // suggestedMax:100,
+          ticks: {
+            beginAtZero: true,
+            max: 100,
+            userCallback: function (label, index, labels) {
+              // when the floored value is the same as the value we have a whole number
+              if (Math.floor(label) === label) {
+                return label + ' %';
+              }
+  
+            },
+          },
+        }],
+      },
+      elements: {
+        line: {
+          fill: false
+        }
+      },
+      tooltips: {
+        mode: 'x-axis',
+        custom: function (tooltip) {
+          if (!tooltip) return;
+        },
+        callbacks: {
+          // use label callback to return the desired label
+          label: function (tooltipItem, data) {
+            return tooltipItem.xLabel + ": " + tooltipItem.yLabel + "%";
+          },
+          // remove title
+          title: function (tooltipItem, data) {
+            return;
+          }
+        }
+      },
+      legend: {
+        position: 'top',
+        onClick: function (e, legendItem) {
+          var index = legendItem.datasetIndex;
+          var ci = this.chart;
+          if (index == 0) {
+            ci.getDatasetMeta(1).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
+          }
+          else if (index == 1) {
+            ci.getDatasetMeta(0).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
+          }
+          ci.update();
+        },
+      },
+    };
 
     public barChartOptions: any = {
         borderRadius: 50,
@@ -229,6 +330,19 @@ export class GraphsComponent{
         });
     }
 
+    private recallPrebook(){
+      this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+        this.calculateDataForBarCharts(data);
+      });
+    }
+
+    private reappointRate(){
+      this.cliniciananalysisService.caReappointRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+        this.calculateDataForBarCharts(data);
+      });
+    }
+
+
     // calculating data and set the value for bar chart
     private calculateDataForBarCharts(data){
         this.barChartData1 = [];
@@ -237,13 +351,36 @@ export class GraphsComponent{
         this.productionTotal = 0;
 
         if (data.status == 200) {
+          
             this.hasBarChart = true;
             this.barChartData[0]['data'] =[];
     
-            data.data.forEach(res => {
+            if(this.item.agenda_chart_id == 7){
+              data.data.sort((a,b) => b.hourly_rate - a.hourly_rate); 
+              data.data.forEach(res => {
+                this.barChartData1.push(Math.round(res.hourly_rate));
+                this.barChartLabels1.push(res.provider_name);
+              });
+            }else if(this.item.agenda_chart_id == 1){
+              data.data.sort((a,b) => b.production - a.production); 
+              data.data.forEach(res => {
                 this.barChartData1.push(Math.round(res.production));
                 this.barChartLabels1.push(res.provider_name);
-            });
+              });
+            }else if(this.item.agenda_chart_id == 4){
+              data.data.sort((a,b) => b.recall_percent - a.recall_percent); 
+              data.data.forEach(res => {
+                this.barChartData1.push(Math.round(res.recall_percent));
+                this.barChartLabels1.push(res.provider_name);
+              });
+            }else if(this.item.agenda_chart_id == 5){
+              data.data.sort((a,b) => b.reappoint_rate - a.reappoint_rate); 
+              data.data.forEach(res => {
+                this.barChartData1.push(Math.round(res.reappoint_rate));
+                this.barChartLabels1.push(res.provider_name);
+              });
+            }
+           
             
             this.barChartData[0]['data'] = this.barChartData1;
     

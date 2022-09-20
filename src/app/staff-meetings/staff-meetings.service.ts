@@ -246,5 +246,17 @@ export class StaffMeetingService {
             })
         );
     }
+
+    sendMeetingReminder(meeting_id, clinic_id): Observable<any>{
+        const formData = new FormData();
+        formData.append("meeting_id", meeting_id);
+        formData.append("clinic_id", clinic_id);
+        var header = this.getHeaders();
+        return this.http.post(this.apiUrl + "/StaffMeeting/smSendReminder",formData, header).pipe(
+            map((response: Response) => {
+                return response;
+            })
+        );
+    }
     
 }

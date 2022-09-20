@@ -118,9 +118,11 @@ export class StaffMeetingsComponent implements OnInit{
       {id: 0, chart_name : "None"},
       {id: 1, chart_name : "Production"},
       {id: 7, chart_name : "Hourly Rate"},
-      {id: 16, chart_name : "Recall  Rate"},
-      {id: 17, chart_name : "Reappointment Rate"},
-      {id: 25, chart_name : "Total Visits"}
+      // {id: 16, chart_name : "Recall  Rate"},
+      // {id: 17, chart_name : "Reappointment Rate"},
+      {id: 25, chart_name : "Total Visits"},
+      {id: 4, chart_name : "Recall Prebook Rate"},
+      {id: 5, chart_name : "Reappointment Rate"}
     ];
 
     public hrs = [
@@ -842,5 +844,14 @@ export class StaffMeetingsComponent implements OnInit{
   pagination(pageNumber){
     this.currentPage = pageNumber;
     this.meetingCards = [...this.data.slice((this.currentPage - 1) * this.itemsPerPage,this.currentPage * this.itemsPerPage)];
+  }
+
+  sendMeetingReminder(meeting_id){
+    this.staffMeetingService.sendMeetingReminder(meeting_id, this.clinic_id).subscribe(res=>{
+      if(res.status == 200){
+        this.drawer.close();
+        this.toastr.success('Reminder has been send successfully');
+      }
+    });
   }
 }

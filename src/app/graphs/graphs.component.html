@@ -1,7 +1,7 @@
-<section *ngIf="hasGaugeChart || hasBarChart">
+<section class="agenda-graphs" *ngIf="hasGaugeChart || hasBarChart">
     <mat-card>
         <mat-card-title class="header">
-             <section class="meeting_card_header">
+             <section class="meeting_card_header_graphs">
                  {{chart_heading}}
                  <span class="chart-date-range"><i class="fas fa-calendar"></i> {{showStartDate}} - {{showEndDate}} </span>
              </section>
@@ -18,7 +18,7 @@
                
                 <section *ngIf="productionTotal > 0 && hasBarChart" class="div-pro-coll-show">
                     <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
-                      [legend]="barChartLegend" [chartType]="'bar'" [options]="barChartOptions"
+                      [legend]="barChartLegend" [chartType]="'bar'" [options]="(hasPercentBarChart) ? barChartOptionsPercent : barChartOptions"
                       [colors]="barChartColors">
                     </canvas> 
                 </section>
@@ -36,7 +36,8 @@
                     <h3 *ngIf="item.agenda_chart_id == 25 && hasGaugeChart" class="m-0 value-num">{{gaugeGraphsTotal}}</h3>
                     <h3 *ngIf="item.agenda_chart_id != 25 && hasGaugeChart" class="m-0 value-num">{{gaugeGraphsTotal}}%</h3>
                     <small *ngIf="hasGaugeChart" >Current</small>
-                    <h3 *ngIf="hasBarChart" class="m-0 value-num">${{productionTotal}}</h3>
+                    <h3 *ngIf="hasBarChart && !hasPercentBarChart" class="m-0 value-num">${{productionTotal}}</h3>
+                    <h3 *ngIf="hasBarChart && hasPercentBarChart" class="m-0 value-num">%{{productionTotal}}</h3>
                     <small *ngIf="hasBarChart" >Current Average</small>
                   </section>
                 </section>
