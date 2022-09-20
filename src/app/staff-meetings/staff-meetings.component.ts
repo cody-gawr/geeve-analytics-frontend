@@ -85,7 +85,7 @@ export class StaffMeetingsComponent implements OnInit{
     public currentPage: number = 1;
     public itemsPerPage = 10;
 
-    public meeting_detail = {id:"",meeting_topic : "", start_time:"", end_time:"", link: "",meeting_date:"",agenda_template_id:"", created_date:""};
+    public meeting_detail = {id:"",meeting_topic : "", start_time:"", end_time:"", link: "",meeting_date:"",agenda_template_id:"", created_date:"", showAlerts: false};
 
     public time = [
       "01:00",
@@ -299,10 +299,16 @@ export class StaffMeetingsComponent implements OnInit{
     if(!this.drawer.opened){
       $(card).parent(".meeting_card").addClass("active");
       this.create_meeting.close();
-
+      let now = new Date();
       this.staffMeetingService.getMeeting(id,this.clinic_id).subscribe(res=>{
         if(res.status == 200){
           res.data.forEach(item=>{
+            let meeting_date = new Date(item.meeting_date);
+            if(now.getTime() > meeting_date.getTime()){
+              item.showAlert = true;
+            }else{
+              item.showAlert = false;
+            }
             item.meeting_date = this.datepipe.transform(item.meeting_date, 'dd-MM-yyyy');
           });
           this.meeting_detail = res.data[0];
