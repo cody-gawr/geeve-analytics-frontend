@@ -46,7 +46,7 @@ table.utiTable tbody {
     font-size: 11px;
 }
 
-.div-pro-coll-show {
+.div-pro-coll-show-graphs {
     // height: 300px;
     height: 250px;
     margin-bottom: -30px;
@@ -59,4 +59,19 @@ table.utiTable tbody {
 .meeting_card_header_graphs {
     font-weight: 600;
     font-size: initial;
+}
+
+.sa_chart_details_sec_graphs {
+    place-content: center!important;
+    margin: 10px 0 0!important;
+    padding: 10px 0 0px;
+    border-radius: 10px;
+    color: #5e5e5e;
+    background: #f8f9fd;
+}
+
+.chart-recall-rate-graphs {
+    height: 190px;
+    width: 100%;
+    margin-left: 25px;
 }

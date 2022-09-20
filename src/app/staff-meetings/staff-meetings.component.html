@@ -119,7 +119,7 @@
                                 <mat-card-title class="header">
                                     <div class="meeting_card_header">
                                         {{meeting.meeting_topic}}
-                                        <span title="mark pending review" *ngIf="meeting.attended == 0" class="float-right"><i class="fas fa-exclamation"></i></span>
+                                        <span title="Pending review" *ngIf="meeting.attended == 0" class="float-right"><i class="fas fa-exclamation"></i></span>
                                     </div>
                                 </mat-card-title>
                                 <mat-card-content class="meeting_card_content">
@@ -154,7 +154,7 @@
                                 <mat-card-title class="header">
                                     <div class="meeting_card_header">
                                         {{meeting.meeting_topic}}
-                                        <span title="mark complete pending" *ngIf="meeting.showAlert" class="float-right"><i class="fas fa-exclamation"></i></span>
+                                        <span title="Pending to mark complete" *ngIf="meeting.showAlert" class="float-right"><i class="fas fa-exclamation"></i></span>
                                     </div>
                                 </mat-card-title>
                                 <mat-card-content class="meeting_card_content">
