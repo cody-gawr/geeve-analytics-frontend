@@ -1,5 +1,4 @@
 <input type="button" id="clinic_initiate" (click)="initiate_clinic()" [style.display]="'none'" />
-
 <mat-drawer-container *ngIf="!agendaTab && !boardMeetingPage" class="example-container" autosize>
     <div fxFlex="calc(39% - 10px)" fxFlex.lg="calc(39% - 10px)" fxFlex.md="900" fxFlex.sm="900" fxFlex.xs="900" class="sa_flexbg last">
         <span class="top_buttons">
@@ -184,6 +183,9 @@
     </div>
     
     <mat-drawer #drawer class="example-sidenav"  mode="side" position="end">
+        <div class="card-loading" *ngIf="loader">
+            <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
+        </div>
             <mat-card class="meeting_content" *ngIf="currentTab == 0">
                 <span class="close-icon float-right" (click)="close(drawer,invites_form)"><i class="ti-close"></i></span>
                 <mat-card-title>
@@ -277,6 +279,9 @@
 
 <mat-drawer-container>
     <mat-drawer #create_meeting class="example-sidenav-create" mode="side" position="end">
+        <div class="card-loading" *ngIf="loader">
+            <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
+        </div>
         <mat-card class="meeting_content">
             <span class="close-icon float-right" (click)="close(create_meeting, create_meeting_form)"><i class="ti-close"></i></span>
             <hr>
@@ -458,6 +463,9 @@
 
     <mat-drawer-container>
         <mat-drawer #agenda_drawer class="example-sidenav-create" mode="side" position="end">
+            <div class="card-loading" *ngIf="loader">
+                <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
+            </div>
             <mat-card class="meeting_card">
                 <span class="close-icon float-right" (click)="close(agenda_drawer,create_agenda_form)"><i class="ti-close"></i></span>
             <hr>

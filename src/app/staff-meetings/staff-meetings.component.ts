@@ -204,7 +204,9 @@ export class StaffMeetingsComponent implements OnInit{
         this.getAdengaTemplate();
         this.getUsers();
         this.getInvitedMeetings();
-        // this.refresh();
+        this.currentTab = 1;
+        this.refresh();
+
     }
 
     refresh(){
@@ -324,6 +326,8 @@ export class StaffMeetingsComponent implements OnInit{
       $(".meeting_card").removeClass("active");
     }
     this.drawer.toggle();
+    this.allSelected = false;
+    this.invited_users = [];
     this.invites_form.reset();
 
   }
@@ -466,9 +470,11 @@ export class StaffMeetingsComponent implements OnInit{
     );
   }
 
+  public loader : boolean;
+  
   save_invites(meeting_id){
     let user_ids = [];
-
+    this.loader = true;
     if(this.invited_users[0].id == -1){
       this.staff.forEach(item=>{
         if(item.id != -1){
@@ -483,9 +489,17 @@ export class StaffMeetingsComponent implements OnInit{
 
     this.staffMeetingService.publishMeeting(user_ids, meeting_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
+        this.loader = false;
         this.drawer.close();
+        this.allSelected = false;
+        this.invited_users = [];
+        this.invites_form.reset();
         this.refresh();
+      }else{
+        this.loader = false;
       }
+    },error=>{
+      this.loader = false;
     });
   }
 
@@ -730,7 +744,7 @@ export class StaffMeetingsComponent implements OnInit{
   }
 
   save_agenda(formData){
-    
+    this.loader = true;
     formData.start_date = this.datepipe.transform(formData.start_date, 'yyyy-MM-dd');
     formData.end_date = this.datepipe.transform(formData.end_date, 'yyyy-MM-dd');
     if(formData.chart == 0)
@@ -744,10 +758,15 @@ export class StaffMeetingsComponent implements OnInit{
     
     this.staffMeetingService.saveMeetingAgenda(formData).subscribe(res=>{
       if(res.status == 200){
+        this.loader = false;
         this.agenda_drawer.close();
         this.create_agenda_form.reset();
         this.openAgenda(this.meeting_id);
+      }else{
+        this.loader = false;
       }
+    },error=>{
+      this.loader = false;
     });
   }
 
@@ -855,11 +874,17 @@ export class StaffMeetingsComponent implements OnInit{
   }
 
   sendMeetingReminder(meeting_id){
+    this.loader = true;
     this.staffMeetingService.sendMeetingReminder(meeting_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
+        this.loader = false;
         this.drawer.close();
         this.toastr.success('Reminder has been send successfully');
+      }else{
+        this.loader = false;
       }
+    },error=>{
+      this.loader = false;
     });
   }
 }

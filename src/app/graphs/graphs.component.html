@@ -28,7 +28,7 @@
                         [legend]="true" [colors]="IPcolors">
                   </canvas>
                 </section>
-                <section *ngIf="gaugeGraphsTotal <= 0 && hasGaugeChart || productionTotal <= 0 && hasBarChart">
+                <section *ngIf="gaugeGraphsTotal <= 0 && hasGaugeChart || productionTotal <= 0 && hasBarChart || productionTotal <= 0 && hasStackChart">
                   <section class="sa_nodata_div">
                   </section>
                   <p class="chart-placeholder-text">{{noDataText}}</p>
