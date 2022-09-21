@@ -1,4 +1,4 @@
-<section class="agenda-graphs" *ngIf="hasGaugeChart || hasBarChart">
+<section class="agenda-graphs" *ngIf="hasGaugeChart || hasBarChart || hasStackChart">
     <mat-card>
         <mat-card-title class="header">
              <section class="meeting_card_header_graphs">
@@ -18,9 +18,15 @@
                
                 <section *ngIf="productionTotal > 0 && hasBarChart" class="div-pro-coll-show-graphs">
                     <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
-                      [legend]="barChartLegend" [chartType]="'bar'" [options]="(hasPercentBarChart) ? barChartOptionsPercent : barChartOptions"
+                      [legend]="barChartLegend" [chartType]="'bar'" [options]="barOptions"
                       [colors]="barChartColors">
                     </canvas> 
+                </section>
+                <section *ngIf="productionTotal > 0 && hasStackChart" class="div-pro-coll-show-graphs">
+                  <canvas #myCanvas baseChart [datasets]="perUserData" [labels]="perUserLabels"
+                        [options]="stackedChartOptions" [chartType]="'bar'" 
+                        [legend]="true" [colors]="IPcolors">
+                  </canvas>
                 </section>
                 <section *ngIf="gaugeGraphsTotal <= 0 && hasGaugeChart || productionTotal <= 0 && hasBarChart">
                   <section class="sa_nodata_div">
@@ -32,13 +38,37 @@
         <mat-card-footer>
             <section class="card-footer">
                 <section fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 sa_chart_details_sec_graphs pieChartDetails">
-                  <section fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <!-- <section fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                     <h3 *ngIf="item.agenda_chart_id == 25 && hasGaugeChart" class="m-0 value-num">{{gaugeGraphsTotal | number:'1.0-0'}}</h3>
                     <h3 *ngIf="item.agenda_chart_id != 25 && hasGaugeChart" class="m-0 value-num">{{gaugeGraphsTotal | number:'1.0-0'}}%</h3>
                     <small *ngIf="hasGaugeChart" >Current</small>
-                    <h3 *ngIf="hasBarChart && !hasPercentBarChart" class="m-0 value-num">${{productionTotal | number:'1.0-0'}}</h3>
-                    <h3 *ngIf="hasBarChart && hasPercentBarChart" class="m-0 value-num">%{{productionTotal | number:'1.0-0'}}</h3>
-                    <small *ngIf="hasBarChart" >Current Average</small>
+                    <h3 *ngIf="hasBarChart && !hasPercentBarChart && item.agenda_chart_id != 55" class="m-0 value-num">${{productionTotal | number:'1.0-0'}}</h3>
+                    <h3 *ngIf="hasBarChart && hasPercentBarChart && item.agenda_chart_id != 55" class="m-0 value-num">{{productionTotal | number:'1.0-0'}}%</h3>
+                    <h3 *ngIf="item.agenda_chart_id == 55" class="m-0 value-num">{{productionTotal | number:'1.0-0'}}</h3>
+                    <small *ngIf="hasBarChart && item.agenda_chart_id != 55" >Current Average</small>
+                    <small *ngIf="hasBarChart && item.agenda_chart_id == 55" >Current</small>
+                  </section> -->
+
+                  <section *ngIf="hasGaugeChart" fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                    <h3 *ngIf="showNormal" class="m-0 value-num">{{gaugeGraphsTotal | number:'1.0-0'}}</h3>
+                    <h3 *ngIf="!showNormal" class="m-0 value-num">{{gaugeGraphsTotal | number:'1.0-0'}}%</h3>
+                    <small>Current</small>
+                  </section>
+
+                  <section *ngIf="hasBarChart" fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                    <h3 *ngIf="!hasPercentBarChart && item.agenda_chart_id != 55" class="m-0 value-num">${{productionTotal | number:'1.0-0'}}</h3>
+                    <h3 *ngIf="hasPercentBarChart && item.agenda_chart_id != 55" class="m-0 value-num">{{productionTotal | number:'1.0-0'}}%</h3>
+                    <h3 *ngIf="item.agenda_chart_id == 55" class="m-0 value-num">{{productionTotal | number:'1.0-0'}}</h3>
+                    <small *ngIf="item.agenda_chart_id != 55" >Current Average</small>
+                    <small *ngIf="item.agenda_chart_id == 55" >Current</small>
+                  </section>
+
+                  <section *ngIf="hasStackChart" fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                    <h3 *ngIf="!hasPercentBarChart && !showNormal" class="m-0 value-num">${{productionTotal | number:'1.0-0'}}</h3>
+                    <h3 *ngIf="hasPercentBarChart && !showNormal" class="m-0 value-num">{{productionTotal | number:'1.0-0'}}%</h3>
+                    <h3 *ngIf="showNormal" class="m-0 value-num">{{productionTotal | number:'1.0-0'}}</h3>
+                    <small *ngIf="!showNormal" >Current Average</small>
+                    <small *ngIf="showNormal" >Current</small>
                   </section>
                 </section>
               </section>

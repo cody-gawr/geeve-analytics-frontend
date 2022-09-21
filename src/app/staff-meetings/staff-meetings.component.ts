@@ -122,7 +122,9 @@ export class StaffMeetingsComponent implements OnInit{
       // {id: 17, chart_name : "Reappointment Rate"},
       {id: 25, chart_name : "Total Visits"},
       {id: 4, chart_name : "Recall Prebook Rate"},
-      {id: 5, chart_name : "Reappointment Rate"}
+      {id: 5, chart_name : "Reappointment Rate"},
+      {id: 15, chart_name : "Utilisation Rate"},
+      {id: 55, chart_name : "Followups Per User"}
     ];
 
     public hrs = [

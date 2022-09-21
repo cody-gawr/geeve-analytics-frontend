@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { CookieService } from "ngx-cookie";
 import { MarketingService } from "../dashboards/marketing/marketing.service";
 import { Chart } from 'chart.js';
+import { FollowupsService } from "../dashboards/followups/followups.service";
 
 @Component({
     selector: 'graphs',
@@ -43,12 +44,17 @@ export class GraphsComponent{
     public noDataText;
     public showStartDate;
     public showEndDate;
-
+    public barChartColors;
     public user_type;
     public childid;
     public hasPercentBarChart: boolean;
+    public barOptions;
+    public hasStackChart : boolean;
+    public showPercentage : boolean;
+    public showDoller : boolean;
+    public showNormal : boolean;
 
-    constructor(private frontdeskService : FrontDeskService, private datepipe : DatePipe, private chartService: ChartService, private decimalPipe : DecimalPipe, private cliniciananalysisService : ClinicianAnalysisService,private _cookieService: CookieService, private marketingService : MarketingService, private router : Router){
+    constructor(private frontdeskService : FrontDeskService, private datepipe : DatePipe, private chartService: ChartService, private decimalPipe : DecimalPipe, private cliniciananalysisService : ClinicianAnalysisService,private _cookieService: CookieService, private marketingService : MarketingService, private router : Router, private followupsService : FollowupsService){
         
     }
 
@@ -60,50 +66,82 @@ export class GraphsComponent{
         this.showStartDate = this.datepipe.transform(this.item.agenda_chart_start_date, 'dd MMM yyyy');
         this.showEndDate = this.datepipe.transform(this.item.agenda_chart_end_date, 'dd MMM yyyy');
 
-        // Recall Rate chart
-        if(this.item.agenda_chart_id == 16){
+        switch(this.item.agenda_chart_id){
+          case 16:{
+            // Recall Rate chart gauge
             this.chart_heading = "Recall Rate";
             this.fdRecallPrebookRate();   
             this.noDataText = "You have no recall prebookings in the selected period";
-        }
-        //Reappointment Rate chart
-        else if(this.item.agenda_chart_id == 17){
+            break;
+          }
+          case 17:{
+            //Reappointment Rate chart gauge
             this.chart_heading = "Reappointment Rate";
             this.fdtreatmentPrebookRate();
             this.noDataText = "You have no reappointments in the selected period";
-        }
-        // Total Visits chart
-        else if(this.item.agenda_chart_id == 25){
+            break;
+          }
+          case 25:{
+            // Total Visits chart gauge
+            this.showNormal = true;
             this.chart_heading = "Total Visits";
             this.fdvisitsRatio();
             this.noDataText = "You have no visits in the selected period";
-        }
-        // Production chart
-        else if(this.item.agenda_chart_id == 1){
+            break;
+          }
+          case 1:{
+            // Production chart
             this.chart_heading = "Production";
+            this.barOptions = this.barChartOptions;
             this.dentistProduction();
             this.noDataText = "You have no production in the selected period";
-        }
-        // Hourly Rate chart
-        else if(this.item.agenda_chart_id == 7){
+            break;
+          }
+          case 7:{
+            // Hourly Rate chart
             this.chart_heading = "Hourly Rate";
+            this.barOptions = this.barChartOptions;
             this.hourlyRateChart();
             this.noDataText = "You have no hourly rates for the selected period";
-        }
-        // Recall Prebook Rate
-        else if(this.item.agenda_chart_id == 4){
-          this.hasPercentBarChart = true;
-          this.chart_heading = "Recall Prebook Rate";
-          this.recallPrebook();
-          this.noDataText = "You have no recall prebookings in the selected period";
-        }
-        // Reappointment Rate
-        else if(this.item.agenda_chart_id == 5){
-          this.hasPercentBarChart = true;
-          this.chart_heading = "Reappointment Rate";
-          this.reappointRate();
-          this.noDataText = "You have no reappointments in the selected period";
-        }
+            break;
+          }
+          case 4:{
+            // Recall Prebook Rate
+            this.hasPercentBarChart = true;
+            this.chart_heading = "Recall Prebook Rate";
+            this.barOptions = this.barChartOptionsPercent;
+            this.recallPrebook();
+            this.noDataText = "You have no recall prebookings in the selected period";
+            break;
+          }
+          case 5:{
+            // Reappointment Rate
+            this.hasPercentBarChart = true;
+            this.chart_heading = "Reappointment Rate";
+            this.barOptions = this.barChartOptionsPercent;
+            this.reappointRate();
+            this.noDataText = "You have no reappointments in the selected period";
+            break;
+          }
+          case 15:{
+            // Utilisation Rate
+            this.hasPercentBarChart = true;
+            this.chart_heading = "Utilisation Rate";
+            this.barOptions = this.stackedChartOptionsUti;
+            this.fdWorkTimeAnalysis();
+            this.noDataText = "You have no appointments in the selected period";
+            break;
+          }
+          case 55:{
+            // Followups Per User
+            this.hasStackChart = true;
+            this.showNormal = true;
+            this.chart_heading = "Followups Per User";
+            this.getFollowupsPerUser();
+            this.noDataText = "No followups were completed in this period";
+            break;
+          }
+        };
     }
 
     // -------------- gauge charts -------------------------
@@ -305,6 +343,204 @@ export class GraphsComponent{
         },
     };
 
+    public stackedChartOptionsUti: any = {
+
+      scaleShowVerticalLines: false,
+      responsive: true,
+      maintainAspectRatio: false,
+      // barThickness: 10,
+        animation: {
+          duration: 1,
+          easing: 'linear'
+        },
+        fill:false,
+      scales: {
+        xAxes: [{ 
+          ticks: {
+            autoSkip: false,
+            callback: function (value, index, values) {
+              if(value.indexOf('--') >= 0){
+                let lbl = value.split('--');
+                value = lbl[0];
+              }
+              return value;
+            }
+          },
+          stacked:true,
+        }],
+        yAxes: [{ 
+          // stacked:true,
+          ticks: {
+            min:0,
+            max:100,
+            userCallback: function(label, index, labels) {
+                    // when the floored value is the same as the value we have a whole number
+                    if (Math.floor(label) === label) {
+                        return label+"%";
+                    }
+                },
+          },
+          }],
+        },
+        tooltips: {
+          mode: 'x-axis',
+          custom: function(tooltip) {
+            if (!tooltip) return;
+              tooltip.displayColors = false;
+            },
+            callbacks: {
+              label: function(tooltipItems, data) { 
+                let total = tooltipItems.yLabel > 100 ? 100 : tooltipItems.yLabel;    
+                if(tooltipItems.xLabel.indexOf('--') >= 0){
+                  let lbl = tooltipItems.xLabel.split('--');
+                  if(typeof lbl[3] === 'undefined'){
+                    tooltipItems.xLabel = lbl[0];                    
+                  }else{
+                    tooltipItems.xLabel = lbl[0]+' - '+lbl[3];
+                  }                  
+                }  
+                var Targetlable = '';  
+                const v = data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index];
+                  let Tlable = data.datasets[tooltipItems.datasetIndex].label;
+                  if(Tlable !=''){
+                    Tlable = Tlable + ": "
+                    Targetlable = Tlable
+                  }
+                let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v; 
+                var tlab = 0; 
+                if(typeof data.datasets[1] === 'undefined') {
+                  }
+                  else {
+                    const tval  = data.datasets[1].data[tooltipItems.index];
+                    if(Array.isArray(tval)){
+                      tlab =  Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
+                      if(tlab == 0){
+                        Tlable = '';
+                      }
+                    }
+                  }  
+                if(tlab == 0 && Targetlable =='Target: '){
+                }else{
+                return Tlable + tooltipItems.xLabel+": "+ ylable + '%';
+                }   
+                
+              },
+              afterLabel: function(tooltipItems, data) {
+                let hour = 0;
+                let phour = 0;
+                if(tooltipItems.label.indexOf('--') >= 0 && tooltipItems.datasetIndex == 0){
+                  let lbl = tooltipItems.label.split('--');                
+                  hour = lbl[1];
+                  phour = lbl[2];
+                  return ['',"Available Hours: "+phour,"Used Hours: "+hour];
+                } 
+                return;
+              },
+              title: function() {
+                return "";
+            }
+          }
+        },
+        legend: {
+            display: true
+        }
+    };  
+    public IPcolors = [
+      { backgroundColor: '#6cd8ba' },
+      { backgroundColor: '#b0fffa' },
+      { backgroundColor: '#abb3ff' },
+      { backgroundColor: '#feefb8' },
+      { backgroundColor: '#ffb4b5' },
+      { backgroundColor: '#fffcac' }
+    ];
+
+    private legendLabelOptions = {
+      labels: {
+        usePointStyle: true,
+        padding: 20
+      },
+      onClick: function (e) {
+        e.stopPropagation();
+      }
+    };
+    public stackedChartOptions: any = {
+      hover: { 
+        mode: null
+      },
+      elements: {
+        point: {
+          radius: 5,
+          hoverRadius: 7,
+          pointStyle:'rectRounded',
+          hoverBorderWidth:7
+        },
+      },
+      curvature: 1,
+      scaleShowVerticalLines: false,
+      responsive: true,
+      maintainAspectRatio: false,
+        animation: {
+          duration: 500,
+          easing: 'easeOutSine'
+        },
+      scales: {
+        xAxes: [{ 
+            stacked:true,
+            ticks: {
+                autoSkip: false
+            }
+        }],
+        yAxes: [{ 
+          stacked:true, 
+            ticks: {
+              userCallback: function(label, index, labels) {
+                  // when the floored value is the same as the value we have a whole number
+                  if (Math.floor(label) === label) {
+                      return label;
+                  }
+              },
+            }, 
+          }],
+        },
+        legend: {
+            display: true,
+            position: 'top',
+            ...this.legendLabelOptions,
+         },
+        tooltips: {
+            mode: 'x-axis',
+            custom: function(tooltip) {
+              if (!tooltip) return;
+              // disable displaying the color box;
+              tooltip.displayColors = true;
+            },
+        callbacks: {
+          label: function(tooltipItems, data) { 
+            if(tooltipItems.yLabel > 0 && data.datasets[tooltipItems.datasetIndex].label != ''){
+            if(data.datasets[tooltipItems.datasetIndex].label.indexOf('DentistMode-') >= 0){
+                return tooltipItems.label+": "+tooltipItems.yLabel;
+              } else {
+                return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel;          
+              } 
+            }
+          },
+          title : function(tooltip, data){
+            let total = 0;
+            tooltip.forEach( (val) => {
+              total = total + val.yLabel;
+            });
+            if( data.datasets[0].label.indexOf('DentistMode-') >= 0){
+                var dentist = data.datasets[0].label.split('Mode-');
+                return dentist[1]+':'+total;
+            } else {
+              return tooltip[0].label+': '+total;
+            }
+          }
+        }
+      }
+    };
+
+
     public barChartData: any[] = [
         {
             ...this.chartService.baseChartData,
@@ -342,6 +578,60 @@ export class GraphsComponent{
       });
     }
 
+    private fdWorkTimeAnalysis(){
+      this.frontdeskService.fdWorkTimeAnalysis(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+        this.calculateDataForBarCharts(data);
+      });
+    }
+
+    public perUserData: any[] = [
+      {data: [], label: 'Ticks'},
+      {data: [], label: 'Post Op' },
+      {data: [], label: 'Recall' },
+      {data: [], label: 'Ftas' },
+      {data: [], label: 'Utas' }
+    ];
+    public perUserData1 = [];
+    public perUserData2 = [];
+    public perUserData3 = [];
+    public perUserData4 = [];
+    public perUserData5 = [];
+    public perUserLabels = [];
+    private getFollowupsPerUser(){
+      this.followupsService.getFollowupsPerUser(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
+        
+        this.perUserData = [
+          {data: [], label: 'Ticks'},
+          {data: [], label: 'Post Op' },
+          {data: [], label: 'Recall' },
+          {data: [], label: 'Ftas' },
+          {data: [], label: 'Utas' }
+        ];
+        
+        // let perUserTotal = 0;
+        this.productionTotal = 0;
+        if(res.status == 200){  
+          res.data.forEach((response) => {
+             this.perUserData1.push(response.num_ticks);
+             this.perUserData2.push(response.num_postop);
+             this.perUserData3.push(response.num_recall);
+             this.perUserData4.push(response.num_ftas);
+             this.perUserData5.push(response.num_utas);
+             this.perUserLabels.push(response.completed_by);
+          });
+          this.perUserData[0]['data'] = this.perUserData1;
+          this.perUserData[1]['data'] = this.perUserData2;
+          this.perUserData[2]['data'] = this.perUserData3;
+          this.perUserData[3]['data'] = this.perUserData4;
+          this.perUserData[4]['data'] = this.perUserData5;
+
+          this.productionTotal = res.total;
+          
+        }
+      }, error => {
+           this.handleUnAuthorization();
+      });
+    }
 
     // calculating data and set the value for bar chart
     private calculateDataForBarCharts(data){
@@ -380,6 +670,13 @@ export class GraphsComponent{
                 this.barChartLabels1.push(res.provider_name);
               });
             }
+            else if(this.item.agenda_chart_id == 15){
+              data.data.sort((a,b) => b.util_rate - a.util_rate); 
+              data.data.forEach(res => {
+                this.barChartData1.push(Math.round(res.util_rate * 100));
+                this.barChartLabels1.push(res.app_book_name+'--'+res.worked_hour+'--'+res.planned_hour +'--'+res.clinic_name); 
+              });
+            }
            
             
             this.barChartData[0]['data'] = this.barChartData1;
@@ -399,6 +696,15 @@ export class GraphsComponent{
             this._cookieService.put("userid", '');
             this.router.navigateByUrl('/login');
         }
+    }
+
+    handleUnAuthorization() {
+      if(this.user_type !='7'){
+        this._cookieService.put("username", '');
+        this._cookieService.put("email", '');
+        this._cookieService.put("userid", '');
+        this.router.navigateByUrl('/login');
+      }
     }
     
 }
