@@ -3789,7 +3789,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             this.collectionExpDentistTotalPrev = Math.round(data.total_ta);
             this.productionTotalAverage = Math.round(data.total_average);
             this.dentistCollectionExpGoal = data.goals;
-            console.log(this.collectionExpDentistTotal, this.collectionExpDentistTotalPrev);
             if (this.collectionExpDentistTotal > this.collectionExpDentistTotalPrev) {
               this.collectionExpTooltip = 'up';
             }
