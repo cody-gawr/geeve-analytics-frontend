@@ -53,6 +53,8 @@ export class GraphsComponent{
     public showPercentage : boolean;
     public showDoller : boolean;
     public showNormal : boolean;
+    public hasError :boolean;
+    public errorText = "";
 
     constructor(private frontdeskService : FrontDeskService, private datepipe : DatePipe, private chartService: ChartService, private decimalPipe : DecimalPipe, private cliniciananalysisService : ClinicianAnalysisService,private _cookieService: CookieService, private marketingService : MarketingService, private router : Router, private followupsService : FollowupsService){
         
@@ -349,11 +351,11 @@ export class GraphsComponent{
       responsive: true,
       maintainAspectRatio: false,
       // barThickness: 10,
-        animation: {
-          duration: 1,
-          easing: 'linear'
-        },
-        fill:false,
+      animation: {
+        duration: 1,
+        easing: 'linear'
+      },
+      fill:false,
       scales: {
         xAxes: [{ 
           ticks: {
@@ -363,6 +365,7 @@ export class GraphsComponent{
                 let lbl = value.split('--');
                 value = lbl[0];
               }
+              
               return value;
             }
           },
@@ -402,10 +405,13 @@ export class GraphsComponent{
                 var Targetlable = '';  
                 const v = data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index];
                   let Tlable = data.datasets[tooltipItems.datasetIndex].label;
-                  if(Tlable !=''){
+                  if(Tlable !='' && Tlable != undefined){
                     Tlable = Tlable + ": "
                     Targetlable = Tlable
+                  }else{
+                    Tlable = '';
                   }
+                  
                 let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v; 
                 var tlab = 0; 
                 if(typeof data.datasets[1] === 'undefined') {
@@ -517,7 +523,7 @@ export class GraphsComponent{
         callbacks: {
           label: function(tooltipItems, data) { 
             if(tooltipItems.yLabel > 0 && data.datasets[tooltipItems.datasetIndex].label != ''){
-            if(data.datasets[tooltipItems.datasetIndex].label.indexOf('DentistMode-') >= 0){
+              if(data.datasets[tooltipItems.datasetIndex].label.indexOf('DentistMode-') >= 0){
                 return tooltipItems.label+": "+tooltipItems.yLabel;
               } else {
                 return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel;          
@@ -557,31 +563,66 @@ export class GraphsComponent{
     private dentistProduction() {
         this.cliniciananalysisService.DentistProduction(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
             this.calculateDataForBarCharts(data);
-        });
+        }, error => {
+          this.hasError = true;
+          if(error.status == 401){
+            this.errorText = "You are not autherised to view this graph.";
+          }else{
+            this.errorText = "Something went wrong.";
+          }
+      });
     }
 
     private hourlyRateChart() {
         this.cliniciananalysisService.hourlyRateChart(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
             this.calculateDataForBarCharts(data);
-        });
+        }, error => {
+          this.hasError = true;
+          if(error.status == 401){
+            this.errorText = "You are not autherised to view this graph.";
+          }else{
+            this.errorText = "Something went wrong.";
+          }
+      });
     }
 
     private recallPrebook(){
       this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
         this.calculateDataForBarCharts(data);
+      }, error => {
+          this.hasError = true;
+          if(error.status == 401){
+            this.errorText = "You are not autherised to view this graph.";
+          }else{
+            this.errorText = "Something went wrong.";
+          }
       });
     }
 
     private reappointRate(){
       this.cliniciananalysisService.caReappointRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
         this.calculateDataForBarCharts(data);
+      }, error => {
+          this.hasError = true;
+          if(error.status == 401){
+            this.errorText = "You are not autherised to view this graph.";
+          }else{
+            this.errorText = "Something went wrong.";
+          }
       });
     }
 
     private fdWorkTimeAnalysis(){
       this.frontdeskService.fdWorkTimeAnalysis(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
         this.calculateDataForBarCharts(data);
-      });
+      }, error => {
+        this.hasError = true;
+        if(error.status == 401){
+          this.errorText = "You are not autherised to view this graph.";
+        }else{
+          this.errorText = "Something went wrong.";
+        }
+    });
     }
 
     public perUserData: any[] = [
@@ -629,7 +670,12 @@ export class GraphsComponent{
           
         }
       }, error => {
-           this.handleUnAuthorization();
+          this.hasError = true;
+          if(error.status == 401){
+            this.errorText = "You are not autherised to view this graph.";
+          }else{
+            this.errorText = "Something went wrong.";
+          }
       });
     }
 
@@ -691,10 +737,11 @@ export class GraphsComponent{
             this.productionTotal = Math.round(data.total);
         }
         else if (data.status == '401') {
-            this._cookieService.put("username", '');
-            this._cookieService.put("email", '');
-            this._cookieService.put("userid", '');
-            this.router.navigateByUrl('/login');
+          this.hasError = true;
+          this.errorText = "You are not autherised to view this graph.";
+        }else{
+          this.hasError = true;
+          this.errorText = "Something went wrong.";
         }
     }
 

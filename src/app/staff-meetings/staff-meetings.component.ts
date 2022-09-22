@@ -342,6 +342,7 @@ export class StaffMeetingsComponent implements OnInit{
     form.reset();
     this.create_meeting_form.get('day_time').setValue('AM');
     this.create_meeting_form.get('duration_mins').setValue(0);
+    this.create_meeting_form.get('template').setValue(0);
   }
 
   save_meeting(formData){
@@ -426,6 +427,7 @@ export class StaffMeetingsComponent implements OnInit{
         this.create_meeting_form.reset();
         this.create_meeting_form.get('day_time').setValue('AM');
         this.create_meeting_form.get('duration_mins').setValue(0);
+        this.create_meeting_form.get('template').setValue(0);
       }
     });
 
@@ -672,7 +674,8 @@ export class StaffMeetingsComponent implements OnInit{
     this.staffMeetingService.saveMeetingAttended(this.meeting_id, this.user_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
         this.toastr.success('Thanks for attending the meeting. once the creator of the meeting mark the meeting completed it will be visible in you completed tab. Thankyou !! ');
-        this.boardMeeting(this.meeting_id);
+        this.notAttended = false;
+        // this.boardMeeting(this.meeting_id);
       }
     });
   }
@@ -773,9 +776,11 @@ export class StaffMeetingsComponent implements OnInit{
   markCompleteMeeting(){
     this.staffMeetingService.markMeetingComplete(this.meeting_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
+        this.isMeetingCreator = false;
         this.toastr.success('Thankyou for marking the meeting complete.');
         // this.drawer.close();
-        this.refresh();
+        // this.refresh();
+        
       }
     });
   }
@@ -879,6 +884,7 @@ export class StaffMeetingsComponent implements OnInit{
       if(res.status == 200){
         this.loader = false;
         this.drawer.close();
+        $(".meeting_card").removeClass("active");
         this.toastr.success('Reminder has been send successfully');
       }else{
         this.loader = false;

@@ -31,7 +31,8 @@
                 <section *ngIf="gaugeGraphsTotal <= 0 && hasGaugeChart || productionTotal <= 0 && hasBarChart || productionTotal <= 0 && hasStackChart">
                   <section class="sa_nodata_div">
                   </section>
-                  <p class="chart-placeholder-text">{{noDataText}}</p>
+                  <p *ngIf="!hasError" class="chart-placeholder-text">{{noDataText}}</p>
+                  <p *ngIf="hasError" class="chart-placeholder-text-error">{{errorText}}</p>
                 </section>
             </section>
         </mat-card-content>
