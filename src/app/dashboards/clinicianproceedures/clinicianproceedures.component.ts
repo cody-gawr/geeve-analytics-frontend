@@ -2112,7 +2112,7 @@ public doughnutChartColors1;
         this.pieChartCombinedPrevTooltip = 'down';
       if (data.message == 'success' && data.data && data.data.length) {
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
-          data.dataMulti.forEach(res => {
+          data.data.forEach(res => {
             res.val.forEach((result, key) => {
               if(result.internal > 0) {
                   this.pieChartDatares1.push(result.internal);
@@ -2156,11 +2156,12 @@ public doughnutChartColors1;
               i++;
             
           });
+
+          this.pieChartInternalPrevTotal = this.pieChartInternalPrevTotal + parseInt(data.total_ta.internal);
+          this.pieChartExternalPrevTotal = this.pieChartExternalPrevTotal + parseInt(data.total_ta.external);
+          this.pieChartCombinedPrevTotal = this.pieChartCombinedPrevTotal + parseInt(data.total_ta.total);
         }
         
-        this.pieChartInternalPrevTotal = this.pieChartInternalPrevTotal + parseInt(data.total_ta.internal);
-        this.pieChartExternalPrevTotal = this.pieChartExternalPrevTotal + parseInt(data.total_ta.external);
-        this.pieChartCombinedPrevTotal = this.pieChartCombinedPrevTotal + parseInt(data.total_ta.total);
         if(this.pieChartInternalTotal>=this.pieChartInternalPrevTotal)
           this.pieChartInternalPrevTooltip = 'up'
         if(this.pieChartExternalTotal>=this.pieChartExternalPrevTotal)

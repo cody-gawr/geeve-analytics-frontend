@@ -3000,8 +3000,8 @@ export class FinancesComponent implements AfterViewInit {
         this.finCollectionTrend();
         
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
-          data.dataMulti.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
-          data.dataMulti.forEach(res => {
+          data.data_combined.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
+          data.data_combined.forEach(res => {
             res.val.forEach((result, key) => {
               if (typeof (this.netProfitPercentChartTrendMulti[key]) == 'undefined') {
                 this.netProfitPercentChartTrendMulti[key] = { data: [], label: '' };

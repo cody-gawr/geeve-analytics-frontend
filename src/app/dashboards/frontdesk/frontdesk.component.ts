@@ -1611,8 +1611,8 @@ public fdNumberOfTicksLoader:boolean;
         this.fdNumberOfTicksLoader = false;
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           this.showmulticlinicticks = true;          
-        if (data.total > 0 && data.multiC[0]) {
-          data.multiC[0].forEach(res => {
+        if (data.total > 0 && data.data) {
+          data.data.forEach(res => {
             if(res.clinic_id){
               this.ticksLabels1.push(Math.round(res.num_ticks));
               this.ticksLabels.push(res.clinic_name);
@@ -1694,8 +1694,8 @@ public fdPrebookRateTrnd:any=[];
         this.fdRecallPrebookRateLoader = false;
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           this.showmulticlinicPrebook = true;          
-        if (data.total > 0 && data.multiC[0]) {
-          data.multiC[0].forEach(res => {
+        if (data.total > 0 && data.data) {
+          data.data.forEach(res => {
             if(res.clinic_id){
               this.fdPrebookRateTrnd.push(Math.round(res.recall_patient/res.total_patient * 100));
               this.fdPrebookRateLabels.push(res.clinic_name);
