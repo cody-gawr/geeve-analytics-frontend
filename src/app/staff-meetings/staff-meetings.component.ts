@@ -155,6 +155,7 @@ export class StaffMeetingsComponent implements OnInit{
       this.dateAdapter.setLocale('en-GB');
     }
     ngOnInit(): void {
+       // creating the meeting form and set up validators
       this.create_meeting_form = this.formBuilder.group({
         meeting_topic: [null, Validators.compose([Validators.required])],
         start_date: [null, Validators.compose([Validators.required])],
@@ -168,6 +169,7 @@ export class StaffMeetingsComponent implements OnInit{
         validator: notZeroValidator
       });
 
+      // creating the agenda form and set up validators
       this.create_agenda_form = this.formBuilder.group({
         category: [null, Validators.compose([Validators.required])],
         item: [null, Validators.compose([Validators.required])],
@@ -185,6 +187,7 @@ export class StaffMeetingsComponent implements OnInit{
 
     }
 
+    // initiate the clinic the stored the required information
     initiate_clinic() {
         $('#title').html('Staff Meetings');
         $('.dynamicDropdown2').addClass("flex_direct_mar");  
@@ -209,6 +212,8 @@ export class StaffMeetingsComponent implements OnInit{
 
     }
 
+
+    // use to refresh the listing based on the current tab
     refresh(){
       // this.getUpcomingMeetings();
       // this.getCompletedMeetings();
@@ -235,6 +240,7 @@ export class StaffMeetingsComponent implements OnInit{
     }
 
 
+  // changing list based on tags completed or upcoming
   changeCompleteTab(type){
     if(type == 'Upcoming'){
       this.currentTab = 0;
@@ -247,6 +253,7 @@ export class StaffMeetingsComponent implements OnInit{
     this.refresh();
   }
 
+  // use to check the permission of the logged user
   getRolesIndividual() {
     this.hasPermission = false;
     if (this._cookieService.get("user_type") == '2') {
@@ -266,6 +273,7 @@ export class StaffMeetingsComponent implements OnInit{
   public staff = [];
   
 
+// removing the users form the selected chips 
   removeInvites(user_id): void {
 
     if(user_id == -1)
@@ -282,6 +290,7 @@ export class StaffMeetingsComponent implements OnInit{
       this.invites_form.get('invites').setValue('');
   }
 
+  // chips of the selected uses.
   selectedInvites(event: MatAutocompleteSelectedEvent): void {
     let data = {id : event.option.value, name : event.option.viewValue};
 
@@ -299,6 +308,7 @@ export class StaffMeetingsComponent implements OnInit{
     
   }
 
+  // logic for the drawer toggle
   drawerToggle(id, card : ElementRef<HTMLInputElement>){
     if(!this.drawer.opened){
       $(card).parent(".meeting_card").addClass("active");
@@ -332,10 +342,12 @@ export class StaffMeetingsComponent implements OnInit{
 
   }
 
+// use to open the create meeting drawer
   createMeeting(){
     this.create_meeting.open();
   }
 
+// use to close the drawer
   close(card, form){
     $(".meeting_card").removeClass("active");
     card.close();
@@ -345,6 +357,7 @@ export class StaffMeetingsComponent implements OnInit{
     this.create_meeting_form.get('template').setValue(0);
   }
 
+  // use to create meetings
   save_meeting(formData){
 
     // let meeting_topic = formData.meeting_topic;
@@ -353,6 +366,7 @@ export class StaffMeetingsComponent implements OnInit{
     let hr = parseInt(time[0]) + formData.duration_hr;
     let min = parseInt(time[1]) + formData.duration_mins;
 
+    // logic for the hr and min calculation.
     if(min > 60){
       hr += Math.floor(min/60);
       min = min%60;
@@ -369,7 +383,7 @@ export class StaffMeetingsComponent implements OnInit{
     }
 
     let day_time = formData.day_time;
-
+// locgic for the time calculation : calculating the end time
     if(time[0] != "12"){
       if(hr>12 && formData.day_time == "AM"){
         hr = "0"+(hr%12);
@@ -405,6 +419,7 @@ export class StaffMeetingsComponent implements OnInit{
     }else{
       this.agenda_tab_has_data = true;
     }
+
     this.staffMeetingService.createMeeting(formData).subscribe(res=>{
       if(res.status == 200){
         if(this.agenda_tab_has_data){
@@ -424,6 +439,7 @@ export class StaffMeetingsComponent implements OnInit{
         if(this.create_meeting.opened)
           this.create_meeting.close();
 
+        // after save data reseting the inputs field to its default
         this.create_meeting_form.reset();
         this.create_meeting_form.get('day_time').setValue('AM');
         this.create_meeting_form.get('duration_mins').setValue(0);
@@ -433,6 +449,7 @@ export class StaffMeetingsComponent implements OnInit{
 
   }
 
+  // use to show the review meeting page.
   boardMeeting(meeting_id){
     this.meeting_attendees = [];
     this.meeting_id = meeting_id;
@@ -452,6 +469,7 @@ export class StaffMeetingsComponent implements OnInit{
       this.create_meeting.close();
   }
 
+  // get the list of user 
   getUsers() {
     this.tasksService.getUsers().subscribe((res) => {
       this.staff = [];
@@ -474,9 +492,12 @@ export class StaffMeetingsComponent implements OnInit{
 
   public loader : boolean;
   
+  // use to send invitation to the selected use.
   save_invites(meeting_id){
     let user_ids = [];
     this.loader = true;
+
+    // collect the id's of the invited user 
     if(this.invited_users[0].id == -1){
       this.staff.forEach(item=>{
         if(item.id != -1){
@@ -505,6 +526,7 @@ export class StaffMeetingsComponent implements OnInit{
     });
   }
 
+  // get the listing of upcoming meetings
   getUpcomingMeetings(){
     this.staffMeetingService.getUpcomingMeetings(this.user_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
@@ -518,6 +540,7 @@ export class StaffMeetingsComponent implements OnInit{
     error=>{});
   }
   
+// get the listing of completed meetings
   getCompletedMeetings(){
     this.staffMeetingService.getCompletedMeetings(this.user_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
@@ -531,6 +554,7 @@ export class StaffMeetingsComponent implements OnInit{
     error=>{});
   } 
 
+// get the listing of invited meetings
   getInvitedMeetings(){
     this.staffMeetingService.getInvitedMeetings(this.user_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
@@ -544,6 +568,7 @@ export class StaffMeetingsComponent implements OnInit{
     error=>{});
   } 
 
+  //  get the listing of the agenda template.
   getAdengaTemplate(){
     this.staffMeetingService.getAdengaTemplate().subscribe(res=>{
       if(res.status == 200){
@@ -555,6 +580,7 @@ export class StaffMeetingsComponent implements OnInit{
     error=>{});
   }
 
+// get the listing of published invited meetings
   getPublishedMeeting(){
     this.staffMeetingService.getPublishedMeeting(this.user_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
@@ -576,6 +602,7 @@ export class StaffMeetingsComponent implements OnInit{
     })
   }
 
+  // mark the meeting complete :: not using this method
   markComplete(id){
     this.staffMeetingService.markMeetingComplete(id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
@@ -585,6 +612,7 @@ export class StaffMeetingsComponent implements OnInit{
     });
   }
 
+// get the listing of completed invited meetings
   getCompeleteInvitedMeetings(){
     this.staffMeetingService.getCompeleteInvitedMeetings(this.user_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
@@ -597,6 +625,7 @@ export class StaffMeetingsComponent implements OnInit{
     })
   }
 
+  // call when we change the tab
   changeTab(tabIndex){
     this.currentTab = tabIndex;
     this.drawer.close();
@@ -611,7 +640,7 @@ export class StaffMeetingsComponent implements OnInit{
 
   }
 
-
+// use to get the meeting agenda's
   getMeetingAgenda(meeting_id){
     this.meeting_id = meeting_id;
     this.staffMeetingService.getMeetingAgenda(meeting_id, this.clinic_id).subscribe(res=>{
@@ -629,6 +658,7 @@ export class StaffMeetingsComponent implements OnInit{
     });
   }
 
+  // use to viwe the agenda tab
   viewMeetingAgenda(meeting_id){
     this.staffMeetingService.getMeetingAgenda(meeting_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
@@ -645,6 +675,7 @@ export class StaffMeetingsComponent implements OnInit{
     });
   }
 
+  // back button
   back_page(tab : string){
     if(tab == "board_meeting"){
       this.boardMeetingPage = false;
@@ -658,6 +689,7 @@ export class StaffMeetingsComponent implements OnInit{
     this.refresh();
   }
 
+  // open view agenda tab
   openAgenda(meeting_id){
     this.meeting_id = meeting_id;
     this.staffMeetingService.getMeetingAgenda(meeting_id, this.clinic_id).subscribe(res=>{
@@ -670,6 +702,7 @@ export class StaffMeetingsComponent implements OnInit{
       
   }
 
+  // mark the meeting attended.
   confirmMeetingAttend(){
     this.staffMeetingService.saveMeetingAttended(this.meeting_id, this.user_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
@@ -682,6 +715,9 @@ export class StaffMeetingsComponent implements OnInit{
 
 
   public meeting_agenda_id = null;
+  // open the agenda drawer based in the action
+  // edit = use to edit the agenda
+  // new use to add new agenda
   openAgendaDrawer(agenda_drawer, item, action){
     agenda_drawer.toggle();
     if(action == "add"){
@@ -726,7 +762,9 @@ export class StaffMeetingsComponent implements OnInit{
     }
   }
 
+  // add a heagin in the agenda view
   addAgendaHeading(agenda_drawer){
+    // below reset the required fields.
     this.chart_id = 0;
     this.agenda_flag = "new";
     this.agenda_order = 1;
@@ -746,6 +784,7 @@ export class StaffMeetingsComponent implements OnInit{
     agenda_drawer.toggle();
   }
 
+  //  save agenda
   save_agenda(formData){
     this.loader = true;
     formData.start_date = this.datepipe.transform(formData.start_date, 'yyyy-MM-dd');
@@ -773,6 +812,7 @@ export class StaffMeetingsComponent implements OnInit{
     });
   }
 
+  // create mark the meeting complete
   markCompleteMeeting(){
     this.staffMeetingService.markMeetingComplete(this.meeting_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
@@ -878,6 +918,7 @@ export class StaffMeetingsComponent implements OnInit{
     this.meetingCards = [...this.data.slice((this.currentPage - 1) * this.itemsPerPage,this.currentPage * this.itemsPerPage)];
   }
 
+  // send email reminder to the invited user
   sendMeetingReminder(meeting_id){
     this.loader = true;
     this.staffMeetingService.sendMeetingReminder(meeting_id, this.clinic_id).subscribe(res=>{
