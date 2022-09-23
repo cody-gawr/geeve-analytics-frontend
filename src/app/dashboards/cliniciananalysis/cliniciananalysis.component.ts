@@ -7091,7 +7091,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
 
-        if (data.total > 0) {
+        if (data.data) {
           data.data.forEach(res => {
             // if (res.production > 0) {
               this.dentistProductionTrend1.push(Math.round(res.production));
