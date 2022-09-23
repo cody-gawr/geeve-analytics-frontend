@@ -1684,7 +1684,7 @@ if(this._cookieService.get("user_type") == '4'){
           this.procedureSpecialLabels.push(res[0]);
         });
         this.itemPredictedChartSpecailData[0]['data'] = this.procedureSpecialTemp;
-        this.itemPredictedChartSpecailData[0]['label'] = data.data[0].provider;
+        this.itemPredictedChartSpecailData[0]['label'] = data.data[0].provider_name;
         this.procedureSpecialDataMax = Math.max(...this.itemPredictedChartData[0]['data']);         
       }
     }, error => {

@@ -566,7 +566,7 @@ export class GraphsComponent{
         }, error => {
           this.hasError = true;
           if(error.status == 401){
-            this.errorText = "You are not autherised to view this graph.";
+            this.errorText = "You are not authorised to view this graph.";
           }else{
             this.errorText = "Something went wrong.";
           }
@@ -579,7 +579,7 @@ export class GraphsComponent{
         }, error => {
           this.hasError = true;
           if(error.status == 401){
-            this.errorText = "You are not autherised to view this graph.";
+            this.errorText = "You are not authorised to view this graph.";
           }else{
             this.errorText = "Something went wrong.";
           }
@@ -592,7 +592,7 @@ export class GraphsComponent{
       }, error => {
           this.hasError = true;
           if(error.status == 401){
-            this.errorText = "You are not autherised to view this graph.";
+            this.errorText = "You are not authorised to view this graph.";
           }else{
             this.errorText = "Something went wrong.";
           }
@@ -605,7 +605,7 @@ export class GraphsComponent{
       }, error => {
           this.hasError = true;
           if(error.status == 401){
-            this.errorText = "You are not autherised to view this graph.";
+            this.errorText = "You are not authorised to view this graph.";
           }else{
             this.errorText = "Something went wrong.";
           }
@@ -618,7 +618,7 @@ export class GraphsComponent{
       }, error => {
         this.hasError = true;
         if(error.status == 401){
-          this.errorText = "You are not autherised to view this graph.";
+          this.errorText = "You are not authorised to view this graph.";
         }else{
           this.errorText = "Something went wrong.";
         }
@@ -672,7 +672,7 @@ export class GraphsComponent{
       }, error => {
           this.hasError = true;
           if(error.status == 401){
-            this.errorText = "You are not autherised to view this graph.";
+            this.errorText = "You are not authorised to view this graph.";
           }else{
             this.errorText = "Something went wrong.";
           }
@@ -738,7 +738,7 @@ export class GraphsComponent{
         }
         else if (data.status == '401') {
           this.hasError = true;
-          this.errorText = "You are not autherised to view this graph.";
+          this.errorText = "You are not authorised to view this graph.";
         }else{
           this.hasError = true;
           this.errorText = "Something went wrong.";
