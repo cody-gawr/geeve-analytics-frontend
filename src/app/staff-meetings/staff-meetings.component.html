@@ -1,19 +1,16 @@
 <input type="button" id="clinic_initiate" (click)="initiate_clinic()" [style.display]="'none'" />
 <mat-drawer-container *ngIf="!agendaTab && !boardMeetingPage" class="example-container" autosize>
     <div fxFlex="calc(39% - 10px)" fxFlex.lg="calc(39% - 10px)" fxFlex.md="900" fxFlex.sm="900" fxFlex.xs="900" class="sa_flexbg last">
-        <span class="top_buttons">
+        <!-- <span class="top_buttons">
             <button mat-raised-button [ngClass]="(!showCompletedMeetingTab) ? 'btn_active' : ''" (click)="changeCompleteTab('Upcoming')" >Upcoming</button>
             <button mat-raised-button [ngClass]="(showCompletedMeetingTab) ? 'btn_active' : ''" (click)="changeCompleteTab('Completed')" >Completed</button>
-        </span>
-        <button *ngIf="!drawer.opened && hasPermission" mat-raised-button color="green" (click)="createMeeting()" class="float-right" ><i class="fas fa-plus"></i> Create New Meeting</button>
-        <br>
-        <br>
-        <hr>
+        </span> -->
+        <button *ngIf="!drawer.opened && hasPermission" mat-raised-button color="green" (click)="createMeeting()" class="float-right create-meeting-btn" ><i class="fas fa-plus"></i> Create New Meeting</button>
+
         <mat-tab-group [selectedIndex]="currentTab" (selectedIndexChange) = "changeTab($event)">
-            <mat-tab *ngIf="hasPermission" label="Created">
-                <div *ngIf="!showCompletedMeetingTab && meetingCards.length > 0">
+            <mat-tab *ngIf="hasPermission" label="Drafts">
+                <div *ngIf="meetingCards.length > 0">
                     <div class="card_meeting_card" *ngFor="let meeting of meetingCards; let i = index;">
-                       
                         <mat-card class="meeting_card">
                             <div #card (click)="drawerToggle(meeting.id, card)">
                                 <mat-card-title class="header">
@@ -37,14 +34,14 @@
                         </li>
                     </ul>
                 </div>
-                <div *ngIf="!showCompletedMeetingTab && meetingCards.length <= 0">
+                <div *ngIf="meetingCards.length <= 0">
                     <mat-card class="meeting_card">
                         <mat-card-content class="meeting_card_content">
-                            No Created Meeting Available.
+                            No Draft Available.
                         </mat-card-content>
                     </mat-card>
                 </div>
-                <div *ngIf="showCompletedMeetingTab && meetingCards.length > 0">
+                <!-- <div *ngIf="showCompletedMeetingTab && meetingCards.length > 0">
                     <div class="card_meeting_card" *ngFor="let meeting of meetingCards; let i = index;">
                         <mat-card class="meeting_card">
                             <div (click)="viewMeetingAttendees(meeting.id)" >
@@ -75,16 +72,17 @@
                             No Created Meeting Available.
                         </mat-card-content>
                     </mat-card>
-                </div>
+                </div> -->
             </mat-tab>
-            <mat-tab label="Invites">
-                <div *ngIf="!showCompletedMeetingTab && meetingCards.length > 0">
+            <mat-tab label="Scheduled">
+                <div *ngIf="meetingCards.length > 0">
                     <div class="card_meeting_card" *ngFor="let meeting of meetingCards; let i = index;">
                         <mat-card class="meeting_card">
                             <div (click)="boardMeeting(meeting.id)">
                                 <mat-card-title class="header">
                                     <div class="meeting_card_header">
                                         {{meeting.meeting_topic}}
+                                        <span title="Pending review" *ngIf="meeting.attended == 0" class="float-right"><i class="fas fa-exclamation"></i></span>
                                     </div>
                                 </mat-card-title>
                                 <mat-card-content class="meeting_card_content">
@@ -102,16 +100,15 @@
                         </li>
                     </ul>
                 </div>
-                <div *ngIf="!showCompletedMeetingTab && meetingCards.length <= 0">
+                <div *ngIf="meetingCards.length <= 0">
                     <mat-card class="meeting_card">
                             <mat-card-content class="meeting_card_content">
-                               No Invited Meeting Available.
+                               No Scheduled Meeting Available.
                             </mat-card-content>
                     </mat-card>
                 </div>
 
-                <div *ngIf="showCompletedMeetingTab && meetingCards.length > 0">
-                    <!-- <h5>Today <i class="fas fa-calendar"></i></h5> -->
+                <!-- <div *ngIf="showCompletedMeetingTab && meetingCards.length > 0">
                     <div class="card_meeting_card" *ngFor="let meeting of meetingCards; let i = index;">
                         <mat-card class="meeting_card">
                             <div (click)="boardMeeting(meeting.id)">
@@ -143,9 +140,9 @@
                            No Invited Meeting Available.
                         </mat-card-content>
                     </mat-card>
-                </div>
+                </div> -->
             </mat-tab>
-            <mat-tab label="published" *ngIf="!showCompletedMeetingTab && hasPermission">
+            <mat-tab label="Completed" *ngIf="!showCompletedMeetingTab && hasPermission">
                 <div *ngIf="meetingCards.length > 0">
                     <div class="card_meeting_card" *ngFor="let meeting of meetingCards; let i = index;">
                         <mat-card class="meeting_card">
@@ -174,7 +171,7 @@
                 <div *ngIf="meetingCards.length <= 0">
                     <mat-card class="meeting_card">
                         <mat-card-content class="meeting_card_content">
-                            No published Meeting Available.
+                            No Completed Meeting Available.
                         </mat-card-content>
                     </mat-card>
                 </div>
@@ -278,7 +275,7 @@
 </mat-drawer-container>
 
 <mat-drawer-container>
-    <mat-drawer #create_meeting class="example-sidenav-create" mode="side" position="end">
+    <mat-drawer #create_meeting class="example-sidenav-create-meeting" mode="side" position="end">
         <div class="card-loading" *ngIf="loader">
             <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
         </div>
@@ -286,41 +283,70 @@
             <span class="close-icon float-right" (click)="close(create_meeting, create_meeting_form)"><i class="ti-close"></i></span>
             <hr>
             <mat-card-content>
-                <form [formGroup]="create_meeting_form">        
-                    <mat-form-field class="example-full-width" appearance="outline">
-                        <mat-label>Meeting Topic</mat-label>
+                <form [formGroup]="create_meeting_form" class="create-meeting-form">   
+                    <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+                        <div  fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group" >
+                            <label>Meeting Topic</label>
+                        </div>
+                        <div  fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group">
+                            <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                                <input type="text" matInput autocomplete="off" [formControl]="create_meeting_form.controls['meeting_topic']" required>
+                                <mat-error *ngIf="create_meeting_form.controls['meeting_topic'].hasError('required') && create_meeting_form.controls['meeting_topic'].touched">
+                                    Please Enter meeting topic
+                                  </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>     
+                    <!-- <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                        <label>Meeting Topic</label>
                         <input type="text" matInput autocomplete="off" [formControl]="create_meeting_form.controls['meeting_topic']" required>
                         <mat-error *ngIf="create_meeting_form.controls['meeting_topic'].hasError('required') && create_meeting_form.controls['meeting_topic'].touched">
                             Please Enter meeting topic
                           </mat-error>
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width" appearance="outline">
+                    </mat-form-field> -->
+                    <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+                        <div  fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
+                            <mat-label>Select Date</mat-label>
+                        </div>
+                        <div  fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group">
+                            <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                                <input (click)="picker.open()" matInput [min]="minDate" [matDatepicker]="picker" autocomplete="off" type="text" [formControl]="create_meeting_form.controls['start_date']" required readonly>
+                                <mat-datepicker-toggle matSuffix [for]="picker" class="create-meeting-form"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker> 
+                                <mat-error *ngIf="create_meeting_form.controls['start_date'].hasError('required') && create_meeting_form.controls['start_date'].touched">
+                                    Please Enter Meeting Start Date
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>  
+                    <!-- <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
                         <mat-label>Select Date</mat-label>
                         <input (click)="picker.open()" matInput [min]="minDate" [matDatepicker]="picker" autocomplete="off" type="text" [formControl]="create_meeting_form.controls['start_date']" required readonly>
-                        <!-- <mat-hint>DD/MM/YYYY</mat-hint> -->
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker> <!--touchUi-->
+                        <mat-datepicker #picker></mat-datepicker> 
                         <mat-error *ngIf="create_meeting_form.controls['start_date'].hasError('required') && create_meeting_form.controls['start_date'].touched">
                             Please Enter Meeting Start Date
                         </mat-error>
-                    </mat-form-field>
+                    </mat-form-field> -->
 
                     <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
-                        <div fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group" >
-                            <mat-form-field class="example-full-width" appearance="outline">
-                                <mat-label>Start Time</mat-label>
-                                <mat-select [formControl]="create_meeting_form.controls['start_time']" required>
+                        <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
+                            <mat-label>Start Time</mat-label>
+                        </div>
+                        <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                            <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                                <mat-select [ngModel]="'09:00'" [formControl]="create_meeting_form.controls['start_time']" required>
                                     <mat-option *ngFor="let t of time" [value]="t">
                                       {{t}}
                                     </mat-option>
                                   </mat-select>
                                 <mat-error *ngIf="create_meeting_form.controls['start_time'].hasError('required') && create_meeting_form.controls['start_time'].touched">
                                     Please Enter Start Time
-                                  </mat-error>
+                                </mat-error>
                             </mat-form-field>
                         </div>
-                        <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
-                            <mat-form-field class="example-full-width" appearance="outline">
+                        <div fxFlex.gt-sm="20%" fxFlex.gt-xs="20%" fxFlex="100" class="btn-group">
+                            <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
                                 <mat-select [ngModel]="'AM'" [formControl]="create_meeting_form.controls['day_time']" >
                                     <mat-option [value]="'AM'">AM</mat-option>
                                     <mat-option [value]="'PM'">PM</mat-option>
@@ -329,11 +355,14 @@
                         </div>
                     </div>
 
-                    <span>Duration</span> <small class="note"> (*Both Hours and Minutes should not be zero)</small>
+                    <!-- <span></span> <small class="note"> (*Both Hours and Minutes should not be zero)</small> -->
                     <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
-                        <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group" >
-                            <mat-form-field class="example-full-width" appearance="outline">
-                                <mat-label>hr</mat-label>
+                        <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
+                            <mat-label>Duration</mat-label>
+                        </div>
+                        <div fxFlex.gt-sm="40%" fxFlex.gt-xs="40%" fxFlex="100" class="btn-group" >
+                            <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                                <!-- <mat-label>hr</mat-label> -->
                                 <mat-select [formControl]="create_meeting_form.controls['duration_hr']" required>
                                     <mat-option *ngFor="let hr of hrs" [value]="hr">
                                       {{hr}}
@@ -344,9 +373,8 @@
                                 </mat-error>
                             </mat-form-field>
                         </div>
-                        <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                            <mat-form-field class="example-full-width" appearance="outline">
-                                <mat-label>mins</mat-label>
+                        <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
+                            <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
                                 <mat-select [ngModel]="0" [formControl]="create_meeting_form.controls['duration_mins']" required>
                                     <mat-option *ngFor="let min of mins" [value]="min">
                                       {{min}}
@@ -359,8 +387,28 @@
                         </div>
                     </div>
 
-                    <mat-form-field class="example-full-width" appearance="outline">
-                        <mat-label>Select agenda template</mat-label>
+                    <!-- mat input for the get time zone : remain to implement -->
+
+                    <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+                        <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
+                            <mat-label>Agenda template</mat-label>
+                        </div>
+                        <div fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group" >
+                            <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                                <!-- <mat-label>Agenda template</mat-label> -->
+                                <mat-select [ngModel]="0" [formControl]="create_meeting_form.controls['template']">
+                                    <mat-option *ngFor="let template of templates" [value]="template.id">
+                                      {{template.template_name}}
+                                    </mat-option>
+                                  </mat-select>
+                                <mat-error *ngIf="create_meeting_form.controls['template'].hasError('required') && create_meeting_form.controls['template'].touched">
+                                    Please select agenda template
+                                  </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                        <mat-label>Agenda template</mat-label>
                         <mat-select [ngModel]="0" [formControl]="create_meeting_form.controls['template']">
                             <mat-option *ngFor="let template of templates" [value]="template.id">
                               {{template.template_name}}
@@ -369,7 +417,7 @@
                         <mat-error *ngIf="create_meeting_form.controls['template'].hasError('required') && create_meeting_form.controls['template'].touched">
                             Please select agenda template
                           </mat-error>
-                      </mat-form-field>
+                      </mat-form-field> -->
                 </form>
             </mat-card-content>
             <mat-card-footer>

@@ -74,6 +74,7 @@ export class StaffMeetingsComponent implements OnInit{
     public chart_end_date = "";
     public show_date_picker: boolean;
     public allSelected : boolean;
+    public hasDraftData : boolean;
     public meeting_attendees = [];
 
     public templates = [];
@@ -206,31 +207,36 @@ export class StaffMeetingsComponent implements OnInit{
         this.getRolesIndividual();
         this.getAdengaTemplate();
         this.getUsers();
-        this.getInvitedMeetings();
         this.currentTab = 1;
-        this.refresh();
-
     }
 
 
     // use to refresh the listing based on the current tab
     refresh(){
+      if(this.currentTab == 0){
+        this.getDraftMeetings();
+      }else if(this.currentTab == 1){
+        this.getScheduledMeeting();
+      }
+      else if(this.currentTab == 2){
+        this.getCompletedMeetings();
+      }
       // this.getUpcomingMeetings();
       // this.getCompletedMeetings();
       // this.getInvitedMeetings();
       // this.getPublishedMeeting();
       // this.getCompeleteInvitedMeetings();
-      if(this.currentTab == 1 && !this.showCompletedMeetingTab){
-        this.getInvitedMeetings();
-      }else if(this.currentTab == 0 && !this.showCompletedMeetingTab){
-        this.getUpcomingMeetings();
-      }else if(this.currentTab == 2 && !this.showCompletedMeetingTab){
-        this.getPublishedMeeting();
-      }else if(this.currentTab == 0 && this.showCompletedMeetingTab){
-        this.getCompletedMeetings();
-      }else if(this.currentTab == 1 && this.showCompletedMeetingTab){
-        this.getCompeleteInvitedMeetings();
-      }
+      // if(this.currentTab == 1 && !this.showCompletedMeetingTab){
+      //   this.getInvitedMeetings();
+      // }else if(this.currentTab == 0 && !this.showCompletedMeetingTab){
+      //   this.getUpcomingMeetings();
+      // }else if(this.currentTab == 2 && !this.showCompletedMeetingTab){
+      //   this.getPublishedMeeting();
+      // }else if(this.currentTab == 0 && this.showCompletedMeetingTab){
+      //   this.getCompletedMeetings();
+      // }else if(this.currentTab == 1 && this.showCompletedMeetingTab){
+      //   this.getCompeleteInvitedMeetings();
+      // }
       // if(this.drawer.opened){
       //   this.drawer.close();
       // }
@@ -353,6 +359,7 @@ export class StaffMeetingsComponent implements OnInit{
     card.close();
     form.reset();
     this.create_meeting_form.get('day_time').setValue('AM');
+    this.create_meeting_form.get('start_time').setValue('09:00');
     this.create_meeting_form.get('duration_mins').setValue(0);
     this.create_meeting_form.get('template').setValue(0);
   }
@@ -442,6 +449,7 @@ export class StaffMeetingsComponent implements OnInit{
         // after save data reseting the inputs field to its default
         this.create_meeting_form.reset();
         this.create_meeting_form.get('day_time').setValue('AM');
+        this.create_meeting_form.get('start_time').setValue('09:00');
         this.create_meeting_form.get('duration_mins').setValue(0);
         this.create_meeting_form.get('template').setValue(0);
       }
@@ -453,9 +461,12 @@ export class StaffMeetingsComponent implements OnInit{
   boardMeeting(meeting_id){
     this.meeting_attendees = [];
     this.meeting_id = meeting_id;
-    this.staffMeetingService.getMeetingDetails(meeting_id, this.clinic_id, this.user_id).subscribe(res=>{
+    this.staffMeetingService.getMeetingDetails(meeting_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
         this.isMeetingCreator = res.meetingCreator == 1;
+        if(this.isMeetingCreator){
+          this.viewMeetingAttendees(meeting_id);
+        }
         this.boardMeetingPage = true;
         this.meeting_details = [...res.data];
         if(res.attended_status != null){
@@ -527,8 +538,8 @@ export class StaffMeetingsComponent implements OnInit{
   }
 
   // get the listing of upcoming meetings
-  getUpcomingMeetings(){
-    this.staffMeetingService.getUpcomingMeetings(this.user_id, this.clinic_id).subscribe(res=>{
+  getUpcomingMeetings(){ // to be deleted
+    this.staffMeetingService.getUpcomingMeetings(this.clinic_id).subscribe(res=>{
       if(res.status == 200){
         res.data.forEach(item=>{
           item.meeting_date = this.datepipe.transform(item.meeting_date, 'dd-MM-yyyy');
@@ -539,10 +550,26 @@ export class StaffMeetingsComponent implements OnInit{
     },
     error=>{});
   }
+
+  // get the listing of Draft meetings
+  getDraftMeetings(){
+    this.staffMeetingService.getDraftMeetings(this.clinic_id).subscribe(res=>{
+      if(res.status == 200){
+        res.data.forEach(item=>{
+          item.meeting_date = this.datepipe.transform(item.meeting_date, 'dd-MM-yyyy');
+        });
+        if(res.data.length > 0)
+          this.hasDraftData = true;
+        // add paginator and displaying data
+        this.setPagesForpaginator(res.data);
+      }
+    },
+    error=>{});
+  }
   
 // get the listing of completed meetings
   getCompletedMeetings(){
-    this.staffMeetingService.getCompletedMeetings(this.user_id, this.clinic_id).subscribe(res=>{
+    this.staffMeetingService.getCompletedMeetings(this.clinic_id).subscribe(res=>{
       if(res.status == 200){
         res.data.forEach(item=>{
           item.meeting_date = this.datepipe.transform(item.meeting_date, 'dd-MM-yyyy');
@@ -555,8 +582,8 @@ export class StaffMeetingsComponent implements OnInit{
   } 
 
 // get the listing of invited meetings
-  getInvitedMeetings(){
-    this.staffMeetingService.getInvitedMeetings(this.user_id, this.clinic_id).subscribe(res=>{
+  getInvitedMeetings(){ //to be deleted
+    this.staffMeetingService.getInvitedMeetings(this.clinic_id).subscribe(res=>{
       if(res.status == 200){
         res.data.forEach(item=>{
           item.meeting_date = this.datepipe.transform(item.meeting_date, 'dd-MM-yyyy');
@@ -581,8 +608,29 @@ export class StaffMeetingsComponent implements OnInit{
   }
 
 // get the listing of published invited meetings
-  getPublishedMeeting(){
-    this.staffMeetingService.getPublishedMeeting(this.user_id, this.clinic_id).subscribe(res=>{
+  getPublishedMeeting(){ // to be deleted
+    this.staffMeetingService.getPublishedMeeting(this.clinic_id).subscribe(res=>{
+      if(res.status == 200){
+        let now = new Date();
+
+        res.data.forEach(item=>{
+          let meeting_date = new Date(item.meeting_date);
+          if(now.getTime() > meeting_date.getTime()){
+            item.showAlert = true;
+          }else{
+            item.showAlert = false;
+          }
+          item.meeting_date = this.datepipe.transform(item.meeting_date, 'dd-MM-yyyy');
+        });
+        // add paginator and displaying data
+        this.setPagesForpaginator(res.data);
+      }
+    })
+  }
+
+  // get the listing of published invited meetings
+  getScheduledMeeting(){
+    this.staffMeetingService.getScheduledMeeting(this.clinic_id).subscribe(res=>{
       if(res.status == 200){
         let now = new Date();
 
@@ -613,8 +661,8 @@ export class StaffMeetingsComponent implements OnInit{
   }
 
 // get the listing of completed invited meetings
-  getCompeleteInvitedMeetings(){
-    this.staffMeetingService.getCompeleteInvitedMeetings(this.user_id, this.clinic_id).subscribe(res=>{
+  getCompeleteInvitedMeetings(){ // to be deleted
+    this.staffMeetingService.getCompeleteInvitedMeetings(this.clinic_id).subscribe(res=>{
       if(res.status == 200){
         res.data.forEach(item=>{
           item.meeting_date = this.datepipe.transform(item.meeting_date, 'dd-MM-yyyy');
@@ -781,7 +829,7 @@ export class StaffMeetingsComponent implements OnInit{
     this.create_agenda_form.get('start_date').updateValueAndValidity();
     this.create_agenda_form.get('end_date').clearValidators();
     this.create_agenda_form.get('end_date').updateValueAndValidity();
-    agenda_drawer.toggle();
+    agenda_drawer.open();
   }
 
   //  save agenda
@@ -828,7 +876,7 @@ export class StaffMeetingsComponent implements OnInit{
 
   //  use to get the meeting attendees list
   viewMeetingAttendees(meeting_id){
-    this.staffMeetingService.getMeetingDetails(meeting_id, this.clinic_id, this.user_id).subscribe(res=>{
+    this.staffMeetingService.getMeetingDetails(meeting_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
         this.isMeetingCreator = res.meetingCreator == 1 && res.meetingStatus == 1;
         this.showAttendees = res.meetingCreator == 1;
@@ -896,6 +944,7 @@ export class StaffMeetingsComponent implements OnInit{
   public data = [];
   private setPagesForpaginator(dataArray){
     this.pages = [];
+    this.meetingCards = [];
 
     // store all data from api
     this.data = [...dataArray];
@@ -914,6 +963,7 @@ export class StaffMeetingsComponent implements OnInit{
 
   // change page according to the pageNumber
   pagination(pageNumber){
+    this.meetingCards = [];
     this.currentPage = pageNumber;
     this.meetingCards = [...this.data.slice((this.currentPage - 1) * this.itemsPerPage,this.currentPage * this.itemsPerPage)];
   }

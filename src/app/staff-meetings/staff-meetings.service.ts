@@ -56,24 +56,18 @@ export class StaffMeetingService {
         );
     }
 
-    getUpcomingMeetings(user_id, clinic_id): Observable<any> {
-        const formData = new FormData();
-        formData.append("userid", user_id);
-        formData.append("clinic_id", clinic_id);
+    getUpcomingMeetings(clinic_id): Observable<any> {
         var header = this.getHeaders();
-        return this.http.post(this.apiUrl + "/StaffMeeting/smGetUpcommingMeetings", formData, header).pipe(
+        return this.http.get(this.apiUrl + "/StaffMeeting/smGetUpcommingMeetings?clinic_id="+clinic_id, header).pipe(
             map((response: Response) => {
                 return response;
             })
         );
     }
 
-    getCompletedMeetings(user_id, clinic_id): Observable<any> {
-        const formData = new FormData();
-        formData.append("userid", user_id);
-        formData.append("clinic_id", clinic_id);
+    getCompletedMeetings(clinic_id): Observable<any> {
         var header = this.getHeaders();
-        return this.http.post(this.apiUrl + "/StaffMeeting/smGetCompletedMeetings",formData, header).pipe(
+        return this.http.get(this.apiUrl + "/StaffMeeting/smGetCompletedMeetings?clinic_id="+clinic_id, header).pipe(
             map((response: Response) => {
                 return response;
             })
@@ -95,11 +89,8 @@ export class StaffMeetingService {
     }
 
     getMeetingAgenda(meeting_id, clinic_id): Observable<any> {
-        const formData = new FormData();
-        formData.append("meeting_id", meeting_id);
-        formData.append("clinic_id", clinic_id);
         var header = this.getHeaders();
-        return this.http.post(this.apiUrl + "/StaffMeeting/smGetMeetingAgenda", formData, header).pipe(
+        return this.http.get(this.apiUrl + "/StaffMeeting/smGetMeetingAgenda?meeting_id="+meeting_id+"&clinic_id="+clinic_id, header).pipe(
             map((response: Response) => {
                 return response;
             })
@@ -132,12 +123,10 @@ export class StaffMeetingService {
         );
     }
 
-    getInvitedMeetings(user_id, clinic_id): Observable<any>{
-        const formData = new FormData();
-        formData.append("userid", user_id);
-        formData.append("clinic_id", clinic_id);
+    getInvitedMeetings(clinic_id): Observable<any>{
         var header = this.getHeaders();
-        return this.http.post(this.apiUrl + "/StaffMeeting/smGetInvitedMeetings",formData, header).pipe(
+        return this.http.get(this.apiUrl + "/StaffMeeting/smGetInvitedMeetings?clinic_id="
+        +clinic_id, header).pipe(
             map((response: Response) => {
                 return response;
             })
@@ -175,24 +164,18 @@ export class StaffMeetingService {
     //     );
     // }
 
-    getPublishedMeeting(user_id, clinic_id): Observable<any>{
-        const formData = new FormData();
-        formData.append("userid",user_id);
-        formData.append("clinic_id",clinic_id);
+    getPublishedMeeting(clinic_id): Observable<any>{
         var header = this.getHeaders();
-        return this.http.post(this.apiUrl + "/StaffMeeting/smGetPublishedMeetings", formData, header).pipe(
+        return this.http.get(this.apiUrl + "/StaffMeeting/smGetPublishedMeetings?clinic_id="+clinic_id, header).pipe(
             map((response : Response)=>{
                 return response;
             })
         );
     }
 
-    getCompeleteInvitedMeetings(user_id, clinic_id): Observable<any>{
-        const formData = new FormData();
-        formData.append("userid", user_id);
-        formData.append("clinic_id", clinic_id);
+    getCompeleteInvitedMeetings(clinic_id): Observable<any>{
         var header = this.getHeaders();
-        return this.http.post(this.apiUrl + "/StaffMeeting/smGetInvitedCompleteMeetings",formData, header).pipe(
+        return this.http.get(this.apiUrl + "/StaffMeeting/smGetInvitedCompleteMeetings?clinic_id="+clinic_id, header).pipe(
             map((response: Response) => {
                 return response;
             })
@@ -211,13 +194,9 @@ export class StaffMeetingService {
         );
     }
 
-    getMeetingDetails(meeting_id, clinic_id, user_id): Observable<any>{
-        const formData = new FormData();
-        formData.append("meeting_id", meeting_id);
-        formData.append("clinic_id", clinic_id);
-        formData.append("userId", user_id);
+    getMeetingDetails(meeting_id, clinic_id): Observable<any>{
         var header = this.getHeaders();
-        return this.http.post(this.apiUrl + "/StaffMeeting/smGetMeetingDetails",formData, header).pipe(
+        return this.http.get(this.apiUrl + "/StaffMeeting/smGetMeetingDetails?meeting_id="+meeting_id+"&clinic_id="+clinic_id, header).pipe(
             map((response: Response) => {
                 return response;
             })
@@ -225,11 +204,8 @@ export class StaffMeetingService {
     }
 
     getMeetingAttendees(meeting_id, clinic_id): Observable<any>{
-        const formData = new FormData();
-        formData.append("meeting_id", meeting_id);
-        formData.append("clinic_id", clinic_id);
         var header = this.getHeaders();
-        return this.http.post(this.apiUrl + "/StaffMeeting/smGetMeetingAttendees",formData, header).pipe(
+        return this.http.get(this.apiUrl + "/StaffMeeting/smGetMeetingAttendees?meeting_id="+meeting_id+"&clinic_id="+clinic_id, header).pipe(
             map((response: Response) => {
                 return response;
             })
@@ -254,6 +230,24 @@ export class StaffMeetingService {
         var header = this.getHeaders();
         return this.http.post(this.apiUrl + "/StaffMeeting/smSendReminder",formData, header).pipe(
             map((response: Response) => {
+                return response;
+            })
+        );
+    }
+
+    getDraftMeetings(clinic_id): Observable<any> {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl + "/StaffMeeting/smGetDraftMeetings?clinic_id="+clinic_id, header).pipe(
+            map((response: Response) => {
+                return response;
+            })
+        );
+    }
+
+    getScheduledMeeting(clinic_id): Observable<any>{
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl + "/StaffMeeting/smGetScheduledMeetings?clinic_id="+clinic_id, header).pipe(
+            map((response : Response)=>{
                 return response;
             })
         );

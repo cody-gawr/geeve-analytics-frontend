@@ -320,3 +320,110 @@ i{
   .fa-exclamation{
       color: red;
   }
+
+.mat-ink-bar {
+    display: none;
+}
+
+.mat-tab-header {
+    border-radius: 5px;
+    width: 80%;
+}
+
+.mat-tab-label-active{
+    background: rgb(24, 166, 137);
+    /* / Old browsers / */
+    background: -moz-linear-gradient(top, rgba(24, 166, 137, 1) 0%, rgba(0, 111, 115, 1) 99%);
+    /* / FF3.6-15 / */
+    background: -webkit-linear-gradient(top, rgba(24, 166, 137, 1) 0%, rgba(0, 111, 115, 1) 99%);
+    /* / Chrome10-25,Safari5.1-6 / */
+    background: linear-gradient(to bottom, rgba(24, 166, 137, 1) 0%, rgba(0, 111, 115, 1) 99%);
+    /* / W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ / */
+    height: 40px;
+    color: #fff;
+    opacity: 1;
+    margin: 3px;
+}
+
+.mat-tab-label {
+    margin: 3px;
+    padding: 0 24px;
+    cursor: pointer;
+    box-sizing: border-box;
+    min-width: 160px;
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+    position: relative;
+    opacity: 1 !important;
+    border-radius: 5px !important;
+    box-shadow   : 0px 3px 15px 0 rgba(0, 0, 0, 0) !important;
+    transition : all 0.3s ease;
+    height: 40px !important;
+
+}
+.create-meeting-btn{
+    top: 40px;
+}
+
+.mat-tab-group {
+    width: 100% !important;
+}
+
+/* .mat-form-field-appearance-outline .mat-form-field-flex {
+    padding: 0 .75em 0 .75em;
+    margin-top: -0.25em;
+    position: relative;
+    height: 40px !important;
+} */
+
+/* .mat-form-field-flex {
+    display: inline-flex;
+    align-items: center !important;
+    box-sizing: border-box;
+    width: 100%;
+} */
+
+.example-sidenav-create-meeting{
+    width: 600px !important;
+    position: fixed;
+    top: 65px;
+}
+
+/* .create-meeting-form{
+    border: 1px solid black;
+    border-radius: 5px;
+    height: 30px;
+} */
+
+input.mat-input-element.create-meeting-form {
+    margin-top: -0.0625em;
+    height: 30px;
+    border: 1px solid black;
+    border-radius: 5px;
+    text-align: left;
+    padding-left: 8px;
+    /* margin-left: 8px; */
+}
+.mat-icon-button {
+    padding: 0;
+    min-width: 0;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    line-height: 40px;
+    border-radius: 50%;
+    top: -5px;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 1em 0 1em 0;
+    height: 0px;
+    top: -12px;
+}
+
+.create-meeting-form{
+    top: -10px;
+}
