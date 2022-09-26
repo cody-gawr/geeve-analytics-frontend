@@ -2,13 +2,10 @@ import { DatePipe, DecimalPipe } from "@angular/common";
 import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { Router, NavigationEnd} from "@angular/router";
 import { ChartService } from "../dashboards/chart.service";
-import { ClinicianAnalysisService } from "../dashboards/cliniciananalysis/cliniciananalysis.service";
-import { FrontDeskService } from "../dashboards/frontdesk/frontdesk.service";
 import { Subscription } from 'rxjs/Subscription';
 import { CookieService } from "ngx-cookie";
-import { MarketingService } from "../dashboards/marketing/marketing.service";
 import { Chart } from 'chart.js';
-import { FollowupsService } from "../dashboards/followups/followups.service";
+import { GraphsService } from './graphs.service';
 
 @Component({
     selector: 'graphs',
@@ -56,7 +53,7 @@ export class GraphsComponent{
     public hasError :boolean;
     public errorText = "";
 
-    constructor(private frontdeskService : FrontDeskService, private datepipe : DatePipe, private chartService: ChartService, private decimalPipe : DecimalPipe, private cliniciananalysisService : ClinicianAnalysisService,private _cookieService: CookieService, private marketingService : MarketingService, private router : Router, private followupsService : FollowupsService){
+    constructor( private datepipe : DatePipe, private chartService: ChartService, private decimalPipe : DecimalPipe,private _cookieService: CookieService, private router : Router,private graphsService : GraphsService){
         
     }
 
@@ -150,7 +147,7 @@ export class GraphsComponent{
 
     // gauge chart for Recall Rate
     private fdRecallPrebookRate() {
-        this.frontdeskService.fdRecallPrebookRate(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+        this.graphsService.fdRecallPrebookRate(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
             if(data.status == 200){
                 this.calculateDataForGaugeChart(data);
             }
@@ -159,7 +156,7 @@ export class GraphsComponent{
 
     // gauge chart for Reappointment Rate
     private fdtreatmentPrebookRate() {
-        this.frontdeskService.fdReappointRate(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+        this.graphsService.fdReappointRate(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
             if(data.status == 200){
                 this.calculateDataForGaugeChart(data);
             }
@@ -168,7 +165,7 @@ export class GraphsComponent{
 
     // gauge chart for total visits
     private fdvisitsRatio() {
-          this.marketingService.fdvisitsRatio(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+          this.graphsService.fdvisitsRatio(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
             if(data.status == 200){
                 this.calculateDataForGaugeChart(data);
             }
@@ -561,7 +558,7 @@ export class GraphsComponent{
     public barChartLegend = false;   
 
     private dentistProduction() {
-        this.cliniciananalysisService.DentistProduction(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+        this.graphsService.DentistProduction(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
             this.calculateDataForBarCharts(data);
         }, error => {
           this.hasError = true;
@@ -574,7 +571,7 @@ export class GraphsComponent{
     }
 
     private hourlyRateChart() {
-        this.cliniciananalysisService.hourlyRateChart(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+        this.graphsService.hourlyRateChart(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
             this.calculateDataForBarCharts(data);
         }, error => {
           this.hasError = true;
@@ -587,7 +584,7 @@ export class GraphsComponent{
     }
 
     private recallPrebook(){
-      this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+      this.graphsService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
         this.calculateDataForBarCharts(data);
       }, error => {
           this.hasError = true;
@@ -600,7 +597,7 @@ export class GraphsComponent{
     }
 
     private reappointRate(){
-      this.cliniciananalysisService.caReappointRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+      this.graphsService.caReappointRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
         this.calculateDataForBarCharts(data);
       }, error => {
           this.hasError = true;
@@ -613,7 +610,7 @@ export class GraphsComponent{
     }
 
     private fdWorkTimeAnalysis(){
-      this.frontdeskService.fdWorkTimeAnalysis(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+      this.graphsService.fdWorkTimeAnalysis(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
         this.calculateDataForBarCharts(data);
       }, error => {
         this.hasError = true;
@@ -639,7 +636,7 @@ export class GraphsComponent{
     public perUserData5 = [];
     public perUserLabels = [];
     private getFollowupsPerUser(){
-      this.followupsService.getFollowupsPerUser(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
+      this.graphsService.getFollowupsPerUser(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
         
         this.perUserData = [
           {data: [], label: 'Ticks'},

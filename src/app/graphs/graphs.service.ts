@@ -25,5 +25,94 @@ export class GraphsService {
         let headers = { headers: new HttpHeaders(), withCredentials: true };
         return headers;
     }
+
+    getFollowupsPerUser( clinic_id, startDate, endDate, duration=''): Observable<any> 
+    {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl +"/StaffMeeting/smGetPerUser?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+    // Dentist Production Service
+    DentistProduction(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl + "/StaffMeeting/smDentistProduction?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
+            .pipe(map((response: Response) => {
+                return response;
+            })
+            );
+    }
+
+    hourlyRateChart(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl + "/StaffMeeting/smHourlyRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
+            .pipe(map((response: Response) => {
+                return response;
+            })
+            );
+    }
+
+    // Dentist Production Service
+    RecallPrebook(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl + "/StaffMeeting/smRecallRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
+            .pipe(map((response: Response) => {
+                return response;
+            })
+            );
+    }
+
+    // Dentist Production Service
+    caReappointRate(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl + "/StaffMeeting/smReappointRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
+            .pipe(map((response: Response) => {
+                return response;
+            })
+            );
+    }
+
+    // Items Predictor Analysis 
+    fdWorkTimeAnalysis(clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/StaffMeeting/smUtilisationRate?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+    // Items Predictor Analysis  
+    fdvisitsRatio(clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/StaffMeeting/smTotalVisits?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
     
+      // Items Predictor Analysis  
+      fdReappointRate(clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/StaffMeeting/smReappointRate?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+     // Items Predictor Analysis  
+     fdRecallPrebookRate(clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/StaffMeeting/smRecallRate?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+     
 }
