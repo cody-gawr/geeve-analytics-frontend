@@ -1842,7 +1842,7 @@ export class MarketingComponent implements AfterViewInit {
         this.fdActivePatientLoader = false;
         data.data.forEach(res => { 
           this.newAPTrend1.push(Math.round(res.active_patients));
-          this.newAPTrendLabels1.push(res.clinicName);
+          this.newAPTrendLabels1.push(res.clinic_name);
         });
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           this.showAPBar = true;

@@ -1325,7 +1325,7 @@ public fdUtiData:any = [];
           this.prevByDayTotal=  0;
         if(data.message == 'success'){
           if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
-            data.multiC.forEach(res => { 
+            data.data.forEach(res => { 
               res.val.forEach((reslt, key) => { 
                 var temp =  {
                   'day':  res.duration, 
