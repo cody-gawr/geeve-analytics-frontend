@@ -327,7 +327,6 @@ i{
 
 .mat-tab-header {
     border-radius: 5px;
-    width: 80%;
 }
 
 .mat-tab-label-active{
@@ -365,7 +364,8 @@ i{
 
 }
 .create-meeting-btn{
-    top: 40px;
+    top: 43px;
+    z-index: 99;
 }
 
 .mat-tab-group {
@@ -386,7 +386,7 @@ i{
     width: 100%;
 } */
 
-.example-sidenav-create-meeting{
+.example-sidenav-create{
     width: 600px !important;
     position: fixed;
     top: 65px;
@@ -405,8 +405,8 @@ input.mat-input-element.create-meeting-form {
     border-radius: 5px;
     text-align: left;
     padding-left: 8px;
-    /* margin-left: 8px; */
 }
+
 .mat-icon-button {
     padding: 0;
     min-width: 0;
@@ -418,7 +418,7 @@ input.mat-input-element.create-meeting-form {
     top: -5px;
 }
 
-.mat-form-field-appearance-outline .mat-form-field-infix {
+.create-meeting-form.mat-form-field-appearance-outline .mat-form-field-infix {
     padding: 1em 0 1em 0;
     height: 0px;
     top: -12px;
@@ -426,4 +426,14 @@ input.mat-input-element.create-meeting-form {
 
 .create-meeting-form{
     top: -10px;
+}
+
+.none-zero-error {
+    font-size: 12px;
+    margin-top: -35px;
+    margin-left: 100px;
+}
+
+.mat-card>:last-child:not(.mat-card-footer), .mat-card-content>:last-child:not(.mat-card-footer) {
+    margin-top: 15px;
 }

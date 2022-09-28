@@ -10,6 +10,7 @@ import { RolesUsersService } from "../roles-users/roles-users.service";
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material/core";
 import { MatSort } from "@angular/material/sort";
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { HeaderService } from "../layouts/full/header/header.service";
 
 
 export const MY_DATE_FORMATS = {
@@ -76,17 +77,16 @@ export class StaffMeetingsComponent implements OnInit{
     public allSelected : boolean;
     public hasDraftData : boolean;
     public meeting_attendees = [];
-
     public templates = [];
-
     public agendaList = [];
-
     public pages = [];
+    public timezones = [];
+    public clinics = [];
 
     public currentPage: number = 1;
     public itemsPerPage = 10;
 
-    public meeting_detail = {id:"",meeting_topic : "", start_time:"", end_time:"", link: "",meeting_date:"",agenda_template_id:"", created_date:"", showAlerts: false};
+    public meeting_detail = {id:"",meeting_topic : "", start_time:"", end_time:"", link: "",meeting_date:"",agenda_template_id:"", created_date:"", showAlert : true};
 
     public time = [
       "01:00",
@@ -148,12 +148,16 @@ export class StaffMeetingsComponent implements OnInit{
     @ViewChild('create_meeting') create_meeting;
     @ViewChild('agenda_drawer') agenda_drawer;
     @ViewChild('picker_range') picker_range;
+    @ViewChild('agenda_form') agenda_form: HTMLFormElement;
+    @ViewChild('invite') invite_form: HTMLFormElement;
+    @ViewChild('meeting_form') meeting_form: HTMLFormElement;
     @ViewChild(MatSort) sort: MatSort;
     // @ViewChild('chipList') chipList : MatChipList;
 
-    constructor(private formBuilder : FormBuilder, private tasksService : TasksService, private staffMeetingService : StaffMeetingService, private datepipe: DatePipe, private _cookieService: CookieService, private toastr: ToastrService, private rolesUsersService : RolesUsersService, private dateAdapter: DateAdapter<Date>) {
+    constructor(private formBuilder : FormBuilder, private tasksService : TasksService, private staffMeetingService : StaffMeetingService, private datepipe: DatePipe, private _cookieService: CookieService, private toastr: ToastrService, private rolesUsersService : RolesUsersService, private dateAdapter: DateAdapter<Date>, private headerService : HeaderService) {
       this.minDate = new Date();
       this.dateAdapter.setLocale('en-GB');
+      // this.getClinic();
     }
     ngOnInit(): void {
        // creating the meeting form and set up validators
@@ -164,6 +168,7 @@ export class StaffMeetingsComponent implements OnInit{
         duration_mins: [null, Validators.compose([Validators.required])],
         duration_hr: [null, Validators.compose([Validators.required])],
         day_time: [null, Validators.compose([Validators.required])],
+        timezone: [null, Validators.compose([Validators.required])],
         template: [null,]
       },
       {
@@ -194,9 +199,8 @@ export class StaffMeetingsComponent implements OnInit{
         $('.dynamicDropdown2').addClass("flex_direct_mar");  
         var val = $('#currentClinic').attr('cid');
 
-        if(val != undefined && val != 'all') {
+        if(val != undefined && val != 'all')
           this.clinic_id = val;
-        }
 
         this.user_type = this._cookieService.get("user_type");
         if(this.user_type == 2){
@@ -204,9 +208,17 @@ export class StaffMeetingsComponent implements OnInit{
         }else{
           this.user_id = this._cookieService.get("childid");
         }
+
+        this.boardMeetingPage = false;
+        this.agendaTab = false;
+
         this.getRolesIndividual();
         this.getAdengaTemplate();
         this.getUsers();
+        this.getTimezone();
+        if(this.currentTab == 1)
+          this.getScheduledMeeting();
+
         this.currentTab = 1;
     }
 
@@ -221,28 +233,6 @@ export class StaffMeetingsComponent implements OnInit{
       else if(this.currentTab == 2){
         this.getCompletedMeetings();
       }
-      // this.getUpcomingMeetings();
-      // this.getCompletedMeetings();
-      // this.getInvitedMeetings();
-      // this.getPublishedMeeting();
-      // this.getCompeleteInvitedMeetings();
-      // if(this.currentTab == 1 && !this.showCompletedMeetingTab){
-      //   this.getInvitedMeetings();
-      // }else if(this.currentTab == 0 && !this.showCompletedMeetingTab){
-      //   this.getUpcomingMeetings();
-      // }else if(this.currentTab == 2 && !this.showCompletedMeetingTab){
-      //   this.getPublishedMeeting();
-      // }else if(this.currentTab == 0 && this.showCompletedMeetingTab){
-      //   this.getCompletedMeetings();
-      // }else if(this.currentTab == 1 && this.showCompletedMeetingTab){
-      //   this.getCompeleteInvitedMeetings();
-      // }
-      // if(this.drawer.opened){
-      //   this.drawer.close();
-      // }
-      // if(this.create_meeting.opened){
-      //   this.create_meeting.close();
-      // }
     }
 
 
@@ -316,6 +306,7 @@ export class StaffMeetingsComponent implements OnInit{
 
   // logic for the drawer toggle
   drawerToggle(id, card : ElementRef<HTMLInputElement>){
+    this.meeting_detail.showAlert = true;
     if(!this.drawer.opened){
       $(card).parent(".meeting_card").addClass("active");
       this.create_meeting.close();
@@ -344,7 +335,8 @@ export class StaffMeetingsComponent implements OnInit{
     this.drawer.toggle();
     this.allSelected = false;
     this.invited_users = [];
-    this.invites_form.reset();
+    if(this.currentTab == 0)
+      this.invite_form.nativeElement.reset();
 
   }
 
@@ -365,9 +357,12 @@ export class StaffMeetingsComponent implements OnInit{
   }
 
   // use to create meetings
-  save_meeting(formData){
+  save_meeting(form){
 
-    // let meeting_topic = formData.meeting_topic;
+    if(form.invalid)
+      return;
+
+    let formData = form.value;
     let start_time = formData.start_time;
     let time = start_time.split(":");
     let hr = parseInt(time[0]) + formData.duration_hr;
@@ -426,7 +421,7 @@ export class StaffMeetingsComponent implements OnInit{
     }else{
       this.agenda_tab_has_data = true;
     }
-
+    
     this.staffMeetingService.createMeeting(formData).subscribe(res=>{
       if(res.status == 200){
         if(this.agenda_tab_has_data){
@@ -447,7 +442,7 @@ export class StaffMeetingsComponent implements OnInit{
           this.create_meeting.close();
 
         // after save data reseting the inputs field to its default
-        this.create_meeting_form.reset();
+        this.meeting_form.nativeElement.reset();
         this.create_meeting_form.get('day_time').setValue('AM');
         this.create_meeting_form.get('start_time').setValue('09:00');
         this.create_meeting_form.get('duration_mins').setValue(0);
@@ -463,8 +458,9 @@ export class StaffMeetingsComponent implements OnInit{
     this.meeting_id = meeting_id;
     this.staffMeetingService.getMeetingDetails(meeting_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
-        this.isMeetingCreator = res.meetingCreator == 1;
-        if(this.isMeetingCreator){
+        this.isMeetingCreator = res.meetingCreator == 1 && res.meetingStatus == 1;
+        if(res.meetingCreator == 1){
+          this.showAttendees = true;
           this.viewMeetingAttendees(meeting_id);
         }
         this.boardMeetingPage = true;
@@ -504,7 +500,11 @@ export class StaffMeetingsComponent implements OnInit{
   public loader : boolean;
   
   // use to send invitation to the selected use.
-  save_invites(meeting_id){
+  save_invites(meeting_id, invitesForm){
+
+    if(invitesForm.invalid)
+      return;
+    
     let user_ids = [];
     this.loader = true;
 
@@ -527,7 +527,7 @@ export class StaffMeetingsComponent implements OnInit{
         this.drawer.close();
         this.allSelected = false;
         this.invited_users = [];
-        this.invites_form.reset();
+        this.invite_form.nativeElement.reset()
         this.refresh();
       }else{
         this.loader = false;
@@ -535,20 +535,6 @@ export class StaffMeetingsComponent implements OnInit{
     },error=>{
       this.loader = false;
     });
-  }
-
-  // get the listing of upcoming meetings
-  getUpcomingMeetings(){ // to be deleted
-    this.staffMeetingService.getUpcomingMeetings(this.clinic_id).subscribe(res=>{
-      if(res.status == 200){
-        res.data.forEach(item=>{
-          item.meeting_date = this.datepipe.transform(item.meeting_date, 'dd-MM-yyyy');
-        });
-        // add paginator and displaying data
-        this.setPagesForpaginator(res.data);
-      }
-    },
-    error=>{});
   }
 
   // get the listing of Draft meetings
@@ -581,20 +567,6 @@ export class StaffMeetingsComponent implements OnInit{
     error=>{});
   } 
 
-// get the listing of invited meetings
-  getInvitedMeetings(){ //to be deleted
-    this.staffMeetingService.getInvitedMeetings(this.clinic_id).subscribe(res=>{
-      if(res.status == 200){
-        res.data.forEach(item=>{
-          item.meeting_date = this.datepipe.transform(item.meeting_date, 'dd-MM-yyyy');
-        });
-        // add paginator and displaying data
-        this.setPagesForpaginator(res.data);
-      }
-    },
-    error=>{});
-  } 
-
   //  get the listing of the agenda template.
   getAdengaTemplate(){
     this.staffMeetingService.getAdengaTemplate().subscribe(res=>{
@@ -605,27 +577,6 @@ export class StaffMeetingsComponent implements OnInit{
       }
     },
     error=>{});
-  }
-
-// get the listing of published invited meetings
-  getPublishedMeeting(){ // to be deleted
-    this.staffMeetingService.getPublishedMeeting(this.clinic_id).subscribe(res=>{
-      if(res.status == 200){
-        let now = new Date();
-
-        res.data.forEach(item=>{
-          let meeting_date = new Date(item.meeting_date);
-          if(now.getTime() > meeting_date.getTime()){
-            item.showAlert = true;
-          }else{
-            item.showAlert = false;
-          }
-          item.meeting_date = this.datepipe.transform(item.meeting_date, 'dd-MM-yyyy');
-        });
-        // add paginator and displaying data
-        this.setPagesForpaginator(res.data);
-      }
-    })
   }
 
   // get the listing of published invited meetings
@@ -644,29 +595,6 @@ export class StaffMeetingsComponent implements OnInit{
           item.meeting_date = this.datepipe.transform(item.meeting_date, 'dd-MM-yyyy');
         });
         
-        // add paginator and displaying data
-        this.setPagesForpaginator(res.data);
-      }
-    })
-  }
-
-  // mark the meeting complete :: not using this method
-  markComplete(id){
-    this.staffMeetingService.markMeetingComplete(id, this.clinic_id).subscribe(res=>{
-      if(res.status == 200){
-        this.drawer.close();
-        this.refresh();
-      }
-    });
-  }
-
-// get the listing of completed invited meetings
-  getCompeleteInvitedMeetings(){ // to be deleted
-    this.staffMeetingService.getCompeleteInvitedMeetings(this.clinic_id).subscribe(res=>{
-      if(res.status == 200){
-        res.data.forEach(item=>{
-          item.meeting_date = this.datepipe.transform(item.meeting_date, 'dd-MM-yyyy');
-        });
         // add paginator and displaying data
         this.setPagesForpaginator(res.data);
       }
@@ -806,25 +734,19 @@ export class StaffMeetingsComponent implements OnInit{
         this.show_date_picker = false;
 
       if(!agenda_drawer.open)
-        this.create_agenda_form.reset();
+        this.agenda_form.nativeElement.reset();
     }
   }
 
   // add a heagin in the agenda view
   addAgendaHeading(agenda_drawer){
     // below reset the required fields.
-    this.chart_id = 0;
     this.agenda_flag = "new";
     this.agenda_order = 1;
     this.hasDisable = false;
     this.show_date_picker = false;
-    this.create_agenda_form.get('category').setValue('');
-    this.create_agenda_form.get('item').setValue('');
-    this.create_agenda_form.get('person').setValue('');
-    this.create_agenda_form.get('duration').setValue('');
-    this.create_agenda_form.get('start_date').setValue('');
-    this.create_agenda_form.get('end_date').setValue('');
-    this.create_agenda_form.get('description').setValue('');
+    this.create_agenda_form.reset();
+    this.create_agenda_form.get('chart').setValue(0);
     this.create_agenda_form.get('start_date').clearValidators();
     this.create_agenda_form.get('start_date').updateValueAndValidity();
     this.create_agenda_form.get('end_date').clearValidators();
@@ -833,7 +755,13 @@ export class StaffMeetingsComponent implements OnInit{
   }
 
   //  save agenda
-  save_agenda(formData){
+  save_agenda(form){
+
+    if(form.invalid)
+      return;
+
+    let formData = form.value;
+
     this.loader = true;
     formData.start_date = this.datepipe.transform(formData.start_date, 'yyyy-MM-dd');
     formData.end_date = this.datepipe.transform(formData.end_date, 'yyyy-MM-dd');
@@ -850,7 +778,7 @@ export class StaffMeetingsComponent implements OnInit{
       if(res.status == 200){
         this.loader = false;
         this.agenda_drawer.close();
-        this.create_agenda_form.reset();
+        this.agenda_form.nativeElement.reset();
         this.openAgenda(this.meeting_id);
       }else{
         this.loader = false;
@@ -865,10 +793,6 @@ export class StaffMeetingsComponent implements OnInit{
     this.staffMeetingService.markMeetingComplete(this.meeting_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
         this.isMeetingCreator = false;
-        this.toastr.success('Thankyou for marking the meeting complete.');
-        // this.drawer.close();
-        // this.refresh();
-        
       }
     });
   }
@@ -876,16 +800,6 @@ export class StaffMeetingsComponent implements OnInit{
 
   //  use to get the meeting attendees list
   viewMeetingAttendees(meeting_id){
-    this.staffMeetingService.getMeetingDetails(meeting_id, this.clinic_id).subscribe(res=>{
-      if(res.status == 200){
-        this.isMeetingCreator = res.meetingCreator == 1 && res.meetingStatus == 1;
-        this.showAttendees = res.meetingCreator == 1;
-        this.boardMeetingPage = true;
-        this.meeting_details = [...res.data];
-        this.agenda_heading = res.meetingTopic;
-      }
-    });
-
     this.staffMeetingService.getMeetingAttendees(meeting_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
         res.data.forEach(item=>{
@@ -896,12 +810,10 @@ export class StaffMeetingsComponent implements OnInit{
           });
         })
         this.meeting_attendees = [...res.data];
+        // console.log(this.meeting_attendees);
+        
       }
     });
-    
-    // close createMeeting drawer if open
-    if(this.create_meeting.opened)
-      this.create_meeting.close();
   }
 
   // drag and drop in the agenda page
@@ -982,6 +894,21 @@ export class StaffMeetingsComponent implements OnInit{
       }
     },error=>{
       this.loader = false;
+    });
+  }
+
+  getTimezone(){
+    this.staffMeetingService.getTimezone().subscribe(res=>{
+      if(res.status == 200){
+        this.timezones = [...res.data];
+      }
+    })
+  }
+
+  getClinic(){
+    this.headerService.getClinics().subscribe(res=>{
+      // console.log(res);
+      
     });
   }
 }

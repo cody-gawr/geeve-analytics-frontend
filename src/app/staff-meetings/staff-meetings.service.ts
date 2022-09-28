@@ -38,6 +38,7 @@ export class StaffMeetingService {
         formData.append("agenda_template_id", data.template);
         formData.append("created_by", data.user_id);
         formData.append("status", data.status);
+        formData.append("timezone", data.timezone);
         var header = this.getHeaders();
         return this.http.post(this.apiUrl + "/StaffMeeting/smCreateMeeting", formData, header)
         .pipe(
@@ -253,4 +254,12 @@ export class StaffMeetingService {
         );
     }
     
+    getTimezone(): Observable<any>{
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl + "/StaffMeeting/smGetTimezone", header).pipe(
+            map((response : Response)=>{
+                return response;
+            })
+        );
+    }
 }
