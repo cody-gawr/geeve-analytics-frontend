@@ -286,7 +286,7 @@ export class ClinicianAnalysisService {
     //Treatment Plan Average Cost service
     TreatmentPlan(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanAvgCost?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanAvgProposedFees?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
@@ -296,7 +296,27 @@ export class ClinicianAnalysisService {
     //Treatment Plan Average Cost Single service
     TreatmentPlanDentist(dentist_id, clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanAvgCost?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&provider_id=" + dentist_id + "&duration=" + duration, header)
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanAvgProposedFees?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&provider_id=" + dentist_id + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+            })
+            );
+    }
+
+    //Treatment Plan Average Cost service
+    TreatmentPlanCompletedFees(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanAvgCompletedFees?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
+            .pipe(map((response: Response) => {
+                return response;
+            })
+            );
+    }
+
+    //Treatment Plan Average Cost Single service
+    TreatmentPlanCompletedFeesDentist(dentist_id, clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanAvgCompletedFees?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&provider_id=" + dentist_id + "&duration=" + duration, header)
             .pipe(map((response: Response) => {
                 return response;
             })
@@ -315,7 +335,16 @@ export class ClinicianAnalysisService {
     // Dentist Production Single Service
     caTreatmentPlanAverageCostTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanAvgCostTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanAvgProposedFeesTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
+            .pipe(map((response: Response) => {
+                return response;
+            })
+            );
+    }
+    // Dentist Production Single Service
+    caTreatmentPlanAverageCompletedFeeTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanAvgCompletedFeesTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
             .pipe(map((response: Response) => {
                 return response;
             })

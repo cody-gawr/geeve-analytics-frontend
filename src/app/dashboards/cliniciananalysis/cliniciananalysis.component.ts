@@ -1617,20 +1617,24 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.hourlyRateChart();
         this.collectionHourlyRate();
         this.collectionExpHourlyRate();
+        this.buildChartTreatment();
+        this.buildChartTreatmentCompletedFees();
+        this.recallPrebook();
+        this.treatmentPrePrebook();
       }
       this.buildChartNewpatients();
-      this.buildChartTreatment();
       this.treatmentPlanRate();
       if(this.user_type != '4'){
+        if(this.tcmain == 1){
+          this.buildChartTreatment();
+        }else if(this.tcmain == 2){
+          this.buildChartTreatmentCompletedFees();
+        }
         if(this.prebook =="recall"){
           this.recallPrebook();
         }else if(this.prebook =="treatment"){
           this.treatmentPrePrebook();
         }
-      }
-      if(this.user_type == '4'){
-        this.recallPrebook();
-        this.treatmentPrePrebook();
       }
       this.buildChartNopatients();
       (<HTMLElement>document.querySelector('.dentistProductionSingle')).style.display = 'none';
@@ -1647,7 +1651,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       (<HTMLElement>document.querySelector('.treatmentPlanRate')).style.display = 'block';
       (<HTMLElement>document.querySelector('.hourlyRateSingle')).style.display = 'none';
       (<HTMLElement>document.querySelector('.hourlyRate')).style.display = 'block';
-      this.changeTreatmentCost('1');
+     // this.changeTreatmentCost('1','all');
     } else {
       this.dentistVal = newValue;
       this.showTrend = true;
@@ -1699,7 +1703,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         (<HTMLElement>document.querySelector('.dentistProductionSingle')).style.display = 'block';
         (<HTMLElement>document.querySelector('.dentistProduction')).style.display = 'none';
-        this.buildChartTreatmentDentist();
+       // this.buildChartTreatmentDentist();
+    //    this.buildChartTreatmentCompletedFeeDentist();
         (<HTMLElement>document.querySelector('.treatmentPlanSingle')).style.display = 'block';
         (<HTMLElement>document.querySelector('.treatmentPlan')).style.display = 'none';
         this.buildChartNopatientsDentist();
@@ -1708,6 +1713,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         (<HTMLElement>document.querySelector('.noPatientsSingle')).style.display = 'block';
         (<HTMLElement>document.querySelector('.noPatients')).style.display = 'none';
         if(this.user_type != '4'){
+          if(this.tcmain == 1){
+            this.buildChartTreatmentDentist();
+          }else if(this.tcmain == 2){
+            this.buildChartTreatmentCompletedFeeDentist();
+          }
           if(this.prebook =="recall"){
             this.recallPrebookDentist();
           }else if(this.prebook =="treatment"){
@@ -1715,6 +1725,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
         }       
         if(this.user_type == '4'){
+          this.buildChartTreatmentDentist();
+          this.buildChartTreatmentCompletedFeeDentist();
           this.recallPrebookDentist();
           this.treatmentPrePrebookDentist();          
         }
@@ -1733,7 +1745,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         (<HTMLElement>document.querySelector('.hourlyRateSingle')).style.display = 'block';
         (<HTMLElement>document.querySelector('.hourlyRate')).style.display = 'none';
       }
-      this.changeTreatmentCostSingle('1');
+     // this.changeTreatmentCostSingle('1');
 
     }
   }
@@ -1820,68 +1832,75 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   //Activate average /Goal line on Treatment Cost Chart
   public planCompletedTotal;
   public planCompletedTotalTrend;
-  changeTreatmentCost(val) {
+  changeTreatmentCost(val,dentType) {
+    this.treatmentPlanAverageCostTab = val;
+    if (val == 1 && dentType == 'all' && this.user_type != '4') {
+      this.buildChartTreatment();
+     // this.showPreBookReapointRate = false;
+    } else if (val == 2  && dentType == 'all' && this.user_type != '4') {
+      this.buildChartTreatmentCompletedFees();
+    //  this.showPreBookReapointRate = true;
+    }else if (val == 1  && dentType == 'single' && this.user_type != '4') {
+      if(this.showTrendChart){
+        this.treatmentPlanTrend();
+      }else{
+        this.buildChartTreatmentDentist();
+      }
+    }else if (val == 2  && dentType == 'single'&& this.user_type != '4') {
+      if(this.showTrendChart){
+        this.treatmentPlanCompletedFeesTrend();
+      }else{
+        this.buildChartTreatmentCompletedFeeDentist();
+      }
+    }
+
+    
+    if(this.user_type == '4'){
+      if (val == 1) {
+        if (this.toggleChecked) {
+          if (this.treatmentPlanTrend1.every((value) => value == 0)) this.treatmentPlanTrend1 = [];
+          this.treatPlanTrend[0]['data'] = this.treatmentPlanTrend1;
+        }
+        else {
+          this.gaugeValueTreatment = Math.floor(this.gaugeValueTreatmentP);
+          this.planTotalPrev = this.planAllTotalTrend;
+          this.planTotal = this.planTotalAll;
+        }
+
+        if (this.gaugeValueTreatment > this.planTotalGoal)
+         this.maxplanTotalGoal = this.gaugeValueTreatment;
+        else
+          this.maxplanTotalGoal = this.planTotalGoal;
+      }
+      else {
+        if (this.toggleChecked) {
+          if (this.treatmentPlanTrend2.every((value) => value == 0)) this.treatmentPlanTrend2 = [];
+          this.treatPlanTrendCmp[0]['data'] = this.treatmentPlanTrend2;
+        }
+        else {
+          this.gaugeValueTreatmentCmp = Math.floor(this.gaugeValueTreatmentC);
+          this.planTotalPrev = this.planCompletedTotalTrend;
+          this.planTotal = this.planTotalCompleted;
+  
+        }
+        if (this.gaugeValueTreatmentCmp > this.planTotalGoal)
+         this.maxplanTotalGoal = this.gaugeValueTreatmentCmp;
+        else
+          this.maxplanTotalGoal = this.planTotalGoal;
+      }
+      if (this.maxplanTotalGoal == 0)
+        this.maxplanTotalGoal = '';
+      
+    }
+
     $('.treatmentPlan .treatment_cost .sa_tab_btn').removeClass('active');
     $('.treatmentPlan .tcmain' + val).addClass('active');
-    this.planTotalTooltip = 'down';
-    this.tcmain = val;
-    if (val == '1') {
-      this.planTotalAverage = this.planAllTotal;
-      this.planTotalPrev = this.planAllTotalTrend;
-    }
-    else {
-      this.planTotalAverage = this.planCompletedTotal;
-      this.planTotalPrev = this.planCompletedTotalTrend;
-    }
-    if (this.planTotalAverage >= this.planTotalPrev)
-      this.planTotalTooltip = 'up';
-    if (this.goalchecked == 'average') {
-      if (this.barChartOptionsTC.annotation.annotations)
-        this.barChartOptionsTC.annotation.annotations[0].value = this.planTotalAverage;
-    }
-    if (this.goalchecked == 'goal') {
-      if (this.barChartOptionsTC.annotation.annotations)
-        this.barChartOptionsTC.annotation.annotations[0].value = this.planTotalGoal;
-    }
-
-  }
-  //Load Individual dentist Chart
-  changeTreatmentCostSingle(val) {
     $('.treatmentPlanSingle .treatment_cost .sa_tab_btn').removeClass('active');
     $('.treatmentPlanSingle .tcmain' + val).addClass('active');
+    this.planTotalTooltip = 'down';
     this.tcmain = val;
-    this.treatmentPlanAverageCostTab = val;
-    if (val == '1') {
-      if (this.toggleChecked) {
-        if (this.treatmentPlanTrend1.every((value) => value == 0)) this.treatmentPlanTrend1 = [];
-        this.treatPlanTrend[0]['data'] = this.treatmentPlanTrend1;
-      }
-      else {
-        this.gaugeValueTreatment = Math.floor(this.gaugeValueTreatmentP);
-        this.planTotalPrev = this.planAllTotalTrend;
-        this.planTotal = this.planTotalAll;
-      }
-    }
-    else {
-      if (this.toggleChecked) {
-        if (this.treatmentPlanTrend2.every((value) => value == 0)) this.treatmentPlanTrend2 = [];
-        this.treatPlanTrend[0]['data'] = this.treatmentPlanTrend2;
-      }
-      else {
-        this.gaugeValueTreatment = Math.floor(this.gaugeValueTreatmentC);
-        this.planTotalPrev = this.planCompletedTotalTrend;
-        this.planTotal = this.planTotalCompleted;
 
-      }
-    }
-    if (this.gaugeValueTreatment > this.planTotalGoal)
-      this.maxplanTotalGoal = this.gaugeValueTreatment;
-    else
-      this.maxplanTotalGoal = this.planTotalGoal;
-    if (this.maxplanTotalGoal == 0)
-      this.maxplanTotalGoal = '';
   }
-
   public productionTooltip = 'down';
   public productionTotalPrev;
   public barChartOptionsDP: any = this.barChartOptions2;
@@ -4491,7 +4510,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     );
   }
 
-  public tcmain;
+  public tcmain = 1;
   public planTotalTooltip = 'down';
   public planTotalPrev;
   public planAllTotal = 0;
@@ -4565,36 +4584,28 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public TPACAcolors: any;
   public TPACCcolors: any;
   public tpacAKey;
-  public tpacCKey;
 
 
-  //Treatment Plan Average Cost for all dentist
-  public planChartCtbl:any=[];
+  //Treatment Plan Average Cost proposed Fee for all dentist
   public planChartPtbl:any=[];
-  public showplanChartCTbl :boolean = false;
   public showplanChartPTbl:boolean = false;
   private buildChartTreatment() {
     this.buildChartTreatmentLoader = true;
-    $('.treatment_cost .sa_tab_btn').removeClass('active');
-    $('.tcmain1').addClass('active');
-    this.tcmain = 1;
+    // $('.treatment_cost .sa_tab_btn').removeClass('active');
+    // $('.tcmain1').addClass('active');
     this.planChartData1 = [];
-    this.planChartData2 = [];
     this.planChartLabels1 = [];
-    this.planChartLabels2 = [];
     this.planTotal = 0;
     this.planChartLabels = [];
     this.barChartOptionsTC.annotation = [];
     this.clinic_id && this.cliniciananalysisService.TreatmentPlan(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
-      this.tcmain = 1;
       this.planChartData1 = [];
-      this.planChartData2 = [];
       this.planChartLabels1 = [];
-      this.planChartLabels2 = [];
+      this.planTotalAverage = 0;
+      this.planTotalPrev = 0;
       this.planTotal = 0;
       this.planChartLabels = [];
       this.planChartDataP[0]['data'] =[];
-      this.planChartDataC[0]['data'] = [];
       this.barChartOptionsTC.annotation = [];
       if (data.message == 'success') {
         this.Apirequest = this.Apirequest - 1;
@@ -4603,21 +4614,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.planTotalTooltip = 'down';
         var ia = 0;
         this.treatmentPlanProposedProvidersByInx = [];
-        this.planChartCtbl = [];
         this.planChartPtbl = [];
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
-          data.data['plan_fee_all'].sort((a, b)=> a.average_fees - b.average_fees).reverse();
-          data.data['plan_fee_completed'].sort((a, b)=> a.average_fees - b.average_fees).reverse();
+          data.data.sort((a, b)=> a.average_fees - b.average_fees).reverse();
         }
-        this.planChartPtbl = data.data['plan_fee_all'];
-        // if(data.data.plan_fee_all.length >= this.numberOfRecords){
-        //   this.planChartPtbl = data.data['plan_fee_all'];
-        //   this.showplanChartPTbl = true;
-        // }else{
-        //   this.showplanChartPTbl = false;
-        // }
-        if (data.data.plan_fee_all.length > this.numberOfRecords) data.data.plan_fee_all = data.data.plan_fee_all.slice(0, this.numberOfRecords);
-        data.data.plan_fee_all.forEach(res => {
+        this.planChartPtbl = data.data;
+        if (data.data.length > this.numberOfRecords) data.data= data.data.slice(0, this.numberOfRecords);
+        data.data.forEach(res => {
           if (res.average_fees > 0) {
             if (res.provider_name != null) {
               var pName ='';
@@ -4635,46 +4638,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             }
           }
         });
-        this.planAllTotal = Math.round(data.total_all);
-        this.planAllTotalTrend = Math.round(data.total_ta_all);
+        this.planAllTotal = Math.round(data.total);
+        this.planAllTotalTrend = Math.round(data.total_ta);
        
-        var ic = 0;
-        this.planChartCtbl = data.data['plan_fee_completed'];
-        // if(data.data.plan_fee_completed.length >= this.numberOfRecords){
-        //   this.planChartCtbl = data.data['plan_fee_completed'];
-        //   this.showplanChartCTbl = true;
-        // }else{
-        //   this.showplanChartCTbl = false;
-        // }
-        if (data.data.plan_fee_completed.length > this.numberOfRecords) data.data.plan_fee_completed = data.data.plan_fee_completed.slice(0, this.numberOfRecords);
-        data.data.plan_fee_completed.forEach(res => {
-          if (res.average_fees) {
-             var prName ='';
-              if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
-                  prName = res.provider_name + " - " + res.clinic_name;
-                }else{
-                  prName = res.provider_name;
-                }
-            this.planChartData2.push(Math.round(res.average_fees));
-            this.planChartLabels2.push(prName);
-            this.treatmentPlanProposedProvidersByInx.push(prName);
-            if (res.provider_name != 'Anonymous')
-              this.tpacCKey = ic;
-            ic++;
-          }
-        });
-        this.planCompletedTotal = Math.round(data.total_completed);
-        this.planCompletedTotalTrend = Math.round(data.total_ta_completed);
-        let dynamicColors = [];
+       let dynamicColors = [];
         this.planChartLabels1.forEach((label, labelIndex) => {
           dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
         }); // This is dynamic array for colors of bars        
         this.planChartDataP[0].backgroundColor = dynamicColors;
 
         this.planChartDataP[0]['data'] = this.planChartData1;
-        this.planChartDataC[0]['data'] = this.planChartData2;
         this.planChartDataP[0]['label'] = '';
-        this.planChartDataC[0]['label'] = '';
         this.planChartLabels = this.planChartLabels1;
         this.planTotalAverage = this.planAllTotal;
         this.planTotalGoal = data.goals;
@@ -4688,7 +4662,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.barChartColors = [
             { backgroundColor: [] }
           ];
-          this.barChartColors[0].backgroundColor[this.tpacCKey] = '#1CA49F';
+          //this.barChartColors[0].backgroundColor[this.tpacCKey] = '#1CA49F';
           this.TPACCcolors = this.barChartColors;
 
         }
@@ -4700,13 +4674,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             dynamicColors1.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
           }); // This is dynamic array for colors of bars        
           this.planChartDataP[0].backgroundColor = dynamicColors1;
-
-          let dynamicColors2 = [];
-          this.planChartLabels2.forEach((label, labelIndex) => {
-            dynamicColors2.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
-          this.planChartDataC[0].backgroundColor = dynamicColors2;
-
         }
         if (this.planTotalAverage >= this.planTotalPrev)
           this.planTotalTooltip = 'up';
@@ -4755,15 +4722,151 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+
+    //Treatment Plan Average Cost Completed fees for all dentist
+    public tpacCKey;
+    public planChartCtbl:any=[];
+    public showplanChartCTbl :boolean = false;
+    private buildChartTreatmentCompletedFees() {
+      this.buildChartTreatmentLoader = true;
+      // $('.treatment_cost .sa_tab_btn').removeClass('active');
+      // $('.tcmain1').addClass('active');
+      this.planChartData2 = [];
+      this.planChartLabels2 = [];
+      this.planTotal = 0;
+      this.planChartLabels = [];
+      this.barChartOptionsTC.annotation = [];
+      this.clinic_id && this.cliniciananalysisService.TreatmentPlanCompletedFees(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+        this.planChartData2 = [];
+        this.planChartLabels2 = [];
+        this.planTotalAverage = 0;
+        this.planTotalPrev = 0;
+        this.planTotal = 0;
+        this.planChartLabels = [];
+        this.planChartDataC[0]['data'] = [];
+        this.barChartOptionsTC.annotation = [];
+        if (data.message == 'success') {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.buildChartTreatmentLoader = false;
+          this.planTotalTooltip = 'down';
+          var ia = 0;
+          this.treatmentPlanProposedProvidersByInx = [];
+          this.planChartCtbl = [];
+          if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+            data.data.sort((a, b)=> a.average_fees - b.average_fees).reverse();
+          }
+          var ic = 0;
+          this.planChartCtbl = data.data;
+          if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
+          data.data.forEach(res => {
+            if (res.average_fees) {
+               var prName ='';
+                if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+                    prName = res.provider_name + " - " + res.clinic_name;
+                  }else{
+                    prName = res.provider_name;
+                  }
+              this.planChartData2.push(Math.round(res.average_fees));
+              this.planChartLabels2.push(prName);
+              this.treatmentPlanProposedProvidersByInx.push(prName);
+              if (res.provider_name != 'Anonymous')
+                this.tpacCKey = ic;
+              ic++;
+            }
+          });
+          this.planCompletedTotal = Math.round(data.total);
+          this.planCompletedTotalTrend = Math.round(data.total_ta);
+          let dynamicColors = [];
+          this.planChartLabels1.forEach((label, labelIndex) => {
+            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+          }); // This is dynamic array for colors of bars        
+          this.planChartDataP[0].backgroundColor = dynamicColors;
+  
+          this.planChartDataC[0]['data'] = this.planChartData2;
+          this.planChartDataC[0]['label'] = '';
+          this.planChartLabels = this.planChartLabels1;
+          this.planTotalAverage = this.planCompletedTotal;
+          this.planTotalGoal = data.goals;
+          this.planTotalPrev = this.planCompletedTotalTrend;
+          if (this.user_type == '4' && this.childid != '') {
+            this.barChartColors = [
+              { backgroundColor: [] }
+            ];
+            this.barChartColors[0].backgroundColor[this.tpacAKey] = '#1CA49F';
+            this.TPACAcolors = this.barChartColors;
+            this.barChartColors = [
+              { backgroundColor: [] }
+            ];
+            this.barChartColors[0].backgroundColor[this.tpacCKey] = '#1CA49F';
+            this.TPACCcolors = this.barChartColors;
+  
+          }
+          else {
+            this.TPACAcolors = this.lineChartColors;
+            this.TPACCcolors = this.lineChartColors;  
+            let dynamicColors2 = [];
+            this.planChartLabels2.forEach((label, labelIndex) => {
+              dynamicColors2.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+            }); // This is dynamic array for colors of bars        
+            this.planChartDataC[0].backgroundColor = dynamicColors2;
+  
+          }
+          if (this.planTotalAverage >= this.planTotalPrev)
+            this.planTotalTooltip = 'up';
+          var index = 0;
+          this.barChartOptionsTC.annotation = [];
+          if (this.goalchecked == 'average') {
+            this.barChartOptionsTC.annotation = {
+              annotations: [{
+                type: 'line',
+                drawTime: 'afterDatasetsDraw',
+                mode: 'horizontal',
+                scaleID: 'y-axis-0',
+                value: this.planTotalAverage,
+                borderColor: '#0e3459',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderDashOffset: 0,
+              },
+              ]
+            }
+          }
+          else if (this.goalchecked == 'goal') {
+            this.barChartOptionsTC.annotation = {
+              annotations: [{
+                type: 'line',
+                drawTime: 'afterDatasetsDraw',
+                mode: 'horizontal',
+                scaleID: 'y-axis-0',
+                value: this.planTotalGoal * this.goalCount,
+                borderColor: 'red',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderDashOffset: 0,
+              },
+              ]
+            }
+          }
+        }
+      }, error => {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
+        if(this.user_type !='7'){
+          this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+          this.warningMessage = "Please Provide Valid Inputs!";
+        } 
+      });
+    }
+
   public gaugeValueTreatmentP: any = 0;
-  public gaugeValueTreatmentC: any = 0;
   public maxplanTotalGoal: any = 0;
   public buildChartTreatmentDentistLoader: boolean;
 
-  //Individual Treatment Plan Average Cost
+  //Individual Treatment Plan Average Cost Proposed Fee
   private buildChartTreatmentDentist() {
-    $('.treatmentPlanSingle .treatment_cost .sa_tab_btn').removeClass('active');
-    $('.treatmentPlanSingle .tcmain1').addClass('active');
+    // $('.treatmentPlanSingle .treatment_cost .sa_tab_btn').removeClass('active');
+    // $('.treatmentPlanSingle .tcmain1').addClass('active');
     this.buildChartTreatmentDentistLoader = true;
 
 
@@ -4774,24 +4877,76 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.enableDiabaleButton(this.Apirequest);
         this.buildChartTreatmentDentistLoader = false;
         this.gaugeValueTreatmentP = 0;
-        this.gaugeValueTreatmentC = 0;
         this.gaugeValueTreatment = 0;
         if (data.data != null) {
-          if (data.data.plan_fee_completed[0] && data.data.plan_fee_completed[0].average_fees != undefined)
-            this.gaugeValueTreatmentC = Math.round(data.data.plan_fee_completed[0].average_fees);
-          if (data.data.plan_fee_all[0] && data.data.plan_fee_all[0].average_fees != undefined)
-            this.gaugeValueTreatmentP = Math.round(data.data.plan_fee_all[0].average_fees);
-          if (data.data.plan_fee_all[0] && data.data.plan_fee_all[0].provider_name != undefined)
-            this.gaugeLabelTreatment = data.data.plan_fee_all[0].provider_name;
-          this.planTotalAll = Math.round(data.total_all);
-          this.planTotalCompleted = Math.round(data.total_completed);
+          if (data.data[0] && data.data[0].average_fees != undefined)
+            this.gaugeValueTreatmentP = Math.round(data.data[0].average_fees);
+          if (data.data[0] && data.data[0].provider_name != undefined)
+            this.gaugeLabelTreatment = data.data[0].provider_name;
+          this.planTotalAll = Math.round(data.total);
           this.planTotal = this.planTotalAll;
-          this.planCompletedTotalTrend = Math.round(data.total_ta_completed);
-          this.planAllTotalTrend = Math.round(data.total_ta_all);
+          this.planAllTotalTrend = Math.round(data.total_ta);
           this.planTotalPrev = this.planAllTotalTrend;
         }
         else {
           this.gaugeValueTreatmentP = 0;
+          this.gaugeLabelTreatment = "";
+          this.planTotal = 0;
+          this.planTotalAverage = 0;
+          this.planAllTotalTrend = 0;
+          this.planTotalPrev = this.planAllTotalTrend;
+          this.planTotalAll = 0;
+        }
+        this.gaugeValueTreatment = this.gaugeValueTreatmentP;
+        this.planTotalGoal = data.goals;
+        if (this.gaugeValueTreatment > this.planTotalGoal)
+          this.maxplanTotalGoal = this.gaugeValueTreatment;
+        else
+          this.maxplanTotalGoal = this.planTotalGoal;
+        if (this.maxplanTotalGoal == 0)
+          this.maxplanTotalGoal = '';
+
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }
+    );
+  }
+
+  public gaugeValueTreatmentC: any = 0;
+  public gaugeValueTreatmentCmp: any = 0;
+
+  //Individual Treatment Plan Average Cost Completed Fee
+  private buildChartTreatmentCompletedFeeDentist() {
+    // $('.treatmentPlanSingle .treatment_cost .sa_tab_btn').removeClass('active');
+    // $('.treatmentPlanSingle .tcmain1').addClass('active');
+    this.buildChartTreatmentDentistLoader = true;
+
+
+    this.clinic_id && this.cliniciananalysisService.TreatmentPlanCompletedFeesDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+      this.gaugeValueTreatmentCmp = 0;
+      if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
+        this.buildChartTreatmentDentistLoader = false;
+        this.gaugeValueTreatmentC = 0;
+        this.gaugeValueTreatmentCmp = 0;
+        if (data.data != null) {
+          if (data.data[0] && data.data[0].average_fees != undefined)
+            this.gaugeValueTreatmentC = Math.round(data.data[0].average_fees);
+          if (data.data[0] && data.data[0].provider_name != undefined)
+            this.gaugeLabelTreatment = data.data[0].provider_name;
+          this.planTotalAll = Math.round(data.total_all);
+          this.planTotalCompleted = Math.round(data.total);
+          this.planTotal = this.planTotalAll;
+          this.planCompletedTotalTrend = Math.round(data.total_ta);
+          this.planAllTotalTrend = Math.round(data.total_ta);
+          this.planTotalPrev = this.planAllTotalTrend;
+        }
+        else {
           this.gaugeValueTreatmentC = 0;
           this.gaugeLabelTreatment = "";
           this.planTotal = 0;
@@ -4802,10 +4957,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.planTotalAll = 0;
           this.planTotalCompleted = 0;
         }
-        this.gaugeValueTreatment = this.gaugeValueTreatmentP;
+        this.gaugeValueTreatmentCmp = this.gaugeValueTreatmentC;
         this.planTotalGoal = data.goals;
-        if (this.gaugeValueTreatment > this.planTotalGoal)
-          this.maxplanTotalGoal = this.gaugeValueTreatment;
+        if (this.gaugeValueTreatmentCmp > this.planTotalGoal)
+          this.maxplanTotalGoal = this.gaugeValueTreatmentCmp;
         else
           this.maxplanTotalGoal = this.planTotalGoal;
         if (this.maxplanTotalGoal == 0)
@@ -7808,11 +7963,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       backgroundOverlayMode: 'multiply'
     }];
   public treatmentPlanTrend1 = [];
-  public treatmentPlanTrend2 = [];
   public treatmentPlanTrendLabels = [];
   public treatmentPlanTrendLabels1 = [];
   public treatmentPlanTrendLoader: any;
-  //Trend mode for Treatment PLan Chart
+  //Trend mode for Treatment PLan Chart proposed fees
   private treatmentPlanTrend() {
     this.treatmentPlanTrendLoader = true;
     var user_id;
@@ -7820,16 +7974,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.clinic_id && this.cliniciananalysisService.caTreatmentPlanAverageCostTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
       this.treatmentPlanTrendLabels1 = [];
       this.treatmentPlanTrendLabels = [];
-
+      this.treatPlanTrend[0]['data']=[];
       this.treatmentPlanTrend1 = [];
-      this.treatmentPlanTrend2 = [];
       if (data.message == 'success') {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
         this.treatmentPlanTrendLoader = false;
         if (data.data) {
-          if (data.data.plan_fee_all) {
-            data.data.plan_fee_all.forEach(res => {
+          if (data.data) {
+            data.data.forEach(res => {
               if (res.average_fees >= 0) {
                 if (res.average_fees)
                   this.treatmentPlanTrend1.push(Math.round(res.average_fees));
@@ -7842,40 +7995,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 this.treatmentPlanTrendLabels1.push(res.year);
             });
           }
-
-          if (data.data.plan_fee_completed) {
-            data.data.plan_fee_completed.forEach(res => {
-              if (res.average_fees >= 0) {
-                if (res.average_fees)
-                  this.treatmentPlanTrend2.push(Math.round(res.average_fees));
-                else
-                  this.treatmentPlanTrend2.push(0);
-              }
-              /* if (this.trendValue == 'c')
-                   this.treatmentPlanTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-                 else
-                   this.treatmentPlanTrendLabels1.push(res.year);*/
-            });
-          }
-
-
-          /*   data.data.forEach(res => {
-               if (res.val.total_fee_all)
-                 this.treatmentPlanTrend1.push(Math.round(res.val.average_cost));
-               else
-                 this.treatmentPlanTrend1.push(0);
-               if (res.val.total_completed)
-                 this.treatmentPlanTrend2.push(Math.round(res.val.total_completed / res.val.total_plans));
-               else
-                 this.treatmentPlanTrend2.push(0);
-   
-               if (this.trendValue == 'c')
-                 this.treatmentPlanTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-               else
-                 this.treatmentPlanTrendLabels1.push(res.duration);
-             });*/
-
-
         }
         if (this.treatmentPlanTrend1.every((value) => value == 0)) this.treatmentPlanTrend1 = [];
         this.treatPlanTrend[0]['data'] = this.treatmentPlanTrend1;
@@ -7900,6 +8019,93 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     });
   }
+
+
+  public treatPlanTrendCmp: any[] = [
+    {
+      data: [], label: '', shadowOffsetX: 3,
+      backgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even
+      ],
+      shadowOffsetY: 2,
+      shadowBlur: 3,
+      shadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointBevelWidth: 2,
+      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointShadowOffsetX: 3,
+      pointShadowOffsetY: 3,
+      pointShadowBlur: 10,
+      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+      backgroundOverlayMode: 'multiply'
+    }];
+  public treatmentPlanTrend2 = [];
+  //Trend mode for Treatment PLan Chart Conpleted fees
+  private treatmentPlanCompletedFeesTrend() {
+    this.treatmentPlanTrendLoader = true;
+    var user_id;
+    var clinic_id;
+    this.clinic_id && this.cliniciananalysisService.caTreatmentPlanAverageCompletedFeeTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+      this.treatmentPlanTrendLabels1 = [];
+      this.treatmentPlanTrendLabels = [];
+      this.treatmentPlanTrend2 = [];
+      if (data.message == 'success') {
+        this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+        this.treatmentPlanTrendLoader = false;
+        if (data.data) {
+          if (data.data) {
+            data.data.forEach(res => {
+              if (res.average_fees >= 0) {
+                if (res.average_fees)
+                  this.treatmentPlanTrend2.push(Math.round(res.average_fees));
+                else
+                  this.treatmentPlanTrend2.push(0);
+              }
+               if (this.trendValue == 'c')
+                   this.treatmentPlanTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+                 else
+                   this.treatmentPlanTrendLabels1.push(res.year);
+            });
+          }
+
+        }
+        if (this.treatmentPlanTrend2.every((value) => value == 0)) this.treatmentPlanTrend2 = [];
+        this.treatPlanTrendCmp[0]['data'] = this.treatmentPlanTrend2;
+        this.treatmentPlanTrendLabels = this.treatmentPlanTrendLabels1;
+
+        let dynamicColors = [];
+        this.treatmentPlanTrendLabels.forEach((label, labelIndex) => {
+          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+        }); // This is dynamic array for colors of bars        
+        this.treatPlanTrendCmp[0].backgroundColor = dynamicColors;
+
+
+        if (this.treatmentPlanTrendLabels.length <= 0) {
+          this.gaugeValueTreatment = 0;
+        }
+      }
+    }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+
+    });
+  }
+
+
 
   public patientComplaintTrend: any[] = [
     {
@@ -8997,9 +9203,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.collectionExpHourlyRateTrend();
       }
       this.fdnewPatientsRateTrend();
-      this.treatmentPlanTrend();
       this.fdtreatmentPlanRateTrend();
       if(this.user_type != '4'){
+        if(this.tcmain == 1){
+          this.treatmentPlanTrend();
+        }else if(this.tcmain == 2){
+          this.treatmentPlanCompletedFeesTrend();
+        }
         if(this.prebook =="recall"){
           this.fdRecallPrebookRateTrend();
         }else if(this.prebook =="treatment"){
@@ -9007,6 +9217,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }      
       if(this.user_type == '4'){
+        this.treatmentPlanTrend();
+        this.treatmentPlanCompletedFeesTrend();
         this.fdRecallPrebookRateTrend();
         this.fdTreatmentPrebookRateTrend();
       }
@@ -9015,7 +9227,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       // this.fdhourlyRateRateDentistsTrend();
      // this.fdhourlyRateRateOhtTrend();     
       
-      this.changeTreatmentCostSingle('1');
+     // this.changeTreatmentCostSingle('1');
      // this.changePrebookRate('recall','single');
     }
   }

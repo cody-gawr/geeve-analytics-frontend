@@ -2407,10 +2407,10 @@
             <div class="card-body">
               <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec" fxLayoutAlign="center">
                 <div fxFlex.gt-sm="37.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Avg. Proposed Fees</small>
+                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1','all')">Avg. Proposed Fees</small>
                 </div>
                 <div fxFlex.gt-sm="37.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Avg. Completed Fees</small>
+                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2','all')">Avg. Completed Fees</small>
                 </div>
               </div>
               <div class="cl-card-height-new">
@@ -2536,11 +2536,11 @@
             <div class="card-body">
               <div fxLayout="row wrap" fxLayoutAlign="center" class="treatment_cost sa_tabs_main_sec">
                 <div fxFlex.gt-sm="37.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCostSingle('1')">Avg. Proposed
+                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1','single')">Avg. Proposed
                     Fees</small>
                 </div>
                 <div fxFlex.gt-sm="37.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCostSingle('2')">Avg. Completed Fees</small>
+                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2','single')">Avg. Completed Fees</small>
                 </div>
               </div>
               <!-- <div fxLayout="row wrap" fxLayoutAlign="center center" class="prebook_rate sa_tabs_main_sec btn-right">
@@ -2554,23 +2554,38 @@
               </div> -->
 
 
-              <div class="chart div-height"
-                *ngIf="showTrendChart == false && gaugeValueTreatment > 0 && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader"
-                fxLayout="row" fxLayoutAlign="start center">
+              <div class="chart div-height" fxLayout="row" fxLayoutAlign="start center"
+               *ngIf="showTrendChart == false && gaugeValueTreatment > 0 && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader && tcmain == 1">
                 <ngx-gauge [type]="gaugeType" [value]="gaugeValueTreatment" [label]="gaugeLabelTreatment"
                   [thick]="gaugeThick" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor"
                   [cap]="cap" [max]="maxplanTotalGoal" [duration]="gaugeDuration" [prepend]="gaugePrependText"
                   [size]="size">
                 </ngx-gauge>
               </div>
-              <div
-                *ngIf="showTrendChart == true && treatPlanTrend[0]['data'].length > 0 && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader"
+              <div class="chart div-height" fxLayout="row" fxLayoutAlign="start center"
+               *ngIf="showTrendChart == false && gaugeValueTreatmentCmp > 0 && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader && tcmain == 2">
+                <ngx-gauge [type]="gaugeType" [value]="gaugeValueTreatmentCmp" [label]="gaugeLabelTreatment"
+                  [thick]="gaugeThick" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor"
+                  [cap]="cap" [max]="maxplanTotalGoal" [duration]="gaugeDuration" [prepend]="gaugePrependText"
+                  [size]="size">
+                </ngx-gauge>
+              </div>
+              <div *ngIf="showTrendChart == true && treatPlanTrend[0]['data'].length > 0 && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader && !treatmentPlanTrendLoader && tcmain == 1" 
                 class="div-height">
-                <canvas #myCanvas id="treatmentPlanTrend" baseChart [datasets]="treatPlanTrend"
-                  [labels]="treatmentPlanTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
-                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
-                  (chartClick)="chartClicked($event)">
-                </canvas>
+                  <canvas #myCanvas id="treatmentPlanTrend" baseChart [datasets]="treatPlanTrend"
+                    [labels]="treatmentPlanTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
+                    (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
+                    (chartClick)="chartClicked($event)">
+                  </canvas>
+                </div>
+                <div *ngIf="showTrendChart == true && treatPlanTrendCmp[0]['data'].length > 0 && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader && !treatmentPlanTrendLoader && tcmain == 2"
+                  class="div-height">
+                  <canvas 
+                    #myCanvas id="treatmentPlanTrend" baseChart [datasets]="treatPlanTrendCmp"
+                      [labels]="treatmentPlanTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
+                      (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
+                      (chartClick)="chartClicked($event)">
+                    </canvas>
               </div>
               <div
                 *ngIf="((showTrendChart == false && gaugeValueTreatment <= 0 ) || (showTrendChart == true && treatPlanTrend[0]['data'].length <= 0)) && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader && treatmentPlanAverageCostTab == '1'"
@@ -2580,7 +2595,7 @@
                 <p class="chart-placeholder-text">You have no proposed treatment in the selected period</p>
               </div>
               <div
-                *ngIf="((showTrendChart == false && gaugeValueTreatment <= 0 ) || (showTrendChart == true && treatPlanTrend[0]['data'].length <= 0)) && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader && treatmentPlanAverageCostTab == '2'"
+                *ngIf="((showTrendChart == false && gaugeValueTreatment <= 0 ) || (showTrendChart == true && treatPlanTrendCmp[0]['data'].length <= 0)) && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader && treatmentPlanAverageCostTab == '2'"
                 class="no-data-placeholder">
                 <div class="sa_nodata_div">
                 </div>
@@ -2591,7 +2606,8 @@
               <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
                 fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                  <h3 class="m-0 value-num">${{gaugeValueTreatment | number:'1.0-0' }}</h3>
+                  <h3  *ngIf="tcmain == '1'" class="m-0 value-num">${{gaugeValueTreatment | number:'1.0-0' }}</h3>
+                  <h3  *ngIf="tcmain == '2'" class="m-0 value-num">${{gaugeValueTreatmentCmp | number:'1.0-0' }}</h3>
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
                   <span class="value-text" *ngIf="currentText == ''">Current Average</span>
                 </div>
@@ -2608,7 +2624,7 @@
                 </div> -->
               </div>
             </div>
-            <div *ngIf="buildChartTreatmentLoader || buildChartTreatmentDentistLoader"
+            <div *ngIf="buildChartTreatmentLoader || buildChartTreatmentDentistLoader || treatmentPlanTrendLoader"
               class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
               <div class="loader-text">Calculating...</div>
             </div>
@@ -2727,14 +2743,14 @@
             </mat-card-title>
 
             <div class="card-body">
-              <div fxLayout="row wrap" class="hide treatment_cost sa_tabs_main_sec">
+              <!-- <div fxLayout="row wrap" class="hide treatment_cost sa_tabs_main_sec">
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Avg. Proposed Fees</small>
+                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1','single')">Avg. Proposed Fees</small>
                 </div>
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Avg. Completed Fees</small>
+                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2','single')">Avg. Completed Fees</small>
                 </div>
-              </div>
+              </div> -->
               <div class="chart div-height"
                 *ngIf="showTrendChart == false && treatmentPlanValue >= 0 && !treatmentPlanRateDentistLoader"
                 fxLayout="row" fxLayoutAlign="start center">
@@ -3138,14 +3154,14 @@
               </div>
             </mat-card-title>
             <div class="card-body">
-              <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec hide-item">
+              <!-- <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec hide-item">
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Avg. Proposed Fees</small>
                 </div>
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Avg. Completed Fees</small>
                 </div>
-              </div>
+              </div> -->
               <div class="chart">
                 <div *ngIf="showpatientCtblTbl === false && showTrendChart == false && doughnutChartLabels.length > 0" class="div-height">
                   <canvas #myCanvas id="patientComplaints" baseChart class="chart" [data]="doughnutChartData"
@@ -3225,14 +3241,14 @@
               </div>
             </mat-card-title>
             <div class="card-body">
-              <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec hide-item">
+              <!-- <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec hide-item">
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Avg. Proposed Fees</small>
                 </div>
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Avg. Completed Fees</small>
                 </div>
-              </div>
+              </div> -->
               <div class="chart div-height" fxLayout="row" fxLayoutAlign="start center"
                 *ngIf="showTrendChart == false && gaugeValuePatients > 0">
                 <ngx-gauge [type]="gaugeType" [value]="gaugeValuePatients" [label]="gaugeLabelPatients"
