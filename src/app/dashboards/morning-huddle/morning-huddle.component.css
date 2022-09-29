@@ -1004,3 +1004,14 @@ tr.mat-row.cdk-row.ng-star-inserted:empty {
     border-radius: 8px;
     height: 40px;
 }
+.custom-tooltip::after {
+    content      : " ";
+    position     : absolute;
+    margin-top   : -6px;
+    margin-left  : -5px;
+    border-left  : 8px solid transparent;
+    border-right : 8px solid transparent;
+    border-bottom: 8px solid transparent !important;
+    right        : 8px;
+    top          : 0px;
+}

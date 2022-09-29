@@ -864,3 +864,14 @@ div.mat-chip-list-wrapper .custom-tooltip {
     text-align: center;
     color: #ca1c1c;
 }
+.custom-tooltip::after {
+    content      : " ";
+    position     : absolute;
+    margin-top   : -6px;
+    margin-left  : -5px;
+    border-left  : 8px solid transparent;
+    border-right : 8px solid transparent;
+    border-bottom: 8px solid transparent !important;
+    right        : 8px;
+    top          : 0px;
+}

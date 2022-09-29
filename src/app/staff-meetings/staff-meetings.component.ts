@@ -205,7 +205,8 @@ export class StaffMeetingsComponent implements OnInit{
       });
 
       this.invites_form = this.formBuilder.group({
-        invites: [null, Validators.compose([Validators.required])]
+        invites: [null, Validators.compose([Validators.required])],
+        invites_input: [null,'']
       });
 
     }
@@ -473,7 +474,7 @@ export class StaffMeetingsComponent implements OnInit{
     if(this.create_meeting.opened)
       this.create_meeting.close();
   }
-
+  public staffTemp;
   // get the list of user 
   getUsers() {
     this.tasksService.getUsers().subscribe((res) => {
@@ -489,6 +490,7 @@ export class StaffMeetingsComponent implements OnInit{
           });
           let all = {id: -1, name : "All"};
           this.staff.unshift(all);
+          this.staffTemp = [...this.staff];
         }
       },
       (error) => {}
@@ -960,5 +962,20 @@ export class StaffMeetingsComponent implements OnInit{
     this.headerService.getClinics().subscribe(res=>{
       this.clinics = [...res.data];
     });
+  }
+
+  // apply dynamic filter on the staff users
+  findStaff(event){
+    if (event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode >= 65 && event.keyCode <= 90) {
+      var value = this.invites_form.get('invites_input').value;
+      this.staffTemp = this.staff.filter(item=>{
+          if(item.name.toLowerCase().includes(value.toLowerCase())){
+            return item;
+          }
+      });
+    }
+    else{
+      this.staffTemp = [...this.staff];
+    }
   }
 }

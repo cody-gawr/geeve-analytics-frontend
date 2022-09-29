@@ -146,14 +146,15 @@
                                 id="chip"
                                 placeholder="Select Staff....."
                                 #invitesInput
-                                [formControl]="invites_form.controls['invites']"
+                                [formControl]="invites_form.controls['invites_input']"
                                 [matAutocomplete]="auto"
                                 [matChipInputFor]="invitesChipList"
                                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                [disabled]="allSelected">
+                                [disabled]="allSelected"
+                                (keyup)="findStaff($event)">
                             </mat-chip-list>
                             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedInvites($event)">
-                                <mat-option *ngFor="let user of staff" [value]="user.id">
+                                <mat-option *ngFor="let user of staffTemp" [value]="user.id">
                                 {{user.name}}
                                 </mat-option>
                             </mat-autocomplete>
