@@ -205,8 +205,7 @@ export class StaffMeetingsComponent implements OnInit{
       });
 
       this.invites_form = this.formBuilder.group({
-        invites: [null, Validators.compose([Validators.required])],
-        invites_input: [null,'']
+        invites: [null, Validators.compose([Validators.required])]
       });
 
     }
@@ -510,7 +509,7 @@ export class StaffMeetingsComponent implements OnInit{
 
     // collect the id's of the invited user 
     if(this.invited_users[0].id == -1){
-      this.staff.forEach(item=>{
+      this.staffTemp.forEach(item=>{
         if(item.id != -1){
           user_ids.push(item.id);
         }
@@ -676,7 +675,6 @@ export class StaffMeetingsComponent implements OnInit{
         this.agendaTab = true;
       }
     });
-      
   }
 
   // mark the meeting attended.
@@ -967,7 +965,7 @@ export class StaffMeetingsComponent implements OnInit{
   // apply dynamic filter on the staff users
   findStaff(event){
     if (event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode >= 65 && event.keyCode <= 90) {
-      var value = this.invites_form.get('invites_input').value;
+      var value = this.invites_form.get('invites').value;
       this.staffTemp = this.staff.filter(item=>{
           if(item.name.toLowerCase().includes(value.toLowerCase())){
             return item;
