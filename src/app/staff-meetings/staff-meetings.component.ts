@@ -11,6 +11,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/materia
 import { MatSort } from "@angular/material/sort";
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { HeaderService } from "../layouts/full/header/header.service";
+import Swal from 'sweetalert2';
 
 
 export const MY_DATE_FORMATS = {
@@ -82,11 +83,26 @@ export class StaffMeetingsComponent implements OnInit{
     public pages = [];
     public timezones = [];
     public clinics = [];
+    public chart_clinic_id;
 
     public currentPage: number = 1;
     public itemsPerPage = 10;
 
     public meeting_detail = {id:"",meeting_topic : "", start_time:"", end_time:"", link: "",meeting_date:"",agenda_template_id:"", created_date:"", showAlert : true};
+
+
+    
+    public tipPendingCompleteMarkStaffMeeting = {
+      title: 'Alert',
+      info: 'This meeting is pending to mark complete.',
+      direction: 'left'
+    }
+
+    public tipPendingReviewStaffMeeting = {
+        title: 'Alert',
+        info: 'This meeting is pending to mark complete review.',
+        direction: 'left'
+    }
 
     public time = [
       "01:00",
@@ -184,7 +200,8 @@ export class StaffMeetingsComponent implements OnInit{
         description: [null, Validators.compose([Validators.required])],
         chart :[null, null],
         start_date :[null, ''],
-        end_date: [null, '']
+        end_date: [null, ''],
+        clinic: [null, '']
       });
 
       this.invites_form = this.formBuilder.group({
@@ -211,7 +228,7 @@ export class StaffMeetingsComponent implements OnInit{
 
         this.boardMeetingPage = false;
         this.agendaTab = false;
-
+        this.meetingCards = [];
         this.getRolesIndividual();
         this.getAdengaTemplate();
         this.getUsers();
@@ -305,30 +322,12 @@ export class StaffMeetingsComponent implements OnInit{
   }
 
   // logic for the drawer toggle
-  drawerToggle(id, card : ElementRef<HTMLInputElement>){
-    this.meeting_detail.showAlert = true;
+  drawerToggle(card : ElementRef<HTMLInputElement>, meeting){
     if(!this.drawer.opened){
       $(card).parent(".meeting_card").addClass("active");
       this.create_meeting.close();
-      let now = new Date();
-      this.staffMeetingService.getMeeting(id,this.clinic_id).subscribe(res=>{
-        if(res.status == 200){
-          res.data.forEach(item=>{
-            let meeting_date = new Date(item.meeting_date);
-            if(now.getTime() > meeting_date.getTime()){
-              item.showAlert = true;
-            }else{
-              item.showAlert = false;
-            }
-            item.meeting_date = this.datepipe.transform(item.meeting_date, 'dd-MM-yyyy');
-          });
-          this.meeting_detail = res.data[0];
-          this.agenda_heading = res.data[0].meeting_topic; 
-          this.agenda_tab_has_data = res.data[0].agenda_template_id != null;
-        }else{
-          this.drawer.close();
-        }
-      });
+      this.agenda_heading = meeting.meeting_topic;
+      this.meeting_detail = meeting;
     }else{
       $(".meeting_card").removeClass("active");
     }
@@ -460,7 +459,6 @@ export class StaffMeetingsComponent implements OnInit{
       if(res.status == 200){
         this.isMeetingCreator = res.meetingCreator == 1 && res.meetingStatus == 1;
         if(res.meetingCreator == 1){
-          this.showAttendees = true;
           this.viewMeetingAttendees(meeting_id);
         }
         this.boardMeetingPage = true;
@@ -603,6 +601,7 @@ export class StaffMeetingsComponent implements OnInit{
 
   // call when we change the tab
   changeTab(tabIndex){
+    this.meetingCards = [];
     this.currentTab = tabIndex;
     this.drawer.close();
 
@@ -711,6 +710,8 @@ export class StaffMeetingsComponent implements OnInit{
       this.chart_id = 0;
       this.chart_start_date = "";
       this.chart_end_date = "";
+      this.create_agenda_form.get('clinic').clearValidators();
+      this.create_agenda_form.get('clinic').updateValueAndValidity();
       this.create_agenda_form.get('start_date').clearValidators();
       this.create_agenda_form.get('start_date').updateValueAndValidity();
       this.create_agenda_form.get('end_date').clearValidators();
@@ -747,6 +748,8 @@ export class StaffMeetingsComponent implements OnInit{
     this.show_date_picker = false;
     this.create_agenda_form.reset();
     this.create_agenda_form.get('chart').setValue(0);
+    this.create_agenda_form.get('clinic').clearValidators();
+    this.create_agenda_form.get('clinic').updateValueAndValidity();
     this.create_agenda_form.get('start_date').clearValidators();
     this.create_agenda_form.get('start_date').updateValueAndValidity();
     this.create_agenda_form.get('end_date').clearValidators();
@@ -800,18 +803,12 @@ export class StaffMeetingsComponent implements OnInit{
 
   //  use to get the meeting attendees list
   viewMeetingAttendees(meeting_id){
+    this.meeting_attendees = [];
+    this.showAttendees = false;
     this.staffMeetingService.getMeetingAttendees(meeting_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
-        res.data.forEach(item=>{
-          this.staff.forEach(ele=>{
-            if(item.invited_user == ele.id){
-              item.user_name = ele.name;
-            }
-          });
-        })
         this.meeting_attendees = [...res.data];
-        // console.log(this.meeting_attendees);
-        
+        this.showAttendees = true;
       }
     });
   }
@@ -837,8 +834,11 @@ export class StaffMeetingsComponent implements OnInit{
       this.show_date_picker = false;
 
       // reset the date value and its validations
+      this.create_agenda_form.get('clinic').setValue('');
       this.create_agenda_form.get('start_date').setValue('');
       this.create_agenda_form.get('end_date').setValue('');
+      this.create_agenda_form.get('clinic').clearValidators();
+      this.create_agenda_form.get('clinic').updateValueAndValidity();
       this.create_agenda_form.get('start_date').clearValidators();
       this.create_agenda_form.get('start_date').updateValueAndValidity();
       this.create_agenda_form.get('end_date').clearValidators();
@@ -847,6 +847,7 @@ export class StaffMeetingsComponent implements OnInit{
 
       // show date picker and update the validation for date
       this.show_date_picker = true;
+      this.create_agenda_form.get('clinic').setValidators([Validators.required]);
       this.create_agenda_form.get('start_date').setValidators([Validators.required]);
       this.create_agenda_form.get('end_date').setValidators([Validators.required]);
     }
@@ -883,17 +884,34 @@ export class StaffMeetingsComponent implements OnInit{
   // send email reminder to the invited user
   sendMeetingReminder(meeting_id){
     this.loader = true;
-    this.staffMeetingService.sendMeetingReminder(meeting_id, this.clinic_id).subscribe(res=>{
-      if(res.status == 200){
-        this.loader = false;
-        this.drawer.close();
-        $(".meeting_card").removeClass("active");
-        this.toastr.success('Reminder has been send successfully');
-      }else{
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Are you sure you want to send a reminder email to all meeting attendees?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.staffMeetingService.sendMeetingReminder(meeting_id, this.clinic_id).subscribe(res=>{
+          if(res.status == 200){
+            this.loader = false;
+            this.drawer.close();
+            $(".meeting_card").removeClass("active");
+            Swal.fire(
+              'Sent!',
+              'Reminder email has been sent.',
+              'success'
+            );
+          }else{
+            this.loader = false;
+          }
+        },error=>{
+          this.loader = false;
+        });
+      }else if(result.isDismissed){
         this.loader = false;
       }
-    },error=>{
-      this.loader = false;
     });
   }
 
@@ -905,10 +923,42 @@ export class StaffMeetingsComponent implements OnInit{
     })
   }
 
+
+  // clinic response
+    /**
+      * address : "second street"
+        clinicEmail: "undefined"
+        clinicName: "1st Clinic"
+        compare_mode: 0
+        config_user: {id: 189, clinics_count: 20}
+        connectedwith: "myob"
+        consultant: "prime"
+        contactName: "second names"
+        created: "2021-05-14T04:14:48+00:00"
+        daily_task_enable: 1
+        datasource: "pms-datasource-01"
+        days: "{\"sunday\":false,\"monday\":true,\"tuesday\":true,\"wednesday\":true,\"thursday\":true,\"friday\":true,\"saturday\":true}"
+        db_name: "test_jeeve_analytics"
+        db_server: "test-jeeve-solutions.ctun56veglzt.ap-southeast-2.rds.amazonaws.com"
+        equip_list_enable: 1
+        fta_uta: "item"
+        id: 86
+        is_deleted: 0
+        net_profit_exclusions: "123"
+        phoneNo: "undefined"
+        pms: null
+        sr: 1
+        timezone: "Australia/Perth"
+        trial_end_date: null
+        user_id: 189
+        utility_ver: "1.32.0.0"
+        wh_name: ""
+        wh_server: ""
+      */
+
   getClinic(){
     this.headerService.getClinics().subscribe(res=>{
-      // console.log(res);
-      
+      this.clinics = [...res.data];
     });
   }
 }

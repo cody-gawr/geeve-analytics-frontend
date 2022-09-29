@@ -12,7 +12,7 @@
                 <div *ngIf="meetingCards.length > 0">
                     <div class="card_meeting_card" *ngFor="let meeting of meetingCards; let i = index;">
                         <mat-card class="meeting_card">
-                            <div #card (click)="drawerToggle(meeting.id, card)">
+                            <div #card (click)="drawerToggle(card, meeting)">
                                 <mat-card-title class="header">
                                     <div class="meeting_card_header">
                                         {{meeting.meeting_topic}}
@@ -20,7 +20,7 @@
                                     
                                 </mat-card-title>
                                 <mat-card-content class="meeting_card_content">
-                                    <p><i class="fas fa-calendar"></i> {{meeting.meeting_date}}</p>
+                                    <p><i class="fa fa-calendar-check"></i> {{meeting.meeting_date}}</p>
                                     <p><i class="fas fa-clock"></i> {{meeting.start_time}} - {{meeting.end_time}}</p>
                                 </mat-card-content>
                             </div>      
@@ -46,15 +46,15 @@
                 <div *ngIf="meetingCards.length > 0">
                     <div class="card_meeting_card" *ngFor="let meeting of meetingCards; let i = index;">
                         <mat-card class="meeting_card">
-                            <div #card (click)="drawerToggle(meeting.id, card)">
+                            <div #card (click)="drawerToggle(card, meeting)">
                                 <mat-card-title class="header">
                                     <div class="meeting_card_header">
                                         {{meeting.meeting_topic}}
-                                        <span title="Pending to mark complete" *ngIf="meeting.showAlert" class="float-right"><i class="fas fa-exclamation"></i></span>
+                                        <span *ngIf="meeting.showAlert" class="float-right info-icon-container"><i [tooltip]="tipPendingCompleteMarkStaffMeeting" class="fa-solid fa-triangle-exclamation"></i></span>
                                     </div>
                                 </mat-card-title>
                                 <mat-card-content class="meeting_card_content">
-                                    <p><i class="fas fa-calendar"></i> {{meeting.meeting_date}}</p>
+                                    <p><i class="fa fa-calendar-check"></i> {{meeting.meeting_date}}</p>
                                     <p><i class="fas fa-clock"></i> {{meeting.start_time}} - {{meeting.end_time}}</p>
                                 </mat-card-content>
                             </div>
@@ -84,11 +84,11 @@
                                 <mat-card-title class="header">
                                     <div class="meeting_card_header">
                                         {{meeting.meeting_topic}}
-                                        <span title="Pending review" *ngIf="meeting.attended == 0" class="float-right"><i class="fas fa-exclamation"></i></span>
+                                        <span *ngIf="meeting.attended == 0" class="float-right info-icon-container"><i [tooltip]="tipPendingReviewStaffMeeting" class="fa-solid fa-triangle-exclamation"></i></span>
                                     </div>
                                 </mat-card-title>
                                 <mat-card-content class="meeting_card_content">
-                                    <p><i class="fas fa-calendar"></i> {{meeting.meeting_date}}</p>
+                                    <p><i class="fa fa-calendar-check"></i> {{meeting.meeting_date}}</p>
                                     <p><i class="fas fa-clock"></i> {{meeting.start_time}} - {{meeting.end_time}}</p>
                                 </mat-card-content>
                             </div>
@@ -125,7 +125,7 @@
                     </div>
                 </mat-card-title>
                 <mat-card-subtitle>
-                    <p class="header_desc"><i class="fas fa-calendar"></i> {{meeting_detail.meeting_date}}</p>
+                    <p class="header_desc"><i class="fa fa-calendar-check"></i> {{meeting_detail.meeting_date}}</p>
                     <p class="header_desc"><i class="fas fa-clock"></i> {{meeting_detail.start_time}} - {{meeting_detail.end_time}}</p>
                 </mat-card-subtitle>
                 <hr>
@@ -187,7 +187,7 @@
                     </div>
                 </mat-card-title>
                 <mat-card-subtitle>
-                    <p class="header_desc"><i class="fas fa-calendar"></i> {{meeting_detail.meeting_date}}</p>
+                    <p class="header_desc"><i class="fa fa-calendar-check"></i> {{meeting_detail.meeting_date}}</p>
                     <p class="header_desc"><i class="fas fa-clock"></i> {{meeting_detail.start_time}} - {{meeting_detail.end_time}}</p>
                 </mat-card-subtitle>
                 <hr>
@@ -496,11 +496,14 @@
                             </div>
                             <div fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group" >
                                 <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
-                                    <mat-select #select [(ngModel)]="chart_id" (ngModelChange)="openDateRangePicker()" [formControl]="create_agenda_form.controls['chart']">
-                                        <mat-option *ngFor="let chart of charts" [value]="chart.id">
-                                          {{chart.chart_name}}
+                                    <mat-select #select [(ngModel)]="chart_clinic_id" [formControl]="create_agenda_form.controls['clinic']">
+                                        <mat-option *ngFor="let clinic of clinics" [value]="clinic.id">
+                                          {{clinic.clinicName}}
                                         </mat-option>
                                     </mat-select>
+                                    <mat-error>
+                                        Please Select clinic for selected chart.
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
@@ -519,7 +522,7 @@
                                     <mat-date-range-picker #picker_range></mat-date-range-picker>
                                     <mat-error>
                                         Please Select start Date & End Date
-                                      </mat-error>
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
@@ -559,7 +562,7 @@
                         </div>
                     
                         <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
-                            <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group" >
+                            <div fxFlex.gt-sm="23.33%" fxFlex.gt-xs="23%" fxFlex="100" class="btn-group" >
                                 <button type="button" mat-button (click)="close(agenda_drawer, agenda_form)" class="mat-raised-button mat-gray">Cancel</button>
                             </div>
                             <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
