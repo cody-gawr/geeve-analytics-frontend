@@ -2832,14 +2832,16 @@ toggleChangeProcess(){
       var user_id;
       var clinic_id;
     this.stackedChartTrendData = [
-    {data: [], label: 'Oral Surgeon'},
-    {data: [], label: 'Orthodontics' },
-    {data: [], label: 'Prosthodontics' },
-    {data: [], label: 'Endodontics' },
-    {data: [], label: 'Paediatrics' },
-    {data: [], label: 'Periodontics'},
-    {data: [], label: 'Sleep Consult' },
-    {data: [], label: 'Implants' }  ];
+      {data: [], label: 'Oral Surgeon'},
+      {data: [], label: 'Orthodontics' },
+      {data: [], label: 'Prosthodontics'},
+      {data: [], label: 'Endodontics'},
+      {data: [], label: 'Paediatrics'},
+      {data: [], label: 'Periodontics'},
+      {data: [], label: 'Sleep Consult'},
+      {data: [], label: 'Implants'}, 
+      {data: [], label: 'Oral Medicine'}  
+    ];
     
       this.showTrend =true;
       // this.showInternal =false;
@@ -2854,6 +2856,7 @@ toggleChangeProcess(){
       this.stackedChartTrendData6 =[];
       this.stackedChartTrendData7 =[];
       this.stackedChartTrendData8 =[];
+      this.stackedChartTrendData9 =[];
    this.clinic_id && this.clinicianproceeduresService.ClinicianReferralTrendDentist(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
     this.Apirequest = this.Apirequest -1;
     // this.showInternal =false;
@@ -2868,6 +2871,7 @@ toggleChangeProcess(){
       this.stackedChartTrendData6 =[];
       this.stackedChartTrendData7 =[];
       this.stackedChartTrendData8 =[];
+      this.stackedChartTrendData9 =[];
     if(this.mode == 'Internal') {
        if(data.message == 'success' && data.data){
          if(data.data.internal.length > 0) {
@@ -2880,6 +2884,7 @@ toggleChangeProcess(){
                    this.stackedChartTrendData6.push(res.val[5]);
                    this.stackedChartTrendData7.push(res.val[6]);
                    this.stackedChartTrendData8.push(res.val[7]);
+                   this.stackedChartTrendData9.push(res.val[8]);
                    if(this.trendValue == 'c')
                    this.stackedChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
@@ -2893,6 +2898,7 @@ toggleChangeProcess(){
                this.stackedChartTrendData[5]['data'] = this.stackedChartTrendData6;
                this.stackedChartTrendData[6]['data'] = this.stackedChartTrendData7;
                this.stackedChartTrendData[7]['data'] = this.stackedChartTrendData8;
+               this.stackedChartTrendData[8]['data'] = this.stackedChartTrendData9;
                this.stackedChartTrendLabels = this.stackedChartTrendLabels1;
              }
            }
@@ -2909,6 +2915,7 @@ toggleChangeProcess(){
                    this.stackedChartTrendData6.push(res.val[5]);
                    this.stackedChartTrendData7.push(res.val[6]);
                    this.stackedChartTrendData8.push(res.val[7]);
+                   this.stackedChartTrendData9.push(res.val[8]);
                   if(this.trendValue == 'c')
                    this.stackedChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
@@ -2922,6 +2929,7 @@ toggleChangeProcess(){
                this.stackedChartTrendData[5]['data'] = this.stackedChartTrendData6;
                this.stackedChartTrendData[6]['data'] = this.stackedChartTrendData7;
                this.stackedChartTrendData[7]['data'] = this.stackedChartTrendData8;
+               this.stackedChartTrendData[8]['data'] = this.stackedChartTrendData9;
                this.stackedChartTrendLabels = this.stackedChartTrendLabels1;
              }
            }
@@ -2939,6 +2947,7 @@ toggleChangeProcess(){
                    this.stackedChartTrendData6.push(res.val[5]);
                    this.stackedChartTrendData7.push(res.val[6]);
                    this.stackedChartTrendData8.push(res.val[7]);
+                   this.stackedChartTrendData9.push(res.val[8]);
                    }
                    if(this.trendValue == 'c')
                    this.stackedChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
@@ -2953,11 +2962,12 @@ toggleChangeProcess(){
                this.stackedChartTrendData[5]['data'] = this.stackedChartTrendData6;
                this.stackedChartTrendData[6]['data'] = this.stackedChartTrendData7;
                this.stackedChartTrendData[7]['data'] = this.stackedChartTrendData8;
+               this.stackedChartTrendData[8]['data'] = this.stackedChartTrendData9;
                this.stackedChartTrendLabels = this.stackedChartTrendLabels1;
              }
            }
          }
-         this.stackedChartTrendDataMax = Math.max(...this.stackedChartTrendData[0]['data'])+Math.max(...this.stackedChartTrendData[1]['data'])+Math.max(...this.stackedChartTrendData[2]['data'])+Math.max(...this.stackedChartTrendData[3]['data'])+Math.max(...this.stackedChartTrendData[4]['data'])+Math.max(...this.stackedChartTrendData[5]['data'])+Math.max(...this.stackedChartTrendData[6]['data'])+Math.max(...this.stackedChartTrendData[7]['data']);
+         this.stackedChartTrendDataMax = Math.max(...this.stackedChartTrendData[0]['data'])+Math.max(...this.stackedChartTrendData[1]['data'])+Math.max(...this.stackedChartTrendData[2]['data'])+Math.max(...this.stackedChartTrendData[3]['data'])+Math.max(...this.stackedChartTrendData[4]['data'])+Math.max(...this.stackedChartTrendData[5]['data'])+Math.max(...this.stackedChartTrendData[6]['data'])+Math.max(...this.stackedChartTrendData[7]['data'])+Math.max(...this.stackedChartTrendData[8]['data']);
 
        
     }, error => {

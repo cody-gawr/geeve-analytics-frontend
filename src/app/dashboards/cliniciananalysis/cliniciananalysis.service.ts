@@ -478,7 +478,7 @@ export class ClinicianAnalysisService {
     }
     hourlyRateChartDesntists(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRateDesntists?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRateDentists?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
@@ -595,7 +595,7 @@ export class ClinicianAnalysisService {
      // Dentist Production Single Service
      cahourlyRateChartDesntistsTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRateDesntistsTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRateDentistsTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
             .pipe(map((response: Response) => {
                 return response;
             })
@@ -644,7 +644,7 @@ export class ClinicianAnalysisService {
     }
     hourlyRateDentistsSingle(dentist_id, clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRateDesntists?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+        return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRateDentists?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
             .pipe(map((response: Response) => {
                 return response;
             })
