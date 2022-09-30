@@ -50,7 +50,7 @@
                                 <mat-card-title class="header">
                                     <div class="meeting_card_header">
                                         {{meeting.meeting_topic}}
-                                        <span *ngIf="meeting.showAlert" class="float-right info-icon-container"><i [tooltip]="tipPendingCompleteMarkStaffMeeting" class="fa-solid fa-triangle-exclamation"></i></span>
+                                        <span *ngIf="meeting.showAlert" class="float-right info-icon-container"><i [tooltip]="tipPendingCompleteMarkStaffMeeting" class="fa fa-exclamation-triangle"></i></span>
                                     </div>
                                 </mat-card-title>
                                 <mat-card-content class="meeting_card_content">
@@ -84,7 +84,7 @@
                                 <mat-card-title class="header">
                                     <div class="meeting_card_header">
                                         {{meeting.meeting_topic}}
-                                        <span *ngIf="meeting.attended == 0" class="float-right info-icon-container"><i [tooltip]="tipPendingReviewStaffMeeting" class="fa-solid fa-triangle-exclamation"></i></span>
+                                        <span *ngIf="meeting.attended == 0" class="float-right info-icon-container"><i [tooltip]="tipPendingReviewStaffMeeting" class="fa fa-exclamation-triangle"></i></span>
                                     </div>
                                 </mat-card-title>
                                 <mat-card-content class="meeting_card_content">
