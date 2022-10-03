@@ -2338,9 +2338,10 @@ public currentText;
         dentistVal = $('.internal_dentist').val();
      else
         dentistVal = $('.external_dentist').val();
-    if(dentistVal == ''){
+    if(dentistVal == '' || this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
       dentistVal = 'all';
-    } 
+    }
+
     if(duration == 'w') {
       this.trendText= 'Last Week';
       this.currentText= 'This Week';

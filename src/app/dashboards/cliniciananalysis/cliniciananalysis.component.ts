@@ -200,7 +200,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         ]
       }];
 
-    this.filterDate(this.chartService.duration$.value);
+    // this.filterDate(this.chartService.duration$.value);
   }
 
   ngOnInit() {
@@ -1541,6 +1541,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     $('.sa_tabs_data button').prop('disabled',true); 
     if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
       this.Apirequest = 7;
+      newValue = 'all';
       $('.multi-clinic-dis').addClass("disablePointer");
       $('.multi-clinic-pro').addClass("disablePointerProgress");
     }else{
