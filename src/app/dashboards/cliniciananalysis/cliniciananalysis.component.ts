@@ -2491,7 +2491,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             var name = res.provider_name;
             var pName ='';
             if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
-                pName = res.provider_name + " - " + res.clinicName;
+                pName = res.provider_name + " - " + res.clinic_name;
               }else{
                 pName = res.provider_name;
               }
@@ -2655,7 +2655,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             var name = res.provider_name;
             var pName ='';
             if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
-                pName = res.provider_name + " - " + res.clinicName;
+                pName = res.provider_name + " - " + res.clinic_name;
               }else{
                 pName = res.provider_name;
               }
@@ -2819,7 +2819,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             var name = res.provider_name;
             var pName ='';
             if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
-                pName = res.provider_name + " - " + res.clinicName;
+                pName = res.provider_name + " - " + res.clinic_name;
               }else{
                 pName = res.provider_name;
               }
@@ -2982,7 +2982,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             var name = res.provider_name;
             var pName ='';
             if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
-                pName = res.provider_name + " - " + res.clinicName;
+                pName = res.provider_name + " - " + res.clinic_name;
               }else{
                 pName = res.provider_name;
               }
@@ -3145,7 +3145,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             var name = res.provider_name;
             var pName ='';
             if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
-                pName = res.provider_name + " - " + res.clinicName;
+                pName = res.provider_name + " - " + res.clinic_name;
               }else{
                 pName = res.provider_name;
               }
@@ -3309,7 +3309,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             var name = res.provider_name;
             var pName ='';
             if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
-                pName = res.provider_name + " - " + res.clinicName;
+                pName = res.provider_name + " - " + res.clinic_name;
               }else{
                 pName = res.provider_name;
               }

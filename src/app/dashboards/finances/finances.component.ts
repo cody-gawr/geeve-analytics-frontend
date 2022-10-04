@@ -2067,7 +2067,7 @@ export class FinancesComponent implements AfterViewInit {
         this.totalDiscountChartTotal = 0;
         data.data.forEach(res => {
           if (res.total != 0) {
-            this.clinicsName.push(res.clinicName);
+            this.clinicsName.push(res.clinic_name);
             this.clinicsids.push(res.clinic_id);
             this.totalDiscountChartDatares.push(Math.round(res.discounts));
             var name = '';
