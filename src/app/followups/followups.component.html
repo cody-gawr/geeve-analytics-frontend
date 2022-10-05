@@ -20,7 +20,7 @@
                                 class="info-icon" />
                         </div>
                     </div>
-                     <div class="showExport" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+                     <div class="showExport" *ngIf="(apiUrl.includes('test') || apiUrl.includes('staging-')) && followupOverDueRecall.length > 0">
                         <i   class="fas fa-file-export" (click)="exportreport('overdue_recalls')"> Export</i>
                     </div>
                     <div class="showComplete" *ngIf="followupOverDueRecall.length > 0">
@@ -291,7 +291,7 @@
                         </div>
                     </div>  
 
-                     <div class="showExport" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+                     <div class="showExport" *ngIf="(apiUrl.includes('test') || apiUrl.includes('staging-')) && followupTickFollowups.length > 0">
                         <i   class="fas fa-file-export" (click)="exportreport('tick_followups')"> Export</i>
                     </div>
 
@@ -608,7 +608,7 @@
                                 class="info-icon" />
                         </div>
                     </div>
-                      <div class="showExport" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+                      <div class="showExport" *ngIf="(apiUrl.includes('test') || apiUrl.includes('staging-')) && followupPostOpCalls.length > 0">
                         <i   class="fas fa-file-export" (click)="exportreport('post_op')"> Export</i>
                     </div>
                     <div class="showComplete" *ngIf="followupPostOpCalls.length > 0">
@@ -810,7 +810,7 @@
                                 class="info-icon" />
                         </div>
                     </div>
-                    <div class="showExport" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+                    <div class="showExport" *ngIf="(apiUrl.includes('test') || apiUrl.includes('staging-')) && followupFtaFollowups.length > 0">
                         <i   class="fas fa-file-export" (click)="exportreport('fta_followups')"> Export</i>
                     </div>
                     <div class="showComplete" *ngIf="followupFtaFollowups.length > 0">
@@ -1120,7 +1120,7 @@
                         </div>
                     </div>
 
-                    <div class="showExport" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+                    <div class="showExport" *ngIf="(apiUrl.includes('test') || apiUrl.includes('staging-')) && followupUtaFollowups.length > 0">
                         <i   class="fas fa-file-export" (click)="exportreport('uta_followups')"> Export</i>
                     </div>
                     <div class="showComplete" *ngIf="followupUtaFollowups.length > 0">
@@ -1435,7 +1435,7 @@
                             <img [tooltip]="charTips['52']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                         </div> -->
                     </div>
-                    <div class="showExport" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+                    <div class="showExport" *ngIf="(apiUrl.includes('test') || apiUrl.includes('staging-')) && internalReferrals.length > 0">
                         <i class="fas fa-file-export" (click)="exportreport('internal_referrals')"> Export</i>
                     </div>
                     <div class="showComplete" *ngIf="internalReferrals.length > 0">

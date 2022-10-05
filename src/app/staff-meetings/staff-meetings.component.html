@@ -33,6 +33,7 @@
                             </button>
                         </li>
                     </ul>
+                    <span *ngIf="data.length > itemsPerPage" class="float-right">Items per page {{itemsPerPage}} and current page items {{meetingCards.length}}</span>
                 </div>
                 <div *ngIf="meetingCards.length <= 0">
                     <mat-card class="meeting_card">
@@ -67,6 +68,7 @@
                             </button>
                         </li>
                     </ul>
+                    <span *ngIf="data.length > itemsPerPage" class="float-right">Items per page {{itemsPerPage}} and current page items {{meetingCards.length}}</span>
                 </div>
                 <div *ngIf="meetingCards.length <= 0">
                     <mat-card class="meeting_card">
@@ -101,6 +103,7 @@
                             </button>
                         </li>
                     </ul>
+                    <span *ngIf="data.length > itemsPerPage" class="float-right">Items per page {{itemsPerPage}} and current page items {{meetingCards.length}}</span>
                 </div>
                 <div *ngIf="meetingCards.length <= 0">
                     <mat-card class="meeting_card">
@@ -129,7 +132,7 @@
                     <p class="header_desc"><i class="fas fa-clock"></i> {{meeting_detail.start_time}} - {{meeting_detail.end_time}}</p>
                 </mat-card-subtitle>
                 <hr>
-                <form [formGroup]="invites_form" #invite>
+                <form (keydown.enter)="$event.preventDefault()" [formGroup]="invites_form" #invite>
                     <mat-card-content>
                         <mat-form-field class="example-chip-list" appearance="outline">
                             <mat-label>Invites</mat-label>
@@ -218,7 +221,7 @@
         <mat-card class="meeting_content">
             <span class="close-icon float-right" (click)="close(create_meeting, meeting_form)"><i class="ti-close"></i></span>
             <hr>
-            <form [formGroup]="create_meeting_form" #meeting_form class="create-meeting-form">   
+            <form (keydown.enter)="$event.preventDefault()" [formGroup]="create_meeting_form" #meeting_form class="create-meeting-form">   
                 <mat-card-content>
                         <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                             <div  fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group" >
@@ -446,7 +449,7 @@
             <hr>
                 <mat-card-content class="meeting_card_content">
                     
-                    <form [formGroup]="create_agenda_form" #agenda_form>        
+                    <form (keydown.enter)="$event.preventDefault()" [formGroup]="create_agenda_form" #agenda_form>        
 
                         <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                             <div  fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group" >

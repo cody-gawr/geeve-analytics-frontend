@@ -2199,6 +2199,7 @@ export class MarketingComponent implements AfterViewInit {
     if (this.connectedwith != '' && this.multipleClinicsSelected == false) {
       this.Apirequest = 4;
     }
+    this.fdnewPatientsAcqTrend();
     this.mkNewPatientsByReferralTrend();
     //this.mkNewPatientsByReferralTrend();
     //this.mkRevenueByReferral();
@@ -2404,9 +2405,9 @@ export class MarketingComponent implements AfterViewInit {
     this.newPatientsChartTrendLabels1 = [];
     this.newPatientsChartTrend1 = [];
     this.fdnewPatientsRatioLoader = true;
-    this.fdnewPatientsAcqLoader = true;
+    // this.fdnewPatientsAcqLoader = true;
     this.marketingService.mkNoNewPatientsTrend(this.clinic_id, this.trendValue).subscribe((data) => {
-      // this.fdnewPatientsRatioLoader = false;
+      this.fdnewPatientsRatioLoader = false;
       this.newPatientsChartTrend1 = [];
       this.newPatientsChartTrendLabels1 = [];
       this.newPatientsChartTrendLabels = [];
@@ -2451,11 +2452,11 @@ export class MarketingComponent implements AfterViewInit {
           });
           this.newPatientsChartTrend[0]['data'] = this.newPatientsChartTrend1;
           this.newPatientsChartTrendLabels = this.newPatientsChartTrendLabels1;
-          this.fdnewPatientsAcqTrend();
+          // this.fdnewPatientsAcqTrend();
         }
       }
       this.fdnewPatientsRatioLoader = false;
-      this.fdnewPatientsAcqLoader = false;
+      // this.fdnewPatientsAcqLoader = false;
 
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";

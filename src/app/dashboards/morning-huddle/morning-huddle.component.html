@@ -1160,7 +1160,7 @@
               <div class="info-icon-container"><img [tooltip]="charTips['43']" src="../assets/images/info-icon.png"
                   alt="info-icon" class="info-icon" /></div>
             </div>
-            <div class="showComplete">
+            <div *ngIf="followupPostOpCallsInComp.length > 0" class="showComplete">
               <mat-checkbox name="status" [checked]="postopCallsPostOp" (change)="updateToCompleteOP($event)">Show
                 Complete</mat-checkbox>
             </div>
@@ -1322,7 +1322,7 @@
               <div class="info-icon-container"><img [tooltip]="charTips['44']" src="../assets/images/info-icon.png"
                   alt="info-icon" class="info-icon" /></div>
             </div>
-            <div class="showComplete">
+            <div *ngIf="followupOverDueRecallInCMP.length > 0" class="showComplete">
               <mat-checkbox name="status" [checked]="showCompleteOverdue" (change)="updateToCompleteOR($event)">Show
                 Complete</mat-checkbox>
             </div>
@@ -1518,7 +1518,7 @@
                   alt="info-icon" class="info-icon" /></div>
             </div>
 
-            <div class="showComplete">
+            <div *ngIf="followupTickFollowupsInCMP.length > 0" class="showComplete">
               <mat-checkbox name="status" [checked]="showCompleteTick" (change)="updateToCompleteTF($event)">Show
                 Complete
               </mat-checkbox>
@@ -1742,7 +1742,7 @@
                   alt="info-icon" class="info-icon" /></div>
             </div>
 
-            <div class="showComplete">
+            <div *ngIf="followupFtaFollowupsInCMP.length > 0" class="showComplete">
               <mat-checkbox name="status" [checked]="showCompleteFta" (change)="updateToCompleteFT($event)">Show
                 Complete
               </mat-checkbox>
@@ -1967,7 +1967,7 @@
                 alt="info-icon" class="info-icon" /></div>
           </div>
 
-          <div class="showComplete">
+          <div *ngIf="followupUtaFollowupsInCMP.length > 0" class="showComplete">
             <mat-checkbox name="status" [checked]="showCompleteUta" (change)="updateToCompleteUT($event)">Show
               Complete
             </mat-checkbox>

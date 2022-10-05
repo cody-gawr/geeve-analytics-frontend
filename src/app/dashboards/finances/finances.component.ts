@@ -2065,6 +2065,10 @@ export class FinancesComponent implements AfterViewInit {
         this.finTotalDiscountsLoader = false;
         this.totalDiscountChartDatares = [];
         this.totalDiscountChartTotal = 0;
+        if(data.data == null || data.data.length <= 0){
+          this.finTotalDiscountsLoader = false;
+          return;
+        }
         data.data.forEach(res => {
           if (res.total != 0) {
             this.clinicsName.push(res.clinic_name);
@@ -2803,6 +2807,10 @@ export class FinancesComponent implements AfterViewInit {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
+        if(data.data == null || data.data.length <= 0){
+          this.finTotalDiscountsTrendLoader = false;
+          return;
+        }
         data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
           this.showByclinic = true;

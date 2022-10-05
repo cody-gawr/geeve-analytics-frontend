@@ -348,13 +348,13 @@
                                 </div>
 
                                 <div
-                                    *ngIf="showTrend == true  && activePatients == false && newPatientsChartTrend1.length <=0 &&  newPatientsMultiLabels1.length <=0">
+                                    *ngIf="!fdnewPatientsRatioLoader && showTrend == true  && activePatients == false && newPatientsChartTrend1.length <=0 &&  newPatientsMultiLabels1.length <=0">
                                     <div class="sa_nodata_div"></div>
                                     <p class="chart-placeholder-text">You have no new patients in the selected period
                                     </p>
                                 </div>
                                 <div
-                                    *ngIf="showTrend == true && activePatients == true && activePatientsChartTrend1.length <=0  && newAPatientsMultiLabels1.length <=0">
+                                    *ngIf="!fdActivePatientLoader && showTrend == true && activePatients == true && activePatientsChartTrend1.length <=0  && newAPatientsMultiLabels1.length <=0">
                                     <div class="sa_nodata_div"></div>
                                     <p class="chart-placeholder-text">You have no active patients in the selected period
                                     </p>
