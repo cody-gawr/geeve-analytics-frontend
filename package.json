@@ -40,7 +40,7 @@
     "angular-user-idle": "^2.2.6",
     "chart.js": "^2.9.3",
     "chartjs-plugin-annotation": "^0.5.7",
-    "d3": "^7.2.1",
+    "d3": "^7.6.1",
     "jquery": "^3.6.1",
     "moment": "^2.29.1",
     "ng-recaptcha": "^8.0.1",
@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.15",
-    "@angular/cli": "^11.2.17",
+    "@angular/cli": "^11.2.19",
     "@angular/compiler-cli": "^11.2.14",
     "@angular/core": "^11.2.14",
     "@angular/language-service": "^11.2.14",
@@ -71,14 +71,14 @@
     "@types/node": "^12.20.55",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
-    "karma": "~2.0.0",
+    "karma": "^6.0.0",
     "karma-chrome-launcher": "~2.2.0",
     "karma-cli": "^2.0.0",
     "karma-coverage-istanbul-reporter": "~1.4.2",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "ts-node": "~5.0.1",
-    "tslint": "~5.9.1",
+    "tslint": "^6.1.0",
     "typescript": "~4.1.6"
   }
 }
