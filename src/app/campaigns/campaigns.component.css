@@ -255,10 +255,10 @@ table{
     margin-right: 10px;
 }
 
-.mat-card-title {
+/* .mat-card-title {
     padding-bottom: 30px !important;
     display: block;
-}
+} */
 
 .notes{ cursor: pointer; font-size: 17px;}
 .notes.green { color: #047c04; }

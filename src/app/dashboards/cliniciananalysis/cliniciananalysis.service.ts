@@ -26,83 +26,158 @@ export class ClinicianAnalysisService {
     // Dentist Production Service
     DentistProduction(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caDentistProduction?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caDentistProduction?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
     // Dentist Production Service
     DentistProductionDentist(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caDentistProductionDentist?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
+
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caDentistProductionDentist?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
     // Dentist Production Service
     DentistProductionOht(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caDentistProductionOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caDentistProductionOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
     // Dentist Production Service
     DentistCollection(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollection?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollection?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
     // Dentist Production Service
     DentistCollectionDentists(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionDentists?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionDentists?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
      // Dentist Production Service
      DentistCollectionOht(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
+
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
     // Dentist collection Exp Service
     DentistCollectionExp(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExp?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExp?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
     // Dentist collection Exp Service
     DentistCollectionExpDentists(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpDentists?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
+
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpDentists?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
     // Dentist collection Exp Service
     DentistCollectionExpOht(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
     // Dentist Production Service
     changeLoginStatus(): Observable<any> {
@@ -286,11 +361,20 @@ export class ClinicianAnalysisService {
     //Treatment Plan Average Cost service
     TreatmentPlan(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanAvgProposedFees?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
+
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanAvgProposedFees?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
 
     //Treatment Plan Average Cost Single service
@@ -306,11 +390,20 @@ export class ClinicianAnalysisService {
     //Treatment Plan Average Cost service
     TreatmentPlanCompletedFees(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanAvgCompletedFees?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
+
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanAvgCompletedFees?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
 
     //Treatment Plan Average Cost Single service
@@ -363,11 +456,20 @@ export class ClinicianAnalysisService {
     //Hourly Rate service
     NoPatients(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caNumComplaints?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
+
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caNumComplaints?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&provider_id=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
 
     //Hourly Rate service
@@ -383,11 +485,20 @@ export class ClinicianAnalysisService {
     // Dentist Production Service
     RecallPrebook(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caRecallRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
+
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caRecallRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
 
     // Dentist Production Service
@@ -403,11 +514,19 @@ export class ClinicianAnalysisService {
     // Dentist Production Service
     caReappointRate(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caReappointRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caReappointRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
 
     caReappointRateTrend(dentist_id, clinic_id, mode): Observable<any> {
@@ -434,11 +553,20 @@ export class ClinicianAnalysisService {
     // Dentist Production Service
     TreatmentPlanRate(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanCompRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
+
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanCompRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
 
     // Dentist Production Service
@@ -453,11 +581,19 @@ export class ClinicianAnalysisService {
     //Hourly Rate service
     NewPatients(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caNumNewPatients?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caNumNewPatients?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
     NewPatientsDentist(dentist_id, clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
@@ -470,27 +606,54 @@ export class ClinicianAnalysisService {
 
     hourlyRateChart(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );  
+        }
+
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
     hourlyRateChartDesntists(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRateDentists?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
+
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRateDentists?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
     hourlyRateChartOht(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRateOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
+
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRateOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
 
     // Dentist Production Single Service
@@ -506,27 +669,54 @@ export class ClinicianAnalysisService {
     // hourly rate collection
     collectionHourlyRate(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionHourlyRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
+
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionHourlyRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
     collectionHourlyRateDentist(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionHourlyRateDentist?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
+
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionHourlyRateDentist?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
     collectionHourlyRateOht(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionHourlyRateOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
+
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionHourlyRateOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
 
     collectionHourlyRateSingle(dentist_id, clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
@@ -551,27 +741,54 @@ export class ClinicianAnalysisService {
      // hourly rate collection EXP
      collectionExpHourlyRate(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpHourlyRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
+
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpHourlyRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
     collectionExpHourlyRateDentist(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpHourlyRateDentist?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
+
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpHourlyRateDentist?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
     collectionExpHourlyRateOht(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = ''): Observable<any> {
         var header = this.getHeaders();
+
+        if(clinician == ''){
+            return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpHourlyRateOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
+            .pipe(map((response: Response) => {
+                return response;
+                })
+            );
+        }
+
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpHourlyRateOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
     }
 
     collectionExpHourlyRateSingle(dentist_id, clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {

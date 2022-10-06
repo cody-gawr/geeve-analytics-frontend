@@ -325,9 +325,9 @@ table{
     margin-right: 10px;
 }
 
-.mat-card-title {
+/* .mat-card-title {
     padding-bottom: 30px !important;
-}
+} */
 .notes{ cursor: pointer; font-size: 17px;}
 .notes.green { color: #047c04; }
 .notes.red { color: #7c0404; }
@@ -443,6 +443,7 @@ table.noDataTableClass {
 }
 table.noDataTableClass mat-footer-row {
     border: 0px solid !important;
+    height: 100px;
 }
 
 .sa_huddle .production_description h4 span {
