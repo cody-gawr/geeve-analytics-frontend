@@ -2743,14 +2743,14 @@
             </mat-card-title>
 
             <div class="card-body">
-              <!-- <div fxLayout="row wrap" class="hide treatment_cost sa_tabs_main_sec">
+              <div [hidden]="true" fxLayout="row wrap" class="hide treatment_cost sa_tabs_main_sec">
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1','single')">Avg. Proposed Fees</small>
+                  <small class="sa_tab_btn tcmain1 active">Avg. Proposed Fees</small>
                 </div>
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2','single')">Avg. Completed Fees</small>
+                  <small class="sa_tab_btn tcmain2">Avg. Completed Fees</small>
                 </div>
-              </div> -->
+              </div>
               <div class="chart div-height"
                 *ngIf="showTrendChart == false && treatmentPlanValue >= 0 && !treatmentPlanRateDentistLoader"
                 fxLayout="row" fxLayoutAlign="start center">
@@ -3241,14 +3241,14 @@
               </div>
             </mat-card-title>
             <div class="card-body">
-              <!-- <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec hide-item">
+              <div [hidden]="true" fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec hide-item">
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Avg. Proposed Fees</small>
+                  <small class="sa_tab_btn tcmain1 active">Avg. Proposed Fees</small>
                 </div>
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Avg. Completed Fees</small>
+                  <small class="sa_tab_btn tcmain2">Avg. Completed Fees</small>
                 </div>
-              </div> -->
+              </div>
               <div class="chart div-height" fxLayout="row" fxLayoutAlign="start center"
                 *ngIf="showTrendChart == false && gaugeValuePatients > 0">
                 <ngx-gauge [type]="gaugeType" [value]="gaugeValuePatients" [label]="gaugeLabelPatients"
