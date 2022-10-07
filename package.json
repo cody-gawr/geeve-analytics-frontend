@@ -36,7 +36,6 @@
     "@syncfusion/ej2-angular-dropdowns": "^19.4.56",
     "@syncfusion/ej2-angular-kanban": "^19.4.52",
     "@syncfusion/ej2-dropdowns": "^19.4.40",
-    "angular-gauge-chart": "^0.7.2",
     "angular-user-idle": "^2.2.6",
     "chart.js": "^2.9.3",
     "chartjs-plugin-annotation": "^0.5.7",
@@ -59,7 +58,7 @@
     "zone.js": "^0.11.8"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.901.15",
+    "@angular-devkit/build-angular": "^0.1102.19",
     "@angular/cli": "^11.2.19",
     "@angular/compiler-cli": "^11.2.14",
     "@angular/core": "^11.2.14",
