@@ -68,7 +68,7 @@
                 </div>
 
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="conversionGoal >= 0 && showGoals == true">
+                  *ngIf="conversionGoal >= 0 && conversionGoal != null && showGoals == true">
                   <h3 class="m-0 value-num" >
                     {{ conversionGoal | number:'1.0-0' }}%</h3>
                   <span class="value-text">Goal</span>
@@ -123,7 +123,7 @@
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="completionRateGoal >= 0 && showGoals == true">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="completionRateGoal >= 0 && completionRateGoal != null && showGoals == true">
                   <h3 class="m-0 value-num">{{ completionRateGoal | number:'1.0-0' }}%</h3>
                   <span class="value-text">Goal</span>
                 </div>

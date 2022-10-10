@@ -142,13 +142,19 @@ export class FinancesComponent implements AfterViewInit {
   ) {
     this.user_type = this._cookieService.get("user_type");
     this.getChartsTips();
+    this.getAllClinics();
   }
 
   private warningMessage: string;
   async initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
-    this.clinic_id = val;
+    // this.clinic_id = val;
     if (val != undefined && val != '') {     
+      if(val == 'all'){
+        this.clinic_id = this.clinics;
+      }else{
+        this.clinic_id = val;
+      }
       if( val.indexOf(',') == -1 && val != 'all'){
         this.multipleClinicsSelected = false;
         this.clinic_id = val;
@@ -173,6 +179,16 @@ export class FinancesComponent implements AfterViewInit {
     }
   }
 
+  public clinics = [];
+  getAllClinics(){
+    this.headerService.getClinics().subscribe(res=>{
+        if(res.status == 200){
+          res.data.forEach(item=>{
+            this.clinics.push(item.id);
+          });
+        }
+    });
+  }
   clinicGetAccountingPlatform() {
     var self = this;
     return new Promise(function (resolve, reject) {
@@ -1981,7 +1997,7 @@ export class FinancesComponent implements AfterViewInit {
       this.productionChartTrendIcon = "down";
       this.productionChartTrendTotal = 0;
       if (data.message == 'success') {
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showClinicByclinic = true;
         }
         this.finProductionByClinicianLoader = false;
@@ -2055,7 +2071,7 @@ export class FinancesComponent implements AfterViewInit {
       this.totalDiscountChartTrendIcon = "down";
       this.totalDiscountChartTrendTotal = 0;
       if (data.message == 'success') {
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showClinicBar = true;
         }
         this.totalDiscountChartClinicsData=[];
@@ -2266,7 +2282,7 @@ export class FinancesComponent implements AfterViewInit {
             this.ProductionTrendLabels1.push(res.clinic_name);
           });
         }
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showBar = true;
         }
         this.ProdPerVisit[0]['data'] = this.ProductionTrend1;
@@ -2723,7 +2739,7 @@ export class FinancesComponent implements AfterViewInit {
                 this.productionChartTrend[key]['data'].push(total / sumProd * 100);
                 this.productionChartTrend[key]['label'] = result.clinic_name;
             }else{
-              if(this.clinic_id == 'all'){
+              if(Array.isArray(this.clinic_id)){
                 this.showClinic = true;
                 var total1 = Math.trunc(result.production);
                 if (result.production > 0 && result.production.toString().includes('.')) {
@@ -2812,11 +2828,11 @@ export class FinancesComponent implements AfterViewInit {
           return;
         }
         data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showByclinic = true;
         }
         this.finTotalDiscountsTrendLoader = false;
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           data.data.forEach(res => { 
             res.val.forEach((reslt, key) => {
               if (typeof (this.discountsChartTrendMulti[key]) == 'undefined') {
@@ -2960,7 +2976,7 @@ export class FinancesComponent implements AfterViewInit {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showProdByclinic = true;
         }
         this.finTotalProductionTrendLoader = false;
@@ -3007,7 +3023,7 @@ export class FinancesComponent implements AfterViewInit {
         this.totalProductionChartTrendLabels = this.totalProductionChartTrendLabels1;
         this.finCollectionTrend();
         
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           data.data_combined.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
           data.data_combined.forEach(res => {
             res.val.forEach((result, key) => {

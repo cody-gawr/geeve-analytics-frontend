@@ -91,6 +91,18 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
           
        }
     });
+    this.getAllClinics();
+  }
+
+  public clinics = [];
+  getAllClinics(){
+    this.headerService.getClinics().subscribe(res=>{
+        if(res.status == 200){
+          res.data.forEach(item=>{
+            this.clinics.push(item.id);
+          });
+        }
+    });
   }
 
   ngOnDestroy(): void {
@@ -117,12 +129,16 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     }
     var val = $('#currentClinic').attr('cid');
      if(val != undefined ) {
-        this.clinic_id = val;
+        if(val == 'all'){
+          this.clinic_id = this.clinics;
+        }else{
+          this.clinic_id = val;
+        }
         if( this._cookieService.get("dentistid")) {
             this.childid = this._cookieService.get("childid");
             this.dentistid = this._cookieService.get("dentistid");
           } 
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           // this.getDentists();
           this.multiclinic = true;
         }else{
@@ -1340,7 +1356,7 @@ if(this._cookieService.get("user_type") == '4'){
         if(data && data.data && data.data.length <=0) {
 
         }else {
-          if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
             this.showmulticlinicGenPredictor = true;
             data.data.forEach(res => {
               res.proval.forEach((result, key) => {
@@ -1496,7 +1512,7 @@ if(this._cookieService.get("user_type") == '4'){
        if(data.message == 'success'){   
         if(data && data.data && data.data.length <= 0) {
         } else {
-          if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
             this.showmulticlinicItemsPredictor = true;
             data.data.forEach(res => {
               res.proval.forEach((result, key) => {
@@ -1788,7 +1804,7 @@ public PRcolors;
         this.predictedstackedChartLabels2AvrPre = data.total_ta[1];
         this.predictedstackedChartLabels3AvrPre = data.total_ta[2]; 
 
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showmulticlinicPredictor = true;
           data.data_crown_large.forEach(res => {
             res.proval.forEach((result, key) => {
@@ -2114,7 +2130,7 @@ public doughnutChartColors1;
         this.pieChartExternalPrevTooltip = 'down';
         this.pieChartCombinedPrevTooltip = 'down';
       if (data.message == 'success' && data.data && data.data.length) {
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           data.data.forEach(res => {
             res.val.forEach((result, key) => {
               if(result.internal > 0) {
@@ -2338,7 +2354,7 @@ public currentText;
         dentistVal = $('.internal_dentist').val();
      else
         dentistVal = $('.external_dentist').val();
-    if(dentistVal == '' || this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+    if(dentistVal == '' || this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
       dentistVal = 'all';
     }
 
@@ -2624,7 +2640,7 @@ toggleFilter(val) {
   initiate_dentist() {
     var val = $('#currentDentist').attr('did');
     //var val = $('.internal_dentist').val();
-    if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+    if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
       //this.loadDentist(val);
     }else{
       this.loadDentist(val);

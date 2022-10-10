@@ -42,7 +42,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public trendText;
   public showTrend = false;
   public showTrendChart = false;
-  public canvasWidth = 300
+  public canvasWidth = "30";
   public needleValue = 65
   public centralLabel = ''
   public name = 'Gauge chart'
@@ -88,7 +88,6 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public hoursrateleaders: boolean = true;
   public refreralleaders: boolean = true;
   public charTips: any = [];
-
 
  constructor(
     private healthscreenService: HealthScreenService,
@@ -285,13 +284,16 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public chartHovered(e: any): void {
 
   }
-  public gaugeType = "arch";
+  public gaugeType = "semi";
   public gaugeValue = '';
   public gaugeLabel = "";
   public gaugeThick = "20";
-  public foregroundColor = "rgba(0, 150, 136,0.7)";
+  public foregroundColor = "rgba(166, 178, 255, 1)";
+  public foregroundColor1 = "#fff0bb";
+  public foregroundColor2 = "rgba(255, 195, 194, 1)";
+  public backgroundColor = '#f4f0fa';
   public cap = "round";
-  public size = "300";
+  public size = "250";
 
   public gaugeValueTreatment = 0;
   public gaugeLabelTreatment = "";
@@ -599,7 +601,8 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.healthscreenService.commonCall(this.clinic_id, startDate, endDate, 'chUnscheduledProd').subscribe((data) => {
       if (data.message == 'success') {
         this.unscheduledproduction = true;
-        this.unscheduled_production_f = data.data;
+        let value = (data.data >= 1000) ? data.data / 1000 : data.data;
+        this.unscheduled_production_f = Math.round(value);
       }
     }, error => {
       $('.ajax-loader').hide();

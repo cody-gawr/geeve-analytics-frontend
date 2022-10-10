@@ -376,7 +376,7 @@
                                     <span class="value-text" *ngIf="trendText == ''">Previous</span>
                                 </div>
                                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                                    *ngIf="newPatientsGoal >= 0 && showGoals == true">
+                                    *ngIf="newPatientsGoal >= 0 && newPatientsGoal != null && showGoals == true">
                                     <h3 class="m-0 value-num">{{newPatientsGoal * goalCount | number:'1.0-0'}}</h3>
                                     <span class="value-text">Goal</span>
                                 </div>
@@ -501,7 +501,7 @@
                                     <span class="value-text" *ngIf="trendText == ''">Previous</span>
                                 </div>
                                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                                    *ngIf="newAcqValueGoal >= 0 && showGoals == true">
+                                    *ngIf="newAcqValueGoal >= 0 && newAcqValueGoal != null && showGoals == true">
                                     <h3 class="m-0 value-num">${{ newAcqValueGoal}}</h3>
                                     <span class="value-text">Goal</span>
                                 </div>
@@ -592,7 +592,7 @@
                                     <span class="value-text" *ngIf="trendText == ''">Previous</span>
                                 </div>
                                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                                    *ngIf="visitsGoal >= 0 && showGoals == true">
+                                    *ngIf="visitsGoal >= 0 && visitsGoal != null && showGoals == true">
                                     <h3 class="m-0 value-num">{{visitsGoal * goalCount | number:'1.0-0'}}</h3>
                                     <span class="value-text">Goal</span>
                                 </div>

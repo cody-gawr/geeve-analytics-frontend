@@ -398,9 +398,11 @@
                 </div>
               </mat-card-title>
               <div class="card-body no-data-placeholder">
-                <rg-gauge-chart class="green_guagechart" *ngIf="visits_f > 0 && prebookedvisitchart==true"
+                <!-- <rg-gauge-chart class="green_guagechart" *ngIf="visits_f > 0 && prebookedvisitchart==true"
                   [canvasWidth]="canvasWidth" [needleValue]="visits_f" [options]="options"
-                  [centralLabel]="visits_f + ''"></rg-gauge-chart>
+                  [centralLabel]="visits_f + ''"></rg-gauge-chart> -->
+                  <ngx-gauge class="green_guagechart"  *ngIf="visits_f > 0 && prebookedvisitchart==true" [type]="gaugeType" [value]="visits_f" [thick]="canvasWidth" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [size]="size">
+                  </ngx-gauge>
                 <div *ngIf="prebookedvisitchart==false" class="loader_container loader_container_middle">
                   <img class="loader_ico" src="../assets/images/720.gif">
                   <div class="loader-text">Calculating...</div>
@@ -426,10 +428,12 @@
                 </div>
               </mat-card-title>
               <div class="card-body no-data-placeholder">
-                <rg-gauge-chart class="yellow_guagechart" *ngIf="utilisation_rate_f > 0 && chairutilrate==true"
+                <!-- <rg-gauge-chart class="yellow_guagechart" *ngIf="utilisation_rate_f > 0 && chairutilrate==true"
                   [canvasWidth]="canvasWidth" [needleValue]="100" [options]="options1"
                   [centralLabel]="utilisation_rate_f + '%'">
-                </rg-gauge-chart>
+                </rg-gauge-chart> -->
+                <ngx-gauge class="yellow_guagechart" *ngIf="utilisation_rate_f > 0 && chairutilrate==true" [type]="gaugeType" [value]="utilisation_rate_f" [thick]="canvasWidth" [foregroundColor]="foregroundColor1" [backgroundColor]="backgroundColor" [size]="size">
+                </ngx-gauge>
                 <div *ngIf="chairutilrate==false" class="loader_container loader_container_middle">
                   <img class="loader_ico" src="../assets/images/720.gif">
                   <div class="loader-text">Calculating...</div>
@@ -455,11 +459,13 @@
                 </div>
               </mat-card-title>
               <div class="chart card-body no-data-placeholder">
-                <rg-gauge-chart
+                <!-- <rg-gauge-chart
                   [ngClass]="{'small-fonts': (unscheduled_production_f.toString().length>5), 'blue_guagechart': true}"
                   *ngIf="unscheduled_production_f > 0 && unscheduledproduction == true" [canvasWidth]="canvasWidth"
                   [needleValue]="unscheduled_production_f" [options]="optionsunscheduled"
-                  [centralLabel]="'$' + (unscheduled_production_f| currencySuffix:2)"></rg-gauge-chart>
+                  [centralLabel]="'$' + (unscheduled_production_f| currencySuffix:2)"></rg-gauge-chart> -->
+                  <ngx-gauge class="yellow_guagechart" *ngIf="unscheduled_production_f > 0 && unscheduledproduction==true" [type]="gaugeType" [value]="unscheduled_production_f" [thick]="canvasWidth" [foregroundColor]="foregroundColor2" [backgroundColor]="backgroundColor" [append]="'K'" [prepend]="'$'" [size]="size">
+                  </ngx-gauge>
                 <div *ngIf="unscheduledproduction == false" class="loader_container loader_container_middle">
                   <img class="loader_ico" src="../assets/images/720.gif">
                   <div class="loader-text">Calculating...</div>

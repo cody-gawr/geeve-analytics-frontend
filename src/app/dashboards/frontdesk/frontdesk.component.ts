@@ -59,6 +59,7 @@ export class FrontDeskComponent implements AfterViewInit {
     public chartstipsService: ChartstipsService
     ){
      this.getChartsTips();
+     this.getAllClinics();
   }
   private warningMessage: string; 
  private myTemplate: any = "";
@@ -68,10 +69,25 @@ export class FrontDeskComponent implements AfterViewInit {
     initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
       if(val != undefined) {
-    this.clinic_id = val;
-   // this.getDentists();
-   this.filterDate(this.chartService.duration$.value);
-   }
+        if(val == 'all'){
+          this.clinic_id = this.clinics;
+        }else{
+          this.clinic_id = val;
+        }
+        // this.getDentists();
+        this.filterDate(this.chartService.duration$.value);
+      }
+    }
+
+  public clinics = [];
+  getAllClinics(){
+    this.headerService.getClinics().subscribe(res=>{
+        if(res.status == 200){
+          res.data.forEach(item=>{
+            this.clinics.push(item.id);
+          });
+        }
+    });
   }
 
   formatDate(date) {
@@ -1214,7 +1230,7 @@ public fdUtiData:any = [];
        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
         data.data.forEach(res => {            
             this.workTimeData1.push(Math.round(res.util_rate * 100));
-            if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
               this.showMultiClinicUR = true;
             }
             this.workTimeLabels1.push(res.app_book_name+'--'+res.worked_hour+'--'+res.planned_hour +'--'+res.clinic_name); 
@@ -1324,7 +1340,7 @@ public fdUtiData:any = [];
         this.byTotal=  0;
           this.prevByDayTotal=  0;
         if(data.message == 'success'){
-          if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
             data.data.forEach(res => { 
               res.val.forEach((reslt, key) => { 
                 var temp =  {
@@ -1433,7 +1449,7 @@ public fdFtaRatioLoader:any;
             this.ftaLabels.push(res.clinic_name);
           });
         }
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showmulticlinicFta = true;
         }
         this.ftaMulti[0]['data'] = this.ftaLabels1;
@@ -1526,7 +1542,7 @@ public maxutaGoal:any=0;
             this.utaLabels.push(res.clinic_name);
           });
         }
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showmulticlinicUta = true;
         }
         this.utaMulti[0]['data'] = this.utaLabels1;
@@ -1609,7 +1625,7 @@ public fdNumberOfTicksLoader:boolean;
       this.ticksLabels1 = [];  
       if(data.message == 'success'){
         this.fdNumberOfTicksLoader = false;
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showmulticlinicticks = true;          
         if (data.total > 0 && data.data) {
           data.data.forEach(res => {
@@ -1692,7 +1708,7 @@ public fdPrebookRateTrnd:any=[];
         this.fdPrebookRateLabels = [];
         this.fdPrebookRateTrnd = [];
         this.fdRecallPrebookRateLoader = false;
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showmulticlinicPrebook = true;          
         if (data.total > 0 && data.data) {
           data.data.forEach(res => {
@@ -1786,7 +1802,7 @@ public fdReappointRateTrnd:any=[];
             this.fdReappointRateLabels.push(res.clinic_name);
           });
         }
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showmulticlinicReappointRate = true;
         }
         this.fdReappointRateMulti[0]['data'] = this.fdReappointRateTrnd;
@@ -2104,7 +2120,7 @@ toggleFilter(val) {
   }
   initiate_dentist() {
     var val = $('.internal_dentist').val();
-    if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+    if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
       //this.loadDentist(val);
     }else{
       this.loadDentist(val);
@@ -2168,7 +2184,7 @@ public ftaTrendMultiLabels = [];
        if(data.message == 'success'){
         data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         this.fdFtaRatioTrendLoader =false;
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showByclinicfta = true;
           data.data.forEach(res => { 
             res.val.forEach((reslt, key) => {
@@ -2292,11 +2308,13 @@ public ftaTrendMultiLabels = [];
     this.Apirequest = this.Apirequest -1;
        if(data.message == 'success'){
         data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showByclinicUR = true;
         }
         this.fdwtaRatioTrendLoader =false;
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          console.log('if');
+          
           data.data.forEach(res => { 
             res.val.forEach((reslt, key) => {
               if (typeof (this.uRChartTrendMulti[key]) == 'undefined') {
@@ -2318,6 +2336,8 @@ public ftaTrendMultiLabels = [];
           });
           this.uRChartTrendMultiLabels = this.uRChartTrendMultiLabels1;
         }else{
+          console.log('else');
+          
               data.data.forEach(res => {  
                 this.wtaChartTrend1.push(Math.round(res.util_rate * 100));
                 if(res.goals == -1 || res.goals == null || res.goals == ''){
@@ -2405,7 +2425,7 @@ public utaTrendMultiLabels = [];
        if(data.message == 'success'){
         data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         this.fdUtaRatioTrendLoader = false;
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showByclinicUta = true;
           data.data.forEach(res => { 
             res.val.forEach((reslt, key) => {
@@ -2511,7 +2531,7 @@ public ticChartTrendMultiLabels = [];
        if(data.message == 'success'){
         data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         this.fdNumberOfTicksTrendLoader = false;
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showByclinictic = true;
           data.data.forEach(res => { 
             res.val.forEach((reslt, key) => {
@@ -2625,11 +2645,11 @@ public ticChartTrendMultiLabels = [];
     this.Apirequest = this.Apirequest -1;  
     if(data.message == 'success'){
       data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
-      if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+      if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
         this.showByclinicRP = true;
       }
           this.fdRecallPrebookRateTrendLoader = false;
-          if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
             data.data.forEach(res => { 
               res.val.forEach((reslt, key) => {
                 if (typeof (this.rPChartTrendMulti[key]) == 'undefined') {
@@ -2766,7 +2786,7 @@ public ticChartTrendMultiLabels = [];
     if(data.message == 'success'){
       data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         this.fdTreatmentPrebookRateTrendLoader = false;
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showByclinic = true;
           data.data.forEach(res => { 
             res.val.forEach((reslt, key) => {

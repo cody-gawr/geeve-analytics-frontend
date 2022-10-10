@@ -105,6 +105,7 @@ export class MarketingComponent implements AfterViewInit {
     private rolesUsersService: RolesUsersService
   ) {
     this.getChartsTips();
+    this.getAllClinics();
   }
 
   private warningMessage: string;
@@ -116,8 +117,13 @@ export class MarketingComponent implements AfterViewInit {
     }
     this.getRolesIndividual();
     var val = $('#currentClinic').attr('cid');
-    this.clinic_id = val;
+    // this.clinic_id = val;
     if (val != undefined) {
+      if(val == 'all'){
+        this.clinic_id = this.clinics;
+      }else{
+        this.clinic_id = val;
+      }
       if( val.indexOf(',') == -1 && val != 'all'){
         this.multipleClinicsSelected = false;
         this.clinic_id = val;
@@ -142,6 +148,18 @@ export class MarketingComponent implements AfterViewInit {
       this.multipleClinicsSelected = true;
     }
   }
+
+  public clinics = [];
+  getAllClinics(){
+    this.headerService.getClinics().subscribe(res=>{
+        if(res.status == 200){
+          res.data.forEach(item=>{
+            this.clinics.push(item.id);
+          });
+        }
+    });
+  }
+
   clinicGetAccountingPlatform() {
     var self = this;
     return new Promise(function (resolve, reject) {
@@ -1264,7 +1282,7 @@ export class MarketingComponent implements AfterViewInit {
       if (data.message == 'success') {
         this.mkNewPatientsByReferalMulti = [];
         this.mkNewPatientsByReferalLabels = [];
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.totalNewPatientsReferral = Math.round(data.total);
           this.showmulticlinicNewPatients = true;
           data.data.forEach(res => {
@@ -1375,7 +1393,7 @@ export class MarketingComponent implements AfterViewInit {
       if (data.message == 'success') {
         this.mkNewPatientsByReferalRevMulti = [];
         this.mkNewPatientsByReferalRevLabels = [];
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.totalNewPatientsReferralRev = Math.round(data.total);
           this.showmulticlinicNewPatientsRev = true;
           data.data.forEach(res => {
@@ -1636,7 +1654,7 @@ export class MarketingComponent implements AfterViewInit {
               this.TvisitTrendLabels1.push(res.clinic_name);
             });
           }
-          if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
             this.showBar = true;
           }
           this.totalvisit[0]['data'] = this.TvisitTrend1;
@@ -1761,7 +1779,7 @@ export class MarketingComponent implements AfterViewInit {
               this.newPTrendLabels1.push(res.clinic_name);
             });
           }
-          if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+          if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
             this.showNPBar = true;
           }
           this.newPativentbr[0]['data'] = this.newPTrend1;
@@ -1844,7 +1862,7 @@ export class MarketingComponent implements AfterViewInit {
           this.newAPTrend1.push(Math.round(res.active_patients));
           this.newAPTrendLabels1.push(res.clinic_name);
         });
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showAPBar = true;
         }
         this.newAPativentbr[0]['data'] = this.newAPTrend1;
@@ -2180,7 +2198,7 @@ export class MarketingComponent implements AfterViewInit {
 
   initiate_dentist() {
     var val = $('.internal_dentist').val();
-    if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+    if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
       //this.loadDentist(val);
     }else{
       // this.loadDentist(val);
@@ -2277,10 +2295,10 @@ export class MarketingComponent implements AfterViewInit {
       this.visitsChartTrend[0]['data'] = [];
       this.fdvisitsRatioTrendLoader = false;
       if (data.message == 'success') {
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showByclinic = true;
         }
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
           data.data.forEach(res => { 
             res.val.forEach((reslt, key) => {
@@ -2418,7 +2436,7 @@ export class MarketingComponent implements AfterViewInit {
       this.newPatientsMultiLabels1 =[];
       this.Apirequest = this.Apirequest - 1;
       if (data.message == 'success') {
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showNPclinic = true;
             data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
             data.data.forEach(res => { 
@@ -2490,7 +2508,7 @@ export class MarketingComponent implements AfterViewInit {
       this.Apirequest = this.Apirequest - 1;
       if (data.message == 'success') {
         
-        if(this.clinic_id.indexOf(',') >= 0 || this.clinic_id == 'all'){
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showAPclinic = true;
           data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
           data.data.forEach(res => { 
