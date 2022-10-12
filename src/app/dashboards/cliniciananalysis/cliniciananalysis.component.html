@@ -432,13 +432,13 @@
               <div *ngIf="proCollShow == 3 && proSelectShow =='collection_exp_all'">
                 <div class="div-pro-coll-show" *ngIf="showAvg === false && showCollExpTbl === false && collectionExpData[0].data.length && !collectionExpLoader">
                   <canvas id="dentistCollection" baseChart [datasets]="collectionExpData" [labels]="collectionLabelsExp"
-                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
+                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP6"
                     [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
                 <div class="div-pro-coll-show" *ngIf="showAvg === true && showCollExpTbl === false && collectionExpData[0].data.length && !collectionExpLoader">
                   <canvas id="dentistCollection" baseChart [datasets]="collectionExpData" [labels]="collectionLabelsExp"
-                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
+                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP6"
                     [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
@@ -1455,13 +1455,13 @@
                   <canvas #myCanvas id="HourlyRate" baseChart
                     *ngIf="showAvg === false && showHrDentTbl === false && hourlyRateChartDesntistsData1.length > 0 && hourlyRateChartDentistsLoader == false"
                     [datasets]="hourlyRateChartDentistsData" [labels]="hourlyRateChartDesntistsLabels" [legend]="barChartLegend"
-                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
+                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR1"
                     [colors]="HRcolors" (chartClick)="chartClicked($event)">
                   </canvas>
                   <canvas #myCanvas id="HourlyRate" baseChart
                     *ngIf="showAvg === true && showHrDentTbl === false && hourlyRateChartDesntistsData1.length > 0 && hourlyRateChartDentistsLoader == false"
                     [datasets]="hourlyRateChartDentistsData" [labels]="hourlyRateChartDesntistsLabels" [legend]="barChartLegend"
-                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
+                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR1"
                     [colors]="HRcolors" (chartClick)="chartClicked($event)">
                   </canvas>
                   <div class="hr-tbl-height" *ngIf=" hourlyRateChartDesntistsData1.length > 0 && showHrDentTbl === true">
@@ -1495,13 +1495,13 @@
                   <canvas #myCanvas id="HourlyRate" baseChart
                     *ngIf="showAvg === false && showHrOhtTbl === false && hourlyRateChartOhtData1.length > 0 && hourlyRateChartOhtLoader == false"
                     [datasets]="hourlyRateChartOhtData" [labels]="hourlyRateChartOhtLabels" [legend]="barChartLegend"
-                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
+                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR2"
                     [colors]="HRcolors" (chartClick)="chartClicked($event)">
                   </canvas>
                   <canvas #myCanvas id="HourlyRate" baseChart
                     *ngIf="showAvg === true && showHrOhtTbl === false && hourlyRateChartOhtData1.length > 0 && hourlyRateChartOhtLoader == false"
                     [datasets]="hourlyRateChartOhtData" [labels]="hourlyRateChartOhtLabels" [legend]="barChartLegend"
-                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
+                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR2"
                     [colors]="HRcolors" (chartClick)="chartClicked($event)">
                   </canvas>
                   <div class="hr-tbl-height" *ngIf="hourlyRateChartOhtData1.length > 0 && showHrOhtTbl === true">
@@ -1577,13 +1577,13 @@
                   <canvas #myCanvas id="collDentHourlyRate" baseChart
                     *ngIf="showAvg === false && showCollHrDentTbl === false && collhourlyRateChartDesntistsData1.length > 0 && collhourlyRateChartDentistsLoader == false"
                     [datasets]="collhourlyRateChartDentistsData" [labels]="collhourlyRateChartDesntistsLabels" [legend]="barChartLegend"
-                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
+                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR1"
                     [colors]="HRcolorsDent" (chartClick)="chartClicked($event)">
                   </canvas>
                   <canvas #myCanvas id="collDentHourlyRate" baseChart
                     *ngIf="showAvg === true && showCollHrDentTbl === false && collhourlyRateChartDesntistsData1.length > 0 && collhourlyRateChartDentistsLoader == false"
                     [datasets]="collhourlyRateChartDentistsData" [labels]="collhourlyRateChartDesntistsLabels" [legend]="barChartLegend"
-                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
+                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR1"
                     [colors]="HRcolorsDent" (chartClick)="chartClicked($event)">
                   </canvas>
                   <div class="hr-tbl-height" *ngIf=" collhourlyRateChartDesntistsData1.length > 0 && showCollHrDentTbl === true">
@@ -1617,13 +1617,13 @@
                   <canvas #myCanvas id="collOhtHourlyRate" baseChart
                     *ngIf="showAvg === false && showCollHrOhtTbl === false && collhourlyRateChartOhtData1.length > 0 && collhourlyRateChartOhtLoader == false"
                     [datasets]="collhourlyRateChartOhtData" [labels]="collhourlyRateChartOhtLabels" [legend]="barChartLegend"
-                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
+                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR2"
                     [colors]="collExpHRcolors" (chartClick)="chartClicked($event)">
                   </canvas>
                   <canvas #myCanvas id="collOhtHourlyRate" baseChart
                     *ngIf="showAvg === true && showCollHrOhtTbl === false && collhourlyRateChartOhtData1.length > 0 && collhourlyRateChartOhtLoader == false"
                     [datasets]="collhourlyRateChartOhtData" [labels]="collhourlyRateChartOhtLabels" [legend]="barChartLegend"
-                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
+                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR2"
                     [colors]="collExpHRcolors" (chartClick)="chartClicked($event)">
                   </canvas>
                   <div class="hr-tbl-height" *ngIf="collhourlyRateChartOhtData1.length > 0 && showCollHrOhtTbl === true">
@@ -1699,13 +1699,13 @@
                   <canvas #myCanvas id="collExpDentHourlyRate" baseChart
                     *ngIf="showAvg === false && showCollexpHrDentTbl === false && collExphourlyRateChartDesntistsData1.length > 0 && collExphourlyRateChartDentistsLoader == false"
                     [datasets]="collExphourlyRateChartDentistsData" [labels]="collExphourlyRateChartDesntistsLabels" [legend]="barChartLegend"
-                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
+                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR1"
                     [colors]="HRcolorsDent" (chartClick)="chartClicked($event)">
                   </canvas>
                   <canvas #myCanvas id="collExpDentHourlyRate" baseChart
                     *ngIf="showAvg === true && showCollexpHrDentTbl === false && collExphourlyRateChartDesntistsData1.length > 0 && collExphourlyRateChartDentistsLoader == false"
                     [datasets]="collExphourlyRateChartDentistsData" [labels]="collExphourlyRateChartDesntistsLabels" [legend]="barChartLegend"
-                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
+                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR1"
                     [colors]="HRcolorsDent" (chartClick)="chartClicked($event)">
                   </canvas>
                   <div class="hr-tbl-height" *ngIf=" collExphourlyRateChartDesntistsData1.length > 0 && showCollexpHrDentTbl === true">
@@ -1739,13 +1739,13 @@
                   <canvas #myCanvas id="collExpOhtHourlyRate" baseChart
                     *ngIf="showAvg === false && showCollexpHrOhtTbl === false && collExphourlyRateChartOhtData1.length > 0 && collExphourlyRateChartOhtLoader == false"
                     [datasets]="collExphourlyRateChartOhtData" [labels]="collExphourlyRateChartOhtLabels" [legend]="barChartLegend"
-                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
+                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR2"
                     [colors]="collExpHRcolors" (chartClick)="chartClicked($event)">
                   </canvas>
                   <canvas #myCanvas id="collExpOhtHourlyRate" baseChart
                     *ngIf="showAvg === true && showCollexpHrOhtTbl === false && collExphourlyRateChartOhtData1.length > 0 && collExphourlyRateChartOhtLoader == false"
                     [datasets]="collExphourlyRateChartOhtData" [labels]="collExphourlyRateChartOhtLabels" [legend]="barChartLegend"
-                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
+                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR2"
                     [colors]="collExpHRcolors" (chartClick)="chartClicked($event)">
                   </canvas>
                   <div class="hr-tbl-height" *ngIf="collExphourlyRateChartOhtData1.length > 0 && showCollexpHrOhtTbl === true">

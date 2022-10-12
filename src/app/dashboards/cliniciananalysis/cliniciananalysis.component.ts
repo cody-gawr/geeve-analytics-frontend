@@ -2069,9 +2069,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         if (this.productionTotal >= this.productionTotalPrev)
           this.productionTooltip = 'up';
-        this.barChartOptionsDP.annotation = [];
+        this.barChartOptionsDP1.annotation = [];
         if (this.goalchecked == 'average') {
-          this.barChartOptionsDP.annotation = {
+          this.barChartOptionsDP1.annotation = {
             drawTime: 'afterDatasetsDraw',
             annotations: [{
               drawTime: 'afterDraw',
@@ -2089,7 +2089,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else if (this.goalchecked == 'goal') {
 
-          this.barChartOptionsDP.annotation = {
+          this.barChartOptionsDP1.annotation = {
             drawTime: 'afterDatasetsDraw',
             annotations: [{
               drawTime: 'afterDraw',
@@ -2954,6 +2954,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     data: [],
   }
   ];
+  public collectionExpTotalAverage = 0;
   public collectionExpTotal: any = 0;
   public dentistCollectionExptbl :any =[];
   public showCollExpTbl :boolean =false;
@@ -3044,7 +3045,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.collectionExpData[0].backgroundColor = dynamicColors;
         this.collectionLabelsExp = this.collectionLabelsExp1;
         this.collectionExpTotal = Math.round(data.total);
-        this.collectionTotalAverage = Math.round(data.total_average);
+        this.collectionExpTotalAverage = Math.round(data.total_average);
         this.collectionExpTotalPrev = Math.round(data.total_ta);
         this.collectionTotalExpGoal = data.goals;
 
@@ -3059,7 +3060,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               type: 'line',
               mode: 'horizontal',
               scaleID: 'y-axis-0',
-              value: this.collectionTotalAverage,
+              value: this.collectionExpTotalAverage,
               borderColor: '#0e3459',
               borderWidth: 2,
               borderDash: [2, 2],
@@ -7113,7 +7114,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     $('.page-title-date').val(this.startDate + " - " + this.endDate);
     $('.customRange').css('display', 'none');
 
-
   }
 
   toggleFilter(val) {
@@ -9270,8 +9270,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       if(this.collectionOhtTotalAverage > 0){
         this.ChartsAvg(this.collectionOhtTotalAverage,this.barChartOptionsDP5);
       }
-      if(this.collectionTotalAverage > 0){
-        this.ChartsAvg(this.collectionTotalAverage,this.barChartOptionsDP6);
+      if(this.collectionExpTotalAverage > 0){
+        this.ChartsAvg(this.collectionExpTotalAverage,this.barChartOptionsDP6);
       }
       if(this.collectionTotalExpDentistsAverage > 0){
         this.ChartsAvg(this.collectionTotalExpDentistsAverage,this.barChartOptionsDP7);
@@ -9300,7 +9300,26 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       if(this.treatmentChartAverage > 0){
         this.ChartsAvg(this.treatmentChartAverage,this.barChartOptionsTP);
       }
-    
+      if(this.collectionhourlyRateChartAverage > 0){
+        this.ChartsAvg(this.collectionhourlyRateChartAverage,this.barChartOptionsHR);
+      }
+      if(this.collhourlyRateChartDesntistsAverage > 0){
+        this.ChartsAvg(this.collhourlyRateChartDesntistsAverage,this.barChartOptionsHR1);
+      }
+      if(this.collhourlyRateChartOhtAverage > 0){
+        this.ChartsAvg(this.collhourlyRateChartOhtAverage,this.barChartOptionsHR2);
+      }
+      if(this.collExphourlyRateChartAverage > 0){
+        this.ChartsAvg(this.collExphourlyRateChartAverage,this.barChartOptionsHR);
+      }
+      if(this.collExphourlyRateChartDesntistsAverage > 0){
+        this.ChartsAvg(this.collExphourlyRateChartDesntistsAverage,this.barChartOptionsHR1);
+      }
+      if(this.collExphourlyRateChartOhtAverage > 0){
+        this.ChartsAvg(this.collExphourlyRateChartOhtAverage,this.barChartOptionsHR2);
+      }
+      
+      
     }else{
       this.showAvg = false;
       this.ChartsAvgOff(this.productionTotalAverage,this.barChartOptionsDP1);
@@ -9309,7 +9328,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.ChartsAvgOff(this.collectionTotalAverage,this.barChartOptionsDP);
       this.ChartsAvgOff(this.collectionDentistsTotalAverage,this.barChartOptionsDP4);
       this.ChartsAvgOff(this.collectionOhtTotalAverage,this.barChartOptionsDP5);
-      this.ChartsAvgOff(this.collectionTotalAverage,this.barChartOptionsDP6);
+      this.ChartsAvgOff(this.collectionExpTotalAverage,this.barChartOptionsDP6);
       this.ChartsAvgOff(this.collectionTotalExpDentistsAverage,this.barChartOptionsDP7);
       this.ChartsAvgOff(this.collectionTotalExpOhtAverage,this.barChartOptionsDP8);
       this.ChartsAvgOff(this.hourlyRateChartAverage,this.barChartOptionsHR);
@@ -9319,6 +9338,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.ChartsAvgOff(this.treatmentPreChartAverage,this.barChartOptionsTPB);
       this.ChartsAvgOff(this.recallChartAverage,this.barChartOptionsRP);
       this.ChartsAvgOff(this.treatmentChartAverage,this.barChartOptionsTP);
+      this.ChartsAvgOff(this.collectionhourlyRateChartAverage,this.barChartOptionsHR);
+      this.ChartsAvgOff(this.collhourlyRateChartDesntistsAverage,this.barChartOptionsHR1);
+      this.ChartsAvgOff(this.collhourlyRateChartOhtAverage,this.barChartOptionsHR2);
+      this.ChartsAvgOff(this.collExphourlyRateChartAverage,this.barChartOptionsHR);
+      this.ChartsAvgOff(this.collExphourlyRateChartDesntistsAverage,this.barChartOptionsHR1);
+      this.ChartsAvgOff(this.collExphourlyRateChartOhtAverage,this.barChartOptionsHR2);
+
     }
     
   // this.buildChart();

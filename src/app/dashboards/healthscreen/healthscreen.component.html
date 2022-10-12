@@ -432,7 +432,7 @@
                   [canvasWidth]="canvasWidth" [needleValue]="100" [options]="options1"
                   [centralLabel]="utilisation_rate_f + '%'">
                 </rg-gauge-chart> -->
-                <ngx-gauge class="yellow_guagechart" *ngIf="utilisation_rate_f > 0 && chairutilrate==true" [type]="gaugeType" [value]="utilisation_rate_f" [thick]="canvasWidth" [foregroundColor]="foregroundColor1" [backgroundColor]="backgroundColor" [size]="size">
+                <ngx-gauge class="yellow_guagechart" *ngIf="utilisation_rate_f > 0 && chairutilrate==true" [type]="gaugeType" [value]="utilisation_rate_f" [thick]="canvasWidth" [foregroundColor]="foregroundColor1" [backgroundColor]="backgroundColor" [append]="'%'" [size]="size">
                 </ngx-gauge>
                 <div *ngIf="chairutilrate==false" class="loader_container loader_container_middle">
                   <img class="loader_ico" src="../assets/images/720.gif">
