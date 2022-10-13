@@ -40,7 +40,27 @@ export const DashboardsRoutes: Routes = [
       {
         path: 'healthscreen',
         component: HealthScreenComponent
-      }      
+      },
+      {
+        path: 'cliniciananalysis/multi',
+        component: ClinicianAnalysisComponent
+      },
+      {
+        path: 'clinicianproceedures/multi',
+        component: ClinicianProceeduresComponent
+      },
+      {
+        path: 'frontdesk/multi',
+        component: FrontDeskComponent
+      },
+      {
+        path: 'marketing/multi',
+        component: MarketingComponent
+      },
+      {
+        path: 'finances/multi',
+        component: FinancesComponent
+      }
     ]
   }
 ];

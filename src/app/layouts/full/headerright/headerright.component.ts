@@ -117,15 +117,16 @@ export class AppHeaderrightComponent implements AfterViewInit {
       .subscribe((value) => {
         this.referFriend = false;
         this.route = router.url;
-        if (this.route == "/dashboards/cliniciananalysis") {
+        if (this.route == "/dashboards/cliniciananalysis" || this.route == "/dashboards/cliniciananalysis/multi") {
           this.showCompare = true;
         } else {
           this.showCompare = false;
         }
 
-        if (
-          this.route == "/dashboards/cliniciananalysis" ||
-          this.route == "/dashboards/clinicianproceedures"
+        if (this.route == "/dashboards/cliniciananalysis" ||
+            this.route == "/dashboards/cliniciananalysis/multi" ||
+            this.route == "/dashboards/clinicianproceedures" ||
+            this.route == "/dashboards/clinicianproceedures/multi"
           // this.route == "/kpi-report"
         ) {
           this.showDropDown = true;
@@ -268,10 +269,11 @@ export class AppHeaderrightComponent implements AfterViewInit {
                 } else {
                   this.selectedDentist = parseInt(dentistclinic[1]);
                 } 
-                if (((this.route == "/dashboards/finances" && this.user_type != 7) || (this.route == "/dashboards/marketing" && this.user_type != 7) || (this.route == "/dashboards/frontdesk" && this.user_type != 7) || (this.route == "/dashboards/cliniciananalysis" && this.user_type !=4  && this.user_type != 7) || (this.route == "/dashboards/clinicianproceedures" && this.user_type !=4  && this.user_type != 7)) && this.apiUrl.includes('test')) {
+                if (((this.route == "/dashboards/finances/multi" && this.user_type != 7) || (this.route == "/dashboards/marketing/multi" && this.user_type != 7) || (this.route == "/dashboards/frontdesk/multi" && this.user_type != 7) || (this.route == "/dashboards/cliniciananalysis/multi" && this.user_type !=4  && this.user_type != 7) || (this.route == "/dashboards/clinicianproceedures/multi" && this.user_type !=4  && this.user_type != 7))) {
                   this.allChecked = false;
                   this.clinic_id = [];
                   this.selectedClinic = [];
+                  
                   if(dentistclinic[0].indexOf(',') >= 0){
                     let tmpcl = [];
                     let allcookieCl = dentistclinic[0].split(',');
@@ -300,7 +302,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
                       this.selectedClinic.push(parseInt(dentistclinic[0]));
                     }                   
                   }
-                  if( this.selectedClinic[0].toString() != 'NaN' && this.selectedClinic[0] !='all' && this.selectedClinic.length == 1 && (this.route == "/dashboards/cliniciananalysis" || this.route == "/dashboards/clinicianproceedures")){
+                  if( this.selectedClinic[0].toString() != 'NaN' && this.selectedClinic[0] !='all' && this.selectedClinic.length == 1 && (this.route == "/dashboards/cliniciananalysis/multi" || this.route == "/dashboards/clinicianproceedures/multi")){
                     this.showDropDown = true; 
                    }else{
                     this.showDropDown = false; 
@@ -339,7 +341,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
                   });
                 }
               } else {
-                if (((this.route == "/dashboards/finances" && this.user_type != 7) || (this.route == "/dashboards/marketing" && this.user_type != 7) || (this.route == "/dashboards/frontdesk" && this.user_type != 7) || (this.route == "/dashboards/cliniciananalysis" && this.user_type !=4  && this.user_type != 7) || (this.route == "/dashboards/clinicianproceedures" && this.user_type !=4  && this.user_type != 7)) && this.apiUrl.includes('test')) {
+                if (((this.route == "/dashboards/finances/multi" && this.user_type != 7) || (this.route == "/dashboards/marketing/multi" && this.user_type != 7) || (this.route == "/dashboards/frontdesk/multi" && this.user_type != 7) || (this.route == "/dashboards/cliniciananalysis/multi" && this.user_type !=4  && this.user_type != 7) || (this.route == "/dashboards/clinicianproceedures/multi" && this.user_type !=4  && this.user_type != 7))) {
                   this.selectedClinic = [];
                   this.selectedClinic.push(res.data[0].id);
                 }else{
@@ -409,10 +411,15 @@ export class AppHeaderrightComponent implements AfterViewInit {
 
             if (
               this.route == "/dashboards/cliniciananalysis" ||
+              this.route == "/dashboards/cliniciananalysis/multi" ||
               this.route == "/dashboards/clinicianproceedures" ||
+              this.route == "/dashboards/clinicianproceedures/multi" ||
               this.route == "/dashboards/frontdesk" ||
+              this.route == "/dashboards/frontdesk/multi" ||
               this.route == "/dashboards/marketing" ||
+              this.route == "/dashboards/marketing/multi" ||
               this.route == "/dashboards/finances" ||
+              this.route == "/dashboards/finances/multi" ||
               this.route == "/morning-huddle" ||
               this.route == "/followups" ||
               this.route == "/dashboards/followups" ||
@@ -509,7 +516,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
     var newValue:any = '';
     if (newValue != "undefined") {
       if(Array.isArray(newValues)) {
-        if ((this.route == "/dashboards/finances"  || this.route == "/dashboards/marketing" || this.route == "/dashboards/frontdesk" || this.route == "/dashboards/cliniciananalysis" || this.route == "/dashboards/clinicianproceedures") && this.apiUrl.includes('test')) {
+        if ((this.route == "/dashboards/finances/multi"  || this.route == "/dashboards/marketing/multi" || this.route == "/dashboards/frontdesk/multi" || this.route == "/dashboards/cliniciananalysis/multi" || this.route == "/dashboards/clinicianproceedures/multi")) {
           if(this.clinicsData.length == this.selectedClinic.length && this.selectedClinic[0] =='all'){
             newValue = '';            
             this.selectedClinic = [];
@@ -589,12 +596,12 @@ export class AppHeaderrightComponent implements AfterViewInit {
       } else {
         $("#currentClinic").attr("cid", newValue);
       }
-      if (((this.route != "/dashboards/finances"  && this.route != "/dashboards/marketing" && this.route != "/dashboards/frontdesk" && this.route != "/dashboards/cliniciananalysis" && this.route != "/dashboards/clinicianproceedures") && this.apiUrl.includes('test')) || this.apiUrl.includes('staging') || ( !this.apiUrl.includes('test-') && !this.apiUrl.includes('staging-'))) {
+      if (((this.route != "/dashboards/finances/multi"  && this.route != "/dashboards/marketing/multi" && this.route != "/dashboards/frontdesk/multi" && this.route != "/dashboards/cliniciananalysis/multi" && this.route != "/dashboards/clinicianproceedures/multi"))) {
         this.selectedClinic = newValue;
         this.clinic_id = this.selectedClinic;
         this.getDentists();
       }
-      if(this.route == "/dashboards/cliniciananalysis" || this.route == "/dashboards/clinicianproceedures"){
+      if(this.route == "/dashboards/cliniciananalysis/multi" || this.route == "/dashboards/clinicianproceedures/multi"){
         if(Array.isArray(this.clinic_id)){
           if(this.clinic_id.length == 1){
             this.getDentists();
@@ -714,13 +721,13 @@ export class AppHeaderrightComponent implements AfterViewInit {
     }
     this.selectedDentist = newValue;
     if (
-      this.route == "/dashboards/cliniciananalysis" ||
-      this.route == "/dashboards/clinicianproceedures" ||
-      this.route == "/dashboards/frontdesk" ||
-      this.route == "/dashboards/marketing" ||
+      this.route == "/dashboards/cliniciananalysis/multi" ||
+      this.route == "/dashboards/clinicianproceedures/multi" ||
+      this.route == "/dashboards/frontdesk/multi" ||
+      this.route == "/dashboards/marketing/multi" ||
       // this.route == "/kpi-report" ||
       
-      this.route == "/dashboards/finances"
+      this.route == "/dashboards/finances/multi"
     ) {
       let opts = this.constants.cookieOpt as CookieOptions;
       this._cookieService.put(
@@ -799,10 +806,9 @@ export class AppHeaderrightComponent implements AfterViewInit {
 
   changeClinic(newValues,allChecked) {
     var newValue:any = '';
-    
     if (newValue != "undefined") {
       if(Array.isArray(newValues)) {
-        if ((this.route == "/dashboards/finances"  || this.route == "/dashboards/marketing" || this.route == "/dashboards/frontdesk" || this.route == "/dashboards/cliniciananalysis" || this.route == "/dashboards/clinicianproceedures") && this.apiUrl.includes('test')) {
+        if ((this.route == "/dashboards/finances/multi"  || this.route == "/dashboards/marketing/multi" || this.route == "/dashboards/frontdesk/multi" || this.route == "/dashboards/cliniciananalysis/multi" || this.route == "/dashboards/clinicianproceedures/multi")) {
           if(this.clinicsData.length == this.selectedClinic.length && this.clinicsData.length != 1){
             if(this.allChecked == true){
               newValue = '';            
@@ -833,7 +839,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
               this.allChecked = true;
               this.showDropDown = false; 
              }else{
-               if(newValues.length == 1 && (this.route == "/dashboards/cliniciananalysis" || this.route == "/dashboards/clinicianproceedures")){
+               if(newValues.length == 1 && (this.route == "/dashboards/cliniciananalysis/multi" || this.route == "/dashboards/clinicianproceedures/multi")){
                 this.showDropDown = true; 
                }else{
                 this.showDropDown = false; 
