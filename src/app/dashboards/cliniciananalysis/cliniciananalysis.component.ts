@@ -6886,6 +6886,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.showWeekTrend = false;
     this.showTrendChart = false;
     this.toggleChecked = false;
+    $('.target_off').addClass('mat-button-toggle-checked');
+    $('.target_current').removeClass('mat-button-toggle-checked');
+    $('.target_historic').removeClass('mat-button-toggle-checked');
     if (this.clinic_id != undefined) {
       $('.customRange').css('display', 'none');
       this.showTrendChart = false;
