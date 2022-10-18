@@ -62,6 +62,22 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public user_type: string = '';
   public apiUrl = environment.apiUrl;
   public showGoals: boolean = false;
+  public legendBackgroundColor = [
+    '#6edbbb',
+    '#b0fffa', 
+    '#abb3ff', 
+    '#ffb4b5', 
+    '#fffcac', 
+    '#FFE4E4', 
+    '#FFD578', 
+    '#54D2FF', 
+    '#E58DD7', 
+    '#A9AABC', 
+    '#F2ECFF', 
+    '#5689C9', 
+    '#F9F871'
+  ];
+  public maxLegendLabelLimit = 10;
 
   public proCollShow: number = 1;
   public hrCollShow: number = 1;
@@ -276,6 +292,35 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   }
 
+  public barBackgroundColor(data, labels) {
+    let dynamicColors = [];
+    if(this.isAllClinic){
+      dynamicColors=[];
+      data.data.forEach(res => {
+        if(Array.isArray(this.clinic_id)){
+          this.clinic_id.forEach((item,index)=>{
+            if(res.clinic_id == item){
+              dynamicColors.push(this.legendBackgroundColor[index]);
+            }
+          })
+        }else{
+          this.clinic_id.split(",").forEach((item,index)=>{
+            if(res.clinic_id == item){
+              dynamicColors.push(this.legendBackgroundColor[index]);
+            }
+          });
+        }
+      });
+    }else{
+      dynamicColors = [];
+      labels.forEach((label, labelIndex) => {
+        dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+      });
+    }
+    return dynamicColors;
+  }
+
+
   dentists: Dentist[] = [
     { providerId: 'all', name: 'All Dentists' },
   ];
@@ -430,6 +475,33 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public treatmentPreValue: any = '';
   public treatmentPreLabel = "";
   public treatmentPreGoal = 0;
+  public legendGenerator = {
+    display: true,
+      position: "bottom",
+      labels: {
+        boxWidth : 8,
+        usePointStyle: true,
+        generateLabels : (chart)=>{
+          let bgColor = {};
+          let labels = chart.data.labels.map((value,i)=>{
+            bgColor[value.split(" - ")[1]] = chart.data.datasets[0].backgroundColor[i];
+            return value.split(" - ")[1];
+          });
+          labels = [...new Set(labels)];
+          labels = labels.splice(0,this.maxLegendLabelLimit);
+          return labels.map((label,index)=>({
+            text: label,
+            strokeStyle : bgColor[label],
+            fillStyle : bgColor[label],
+          }));
+          
+        }
+      },
+      onClick : (event, legendItem, legend)=>{
+        return;
+      },
+      // align : 'start',
+  }
   public barChartOptions: any = {
     borderRadius: 50,
     hover: { mode: null },
@@ -482,6 +554,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }],
     },
+    legend: this.legendGenerator,
     tooltips: {
       mode: 'x-axis',
       bodyFontFamily: 'Gilroy-Regular',
@@ -572,6 +645,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }],
     },
+    legend: this.legendGenerator,
     tooltips: {
       mode: 'x-axis',
       bodyFontFamily: 'Gilroy-Regular',
@@ -662,6 +736,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }],
     },
+    legend: this.legendGenerator,
     tooltips: {
       mode: 'x-axis',
       bodyFontFamily: 'Gilroy-Regular',
@@ -752,6 +827,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }],
     },
+    legend: this.legendGenerator,
     tooltips: {
       mode: 'x-axis',
       bodyFontFamily: 'Gilroy-Regular',
@@ -842,6 +918,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }],
     },
+    legend: this.legendGenerator,
     tooltips: {
       mode: 'x-axis',
       bodyFontFamily: 'Gilroy-Regular',
@@ -932,6 +1009,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }],
     },
+    legend: this.legendGenerator,
     tooltips: {
       mode: 'x-axis',
       bodyFontFamily: 'Gilroy-Regular',
@@ -1219,6 +1297,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         fill: false
       }
     },
+    legend: this.legendGenerator,
     tooltips: {
       mode: 'x-axis',
       custom: function (tooltip) {
@@ -1237,22 +1316,22 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }
     },
-    legend: {
-      position: 'top',
-      onClick: function (e, legendItem) {
-        var index = legendItem.datasetIndex;
-        var ci = this.chart;
-        if (index == 0) {
-          ci.getDatasetMeta(1).hidden = true;
-          ci.getDatasetMeta(index).hidden = false;
-        }
-        else if (index == 1) {
-          ci.getDatasetMeta(0).hidden = true;
-          ci.getDatasetMeta(index).hidden = false;
-        }
-        ci.update();
-      },
-    },
+    // legend: {
+    //   position: 'top',
+    //   onClick: function (e, legendItem) {
+    //     var index = legendItem.datasetIndex;
+    //     var ci = this.chart;
+    //     if (index == 0) {
+    //       ci.getDatasetMeta(1).hidden = true;
+    //       ci.getDatasetMeta(index).hidden = false;
+    //     }
+    //     else if (index == 1) {
+    //       ci.getDatasetMeta(0).hidden = true;
+    //       ci.getDatasetMeta(index).hidden = false;
+    //     }
+    //     ci.update();
+    //   },
+    // },
   };
 
   public barChartOptionsPercentTrend: any = {
@@ -1941,6 +2020,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public DPcolors2: any;
   public DPcolors2Dent: any;
   public DPcolors2Oht: any;
+  public isAllClinic : boolean;
   //Dentist Production Chart for all Dentist
   public dentistProductiontbl :any = [];
   public showprodAllTbl:boolean = false;
@@ -1969,7 +2049,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.productionTooltip = 'down';
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.production - b.production).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.dentistProductiontbl = data.data;
         // if(data.data.length >= this.numberOfRecords){
@@ -2055,10 +2138,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.chartService.colors.odd
         ]; // this is static array for colors of bars
 
-        let dynamicColors = [];
-        this.barChartLabels1.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars
+        let dynamicColors = this.barBackgroundColor(data, this.barChartLabels1);
 
         this.barChartData[0].backgroundColor = dynamicColors;
         this.barChartLabels = this.barChartLabels1;
@@ -2163,7 +2243,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.productionDentists1Tooltip = 'down';
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.production - b.production).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.dentistProductionDentisttbl = data.data;
         // if(data.data.length >= this.numberOfRecords){
@@ -2215,11 +2298,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.chartService.colors.odd
         ]; // this is static array for colors of bars
 
-        let dynamicColors = [];
-        this.barChartDentistsLabels1.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars
-
+        let dynamicColors = this.barBackgroundColor(data, this.barChartDentistsLabels1);
+        
         this.barChartDataDentists[0].backgroundColor = dynamicColors;
         this.barChartDentistLabels = this.barChartDentistsLabels1;
         this.productionDentistsTotal = Math.round(data.total);
@@ -2323,7 +2403,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.productionOhtTooltip = 'down';
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.production - b.production).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.dentistProductionOhttbl = data.data;
         // if(data.data.length >= this.numberOfRecords){
@@ -2375,10 +2458,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.chartService.colors.odd
         ]; // this is static array for colors of bars
 
-        let dynamicColors = [];
-        this.barChartOhtLabels1.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars
+        let dynamicColors = this.barBackgroundColor(data, this.barChartOhtLabels1);
 
         this.barChartDataOht[0].backgroundColor = dynamicColors;
         this.barChartOhtLabels = this.barChartOhtLabels1;
@@ -2488,7 +2568,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         var selectedDen: any = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.collection - b.collection).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.dentistCollectiontbl = data.data;
         // if(data.data.length >= this.numberOfRecords){
@@ -2544,11 +2627,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.chartService.colors.odd
         ]; // this is static array for colors of bars
 
-        let dynamicColors = [];
-        this.collectionLabels1.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars
 
+        let dynamicColors = this.barBackgroundColor(data, this.collectionLabels1);
 
         this.collectionData[0].backgroundColor = dynamicColors;
         this.collectionLabels = this.collectionLabels1;
@@ -2652,7 +2732,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         var selectedDen: any = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.collection - b.collection).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.dentistCollectionDenttbl = data.data;
         // if(data.data.length >= this.numberOfRecords){
@@ -2708,11 +2791,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.chartService.colors.odd
         ]; // this is static array for colors of bars
 
-        let dynamicColors = [];
-        this.collectionDentistsLabels1.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars
-
+        let dynamicColors = this.barBackgroundColor(data, this.collectionDentistsLabels1);
 
         this.collectionDentistsData[0].backgroundColor = dynamicColors;
         this.collectionDentistsLabels = this.collectionDentistsLabels1;
@@ -2816,7 +2895,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         var selectedDen: any = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.collection - b.collection).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.dentistCollectionOhttbl = data.data;
         // if(data.data.length >= this.numberOfRecords){
@@ -2872,11 +2954,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.chartService.colors.odd
         ]; // this is static array for colors of bars
 
-        let dynamicColors = [];
-        this.collectionOhtLabels1.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars
-
+        let dynamicColors = this.barBackgroundColor(data, this.collectionOhtLabels1);
 
         this.collectionOhtData[0].backgroundColor = dynamicColors;
         this.collectionOhtLabels = this.collectionOhtLabels1;
@@ -2980,7 +3058,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         var selectedDen: any = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.collection - b.collection).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.dentistCollectionExptbl = data.data;
         // if(data.data.length >= this.numberOfRecords){
@@ -3036,11 +3117,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.chartService.colors.odd
         ]; // this is static array for colors of bars
 
-        let dynamicColors = [];
-        this.collectionLabelsExp1.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars
-
+        let dynamicColors = this.barBackgroundColor(data, this.collectionLabelsExp1);
 
         this.collectionExpData[0].backgroundColor = dynamicColors;
         this.collectionLabelsExp = this.collectionLabelsExp1;
@@ -3143,7 +3220,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         var selectedDen: any = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.collection - b.collection).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.dentistCollectionExpDenttbl = data.data;
         // if(data.data.length >= this.numberOfRecords){
@@ -3199,11 +3279,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.chartService.colors.odd
         ]; // this is static array for colors of bars
 
-        let dynamicColors = [];
-        this.collectionLabelsDentistsExp1.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars
-
+        let dynamicColors = this.barBackgroundColor(data, this.collectionLabelsDentistsExp1);
 
         this.collectionExpDentistsData[0].backgroundColor = dynamicColors;
         this.collectionLabelsDentistsExp = this.collectionLabelsDentistsExp1;
@@ -3307,7 +3383,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         var selectedDen: any = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.collection - b.collection).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.dentistCollectionExpOhttbl = data.data;
         // if(data.data.length >= this.numberOfRecords){
@@ -3363,11 +3442,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.chartService.colors.odd
         ]; // this is static array for colors of bars
 
-        let dynamicColors = [];
-        this.collectionLabelsOhtExp1.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars
-
+        let dynamicColors = this.barBackgroundColor(data, this.collectionLabelsOhtExp1);
 
         this.collectionExpOhtData[0].backgroundColor = dynamicColors;
         this.collectionLabelsOhtExp = this.collectionLabelsOhtExp1;
@@ -4015,7 +4090,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.recallChartTooltip = 'down';
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.recall_percent - b.recall_percent).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.recalltbl = data.data;
         // if(data.data.length >= this.numberOfRecords){
@@ -4057,10 +4135,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else {
           this.RPcolors = this.lineChartColors;
-          let dynamicColors = [];
-          this.recallChartLabels.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
+          let dynamicColors = this.barBackgroundColor(data, this.recallChartLabels);      
           this.recallChartData[0].backgroundColor = dynamicColors;
         }
         if (this.recallChartAverage >= this.recallChartAveragePrev)
@@ -4208,7 +4283,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.treatmentPreChartTooltip = 'down';
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.reappoint_rate - b.reappoint_rate).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.reappointtbl = data.data;
         // if(data.data.length >= this.numberOfRecords){
@@ -4250,10 +4328,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         else {
           this.TPcolors = this.lineChartColors;
 
-          let dynamicColors = [];
-          this.treatmentPreChartLabels.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
+          let dynamicColors = this.barBackgroundColor(data, this.treatmentPreChartLabels);       
           this.treatmentPreChartData[0].backgroundColor = dynamicColors;
         }
         if (this.treatmentPreChartAverage >= this.treatmentPreChartAveragePrev)
@@ -4385,7 +4460,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.treatmentChartTooltip = 'down';
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.treatment_per_plan_percentage - b.treatment_per_plan_percentage).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.tprtbl = data.data;
         // if(data.data.length >= this.numberOfRecords){
@@ -4429,10 +4507,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         else {
           this.TPRcolors = this.lineChartColors;
 
-          let dynamicColors = [];
-          this.treatmentChartLabels.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
+          let dynamicColors = this.barBackgroundColor(data, this.treatmentChartLabels);       
           this.treatmentChartData[0].backgroundColor = dynamicColors;
         }
         if (this.treatmentChartAverage >= this.treatmentChartAveragePrev)
@@ -4576,6 +4651,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }],
     },
+    legend: this.legendGenerator,
     tooltips: {
       mode: 'x-axis',
       bodyFontFamily: 'Gilroy-Regular',
@@ -4632,7 +4708,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.treatmentPlanProposedProvidersByInx = [];
         this.planChartPtbl = [];
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.average_fees - b.average_fees).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.planChartPtbl = data.data;
         if (data.data.length > this.numberOfRecords) data.data= data.data.slice(0, this.numberOfRecords);
@@ -4657,10 +4736,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.planAllTotal = Math.round(data.total);
         this.planAllTotalTrend = Math.round(data.total_ta);
        
-       let dynamicColors = [];
-        this.planChartLabels1.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars        
+       let dynamicColors = this.barBackgroundColor(data, this.planChartLabels1);       
         this.planChartDataP[0].backgroundColor = dynamicColors;
 
         this.planChartDataP[0]['data'] = this.planChartData1;
@@ -4685,10 +4761,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         else {
           this.TPACAcolors = this.lineChartColors;
           this.TPACCcolors = this.lineChartColors;
-          let dynamicColors1 = [];
-          this.planChartLabels1.forEach((label, labelIndex) => {
-            dynamicColors1.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
+          let dynamicColors1 = this.barBackgroundColor(data, this.planChartLabels1);     
           this.planChartDataP[0].backgroundColor = dynamicColors1;
         }
         if (this.planTotalAverage >= this.planTotalPrev)
@@ -4770,7 +4843,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.treatmentPlanProposedProvidersByInx = [];
           this.planChartCtbl = [];
           if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+            this.isAllClinic = true;
             data.data.sort((a, b)=> a.average_fees - b.average_fees).reverse();
+          }else{
+            this.isAllClinic = false;
           }
           var ic = 0;
           this.planChartCtbl = data.data;
@@ -4793,10 +4869,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           });
           this.planCompletedTotal = Math.round(data.total);
           this.planCompletedTotalTrend = Math.round(data.total_ta);
-          let dynamicColors = [];
-          this.planChartLabels1.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
+          let dynamicColors = this.barBackgroundColor(data, this.planChartLabels1);          
           this.planChartDataP[0].backgroundColor = dynamicColors;
   
           this.planChartDataC[0]['data'] = this.planChartData2;
@@ -4821,10 +4894,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           else {
             this.TPACAcolors = this.lineChartColors;
             this.TPACCcolors = this.lineChartColors;  
-            let dynamicColors2 = [];
-            this.planChartLabels2.forEach((label, labelIndex) => {
-              dynamicColors2.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-            }); // This is dynamic array for colors of bars        
+            let dynamicColors2 = this.barBackgroundColor(data, this.planChartLabels1);      
             this.planChartDataC[0].backgroundColor = dynamicColors2;
   
           }
@@ -5332,7 +5402,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.hourlyRateChartTooltip = 'down';
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.hourlyRatetbl = data.data;
         // if(data.data.length >= this.numberOfRecords){
@@ -5382,10 +5455,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else {
           this.HRcolors = this.lineChartColors;
-          let dynamicColors = [];
-          this.hourlyRateChartLabels.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
+          let dynamicColors = this.barBackgroundColor(data, this.hourlyRateChartLabels);       
           this.hourlyRateChartData[0].backgroundColor = dynamicColors;
         }
 
@@ -5476,7 +5546,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.hourlyRateChartDesntistsTooltip = 'down';
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.hourlyRateDenttbl = data.data;
         // if(data.data.length >= this.numberOfRecords){
@@ -5526,10 +5599,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else {
           this.HRcolorsDent = this.lineChartColors;
-          let dynamicColors = [];
-          this.hourlyRateChartDesntistsLabels.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
+          let dynamicColors = this.barBackgroundColor(data, this.hourlyRateChartDesntistsLabels);      
           this.hourlyRateChartDentistsData[0].backgroundColor = dynamicColors;
         }
 
@@ -5619,7 +5689,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.hourlyRateChartOhtTooltip = 'down';
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.hourlyRateOhttbl = data.data;
         // if(data.data.length >= this.numberOfRecords){
@@ -5669,10 +5742,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else {
           this.HRcolorsOht = this.lineChartColors;
-          let dynamicColors = [];
-          this.hourlyRateChartOhtLabels.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
+          let dynamicColors = this.barBackgroundColor(data, this.hourlyRateChartOhtLabels);      
           this.hourlyRateChartOhtData[0].backgroundColor = dynamicColors;
         }
 
@@ -6063,7 +6133,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.collhourlyRateChartTooltip = 'down';
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.collhourlyRatetbl = data.data;
         if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
@@ -6107,10 +6180,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else {
           this.cHRcolors = this.lineChartColors;
-          let dynamicColors = [];
-          this.collhourlyRateChartLabels.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
+          let dynamicColors = this.barBackgroundColor(data, this.collhourlyRateChartLabels);      
           this.collectionhourlyRateChartData[0].backgroundColor = dynamicColors;
         }
 
@@ -6199,7 +6269,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.collhourlyRateChartDesntistsTooltip = 'down';
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.collhourlyRateDenttbl = data.data;
         if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
@@ -6243,10 +6316,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else {
           this.HRcolorsDent = this.lineChartColors;
-          let dynamicColors = [];
-          this.collhourlyRateChartDesntistsLabels.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
+          let dynamicColors = this.barBackgroundColor(data, this.collhourlyRateChartDesntistsLabels); 
           this.collhourlyRateChartDentistsData[0].backgroundColor = dynamicColors;
         }
 
@@ -6335,7 +6405,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.collhourlyRateChartOhtTooltip = 'down';
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.collhourlyRateOhttbl = data.data;
         if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
@@ -6379,10 +6452,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else {
           this.HRcolorsOht = this.lineChartColors;
-          let dynamicColors = [];
-          this.collhourlyRateChartOhtLabels.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
+          let dynamicColors =  this.barBackgroundColor(data, this.collhourlyRateChartOhtLabels);     
           this.collhourlyRateChartOhtData[0].backgroundColor = dynamicColors;
         }
 
@@ -6483,7 +6553,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.collExphourlyRateChartTooltip = 'down';
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.collExphourlyRatetbl = data.data;
         if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
@@ -6527,10 +6600,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else {
           this.collExpHRcolors = this.lineChartColors;
-          let dynamicColors = [];
-          this.collExphourlyRateChartLabels.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
+          let dynamicColors = this.barBackgroundColor(data, this.collExphourlyRateChartLabels); 
           this.collExphourlyRateChartData[0].backgroundColor = dynamicColors;
         }
 
@@ -6619,7 +6689,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.collExphourlyRateChartDesntistsTooltip = 'down';
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.collExphourlyRateDenttbl = data.data;
         if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
@@ -6663,10 +6736,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else {
           this.HRcolorsDent = this.lineChartColors;
-          let dynamicColors = [];
-          this.collExphourlyRateChartDesntistsLabels.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
+          let dynamicColors = this.barBackgroundColor(data, this.collExphourlyRateChartDesntistsLabels);       
           this.collExphourlyRateChartDentistsData[0].backgroundColor = dynamicColors;
         }
 
@@ -6755,7 +6825,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.collExphourlyRateChartOhtTooltip = 'down';
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
           data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
+        }else{
+          this.isAllClinic = false;
         }
         this.collExphourlyRateOhttbl = data.data;
         if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
@@ -6799,10 +6872,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else {
           this.HRcolorsOht = this.lineChartColors;
-          let dynamicColors = [];
-          this.collExphourlyRateChartOhtLabels.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
+          let dynamicColors = this.barBackgroundColor(data, this.collExphourlyRateChartOhtLabels);
           this.collExphourlyRateChartOhtData[0].backgroundColor = dynamicColors;
         }
 
