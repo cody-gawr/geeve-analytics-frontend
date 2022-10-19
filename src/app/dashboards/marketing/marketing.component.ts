@@ -142,6 +142,7 @@ export class MarketingComponent implements AfterViewInit {
         }
         this.filterDate(this.chartService.duration$.value);
       }else{
+        this.isVisibleAccountGraphs = true; 
         this.multipleClinicsSelected = true;
         this.filterDate(this.chartService.duration$.value);
       }
