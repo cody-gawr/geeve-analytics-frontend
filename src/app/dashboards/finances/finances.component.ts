@@ -124,6 +124,8 @@ export class FinancesComponent implements AfterViewInit {
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
   profitChartTitles = ['Production', 'Net Profit', 'Net Profit %'];
   barChartColors = [{ backgroundColor: '#39acac' }, { backgroundColor: '#48daba' }];
+  public isVisibleAccountGraphs: boolean = true;
+
   constructor(
     private toastr: ToastrService,
     private financesService: FinancesService,
@@ -159,6 +161,7 @@ export class FinancesComponent implements AfterViewInit {
         this.multipleClinicsSelected = false;
         this.clinic_id = val;
         await this.clinicGetAccountingPlatform();
+        this.acountVisibility(this.connectedwith);
         if (this.connectedwith == 'myob') {
           this.xeroConnect = false;
           this.checkMyobStatus();
@@ -189,6 +192,15 @@ export class FinancesComponent implements AfterViewInit {
         }
     });
   }
+
+  acountVisibility(connectedwith){
+    if(connectedwith == 'none'){
+      this.isVisibleAccountGraphs = false; 
+    }else{
+      this.isVisibleAccountGraphs = true;
+    }
+  }
+
   clinicGetAccountingPlatform() {
     var self = this;
     return new Promise(function (resolve, reject) {
@@ -1742,7 +1754,7 @@ export class FinancesComponent implements AfterViewInit {
       // this.netProfitPercent();
 
 
-      if (this.connectedwith != '' && this.connectedwith != undefined && this.multipleClinicsSelected == false) {
+      if (this.connectedwith != '' && this.connectedwith != 'none' && this.connectedwith != undefined && this.multipleClinicsSelected == false) {
         this.netprofitstats = false;
         this.netprofitpercentstats = false;
         this.productionstats = false;
@@ -2680,7 +2692,7 @@ export class FinancesComponent implements AfterViewInit {
       $('.nonTrendMode').hide();
 
       this.finTotalProductionTrend();
-      if (this.connectedwith != '' && this.connectedwith != undefined && this.multipleClinicsSelected == false) {
+      if (this.connectedwith != '' && this.connectedwith != 'none' && this.connectedwith != undefined && this.multipleClinicsSelected == false) {
         this.Apirequest = 5;
         this.expensestrendstats = false;
         this.finNetProfitPMSTrend();

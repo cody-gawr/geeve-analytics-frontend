@@ -77,7 +77,7 @@
         <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="md_mrn">
           <mat-card-content class="sa_matcard_content">
             <!-- column -->
-            <div class="sa_main_grid_dashboard profit-purple d-flex no-block align-items-center">
+            <div *ngIf="isVisibleAccountGraphs" class="sa_main_grid_dashboard profit-purple d-flex no-block align-items-center">
               <ng-container *ngIf="( (xeroConnect || myobConnect) && !netprofitstatsError && multipleClinicsSelected===false);else NoXeroConnectProfitValuePlaceholder">
                 <div class="stats-icon">
                   <img src="../assets/images/net-profit.png" alt />
@@ -112,7 +112,24 @@
                     <p>Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
                   </div>
                 </div>
-
+            </div>
+            <div *ngIf="!isVisibleAccountGraphs" class="sa_main_grid_dashboard profit-purple d-flex no-block align-items-center">
+              <ng-container>
+                <div class="stats-icon">
+                  <img src="../assets/images/net-profit.png" alt />
+                  <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="stats">
+                  <h3 class="m-0">Production Per Visit</h3>
+                  <h1 class="m-0">${{productionVal | number:'1.0-0'}}</h1>
+                </div>
+                <div class="info-button">
+                  <div class="info-icon-container">
+                    <img [tooltip]="charTips['32']" src="../assets/images/info-icon.png" alt="info-icon"
+                      class="info-icon" />
+                  </div>
+                </div>
+              </ng-container>
             </div>
           </mat-card-content>
         </div>
@@ -120,7 +137,7 @@
         <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="last md_mrn">
           <mat-card-content class="sa_matcard_content">
             <!-- column -->
-            <div class="sa_main_grid_dashboard profit-green d-flex no-block align-items-center">
+            <div *ngIf="isVisibleAccountGraphs" class="sa_main_grid_dashboard profit-green d-flex no-block align-items-center">
               <ng-container *ngIf="((xeroConnect || myobConnect) && !netprofitPerError && multipleClinicsSelected===false);else NoXeroConnectProfitPlaceholder">
                 <div class="stats-icon">
                   <img src="../assets/images/net-profit-PMS.png" alt />
@@ -157,13 +174,31 @@
                 </div>
 
             </div>
+            <div *ngIf="!isVisibleAccountGraphs" class="sa_main_grid_dashboard profit-green d-flex no-block align-items-center">
+              <ng-container>
+                <div class="stats-icon">
+                  <img src="../assets/images/net-profit-PMS.png" alt />
+                  <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="stats">
+                  <h3 class="m-0">Collection</h3>
+                  <h1 class="m-0"> ${{collectionVal | number:'1.0-0'}}</h1>
+                </div>
+                <div class="info-button">
+                  <div class="info-icon-container">
+                    <img [tooltip]="charTips['33']" src="../assets/images/info-icon.png" alt="info-icon"
+                      class="info-icon" />
+                  </div>
+                </div>
+              </ng-container>
+            </div>
           </mat-card-content>
         </div>
       </div>
       <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
-        <div fxFlex="calc(64% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg md_mrn
+        <div *ngIf="isVisibleAccountGraphs" fxFlex="calc(64% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg md_mrn
 expenses_card custom_ngx_cw01">
-          <mat-card class="chart_card">
+          <mat-card *ngIf="isVisibleAccountGraphs" class="chart_card">
             <mat-card-content class="sa_matcard_content">
               <mat-card-title class="text-center"> Expenses
                 <div class="info-icon-container">
@@ -240,6 +275,70 @@ expenses_card custom_ngx_cw01">
               </div>
 
               
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <div *ngIf="!isVisibleAccountGraphs" fxFlex="calc(36% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg md_mrn
+expenses_card custom_ngx_cw01">
+          <mat-card  class="">
+            <mat-card-content class="sa_matcard_content">
+              <mat-card-title class="text-center total-dicount-title">
+                <span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button
+                  matTooltip="{{trendText}} : ${{totalDiscountChartTrendTotal | number:'1.0-0'}}" *ngIf="trendText">
+                  <img class="trend_ico" src="../assets/images/trend_{{totalDiscountChartTrendIcon}}.png">
+                </span>
+                <span class="title">
+                  Total Discounts
+                </span>
+                <div class="info-icon-container">
+                  <img [tooltip]="charTips['34']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                </div>
+              </mat-card-title>
+              <div class="card-body chart-spacing">
+                <div class="chart w-100"
+                  *ngIf="totalDiscountChartData && totalDiscountChartData.length > 0 && showInternal == true && showClinicBar ===false">
+                  <div class="clinician-chart">
+                    <canvas class="totalDiscount" #myCanvas baseChart [data]="totalDiscountChartData"
+                      [labels]="totalDiscountChartLabels" [chartType]="totalDiscountChartType"
+                      (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)" [legend]="false"
+                      [options]="pieChartOptions2" [plugins]="totalDiscountPluginObservable$ | async"
+                      [colors]="pieChartColors"> </canvas>
+                  </div>
+                </div>
+                <div class="chart w-100"
+                  *ngIf="totalDiscountChartData && totalDiscountChartData.length > 0 && showInternal == true && showClinicBar ===true">
+                  <div class="clinician-chart">
+                    <canvas class="totalDiscount" #myCanvas baseChart [data]="totalDiscountChartClinicsData"
+                      [labels]="totalDiscountChartLabelsClinics" [chartType]="totalDiscountChartType"
+                      (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)" [legend]="false"
+                      [options]="pieChartOptions2" [plugins]="totalDiscountPluginObservable$ | async"
+                      [colors]="pieChartColors"> </canvas>
+                  </div>
+                </div>
+                <div
+                  *ngIf="totalDiscountChartData && totalDiscountChartData.length <= 0 && finTotalDiscountsLoader == false"
+                  class="no-data-placeholder">
+                  <div class="sa_nodata_div">
+                  </div>
+                  <p class="chart-placeholder-text">You have offered no discounts in the selected period</p>
+                </div>
+              </div>
+              <div class="card-footer">
+                <div fxLayout="row wrap" class="m-t-40 predicted1 sa_chart_details_sec"
+                  *ngIf="totalDiscountChartLabels.length > 0">
+                  <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
+                    <h3 class="m-0 value-num">${{totalDiscountChartTotal | number:'1.0-0'}}</h3>
+                    <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
+                    <span class="value-text" *ngIf="currentText == ''">Current</span>
+                  </div>
+                  <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
+                    <h3 class="m-0 value-num">${{totalDiscountChartTrendTotal | number:'1.0-0'}}</h3>
+                    <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                    <span class="value-text" *ngIf="trendText == ''">Previous</span>
+                  </div>
+                </div>
+              </div>
             </mat-card-content>
           </mat-card>
         </div>
@@ -330,7 +429,7 @@ expenses_card custom_ngx_cw01">
 
 
       </div>
-      <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+      <div *ngIf="isVisibleAccountGraphs" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
         <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
           class="total_val sa_flexbg predictor_ratio md_mrn custom_ngx_cw03">
           <mat-card class="">
@@ -628,7 +727,7 @@ expenses_card custom_ngx_cw01">
               </div>
               </mat-card-title>
               <div class="card-body">
-                <div class="sa_tabs_main_sec">
+                <div *ngIf="isVisibleAccountGraphs" class="sa_tabs_main_sec">
                   <div fxLayout="row wrap" fxLayoutGap="20px grid">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"> <small
                         class="sa_tab_btn profit_btn netProfit1 active" (click)="displayProfit('1')">Production</small>
@@ -765,9 +864,9 @@ expenses_card custom_ngx_cw01">
       </div>
 
       <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
-        <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+        <div *ngIf="isVisibleAccountGraphs" fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
           class="sa_flexbg md_mrn expenses_card">
-          <mat-card class="chart_card">
+          <mat-card  class="chart_card">
             <mat-card-content class="sa_matcard_content">
               <mat-card-title class="text-center">Expenses
                 <div class="sa_box_title_right_buttons">
@@ -818,6 +917,43 @@ expenses_card custom_ngx_cw01">
           </mat-card>
           
         </div>
+
+        <div *ngIf="!isVisibleAccountGraphs" fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+        class="sa_flexbg md_mrn expenses_card">
+
+          <mat-card class="">
+            <mat-card-content class="sa_matcard_content">
+              <mat-card-title class="text-center">
+                <span *ngIf="showClinic === false">Production % Per Clinician</span>
+                <span *ngIf="showClinic === true">Production % Per Clinic</span>
+                <div class="info-icon-container">
+                  <img [tooltip]="charTips['30']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                </div>
+              </mat-card-title>
+              <div class="card-body">
+                <div class="chart-clinician">
+                  <canvas #myCanvas2 class="trendProductionPercentage" baseChart
+                    *ngIf="productionChartTrendLabels && productionChartTrendLabels.length  > 0 && finProductionByClinicianTrendLoader == false && finProductionByClinicianTrendError == false"
+                    [datasets]="productionChartTrend" [labels]="productionChartTrendLabels"
+                    [options]="labelBarPercentOptionsStacked" [legend]="false" [chartType]="stackedChartType"
+                    (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"> </canvas>
+                  <div
+                    *ngIf="productionChartTrendLabels && productionChartTrendLabels.length  <=0 && finProductionByClinicianTrendLoader == false"
+                    class="no-data-placeholder">
+                    <div class="sa_nodata_div">
+                    </div>
+                    <p class="chart-placeholder-text">You have no production in the selected period</p>
+                  </div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <div *ngIf="finProductionByClinicianTrendLoader == true && finProductionByClinicianTrendError == false" class="loader_container loader_container_middle"><img
+              class="loader_ico" src="../assets/images/720.gif">
+            <div class="loader-text">Calculating...</div>
+          </div>
+        </div>
+
         <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
           class="sa_flexbg predictor_ratio md_mrn">
           <mat-card class="">
@@ -899,7 +1035,7 @@ expenses_card custom_ngx_cw01">
           </div>
         </div>
 
-        <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+        <div *ngIf="isVisibleAccountGraphs" fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
           class="sa_flexbg predictor_ratio last md_mrn last">
 
           <mat-card class="">

@@ -86,6 +86,7 @@ export class MarketingComponent implements AfterViewInit {
   revenuePluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
   destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   public doughnutChartPlugins: PluginServiceGlobalRegistrationAndOptions[] = [];
+  public isVisibleAccountGraphs: boolean = true;
 
   constructor(private toastr: ToastrService,
     private marketingService: MarketingService,
@@ -128,6 +129,7 @@ export class MarketingComponent implements AfterViewInit {
         this.multipleClinicsSelected = false;
         this.clinic_id = val;
         await this.clinicGetAccountingPlatform();
+        this.acountVisibility(this.connectedwith);
         if (this.connectedwith == 'myob') {
           this.xeroConnect = false;
           this.checkMyobStatus();
@@ -158,6 +160,19 @@ export class MarketingComponent implements AfterViewInit {
           });
         }
     });
+  }
+
+  acountVisibility(connectedwith){
+    if(connectedwith == 'none'){
+      this.isVisibleAccountGraphs = false; 
+      if(this.showTrend){
+        this.mkNoActivePatientsTrend();
+      }else{
+        this.fdActivePatient();
+      }
+    }else{
+      this.isVisibleAccountGraphs = true;
+    }
   }
 
   clinicGetAccountingPlatform() {
