@@ -40,8 +40,8 @@ export class FinancesComponent implements AfterViewInit {
   stackedChartColorsBar1;
   public xeroConnect: boolean = true;
   public myobConnect: boolean = true;
-  public netprofitstats: boolean = true;
-  public netprofitpercentstats: boolean = true;
+  public netprofitstats: boolean = false;
+  public netprofitpercentstats: boolean = false;
   public productionstats: boolean = false;
   public expensestrendstats: boolean = true;
   public connectedwith: any;
@@ -2219,7 +2219,7 @@ export class FinancesComponent implements AfterViewInit {
   public collectionTrendIcon;
   public collectionTrendVal;
   public totalProductionCollectionMax;
-  public finCollectionLoader: any;
+  public finCollectionLoader: boolean = true;
 
   //Collection
   private finCollection() {
@@ -2269,7 +2269,7 @@ export class FinancesComponent implements AfterViewInit {
   public productionTrendIcon;
   public showBar: boolean = false;
   public productionTrendVal;
-  public finProductionPerVisitLoader: any;
+  public finProductionPerVisitLoader: boolean = true;
   public ProductionTrend1 = [];
   public ProductionTrendLabels1 = [];
   private finProductionPerVisit() {
