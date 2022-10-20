@@ -74,11 +74,11 @@
             </div>
           </mat-card-content>
         </div>
-        <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="md_mrn">
+        <div *ngIf="isVisibleAccountGraphs" fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="md_mrn">
           <mat-card-content class="sa_matcard_content">
             <!-- column -->
-            <div *ngIf="isVisibleAccountGraphs" class="sa_main_grid_dashboard profit-purple d-flex no-block align-items-center">
-              <ng-container *ngIf="( (xeroConnect || myobConnect) && !netprofitstatsError && multipleClinicsSelected===false);else NoXeroConnectProfitValuePlaceholder">
+            <div class="sa_main_grid_dashboard profit-purple d-flex no-block align-items-center">
+              <ng-container *ngIf="( (xeroConnect || myobConnect) && !netprofitstatsError && multipleClinicsSelected===false)">
                 <div class="stats-icon">
                   <img src="../assets/images/net-profit.png" alt />
                   <i class="fas fa-chart-bar"></i>
@@ -113,13 +113,25 @@
                   </div>
                 </div>
             </div>
-            <div *ngIf="!isVisibleAccountGraphs" class="sa_main_grid_dashboard profit-purple d-flex no-block align-items-center">
+          </mat-card-content>
+        </div>
+
+        <div *ngIf="!isVisibleAccountGraphs" fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="md_mrn">
+          <mat-card-content class="sa_matcard_content">
+            <!-- column -->
+            <div class="sa_main_grid_dashboard profit-purple d-flex no-block align-items-center">
               <ng-container>
                 <div class="stats-icon">
                   <img src="../assets/images/net-profit.png" alt />
                   <i class="fas fa-chart-bar"></i>
                 </div>
-                <div class="stats">
+                <div *ngIf="finProductionPerVisitLoader" class="stats">
+                  <h3 class="m-0">Production Per Visit</h3>
+                  <h1 class="m-0">
+                    <div class="loader-text">Calculating...</div>
+                  </h1> 
+                </div>
+                <div *ngIf="!finProductionPerVisitLoader" class="stats">
                   <h3 class="m-0">Production Per Visit</h3>
                   <h1 class="m-0">${{productionVal | number:'1.0-0'}}</h1>
                 </div>
@@ -138,7 +150,7 @@
           <mat-card-content class="sa_matcard_content">
             <!-- column -->
             <div *ngIf="isVisibleAccountGraphs" class="sa_main_grid_dashboard profit-green d-flex no-block align-items-center">
-              <ng-container *ngIf="((xeroConnect || myobConnect) && !netprofitPerError && multipleClinicsSelected===false);else NoXeroConnectProfitPlaceholder">
+              <ng-container *ngIf="((xeroConnect || myobConnect) && !netprofitPerError && multipleClinicsSelected===false)">
                 <div class="stats-icon">
                   <img src="../assets/images/net-profit-PMS.png" alt />
                   <i class="fas fa-chart-bar"></i>
@@ -180,7 +192,13 @@
                   <img src="../assets/images/net-profit-PMS.png" alt />
                   <i class="fas fa-chart-bar"></i>
                 </div>
-                <div class="stats">
+                <div *ngIf="finCollectionLoader" class="stats">
+                  <h3 class="m-0">Collection</h3>
+                  <h1 class="m-0">
+                    <div class="loader-text">Calculating...</div>
+                  </h1> 
+                </div>
+                <div *ngIf="!finCollectionLoader" class="stats">
                   <h3 class="m-0">Collection</h3>
                   <h1 class="m-0"> ${{collectionVal | number:'1.0-0'}}</h1>
                 </div>

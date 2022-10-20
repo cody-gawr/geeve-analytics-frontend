@@ -86,7 +86,7 @@ export class MarketingComponent implements AfterViewInit {
   revenuePluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
   destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   public doughnutChartPlugins: PluginServiceGlobalRegistrationAndOptions[] = [];
-  public isVisibleAccountGraphs: boolean = true;
+  public isVisibleAccountGraphs: boolean = false;
 
   constructor(private toastr: ToastrService,
     private marketingService: MarketingService,
@@ -1260,8 +1260,10 @@ export class MarketingComponent implements AfterViewInit {
       }else{        
         this.fdnewPatientsRatio();
       }
-      if(!this.multipleClinicsSelected)
+      if(!this.multipleClinicsSelected && this.connectedwith != 'none'){
         this.fdnewPatientsAcq();
+        
+      }
 
       this.fdvisitsRatio();
       if (this.connectedwith == 'myob' && this.multipleClinicsSelected == false) {
@@ -2230,10 +2232,12 @@ export class MarketingComponent implements AfterViewInit {
   toggleChangeProcess() {
     this.Apirequest = 4;
     this.showTrend = true;
-    if (this.connectedwith != '' && this.multipleClinicsSelected == false) {
+    if (this.connectedwith != '' && this.connectedwith != 'none' && this.multipleClinicsSelected == false) {
       this.Apirequest = 4;
     }
-    this.fdnewPatientsAcqTrend();
+    if(this.connectedwith != 'none')
+      this.fdnewPatientsAcqTrend();
+
     this.mkNewPatientsByReferralTrend();
     //this.mkNewPatientsByReferralTrend();
     //this.mkRevenueByReferral();

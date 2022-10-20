@@ -257,7 +257,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       }else{
         this.getDentists();
       }
-      this.filterDate(this.chartService.duration$.value);
+      if (this.user_type != '4') {
+        this.filterDate(this.chartService.duration$.value);
+      }
     }
 
   }
@@ -268,6 +270,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.cliniciananalysisService.getClinics(this.clinic_id, 'CompareMode').subscribe((data: any) => {
       if (data.data) {
         this.compareModeEnable = (data.data.compare_mode == 1) ? true : false;
+        if(!this.compareModeEnable){
+          this.averageToggle = false;
+        }else if(this.compareModeEnable && this._cookieService.get("dentist_toggle") == 'true'){
+          this.averageToggle = true;
+        }
+        this.filterDate(this.chartService.duration$.value);
       }
     }, error => { });
   }
@@ -1641,7 +1649,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.Apirequest = 7;
     }    
     if (this._cookieService.get("user_type") == '4') {
-      if (this._cookieService.get("dentist_toggle") === 'false'){
+      if (this._cookieService.get("dentist_toggle") === 'false' || !this.compareModeEnable){
         newValue =this._cookieService.get("dentistid");
       }else{
         newValue = 'all';

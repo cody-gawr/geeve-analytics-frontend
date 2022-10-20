@@ -124,7 +124,7 @@ export class FinancesComponent implements AfterViewInit {
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
   profitChartTitles = ['Production', 'Net Profit', 'Net Profit %'];
   barChartColors = [{ backgroundColor: '#39acac' }, { backgroundColor: '#48daba' }];
-  public isVisibleAccountGraphs: boolean = true;
+  public isVisibleAccountGraphs: boolean = false;
 
   constructor(
     private toastr: ToastrService,
