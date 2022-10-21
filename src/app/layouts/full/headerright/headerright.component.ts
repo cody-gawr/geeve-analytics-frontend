@@ -852,6 +852,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
               this.clinic_id = this.selectedClinic;
               this.allChecked = true;
               this.showDropDown = false; 
+              this.resetAccountConnection();
              }else{
               if(newValues.length == 1){
                 this.getAccountConnection(newValues);
