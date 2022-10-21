@@ -1292,8 +1292,10 @@ if(this._cookieService.get("user_type") == '4'){
       (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'block';        
       this.buildChartPredictorDentist();
       this.buildChartProceedureDentist();
-      $('.revenueProceedureSingle').show();
-      $('.revenueProceedure').hide();
+      setTimeout(()=>{
+        $('.revenueProceedureSingle').show();
+        $('.revenueProceedure').hide();
+      },0)
       this.buildChartReferralDentist();
       this.changeDentistPredictor('1');
     }
