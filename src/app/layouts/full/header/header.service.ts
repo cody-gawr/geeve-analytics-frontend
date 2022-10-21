@@ -60,4 +60,13 @@ export class HeaderService {
         );
     }
 
+    clinicGetAccountingPlatform(clinic_id): Observable<any> {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl + "/Clinics/clinicGetAccountingPlatform?clinic_id=" + clinic_id, header)
+            .pipe(map((response: Response) => {
+                return response;
+            })
+        );
+    }
+
 }

@@ -105,6 +105,8 @@ export class MarketingComponent implements AfterViewInit {
     public chartstipsService: ChartstipsService,
     private rolesUsersService: RolesUsersService
   ) {
+    this.connectedwith = this._cookieService.get("a_connect");
+    this.acountVisibility(this.connectedwith);
     this.getChartsTips();
     this.getAllClinics();
   }
@@ -128,7 +130,8 @@ export class MarketingComponent implements AfterViewInit {
       if( val.indexOf(',') == -1 && val != 'all'){
         this.multipleClinicsSelected = false;
         this.clinic_id = val;
-        await this.clinicGetAccountingPlatform();
+        // await this.clinicGetAccountingPlatform();
+        this.connectedwith = this._cookieService.get("a_connect");
         this.acountVisibility(this.connectedwith);
         if (this.connectedwith == 'myob') {
           this.xeroConnect = false;

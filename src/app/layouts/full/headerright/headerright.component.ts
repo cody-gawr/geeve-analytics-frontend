@@ -529,6 +529,11 @@ export class AppHeaderrightComponent implements AfterViewInit {
               })
               this.clinic_id = this.selectedClinic;
              }else{
+                if(newValues.length == 1)
+                  this.getAccountConnection(newValues);
+                else{
+                  this.resetAccountConnection();
+                }
               this.selectedClinic =[];
               newValue = newValues; 
               this.selectedClinic = newValue;
@@ -540,6 +545,11 @@ export class AppHeaderrightComponent implements AfterViewInit {
         }
       }else{
         newValue = newValues;
+        if(newValues != 'all'){
+          this.getAccountConnection(newValues);
+        }
+        else
+          this.resetAccountConnection();
       }
       if(this.user_type == 7){ 
         var clid = newValue
@@ -843,6 +853,11 @@ export class AppHeaderrightComponent implements AfterViewInit {
               this.allChecked = true;
               this.showDropDown = false; 
              }else{
+              if(newValues.length == 1){
+                this.getAccountConnection(newValues);
+              }else{
+                this.resetAccountConnection();
+              }
                if(newValues.length == 1 && (this.route == "/dashboards/cliniciananalysis" || this.route == "/dashboards/clinicianproceedures" || this.route == "/dashboards/cliniciananalysis/multi" || this.route == "/dashboards/clinicianproceedures/multi")){
                 this.showDropDown = true; 
                }else{
@@ -871,5 +886,26 @@ export class AppHeaderrightComponent implements AfterViewInit {
     if($event == false && this.selectedClinic ==''){
       this.toastr.error('Please select atleast one clinic');
     }
+  }
+
+  getAccountConnection(clinic_id){
+    this.headerService.clinicGetAccountingPlatform(clinic_id).subscribe(res=>{
+      if(res.status == 200){
+        let opts = this.constants.cookieOpt as CookieOptions;
+        this._cookieService.put(
+          "a_connect",
+          res.data,
+          opts
+        );
+      }
+    })
+  }
+  resetAccountConnection(){
+    let opts = this.constants.cookieOpt as CookieOptions;
+      this._cookieService.put(
+        "a_connect",
+        '',
+        opts
+      );
   }
 }

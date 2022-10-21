@@ -100,13 +100,11 @@
                   </div>
                 </div>
               </ng-container>
-              <ng-template #NoXeroConnectProfitValuePlaceholder>
                 <div *ngIf="(!xeroConnect && !myobConnect) && multipleClinicsSelected===false" class="w-100">
                   <div class="sa_nodata_div no-found-data ">
                     <p>Please ensure your Xero/MYOB account is connected</p>
                   </div>
                 </div>
-              </ng-template>
                 <div *ngIf="multipleClinicsSelected===true && netprofitstats == true" class="w-100">
                   <div class="sa_nodata_div no-found-data ">
                     <p>Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
@@ -172,13 +170,11 @@
                   </div>
                 </div>
               </ng-container>
-              <ng-template #NoXeroConnectProfitPlaceholder>
                 <div *ngIf="(!xeroConnect && !myobConnect) && multipleClinicsSelected===false" class="w-100">
                   <div class="sa_nodata_div no-found-data ">
                     <p>Please ensure your Xero/MYOB account is connected</p>
                   </div>
                 </div>
-              </ng-template>
                 <div *ngIf="multipleClinicsSelected===true && netprofitpercentstats==true" class="w-100">
                   <div class="sa_nodata_div no-found-data ">
                     <p>Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
