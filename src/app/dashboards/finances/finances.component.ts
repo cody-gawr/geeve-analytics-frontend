@@ -125,7 +125,7 @@ export class FinancesComponent implements AfterViewInit {
   profitChartTitles = ['Production', 'Net Profit', 'Net Profit %'];
   barChartColors = [{ backgroundColor: '#39acac' }, { backgroundColor: '#48daba' }];
   public isVisibleAccountGraphs: boolean = false;
-
+  public maxLegendLabelLimit = 10;
   constructor(
     private toastr: ToastrService,
     private financesService: FinancesService,
@@ -149,6 +149,36 @@ export class FinancesComponent implements AfterViewInit {
     this.getAllClinics();
   }
 
+  public stackLegendGenerator = {
+    display: true,
+    position: "bottom",
+    labels: {
+      boxWidth : 8,
+      usePointStyle: true,
+      generateLabels : (chart)=>{
+        let labels = [];
+        let bg_color = {};
+        chart.data.datasets.forEach((item)=>{
+          item.data.forEach(val=>{
+            if(val > 0){
+              labels.push(item.label);
+              bg_color[item.label] = item.backgroundColor;
+            }
+          })
+        })
+        labels = [...new Set(labels)]; 
+        labels = labels.splice(0,this.maxLegendLabelLimit);
+        return labels.map((item)=>({
+          text: item,
+          strokeStyle : bg_color[item],
+          fillStyle : bg_color[item],
+        }));
+      }
+    },
+    onClick : (event, legendItem, legend)=>{
+      return;
+    }
+  }
   private warningMessage: string;
   async initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
@@ -749,9 +779,8 @@ export class FinancesComponent implements AfterViewInit {
           },
         },
       }],
-    }, legend: {
-      display: true
-    },
+    }, 
+    legend: this.stackLegendGenerator,
     tooltips: {
       mode: 'x-axis',
       enabled: false,
@@ -1207,9 +1236,8 @@ export class FinancesComponent implements AfterViewInit {
           },
         },
       }],
-    }, legend: {
-      display: true
-    },
+    }, 
+    legend: this.stackLegendGenerator,
     tooltips: {
       mode: 'x-axis',
       enabled: false,

@@ -96,7 +96,7 @@
                     <div class="chart-utilisation-rate utigraph"  *ngIf="!showTrend && workTimeData1.length > 0 && utilityratemessage == false && !fdWorkTimeAnalysisLoader && utilShow ==1">
                       <canvas *ngIf="!showTrend && workTimeData1.length > 0 && utilityratemessage == false && !fdWorkTimeAnalysisLoader && !showUtiTable" #myCanvas
                       baseChart [datasets]="workTimeData" [labels]="workTimeLabels" [options]="stackedChartOptionsUtiDP"
-                      [chartType]="'bar'" (chartHover)="chartHovered($event)" [legend]="false"
+                      [chartType]="'bar'" (chartHover)="chartHovered($event)" [legend]="isAllClinic"
                       (chartClick)="chartClicked($event)">
                       </canvas>  
                       <div *ngIf="!showTrend && workTimeData1.length > 0 && utilityratemessage == false && !fdWorkTimeAnalysisLoader && showUtiTable" class="utiTablecon">
@@ -160,7 +160,7 @@
                       <div class="chart-utilisation-rate" *ngIf="showByclinicUR== true && showTrend && uRChartTrendMultiLabels1.length > 0 && utilityratemessage == false && !fdwtaRatioTrendLoader">
                         <canvas *ngIf="showByclinicUR== true && showTrend && uRChartTrendMultiLabels1.length > 0 && utilityratemessage == false && !fdwtaRatioTrendLoader" #myCanvas baseChart
                           [datasets]="uRChartTrendMulti" [labels]="uRChartTrendMultiLabels" [options]="stackedChartOptionsTC"
-                          [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
+                          [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true"
                           (chartClick)="chartClicked($event)">
                           <!-- [colors]="predictedChartColors"  -->
                         </canvas>
@@ -243,11 +243,17 @@
             </mat-card-content>
           </mat-card>
           <div *ngIf="fdWorkTimeAnalysisLoader && utilShow == 1" class="loader_container loader_container_middle"><img class="loader_ico"
-              src="../assets/images/720.gif"></div>
+              src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+          </div>
           <div *ngIf="byDayLoader  && utilShow == 2" class="loader_container loader_container_middle"><img class="loader_ico"
-            src="../assets/images/720.gif"></div>    
+            src="../assets/images/720.gif">
+            <div class="loader-text">Calculating...</div>
+          </div>    
           <div *ngIf="fdwtaRatioTrendLoader" class="loader_container loader_container_middle"><img class="loader_ico"
-              src="../assets/images/720.gif"></div>
+              src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+          </div>
         </div>
         <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
           class="sa_flexbg referral_clinicians">
@@ -305,7 +311,7 @@
                     class="chart-utilisation-rate">
                     <canvas #myCanvas baseChart [datasets]="rPChartTrendMulti"
                       [labels]="rPChartTrendMultiLabels" [options]="stackedChartOptionsTC"
-                      [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
+                      [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true"
                       (chartClick)="chartClicked($event)">
                       <!-- [colors]="predictedChartColors"  -->
                     </canvas>
@@ -343,9 +349,13 @@
             </mat-card-content>
           </mat-card>
           <div *ngIf="fdRecallPrebookRateLoader" class="loader_container loader_container_middle"><img
-              class="loader_ico" src="../assets/images/720.gif"></div>
+              class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+          </div>
           <div *ngIf="fdRecallPrebookRateTrendLoader" class="loader_container loader_container_middle"><img
-              class="loader_ico" src="../assets/images/720.gif"></div>
+              class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+          </div>
         </div>
         <!-- Column-->
         <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
@@ -404,7 +414,7 @@
                     class="chart-utilisation-rate">
                     <canvas #myCanvas baseChart [datasets]="tPChartTrendMulti"
                       [labels]="tPChartTrendMultiLabels" [options]="stackedChartOptionsTC"
-                      [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
+                      [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true"
                       (chartClick)="chartClicked($event)">
                       <!-- [colors]="predictedChartColors" -->
                     </canvas>
@@ -444,9 +454,13 @@
             </mat-card-content>
           </mat-card>
           <div *ngIf="fdtreatmentPrebookRateLoader && !showTrend" class="loader_container loader_container_middle"><img
-              class="loader_ico" src="../assets/images/720.gif"></div>
+              class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+          </div>
           <div *ngIf="fdTreatmentPrebookRateTrendLoader && showTrend" class="loader_container loader_container_middle">
-            <img class="loader_ico" src="../assets/images/720.gif"></div>
+            <img class="loader_ico" src="../assets/images/720.gif">
+            <div class="loader-text">Calculating...</div>
+          </div>
         </div>
         <!-- Column-->
         <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
@@ -500,7 +514,7 @@
                     class="chart-recall-rate-trend">
                     <canvas #myCanvas baseChart [datasets]="ticChartTrendMulti" [labels]="ticChartTrendMultiLabels"
                       [options]="stackedChartOptionsTic" [chartType]="stackedChartType"
-                      (chartHover)="chartHovered($event)" [legend]="false" (chartClick)="chartClicked($event)">
+                      (chartHover)="chartHovered($event)" [legend]="true" (chartClick)="chartClicked($event)">
                       <!-- [colors]="predictedChartColors" -->
                     </canvas>
                   </div>
@@ -530,9 +544,13 @@
             </mat-card-content>
           </mat-card>
           <div *ngIf="fdNumberOfTicksLoader" class="loader_container loader_container_middle"><img class="loader_ico"
-              src="../assets/images/720.gif"></div>
+              src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+          </div>
           <div *ngIf="fdNumberOfTicksTrendLoader" class="loader_container loader_container_middle"><img
-              class="loader_ico" src="../assets/images/720.gif"></div>
+              class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+          </div>
         </div>
         <!-- Column-->
         <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
@@ -623,7 +641,9 @@
             </mat-card-content>
           </mat-card>
           <div *ngIf="fdFtaRatioTrendLoader" class="loader_container loader_container_middle"><img class="loader_ico"
-              src="../assets/images/720.gif"></div>
+              src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+          </div>
         </div>
         <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
           class="sa_flexbg referral_clinicians last">
@@ -711,9 +731,13 @@
             </mat-card-content>
           </mat-card>
           <div *ngIf="fdUtaRatioLoader" class="loader_container loader_container_middle"><img class="loader_ico"
-              src="../assets/images/720.gif"></div>
+              src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+          </div>
           <div *ngIf="fdUtaRatioTrendLoader" class="loader_container loader_container_middle"><img class="loader_ico"
-              src="../assets/images/720.gif"></div>
+              src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+          </div>
         </div>
       </div>
     </div>

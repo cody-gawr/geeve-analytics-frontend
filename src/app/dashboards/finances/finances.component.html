@@ -763,7 +763,7 @@ expenses_card custom_ngx_cw01">
                     <canvas
                     *ngIf="finNetProfitTrendLoader == false && showProdByclinic == true"
                     class="profit1 net_profit" baseChart [datasets]="netProfitPercentChartTrendMulti"
-                    [labels]="netProfitChartTrendLabelsMulti" [options]="stackedChartOptionsDiscount" [legend]="false"
+                    [labels]="netProfitChartTrendLabelsMulti" [options]="stackedChartOptionsDiscount" [legend]="true"
                     [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
                     (chartClick)="chartClicked($event)"> </canvas>
                   <div
@@ -988,7 +988,7 @@ expenses_card custom_ngx_cw01">
                   <canvas #myCanvas2 class="trendtotalDiscount"
                     *ngIf="finTotalDiscountsTrendLoader == false && showByclinic == true"
                     baseChart [datasets]="discountsChartTrendMulti" [labels]="discountsChartTrendMultiLabels1"
-                    [options]="stackedChartOptionsDiscount" [legend]="false" [chartType]="stackedChartType"
+                    [options]="stackedChartOptionsDiscount" [legend]="true" [chartType]="stackedChartType"
                     (chartHover)="chartHovered($event)" 
                     (chartClick)="chartClicked($event)"> </canvas>
                   <div
@@ -1066,7 +1066,7 @@ expenses_card custom_ngx_cw01">
                   <canvas #myCanvas2 class="trendProductionPercentage" baseChart
                     *ngIf="productionChartTrendLabels && productionChartTrendLabels.length  > 0 && finProductionByClinicianTrendLoader == false && finProductionByClinicianTrendError == false"
                     [datasets]="productionChartTrend" [labels]="productionChartTrendLabels"
-                    [options]="labelBarPercentOptionsStacked" [legend]="false" [chartType]="stackedChartType"
+                    [options]="labelBarPercentOptionsStacked" [legend]="true" [chartType]="stackedChartType"
                     (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"> </canvas>
                   <div
                     *ngIf="productionChartTrendLabels && productionChartTrendLabels.length  <=0 && finProductionByClinicianTrendLoader == false"

@@ -318,12 +318,12 @@
                                         (chartClick)="chartClicked($event)">
                                     </canvas>
                                 </div>
-                                <div *ngIf="showTrend == true && activePatients == false &&  newPatientsMultiLabels1.length > 0 && showNPclinic == true"
+                                <div *ngIf="showTrend == true && activePatients == false &&  newPatientsMultiLabels1.length > 0 && showNPclinic == true && !fdnewPatientsRatioLoader"
                                     class="chart-Trend1-patients trendH">
                                     <canvas #myCanvas baseChart [datasets]="newPatientsTrendMulti"
                                         [labels]="newPatientsMultiLabels" [options]="stackedChartOptionsMulti"
                                         [chartType]="stackedChartType" [colors]="lineChartColors"
-                                        (chartHover)="chartHovered($event)" [legend]="false"
+                                        (chartHover)="chartHovered($event)" [legend]="true"
                                         (chartClick)="chartClicked($event)">
                                     </canvas>
                                 </div>
@@ -342,7 +342,7 @@
                                     <canvas #myCanvas baseChart [datasets]="newAPatientsTrendMulti"
                                         [labels]="newAPatientsMultiLabels" [options]="stackedChartOptionsMulti"
                                         [chartType]="stackedChartType" [colors]="lineChartColors"
-                                        (chartHover)="chartHovered($event)" [legend]="false"
+                                        (chartHover)="chartHovered($event)" [legend]="true"
                                         (chartClick)="chartClicked($event)">
                                     </canvas>
                                 </div>

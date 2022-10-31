@@ -1160,9 +1160,8 @@
               <div class="info-icon-container"><img [tooltip]="charTips['43']" src="../assets/images/info-icon.png"
                   alt="info-icon" class="info-icon" /></div>
             </div>
-            <div *ngIf="followupPostOpCallsInComp.length > 0" class="showComplete">
-              <mat-checkbox name="status" [checked]="postopCallsPostOp" (change)="updateToCompleteOP($event)">Show
-                Complete</mat-checkbox>
+            <div *ngIf="followupPostOpCalls.length > 0" class="showComplete">
+              <mat-checkbox name="status" [checked]="postopCallsPostOp" (change)="updateToCompleteOP($event)">Show Complete</mat-checkbox>
             </div>
 
           </div>
@@ -1322,9 +1321,8 @@
               <div class="info-icon-container"><img [tooltip]="charTips['44']" src="../assets/images/info-icon.png"
                   alt="info-icon" class="info-icon" /></div>
             </div>
-            <div *ngIf="followupOverDueRecallInCMP.length > 0" class="showComplete">
-              <mat-checkbox name="status" [checked]="showCompleteOverdue" (change)="updateToCompleteOR($event)">Show
-                Complete</mat-checkbox>
+            <div *ngIf="followupOverDueRecall.length > 0" class="showComplete">
+              <mat-checkbox name="status" [checked]="showCompleteOverdue" (change)="updateToCompleteOR($event)">Show Complete</mat-checkbox>
             </div>
           </div>
           <div class="chipSets mornHuddle" *ngIf="overdueRecallsScrps.length > 0">
@@ -1518,9 +1516,8 @@
                   alt="info-icon" class="info-icon" /></div>
             </div>
 
-            <div *ngIf="followupTickFollowupsInCMP.length > 0" class="showComplete">
-              <mat-checkbox name="status" [checked]="showCompleteTick" (change)="updateToCompleteTF($event)">Show
-                Complete
+            <div *ngIf="followupTickFollowups.length > 0" class="showComplete">
+              <mat-checkbox name="status" [checked]="showCompleteTick" (change)="updateToCompleteTF($event)">Show Complete
               </mat-checkbox>
             </div>
           </div>
@@ -1742,9 +1739,8 @@
                   alt="info-icon" class="info-icon" /></div>
             </div>
 
-            <div *ngIf="followupFtaFollowupsInCMP.length > 0" class="showComplete">
-              <mat-checkbox name="status" [checked]="showCompleteFta" (change)="updateToCompleteFT($event)">Show
-                Complete
+            <div *ngIf="followupFtaFollowups.length > 0" class="showComplete">
+              <mat-checkbox name="status" [checked]="showCompleteFta" (change)="updateToCompleteFT($event)">Show Complete
               </mat-checkbox>
             </div>
           </div>
@@ -1967,9 +1963,8 @@
                 alt="info-icon" class="info-icon" /></div>
           </div>
 
-          <div *ngIf="followupUtaFollowupsInCMP.length > 0" class="showComplete">
-            <mat-checkbox name="status" [checked]="showCompleteUta" (change)="updateToCompleteUT($event)">Show
-              Complete
+          <div *ngIf="followupUtaFollowups.length > 0" class="showComplete">
+            <mat-checkbox name="status" [checked]="showCompleteUta" (change)="updateToCompleteUT($event)">Show Complete
             </mat-checkbox>
           </div>
         </div>
@@ -2190,7 +2185,7 @@
       <div class="loader_container mainloader" *ngIf="equipmentListLoading && endTaksLoading ">
         <img src="../../assets/images/logo-icon.gif">
       </div>
-      <div class="showComplete dailytsk" *ngIf="isEnabletasks && tasklistArray.length > 0">
+      <div class="showComplete dailytsk" *ngIf="isEnabletasks && endOfDaysTasks.length > 0">
         <mat-checkbox name="status" [checked]="showComplete" (change)="updateToComplete($event)">Show Complete
         </mat-checkbox>
       </div>
@@ -2451,7 +2446,7 @@
       <div class="morning-huddle-date">
         <strong>Current Day: {{ endOfDaysTasksDate | date:'EEE MMM d':'timezone' }} </strong>
       </div>
-      <div class="showComplete dailytsk" *ngIf="isEnabletasks && tasklistArray.length > 0">
+      <div class="showComplete dailytsk" *ngIf="isEnabletasks && endOfDaysTasks.length > 0">
         <mat-checkbox name="status" [checked]="showComplete" (change)="updateToComplete($event)">Show Complete
         </mat-checkbox>
       </div>      

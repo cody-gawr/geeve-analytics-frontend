@@ -42,6 +42,23 @@ export class FrontDeskComponent implements AfterViewInit {
   public  apiUrl = environment.apiUrl;
   public showGoals: boolean = false;
   public numberOfRecords:number = 50;
+  public maxLegendLabelLimit = 10;
+  public legendBackgroundColor = [
+    '#6edbbb',
+    '#b0fffa', 
+    '#abb3ff', 
+    '#ffb4b5', 
+    '#fffcac', 
+    '#FFE4E4', 
+    '#FFD578', 
+    '#54D2FF', 
+    '#E58DD7', 
+    '#A9AABC', 
+    '#F2ECFF', 
+    '#5689C9', 
+    '#F9F871'
+  ];
+  public isAllClinic: boolean;
 
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
@@ -196,6 +213,53 @@ this.predictedChartColors = [
     this.filterDate(this.chartService.duration$.value);
   }
 
+  public legendGenerator = {
+    display: true,
+      position: "bottom",
+      labels: {
+        boxWidth : 8,
+        usePointStyle: true,
+        generateLabels : (chart)=>{
+          let bgColor = {};
+          let labels = chart.data.labels.map((value,i)=>{
+            bgColor[value.split("--")[3]] = chart.data.datasets[0].backgroundColor[i];
+            return value.split("--")[3];
+          });
+          labels = [...new Set(labels)];
+          labels = labels.splice(0,this.maxLegendLabelLimit);
+          return labels.map((label,index)=>({
+            text: label,
+            strokeStyle : bgColor[label],
+            fillStyle : bgColor[label],
+          }));
+          
+        }
+      },
+      onClick : (event, legendItem, legend)=>{
+        return;
+      },
+      // align : 'start',
+  }
+
+  public barBackgroundColor(data) {
+    let dynamicColors = [];
+      data.data.forEach(res => {
+        if(Array.isArray(this.clinic_id)){
+          this.clinic_id.forEach((item,index)=>{
+            if(res.clinic_id == item){
+              dynamicColors.push(this.legendBackgroundColor[index]);
+            }
+          })
+        }else{
+          this.clinic_id.split(",").forEach((item,index)=>{
+            if(res.clinic_id == item){
+              dynamicColors.push(this.legendBackgroundColor[index]);
+            }
+          });
+        }
+      });
+    return dynamicColors;
+  }
   public date =new Date();
     public stackedChartOptions: any = {
     //   elements: {
@@ -339,7 +403,38 @@ this.predictedChartColors = [
 //             display: true
 //          }
 //   };
-  
+
+public stackLegendGenerator = {
+  display: true,
+  position: "bottom",
+  labels: {
+    boxWidth : 8,
+    usePointStyle: true,
+    generateLabels : (chart)=>{
+      let labels = [];
+      let bg_color = {};
+      chart.data.datasets.forEach((item)=>{
+        item.data.forEach(val=>{
+          if(val > 0){
+            labels.push(item.label);
+            bg_color[item.label] = item.backgroundColor;
+          }
+        })
+      })
+      labels = [...new Set(labels)]; 
+      labels = labels.splice(0,this.maxLegendLabelLimit);
+      return labels.map((item)=>({
+        text: item,
+        strokeStyle : bg_color[item],
+        fillStyle : bg_color[item],
+      }));
+    }
+  },
+  onClick : (event, legendItem, legend)=>{
+    return;
+  }
+}
+
 public stackedChartOptionsTC: any = {
   elements: {
     point: {
@@ -379,9 +474,8 @@ public stackedChartOptionsTC: any = {
         },
       },
     }],
-  }, legend: {
-    display: true
-  },
+  }, 
+  legend: this.stackLegendGenerator,
   tooltips: {
     mode: 'x-axis',
     enabled: false,
@@ -414,12 +508,25 @@ public stackedChartOptionsTC: any = {
         tooltipEl.classList.add('no-transform');
       }
 
+      // function getBody(bodyItem) {
+      //   return bodyItem.lines;
+      // }
       function getBody(bodyItem) {
-        return bodyItem.lines;
+        let result = [];
+        bodyItem.forEach(items=>{
+          items.lines.forEach(item=>{
+            if(item.split(":")[1].trim() != "$NaN"){
+              result.push(items.lines);
+            }
+          });
+        })
+        return result;
+        // return bodyItem.lines;
       }
       if (tooltip.body) {
         var titleLines = tooltip.title || [];
-        var bodyLines = tooltip.body.map(getBody);
+        // var bodyLines = tooltip.body.map(getBody);
+        var bodyLines = getBody(tooltip.body);
         var labelColorscustom = tooltip.labelColors;
         var innerHtml = '<table><thead>';
         innerHtml += '</thead><tbody>';
@@ -542,9 +649,8 @@ public stackedChartOptionsTic: any = {
           },
         },
       }],
-    }, legend: {
-      display: true
-    },
+    }, 
+    legend: this.stackLegendGenerator,
     tooltips: {
       mode: 'x-axis',
       enabled: false,
@@ -578,11 +684,21 @@ public stackedChartOptionsTic: any = {
         }
 
         function getBody(bodyItem) {
-          return bodyItem.lines;
+          let result = [];
+          bodyItem.forEach(items=>{
+            items.lines.forEach(item=>{
+              if(item.split(":")[1].trim() != "$NaN"){
+                result.push(items.lines);
+              }
+            });
+          })
+          return result;
+          // return bodyItem.lines;
         }
         if (tooltip.body) {
           var titleLines = tooltip.title || [];
-          var bodyLines = tooltip.body.map(getBody);
+          var bodyLines = getBody(tooltip.body);
+          // var bodyLines = tooltip.body.map(getBody);
           var labelColorscustom = tooltip.labelColors;
           var innerHtml = '<table><thead>';
           innerHtml += '</thead><tbody>';
@@ -768,7 +884,7 @@ public stackedChartOptionsTic: any = {
          }
       };
   public stackedChartOptionsUti: any = {
-
+    hover: { mode: null },
     scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
@@ -856,7 +972,7 @@ public stackedChartOptionsTic: any = {
                   let lbl = tooltipItems.label.split('--');                
                   hour = lbl[1];
                   phour = lbl[2];
-                  return ['',"Available Hours: "+phour,"Used Hours: "+hour];
+                  return ['',"Available Hours: "+Math.round(phour * 100)/100,"Used Hours: "+Math.round(hour * 100)/100];
                 } 
                 return;
               },
@@ -865,12 +981,10 @@ public stackedChartOptionsTic: any = {
             }
           }
         },
-        legend: {
-            display: true
-         }
+        legend: this.legendGenerator
       };
 public stackedChartOptionsUti1: any = {
-
+    hover: {mode:null},
     scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
@@ -946,9 +1060,7 @@ public stackedChartOptionsUti1: any = {
         tooltips: {
           enabled : false
         },
-        legend: {
-            display: true
-         }
+        legend: this.legendGenerator
       };
 
 public stackedChartOptionsUtiDP = this.stackedChartOptionsUti;
@@ -1231,13 +1343,18 @@ public fdUtiData:any = [];
         data.data.forEach(res => {            
             this.workTimeData1.push(Math.round(res.util_rate * 100));
             if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+              this.isAllClinic = true;
               this.showMultiClinicUR = true;
+            }else{
+              this.isAllClinic = false;
             }
             this.workTimeLabels1.push(res.app_book_name+'--'+res.worked_hour+'--'+res.planned_hour +'--'+res.clinic_name); 
           
         });
      }
         this.workTimeData[0]['data'] = this.workTimeData1;
+        if(this.isAllClinic)
+          this.workTimeData[0].backgroundColor = this.barBackgroundColor(data);
          this.workTimeLabels= this.workTimeLabels1;
          this.workTimeTotal = Math.round(data.total);
          this.prevWorkTimeTotal =  Math.round(data.total_ta);
@@ -1341,6 +1458,7 @@ public fdUtiData:any = [];
           this.prevByDayTotal=  0;
         if(data.message == 'success'){
           if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+            this.isAllClinic = true;
             data.data.forEach(res => { 
               res.val.forEach((reslt, key) => { 
                 var temp =  {
@@ -1358,6 +1476,7 @@ public fdUtiData:any = [];
             this.byDayLabels = this.byDayLabelsTemp;
           }else{
             data.data.forEach(res => {
+              this.isAllClinic = false;
               // if(res.worked_hour > 0) {
                 var temp =  {
                 'day':  res.day, 
@@ -2313,8 +2432,6 @@ public ftaTrendMultiLabels = [];
         }
         this.fdwtaRatioTrendLoader =false;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          console.log('if');
-          
           data.data.forEach(res => { 
             res.val.forEach((reslt, key) => {
               if (typeof (this.uRChartTrendMulti[key]) == 'undefined') {
@@ -2336,8 +2453,6 @@ public ftaTrendMultiLabels = [];
           });
           this.uRChartTrendMultiLabels = this.uRChartTrendMultiLabels1;
         }else{
-          console.log('else');
-          
               data.data.forEach(res => {  
                 this.wtaChartTrend1.push(Math.round(res.util_rate * 100));
                 if(res.goals == -1 || res.goals == null || res.goals == ''){

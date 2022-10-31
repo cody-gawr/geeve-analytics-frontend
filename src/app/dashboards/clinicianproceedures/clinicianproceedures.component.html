@@ -83,13 +83,13 @@
             
               <!--  Procedure Analysis All dentist General-->
               <div class="Item_Predictor_clinicianproceedures" *ngIf="dentistMode == false ">
-                <div class="chart-item-predictor" *ngIf="stackedChartDataMax > 0 && buildChartLoader == false && !showPaTable  && showmulticlinicGenPredictor == false">
+                <div class="chart-item-predictor" *ngIf="stackedChartDataMax > 0 && !buildChartLoader && !showPaTable  && showmulticlinicGenPredictor == false">
                   <canvas #myCanvas baseChart [datasets]="stackedChartData" [labels]="stackedChartLabels"
                     [options]="stackedChartOptions" [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
                     [legend]="true" [colors]="IPcolors" (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
-                <div class="chart-item-predictor" *ngIf="!showPaTable && showmulticlinicGenPredictor == true">
+                <div class="chart-item-predictor" *ngIf="!showPaTable && showmulticlinicGenPredictor == true && !buildChartLoader">
                   <canvas #myCanvas baseChart [datasets]="ItemsPredictorAnalysisGenMulti"
                     [labels]="ItemsPredictorAnalysisGenLabels" [options]="stackedChartOptionsmulti" [chartType]="stackedChartType"
                     (chartHover)="chartHovered($event)" [legend]="true" [colors]="predictorAnalysisChartColors"
@@ -147,7 +147,7 @@
                     (chartClick)="chartClicked($event)"></canvas>
                 </div>
                 <!-- Trend Mode -->
-                <div *ngIf="showTrend == true && stackedChartDataMax > 0" class="chart-trend">
+                <div *ngIf="showTrend == true && stackedChartDataMax > 0 && !buildChartDentistLoader" class="chart-trend">
                   <canvas baseChart [datasets]="stackedChartData" [labels]="stackedChartLabels"
                     [options]="stackedChartOptions" [legend]="false" [chartType]="stackedChartType"
                     (chartHover)="chartHovered($event)" [colors]="IPcolors"
@@ -172,7 +172,7 @@
             <div class="procedureAnalysisSpecialist" *ngIf="procedureAnalysisVisibility == 'Specialist'">
               <!--  Procedure Analysis All dentist Specialist-->
               <div class="Item_Predictor_clinicianproceedures" *ngIf="dentistMode == false">
-                <div class="chart-item-predictor" *ngIf="predictorAnalysisDataMax > 0 && !showPaTable && showmulticlinicItemsPredictor == false">
+                <div class="chart-item-predictor" *ngIf="predictorAnalysisDataMax > 0 && !showPaTable && showmulticlinicItemsPredictor == false && !predictorAnalysisSpecialLoader">
                   <canvas #myCanvas baseChart [datasets]="stackedChartDataItemSpecial"
                     [labels]="predictorAnalysisLablesSpe" [options]="stackedChartOptions" [chartType]="stackedChartType"
                     (chartHover)="chartHovered($event)" [legend]="true" [colors]="predictorAnalysisChartColors"
@@ -458,7 +458,7 @@
               </div>
             </div>
 
-            <div class="chart-predicted-stacked" *ngIf="predictorLabels1.length > 0 && predictorRatioTab == 1 && showmulticlinicPredictor == true">
+            <div class="chart-predicted-stacked" *ngIf="predictorLabels1.length > 0 && predictorRatioTab == 1 && showmulticlinicPredictor == true && !buildChartPredictorLoader">
               <canvas #myCanvas baseChart [datasets]="predictedMulti1"
                 [labels]="predictorLabels1" [options]="stackedChartOptionsmulti" [chartType]="stackedChartType"
                 (chartHover)="chartHovered($event)" [legend]="true" [colors]="predictorAnalysisChartColors"
@@ -490,7 +490,7 @@
             </div>
 
             <div class="chart-predicted-stacked"
-              *ngIf="showmulticlinicPredictor == false && predictedstackedChartData[0]['data'].length > 0 || predictedstackedChartData[1]['data'].length > 0">
+              *ngIf="(showmulticlinicPredictor == false && predictedstackedChartData[0]['data'].length > 0 || predictedstackedChartData[1]['data'].length > 0 ) && !buildChartLoader">
               <canvas baseChart class="chart" [datasets]="predictedstackedChartData"
                 [labels]="predictedstackedChartLabels" [options]="stackedChartOptions" [chartType]="stackedChartType"
                 (chartHover)="chartHovered($event)" [colors]="predictorRatioColors"
@@ -631,7 +631,7 @@
               <p></p>
             </div>
             <div class="chart-ratio-div"
-              *ngIf="toggleChecked == true && (ratioChartData[0]['data'].length > 0 || ratioChartData[1]['data'].length) ">
+              *ngIf="toggleChecked == true && (ratioChartData[0]['data'].length > 0 || ratioChartData[1]['data'].length) && !predictorRatioLoader">
               <canvas class="trendRatio" baseChart [datasets]="ratioChartData" [labels]="ratioChartLabels"
                 [options]="stackedChartOptions" [legend]="false" [options]="stackedChartOptions"
                 [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true" [colors]="IPcolors"
@@ -639,7 +639,7 @@
               </canvas>
             </div>
             <div
-              *ngIf="(ratioChartData1[0]['data'].length <= 0 && ratioChartData1[1]['data'].length <= 0) && predictorRatioTab == '1' && toggleChecked == true"
+              *ngIf="(ratioChartData1[0]['data'].length <= 0 && ratioChartData1[1]['data'].length <= 0) && predictorRatioTab == '1' && toggleChecked == true && !predictorRatioLoader"
               class="no-data-placeholder">
               <div class="sa_nodata_div">
               </div>
@@ -648,7 +648,7 @@
             </div>
 
             <div
-              *ngIf="(ratioChartData2[0]['data'].length <= 0 && ratioChartData2[1]['data'].length <= 0) && predictorRatioTab == '2' && toggleChecked == true"
+              *ngIf="(ratioChartData2[0]['data'].length <= 0 && ratioChartData2[1]['data'].length <= 0) && predictorRatioTab == '2' && toggleChecked == true && !predictorRatioLoader"
               class="no-data-placeholder">
               <div class="sa_nodata_div">
               </div>
@@ -656,7 +656,7 @@
             </div>
 
             <div
-              *ngIf="(ratioChartData3[0]['data'].length <= 0 && ratioChartData3[1]['data'].length <= 0) && predictorRatioTab == '3' && toggleChecked == true"
+              *ngIf="(ratioChartData3[0]['data'].length <= 0 && ratioChartData3[1]['data'].length <= 0) && predictorRatioTab == '3' && toggleChecked == true && !predictorRatioLoader"
               class="no-data-placeholder">
               <div class="sa_nodata_div">
               </div>
@@ -685,10 +685,18 @@
           class="loader_ico" src="../assets/images/720.gif">
         <div class="loader-text">Calculating...</div>
       </div>
-      <div *ngIf="buildChartPredictorDentistLoader == true" class="loader_container loader_container_middle"><img
-          class="loader_ico" src="../assets/images/720.gif">
-        <div class="loader-text">Calculating...</div>
-      </div>
+      <div *ngIf="predictorRatioLoader" class="loader_container loader_container_middle"><img
+        class="loader_ico" src="../assets/images/720.gif">
+      <div class="loader-text">Calculating...</div>
+    </div>
+    <div *ngIf="buildChartPredictorDentistLoader == true" class="loader_container loader_container_middle"><img
+        class="loader_ico" src="../assets/images/720.gif">
+      <div class="loader-text">Calculating...</div>
+    </div>
+    <div *ngIf="buildChartLoader" class="loader_container loader_container_middle"><img
+      class="loader_ico" src="../assets/images/720.gif">
+    <div class="loader-text">Calculating...</div>
+  </div>
     </div>
     <!-- Column-->
     <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
@@ -734,19 +742,19 @@
 
             </div>
             <div class="chart">
-              <div *ngIf="showInternal == true && pieChartDataMax1 > 0 && showTrend == false" class="trend-show">
+              <div *ngIf="showInternal == true && pieChartDataMax1 > 0 && showTrend == false && !clinicianReferralLoader" class="trend-show">
                 <canvas baseChart [data]="pieChartData1" [labels]="pieChartLabels1" [chartType]="pieChartType"
                   (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)" [legend]="true"
                   [options]="pieChartOptions" [colors]="doughnutChartColors">
                 </canvas>
               </div>
-              <div *ngIf="pieChartDataMax1 <= 0 && showInternal == true && showTrend == false">
+              <div *ngIf="pieChartDataMax1 <= 0 && showInternal == true && showTrend == false && !clinicianReferralLoader">
                 <div class="sa_nodata_div">
                 </div>
                 <p class="chart-placeholder-text">You have no internal referrals in the selected period</p>
               </div>
 
-              <div *ngIf="showExternal == true && pieChartDataMax2 > 0 && showTrend == false" class="trend-show">
+              <div *ngIf="showExternal == true && pieChartDataMax2 > 0 && showTrend == false && !clinicianReferralLoader" class="trend-show">
                 <canvas baseChart [data]="pieChartData2" [labels]="pieChartLabels2" [chartType]="pieChartType"
                   (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)" [options]="pieChartOptions"
                   [colors]="doughnutChartColors">
@@ -756,13 +764,13 @@
             <p></p>
         </div> -->
               </div>
-              <div *ngIf="pieChartDataMax2 <= 0 && showExternal == true && showTrend == false">
+              <div *ngIf="pieChartDataMax2 <= 0 && showExternal == true && showTrend == false && !clinicianReferralLoader">
                 <div class="sa_nodata_div">
                 </div>
                 <p class="chart-placeholder-text">You have no external referrals in the selected period</p>
               </div>
 
-              <div *ngIf="showCombined == true  && pieChartDataMax3 > 0  && showTrend == false" class="trend-show">
+              <div *ngIf="showCombined == true  && pieChartDataMax3 > 0  && showTrend == false && !clinicianReferralLoader" class="trend-show">
                 <canvas baseChart [data]="pieChartData3" [labels]="pieChartLabels3" [chartType]="pieChartType"
                   (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)" [options]="pieChartOptions"
                   [colors]="doughnutChartColors">
@@ -772,13 +780,13 @@
             <p></p>
         </div> -->
               </div>
-              <div *ngIf="pieChartDataMax3 <= 0 && showCombined == true && showTrend == false">
+              <div *ngIf="pieChartDataMax3 <= 0 && showCombined == true && showTrend == false && !clinicianReferralLoader">
                 <div class="sa_nodata_div">
                 </div>
                 <p class="chart-placeholder-text">You have no referrals in the selected period</p>
               </div>
 
-              <div *ngIf="showTrend == true && stackedChartTrendDataMax > 0" class="chart-trend-show">
+              <div *ngIf="showTrend == true && stackedChartTrendDataMax > 0 && !clinicianReferralLoader" class="chart-trend-show">
                 <canvas baseChart [datasets]="stackedChartTrendData" [labels]="stackedChartTrendLabels"
                   [options]="stackedChartOptions" [legend]="false" [chartType]="stackedChartType"
                   (chartHover)="chartHovered($event)" [colors]="stackedChartColors"
@@ -788,19 +796,19 @@
             <p></p>
         </div> -->
               </div>
-              <div *ngIf="stackedChartTrendDataMax <= 0 && showTrend == true && showInternal == true"
+              <div *ngIf="stackedChartTrendDataMax <= 0 && showTrend == true && showInternal == true && !clinicianReferralLoader"
                 class="no-data-placeholder">
                 <div class="sa_nodata_div">
                 </div>
                 <p class="chart-placeholder-text">You have no referrals in the selected period</p>
               </div>
-              <div *ngIf="stackedChartTrendDataMax <= 0 && showTrend == true && showExternal == true"
+              <div *ngIf="stackedChartTrendDataMax <= 0 && showTrend == true && showExternal == true && !clinicianReferralLoader"
                 class="no-data-placeholder">
                 <div class="sa_nodata_div">
                 </div>
                 <p class="chart-placeholder-text">You have no referrals in the selected period</p>
               </div>
-              <div *ngIf="stackedChartTrendDataMax <= 0 && showTrend == true && showCombined == true">
+              <div *ngIf="stackedChartTrendDataMax <= 0 && showTrend == true && showCombined == true && !clinicianReferralLoader">
                 <div class="sa_nodata_div">
                 </div>
                 <p class="chart-placeholder-text">You have no referrals in the selected period</p>
@@ -827,6 +835,10 @@
             </div>
           </div>
         </mat-card-content>
+        <div *ngIf="clinicianReferralLoader" class="loader_container loader_container_middle">
+          <img class="loader_ico" src="../assets/images/720.gif">
+          <div class="loader-text">Calculating...</div>
+        </div>
       </mat-card>
     </div>
   </div>

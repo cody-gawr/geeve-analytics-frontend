@@ -2239,8 +2239,8 @@ html .page-wrapper {
 }
 
 .loader_ico {
-  width : 32px;
-  height: 32px;
+  width : 100px;
+  /* height: 32px; */
 }
 
 .loader-text {
