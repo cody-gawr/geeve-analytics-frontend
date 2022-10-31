@@ -107,7 +107,8 @@ export class MarketingComponent implements AfterViewInit {
     private rolesUsersService: RolesUsersService
   ) {
     this.connectedwith = this._cookieService.get("a_connect");
-    this.acountVisibility(this.connectedwith);
+    // this.acountVisibility(this.connectedwith);
+    this.isVisibleAccountGraphs = this.connectedwith == 'none' ? false : true;;
     this.getChartsTips();
     this.getAllClinics();
   }
@@ -200,11 +201,11 @@ export class MarketingComponent implements AfterViewInit {
   acountVisibility(connectedwith){
     if(connectedwith == 'none'){
       this.isVisibleAccountGraphs = false; 
-      if(this.showTrend){
-        this.mkNoActivePatientsTrend();
-      }else{
-        this.fdActivePatient();
-      }
+      // if(this.showTrend){
+      //   this.mkNoActivePatientsTrend();
+      // }else{
+      //   this.fdActivePatient();
+      // }
     }else{
       this.isVisibleAccountGraphs = true;
     }
@@ -1292,6 +1293,10 @@ export class MarketingComponent implements AfterViewInit {
         this.fdActivePatient();
       }else{        
         this.fdnewPatientsRatio();
+      }
+
+      if(!this.isVisibleAccountGraphs){
+        this.fdActivePatient();
       }
       if(!this.multipleClinicsSelected && this.connectedwith != 'none'){
         this.fdnewPatientsAcq();

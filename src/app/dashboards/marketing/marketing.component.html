@@ -690,7 +690,12 @@
                             </div>
                         </div>
                     </mat-card-content>
+                    <div *ngIf="fdActivePatientLoader" class="loader_container loader_container_middle">
+                        <img class="loader_ico" src="../assets/images/720.gif">
+                        <div class="loader-text">Calculating...</div>
+                    </div>
                 </mat-card>
+                
             </div>
             <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
                 class="sa_flexbg referral_clinicians last">
@@ -746,7 +751,7 @@
                                     <canvas #myCanvas baseChart [datasets]="totavisitTrendMulti"
                                         [labels]="totalVisitMultiLabels" [options]="stackedChartOptionsMulti"
                                         [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
-                                        [legend]="false" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+                                        [legend]="true" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
                                     </canvas>
                                 </div>
 

@@ -601,11 +601,11 @@
                       [legend]="false" [colors]="predictedChartColors" (chartClick)="chartClicked($event)">
                     </canvas>
                   </div>
-                  <div *ngIf="showByclinicfta == true && showTrend && ftaChartTrendMultiLabels1.length > 0 && !fdTreatmentPrebookRateTrendLoader"
+                  <div *ngIf="showByclinicfta == true && showTrend && ftaChartTrendMultiLabels1.length > 0 && !fdFtaRatioTrendLoader"
                     class="chart-utilisation-rate">
                     <canvas #myCanvas baseChart [datasets]="ftaChartTrendMulti"
                       [labels]="ftaTrendMultiLabels" [options]="stackedChartOptionsTC"
-                      [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
+                      [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true"
                       (chartClick)="chartClicked($event)">
                     </canvas>
                   </div>
@@ -695,7 +695,7 @@
                     class="chart-utilisation-rate">
                     <canvas #myCanvas baseChart [datasets]="utaChartTrendMulti"
                       [labels]="utaTrendMultiLabels" [options]="stackedChartOptionsTC"
-                      [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
+                      [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true"
                       (chartClick)="chartClicked($event)">
                     </canvas>
                   </div>
