@@ -1333,8 +1333,8 @@ public fdUtiData:any = [];
       data.data.forEach(res => {
         var temp =  {
           'name':  res.app_book_name, 
-          'scheduled_hours':  res.planned_hour, 
-          'clinican_hours':  res.worked_hour, 
+          'scheduled_hours':  Math.round(res.planned_hour * 100)/100, 
+          'clinican_hours':  Math.round(res.worked_hour * 100)/100, 
           'util_rate':  Math.round(res.util_rate * 100), 
           };
           this.fdUtiData.push(temp);
