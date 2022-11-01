@@ -650,7 +650,7 @@ export class StaffMeetingsComponent implements OnInit{
 // use to get the meeting agenda's
   getMeetingAgenda(meeting_id){
     this.meeting_id = meeting_id;
-    this.staffMeetingService.getMeetingAgenda(meeting_id).subscribe(res=>{
+    this.staffMeetingService.getMeetingAgenda(meeting_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
         this.staffMeetingService.getMeeting(meeting_id,this.clinic_id).subscribe(res=>{
           if(res.status == 200){
@@ -667,7 +667,7 @@ export class StaffMeetingsComponent implements OnInit{
 
   // use to viwe the agenda tab
   viewMeetingAgenda(meeting_id){
-    this.staffMeetingService.getMeetingAgenda(meeting_id).subscribe(res=>{
+    this.staffMeetingService.getMeetingAgenda(meeting_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
         this.view_agenda = [...res.data];
         this.view_agenda_tab = true;
@@ -699,7 +699,7 @@ export class StaffMeetingsComponent implements OnInit{
   // open view agenda tab
   openAgenda(meeting_id){
     this.meeting_id = meeting_id;
-    this.staffMeetingService.getMeetingAgenda(meeting_id).subscribe(res=>{
+    this.staffMeetingService.getMeetingAgenda(meeting_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
         if(this.scheduleDrawer.opened)
           this.scheduleDrawer.close();
@@ -736,6 +736,7 @@ export class StaffMeetingsComponent implements OnInit{
       this.agenda_flag = "new";
       this.hasDisable = true;
       this.agenda_description = "";
+      this.chart_clinic_id = +this.clinic_id;
       // this.agenda_duration = 0;
       this.create_agenda_form.get('duration').setValue('');
       this.agenda_staff_member = "";
@@ -753,6 +754,7 @@ export class StaffMeetingsComponent implements OnInit{
     }else if(action == "edit"){
       this.meeting_agenda_id = item.id;
       this.agenda_item = item.agenda_item;
+      this.chart_clinic_id = item.chart_clinic_id;
       this.agenda_staff_member = (item.staff_member == "null") ? "" : item.staff_member;
       this.agenda_category = item.category;
       this.agenda_duration = item.duration;
@@ -804,7 +806,7 @@ export class StaffMeetingsComponent implements OnInit{
     if(formData.chart == 0)
       formData.chart = "";
     formData.meeting_id = this.meeting_id;
-    // formData.clinic_id = this.chart_clinic_id;
+    formData.clinic_id = this.clinic_id;
     formData.flag = this.agenda_flag;
     formData.agenda_order = this.agenda_order;
     if(this.agenda_flag == "update")

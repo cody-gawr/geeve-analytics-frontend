@@ -58,7 +58,7 @@ export class GraphsComponent{
     }
 
     ngAfterViewInit(){
-        this.clinic_id = this.item.clinic_id;
+        this.clinic_id = this.item.chart_clinic_id;
         this.startDate = this.datepipe.transform(this.item.agenda_chart_start_date, 'yyyy-MM-dd');
         this.endDate = this.datepipe.transform(this.item.agenda_chart_end_date, 'yyyy-MM-dd');
         

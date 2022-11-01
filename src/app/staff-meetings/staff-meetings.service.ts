@@ -89,9 +89,9 @@ export class StaffMeetingService {
         );
     }
 
-    getMeetingAgenda(meeting_id): Observable<any> {
+    getMeetingAgenda(meeting_id, clinic_id): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/StaffMeeting/smGetMeetingAgenda?meeting_id="+meeting_id, header).pipe(
+        return this.http.get(this.apiUrl + "/StaffMeeting/smGetMeetingAgenda?meeting_id="+meeting_id+"&clinic_id="+clinic_id, header).pipe(
             map((response: Response) => {
                 return response;
             })
@@ -101,7 +101,8 @@ export class StaffMeetingService {
     saveMeetingAgenda(data): Observable<any>{
         const formData = new FormData();
         // formData.append("clinic_id", data.clinic_id);
-        formData.append("clinic_id", data.clinic);
+        formData.append("clinic_id", data.clinic_id);
+        formData.append("chart_clinic_id", data.clinic);
         formData.append("meeting_id", data.meeting_id);
         formData.append("category", data.category);
         formData.append("agenda_item", data.item);
