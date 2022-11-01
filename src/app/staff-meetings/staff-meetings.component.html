@@ -5,14 +5,14 @@
             <button mat-raised-button [ngClass]="(!showCompletedMeetingTab) ? 'btn_active' : ''" (click)="changeCompleteTab('Upcoming')" >Upcoming</button>
             <button mat-raised-button [ngClass]="(showCompletedMeetingTab) ? 'btn_active' : ''" (click)="changeCompleteTab('Completed')" >Completed</button>
         </span> -->
-        <button *ngIf="!drawer.opened && hasPermission" mat-raised-button color="green" (click)="createMeeting()" class="float-right create-meeting-btn" ><i class="fas fa-plus"></i> Create New Meeting</button>
+        <button *ngIf="!draftDrawer.opened && hasPermission" mat-raised-button color="green" (click)="createMeeting()" class="float-right create-meeting-btn" ><i class="fas fa-plus"></i> Create New Meeting</button>
 
         <mat-tab-group [selectedIndex]="currentTab" (selectedIndexChange) = "changeTab($event)">
             <mat-tab *ngIf="hasPermission" label="Drafts">
                 <div *ngIf="meetingCards.length > 0">
                     <div class="card_meeting_card" *ngFor="let meeting of meetingCards; let i = index;">
                         <mat-card class="meeting_card">
-                            <div #card (click)="drawerToggle(card, meeting)">
+                            <div #card (click)="draftDrawerToggle(card, meeting)">
                                 <mat-card-title class="header">
                                     <div class="meeting_card_header">
                                         {{meeting.meeting_topic}}
@@ -47,7 +47,7 @@
                 <div *ngIf="meetingCards.length > 0">
                     <div class="card_meeting_card" *ngFor="let meeting of meetingCards; let i = index;">
                         <mat-card class="meeting_card">
-                            <div #card (click)="drawerToggle(card, meeting)">
+                            <div #card (click)="scheduleDrawerToggle(card, meeting)">
                                 <mat-card-title class="header">
                                     <div class="meeting_card_header">
                                         {{meeting.meeting_topic}}
@@ -116,12 +116,12 @@
         </mat-tab-group>
     </div>
     
-    <mat-drawer #drawer class="example-sidenav"  mode="side" position="end">
+    <mat-drawer #draftDrawer class="example-sidenav"  mode="side" position="end" >
         <div class="card-loading" *ngIf="loader">
             <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
         </div>
-            <mat-card class="meeting_content" *ngIf="currentTab == 0">
-                <span class="close-icon float-right" (click)="close(drawer,invite)"><i class="ti-close"></i></span>
+            <mat-card class="meeting_content" >
+                <span class="close-icon float-right" (click)="close(draftDrawer,invite)"><i class="ti-close"></i></span>
                 <mat-card-title>
                     <div class="card_header">
                         {{meeting_detail.meeting_topic}}
@@ -182,9 +182,16 @@
                     </mat-card-footer>
                 </form>
             </mat-card>
-            
-            <mat-card class="meeting_content" *ngIf="currentTab == 1">
-                <span class="close-icon float-right" (click)="close(drawer,invite)"><i class="ti-close"></i></span>
+    </mat-drawer>
+</mat-drawer-container>
+
+<mat-drawer-container autosize>
+    <mat-drawer #scheduleDrawer class="example-sidenav"  mode="side" position="end">
+        <div class="card-loading" *ngIf="loader">
+            <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
+        </div>
+            <mat-card class="meeting_content">
+                <span class="close-icon float-right" (click)="scheduleDrawer.close()"><i class="ti-close"></i></span>
                 <mat-card-title>
                     <div class="card_header">
                         {{meeting_detail.meeting_topic}}
@@ -200,10 +207,10 @@
                         <div fxFlex.gt-sm="40%" fxFlex.gt-xs="40%" fxFlex="100" class="btn-group">
                           <button class="sa_tab_btn" mat-raised-button color="green" (click)="boardMeeting(meeting_detail.id)">view meeting</button>
                         </div>
-                        <div *ngIf="!meeting_detail.showAlert" fxFlex.gt-sm="40%" fxFlex.gt-xs="40%" fxFlex="100" class="btn-group">
+                        <div *ngIf="!meeting_detail.showAlert && meeting_detail.isCreator" fxFlex.gt-sm="40%" fxFlex.gt-xs="40%" fxFlex="100" class="btn-group">
                             <button class="sa_tab_btn" mat-raised-button color="green" (click)="openAgenda(meeting_detail.id)">Open Agenda</button>
                         </div>
-                        <div *ngIf="!meeting_detail.showAlert" fxFlex.gt-sm="15.33%" fxFlex.gt-xs="15%" fxFlex="100" class="btn-group" title="send reminder">
+                        <div *ngIf="!meeting_detail.showAlert && meeting_detail.isCreator" fxFlex.gt-sm="15.33%" fxFlex.gt-xs="15%" fxFlex="100" class="btn-group" title="send reminder">
                             <button class="sa_tab_btn" mat-raised-button color="green" (click)="sendMeetingReminder(meeting_detail.id)"><i class="fa fa-envelope" aria-hidden="true"></i></button>
                         </div>
                     </div>
@@ -213,7 +220,7 @@
     </mat-drawer>
 </mat-drawer-container>
 
-<mat-drawer-container>
+<mat-drawer-container autosize>
     <mat-drawer #create_meeting class="example-sidenav-create" mode="side" position="end">
         <div class="card-loading" *ngIf="loader">
             <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
@@ -282,30 +289,37 @@
                             <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
                                 <mat-label>Duration</mat-label>
                             </div>
-                            <div fxFlex.gt-sm="40%" fxFlex.gt-xs="40%" fxFlex="100" class="btn-group" >
+                            <div fxFlex.gt-sm="25%" fxFlex.gt-xs="25%" fxFlex="100" class="btn-group" >
                                 <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
-                                    <!-- <mat-label>hr</mat-label> -->
                                     <mat-select [formControl]="create_meeting_form.controls['duration_hr']" required>
                                         <mat-option *ngFor="let hr of hrs" [value]="hr">
-                                        {{hr}}
+                                            {{hr}}
                                         </mat-option>
                                     </mat-select>
+                                    <!-- <span class="duration" matSuffix>Hours</span> -->
                                     <mat-error *ngIf="!create_meeting_form.controls['duration_hr'].hasError('notZero')">
                                         Please Select duration (hr)
                                     </mat-error>
                                 </mat-form-field>
                             </div>
-                            <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
+                            <div fxFlex.gt-sm="12.5%" fxFlex.gt-xs="12.5%" fxFlex="100" class="btn-group">
+                                <mat-label>hours</mat-label>
+                            </div>
+                            <div fxFlex.gt-sm="20%" fxFlex.gt-xs="20%" fxFlex="100" class="btn-group">
                                 <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
                                     <mat-select [ngModel]="0" [formControl]="create_meeting_form.controls['duration_mins']" required>
                                         <mat-option *ngFor="let min of mins" [value]="min">
                                         {{min}}
                                         </mat-option>
                                     </mat-select>
+                                    <!-- <span class="duration" matSuffix>minutes</span> -->
                                     <mat-error >
                                         Please Select duration(mins)
                                     </mat-error>
                                 </mat-form-field>
+                            </div>
+                            <div fxFlex.gt-sm="12.5%" fxFlex.gt-xs="12.5%" fxFlex="100" class="btn-group">
+                                <mat-label>mins</mat-label>
                             </div>
                             <mat-error class="none-zero-error" *ngIf="create_meeting_form.errors?.notZero">
                                 Meeting duration must be more than 0 minutes
@@ -439,7 +453,7 @@
         </mat-card>
     </div>
 
-    <mat-drawer-container>
+    <mat-drawer-container autosize>
         <mat-drawer #agenda_drawer class="example-sidenav-create" mode="side" position="end">
             <div class="card-loading" *ngIf="loader">
                 <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
@@ -494,7 +508,7 @@
                             </div>
                         </div>
 <!-- choose clinic drop down ...  -->
-                        <div *ngIf="show_date_picker && false" fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+                        <div *ngIf="show_date_picker" fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                             <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
                                 <mat-label>Choose clinic</mat-label>
                             </div>

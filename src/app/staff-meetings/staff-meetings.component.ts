@@ -88,7 +88,7 @@ export class StaffMeetingsComponent implements OnInit{
     public currentPage: number = 1;
     public itemsPerPage = 10;
 
-    public meeting_detail = {id:"",meeting_topic : "", start_time:"", end_time:"", link: "",meeting_date:"",agenda_template_id:"", created_date:"", showAlert : true};
+    public meeting_detail = {id:"",meeting_topic : "", start_time:"", end_time:"", link: "",meeting_date:"",agenda_template_id:"", created_date:"", showAlert : true, isCreator: false};
 
 
     
@@ -160,7 +160,8 @@ export class StaffMeetingsComponent implements OnInit{
     @ViewChild('invitesInput') invitesInput: ElementRef<HTMLInputElement>;
     // @ViewChild('card') card: ElementRef<HTMLInputElement>;
     @ViewChild('auto') matAutocomplete: MatAutocomplete;
-    @ViewChild('drawer') drawer;
+    @ViewChild('draftDrawer') drawer;
+    @ViewChild('scheduleDrawer') scheduleDrawer;
     @ViewChild('create_meeting') create_meeting;
     @ViewChild('agenda_drawer') agenda_drawer;
     @ViewChild('picker_range') picker_range;
@@ -173,7 +174,7 @@ export class StaffMeetingsComponent implements OnInit{
     constructor(private formBuilder : FormBuilder, private tasksService : TasksService, private staffMeetingService : StaffMeetingService, private datepipe: DatePipe, private _cookieService: CookieService, private toastr: ToastrService, private rolesUsersService : RolesUsersService, private dateAdapter: DateAdapter<Date>, private headerService : HeaderService) {
       this.minDate = new Date();
       this.dateAdapter.setLocale('en-GB');
-      // this.getClinic();
+      this.getClinic();
     }
     ngOnInit(): void {
        // creating the meeting form and set up validators
@@ -216,8 +217,10 @@ export class StaffMeetingsComponent implements OnInit{
         $('.dynamicDropdown2').addClass("flex_direct_mar");  
         var val = $('#currentClinic').attr('cid');
 
-        if(val != undefined && val != 'all')
+        if(val != undefined && val != 'all'){
           this.clinic_id = val;
+          this.chart_clinic_id = +val;
+        }
 
         this.user_type = this._cookieService.get("user_type");
         if(this.user_type == 2){
@@ -233,10 +236,12 @@ export class StaffMeetingsComponent implements OnInit{
         this.getAdengaTemplate();
         this.getUsers();
         this.getTimezone();
-        if(this.currentTab == 1)
+        // if(this.currentTab == 1)
           this.getScheduledMeeting();
 
-        this.currentTab = 1;
+        // this.currentTab = 1;
+        // console.log("initial");
+        
     }
 
 
@@ -252,19 +257,19 @@ export class StaffMeetingsComponent implements OnInit{
       }
     }
 
-
+  // ---- not in use ----
   // changing list based on tags completed or upcoming
-  changeCompleteTab(type){
-    if(type == 'Upcoming'){
-      this.currentTab = 0;
-      this.showCompletedMeetingTab = false;
-    }else if(type == 'Completed'){
-      this.showCompletedMeetingTab = true
-      this.currentTab = 1;
-    }
+  // changeCompleteTab(type){
+  //   if(type == 'Upcoming'){
+  //     this.currentTab = 0;
+  //     this.showCompletedMeetingTab = false;
+  //   }else if(type == 'Completed'){
+  //     this.showCompletedMeetingTab = true
+  //     this.currentTab = 1;
+  //   }
 
-    this.refresh();
-  }
+  //   this.refresh();
+  // }
 
   // use to check the permission of the logged user
   getRolesIndividual() {
@@ -322,7 +327,7 @@ export class StaffMeetingsComponent implements OnInit{
   }
 
   // logic for the drawer toggle
-  drawerToggle(card : ElementRef<HTMLInputElement>, meeting){
+  draftDrawerToggle(card : ElementRef<HTMLInputElement>, meeting){
     if(!this.drawer.opened){
       $(card).parent(".meeting_card").addClass("active");
       this.create_meeting.close();
@@ -332,6 +337,30 @@ export class StaffMeetingsComponent implements OnInit{
       $(".meeting_card").removeClass("active");
     }
     this.drawer.toggle();
+    this.allSelected = false;
+    this.invited_users = [];
+    if(this.currentTab == 0)
+      this.invite_form.nativeElement.reset();
+
+  }
+
+  // logic for the drawer toggle
+  scheduleDrawerToggle(card : ElementRef<HTMLInputElement>, meeting){
+    if(!this.scheduleDrawer.opened){
+      $(card).parent(".meeting_card").addClass("active");
+      this.create_meeting.close();
+      this.agenda_heading = meeting.meeting_topic;
+      this.meeting_detail = meeting;
+      if(meeting.created_by == this.user_id){
+        this.meeting_detail.isCreator = true;
+      }else{
+        this.meeting_detail.isCreator = false;
+      }
+      
+    }else{
+      $(".meeting_card").removeClass("active");
+    }
+    this.scheduleDrawer.toggle();
     this.allSelected = false;
     this.invited_users = [];
     if(this.currentTab == 0)
@@ -461,6 +490,8 @@ export class StaffMeetingsComponent implements OnInit{
         if(res.meetingCreator == 1){
           this.viewMeetingAttendees(meeting_id);
         }
+        if(this.scheduleDrawer.opened)
+          this.scheduleDrawer.close();
         this.boardMeetingPage = true;
         this.meeting_details = [...res.data];
         if(res.attended_status != null){
@@ -619,7 +650,7 @@ export class StaffMeetingsComponent implements OnInit{
 // use to get the meeting agenda's
   getMeetingAgenda(meeting_id){
     this.meeting_id = meeting_id;
-    this.staffMeetingService.getMeetingAgenda(meeting_id, this.clinic_id).subscribe(res=>{
+    this.staffMeetingService.getMeetingAgenda(meeting_id).subscribe(res=>{
       if(res.status == 200){
         this.staffMeetingService.getMeeting(meeting_id,this.clinic_id).subscribe(res=>{
           if(res.status == 200){
@@ -636,7 +667,7 @@ export class StaffMeetingsComponent implements OnInit{
 
   // use to viwe the agenda tab
   viewMeetingAgenda(meeting_id){
-    this.staffMeetingService.getMeetingAgenda(meeting_id, this.clinic_id).subscribe(res=>{
+    this.staffMeetingService.getMeetingAgenda(meeting_id).subscribe(res=>{
       if(res.status == 200){
         this.view_agenda = [...res.data];
         this.view_agenda_tab = true;
@@ -668,8 +699,10 @@ export class StaffMeetingsComponent implements OnInit{
   // open view agenda tab
   openAgenda(meeting_id){
     this.meeting_id = meeting_id;
-    this.staffMeetingService.getMeetingAgenda(meeting_id, this.clinic_id).subscribe(res=>{
+    this.staffMeetingService.getMeetingAgenda(meeting_id).subscribe(res=>{
       if(res.status == 200){
+        if(this.scheduleDrawer.opened)
+          this.scheduleDrawer.close();
         this.agendaList = [...res.data];
         this.view_agenda_tab = false;
         this.agendaTab = true;
@@ -771,7 +804,7 @@ export class StaffMeetingsComponent implements OnInit{
     if(formData.chart == 0)
       formData.chart = "";
     formData.meeting_id = this.meeting_id;
-    formData.clinic_id = this.clinic_id;
+    // formData.clinic_id = this.chart_clinic_id;
     formData.flag = this.agenda_flag;
     formData.agenda_order = this.agenda_order;
     if(this.agenda_flag == "update")
@@ -779,13 +812,11 @@ export class StaffMeetingsComponent implements OnInit{
     
     this.staffMeetingService.saveMeetingAgenda(formData).subscribe(res=>{
       if(res.status == 200){
-        this.loader = false;
         this.agenda_drawer.close();
         this.agenda_form.nativeElement.reset();
         this.openAgenda(this.meeting_id);
-      }else{
-        this.loader = false;
       }
+      this.loader = false;
     },error=>{
       this.loader = false;
     });
@@ -834,7 +865,7 @@ export class StaffMeetingsComponent implements OnInit{
       this.show_date_picker = false;
 
       // reset the date value and its validations
-      this.create_agenda_form.get('clinic').setValue('');
+      this.create_agenda_form.get('clinic').setValue(+this.clinic_id);
       this.create_agenda_form.get('start_date').setValue('');
       this.create_agenda_form.get('end_date').setValue('');
       this.create_agenda_form.get('clinic').clearValidators();
@@ -843,6 +874,9 @@ export class StaffMeetingsComponent implements OnInit{
       this.create_agenda_form.get('start_date').updateValueAndValidity();
       this.create_agenda_form.get('end_date').clearValidators();
       this.create_agenda_form.get('end_date').updateValueAndValidity();
+      this.create_agenda_form.get('clinic').markAsUntouched();
+      this.create_agenda_form.get('start_date').markAsUntouched();
+      this.create_agenda_form.get('end_date').markAsUntouched();
     }else{
 
       // show date picker and update the validation for date
@@ -896,7 +930,7 @@ export class StaffMeetingsComponent implements OnInit{
         this.staffMeetingService.sendMeetingReminder(meeting_id, this.clinic_id).subscribe(res=>{
           if(res.status == 200){
             this.loader = false;
-            this.drawer.close();
+            this.scheduleDrawer.close();
             $(".meeting_card").removeClass("active");
             Swal.fire(
               'Sent!',
