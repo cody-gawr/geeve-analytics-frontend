@@ -1,4 +1,4 @@
-<section class="agenda-graphs" *ngIf="hasGaugeChart || hasBarChart || hasStackChart">
+<section class="agenda-graphs" *ngIf="hasGaugeChart || hasBarChart || hasStackChart || hasError">
     <mat-card>
         <mat-card-title class="header">
              <section class="meeting_card_header_graphs">
@@ -28,7 +28,7 @@
                         [legend]="true" [colors]="IPcolors">
                   </canvas>
                 </section>
-                <section *ngIf="gaugeGraphsTotal <= 0 && hasGaugeChart || productionTotal <= 0 && hasBarChart || productionTotal <= 0 && hasStackChart">
+                <section *ngIf="gaugeGraphsTotal <= 0 && hasGaugeChart || productionTotal <= 0 && hasBarChart || productionTotal <= 0 && hasStackChart || hasError">
                   <section class="sa_nodata_div">
                   </section>
                   <p *ngIf="!hasError" class="chart-placeholder-text">{{noDataText}}</p>

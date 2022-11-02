@@ -8,7 +8,7 @@
         <button *ngIf="!draftDrawer.opened && hasPermission" mat-raised-button color="green" (click)="createMeeting()" class="float-right create-meeting-btn" ><i class="fas fa-plus"></i> Create New Meeting</button>
 
         <mat-tab-group [selectedIndex]="currentTab" (selectedIndexChange) = "changeTab($event)">
-            <mat-tab *ngIf="hasPermission" label="Drafts">
+            <mat-tab [disabled]="!hasPermission" label="Drafts">
                 <div *ngIf="meetingCards.length > 0">
                     <div class="card_meeting_card" *ngFor="let meeting of meetingCards; let i = index;">
                         <mat-card class="meeting_card">

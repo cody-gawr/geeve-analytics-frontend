@@ -52,6 +52,7 @@ export class GraphsComponent{
     public showNormal : boolean;
     public hasError :boolean;
     public errorText = "";
+    public clinicName = "";
 
     constructor( private datepipe : DatePipe, private chartService: ChartService, private decimalPipe : DecimalPipe,private _cookieService: CookieService, private router : Router,private graphsService : GraphsService){
         
@@ -64,7 +65,7 @@ export class GraphsComponent{
         
         this.showStartDate = this.datepipe.transform(this.item.agenda_chart_start_date, 'dd MMM yyyy');
         this.showEndDate = this.datepipe.transform(this.item.agenda_chart_end_date, 'dd MMM yyyy');
-
+        this.clinicName = this.item.chart_clinic_name;
         switch(this.item.agenda_chart_id){
           case 16:{
             // Recall Rate chart gauge
@@ -151,7 +152,9 @@ export class GraphsComponent{
             if(data.status == 200){
                 this.calculateDataForGaugeChart(data);
             }
-       });
+        },error => {
+          this.handleUnAuthorization(error);
+        });
     }
 
     // gauge chart for Reappointment Rate
@@ -160,6 +163,8 @@ export class GraphsComponent{
             if(data.status == 200){
                 this.calculateDataForGaugeChart(data);
             }
+       }, error=>{
+        this.handleUnAuthorization(error);
        });
     }
 
@@ -169,6 +174,8 @@ export class GraphsComponent{
             if(data.status == 200){
                 this.calculateDataForGaugeChart(data);
             }
+        }, error=>{
+          this.handleUnAuthorization(error);
         });
     }
 
@@ -561,12 +568,7 @@ export class GraphsComponent{
         this.graphsService.DentistProduction(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
             this.calculateDataForBarCharts(data);
         }, error => {
-          this.hasError = true;
-          if(error.status == 401){
-            this.errorText = "You are not authorised to view this graph.";
-          }else{
-            this.errorText = "Something went wrong.";
-          }
+          this.handleUnAuthorization(error);
       });
     }
 
@@ -574,12 +576,7 @@ export class GraphsComponent{
         this.graphsService.hourlyRateChart(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
             this.calculateDataForBarCharts(data);
         }, error => {
-          this.hasError = true;
-          if(error.status == 401){
-            this.errorText = "You are not authorised to view this graph.";
-          }else{
-            this.errorText = "Something went wrong.";
-          }
+          this.handleUnAuthorization(error);
       });
     }
 
@@ -587,12 +584,7 @@ export class GraphsComponent{
       this.graphsService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
         this.calculateDataForBarCharts(data);
       }, error => {
-          this.hasError = true;
-          if(error.status == 401){
-            this.errorText = "You are not authorised to view this graph.";
-          }else{
-            this.errorText = "Something went wrong.";
-          }
+          this.handleUnAuthorization(error)
       });
     }
 
@@ -600,12 +592,7 @@ export class GraphsComponent{
       this.graphsService.caReappointRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
         this.calculateDataForBarCharts(data);
       }, error => {
-          this.hasError = true;
-          if(error.status == 401){
-            this.errorText = "You are not authorised to view this graph.";
-          }else{
-            this.errorText = "Something went wrong.";
-          }
+          this.handleUnAuthorization(error);
       });
     }
 
@@ -613,12 +600,7 @@ export class GraphsComponent{
       this.graphsService.fdWorkTimeAnalysis(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
         this.calculateDataForBarCharts(data);
       }, error => {
-        this.hasError = true;
-        if(error.status == 401){
-          this.errorText = "You are not authorised to view this graph.";
-        }else{
-          this.errorText = "Something went wrong.";
-        }
+        this.handleUnAuthorization(error);
     });
     }
 
@@ -667,12 +649,7 @@ export class GraphsComponent{
           
         }
       }, error => {
-          this.hasError = true;
-          if(error.status == 401){
-            this.errorText = "You are not authorised to view this graph.";
-          }else{
-            this.errorText = "Something went wrong.";
-          }
+          
       });
     }
 
@@ -733,21 +710,14 @@ export class GraphsComponent{
             this.barChartLabels = this.barChartLabels1;
             this.productionTotal = Math.round(data.total);
         }
-        else if (data.status == '401') {
-          this.hasError = true;
-          this.errorText = "You are not authorised to view this graph.";
-        }else{
-          this.hasError = true;
-          this.errorText = "Something went wrong.";
-        }
     }
 
-    handleUnAuthorization() {
-      if(this.user_type !='7'){
-        this._cookieService.put("username", '');
-        this._cookieService.put("email", '');
-        this._cookieService.put("userid", '');
-        this.router.navigateByUrl('/login');
+    handleUnAuthorization(error) {
+      this.hasError = true;
+      if(error.status == 401){
+        this.errorText = "You do not have permission to clinic "+this.clinicName;
+      }else{
+        this.errorText = "Something went wrong";
       }
     }
     

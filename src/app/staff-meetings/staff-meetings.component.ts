@@ -66,7 +66,7 @@ export class StaffMeetingsComponent implements OnInit{
     public agenda_category = "";
     public agenda_order : number = null;
     public agenda_flag = "";
-    public hasPermission :boolean;
+    public hasPermission :boolean = false;
     public hasDisable : boolean;
     public minDate : Date;
     public isMeetingCreator : boolean;
@@ -236,11 +236,9 @@ export class StaffMeetingsComponent implements OnInit{
         this.getAdengaTemplate();
         this.getUsers();
         this.getTimezone();
-        // if(this.currentTab == 1)
-          this.getScheduledMeeting();
+        this.getScheduledMeeting();
 
-        // this.currentTab = 1;
-        // console.log("initial");
+        this.currentTab = 1;
         
     }
 
