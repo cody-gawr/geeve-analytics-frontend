@@ -649,7 +649,7 @@ export class GraphsComponent{
           
         }
       }, error => {
-          
+          this.handleUnAuthorization(error);
       });
     }
 
