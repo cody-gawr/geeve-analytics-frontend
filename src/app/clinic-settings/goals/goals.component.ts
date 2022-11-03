@@ -307,7 +307,7 @@ setGoalsPerMonth(chartGoals)
   }
 
   onKeyUp(id,event,index){
-    let sum = +$( "input[name='goal63"+index+"']" ).val() + +$( "input[name='goal64"+index+"']" ).val();
+    let sum = +$( "input[name='goal63"+index+"']" ).val() * +$( "input[name='goal64"+index+"']" ).val();
     $( "input[name='goal1"+index+"']" ).val(sum == 0 ? "" : sum);
     this.goalsData['goals'][1][index] = sum;
   }
