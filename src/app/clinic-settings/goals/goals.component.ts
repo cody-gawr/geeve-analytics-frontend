@@ -255,7 +255,7 @@ setGoalsPerMonth(chartGoals)
     $('.ajax-loader').show();
     if (this.selectedGoalCategory$.value === '') {
       this.updateClinicGoals(myJsonString);
-      this.getData(this.clinic_id$.value,this.selectedGoalCategory$.value,this.selectedYear);
+      // this.getData(this.clinic_id$.value,this.selectedGoalCategory$.value,this.selectedYear);
     } else {
       this.updateDentistGoals(myJsonString);
     }
