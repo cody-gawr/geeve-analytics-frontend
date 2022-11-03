@@ -308,7 +308,7 @@ setGoalsPerMonth(chartGoals)
 
   onKeyUp(id,event,index){
     let sum = +$( "input[name='goal63"+index+"']" ).val() + +$( "input[name='goal64"+index+"']" ).val();
-    $( "input[name='goal1"+index+"']" ).val(sum);
+    $( "input[name='goal1"+index+"']" ).val(sum == 0 ? "" : sum);
     this.goalsData['goals'][1][index] = sum;
   }
 
@@ -321,6 +321,12 @@ setGoalsPerMonth(chartGoals)
       val = '';
     } 
    $(event.target).val(val);  
-   this.goalsData['goals'][parseInt(id)][parseInt(sn)] =  parseInt(val);
+   this.goalsData['goals'][parseInt(id)][parseInt(sn)] = parseInt(val);
  }
+
+ keyDown(event){
+    if((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105) && event.keyCode != 9 && event.keyCode != 8){
+      event.preventDefault();
+    }
+  }
 }

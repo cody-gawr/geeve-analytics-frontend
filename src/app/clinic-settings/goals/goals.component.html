@@ -100,7 +100,7 @@
               <td *ngFor="let goalsD of charts.goals; let sn =  index;">
                 <div class="goal-value">
                   <!-- <span matPrefix  [ngStyle]="{'opacity':  charts.sign == '$' ? '1' : '0'}">$</span>            -->
-                  <input autocomplete="off" type="text" name="goal{{ charts.c_id }}{{ sn }}" value="{{ goalsD != -1 ? goalsD : ''}}" (keyup)="onKeyUp(charts.c_id, $event,sn)" (focusout)="onBlur(charts.c_id, $event.target.value,$event,sn)" class="sign{{charts.sign}}" />                
+                  <input autocomplete="off" type="text" name="goal{{ charts.c_id }}{{ sn }}" value="{{ goalsD != -1 ? goalsD : ''}}" (keydown)="keyDown($event)" (keyup)="onKeyUp(charts.c_id, $event,sn)" (focusout)="onBlur(charts.c_id, $event.target.value,$event,sn)" class="sign{{charts.sign}}" />                
                   <!-- <span matSuffix *ngIf=" charts.sign == '%'">%</span> -->
                 </div>
               </td>
