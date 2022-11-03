@@ -186,13 +186,13 @@ getGoalsForTabsClinic(allGoals) {
    });
    this.tabs.push(temp);
   });
-  var order = [1,49,63,64,15,66,65,8];
+  var order = [63,64,1,49,15,66,65,8];
   this.tabs[4].charts.sort(function(a, b) {
     return order.indexOf(a.c_id) - order.indexOf(b.c_id);
   })
   this.tabs[4].d_name = "Prime KPI Report"
   
-  this.swap(this.tabs[4].charts,0,2);
+  // this.swap(this.tabs[4].charts,0,2);
 
   // if(this.Cconsultant != 'prime'){
   //   this.selectedTab = this.tabs[0].d_id;
@@ -306,48 +306,15 @@ setGoalsPerMonth(chartGoals)
     return name;
   }
 
-
-  dentistProductionPerDay : number;
-  dentistDays : number;
-  currentIndex : number;
-
   onKeyUp(id,event,index){
-    if(event.code == "Tab"){
-      return; 
-    }
-    if(id == 63)
-      this.dentistDays = event.target.value;
-
-    if(id == 64)
-      this.dentistProductionPerDay = event.target.value;
-    if(this.currentIndex != undefined && this.currentIndex != index){
-      this.dentistDays = undefined;
-      this.dentistProductionPerDay = undefined;
-      this.currentIndex = index;
-      if(id === 63){
-        this.dentistDays = event.target.value;;
-        this.dentistProductionPerDay = undefined;
-      }
-
-      if(id === 64){
-        this.dentistProductionPerDay = event.target.value;
-        this.dentistDays = undefined;
-      }
-    }
-
-    if(this.dentistDays != undefined && this.dentistProductionPerDay != undefined){
-      var dentistProduct = this.dentistDays * this.dentistProductionPerDay;
-      if(isNaN(dentistProduct)){
-        return;  
-      }
-      $( "input[name='goal1"+index+"']" ).val(dentistProduct);
-      this.goalsData['goals'][1][index] =  dentistProduct;
-      this.currentIndex = index;
-    }
+    let sum = +$( "input[name='goal63"+index+"']" ).val() + +$( "input[name='goal64"+index+"']" ).val();
+    $( "input[name='goal1"+index+"']" ).val(sum);
+    this.goalsData['goals'][1][index] = sum;
   }
+
   onBlur(id,val,event,sn){    
-     event.preventDefault();
-      event.stopPropagation();
+    event.preventDefault();
+    event.stopPropagation();
     if($(event.target).hasClass('sign%') && val > 100){
       val = 100;
     }  else if(val == ''){

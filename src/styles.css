@@ -3433,14 +3433,14 @@ ul.list-categories {
 }
 
 .custom-tooltip-top-right {
-  position: relative;
+  position: absolute;
   top: -172px;
   left: -56px;
   height: max-content;
 }
 
 .custom-tooltip-top-right-discount {
-  position: relative;
+  position: absolute;
   top: -90px;
   left: -30px;
   height: max-content;
