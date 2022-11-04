@@ -2205,7 +2205,7 @@
                   src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
               </div>
-              <!-- <table #sort1="matSort" mat-table matSort [dataSource]="endOfDaysTasksInComp"
+              <table #sort1="matSort" mat-table matSort [dataSource]="endOfDaysTasksInComp"
                 class="mat-elevation-z8 daily-task"
                 [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''">
                 <ng-container matColumnDef="name" >
@@ -2251,9 +2251,9 @@
                 <tr mat-row *matRowDef="let row; columns: displayedColumns9;"></tr>
                 <mat-footer-row *matFooterRowDef="['isDataAvailable9']"
                   [ngClass]="(endOfDaysTasksInComp.data.length <= 0)? 'show' : 'hide'"></mat-footer-row>
-              </table> -->
+              </table>
               <!-- using custom directive to sort the table -->
-              <table class="mat-table cdk-table mat-sort mat-elevation-z8 daily-task" style="overflow-x:auto;" [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''" id="MH-table">
+              <!-- <table class="mat-table cdk-table mat-sort mat-elevation-z8 daily-task" style="overflow-x:auto;" [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''" id="MH-table">
                 <thead>
                   <tr >
                     <th [appSort]="endOfDaysTasksInComp.data" data-order="desc" data-name="name" scope="col">Task Name
@@ -2286,7 +2286,7 @@
                   <span *ngIf="!isEnabletasks">Daily Tasks are not enabled - this can be configured in your Jeeve
                     Settings menu</span>
                 </tfoot>
-              </table>
+              </table> -->
               <!-- responsive table - frontdesk followup (Post op calls)  -->
               <div fxHide.gt-sm>
                 <div *ngIf="endOfDaysTasksInComp.length;else noPostOpCalls">

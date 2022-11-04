@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit,ViewChild,ViewEncapsulation,Inject } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit,ViewChild,ViewEncapsulation,Inject, ViewChildren, QueryList } from '@angular/core';
 import { MorningHuddleService } from './morning-huddle.service';
 import { ClinicianAnalysisService } from '../cliniciananalysis/cliniciananalysis.service';
 import { CookieService } from "ngx-cookie";
@@ -297,7 +297,12 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
 
   timezone: string = '+1000';
   
-  @ViewChild('sort1') sort1: MatSort;
+  // @ViewChild('sort1') sort1: MatSort;
+  sortList: QueryList<MatSort>;
+  @ViewChildren('sort1') set matSort(ms: QueryList<MatSort>) {
+      this.sortList = ms; 
+        this.endOfDaysTasksInComp.sort = this.sortList.toArray()[0];
+  }
   @ViewChild('sort2') sort2: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
@@ -348,7 +353,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     }, 1000 * 300);    
  }
 ngAfterViewInit(): void {
-  this.endOfDaysTasksInComp.sort = this.sort1; 
+  // this.endOfDaysTasksInComp.sort = this.sort1; 
   // this.lquipmentList.sort = this.sort2;
     this.dentistList.paginator = this.paginator;
     //$('.dentist_dropdown').parent().hide(); // added

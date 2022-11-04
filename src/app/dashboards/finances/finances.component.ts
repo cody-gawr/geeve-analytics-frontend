@@ -144,7 +144,7 @@ export class FinancesComponent implements AfterViewInit {
   ) {
     this.user_type = this._cookieService.get("user_type");
     this.connectedwith = this._cookieService.get("a_connect");
-    this.acountVisibility(this.connectedwith);
+    this.isVisibleAccountGraphs = this.connectedwith == 'none' ? false : true;
     this.getChartsTips();
     this.getAllClinics();
   }
@@ -192,9 +192,8 @@ export class FinancesComponent implements AfterViewInit {
       if( val.indexOf(',') == -1 && val != 'all'){
         this.multipleClinicsSelected = false;
         this.clinic_id = val;
-        // await this.clinicGetAccountingPlatform();
-        this.connectedwith = this._cookieService.get("a_connect");
-        this.acountVisibility(this.connectedwith);
+        await this.clinicGetAccountingPlatform();
+        this.isVisibleAccountGraphs = this.connectedwith == 'none' ? false : true;
         if (this.connectedwith == 'myob') {
           this.xeroConnect = false;
           this.checkMyobStatus();
@@ -225,14 +224,6 @@ export class FinancesComponent implements AfterViewInit {
           });
         }
     });
-  }
-
-  acountVisibility(connectedwith){
-    if(connectedwith == 'none'){
-      this.isVisibleAccountGraphs = false; 
-    }else{
-      this.isVisibleAccountGraphs = true;
-    }
   }
 
   clinicGetAccountingPlatform() {
