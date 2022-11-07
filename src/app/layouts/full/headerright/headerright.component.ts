@@ -251,7 +251,8 @@ export class AppHeaderrightComponent implements AfterViewInit {
           this.clinicsData = res.data;
           if (res.data.length > 0) {            
             
-            if (this.route == "/dashboards/healthscreen") {          
+            if (this.route == "/dashboards/healthscreen") { 
+              this.getAccountConnection(this._cookieService.get("clinic_dentist") ? this._cookieService.get("clinic_dentist").split('_')[0] : res.data[0].id);    
               if (this.clinicsData.length > 1 && this.user_type != 7) {
                 this.clinic_id = "all";
                 this.selectedClinic = "all";
@@ -545,11 +546,6 @@ export class AppHeaderrightComponent implements AfterViewInit {
         }
       }else{
         newValue = newValues;
-        if(newValues != 'all'){
-          this.getAccountConnection(newValues);
-        }
-        else
-          this.resetAccountConnection();
       }
       if(this.user_type == 7){ 
         var clid = newValue
@@ -625,7 +621,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
       $(".internal_clinic").val(newValue);
       if (this.user_type_dentist != "2" && newValue != "all") {
        // this.getChildID(newValue);
-        if(Array.isArray(this.clinic_id)){
+        if(Array.isArray(this.clinic_id) || this.user_type_dentist == 7){
           // if(this.clinic_id.length == 1){
           //   this.getChildID(newValue);
           // }else{
