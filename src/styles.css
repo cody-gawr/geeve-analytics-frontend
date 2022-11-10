@@ -8645,6 +8645,10 @@ button.Set-Colours, button.Set-Colours:focus, button.Set-Colours:active {
   cursor: progress;
 }
 
+.onofftoogle .mat-button-toggle-disabled .mat-button-toggle-button{
+  cursor: progress !important;
+}
+
 #cllclinic{
   margin-right: 10px;
   margin-bottom: 10px;

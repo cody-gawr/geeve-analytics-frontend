@@ -1764,9 +1764,7 @@ export class FinancesComponent implements AfterViewInit {
   loadDentist(newValue) {
     $('.sa_tabs_data button').prop('disabled',true); 
     this.Apirequest = 5;
-    if (this.connectedwith != '' && this.connectedwith != undefined) {
-      this.Apirequest = 5;
-    }
+
     $('#title').html('<span>Finances</span>');
     $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate));
     if (newValue == 'all') {
@@ -1778,6 +1776,7 @@ export class FinancesComponent implements AfterViewInit {
 
 
       if (this.connectedwith != '' && this.connectedwith != 'none' && this.connectedwith != undefined && this.multipleClinicsSelected == false) {
+        this.Apirequest = 8;
         this.netprofitstats = false;
         this.netprofitpercentstats = false;
         this.productionstats = false;
@@ -2529,7 +2528,7 @@ export class FinancesComponent implements AfterViewInit {
     else if (duration == 'custom') {
       this.trendText = '';
       this.currentText = '';
-      $('.customRange').css('display', 'block');
+      // $('.customRange').css('display', 'block');
       let selectedDate = this.chartService.customSelectedDate$.value;
       this.startDate = this.datePipe.transform(selectedDate.startDate, 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(selectedDate.endDate, 'dd-MM-yyyy');
@@ -2590,7 +2589,9 @@ export class FinancesComponent implements AfterViewInit {
     if (diffTime <= 365) {
       this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
-      this.loadDentist('all');
+      this.duration = 'custom';
+
+      // this.loadDentist('all');
       // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
       $('.customRange').css('display', 'none');
     }
@@ -2639,7 +2640,7 @@ export class FinancesComponent implements AfterViewInit {
       this.displayProfit(1);
     }
     else if (val == 'off') {
-      this.filterDate('m');
+      // this.filterDate('m');
       $('.trendMode').hide();
       $('.nonTrendMode').css('display', 'block');
     }
@@ -2716,7 +2717,7 @@ export class FinancesComponent implements AfterViewInit {
 
       this.finTotalProductionTrend();
       if (this.connectedwith != '' && this.connectedwith != 'none' && this.connectedwith != undefined && this.multipleClinicsSelected == false) {
-        this.Apirequest = 5;
+        this.Apirequest = 8;
         this.expensestrendstats = false;
         this.finNetProfitPMSTrend();
         this.finNetProfitPMSPercentTrend();

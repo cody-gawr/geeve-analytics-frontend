@@ -21,8 +21,8 @@
                     <span class="trend_mode_title">Trend:</span>
                     <mat-button-toggle-group #group="matButtonToggleGroup" name="fontStyle"
                         class="trendToggle sa_toogle_group2 toggle_switcher" aria-label="Font Style">
-                        <mat-button-toggle checked value="off" class="target_off target_filter"
-                            (click)="toggleFilter('off')">
+                        <mat-button-toggle checked value="off" [disabled]="Apirequest <= 0?false:true" class="target_off target_filter"
+                            (click)="Apirequest <= 0?toggleFilter('off'):false">
                             <span>Off</span>
                         </mat-button-toggle>
                         <mat-button-toggle value="current" class="target_current target_filter"
@@ -596,7 +596,7 @@
                                     <span class="value-text" *ngIf="trendText == ''">Previous</span>
                                 </div>
                                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                                    *ngIf="newAcqValueGoal >= 0 && newAcqValueGoal != null && showGoals == true">
+                                    *ngIf="newAcqValueGoal >= 0 && newAcqValueGoal != '' && showGoals == true">
                                     <h3 class="m-0 value-num">${{ newAcqValueGoal}}</h3>
                                     <span class="value-text">Goal</span>
                                 </div>

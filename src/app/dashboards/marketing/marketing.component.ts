@@ -1268,22 +1268,37 @@ export class MarketingComponent implements AfterViewInit {
 
     return validDate
   }
+
+  enableDiabaleButton(val) {
+    if(val <= 0 ){
+      $('.sa_tabs_data button').prop('disabled',false);
+    }else{
+      $('.sa_tabs_data button').prop('disabled',true);     
+    }
+  }
+
   loadDentist(newValue) {
+    // $('.sa_tabs_data button').prop('disabled',true); 
+    this.Apirequest = 4;
+    if (this.connectedwith != '' && this.connectedwith != 'none' && this.connectedwith != undefined && !this.multipleClinicsSelected) {
+      this.Apirequest = 6;
+    }
+
     $('#title').html('<span>Marketing</span>');
     $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate));
 
     if (newValue == 'all') {
       this.mkNewPatientsByReferral();
       this.mkRevenueByReferral();
-      if(this.activePatients){
+      if(this.activePatients || !this.isVisibleAccountGraphs){
         this.fdActivePatient();
-      }else{        
-        this.fdnewPatientsRatio();
-      }
+      }        
+      this.fdnewPatientsRatio();
 
-      if(!this.isVisibleAccountGraphs){
-        this.fdActivePatient();
-      }
+
+      // if(!this.isVisibleAccountGraphs){
+      //   this.fdActivePatient();
+      // }
       if(!this.multipleClinicsSelected && this.connectedwith != 'none'){
         this.fdnewPatientsAcq();
         
@@ -1295,7 +1310,6 @@ export class MarketingComponent implements AfterViewInit {
       } else if (this.connectedwith == 'xero' && this.multipleClinicsSelected == false) {
         this.getAccounts();
       }
-
       //this.fdWorkTimeAnalysis();
     }
   }
@@ -1321,6 +1335,8 @@ export class MarketingComponent implements AfterViewInit {
     this.showmulticlinicNewPatients = false;
     this.mkNewPatientsByReferalLabels = [];
     this.marketingService.mkNewPatientsByReferral(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         this.mkNewPatientsByReferalMulti = [];
         this.mkNewPatientsByReferalLabels = [];
@@ -1378,6 +1394,8 @@ export class MarketingComponent implements AfterViewInit {
         
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
     }
     );
@@ -1432,6 +1450,8 @@ export class MarketingComponent implements AfterViewInit {
       this.reffralAllData = [];
       this.revenueReferralData = [];
       this.revenueReferralLabels = [];
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         this.mkNewPatientsByReferalRevMulti = [];
         this.mkNewPatientsByReferalRevLabels = [];
@@ -1494,6 +1514,8 @@ export class MarketingComponent implements AfterViewInit {
         
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
     }
     );
@@ -1515,6 +1537,7 @@ export class MarketingComponent implements AfterViewInit {
     var clinic_id;
     this.marketingService.mkRevenueByReferralTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         data.data.forEach(res => {
           res.val.forEach((result, key) => {
@@ -1543,6 +1566,8 @@ export class MarketingComponent implements AfterViewInit {
         this.mkRevenueByReferralLoader = false;
       }
     }, error => {
+      this.Apirequest -= 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });
@@ -1564,6 +1589,7 @@ export class MarketingComponent implements AfterViewInit {
     var clinic_id;
     this.marketingService.mkNewPatientsByReferralTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
 
         data.data.forEach(res => {
@@ -1593,6 +1619,8 @@ export class MarketingComponent implements AfterViewInit {
         this.mkNewPatientsByReferralLoader = false;
       }
     }, error => {
+      this.Apirequest -= 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });
@@ -1685,6 +1713,8 @@ export class MarketingComponent implements AfterViewInit {
         this.visitsTotal = 0;
         this.visitsPrevTotal = 0;
         this.fdvisitsRatioLoader = false;
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         if (data.message == 'success') {
           this.totalvisit[0]['data'] = [];
           this.TvisitTrend1 = [];
@@ -1710,6 +1740,8 @@ export class MarketingComponent implements AfterViewInit {
           this.visitsGoal = data.goals;
         }
       }, error => {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         this.warningMessage = "Please Provide Valid Inputs!";
       }
       );
@@ -1722,6 +1754,8 @@ export class MarketingComponent implements AfterViewInit {
     this.marketingService.getAccounts(this.clinic_id).subscribe((data) => {
       this.Accounts = [];
       this.selectedAccounts = [];
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         for (let key in data.data.categories) {
           this.Accounts.push(data.data.categories[key]);
@@ -1732,6 +1766,8 @@ export class MarketingComponent implements AfterViewInit {
 
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
     }
     );
@@ -1741,6 +1777,8 @@ export class MarketingComponent implements AfterViewInit {
     this.marketingService.getMyobAccounts(this.clinic_id).subscribe((data) => {
       this.Accounts = [];
       this.selectedAccounts = [];
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         for (let key in data.data.categories) {
           this.Accounts.push(data.data.categories[key]);
@@ -1751,6 +1789,8 @@ export class MarketingComponent implements AfterViewInit {
 
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
     }
     );
@@ -1810,6 +1850,8 @@ export class MarketingComponent implements AfterViewInit {
       this.marketingService.fdnewPatientsRatio(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
         this.newPatientsTotal = 0;
         this.newPatientsPrevTotal = 0;
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         if (data.message == 'success') {
           this.fdnewPatientsRatioLoader = false;
           this.newPativentbr[0]['data'] = [];
@@ -1842,6 +1884,8 @@ export class MarketingComponent implements AfterViewInit {
             this.maxnewPatientsGoal = '';
         }
       }, error => {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         this.warningMessage = "Please Provide Valid Inputs!";
       }
       );
@@ -1895,6 +1939,8 @@ export class MarketingComponent implements AfterViewInit {
     this.marketingService.fdActivePatient(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.fdActivePatients = 0;
       this.fdActivePatientsTa = 0;
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         this.newAPativentbr[0]['data'] = [];
         this.newAPTrend1 = [];
@@ -1916,6 +1962,8 @@ export class MarketingComponent implements AfterViewInit {
           this.activePatientsTooltip = 'up';
       }
     }, error => {
+      this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
     }
     );
@@ -1943,6 +1991,8 @@ export class MarketingComponent implements AfterViewInit {
       this.fdnewPatientsAcqLoader = true;
 
       this.marketingService.categoryExpenses(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((data) => {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         if (data.message == 'success') {
           this.newAcqValueError = false;
           this.fdnewPatientsAcqLoader = false;
@@ -1968,6 +2018,8 @@ export class MarketingComponent implements AfterViewInit {
 
         }
       }, error => {
+        this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         this.fdnewPatientsAcqLoader = false;
         this.newAcqValueError = true;
         this.warningMessage = "Please Provide Valid Inputs!";
@@ -2180,7 +2232,7 @@ export class MarketingComponent implements AfterViewInit {
         this.showGoals = false;
       }
       this.loadDentist('all');
-      $('.customRange').css('display', 'block');
+      // $('.customRange').css('display', 'block');
     }
     $('.filter').removeClass('active');
     $('.filter_' + duration).addClass("active");
@@ -2195,7 +2247,7 @@ export class MarketingComponent implements AfterViewInit {
     this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
     this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
     this.duration = 'custom';
-    this.loadDentist('all');
+    // this.loadDentist('all');
 
     // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
     $('.customRange').css('display', 'none');
@@ -2257,7 +2309,7 @@ export class MarketingComponent implements AfterViewInit {
     this.Apirequest = 4;
     this.showTrend = true;
     if (this.connectedwith != '' && this.connectedwith != 'none' && this.multipleClinicsSelected == false) {
-      this.Apirequest = 4;
+      this.Apirequest = 5;
     }
     if(this.connectedwith != 'none')
       this.fdnewPatientsAcqTrend();
@@ -2333,6 +2385,7 @@ export class MarketingComponent implements AfterViewInit {
     this.totalVisitMultiLabels1 =[];
     this.marketingService.mkTotalVisitsTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.visitsChartTrend1 = [];
       this.visitsChartTrendLabels = [];
       this.visitsChartTrendLabels1 = [];
@@ -2380,6 +2433,8 @@ export class MarketingComponent implements AfterViewInit {
         
       }
     }, error => {
+      this.Apirequest -= 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
     });
   }
@@ -2479,6 +2534,7 @@ export class MarketingComponent implements AfterViewInit {
       this.newPatientsMultiLabels =[];
       this.newPatientsMultiLabels1 =[];
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showNPclinic = true;
@@ -2521,6 +2577,8 @@ export class MarketingComponent implements AfterViewInit {
       // this.fdnewPatientsAcqLoader = false;
 
     }, error => {
+      this.Apirequest -= 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
     });
   }
@@ -2550,6 +2608,7 @@ export class MarketingComponent implements AfterViewInit {
       this.activePatientsChartTrendLabels = [];
       this.activePatientsChartTrend[0]['data'] = [];
       this.Apirequest = this.Apirequest - 1;
+      this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
         
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
@@ -2594,6 +2653,8 @@ export class MarketingComponent implements AfterViewInit {
       
 
     }, error => {
+      this.Apirequest -= 1;
+      this.enableDiabaleButton(this.Apirequest);
       this.warningMessage = "Please Provide Valid Inputs!";
     });
   }
@@ -2710,6 +2771,7 @@ export class MarketingComponent implements AfterViewInit {
       this.marketingService.categoryExpensesTrend(this.clinic_id, this.trendValue, this.connectedwith).subscribe((data) => {
         this.fdnewPatientsAcqLoader = false;
         this.Apirequest = this.Apirequest - 1;
+        this.enableDiabaleButton(this.Apirequest);
         if (data.message == 'success') {
           this.newAcqValueError = false;
           this.expenseDataTrend1 = [];
@@ -2765,6 +2827,8 @@ export class MarketingComponent implements AfterViewInit {
           this.expenseDataTrendLabels = this.expenseDataTrendLabels1;
         }
       }, error => {
+        this.Apirequest -= 1;
+        this.enableDiabaleButton(this.Apirequest);
         this.newAcqValueError = true;
         this.warningMessage = "Please Provide Valid Inputs!";
       }
