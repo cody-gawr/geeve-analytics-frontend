@@ -2641,6 +2641,7 @@ export class FinancesComponent implements AfterViewInit {
     }
     else if (val == 'off') {
       // this.filterDate('m');
+      $('.filter_m').addClass("active");
       $('.trendMode').hide();
       $('.nonTrendMode').css('display', 'block');
     }

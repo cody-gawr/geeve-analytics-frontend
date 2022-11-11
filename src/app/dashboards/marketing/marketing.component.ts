@@ -1279,7 +1279,7 @@ export class MarketingComponent implements AfterViewInit {
 
   loadDentist(newValue) {
     // $('.sa_tabs_data button').prop('disabled',true); 
-    this.Apirequest = 4;
+    this.Apirequest = 5;
     if (this.connectedwith != '' && this.connectedwith != 'none' && this.connectedwith != undefined && !this.multipleClinicsSelected) {
       this.Apirequest = 6;
     }
@@ -2277,6 +2277,8 @@ export class MarketingComponent implements AfterViewInit {
       this.toggleChangeProcess();
     }
     else if (val == 'off') {
+      // this.filterDate("m");
+      $('.filter_m').addClass("active");
       this.showTrend = false;
     }
 
