@@ -469,9 +469,9 @@
                             <div  fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group" >
                                 <label>Category</label>
                             </div>
-                            <div  fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group">
+                            <div  fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group" [ngClass]="hasDisable?'input-disabled' : ''">
                                 <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
-                                    <input type="text" matInput [(ngModel)]="agenda_category" [readonly]="hasDisable" [formControl]="create_agenda_form.controls['category']" required>
+                                    <input type="text" matInput [(ngModel)]="agenda_category" [disabled]="hasDisable" [readonly]="hasDisable" [formControl]="create_agenda_form.controls['category']" required>
                                     <mat-error>
                                         Please Enter category
                                     </mat-error>

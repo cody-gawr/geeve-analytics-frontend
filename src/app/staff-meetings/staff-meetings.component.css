@@ -445,3 +445,7 @@ input.mat-input-element.create-meeting-form {
 .staff-meeting .mat-card-title.header {
     margin-bottom: 8px !important;
 }
+
+.input-disabled .mat-form-field-appearance-outline .mat-form-field-outline-thick{
+    color: rgba(0, 0, 0, 0.05);
+}

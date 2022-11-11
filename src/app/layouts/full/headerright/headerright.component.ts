@@ -546,6 +546,10 @@ export class AppHeaderrightComponent implements AfterViewInit {
         }
       }else{
         newValue = newValues;
+        if(this.route != "/dashboards/healthscreen"){
+          this.getAccountConnection(newValue);
+        }
+        
       }
       if(this.user_type == 7){ 
         var clid = newValue
