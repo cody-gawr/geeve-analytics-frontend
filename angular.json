@@ -52,7 +52,7 @@
               "budgets": [
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "256kb"
                 }
               ],
               "optimization": {
@@ -81,7 +81,7 @@
               "budgets": [
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "256kb"
                 }
               ],
               "optimization": {
@@ -110,7 +110,7 @@
               "budgets": [
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "256kb"
                 }
               ],
               "fileReplacements": [
@@ -124,7 +124,7 @@
               "budgets": [
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "256kb"
                 }
               ],
               "optimization": {
@@ -153,7 +153,7 @@
               "budgets": [
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "256kb"
                 }
               ],
               "optimization": {
@@ -182,7 +182,7 @@
               "budgets": [
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "256kb"
                 }
               ],
               "optimization": {

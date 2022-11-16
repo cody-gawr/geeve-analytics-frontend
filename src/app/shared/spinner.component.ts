@@ -10,7 +10,8 @@ import {
   NavigationStart,
   NavigationEnd,
   NavigationCancel,
-  NavigationError
+  NavigationError,
+  Event
 } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 
@@ -33,7 +34,7 @@ export class SpinnerComponent implements OnDestroy {
     @Inject(DOCUMENT) private document: Document
   ) {
     this.router.events.subscribe(
-      event => {
+      (event: Event) => {
         if (event instanceof NavigationStart) {
           this.isSpinnerVisible = true;
         } else if (

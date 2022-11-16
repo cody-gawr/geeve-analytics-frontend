@@ -5,7 +5,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { RolesUsersService } from '../../../roles-users/roles-users.service';
 import { CookieService, CookieOptions } from "ngx-cookie";
 import { HeaderService } from '../header/header.service';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd, Event } from '@angular/router';
 import { environment } from "../../../../environments/environment";
 import { AppConstants } from '../../../app.constants';
 import { ToastrService } from "ngx-toastr";
@@ -141,27 +141,29 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
   }
   constructor(public dialog: MatDialog, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,/* public menuItems: MenuItems,*/ private rolesUsersService: RolesUsersService, private headerService: HeaderService, private _cookieService: CookieService, private route: ActivatedRoute, private router: Router, public constants: AppConstants
   ) {
-    this.router.events.filter(event => event instanceof NavigationEnd).subscribe((value) => {
-      this.userType = this._cookieService.get("user_type");
-      this.clinic_id = this._cookieService.get("clinic_id");
-      if( this.userType == 7){
-        if(this.clinic_id != null && typeof (this.clinic_id) != 'undefined'){
-          this.clinic_id = this._cookieService.get("clinic_id");
-          this.getRoles();
+    this.router.events.subscribe((event: Event) => {
+      if (event instanceof NavigationEnd){
+        this.userType = this._cookieService.get("user_type");
+        this.clinic_id = this._cookieService.get("clinic_id");
+        if( this.userType == 7){
+          if(this.clinic_id != null && typeof (this.clinic_id) != 'undefined'){
+            this.clinic_id = this._cookieService.get("clinic_id");
+            this.getRoles();
+          }else{
+              this.getClinic();
+          }
         }else{
             this.getClinic();
+            this.getRoles();
         }
-      }else{
-          this.getClinic();
-          this.getRoles();
-      }
-      this.activeRoute = router.url;
-      if (this.activeRoute == '/dashboards/cliniciananalysis' || this.activeRoute == '/dashboards/clinicianproceedures' || this.activeRoute == '/dashboards/frontdesk' || this.activeRoute == '/dashboards/marketing' || this.activeRoute == '/dashboards/finances' || this.activeRoute == '/dashboards/followups') {
-        this.nav_open = 'dashboards';
-      } else if (this.activeRoute == '/clinic' || this.activeRoute == '/roles-users' || this.activeRoute == '/profile-settings') {
-        this.nav_open = 'setting';
-      } else {
-        this.nav_open = '';
+        this.activeRoute = router.url;
+        if (this.activeRoute == '/dashboards/cliniciananalysis' || this.activeRoute == '/dashboards/clinicianproceedures' || this.activeRoute == '/dashboards/frontdesk' || this.activeRoute == '/dashboards/marketing' || this.activeRoute == '/dashboards/finances' || this.activeRoute == '/dashboards/followups') {
+          this.nav_open = 'dashboards';
+        } else if (this.activeRoute == '/clinic' || this.activeRoute == '/roles-users' || this.activeRoute == '/profile-settings') {
+          this.nav_open = 'setting';
+        } else {
+          this.nav_open = '';
+        }
       }
     });
     this.mobileQuery = media.matchMedia('(min-width: 768px)');

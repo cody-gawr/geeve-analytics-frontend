@@ -490,7 +490,7 @@
             </div>
 
             <div class="chart-predicted-stacked"
-              *ngIf="(showmulticlinicPredictor == false && predictedstackedChartData[0]['data'].length > 0 || predictedstackedChartData[1]['data'].length > 0 ) && !buildChartLoader">
+              *ngIf="(showmulticlinicPredictor == false && predictedstackedChartData[0]['data'].length > 0 || predictedstackedChartData[1]['data'].length > 0 ) && !predictedstackedChartLoader">
               <canvas baseChart class="chart" [datasets]="predictedstackedChartData"
                 [labels]="predictedstackedChartLabels" [options]="stackedChartOptions" [chartType]="stackedChartType"
                 (chartHover)="chartHovered($event)" [colors]="predictorRatioColors"
@@ -693,7 +693,7 @@
         class="loader_ico" src="../assets/images/720.gif">
       <div class="loader-text">Calculating...</div>
     </div>
-    <div *ngIf="buildChartLoader" class="loader_container loader_container_middle"><img
+    <div *ngIf="predictedstackedChartLoader" class="loader_container loader_container_middle"><img
       class="loader_ico" src="../assets/images/720.gif">
     <div class="loader-text">Calculating...</div>
   </div>

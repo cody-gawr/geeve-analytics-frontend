@@ -2,7 +2,6 @@ import { DatePipe, DecimalPipe } from "@angular/common";
 import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { Router, NavigationEnd} from "@angular/router";
 import { ChartService } from "../dashboards/chart.service";
-import { Subscription } from 'rxjs/Subscription';
 import { CookieService } from "ngx-cookie";
 import { Chart } from 'chart.js';
 import { GraphsService } from './graphs.service';

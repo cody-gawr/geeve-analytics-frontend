@@ -3,13 +3,11 @@ import { Component, AfterViewInit, ViewEncapsulation , ViewChild,ElementRef, OnD
 import { ClinicianProceeduresService } from './clinicianproceedures.service';
 import { DentistService } from '../../dentist/dentist.service';
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { ActivatedRoute, Router , NavigationEnd } from "@angular/router";
+import { ActivatedRoute, Router , NavigationEnd, Event } from "@angular/router";
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { CookieService } from "ngx-cookie";
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/filter';
+import { Subscription } from 'rxjs';
 import { Chart } from 'chart.js';
 import { ChartService } from '../chart.service';
 import { AppConstants } from '../../app.constants';
@@ -80,16 +78,17 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     private sanitized: DomSanitizer
   ){
     this.getChartsTips();
-         this._routerSub = this.router.events
-         .filter(event => event instanceof NavigationEnd)
-         .subscribe((value) => {
-      this.user_type = this._cookieService.get("user_type");          
- if( this._cookieService.get("dentistid")){
-         this.childid = this._cookieService.get("dentistid");
-          $('.internal_dentist').val('all');
-          $('.external_dentist').val('all');
-          
-       }
+    this._routerSub = this.router.events
+      .subscribe((event: Event) => {
+        if (event instanceof NavigationEnd){
+          this.user_type = this._cookieService.get("user_type");          
+          if( this._cookieService.get("dentistid")){
+            this.childid = this._cookieService.get("dentistid");
+            $('.internal_dentist').val('all');
+            $('.external_dentist').val('all');
+              
+          }
+        }
     });
     this.getAllClinics();
   }
@@ -1954,15 +1953,15 @@ public rct_started :any=0;
 public rct_started_ta :any=0; 
 
 
-
+public predictedstackedChartLoader: boolean = false;
  //Predictor Ratio :All Dentist
   private buildChartPredictorDentist() {
     if(!this.clinic_id){
       return false;
     }
-    this.buildChartLoader = true;
+    this.predictedstackedChartLoader = true;
     this.clinicianproceeduresService.PredictorRatioDentist(this.selectedDentist,this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-      this.buildChartLoader = false;
+      this.predictedstackedChartLoader = false;
       this.predictedstackedChartData1 = [{data: [], label: 'Indirect Restorations'},{data: [], label: 'Large Direct Restorations' } ];
       this.predictedstackedChartData2 = [{data: [], label: 'RCT'},{data: [], label: 'Extractions' } ];
       this.predictedstackedChartData3 = [{data: [], label: "RCT's Started" },{data: [], label: "RCT's Completed" } ];

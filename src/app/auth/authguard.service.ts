@@ -5,7 +5,7 @@
     import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot  } from 
     '@angular/router';
     import { Location } from "@angular/common";
-    import { Observable } from 'rxjs/Observable';
+    import { Observable } from 'rxjs';
 	import { CookieService } from "ngx-cookie";
 
   @Injectable()

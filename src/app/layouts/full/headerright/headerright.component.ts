@@ -9,16 +9,13 @@ import {
 import { PerfectScrollbarConfigInterface } from "ngx-perfect-scrollbar";
 import { CookieService, CookieOptions } from "ngx-cookie";
 import { ToastrService } from "ngx-toastr";
-import { Router, NavigationEnd } from "@angular/router";
+import { Router, NavigationEnd, Event } from "@angular/router";
 import { HeaderService } from "../header/header.service";
 import { DentistService } from "../../../dentist/dentist.service";
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { UserIdleService } from "angular-user-idle";
 import { AppConstants } from "../../../app.constants";
 import { RolesUsersService } from "../../../roles-users/roles-users.service";
-import "rxjs/add/operator/do";
-import "rxjs/add/operator/filter";
-
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { MatDialogRef } from "@angular/material/dialog";
 import { MatDialog } from "@angular/material/dialog";
@@ -113,40 +110,41 @@ export class AppHeaderrightComponent implements AfterViewInit {
    this.getRoles();
     this.user_type_dentist = this._cookieService.get("user_type");
     this._routerSub = this.router.events
-      .filter((event) => event instanceof NavigationEnd)
-      .subscribe((value) => {
-        this.referFriend = false;
-        this.route = router.url;
-        if (this.route == "/dashboards/cliniciananalysis" || this.route == "/dashboards/cliniciananalysis/multi") {
-          this.showCompare = true;
-        } else {
-          this.showCompare = false;
-        }
-
-        if (this.route == "/dashboards/cliniciananalysis" ||
-            this.route == "/dashboards/clinicianproceedures" ||
-            this.route == "/dashboards/cliniciananalysis/multi" ||
-            this.route == "/dashboards/clinicianproceedures/multi"
-          // this.route == "/kpi-report"
-        ) {
-          this.showDropDown = true;
-        } else {
-          this.showDropDown = false;
-        }
-
-        if (this.route.includes("/")) {
-          var urlParams = this.route.split("/");
-          if (typeof urlParams[3] != "undefined") {
-            this.classUrl = urlParams[3];
-          } else if (typeof urlParams[2] != "undefined") {
-            this.classUrl = urlParams[2];
-          } else if (typeof urlParams[1] != "undefined") {
-            this.classUrl = urlParams[1];
-          } else if (typeof urlParams[0] != "undefined") {
-            this.classUrl = urlParams[0];
+      .subscribe((event: Event) => {
+        if (event instanceof NavigationEnd){
+          this.referFriend = false;
+          this.route = router.url;
+          if (this.route == "/dashboards/cliniciananalysis" || this.route == "/dashboards/cliniciananalysis/multi") {
+            this.showCompare = true;
+          } else {
+            this.showCompare = false;
           }
+  
+          if (this.route == "/dashboards/cliniciananalysis" ||
+              this.route == "/dashboards/clinicianproceedures" ||
+              this.route == "/dashboards/cliniciananalysis/multi" ||
+              this.route == "/dashboards/clinicianproceedures/multi"
+            // this.route == "/kpi-report"
+          ) {
+            this.showDropDown = true;
+          } else {
+            this.showDropDown = false;
+          }
+  
+          if (this.route.includes("/")) {
+            var urlParams = this.route.split("/");
+            if (typeof urlParams[3] != "undefined") {
+              this.classUrl = urlParams[3];
+            } else if (typeof urlParams[2] != "undefined") {
+              this.classUrl = urlParams[2];
+            } else if (typeof urlParams[1] != "undefined") {
+              this.classUrl = urlParams[1];
+            } else if (typeof urlParams[0] != "undefined") {
+              this.classUrl = urlParams[0];
+            }
+          }
+          this.getClinics();
         }
-        this.getClinics();
         // this.getDentists();
         // if($('#currentClinic').attr('cid') == 'all' && this.route != '/dashboards/healthscreen')
         // {

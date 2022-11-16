@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { RolesUsersService } from '../../roles-users/roles-users.service';
-import { Router , NavigationEnd } from "@angular/router";
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/filter';  
+import { Router , NavigationEnd, Event } from "@angular/router";
+import { Subscription } from 'rxjs';
 export interface BadgeItem {
   type: string;
   value: string;
@@ -152,10 +150,11 @@ const MENUITEMS = [
 export class MenuItems {
       private _routerSub = Subscription.EMPTY;
   constructor(private rolesUsersService: RolesUsersService, private router: Router) {
-   this._routerSub = this.router.events
-         .filter(event => event instanceof NavigationEnd)
-         .subscribe((value) => {
-    this.getRoles();
+    this._routerSub = this.router.events
+      .subscribe((event: Event) => {
+        if (event instanceof NavigationEnd){
+          this.getRoles();
+        }
     });
   }
   getMenuitem(): Menu[] {

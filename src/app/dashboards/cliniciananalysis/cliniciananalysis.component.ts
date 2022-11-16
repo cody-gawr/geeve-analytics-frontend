@@ -3,16 +3,14 @@ import { ClinicianAnalysisService } from './cliniciananalysis.service';
 import { DentistService } from '../../dentist/dentist.service';
 import { FrontDeskService } from '../frontdesk/frontdesk.service';
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
+import { ActivatedRoute, Router, NavigationEnd, Event } from "@angular/router";
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { CookieService } from "ngx-cookie";
 import { Chart } from 'chart.js';
 import * as ChartAnnotation from 'chartjs-plugin-annotation';
 import { BaseChartDirective, PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/filter';
+import { Subscription } from 'rxjs';
 import { ChartService } from '../chart.service';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
@@ -116,12 +114,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   ) {
     this.getChartsTips();
     this._routerSub = this.router.events
-      .filter(event => event instanceof NavigationEnd)
-      .subscribe((value) => {
+      .subscribe((event: Event) => {
+        if (event instanceof NavigationEnd){
+          this.user_type = this._cookieService.get("user_type");
+          if (this._cookieService.get("childid"))
+            this.childid = this._cookieService.get("dentistid");
+        }
         // this.initiate_clinic();
-        this.user_type = this._cookieService.get("user_type");
-        if (this._cookieService.get("childid"))
-          this.childid = this._cookieService.get("dentistid");
       });
     this.user_type = this._cookieService.get("user_type");
     this.getAllClinics();

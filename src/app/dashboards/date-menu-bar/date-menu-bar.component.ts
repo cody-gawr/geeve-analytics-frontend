@@ -4,7 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { BaseComponent } from '../../clinic-settings/base/base.component';
 import { ChartService } from '../chart.service';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, Event } from '@angular/router';
 import { NgxDaterangepickerMd, DaterangepickerComponent } from 'ngx-daterangepicker-material';
 import * as moment from 'moment';
 import { DatePipe } from '@angular/common';
@@ -65,16 +65,18 @@ export class DateMenuBarComponent extends BaseComponent implements AfterViewInit
     super();
     chartService.duration$.pipe(
       takeUntil(this.destroyed$)
-    ).subscribe(value => this.currentSelectedPeriod = value);
+    ).subscribe((value : string) => this.currentSelectedPeriod = value);
 
    
 
 
-    this.router.events.filter(event => event instanceof NavigationEnd).subscribe((value) => {
-     this.route = router.url; 
-     if(this.chartService.duration$.value == 'custom'){
-      this.filterDate('m');
-     }     
+    this.router.events.subscribe((event: Event) => {
+      if (event instanceof NavigationEnd){
+        this.route = router.url; 
+        if(this.chartService.duration$.value == 'custom'){
+         this.filterDate('m');
+        }     
+      }
     });
     
   }
