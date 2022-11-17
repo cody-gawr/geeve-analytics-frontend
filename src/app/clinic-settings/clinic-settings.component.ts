@@ -190,7 +190,7 @@ export class ClinicSettingsComponent implements OnInit {
           this.contactName = res.data[0].contactName;
           this.address = res.data[0].address;
           this.practice_size = res.data[0].practice_size;
-          this.subtracted_accounts = res.data[0].net_profit_exclusions;
+          this.subtracted_accounts = res.data[0].net_profit_exclusions === 'null' ? "" : res.data[0].net_profit_exclusions;
           this.ftaUta = res.data[0].fta_uta;
           this.timezone = res.data[0].timezone;
           this.equipmentList =

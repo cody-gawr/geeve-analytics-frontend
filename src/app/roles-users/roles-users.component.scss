@@ -82,7 +82,7 @@
     font-family: sans-serif;
 }
 .roleTipCon h5:after {
-    content: ",";
+    // content: ",";
 }
 .perCon h5:last-child:after {
     display: none;
@@ -124,5 +124,13 @@
     margin-left: 155px;
     margin-top: 5px;
 }
+.search_user.mat-form-field {
+    width: 50%;
+}
 
-
+.search_user .mat-form-field-underline {
+    position: absolute;
+    width: 200%;
+    pointer-events: none;
+    transform: scale3d(1, 1.0001, 1);
+}

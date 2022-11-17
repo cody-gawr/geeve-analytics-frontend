@@ -8,7 +8,7 @@ import { EventEmitter , Output} from '@angular/core';
 import { DentistService } from '../dentist/dentist.service';
 import { ClinicService } from '../clinic/clinic.service';
 import { ToastrService } from 'ngx-toastr';
-import {FormControl} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { CookieService } from "ngx-cookie";
 import { ITooltipData } from '../shared/tooltip/tooltip.directive';
 import { HeaderService } from '../layouts/full/header/header.service';
@@ -23,35 +23,54 @@ import { environment } from "../../environments/environment";
 
 export class DialogOverviewExampleDialogComponent {
   public apiUrl = environment.apiUrl;
-   public clinic_id:any ={};
-show_dentist = false;
-showtooltip:boolean= false;
+  public clinic_id:any ={};
+  show_dentist = false;
+  showtooltip:boolean= false;
   public rolesAll:any = { healthscreen: "Clinic Health", morninghuddle: "Morning Huddle", followups: "Follow-Ups", dashboard1: "Clinician Analysis",dashboard2: "Clinician Procedures & Referrals", dashboard3: "Front Desk", dashboard4: "Marketing", dashboard5: "Finances", lostopportunity: "Lost Opportunity", profilesettings: "Settings"};
 
+  public display_name_error: boolean;
+  public email_error: boolean;
+  public select_clinic_error: boolean;
+  public select_dentist_error: boolean;
+  public validMailError: boolean;
+  public reg = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
   constructor(
+    private formBuilder : FormBuilder,
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,private clinicService: ClinicService,private _cookieService: CookieService, private router: Router
-  ) {
-
-  }
+  ) {}
+    
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-    @Output() public onDentist: EventEmitter<any> = new EventEmitter();
-   public selected_dentist ={};
-   public dentistList = {};
-   public user_type;
-   public dentist_id;
-   public loginUserType = this._cookieService.get("user_type");
-    loadDentist(val) {
-      this.user_type= val;
-      if(val == '4')
-        this.show_dentist = true;
-    }
+  @Output() public onDentist: EventEmitter<any> = new EventEmitter();
+  public selected_dentist ={};
+  public dentistList = {};
+  public user_type;
+  public dentist_id;
+  public loginUserType = this._cookieService.get("user_type");
+  
+  loadDentist(val) {
+    this.user_type= val;
+    if(val == '4')
+      this.show_dentist = true;
+  }
+
+  checkEmail(value){
+    this.email_error = value == '';
+    this.validMailError = !this.reg.test(value) && value != '';
+  }
+
+
   save(data) {
     $('.mat-form-control').click();
-    if(data.display_name != undefined && data.email != undefined && data.user_type != '' &&  this.selectedClinics.value != ''){      
+    this.display_name_error = data.display_name == undefined || data.display_name == '';
+    this.email_error = data.email == undefined || data.email == ''
+    this.select_clinic_error = this.selectedClinics.value == '' || this.selectedClinics.value == null;
+    this.select_dentist_error = this.objectsize(this.dentistList) != this.objectsize(this.selected_dentist);
+    if(data.display_name != undefined && data.display_name != '' && data.email != undefined && data.email != '' && data.user_type != '' &&  this.selectedClinics.value != '' && this.selectedClinics.value != null){    
+
       data.selectedClinics= this.selectedClinics.value;
       data.selected_dentist = this.selected_dentist;
       if(this.show_dentist == true)
@@ -62,25 +81,26 @@ showtooltip:boolean= false;
   }
 
   objectsize(obj) {
-  var size = 0,
+    var size = 0,
     key;
-  for (key in obj) {
-    if (obj.hasOwnProperty(key)) size++;
+    for (key in obj) {
+      if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
   }
-  return size;
-}
   public selectedClinics=new FormControl();
    clinicSelect(event) {
-    if(event == false)
-      this.unselectDentist();
-    if(this.user_type == '4'){
+     if(event == false)
+     this.unselectDentist();
+     if(this.user_type == '4'){
        this.show_dentist = true;
        if(this.selectedClinics.value != null)
-        this.getClinicProviders(); 
-    } 
-    else{
-      this.selected_dentist=[];
-    }
+       this.getClinicProviders(); 
+      } 
+      else{
+        this.selected_dentist=[];
+      }
+    this.select_clinic_error = this.selectedClinics.value == '';
   }
 
 unselectDentist() {
@@ -100,6 +120,7 @@ selectedDentist(event,i,clinic_id) {
       delete this.selected_dentist['clinic'+clinic_id];    
       delete this.dentistList[clinic_id];
     }
+    this.select_dentist_error = event == 0;
 }
 
 
@@ -132,8 +153,12 @@ public selectedClinicProviders=[];
 
 export class EditDialogComponent {
   public apiUrl = environment.apiUrl;
-   public clinic_id:any ={};
-show_dentist = false;
+  public clinic_id:any ={};
+  show_dentist = false;
+
+  public display_name_error: boolean;
+  public select_clinic_error: boolean;
+  public select_dentist_error: boolean;
 
   constructor(
     public dialogEdit: MatDialogRef<DialogOverviewExampleDialogComponent>,
@@ -168,25 +193,29 @@ show_dentist = false;
   onNoClick(): void {
     this.dialogEdit.close();
   }
-    @Output() public onDentist: EventEmitter<any> = new EventEmitter();
-   public selected_dentist ={};
-   public user_type;
-   public dentist_id;
-    loadDentist(val) {
-      this.userData.user_type= val;
-      if(val == '4')
-        this.show_dentist = true;
-    }
-    save(userData) {
+
+  @Output() public onDentist: EventEmitter<any> = new EventEmitter();
+  public selected_dentist ={};
+  public user_type;
+  public dentist_id;
+
+  loadDentist(val) {
+    this.userData.user_type= val;
+    if(val == '4')
+      this.show_dentist = true;
+  }
+  save(userData) {
     $('.mat-form-control').click();
     let name = userData.display_name.trim();
-    if(userData.display_name != undefined && name != "" && userData.email != undefined && userData.user_type != '' &&  this.selectedClinics.value != ''){
+    this.display_name_error = userData.display_name == undefined || userData.display_name.trim() == '';
+    this.select_clinic_error = this.selectedClinics.value == '' || this.selectedClinics.value == null;
+    if(userData.display_name != undefined && name != "" && userData.email != undefined && userData.email != '' && userData.user_type != '' &&  this.selectedClinics.value != ''){
       userData.selectedClinics= this.selectedClinics.value;
       userData.selected_dentist = this.selected_dentist;
       if(this.show_dentist == true)
         this.dialogEdit.close(userData);
       else if(this.show_dentist == false)
-         this.dialogEdit.close(userData);
+        this.dialogEdit.close(userData);
     }
   }
   public selectedClinics=new FormControl();
@@ -201,6 +230,7 @@ show_dentist = false;
     else{
       this.selected_dentist=[];
     }
+    this.select_clinic_error = this.selectedClinics.value == '';
   }
   unselectDentist() {
     var tempArray={};
@@ -216,18 +246,18 @@ show_dentist = false;
     } else {
       delete this.selected_dentist['clinic'+clinic_id];    
     }
+    this.select_dentist_error = event == 0;
   }
 
-public clinics=[];
-public selectedClinicProviders=[];
+  public clinics=[];
+  public selectedClinicProviders=[];
   getClinicProviders() {
-  this.clinicService.getClinicProviders(this.selectedClinics.value).subscribe((res) => {
-      if(res.message == 'success'){
-        this.selectedClinicProviders = res.data;
-      } else if(res.status == '401'){       
-      }
-    }, error => {
-    });
+    this.clinicService.getClinicProviders(this.selectedClinics.value).subscribe((res) => {
+        if(res.message == 'success'){
+          this.selectedClinicProviders = res.data;
+        } else if(res.status == '401'){}
+    }, 
+    error => {});
   }
 
   changeStatus(userStatus){
@@ -274,13 +304,13 @@ const data: any = require('assets/company.json');
 })
 export class RolesUsersComponent implements AfterViewInit {
 
-  display_name: string;
-  email: string;
+  display_name: string = "";
+  email: string = "";
   user_type ='3';
   fileInput: any ;
   public clinic_id;
   dentist_id = '';
-  password:string;
+  password:string = "";
   dentists:any=[];
   userPlan:any = 'lite';
 public userTypeLogin:any = '';
@@ -325,7 +355,6 @@ initiate_clinic() {
   @ViewChild(RolesUsersComponent) table: RolesUsersComponent;
   constructor(private toastr: ToastrService,private rolesUsersService: RolesUsersService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router, private route: ActivatedRoute, private dentistService: DentistService,private clinicService: ClinicService, private headerService: HeaderService) {
     this.getClinics();
-    this.rows = data;
     this.temp = [...data];
     setTimeout(() => {
       this.loadingIndicator = false;
@@ -342,8 +371,8 @@ initiate_clinic() {
     dialogRef.afterClosed().subscribe(result => {
        if(result != undefined) {
         /* Generate Default Password*/
-        var password           = '';
-        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+        var password = '';
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
         var charactersLength = characters.length;
         for ( var i = 0; i < 15; i++ ) {
           password += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -550,9 +579,12 @@ initiate_clinic() {
       this.toastr.error('Please Provide Valid Inputs!');
     });
   }
-
+  public activeData = [];
+  public inactiveData = [];
   private getUsers() {
     let clinics = [];
+    this.activeData = [];
+    this.inactiveData = [];
     this.rolesUsersService.getUsers().subscribe((res) => {
   
       this.clinics.forEach(ele=>{
@@ -570,19 +602,17 @@ initiate_clinic() {
       
       this.rows=[];
        if(res.message == 'success'){
-        let activeData = [];
-        let inactiveData = [];
         
         // isShowInactive 
         res.data.filter(r=>{
-          r.status == 1 ? activeData.push(r) : inactiveData.push(r);
+          r.status == 1 ? this.activeData.push(r) : this.inactiveData.push(r);
         });
         // this.rows = res.data;
-        this.rows = this.isShowInactive ? inactiveData : activeData;
+        this.rows = this.isShowInactive ? this.inactiveData : this.activeData;
         if(this.isShowInactive){
-          this.temp = [...inactiveData];
+          this.temp = [...this.inactiveData];
         }else{
-          this.temp = [...activeData];
+          this.temp = [...this.activeData];
         }
         this.table = data;
        }
@@ -683,16 +713,21 @@ initiate_clinic() {
   }
 
   updateFilter(event) {
-    const val = event.target.value.toLowerCase();
-
+    const val = event.toLowerCase();
     // filter our data
-    const temp = this.temp.filter(function(d) {
-      if(d.displayName != null){
-        return d.displayName.toLowerCase().indexOf(val) !== -1 || !val;
-      }
-    });
-    // update the rows
-    this.rows = temp;
+    if(this.isShowInactive){
+      this.rows = this.inactiveData.filter(function(d) {
+        if(d.displayName != null){
+          return d.displayName.toLowerCase().indexOf(val) !== -1 || !val;
+        }
+      });
+    }else{
+      this.rows = this.activeData.filter(function(d) {
+        if(d.displayName != null){
+          return d.displayName.toLowerCase().indexOf(val) !== -1 || !val;
+        }
+      });
+    }
     // Whenever the filter changes, always go back to the first page
     this.table = data;
   }
@@ -711,6 +746,8 @@ initiate_clinic() {
   }
   showActiveToggle(e){
     this.isShowInactive = e.checked;
-    this.getUsers();
+    this.rows = this.isShowInactive ? this.inactiveData : this.activeData;
+    let val = $("#search_user").val();
+    this.updateFilter(val);
   }
 }

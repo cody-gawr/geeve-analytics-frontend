@@ -42,14 +42,14 @@
           />
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="Created">
+      <ngx-datatable-column name="Created" [sortable]="false">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
           <span >
             {{value| date}}
           </span>
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="id">
+      <ngx-datatable-column name="id" [sortable]="false">
          <ng-template let-column="column" ngx-datatable-header-template>
         <span>Actions</span>
       </ng-template>

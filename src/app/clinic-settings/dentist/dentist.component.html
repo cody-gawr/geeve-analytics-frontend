@@ -77,7 +77,7 @@
           </td>
         </ng-container>
         <ng-container matColumnDef="position">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Position
+          <th mat-header-cell *matHeaderCellDef >Position
             <div class="info-button">
                 <div class="info-icon-container">
                   <img [tooltip]="this.constants.tipDentistsPosition" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
@@ -94,7 +94,7 @@
           </td>
         </ng-container>
         <ng-container matColumnDef="appbook">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>App Book
+          <th mat-header-cell *matHeaderCellDef >App Book
             <!-- <div class="info-button">
                 <div class="info-icon-container">
                   <img [tooltip]="this.constants.tipDentistsPosition" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
@@ -152,15 +152,9 @@
       ></mat-paginator>
     </div>
 
-    <ul
-      class="main_pagination settings-table-pagination"
-      *ngIf="dentistTablePages.length"
-    >
+    <ul class="main_pagination settings-table-pagination" *ngIf="dentistTablePages.length > 1">
       <li *ngFor="let page of dentistTablePages">
-        <button
-          [ngClass]="{ active: page === currentPage, page: true }"
-          (click)="handlePageChange(page)"
-        >
+        <button [ngClass]="{ active: page === currentPage, page: true }" (click)="handlePageChange(page)">
           {{ page }}
         </button>
       </li>
@@ -168,6 +162,9 @@
 
     <div class="data-loading-main">
       <div class="no-data" [ngClass]="dentistList.data.length == 0 && dentistListLoading ? 'show' : 'hide'">
+        No Data found
+      </div>
+      <div class="no-data" [ngClass]="dentistList.filteredData.length == 0? 'show' : 'hide'">
         No Data found
       </div>
       <div class="loader" [ngClass]="dentistList.data.length == 0 && !dentistListLoading ? 'show' : 'hide'">

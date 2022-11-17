@@ -15,11 +15,12 @@
         (keyup)="doFilter($event.target.value)"
       />     
     </mat-form-field>
-     <button class="mat-raised-button mat-green addItemBtn" mat-raised-button (click)="openDialog()">Add Item</button>
-   <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ EquipListEnable }}" name="equip_list_enable" (change)="toggleMH($event)">
-     <span *ngIf="EquipListEnable">Enabled</span>
-     <span *ngIf="!EquipListEnable">Disabled</span>
-   </mat-slide-toggle>
+    <!-- lass="mat-raised-button mat-green addItemBtn" mat-raised-button -->
+      <button class="sa-pull-right mat-raised-button mat-green" mat-raised-button (click)="openDialog()">Add Item</button>
+      <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ EquipListEnable }}" name="equip_list_enable" (change)="toggleMH($event)">
+        <span *ngIf="EquipListEnable">Enabled</span>
+        <span *ngIf="!EquipListEnable">Disabled</span>
+      </mat-slide-toggle>
 
   </div>
   <div class="DentistListSecRow mh-table patient_data-table_responsive">

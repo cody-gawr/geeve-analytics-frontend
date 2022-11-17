@@ -8,7 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DentistService } from '../../dentist/dentist.service';
 import { BaseComponent } from '../base/base.component';
-import {MatSort} from '@angular/material/sort';
+import { MatSort } from '@angular/material/sort';
 import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 import { environment } from "../../../environments/environment";
@@ -137,6 +137,8 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   setPaginationButtons(totalDentist) {
     this.dentistTablePages = [];
     const totalPages = Math.ceil(totalDentist / this.dentistPageSize);
+    // after search when user clear search set page to 1
+    this.currentPage = this.currentPage > totalPages ? 1 : this.currentPage;
     for (let i = 0; i < totalPages; i++) {
       this.dentistTablePages.push(i + 1);
     }
