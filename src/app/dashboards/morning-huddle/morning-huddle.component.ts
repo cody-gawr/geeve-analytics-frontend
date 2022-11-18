@@ -928,7 +928,7 @@ initiate_clinic() {
           this.endOfDaysTasks = production.data;            
           this.endOfDaysTasksDate = this.datepipe.transform( production.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
           if(this.showComplete == true) {
-            this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
+            this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete == 1);
           } else {
             this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
           }  
@@ -967,8 +967,8 @@ initiate_clinic() {
         {
           this.endOfDaysTasks = production.data;            
           this.endOfDaysTasksDate = this.datepipe.transform( production.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
-          if(this.showComplete == true) {
-           this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
+          if(this.showComplete) {
+           this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete == 1);
           } else {
             this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
           }  
@@ -1493,10 +1493,10 @@ async getDentistList(){
     }); 
   }
 
-  updateToComplete(event){
-    this.showComplete = event.checked;
-    if(event.checked ==  true){  
-      this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
+  updateToComplete(checked){
+    this.showComplete = checked;
+    if(checked){  
+      this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete == 1);
     } else {
       this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
     }

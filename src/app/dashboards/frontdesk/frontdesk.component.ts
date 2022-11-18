@@ -2182,10 +2182,10 @@ toggleFilter(val) {
     $('.filter').removeClass('active');
     this.Apirequest = 0;
     if(val == 'current') {
-     this.toggleChecked = true;
-     this.trendValue = 'c';
-       this.stackedChartOptionssWT.annotation =[];
-     this.toggleChangeProcess();
+      this.toggleChecked = true;
+      this.trendValue = 'c';
+      this.stackedChartOptionssWT.annotation =[];
+      this.toggleChangeProcess();
     }
     else if(val == 'historic') {
        this.toggleChecked = true;
@@ -2195,21 +2195,22 @@ toggleFilter(val) {
     }
     else if(val == 'off') {
       if(this.goalchecked=='average') {
-    this.stackedChartOptionssWT.annotation = {annotations: [{
-              type: 'line',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.workTimeTotal,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-          },
-         ]
+          this.stackedChartOptionssWT.annotation = {
+            annotations: [{
+                type: 'line',
+                mode: 'horizontal',
+                scaleID: 'y-axis-0',
+                value: this.workTimeTotal,
+                borderColor: 'red',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                borderDashOffset: 0,
+            }]
+          }
         }
-      }
-      else if(this.goalchecked=='goal')  {
-           this.stackedChartOptionssWT.annotation = {annotations: [{
+        else if(this.goalchecked=='goal')  {
+          this.stackedChartOptionssWT.annotation = {
+            annotations: [{
               type: 'line',
               mode: 'horizontal',
               scaleID: 'y-axis-0',
@@ -2218,11 +2219,10 @@ toggleFilter(val) {
               borderWidth: 2,
               borderDash: [2, 2],
               borderDashOffset: 0,
-          },
-         ]
+            }]
+          }
         }
-      }
-
+      this.filterDate("m");
       this.showTrend = false;
     }
 }

@@ -2375,7 +2375,7 @@ export class FinancesComponent implements AfterViewInit {
   filterDate(duration) {    
     $('.customRange').css('display', 'none');
     if (this.toggleChecked)
-      $('.target_off').click();
+      // $('.target_off').click();
     this.toggleChecked = false;
 
     $('.target_filter').removeClass('mat-button-toggle-checked');
@@ -2640,8 +2640,8 @@ export class FinancesComponent implements AfterViewInit {
       this.displayProfit(1);
     }
     else if (val == 'off') {
-      // this.filterDate('m');
-      $('.filter_m').addClass("active");
+      this.filterDate('m');
+      // $('.filter_m').addClass("active");
       $('.trendMode').hide();
       $('.nonTrendMode').css('display', 'block');
     }

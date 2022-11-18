@@ -1016,3 +1016,7 @@ tr.mat-row.cdk-row.ng-star-inserted:empty {
     right        : 8px;
     top          : 0px;
 }
+
+.morning-huddle-date .dentist-select.mat-form-field {
+    left: 50px;
+}

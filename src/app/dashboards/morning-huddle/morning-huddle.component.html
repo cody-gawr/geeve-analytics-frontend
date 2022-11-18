@@ -445,7 +445,7 @@
       <div id="mh-dentist-schedule-print">
       <div class="morning-huddle-date">
         <div *ngIf="clinicDentists.length > 0 && user_type != '4'">
-          <mat-form-field>
+          <mat-form-field class="dentist-select">
             <!-- <mat-label>Select Dentist</mat-label> -->
             <mat-select (selectionChange)="refreshScheduleTab($event.value)" id="setPreviousDay2"
               [(ngModel)]="currentDentistSchedule">
@@ -804,7 +804,7 @@
       <div id="mh-front-desk-reminders-print">
       <div class="morning-huddle-date">
         <div *ngIf="clinicDentistsReminders.length > 0">
-          <mat-form-field>
+          <mat-form-field class="dentist-select">
             <!-- <mat-label>Select Dentist</mat-label> -->
             <mat-select (selectionChange)="refreshReminderTab($event.value)" id="setPreviousDay3"
               [(ngModel)]="currentDentistReminder">
@@ -2186,7 +2186,7 @@
         <img src="../../assets/images/logo-icon.gif">
       </div>
       <div class="showComplete dailytsk" *ngIf="isEnabletasks && endOfDaysTasks.length > 0">
-        <mat-checkbox name="status" [checked]="showComplete" (change)="updateToComplete($event)">Show Complete
+        <mat-checkbox name="status" [checked]="showComplete" (change)="updateToComplete($event.checked)">Show Complete
         </mat-checkbox>
       </div>
       <div *ngFor="let list of tasklistArray">
@@ -2240,7 +2240,8 @@
   
                 <ng-container matColumnDef="isDataAvailable9">
                   <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns9.length">
-                    <span *ngIf="isEnabletasks && futureDateDT == ''">No task list has been generated for today</span>
+                    <span *ngIf="showComplete && endOfDaysTasksInComp.data.length <= 0">No data in complete task list.</span>
+                    <span *ngIf="!showComplete && isEnabletasks && futureDateDT == ''">No task list has been generated for today</span>
                     <span *ngIf="isEnabletasks && futureDateDT != ''">Daily Tasks will be populated on {{ futureDateDT | date:'MMM d, y':'timezone'
                       }}</span>
                     <span *ngIf="!isEnabletasks">Daily Tasks are not enabled - this can be configured in your Jeeve

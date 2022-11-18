@@ -2277,8 +2277,7 @@ export class MarketingComponent implements AfterViewInit {
       this.toggleChangeProcess();
     }
     else if (val == 'off') {
-      // this.filterDate("m");
-      $('.filter_m').addClass("active");
+      this.filterDate("m");
       this.showTrend = false;
     }
 
