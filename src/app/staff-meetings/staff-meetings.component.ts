@@ -767,9 +767,11 @@ export class StaffMeetingsComponent implements OnInit{
       if(item.agenda_chart_id == null)
         this.show_date_picker = false;
 
-      if(!agenda_drawer.open)
+      }
+
+      if(!agenda_drawer.opened){
         this.agenda_form.nativeElement.reset();
-    }
+      }
   }
 
   // add a heagin in the agenda view

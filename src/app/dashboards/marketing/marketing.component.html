@@ -228,11 +228,11 @@
                             <div>
                                 <span *ngIf="showTrend == false  && trendText && activePatients == false"
                                     class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
-                                    matTooltip="{{trendText}} : {{newPatientsPrevTotal}}"><img class="trend_ico"
+                                    matTooltip="{{trendText}} : {{newPatientsPrevTotal | number:'1.0-0'}}"><img class="trend_ico"
                                         src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
                                 <span *ngIf="showTrend == false  && trendText && activePatients == true"
                                     class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
-                                    matTooltip="{{trendText}} : {{fdActivePatientsTa}}"><img class="trend_ico"
+                                    matTooltip="{{trendText}} : {{fdActivePatientsTa | number:'1.0-0'}}"><img class="trend_ico"
                                         src="../assets/images/trend_{{activePatientsTooltip}}.png"></span>
                                 {{patientText}}
                             </div>
@@ -407,7 +407,7 @@
                             <div>
                                 <span *ngIf="showTrend == false  && trendText"
                                     class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
-                                    matTooltip="{{trendText}} : {{newPatientsPrevTotal}}"><img class="trend_ico"
+                                    matTooltip="{{trendText}} : {{newPatientsPrevTotal | number:'1.0-0'}}"><img class="trend_ico"
                                         src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
                                     No. New Patients
                             </div>
@@ -611,7 +611,7 @@
                             <div>
                                 <span *ngIf="showTrend == false  && trendText"
                                     class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
-                                    matTooltip="{{trendText}} : {{fdActivePatientsTa}}"><img class="trend_ico"
+                                    matTooltip="{{trendText}} : {{fdActivePatientsTa | number:'1.0-0'}}"><img class="trend_ico"
                                         src="../assets/images/trend_{{activePatientsTooltip}}.png"></span>
                                     No. Active Patients
                             </div>
