@@ -1278,7 +1278,7 @@ export class FinancesComponent implements AfterViewInit {
             if (body[0].includes("100%")) {
               innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' + labelColorscustom[i].backgroundColor + '"></span></td><td style="padding: 0px">' + body[0] + '</td></tr>';
               bodyLineCont = bodyLineCont + 1;
-            } else if (!body[0].includes("0%")) {
+            } else if (!body[0].split(":")[1].trim().startsWith("0")) {
               innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' + labelColorscustom[i].backgroundColor + '"></span></td><td style="padding: 0px">' + body[0] + '</td></tr>';
               bodyLineCont = bodyLineCont + 1;
             }
