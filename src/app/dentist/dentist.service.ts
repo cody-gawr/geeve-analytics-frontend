@@ -205,7 +205,7 @@ export class DentistService {
   }
 
   private dentistList = new BehaviorSubject({message: '', data: [], status: ''});
-  currentList = this.dentistList.asObservable();
+  currentDentistList = this.dentistList.asObservable();
   setDentistList(list) {
     this.dentistList.next(list)
   }

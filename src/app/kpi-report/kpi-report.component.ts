@@ -346,7 +346,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 
 	// Get Dentist
 	getDentists() {
-		this.dentistService.currentList.subscribe(res=>{
+		this.dentistService.currentDentistList.subscribe(res=>{
 			if (res.message == 'success') {
 					this.dentists = res.data;
 					this.dentistCount = res.data.length;

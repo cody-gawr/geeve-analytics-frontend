@@ -154,9 +154,11 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   getAllClinics(){
     this.headerService.getClinic.subscribe(res=>{
         if(res.status == '200'){
+          let temp = [];
           res.data.forEach(item=>{
-            this.clinics.push(item.id);
+            temp.push(item.id);
           });
+          this.clinics = [...temp];
         }
     });
   }

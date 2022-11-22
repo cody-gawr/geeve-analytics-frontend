@@ -37,30 +37,57 @@ export class HealthScreenService {
 
     hourlyRateChart(clinic_id, startDate = '', endDate = '', duration = '', user_type = '', clinician = '', limit = 5): Observable<any> {
         var header = this.getHeaders();
+        if(duration == ''){
+            return this.http.get(this.apiUrl + "/health/chHourlyLeaders?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&limit=5", header)
+                .pipe(map((response: Response) => {
+                    return response;
+                })
+            );
+        }
+        
         return this.http.get(this.apiUrl + "/health/chHourlyLeaders?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&limit=5", header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
+
     }
     // Items Predictor Analysis 
     mkNewPatientsByReferral(clinic_id, startDate = '', endDate = '', duration = '', limit = 5): Observable<any> {
         var header = this.getHeaders();
+        if(duration == ''){
+            return this.http.get(this.apiUrl + "/health/chReferralLeaders?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&limit=" + limit, header)
+                .pipe(map((response: Response) => {
+                    return response;
+                })
+            );
+        }
+        
         return this.http.get(this.apiUrl + "/health/chReferralLeaders?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&limit=" + limit, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
+
     }
 
     // finProductionPerVisit
     finProductionPerVisit(clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
+        if(duration == ''){
+            return this.http.get(this.apiUrl + "/Health/chProductionPerVisit?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate, header)
+                .pipe(map((response: Response) => {
+                    return response;
+                })
+            );
+        }
+        
         return this.http.get(this.apiUrl + "/Health/chProductionPerVisit?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
             .pipe(map((response: Response) => {
                 return response;
             })
-            );
+        );
+
     }
 
     // Added by Hanney Sharma on 01-04-2021    

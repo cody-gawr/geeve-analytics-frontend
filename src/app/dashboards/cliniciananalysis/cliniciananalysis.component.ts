@@ -283,11 +283,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   public clinics = [];
   getAllClinics(){
-    this.headerService.getClinics().subscribe(res=>{
-        if(res.status == 200){
+    this.headerService.getClinic.subscribe(res=>{
+        if(res.status == '200'){
+          let temp = [];
           res.data.forEach(item=>{
-            this.clinics.push(item.id);
+            temp.push(item.id);
           });
+          this.clinics = [...temp];
         }
     });
   }
@@ -6932,7 +6934,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   // Get Dentist
   private getDentists() {
     this.dentists =[];
-    this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
+    this.dentistService.currentDentistList.subscribe((res) => {
       this.selectedDentist = 'all';
       if (this._cookieService.get("clinic_dentist")) {
           var dentistVal1 = this._cookieService.get("clinic_dentist").split('_');
@@ -6960,7 +6962,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public planTotalCompleted = 0;
   // Filter By Date
   filterDate(duration) {
-      this.showWeekTrend = false;
+    this.showWeekTrend = false;
     this.showTrendChart = false;
     this.toggleChecked = false;
     $('.target_off').addClass('mat-button-toggle-checked');

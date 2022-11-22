@@ -40,10 +40,17 @@ export class ClinicGoalsService {
     // Get ClinicGoals updated
     getGoalAllData(clinic_id='',dentist_id,selectedYear): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Goals/goalGetData?clinic_id="+clinic_id+"&dentist_id="+dentist_id+"&year="+selectedYear, header)
-        .pipe(map((response: Response) => {
+        if(dentist_id == ''){
+            return this.http.get(this.apiUrl +"/Goals/goalGetData?clinic_id="+clinic_id+"&year="+selectedYear, header)
+                .pipe(map((response: Response) => {
                         return response;
                     })
+                );
+        }
+        return this.http.get(this.apiUrl +"/Goals/goalGetData?clinic_id="+clinic_id+"&dentist_id="+dentist_id+"&year="+selectedYear, header)
+            .pipe(map((response: Response) => {
+                return response;
+            })
         );
     }
        // Get ClinicGoals
