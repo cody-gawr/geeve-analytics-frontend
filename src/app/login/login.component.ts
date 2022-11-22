@@ -172,7 +172,7 @@ onSubmit() {
   getRoles() {
     this.userType = this._cookieService.get("user_type");
     var permision = '';
-    this.rolesUsersService.getRoles(this.clinic_id).subscribe((res) => {
+    this.rolesUsersService.getRoles().subscribe((res) => {
       if(res.message == 'success'){ 
         res.data.forEach((dt) => {
           if(this.userType == dt['role_id']){

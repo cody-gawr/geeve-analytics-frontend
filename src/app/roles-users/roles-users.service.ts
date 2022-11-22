@@ -2,7 +2,7 @@
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../environments/environment";
 import { Router  } from '@angular/router';
@@ -39,18 +39,26 @@ export class RolesUsersService {
     }
 
     // Get Dentist
-    getRoles(clinic_id=''): Observable<any> {
+    getRoles(): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Roles/rolesGet?clinic_id="+clinic_id, header)
+        return this.http.get(this.apiUrl +"/Roles/rolesGet", header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
+
     }
 
     // Get Roles For individual
     getRolesIndividual(clinic_id =''): Observable<any> {
         var header = this.getHeaders(); 
+        if(clinic_id == ''){
+            return this.http.get(this.apiUrl +"/Roles/rolesIndividual", header)
+            .pipe(map((response: Response) => {
+                            return response;
+                        })
+            );
+        }
         return this.http.get(this.apiUrl +"/Roles/rolesIndividual?clinic_id="+clinic_id, header)
         .pipe(map((response: Response) => {
                         return response;
@@ -165,6 +173,15 @@ export class RolesUsersService {
                         return response;
                     })
         );
+    }
+
+
+    body = {data: "", message: "", plan: "", status: "", type: 0};
+    private roleIndividual = new BehaviorSubject(this.body);
+    getRoleIndividual = this.roleIndividual.asObservable();
+
+    setRoleIndividual(res){
+        this.roleIndividual.next(res);
     }
 
 }

@@ -1,7 +1,7 @@
 import { map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../environments/environment";
 import { Router } from "@angular/router";
@@ -202,5 +202,11 @@ export class DentistService {
             return response;
         })
         );
-}
+  }
+
+  private dentistList = new BehaviorSubject({message: '', data: [], status: ''});
+  currentList = this.dentistList.asObservable();
+  setDentistList(list) {
+    this.dentistList.next(list)
+  }
 }

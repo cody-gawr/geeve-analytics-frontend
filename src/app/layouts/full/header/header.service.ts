@@ -1,7 +1,7 @@
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 import { CookieService } from "ngx-cookie";
 import { Router  } from '@angular/router';
@@ -67,6 +67,14 @@ export class HeaderService {
                 return response;
             })
         );
+    }
+
+    data = {message:"", data: [], hasPrimeClinics: "", status: ""};
+    private clincs = new BehaviorSubject(this.data);
+    getClinic = this.clincs.asObservable();
+
+    setClinics(clinic){
+        this.clincs.next(clinic);
     }
 
 }

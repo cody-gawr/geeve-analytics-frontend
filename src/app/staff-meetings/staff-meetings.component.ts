@@ -236,7 +236,7 @@ export class StaffMeetingsComponent implements OnInit{
         this.getAdengaTemplate();
         this.getUsers();
         this.getTimezone();
-        this.getScheduledMeeting();
+        // this.getScheduledMeeting();
 
         this.currentTab = 1;
         
@@ -993,9 +993,12 @@ export class StaffMeetingsComponent implements OnInit{
       */
 
   getClinic(){
-    this.headerService.getClinics().subscribe(res=>{
+    this.headerService.getClinic.subscribe(res=>{
       this.clinics = [...res.data];
     });
+    // this.headerService.getClinics().subscribe(res=>{
+    //   this.clinics = [...res.data];
+    // });
   }
 
   // apply dynamic filter on the staff users

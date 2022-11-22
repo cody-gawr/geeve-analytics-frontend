@@ -283,6 +283,10 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 	public totalDentistProductionPerHrActual :number ;
 	private getKpiReport() {
 		this.reportloader = true;
+
+		this.startDate = this.datepipe.transform(new Date(this.startDate), 'yyyy-MM-dd');
+		this.endDate = this.datepipe.transform(new Date(this.endDate), 'yyyy-MM-dd');
+
 		this.KpiReportService.getKpiReport(this.clinic_id, this.startDate, this.endDate, this.selectedDentist).subscribe((data: any) => {
 			if (data.message == 'success') {
 				this.reportData = data.data;
@@ -342,20 +346,34 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 
 	// Get Dentist
 	getDentists() {
-		this.clinic_id && this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
+		this.dentistService.currentList.subscribe(res=>{
 			if (res.message == 'success') {
-				this.dentists = res.data;
-				this.dentistCount = res.data.length;
-			}
-			else if (res.status == '401') {
-				this._cookieService.put("username", '');
-				this._cookieService.put("email", '');
-				this._cookieService.put("userid", '');
-				this.router.navigateByUrl('/login');
-			}
-		}, error => {
-			this.warningMessage = "Please Provide Valid Inputs!";
-		}
-		);
+					this.dentists = res.data;
+					this.dentistCount = res.data.length;
+				}
+				else if (res.status == '401') {
+					this._cookieService.put("username", '');
+					this._cookieService.put("email", '');
+					this._cookieService.put("userid", '');
+					this.router.navigateByUrl('/login');
+				}
+			}, error => {
+				this.warningMessage = "Please Provide Valid Inputs!";
+		});
+		// this.clinic_id && this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
+		// 	if (res.message == 'success') {
+		// 		this.dentists = res.data;
+		// 		this.dentistCount = res.data.length;
+		// 	}
+		// 	else if (res.status == '401') {
+		// 		this._cookieService.put("username", '');
+		// 		this._cookieService.put("email", '');
+		// 		this._cookieService.put("userid", '');
+		// 		this.router.navigateByUrl('/login');
+		// 	}
+		// }, error => {
+		// 	this.warningMessage = "Please Provide Valid Inputs!";
+		// }
+		// );
 	}
 }

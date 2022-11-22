@@ -102,7 +102,8 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     public constants: AppConstants,
     public chartstipsService: ChartstipsService
   ) {
-  this.getChartsTips();
+    this.getChartsTips();
+    this.getAllClinics();
   }
 
   private warningMessage: string;
@@ -149,6 +150,17 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     $('.sa_heading_bar').removeClass("filter_single"); // added
   }
 
+  public clinics = [];
+  getAllClinics(){
+    this.headerService.getClinic.subscribe(res=>{
+        if(res.status == '200'){
+          res.data.forEach(item=>{
+            this.clinics.push(item.id);
+          });
+        }
+    });
+  }
+
   async initiate_clinic() {
     if(this.user_type != 7){
       await this.getScreenMTD();
@@ -168,7 +180,11 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
         val,
         opts
       );
-      this.clinic_id = val;
+      if(val == 'all'){
+        this.clinic_id = this.clinics;
+      }else{
+        this.clinic_id = val;
+      }
       // this.getCustomiseSettings();
       this.loadHealthScreen();  
       
@@ -252,7 +268,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.refreralleaders = false;
 
     if (this.user_type == 4) {
-      if (this.clinic_id == 'all') {
+      if (Array.isArray(this.clinic_id)) {
         this.chGetProductionMCP();
         this.chGetHourlyRateMCP();
         this.chGetReappointRateMCP();
@@ -352,7 +368,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
         this.prodpervisitstats = true;
         this.finProductionPerVisitLoader = false;
         // check for all clinic 
-        if (this.clinic_id == 'all') {
+        if (Array.isArray(this.clinic_id)) {
           this.production_p = Math.round(data.data.production_ta);
 
           this.production_c = 0;

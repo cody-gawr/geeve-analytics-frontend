@@ -98,7 +98,7 @@ export class FullComponent implements OnDestroy, AfterViewInit {
     (<any>$(".srh-btn, .cl-srh-btn")).on("click", function () {
       (<any>$(".app-search")).toggle(200);
     });
-    this.getClinics();
+    // this.getClinics();
 
     $(".hamburger_menu").click(function (e) {
       if ($(this).hasClass("active")) $(this).removeClass("active");

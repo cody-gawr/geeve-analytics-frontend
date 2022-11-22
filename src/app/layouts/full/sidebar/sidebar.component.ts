@@ -154,7 +154,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
           }
         }else{
             this.getClinic();
-            this.getRoles();
+            // this.getRoles();
         }
         this.activeRoute = router.url;
         if (this.activeRoute == '/dashboards/cliniciananalysis' || this.activeRoute == '/dashboards/clinicianproceedures' || this.activeRoute == '/dashboards/frontdesk' || this.activeRoute == '/dashboards/marketing' || this.activeRoute == '/dashboards/finances' || this.activeRoute == '/dashboards/followups') {
@@ -202,15 +202,15 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
 
   public userPlan: any = '';
   async getRoles() {
-    await this.rolesUsersService.getRolesIndividual(this.clinic_id).subscribe((res) => {
+    await this.rolesUsersService.getRoleIndividual.subscribe((res) => {
       if (res.message == 'success') {
         this.permisions = res.data;
         let opts = this.constants.cookieOpt as CookieOptions;
-        this._cookieService.put("user_type", res.type, opts);
+        this._cookieService.put("user_type", res.type+"", opts);
         this._cookieService.put("user_plan", res.plan, opts);
         this.userPlan = res.plan;
         //Remove apis calls when user have not permission of any page form FE
-        if (res.type != '2' && res.type != 7) {
+        if (res.type != 2 && res.type != 7) {
           if (this.activeRoute == '/dashboards/healthscreen') {
             this.permisions_var = 'healthscreen';
           } else if (this.activeRoute == '/dashboards/cliniciananalysis') {
@@ -240,10 +240,49 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
       }
     }, error => {
     });
+    // await this.rolesUsersService.getRolesIndividual(this.clinic_id).subscribe((res) => {
+    //   if (res.message == 'success') {
+    //     this.permisions = res.data;
+    //     let opts = this.constants.cookieOpt as CookieOptions;
+    //     this._cookieService.put("user_type", res.type, opts);
+    //     this._cookieService.put("user_plan", res.plan, opts);
+    //     this.userPlan = res.plan;
+    //     //Remove apis calls when user have not permission of any page form FE
+    //     if (res.type != '2' && res.type != 7) {
+    //       if (this.activeRoute == '/dashboards/healthscreen') {
+    //         this.permisions_var = 'healthscreen';
+    //       } else if (this.activeRoute == '/dashboards/cliniciananalysis') {
+    //         this.permisions_var = 'dashboard1';
+    //       } else if (this.activeRoute == '/dashboards/clinicianproceedures') {
+    //         this.permisions_var = 'dashboard2';
+    //       } else if (this.activeRoute == '/dashboards/frontdesk') {
+    //         this.permisions_var = 'dashboard3';
+    //       } else if (this.activeRoute == '/dashboards/marketing') {
+    //         this.permisions_var = 'dashboard4';
+    //       } else if (this.activeRoute == '/dashboards/finances') {
+    //         this.permisions_var = 'dashboard5';
+    //       } else if (this.activeRoute == '/morning-huddle') {
+    //         this.permisions_var = 'morninghuddle';
+    //       } else if (this.activeRoute == '/lost-opportunity') {
+    //         this.permisions_var = 'lostopportunity';
+    //       }
+
+    //       if (this.permisions.indexOf(this.permisions_var) >= 0) {
+
+    //       } else {
+    //         this.router.navigate(['/profile-settings']);
+    //       }
+    //     }
+    //     // End
+
+    //   }
+    // }, error => {
+    // });
   }
 
   getClinic() {
-    this.headerService.getClinics().subscribe((res) => {
+
+    this.headerService.getClinic.subscribe((res) => {
       if (res.message == 'success') {
         this.clinic_id = res.data[0]['id'];
         this.hasPrimeClinics = res.hasPrimeClinics;
@@ -251,6 +290,15 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
       }
     }, error => {
     });
+
+    // this.headerService.getClinics().subscribe((res) => {
+    //   if (res.message == 'success') {
+    //     this.clinic_id = res.data[0]['id'];
+    //     this.hasPrimeClinics = res.hasPrimeClinics;
+    //     this.getRoles();
+    //   }
+    // }, error => {
+    // });
   }
 
   open() {

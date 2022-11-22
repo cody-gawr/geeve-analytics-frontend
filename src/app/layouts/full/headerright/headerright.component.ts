@@ -188,6 +188,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
   async getRoles() {
     await this.rolesUsersService.getRolesIndividual().subscribe(
       (res) => {
+        this.rolesUsersService.setRoleIndividual(res);
         if (res.message == "success") {
           this.user_type_dentist = res.type;
           let opts = this.constants.cookieOpt as CookieOptions;
@@ -245,6 +246,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
     this.selectedClinic = [];
     this.headerService.getClinics().subscribe(
       (res) => {
+        this.headerService.setClinics(res);
         if (res.message == "success") {
           this.clinicsData = res.data;
           if (res.data.length > 0) {            
@@ -381,6 +383,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
         (res) => {
           this.showAll = true;
            this.dentists = [];
+           this.dentistService.setDentistList(res);
           if (res.message == "success") {
             res.data.forEach((data) => {
               if (data.is_active == 1) {
