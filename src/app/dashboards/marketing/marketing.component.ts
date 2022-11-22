@@ -188,12 +188,14 @@ export class MarketingComponent implements AfterViewInit {
 
   public clinics = [];
   getAllClinics(){
-    this.headerService.getClinics().subscribe(res=>{
-        if(res.status == 200){
-          res.data.forEach(item=>{
-            this.clinics.push(item.id);
-          });
-        }
+    this.headerService.getClinic.subscribe(res=>{
+      if(res.status == '200'){
+        let temp = [];
+        res.data.forEach(item=>{
+          temp.push(item.id);
+        });
+        this.clinics = [...temp];
+      }
     });
   }
 

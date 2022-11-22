@@ -95,12 +95,14 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
 
   public clinics = [];
   getAllClinics(){
-    this.headerService.getClinics().subscribe(res=>{
-        if(res.status == 200){
-          res.data.forEach(item=>{
-            this.clinics.push(item.id);
-          });
-        }
+    this.headerService.getClinic.subscribe(res=>{
+      if(res.status == '200'){
+        let temp = [];
+        res.data.forEach(item=>{
+          temp.push(item.id);
+        });
+        this.clinics = [...temp];
+      }
     });
   }
 
@@ -190,7 +192,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
              $('.external_dentist').val('all');
           }        
         //this.filterDate('cytd');
-        this.getClinics();
+        // this.getClinics();
         //$('.dentist_dropdown').show();
         $('.header_filters').removeClass('flex_direct_mar');
         $('.header_filters').removeClass('hide_header');
@@ -2532,7 +2534,7 @@ public currentText;
 
   // Get Dentist
     getDentists() {
-      this.clinic_id && this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
+      this.clinic_id && this.dentistService.currentDentistList.subscribe((res) => {
            if(res.message == 'success'){
               this.dentists= res.data;
               this.dentistCount= res.data.length;
