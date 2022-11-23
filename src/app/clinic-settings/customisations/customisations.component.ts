@@ -137,8 +137,8 @@ export class CustomisationsComponent
     private fb: FormBuilder,
     private toastr: ToastrService,
     public dialog: MatDialog,
-    public constants: AppConstants
-    
+    public constants: AppConstants,
+    private clinicSettingsService: ClinicSettingsService
   ) {
     super();
     // console.log('test ',this.clinic_id$.value)
@@ -281,34 +281,55 @@ export class CustomisationsComponent
   }
 
   getCustomiseSettings() {
-    this.customisationsService
-      .getCustomiseSettings(this.clinic_id$.value)
-      .subscribe(
-        (res) => {
-          $(".ajax-loader").hide();
-          if (res.message == "success") {
-            if (res.data) {
-              this.recallCode1 = res.data.recall_code1;
-              this.recallCode2 = res.data.recall_code2;
-              this.recallCode3 = res.data.recall_code3;
-              this.labCode1 = res.data.lab_code1;
-              this.labCode2 = res.data.lab_code2;
-              this.xrayMonths = res.data.xray_months;
-              this.opgMonths = res.data.opg_months;
-              this.newPatients = res.data.new_patients_main;
-             // this.health_screen_mtd = res.data.health_screen_mtd;
-              this.recall_rate_default = res.data.recall_rate_default;
-              this.hourly_rate_appt_hours = res.data.hourly_rate_appt_hours;
-              this.lab_code1 = res.data.lab_code1;
-              this.lab_code2 = res.data.lab_code2;
-            }
+    this.clinicSettingsService.getClincsSetting.subscribe(res=>{
+      $(".ajax-loader").hide();
+        if (res.message == "success") {
+          if (res.data) {
+            this.recallCode1 = res.data.recall_code1;
+            this.recallCode2 = res.data.recall_code2;
+            this.recallCode3 = res.data.recall_code3;
+            this.labCode1 = res.data.lab_code1;
+            this.labCode2 = res.data.lab_code2;
+            this.xrayMonths = res.data.xray_months;
+            this.opgMonths = res.data.opg_months;
+            this.newPatients = res.data.new_patients_main;
+            // this.health_screen_mtd = res.data.health_screen_mtd;
+            this.recall_rate_default = res.data.recall_rate_default;
+            this.hourly_rate_appt_hours = res.data.hourly_rate_appt_hours;
+            this.lab_code1 = res.data.lab_code1;
+            this.lab_code2 = res.data.lab_code2;
           }
-        },
-        (error) => {
-          console.log("error", error);
-          $(".ajax-loader").hide();
         }
-      );
+      },(error) => {
+        console.log("error", error);
+        $(".ajax-loader").hide();
+    });
+    // this.customisationsService.getCustomiseSettings(this.clinic_id$.value).subscribe(
+    //     (res) => {
+    //       $(".ajax-loader").hide();
+    //       if (res.message == "success") {
+    //         if (res.data) {
+    //           this.recallCode1 = res.data.recall_code1;
+    //           this.recallCode2 = res.data.recall_code2;
+    //           this.recallCode3 = res.data.recall_code3;
+    //           this.labCode1 = res.data.lab_code1;
+    //           this.labCode2 = res.data.lab_code2;
+    //           this.xrayMonths = res.data.xray_months;
+    //           this.opgMonths = res.data.opg_months;
+    //           this.newPatients = res.data.new_patients_main;
+    //          // this.health_screen_mtd = res.data.health_screen_mtd;
+    //           this.recall_rate_default = res.data.recall_rate_default;
+    //           this.hourly_rate_appt_hours = res.data.hourly_rate_appt_hours;
+    //           this.lab_code1 = res.data.lab_code1;
+    //           this.lab_code2 = res.data.lab_code2;
+    //         }
+    //       }
+    //     },
+    //     (error) => {
+    //       console.log("error", error);
+    //       $(".ajax-loader").hide();
+    //     }
+    //   );
   }
 
   onSubmit() {

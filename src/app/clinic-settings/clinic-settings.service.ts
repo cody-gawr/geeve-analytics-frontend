@@ -1,7 +1,7 @@
 import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../environments/environment";
 import { Router } from '@angular/router';
@@ -12,7 +12,6 @@ export class ClinicSettingsService {
     private headers: HttpHeaders;
     private apiUrl = environment.apiUrl;
     public token_id;
-    public clinicData: any;
 
     constructor(private http: HttpClient, private _cookieService: CookieService, private router: Router) { }
     getHeaders() {
@@ -133,15 +132,6 @@ export class ClinicSettingsService {
             );
     }
 
-    setClinicData(data) {
-        this.clinicData = data;
-        return true;
-    }
-
-    getClinicData(): Observable<any> {
-        return this.clinicData;
-    }
-
     updatePartialSetting(clinic_id, value, column): Observable<any> {
         const formData = new FormData();
         formData.append('clinic_id', clinic_id);
@@ -223,6 +213,73 @@ export class ClinicSettingsService {
                     return response;
                 })
             );
+    }
+
+    private data = {
+        "status": Boolean,
+        "message": "",
+        "data": {
+            "clinic_id": 0,
+            "xray_months": 0,
+            "opg_months": 0,
+            "recall_code1": "",
+            "recall_code2": "",
+            "recall_code3": "",
+            "lab_code1": "",
+            "lab_code2": "",
+            "new_patients_main": 0,
+            "recall_rate_default": 0,
+            "hourly_rate_appt_hours": 0,
+            "fta_enable": 0,
+            "fta_days_later": 0,
+            "fta_followup_days": 0,
+            "uta_enable": 0,
+            "uta_days_later": 0,
+            "uta_followup_days": 0,
+            "post_op_enable": 0,
+            "post_op_days": 0,
+            "post_op_calls": "",
+            "tick_enable": 0,
+            "tick_days": 0,
+            "recall_enable": 0,
+            "recall_weeks": 0,
+            "referral_enable": 0,
+            "referral_weeks": 0,
+            "health_screen_mtd": 0,
+            "days": "",
+            "equip_list_enable": 0,
+            "daily_task_enable": 0,
+            "compare_mode": 0,
+            "net_profit_exclusions": "",
+            "custom_tx_codes": "",
+            "trial_end_date": null,
+            "utility_ver": "",
+            "connectedwith": "",
+            "consultant": ""
+        }
+    };
+
+    private clincsSetting = new BehaviorSubject(this.data);
+    getClincsSetting = this.clincsSetting.asObservable();
+
+    setClincsSetting(data){
+        this.clincsSetting.next(data);
+        this.clincsSetting.complete();
+    }
+
+    private data1 = {
+        "status": "",
+        "message": "",
+        "data": [],
+        "total": 0,
+        "hasPrimeClinics": ""
+    };
+
+    private clinicData = new BehaviorSubject(this.data1);
+    getClinicData = this.clinicData.asObservable();
+
+    setClinicData(data){
+        this.clinicData.next(data);
     }
 
 }

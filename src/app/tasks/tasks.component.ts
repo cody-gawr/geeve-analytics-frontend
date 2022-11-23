@@ -31,6 +31,7 @@ import * as moment from "moment";
 import { DatePipe } from "@angular/common";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { environment } from "../../environments/environment";
+import { HeaderService } from "../layouts/full/header/header.service";
 
 /**** Adoptor Updates ****/
 class CustomAdaptor extends UrlAdaptor {
@@ -162,7 +163,8 @@ export class TasksComponent implements AfterViewInit, OnInit {
   @Input() progress = 0;
   constructor(
     private tasksService: TasksService,
-    private _cookieService: CookieService
+    private _cookieService: CookieService,
+    private headerService: HeaderService
   ) {
     this.getUsers();
     this.getClinics();
@@ -339,14 +341,20 @@ export class TasksComponent implements AfterViewInit, OnInit {
   }
 
   getClinics() {
-    this.tasksService.getClinics().subscribe(
-      (res) => {
-        if (res.message == "success") {
-          this.clinicsData = res.data;
-        }
-      },
-      (error) => {}
+    this.headerService.getClinic.subscribe(res=>{
+      if (res.message == "success") {
+        this.clinicsData = res.data;
+      }
+    },(error) => {}
     );
+    // this.tasksService.getClinics().subscribe(
+    //   (res) => {
+    //     if (res.message == "success") {
+    //       this.clinicsData = res.data;
+    //     }
+    //   },
+    //   (error) => {}
+    // );
   }
 
 

@@ -354,7 +354,7 @@ initiate_clinic() {
 
   @ViewChild(RolesUsersComponent) table: RolesUsersComponent;
   constructor(private toastr: ToastrService,private rolesUsersService: RolesUsersService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router, private route: ActivatedRoute, private dentistService: DentistService,private clinicService: ClinicService, private headerService: HeaderService) {
-    this.getClinics();
+    // this.getClinics();
     this.temp = [...data];
     setTimeout(() => {
       this.loadingIndicator = false;
@@ -496,7 +496,7 @@ initiate_clinic() {
   public hasPrimeClinics = '';
 //Get Clinics
   private getClinics() {
-    this.clinicService.getClinics().subscribe((res) => {
+    this.headerService.getClinic.subscribe((res) => {
       if(res.message == 'success'){
         this.clinics = res.data;
         this.hasPrimeClinics = res.hasPrimeClinics;
@@ -515,7 +515,7 @@ initiate_clinic() {
 
     // Get Dentist
     getDentists() {
-      this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
+      this.dentistService.currentDentistList.subscribe(res=>{
         this.dentists=[];
            if(res.message == 'success'){
             res.data.forEach(result => {
@@ -526,10 +526,23 @@ initiate_clinic() {
             });
            }
         }, error => {
-
           this.warningMessage = "Please Provide Valid Inputs!";
-        }    
-        );
+      });
+      // this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
+      //   this.dentists=[];
+      //      if(res.message == 'success'){
+      //       res.data.forEach(result => {
+      //         var temp=[];
+      //       temp['providerId'] = result.providerId;
+      //       temp['name'] = result.name;
+      //       this.dentists.push(temp);
+      //       });
+      //      }
+      //   }, error => {
+
+      //     this.warningMessage = "Please Provide Valid Inputs!";
+      //   }    
+      //   );
   }
   
   add_clinic_consultant(usrId,selectedClinics,display_name,email) {

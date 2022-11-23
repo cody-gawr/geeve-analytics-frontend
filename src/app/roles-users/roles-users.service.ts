@@ -176,7 +176,7 @@ export class RolesUsersService {
     }
 
 
-    body = {data: "", message: "", plan: "", status: "", type: 0};
+    private body = {data: "", message: "", plan: "", status: "", type: 0};
     private roleIndividual = new BehaviorSubject(this.body);
     getRoleIndividual = this.roleIndividual.asObservable();
 

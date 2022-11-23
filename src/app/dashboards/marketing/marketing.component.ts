@@ -2286,7 +2286,7 @@ export class MarketingComponent implements AfterViewInit {
   }
 
   private getClinics() {
-    this.headerService.getClinics().subscribe((res) => {
+    this.headerService.getClinic.subscribe((res) => {
       if (res.message == 'success') {
         this.clinicsData = res.data;
       }

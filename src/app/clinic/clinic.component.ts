@@ -221,7 +221,7 @@ export class ClinicComponent implements AfterViewInit {
   public clinicscount = 0;
   public createdClinicsCount = 0;
   private getClinics() {
-    this.clinicService.getClinics().subscribe((res) => {
+    this.headerService.getClinic.subscribe(res=>{
       if (res.message == 'success') {
         this.rows = res.data;
         if (res.data.length > 0) {
@@ -238,8 +238,26 @@ export class ClinicComponent implements AfterViewInit {
       }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+    });
+    // this.clinicService.getClinics().subscribe((res) => {
+    //   if (res.message == 'success') {
+    //     this.rows = res.data;
+    //     if (res.data.length > 0) {
+    //       this.temp = [...res.data];
+    //       this.clinicscount = res.data[0]['config_user'].clinics_count;
+    //       this.createdClinicsCount = res.total;
+    //       this.table = data;
+    //     }
+    //   } else if (res.status == '401') {
+    //     this._cookieService.put("username", '');
+    //     this._cookieService.put("email", '');
+    //     this._cookieService.put("userid", '');
+    //     this.router.navigateByUrl('/login');
+    //   }
+    // }, error => {
+    //   this.warningMessage = "Please Provide Valid Inputs!";
+    // }
+    // );
 
   }
   //get count of clinics allowed

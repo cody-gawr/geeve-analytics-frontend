@@ -110,7 +110,7 @@ export class ClinicSettingsComponent implements OnInit {
       $(".header_filters").addClass("flex_direct_mar");
       this.checkXeroStatus();
       this.checkMyobStatus();
-      this.getFollowUpSettings();
+      // this.getFollowUpSettings();
     });
     
     if(this.apiUrl.includes('test') || this.apiUrl.includes('staging-')){
@@ -185,7 +185,7 @@ export class ClinicSettingsComponent implements OnInit {
     this.clinicSettingsService.getClinicSettings(this.id).subscribe(
       (res) => {
         if (res.message == "success") {
-          this.clinicSettingsService.setClinicData(res.data[0]);
+          this.clinicSettingsService.setClinicData(res);
           this.clinicName = res.data[0].clinicName;
           this.contactName = res.data[0].contactName;
           this.address = res.data[0].address;
@@ -234,8 +234,7 @@ export class ClinicSettingsComponent implements OnInit {
   getClinicFollowUPSettings() {
     this.clinicSettingsService.getClinicFollowUPSettings(this.id).subscribe(
       (res) => {
-
-        
+        this.clinicSettingsService.setClincsSetting(res);
         if (res.message == "success") {
           this.postOpEnable = res.data.post_op_enable == 1 ? true : false;
           this.tickEnable = res.data.tick_enable == 1 ? true : false;
@@ -243,6 +242,15 @@ export class ClinicSettingsComponent implements OnInit {
           this.ftaEnable = res.data.fta_enable == 1 ? true : false;
           this.utaEnable = res.data.uta_enable == 1 ? true : false;
           this.internalReferralEnable = res.data.referral_enable == 1 ? true : false;
+          this.ftaFollowupDays = res.data.fta_followup_days;
+          this.utaFollowupDays = res.data.uta_followup_days;
+          this.ftaFollowupDaysLater = res.data.fta_days_later;
+          this.utaFollowupDaysLater = res.data.uta_days_later;
+          this.postOpCallsMh = res.data.post_op_days;
+          this.post_op_calls = res.data.post_op_calls;
+          this.tickDays = res.data.tick_days;
+          this.recallWeeks = res.data.recall_weeks;
+          this.referralWeeks = res.data.referral_weeks;
         }
       },
       (error) => {

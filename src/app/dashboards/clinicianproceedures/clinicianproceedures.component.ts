@@ -121,8 +121,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
 
   //Load Clinic Data
   initiate_clinic() {
-    // $('.internal_dentist').val('all');
-    // $('.external_dentist').val('all');
+    $('.internal_dentist').val('all');
+    $('.external_dentist').val('all');
     this.userPlan =  this._cookieService.get("user_plan"); 
     if(this.userPlan == 'lite')
     {

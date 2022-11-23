@@ -9,6 +9,7 @@ import { ClinicGoalsService } from '../../clinic-goals/clinic-goals.service';
 import { DentistGoalsService } from '../../dentist-goals/dentist-goals.service';
 import { DentistService } from '../../dentist/dentist.service';
 import { BaseComponent } from '../base/base.component';
+import { ClinicSettingsService } from '../clinic-settings.service';
 
 @Component({
   selector: 'app-goals-settings',
@@ -45,7 +46,8 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
     private router: Router,
     private fb: FormBuilder,
     private toastr: ToastrService,
-    private dentistService: DentistService
+    private dentistService: DentistService,
+    private clinicSettingsService: ClinicSettingsService
   ) {
     super();
     this.range.push(this.year - 1);
@@ -78,7 +80,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
 
   getData(id,selectedGoalCategory,selectedYear) 
   {
-    this.dentistService.getClinicSettings(this.clinic_id$.value).subscribe((res) => {
+    this.clinicSettingsService.getClinicData.subscribe(res=>{
       if (res.message == 'success') {
         this.Cconsultant = res.data[0]['consultant'];
           this.clinicGoalsService.getGoalAllData(id,selectedGoalCategory,selectedYear).subscribe((res) => {
@@ -97,6 +99,25 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
     }, error => {
       console.log('error', error)
     });
+    // this.dentistService.getClinicSettings(this.clinic_id$.value).subscribe((res) => {
+    //   if (res.message == 'success') {
+    //     this.Cconsultant = res.data[0]['consultant'];
+    //       this.clinicGoalsService.getGoalAllData(id,selectedGoalCategory,selectedYear).subscribe((res) => {
+    //         if (res.message == 'success') {
+    //           this.getGoalsForTabsClinic(res.data);
+    //         } else if (res.status == '401') {
+    //           this.handleUnAuthorization();
+    //         }
+    //     }, error => {
+    //       console.log('error', error)
+    //     });
+    //   }
+    //   else if (res.status == '401') {
+    //     this.handleUnAuthorization();
+    //   }
+    // }, error => {
+    //   console.log('error', error)
+    // });
     
   }
 

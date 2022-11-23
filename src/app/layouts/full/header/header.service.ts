@@ -69,7 +69,7 @@ export class HeaderService {
         );
     }
 
-    data = {message:"", data: [], hasPrimeClinics: "", status: ""};
+    private data = {message:"", data: [], hasPrimeClinics: "", status: "", total: 0};
     private clincs = new BehaviorSubject(this.data);
     getClinic = this.clincs.asObservable();
 
