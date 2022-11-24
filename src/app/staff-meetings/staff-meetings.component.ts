@@ -755,7 +755,7 @@ export class StaffMeetingsComponent implements OnInit{
       this.chart_clinic_id = item.chart_clinic_id;
       this.agenda_staff_member = (item.staff_member == "null") ? "" : item.staff_member;
       this.agenda_category = item.category;
-      this.agenda_duration = item.duration;
+      this.agenda_duration = item.duration > 0 ? item.duration : "";
       this.agenda_description = item.description;
       this.agenda_order = item.agenda_order;
       this.hasDisable = true;

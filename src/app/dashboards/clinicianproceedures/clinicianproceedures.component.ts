@@ -2938,20 +2938,22 @@ toggleChangeProcess(){
        if(data.message == 'success'){
          if(data.data.external.length >0) { 
                 data.data.external.forEach(res => {
-                   this.stackedChartTrendData1.push(res.val[0]);
-                   this.stackedChartTrendData2.push(res.val[1]);
-                   this.stackedChartTrendData3.push(res.val[2]);
-                   this.stackedChartTrendData4.push(res.val[3]);
-                   this.stackedChartTrendData5.push(res.val[4]);
-                   this.stackedChartTrendData6.push(res.val[5]);
-                   this.stackedChartTrendData7.push(res.val[6]);
-                   this.stackedChartTrendData8.push(res.val[7]);
-                   this.stackedChartTrendData9.push(res.val[8]);
+                  if(typeof(res.val) != 'undefined'){
+                    this.stackedChartTrendData1.push(res.val[0]);
+                    this.stackedChartTrendData2.push(res.val[1]);
+                    this.stackedChartTrendData3.push(res.val[2]);
+                    this.stackedChartTrendData4.push(res.val[3]);
+                    this.stackedChartTrendData5.push(res.val[4]);
+                    this.stackedChartTrendData6.push(res.val[5]);
+                    this.stackedChartTrendData7.push(res.val[6]);
+                    this.stackedChartTrendData8.push(res.val[7]);
+                    this.stackedChartTrendData9.push(res.val[8] == undefined ? 0 : res.val[8]);
+                  }
                   if(this.trendValue == 'c')
-                   this.stackedChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-                    else
-                   this.stackedChartTrendLabels1.push(res.duration);
-                 });
+                    this.stackedChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+                  else
+                    this.stackedChartTrendLabels1.push(res.duration);
+                });
                this.stackedChartTrendData[0]['data'] = this.stackedChartTrendData1;
                this.stackedChartTrendData[1]['data'] = this.stackedChartTrendData2;
                this.stackedChartTrendData[2]['data'] = this.stackedChartTrendData3;
@@ -2970,21 +2972,21 @@ toggleChangeProcess(){
          if(data.data.combined.length >0) {
                 data.data.combined.forEach(res => {
                   if(typeof(res.val) != 'undefined'){
-                   this.stackedChartTrendData1.push(res.val[0]);
-                   this.stackedChartTrendData2.push(res.val[1]);
-                   this.stackedChartTrendData3.push(res.val[2]);
-                   this.stackedChartTrendData4.push(res.val[3]);
-                   this.stackedChartTrendData5.push(res.val[4]);
-                   this.stackedChartTrendData6.push(res.val[5]);
-                   this.stackedChartTrendData7.push(res.val[6]);
-                   this.stackedChartTrendData8.push(res.val[7]);
-                   this.stackedChartTrendData9.push(res.val[8] == undefined ? 0 : res.val[8]);
-                   }
-                   if(this.trendValue == 'c')
-                   this.stackedChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-                    else
-                   this.stackedChartTrendLabels1.push(res.duration);
-                 });
+                    this.stackedChartTrendData1.push(res.val[0]);
+                    this.stackedChartTrendData2.push(res.val[1]);
+                    this.stackedChartTrendData3.push(res.val[2]);
+                    this.stackedChartTrendData4.push(res.val[3]);
+                    this.stackedChartTrendData5.push(res.val[4]);
+                    this.stackedChartTrendData6.push(res.val[5]);
+                    this.stackedChartTrendData7.push(res.val[6]);
+                    this.stackedChartTrendData8.push(res.val[7]);
+                    this.stackedChartTrendData9.push(res.val[8] == undefined ? 0 : res.val[8]);
+                  }
+                  if(this.trendValue == 'c')
+                    this.stackedChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+                  else
+                    this.stackedChartTrendLabels1.push(res.duration);
+                });
                this.stackedChartTrendData[0]['data'] = this.stackedChartTrendData1;
                this.stackedChartTrendData[1]['data'] = this.stackedChartTrendData2;
                this.stackedChartTrendData[2]['data'] = this.stackedChartTrendData3;

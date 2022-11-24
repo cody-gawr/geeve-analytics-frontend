@@ -497,7 +497,7 @@ initiate_clinic() {
 
   refreshScheduleTab(event){
     this.appointmentCardsLoaders = true;
-
+    this.currentDentistSchedule = event;
     this.currentDentist = event;
     this.getScheduleNewPatients(this.currentDentist);
     this.getScheduleHours(this.currentDentist);
@@ -1261,6 +1261,7 @@ initiate_clinic() {
 
           // this.appointmentCards.data = production.data; 
         }
+        this.refreshScheduleTab(this.selectDentist);
         production.data.forEach(val => {
           // check for duplicate values        
           var isExsist = this.clinicDentists.filter(function (person) { return person.provider_id == val.provider_id });
