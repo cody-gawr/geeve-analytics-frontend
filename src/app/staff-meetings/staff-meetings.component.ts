@@ -395,41 +395,50 @@ export class StaffMeetingsComponent implements OnInit{
     let min = parseInt(time[1]) + formData.duration_mins;
 
     // logic for the hr and min calculation.
-    if(min > 60){
+    if(min >= 60){
       hr += Math.floor(min/60);
       min = min%60;
-    }
-    if(min == 60){
-      hr ++;
-      min = "00";
-    }
-    if(min == 0){
-      min = "00";
-    }
-    if(hr < 10){
-      hr = "0"+hr;
     }
 
     let day_time = formData.day_time;
 // locgic for the time calculation : calculating the end time
-    if(time[0] != "12"){
-      if(hr>12 && formData.day_time == "AM"){
-        hr = "0"+(hr%12);
-        day_time = "PM";
-      }else if(hr>12 && formData.day_time == "PM"){
-        hr = "0"+(hr%12);
-        day_time = "AM";
-      }
-    }else{
-      if(hr < 12){
-        hr = "0"+(hr%12);
+    if(hr>12){
+      if(hr == 24){
+        hr = 12;
       }else{
-        hr =(hr%12);
+        hr = hr%12;
       }
-      if(hr == "00"){
-        hr = "0"+1;
+      if(time[0] != 12){
+        day_time = day_time == "AM" ? "PM" : "AM";
+      }
+    }else if(hr == 12){
+      if(time[0] != 12){
+        day_time = day_time == "AM" ? "PM" : "AM";
       }
     }
+    // if(time[0] != "12"){
+    //   if(hr>12){
+    //     if(hr == 24){
+    //       hr = 12;
+    //     }else{
+    //       hr = hr%12;
+    //     }
+    //     day_time = day_time == "AM" ? "PM" : "AM";
+    //   }else if(hr == 12){
+    //     day_time = day_time == "AM" ? "PM" : "AM";
+    //   }
+    // }else{
+    //   console.log("-->",hr);
+      
+    //   if(hr > 12 ){
+    //     if(hr == 24){
+    //       hr = 12;
+    //     }else{
+    //       hr = (hr%12);
+    //     }
+    //   }
+    //   console.log("--->",hr);
+    // }
 
     let end_time = hr+":"+min+" "+day_time;
     let start_date = this.datepipe.transform(formData.start_date, 'yyyy-MM-dd');
@@ -447,7 +456,6 @@ export class StaffMeetingsComponent implements OnInit{
     }else{
       this.agenda_tab_has_data = true;
     }
-    
     this.staffMeetingService.createMeeting(formData).subscribe(res=>{
       if(res.status == 200){
         if(this.agenda_tab_has_data){

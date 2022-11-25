@@ -88,6 +88,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public hoursrateleaders: boolean = true;
   public refreralleaders: boolean = true;
   public charTips: any = [];
+  public isAllClinic: boolean;
 
  constructor(
     private healthscreenService: HealthScreenService,
@@ -184,8 +185,10 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
       );
       if(val == 'all'){
         this.clinic_id = this.clinics;
+        this.isAllClinic = true;
       }else{
         this.clinic_id = val;
+        this.isAllClinic = false;
       }
       // this.getCustomiseSettings();
       this.loadHealthScreen();  

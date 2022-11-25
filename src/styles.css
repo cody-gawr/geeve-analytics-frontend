@@ -1153,7 +1153,7 @@ html .page-wrapper {
   left            : 0;
   bottom          : 0;
   text-align      : center;
-  width           : 250px;
+  width           : 240px;
   padding         : 20px 0px;
   background-color: #027475;
   overflow        : hidden;
@@ -8800,6 +8800,7 @@ ul.ngx-pagination.ng-star-inserted {
 
 .mat-drawer-inner-container::-webkit-scrollbar {
   width: 10px;
+  height: 0px;
   background: -moz-linear-gradient(top, #fff 20%, rgba(0, 111, 115, 1) 99%);
   background: -webkit-linear-gradient(top, #fff 20%, rgba(0, 111, 115, 1) 99%);
   background: linear-gradient(to bottom, #fff 20%, rgba(0, 111, 115, 1) 99%);
