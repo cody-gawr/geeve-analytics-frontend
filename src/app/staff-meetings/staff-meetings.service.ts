@@ -264,4 +264,27 @@ export class StaffMeetingService {
             })
         );
     }
+
+
+    deleteAgednaItem(id): Observable<any>{
+        var header = this.getHeaders();
+        const formData = new FormData();
+        formData.append("agenda_item_id", id);
+        return this.http.post(this.apiUrl + "/StaffMeeting/smDeleteAgendaItem", formData, header).pipe(
+            map((response : Response)=>{
+                return response;
+            })
+        );
+    }
+
+    deleteAgedna(ids): Observable<any>{
+        var header = this.getHeaders();
+        const formData = new FormData();
+        formData.append("agenda_item_ids", ids);
+        return this.http.post(this.apiUrl + "/StaffMeeting/smDeleteAgenda", formData, header).pipe(
+            map((response : Response)=>{
+                return response;
+            })
+        );
+    }
 }

@@ -967,38 +967,48 @@ export class StaffMeetingsComponent implements OnInit{
     })
   }
 
+  deleteAgenda({agenda_item},i){
+    const ids = agenda_item.map(item=>item.id);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to delete agenda?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if(result.isConfirmed){
+        this.staffMeetingService.deleteAgedna(ids).subscribe(res=>{
+          if(res.status == 200){
+            this.toastr.success('Agenda deleted!');
+            this.agendaList = this.agendaList.filter((agenda, index) => index != i);
+          }
+        });
+      }
+    })
+  }
 
-  // clinic response
-    /**
-      * address : "second street"
-        clinicEmail: "undefined"
-        clinicName: "1st Clinic"
-        compare_mode: 0
-        config_user: {id: 189, clinics_count: 20}
-        connectedwith: "myob"
-        consultant: "prime"
-        contactName: "second names"
-        created: "2021-05-14T04:14:48+00:00"
-        daily_task_enable: 1
-        datasource: "pms-datasource-01"
-        days: "{\"sunday\":false,\"monday\":true,\"tuesday\":true,\"wednesday\":true,\"thursday\":true,\"friday\":true,\"saturday\":true}"
-        db_name: "test_jeeve_analytics"
-        db_server: "test-jeeve-solutions.ctun56veglzt.ap-southeast-2.rds.amazonaws.com"
-        equip_list_enable: 1
-        fta_uta: "item"
-        id: 86
-        is_deleted: 0
-        net_profit_exclusions: "123"
-        phoneNo: "undefined"
-        pms: null
-        sr: 1
-        timezone: "Australia/Perth"
-        trial_end_date: null
-        user_id: 189
-        utility_ver: "1.32.0.0"
-        wh_name: ""
-        wh_server: ""
-      */
+  deleteAgendaItem({id}){
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to delete agenda item?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if(result.isConfirmed){
+        this.staffMeetingService.deleteAgednaItem(id).subscribe(res=>{
+          if(res.status == 200){
+            this.toastr.success('Agenda item deleted!');
+            this.agendaList.filter(agenda=>{
+              return agenda.agenda_item = agenda.agenda_item.filter(item=> item.id != id);
+            });
+          }
+        });
+      }
+    })
+  }
 
   getClinic(){
     this.headerService.getClinic.subscribe(res=>{

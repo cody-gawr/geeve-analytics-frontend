@@ -388,22 +388,23 @@
            </span>
         </div>
 
-        <mat-card  class="meeting_card">
+        <mat-card  class="agenda_card">
                 <mat-card-title class="header">
                     <div class="meeting_card_header">
                     </div>
                 </mat-card-title>
                 <mat-card-content *ngIf="agendaList.length > 0" class="meeting_card_content">
                     <div class="agenda">
-                        <div *ngFor="let agenda of agendaList" >
-                        <p>&nbsp;&nbsp; <strong>{{agenda.category}}</strong></p>
+                        <div *ngFor="let agenda of agendaList; let i = index" >
+                        <p>&nbsp;&nbsp; <strong>{{agenda.category}}</strong> <i (click)="deleteAgenda(agenda, i)" class="agenda-delete ti-trash text-danger m-r-10"></i></p>
                                 <ol cdkDropList (cdkDropListDropped)="moveAgendaItems($event, agenda)">
                                     <li 
                                         cdkDrag 
                                         cdkDragBoundary="ol" 
                                         *ngFor="let item of agenda.agenda_item"
-                                        (click)="openAgendaDrawer(agenda_drawer, item, 'edit')">
-                                        {{item.agenda_item}} &nbsp;&nbsp; <i class="ti-pencil m-r-10"></i> 
+                                        >
+                                        {{item.agenda_item}} &nbsp;&nbsp; <i (click)="openAgendaDrawer(agenda_drawer, item, 'edit')" class="agenda-edit ti-pencil m-r-10"></i>
+                                        <i (click)="deleteAgendaItem(item)" class="ti-trash text-danger m-r-10"></i> 
                                         <span 
                                             class="margintime" 
                                             *ngIf="item.staff_member != 'null' && item.duration != '0'">

@@ -449,3 +449,12 @@ input.mat-input-element.create-meeting-form {
 .input-disabled .mat-form-field-appearance-outline .mat-form-field-outline-thick{
     color: rgba(0, 0, 0, 0.05);
 }
+
+/* #18a689!important */
+.agenda-edit{
+    color: #18a689;
+}
+
+.agenda-delete{
+    float: right;
+}
