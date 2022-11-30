@@ -202,11 +202,13 @@ public cvcStyle = {
 
     public stripePublicKey:any = '';
     getStripeKey(){
-      this.profileSettingsService.getStripeKey().subscribe((res) => {
-        this.stripePublicKey = res.pKey;
-        this.stripeService.setKey(this.stripePublicKey);
+      // this.profileSettingsService.getStripeKey().subscribe((res) => {
+      //   this.stripePublicKey = res.pKey;  
+      //   this.stripeService.setKey(this.stripePublicKey);
+      //   this.getStripeForm();
+      // }, error => {});
+        this.stripeService.setKey(environment.stripeKey);
         this.getStripeForm();
-      }, error => {});
     }
 
     getStripeForm(){

@@ -6,13 +6,13 @@
 
 export const environment = {
 	production: true,
-
-	//apiUrl : "https://localhost:4005", 
-	apiUrl : "https://test-api.jeeve.com.au/test/analytics",
-	homeUrl:"http://localhost/jeeveanalytics/client2/",
-	solutionsUrl : "https://api.jeeve.com.au/solutions" 
-	//	apiUrl : "https://api.jeeve.com.au/analytics",
-	//homeUrl:"https://staging-analytics.jeeve.com.au/",
-	//solutionsUrl : "https://api.jeeve.com.au/staging/solutions"
+	// apiUrl : "https://localhost:4005", 
+	apiUrl: "https://test-api.jeeve.com.au/test/analytics",
+	homeUrl: "http://localhost/jeeveanalytics/client2/",
+	solutionsUrl: "https://api.jeeve.com.au/solutions",
+	// apiUrl : "https://api.jeeve.com.au/analytics",
+	// homeUrl:"https://staging-analytics.jeeve.com.au/",
+	// solutionsUrl : "https://api.jeeve.com.au/staging/solutions",
+	stripeKey: "pk_test_51IwzWzDUubFKxLHp1i9fEqN0jFQTWPYOslUFJ2k84twcLejkiE4nnyq5HgsHqNlez8pGy9ZvKPR9AjO2vZ1th9JY00Kv8FlSSy"
 };
 	
