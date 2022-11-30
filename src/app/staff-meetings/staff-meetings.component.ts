@@ -1004,6 +1004,7 @@ export class StaffMeetingsComponent implements OnInit{
             this.agendaList.filter(agenda=>{
               return agenda.agenda_item = agenda.agenda_item.filter(item=> item.id != id);
             });
+            this.agendaList = this.agendaList.filter(agenda=> agenda.agenda_item.length > 0);
           }
         });
       }
