@@ -324,7 +324,7 @@ expenses_card custom_ngx_cw01">
                   <div class="clinician-chart">
                     <canvas class="totalDiscount" #myCanvas baseChart [data]="totalDiscountChartClinicsData"
                       [labels]="totalDiscountChartLabelsClinics" [chartType]="totalDiscountChartType"
-                      (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)" [legend]="false"
+                      (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)" [legend]="true"
                       [options]="pieChartOptions2" [plugins]="totalDiscountPluginObservable$ | async"
                       [colors]="pieChartColors"> </canvas>
                   </div>
@@ -531,7 +531,7 @@ expenses_card custom_ngx_cw01">
                   <div class="clinician-chart">
                     <canvas class="totalDiscount" #myCanvas baseChart [data]="totalDiscountChartClinicsData"
                       [labels]="totalDiscountChartLabelsClinics" [chartType]="totalDiscountChartType"
-                      (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)" [legend]="false"
+                      (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)" [legend]="true"
                       [options]="pieChartOptions2" [plugins]="totalDiscountPluginObservable$ | async"
                       [colors]="pieChartColors"> </canvas>
                   </div>
@@ -625,9 +625,15 @@ expenses_card custom_ngx_cw01">
                   <div class="ngx-charts-fix " fxFlex.lg="55" fxFlex.xl="55" fxFlex.md="100" fxFlex.sm="100"
                     fxFlex.xs="100" fxFlex="60">
                     <div class="chart-prod-coll"
-                      *ngIf="totalProductionCollectionMax > 0 && finTotalProductionLoader == false">
+                      *ngIf="totalProductionCollectionMax > 0 && finTotalProductionLoader == false && !isAllClinic">
                       <canvas #myCanvas2 baseChart [datasets]="totalProductionCollection1"
                         [labels]="totalProductionCollectionLabel1" [options]="labelBarOptionsTC" [legend]="false"
+                        [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)"></canvas>
+                    </div>
+                    <div class="chart-prod-coll" *ngIf="isAllClinic">
+                      <canvas #myCanvas2 baseChart [datasets]="totalProductionCollection1"
+                        [labels]="totalProductionCollectionLabel1" [options]="labelBarOptionsMultiTC" [legend]="true"
                         [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
                         (chartClick)="chartClicked($event)"></canvas>
                     </div>
@@ -650,7 +656,7 @@ expenses_card custom_ngx_cw01">
                           <div fxFlex.gt-sm="100%" fxFlex.gt-xs="100%" fxFlex="100">
                             <div class="production-value">
                               <h3 class="m-0 value-num">$ {{totalProductionVal | number:'1.0-0'}}</h3>
-                              <span class="value-text pink" *ngIf="currentText != ''">{{currentText}}</span>
+                              <span [ngClass]="isAllClinic?'value-text':'value-text pink'" *ngIf="currentText != ''">{{currentText}}</span>
                               <span class="value-text" *ngIf="currentText == ''">Current</span>
                             </div>
                             <div class="production-value">
@@ -669,7 +675,7 @@ expenses_card custom_ngx_cw01">
                           <div fxFlex.gt-sm="100%" fxFlex.gt-xs="100%" fxFlex="100">
                             <div class="collection-value">
                               <h3 class="m-0 value-num">$ {{collectionVal | number:'1.0-0'}}</h3>
-                              <span class="value-text green" *ngIf="currentText != ''">{{currentText}}</span>
+                              <span [ngClass]="isAllClinic?'value-text':'value-text green'" *ngIf="currentText != ''">{{currentText}}</span>
                               <span class="value-text" *ngIf="currentText == ''">Current</span>
                             </div>
                             <div class="collection-value">

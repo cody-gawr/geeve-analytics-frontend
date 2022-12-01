@@ -408,7 +408,7 @@
                                         <span 
                                             class="margintime" 
                                             *ngIf="item.staff_member != 'null' && item.duration != '0'">
-                                            {{item.staff_member}} - {{item.duration}} Mins
+                                            {{item.staff_member && item.staff_member+' -'}}  {{item.duration}} Mins
                                         </span>
                                     </li>
                                     <section class="addMore"><span (click)="openAgendaDrawer(agenda_drawer, agenda, 'add')" ><i class="fas fa-plus"></i></span></section>

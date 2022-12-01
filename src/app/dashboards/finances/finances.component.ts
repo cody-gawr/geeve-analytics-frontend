@@ -894,6 +894,164 @@ export class FinancesComponent implements AfterViewInit {
     }
   };
 
+  public labelBarOptionsMultiTC: any = {
+    elements: {
+      point: {
+        radius: 5,
+        hoverRadius: 7,
+        pointStyle: 'rectRounded',
+        hoverBorderWidth: 7
+      },
+    },
+    scaleShowVerticalLines: false,
+    responsive: true,
+    maintainAspectRatio: false,
+    barThickness: 10,
+    animation: {
+      duration: 500,
+      easing: 'easeOutSine'
+    },
+    scales: {
+      xAxes: [{
+        stacked: true,
+        ticks: {
+          autoSkip: false
+        }
+      }],
+      yAxes: [{
+        stacked: true,
+        ticks: {
+          userCallback: function (label, index, labels) {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              let currency = label < 0 ? label.toString().split('-').join('') : label.toString();
+              currency = currency.split(/(?=(?:...)*$)/).join(',');
+              return `${label < 0 ? '- $' : '$'}${currency}`;
+            }
+          },
+        },
+      }],
+    }, 
+    legend: this.stackLegendGenerator,
+    tooltips: {
+      mode: 'x-axis',
+      enabled: false,
+      custom: function (tooltip) {
+        if (!tooltip) return;
+        var tooltipEl = document.getElementById('chartjs-tooltip');
+        if (!tooltipEl) {
+          tooltipEl = document.createElement('div');
+          tooltipEl.id = 'chartjs-tooltip';
+          tooltipEl.style.backgroundColor = "#FFFFFF";
+          tooltipEl.style.borderColor = "#B2BABB";
+          tooltipEl.style.borderWidth = "thin";
+          tooltipEl.style.borderStyle = "solid";
+          tooltipEl.style.zIndex = "999999";
+          tooltipEl.style.backgroundColor = "#000000";
+          tooltipEl.style.color = "#FFFFFF";
+          document.body.appendChild(tooltipEl);
+        }
+        if (tooltip.opacity === 0) {
+          tooltipEl.style.opacity = "0";
+          return;
+        } else {
+          tooltipEl.style.opacity = "0.8";
+        }
+
+        tooltipEl.classList.remove('above', 'below', 'no-transform');
+        if (tooltip.yAlign) {
+          tooltipEl.classList.add(tooltip.yAlign);
+        } else {
+          tooltipEl.classList.add('no-transform');
+        }
+
+        function getBody(bodyItem) {
+          return bodyItem.lines;
+        }
+        if (tooltip.body) {
+          var titleLines = tooltip.title || [];
+          var bodyLines = tooltip.body.map(getBody);
+          var labelColorscustom = tooltip.labelColors;
+          var innerHtml = '<table><thead>';
+          innerHtml += '</thead><tbody>';
+
+          let total: any = 0;
+          bodyLines.forEach(function (body, i) {
+            if (!body[0].includes("$0")) {
+              var singleval = body[0].split(':');
+              if (singleval[1].includes("-")) {
+                var temp = singleval[1].split('$');
+                var amount = temp[1].replace(/,/g, '');
+                total -= parseFloat(amount);
+              } else {
+                var temp = singleval[1].split('$');
+                var amount = temp[1].replace(/,/g, '');
+                total += parseFloat(amount);
+              }
+
+            }
+          });
+          total = Math.round(total);
+          if (total != 0) {
+            var num_parts = total.toString().split(".");
+            num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            total = num_parts.join(".");
+          }
+          titleLines.forEach(function (title) {
+            innerHtml += '<tr><th colspan="2" style="text-align: left;">' + title + ': $' + total + '</th></tr>';
+
+          });
+          bodyLines.forEach(function (body, i) {
+            if (!body[0].includes("$0")) {
+              var body_custom = body[0];
+              body_custom = body_custom.split(":");
+              if (body_custom[1].includes("-")) {
+                var temp_ = body_custom[1].split('$');
+                temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
+                temp_[1] = temp_[1].toString();
+                temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
+                body_custom[1] = temp_.join("$");
+              } else {
+                var temp_ = body_custom[1].split('$');
+                temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
+                temp_[1] = temp_[1].toString();
+                temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
+                body_custom[1] = temp_.join("$");
+              }
+
+              body[0] = body_custom.join(":");
+              innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' + labelColorscustom[i].backgroundColor + '"></span></td><td style="padding: 0px">' + body[0] + '</td></tr>';
+            }
+          });
+          innerHtml += '</tbody></table>';
+          tooltipEl.innerHTML = innerHtml;
+          //tableRoot.innerHTML = innerHtml;
+        }
+        // disable displaying the color box;
+        var position = this._chart.canvas.getBoundingClientRect();
+        // Display, position, and set styles for font
+        tooltipEl.style.position = 'fixed';
+        tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 20) + 'px';
+        tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 70) + 'px';
+        tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
+        tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
+        tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
+        tooltipEl.style.padding = tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+        tooltipEl.style.pointerEvents = 'none';
+        tooltip.displayColors = false;
+      },
+      callbacks: {
+        label: function (tooltipItems, data) {
+          let currency = tooltipItems.yLabel.toString();
+          currency = currency.split(".");
+          currency[0] = currency[0].split('-').join('').split(/(?=(?:...)*$)/).join(',');
+          currency = currency.join(".");
+          return data.datasets[tooltipItems.datasetIndex].label + `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`;;
+        },
+
+      }
+    }
+  };
 
   public labelBarOptionsTC: any = {
     pointHoverBackgroundColor: 'none',
@@ -1346,7 +1504,7 @@ export class FinancesComponent implements AfterViewInit {
     maintainAspectRatio: false,
     legend: {
       display: true,
-      position: 'right',
+      position: 'bottom',
       labels: {
         usePointStyle: true,
         padding: 20
@@ -2109,6 +2267,8 @@ export class FinancesComponent implements AfterViewInit {
       if (data.message == 'success') {
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showClinicBar = true;
+        }else{
+          this.showClinicBar = false;
         }
         this.totalDiscountChartClinicsData=[];
         this.totalDiscountChartClinicsData1 =[];
@@ -2165,6 +2325,7 @@ export class FinancesComponent implements AfterViewInit {
   }
   public totalProductionTrendIcon;
   public totalProductionTrendVal;
+  public isAllClinic: boolean;
   public totalProductionCollection1: any[] = [
     {
       data: [],
@@ -2175,13 +2336,11 @@ export class FinancesComponent implements AfterViewInit {
   ];
   public totalProductionCollectionLabel1 = [];
   public finTotalProductionLoader: any;
-
   //finTotalProduction
   private finTotalProduction() {
     this.finTotalProductionLoader = true;
     this.totalProductionTrendIcon = "down";
     this.totalProductionTrendVal = 0;
-    this.totalProductionCollectionLabel1 = [];
     this.netProfitProductionVal = 0;
     var user_id;
     var clinic_id;
@@ -2189,35 +2348,48 @@ export class FinancesComponent implements AfterViewInit {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       this.finCollection();
+      this.totalProductionCollection1 = [
+        {
+          data: [],
+          label: '',
+          backgroundColor: [],
+          hoverBackgroundColor: []
+        }
+      ];
       if (data.message == 'success') {
 
         this.finTotalProductionLoader = false;
-        this.totalProductionCollection1[0]['data'] = [];
+        this.totalProductionVal = (data.total) ? Math.round(data.total) : 0;
+        this.netProfitProductionVal = (data.total) ? Math.round(data.total) : 0;;
+        this.totalProductionTrendVal = (data.total_ta) ? Math.round(data.total_ta) : 0;
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
+          data.data.forEach((item, ind)=>{
+            this.totalProductionCollection1[ind] = {data:[], label: ''}
+          });
 
-        if (data.total) {
+          data.data.forEach((item, ind)=>{
+            this.totalProductionCollection1[ind]['data'].push(Math.round(item.production));
+            this.totalProductionCollection1[ind]['label'] = item.clinic_name;
+            this.totalProductionCollection1[ind]['backgroundColor']= this.doughnutChartColors[ind];
+            this.totalProductionCollection1[ind]['hoverBackgroundColor']= this.doughnutChartColors[ind];
+          });
 
-          this.totalProductionVal = Math.round(data.total);
-          this.netProfitProductionVal = Math.round(data.total);
-        } else {
-          this.totalProductionVal = 0;
+        }else{
+          this.isAllClinic = false;
+          this.totalProductionCollection1[0]['data'] = [];
+          this.productionstats = true;
+
+          if (data.data[0])
+            this.totalProductionLabel = data.data[0].provider_name;
+          else
+            this.totalProductionLabel = '';
+
+          this.totalProductionCollection1[0]['data'].push(this.totalProductionVal);
+
+          if (Math.round(this.totalProductionVal) >= Math.round(this.totalProductionTrendVal))
+            this.totalProductionTrendIcon = "up";
         }
-        this.productionstats = true;
-
-
-        if (data.data[0])
-          this.totalProductionLabel = data.data[0].provider_name;
-        else
-          this.totalProductionLabel = '';
-
-        if (data.total_ta)
-          this.totalProductionTrendVal = Math.round(data.total_ta);
-        else
-          this.totalProductionTrendVal = 0;
-
-        this.totalProductionCollection1[0]['data'].push(this.totalProductionVal);
-
-        if (Math.round(this.totalProductionVal) >= Math.round(this.totalProductionTrendVal))
-          this.totalProductionTrendIcon = "up";
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
@@ -2255,16 +2427,30 @@ export class FinancesComponent implements AfterViewInit {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
+
         this.finCollectionLoader = false;
         this.collectionVal = 0;
         this.collectionVal = (data.total) ? Math.round(data.total) : 0;
         this.collectionPercentage = (data.total_average) ? Math.round(data.total_average) : 0;
         this.collectionTrendVal = (data.total_ta) ? Math.round(data.total_ta) : 0;
+        
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;        
+          data.data.forEach((item, ind)=>{
+            this.totalProductionCollection1[ind]['data'].push(Math.round(item.collection));
+            this.totalProductionCollection1[ind]['label'] = item.clinic_name;
+            this.totalProductionCollection1[ind]['backgroundColor']= this.doughnutChartColors[ind];
+            this.totalProductionCollection1[ind]['hoverBackgroundColor']= this.doughnutChartColors[ind];
+          });
 
-        this.totalProductionCollection1[0]['data'].push(this.collectionVal);
-        this.totalProductionCollectionLabel1 = ['Production', 'Collection'];
-        this.totalProductionCollection1[0]['hoverBackgroundColor'] = ['#ffb4b5', '#4ccfae'];
-        this.totalProductionCollection1[0]['backgroundColor'] = ['#ffb4b5', '#4ccfae']; //as label are static we can add background color for that particular column as static
+          this.totalProductionCollectionLabel1 = ['Production', 'Collection'];
+        }else{
+          this.isAllClinic = false;
+          this.totalProductionCollection1[0]['data'].push(this.collectionVal);
+          this.totalProductionCollectionLabel1 = ['Production', 'Collection'];
+          this.totalProductionCollection1[0]['hoverBackgroundColor'] = ['#ffb4b5', '#4ccfae'];
+          this.totalProductionCollection1[0]['backgroundColor'] = ['#ffb4b5', '#4ccfae']; //as label are static we can add background color for that particular column as static
+        }
         this.totalProductionCollectionMax = Math.max(...this.totalProductionCollection1[0]['data']);
         if (this.totalProductionVal)
           this.collectionPercentageC = Math.round((this.collectionVal / this.totalProductionVal) * 100);
@@ -2379,7 +2565,8 @@ export class FinancesComponent implements AfterViewInit {
     if (this.toggleChecked)
       // $('.target_off').click();
     this.toggleChecked = false;
-
+    $('.trendMode').hide();
+    $('.nonTrendMode').css('display', 'block');
     $('.target_filter').removeClass('mat-button-toggle-checked');
     $('.target_off').addClass('mat-button-toggle-checked');
     //   $('.trend_arrow').hide();
