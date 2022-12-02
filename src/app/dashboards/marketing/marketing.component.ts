@@ -1281,9 +1281,9 @@ export class MarketingComponent implements AfterViewInit {
 
   loadDentist(newValue) {
     // $('.sa_tabs_data button').prop('disabled',true); 
-    this.Apirequest = 5;
+    this.Apirequest = 4;
     if (this.connectedwith != '' && this.connectedwith != 'none' && this.connectedwith != undefined && !this.multipleClinicsSelected) {
-      this.Apirequest = 6;
+      this.Apirequest = 4;
     }
 
     $('#title').html('<span>Marketing</span>');

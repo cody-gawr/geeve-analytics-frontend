@@ -249,10 +249,10 @@ usersArray = new Array(this.userRows);
   changePmsSelection(val){
     this.showCorePractice = val == 'core' ? true : false;
     if(this.showCorePractice)
-      this.form.get('coreURL').setValidators([Validators.required, Validators.pattern(this.urlPattern)]);
+      this.firstFormGroup.get('coreURL').setValidators([Validators.required, Validators.pattern(this.urlPattern)]);
     else{
-      this.form.get('coreURL').clearValidators();
-      this.form.get('coreURL').updateValueAndValidity();
+      this.firstFormGroup.get('coreURL').clearValidators();
+      this.firstFormGroup.get('coreURL').updateValueAndValidity();
     }
   }
 
@@ -817,6 +817,11 @@ getClinicLocation(){
     }
   })
 }
+
+  skipPMSDownload(){
+    this.stepVal = 3;
+     this.updateStepperStatus(); 
+  }
 
 }
 

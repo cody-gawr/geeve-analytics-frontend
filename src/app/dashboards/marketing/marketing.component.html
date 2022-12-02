@@ -169,7 +169,7 @@
                                     [colors]="pieChartColors">
                                 </canvas>
                                 <canvas 
-                                    *ngIf="showTrend == false && mkRevenueByReferralLoader == false  && showmulticlinicNewPatientsRev == true"
+                                    *ngIf="showTrend == false && mkRevenueByReferralLoader == false  && showmulticlinicNewPatientsRev == true && mkNewPatientsByReferalRevLabels.length > 0"
                                     #myCanvas2 class="trendProductionPercentage" baseChart
                                     [datasets]="mkNewPatientsByReferalRevMulti" [labels]="mkNewPatientsByReferalRevLabels"
                                     [options]="stackedChartOptionsRev" [legend]="false" [chartType]="stackedChartType"
