@@ -12,7 +12,7 @@
       class="dashboard-top-header">
 
       <div fxFlex>
-        <app-date-menu-bar #dateBar (filter)="filterDate($event)" (changeDate)="choosedDate($event)">
+        <app-date-menu-bar #dateBar [isAllClinic]="isAllClinic" (filter)="filterDate($event)" (changeDate)="choosedDate($event)">
         </app-date-menu-bar>
       </div>
 

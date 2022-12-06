@@ -16,7 +16,7 @@
       fxLayoutGap.xs="0">
 
       <div fxFlex>
-        <app-date-menu-bar #dateBar (filter)="filterDate($event)" (changeDate)="choosedDate($event)">
+        <app-date-menu-bar #dateBar [isAllClinic]="multiclinic" (filter)="filterDate($event)" (changeDate)="choosedDate($event)">
         </app-date-menu-bar>
       </div>
 

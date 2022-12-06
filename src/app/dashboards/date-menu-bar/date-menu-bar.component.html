@@ -48,7 +48,7 @@
       </div>     
     </div>
   </div>
-  <div class="custom_date" [ngClass]="{'date-picker active': currentSelectedPeriod==='custom'}">
+  <div class="custom_date" [hidden]="isAllClinic" [ngClass]="{'date-picker active': currentSelectedPeriod==='custom'}">
     <input
       class="filter_custom filter sa_datepicker"
       id="sa_datepicker"

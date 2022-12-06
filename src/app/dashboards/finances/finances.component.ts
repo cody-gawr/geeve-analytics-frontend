@@ -122,7 +122,7 @@ export class FinancesComponent implements AfterViewInit {
   public percentOfCurrentOverdue$ = new BehaviorSubject<number>(0);
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
-  profitChartTitles = ['Production', 'Net Profit', 'Net Profit %'];
+  profitChartTitles = ['Production', 'Net Profit', 'Net Profit %', 'Collection'];
   barChartColors = [{ backgroundColor: '#39acac' }, { backgroundColor: '#48daba' }];
   public isVisibleAccountGraphs: boolean = false;
   public maxLegendLabelLimit = 10;
@@ -208,7 +208,8 @@ export class FinancesComponent implements AfterViewInit {
       }else{
         this.isVisibleAccountGraphs = true;
         this.multipleClinicsSelected = true;
-        this.filterDate(this.chartService.duration$.value);
+        // this.filterDate(this.chartService.duration$.value);
+        this.filterDate("m");
       }
     }else{
       this.multipleClinicsSelected = true;
@@ -3296,7 +3297,9 @@ export class FinancesComponent implements AfterViewInit {
   public collectionChartTrend1 = [];
   public collectionChartTrendLabels = [];
   public collectionChartTrendLabels1 = [];
-  public finCollectionTrendLoader: any;
+  public collectionChartTrendMultiData = [];
+  public collectionChartTrendMultiLabels = [];
+  public finCollectionTrendLoader: boolean;
   public CMonthRange;
   public CYearRange;
   private finCollectionTrend() {
@@ -3310,8 +3313,29 @@ export class FinancesComponent implements AfterViewInit {
       this.enableDiabaleButton(this.Apirequest);
       this.CMonthRange =[];
       this.CYearRange =[];
+      this.collectionChartTrendMultiData = [];
       if (data.message == 'success') {
         this.finCollectionTrendLoader = false;   
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
+          data.data_combined.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
+          data.data_combined.forEach(res => {
+            res.val.forEach((result, key) => {
+              if (typeof (this.collectionChartTrendMultiData[key]) == 'undefined') {
+                this.collectionChartTrendMultiData[key] = { data: [], label: '' };
+              }
+              if (typeof (this.collectionChartTrendMultiData[key]['data']) == 'undefined') {
+                this.collectionChartTrendMultiData[key]['data'] = [];
+              }
+              this.collectionChartTrendMultiData[key]['data'].push(Math.round(result.collection));
+              this.collectionChartTrendMultiData[key]['label'] = result.clinic_name;
+              this.collectionChartTrendMultiData[key]['backgroundColor'] = this.doughnutChartColors[key];
+              this.collectionChartTrendMultiData[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+            });
+          });
+        }else{
+          this.isAllClinic = false;
+        }
         data.data.sort((a, b)=> a.year - b.year);    
         data.data.forEach(res => {
           this.CMonthRange.push(res.year_month);
@@ -3323,7 +3347,6 @@ export class FinancesComponent implements AfterViewInit {
           //   this.collectionChartTrendLabels1.push(res.year);
 
         });
-
         const CsumClinics = (range:any) => data.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.collection), 0);
         const CsumClinics1 = (range:any) => data.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.collection), 0);
       
@@ -3344,7 +3367,7 @@ export class FinancesComponent implements AfterViewInit {
         this.totalProductionCollection[0]['data'] = this.totalProductionChartTrend1;
         this.totalProductionCollection[1]['data'] = this.collectionChartTrend1;
         this.totalProductionCollectionLabel = this.totalProductionChartTrendLabels1;
-
+        this.collectionChartTrendMultiLabels = this.collectionChartTrendLabels1;
 
         //  this.collectionChartTrend[0]['data'] = this.collectionChartTrend1;
 

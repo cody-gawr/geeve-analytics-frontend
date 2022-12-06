@@ -91,8 +91,15 @@ export class FrontDeskComponent implements AfterViewInit {
         }else{
           this.clinic_id = val;
         }
+
+        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+          this.isAllClinic = true;
+          this.filterDate("m");
+        }else{
+          this.isAllClinic = false;
+          this.filterDate(this.chartService.duration$.value);
+        }
         // this.getDentists();
-        this.filterDate(this.chartService.duration$.value);
       }
     }
 

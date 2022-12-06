@@ -1,5 +1,5 @@
 
-import { AfterViewInit, Component, EventEmitter, Output ,ViewChild} from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Output ,ViewChild, Input} from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { BaseComponent } from '../../clinic-settings/base/base.component';
@@ -20,6 +20,7 @@ interface IDateOption {
 export class DateMenuBarComponent extends BaseComponent implements AfterViewInit {
   @Output() filter: EventEmitter<string> = new EventEmitter();
   @Output() changeDate: EventEmitter<any> = new EventEmitter();
+  @Input() isAllClinic : boolean = false;
   @ViewChild(DaterangepickerComponent, { static: false }) datePicker: DaterangepickerComponent;
   currentSelectedPeriod: string = 'm';
 

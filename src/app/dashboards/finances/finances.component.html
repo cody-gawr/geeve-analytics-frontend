@@ -11,7 +11,7 @@
     <div class="dashboard-top-header" fxLayout="row wrap" fxLayoutGap="0px" fxLayoutGap.md="0" fxLayoutGap.sm="0"
       fxLayoutGap.xs="0">
       <div fxFlex>
-        <app-date-menu-bar #dateBar (filter)="filterDate($event)" (changeDate)="choosedDate($event)">
+        <app-date-menu-bar #dateBar [isAllClinic]="multipleClinicsSelected" (filter)="filterDate($event)" (changeDate)="choosedDate($event)">
         </app-date-menu-bar>
       </div>
       <div class="dh-target">
@@ -631,7 +631,7 @@ expenses_card custom_ngx_cw01">
                         [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
                         (chartClick)="chartClicked($event)"></canvas>
                     </div>
-                    <div class="chart-prod-coll" *ngIf="isAllClinic">
+                    <div class="chart-prod-coll" *ngIf="totalProductionCollectionMax > 0 && finTotalProductionLoader == false && isAllClinic">
                       <canvas #myCanvas2 baseChart [datasets]="totalProductionCollection1"
                         [labels]="totalProductionCollectionLabel1" [options]="labelBarOptionsMultiTC" [legend]="true"
                         [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
@@ -743,17 +743,21 @@ expenses_card custom_ngx_cw01">
                   <img *ngIf="netProfitDisplayVal == 1" [tooltip]="charTips['31']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                   <img *ngIf="netProfitDisplayVal == 2" [tooltip]="charTips['26']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                   <img *ngIf="netProfitDisplayVal == 3" [tooltip]="charTips['27']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                  <img *ngIf="netProfitDisplayVal == 4" [tooltip]="charTips['33']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>
               </mat-card-title>
               <div class="card-body">
                 <div *ngIf="isVisibleAccountGraphs" class="sa_tabs_main_sec">
                   <div fxLayout="row wrap" fxLayoutGap="20px grid">
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"> <small
+                    <div fxFlex.gt-sm="25%" fxFlex.gt-xs="25%" fxFlex="100" class="text-center"> <small
                         class="sa_tab_btn profit_btn netProfit1 active" (click)="displayProfit('1')">Production</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"> <small
+                    <div fxFlex.gt-sm="25%" fxFlex.gt-xs="25%" fxFlex="100" class="text-center"> <small
+                      class="sa_tab_btn profit_btn netProfit4" (click)="displayProfit('4')">Collection</small>
+                    </div>
+                    <div fxFlex.gt-sm="25%" fxFlex.gt-xs="25%" fxFlex="100" class="text-center"> <small
                         class="sa_tab_btn profit_btn netProfit2" (click)="displayProfit('2')">Net Profit</small> </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"> <small
+                    <div fxFlex.gt-sm="25%" fxFlex.gt-xs="25%" fxFlex="100" class="text-center"> <small
                         class="sa_tab_btn profit_btn netProfit3" (click)="displayProfit('3')">Net Profit % </small>
                     </div>
                   </div>
@@ -780,7 +784,7 @@ expenses_card custom_ngx_cw01">
                   </div>
 
                   <canvas *ngIf="(xeroConnect || myobConnect) &&  netProfitDisplayVal == 2 && netProfitPmsChartTrendLabels.length  >0"
-                    class="profit1 net_profit" baseChart [datasets]="netProfitChartTrend"
+                    class="profit2 net_profit" baseChart [datasets]="netProfitChartTrend"
                     [labels]="netProfitPmsChartTrendLabels" [options]="labelBarOptionsSingleValue" [legend]="false"
                     [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"> </canvas>
@@ -797,7 +801,7 @@ expenses_card custom_ngx_cw01">
                     </div>
                     <p class="chart-placeholder-text">Please connect to Xero/MYOB to display this chart</p>
                   </div>
-                  <div *ngIf="multipleClinicsSelected==true" class="no-data-placeholder">
+                  <div *ngIf="multipleClinicsSelected==true && netProfitDisplayVal == 2" class="no-data-placeholder">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
@@ -821,11 +825,23 @@ expenses_card custom_ngx_cw01">
                     </div>
                     <p class="chart-placeholder-text">Please connect to Xero/MYOB to display this chart</p>
                     </div>
-                  <div *ngIf="multipleClinicsSelected==true" class="no-data-placeholder">
+                  <div *ngIf="multipleClinicsSelected==true && netProfitDisplayVal == 3" class="no-data-placeholder">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
                   </div>  
+
+                  <canvas
+                    *ngIf="!finCollectionTrendLoader && isAllClinic && netProfitDisplayVal == 4"
+                    class="profit4 net_profit" baseChart [datasets]="collectionChartTrendMultiData"
+                    [labels]="collectionChartTrendMultiLabels" [options]="stackedChartOptionsDiscount" [legend]="true"
+                    [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)"> </canvas>
+                  <div *ngIf="netProfitDisplayVal == 4 && collectionChartTrendMultiLabels.length < 0 && !finCollectionTrendLoader" class="no-data-placeholder">
+                    <div class="sa_nodata_div">
+                    </div>
+                    <p class="chart-placeholder-text">You have no collection in the selected period</p>
+                  </div>
 
                 </div>
               </div>
@@ -841,6 +857,11 @@ expenses_card custom_ngx_cw01">
           </div>
           
           <div *ngIf="finNetProfitPMSTrendLoader == true && netProfitDisplayVal == 3"
+            class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+            <div class="loader-text">Calculating...</div>
+          </div>
+
+          <div *ngIf="finCollectionTrendLoader && netProfitDisplayVal == 4"
             class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
             <div class="loader-text">Calculating...</div>
           </div>
