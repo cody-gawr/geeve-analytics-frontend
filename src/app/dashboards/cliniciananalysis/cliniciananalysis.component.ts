@@ -7162,7 +7162,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       else if (duration == 'custom') {
         this.trendText = '';
         this.currentText = '';
-        $('.customRange').css('display', 'block');
+        // $('.customRange').css('display', 'block');
         let selectedDate = this.chartService.customSelectedDate$.value;
         this.startDate = this.datePipe.transform(selectedDate.startDate, 'dd-MM-yyyy');
         this.endDate = this.datePipe.transform(selectedDate.endDate, 'dd-MM-yyyy');

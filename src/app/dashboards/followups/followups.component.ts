@@ -473,7 +473,7 @@ export class FollowupsComponent implements AfterViewInit {
       }else{
         this.showGoals = false;
       }
-      $('.customRange').css('display','block');
+      // $('.customRange').css('display','block');
     }
     $('.filter').removeClass('active');
     $('.filter_'+duration).addClass("active");
