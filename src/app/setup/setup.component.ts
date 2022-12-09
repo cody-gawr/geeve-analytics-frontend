@@ -77,7 +77,7 @@ export class SetupComponent implements AfterViewInit {
   public showCorePractice : boolean ;
 
   public LocationData;
-
+  public pmsValue = "";
 usersArray = new Array(this.userRows);
   omit_special_char(event)
   {   
@@ -247,6 +247,7 @@ usersArray = new Array(this.userRows);
   }
 
   changePmsSelection(val){
+    this.pmsValue = val;
     this.showCorePractice = val == 'core' ? true : false;
     if(this.showCorePractice)
       this.firstFormGroup.get('coreURL').setValidators([Validators.required, Validators.pattern(this.urlPattern)]);
@@ -322,8 +323,11 @@ usersArray = new Array(this.userRows);
   if(selectedIndex == 2 && this.showCorePractice) {
     this.coreSyncStatus();
   }
-  if(selectedIndex == 2 && !this.showCorePractice) {
+  if(selectedIndex == 2 && this.pmsValue == "d4w") {
     this.checkRepotrs();
+  }
+  if(selectedIndex == 2 && this.pmsValue == "exact") {
+    this.checkExactRepotrs();
   }
   this.selectedIndex = selectedIndex;
 
@@ -725,7 +729,7 @@ usersArray = new Array(this.userRows);
   checkRepotrs(){   
      var selfO = this;
      selfO.setupService.checkReportsStatus(selfO.clinic_id).subscribe((res) => {
-       
+
           let urlActive = this._location.path();
           this.reportsStatusInfo = true;
           if(res.message == 'noStart')
@@ -757,6 +761,34 @@ usersArray = new Array(this.userRows);
       }    
     ); 
 
+  }
+
+  checkExactRepotrs(){   
+    var selfO = this;
+    selfO.setupService.checkExactRepotrStatus(selfO.clinic_id).subscribe((res) => {
+        let urlActive = this._location.path();
+        this.reportsStatusInfo = true;
+        selfO.reportsStatus = [];
+        if(res.message == 'success'){    
+          if(res.data.length > 0){
+            selfO.reportsStatus = res.data;
+            selfO.stepVal = 3;
+            selfO.updateStepperStatus(); 
+          }else{
+            if(urlActive == '/setup'){
+              setTimeout(function(){
+                selfO.checkExactRepotrs();
+              }, 10000);
+            }
+          }
+        }
+    },(error) => {
+         this.toastr.error('Some Error Occur. Please try later.');
+         selfO._cookieService.put("username",'');
+         selfO._cookieService.put("email", '');
+         selfO._cookieService.put("userid", '');
+         selfO.router.navigateByUrl('/login');
+    }); 
   }
 
   public toggle(event){

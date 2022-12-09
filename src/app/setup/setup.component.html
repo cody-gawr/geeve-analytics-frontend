@@ -38,6 +38,7 @@
       <select class="form-control" (ngModelChange)="changePmsSelection($event)" [(ngModel)]="pms" [formControl]="firstFormGroup.controls['pms']" required="true" class="sa_select form-control" name="pms">
         <option value ="d4w">D4w</option>
         <option value ="core">Core Practice</option>
+        <option value ="exact">Exact</option>
     </select> 
     <small *ngIf="firstFormGroup.controls['pms'].hasError('required') && firstFormGroup.controls['pms'].touched" class="text-danger support-text">PMS is Required.</small>
   </div>

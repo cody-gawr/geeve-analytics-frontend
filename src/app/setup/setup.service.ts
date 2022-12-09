@@ -109,7 +109,14 @@ export class SetupService {
         );
     }
 
-
+    checkExactRepotrStatus( clinicId, userId = this._cookieService.get("userid")): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/users/userExactCheckStatus/"+userId+"/"+clinicId, header)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
 
      updateStepperStatus(): Observable<any> {
             const formData = new FormData();
