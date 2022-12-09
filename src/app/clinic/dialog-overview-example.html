@@ -30,6 +30,7 @@
     <select class="form-control" (ngModelChange)="selectPMS($event)" [(ngModel)]="data.pms" [formControl]="form.controls['pms']" required="true" class="sa_select form-control" name="pms">
       <option value ="d4w">D4w</option>
       <option value ="core">Core Practice</option>
+      <option value ="exact">Exact</option>
   </select> 
     <small *ngIf="form.controls['pms'].hasError('required') && form.controls['pms'].touched" class="text-danger support-text">PMS is Required.</small>
   </div>
