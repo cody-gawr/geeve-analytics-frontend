@@ -586,7 +586,8 @@ initiate_clinic() {
             if(isExsist.length <= 0){
               var nm = (val.jeeve_name != '' && val.jeeve_name)? val.jeeve_name : val.provider_name;
               var temp = {'provider_id' : val.provider_id, 'provider_name' : nm};
-              this.clinicDentistsReminders.push(temp);  
+              if(temp.provider_name != null)
+                this.clinicDentistsReminders.push(temp);  
             }          
           });               
           this.clinicDentistsReminders.sort(function (x, y) {
@@ -1268,7 +1269,8 @@ initiate_clinic() {
           if(isExsist.length <= 0){
             var nm = (val.jeeve_name != '' && val.jeeve_name)? val.jeeve_name : val.provider_name;
             var temp = {'provider_id' : val.provider_id, 'provider_name' : nm};
-            this.clinicDentists.push(temp);  
+            if(temp.provider_name != null)
+              this.clinicDentists.push(temp);  
           }          
         });               
         this.clinicDentists.sort(function (x, y) {
