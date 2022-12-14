@@ -769,8 +769,8 @@ export class AppHeaderrightComponent implements AfterViewInit {
         opts
       );
     }
-    $(".internal_dentist").val(newValue);
-    $("#dentist_initiate").click();
+    $(".external_dentist").val(newValue);
+    $("#dentist_initiate").click(); 
   }
 
   toggleReffer(event) {
