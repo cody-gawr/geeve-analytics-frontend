@@ -11,7 +11,7 @@ before_script:
   - npm -v
   - node -v
   - npm install
-# - npm audit fix --production
+  - npm audit fix --production
 
    # Make test Build
 build_test: 
