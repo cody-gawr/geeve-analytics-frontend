@@ -641,7 +641,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
                 let dentistclinic = this._cookieService
                   .get("clinic_dentist")
                   .split('_');
-                if (dentistclinic[0] !== newValue) {
+                if (dentistclinic[0] != newValue) {
                   this.selectedDentist = "all";
                 } else {
                   if (dentistclinic[1] == "all") {
@@ -653,13 +653,13 @@ export class AppHeaderrightComponent implements AfterViewInit {
               } else {
                 this.selectedDentist = "all";
               }
-              let opts = this.constants.cookieOpt as CookieOptions;
-              this._cookieService.put(
-                "clinic_dentist",
-                this.clinic_id + "_" + this.selectedDentist,
-                opts
-              );
-              // this.loadDentist(this.selectedDentist);
+              // let opts = this.constants.cookieOpt as CookieOptions;
+              // this._cookieService.put(
+              //   "clinic_dentist",
+              //   this.clinic_id + "_" + this.selectedDentist,
+              //   opts
+              // );
+              this.loadDentist(this.selectedDentist);
           // }
         }else{
           this.getChildID(newValue);
@@ -670,7 +670,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
           let dentistclinic = this._cookieService
             .get("clinic_dentist")
             .split('_');
-          if (dentistclinic[0] !== newValue) {
+          if (dentistclinic[0] != newValue) {
             this.selectedDentist = "all";
           } else {
             if (dentistclinic[1] == "all") {
@@ -682,13 +682,13 @@ export class AppHeaderrightComponent implements AfterViewInit {
         } else {
           this.selectedDentist = "all";
         }
-        let opts = this.constants.cookieOpt as CookieOptions;
-        this._cookieService.put(
-          "clinic_dentist",
-          this.clinic_id + "_" + this.selectedDentist,
-          opts
-        );
-        // this.loadDentist(this.selectedDentist);
+        // let opts = this.constants.cookieOpt as CookieOptions;
+        // this._cookieService.put(
+        //   "clinic_dentist",
+        //   this.clinic_id + "_" + this.selectedDentist,
+        //   opts
+        // );
+        this.loadDentist(this.selectedDentist);
       }
     }
   }
