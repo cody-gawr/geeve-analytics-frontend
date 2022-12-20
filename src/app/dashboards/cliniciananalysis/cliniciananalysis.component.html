@@ -3040,7 +3040,7 @@
                 </ngx-gauge>
               </div>
               <div
-                *ngIf="showTrendChart == true  && prebook=='recall' && !recallPrebookDentistLoader && recallPrebookChartTrend1.length > 0"
+                *ngIf="showTrendChart == true  && prebook=='recall' && !fdRecallPrebookRateTrendLoader && recallPrebookChartTrend1.length > 0"
                 class="div-height">
                 <canvas #myCanvas id="RecallRateTrend" baseChart [datasets]="recallPrebookChartTrend"
                   [labels]="recallPrebookChartTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
@@ -3058,13 +3058,13 @@
                 </canvas>
               </div>
               <div class="no-data-placeholder"
-                *ngIf="((showTrendChart == false && recallValue <= 0) || (showTrendChart == true && recallPrebookChartTrend1.length <= 0)) && prebook=='recall' && !recallPrebookDentistLoader">
+                *ngIf="((showTrendChart == false && recallValue <= 0 && !recallPrebookDentistLoader) || (showTrendChart == true && recallPrebookChartTrend1.length <= 0 && !fdRecallPrebookRateTrendLoader)) && prebook=='recall' ">
                 <div class="sa_nodata_div">
                 </div>
                 <p class="chart-placeholder-text">You have no recall prebookings in the selected period</p>
               </div>
               <div class="no-data-placeholder"
-                *ngIf="((showTrendChart == false && treatmentPreValue <= 0) || (showTrendChart == true && treatmentPrebookChartTrend1.length <= 0)) && prebook == 'treatment' && !treatmentPrebookDentistLoader">
+                *ngIf="((showTrendChart == false && treatmentPreValue <= 0 && !treatmentPrebookDentistLoader) || (showTrendChart == true && treatmentPrebookChartTrend1.length <= 0 && !fdTreatmentPrebookRateTrendLoader)) && prebook == 'treatment'">
                 <div class="sa_nodata_div">
                 </div>
                 <p class="chart-placeholder-text">You have no reappointments in the selected period</p>

@@ -830,7 +830,12 @@ expenses_card custom_ngx_cw01">
                     </div>
                     <p class="chart-placeholder-text">Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
                   </div>  
-
+                  <canvas
+                    *ngIf="!finCollectionTrendLoader && netProfitDisplayVal == 4 && !isAllClinic"
+                    class="profit1 net_profit" baseChart [datasets]="collectionChartTrend"
+                    [labels]="collectionChartTrendLabels" [options]="labelBarOptionsSingleValue" [legend]="false"
+                    [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar"
+                    (chartClick)="chartClicked($event)"> </canvas>
                   <canvas
                     *ngIf="!finCollectionTrendLoader && isAllClinic && netProfitDisplayVal == 4"
                     class="profit4 net_profit" baseChart [datasets]="collectionChartTrendMultiData"

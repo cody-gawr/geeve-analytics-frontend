@@ -1452,7 +1452,7 @@ public fdUtiData:any = [];
   public byDayLabels: any =  [];
   public byDayLabelsTemp: any =  [];
   public byDayDataTable: any =  [];
-  public byDayLoader: boolean =  true;
+  public byDayLoader: boolean;
   public byTotal: any=  0;
   public prevByDayTotal: any=  0;
   // Function for utilisation by day
@@ -1552,7 +1552,7 @@ public ftaTooltip='up';
 public ftaGoal;
 public maxftaGoal:any=0;
 
-public fdFtaRatioLoader:any;
+public fdFtaRatioLoader:boolean;
 
 //Predictor Ratio :
   private fdFtaRatio() {
@@ -2311,23 +2311,28 @@ public ftaTrendMultiLabels = [];
   this.ftaChartTrend1=[];
   this.Apirequest = this.Apirequest -1;
        if(data.message == 'success'){
+        this.ftaChartTrendMulti[0] = { data: [], label: '' };
         data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showByclinicfta = true;
           data.data.forEach(res => { 
+            let ftaSum = 0;
             res.val.forEach((reslt, key) => {
-              if (typeof (this.ftaChartTrendMulti[key]) == 'undefined') {
-                this.ftaChartTrendMulti[key] = { data: [], label: '' };
-              }
-              if (typeof (this.ftaChartTrendMulti[key]['data']) == 'undefined') {
-                this.ftaChartTrendMulti[key]['data'] = [];
-              }
+              ftaSum += Math.round(reslt.fta_ratio);
+              // if (typeof (this.ftaChartTrendMulti[key]) == 'undefined') {
+              //   this.ftaChartTrendMulti[key] = { data: [], label: '' };
+              // }
+              // if (typeof (this.ftaChartTrendMulti[key]['data']) == 'undefined') {
+              //   this.ftaChartTrendMulti[key]['data'] = [];
+              // }
               
-                this.ftaChartTrendMulti[key]['data'].push(Math.round(reslt.fta_ratio));
-                this.ftaChartTrendMulti[key]['label'] = reslt.clinic_name;
-                this.ftaChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
-                this.ftaChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+              //   this.ftaChartTrendMulti[key]['data'].push(Math.round(reslt.fta_ratio));
+              //   this.ftaChartTrendMulti[key]['label'] = reslt.clinic_name;
+              //   this.ftaChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
+              //   this.ftaChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
              }); 
+              this.ftaChartTrendMulti[0]['data'].push(ftaSum / res.val.length);
+              this.ftaChartTrendMulti[0]['backgroundColor'] = this.doughnutChartColors[0];
              if (this.trendValue == 'c')
               this.ftaChartTrendMultiLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
             else
@@ -2435,6 +2440,7 @@ public ftaTrendMultiLabels = [];
     this.wtaChartTrend1=[];
     this.Apirequest = this.Apirequest -1;
        if(data.message == 'success'){
+        this.uRChartTrendMulti[0] = { data: [], label: '' };
         data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showByclinicUR = true;
@@ -2442,19 +2448,22 @@ public ftaTrendMultiLabels = [];
         this.fdwtaRatioTrendLoader =false;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           data.data.forEach(res => { 
+            let utiSum = 0;
             res.val.forEach((reslt, key) => {
-              if (typeof (this.uRChartTrendMulti[key]) == 'undefined') {
-                this.uRChartTrendMulti[key] = { data: [], label: '' };
-              }
-              if (typeof (this.uRChartTrendMulti[key]['data']) == 'undefined') {
-                this.uRChartTrendMulti[key]['data'] = [];
-              }
-              
-                this.uRChartTrendMulti[key]['data'].push(Math.round(reslt.util_rate * 100));
-                this.uRChartTrendMulti[key]['label'] = reslt.clinic_name;
-                this.uRChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
-                this.uRChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
-             }); 
+              utiSum += Math.round(reslt.util_rate * 100);
+              // if (typeof (this.uRChartTrendMulti[key]) == 'undefined') {
+              //   this.uRChartTrendMulti[key] = { data: [], label: '' };
+              // }
+              // if (typeof (this.uRChartTrendMulti[key]['data']) == 'undefined') {
+              //   this.uRChartTrendMulti[key]['data'] = [];
+              // }
+              // this.uRChartTrendMulti[key]['data'].push(Math.round(reslt.util_rate * 100));
+              // this.uRChartTrendMulti[key]['label'] = reslt.clinic_name;
+              // this.uRChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
+              // this.uRChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+             });
+              this.uRChartTrendMulti[0]['data'].push(utiSum / res.val.length);
+              this.uRChartTrendMulti[0]['backgroundColor'] = this.doughnutChartColors[0];
              if (this.trendValue == 'c')
               this.uRChartTrendMultiLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
             else
@@ -2547,24 +2556,29 @@ public utaTrendMultiLabels = [];
   this.utaChartTrend1=[];
   this.Apirequest = this.Apirequest -1;
        if(data.message == 'success'){
+        this.utaChartTrendMulti[0] = { data: [], label: '' };
         data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         this.fdUtaRatioTrendLoader = false;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showByclinicUta = true;
           data.data.forEach(res => { 
+            let utaSum = 0;
             res.val.forEach((reslt, key) => {
-              if (typeof (this.utaChartTrendMulti[key]) == 'undefined') {
-                this.utaChartTrendMulti[key] = { data: [], label: '' };
-              }
-              if (typeof (this.utaChartTrendMulti[key]['data']) == 'undefined') {
-                this.utaChartTrendMulti[key]['data'] = [];
-              }
+              utaSum += Math.round(reslt.uta_ratio);
+              // if (typeof (this.utaChartTrendMulti[key]) == 'undefined') {
+              //   this.utaChartTrendMulti[key] = { data: [], label: '' };
+              // }
+              // if (typeof (this.utaChartTrendMulti[key]['data']) == 'undefined') {
+              //   this.utaChartTrendMulti[key]['data'] = [];
+              // }
               
-                this.utaChartTrendMulti[key]['data'].push(Math.round(reslt.uta_ratio));
-                this.utaChartTrendMulti[key]['label'] = reslt.clinic_name;
-                this.utaChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
-                this.utaChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+              //   this.utaChartTrendMulti[key]['data'].push(Math.round(reslt.uta_ratio));
+              //   this.utaChartTrendMulti[key]['label'] = reslt.clinic_name;
+              //   this.utaChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
+              //   this.utaChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
              }); 
+              this.utaChartTrendMulti[0]['data'].push(utaSum / res.val.length);
+              this.utaChartTrendMulti[0]['backgroundColor'] = this.doughnutChartColors[0];
              if (this.trendValue == 'c')
               this.utaChartTrendMultiLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
             else
@@ -2768,6 +2782,7 @@ public ticChartTrendMultiLabels = [];
    this.clinic_id && this.frontdeskService.frontdeskdRecallPrebookRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
     this.Apirequest = this.Apirequest -1;  
     if(data.message == 'success'){
+      this.rPChartTrendMulti[0] = { data: [], label: '' };
       data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
       if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
         this.showByclinicRP = true;
@@ -2775,19 +2790,23 @@ public ticChartTrendMultiLabels = [];
           this.fdRecallPrebookRateTrendLoader = false;
           if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
             data.data.forEach(res => { 
+              let recallSum = 0;
               res.val.forEach((reslt, key) => {
-                if (typeof (this.rPChartTrendMulti[key]) == 'undefined') {
-                  this.rPChartTrendMulti[key] = { data: [], label: '' };
-                }
-                if (typeof (this.rPChartTrendMulti[key]['data']) == 'undefined') {
-                  this.rPChartTrendMulti[key]['data'] = [];
-                }
+                recallSum += Math.round(reslt.recall_percent);
+                // if (typeof (this.rPChartTrendMulti[key]) == 'undefined') {
+                //   this.rPChartTrendMulti[key] = { data: [], label: '' };
+                // }
+                // if (typeof (this.rPChartTrendMulti[key]['data']) == 'undefined') {
+                //   this.rPChartTrendMulti[key]['data'] = [];
+                // }
                 
-                  this.rPChartTrendMulti[key]['data'].push(Math.round(reslt.recall_percent));
-                  this.rPChartTrendMulti[key]['label'] = reslt.clinic_name;
-                  this.rPChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
-                  this.rPChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+                //   this.rPChartTrendMulti[key]['data'].push(Math.round(reslt.recall_percent));
+                //   this.rPChartTrendMulti[key]['label'] = reslt.clinic_name;
+                //   this.rPChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
+                //   this.rPChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
                }); 
+                this.rPChartTrendMulti[0]['data'].push(recallSum / res.val.length);
+                this.rPChartTrendMulti[0]['backgroundColor'] = this.doughnutChartColors[0];
                if (this.trendValue == 'c')
                 this.rPChartTrendMultiLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
               else
@@ -2908,24 +2927,29 @@ public ticChartTrendMultiLabels = [];
    this.clinic_id && this.frontdeskService.fdReappointRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
     this.Apirequest = this.Apirequest -1;   
     if(data.message == 'success'){
+      this.tPChartTrendMulti[0] = { data: [], label: '' };
       data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         this.fdTreatmentPrebookRateTrendLoader = false;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showByclinic = true;
           data.data.forEach(res => { 
+            let reappointSum = 0;
             res.val.forEach((reslt, key) => {
-              if (typeof (this.tPChartTrendMulti[key]) == 'undefined') {
-                this.tPChartTrendMulti[key] = { data: [], label: '' };
-              }
-              if (typeof (this.tPChartTrendMulti[key]['data']) == 'undefined') {
-                this.tPChartTrendMulti[key]['data'] = [];
-              }
+              reappointSum += Math.round(reslt.reappoint_rate);
+              // if (typeof (this.tPChartTrendMulti[key]) == 'undefined') {
+              //   this.tPChartTrendMulti[key] = { data: [], label: '' };
+              // }
+              // if (typeof (this.tPChartTrendMulti[key]['data']) == 'undefined') {
+              //   this.tPChartTrendMulti[key]['data'] = [];
+              // }
               
-                this.tPChartTrendMulti[key]['data'].push(Math.round(reslt.reappoint_rate));
-                this.tPChartTrendMulti[key]['label'] = reslt.clinic_name;
-                this.tPChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
-                this.tPChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+              //   this.tPChartTrendMulti[key]['data'].push(Math.round(reslt.reappoint_rate));
+              //   this.tPChartTrendMulti[key]['label'] = reslt.clinic_name;
+              //   this.tPChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
+              //   this.tPChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
              }); 
+              this.tPChartTrendMulti[0]['data'].push(reappointSum / res.val.length);
+              this.tPChartTrendMulti[0]['backgroundColor'] = this.doughnutChartColors[0];
              if (this.trendValue == 'c')
               this.tPChartTrendMultiLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
             else

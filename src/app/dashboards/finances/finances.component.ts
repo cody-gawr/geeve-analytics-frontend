@@ -3369,9 +3369,8 @@ export class FinancesComponent implements AfterViewInit {
         this.totalProductionCollectionLabel = this.totalProductionChartTrendLabels1;
         this.collectionChartTrendMultiLabels = this.collectionChartTrendLabels1;
 
-        //  this.collectionChartTrend[0]['data'] = this.collectionChartTrend1;
-
-        //  this.collectionChartTrendLabels =this.collectionChartTrendLabels1; 
+        this.collectionChartTrend[0]['data'] = this.collectionChartTrend1;
+        this.collectionChartTrendLabels =this.collectionChartTrendLabels1; 
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;

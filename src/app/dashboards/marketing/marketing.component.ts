@@ -1336,6 +1336,7 @@ export class MarketingComponent implements AfterViewInit {
     this.mkNewPatientsByReferalMulti = [];
     this.showmulticlinicNewPatients = false;
     this.mkNewPatientsByReferalLabels = [];
+    let mkNewPatientsLabels = [];
     this.marketingService.mkNewPatientsByReferral(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
@@ -1345,7 +1346,15 @@ export class MarketingComponent implements AfterViewInit {
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.totalNewPatientsReferral = Math.round(data.total);
           this.showmulticlinicNewPatients = true;
+          let label = [];
           data.data.forEach(res => {
+            res.val.forEach((result, key) => {
+              if(result.reftype_name)
+                  label.push(result.reftype_name);
+            });
+          });
+          mkNewPatientsLabels = [...new Set(label)];
+          data.data.forEach((res, ind) => {
             res.val.forEach((result, key) => {
               if (typeof (this.mkNewPatientsByReferalMulti[key]) == 'undefined') {
                 this.mkNewPatientsByReferalMulti[key] = { data: [], label: '' };
@@ -1353,16 +1362,30 @@ export class MarketingComponent implements AfterViewInit {
               if (typeof (this.mkNewPatientsByReferalMulti[key]['data']) == 'undefined') {
                 this.mkNewPatientsByReferalMulti[key]['data'] = [];
               }
-              var total = Math.trunc(result.patients_visits);
+              // var total = Math.trunc(result.patients_visits);
+              var total = Math.round(result.patients_visits);
               if (result.production > 0 && result.production.toString().includes('.')) {
                 var num_parts = result.production.split(".");
                 num_parts[1] = num_parts[1].charAt(0);
                 total = num_parts.join(".");
               }
-              this.mkNewPatientsByReferalMulti[key]['data'].push(total);
-              this.mkNewPatientsByReferalMulti[key]['label'] = result.reftype_name;
+              mkNewPatientsLabels.forEach((name, index) => {
+                 if(result.reftype_name === name){
+                   if(total > 0){
+                     this.mkNewPatientsByReferalMulti[index]['data'][ind] = total;
+                     this.mkNewPatientsByReferalMulti[index]['label'] = result.reftype_name;
+                   }
+                 }
+              })
              });
              this.mkNewPatientsByReferalLabels.push(res.clinic_name);
+          });
+          this.mkNewPatientsByReferalMulti.forEach(item => {
+              for(let i=0; i<item.data.length; i++){
+                if(!item.data[i]){
+                  item.data[i] = 0;
+                }
+              }
           });
           this.mkNewPatientsByReferralLoader = false;
         }else{
@@ -1452,6 +1475,7 @@ export class MarketingComponent implements AfterViewInit {
       this.reffralAllData = [];
       this.revenueReferralData = [];
       this.revenueReferralLabels = [];
+      let mkNewPatientsLabels = [];
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       if (data.message == 'success') {
@@ -1460,7 +1484,15 @@ export class MarketingComponent implements AfterViewInit {
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.totalNewPatientsReferralRev = Math.round(data.total);
           this.showmulticlinicNewPatientsRev = true;
+          let label = [];
           data.data.forEach(res => {
+            res.val.forEach((result, key) => {
+              if(result.reftype_name)
+                  label.push(result.reftype_name);
+            });
+          });
+          mkNewPatientsLabels = [...new Set(label)];
+          data.data.forEach((res, ind) => {
             res.val.forEach((result, key) => {
               if (typeof (this.mkNewPatientsByReferalRevMulti[key]) == 'undefined') {
                 this.mkNewPatientsByReferalRevMulti[key] = { data: [], label: '' };
@@ -1468,16 +1500,30 @@ export class MarketingComponent implements AfterViewInit {
               if (typeof (this.mkNewPatientsByReferalRevMulti[key]['data']) == 'undefined') {
                 this.mkNewPatientsByReferalRevMulti[key]['data'] = [];
               }
-              var total = Math.trunc(result.invoice_amount);
+              // var total = Math.trunc(result.invoice_amount);
+              var total = Math.round(result.invoice_amount);
               if (result.production > 0 && result.production.toString().includes('.')) {
                 var num_parts = result.production.split(".");
                 num_parts[1] = num_parts[1].charAt(0);
                 total = num_parts.join(".");
               }
-              this.mkNewPatientsByReferalRevMulti[key]['data'].push(total);
-              this.mkNewPatientsByReferalRevMulti[key]['label'] = result.reftype_name;
+              mkNewPatientsLabels.forEach((name, index) => {
+                if(result.reftype_name === name){
+                  if(total > 0){
+                    this.mkNewPatientsByReferalRevMulti[index]['data'][ind] = total;
+                    this.mkNewPatientsByReferalRevMulti[index]['label'] = result.reftype_name;
+                  }
+                }
+              })
              });
              this.mkNewPatientsByReferalRevLabels.push(res.clinic_name);
+          });
+          this.mkNewPatientsByReferalRevMulti.forEach(item => {
+            for(let i=0; i<item.data.length; i++){
+              if(!item.data[i]){
+                item.data[i] = 0;
+              }
+            }
           });
           this.mkRevenueByReferralLoader = false;
         }else{

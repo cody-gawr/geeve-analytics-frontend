@@ -920,17 +920,12 @@ export class ClinicianAnalysisService {
     /******** get clinic **********/
     getClinics(clinicId, clinicInfo): Observable<any> {
         var header = this.getHeaders();
-        const formData = new FormData();
-        formData.append('clinic_id', clinicId);
-        formData.append('clinic_info', clinicInfo);
-        return this.http.post(this.apiUrl + "/clinics/clinicGetInfo", formData, header).pipe(map((response: Response) => { return response; }));
+        return this.http.get(this.apiUrl + "/clinics/clinicGetInfo?clinic_id="+clinicId+"&clinic_info="+clinicInfo, header).pipe(map((response: Response) => { return response; }));
     }
     /******** get clinic **********/
     getClinicSettings(clinicId): Observable<any> {
         var header = this.getHeaders();
-        const formData = new FormData();
-        formData.append('clinic_id', clinicId);
-        return this.http.post(this.apiUrl + "/clinics/clinicGetSettings", formData, header).pipe(map((response: Response) => { return response; }));
+        return this.http.get(this.apiUrl + "/clinics/clinicGetSettings?clinic_id="+clinicId, header).pipe(map((response: Response) => { return response; }));
     }
 
 }

@@ -159,8 +159,8 @@
                       </div>  
                       <div class="chart-utilisation-rate" *ngIf="showByclinicUR== true && showTrend && uRChartTrendMultiLabels1.length > 0 && utilityratemessage == false && !fdwtaRatioTrendLoader">
                         <canvas *ngIf="showByclinicUR== true && showTrend && uRChartTrendMultiLabels1.length > 0 && utilityratemessage == false && !fdwtaRatioTrendLoader" #myCanvas baseChart
-                          [datasets]="uRChartTrendMulti" [labels]="uRChartTrendMultiLabels" [options]="stackedChartOptionsTC"
-                          [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true"
+                          [datasets]="uRChartTrendMulti" [labels]="uRChartTrendMultiLabels" [options]="stackedChartOptionsUti"
+                          [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
                           (chartClick)="chartClicked($event)">
                           <!-- [colors]="predictedChartColors"  -->
                         </canvas>
@@ -173,7 +173,7 @@
                       </div>
                       <p class="chart-placeholder-text">You have no appointments in the selected period</p>
                     </div>
-                    <div class="no-data-placeholder" *ngIf="utilShow ==2 && byDayLabels.length <= 0">
+                    <div class="no-data-placeholder" *ngIf="utilShow ==2 && byDayLabels.length <= 0 && !byDayLoader">
                       <div class="sa_nodata_div">
                       </div>
                       <p class="chart-placeholder-text">You have no appointments in the selected period</p>
@@ -310,8 +310,8 @@
                   <div *ngIf="showByclinicRP== true && showTrend && rPChartTrendMultiLabels1.length > 0 && !fdRecallPrebookRateTrendLoader"
                     class="chart-utilisation-rate">
                     <canvas #myCanvas baseChart [datasets]="rPChartTrendMulti"
-                      [labels]="rPChartTrendMultiLabels" [options]="stackedChartOptionsTC"
-                      [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true"
+                      [labels]="rPChartTrendMultiLabels" [options]="stackedChartOptionsUti"
+                      [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
                       (chartClick)="chartClicked($event)">
                       <!-- [colors]="predictedChartColors"  -->
                     </canvas>
@@ -413,8 +413,8 @@
                   <div *ngIf="showByclinic == true && showTrend && tPChartTrendMultiLabels1.length > 0 && !fdTreatmentPrebookRateTrendLoader"
                     class="chart-utilisation-rate">
                     <canvas #myCanvas baseChart [datasets]="tPChartTrendMulti"
-                      [labels]="tPChartTrendMultiLabels" [options]="stackedChartOptionsTC"
-                      [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true"
+                      [labels]="tPChartTrendMultiLabels" [options]="stackedChartOptionsUti"
+                      [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
                       (chartClick)="chartClicked($event)">
                       <!-- [colors]="predictedChartColors" -->
                     </canvas>
@@ -576,18 +576,18 @@
                 <div class="chart">
 
 
-                  <div *ngIf="showmulticlinicFta == false && !showTrend && ftaTotal > 0" class="chart-recall-rate">
+                  <div *ngIf="showmulticlinicFta == false && !showTrend && ftaTotal > 0 && !fdFtaRatioLoader" class="chart-recall-rate">
                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="ftaTotal" [thick]="gaugeThick"
                       [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [append]="gaugeAppendText"
                       [max]="maxftaGoal" [cap]="cap" [size]="size">
                     </ngx-gauge>
                   </div>
-                  <canvas *ngIf="showmulticlinicFta == true && !showTrend && ftaTotal > 0" #myCanvas
+                  <canvas *ngIf="showmulticlinicFta == true && !showTrend && ftaTotal > 0 && !fdFtaRatioLoader" #myCanvas
                     baseChart [datasets]="ftaMulti" [labels]="ftaLabels" [options]="stackedChartOptionsUti"
                     [chartType]="'bar'" (chartHover)="chartHovered($event)" [legend]="false"
                     (chartClick)="chartClicked($event)">
                   </canvas>
-                  <div *ngIf="!showTrend && ftaTotal <= 0">
+                  <div *ngIf="!showTrend && ftaTotal <= 0 && !fdFtaRatioLoader">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">You have no FTA's in the selected period</p>
@@ -604,8 +604,8 @@
                   <div *ngIf="showByclinicfta == true && showTrend && ftaChartTrendMultiLabels1.length > 0 && !fdFtaRatioTrendLoader"
                     class="chart-utilisation-rate">
                     <canvas #myCanvas baseChart [datasets]="ftaChartTrendMulti"
-                      [labels]="ftaTrendMultiLabels" [options]="stackedChartOptionsTC"
-                      [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true"
+                      [labels]="ftaTrendMultiLabels" [options]="stackedChartOptionsUti"
+                      [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
                       (chartClick)="chartClicked($event)">
                     </canvas>
                   </div>
@@ -640,10 +640,14 @@
               </div>
             </mat-card-content>
           </mat-card>
-          <div *ngIf="fdFtaRatioTrendLoader" class="loader_container loader_container_middle"><img class="loader_ico"
+          <div *ngIf="fdFtaRatioLoader" class="loader_container loader_container_middle"><img class="loader_ico"
               src="../assets/images/720.gif">
               <div class="loader-text">Calculating...</div>
           </div>
+          <div *ngIf="fdFtaRatioTrendLoader" class="loader_container loader_container_middle"><img class="loader_ico"
+            src="../assets/images/720.gif">
+            <div class="loader-text">Calculating...</div>
+        </div>
         </div>
         <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
           class="sa_flexbg referral_clinicians last">
@@ -694,8 +698,8 @@
                   <div *ngIf="showByclinicUta == true && showTrend && utaChartTrendMultiLabels1.length > 0 && !fdUtaRatioTrendLoader"
                     class="chart-utilisation-rate">
                     <canvas #myCanvas baseChart [datasets]="utaChartTrendMulti"
-                      [labels]="utaTrendMultiLabels" [options]="stackedChartOptionsTC"
-                      [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true"
+                      [labels]="utaTrendMultiLabels" [options]="stackedChartOptionsUti"
+                      [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
                       (chartClick)="chartClicked($event)">
                     </canvas>
                   </div>

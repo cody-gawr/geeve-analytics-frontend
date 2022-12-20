@@ -270,7 +270,8 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
       takeUntil(this.destroyed$)
     ).subscribe(id => {
       if (id) {
-        this.getClinic(id);
+        // this.getClinic(id);
+        this.getClinic();
         this.getTasks(id);
       }
     })
@@ -311,10 +312,17 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
     this.setPaginationButtons(pageNum);
   }
 
-  getClinic(id) {
-    this.clinicianAnalysisService.getClinics(id, 'DailyTaskEnable').subscribe((data: any) => {
-      if (data.data) {
-        this.dailyTaskEnable = (data.data.daily_task_enable == 1) ? true : false;
+  // getClinic(id) {
+  //   this.clinicianAnalysisService.getClinics(id, 'DailyTaskEnable').subscribe((data: any) => {
+  //     if (data.data) {
+  //       this.dailyTaskEnable = (data.data.daily_task_enable == 1) ? true : false;
+  //     }
+  //   }, error => { });
+  // }
+  getClinic() {
+    this.clinicSettingsService.getClinicData.subscribe((data: any) => {
+      if (data.status == 200) {
+        this.dailyTaskEnable = (data.data[0].daily_task_enable == 1) ? true : false;
       }
     }, error => { });
   }

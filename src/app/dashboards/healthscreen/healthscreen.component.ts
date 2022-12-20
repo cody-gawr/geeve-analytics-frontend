@@ -273,7 +273,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.refreralleaders = false;
 
     if (this.user_type == 4) {
-      if (Array.isArray(this.clinic_id)) {
+      if (Array.isArray(this.clinic_id) || this.clinic_id == 'all') {
         this.chGetProductionMCP();
         this.chGetHourlyRateMCP();
         this.chGetReappointRateMCP();
@@ -373,7 +373,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
         this.prodpervisitstats = true;
         this.finProductionPerVisitLoader = false;
         // check for all clinic 
-        if (Array.isArray(this.clinic_id)) {
+        if (Array.isArray(this.clinic_id) || this.clinic_id == 'all') {
           this.production_p = Math.round(data.data.production_ta);
 
           this.production_c = 0;

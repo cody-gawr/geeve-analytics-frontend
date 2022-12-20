@@ -275,7 +275,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 
 	public reportData: any = [];
 	public reportMonths: any = [];
-	public reportloader: boolean = true;
+	public reportloader: boolean;
 	public totalProductionActual:number ;
 	public totalHoursAvailable:number ;
 	public totalDaysActual:number ;
@@ -289,6 +289,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 
 		this.KpiReportService.getKpiReport(this.clinic_id, this.startDate, this.endDate, this.selectedDentist).subscribe((data: any) => {
 			if (data.message == 'success') {
+				this.reportloader = false;
 				this.reportData = data.data;
 				this.reportData.forEach(element => {
 					if(element.kpi_type == "Production"){
@@ -335,9 +336,9 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 				this.reportData[8]['kpi_type'] = 'Discounts';
 				this.reportData[5]['kpi_type'] = 'Dentist Production Per Hr';
 				this.reportMonths = data.months;
-				this.reportloader = false;
 			}
 		}, error => {
+			this.reportloader = false;	
 			// this.warningMessage = "Please Provide Valid Inputs!";
 			// this.toastr.error('There was an error retrieving your report data, please contact our support team.');
 		}
