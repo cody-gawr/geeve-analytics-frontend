@@ -159,7 +159,7 @@
                       </div>  
                       <div class="chart-utilisation-rate" *ngIf="showByclinicUR== true && showTrend && uRChartTrendMultiLabels1.length > 0 && utilityratemessage == false && !fdwtaRatioTrendLoader">
                         <canvas *ngIf="showByclinicUR== true && showTrend && uRChartTrendMultiLabels1.length > 0 && utilityratemessage == false && !fdwtaRatioTrendLoader" #myCanvas baseChart
-                          [datasets]="uRChartTrendMulti" [labels]="uRChartTrendMultiLabels" [options]="stackedChartOptionsUti"
+                          [datasets]="uRChartTrendMulti" [labels]="uRChartTrendMultiLabels" [options]="stackedChartOptionsTC"
                           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
                           (chartClick)="chartClicked($event)">
                           <!-- [colors]="predictedChartColors"  -->
@@ -310,7 +310,7 @@
                   <div *ngIf="showByclinicRP== true && showTrend && rPChartTrendMultiLabels1.length > 0 && !fdRecallPrebookRateTrendLoader"
                     class="chart-utilisation-rate">
                     <canvas #myCanvas baseChart [datasets]="rPChartTrendMulti"
-                      [labels]="rPChartTrendMultiLabels" [options]="stackedChartOptionsUti"
+                      [labels]="rPChartTrendMultiLabels" [options]="stackedChartOptionsTC"
                       [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
                       (chartClick)="chartClicked($event)">
                       <!-- [colors]="predictedChartColors"  -->
@@ -413,7 +413,7 @@
                   <div *ngIf="showByclinic == true && showTrend && tPChartTrendMultiLabels1.length > 0 && !fdTreatmentPrebookRateTrendLoader"
                     class="chart-utilisation-rate">
                     <canvas #myCanvas baseChart [datasets]="tPChartTrendMulti"
-                      [labels]="tPChartTrendMultiLabels" [options]="stackedChartOptionsUti"
+                      [labels]="tPChartTrendMultiLabels" [options]="stackedChartOptionsTC"
                       [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
                       (chartClick)="chartClicked($event)">
                       <!-- [colors]="predictedChartColors" -->
@@ -604,7 +604,7 @@
                   <div *ngIf="showByclinicfta == true && showTrend && ftaChartTrendMultiLabels1.length > 0 && !fdFtaRatioTrendLoader"
                     class="chart-utilisation-rate">
                     <canvas #myCanvas baseChart [datasets]="ftaChartTrendMulti"
-                      [labels]="ftaTrendMultiLabels" [options]="stackedChartOptionsUti"
+                      [labels]="ftaTrendMultiLabels" [options]="stackedChartOptionsTC"
                       [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
                       (chartClick)="chartClicked($event)">
                     </canvas>
@@ -698,7 +698,7 @@
                   <div *ngIf="showByclinicUta == true && showTrend && utaChartTrendMultiLabels1.length > 0 && !fdUtaRatioTrendLoader"
                     class="chart-utilisation-rate">
                     <canvas #myCanvas baseChart [datasets]="utaChartTrendMulti"
-                      [labels]="utaTrendMultiLabels" [options]="stackedChartOptionsUti"
+                      [labels]="utaTrendMultiLabels" [options]="stackedChartOptionsTC"
                       [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
                       (chartClick)="chartClicked($event)">
                     </canvas>

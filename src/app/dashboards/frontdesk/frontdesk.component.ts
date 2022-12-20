@@ -543,7 +543,7 @@ public stackedChartOptionsTC: any = {
         let total: any = 0;
         let count:any = 0;
         bodyLines.forEach(function (body, i) {
-          if (!body[0].includes("$0")) {
+          // if (!body[0].includes("$0")) {
             var singleval = body[0].split(':');
             if (singleval[1].includes("-")) {
               var temp = singleval[1].split('$');
@@ -555,42 +555,21 @@ public stackedChartOptionsTC: any = {
               total += parseFloat(amount);
             }
 
-          }
+          // }
           count ++;
         })
-        total = Math.round(total);
-        if (total != 0) {
-          var num_parts = total.toString().split(".");
-          num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-          total = num_parts.join(".");
-          total = total / count;
-          total = Math.round(total);
-        }
+        // total = Math.round(total);
+        // if (total != 0) {
+        //   var num_parts = total.toString().split(".");
+        //   num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        //   total = num_parts.join(".");
+        //   total = total / count;
+        //   total = Math.round(total);
+        // }
+        total = Math.round(((total) + Number.EPSILON) * 100) / 100;
         titleLines.forEach(function (title) {
           innerHtml += '<tr><th colspan="2" style="text-align: left;">' + title + ': ' + total + '% </th></tr>';
 
-        });
-        bodyLines.forEach(function (body, i) {
-          if (!body[0].includes("$0")) {
-            var body_custom = body[0];
-            body_custom = body_custom.split(":");
-            if (body_custom[1].includes("-")) {
-              var temp_ = body_custom[1].split('$');
-              temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
-              temp_[1] = temp_[1].toString();
-              temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-              body_custom[1] = temp_.join("");
-            } else {
-              var temp_ = body_custom[1].split('$');
-              temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
-              temp_[1] = temp_[1].toString();
-              temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-              body_custom[1] = temp_.join("");
-            }
-
-            body[0] = body_custom.join(":");
-            innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' + labelColorscustom[i].backgroundColor + '"></span></td><td style="padding: 0px">' + body[0] + '% </td></tr>';
-          }
         });
         innerHtml += '</tbody></table>';
         tooltipEl.innerHTML = innerHtml;
@@ -2331,7 +2310,8 @@ public ftaTrendMultiLabels = [];
               //   this.ftaChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
               //   this.ftaChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
              }); 
-              this.ftaChartTrendMulti[0]['data'].push(ftaSum / res.val.length);
+              // this.ftaChartTrendMulti[0]['data'].push(Math.round(((ftaSum / res.val.length) + Number.EPSILON) * 100) / 100);
+              this.ftaChartTrendMulti[0]['data'].push((ftaSum / res.val.length));
               this.ftaChartTrendMulti[0]['backgroundColor'] = this.doughnutChartColors[0];
              if (this.trendValue == 'c')
               this.ftaChartTrendMultiLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
@@ -2462,6 +2442,7 @@ public ftaTrendMultiLabels = [];
               // this.uRChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
               // this.uRChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
              });
+              // this.uRChartTrendMulti[0]['data'].push(Math.round(((utiSum / res.val.length) + Number.EPSILON) * 100) / 100);
               this.uRChartTrendMulti[0]['data'].push(utiSum / res.val.length);
               this.uRChartTrendMulti[0]['backgroundColor'] = this.doughnutChartColors[0];
              if (this.trendValue == 'c')
@@ -2577,6 +2558,7 @@ public utaTrendMultiLabels = [];
               //   this.utaChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
               //   this.utaChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
              }); 
+              // this.utaChartTrendMulti[0]['data'].push(Math.round(((utaSum / res.val.length) + Number.EPSILON) * 100) / 100);
               this.utaChartTrendMulti[0]['data'].push(utaSum / res.val.length);
               this.utaChartTrendMulti[0]['backgroundColor'] = this.doughnutChartColors[0];
              if (this.trendValue == 'c')
@@ -2805,6 +2787,7 @@ public ticChartTrendMultiLabels = [];
                 //   this.rPChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
                 //   this.rPChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
                }); 
+                // this.rPChartTrendMulti[0]['data'].push(Math.round(((recallSum / res.val.length) + Number.EPSILON) * 100) / 100);
                 this.rPChartTrendMulti[0]['data'].push(recallSum / res.val.length);
                 this.rPChartTrendMulti[0]['backgroundColor'] = this.doughnutChartColors[0];
                if (this.trendValue == 'c')
@@ -2948,6 +2931,7 @@ public ticChartTrendMultiLabels = [];
               //   this.tPChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
               //   this.tPChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
              }); 
+              // this.tPChartTrendMulti[0]['data'].push(Math.round(((reappointSum / res.val.length) + Number.EPSILON) * 100) / 100);
               this.tPChartTrendMulti[0]['data'].push(reappointSum / res.val.length);
               this.tPChartTrendMulti[0]['backgroundColor'] = this.doughnutChartColors[0];
              if (this.trendValue == 'c')
