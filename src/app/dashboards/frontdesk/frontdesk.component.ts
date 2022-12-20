@@ -2788,19 +2788,22 @@ public ticChartTrendMultiLabels = [];
                 //   this.rPChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
                }); 
                 // this.rPChartTrendMulti[0]['data'].push(Math.round(((recallSum / res.val.length) + Number.EPSILON) * 100) / 100);
-                this.rPChartTrendMulti[0]['data'].push(recallSum / res.val.length);
-                this.rPChartTrendMulti[0]['backgroundColor'] = this.doughnutChartColors[0];
-               if (this.trendValue == 'c')
-                this.rPChartTrendMultiLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-              else
-                this.rPChartTrendMultiLabels1.push(res.duration);
+                if(recallSum > 0){
+                  this.rPChartTrendMulti[0]['data'].push(recallSum / res.val.length);
+                  this.rPChartTrendMulti[0]['backgroundColor'] = this.doughnutChartColors[0];
+                 if (this.trendValue == 'c')
+                  this.rPChartTrendMultiLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+                else
+                  this.rPChartTrendMultiLabels1.push(res.duration);
+                }
             });
             this.rPChartTrendMultiLabels = this.rPChartTrendMultiLabels1;
           }else{
             this.recallPrebookChartTrendLabels1=[];
             this.recallPrebookChartTrend1=[];
             data.data.forEach(res => {  
-              this.recallPrebookChartTrend1.push(Math.round(res.recall_percent));
+              if(res.recall_percent > 0)
+                this.recallPrebookChartTrend1.push(Math.round(res.recall_percent));
               if(res.goals == -1 || res.goals == null || res.goals == ''){
                 this.fdRecallPrebookRatetargetData.push(null);
               }else{
