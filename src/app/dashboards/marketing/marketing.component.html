@@ -594,7 +594,7 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <div *ngIf="showTrend == false" fxLayout="row wrap"
+                            <div *ngIf="showTrend == false && isCompleteMonth" fxLayout="row wrap"
                                 class="pieChartDetails sa_chart_details_sec">
                                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                                     <h3 class="m-0 value-num">$ {{newAcqValue | number:'0.0-0'}}</h3>

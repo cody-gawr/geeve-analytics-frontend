@@ -579,7 +579,7 @@ public stackedChartOptionsTC: any = {
       var position = this._chart.canvas.getBoundingClientRect();
       // Display, position, and set styles for font
       tooltipEl.style.position = 'fixed';
-      tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 20) + 'px';
+      tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 70) + 'px';
       tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 70) + 'px';
       tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
       tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
@@ -747,7 +747,7 @@ public stackedChartOptionsTic: any = {
         var position = this._chart.canvas.getBoundingClientRect();
         // Display, position, and set styles for font
         tooltipEl.style.position = 'fixed';
-        tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 20) + 'px';
+        tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 70) + 'px';
         tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 70) + 'px';
         tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
         tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';

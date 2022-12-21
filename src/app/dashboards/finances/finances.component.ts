@@ -714,7 +714,7 @@ export class FinancesComponent implements AfterViewInit {
         var position = this._chart.canvas.getBoundingClientRect();
         // Display, position, and set styles for font
         tooltipEl.style.position = 'fixed';
-        tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 20) + 'px';
+        tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 130) + 'px';
         tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 70) + 'px';
         tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
         tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
@@ -874,7 +874,7 @@ export class FinancesComponent implements AfterViewInit {
         var position = this._chart.canvas.getBoundingClientRect();
         // Display, position, and set styles for font
         tooltipEl.style.position = 'fixed';
-        tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 120) + 'px';
+        tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 130) + 'px';
         tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 70) + 'px';
         tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
         tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
@@ -1033,7 +1033,7 @@ export class FinancesComponent implements AfterViewInit {
         var position = this._chart.canvas.getBoundingClientRect();
         // Display, position, and set styles for font
         tooltipEl.style.position = 'fixed';
-        tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 20) + 'px';
+        tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 130) + 'px';
         tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 70) + 'px';
         tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
         tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
@@ -1453,7 +1453,7 @@ export class FinancesComponent implements AfterViewInit {
         var position = this._chart.canvas.getBoundingClientRect();
         // Display, position, and set styles for font
         tooltipEl.style.position = 'fixed';
-        tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 80) + 'px';
+        tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 130) + 'px';
         tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - (70 + (bodyLineCont * 15))) + 'px';
         tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
         tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
