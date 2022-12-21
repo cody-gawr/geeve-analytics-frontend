@@ -1770,6 +1770,7 @@ export class MarketingComponent implements AfterViewInit {
           this.TvisitTrendLabels1 = [];  
 
           if (data.total > 0) {
+            data.data.sort((a, b)=> a.num_visits === b.num_visits ? 0 : a.num_visits < b.num_visits || -1);
             data.data.forEach(res => { 
               this.TvisitTrend1.push(Math.round(res.num_visits));
               this.TvisitTrendLabels1.push(res.clinic_name);
