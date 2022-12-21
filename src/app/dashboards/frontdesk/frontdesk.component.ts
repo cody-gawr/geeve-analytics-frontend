@@ -41,7 +41,7 @@ export class FrontDeskComponent implements AfterViewInit {
   public utilShow: any = 1;
   public  apiUrl = environment.apiUrl;
   public showGoals: boolean = false;
-  public numberOfRecords:number = 50;
+  public numberOfRecords:number = 20;
   public maxLegendLabelLimit = 10;
   public legendBackgroundColor = [
     '#6edbbb',
@@ -176,7 +176,7 @@ predictedGradient4.addColorStop(0,  'rgba(22, 82, 141, 0.8)');
 let predictedGradient5 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
 predictedGradient5.addColorStop(1, 'rgba(201, 247,238,0.8)');
 predictedGradient5.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
-this.doughnutChartColors = ['#6cd8ba', '#b0fffa', '#abb3ff', '#feefb8', '#91ADEA', '#ffb4b5', '#F2C6C6', '#FDC6C0', '#FEEEE1', '#FFDD99', '#A8DDDD', '#F4F4A0', '#C3DDFF', '#9FDBDB', '#CCFDCC', '#B1F2EC', '#BBEBFA', '#BBEBFA', '#D7ECF3', '#BBE7FF', '#C8CDF0', '#F7C4F5', '#6cd8ba', '#feefb8'];
+this.doughnutChartColors = ['#6cd8ba', '#b0fffa', '#abb3ff', '#feefb8', '#91ADEA', '#ffb4b5', '#F2C6C6', '#FDC6C0', '#FEEEE1', '#FFDD99', '#A8DDDD', '#F4F4A0', '#C3DDFF', '#9FDBDB', '#CCFDCC', '#B1F2EC', '#BBEBFA', '#BBEBFA', '#D7ECF3', '#BBE7FF', '#C8CDF0', '#F7C4F5', '#6cd8ba', '#feefb8', '#FF6384', '#fe7b85', '#87ada9', '#386087', '#54D2FF', '#E58DD7'];
 this.predictedChartColors = [
   {
     backgroundColor: predictedGradient,
@@ -1735,12 +1735,13 @@ public fdNumberOfTicksLoader:boolean;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showmulticlinicticks = true;          
         if (data.total > 0 && data.data) {
+          data.data.sort((a, b)=> a.num_ticks === b.num_ticks ? 0 : a.num_ticks < b.num_ticks || -1);
           data.data.forEach(res => {
             if(res.clinic_id){
               this.ticksLabels1.push(Math.round(res.num_ticks));
               this.ticksLabels.push(res.clinic_name);
             } 
-          });
+          }); 
         }       
         this.ticksMulti[0]['data'] = this.ticksLabels1;
         }
@@ -1818,6 +1819,7 @@ public fdPrebookRateTrnd:any=[];
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showmulticlinicPrebook = true;          
         if (data.total > 0 && data.data) {
+          data.data.sort((a, b)=> a.recall_patient === b.recall_patient ? 0 : a.recall_patient < b.recall_patient || -1);
           data.data.forEach(res => {
             if(res.clinic_id){
               this.fdPrebookRateTrnd.push(Math.round(res.recall_patient/res.total_patient * 100));
@@ -1904,6 +1906,7 @@ public fdReappointRateTrnd:any=[];
         this.fdReappointRateLabels = [];
         this.fdReappointRateTrnd = [];
         if (data.total > 0) {
+          data.data.sort((a, b)=> a.reappoint_rate === b.reappoint_rate ? 0 : a.reappoint_rate < b.reappoint_rate || -1);
           data.data.forEach(res => { 
             this.fdReappointRateTrnd.push(Math.round(res.reappoint_rate));
             this.fdReappointRateLabels.push(res.clinic_name);

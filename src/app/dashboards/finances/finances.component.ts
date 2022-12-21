@@ -337,7 +337,7 @@ export class FinancesComponent implements AfterViewInit {
     gradient7.addColorStop(0, '#168F7F');
 
     // this.doughnutChartColors = [{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}];
-    this.doughnutChartColors = ['#6cd8ba', '#b0fffa', '#abb3ff', '#feefb8', '#91ADEA', '#ffb4b5', '#F2C6C6', '#FDC6C0', '#FEEEE1', '#FFDD99', '#A8DDDD', '#F4F4A0', '#C3DDFF', '#9FDBDB', '#CCFDCC', '#B1F2EC', '#BBEBFA', '#BBEBFA', '#D7ECF3', '#BBE7FF', '#C8CDF0', '#F7C4F5', '#6cd8ba', '#feefb8'];
+    this.doughnutChartColors = ['#6cd8ba', '#b0fffa', '#abb3ff', '#feefb8', '#91ADEA', '#ffb4b5', '#F2C6C6', '#FDC6C0', '#FEEEE1', '#FFDD99', '#A8DDDD', '#F4F4A0', '#C3DDFF', '#9FDBDB', '#CCFDCC', '#B1F2EC', '#D7ECF3', '#C8CDF0', '#F7C4F5', '#BBEBFA', '#D7ECF3', '#BBE7FF', '#9BD0F5', '#36A2EB', '#FF6384', '#fe7b85', '#87ada9', '#386087', '#54D2FF', '#E58DD7'];
     let stackedGradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
     stackedGradient.addColorStop(0, '#168F7F');
     stackedGradient.addColorStop(1, '#168F7F');

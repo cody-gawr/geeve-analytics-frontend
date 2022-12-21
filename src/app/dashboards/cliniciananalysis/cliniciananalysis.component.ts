@@ -83,7 +83,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public hrSelectShow: any = "hr_all";
   public charTips: any = [];
   public userPlan: any = 'lite';
-  public numberOfRecords:number = 50;
+  public numberOfRecords:number = 20;
   public showPreBookReapointRate: boolean = false;
   public flag = false;
   private _routerSub = Subscription.EMPTY;

@@ -252,7 +252,8 @@ this.doughnutChartColors = [{backgroundColor: [
   '#feefb8',
   '#ffb4b5',
   '#fffcac',
-  '#d7f8ef'
+  '#d7f8ef',
+  '#54D2FF', '#E58DD7', '#A9AABC', '#F2ECFF', '#5689C9', '#F9F871', '#91ADEA', '#F2C6C6', '#FDC6C0', '#FEEEE1', '#FFDD99', '#A8DDDD', '#F4F4A0', '#C3DDFF', '#9FDBDB', '#CCFDCC', '#B1F2EC', '#BBEBFA', '#D7ECF3', '#BBE7FF', '#C8CDF0', '#F7C4F5', '#9BD0F5', '#36A2EB', '#FF6384', '#fe7b85', '#87ada9', '#386087'
 ]}];
 this.lineChartColors = [
   {
