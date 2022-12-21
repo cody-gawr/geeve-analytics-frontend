@@ -382,13 +382,13 @@ initiate_clinic() {
     }
     this.dailyTabSettLod = false;
     // clinicGetSettings
-    this.clinicianAnalysisService.getClinics( this.clinic_id, 'DailyTaskEnable,EquipListEnable,PostOpEnable,RecallEnable,TickEnable,FtaEnable' ).subscribe((data:any) => {
-      this.dailyTabSettLod = true;
-      if(data.message == 'success'){
-        this.isEnabletasks = (data.data.daily_task_enable == 1)? true : false;
-        this.isEnableEquipList = (data.data.equip_list_enable == 1)? true : false;        
-      }
-    }); 
+    // this.clinicianAnalysisService.getClinics( this.clinic_id, 'DailyTaskEnable,EquipListEnable,PostOpEnable,RecallEnable,TickEnable,FtaEnable' ).subscribe((data:any) => {
+    //   this.dailyTabSettLod = true;
+    //   if(data.message == 'success'){
+    //     this.isEnabletasks = (data.data.daily_task_enable == 1)? true : false;
+    //     this.isEnableEquipList = (data.data.equip_list_enable == 1)? true : false;        
+    //   }
+    // }); 
 
     this.clinicianAnalysisService.getClinicSettings( this.clinic_id).subscribe((data:any) => {
       if(data.message == 'success'){
@@ -397,6 +397,8 @@ initiate_clinic() {
         this.isEnableTH = (data.data.tick_enable == 1)? true : false;
         this.isEnableFT = (data.data.fta_enable == 1)? true : false;
         this.isEnableUT = (data.data.uta_enable == 1)? true : false;
+        this.isEnabletasks = (data.data.daily_task_enable == 1)? true : false;
+        this.isEnableEquipList = (data.data.equip_list_enable == 1)? true : false; 
       }
     }); 
 

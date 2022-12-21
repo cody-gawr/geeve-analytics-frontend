@@ -246,7 +246,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       }else{
         this.clinic_id = val;
       }
-
+      // this.getMaxBarLimit();
       if (this.user_type == '4') {
         this.getClinic();
       }
@@ -307,6 +307,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     return name.toString().trim().match(regex);
     
 
+  }
+
+  getMaxBarLimit(){
+    this.cliniciananalysisService.getClinicSettings( this.clinic_id).subscribe((data:any) => {
+      if(data.message == 'success'){
+        this.numberOfRecords = data.data.max_bars_multi; 
+      }
+    });
   }
 
   public barBackgroundColor(data, labels) {

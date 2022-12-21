@@ -13,6 +13,7 @@ import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../../app.constants';
 import { environment } from "../../../environments/environment";
 import { ChartstipsService } from '../../shared/chartstips.service';
+import { ClinicianAnalysisService } from '../cliniciananalysis/cliniciananalysis.service';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -73,7 +74,8 @@ export class FrontDeskComponent implements AfterViewInit {
     private router: Router, 
     private chartService: ChartService,
     public constants: AppConstants,
-    public chartstipsService: ChartstipsService
+    public chartstipsService: ChartstipsService,
+    private clinicianAnalysisService: ClinicianAnalysisService
     ){
      this.getChartsTips();
      this.getAllClinics();
@@ -91,7 +93,7 @@ export class FrontDeskComponent implements AfterViewInit {
         }else{
           this.clinic_id = val;
         }
-
+        // this.getMaxBarLimit();
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
           this.filterDate("m");
@@ -158,68 +160,76 @@ export class FrontDeskComponent implements AfterViewInit {
         })
      });
 
- let predictedGradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
-predictedGradient.addColorStop(0, 'rgba(12, 209,169,0.8)');
-predictedGradient.addColorStop(1, 'rgba(22, 82, 141, 0.9)');
-let predictedGradient1 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-predictedGradient1.addColorStop(1, 'rgba(12, 209,169,0.9)');
-predictedGradient1.addColorStop(0,  'rgba(22, 82, 141, 0.6)');
-let predictedGradient2 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-predictedGradient2.addColorStop(1, 'rgba(59, 227,193,4)');
-predictedGradient2.addColorStop(0,  'rgba(22, 82, 141, 9)');
-let predictedGradient3 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-predictedGradient3.addColorStop(1, 'rgba(94, 232,205,0.7)');
-predictedGradient3.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
-let predictedGradient4 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-predictedGradient4.addColorStop(1, 'rgba(148, 240,221,0.8)');
-predictedGradient4.addColorStop(0,  'rgba(22, 82, 141, 0.8)');
-let predictedGradient5 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-predictedGradient5.addColorStop(1, 'rgba(201, 247,238,0.8)');
-predictedGradient5.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
-this.doughnutChartColors = ['#6cd8ba', '#b0fffa', '#abb3ff', '#feefb8', '#91ADEA', '#ffb4b5', '#F2C6C6', '#FDC6C0', '#FEEEE1', '#FFDD99', '#A8DDDD', '#F4F4A0', '#C3DDFF', '#9FDBDB', '#CCFDCC', '#B1F2EC', '#BBEBFA', '#BBEBFA', '#D7ECF3', '#BBE7FF', '#C8CDF0', '#F7C4F5', '#6cd8ba', '#feefb8', '#FF6384', '#fe7b85', '#87ada9', '#386087', '#54D2FF', '#E58DD7'];
-this.predictedChartColors = [
-  {
-    backgroundColor: predictedGradient,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: 'rgba(25,179,148,0.7)'
-  },
-   {
-    backgroundColor: predictedGradient1,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: 'rgba(25,179,148,0.7)'
+    let predictedGradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
+    predictedGradient.addColorStop(0, 'rgba(12, 209,169,0.8)');
+    predictedGradient.addColorStop(1, 'rgba(22, 82, 141, 0.9)');
+    let predictedGradient1 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    predictedGradient1.addColorStop(1, 'rgba(12, 209,169,0.9)');
+    predictedGradient1.addColorStop(0,  'rgba(22, 82, 141, 0.6)');
+    let predictedGradient2 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    predictedGradient2.addColorStop(1, 'rgba(59, 227,193,4)');
+    predictedGradient2.addColorStop(0,  'rgba(22, 82, 141, 9)');
+    let predictedGradient3 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    predictedGradient3.addColorStop(1, 'rgba(94, 232,205,0.7)');
+    predictedGradient3.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
+    let predictedGradient4 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    predictedGradient4.addColorStop(1, 'rgba(148, 240,221,0.8)');
+    predictedGradient4.addColorStop(0,  'rgba(22, 82, 141, 0.8)');
+    let predictedGradient5 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    predictedGradient5.addColorStop(1, 'rgba(201, 247,238,0.8)');
+    predictedGradient5.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
+    this.doughnutChartColors = ['#6cd8ba', '#b0fffa', '#abb3ff', '#feefb8', '#91ADEA', '#ffb4b5', '#F2C6C6', '#FDC6C0', '#FEEEE1', '#FFDD99', '#A8DDDD', '#F4F4A0', '#C3DDFF', '#9FDBDB', '#CCFDCC', '#B1F2EC', '#BBEBFA', '#BBEBFA', '#D7ECF3', '#BBE7FF', '#C8CDF0', '#F7C4F5', '#6cd8ba', '#feefb8', '#FF6384', '#fe7b85', '#87ada9', '#386087', '#54D2FF', '#E58DD7'];
+    this.predictedChartColors = [
+      {
+        backgroundColor: predictedGradient,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F',
+        borderColor: 'rgba(25,179,148,0.7)'
+      },
+      {
+        backgroundColor: predictedGradient1,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F',
+        borderColor: 'rgba(25,179,148,0.7)'
 
-  },
-  {
-    backgroundColor: predictedGradient2,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: 'rgba(25,179,148,0.7)'
+      },
+      {
+        backgroundColor: predictedGradient2,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F',
+        borderColor: 'rgba(25,179,148,0.7)'
 
-  },
-   {
-    backgroundColor: predictedGradient3,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: 'rgba(25,179,148,0.7)'
+      },
+      {
+        backgroundColor: predictedGradient3,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F',
+        borderColor: 'rgba(25,179,148,0.7)'
 
-  },
-  {
-    backgroundColor: predictedGradient4,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: 'rgba(25,179,148,0.7)'
+      },
+      {
+        backgroundColor: predictedGradient4,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F',
+        borderColor: 'rgba(25,179,148,0.7)'
 
-  },
-   {
-    backgroundColor: predictedGradient5,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F'
-  }
-];
+      },
+      {
+        backgroundColor: predictedGradient5,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F'
+      }
+    ];
 
-    this.filterDate(this.chartService.duration$.value);
+  this.filterDate(this.chartService.duration$.value);
+}
+
+  getMaxBarLimit(){
+    this.clinicianAnalysisService.getClinicSettings( this.clinic_id).subscribe((data:any) => {
+      if(data.message == 'success'){
+        this.numberOfRecords = data.data.max_bars_multi; 
+      }
+    });
   }
 
   public legendGenerator = {
