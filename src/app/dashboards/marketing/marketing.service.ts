@@ -134,7 +134,10 @@ public token_id;
      //Get Xero Categories
    saveSelectedCategories(clinic_id,categories ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Marketing/mkSaveAcctXero?clinic_id="+clinic_id+"&categories="+categories, header)
+        const formData = new FormData();
+        formData.append('clinic_id', clinic_id);
+        formData.append('categories', categories);
+        return this.http.post(this.apiUrl +"/Marketing/mkSaveAcctXero", formData, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -152,7 +155,10 @@ public token_id;
          //Get Xero Categories
        mkSaveAcctMyob(clinic_id,categories ): Observable<any> {
             var header = this.getHeaders(); 
-            return this.http.get(this.apiUrl +"/Myob/mkSaveAcctMyob?clinic_id="+clinic_id+"&categories="+categories, header)
+            const formData = new FormData();
+            formData.append('clinic_id', clinic_id);
+            formData.append('categories', categories);
+            return this.http.post(this.apiUrl +"/Myob/mkSaveAcctMyob", formData, header)
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -193,6 +199,18 @@ public token_id;
                         })
             );    
         }
+    }
+
+    saveXeroCategories(clinic_id, categories): Observable<any> {
+        var header = this.getHeaders(); 
+        const formData = new FormData();
+        formData.append('clinic_id', clinic_id);
+        formData.append('xero_selected_accounts', categories);
+        return this.http.post(this.apiUrl +"/Marketing/mkSaveAcctXeroNew", formData, header)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
     }
 
 }

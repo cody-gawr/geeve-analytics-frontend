@@ -77,16 +77,10 @@
           <mat-card-content class="sa_matcard_content">
             <!-- column -->
             <div class="sa_main_grid_dashboard profit-purple d-flex no-block align-items-center">
-              <ng-container *ngIf="( (xeroConnect || myobConnect) && !netprofitstatsError && multipleClinicsSelected===false)">
-                <div class="stats-icon">
+              <ng-container *ngIf="( (xeroConnect || myobConnect) && !netprofitstatsError && multipleClinicsSelected===false && isCompleteMonth)">
+                <div *ngIf="netprofitstats == true" class="stats-icon">
                   <img src="../assets/images/net-profit.png" alt />
                   <i class="fas fa-chart-bar"></i>
-                </div>
-                <div *ngIf="netprofitstats == false" class="stats">
-                  <h3 class="m-0">Net Profit</h3>
-                  <h1 class="m-0">
-                    <div class="loader-text">Calculating...</div>
-                  </h1> 
                 </div>
                 <div *ngIf="netprofitstats == true" class="stats">
                   <h3 class="m-0">Net Profit</h3>
@@ -99,14 +93,31 @@
                   </div>
                 </div>
               </ng-container>
-                <div *ngIf="(!xeroConnect && !myobConnect) && multipleClinicsSelected===false" class="w-100">
+              <ng-container *ngIf="!netprofitstats && !multipleClinicsSelected">
+                <div class="stats-icon">
+                  <img src="../assets/images/net-profit.png" alt />
+                  <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="stats">
+                  <h3 class="m-0">Net Profit</h3>
+                  <h1 class="m-0">
+                    <div class="loader-text">Calculating...</div>
+                  </h1> 
+                </div>
+              </ng-container>
+                <div *ngIf="(!xeroConnect && !myobConnect) && multipleClinicsSelected===false && netprofitstats" class="w-100">
                   <div class="sa_nodata_div no-found-data ">
                     <p>Please ensure your Xero/MYOB account is connected</p>
                   </div>
                 </div>
-                <div *ngIf="multipleClinicsSelected===true && netprofitstats == true" class="w-100">
+                <div *ngIf="multipleClinicsSelected===true" class="w-100">
                   <div class="sa_nodata_div no-found-data ">
                     <p>Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
+                  </div>
+                </div>
+                <div *ngIf="!multipleClinicsSelected && netprofitstats && !isCompleteMonth" class="w-100">
+                  <div class="sa_nodata_div no-found-data ">
+                    <p>Please select a date range consisting of full months to view Accounting charts</p>
                   </div>
                 </div>
             </div>
@@ -147,17 +158,17 @@
           <mat-card-content class="sa_matcard_content">
             <!-- column -->
             <div *ngIf="isVisibleAccountGraphs" class="sa_main_grid_dashboard profit-green d-flex no-block align-items-center">
-              <ng-container *ngIf="((xeroConnect || myobConnect) && !netprofitPerError && multipleClinicsSelected===false)">
-                <div class="stats-icon">
+              <ng-container *ngIf="((xeroConnect || myobConnect) && !netprofitPerError && multipleClinicsSelected===false && isCompleteMonth)">
+                <div *ngIf="netprofitpercentstats == true" class="stats-icon">
                   <img src="../assets/images/net-profit-PMS.png" alt />
                   <i class="fas fa-chart-bar"></i>
                 </div>
-                <div *ngIf="netprofitpercentstats == false" class="stats">
+                <!-- <div *ngIf="netprofitpercentstats == false" class="stats">
                   <h3 class="m-0">Net Profit % </h3>
                   <h1 class="m-0">
                     <div class="loader-text">Calculating...</div>
                   </h1>
-                </div>
+                </div> -->
                 <div *ngIf="netprofitpercentstats == true" class="stats">
                   <h3 class="m-0">Net Profit % </h3>
                   <h1 class="m-0"> {{netProfitPmsVal | number:'1.0-0'}}%</h1>
@@ -169,14 +180,31 @@
                   </div>
                 </div>
               </ng-container>
-                <div *ngIf="(!xeroConnect && !myobConnect) && multipleClinicsSelected===false" class="w-100">
+              <ng-container *ngIf="!netprofitpercentstats && !multipleClinicsSelected">
+                <div class="stats-icon">
+                  <img src="../assets/images/net-profit-PMS.png" alt />
+                  <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="stats">
+                  <h3 class="m-0">Net Profit % </h3>
+                  <h1 class="m-0">
+                    <div class="loader-text">Calculating...</div>
+                  </h1>
+                </div>
+              </ng-container>
+                <div *ngIf="(!xeroConnect && !myobConnect) && multipleClinicsSelected===false && netprofitpercentstats" class="w-100">
                   <div class="sa_nodata_div no-found-data ">
                     <p>Please ensure your Xero/MYOB account is connected</p>
                   </div>
                 </div>
-                <div *ngIf="multipleClinicsSelected===true && netprofitpercentstats==true" class="w-100">
+                <div *ngIf="multipleClinicsSelected===true" class="w-100">
                   <div class="sa_nodata_div no-found-data ">
                     <p>Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
+                  </div>
+                </div>
+                <div *ngIf="!multipleClinicsSelected && netprofitpercentstats && !isCompleteMonth" class="w-100">
+                  <div class="sa_nodata_div no-found-data ">
+                    <p>Please select a date range consisting of full months to view Accounting charts</p>
                   </div>
                 </div>
 

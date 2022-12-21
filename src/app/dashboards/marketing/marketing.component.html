@@ -535,10 +535,16 @@
 
                         </mat-card-title>
                         <div class="card-body">
-                            <div class="chart py-2">
+                            <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+                                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group"> 
+                                </div>
+                                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                                </div>
+                            </div>
+                            <div class="chart py-2 trendchart">
                                 <div>
 
-                                    <div *ngIf="showTrend == false && fdnewPatientsAcqLoader ==  false &&  (xeroConnect || myobConnect) && !newAcqValueError && !multipleClinicsSelected"
+                                    <div *ngIf="showTrend == false && fdnewPatientsAcqLoader ==  false &&  (xeroConnect || myobConnect) && !newAcqValueError && !multipleClinicsSelected && isCompleteMonth" 
                                         class="chart-trend">
                                         <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="newAcqValue"
                                             [thick]="gaugeThick" [foregroundColor]="foregroundColor"
@@ -578,6 +584,11 @@
                                         <div class="sa_nodata_div">
                                         </div>
                                         <p class="chart-placeholder-text">Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
+                                    </div>
+                                    <div *ngIf="!isCompleteMonth && !multipleClinicsSelected && !fdnewPatientsAcqLoader && !showTrend">
+                                        <div class="sa_nodata_div">
+                                        </div>
+                                        <p class="chart-placeholder-text">Please select a date range consisting of full months to view Accounting charts</p>
                                     </div>
                                 </div>
                             </div>
@@ -717,6 +728,12 @@
                             </div>
                         </mat-card-title>
                         <div class="card-body">
+                            <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+                                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group"> 
+                                </div>
+                                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                                </div>
+                            </div>
                             <div class="chart py-2 trendchart">
 
                                 <div class="chart-num-patients" *ngIf="showTrend == false && visitsTotal > 0 && showBar === false">

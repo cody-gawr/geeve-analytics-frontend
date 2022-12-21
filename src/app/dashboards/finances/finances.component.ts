@@ -53,6 +53,7 @@ export class FinancesComponent implements AfterViewInit {
   public upperLimit = 20;
   public lowerLimit = 1;
   public user_type: string = '';
+  public isCompleteMonth: boolean = true;
 
 
   public pieChartColors = [
@@ -873,7 +874,7 @@ export class FinancesComponent implements AfterViewInit {
         var position = this._chart.canvas.getBoundingClientRect();
         // Display, position, and set styles for font
         tooltipEl.style.position = 'fixed';
-        tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 20) + 'px';
+        tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 120) + 'px';
         tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 70) + 'px';
         tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
         tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
@@ -1935,11 +1936,11 @@ export class FinancesComponent implements AfterViewInit {
       //this.netProfit();
       // this.netProfitPercent();
 
-
+      
+      this.netprofitstats = false;
+      this.netprofitpercentstats = false;
       if (this.connectedwith != '' && this.connectedwith != 'none' && this.connectedwith != undefined && this.multipleClinicsSelected == false) {
         this.Apirequest = 8;
-        this.netprofitstats = false;
-        this.netprofitpercentstats = false;
         this.productionstats = false;
         this.netProfitPms();
         this.netProfitPercentage();
@@ -2566,6 +2567,7 @@ export class FinancesComponent implements AfterViewInit {
     if (this.toggleChecked)
       // $('.target_off').click();
     this.toggleChecked = false;
+    this.isCompleteMonth = true;
     $('.trendMode').hide();
     $('.nonTrendMode').css('display', 'block');
     $('.target_filter').removeClass('mat-button-toggle-checked');
@@ -2722,6 +2724,16 @@ export class FinancesComponent implements AfterViewInit {
       let selectedDate = this.chartService.customSelectedDate$.value;
       this.startDate = this.datePipe.transform(selectedDate.startDate, 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(selectedDate.endDate, 'dd-MM-yyyy');
+      var selectedMonth = this.datePipe.transform(selectedDate.startDate, 'M');
+      var selectedYear = this.datePipe.transform(selectedDate.startDate, 'yyyy');
+      var selectedStartDate = this.datePipe.transform(selectedDate.startDate, 'd');
+      var selectedEndDate = this.datePipe.transform(selectedDate.endDate, 'd');
+      var LastDay = new Date(parseInt(selectedYear), parseInt(selectedMonth) , 0).getDate();
+      if(parseInt(selectedStartDate) == 1 && parseInt(selectedEndDate) == LastDay){
+        this.isCompleteMonth = true;
+      }else{
+        this.isCompleteMonth = false;
+      }
       this.loadDentist('all');
     }
     $('.filter').removeClass('active');

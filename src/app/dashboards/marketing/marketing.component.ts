@@ -88,6 +88,7 @@ export class MarketingComponent implements AfterViewInit {
   destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   public doughnutChartPlugins: PluginServiceGlobalRegistrationAndOptions[] = [];
   public isVisibleAccountGraphs: boolean = false;
+  public isCompleteMonth: boolean = true;
 
   constructor(private toastr: ToastrService,
     private marketingService: MarketingService,
@@ -307,7 +308,7 @@ export class MarketingComponent implements AfterViewInit {
     let proceedureGradient5 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
     proceedureGradient5.addColorStop(1, 'rgba(201, 247,238,0.8)');
     proceedureGradient5.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
-    this.doughnutChartColors = ['#6cd8ba', '#b0fffa', '#abb3ff', '#feefb8', '#91ADEA', '#ffb4b5', '#F2C6C6', '#FDC6C0', '#FEEEE1', '#FFDD99', '#A8DDDD', '#F4F4A0', '#C3DDFF', '#9FDBDB', '#CCFDCC', '#B1F2EC', '#BBEBFA', '#BBEBFA', '#D7ECF3', '#BBE7FF', '#C8CDF0', '#F7C4F5', '#6cd8ba', '#feefb8'];
+    this.doughnutChartColors = ['#6cd8ba', '#b0fffa', '#abb3ff', '#feefb8', '#91ADEA', '#ffb4b5', '#F2C6C6', '#FDC6C0', '#FEEEE1', '#FFDD99', '#A8DDDD', '#F4F4A0', '#C3DDFF', '#9FDBDB', '#CCFDCC', '#B1F2EC', '#BBEBFA', '#BBEBFA', '#D7ECF3', '#BBE7FF', '#C8CDF0', '#F7C4F5', '#6cd8ba', '#feefb8', '#9BD0F5', '#36A2EB', '#FF6384', '#fe7b85', '#87ada9', '#386087'];
 
     this.preoceedureChartColors = [
       {
@@ -2088,6 +2089,7 @@ export class MarketingComponent implements AfterViewInit {
     $('.target_off').addClass('mat-button-toggle-checked');
     this.showTrend = false;
     $('.customRange').css('display', 'none');
+    this.isCompleteMonth = true;
     if (duration == 'w') {
       this.showGoals = false;
       this.goalCount = 1;
@@ -2276,8 +2278,10 @@ export class MarketingComponent implements AfterViewInit {
       var LastDay = new Date(parseInt(selectedYear), parseInt(selectedMonth) , 0).getDate();
       if(parseInt(selectedStartDate) == 1 && parseInt(selectedEndDate) == LastDay){
         this.showGoals = true;
+        this.isCompleteMonth = true;
       }else{
         this.showGoals = false;
+        this.isCompleteMonth = false;
       }
       this.loadDentist('all');
       // $('.customRange').css('display', 'block');
@@ -2889,16 +2893,16 @@ export class MarketingComponent implements AfterViewInit {
   }
 
   save_account() {
-    var selectedAccounts = JSON.stringify(Object.assign({}, this.selectedAccounts));
+    var selectedAccounts = JSON.stringify(this.selectedAccounts);
     if (this.connectedwith == 'myob') {
-      this.marketingService.mkSaveAcctMyob(this.clinic_id, escape(selectedAccounts)).subscribe((data) => {
+      this.marketingService.mkSaveAcctMyob(this.clinic_id, selectedAccounts).subscribe((data) => {
         if (data.message == 'success') {
           this.load_chart_acq();
           this.fdnewPatientsAcq();
         }
       });
     } else if (this.connectedwith == 'xero') {
-      this.marketingService.saveSelectedCategories(this.clinic_id, escape(selectedAccounts)).subscribe((data) => {
+      this.marketingService.saveSelectedCategories(this.clinic_id, selectedAccounts).subscribe((data) => {
         if (data.message == 'success') {
           this.load_chart_acq();
           this.fdnewPatientsAcq();
