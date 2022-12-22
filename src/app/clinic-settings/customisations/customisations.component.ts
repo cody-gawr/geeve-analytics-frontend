@@ -129,7 +129,7 @@ export class CustomisationsComponent
   public xray_overdue_enable: boolean = true;
   public status_codes_enable: boolean = true;
   public opg_overdue_enable: boolean = true;
-
+  public numberOfRecords = 20;
   constructor(
     private _cookieService: CookieService,
     private customisationsService: CustomisationsService,
@@ -161,6 +161,7 @@ export class CustomisationsComponent
       //health_screen_mtd: [null],
       recall_rate_default: [null],
       hourly_rate_appt_hours: [null],
+      max_chart_bars: [null, Validators.compose([Validators.required])],
     });
     this.getCustomiseSettings();
     this.getclinicHuddleNotifications();
@@ -298,6 +299,7 @@ export class CustomisationsComponent
             this.hourly_rate_appt_hours = res.data.hourly_rate_appt_hours;
             this.lab_code1 = res.data.lab_code1;
             this.lab_code2 = res.data.lab_code2;
+            this.numberOfRecords = res.data.max_chart_bars;
           }
         }
       },(error) => {
@@ -351,7 +353,8 @@ export class CustomisationsComponent
       recall_rate_default: this.recall_rate_default,
       hourly_rate_appt_hours: this.form.value.hourly_rate_appt_hours,
       lab_code1: this.form.value.lab_code1,
-      lab_code2: this.form.value.lab_code2
+      lab_code2: this.form.value.lab_code2,
+      max_chart_bars: this.form.value.max_chart_bars
     };
 
     this.customisationsService.updateCustomiseSettings(data).subscribe(

@@ -246,7 +246,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       }else{
         this.clinic_id = val;
       }
-      // this.getMaxBarLimit();
       if (this.user_type == '4') {
         this.getClinic();
       }
@@ -254,6 +253,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
       // this.getDentists();
        this.isAllClinic = true;
+      this.getMaxBarLimit();
       }else{
        this.isAllClinic = false;
         this.getDentists();
@@ -310,9 +310,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   }
 
   getMaxBarLimit(){
-    this.cliniciananalysisService.getClinicSettings( this.clinic_id).subscribe((data:any) => {
+    let ids = this.clinic_id;
+    ids.sort((a, b) => a - b);
+    this.cliniciananalysisService.getClinicSettings(ids[0]).subscribe((data:any) => {
       if(data.message == 'success'){
-        this.numberOfRecords = data.data.max_bars_multi; 
+        if(data.data.max_chart_bars)
+          this.numberOfRecords = data.data.max_chart_bars; 
       }
     });
   }

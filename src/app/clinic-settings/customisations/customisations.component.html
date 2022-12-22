@@ -226,7 +226,6 @@
       <div class="gray_area">
         <div class="working-days">
           <h4 class="clinic-settings-form-title">Dashboards</h4>
-
           <div class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px"
             fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
 
@@ -282,8 +281,38 @@
                 </select>
               </div>
             </div>
+          </div>
+          <div class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px"
+          fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
+            <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
+              <div class="sa-form-group sa-group">
+                <label>Max Chart Bar
+                  <div class="info-button">
+                    <div class="info-icon-container">
+                      <img [tooltip]="this.constants.tipMaxChartBar" src="../assets/images/info-icon.png"
+                        alt="info-icon" class="info-icon" />
+                    </div>
+                  </div>
+                </label>
 
-
+                <select [formControl]="form.controls['max_chart_bars']" [(ngModel)]="numberOfRecords">
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                  <option value="25">25</option>
+                  <option value="30">30</option>
+                </select>
+              </div>
+            </div>
+            <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
+              <div class="sa-form-group sa-group">
+              </div>
+            </div>
+            <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
+              <div class="sa-form-group sa-group">
+              </div>
+            </div>
           </div>
         </div>
       </div>

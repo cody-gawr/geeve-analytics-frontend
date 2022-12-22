@@ -93,9 +93,9 @@ export class FrontDeskComponent implements AfterViewInit {
         }else{
           this.clinic_id = val;
         }
-        // this.getMaxBarLimit();
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
+          this.getMaxBarLimit();
           this.filterDate("m");
         }else{
           this.isAllClinic = false;
@@ -225,9 +225,12 @@ export class FrontDeskComponent implements AfterViewInit {
 }
 
   getMaxBarLimit(){
-    this.clinicianAnalysisService.getClinicSettings( this.clinic_id).subscribe((data:any) => {
+    let ids = this.clinic_id;
+    ids.sort((a, b) => a - b);
+    this.clinicianAnalysisService.getClinicSettings(ids[0]).subscribe((data:any) => {
       if(data.message == 'success'){
-        this.numberOfRecords = data.data.max_bars_multi; 
+        if(data.data.max_chart_bars)
+          this.numberOfRecords = data.data.max_chart_bars; 
       }
     });
   }

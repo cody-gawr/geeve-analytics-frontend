@@ -358,6 +358,11 @@ export class AppConstants {
         info: 'By default, new patients are associated with the provider listed as the main provider of that patient. This setting allows you to calculate new patients based on the provider who performs the first treatment.',
         direction: 'right'
     };
+    public tipMaxChartBar: ITooltipData = {
+        title: 'Max Chart Bar',
+        info: 'By default, Bars of chart is set to 20 you can change here the limit of bars that you want to see on the chart in case of multi-clinic.',
+        direction: 'right'
+    };
     public tipCustomisationsRecallRate: ITooltipData = {
         title: 'Recall Rate',
         info: 'By default, recall prebooking rate is calculated without the need for recall codes being assigned to the future appointment. By changing this to status code, we will count any follow-up appointment that has a recall status code as a valid recall.',

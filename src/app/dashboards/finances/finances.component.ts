@@ -2200,6 +2200,7 @@ export class FinancesComponent implements AfterViewInit {
         this.productionChartDatares = [];
         var totalPer = 0;
         if(data.data){
+          data.data.sort((a, b)=> b.prod_per_clinician - a.prod_per_clinician);
           data.data.forEach(res => {
             if(this.showClinicByclinic == true){
               if (res.production > 0) {
@@ -2283,6 +2284,7 @@ export class FinancesComponent implements AfterViewInit {
           this.finTotalDiscountsLoader = false;
           return;
         }
+        data.data.sort((a, b)=> b.discounts - a.discounts);
         data.data.forEach(res => {
           if (res.total != 0) {
             this.clinicsName.push(res.clinic_name);

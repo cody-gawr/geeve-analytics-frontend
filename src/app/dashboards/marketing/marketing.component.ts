@@ -2480,8 +2480,12 @@ export class MarketingComponent implements AfterViewInit {
               else
                 this.visitsChartTrendLabels1.push(res.year);
             });
+            let bgColor = [];
+            this.visitsChartTrendLabels1.forEach((ele, index) => {
+              bgColor.push(index % 2 == 0 ? this.chartService.colors.even : this.chartService.colors.odd);
+            })
             this.visitsChartTrend[0]['data'] = this.visitsChartTrend1;
-    
+            this.visitsChartTrend[0]['backgroundColor'] = bgColor;
             this.visitsChartTrendLabels = this.visitsChartTrendLabels1;
         }
         
@@ -2620,9 +2624,14 @@ export class MarketingComponent implements AfterViewInit {
             if (this.trendValue == 'c')
               this.newPatientsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
             else
-              this.newPatientsChartTrendLabels1.push(res.year);
+                this.newPatientsChartTrendLabels1.push(res.year);
           });
+          let bgColor = [];
+          this.newPatientsChartTrendLabels1.forEach((ele, index) => {
+            bgColor.push(index % 2 == 0 ? this.chartService.colors.even : this.chartService.colors.odd);
+          })
           this.newPatientsChartTrend[0]['data'] = this.newPatientsChartTrend1;
+          this.newPatientsChartTrend[0]['backgroundColor'] = bgColor;
           this.newPatientsChartTrendLabels = this.newPatientsChartTrendLabels1;
           // this.fdnewPatientsAcqTrend();
         }
@@ -2697,7 +2706,12 @@ export class MarketingComponent implements AfterViewInit {
             else
               this.activePatientsChartTrendLabels1.push(res.year);
           });
+          let bgColor = [];
+          this.activePatientsChartTrendLabels1.forEach((ele, index) => {
+            bgColor.push(index % 2 == 0 ? this.chartService.colors.even : this.chartService.colors.odd);
+          })
           this.activePatientsChartTrend[0]['data'] = this.activePatientsChartTrend1;
+          this.activePatientsChartTrend[0]['backgroundColor'] = bgColor;
           this.activePatientsChartTrendLabels = this.activePatientsChartTrendLabels1;
         // this.fdnewPatientsAcqTrend();
         }

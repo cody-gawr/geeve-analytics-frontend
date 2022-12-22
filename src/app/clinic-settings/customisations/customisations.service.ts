@@ -58,7 +58,7 @@ export class CustomisationsService {
     formData.append("hourly_rate_appt_hours", data.hourly_rate_appt_hours);
     formData.append("lab_code1", data.lab_code1);
     formData.append("lab_code2", data.lab_code2);
-
+    formData.append("max_chart_bars", data.max_chart_bars);
 
     return this.http
       .post(this.apiUrl + "/clinics/clinicSettingsSave", formData, header)

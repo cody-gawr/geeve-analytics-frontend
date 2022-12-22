@@ -255,7 +255,8 @@ export class ClinicSettingsService {
             "trial_end_date": null,
             "utility_ver": "",
             "connectedwith": "",
-            "consultant": ""
+            "consultant": "",
+            "max_chart_bars": 20
         }
     };
 
@@ -264,7 +265,6 @@ export class ClinicSettingsService {
 
     setClincsSetting(data){
         this.clincsSetting.next(data);
-        this.clincsSetting.complete();
     }
 
     private data1 = {

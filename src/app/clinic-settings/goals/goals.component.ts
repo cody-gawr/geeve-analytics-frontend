@@ -176,7 +176,11 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
 
 getGoalsForTabsClinic(allGoals) {
   this.tabs = [];
-  var temp = {};
+  var temp = {
+    'd_id' : 0,
+    'd_name' : 0,
+    'charts' : [],
+  };
   this.goalsData = {'year': this.selectedYear, 'goals' : {} };
   allGoals.forEach((res)=> {
     temp = {
