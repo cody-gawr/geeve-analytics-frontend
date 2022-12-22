@@ -93,7 +93,7 @@
                   </div>
                 </div>
               </ng-container>
-              <ng-container *ngIf="!netprofitstats && !multipleClinicsSelected">
+              <ng-container *ngIf="!netprofitstats && !multipleClinicsSelected && (xeroConnect || myobConnect)">
                 <div class="stats-icon">
                   <img src="../assets/images/net-profit.png" alt />
                   <i class="fas fa-chart-bar"></i>
@@ -105,7 +105,7 @@
                   </h1> 
                 </div>
               </ng-container>
-                <div *ngIf="(!xeroConnect && !myobConnect) && multipleClinicsSelected===false && netprofitstats" class="w-100">
+                <div *ngIf="(!xeroConnect && !myobConnect) && multipleClinicsSelected===false" class="w-100">
                   <div class="sa_nodata_div no-found-data ">
                     <p>Please ensure your Xero/MYOB account is connected</p>
                   </div>
@@ -115,7 +115,7 @@
                     <p>Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
                   </div>
                 </div>
-                <div *ngIf="!multipleClinicsSelected && netprofitstats && !isCompleteMonth" class="w-100">
+                <div *ngIf="!multipleClinicsSelected && (xeroConnect || myobConnect) && netprofitstats && !isCompleteMonth" class="w-100">
                   <div class="sa_nodata_div no-found-data ">
                     <p>Please select a date range consisting of full months to view Accounting charts</p>
                   </div>
@@ -180,7 +180,7 @@
                   </div>
                 </div>
               </ng-container>
-              <ng-container *ngIf="!netprofitpercentstats && !multipleClinicsSelected">
+              <ng-container *ngIf="!netprofitpercentstats && !multipleClinicsSelected && (xeroConnect || myobConnect)">
                 <div class="stats-icon">
                   <img src="../assets/images/net-profit-PMS.png" alt />
                   <i class="fas fa-chart-bar"></i>
@@ -192,7 +192,7 @@
                   </h1>
                 </div>
               </ng-container>
-                <div *ngIf="(!xeroConnect && !myobConnect) && multipleClinicsSelected===false && netprofitpercentstats" class="w-100">
+                <div *ngIf="(!xeroConnect && !myobConnect) && multipleClinicsSelected===false" class="w-100">
                   <div class="sa_nodata_div no-found-data ">
                     <p>Please ensure your Xero/MYOB account is connected</p>
                   </div>
@@ -202,7 +202,7 @@
                     <p>Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
                   </div>
                 </div>
-                <div *ngIf="!multipleClinicsSelected && netprofitpercentstats && !isCompleteMonth" class="w-100">
+                <div *ngIf="!multipleClinicsSelected && (xeroConnect || myobConnect) && netprofitpercentstats && !isCompleteMonth" class="w-100">
                   <div class="sa_nodata_div no-found-data ">
                     <p>Please select a date range consisting of full months to view Accounting charts</p>
                   </div>
@@ -263,7 +263,7 @@ expenses_card custom_ngx_cw01">
                             <img class="loader_ico" src="../assets/images/720.gif">
                             <div class="loader-text">Calculating...</div>
                           </div>
-                          <div *ngIf="((xeroConnect || myobConnect) && !categoryExpensesError && multipleClinicsSelected===false && categoryExpensesLoader == false)">
+                          <div *ngIf="((xeroConnect || myobConnect) && !categoryExpensesError && multipleClinicsSelected===false && categoryExpensesLoader == false && isCompleteMonth)">
                             <ngx-charts-pie-chart fxFlexAlign="center"
                               *ngIf="pieChartLabels && pieChartLabels.length > 0"
                               class="chart-container sa_chart_custom" [view]="[500, 320]" [scheme]="colorScheme"
@@ -273,25 +273,28 @@ expenses_card custom_ngx_cw01">
                               [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
                            
                           </div>
-                          <div *ngIf="((xeroConnect || myobConnect) && pieChartLabels && pieChartLabels.length <= 0 && categoryExpensesLoader == false && multipleClinicsSelected===false)"
+                          <div *ngIf="((xeroConnect || myobConnect) && pieChartLabels && pieChartLabels.length <= 0 && categoryExpensesLoader == false && multipleClinicsSelected===false && isCompleteMonth)"
                           class="no-data-placeholder">
                           <div class="sa_nodata_div">
                           </div>
                           <p class="chart-placeholder-text">No expenses found for the selected period</p>
                         </div>
 
-                          
                           <div *ngIf="(!xeroConnect && !myobConnect) && multipleClinicsSelected===false" class="w-100">
                             <div class="sa_nodata_div no-found-data ">
                               <p>Please ensure your Xero/MYOB account is connected</p>
                             </div>
                           </div>
-                            <div *ngIf="multipleClinicsSelected===true" class="w-100">
-                              <div class="sa_nodata_div no-found-data ">
-                                <p>Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
-                              </div>
+                          <div *ngIf="multipleClinicsSelected===true" class="w-100">
+                            <div class="sa_nodata_div no-found-data ">
+                              <p>Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
                             </div>
-
+                          </div>
+                          <div *ngIf="!isCompleteMonth && (xeroConnect || myobConnect) && !categoryExpensesLoader && !multipleClinicsSelected" class="w-100">
+                            <div class="sa_nodata_div no-found-data ">
+                              <p>Please select a date range consisting of full months to view Accounting charts</p>
+                            </div>
+                          </div>
 
                         </div>
                         <div class="" fxFlex.lg="35" fxFlex.xl="35" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"

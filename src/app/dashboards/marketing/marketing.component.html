@@ -585,7 +585,7 @@
                                         </div>
                                         <p class="chart-placeholder-text">Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
                                     </div>
-                                    <div *ngIf="!isCompleteMonth && !multipleClinicsSelected && !fdnewPatientsAcqLoader && !showTrend">
+                                    <div *ngIf="!isCompleteMonth && (xeroConnect || myobConnect) && !multipleClinicsSelected && !fdnewPatientsAcqLoader && !showTrend">
                                         <div class="sa_nodata_div">
                                         </div>
                                         <p class="chart-placeholder-text">Please select a date range consisting of full months to view Accounting charts</p>
