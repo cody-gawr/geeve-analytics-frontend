@@ -360,7 +360,7 @@ export class AppConstants {
     };
     public tipMaxChartBar: ITooltipData = {
         title: 'Max Chart Bar',
-        info: 'By default, Bars of chart is set to 20 you can change here the limit of bars that you want to see on the chart in case of multi-clinic.',
+        info: 'This setting controls the maximum number of bars shown on bar charts for certain multi clinic selections.',
         direction: 'right'
     };
     public tipCustomisationsRecallRate: ITooltipData = {

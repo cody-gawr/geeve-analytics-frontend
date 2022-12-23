@@ -282,7 +282,7 @@
               </div>
             </div>
           </div>
-          <div class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px"
+          <div *ngIf="visibleMaxBarSetting" class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px"
           fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
             <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
               <div class="sa-form-group sa-group">

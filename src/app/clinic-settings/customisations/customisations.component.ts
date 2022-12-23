@@ -27,6 +27,7 @@ import { ClinicianAnalysisService } from "../../dashboards/cliniciananalysis/cli
 import Swal from "sweetalert2";
 import { AppConstants } from "../../app.constants";
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { HeaderService } from "../../layouts/full/header/header.service";
 
 @Component({
   selector: 'app-dialog-setColors-dialog',
@@ -130,6 +131,7 @@ export class CustomisationsComponent
   public status_codes_enable: boolean = true;
   public opg_overdue_enable: boolean = true;
   public numberOfRecords = 20;
+  public visibleMaxBarSetting: boolean;
   constructor(
     private _cookieService: CookieService,
     private customisationsService: CustomisationsService,
@@ -138,7 +140,8 @@ export class CustomisationsComponent
     private toastr: ToastrService,
     public dialog: MatDialog,
     public constants: AppConstants,
-    private clinicSettingsService: ClinicSettingsService
+    private clinicSettingsService: ClinicSettingsService,
+    private headerService: HeaderService
   ) {
     super();
     // console.log('test ',this.clinic_id$.value)
@@ -165,6 +168,7 @@ export class CustomisationsComponent
     });
     this.getCustomiseSettings();
     this.getclinicHuddleNotifications();
+    this.setVisibilityOfMaxBar();
   }
 
   ngAfterViewInit() { }
@@ -256,6 +260,12 @@ export class CustomisationsComponent
     );
     // console.log("huddles", huddles);
     // console.log("dashboard", dashboard);
+  }
+
+  setVisibilityOfMaxBar(){
+    this.headerService.getClinic.subscribe(res => {
+      this.visibleMaxBarSetting = res.data.length > 1;
+    });
   }
 
   getclinicHuddleNotifications() {
