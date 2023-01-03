@@ -1339,7 +1339,7 @@ if(this._cookieService.get("user_type") == '4'){
     ];
 
 
-  this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysis(this.clinic_id,this.startDate,this.endDate,this.user_type,this.childid).subscribe((data) => {   
+  this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysis(this.clinic_id,this.startDate,this.endDate,this.user_type,this.childid).subscribe((res) => {   
         this.buildChartLoader =false;
         this.ItemsPredictorAnalysisGenMulti = [];
         this.showmulticlinicGenPredictor = false;
@@ -1357,13 +1357,13 @@ if(this._cookieService.get("user_type") == '4'){
         this.stackedChartLabels =[];
         this.stackedChartDataMax = 0;
         this.paGeneralData = [];
-       if(data.body.message == 'success'){ 
-        if(data && data.body.data && data.body.data.length <=0) {
+       if(res.status == 200){ 
+        if(res && res.body.data && res.body.data.length <=0) {
 
         }else {
           if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
             this.showmulticlinicGenPredictor = true;
-            data.body.data.forEach(res => {
+            res.body.data.forEach(res => {
               res.proval.forEach((result, key) => {
                 if (typeof (this.ItemsPredictorAnalysisGenMulti[key]) == 'undefined') {
                   this.ItemsPredictorAnalysisGenMulti[key] = { data: [], label: '' };
@@ -1379,7 +1379,7 @@ if(this._cookieService.get("user_type") == '4'){
             });
           }else{
                 var i=0
-          data && data.body.data && data.body.data.length && data.body.data.forEach(res => {
+          res && res.body.data && res.body.data.length && res.body.data.forEach(res => {
               if(res.provider_name != null){
                 if( (parseInt(res.crowns) + parseInt(res.splints) + parseInt(res.rct) + parseInt(res.perio) + parseInt(res.extract)  + parseInt(res.ss_crowns)  + parseInt(res.comp_veneers)  + parseInt(res.imp_crowns) ) > 0){
               
@@ -1501,7 +1501,7 @@ if(this._cookieService.get("user_type") == '4'){
       {data: [], label: 'Endo Re-treat' },  
       {data: [], label: 'Veneers (indirect)' } 
         ];
-  this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysisSpecial(this.clinic_id,this.startDate,this.endDate,this.user_type,this.childid).subscribe((data) => {   
+  this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysisSpecial(this.clinic_id,this.startDate,this.endDate,this.user_type,this.childid).subscribe((res) => {   
         this.ItemsPredictorAnalysisSpecialStatus =false;
         this.predictorAnalysisSpecialLoader = false;
         this.predictorAnalysis1 = [];
@@ -1517,12 +1517,12 @@ if(this._cookieService.get("user_type") == '4'){
         this.paSpecialistlData = [];
         this.ItemsPredictorAnalysisMulti = [];
         this.ItemsPredictorAnalysisLabels = [];
-       if(data.body.message == 'success'){   
-        if(data && data.body.data && data.body.data.length <= 0) {
+       if(res.status == 200){   
+        if(res && res.body.data && res.body.data.length <= 0) {
         } else {
           if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
             this.showmulticlinicItemsPredictor = true;
-            data.body.data.forEach(res => {
+            res.body.data.forEach(res => {
               res.proval.forEach((result, key) => {
                 if (typeof (this.ItemsPredictorAnalysisMulti[key]) == 'undefined') {
                   this.ItemsPredictorAnalysisMulti[key] = { data: [], label: '' };
@@ -1544,7 +1544,7 @@ if(this._cookieService.get("user_type") == '4'){
           }else{
             var i=0
             var currentUser = 0;
-            data && data.body.data && data.body.data.length && data.body.data.forEach(res => {            
+            res && res.body.data && res.body.data.length && res.body.data.forEach(res => {            
               if(res.provider_name != null){
                 if(parseInt(res.imp_surg) + parseInt(res.ortho_fix) + parseInt(res.sleep) + parseInt(res.ortho_align) + parseInt(res.perio_surg) + parseInt(res.veneers_ind)> 0){
   
@@ -1634,26 +1634,26 @@ if(this._cookieService.get("user_type") == '4'){
     this.buildChartDentistLoader = true;
     var user_id;
     var clinic_id;
-  this.clinicianproceeduresService.ItemsPredictorAnalysisDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
+  this.clinicianproceeduresService.ItemsPredictorAnalysisDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((res) => {
         this.buildChartDentistLoader = false;
         this.itemPredictedChartDataMax = 0;
-       if(data.body.message == 'success' && data.body.data && data.body.data.length){
+       if(res.status == 200 && res.body.data && res.body.data.length){
           this.itemPredictedChartData1 = [];
            this.itemPredictedChartLabels=[];
           var temp=[];
-          temp['Crowns'] = data.body.data[0].crowns;
+          temp['Crowns'] = res.body.data[0].crowns;
           
-          temp['Splints'] = data.body.data[0].splints;
+          temp['Splints'] = res.body.data[0].splints;
          
-          temp['Root Canals'] = data.body.data[0].rct;
+          temp['Root Canals'] = res.body.data[0].rct;
          
-          temp['Perio'] = data.body.data[0].perio;
+          temp['Perio'] = res.body.data[0].perio;
          
-          temp['Surgical Extractions'] = data.body.data[0].extract;
-          temp['Stainless Steel Crowns'] = data.body.data[0].ss_crowns;
-          temp['Composite Veneers'] = data.body.data[0].comp_veneers;
-          temp['Implant Crowns'] = data.body.data[0].imp_crowns;
-          temp['Whitening'] = data.body.data[0].whitening;
+          temp['Surgical Extractions'] = res.body.data[0].extract;
+          temp['Stainless Steel Crowns'] = res.body.data[0].ss_crowns;
+          temp['Composite Veneers'] = res.body.data[0].comp_veneers;
+          temp['Implant Crowns'] = res.body.data[0].imp_crowns;
+          temp['Whitening'] = res.body.data[0].whitening;
           var tupleArray=[];
    for (var key in temp) tupleArray.push([key, temp[key]]);
     tupleArray.sort(function (a, b) { return b[1] - a[1] });
@@ -1663,7 +1663,7 @@ if(this._cookieService.get("user_type") == '4'){
         this.itemPredictedChartLabels.push(res[0]);
       });
           this.itemPredictedChartData[0]['data'] = this.itemPredictedChartData1;
-          this.itemPredictedChartData[0]['label'] = 'DentistMode-'+data.body.data[0].provider_name;
+          this.itemPredictedChartData[0]['label'] = 'DentistMode-'+res.body.data[0].provider_name;
           //this.itemPredictedChartLabels= ['Crowns','Splints','Root Canals','Perio','Surgical Extractions'];
 
           this.itemPredictedChartDataMax = Math.max(...this.itemPredictedChartData[0]['data']);         
@@ -1686,20 +1686,20 @@ if(this._cookieService.get("user_type") == '4'){
       return false;
     }
     this.procedureSpecialDentistLoader = true;
-    this.clinicianproceeduresService.ItemsPredictorAnalysisSpecialistDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
+    this.clinicianproceeduresService.ItemsPredictorAnalysisSpecialistDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((res) => {
       this.procedureSpecialDentistLoader = false;
       this.procedureSpecialDataMax = 0;
-      if(data.body.message == 'success' && data.body.data && data.body.data.length) {
+      if(res.status == 200 && res.body.data && res.body.data.length) {
         this.procedureSpecialTemp = [];
         this.procedureSpecialLabels=[];
         var temp=[];
-        temp['Implant Surg'] = data.body.data[0].imp_surg;
-        temp['Braces'] = data.body.data[0].ortho_fix;
-        temp['Aligners'] = data.body.data[0].ortho_align;
-        temp['MAS'] = data.body.data[0].sleep;
-        temp['Perio Surg'] = data.body.data[0].perio_surg;
-        temp['Endo Re-treat'] = data.body.data[0].endo_retreat;
-        temp['Veneers (indirect)'] = data.body.data[0].veneers_ind;
+        temp['Implant Surg'] = res.body.data[0].imp_surg;
+        temp['Braces'] = res.body.data[0].ortho_fix;
+        temp['Aligners'] = res.body.data[0].ortho_align;
+        temp['MAS'] = res.body.data[0].sleep;
+        temp['Perio Surg'] = res.body.data[0].perio_surg;
+        temp['Endo Re-treat'] = res.body.data[0].endo_retreat;
+        temp['Veneers (indirect)'] = res.body.data[0].veneers_ind;
         var tupleArray=[];
         for (var key in temp) tupleArray.push([key, temp[key]]);
         tupleArray.sort(function (a, b) { return b[1] - a[1] });
@@ -1708,7 +1708,7 @@ if(this._cookieService.get("user_type") == '4'){
           this.procedureSpecialLabels.push(res[0]);
         });
         this.itemPredictedChartSpecailData[0]['data'] = this.procedureSpecialTemp;
-        this.itemPredictedChartSpecailData[0]['label'] = 'DentistMode-'+data.body.data[0].provider_name;
+        this.itemPredictedChartSpecailData[0]['label'] = 'DentistMode-'+res.body.data[0].provider_name;
         this.procedureSpecialDataMax = Math.max(...this.itemPredictedChartData[0]['data']);         
       }
     }, error => {
@@ -1775,7 +1775,7 @@ public PRcolors;
     if(this.clinic_id == null || this.clinic_id == 'null')
       return true;
     this.buildChartPredictorLoader = true;
-    this.clinicianproceeduresService.PredictorRatio(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
+    this.clinicianproceeduresService.PredictorRatio(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((res) => {
       this.buildChartPredictorLoader = false;
       this.predictedstackedChartData1 = [{data: [], label: 'Indirect Restorations'},{data: [], label: 'Large Direct Restorations' } ];
       this.predictedstackedChartData2 = [{data: [], label: 'RCT'},{data: [], label: 'Extractions' } ];
@@ -1807,14 +1807,14 @@ public PRcolors;
       this.ratio5 =0;
       this.ratio6 =0;
 
-      if(data.body.message == 'success'){        
-        this.predictedstackedChartLabels1AvrPre = data.total_ta[0];
-        this.predictedstackedChartLabels2AvrPre = data.total_ta[1];
-        this.predictedstackedChartLabels3AvrPre = data.total_ta[2]; 
+      if(res.status == 200){        
+        this.predictedstackedChartLabels1AvrPre = res.body.total_ta[0];
+        this.predictedstackedChartLabels2AvrPre = res.body.total_ta[1];
+        this.predictedstackedChartLabels3AvrPre = res.body.total_ta[2]; 
 
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showmulticlinicPredictor = true;
-          data.data_crown_large.forEach(res => {
+          res.body.data.data_crown_large.forEach(res => {
             res.proval.forEach((result, key) => {
               if (typeof (this.predictedMulti1[key]) == 'undefined') {
                 this.predictedMulti1[key] = { data: [], label: '' };
@@ -1835,7 +1835,7 @@ public PRcolors;
              this.multifulratio1 = this.ratio1 +':'+ this.ratio2;
              this.predictorLabels1.push(res.clinic_name);
           });
-          data.data_rct_ext.forEach(res => {
+          res.body.data.data_rct_ext.forEach(res => {
             res.proval.forEach((result, key) => {
               if (typeof (this.predictedMulti2[key]) == 'undefined') {
                 this.predictedMulti2[key] = { data: [], label: '' };
@@ -1856,7 +1856,7 @@ public PRcolors;
              this.multifulratio2 = this.ratio3 +':'+ this.ratio4;
              this.predictorLabels2.push(res.clinic_name);
           });
-          data.data_rctsta_comp.forEach(res => {
+          res.body.data.data_rctsta_comp.forEach(res => {
             res.proval.forEach((result, key) => {
               if (typeof (this.predictedMulti3[key]) == 'undefined') {
                 this.predictedMulti3[key] = { data: [], label: '' };
@@ -1878,7 +1878,7 @@ public PRcolors;
              this.predictorLabels3.push(res.clinic_name);
           });          
         }else{
-          data.body.data.forEach((res,key) => {
+          res.body.data.forEach((res,key) => {
             var provider = res.provider_name;
             if(!provider)
               provider = '';
@@ -1964,7 +1964,7 @@ public predictedstackedChartLoader: boolean = false;
       return false;
     }
     this.predictedstackedChartLoader = true;
-    this.clinicianproceeduresService.PredictorRatioDentist(this.selectedDentist,this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+    this.clinicianproceeduresService.PredictorRatioDentist(this.selectedDentist,this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((res) => {
       this.predictedstackedChartLoader = false;
       this.predictedstackedChartData1 = [{data: [], label: 'Indirect Restorations'},{data: [], label: 'Large Direct Restorations' } ];
       this.predictedstackedChartData2 = [{data: [], label: 'RCT'},{data: [], label: 'Extractions' } ];
@@ -1975,11 +1975,11 @@ public predictedstackedChartLoader: boolean = false;
       this.predictedstackedChartLabels1Avr = 0;
       this.predictedstackedChartLabels2Avr = 0;
       this.predictedstackedChartLabels3Avr = 0;    
-      if(data.body.message == 'success'){    
-        this.predictedstackedChartLabels1AvrPre = data.total_ta[0];
-        this.predictedstackedChartLabels2AvrPre = data.total_ta[1];
-        this.predictedstackedChartLabels3AvrPre = data.total_ta[2];    
-        data.body.data.forEach((res,key) => {
+      if(res.status == 200){    
+        this.predictedstackedChartLabels1AvrPre = res.body.total_ta[0];
+        this.predictedstackedChartLabels2AvrPre = res.body.total_ta[1];
+        this.predictedstackedChartLabels3AvrPre = res.body.total_ta[2];    
+        res.body.data.forEach((res,key) => {
           var provider = res.provider_name;
           if(!provider)
             provider = '';
@@ -2022,15 +2022,15 @@ public buildChartProceedureLoader:any;
       return false;
     }
     this.buildChartProceedureLoader =true;          
-    this.clinic_id && this.clinicianproceeduresService.ClinicianProceedure( this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
-      if(data.body.message == 'success'){
+    this.clinic_id && this.clinicianproceeduresService.ClinicianProceedure( this.clinic_id,this.startDate,this.endDate).subscribe((res) => {
+      if(res.status == 200){
         this.buildChartProceedureLoader =false;
         this.proceedureChartLabels1 = [];
         this.proceedureChartData1 =[];
         this.proceedureChartLabels =[];
-        data.body.data.forEach(res => {
-          if(res.body.total > 0 ) {
-            this.proceedureChartData1.push(Math.round(res.body.total));
+        res.body.data.forEach(res => {
+          if(res.total > 0 ) {
+            this.proceedureChartData1.push(Math.round(res.total));
             if(res.item_name != null){
               this.proceedureChartLabels1.push(res.item_name);
             } else {
@@ -2072,13 +2072,13 @@ public buildChartProceedureDentistLoader:any;
   private buildChartProceedureDentist() {
     this.buildChartProceedureDentistLoader =true;
    
-  this.clinic_id && this.clinicianproceeduresService.ClinicianProceedureDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
-    if (data.body.message == 'success' && data.body.data){
+  this.clinic_id && this.clinicianproceeduresService.ClinicianProceedureDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((res) => {
+    if (res.status == 200 && res.body.data){
         this.buildChartProceedureDentistLoader =false;
         this.proceedureChartData1 = [];
         this.proceedureChartLabels1 = [];
-         data.body.data.forEach(res => {
-           this.proceedureChartData1.push(Math.round(res.body.total));
+         res.body.data.forEach(res => {
+           this.proceedureChartData1.push(Math.round(res.total));
            if(res.item_name != null){
               this.proceedureChartLabels1.push(res.item_name);
             } else {
@@ -2113,7 +2113,7 @@ public doughnutChartColors1;
            this.pieChartLabelsres = [];
           this.pieChartLabelsres3=[];
           this.clinicianReferralLoader = true;
-    this.clinic_id && this.clinicianproceeduresService.ClinicianReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+    this.clinic_id && this.clinicianproceeduresService.ClinicianReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((res) => {
         this.clinicianReferralLoader = false;
         this.pieChartDatares1 = [];
         this.pieChartDatares2 = [];
@@ -2137,9 +2137,9 @@ public doughnutChartColors1;
         this.pieChartInternalPrevTooltip = 'down';
         this.pieChartExternalPrevTooltip = 'down';
         this.pieChartCombinedPrevTooltip = 'down';
-      if (data.body.message == 'success' && data.body.data && data.body.data.length) {
+      if (res.status == 200 && res.body.data && res.body.data.length) {
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          data.body.data.forEach(res => {
+          res.body.data.forEach(res => {
             res.val.forEach((result, key) => {
               if(result.internal > 0) {
                   this.pieChartDatares1.push(result.internal);
@@ -2161,7 +2161,7 @@ public doughnutChartColors1;
           });
         }else{
           var i=0;
-          data.body.data.forEach(res => {
+          res.body.data.forEach(res => {
             if(res.internal > 0) {
             this.pieChartDatares1.push(res.internal);
             this.pieChartLabelsres1.push(res.treat_item_name);
@@ -2170,23 +2170,23 @@ public doughnutChartColors1;
             this.pieChartDatares2.push(res.external);
             this.pieChartLabelsres2.push(res.treat_item_name);
           }
-          if(res.body.total>0) {
-            this.pieChartDatares3.push(res.body.total);
+          if(res.total>0) {
+            this.pieChartDatares3.push(res.total);
             this.pieChartLabelsres3.push(res.treat_item_name);
 
           }
             this.pieChartInternalTotal = this.pieChartInternalTotal + parseInt(res.internal);
             this.pieChartExternalTotal = this.pieChartExternalTotal + parseInt(res.external);
-            this.pieChartCombinedTotal = this.pieChartCombinedTotal + parseInt(res.body.total);
+            this.pieChartCombinedTotal = this.pieChartCombinedTotal + parseInt(res.total);
             if(res.label != 'Anonymous')
               this.crKey= i;
               i++;
             
           });
 
-          this.pieChartInternalPrevTotal = this.pieChartInternalPrevTotal + parseInt(data.total_ta.internal);
-          this.pieChartExternalPrevTotal = this.pieChartExternalPrevTotal + parseInt(data.total_ta.external);
-          this.pieChartCombinedPrevTotal = this.pieChartCombinedPrevTotal + parseInt(data.total_ta.total);
+          this.pieChartInternalPrevTotal = this.pieChartInternalPrevTotal + parseInt(res.body.total_ta.internal);
+          this.pieChartExternalPrevTotal = this.pieChartExternalPrevTotal + parseInt(res.body.total_ta.external);
+          this.pieChartCombinedPrevTotal = this.pieChartCombinedPrevTotal + parseInt(res.body.total_ta.total);
         }
         
         if(this.pieChartInternalTotal>=this.pieChartInternalPrevTotal)
@@ -2237,7 +2237,7 @@ public doughnutChartColors1;
       this.pieChartExternalPrevTooltip = 'down';
       this.pieChartCombinedPrevTooltip = 'down';
       this.clinicianReferralLoader = true;
- this.clinic_id && this.clinicianproceeduresService.ClinicianReferralDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+ this.clinic_id && this.clinicianproceeduresService.ClinicianReferralDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((res) => {
       this.clinicianReferralLoader = false;
       this.pieChartLabelsres1 = [];
       this.pieChartLabelsres2 = [];
@@ -2252,10 +2252,10 @@ public doughnutChartColors1;
       this.pieChartDataMax1 = 0;
       this.pieChartDataMax2 = 0;
       this.pieChartDataMax3 = 0;
-       if(data.body.message == 'success' && data.body.data.length){
+       if(res.status == 200 && res.body.data.length){
      
-        data.body.data.forEach(res => {
-          if(res.body.total>0) {
+        res.body.data.forEach(res => {
+          if(res.total>0) {
               if(res.internal>0) {
                  this.pieChartDatares1.push(res.internal);
                  this.pieChartLabelsres1.push(res.treat_item_name);
@@ -2265,19 +2265,19 @@ public doughnutChartColors1;
                  this.pieChartLabelsres2.push(res.treat_item_name);
 
                }
-               if(res.body.total>0) {
-                 this.pieChartDatares3.push(res.body.total);
+               if(res.total>0) {
+                 this.pieChartDatares3.push(res.total);
                  this.pieChartLabelsres3.push(res.treat_item_name);
 
                }
                this.pieChartInternalTotal = this.pieChartInternalTotal + parseInt(res.internal);
                this.pieChartExternalTotal = this.pieChartExternalTotal + parseInt(res.external);
-               this.pieChartCombinedTotal = this.pieChartCombinedTotal + parseInt(res.body.total);
+               this.pieChartCombinedTotal = this.pieChartCombinedTotal + parseInt(res.total);
             }
        });
-      this.pieChartInternalPrevTotal = this.pieChartInternalPrevTotal + parseInt(data.total_ta.internal);
-      this.pieChartExternalPrevTotal = this.pieChartExternalPrevTotal + parseInt(data.total_ta.external);
-      this.pieChartCombinedPrevTotal = this.pieChartCombinedPrevTotal + parseInt(data.total_ta.total);
+      this.pieChartInternalPrevTotal = this.pieChartInternalPrevTotal + parseInt(res.body.total_ta.internal);
+      this.pieChartExternalPrevTotal = this.pieChartExternalPrevTotal + parseInt(res.body.total_ta.external);
+      this.pieChartCombinedPrevTotal = this.pieChartCombinedPrevTotal + parseInt(res.body.total_ta.total);
 
          if(this.pieChartInternalTotal>=this.pieChartInternalPrevTotal)
           this.pieChartInternalPrevTooltip = 'up'
@@ -2537,7 +2537,7 @@ public currentText;
   // Get Dentist
     getDentists() {
       this.clinic_id && this.dentistService.currentDentistList.subscribe((res) => {
-           if(res.body.message == 'success'){
+           if(res.status == 200){
               this.dentists= res.body.data;
               this.dentistCount= res.body.data.length;
            }
@@ -2639,7 +2639,7 @@ toggleFilter(val) {
 //Get Clinics List of all clinics
  private getClinics() { 
       this.headerService.getClinics().subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
         this.clinicsData = res.body.data;
        }
     }, error => {
@@ -2710,7 +2710,7 @@ toggleChangeProcess(){
       {data: [], label: 'Implant Crowns'},
       {data: [], label: 'Whitening'}
     ];
-    this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysisTrendDentist(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
+    this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysisTrendDentist(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((res) => {
        this.stackedChartData1 =[];
       this.stackedChartData2 =[];
       this.stackedChartData3 =[];
@@ -2724,10 +2724,10 @@ toggleChangeProcess(){
       this.stackedChartDataMax = 0;
       this.buildChartDentistLoader = false;
       this.Apirequest = this.Apirequest -1;
-       if(data.body.message == 'success' && data.body.data){
-         if(data.body.data.length <=0) {
+       if(res.status == 200 && res.body.data){
+         if(res.body.data.length <=0) {
                 }else {
-                data.body.data.forEach(res => {
+                res.body.data.forEach(res => {
                    this.stackedChartData1.push(res.crowns);
                    this.stackedChartData2.push(res.splints);
                    this.stackedChartData3.push(res.rct);
@@ -2786,7 +2786,7 @@ toggleChangeProcess(){
   predictorSpecialTrendSingle(){
       this.buildChartDentistSpecLoader = true;      
 
-    this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysisSpecialTrendDentist(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
+    this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysisSpecialTrendDentist(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((res) => {
       this.stackedChartDataSpecTrend1 = [];
       this.stackedChartDataSpecTrend2 = [];
       this.stackedChartDataSpecTrend3 = [];
@@ -2808,10 +2808,10 @@ toggleChangeProcess(){
         {data: [], label: 'Veneers (indirect)' } 
       ];
       this.Apirequest = this.Apirequest -1;
-       if(data.body.message == 'success' && data.body.data){
-         if(data.body.data.length <=0) {
+       if(res.status == 200 && res.body.data){
+         if(res.body.data.length <=0) {
                 }else {
-                data.body.data.forEach(res => {
+                res.body.data.forEach(res => {
                   this.stackedChartDataSpecTrend1.push(res.imp_surg);
                   this.stackedChartDataSpecTrend2.push(res.ortho_fix);
                   this.stackedChartDataSpecTrend3.push(res.ortho_align);
@@ -2889,7 +2889,7 @@ toggleChangeProcess(){
       this.stackedChartTrendData7 =[];
       this.stackedChartTrendData8 =[];
       this.stackedChartTrendData9 =[];
-   this.clinic_id && this.clinicianproceeduresService.ClinicianReferralTrendDentist(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
+   this.clinic_id && this.clinicianproceeduresService.ClinicianReferralTrendDentist(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((res) => {
     this.Apirequest = this.Apirequest -1;
     // this.showInternal =false;
     //   this.showExternal =false;
@@ -2906,9 +2906,9 @@ toggleChangeProcess(){
       this.stackedChartTrendData8 =[];
       this.stackedChartTrendData9 =[];
     if(this.mode == 'Internal') {
-       if(data.body.message == 'success' && data.body.data){
-         if(data.body.data.internal.length > 0) {
-                data.body.data.internal.forEach(res => {
+       if(res.status == 200 && res.body.data){
+         if(res.body.data.internal.length > 0) {
+                res.body.data.internal.forEach(res => {
                    this.stackedChartTrendData1.push(res.val[0]);
                    this.stackedChartTrendData2.push(res.val[1]);
                    this.stackedChartTrendData3.push(res.val[2]);
@@ -2937,9 +2937,9 @@ toggleChangeProcess(){
            }
          }
          else if(this.mode== 'External') {
-       if(data.body.message == 'success'){
-         if(data.body.data.external.length >0) { 
-                data.body.data.external.forEach(res => {
+       if(res.status == 200){
+         if(res.body.data.external.length >0) { 
+                res.body.data.external.forEach(res => {
                   if(typeof(res.val) != 'undefined'){
                     this.stackedChartTrendData1.push(res.val[0]);
                     this.stackedChartTrendData2.push(res.val[1]);
@@ -2970,9 +2970,9 @@ toggleChangeProcess(){
            }
          }
          else if(this.mode== 'Combined') {
-       if(data.body.message == 'success'){
-         if(data.body.data.combined.length >0) {
-                data.body.data.combined.forEach(res => {
+       if(res.status == 200){
+         if(res.body.data.combined.length >0) {
+                res.body.data.combined.forEach(res => {
                   if(typeof(res.val) != 'undefined'){
                     this.stackedChartTrendData1.push(res.val[0]);
                     this.stackedChartTrendData2.push(res.val[1]);
@@ -3059,14 +3059,14 @@ toggleChangeProcess(){
     {data: [], label: "RCT's Completed" } ];
       this.predictorRatioLoader = true;
       this.ratioChartLabels1=[];
-   this.clinic_id && this.clinicianproceeduresService.CpPredictorRatioTrend(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
+   this.clinic_id && this.clinicianproceeduresService.CpPredictorRatioTrend(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((res) => {
       this.predictorRatioLoader = false;
       this.ratioChartLabels1=[];
       this.Apirequest = this.Apirequest -1;
-       if(data.body.message == 'success' && data.body.data){
-          if(data.body.data.length <=0) {
+       if(res.status == 200 && res.body.data){
+          if(res.body.data.length <=0) {
           } else {
-            data.body.data.forEach(res => { 
+            res.body.data.forEach(res => { 
               if(typeof(res.val) != 'undefined'){
                 this.ratioChartData1[0]['data'].push(res.val.crown[0]);
                 this.ratioChartData1[1]['data'].push(res.val.crown[1]);
@@ -3135,9 +3135,9 @@ toggleChangeProcess(){
     } 
 
     getChartsTips() {
-      this.chartstipsService.getCharts(2).subscribe((data) => {
-       if(data.body.message == 'success'){         
-        this.charTips = data.body.data;
+      this.chartstipsService.getCharts(2).subscribe((res) => {
+       if(res.status == 200){         
+        this.charTips = res.body.data;
        }
     }, error => {});
   }
