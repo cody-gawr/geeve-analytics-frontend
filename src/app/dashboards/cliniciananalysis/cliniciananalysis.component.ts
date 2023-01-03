@@ -2173,7 +2173,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.productionTotal = Math.round(res.body.total);
         this.productionTotalAverage = Math.round(res.body.total_average);
         this.productionTotalPrev = Math.round(res.body.total_ta);
-        this.productionGoal = res.res.body.goals;
+        this.productionGoal = res.body.goals;
 
         if (this.productionTotal >= this.productionTotalPrev)
           this.productionTooltip = 'up';
@@ -2333,7 +2333,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.productionDentistsTotal = Math.round(res.body.total);
         this.productionDentistTotalAverage = Math.round(res.body.total_average);
         this.productionDentistsTotalPrev = Math.round(res.body.total_ta);
-        this.productionGoal = res.res.body.goals;
+        this.productionGoal = res.body.goals;
         this.productionTotalPrev = this.productionDentistsTotalPrev;
         if (this.productionDentistsTotal >= this.productionDentistsTotalPrev)
               this.productionTooltip = 'up';
@@ -2493,7 +2493,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.productionOhtTotal = Math.round(res.body.total);
         this.productionOhtTotalAverage = Math.round(res.body.total_average);
         this.productionOhtTotalPrev = Math.round(res.body.total_ta);
-        this.productionGoal = res.res.body.goals;
+        this.productionGoal = res.body.goals;
         this.productionTotalPrev = this.productionOhtTotalPrev;
         if (this.productionOhtTotal >= this.productionOhtTotalPrev)
               this.productionTooltip = 'up';
@@ -2663,7 +2663,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.collectionTotal = Math.round(res.body.total);
         this.collectionTotalAverage = Math.round(res.body.total_average);
         this.collectionTotalPrev = Math.round(res.body.total_ta);
-        this.collectionTotalGoal = res.res.body.goals;
+        this.collectionTotalGoal = res.body.goals;
 
         if (this.collectionTotal >= this.collectionTotalPrev)
           this.collectionTooltip = 'up';
@@ -2826,7 +2826,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.collectionDentistsTotal = Math.round(res.body.total);
         this.collectionDentistsTotalAverage = Math.round(res.body.total_average);
         this.collectionDentistsTotalPrev = Math.round(res.body.total_ta);
-        this.collectionDentistsTotalGoal = res.res.body.goals;
+        this.collectionDentistsTotalGoal = res.body.goals;
         this.collectionTotalPrev = this.collectionDentistsTotalPrev;
         if (this.collectionDentistsTotal >= this.collectionDentistsTotalPrev)
             this.collectionTooltip = 'up';
@@ -2989,7 +2989,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.collectionOhtTotal = Math.round(res.body.total);
         this.collectionOhtTotalAverage = Math.round(res.body.total_average);
         this.collectionOhtTotalPrev = Math.round(res.body.total_ta);
-        this.collectionOhtTotalGoal = res.res.body.goals;
+        this.collectionOhtTotalGoal = res.body.goals;
         this.collectionTotalPrev = this.collectionOhtTotalPrev;
         if (this.collectionOhtTotal >= this.collectionOhtTotalPrev)
               this.collectionTooltip = 'up';
@@ -4523,7 +4523,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.treatmentChartData[0]['data'] = this.treatmentChartData1;
         this.treatmentChartLabels = this.treatmentChartLabels1;
         this.treatmentChartAverage = Math.round(res.body.total);
-        this.treatmentChartAveragePrev = (res.body.total_ta) ? Math.round(res.res.body.total_ta) : 0;
+        this.treatmentChartAveragePrev = (res.body.total_ta) ? Math.round(res.body.total_ta) : 0;
         this.treatmentChartGoal = res.body.goals;
         if (this.user_type == '4' && this.childid != '') {
           this.barChartColors = [
@@ -4610,7 +4610,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.treatmentPlanLabel = res.body.data[0].provider_name;
         }
         this.treatmentPlanGoal = Math.round(res.body.goals);
-        this.treatmentChartAveragePrev = (res.body.total_ta) ? Math.round(res.res.body.total_ta) : 0;
+        this.treatmentChartAveragePrev = (res.body.total_ta) ? Math.round(res.body.total_ta) : 0;
         this.treatmentChartAverage = Math.round(res.body.total);
         if (this.treatmentChartAverage >= this.treatmentChartAveragePrev)
           this.treatmentChartTooltip = 'up';

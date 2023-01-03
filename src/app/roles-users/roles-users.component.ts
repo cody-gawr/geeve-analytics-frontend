@@ -128,7 +128,7 @@ public clinics=[];
 public selectedClinicProviders=[];
   getClinicProviders() {
   this.clinicService.getClinicProviders(this.selectedClinics.value).subscribe((res) => {
-      if(res.body.message == 'success'){
+      if(res.status == 200){
         this.selectedClinicProviders = res.body.data;
       } else if(res.status == 401){       
       }
@@ -173,7 +173,7 @@ export class EditDialogComponent {
   public loginUserType = this._cookieService.get("user_type");
   loadUserData(){
     this.rolesUsersService.getRoleUserDetails(this.data.id).subscribe((res) => {
-      if(res.body.message == 'success'){
+      if(res.status == 200){
         this.userData = res.body.data;
         this.userData.config_users_clinics.forEach(res => {
          this.selClinics.push(res.clinic_id);
@@ -253,7 +253,7 @@ export class EditDialogComponent {
   public selectedClinicProviders=[];
   getClinicProviders() {
     this.clinicService.getClinicProviders(this.selectedClinics.value).subscribe((res) => {
-        if(res.body.message == 'success'){
+        if(res.status == 200){
           this.selectedClinicProviders = res.body.data;
         } else if(res.status == 401){}
     }, 
@@ -380,7 +380,7 @@ initiate_clinic() {
         /* Generate Default Password*/
 
         this.rolesUsersService.checkUserEmail(result.email,result.user_type).subscribe((res) => {
-          if(res.body.message == 'success'){
+          if(res.status == 200){
            if(res.body.data <=0 && res.consultant == null)
            {
                this.add_user(result.display_name, result.email, result.user_type,result.selectedClinics, password,result.selected_dentist);
@@ -454,7 +454,7 @@ initiate_clinic() {
         
         var checkedRoles1 = checkedRoles.join();
         this.rolesUsersService.saveRoles(res1.id, checkedRoles1).subscribe((res) => {
-        if(res.body.message == 'success'){
+        if(res.status == 200){
           this.toastr.success('Permissions Saved!');
           this.getRoles();
         }
@@ -497,7 +497,7 @@ initiate_clinic() {
 //Get Clinics
   private getClinics() {
     this.headerService.getClinic.subscribe((res) => {
-      if(res.body.message == 'success'){
+      if(res.status == 200){
         this.clinics = res.body.data;
         this.hasPrimeClinics = res.body.hasPrimeClinics;
       } else if(res.status == 401){
@@ -517,7 +517,7 @@ initiate_clinic() {
     getDentists() {
       this.dentistService.currentDentistList.subscribe(res=>{
         this.dentists=[];
-           if(res.body.message == 'success'){
+           if(res.status == 200){
             res.body.data.forEach(result => {
               var temp=[];
             temp['providerId'] = result.providerId;
@@ -530,7 +530,7 @@ initiate_clinic() {
       });
       // this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
       //   this.dentists=[];
-      //      if(res.body.message == 'success'){
+      //      if(res.status == 200){
       //       res.body.data.forEach(result => {
       //         var temp=[];
       //       temp['providerId'] = result.providerId;
@@ -549,7 +549,7 @@ initiate_clinic() {
     $('.ajax-loader').show();
     this.rolesUsersService.addUserClinicConsultantMap(usrId,selectedClinics,display_name,email).subscribe((res) => {
       $('.ajax-loader').hide();
-         if(res.body.message == 'success'){
+         if(res.status == 200){
           this.toastr.success('User has been added successfully!');
           this.getUsers();
          } else if(res.body.message == 'error'){
@@ -565,7 +565,7 @@ initiate_clinic() {
   $('.ajax-loader').show();
   this.rolesUsersService.addRoleUser(display_name, email, user_type, selectedClinic, password,selected_dentist).subscribe((res) => {
     $('.ajax-loader').hide();
-       if(res.body.message == 'success'){
+       if(res.status == 200){
         this.toastr.success('User has been added successfully!');
         this.getUsers();
        } else if(res.body.message == 'error'){
@@ -581,7 +581,7 @@ initiate_clinic() {
   $('.ajax-loader').show();
   this.rolesUsersService.updateRoleUser(id,display_name, email, user_type, selectedClinic,selected_dentist,removedClinics,status).subscribe((res) => {
     $('.ajax-loader').hide();
-       if(res.body.message == 'success'){
+       if(res.status == 200){
         this.toastr.success('User has been updated successfully!');
         this.getUsers();
        } else if(res.body.message == 'error'){
@@ -614,7 +614,7 @@ initiate_clinic() {
       })
       
       this.rows=[];
-       if(res.body.message == 'success'){
+       if(res.status == 200){
         
         // isShowInactive 
         res.body.data.filter(r=>{
@@ -644,7 +644,7 @@ initiate_clinic() {
   private getRoles() {      
     this.showRolesButton = false;
     this.rolesUsersService.getRoles().subscribe((res) => { 
-       if(res.body.message == 'success'){ 
+       if(res.status == 200){ 
         this.roles=[];
         var title = "Roles permissions";
         var tipDiscription = [];
@@ -695,7 +695,7 @@ initiate_clinic() {
           if(rowData.id) {
           this.rolesUsersService.deleteUser(rowData.id,rowData.usertype).subscribe((res) => {
             $('.ajax-loader').hide();
-               if(res.body.message == 'success'){
+               if(res.status == 200){
                 this.toastr.success('User Removed');
                   this.getUsers();
                }

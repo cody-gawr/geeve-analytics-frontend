@@ -59,7 +59,7 @@ onSubmit() {
   this.loginService.login(this.form.value.uname.trim(), this.form.value.password).subscribe((res) => 
   {
     this._cookieService.removeAll({ 'path': '/' });
-    if(res.body.message == 'success')
+    if(res.status == 200)
     {        
       var datares = [];
       datares['username'] = res.body.data.data.username;
@@ -112,7 +112,7 @@ onSubmit() {
             this.getRoles()
           }else{
               this.rolesUsersService.getClinics().subscribe((res) => {
-                if (res.body.message == 'success') {
+                if (res.status == 200) {
                   this.clinic_id = res.body.data[0]['id'];
                   this.getRoles()
                 }
@@ -138,7 +138,7 @@ onSubmit() {
     var permision = '';
     var user_type = this._cookieService.get("user_type");
     this.rolesUsersService.getRolesIndividual(this.clinic_id).subscribe((res) => {
-      if(res.body.message == 'success'){ 
+      if(res.status == 200){ 
         permision = res.body.data;
         if(permision != '' && user_type != '2' && user_type != '7'){
           if(permision.indexOf('healthscreen') >= 0){
@@ -173,7 +173,7 @@ onSubmit() {
     this.userType = this._cookieService.get("user_type");
     var permision = '';
     this.rolesUsersService.getRoles().subscribe((res) => {
-      if(res.body.message == 'success'){ 
+      if(res.status == 200){ 
         res.body.data.forEach((dt) => {
           if(this.userType == dt['role_id']){
             permision = dt['permisions'];                

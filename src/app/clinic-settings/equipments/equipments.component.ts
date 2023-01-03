@@ -35,7 +35,7 @@ export class DialogOverviewExampleComponent {
     }
 
     this.equipmentsService.addItem(data.id,data.item_name,data.quantity,data.clinic_id).subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.toastr.success('Equipment List Updated.');
         this.dialogRef.close();
       } else if (res.status == 401) {
@@ -170,7 +170,7 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
     this.EquipListloader = true;
     this.equipmentsService.getItems(id).subscribe((res) => {
         this.EquipListloader = false;
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.itemList.data = res.body.data;
         this.setPaginationButtons(res.body.data.length);
                
@@ -186,7 +186,7 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
   updateStatus(event,id,is_default){
     var active = (event.checked == true)? 1 : 0;
     this.equipmentsService.updateItemStatus(active,id,this.clinic_id$.value,is_default).subscribe((update:any) => {
-      if(update.message == 'success') {
+      if(update.status == 200 ) {
         this.toastr.success('Equipment List Updated');
       }
     });   
@@ -208,7 +208,7 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
     var active = (event.checked == true)? 1 : 0;
     this.EquipListEnable = event.checked;
     this.clinicSettingsService.updatePartialSetting(this.clinic_id$.value,active,'equip_list_enable' ).subscribe((res) => {
-      if(res.body.message == 'success') {
+      if(res.status == 200) {
         this.toastr.success('Equipment List Updated');
       }
     }, error => {});
@@ -227,7 +227,7 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
       if(result.value)
       {
         this.clinicSettingsService.deleteEqupList(this.clinic_id$.value,listId ).subscribe((res) => {
-        if(res.body.message == 'success')
+        if(res.status == 200)
         {
           Swal.fire({
             position: 'top',

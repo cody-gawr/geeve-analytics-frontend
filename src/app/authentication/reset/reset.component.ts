@@ -46,7 +46,7 @@ public string;
   this.loading = true;
   $('.ajax-loader').show();
 this.loginService.checkValidString(this.string).subscribe((res) => {  
-  if(res && res.body.message == 'success'){
+  if(res && res.status == 200){
     this.id= res.body.data;
     this.loading = false;
     $('.ajax-loader').hide();
@@ -93,7 +93,7 @@ onSubmit() {
           this.errorLoginText = '';
           this.successLogin = false;
           this.successLoginText = '';
-           if(res.body.message == 'success'){
+           if(res.status == 200){
               this.successLogin  =true;
               this.isPasswordSet =true;
               this.successLoginText  =res.body.data;

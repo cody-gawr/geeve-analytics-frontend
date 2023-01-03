@@ -160,7 +160,7 @@ export class ClinicGoalsComponent implements OnInit {
 //get clinic goals for all graphs
   getClinicGoals() {
   this.clinicGoalsService.getClinicGoals(this.clinic_id).subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
           this.dentistprod =res.body.data[1].value;
           this.treatmentplan =res.body.data[2].value;
           this.planaverage =res.body.data[3].value;
@@ -261,7 +261,7 @@ export class ClinicGoalsComponent implements OnInit {
   $('.ajax-loader').show();
    this.clinicGoalsService.updateClinicGoals(myJsonString, this.clinic_id).subscribe((res) => {
     $('.ajax-loader').hide();
-       if(res.body.message == 'success'){
+       if(res.status == 200){
           this.toastr.success('Clinic Goals Updated' );
        }
         else if(res.status == 401){

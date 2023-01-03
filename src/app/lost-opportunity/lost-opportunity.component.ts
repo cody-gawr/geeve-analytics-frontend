@@ -124,9 +124,9 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
 		return Math.round(( amount * discount ) / 100);  	
 	}
 	 getChartsTips() {
-    this.chartstipsService.getCharts(8).subscribe((data) => {
-       if(data.body.message == 'success'){         
-        this.charTips = data.body.data;
+    this.chartstipsService.getCharts(8).subscribe((res) => {
+       if(res.status == 200){         
+        this.charTips = res.body.data;
        }
     }, error => {});
   }

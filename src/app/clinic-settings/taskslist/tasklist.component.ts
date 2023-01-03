@@ -61,7 +61,7 @@ export class DialogOverviewTasklistDialogComponent {
     }
     let roles = data.assigned_roles.toString();
     this.taskService.addTask(data.list_id, data.list_name, roles, data.clinic_id).subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.dialogRef.close();
       } else if (res.status == 401) {
         this.handleUnAuthorization();
@@ -81,7 +81,7 @@ export class DialogOverviewTasklistDialogComponent {
       }
       let roles = data.assigned_roles.toString();
       this.taskService.updateTasklist(data.list_id,  data.clinic_id, data.list_name, roles).subscribe((res) => {
-        if (res.body.message == 'success') {
+        if (res.status == 200) {
           this.dialogRef.close();
         } else if (res.status == 401) {
           this.handleUnAuthorization();
@@ -122,7 +122,7 @@ export class DialogOverviewTasklistDialogComponent {
     let data = this.dialogRef.componentInstance.data.tasksListItems[i];
     if (data) {
       this.taskService.updateTasksItem(data.id, data.list_id, data.task_name, data.clinic_id).subscribe((res) => {
-        if (res.body.message == 'success') {
+        if (res.status == 200) {
           this.dialogRef.componentInstance.data.tasksListItems[i].readOnly = true
         } else if (res.status == 401) {
           this.handleUnAuthorization();
@@ -138,7 +138,7 @@ export class DialogOverviewTasklistDialogComponent {
     let data = this.dialogRef.componentInstance.data.tasksListItems[i];
     if (data) {
       this.taskService.deleteTasksItem(data.id, data.clinic_id).subscribe((res) => {
-        if (res.body.message == 'success') {
+        if (res.status == 200) {
           this.dialogRef.componentInstance.data.tasksListItems.splice(i, 1);
           this.dialogRef.componentInstance.data.totalRecords = this.dialogRef.componentInstance.data.tasksListItems.length;
         } else if (res.status == 401) {
@@ -159,7 +159,7 @@ export class DialogOverviewTasklistDialogComponent {
     let task_name = this.task.nativeElement.value; 
     if (task_name) {
       this.taskService.addTasksItem(data.list_id, task_name, data.clinic_id).subscribe((res) => {
-        if (res.body.message == 'success') {
+        if (res.status == 200) {
         this.addTaskInput = false;
         let newData = res.body.data;
         newData.readOnly = true
@@ -183,7 +183,7 @@ export class DialogOverviewTasklistDialogComponent {
 
     
       this.taskService.addTasksItem(data.list_id, 'New task created', data.clinic_id).subscribe((res) => {
-        if (res.body.message == 'success') {
+        if (res.status == 200) {
           let oldData = this.dialogRef.componentInstance.data.tasksListItems;
         let newData = res.body.data;
         if (oldData.length) {
@@ -203,7 +203,7 @@ export class DialogOverviewTasklistDialogComponent {
 
 
     this.taskService.updateTasksItem('', data.list_id, 'New Task', data.clinic_id).subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         let newData = res.body.data;
         newData.readOnly = false
         newData.task_name = '';
@@ -330,7 +330,7 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
   public apiCompleteGet:boolean = true;
   getTasks(id) {
     this.taskService.getTasks(id).subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.apiCompleteGet = false;
         this.tasksList.data = res.body.data;
         this.setPaginationButtons(res.body.data.length);
@@ -355,7 +355,7 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
   openDialog(id = '', name = '', assigned_roles = ''): void {
     if (id) {
       this.taskService.getTasksList(this.clinic_id$.value, id).subscribe((res) => {
-        if (res.body.message == 'success') {
+        if (res.status == 200) {
           res.body.data.end_of_day_tasks.forEach(e => {
             e.readOnly = true;
             e.clinic_id = this.clinic_id$.value;
@@ -396,7 +396,7 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
     var active = (event.checked == true) ? 1 : 0;
     this.dailyTaskEnable = event.checked;
     this.clinicSettingsService.updatePartialSetting(this.clinic_id$.value, active, 'daily_task_enable').subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.toastr.success('Task Updated');
        }
     }, error => { });
@@ -413,7 +413,7 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
     }).then((result) => {
       if (result.value) {
         this.taskService.deleteTaskList(taskId, this.clinic_id$.value).subscribe((res) => {
-          if (res.body.message == 'success') {
+          if (res.status == 200) {
             this.getTasks(this.clinic_id$.value);
           }
         }, error => {

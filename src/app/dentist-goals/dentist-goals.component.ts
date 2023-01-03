@@ -189,7 +189,7 @@ export class DentistGoalsComponent implements OnInit {
 
   getDentistGoals(dentist_id ='' ) {
   this.dentistGoalsService.getDentistGoals(this.clinic_id,dentist_id).subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
           this.dentistprod =res.body.data[1].value;
           this.treatmentplan =res.body.data[2].value;
           this.planaverage =res.body.data[3].value;
@@ -284,7 +284,7 @@ export class DentistGoalsComponent implements OnInit {
   $('.ajax-loader').show();
    this.dentistGoalsService.updateDentistGoals(myJsonString, this.clinic_id, this.dentist_id).subscribe((res) => {
        $('.ajax-loader').hide();
-       if(res.body.message == 'success'){
+       if(res.status == 200){
          this.toastr.success('Dentist Goals Updated');
        }
     }, error => {
@@ -296,7 +296,7 @@ export class DentistGoalsComponent implements OnInit {
     // Get Dentist
     getDentists() {
       this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
-           if(res.body.message == 'success'){
+           if(res.status == 200){
               this.dentists= res.body.data;
               this.dentistCount= res.body.data.length;
               if(!this.dentist_id)

@@ -30,7 +30,7 @@ export class RewardsComponent implements OnInit, OnDestroy {
 		
 		this.isLoading = true;
 		this.rewardsService.dentistProduction().subscribe( (data:any) => {
-			if(data.body.message == 'success'){
+			if(data.status == 200){
 				this.rewards = data.body.data;
 				this.rewardsCode = data.code
 			}

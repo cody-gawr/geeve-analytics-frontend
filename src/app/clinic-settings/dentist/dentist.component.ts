@@ -40,7 +40,7 @@ export class AddJeeveNameComponent
   save(data){
     var name = JSON.stringify( data.jeeveNames);
     this.dentistService.updateJeeveName(data.clinic_id, name).subscribe((res) => {
-        if(res.body.message == 'success')
+        if(res.status == 200)
         {
           this.dialogRef.close();
         }
@@ -154,7 +154,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
     this.dentistService.getAppbook(id).subscribe((res) => {
       var temp = {};
       var dData =[];
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         dentData.forEach((element) => {
             if(element.app_book_id != '' && element.app_book_id != null){
               temp = {
@@ -188,7 +188,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   getDentists(id) {
     this.dentistListLoading = true;
     this.dentistService.getDentists(id,1).subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.dentistListLoading = false;
         this.getAppBook(id, res.body.data);
         this.jeeveProviderIds = [];
@@ -217,7 +217,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   public jeeveNames:any = {};
   getJeeveNames(id) {
     this.dentistService.getJeeveNames(id).subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         for(var i = 1; i <=9; i++ ){
           if(typeof(res.body.data[i]) != 'undefined'){
             this.jeeveNames[i] = res.body.data[i];        
@@ -296,7 +296,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
       )
       .subscribe((res) => {
         this.editing[index + '-' + column] = false;
-        if (res.body.message == 'success') {
+        if (res.status == 200) {
           this.toastr.success('Dentist Updated');
           this.getDentists(this.clinic_id$.value);
         }

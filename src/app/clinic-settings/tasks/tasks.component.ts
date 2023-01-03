@@ -33,7 +33,7 @@ export class DialogOverviewExampleDialogComponent {
     }
 
     this.taskService.addTask(data.id, data.task_name, data.clinic_id).subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.dialogRef.close();
       } else if (res.status == 401) {
         this.handleUnAuthorization();
@@ -157,7 +157,7 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
 
   getTasks(id) {
     this.taskService.getTasks(id).subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.tasksList.data = res.body.data;
         this.setPaginationButtons(res.body.data.length);
       }
@@ -191,7 +191,7 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
     var active = (event.checked == true) ? 1 : 0;
     this.dailyTaskEnable = event.checked;
     this.clinicSettingsService.updatePartialSetting(this.clinic_id$.value, active, 'daily_task_enable').subscribe((res) => {
-      if (res.body.message == 'success') { }
+      if (res.status == 200) { }
     }, error => { });
   }
 
@@ -206,7 +206,7 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
     }).then((result) => {
       if (result.value) {
         this.clinicSettingsService.deleteDailyTask(this.clinic_id$.value, taskId).subscribe((res) => {
-          if (res.body.message == 'success') {
+          if (res.status == 200) {
             this.getTasks(this.clinic_id$.value);
           }
         }, error => {

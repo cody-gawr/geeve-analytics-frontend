@@ -47,9 +47,9 @@ export class DialogSetColorsDialogComponent {
       return false;
     }
     this.CustomisationsService.addStatusColors(data.clinic_id,data.status_code, data.bgcolour, data.colour ).subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.CustomisationsService.getStatusCodeList(data.clinic_id).subscribe((res) => {
-          if (res.body.message == 'success') {
+          if (res.status == 200) {
             this.dialogRef.componentInstance.data.status_code = "";
             this.dialogRef.componentInstance.data.bgcolour = "";
             this.dialogRef.componentInstance.data.colour = "";
@@ -69,7 +69,7 @@ export class DialogSetColorsDialogComponent {
     let data = this.dialogRef.componentInstance.data.statusCodeList[i];
     if (data) {
       this.CustomisationsService.deleteStatusCode(data.clinic_id,data.status_code).subscribe((res) => {
-        if (res.body.message == 'success') {
+        if (res.status == 200) {
           this.dialogRef.componentInstance.data.statusCodeList.splice(i, 1);
         } else if (res.status == 401) {
           this.handleUnAuthorization();
@@ -403,7 +403,7 @@ export class CustomisationsComponent
 
   openDialog(status_code = '', colour = '', bgcolour = ''): void {
       this.customisationsService.getStatusCodeList(this.clinic_id$.value).subscribe((res) => {
-        if (res.body.message == 'success') {
+        if (res.status == 200) {
           const dialogRef = this.dialog.open(DialogSetColorsDialogComponent, {
             width: '500px',
             data: {clinic_id: this.clinic_id$.value,statusCodeList: res.body.data ,status_code:status_code,colour:colour,bgcolour:bgcolour}

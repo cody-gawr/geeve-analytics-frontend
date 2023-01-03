@@ -190,7 +190,7 @@ export class ClinicComponent implements AfterViewInit {
         }
         
         this.clinicService.addClinic(result.name, result.address, result.contact_name, result.pms, coreURL).subscribe((res) => {
-          if (res.body.message == 'success') {
+          if (res.status == 200) {
             if(res.body.data.pms == 'core'){
               let id = res.body.data.id;  
               this.getConnectCoreLink(id);
@@ -223,7 +223,7 @@ export class ClinicComponent implements AfterViewInit {
   public createdClinicsCount = 0;
   private getClinics() {
     this.headerService.getClinic.subscribe(res=>{
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.rows = res.body.data;
         if (res.body.data.length > 0) {
           this.temp = [...res.body.data];
@@ -241,7 +241,7 @@ export class ClinicComponent implements AfterViewInit {
       this.warningMessage = "Please Provide Valid Inputs!";
     });
     // this.clinicService.getClinics().subscribe((res) => {
-    //   if (res.body.message == 'success') {
+    //   if (res.status == 200) {
     //     this.rows = res.body.data;
     //     if (res.body.data.length > 0) {
     //       this.temp = [...res.body.data];
@@ -265,7 +265,7 @@ export class ClinicComponent implements AfterViewInit {
   private getUserDetails() {
     this.rows = [];
     this.clinicService.getUserDetails().subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         if (res.body.data) {
           this.clinicscount = res.body.data.clinics_count;
         }
@@ -298,7 +298,7 @@ export class ClinicComponent implements AfterViewInit {
         if (this.rows[row]['id']) {
           this.clinicService.deleteClinic(this.rows[row]['id']).subscribe((res) => {
             $('.ajax-loader').hide();
-            if (res.body.message == 'success') {
+            if (res.status == 200) {
               this.toastr.success('Clinic Removed!');
               this.getClinics();
             }
@@ -354,7 +354,7 @@ export class ClinicComponent implements AfterViewInit {
     this.editing[rowIndex + '-' + cell] = false;
     this.rows[rowIndex][cell] = event.target.value;
     this.clinicService.updateClinic(this.rows[rowIndex]['id'], this.rows[rowIndex][cell], cell).subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.toastr.success('Clinic Details Updated!');
         this.getClinics();
       }
@@ -387,7 +387,7 @@ export class ClinicComponent implements AfterViewInit {
 
   private getConnectCoreLink(id){
     this.setupService.getConnectCoreLink(id).subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
          let connectToCoreLink = res.body.data;
          this.connectToCore(connectToCoreLink,id);
        }
@@ -409,7 +409,7 @@ export class ClinicComponent implements AfterViewInit {
 
   private checkCoreStatus(id){
     this.setupService.checkCoreStatus(id).subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
          if(res.body.data.refresh_token && res.body.data.token)
             this.getClinicLocation(id);
        }
@@ -420,7 +420,7 @@ export class ClinicComponent implements AfterViewInit {
   
   private getClinicLocation(id){
     this.setupService.getClinicLocation(id).subscribe(res=>{
-      if(res.body.message == 'success'){
+      if(res.status == 200){
         this.availabeLocations = [...res.body.data];
         this.checkMappedLocations();
         this.openLocationDialog(id);
@@ -437,7 +437,7 @@ openLocationDialog(id): void {
       if(result != undefined){
         let location_id = result;
         this.setupService.saveClinicLocation(id,location_id).subscribe(res=>{
-          if(res.body.message == 'success'){
+          if(res.status == 200){
             this.toastr.success('Clinic Added!');
           }
         })

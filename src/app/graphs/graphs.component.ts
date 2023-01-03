@@ -147,9 +147,9 @@ export class GraphsComponent{
 
     // gauge chart for Recall Rate
     private fdRecallPrebookRate() {
-        this.graphsService.fdRecallPrebookRate(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-            if(data.status == 200){
-                this.calculateDataForGaugeChart(data);
+        this.graphsService.fdRecallPrebookRate(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((res) => {
+            if(res.status == 200){
+                this.calculateDataForGaugeChart(res.body.data);
             }
         },error => {
           this.handleUnAuthorization(error);
@@ -158,9 +158,9 @@ export class GraphsComponent{
 
     // gauge chart for Reappointment Rate
     private fdtreatmentPrebookRate() {
-        this.graphsService.fdReappointRate(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
-            if(data.status == 200){
-                this.calculateDataForGaugeChart(data);
+        this.graphsService.fdReappointRate(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
+            if(res.status == 200){
+                this.calculateDataForGaugeChart(res.body.data);
             }
        }, error=>{
         this.handleUnAuthorization(error);
@@ -169,9 +169,9 @@ export class GraphsComponent{
 
     // gauge chart for total visits
     private fdvisitsRatio() {
-          this.graphsService.fdvisitsRatio(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
-            if(data.status == 200){
-                this.calculateDataForGaugeChart(data);
+          this.graphsService.fdvisitsRatio(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
+            if(res.status == 200){
+                this.calculateDataForGaugeChart(res.body.data);
             }
         }, error=>{
           this.handleUnAuthorization(error);
@@ -596,8 +596,8 @@ export class GraphsComponent{
     }
 
     private fdWorkTimeAnalysis(){
-      this.graphsService.fdWorkTimeAnalysis(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-        this.calculateDataForBarCharts(data);
+      this.graphsService.fdWorkTimeAnalysis(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((res) => {
+        this.calculateDataForBarCharts(res.body.data);
       }, error => {
         this.handleUnAuthorization(error);
     });

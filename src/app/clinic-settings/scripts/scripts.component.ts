@@ -45,7 +45,7 @@ export class AddScriptsComponent {
       return false;
     }
     this.scriptsService.addUpdateScript(data.id, data.name, data.text, data.type, data.colour, data.clinic_id).subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.dialogRef.close();
       } else if (res.status == 401) {
         this.handleUnAuthorization();
@@ -159,7 +159,7 @@ export class ScriptsComponent extends BaseComponent implements AfterViewInit {
     this.scriptList = new MatTableDataSource([]);
     this.scriptsService.getScripts(id).subscribe((res) => {
       this.scriptsLoader = true;
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.scriptsLoader = false;
         this.scriptList.data = res.body.data;
         this.setPaginationButtons(res.body.data.length);
@@ -195,7 +195,7 @@ export class ScriptsComponent extends BaseComponent implements AfterViewInit {
     }).then((result) => {
       if (result.value) {
         this.scriptsService.deleteScript(this.clinic_id$.value, recordId).subscribe((res) => {
-          if (res.body.message == 'success') {
+          if (res.status == 200) {
             this.getScripts(this.clinic_id$.value);
           }
         }, error => {

@@ -276,7 +276,7 @@ export class StaffMeetingsComponent implements OnInit{
       this.hasPermission = true;
     } else {
       this.rolesUsersService.getRolesIndividual().subscribe((res) => {
-        if (res.body.message == 'success') {
+        if (res.status == 200) {
           if (res.body.data.indexOf('createmeeting') >= 0) {
             this.hasPermission = true;
           }

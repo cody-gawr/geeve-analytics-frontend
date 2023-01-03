@@ -713,7 +713,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   /*  checkXeroStatus() {
       this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe((res) => {
         console.log('res', res)
-        if (res.body.message == 'success') {
+        if (res.status == 200) {
           if (res.body.data.xero_connect == 1) {
             this.xeroConnect = true;
           }

@@ -91,7 +91,7 @@ public discount;
     dialogRef.afterClosed().subscribe(result => {
       if(result != undefined) {
      this.plansService.addPlans(result.plan, result.allowedClinics, result.description,result.amount, result.discount).subscribe((res) => {
-           if(res.body.message == 'success'){
+           if(res.status == 200){
             alert('Plan Created Successfully!');  
             this.getPlans();
            }
@@ -104,7 +104,7 @@ public discount;
 
   private getPlans() {
   this.plansService.getPlans().subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
         this.rows = res.body.data;
         this.temp = [...res.body.data];        
         this.table = data;
@@ -119,7 +119,7 @@ public discount;
            if(confirm("Are you sure to delete this plan?")) {
               if(this.rows[row]['id']) {
                 this.plansService.deletePlan(this.rows[row]['id']).subscribe((res) => {
-                 if(res.body.message == 'success'){
+                 if(res.status == 200){
                   alert('Plan Removed');
                     this.getPlans();
                  }
@@ -165,7 +165,7 @@ public discount;
   //   else {
   //   this.rows[rowIndex][cell] = event.target.value;
   //   this.plansService.updatePlan(this.rows[rowIndex]['id'], this.rows[rowIndex][cell],cell).subscribe((res) => {
-  //      if(res.body.message == 'success'){
+  //      if(res.status == 200){
   //       alert('Plan Updated');
   //         this.getPlans();
   //      }
@@ -190,7 +190,7 @@ public discount;
     dialogRef.afterClosed().subscribe(result => {
       if(result != undefined) {
      this.plansService.updatePlan(this.rows[row]['id'], result.plan, result.allowedClinics, result.description,result.amount).subscribe((res) => {
-           if(res.body.message == 'success'){
+           if(res.status == 200){
             alert('Plan Updated Successfully!');  
             this.getPlans();
            }

@@ -99,7 +99,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 			this.getDentists();
 			this.selectedDentist = 'all';
 			this.KpiReportService.getClinicSettings(this.clinic_id).subscribe((res) => {
-				if (res.body.message == 'success') {
+				if (res.status == 200) {
 					this.Cconsultant = res.body.data[0]['consultant'];
 					if (this.Cconsultant == 'prime') {
 						$("#kpireport").removeClass('consult');
@@ -288,7 +288,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 		this.endDate = this.datepipe.transform(new Date(this.endDate), 'yyyy-MM-dd');
 
 		this.KpiReportService.getKpiReport(this.clinic_id, this.startDate, this.endDate, this.selectedDentist).subscribe((data: any) => {
-			if (data.body.message == 'success') {
+			if (data.status == 200) {
 				this.reportloader = false;
 				this.reportData = data.body.data;
 				this.reportData.forEach(element => {
@@ -348,7 +348,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 	// Get Dentist
 	getDentists() {
 		this.dentistService.currentDentistList.subscribe(res=>{
-			if (res.body.message == 'success') {
+			if (res.status == 200) {
 					this.dentists = res.body.data;
 					this.dentistCount = res.body.data.length;
 				}
@@ -362,7 +362,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 				this.warningMessage = "Please Provide Valid Inputs!";
 		});
 		// this.clinic_id && this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
-		// 	if (res.body.message == 'success') {
+		// 	if (res.status == 200) {
 		// 		this.dentists = res.body.data;
 		// 		this.dentistCount = res.body.data.length;
 		// 	}

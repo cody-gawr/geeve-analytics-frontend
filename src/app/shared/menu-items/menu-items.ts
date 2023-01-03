@@ -230,7 +230,7 @@ export class MenuItems {
 ];
   getRoles() {      
    this.rolesUsersService.getRoles().subscribe((res) => {
-       if(res.body.message == 'success'){ 
+       if(res.status == 200){ 
          res.body.data.forEach(result => {
             var dashboards = result.permisions.split(',');
             if(dashboards.includes("dashboard1")) 

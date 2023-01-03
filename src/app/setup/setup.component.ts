@@ -334,7 +334,7 @@ usersArray = new Array(this.userRows);
 }
    getXeroLink(){
     this.setupService.getXeroLink(this.clinic_id).subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
         this.xero_link = res.body.data;
        }
         else if(res.status == 401){
@@ -352,7 +352,7 @@ usersArray = new Array(this.userRows);
   getConnectCoreLink(){
     // this.clinic_id = 186;
     this.setupService.getConnectCoreLink(this.clinic_id).subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
          this.connectToCoreLink = res.body.data;
        }
         else if(res.status == 401){
@@ -370,7 +370,7 @@ usersArray = new Array(this.userRows);
   //get myob authorization link
   getMyobLink(){ 
     this.setupService.getMyobLink(this.clinic_id).subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
         this.myob_link = res.body.data;
        } else if(res.status == 401){
             this._cookieService.put("username",'');
@@ -410,7 +410,7 @@ usersArray = new Array(this.userRows);
 }
   public checkXeroStatus(close){
     this.setupService.checkXeroStatus(this.clinic_id).subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
 
         if(res.body.data.xero_connect == 1) {
           this.xeroConnect = true;
@@ -438,7 +438,7 @@ usersArray = new Array(this.userRows);
   //check status of myob connection
   public checkMyobStatus(close){
     this.setupService.checkMyobStatus(this.clinic_id).subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
         if(res.body.data.myob_connect == 1) {
           this.myobConnect = true;
           this.myobOrganization = res.body.data.Name;
@@ -464,7 +464,7 @@ usersArray = new Array(this.userRows);
  public disconnectXero() {
   
     this.setupService.clearSession(this.clinic_id).subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
           this.xeroConnect = false;
           this.xeroOrganization = '';   
           this.getXeroLink();
@@ -479,7 +479,7 @@ usersArray = new Array(this.userRows);
  //disconnect myob connection
  public disconnectMyob() { 
   this.setupService.clearSessionMyob(this.clinic_id).subscribe((res) => {
-     if(res.body.message == 'success'){
+     if(res.status == 200){
         this.myobConnect = false;
         this.myobOrganization = '';   
         this.getMyobLink();
@@ -523,7 +523,7 @@ usersArray = new Array(this.userRows);
       // address,phone_no,clinicEmail,
        this.setupService.addClinic(name,displayName,days,pms,coreURL).subscribe((res) => {
        $('.ajax-loader').hide();
-        if(res.body.message == 'success'){
+        if(res.status == 200){
           this.clinic_id = res.body.data.id;
           this._cookieService.put("display_name", displayName);
           if(res.body.data.pms == 'core'){
@@ -571,7 +571,7 @@ usersArray = new Array(this.userRows);
 
   checkUserEmail(display_name, email, user_type) { 
     this.rolesUsersService.checkUserEmail(email).subscribe((res) => {
-      if(res.body.message == 'success'){
+      if(res.status == 200){
         let length = 10;
         var randomPassword  = '';
         var characters  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
@@ -605,7 +605,7 @@ usersArray = new Array(this.userRows);
       this.setupService.updateStepperStatus().subscribe((res) => {
         
        $('.ajax-loader').hide();
-        if(res.body.message == 'success'){
+        if(res.status == 200){
           if(this.stepVal < 4 ) {
           var stepper1 = parseInt(this.stepVal) + 1;
            this._cookieService.put("stepper", stepper1.toString());
@@ -672,7 +672,7 @@ usersArray = new Array(this.userRows);
   }
   public checkCoreStatus(){
     this.setupService.checkCoreStatus(this.clinic_id).subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
          if(res.body.data.refresh_token && res.body.data.token && res.body.data.core_user_id)
             this.getClinicLocation();
        }
@@ -683,7 +683,7 @@ usersArray = new Array(this.userRows);
 
   public coreSyncStatus(){
     this.setupService.checkCoreSyncStatus(this.clinic_id).subscribe((res) => {
-      if(res.body.message == 'success'){
+      if(res.status == 200){
         if(res.body.data == 1){
             this.stepVal = 3;
             this.updateStepperStatus();
@@ -769,7 +769,7 @@ usersArray = new Array(this.userRows);
         let urlActive = this._location.path();
         this.reportsStatusInfo = true;
         selfO.reportsStatus = [];
-        if(res.body.message == 'success'){    
+        if(res.status == 200){    
           if(res.body.data.length > 0){
             selfO.reportsStatus = res.body.data;
             selfO.stepVal = 3;
@@ -832,7 +832,7 @@ openLocationDialog(): void {
     if(result != undefined){
       let location_id = result;
       this.setupService.saveClinicLocation(this.clinic_id,location_id).subscribe(res=>{
-        if(res.body.message == 'success'){
+        if(res.status == 200){
           this.stepVal = 2;
           this.updateStepperStatus();
         }
@@ -843,7 +843,7 @@ openLocationDialog(): void {
 
 getClinicLocation(){
   this.setupService.getClinicLocation(this.clinic_id).subscribe(res=>{
-    if(res.body.message == 'success'){
+    if(res.status == 200){
       this.LocationData = [...res.body.data];
       this.openLocationDialog();
     }

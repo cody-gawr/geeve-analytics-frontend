@@ -95,7 +95,7 @@ export class XeroComponent implements OnInit {
           this.errorLogin  =false;
 
   this.xeroService.login(this.form.value.uname, this.form.value.password).subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
         var datares = [];
         datares['username'] = res.body.data.username;
         datares['email'] = res.body.data.email;

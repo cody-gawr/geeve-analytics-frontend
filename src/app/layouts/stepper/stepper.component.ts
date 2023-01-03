@@ -90,7 +90,7 @@ document.addEventListener("mozfullscreenchange", this.onFullScreenChange, false)
  }
  private getClinics() { 
   this.headerService.getClinics().subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
         this.clinicsData = res.body.data;
        }
     }, error => {
@@ -139,7 +139,7 @@ else if(window.screenTop==0)
   }
         logout() {
       this.headerService.logout(this._cookieService.get("userid")).subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
         this._cookieService.put("username",'');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');

@@ -242,7 +242,7 @@ public cvcStyle = {
     public showCard = false;
     getRoles() {
       this.rolesUsersService.getRoles().subscribe((res) => {
-        if(res.body.message == 'success')
+        if(res.status == 200)
         { 
           res.body.data.forEach(result => 
           {
@@ -273,7 +273,7 @@ public customer_id;
       $('.ajax-loader').show();
     this.profileSettingsService.updateCardRetryPayment(this.token, this.customer_id,this.last_invoic_id).subscribe((res) => {
       $('.ajax-loader').hide();
-           if(res.body.message == 'success'){
+           if(res.status == 200){
             this.getPaymentDetails();
             if(res.body.data == 'Payment Generated Successfully!') {
              Swal.fire(
@@ -310,7 +310,7 @@ public customer_id;
       $('.ajax-loader').show();
       this.profileSettingsService.retryPayment(this.customer_id,this.last_invoic_id).subscribe((res) => {
              $('.ajax-loader').hide();
-             if(res.body.message == 'success'){
+             if(res.status == 200){
             this.getPaymentDetails();              
               Swal.fire(
                   '',
@@ -331,7 +331,7 @@ public customer_id;
 public subscription_id='';
    getPaymentDetails() {
   this.profileSettingsService.getPaymentDetails().subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
         this.last_invoic_id = res.body.data.lastinvoiceid;
         this.customer_id = res.body.data.customer_id; 
           this.subscription_id = res.body.data.subscr_id; 
@@ -356,7 +356,7 @@ public subscription_id='';
 public last4;
   getprofileSettings() {
   this.profileSettingsService.getprofileSettings(this.id).subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
         this.displayName = res.body.data[0].displayName;
         this.email = res.body.data[0].email;
 
@@ -383,7 +383,7 @@ getCardDetails() {
     if (obj.token) {
       $('.ajax-loader').show();
     this.profileSettingsService.createSetupIntent(this.customer_id).subscribe((res) => {
-      if(res.body.message == 'success'){
+      if(res.status == 200){
              this.stripeService.confirmCardSetup(res.body.data.client_secret,{
                     payment_method: {
                       card: this.cardNumber,
@@ -427,7 +427,7 @@ getCardDetails() {
     } 
 updateCustomerCard(){
   this.profileSettingsService.updateCustomerCard(this.customer_id).subscribe((res) => {
-              if(res.body.message == 'success'){
+              if(res.status == 200){
                 this.getCardDetails();
                  $('.ajax-loader').hide();
                   Swal.fire(
@@ -454,7 +454,7 @@ public imageURL:any;
    }          
    this.profileSettingsService.updateprofileSettings(this.displayName, this.email).subscribe((res) => {
         $('.ajax-loader').hide();
-       if(res.body.message == 'success'){
+       if(res.status == 200){
         let opts = this.constants.cookieOpt as CookieOptions;
         this.displayName = res.body.data.display_name;
         this._cookieService.put("display_name", this.displayName, opts);
@@ -476,7 +476,7 @@ public imageURL:any;
      console.log("dfhgjk");
      console.log(this.health_screen_mtd);       
      this.profileSettingsService.updateprofileSettingsHealthScreen(this.health_screen_mtd).subscribe((res) => {
-      if(res.body.message == 'success'){
+      if(res.status == 200){
         this._cookieService.put("health_screen_mtd", this.health_screen_mtd);
         this.toastr.success('Profile Settings Updated .');  
       }
@@ -529,7 +529,7 @@ if(this.form.controls['newPassword'].hasError('required')){
   this.repeatPassword = this.form.value.repeatPassword;
   if(this.newPassword == this.repeatPassword) {
        this.profileSettingsService.updatePassword(this.currentPassword, this.newPassword).subscribe((res) => {
-           if(res.body.message == 'success'){
+           if(res.status == 200){
             this.toastr.success(res.body.data);
             this.form.reset();
            }
@@ -556,7 +556,7 @@ if(this.form.controls['newPassword'].hasError('required')){
       this.chartsTipsLoader = true;
       this.profileSettingsService.getChartsTips().subscribe((resp) => {
         this.chartsTipsLoader = false;
-        if(resp.message == 'success'){
+        if(resp.status == 200){
           resp.data.forEach((tip) => {
             if(typeof(this.dashboards[tip.dashboard_id] =='undefined')){
               this.dashboards[tip.dashboard_id] = tip.dashboard_name;
@@ -593,7 +593,7 @@ if(this.form.controls['newPassword'].hasError('required')){
      var tipsData:any = JSON.stringify(this.chartsTips); 
      this.profileSettingsService.saveChartsTips(tipsData).subscribe((resp) => {
         this.chartsTipsLoader = false;  
-        if(resp.message == 'success'){
+        if(resp.status == 200 ){
           Swal.fire(
                   '',
                   'Chart Tips have been updated successfully',

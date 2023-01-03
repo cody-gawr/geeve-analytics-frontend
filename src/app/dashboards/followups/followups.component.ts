@@ -557,7 +557,7 @@ export class FollowupsComponent implements AfterViewInit {
       this.perUserLabels = [];
       this.perUserTotal = 0;
       this.perUserPrev = 0;
-      if(res.body.message == 'success'){        
+      if(res.status == 200){        
         var allData = [];
         res.body.data.forEach((response) => {
           this.perUserData1.push(response.num_ticks);
@@ -604,7 +604,7 @@ export class FollowupsComponent implements AfterViewInit {
       this.singleUta = [];
       this.outcomeTotal = 0;
       this.outcomePrev = 0;
-      if(res.body.message == 'success'){  
+      if(res.status == 200){  
         this.outcomeTotal = res.body.total;
         this.outcomePrev = res.body.total_ta;
         /****** Tick ******/
@@ -680,7 +680,7 @@ export class FollowupsComponent implements AfterViewInit {
       this.conversionData = [{ data: [] }];
       this.conversionLabels = [];
       this.conversionLoader = false;
-      if(res.body.message == 'success')
+      if(res.status == 200)
       { 
           var allConversionFtas = [];  
           res.body.data.forEach( (data) => {
@@ -753,7 +753,7 @@ export class FollowupsComponent implements AfterViewInit {
       this.conversionPerUserPrevFta = 0;
       this.conversionPerUserPrevUta = 0;
 
-      if(res.body.message == 'success') {       
+      if(res.status == 200) {       
         
         this.conversionPerUserTotalFta = res.body.total_fta;
         this.conversionPerUserTotalUta = res.body.total_uta;
@@ -846,7 +846,7 @@ export class FollowupsComponent implements AfterViewInit {
       this.completionRateGoal = 0;
       this.completionRateTotal = 0;
       this.completionRatePrev = 0;
-      if(res.body.message == 'success') {  
+      if(res.status == 200) {  
         var allCompletionRate = [];
         this.completionRateTotal = res.body.total;
         this.completionRatePrev = res.body.total_ta;
@@ -873,9 +873,9 @@ export class FollowupsComponent implements AfterViewInit {
 
   public charTips:any = [];
   getChartsTips() {
-    this.chartstipsService.getCharts(9).subscribe((data) => {
-       if(data.body.message == 'success'){         
-        this.charTips = data.body.data;
+    this.chartstipsService.getCharts(9).subscribe((res) => {
+       if(res.status == 200){         
+        this.charTips = res.body.data;
        }
     }, error => {
       

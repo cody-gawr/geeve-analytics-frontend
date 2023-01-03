@@ -1997,8 +1997,8 @@ export class FinancesComponent implements AfterViewInit {
     this.netProfitTrendTotal = 0;
     this.financesService.NetProfit(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
       if (res.status == 200) {
-        this.netProfitVal = res.body.data.total_net_profit;
-        this.netProfitTrendTotal = res.body.data.total_net_profit_ta;
+        this.netProfitVal = res.data.total_net_profit;
+        this.netProfitTrendTotal = res.data.total_net_profit_ta;
         if (this.netProfitVal >= 0)
           this.netProfitIcon = "";
         else
@@ -2204,7 +2204,7 @@ export class FinancesComponent implements AfterViewInit {
           res.body.data.forEach(res => {
             if(this.showClinicByclinic == true){
               if (res.production > 0) {
-                totalPer = Math.round(res.production) * 100 / res.total;
+                totalPer = Math.round(res.production) * 100 / res.body.total;
                 this.productionChartDatares.push(Math.round(totalPer));
                 this.productionChartLabelsres.push(res.clinic_name);
                 this.productionChartTotal = this.productionChartTotal + Math.round(totalPer);
@@ -2218,7 +2218,7 @@ export class FinancesComponent implements AfterViewInit {
             }           
           });
         }
-        this.productionChartTrendTotal = res.total_ta;
+        this.productionChartTrendTotal = res.body.total_ta;
         if (Math.round(this.productionChartTotal) >= Math.round(this.productionChartTrendTotal))
           this.productionChartTrendIcon = "up";
         if (this.productionChartDatares.every((item) => item == 0)) this.productionChartDatares = [];
@@ -2286,7 +2286,7 @@ export class FinancesComponent implements AfterViewInit {
         }
         res.body.data.sort((a, b)=> b.discounts - a.discounts);
         res.body.data.forEach(res => {
-          if (res.body.total != 0) {
+          if (res.total != 0) {
             this.clinicsName.push(res.clinic_name);
             this.clinicsids.push(res.clinic_id);
             this.totalDiscountChartDatares.push(Math.round(res.discounts));
@@ -2306,10 +2306,10 @@ export class FinancesComponent implements AfterViewInit {
         });
         this.totalDiscountChartClinicsData = this.totalDiscountChartClinicsData1
         
-        this.totalDiscountChartTotal = Math.round(res.total);
+        this.totalDiscountChartTotal = Math.round(res.body.total);
         this.percentOfTotalDiscount$.next(this.totalDiscountChartTotal);
-        if (res.total_ta)
-          this.totalDiscountChartTrendTotal = Math.round(res.total_ta);
+        if (res.body.total_ta)
+          this.totalDiscountChartTrendTotal = Math.round(res.body.total_ta);
         else
           this.totalDiscountChartTrendTotal = 0;
 
@@ -2363,9 +2363,9 @@ export class FinancesComponent implements AfterViewInit {
       if (res.status == 200) {
 
         this.finTotalProductionLoader = false;
-        this.totalProductionVal = (res.total) ? Math.round(res.total) : 0;
-        this.netProfitProductionVal = (res.total) ? Math.round(res.total) : 0;;
-        this.totalProductionTrendVal = (res.total_ta) ? Math.round(res.total_ta) : 0;
+        this.totalProductionVal = (res.body.total) ? Math.round(res.body.total) : 0;
+        this.netProfitProductionVal = (res.body.total) ? Math.round(res.body.total) : 0;;
+        this.totalProductionTrendVal = (res.body.total_ta) ? Math.round(res.body.total_ta) : 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
           res.body.data.forEach((item, ind)=>{
@@ -2434,9 +2434,9 @@ export class FinancesComponent implements AfterViewInit {
 
         this.finCollectionLoader = false;
         this.collectionVal = 0;
-        this.collectionVal = (res.total) ? Math.round(res.total) : 0;
-        this.collectionPercentage = (res.total_average) ? Math.round(res.total_average) : 0;
-        this.collectionTrendVal = (res.total_ta) ? Math.round(res.total_ta) : 0;
+        this.collectionVal = (res.body.total) ? Math.round(res.body.total) : 0;
+        this.collectionPercentage = (res.body.total_average) ? Math.round(res.body.total_average) : 0;
+        this.collectionTrendVal = (res.body.total_ta) ? Math.round(res.body.total_ta) : 0;
         
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;        
@@ -2502,7 +2502,7 @@ export class FinancesComponent implements AfterViewInit {
         this.ProdPerVisit[0]['data'] = [];
         this.ProductionTrend1 = [];
         this.ProductionTrendLabels1 = [];       
-        if (res.total > 0) {
+        if (res.body.total > 0) {
           res.body.data.forEach(res => { 
             this.ProductionTrend1.push(Math.round(res.prod_per_visit));
             this.ProductionTrendLabels1.push(res.clinic_name);
@@ -2513,8 +2513,8 @@ export class FinancesComponent implements AfterViewInit {
         }
         this.ProdPerVisit[0]['data'] = this.ProductionTrend1;
         this.finProductionPerVisitLoader = false;
-        this.productionVal = Math.round(res.total);
-        this.productionTrendVal = Math.round(res.total_ta);
+        this.productionVal = Math.round(res.body.total);
+        this.productionTrendVal = Math.round(res.body.total_ta);
         if (Math.round(this.productionVal) >= Math.round(this.productionTrendVal))
           this.productionTrendIcon = "up";
       }
@@ -2550,8 +2550,8 @@ export class FinancesComponent implements AfterViewInit {
             this.totalOverdueAccountLabelsres.push(res.label);
           }
         });
-        this.totalOverdueAccount = res.total;
-        this.percentOfCurrentOverdue$.next(res.total);
+        this.totalOverdueAccount = res.body.total;
+        this.percentOfCurrentOverdue$.next(res.body.total);
         this.totalOverdueAccountData = this.totalOverdueAccountres;
         this.totalOverdueAccountLabels = this.totalOverdueAccountLabelsres;
         this.totalOverdueAccountDataMax = Math.max(...this.totalOverdueAccountData);
@@ -3265,8 +3265,8 @@ export class FinancesComponent implements AfterViewInit {
         this.finCollectionTrend();
         
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          res.data.data_combined.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
-          res.data.data_combined.forEach(res => {
+          res.body.data_combined.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
+          res.body.data_combined.forEach(res => {
             res.val.forEach((result, key) => {
               if (typeof (this.netProfitPercentChartTrendMulti[key]) == 'undefined') {
                 this.netProfitPercentChartTrendMulti[key] = { data: [], label: '' };
@@ -3332,8 +3332,8 @@ export class FinancesComponent implements AfterViewInit {
         this.finCollectionTrendLoader = false;   
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          res.data.data_combined.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
-          res.data.data_combined.forEach(res => {
+          res.body.data_combined.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
+          res.body.data_combined.forEach(res => {
             res.val.forEach((result, key) => {
               if (typeof (this.collectionChartTrendMultiData[key]) == 'undefined') {
                 this.collectionChartTrendMultiData[key] = { data: [], label: '' };

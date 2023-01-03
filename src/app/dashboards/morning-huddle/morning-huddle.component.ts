@@ -55,7 +55,7 @@ export class DialogOverviewExampleDialogComponent {
     }
 
     this.morningHuddleService.notes(data.notes,data.patientId, data.date,data.clinic_id, data.followup_date, data.type).subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.dialogRef.close();
       } else if (res.status == 401) {
         this.handleUnAuthorization();
@@ -384,21 +384,21 @@ initiate_clinic() {
     // clinicGetSettings
     // this.clinicianAnalysisService.getClinics( this.clinic_id, 'DailyTaskEnable,EquipListEnable,PostOpEnable,RecallEnable,TickEnable,FtaEnable' ).subscribe((data:any) => {
     //   this.dailyTabSettLod = true;
-    //   if(data.body.message == 'success'){
+    //   if(res.status == 200){
     //     this.isEnabletasks = (data.body.data.daily_task_enable == 1)? true : false;
     //     this.isEnableEquipList = (data.body.data.equip_list_enable == 1)? true : false;        
     //   }
     // }); 
 
-    this.clinicianAnalysisService.getClinicSettings( this.clinic_id).subscribe((data:any) => {
-      if(data.body.message == 'success'){
-        this.isEnablePO = (data.body.data.post_op_enable == 1)? true : false;
-        this.isEnableOR = (data.body.data.recall_enable == 1)? true : false;
-        this.isEnableTH = (data.body.data.tick_enable == 1)? true : false;
-        this.isEnableFT = (data.body.data.fta_enable == 1)? true : false;
-        this.isEnableUT = (data.body.data.uta_enable == 1)? true : false;
-        this.isEnabletasks = (data.body.data.daily_task_enable == 1)? true : false;
-        this.isEnableEquipList = (data.body.data.equip_list_enable == 1)? true : false; 
+    this.clinicianAnalysisService.getClinicSettings( this.clinic_id).subscribe((res:any) => {
+      if(res.status == 200){
+        this.isEnablePO = (res.body.data.post_op_enable == 1)? true : false;
+        this.isEnableOR = (res.body.data.recall_enable == 1)? true : false;
+        this.isEnableTH = (res.body.data.tick_enable == 1)? true : false;
+        this.isEnableFT = (res.body.data.fta_enable == 1)? true : false;
+        this.isEnableUT = (res.body.data.uta_enable == 1)? true : false;
+        this.isEnabletasks = (res.body.data.daily_task_enable == 1)? true : false;
+        this.isEnableEquipList = (res.body.data.equip_list_enable == 1)? true : false; 
       }
     }); 
 
@@ -551,39 +551,39 @@ initiate_clinic() {
       this.remindersRecallsOverdueLoader = true;
     }
     this.clinicDentistsReminders = [];
-    this.morningHuddleService.getReminders( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
+    this.morningHuddleService.getReminders( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((res:any) => {
       this.remindersRecallsOverdueLoader = false;
-      if(production.status == true) {
+      if(res.status == 200) {
         this.apiSuccessCount += 1;
         this.showXrayOverdue  = false;
         this.OPGOverdue = false;
         this.OverdueRecalls  = false;
         this.LabNeeded   = false;
         this.showStatusCode = false;
-        if(production.status_codes_enable == 1){
+        if(res.body.status_codes_enable == 1){
           this.showStatusCode = true;
         }
-        if(production.xray_overdue_enable == 1){
+        if(res.body.xray_overdue_enable == 1){
           this.showXrayOverdue = true;
         }
-        if(production.opg_overdue_enable == 1){
+        if(res.body.opg_overdue_enable == 1){
           this.OPGOverdue = true;
         }
-        if(production.recall_overdue_enable == 1){
+        if(res.body.recall_overdue_enable == 1){
           this.OverdueRecalls = true;
         }
-        if(production.lab_needed_enable == 1){
+        if(res.body.lab_needed_enable == 1){
           this.LabNeeded = true;
         }
-        this.remindersTotal = production.total;
-        this.remindersRecallsOverdueTemp = production.data;
-        this.remindersRecallsOverdue = production.data;     
-        this.remindersRecallsOverdueDate = this.datepipe.transform( production.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
+        this.remindersTotal = res.body.total;
+        this.remindersRecallsOverdueTemp = res.body.data;
+        this.remindersRecallsOverdue = res.body.data;     
+        this.remindersRecallsOverdueDate = this.datepipe.transform( res.body.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
         if(this.user_type == '4'){         
           this.dentistid = this._cookieService.get("dentistid");
           this.refreshReminderTab(this.dentistid);
         } else {
-          production.data.forEach(val => {
+          res.body.data.forEach(val => {
             var isExsist = this.clinicDentistsReminders.filter(function (person) { return person.provider_id == val.provider_id });
             if(isExsist.length <= 0){
               var nm = (val.jeeve_name != '' && val.jeeve_name)? val.jeeve_name : val.provider_name;
@@ -599,7 +599,7 @@ initiate_clinic() {
           });  
         }
         this.refreshReminderTab(this.selectDentist);
-      } else if (production.status == 401) {
+      } else if (res.status == 401) {
           this.handleUnAuthorization();
         }
       
@@ -612,8 +612,8 @@ initiate_clinic() {
 
 
 /*  getFollowupsUnscheduledPatients(){
-    this.morningHuddleService.getFollowupsUnscheduledPatients( this.clinic_id, this.previousDays,  this.unscheduledPatientsDays  ).subscribe((production:any) => {
-      if(production.status == true) {
+    this.morningHuddleService.getFollowupsUnscheduledPatients( this.clinic_id, this.previousDays,  this.unscheduledPatientsDays  ).subscribe((res:any) => {
+      if(res.status == 200) {
         this.unscheduledPatientsDays = production.days.unsched_days;
         production.data.map((item) => {
           const phoneNumber  = item.phone_number ? item.phone_number : ( item.phone_work ? item.phone_work : item.mobile);
@@ -637,21 +637,21 @@ initiate_clinic() {
   getFollowupPostOpCalls(){
     this.poLoadingLoading = true;
     this.futureDateOP = '';
-    this.morningHuddleService.followupPostOpCalls( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((production:any) => {
+    this.morningHuddleService.followupPostOpCalls( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((res:any) => {
        this.followupPostOpCallsInComp = [];
         var diffTime:any = this.getDataDiffrences();
         if(diffTime < 0){
           this.futureDateOP =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
         }
         this.poLoadingLoading = false;
-      if(production.message == 'success') {
+      if(res.status == 200) {
         this.apiSuccessCount += 1;
-        this.nextBussinessDay = production.next_day;
-        this.followupsPostopCallsDate = production.date;     
-        if(production.data == '204'){
+        this.nextBussinessDay = res.body.next_day;
+        this.followupsPostopCallsDate = res.body.data.date;     
+        if(res.body.data == '204'){
 
         } else {
-          this.followupPostOpCalls = production.data;   
+          this.followupPostOpCalls = res.body.data;   
           if(this.postopCallsPostOp == true){  
             this.followupPostOpCallsInComp = this.followupPostOpCalls;
           } else {            
@@ -660,7 +660,7 @@ initiate_clinic() {
         }
         
         //this.postOpCallsDays = production.previous;     
-      } else if (production.status == 401) {
+      } else if (res.status == 401) {
         this.handleUnAuthorization();      
       }
     }, error => {
@@ -673,7 +673,7 @@ initiate_clinic() {
       this.recallLoadingLoading = true;
     }
     this.futureDateOR = '';
-    this.morningHuddleService.followupOverdueRecalls( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((production:any) => {
+    this.morningHuddleService.followupOverdueRecalls( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((res:any) => {
       this.followupOverDueRecallInCMP  =[];
         var diffTime:any = this.getDataDiffrences();
         if(diffTime < 0){
@@ -681,12 +681,12 @@ initiate_clinic() {
         }
         this.recallLoadingLoading = false;
 
-      if(production.message == 'success') {
+      if(res.status == 200) {
         this.apiSuccessCount += 1;
-        this.nextBussinessDay = production.next_day;
-        if(production.data == '204'){
+        this.nextBussinessDay = res.body.next_day;
+        if(res.body.data == '204'){
         } else {
-          this.followupOverDueRecall = production.data;     
+          this.followupOverDueRecall = res.body.data;     
           if(this.showCompleteOverdue == true){  
             this.followupOverDueRecallInCMP = this.followupOverDueRecall;
           } else {            
@@ -695,9 +695,9 @@ initiate_clinic() {
         }
        
 
-        this.followupsOverDueRecallDate = production.date;     
+        this.followupsOverDueRecallDate = res.body.data.date;     
        //this.OverDueRecallDays = production.previous;     
-      } else if (production.status == 401) {
+      } else if (res.status == 401) {
            this.handleUnAuthorization();      
         }
     }, error => {
@@ -714,7 +714,7 @@ initiate_clinic() {
   /* Get Followups scripts **/
   getFollowupScripts()
   {
-     this.morningHuddleService.getScripts( this.clinic_id).subscribe((scripts:any) => {
+     this.morningHuddleService.getScripts( this.clinic_id).subscribe((res:any) => {
         this.postOpCallsScrps = [];
         this.overdueRecallsScrps = [];
         this.tickFollowupsScrps = [];
@@ -722,9 +722,9 @@ initiate_clinic() {
         this.utaFollowupsScrps = [];
         this.intrFollowupsScrps = [];
         
-        if(scripts.status && scripts.message == 'success'){
+        if(res.status && res.status == 200){
           this.apiSuccessCount += 1;
-          scripts.data.forEach((script) => {
+          res.body.data.forEach((script) => {
             
             if(script.followup_type == 'Post Op'){
               this.postOpCallsScrps.push(script);
@@ -740,7 +740,7 @@ initiate_clinic() {
               this.intrFollowupsScrps.push(script);
             } 
           });
-        } else if (scripts.status == 401) {
+        } else if (res.status == 401) {
            this.handleUnAuthorization();      
         }
     }, error => {
@@ -755,21 +755,21 @@ initiate_clinic() {
      this.endTaksLoadingLoading = true;
     }
      this.futureDateTH = '';
-    this.morningHuddleService.followupTickFollowups( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((production:any) => {
+    this.morningHuddleService.followupTickFollowups( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((res:any) => {
        this.followupTickFollowupsInCMP = [];
         var diffTime:any = this.getDataDiffrences();
         if(diffTime < 0){
           this.futureDateTH =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
         }
         this.endTaksLoadingLoading = false;
-      if(production.message == 'success') {
+      if(res.status == 200) {
         this.apiSuccessCount += 1;
-        this.nextBussinessDay = production.next_day;
-        this.followupsTickFollowupsDate = production.date;
-        if(production.data == '204'){
+        this.nextBussinessDay = res.body.next_day;
+        this.followupsTickFollowupsDate = res.body.data.date;
+        if(res.body.data == '204'){
 
         } else {
-          this.followupTickFollowups = production.data;     
+          this.followupTickFollowups = res.body.data;     
           if(this.showCompleteTick ==  true){  
             this.followupTickFollowupsInCMP = this.followupTickFollowups;
           } else {
@@ -809,22 +809,22 @@ initiate_clinic() {
     if(evn != 'close'){
      this.ftaTaksLoadingLoading = true;
     }
-    this.morningHuddleService.followupFtaFollowups( this.clinic_id, this.previousDays,  this.postOpCallsDays).subscribe((production:any) => {
+    this.morningHuddleService.followupFtaFollowups( this.clinic_id, this.previousDays,  this.postOpCallsDays).subscribe((res:any) => {
         this.ftaTaksLoadingLoading = false;
         this.followupFtaFollowupsInCMP = [];
         this.futureDateTF = '';
-      if(production.message == 'success') {
+      if(res.status == 200) {
         this.apiSuccessCount += 1;
         var diffTime:any = this.getDataDiffrences();
         if(diffTime < 0){
           this.futureDateTF =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
         }
-        this.nextBussinessDay = production.next_day;        
-        this.followupsTickFollowupsDate = production.date;  
-        if( production.data == '204'){
+        this.nextBussinessDay = res.body.next_day;        
+        this.followupsTickFollowupsDate = res.body.data.date;  
+        if( res.body.data == '204'){
 
         } else {
-          this.followupFtaFollowups = production.data;     
+          this.followupFtaFollowups = res.body.data;     
           if(this.showCompleteFta ==  true){  
             this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
           } else {
@@ -843,7 +843,7 @@ initiate_clinic() {
           });
         }     
            
-       } else if (production.status == 401) {
+       } else if (res.status == 401) {
          this.handleUnAuthorization();      
        }
     }, error => {
@@ -863,22 +863,22 @@ initiate_clinic() {
     if(evn != 'close'){
      this.utaTaksLoadingLoading = true;
     }
-    this.morningHuddleService.followupUtaFollowups( this.clinic_id, this.previousDays,  this.postOpCallsDays).subscribe((production:any) => {
+    this.morningHuddleService.followupUtaFollowups( this.clinic_id, this.previousDays,  this.postOpCallsDays).subscribe((res:any) => {
         this.utaTaksLoadingLoading = false;
         this.followupUtaFollowupsInCMP = [];
         this.futureDateTF = '';
-      if(production.message == 'success') {
+      if(res.status == 200) {
         this.apiSuccessCount += 1;
         var diffTime:any = this.getDataDiffrences();
         if(diffTime < 0){
           this.futureDateTF =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
         }
-        this.nextBussinessDay = production.next_day;        
-        this.followupsTickFollowupsDate = production.date;  
-        if( production.data == '204'){
+        this.nextBussinessDay = res.body.next_day;        
+        this.followupsTickFollowupsDate = res.body.data.date;  
+        if( res.body.data == '204'){
 
         } else {
-          this.followupUtaFollowups = production.data;     
+          this.followupUtaFollowups = res.body.data;     
           if(this.showCompleteUta ==  true){  
             this.followupUtaFollowupsInCMP = this.followupUtaFollowups;
           } else {
@@ -897,7 +897,7 @@ initiate_clinic() {
           });
         }     
            
-       } else if (production.status == 401) {
+       } else if (res.status == 401) {
          this.handleUnAuthorization();      
        }
     }, error => {
@@ -911,7 +911,7 @@ initiate_clinic() {
     this.endTaksLoading = true;
     this.futureDateDT = '';
     this.tasklistArray= [];
-    this.morningHuddleService.getEndOfDays( this.clinic_id, this.previousDays).subscribe((production:any) => {
+    this.morningHuddleService.getEndOfDays( this.clinic_id, this.previousDays).subscribe((res:any) => {
     this.endOfDaysTasksInComp  =   new MatTableDataSource([]);
         var diffTime:any = this.getDataDiffrences();
         if(diffTime < 0){
@@ -920,29 +920,30 @@ initiate_clinic() {
       this.endTaksLoading = false;
        this.tasklistArray= [];
        this.endOfDaysTasksInComp.data =[];
-      if(production.message == 'success') {
+      if(res.status == 200) {
         this.apiSuccessCount += 1;
-        if( production.data == '204' ){
+        if( res.body.data == '204' ){
           //this.isEnabletasks = false;
         }
         else 
         {
           //this.isEnabletasks = true;
-          this.endOfDaysTasks = production.data;            
-          this.endOfDaysTasksDate = this.datepipe.transform( production.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
+          this.endOfDaysTasks = res.body.data;
+          console.log(`isEnabletasks: ${this.isEnabletasks} endOfDaysTasks.length: ${this.endOfDaysTasks.length} user_type: ${this.user_type}`)
+          this.endOfDaysTasksDate = this.datepipe.transform( res.body.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
           if(this.showComplete == true) {
-            this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete == 1);
+            this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
           } else {
             this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
           }  
           // this.endOfDaysTasksInComp.sort = this.sort1; 
         }        
-        production.data.forEach(res => {
-          if(res.body.type == "list"){
-            this.tasklistArray.push(res);
+        res.body.data.forEach(data => {
+          if(data.type == "list"){
+            this.tasklistArray.push(data);
           }
         });      
-      } else if (production.status == 401) {
+      } else if (res.status == 401) {
          this.handleUnAuthorization();         
       }
     }, error => {
@@ -953,31 +954,31 @@ initiate_clinic() {
   getEndOfDaysUpdatelist(){
     this.endTaksLoading = true;
     this.futureDateDT = '';
-    this.morningHuddleService.getEndOfDays( this.clinic_id, this.previousDays).subscribe((production:any) => {
+    this.morningHuddleService.getEndOfDays( this.clinic_id, this.previousDays).subscribe((res:any) => {
         var diffTime:any = this.getDataDiffrences();
         if(diffTime < 0){
           this.futureDateDT =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
         }
       this.endTaksLoading = false;
-      if(production.message == 'success') {
+      if(res.status == 200) {
         this.endOfDaysTasks = [];
         this.endOfDaysTasksInComp.data =[];
         this.apiSuccessCount += 1;
-        if( production.data == '204' ){
+        if( res.body.data == '204' ){
           //this.isEnabletasks = false;
         }
         else 
         {
-          this.endOfDaysTasks = production.data;            
-          this.endOfDaysTasksDate = this.datepipe.transform( production.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
+          this.endOfDaysTasks = res.body.data;            
+          this.endOfDaysTasksDate = this.datepipe.transform( res.body.data.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
           if(this.showComplete) {
-           this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete == 1);
+           this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
           } else {
             this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
           }  
           // this.endOfDaysTasksInComp.sort = this.sort1; 
         }       
-      } else if (production.status == 401) {
+      } else if (res.status == 401) {
          this.handleUnAuthorization();         
       }
     }, error => {
@@ -989,7 +990,7 @@ initiate_clinic() {
   getEquipmentList() {
     this.equipmentListLoading = true;
     this.futureDateEL = '';
-    this.morningHuddleService.getEquipmentList( this.clinic_id, this.previousDays).subscribe((production:any) => {
+    this.morningHuddleService.getEquipmentList( this.clinic_id, this.previousDays).subscribe((res:any) => {
       this.lquipmentList =  new MatTableDataSource([]);
       var diffTime:any = this.getDataDiffrences();
       if(diffTime < 0){
@@ -999,19 +1000,19 @@ initiate_clinic() {
     //  this.lquipmentList.data = [];
        this.amButton = true;
         this.pmButton = true;
-      if(production.message == 'success') {
+      if(res.status == 200) {
         this.apiSuccessCount += 1;
-        if( production.data == '204' )
+        if( res.body.data == '204' )
         {
           //this.isEnableEquipList = false;
         }
         else 
         {
             //this.isEnableEquipList = true;
-          this.lquipmentList.data = production.data;       
+          this.lquipmentList.data = res.body.data;       
           this.lquipmentList.sort = this.sort2; 
           var i=0;
-          production.data.forEach((list) => {
+          res.body.data.forEach((list) => {
             
             if(this.amButton == true && list.am_complete == 1 ){
               this.amButton = false;
@@ -1027,7 +1028,7 @@ initiate_clinic() {
           });
 
         }
-      } else if (production.status == 401) {
+      } else if (res.status == 401) {
          this.handleUnAuthorization();      
       }
     }, error => {
@@ -1039,8 +1040,8 @@ initiate_clinic() {
   
   /***** Tab 3 ***/
   //  getReAppointment(){
-  //   this.morningHuddleService.getReAppointment( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
-  //     if(production.status == true) {
+  //   this.morningHuddleService.getReAppointment( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((res:any) => {
+  //     if(res.status == 200) {
   //       this.reAppointment = production.data.reappointment;     
   //       this.reAppointmentdate = production.data.date;     
   //     }
@@ -1048,24 +1049,24 @@ initiate_clinic() {
   // } 
 
   /*getUnscheduledPatients(){
-    this.morningHuddleService.getUnscheduledPatients( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
-      if(production.status == true) {
+    this.morningHuddleService.getUnscheduledPatients( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((res:any) => {
+      if(res.status == 200) {
         this.unscheduledPatients = production.data;
       }
     }); 
   }*/
 
   /*getUnscheduledValues(){
-    this.morningHuddleService.getUnscheduledValues( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
-      if(production.status == true) {
+    this.morningHuddleService.getUnscheduledValues( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((res:any) => {
+      if(res.status == 200) {
         this.unscheduledValue = production.data;
       }
     }); 
   }*/
 
    /*getTodayPatients(){
-    this.morningHuddleService.getTodayPatients( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
-      if(production.status == true) {
+    this.morningHuddleService.getTodayPatients( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((res:any) => {
+      if(res.status == 200) {
         this.todayPatients = production.data.patient;
         this.todayPatientsDate = production.data.date;
       }
@@ -1076,13 +1077,13 @@ initiate_clinic() {
     if(refsh == ''){
       this.todayUnscheduledHoursLoader =  true;
     }
-    this.morningHuddleService.getTodayUnscheduledHours( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
+    this.morningHuddleService.getTodayUnscheduledHours( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((res:any) => {
       this.todayUnscheduledHoursLoader =  false;
-      if(production.status == true) {
+      if(res.status == 200) {
         this.apiSuccessCount += 1;
-        this.todayUnscheduledHours = production.data.hour;
-        this.todayPatientsDate = production.data.date;    
-      } else if (production.status == 401) {
+        this.todayUnscheduledHours = res.body.hour;
+        this.todayPatientsDate = res.body.data.date;    
+      } else if (res.status == 401) {
          this.handleUnAuthorization();      
       }
     }, error => {
@@ -1090,12 +1091,12 @@ initiate_clinic() {
     }); 
   }
    getChairUtilisationRate(){
-    this.morningHuddleService.getChairUtilisationRate( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
-      if(production.message == 'success') {
-        this.todayChairUtilisationRate =  Math.round(production.data);
+    this.morningHuddleService.getChairUtilisationRate( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((res:any) => {
+      if(res.status == 200) {
+        this.todayChairUtilisationRate =  Math.round(res.body.data);
 
     
-      } else if (production.status == 401) {
+      } else if (res.status == 401) {
         if(this.user_type != '7'){
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
@@ -1109,12 +1110,12 @@ initiate_clinic() {
     if(refsh == ''){
       this.todayUnscheduledBalLoader = true;
     }
-    this.morningHuddleService.getTodayUnscheduledBal( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
+    this.morningHuddleService.getTodayUnscheduledBal( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((res:any) => {
       this.todayUnscheduledBalLoader = false;
-      if(production.status == true) {
+      if(res.status == 200) {
         this.apiSuccessCount += 1;
-        this.todayUnscheduledBal = production.data;       
-      } else if (production.status == 401) {
+        this.todayUnscheduledBal = res.body.data;       
+      } else if (res.status == 401) {
         this.handleUnAuthorization();           
       }
     }, error => {
@@ -1124,16 +1125,16 @@ initiate_clinic() {
 
 
   /*getNoShow(){
-    this.morningHuddleService.getNoShow( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
-      if(production.status == true) {
+    this.morningHuddleService.getNoShow( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((res:any) => {
+      if(res.status == 200) {
         this.noShow = production.data;       
       }
     }); 
   }*/
   
 /*   getTodayPostopCalls(){
-    this.morningHuddleService.getTodayPostopCalls( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
-      if(production.status == true) {
+    this.morningHuddleService.getTodayPostopCalls( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((res:any) => {
+      if(res.status == 200) {
         this.todayPostopCalls = production.data;
       }
     }); 
@@ -1144,8 +1145,8 @@ initiate_clinic() {
   
 /***** Tab 2 ***/
 /*   getSchedulePatients(dentist){
-    this.morningHuddleService.getPatients( this.clinic_id,dentist,this.previousDays,  this.user_type  ).subscribe((production:any) => {
-      if(production.status == true) {
+    this.morningHuddleService.getPatients( this.clinic_id,dentist,this.previousDays,  this.user_type  ).subscribe((res:any) => {
+      if(res.status == 200) {
         this.schedulePatieltd = production.data.patient;
         
       }
@@ -1156,13 +1157,13 @@ initiate_clinic() {
       this.scheduleNewPatientsLoader = true;
       this.scheduleNewPatieltd = 0;
     }
-    this.morningHuddleService.getNewPatients( this.clinic_id, dentist,this.previousDays,  this.user_type  ).subscribe((production:any) => {
+    this.morningHuddleService.getNewPatients( this.clinic_id, dentist,this.previousDays,  this.user_type  ).subscribe((res:any) => {
       this.scheduleNewPatientsLoader = false;
-      if(production.status == true) {
+      if(res.status == 200) {
         this.apiSuccessCount += 1;
-        this.scheduleNewPatieltd = production.data.patient;
-        this.schedulePatielDate = this.datepipe.transform( production.data.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
-        } else if (production.status == 401) {
+        this.scheduleNewPatieltd = res.body.data.patient;
+        this.schedulePatielDate = this.datepipe.transform( res.body.data.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
+        } else if (res.body.status == 401) {
          this.handleUnAuthorization();      
       }
     }, error => {
@@ -1174,12 +1175,12 @@ initiate_clinic() {
     if(refsh == ''){
       this.schedulehoursLoader = true;
     }
-    this.morningHuddleService.getScheduleHours( this.clinic_id,  dentist, this.previousDays, this.user_type  ).subscribe((production:any) => {
+    this.morningHuddleService.getScheduleHours( this.clinic_id,  dentist, this.previousDays, this.user_type  ).subscribe((res:any) => {
       this.schedulehoursLoader = false;
-      if(production.status == true) {
+      if(res.status == 200) {
         this.apiSuccessCount += 1;
-        this.schedulehours = production.data;
-      } else if (production.status == 401) {
+        this.schedulehours = res.body.data;
+      } else if (res.status == 401) {
         if(this.user_type != '7'){
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
@@ -1193,12 +1194,12 @@ initiate_clinic() {
     if(refsh == ''){
       this.unschedulehoursLoader = true;
     }
-    this.morningHuddleService.getUnscheduleHours( this.clinic_id, dentist, this.previousDays, this.user_type  ).subscribe((production:any) => {
+    this.morningHuddleService.getUnscheduleHours( this.clinic_id, dentist, this.previousDays, this.user_type  ).subscribe((res:any) => {
       this.unschedulehoursLoader = false;
-      if(production.status == true) {
+      if(res.status == 200) {
         this.apiSuccessCount += 1;
-        this.unSchedulehours = production.data;
-      } else if (production.status == 401) {
+        this.unSchedulehours = res.body.data;
+      } else if (res.status == 401) {
          this.handleUnAuthorization();      
       }
     }, error => {
@@ -1213,7 +1214,7 @@ initiate_clinic() {
       this.appointmentCardsLoaders = true;
       this.appointmentCards = new MatTableDataSource();
     }
-    this.morningHuddleService.getAppointmentCards( this.clinic_id,dentist,this.previousDays,this.user_type ).subscribe((production:any) => {
+    this.morningHuddleService.getAppointmentCards( this.clinic_id,dentist,this.previousDays,this.user_type ).subscribe((res:any) => {
       this.appointmentCardsLoaders = false;
       this.clinicDentists = [];
       this.currentDentistSchedule = (this.currentDentist)? this.currentDentist : 0;
@@ -1221,30 +1222,30 @@ initiate_clinic() {
       if(refsh == ''){
         this.appointmentCards = new MatTableDataSource();
       }
-      if(production.status == true) {
+      if(res.status == 200) {
         this.apiSuccessCount += 1;
         this.showXrayOverdue  = false;
         this.OPGOverdue = false;
         this.OverdueRecalls  = false;
         this.LabNeeded   = false;
         this.showStatusCode = false;
-        if(production.status_codes_enable == 1){
+        if(res.status_codes_enable == 1){
           this.showStatusCode = true;
         }
-        if(production.xray_overdue_enable == 1){
+        if(res.body.xray_overdue_enable == 1){
           this.showXrayOverdue = true;
         }
-        if(production.opg_overdue_enable == 1){
+        if(res.body.opg_overdue_enable == 1){
           this.OPGOverdue = true;
         }
-        if(production.recall_overdue_enable == 1){
+        if(res.body.recall_overdue_enable == 1){
           this.OverdueRecalls = true;
         }
-        if(production.lab_needed_enable == 1){
+        if(res.body.lab_needed_enable == 1){
           this.LabNeeded = true;
         }
-       this.clinicTotal = production.total;
-        this.appointmentCardsTemp = production.data; 
+       this.clinicTotal = res.body.total;
+        this.appointmentCardsTemp = res.body.data; 
         if(this.user_type == '4'){         
           this.dentistid = this._cookieService.get("dentistid");
           this.refreshScheduleTab(this.dentistid);
@@ -1258,14 +1259,14 @@ initiate_clinic() {
             });
             this.appointmentCards.data = temp; 
           } else {
-            this.appointmentCards.data = production.data;
+            this.appointmentCards.data = res.body.data;
           }
 
 
           // this.appointmentCards.data = production.data; 
         }
         this.refreshScheduleTab(this.selectDentist);
-        production.data.forEach(val => {
+        res.body.data.forEach(val => {
           // check for duplicate values        
           var isExsist = this.clinicDentists.filter(function (person) { return person.provider_id == val.provider_id });
           if(isExsist.length <= 0){
@@ -1280,7 +1281,7 @@ initiate_clinic() {
             b = y.provider_name.toUpperCase();
             return a == b ? 0 : a > b ? 1 : -1;
         });
-      } else if (production.status == 401) {
+      } else if (res.status == 401) {
          this.handleUnAuthorization();      
       }
     }, error => {
@@ -1294,13 +1295,13 @@ initiate_clinic() {
 /***** Tab 1 ***/
    async getDentistPerformance(){
     this.dentistperformanceLoader = true;
-  	this.morningHuddleService.dentistProduction( this.clinic_id, this.previousDays, this.user_type,this.dentist_id  ).subscribe((production:any) => {
+  	this.morningHuddleService.dentistProduction( this.clinic_id, this.previousDays, this.user_type,this.dentist_id  ).subscribe((res:any) => {
       this.dentistperformanceLoader = false;
-  		if(production.status == true) { 
+  		if(res.status == 200) { 
         this.apiSuccessCount += 1;
-        this.production = production.data;
+        this.production = res.body.data;
         this.productionDate = this.datepipe.transform( this.production.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
-      } else if (production.status == 401) {
+      } else if (res.status == 401) {
            this.handleUnAuthorization();      
         }
   	}, error => {
@@ -1311,12 +1312,12 @@ initiate_clinic() {
 
   async getRecallRate(){
     this.dentistrecallRateLoader = true;    
-  	this.morningHuddleService.recallRate( this.clinic_id, this.previousDays,  this.user_type, this.dentist_id  ).subscribe((recallRate:any) => {
+  	this.morningHuddleService.recallRate( this.clinic_id, this.previousDays,  this.user_type, this.dentist_id  ).subscribe((res:any) => {
       this.dentistrecallRateLoader = false;
-  		if(recallRate.status == true){
+  		if(res.status == 200){
         this.apiSuccessCount += 1;
-        this.recallRate = recallRate.data;
-  		} else if (recallRate.status == 401) {
+        this.recallRate = res.body.data;
+  		} else if (res.status == 401) {
         this.handleUnAuthorization();          
       }
   	}, error => {
@@ -1326,12 +1327,12 @@ initiate_clinic() {
 
   async getTreatmentRate(){
      this.dentistTreatmentRateLoader = true;    
-    this.morningHuddleService.reappointRate( this.clinic_id, this.previousDays,  this.user_type, this.dentist_id  ).subscribe((treatmentRate:any) => {
+    this.morningHuddleService.reappointRate( this.clinic_id, this.previousDays,  this.user_type, this.dentist_id  ).subscribe((res:any) => {
       this.dentistTreatmentRateLoader = false;    
-      if(treatmentRate.status == true){
+      if(res.status == 200){
         this.apiSuccessCount += 1;
-         this.treatmentRate = treatmentRate.data;
-      } else if (treatmentRate.status == 401) {
+         this.treatmentRate = res.body.data;
+      } else if (res.status == 401) {
          this.handleUnAuthorization();
       }
     }, error => {
@@ -1343,13 +1344,13 @@ initiate_clinic() {
 async getDentistList(){
   this.dentistListLoading = false;
   this.dentistList = new MatTableDataSource([]);
-    this.morningHuddleService.dentistList( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((list:any) => {
+    this.morningHuddleService.dentistList( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((res:any) => {
       this.dentistListLoading = true;
-      if(list.status == true){
+      if(res.status == 200){
         this.apiSuccessCount += 1;
-        this.dentistList.data = list.data;
-        this.dentistListTemp = list.data;
-      } else if (list.status == 401) {
+        this.dentistList.data = res.body.data;
+        this.dentistListTemp = res.body.data;
+      } else if (res.status == 401) {
        this.handleUnAuthorization();           
       }
     }, error => {
@@ -1500,10 +1501,11 @@ async getDentistList(){
 
   updateToComplete(checked){
     this.showComplete = checked;
+    console.log(`ShowComplete = ${this.showComplete}`);
     if(checked){  
-      this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete == 1);
+      this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
     } else {
-      this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
+      this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != true);      
     }
     // this.endOfDaysTasksInComp.sort = this.sort1; 
   }
@@ -1665,9 +1667,9 @@ async getDentistList(){
   }
 
   getChartsTips() {
-    this.chartstipsService.getCharts(7).subscribe((data) => {
-       if(data.body.message == 'success'){         
-        this.charTips = data.body.data;
+    this.chartstipsService.getCharts(7).subscribe((res) => {
+       if(res.status == 200){         
+        this.charTips = res.body.data;
        }
     }, error => {});
   }

@@ -203,7 +203,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
   public userPlan: any = '';
   async getRoles() {
     await this.rolesUsersService.getRoleIndividual.subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.permisions = res.body.data;
         let opts = this.constants.cookieOpt as CookieOptions;
         this._cookieService.put("user_type", res.body.type+"", opts);
@@ -241,7 +241,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     }, error => {
     });
     // await this.rolesUsersService.getRolesIndividual(this.clinic_id).subscribe((res) => {
-    //   if (res.body.message == 'success') {
+    //   if (res.status == 200) {
     //     this.permisions = res.body.data;
     //     let opts = this.constants.cookieOpt as CookieOptions;
     //     this._cookieService.put("user_type", res.body.type, opts);
@@ -283,7 +283,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
   getClinic() {
 
     this.headerService.getClinic.subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.clinic_id = res.body.data[0]['id'];
         this.hasPrimeClinics = res.body.hasPrimeClinics;
         this.getRoles();
@@ -292,7 +292,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     });
 
     // this.headerService.getClinics().subscribe((res) => {
-    //   if (res.body.message == 'success') {
+    //   if (res.status == 200) {
     //     this.clinic_id = res.body.data[0]['id'];
     //     this.hasPrimeClinics = res.body.hasPrimeClinics;
     //     this.getRoles();

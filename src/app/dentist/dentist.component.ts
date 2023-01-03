@@ -97,7 +97,7 @@ export class DentistComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
   this.dentistService.addDentists(result.provider_id, result.dentist_name,this.clinic_id).subscribe((res) => {
     console.log(res);
-       if(res.body.message == 'success'){
+       if(res.status == 200){
         this.toastr.success('Dentist Added');
           this.getDentists();
               $('.external_clinic').show();
@@ -113,7 +113,7 @@ export class DentistComponent implements AfterViewInit {
 
   private getDentists() {
   this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
         this.rows = res.body.data;
     this.temp = [...res.body.data];
         
@@ -144,7 +144,7 @@ this.table = data;
          $('.ajax-loader').show();
     if(this.rows[row]['providerId']) {
   this.dentistService.deleteDentists(this.rows[row]['providerId']).subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
          $('.ajax-loader').hide();
          this.toastr.success('Dentist Removed');
           this.getDentists();
@@ -186,7 +186,7 @@ this.table = data;
     this.editing[rowIndex + '-' + cell] = false;
     this.rows[rowIndex][cell] = event.target.value;
     this.dentistService.updateDentists(this.rows[rowIndex]['providerId'], this.rows[rowIndex][cell],this.clinic_id).subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
          this.toastr.success('Dentist Updated');
           this.getDentists();
        }

@@ -204,7 +204,7 @@ export class MarketingComponent implements AfterViewInit {
     var self = this;
     return new Promise(function (resolve, reject) {
       self.clinicSettingsService.clinicGetAccountingPlatform(self.clinic_id).subscribe((res) => {
-        if (res.body.message == 'success') {
+        if (res.status == 200) {
           if (res.body.data != '') {
             self.connectedwith = res.body.data;
             resolve(true);
@@ -1338,24 +1338,24 @@ export class MarketingComponent implements AfterViewInit {
     this.showmulticlinicNewPatients = false;
     this.mkNewPatientsByReferalLabels = [];
     let mkNewPatientsLabels = [];
-    this.marketingService.mkNewPatientsByReferral(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.marketingService.mkNewPatientsByReferral(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.mkNewPatientsByReferalMulti = [];
         this.mkNewPatientsByReferalLabels = [];
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.totalNewPatientsReferral = Math.round(data.total);
+          this.totalNewPatientsReferral = Math.round(res.body.total);
           this.showmulticlinicNewPatients = true;
           let label = [];
-          data.data.forEach(res => {
+          res.body.data.forEach(res => {
             res.val.forEach((result, key) => {
               if(result.reftype_name)
                   label.push(result.reftype_name);
             });
           });
           mkNewPatientsLabels = [...new Set(label)];
-          data.data.forEach((res, ind) => {
+          res.body.data.forEach((res, ind) => {
             res.val.forEach((result, key) => {
               if (typeof (this.mkNewPatientsByReferalMulti[key]) == 'undefined') {
                 this.mkNewPatientsByReferalMulti[key] = { data: [], label: '' };
@@ -1390,17 +1390,17 @@ export class MarketingComponent implements AfterViewInit {
           });
           this.mkNewPatientsByReferralLoader = false;
         }else{
-          this.mkNewPatientsByReferralAll = data;
-          this.totalNewPatientsReferral = Math.round(data.total);
+          this.mkNewPatientsByReferralAll = res.body.data;
+          this.totalNewPatientsReferral = Math.round(res.body.total);
           this.newPatientsReferral$.next(this.totalNewPatientsReferral)
           // this.noNewPatientsByReferralChartOptions.elements.center.text = this.decimalPipe.transform(this.totalNewPatientsReferral);
 
           this.newPatientsTimeData1 = [];
           this.newPatientsTimeLabelsl2 = [];
           this.newPatientsTimeLabels1 = [];
-          if (data.data.patients_reftype.length > 0) {
+          if (res.body.data.patients_reftype.length > 0) {
             var i = 0;
-            data.data.patients_reftype.forEach(res => {
+            res.body.data.patients_reftype.forEach(res => {
               if (res.patients_visits > 0) {
                 if (i < 10) {
                   this.newPatientsTimeData1.push(res.patients_visits);
@@ -1472,28 +1472,28 @@ export class MarketingComponent implements AfterViewInit {
     this.showmulticlinicNewPatientsRev = false;
     this.mkNewPatientsByReferalRevLabels = [];
     this.totalNewPatientsReferralRev =0;
-    this.marketingService.mkRevenueByReferral(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.marketingService.mkRevenueByReferral(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
       this.reffralAllData = [];
       this.revenueReferralData = [];
       this.revenueReferralLabels = [];
       let mkNewPatientsLabels = [];
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.mkNewPatientsByReferalRevMulti = [];
         this.mkNewPatientsByReferalRevLabels = [];
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.totalNewPatientsReferralRev = Math.round(data.total);
+          this.totalNewPatientsReferralRev = Math.round(res.body.total);
           this.showmulticlinicNewPatientsRev = true;
           let label = [];
-          data.data.forEach(res => {
+          res.body.data.forEach(res => {
             res.val.forEach((result, key) => {
               if(result.reftype_name)
                   label.push(result.reftype_name);
             });
           });
           mkNewPatientsLabels = [...new Set(label)];
-          data.data.forEach((res, ind) => {
+          res.body.data.forEach((res, ind) => {
             res.val.forEach((result, key) => {
               if (typeof (this.mkNewPatientsByReferalRevMulti[key]) == 'undefined') {
                 this.mkNewPatientsByReferalRevMulti[key] = { data: [], label: '' };
@@ -1528,7 +1528,7 @@ export class MarketingComponent implements AfterViewInit {
           });
           this.mkRevenueByReferralLoader = false;
         }else{
-            this.reffralAllData = data;
+            this.reffralAllData = res.body.data;
             this.totalRevenueByReferral = this.decimalPipe.transform(Math.round(this.reffralAllData.total || 0));
             this.revenueByReferralCount$.next(Math.round(this.reffralAllData.total || 0));
             //// this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
@@ -1584,11 +1584,11 @@ export class MarketingComponent implements AfterViewInit {
     this.mkRevenueByReferralChartTrend = [];
     var user_id;
     var clinic_id;
-    this.marketingService.mkRevenueByReferralTrend(this.clinic_id, this.trendValue).subscribe((data) => {
+    this.marketingService.mkRevenueByReferralTrend(this.clinic_id, this.trendValue).subscribe((res) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
-        data.data.forEach(res => {
+      if (res.status == 200) {
+        res.body.data.forEach(res => {
           res.val.forEach((result, key) => {
             if (typeof (this.mkRevenueByReferralChartTrend[key]) == 'undefined') {
               this.mkRevenueByReferralChartTrend[key] = { data: [], label: '' };
@@ -1636,12 +1636,12 @@ export class MarketingComponent implements AfterViewInit {
     this.mkNewPatientsReferralChartTrend = [];
     var user_id;
     var clinic_id;
-    this.marketingService.mkNewPatientsByReferralTrend(this.clinic_id, this.trendValue).subscribe((data) => {
+    this.marketingService.mkNewPatientsByReferralTrend(this.clinic_id, this.trendValue).subscribe((res) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
+      if (res.status == 200) {
 
-        data.data.forEach(res => {
+        res.body.data.forEach(res => {
           res.val.forEach((result, key) => {
             if (typeof (this.mkNewPatientsReferralChartTrend[key]) == 'undefined') {
               this.mkNewPatientsReferralChartTrend[key] = { data: [], label: '' };
@@ -1677,8 +1677,8 @@ export class MarketingComponent implements AfterViewInit {
   private drilldownRevenueReferral(label) {
     var user_id;
     var clinic_id;
-    /* this.marketingService.mkRevenueByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-          if(data.message == 'success'){*/
+    /* this.marketingService.mkRevenueByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((res) => {
+          if(res.status == 200){*/
     this.revenueReferralData1 = [];
     this.revenueReferralLabels1 = [];
     this.revenueReferralData = [];
@@ -1758,20 +1758,20 @@ export class MarketingComponent implements AfterViewInit {
       this.visitsTooltip = 'down';
       var user_id;
       var clinic_id;
-      this.marketingService.fdvisitsRatio(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+      this.marketingService.fdvisitsRatio(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
         this.visitsTotal = 0;
         this.visitsPrevTotal = 0;
         this.fdvisitsRatioLoader = false;
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
-        if (data.message == 'success') {
+        if (res.status == 200) {
           this.totalvisit[0]['data'] = [];
           this.TvisitTrend1 = [];
           this.TvisitTrendLabels1 = [];  
 
-          if (data.total > 0) {
-            data.data.sort((a, b)=> a.num_visits === b.num_visits ? 0 : a.num_visits < b.num_visits || -1);
-            data.data.forEach(res => { 
+          if (res.body.total > 0) {
+            res.body.data.sort((a, b)=> a.num_visits === b.num_visits ? 0 : a.num_visits < b.num_visits || -1);
+            res.body.data.forEach(res => { 
               this.TvisitTrend1.push(Math.round(res.num_visits));
               this.TvisitTrendLabels1.push(res.clinic_name);
             });
@@ -1781,13 +1781,13 @@ export class MarketingComponent implements AfterViewInit {
           }
           this.totalvisit[0]['data'] = this.TvisitTrend1;
 
-          this.visitsTotal = data.total;
-          this.visitsPrevTotal = data.total_ta;
-          this.visitsGoal = data.goals;
+          this.visitsTotal = res.body.total;
+          this.visitsPrevTotal = res.body.total_ta;
+          this.visitsGoal = res.body.goals;
           if (this.visitsTotal >= this.visitsPrevTotal)
             this.visitsTooltip = 'up';
 
-          this.visitsGoal = data.goals;
+          this.visitsGoal = res.body.goals;
         }
       }, error => {
         this.Apirequest = this.Apirequest - 1;
@@ -1801,17 +1801,17 @@ export class MarketingComponent implements AfterViewInit {
   public Accounts = [];
 
   private getAccounts() {
-    this.marketingService.getAccounts(this.clinic_id).subscribe((data) => {
+    this.marketingService.getAccounts(this.clinic_id).subscribe((res) => {
       this.Accounts = [];
       this.selectedAccounts = [];
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
-        for (let key in data.data.categories) {
-          this.Accounts.push(data.data.categories[key]);
+      if (res.status == 200) {
+        for (let key in res.body.data.categories) {
+          this.Accounts.push(res.body.data.categories[key]);
         }
-        for (let key in data.data.selectedCategories) {
-          this.selectedAccounts.push(data.data.selectedCategories[key]);
+        for (let key in res.body.data.selectedCategories) {
+          this.selectedAccounts.push(res.body.data.selectedCategories[key]);
         }
 
       }
@@ -1824,17 +1824,17 @@ export class MarketingComponent implements AfterViewInit {
   }
 
   private getMyobAccounts() {
-    this.marketingService.getMyobAccounts(this.clinic_id).subscribe((data) => {
+    this.marketingService.getMyobAccounts(this.clinic_id).subscribe((res) => {
       this.Accounts = [];
       this.selectedAccounts = [];
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
-        for (let key in data.data.categories) {
-          this.Accounts.push(data.data.categories[key]);
+      if (res.status == 200) {
+        for (let key in res.body.data.categories) {
+          this.Accounts.push(res.body.data.categories[key]);
         }
-        for (let key in data.data.selectedCategories) {
-          this.selectedAccounts.push(data.data.selectedCategories[key]);
+        for (let key in res.body.data.selectedCategories) {
+          this.selectedAccounts.push(res.body.data.selectedCategories[key]);
         }
 
       }
@@ -1897,18 +1897,18 @@ export class MarketingComponent implements AfterViewInit {
       this.newPatientsTotal = 0;
       var user_id;
       var clinic_id;
-      this.marketingService.fdnewPatientsRatio(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+      this.marketingService.fdnewPatientsRatio(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
         this.newPatientsTotal = 0;
         this.newPatientsPrevTotal = 0;
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
-        if (data.message == 'success') {
+        if (res.status == 200) {
           this.fdnewPatientsRatioLoader = false;
           this.newPativentbr[0]['data'] = [];
           this.newPTrend1 = [];
           this.newPTrendLabels1 = [];
-          if (data.total > 0) {
-            data.data.forEach(res => { 
+          if (res.body.total > 0) {
+            res.body.data.forEach(res => { 
               this.newPTrend1.push(Math.round(res.new_patients));
               this.newPTrendLabels1.push(res.clinic_name);
             });
@@ -1918,11 +1918,11 @@ export class MarketingComponent implements AfterViewInit {
           }
           this.newPativentbr[0]['data'] = this.newPTrend1;
 
-          if (data.total != null)
-            this.newPatientsTotal = data.total;
-          if (data.total_ta != null)
-            this.newPatientsPrevTotal = data.total_ta;
-          this.newPatientsGoal = data.goals;
+          if (res.body.total != null)
+            this.newPatientsTotal = res.body.total;
+          if (res.body.total_ta != null)
+            this.newPatientsPrevTotal = res.body.total_ta;
+          this.newPatientsGoal = res.body.goals;
           if (this.newPatientsTotal >= this.newPatientsPrevTotal)
             this.newPatientsTooltip = 'up';
 
@@ -1986,17 +1986,17 @@ export class MarketingComponent implements AfterViewInit {
     this.fdActivePatientsTa = 0;
     this.fdActivePatientLoader = true;
     this.showAPBar = false;
-    this.marketingService.fdActivePatient(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.marketingService.fdActivePatient(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
       this.fdActivePatients = 0;
       this.fdActivePatientsTa = 0;
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.newAPativentbr[0]['data'] = [];
         this.newAPTrend1 = [];
         this.newAPTrendLabels1 = [];
         this.fdActivePatientLoader = false;
-        data.data.forEach(res => { 
+        res.body.data.forEach(res => { 
           this.newAPTrend1.push(Math.round(res.active_patients));
           this.newAPTrendLabels1.push(res.clinic_name);
         });
@@ -2005,8 +2005,8 @@ export class MarketingComponent implements AfterViewInit {
         }
         this.newAPativentbr[0]['data'] = this.newAPTrend1;
 
-        this.fdActivePatients = data.total;
-        this.fdActivePatientsTa = data.total_ta;
+        this.fdActivePatients = res.body.total;
+        this.fdActivePatientsTa = res.body.total_ta;
         this.activePatientsTooltip = 'down';
         if (this.fdActivePatients >= this.fdActivePatientsTa)
           this.activePatientsTooltip = 'up';
@@ -2040,29 +2040,29 @@ export class MarketingComponent implements AfterViewInit {
       var clinic_id;
       this.fdnewPatientsAcqLoader = true;
 
-      this.marketingService.categoryExpenses(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((data) => {
+      this.marketingService.categoryExpenses(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((res) => {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
-        if (data.message == 'success') {
+        if (res.status == 200) {
           this.newAcqValueError = false;
           this.fdnewPatientsAcqLoader = false;
-          if (data.goals) {
-            this.newAcqValueGoal = data.goals;
+          if (res.body.goals) {
+            this.newAcqValueGoal = res.body.goals;
           }
           // checking if any new account name found in report then we are saving that one in existing accounts
           this.categories = [];
           this.expenseData = [];
-          this.Accounts = this.Accounts.concat(data.data_expense_category_report);
+          this.Accounts = this.Accounts.concat(res.body.data_expense_category_report);
           this.Accounts = this.Accounts.filter((item, index) => {
             return (this.Accounts.indexOf(item) == index)
           })
           this.Accounts = this.Accounts.filter(x => !this.selectedAccounts.includes(x));
 
-          data.data.forEach((res, key) => {
+          res.body.data.forEach((res, key) => {
             this.expenseData[res.meta_key] = res.expenses;
           });
           if (this.newPatientsPrevTotal > 0)
-            this.newAcqValuePrev = Math.round(data.data_ta / this.newPatientsPrevTotal);
+            this.newAcqValuePrev = Math.round(res.body.data_ta / this.newPatientsPrevTotal);
           if (this.selectedAccounts.length > 0)
             this.load_chart_acq();
 
@@ -2338,7 +2338,7 @@ export class MarketingComponent implements AfterViewInit {
 
   private getClinics() {
     this.headerService.getClinic.subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.clinicsData = res.body.data;
       }
     }, error => { });
@@ -2437,7 +2437,7 @@ export class MarketingComponent implements AfterViewInit {
     this.totavisitTrendMulti =[];
     this.totalVisitMultiLabels =[];
     this.totalVisitMultiLabels1 =[];
-    this.marketingService.mkTotalVisitsTrend(this.clinic_id, this.trendValue).subscribe((data) => {
+    this.marketingService.mkTotalVisitsTrend(this.clinic_id, this.trendValue).subscribe((res) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       this.visitsChartTrend1 = [];
@@ -2445,13 +2445,13 @@ export class MarketingComponent implements AfterViewInit {
       this.visitsChartTrendLabels1 = [];
       this.visitsChartTrend[0]['data'] = [];
       this.fdvisitsRatioTrendLoader = false;
-      if (data.message == 'success') {
+      if (res.status == 200) {
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showByclinic = true;
         }
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
-          data.data.forEach(res => { 
+          res.body.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
+          res.body.data.forEach(res => { 
             res.val.forEach((reslt, key) => {
               if (typeof (this.totavisitTrendMulti[key]) == 'undefined') {
                 this.totavisitTrendMulti[key] = { data: [], label: '' };
@@ -2473,7 +2473,7 @@ export class MarketingComponent implements AfterViewInit {
           this.totalVisitMultiLabels = this.totalVisitMultiLabels1;
 
         }else{
-            data.data.forEach(res => {
+            res.body.data.forEach(res => {
               this.visitsChartTrend1.push(res.num_visits);
               if (this.trendValue == 'c')
                 this.visitsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -2581,7 +2581,7 @@ export class MarketingComponent implements AfterViewInit {
     this.newPatientsChartTrend1 = [];
     this.fdnewPatientsRatioLoader = true;
     // this.fdnewPatientsAcqLoader = true;
-    this.marketingService.mkNoNewPatientsTrend(this.clinic_id, this.trendValue).subscribe((data) => {
+    this.marketingService.mkNoNewPatientsTrend(this.clinic_id, this.trendValue).subscribe((res) => {
       this.fdnewPatientsRatioLoader = false;
       this.newPatientsChartTrend1 = [];
       this.newPatientsChartTrendLabels1 = [];
@@ -2593,11 +2593,11 @@ export class MarketingComponent implements AfterViewInit {
       this.newPatientsMultiLabels1 =[];
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
+      if (res.status == 200) {
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showNPclinic = true;
-            data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
-            data.data.forEach(res => { 
+            res.body.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
+            res.body.data.forEach(res => { 
               res.val.forEach((reslt, key) => {
                 if (typeof (this.newPatientsTrendMulti[key]) == 'undefined') {
                   this.newPatientsTrendMulti[key] = { data: [], label: '' };
@@ -2618,8 +2618,8 @@ export class MarketingComponent implements AfterViewInit {
             });
             this.newPatientsMultiLabels = this.newPatientsMultiLabels1;
         }else{
-          this.newPatientsChartTemp = data.data;
-          data.data.forEach(res => {
+          this.newPatientsChartTemp = res.body.data;
+          res.body.data.forEach(res => {
             this.newPatientsChartTrend1.push(res.new_patients);
             if (this.trendValue == 'c')
               this.newPatientsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -2664,7 +2664,7 @@ export class MarketingComponent implements AfterViewInit {
       this.newAPatientsTrendMulti =[];
       this.newAPatientsMultiLabels =[];
       this.newAPatientsMultiLabels1 =[];
-    this.marketingService.mkNoActivePatientsTrend(this.clinic_id, this.trendValue).subscribe((data) => {
+    this.marketingService.mkNoActivePatientsTrend(this.clinic_id, this.trendValue).subscribe((res) => {
       // this.fdnewPatientsRatioLoader = false;
       this.activePatientsChartTrend1 = [];
       this.activePatientsChartTrendLabels1 = [];
@@ -2672,12 +2672,12 @@ export class MarketingComponent implements AfterViewInit {
       this.activePatientsChartTrend[0]['data'] = [];
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
+      if (res.status == 200) {
         
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showAPclinic = true;
-          data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
-          data.data.forEach(res => { 
+          res.body.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
+          res.body.data.forEach(res => { 
             res.val.forEach((reslt, key) => {
             if (typeof (this.newAPatientsTrendMulti[key]) == 'undefined') {
               this.newAPatientsTrendMulti[key] = { data: [], label: '' };
@@ -2698,8 +2698,8 @@ export class MarketingComponent implements AfterViewInit {
           });
           this.newAPatientsMultiLabels = this.newAPatientsMultiLabels1;
         }else{
-          this.activePatientsChartTemp = data.data;
-          data.data.forEach(res => {
+          this.activePatientsChartTemp = res.body.data;
+          res.body.data.forEach(res => {
             this.activePatientsChartTrend1.push(res.active_patients);
             if (this.trendValue == 'c')
               this.activePatientsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -2836,16 +2836,16 @@ export class MarketingComponent implements AfterViewInit {
     if (this.duration && this.connectedwith != '') {
       var user_id;
       var clinic_id;
-      this.marketingService.categoryExpensesTrend(this.clinic_id, this.trendValue, this.connectedwith).subscribe((data) => {
+      this.marketingService.categoryExpensesTrend(this.clinic_id, this.trendValue, this.connectedwith).subscribe((res) => {
         this.fdnewPatientsAcqLoader = false;
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
-        if (data.message == 'success') {
+        if (res.status == 200) {
           this.newAcqValueError = false;
           this.expenseDataTrend1 = [];
           this.expenseDataTrendLabels1 = [];
           this.newPatientsChartTemp.forEach((res, key) => {
-            data.data.forEach((res1, key1) => {
+            res.body.data.forEach((res1, key1) => {
               if (this.trendValue == 'c' && res1.duration == res.year_month) {
                 let dataX: number = 0;
                 this.dataY = 0;
@@ -2910,15 +2910,15 @@ export class MarketingComponent implements AfterViewInit {
   save_account() {
     var selectedAccounts = JSON.stringify(this.selectedAccounts);
     if (this.connectedwith == 'myob') {
-      this.marketingService.mkSaveAcctMyob(this.clinic_id, selectedAccounts).subscribe((data) => {
-        if (data.message == 'success') {
+      this.marketingService.mkSaveAcctMyob(this.clinic_id, selectedAccounts).subscribe((res) => {
+        if (res.status == 200) {
           this.load_chart_acq();
           this.fdnewPatientsAcq();
         }
       });
     } else if (this.connectedwith == 'xero') {
-      this.marketingService.saveSelectedCategories(this.clinic_id, selectedAccounts).subscribe((data) => {
-        if (data.message == 'success') {
+      this.marketingService.saveSelectedCategories(this.clinic_id, selectedAccounts).subscribe((res) => {
+        if (res.status == 200) {
           this.load_chart_acq();
           this.fdnewPatientsAcq();
         }
@@ -3015,7 +3015,7 @@ export class MarketingComponent implements AfterViewInit {
   checkXeroStatus() {
     this.newAcqValueError = false;
     this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         if (res.body.data.xero_connect == 1) {
           this.xeroConnect = true;
         } else {
@@ -3031,7 +3031,7 @@ export class MarketingComponent implements AfterViewInit {
   checkMyobStatus() {
     this.newAcqValueError = false;
     this.clinicSettingsService.checkMyobStatus(this.clinic_id).subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         if (res.body.data.myob_connect == 1) {
           this.myobConnect = true;
         } else {
@@ -3054,9 +3054,9 @@ export class MarketingComponent implements AfterViewInit {
   }
 
   getChartsTips() {
-    this.chartstipsService.getCharts(4).subscribe((data) => {
-      if (data.message == 'success') {
-        this.charTips = data.data;
+    this.chartstipsService.getCharts(4).subscribe((res) => {
+      if (res.status == 200) {
+        this.charTips = res.body.data;
       }
     }, error => { });
   }
@@ -3069,7 +3069,7 @@ export class MarketingComponent implements AfterViewInit {
       this.showAccountsButton = true;
     } else {
       this.rolesUsersService.getRolesIndividual().subscribe((res) => {
-        if (res.body.message == 'success') {
+        if (res.status == 200) {
           if (res.body.data.indexOf('profilesettings') >= 0) {
             this.showAccountsButton = true;
           }

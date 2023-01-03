@@ -81,10 +81,10 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
   getData(id,selectedGoalCategory,selectedYear) 
   {
     this.clinicSettingsService.getClinicData.subscribe(res=>{
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.Cconsultant = res.body.data[0]['consultant'];
           this.clinicGoalsService.getGoalAllData(id,selectedGoalCategory,selectedYear).subscribe((res) => {
-            if (res.body.message == 'success') {
+            if (res.status == 200) {
               this.getGoalsForTabsClinic(res.body.data);
             } else if (res.status == 401) {
               this.handleUnAuthorization();
@@ -100,10 +100,10 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       console.log('error', error)
     });
     // this.dentistService.getClinicSettings(this.clinic_id$.value).subscribe((res) => {
-    //   if (res.body.message == 'success') {
+    //   if (res.status == 200) {
     //     this.Cconsultant = res.body.data[0]['consultant'];
     //       this.clinicGoalsService.getGoalAllData(id,selectedGoalCategory,selectedYear).subscribe((res) => {
-    //         if (res.body.message == 'success') {
+    //         if (res.status == 200) {
     //           this.getGoalsForTabsClinic(res.body.data);
     //         } else if (res.status == 401) {
     //           this.handleUnAuthorization();
@@ -123,7 +123,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
 
   getDentists(clinicID) {
     this.dentistService.getDentists(clinicID).subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.dentists = res.body.data;
       }
       else if (res.status == 401) {
@@ -136,7 +136,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
 
   // getClinicSettings(clinicID) {
   //   this.dentistService.getClinicSettings(clinicID).subscribe((res) => {
-  //     if (res.body.message == 'success') {
+  //     if (res.status == 200) {
   //       this.Cconsultant = res.body.data[0]['consultant'];
   //       console.log(this.Cconsultant);
   //     }
@@ -289,7 +289,7 @@ setGoalsPerMonth(chartGoals)
   updateClinicGoals(formData) {
     this.clinicGoalsService.updateClinicGoals(formData, this.clinic_id$.value).subscribe((res) => {
       $('.ajax-loader').hide();
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.toastr.success('Clinic Goals Updated');
         this.getData(this.clinic_id$.value,this.selectedGoalCategory$.value,this.selectedYear);
       }
@@ -305,7 +305,7 @@ setGoalsPerMonth(chartGoals)
   updateDentistGoals(formData) {
     this.dentistGoalsService.updateDentistGoals(formData, this.clinic_id$.value, this.selectedGoalCategory$.value).subscribe((res) => {
       $('.ajax-loader').hide();
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.toastr.success('Dentist Goals Updated');
         this.getData(this.clinic_id$.value,this.selectedGoalCategory$.value,this.selectedYear);
       } else if (res.status == 401) {

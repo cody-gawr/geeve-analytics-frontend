@@ -97,7 +97,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
         });
         dialogRef.afterClosed().subscribe(result => {
           this.headerService.getNewFeatureDisable().subscribe((res) => {
-            if (res.body.message == 'success') {
+            if (res.status == 200) {
               this._cookieService.put("features_dismissed", '1');
             }
           });
@@ -465,7 +465,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
   checkPremissions(Clid){
     var permision = '';
     this.rolesUsersService.getRolesIndividual(Clid).subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         permision = res.body.data;
         if(permision != '' && this.user_type == 7){
           if(permision.indexOf('healthscreen') >= 0  && this.route == "/dashboards/healthscreen"){

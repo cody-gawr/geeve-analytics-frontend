@@ -39,7 +39,7 @@ export class CampaignsDialogComponent {
     }
 
     this.followupsService.notes(data.notes, data.patientId, data.date, data.clinic_id, data.followup_date, data.type, data.treatItem).subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.dialogRef.close();
       } else if (res.status == 401) {
         this.handleUnAuthorization();
@@ -80,7 +80,7 @@ export class CampaignsStatusDialogComponent {
       return false;
     }
     this.followupsService.notes(data.notes, data.patientId, data.date, data.clinic_id, data.followup_date, data.type).subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.dialogRef.close();
       } else if (res.status == 401) {
         this.handleUnAuthorization();
@@ -279,7 +279,7 @@ export class CampaignsComponent implements OnInit, OnDestroy {
       this.clinic_id = val;
 
       this.clinicianAnalysisService.getClinicSettings(this.clinic_id).subscribe((data: any) => {
-        if (data.message == 'success') {
+        if (data.status == 200) {
           this.isEnablePO = (data.body.data.post_op_enable == 1) ? true : false;
           this.isEnableOR = (data.body.data.recall_enable == 1) ? true : false;
           this.isEnableTH = (data.body.data.tick_enable == 1) ? true : false;
@@ -320,7 +320,7 @@ export class CampaignsComponent implements OnInit, OnDestroy {
     this.followupsService.followupPostOpCalls(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((production: any) => {
       this.followupPostOpCallsInComp = [];
       this.poLoadingLoading = false;
-      if (production.message == 'success') {
+      if (production.status== 200 ) {
         // this.nextBussinessDay = production.next_day;
         // if (production.data == '204') {
 
@@ -352,7 +352,7 @@ export class CampaignsComponent implements OnInit, OnDestroy {
     this.followupsService.followupOverdueRecalls(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((production: any) => {
       this.followupOverDueRecallInCMP = [];
       this.recallLoadingLoading = false;
-      if (production.message == 'success') {
+      if (production.status== 200 ) {
         // this.nextBussinessDay = production.next_day;
         // this.followupsOverDueRecallDate = production.date;
         // if (production.data == '204') {
@@ -388,7 +388,7 @@ export class CampaignsComponent implements OnInit, OnDestroy {
     this.followupsService.followupTickFollowups(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((production: any) => {
       this.followupTickFollowupsInCMP = [];
       this.endTaksLoadingLoading = false;
-      if (production.message == 'success') {
+      if (production.status== 200 ) {
         // this.nextBussinessDay = production.next_day;
         // if (production.data == '204') {
 
@@ -696,7 +696,7 @@ export class CampaignsComponent implements OnInit, OnDestroy {
 
   getChartsTips() {
     this.chartstipsService.getCharts(7).subscribe((res) => {
-      if (res.message == 'success') {
+      if (res.status == 200 ) {
         this.charTips = res.body.data;
       }
     }, error => { });

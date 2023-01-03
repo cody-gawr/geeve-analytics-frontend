@@ -58,7 +58,7 @@ export class RolesComponent implements OnInit {
 
   getprofileSettings() {
   this.rolesService.getprofileSettings(this.id).subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
         this.displayName = res.body.data[0].displayName;
         this.email = res.body.data[0].email;
        }
@@ -75,7 +75,7 @@ public display_name;
   this.displayName = $("#displayName").val();
   this.email = $("#email").val();
    this.rolesService.updateprofileSettings(this.displayName, this.email).subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
         let opts = this.constants.cookieOpt as CookieOptions;
         this._cookieService.put("display_name", this.displayName, opts);
         this.display_name = this.displayName;
@@ -105,7 +105,7 @@ onSubmitPassword() {
   this.repeatPassword = this.form.value.repeatPassword;
   if(this.newPassword == this.repeatPassword) {
    this.rolesService.updatePassword(this.currentPassword, this.newPassword).subscribe((res) => {
-       if(res.body.message == 'success'){
+       if(res.status == 200){
         this.successLogin = true;
         this.successtext = res.body.data;
        }
