@@ -30,7 +30,7 @@ export interface PeriodicElement {
   noshows: string;
   newpatient: string;
   card: string;  
-  status: string;  
+  status: number;  
 }
 
 import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
@@ -55,9 +55,9 @@ export class DialogOverviewExampleDialogComponent {
     }
 
     this.morningHuddleService.notes(data.notes,data.patientId, data.date,data.clinic_id, data.followup_date, data.type).subscribe((res) => {
-      if (res.message == 'success') {
+      if (res.body.message == 'success') {
         this.dialogRef.close();
-      } else if (res.status == '401') {
+      } else if (res.status == 401) {
         this.handleUnAuthorization();
       }
     }, error => {
@@ -384,14 +384,14 @@ initiate_clinic() {
     // clinicGetSettings
     // this.clinicianAnalysisService.getClinics( this.clinic_id, 'DailyTaskEnable,EquipListEnable,PostOpEnable,RecallEnable,TickEnable,FtaEnable' ).subscribe((data:any) => {
     //   this.dailyTabSettLod = true;
-    //   if(data.message == 'success'){
+    //   if(data.body.message == 'success'){
     //     this.isEnabletasks = (data.data.daily_task_enable == 1)? true : false;
     //     this.isEnableEquipList = (data.data.equip_list_enable == 1)? true : false;        
     //   }
     // }); 
 
     this.clinicianAnalysisService.getClinicSettings( this.clinic_id).subscribe((data:any) => {
-      if(data.message == 'success'){
+      if(data.body.message == 'success'){
         this.isEnablePO = (data.data.post_op_enable == 1)? true : false;
         this.isEnableOR = (data.data.recall_enable == 1)? true : false;
         this.isEnableTH = (data.data.tick_enable == 1)? true : false;
@@ -599,7 +599,7 @@ initiate_clinic() {
           });  
         }
         this.refreshReminderTab(this.selectDentist);
-      } else if (production.status == '401') {
+      } else if (production.status == 401) {
           this.handleUnAuthorization();
         }
       
@@ -660,7 +660,7 @@ initiate_clinic() {
         }
         
         //this.postOpCallsDays = production.previous;     
-      } else if (production.status == '401') {
+      } else if (production.status == 401) {
         this.handleUnAuthorization();      
       }
     }, error => {
@@ -697,7 +697,7 @@ initiate_clinic() {
 
         this.followupsOverDueRecallDate = production.date;     
        //this.OverDueRecallDays = production.previous;     
-      } else if (production.status == '401') {
+      } else if (production.status == 401) {
            this.handleUnAuthorization();      
         }
     }, error => {
@@ -740,7 +740,7 @@ initiate_clinic() {
               this.intrFollowupsScrps.push(script);
             } 
           });
-        } else if (scripts.status == '401') {
+        } else if (scripts.status == 401) {
            this.handleUnAuthorization();      
         }
     }, error => {
@@ -843,7 +843,7 @@ initiate_clinic() {
           });
         }     
            
-       } else if (production.status == '401') {
+       } else if (production.status == 401) {
          this.handleUnAuthorization();      
        }
     }, error => {
@@ -897,7 +897,7 @@ initiate_clinic() {
           });
         }     
            
-       } else if (production.status == '401') {
+       } else if (production.status == 401) {
          this.handleUnAuthorization();      
        }
     }, error => {
@@ -938,11 +938,11 @@ initiate_clinic() {
           // this.endOfDaysTasksInComp.sort = this.sort1; 
         }        
         production.data.forEach(res => {
-          if(res.type == "list"){
+          if(res.body.type == "list"){
             this.tasklistArray.push(res);
           }
         });      
-      } else if (production.status == '401') {
+      } else if (production.status == 401) {
          this.handleUnAuthorization();         
       }
     }, error => {
@@ -977,7 +977,7 @@ initiate_clinic() {
           }  
           // this.endOfDaysTasksInComp.sort = this.sort1; 
         }       
-      } else if (production.status == '401') {
+      } else if (production.status == 401) {
          this.handleUnAuthorization();         
       }
     }, error => {
@@ -1027,7 +1027,7 @@ initiate_clinic() {
           });
 
         }
-      } else if (production.status == '401') {
+      } else if (production.status == 401) {
          this.handleUnAuthorization();      
       }
     }, error => {
@@ -1082,7 +1082,7 @@ initiate_clinic() {
         this.apiSuccessCount += 1;
         this.todayUnscheduledHours = production.data.hour;
         this.todayPatientsDate = production.data.date;    
-      } else if (production.status == '401') {
+      } else if (production.status == 401) {
          this.handleUnAuthorization();      
       }
     }, error => {
@@ -1095,7 +1095,7 @@ initiate_clinic() {
         this.todayChairUtilisationRate =  Math.round(production.data);
 
     
-      } else if (production.status == '401') {
+      } else if (production.status == 401) {
         if(this.user_type != '7'){
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
@@ -1114,7 +1114,7 @@ initiate_clinic() {
       if(production.status == true) {
         this.apiSuccessCount += 1;
         this.todayUnscheduledBal = production.data;       
-      } else if (production.status == '401') {
+      } else if (production.status == 401) {
         this.handleUnAuthorization();           
       }
     }, error => {
@@ -1162,7 +1162,7 @@ initiate_clinic() {
         this.apiSuccessCount += 1;
         this.scheduleNewPatieltd = production.data.patient;
         this.schedulePatielDate = this.datepipe.transform( production.data.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
-        } else if (production.status == '401') {
+        } else if (production.status == 401) {
          this.handleUnAuthorization();      
       }
     }, error => {
@@ -1179,7 +1179,7 @@ initiate_clinic() {
       if(production.status == true) {
         this.apiSuccessCount += 1;
         this.schedulehours = production.data;
-      } else if (production.status == '401') {
+      } else if (production.status == 401) {
         if(this.user_type != '7'){
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
@@ -1198,7 +1198,7 @@ initiate_clinic() {
       if(production.status == true) {
         this.apiSuccessCount += 1;
         this.unSchedulehours = production.data;
-      } else if (production.status == '401') {
+      } else if (production.status == 401) {
          this.handleUnAuthorization();      
       }
     }, error => {
@@ -1280,7 +1280,7 @@ initiate_clinic() {
             b = y.provider_name.toUpperCase();
             return a == b ? 0 : a > b ? 1 : -1;
         });
-      } else if (production.status == '401') {
+      } else if (production.status == 401) {
          this.handleUnAuthorization();      
       }
     }, error => {
@@ -1300,7 +1300,7 @@ initiate_clinic() {
         this.apiSuccessCount += 1;
         this.production = production.data;
         this.productionDate = this.datepipe.transform( this.production.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
-      } else if (production.status == '401') {
+      } else if (production.status == 401) {
            this.handleUnAuthorization();      
         }
   	}, error => {
@@ -1316,7 +1316,7 @@ initiate_clinic() {
   		if(recallRate.status == true){
         this.apiSuccessCount += 1;
         this.recallRate = recallRate.data;
-  		} else if (recallRate.status == '401') {
+  		} else if (recallRate.status == 401) {
         this.handleUnAuthorization();          
       }
   	}, error => {
@@ -1331,7 +1331,7 @@ initiate_clinic() {
       if(treatmentRate.status == true){
         this.apiSuccessCount += 1;
          this.treatmentRate = treatmentRate.data;
-      } else if (treatmentRate.status == '401') {
+      } else if (treatmentRate.status == 401) {
          this.handleUnAuthorization();
       }
     }, error => {
@@ -1349,7 +1349,7 @@ async getDentistList(){
         this.apiSuccessCount += 1;
         this.dentistList.data = list.data;
         this.dentistListTemp = list.data;
-      } else if (list.status == '401') {
+      } else if (list.status == 401) {
        this.handleUnAuthorization();           
       }
     }, error => {
@@ -1666,7 +1666,7 @@ async getDentistList(){
 
   getChartsTips() {
     this.chartstipsService.getCharts(7).subscribe((data) => {
-       if(data.message == 'success'){         
+       if(data.body.message == 'success'){         
         this.charTips = data.data;
        }
     }, error => {});

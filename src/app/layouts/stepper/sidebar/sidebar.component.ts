@@ -68,7 +68,7 @@ export class StepperSidebarComponent implements OnDestroy,AfterViewInit {
       logout() {
 
       this.headerService.logout(this._cookieService.get("userid")).subscribe((res) => {
-       if(res.message == 'success'){
+       if(res.body.message == 'success'){
         this._cookieService.removeAll();
         this.router.navigate(['/login']);
        }
@@ -78,8 +78,8 @@ export class StepperSidebarComponent implements OnDestroy,AfterViewInit {
   }
    private getClinics() { 
   this.headerService.getClinics().subscribe((res) => {
-       if(res.message == 'success'){
-        this.clinicsData = res.data;
+       if(res.body.message == 'success'){
+        this.clinicsData = res.body.data;
        }
     }, error => {
      // this.warningMessage = "Please Provide Valid Inputs!";

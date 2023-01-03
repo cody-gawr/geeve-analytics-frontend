@@ -1,6 +1,6 @@
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../../environments/environment";
@@ -22,14 +22,14 @@ export class ClinicianProceeduresService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        let headers =  {headers: new HttpHeaders(), withCredentials: true};
+        let headers =  {headers: new HttpHeaders(), withCredentials: true, observe: 'response' as const };
         return headers;
     }
     // Items Predictor Analysis 
     ItemsPredictorAnalysis(clinic_id, startDate = '', endDate = '', user_type='',clinician=''  ): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorAnalysis?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -38,7 +38,7 @@ export class ClinicianProceeduresService {
     ItemsPredictorAnalysisSpecial(clinic_id, startDate = '', endDate = '', user_type='',clinician=''  ): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorSpecialistAnalysis?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -48,7 +48,7 @@ export class ClinicianProceeduresService {
     ItemsPredictorAnalysisTrendDentist(dentist_id, clinic_id, mode =''  ): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorAnalysisTrend?clinic_id="+clinic_id+"&provider_id="+dentist_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -57,7 +57,7 @@ export class ClinicianProceeduresService {
     ItemsPredictorAnalysisSpecialTrendDentist(dentist_id, clinic_id, mode =''  ): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorSpecialistAnalysisTrend?clinic_id="+clinic_id+"&provider_id="+dentist_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -67,7 +67,7 @@ export class ClinicianProceeduresService {
     ItemsPredictorAnalysisDentist(dentist_id, clinic_id, startDate = '', endDate = ''  ): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorAnalysis?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -76,7 +76,7 @@ export class ClinicianProceeduresService {
     ItemsPredictorAnalysisSpecialistDentist(dentist_id, clinic_id, startDate = '', endDate = ''  ): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorSpecialistAnalysis?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -86,7 +86,7 @@ export class ClinicianProceeduresService {
     PredictorRatio( clinic_id, startDate = '', endDate = '',duration='', user_type='',clinician='' ): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorRatio?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -95,7 +95,7 @@ export class ClinicianProceeduresService {
     PredictorRatioDentist(dentist_id, clinic_id, startDate = '', endDate = '',duration='' ): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorRatio?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -105,7 +105,7 @@ export class ClinicianProceeduresService {
     ClinicianProceedure(clinic_id, startDate = '', endDate = '' ): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/ClinicianProcedures/cpRevPerProcedure?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -115,7 +115,7 @@ export class ClinicianProceeduresService {
     ClinicianProceedureDentist(dentist_id, clinic_id, startDate = '', endDate = ''  ): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/ClinicianProcedures/cpRevPerProcedure?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -125,7 +125,7 @@ export class ClinicianProceeduresService {
     ClinicianReferral( clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/ClinicianProcedures/cpReferrals?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -136,7 +136,7 @@ export class ClinicianProceeduresService {
     ClinicianReferralDentist(dentist_id, clinic_id, startDate = '', endDate = '',duration='' ): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/ClinicianProcedures/cpReferrals?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -146,7 +146,7 @@ export class ClinicianProceeduresService {
     ClinicianReferralTrendDentist(dentist_id, clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/ClinicianProcedures/cpReferralsTrend?clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -155,7 +155,7 @@ export class ClinicianProceeduresService {
     CpPredictorRatioTrend(dentist_id, clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorRatioTrend?clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );

@@ -2,7 +2,7 @@ import { OnDestroy, EventEmitter, TemplateRef, AfterViewInit, AfterContentInit, 
 import { DomSanitizer } from '@angular/platform-browser';
 import { Message } from '../common/message';
 import { BlockableUI } from '../common/blockableui';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 export declare class FileUpload implements AfterViewInit, AfterContentInit, OnDestroy, BlockableUI {
     private el;
     sanitizer: DomSanitizer;

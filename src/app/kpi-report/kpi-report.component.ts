@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+ import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { KpiReportService } from './kpi-report.service';
 import { CookieOptions, CookieService } from "ngx-cookie";
@@ -99,8 +99,8 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 			this.getDentists();
 			this.selectedDentist = 'all';
 			this.KpiReportService.getClinicSettings(this.clinic_id).subscribe((res) => {
-				if (res.message == 'success') {
-					this.Cconsultant = res.data[0]['consultant'];
+				if (res.body.message == 'success') {
+					this.Cconsultant = res.body.data[0]['consultant'];
 					if (this.Cconsultant == 'prime') {
 						$("#kpireport").removeClass('consult');
 						$("#notAuth").addClass('consult');
@@ -112,7 +112,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 						$('.prime-logo').addClass('displogo');
 					}
 				}
-				else if (res.status == '401') {
+				else if (res.status == 401) {
 					this.handleUnAuthorization();
 				}
 			}, error => {
@@ -288,7 +288,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 		this.endDate = this.datepipe.transform(new Date(this.endDate), 'yyyy-MM-dd');
 
 		this.KpiReportService.getKpiReport(this.clinic_id, this.startDate, this.endDate, this.selectedDentist).subscribe((data: any) => {
-			if (data.message == 'success') {
+			if (data.body.message == 'success') {
 				this.reportloader = false;
 				this.reportData = data.data;
 				this.reportData.forEach(element => {
@@ -348,11 +348,11 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 	// Get Dentist
 	getDentists() {
 		this.dentistService.currentDentistList.subscribe(res=>{
-			if (res.message == 'success') {
-					this.dentists = res.data;
-					this.dentistCount = res.data.length;
+			if (res.body.message == 'success') {
+					this.dentists = res.body.data;
+					this.dentistCount = res.body.data.length;
 				}
-				else if (res.status == '401') {
+				else if (res.status == 401) {
 					this._cookieService.put("username", '');
 					this._cookieService.put("email", '');
 					this._cookieService.put("userid", '');
@@ -362,11 +362,11 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 				this.warningMessage = "Please Provide Valid Inputs!";
 		});
 		// this.clinic_id && this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
-		// 	if (res.message == 'success') {
-		// 		this.dentists = res.data;
-		// 		this.dentistCount = res.data.length;
+		// 	if (res.body.message == 'success') {
+		// 		this.dentists = res.body.data;
+		// 		this.dentistCount = res.body.data.length;
 		// 	}
-		// 	else if (res.status == '401') {
+		// 	else if (res.status == 401) {
 		// 		this._cookieService.put("username", '');
 		// 		this._cookieService.put("email", '');
 		// 		this._cookieService.put("userid", '');

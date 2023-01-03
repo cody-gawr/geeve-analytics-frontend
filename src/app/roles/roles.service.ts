@@ -1,6 +1,6 @@
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../environments/environment";
@@ -20,7 +20,7 @@ export class RolesService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        let headers =  {headers: new HttpHeaders(), withCredentials: true};
+        let headers =  {headers: new HttpHeaders(), withCredentials: true, observe: 'response' as const };
         return headers;
     }
 
@@ -28,7 +28,7 @@ export class RolesService {
     getprofileSettings( clinic_id): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/Users/getPractices?clinic_id="+clinic_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -42,7 +42,7 @@ export class RolesService {
              var header = this.getHeaders();
 
         return this.http.post(this.apiUrl +"/Users/userUpdateProfile", formData, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -57,7 +57,7 @@ export class RolesService {
             var header = this.getHeaders();
 
         return this.http.post(this.apiUrl +"/Users/userChangePassword", formData,header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -66,7 +66,7 @@ export class RolesService {
     clearSession( clinic_id): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/Xeros/clearSession/?getxero=1?clinic_id="+clinic_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );

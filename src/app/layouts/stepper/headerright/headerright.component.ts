@@ -41,10 +41,10 @@ export class StepperHeaderrightComponent implements AfterViewInit  {
    public finalUrl:string;
    private getClinics() { 
   this.headerService.getClinics().subscribe((res) => {
-       if(res.message == 'success'){
-        if(res.data.length>0) {
-        this.clinicsData = res.data;
-        this.selectedClinic = res.data[0].id;
+       if(res.body.message == 'success'){
+        if(res.body.data.length>0) {
+        this.clinicsData = res.body.data;
+        this.selectedClinic = res.body.data[0].id;
       }
         this.loadClinicid(this.selectedClinic);
 
@@ -59,9 +59,9 @@ export class StepperHeaderrightComponent implements AfterViewInit  {
     // Get Dentist
     getDentists() {
       this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
-           if(res.message == 'success'){
-              this.dentists= res.data;
-              this.dentistCount= res.data.length;
+           if(res.body.message == 'success'){
+              this.dentists= res.body.data;
+              this.dentistCount= res.body.data.length;
 
            }
         }, error => {
@@ -78,7 +78,7 @@ export class StepperHeaderrightComponent implements AfterViewInit  {
 /*  logout() {
       this.headerrightService.logout(this._cookieService.get("userid")).subscribe((res) => {
        console.log(res);
-       if(res.message == 'success'){
+       if(res.body.message == 'success'){
         this._cookieService.put("username",'');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');

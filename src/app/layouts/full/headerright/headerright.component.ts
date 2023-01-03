@@ -84,7 +84,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
     }
     if (this._cookieService.get("features_dismissed") && this._cookieService.get("features_dismissed") == "0") {
       this.headerService.getNewFeature().subscribe((res) => {
-        for (let linkurl of res.data) {
+        for (let linkurl of res.body.data) {
           if (linkurl.link) {
             if (!linkurl.link.match(/^[a-zA-Z]+:\/\//)) {
               linkurl.link = 'http://' + linkurl.link;
@@ -93,11 +93,11 @@ export class AppHeaderrightComponent implements AfterViewInit {
         }
         const dialogRef = this.dialog.open(FeatureDialogComponent, {
           width: "700px",
-          data: res.data,
+          data: res.body.data,
         });
         dialogRef.afterClosed().subscribe(result => {
           this.headerService.getNewFeatureDisable().subscribe((res) => {
-            if (res.message == 'success') {
+            if (res.body.message == 'success') {
               this._cookieService.put("features_dismissed", '1');
             }
           });
@@ -189,10 +189,10 @@ export class AppHeaderrightComponent implements AfterViewInit {
     await this.rolesUsersService.getRolesIndividual().subscribe(
       (res) => {
         this.rolesUsersService.setRoleIndividual(res);
-        if (res.message == "success") {
-          this.user_type_dentist = res.type;
+        if (res.status == 200) {
+          this.user_type_dentist = res.body.type;
           let opts = this.constants.cookieOpt as CookieOptions;
-          this._cookieService.put("user_type", res.type, opts);
+          this._cookieService.put("user_type", res.body.type, opts);
         }
       },
       (error) => { }
@@ -246,15 +246,19 @@ export class AppHeaderrightComponent implements AfterViewInit {
     this.selectedClinic = [];
     this.headerService.getClinics().subscribe(
       (res) => {
+        console.log(`res status = ${res.status}  AND res = ${res}`)
         this.headerService.setClinics(res);
-        if (res.message == "success") {
-          this.clinicsData = res.data;
-          if (res.data.length > 0) {            
+        if (res.status == 200) {
+          this.clinicsData = res.body.data;
+          console.log(`res.body.data = ${res.body.data}`);
+          console.log(`res.body.data = ${res.body.data}`);
+          console.log(`res = ${JSON.stringify(res)}`);
+          if (res.body.data.length > 0) {            
             
             if (this.route == "/dashboards/healthscreen") { 
               if(this._cookieService.get("clinic_dentist")){
                 if(this._cookieService.get("clinic_dentist").split('_')[0].indexOf(",") < 0 || this._cookieService.get("clinic_dentist").split('_')[0] != 'all'){
-                  this.getAccountConnection(res.data[0].id);
+                  this.getAccountConnection(res.body.data[0].id);
                 }else{
                   this.resetAccountConnection();
                 }
@@ -264,9 +268,9 @@ export class AppHeaderrightComponent implements AfterViewInit {
                 this.selectedClinic = "all";
                 this.placeHolder = "All Clinics";
               } else {
-                this.clinic_id = res.data[0].id;
-                this.selectedClinic = res.data[0].id;
-                this.placeHolder = res.data[0].clinicName;
+                this.clinic_id = res.body.data[0].id;
+                this.selectedClinic = res.body.data[0].id;
+                this.placeHolder = res.body.data[0].clinicName;
               } 
             } else {            
               if (this._cookieService.get("clinic_dentist")) {
@@ -300,7 +304,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
                       this.allChecked = true;
                       this.clinic_id = 'all'; 
                       this.selectedClinic = ['all']; 
-                      res.data.forEach((datatemp) => { // getting  clinic name as per cookie data
+                      res.body.data.forEach((datatemp) => { // getting  clinic name as per cookie data
                         this.selectedClinic.push(datatemp.id);
                       });
                     } else {
@@ -334,13 +338,13 @@ export class AppHeaderrightComponent implements AfterViewInit {
                       opts
                     );
                   } else if(dentistclinic[0] == "all" || dentistclinic[0] == ""){ // check clinic data from cookie
-                    this.clinic_id =  res.data[0].id;
-                    this.selectedClinic = res.data[0].id;
+                    this.clinic_id =  res.body.data[0].id;
+                    this.selectedClinic = res.body.data[0].id;
                   }else if(dentistclinic[0] != "all"){
                     this.clinic_id = dentistclinic[0];
                     this.selectedClinic = dentistclinic[0];
                   }
-                  res.data.forEach((datatemp) => { // getting  clinic name as per cookie data
+                  res.body.data.forEach((datatemp) => { // getting  clinic name as per cookie data
                     if (datatemp.id == this.clinic_id) {
                       this.placeHolder = datatemp.clinicName;
                     }
@@ -349,11 +353,11 @@ export class AppHeaderrightComponent implements AfterViewInit {
               } else {
                 if (((this.route == "/dashboards/finances" && this.user_type != 7) || (this.route == "/dashboards/marketing" && this.user_type != 7) || (this.route == "/dashboards/frontdesk" && this.user_type != 7) || (this.route == "/dashboards/cliniciananalysis" && this.user_type !=4  && this.user_type != 7) || (this.route == "/dashboards/clinicianproceedures" && this.user_type !=4  && this.user_type != 7)) && this.apiUrl.includes('test') || ((this.route == "/dashboards/finances/multi" && this.user_type != 7) || (this.route == "/dashboards/marketing/multi" && this.user_type != 7) || (this.route == "/dashboards/frontdesk/multi" && this.user_type != 7) || (this.route == "/dashboards/cliniciananalysis/multi" && this.user_type !=4  && this.user_type != 7) || (this.route == "/dashboards/clinicianproceedures/multi" && this.user_type !=4  && this.user_type != 7))) {
                   this.selectedClinic = [];
-                  this.selectedClinic.push(res.data[0].id);
+                  this.selectedClinic.push(res.body.data[0].id);
                 }else{
-                  this.clinic_id = res.data[0].id;
-                  this.selectedClinic = res.data[0].id;
-                  this.placeHolder = res.data[0].clinicName;
+                  this.clinic_id = res.body.data[0].id;
+                  this.selectedClinic = res.body.data[0].id;
+                  this.placeHolder = res.body.data[0].clinicName;
                 }
               }
             }            
@@ -390,13 +394,13 @@ export class AppHeaderrightComponent implements AfterViewInit {
           this.showAll = true;
            this.dentists = [];
            this.dentistService.setDentistList(res);
-          if (res.message == "success") {
-            res.data.forEach((data) => {
+          if (res.status == 200) {
+            res.body.data.forEach((data) => {
               if (data.is_active == 1) {
                 this.dentists.push(data);
               }
             }); /*
-              this.dentists= res.data;*/
+              this.dentists= res.body.data;*/
             this.dentistCount = this.dentists;
             if (this.route != "/dentist-goals") {
               if (this._cookieService.get("clinic_dentist")) {
@@ -413,7 +417,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
               }
             } else {
               this.showAll = false;
-              this.selectedDentist = res.data[0].providerId;
+              this.selectedDentist = res.body.data[0].providerId;
             }
 
             if (
@@ -461,8 +465,8 @@ export class AppHeaderrightComponent implements AfterViewInit {
   checkPremissions(Clid){
     var permision = '';
     this.rolesUsersService.getRolesIndividual(Clid).subscribe((res) => {
-      if (res.message == 'success') {
-        permision = res.data;
+      if (res.body.message == 'success') {
+        permision = res.body.data;
         if(permision != '' && this.user_type == 7){
           if(permision.indexOf('healthscreen') >= 0  && this.route == "/dashboards/healthscreen"){
              this.unAuth = false;
@@ -713,10 +717,10 @@ export class AppHeaderrightComponent implements AfterViewInit {
       this.dentistService.getChildID(clinic_id).subscribe(
         (res) => {
           let opts = this.constants.cookieOpt as CookieOptions;
-          if(res.data !=0){
-            this._cookieService.put("dentistid", res.data, opts);
+          if(res.body.data !=0){
+            this._cookieService.put("dentistid", res.body.data, opts);
           }          
-          this.providerIdDentist = res.data;
+          this.providerIdDentist = res.body.data;
           $("#clinic_initiate").click();
         },
         (error) => {
@@ -914,7 +918,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
         let opts = this.constants.cookieOpt as CookieOptions;
         this._cookieService.put(
           "a_connect",
-          res.data,
+          res.body.data,
           opts
         );
       }

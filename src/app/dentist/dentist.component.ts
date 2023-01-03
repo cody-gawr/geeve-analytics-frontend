@@ -1,4 +1,4 @@
-import { Component, Inject , ViewChild, AfterViewInit } from '@angular/core';
+ import { Component, Inject , ViewChild, AfterViewInit } from '@angular/core';
 import { DentistService } from './dentist.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -97,7 +97,7 @@ export class DentistComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
   this.dentistService.addDentists(result.provider_id, result.dentist_name,this.clinic_id).subscribe((res) => {
     console.log(res);
-       if(res.message == 'success'){
+       if(res.body.message == 'success'){
         this.toastr.success('Dentist Added');
           this.getDentists();
               $('.external_clinic').show();
@@ -113,13 +113,13 @@ export class DentistComponent implements AfterViewInit {
 
   private getDentists() {
   this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
-       if(res.message == 'success'){
-        this.rows = res.data;
-    this.temp = [...res.data];
+       if(res.body.message == 'success'){
+        this.rows = res.body.data;
+    this.temp = [...res.body.data];
         
 this.table = data;
        }
-        else if(res.status == '401'){
+        else if(res.status == 401){
               this._cookieService.put("username",'');
               this._cookieService.put("email", '');
               this._cookieService.put("userid", '');
@@ -144,7 +144,7 @@ this.table = data;
          $('.ajax-loader').show();
     if(this.rows[row]['providerId']) {
   this.dentistService.deleteDentists(this.rows[row]['providerId']).subscribe((res) => {
-       if(res.message == 'success'){
+       if(res.body.message == 'success'){
          $('.ajax-loader').hide();
          this.toastr.success('Dentist Removed');
           this.getDentists();
@@ -186,7 +186,7 @@ this.table = data;
     this.editing[rowIndex + '-' + cell] = false;
     this.rows[rowIndex][cell] = event.target.value;
     this.dentistService.updateDentists(this.rows[rowIndex]['providerId'], this.rows[rowIndex][cell],this.clinic_id).subscribe((res) => {
-       if(res.message == 'success'){
+       if(res.body.message == 'success'){
          this.toastr.success('Dentist Updated');
           this.getDentists();
        }

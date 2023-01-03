@@ -1,6 +1,6 @@
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable } from 'rxjs';
 
 import { CookieService } from "ngx-cookie";
@@ -21,7 +21,7 @@ export class HeaderrightService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        let headers =  {headers: new HttpHeaders(), withCredentials: true};
+        let headers =  {headers: new HttpHeaders(), withCredentials: true, observe: 'response' as const };
         return headers;
     }
 
@@ -29,7 +29,7 @@ export class HeaderrightService {
     logout(id): Observable<any> {
             const formData = new FormData();
             return this.http.post(this.apiUrl +"/users/userLogout", formData)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                             return response;
                         })
             );
@@ -38,7 +38,7 @@ export class HeaderrightService {
     getClinics(): Observable<any> {        
         var header = this.getHeaders();         
         return this.http.get(this.apiUrl +"/clinics/clinicGet", header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );

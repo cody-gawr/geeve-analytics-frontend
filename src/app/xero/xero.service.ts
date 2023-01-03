@@ -1,7 +1,7 @@
 
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpResponse } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { environment } from "../../environments/environment";
 
@@ -19,7 +19,7 @@ export class XeroService {
             formData.append('email', uname);
             formData.append('password', password);
             return this.http.post(this.apiUrl +"/users/userLogin", formData)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                             return response;
                         })
             );

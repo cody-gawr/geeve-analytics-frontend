@@ -242,9 +242,9 @@ public cvcStyle = {
     public showCard = false;
     getRoles() {
       this.rolesUsersService.getRoles().subscribe((res) => {
-        if(res.message == 'success')
+        if(res.body.message == 'success')
         { 
-          res.data.forEach(result => 
+          res.body.data.forEach(result => 
           {
             if(result.role_id == this._cookieService.get("user_type"))
               this.permisions =result.permisions;
@@ -273,16 +273,16 @@ public customer_id;
       $('.ajax-loader').show();
     this.profileSettingsService.updateCardRetryPayment(this.token, this.customer_id,this.last_invoic_id).subscribe((res) => {
       $('.ajax-loader').hide();
-           if(res.message == 'success'){
+           if(res.body.message == 'success'){
             this.getPaymentDetails();
-            if(res.data == 'Payment Generated Successfully!') {
+            if(res.body.data == 'Payment Generated Successfully!') {
              Swal.fire(
                   '',
                   'Payment Generated Succesfully!',
                   'success'
                 )
             }
-            else if(res.data == 'Card Updated Successfully!') {
+            else if(res.body.data == 'Card Updated Successfully!') {
                 Swal.fire(
                   '',
                   'Card Updated Successfully!',
@@ -290,7 +290,7 @@ public customer_id;
                 )
             }
            }
-           else if(res.message == 'error'){
+           else if(res.body.message == 'error'){
               Swal.fire(
                   '',
                   'Some issue with your card, Please try again!',
@@ -310,7 +310,7 @@ public customer_id;
       $('.ajax-loader').show();
       this.profileSettingsService.retryPayment(this.customer_id,this.last_invoic_id).subscribe((res) => {
              $('.ajax-loader').hide();
-             if(res.message == 'success'){
+             if(res.body.message == 'success'){
             this.getPaymentDetails();              
               Swal.fire(
                   '',
@@ -318,7 +318,7 @@ public customer_id;
                   'success'
                 )
              }
-             else if(res.message == 'error'){
+             else if(res.body.message == 'error'){
                 Swal.fire(
                   '',
                   'Your card is declined, Please change your card Details.',
@@ -331,10 +331,10 @@ public customer_id;
 public subscription_id='';
    getPaymentDetails() {
   this.profileSettingsService.getPaymentDetails().subscribe((res) => {
-       if(res.message == 'success'){
-        this.last_invoic_id = res.data.lastinvoiceid;
-        this.customer_id = res.data.customer_id; 
-          this.subscription_id = res.data.subscr_id; 
+       if(res.body.message == 'success'){
+        this.last_invoic_id = res.body.data.lastinvoiceid;
+        this.customer_id = res.body.data.customer_id; 
+          this.subscription_id = res.body.data.subscr_id; 
          if(this.subscription_id)
           this.getCardDetails();
         if(!this.last_invoic_id){
@@ -342,7 +342,7 @@ public subscription_id='';
         this._cookieService.put("login_status", '1', opts);
         }
        }
-        else if(res.status == '401'){
+        else if(res.status == 401){
             this._cookieService.put("username",'');
               this._cookieService.put("email", '');
               this._cookieService.put("userid", '');
@@ -356,9 +356,9 @@ public subscription_id='';
 public last4;
   getprofileSettings() {
   this.profileSettingsService.getprofileSettings(this.id).subscribe((res) => {
-       if(res.message == 'success'){
-        this.displayName = res.data[0].displayName;
-        this.email = res.data[0].email;
+       if(res.body.message == 'success'){
+        this.displayName = res.body.data[0].displayName;
+        this.email = res.body.data[0].email;
 
        }
     }, error => {
@@ -383,8 +383,8 @@ getCardDetails() {
     if (obj.token) {
       $('.ajax-loader').show();
     this.profileSettingsService.createSetupIntent(this.customer_id).subscribe((res) => {
-      if(res.message == 'success'){
-             this.stripeService.confirmCardSetup(res.data.client_secret,{
+      if(res.body.message == 'success'){
+             this.stripeService.confirmCardSetup(res.body.data.client_secret,{
                     payment_method: {
                       card: this.cardNumber,
                       billing_details: {
@@ -412,7 +412,7 @@ getCardDetails() {
                       )
                     }
                   });
-        } else if(res.message == 'error'){
+        } else if(res.body.message == 'error'){
           $('.ajax-loader').hide();
             this.cardNumber.clear();
             this.cardCvc.clear();
@@ -427,7 +427,7 @@ getCardDetails() {
     } 
 updateCustomerCard(){
   this.profileSettingsService.updateCustomerCard(this.customer_id).subscribe((res) => {
-              if(res.message == 'success'){
+              if(res.body.message == 'success'){
                 this.getCardDetails();
                  $('.ajax-loader').hide();
                   Swal.fire(
@@ -454,9 +454,9 @@ public imageURL:any;
    }          
    this.profileSettingsService.updateprofileSettings(this.displayName, this.email).subscribe((res) => {
         $('.ajax-loader').hide();
-       if(res.message == 'success'){
+       if(res.body.message == 'success'){
         let opts = this.constants.cookieOpt as CookieOptions;
-        this.displayName = res.data.display_name;
+        this.displayName = res.body.data.display_name;
         this._cookieService.put("display_name", this.displayName, opts);
         /*this._cookieService.put("user_image", this.imageURL, opts);*/
         if(this.imageURL) {
@@ -476,7 +476,7 @@ public imageURL:any;
      console.log("dfhgjk");
      console.log(this.health_screen_mtd);       
      this.profileSettingsService.updateprofileSettingsHealthScreen(this.health_screen_mtd).subscribe((res) => {
-      if(res.message == 'success'){
+      if(res.body.message == 'success'){
         this._cookieService.put("health_screen_mtd", this.health_screen_mtd);
         this.toastr.success('Profile Settings Updated .');  
       }
@@ -529,12 +529,12 @@ if(this.form.controls['newPassword'].hasError('required')){
   this.repeatPassword = this.form.value.repeatPassword;
   if(this.newPassword == this.repeatPassword) {
        this.profileSettingsService.updatePassword(this.currentPassword, this.newPassword).subscribe((res) => {
-           if(res.message == 'success'){
-            this.toastr.success(res.data);
+           if(res.body.message == 'success'){
+            this.toastr.success(res.body.data);
             this.form.reset();
            }
            else{
-              this.toastr.error(res.data);
+              this.toastr.error(res.body.data);
             }
         }, error => {
           this.toastr.error('Please Provide Valid Inputs!');

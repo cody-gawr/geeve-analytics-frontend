@@ -1,6 +1,6 @@
 import { map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { BehaviorSubject, Observable } from "rxjs";
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../environments/environment";
@@ -27,7 +27,7 @@ export class DentistService {
     } else {
       this.token_id = this._cookieService.get("userid");
     }
-    let headers = { headers: new HttpHeaders(), withCredentials: true };
+    let headers = { headers: new HttpHeaders(), withCredentials: true, observe: 'response' as const };
     return headers;
   }
 
@@ -44,7 +44,7 @@ export class DentistService {
         header
       )
       .pipe(
-        map((response: Response) => {
+        map((response: HttpResponse<Object>) => {
           return response;
         })
       );
@@ -57,7 +57,7 @@ export class DentistService {
         header
       )
       .pipe(
-        map((response: Response) => {
+        map((response: HttpResponse<Object>) => {
           return response;
         })
       );
@@ -71,7 +71,7 @@ export class DentistService {
           header
         )
         .pipe(
-          map((response: Response) => {
+          map((response: HttpResponse<Object>) => {
             return response;
           })
         );
@@ -87,7 +87,7 @@ export class DentistService {
     return this.http
       .post(this.apiUrl + "/Dentists/delete", formData, header)
       .pipe(
-        map((response: Response) => {
+        map((response: HttpResponse<Object>) => {
           return response;
         })
       );
@@ -129,7 +129,7 @@ export class DentistService {
     return this.http
       .post(this.apiUrl + "/Dentists/dentUpdate", formData, header)
       .pipe(
-        map((response: Response) => {
+        map((response: HttpResponse<Object>) => {
           return response;
         })
       );
@@ -145,7 +145,7 @@ export class DentistService {
     var header = this.getHeaders();
 
     return this.http.post(this.apiUrl + "/Dentists/add", formData, header).pipe(
-      map((response: Response) => {
+      map((response: HttpResponse<Object>) => {
         return response;
       })
     );
@@ -159,7 +159,7 @@ export class DentistService {
         header
       )
       .pipe(
-        map((response: Response) => {
+        map((response: HttpResponse<Object>) => {
           return response;
         })
       );
@@ -173,7 +173,7 @@ export class DentistService {
     return this.http
       .post(this.apiUrl + "/Dentists/updateJeeveName", formData, header)
       .pipe(
-        map((response: Response) => {
+        map((response: HttpResponse<Object>) => {
           return response;
         })
       );
@@ -188,7 +188,7 @@ export class DentistService {
     return this.http
       .post(this.apiUrl + "/users/userReferFriend", formData, header)
       .pipe(
-        map((response: Response) => {
+        map((response: HttpResponse<Object>) => {
           return response;
         })
       );
@@ -198,13 +198,19 @@ export class DentistService {
   getClinicSettings(clinic_id): Observable<any> {
     var header = this.getHeaders();
     return this.http.get(this.apiUrl + "/clinics/clinicGet?clinic_id=" + clinic_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
             return response;
         })
         );
   }
 
-  private dentistList = new BehaviorSubject({message: '', data: [], status: ''});
+  private dentistList = new BehaviorSubject(  
+    { body: { message:"", 
+              data: [], 
+            },
+      status: 0 
+    });
+
   currentDentistList = this.dentistList.asObservable();
   setDentistList(list) {
     this.dentistList.next(list)

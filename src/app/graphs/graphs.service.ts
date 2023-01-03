@@ -1,6 +1,6 @@
 import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../environments/environment";
@@ -22,7 +22,7 @@ export class GraphsService {
         } else {
             this.token_id = this._cookieService.get("userid");
         }
-        let headers = { headers: new HttpHeaders(), withCredentials: true };
+        let headers = { headers: new HttpHeaders(), withCredentials: true, observe: 'response' as const };
         return headers;
     }
 
@@ -30,7 +30,7 @@ export class GraphsService {
     {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/StaffMeeting/smGetPerUser?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -41,13 +41,13 @@ export class GraphsService {
         var header = this.getHeaders();
         if(clinician == ""){
             return this.http.get(this.apiUrl + "/StaffMeeting/smDentistProduction?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-                .pipe(map((response: Response) => {
+                .pipe(map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/StaffMeeting/smDentistProduction?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -57,13 +57,13 @@ export class GraphsService {
         var header = this.getHeaders();
         if(clinician == ""){
             return this.http.get(this.apiUrl + "/StaffMeeting/smHourlyRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-                .pipe(map((response: Response) => {
+                .pipe(map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/StaffMeeting/smHourlyRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -74,13 +74,13 @@ export class GraphsService {
         var header = this.getHeaders();
         if(clinician == ""){
             return this.http.get(this.apiUrl + "/StaffMeeting/smRecallRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-                .pipe(map((response: Response) => {
+                .pipe(map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/StaffMeeting/smRecallRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -91,13 +91,13 @@ export class GraphsService {
         var header = this.getHeaders();
         if(clinician == ""){
             return this.http.get(this.apiUrl + "/StaffMeeting/smReappointRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-                .pipe(map((response: Response) => {
+                .pipe(map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/StaffMeeting/smReappointRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -107,7 +107,7 @@ export class GraphsService {
     fdWorkTimeAnalysis(clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/StaffMeeting/smUtilisationRate?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -117,7 +117,7 @@ export class GraphsService {
     fdvisitsRatio(clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/StaffMeeting/smTotalVisits?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -127,7 +127,7 @@ export class GraphsService {
       fdReappointRate(clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/StaffMeeting/smReappointRate?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -137,7 +137,7 @@ export class GraphsService {
      fdRecallPrebookRate(clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/StaffMeeting/smRecallRate?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );

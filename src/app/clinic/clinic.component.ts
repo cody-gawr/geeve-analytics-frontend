@@ -190,16 +190,16 @@ export class ClinicComponent implements AfterViewInit {
         }
         
         this.clinicService.addClinic(result.name, result.address, result.contact_name, result.pms, coreURL).subscribe((res) => {
-          if (res.message == 'success') {
-            if(res.data.pms == 'core'){
-              let id = res.data.id;  
+          if (res.body.message == 'success') {
+            if(res.body.data.pms == 'core'){
+              let id = res.body.data.id;  
               this.getConnectCoreLink(id);
             }else{
               this.toastr.success('Clinic Added!');
             }
             this.getClinics();
           } else {
-            this.toastr.error(res.data);
+            this.toastr.error(res.body.data);
           }
         }, error => {
           this.warningMessage = "Please Provide Valid Inputs!";
@@ -223,15 +223,15 @@ export class ClinicComponent implements AfterViewInit {
   public createdClinicsCount = 0;
   private getClinics() {
     this.headerService.getClinic.subscribe(res=>{
-      if (res.message == 'success') {
-        this.rows = res.data;
-        if (res.data.length > 0) {
-          this.temp = [...res.data];
-          this.clinicscount = res.data[0]['config_user'].clinics_count;
-          this.createdClinicsCount = res.total;
+      if (res.body.message == 'success') {
+        this.rows = res.body.data;
+        if (res.body.data.length > 0) {
+          this.temp = [...res.body.data];
+          this.clinicscount = res.body.data[0]['config_user'].clinics_count;
+          this.createdClinicsCount = res.body.total;
           this.table = data;
         }
-      } else if (res.status == '401') {
+      } else if (res.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -241,15 +241,15 @@ export class ClinicComponent implements AfterViewInit {
       this.warningMessage = "Please Provide Valid Inputs!";
     });
     // this.clinicService.getClinics().subscribe((res) => {
-    //   if (res.message == 'success') {
-    //     this.rows = res.data;
-    //     if (res.data.length > 0) {
-    //       this.temp = [...res.data];
-    //       this.clinicscount = res.data[0]['config_user'].clinics_count;
-    //       this.createdClinicsCount = res.total;
+    //   if (res.body.message == 'success') {
+    //     this.rows = res.body.data;
+    //     if (res.body.data.length > 0) {
+    //       this.temp = [...res.body.data];
+    //       this.clinicscount = res.body.data[0]['config_user'].clinics_count;
+    //       this.createdClinicsCount = res.body.total;
     //       this.table = data;
     //     }
-    //   } else if (res.status == '401') {
+    //   } else if (res.status == 401) {
     //     this._cookieService.put("username", '');
     //     this._cookieService.put("email", '');
     //     this._cookieService.put("userid", '');
@@ -265,12 +265,12 @@ export class ClinicComponent implements AfterViewInit {
   private getUserDetails() {
     this.rows = [];
     this.clinicService.getUserDetails().subscribe((res) => {
-      if (res.message == 'success') {
-        if (res.data) {
-          this.clinicscount = res.data.clinics_count;
+      if (res.body.message == 'success') {
+        if (res.body.data) {
+          this.clinicscount = res.body.data.clinics_count;
         }
       }
-      else if (res.status == '401') {
+      else if (res.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -298,11 +298,11 @@ export class ClinicComponent implements AfterViewInit {
         if (this.rows[row]['id']) {
           this.clinicService.deleteClinic(this.rows[row]['id']).subscribe((res) => {
             $('.ajax-loader').hide();
-            if (res.message == 'success') {
+            if (res.body.message == 'success') {
               this.toastr.success('Clinic Removed!');
               this.getClinics();
             }
-            else if (res.status == '401') {
+            else if (res.status == 401) {
               this._cookieService.put("username", '');
               this._cookieService.put("email", '');
               this._cookieService.put("userid", '');
@@ -354,7 +354,7 @@ export class ClinicComponent implements AfterViewInit {
     this.editing[rowIndex + '-' + cell] = false;
     this.rows[rowIndex][cell] = event.target.value;
     this.clinicService.updateClinic(this.rows[rowIndex]['id'], this.rows[rowIndex][cell], cell).subscribe((res) => {
-      if (res.message == 'success') {
+      if (res.body.message == 'success') {
         this.toastr.success('Clinic Details Updated!');
         this.getClinics();
       }
@@ -387,8 +387,8 @@ export class ClinicComponent implements AfterViewInit {
 
   private getConnectCoreLink(id){
     this.setupService.getConnectCoreLink(id).subscribe((res) => {
-       if(res.message == 'success'){
-         let connectToCoreLink = res.data;
+       if(res.body.message == 'success'){
+         let connectToCoreLink = res.body.data;
          this.connectToCore(connectToCoreLink,id);
        }
     }, error => {
@@ -409,8 +409,8 @@ export class ClinicComponent implements AfterViewInit {
 
   private checkCoreStatus(id){
     this.setupService.checkCoreStatus(id).subscribe((res) => {
-       if(res.message == 'success'){
-         if(res.data.refresh_token && res.data.token)
+       if(res.body.message == 'success'){
+         if(res.body.data.refresh_token && res.body.data.token)
             this.getClinicLocation(id);
        }
     }, error => {
@@ -420,8 +420,8 @@ export class ClinicComponent implements AfterViewInit {
   
   private getClinicLocation(id){
     this.setupService.getClinicLocation(id).subscribe(res=>{
-      if(res.message == 'success'){
-        this.availabeLocations = [...res.data];
+      if(res.body.message == 'success'){
+        this.availabeLocations = [...res.body.data];
         this.checkMappedLocations();
         this.openLocationDialog(id);
       }
@@ -437,7 +437,7 @@ openLocationDialog(id): void {
       if(result != undefined){
         let location_id = result;
         this.setupService.saveClinicLocation(id,location_id).subscribe(res=>{
-          if(res.message == 'success'){
+          if(res.body.message == 'success'){
             this.toastr.success('Clinic Added!');
           }
         })
@@ -447,9 +447,9 @@ openLocationDialog(id): void {
 
   private checkMappedLocations(){
     this.clinicService.checkMappedLocations().subscribe(res=>{
-      if(res.message == "success"){
+      if(res.status == 200){
         this.availabeLocations.filter(location=>{
-            res.data.forEach(ele => {
+            res.body.data.forEach(ele => {
               if(location.Identifier == ele.location_id){
                 location.DisplayName += "(has)";
               }

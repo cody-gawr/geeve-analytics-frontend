@@ -1,6 +1,6 @@
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../environments/environment";
@@ -23,14 +23,14 @@ export class RewardsService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        let headers =  {headers: new HttpHeaders(), withCredentials: true};
+        let headers =  {headers: new HttpHeaders(), withCredentials: true, observe: 'response' as const };
         return headers;
     }
     // clinic Production Service
     dentistProduction(): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Rewards/getRewards", header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );

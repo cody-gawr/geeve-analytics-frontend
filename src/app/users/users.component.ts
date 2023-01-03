@@ -53,9 +53,9 @@ export class UsersComponent implements AfterViewInit {
 
   private getUsers() {
   this.usersService.getUsers().subscribe((res) => {
-       if(res.message == 'success'){
-        this.rows = res.data;
-        this.temp = [...res.data];        
+       if(res.body.message == 'success'){
+        this.rows = res.body.data;
+        this.temp = [...res.body.data];        
         this.table = data;
        }
     }, error => {
@@ -68,7 +68,7 @@ export class UsersComponent implements AfterViewInit {
            if(confirm("Are you sure to delete this user?")) {
               if(this.rows[row]['id']) {
                 this.usersService.deleteUser(this.rows[row]['id']).subscribe((res) => {
-                 if(res.message == 'success'){
+                 if(res.body.message == 'success'){
                   alert('User Removed');
                     this.getUsers();
                  }
@@ -113,7 +113,7 @@ export class UsersComponent implements AfterViewInit {
     else {
     this.rows[rowIndex][cell] = event.target.value;
     this.usersService.updateUser(this.rows[rowIndex]['id'], this.rows[rowIndex][cell],cell).subscribe((res) => {
-       if(res.message == 'success'){
+       if(res.body.message == 'success'){
         alert('User Updated');
           this.getUsers();
        }

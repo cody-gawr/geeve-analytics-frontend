@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService, CookieOptions } from "ngx-cookie";
 import { AppConstants } from '../app.constants';
@@ -59,25 +59,25 @@ onSubmit() {
   this.loginService.login(this.form.value.uname.trim(), this.form.value.password).subscribe((res) => 
   {
     this._cookieService.removeAll({ 'path': '/' });
-    if(res.message == 'success')
+    if(res.body.message == 'success')
     {        
       var datares = [];
-      datares['username'] = res.data.data.username;
-      datares['email'] = res.data.data.email;
-      datares['token'] = res.data.data.token;        
-      datares['userid'] = res.data.data.id;      
-      datares['clinicid'] = res.data.data.clinic_id;      
-      datares['parentid'] = res.data.data.parent_id;   
-      datares['user_type'] = res.data.data.user_type;       
-      /*datares['user_image'] = res.data.data.user_image;        */
-      datares['stepper_status'] = res.data.data.stepper_status;        
-      datares['login_status'] = res.data.data.status;        
-      datares['display_name'] = res.data.data.display_name;  
-      datares['dentistid'] = res.data.data.dentist_id;        
-      datares['features_dismissed'] = res.data.data.features_dismissed;   
-      datares['health_screen_mtd'] = res.data.data.health_screen_mtd;     
+      datares['username'] = res.body.data.data.username;
+      datares['email'] = res.body.data.data.email;
+      datares['token'] = res.body.data.data.token;        
+      datares['userid'] = res.body.data.data.id;      
+      datares['clinicid'] = res.body.data.data.clinic_id;      
+      datares['parentid'] = res.body.data.data.parent_id;   
+      datares['user_type'] = res.body.data.data.user_type;       
+      /*datares['user_image'] = res.body.data.data.user_image;        */
+      datares['stepper_status'] = res.body.data.data.stepper_status;        
+      datares['login_status'] = res.body.data.data.status;        
+      datares['display_name'] = res.body.data.data.display_name;  
+      datares['dentistid'] = res.body.data.data.dentist_id;        
+      datares['features_dismissed'] = res.body.data.data.features_dismissed;   
+      datares['health_screen_mtd'] = res.body.data.data.health_screen_mtd;     
       let opts = this.constants.cookieOpt as CookieOptions;
-      var nextStep = (parseInt(res.data.data.stepper_status) + 1).toString();
+      var nextStep = (parseInt(res.body.data.data.stepper_status) + 1).toString();
       this._cookieService.put("stepper", nextStep , opts);
       this._cookieService.put("userid", '', opts);
       this._cookieService.put("childid", '', opts);
@@ -112,8 +112,8 @@ onSubmit() {
             this.getRoles()
           }else{
               this.rolesUsersService.getClinics().subscribe((res) => {
-                if (res.message == 'success') {
-                  this.clinic_id = res.data[0]['id'];
+                if (res.body.message == 'success') {
+                  this.clinic_id = res.body.data[0]['id'];
                   this.getRoles()
                 }
               });
@@ -122,7 +122,7 @@ onSubmit() {
           this.getRoles()
         }
       }    
-    } else if(res.message == 'error'){
+    } else if(res.body.message == 'error'){
       this.errorLogin  =true;
     }
   }, (error) => {
@@ -138,8 +138,8 @@ onSubmit() {
     var permision = '';
     var user_type = this._cookieService.get("user_type");
     this.rolesUsersService.getRolesIndividual(this.clinic_id).subscribe((res) => {
-      if(res.message == 'success'){ 
-        permision = res.data;
+      if(res.body.message == 'success'){ 
+        permision = res.body.data;
         if(permision != '' && user_type != '2' && user_type != '7'){
           if(permision.indexOf('healthscreen') >= 0){
               this.router.navigate(['/dashboards/healthscreen']);
@@ -173,13 +173,13 @@ onSubmit() {
     this.userType = this._cookieService.get("user_type");
     var permision = '';
     this.rolesUsersService.getRoles().subscribe((res) => {
-      if(res.message == 'success'){ 
-        res.data.forEach((dt) => {
+      if(res.body.message == 'success'){ 
+        res.body.data.forEach((dt) => {
           if(this.userType == dt['role_id']){
             permision = dt['permisions'];                
           }                
         });
-        if(res.plan == 'lite'){
+        if(res.body.plan == 'lite'){
           this.router.navigate(['/dashboards/healthscreen']);
         } else if(permision != '' && this.userType !='7'){                            
           if(permision.indexOf('healthscreen') >= 0){

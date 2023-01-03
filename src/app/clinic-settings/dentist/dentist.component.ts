@@ -40,7 +40,7 @@ export class AddJeeveNameComponent
   save(data){
     var name = JSON.stringify( data.jeeveNames);
     this.dentistService.updateJeeveName(data.clinic_id, name).subscribe((res) => {
-        if(res.message == 'success')
+        if(res.body.message == 'success')
         {
           this.dialogRef.close();
         }
@@ -154,7 +154,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
     this.dentistService.getAppbook(id).subscribe((res) => {
       var temp = {};
       var dData =[];
-      if (res.message == 'success') {
+      if (res.body.message == 'success') {
         dentData.forEach((element) => {
             if(element.app_book_id != '' && element.app_book_id != null){
               temp = {
@@ -171,13 +171,13 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
             }
         });
         
-        var result = res.data.map(ele => {
+        var result = res.body.data.map(ele => {
           let disableFlag = dData.find(appBookid => appBookid["app_book_id"] === ele["app_book_id"])        
           return { ...ele,...disableFlag };
         });
         this.appBooks = result;
       }
-      else if (res.status == '401') {
+      else if (res.status == 401) {
         this.handleUnAuthorization();
       }
     }, error => {
@@ -188,9 +188,9 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   getDentists(id) {
     this.dentistListLoading = true;
     this.dentistService.getDentists(id,1).subscribe((res) => {
-      if (res.message == 'success') {
+      if (res.body.message == 'success') {
         this.dentistListLoading = false;
-        this.getAppBook(id, res.data);
+        this.getAppBook(id, res.body.data);
         this.jeeveProviderIds = [];
         for(let i = 1; i <= 9; i++){
           this.jeeveProviderIds.push({'id':i, 'name': 'Jeeve Provider '+i});
@@ -199,15 +199,15 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
         let inactiveData = [];
         
         // isShowInactive 
-        res.data.filter(r=>{
+        res.body.data.filter(r=>{
           r.is_active == 1 ? activeData.push(r) : inactiveData.push(r);
         });
         this.dentistList.data = this.isShowInactive ? inactiveData : activeData; 
         this.setPaginationButtons(this.dentistList.data.length);
-        let activeDnt:any = res.data.filter(p => p.is_active == 1);  
+        let activeDnt:any = res.body.data.filter(p => p.is_active == 1);  
         this.activeDentist =  activeDnt.length;
       }
-      else if (res.status == '401') {
+      else if (res.status == 401) {
         this.handleUnAuthorization();
       }
     }, error => {
@@ -217,10 +217,10 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   public jeeveNames:any = {};
   getJeeveNames(id) {
     this.dentistService.getJeeveNames(id).subscribe((res) => {
-      if (res.message == 'success') {
+      if (res.body.message == 'success') {
         for(var i = 1; i <=9; i++ ){
-          if(typeof(res.data[i]) != 'undefined'){
-            this.jeeveNames[i] = res.data[i];        
+          if(typeof(res.body.data[i]) != 'undefined'){
+            this.jeeveNames[i] = res.body.data[i];        
           } else {
             this.jeeveNames[i] = 'undefined';        
           }
@@ -228,7 +228,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
 
         
       }
-      else if (res.status == '401') {
+      else if (res.status == 401) {
         this.handleUnAuthorization();
       }
     }, error => {
@@ -296,7 +296,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
       )
       .subscribe((res) => {
         this.editing[index + '-' + column] = false;
-        if (res.message == 'success') {
+        if (res.body.message == 'success') {
           this.toastr.success('Dentist Updated');
           this.getDentists(this.clinic_id$.value);
         }

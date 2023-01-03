@@ -8,7 +8,7 @@ import {
 } from "@angular/core";
 import { extend } from "@syncfusion/ej2-base";
 import { FormControl } from "@angular/forms";
-import { CookieService, CookieOptions } from "ngx-cookie";
+import { CookieService, CookieOptions } from "ngx-cookie"
 import {
   KanbanComponent,
   CardSettingsModel,
@@ -16,7 +16,7 @@ import {
   SwimlaneSettingsModel,
   ActionEventArgs,
   CardRenderedEventArgs,
-  DialogEventArgs,
+  DialogEventArgs, 
   ColumnsModel,
   DragEventArgs,
 } from "@syncfusion/ej2-angular-kanban";
@@ -321,12 +321,12 @@ export class TasksComponent implements AfterViewInit, OnInit {
   getUsers() {
     this.tasksService.getUsers().subscribe(
       (res) => {
-        if (res.message == "success") {
+        if (res.status == 200) {
           this.assigneeData.push({
             id : null,
             name : "-- select assignee --"
           });
-          res.data.forEach((user) => {
+          res.body.data.forEach((user) => {
             if (user["displayName"]) {
               this.assigneeData.push({
                 id: user["id"],
@@ -342,15 +342,15 @@ export class TasksComponent implements AfterViewInit, OnInit {
 
   getClinics() {
     this.headerService.getClinic.subscribe(res=>{
-      if (res.message == "success") {
-        this.clinicsData = res.data;
+      if (res.status == 200) {
+        this.clinicsData = res.body.data;
       }
     },(error) => {}
     );
     // this.tasksService.getClinics().subscribe(
     //   (res) => {
-    //     if (res.message == "success") {
-    //       this.clinicsData = res.data;
+    //     if (res.status == 200) {
+    //       this.clinicsData = res.body.data;
     //     }
     //   },
     //   (error) => {}

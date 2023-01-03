@@ -108,9 +108,9 @@ export class FrontDeskComponent implements AfterViewInit {
   public clinics = [];
   getAllClinics(){
     this.headerService.getClinic.subscribe(res=>{
-      if(res.status == '200'){
+      if(res.status == 200){
         let temp = [];
-        res.data.forEach(item=>{
+        res.body.data.forEach(item=>{
           temp.push(item.id);
         });
         this.clinics = [...temp];
@@ -228,7 +228,7 @@ export class FrontDeskComponent implements AfterViewInit {
     let ids = this.clinic_id;
     ids.sort((a, b) => a - b);
     this.clinicianAnalysisService.getClinicSettings(ids[0]).subscribe((data:any) => {
-      if(data.message == 'success'){
+      if(data.body.message == 'success'){
         if(data.data.max_chart_bars)
           this.numberOfRecords = data.data.max_chart_bars; 
       }
@@ -1325,7 +1325,7 @@ public fdUtiData:any = [];
       this.utilityratemessage = false;
   this.clinic_id && this.frontdeskService.fdWorkTimeAnalysis(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
       this.fdUtiData = [];
-    if(data.message == 'success'){
+    if(data.body.message == 'success'){
       this.fdWorkTimeAnalysisLoader = false;
       this.workTimeData1 =[];
       this.workTimeLabels1 =[];
@@ -1457,7 +1457,7 @@ public fdUtiData:any = [];
         this.byDayDataTable = [];
         this.byTotal=  0;
           this.prevByDayTotal=  0;
-        if(data.message == 'success'){
+        if(data.body.message == 'success'){
           if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
             this.isAllClinic = true;
             data.data.forEach(res => { 
@@ -1558,7 +1558,7 @@ public fdFtaRatioLoader:boolean;
   this.clinic_id && this.frontdeskService.fdFtaRatio(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
     this.ftaTotal = 0;
           this.ftaPrevTotal = 0;
-       if(data.message == 'success'){
+       if(data.body.message == 'success'){
         this.fdFtaRatioLoader = false;
         this.ftaMulti[0]['data'] = [];        
         this.ftaLabels=[];
@@ -1651,7 +1651,7 @@ public maxutaGoal:any=0;
   this.clinic_id && this.frontdeskService.fdUtaRatio(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
      this.utaTotal = 0;
           this.utaPrevTotal = 0;
-       if(data.message == 'success'){
+       if(data.body.message == 'success'){
         this.fdUtaRatioLoader = false;
         this.utaMulti[0]['data'] = [];        
         this.utaLabels=[];
@@ -1743,7 +1743,7 @@ public fdNumberOfTicksLoader:boolean;
       this.ticksMulti[0]['data'] = [];        
       this.ticksLabels = [];
       this.ticksLabels1 = [];  
-      if(data.message == 'success'){
+      if(data.body.message == 'success'){
         this.fdNumberOfTicksLoader = false;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showmulticlinicticks = true;          
@@ -1824,7 +1824,7 @@ public fdPrebookRateTrnd:any=[];
        var clinic_id;
        this.showmulticlinicPrebook = false;
      this.clinic_id && this.frontdeskService.fdRecallPrebookRate(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-       if(data.message == 'success'){
+       if(data.body.message == 'success'){
         this.fdPrebookRateMulti[0]['data'] = [];        
         this.fdPrebookRateLabels = [];
         this.fdPrebookRateTrnd = [];
@@ -1835,7 +1835,7 @@ public fdPrebookRateTrnd:any=[];
           data.data.sort((a, b)=> a.recall_patient === b.recall_patient ? 0 : a.recall_patient < b.recall_patient || -1);
           data.data.forEach(res => {
             if(res.clinic_id){
-              this.fdPrebookRateTrnd.push(Math.round(res.recall_patient/res.total_patient * 100));
+              this.fdPrebookRateTrnd.push(Math.round(res.recall_patient/res.body.total_patient * 100));
               this.fdPrebookRateLabels.push(res.clinic_name);
             } 
           });
@@ -1913,7 +1913,7 @@ public fdReappointRateTrnd:any=[];
        var clinic_id;
     
      this.clinic_id && this.frontdeskService.fdReappointRate(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-       if(data.message == 'success'){
+       if(data.body.message == 'success'){
         this.fdtreatmentPrebookRateLoader = false;
         this.fdReappointRateMulti[0]['data'] = [];        
         this.fdReappointRateLabels = [];
@@ -2232,8 +2232,8 @@ toggleFilter(val) {
 }
  private getClinics() { 
   this.headerService.getClinic.subscribe((res) => {
-       if(res.message == 'success'){
-        this.clinicsData = res.data;
+       if(res.body.message == 'success'){
+        this.clinicsData = res.body.data;
        }
     }, error => {
      // this.warningMessage = "Please Provide Valid Inputs!";
@@ -2305,7 +2305,7 @@ public ftaTrendMultiLabels = [];
       this.ftaChartTrendLabels1=[];
   this.ftaChartTrend1=[];
   this.Apirequest = this.Apirequest -1;
-       if(data.message == 'success'){
+       if(data.body.message == 'success'){
         this.ftaChartTrendMulti[0] = { data: [], label: '' };
         data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
@@ -2435,7 +2435,7 @@ public ftaTrendMultiLabels = [];
        this.wtaChartTrendLabels1=[];
     this.wtaChartTrend1=[];
     this.Apirequest = this.Apirequest -1;
-       if(data.message == 'success'){
+       if(data.body.message == 'success'){
         this.uRChartTrendMulti[0] = { data: [], label: '' };
         data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
@@ -2552,7 +2552,7 @@ public utaTrendMultiLabels = [];
       this.utaChartTrendLabels1=[];
   this.utaChartTrend1=[];
   this.Apirequest = this.Apirequest -1;
-       if(data.message == 'success'){
+       if(data.body.message == 'success'){
         this.utaChartTrendMulti[0] = { data: [], label: '' };
         data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         this.fdUtaRatioTrendLoader = false;
@@ -2664,7 +2664,7 @@ public ticChartTrendMultiLabels = [];
       this.tickChartTrendLabels1=[];
   this.tickChartTrend1=[];
   this.Apirequest = this.Apirequest -1;
-       if(data.message == 'success'){
+       if(data.body.message == 'success'){
         data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         this.fdNumberOfTicksTrendLoader = false;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
@@ -2779,7 +2779,7 @@ public ticChartTrendMultiLabels = [];
     this.rPChartTrendMultiLabels1 =[];
    this.clinic_id && this.frontdeskService.frontdeskdRecallPrebookRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
     this.Apirequest = this.Apirequest -1;  
-    if(data.message == 'success'){
+    if(data.body.message == 'success'){
       this.rPChartTrendMulti[0] = { data: [], label: '' };
       data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
       if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
@@ -2928,7 +2928,7 @@ public ticChartTrendMultiLabels = [];
   this.tPChartTrendMultiLabels1 =[];
    this.clinic_id && this.frontdeskService.fdReappointRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
     this.Apirequest = this.Apirequest -1;   
-    if(data.message == 'success'){
+    if(data.body.message == 'success'){
       this.tPChartTrendMulti[0] = { data: [], label: '' };
       data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         this.fdTreatmentPrebookRateTrendLoader = false;
@@ -3010,7 +3010,7 @@ public ticChartTrendMultiLabels = [];
 
     getChartsTips() {
       this.chartstipsService.getCharts(3).subscribe((data) => {
-        if(data.message == 'success')
+        if(data.body.message == 'success')
         {         
           this.charTips = data.data;
         }

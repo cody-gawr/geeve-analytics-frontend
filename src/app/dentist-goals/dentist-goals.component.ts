@@ -1,4 +1,4 @@
-import { Component,OnInit  } from '@angular/core';
+ import { Component,OnInit  } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormControl, Validators } from '@angular/forms';
 import { DentistGoalsService } from './dentist-goals.service';
@@ -189,47 +189,47 @@ export class DentistGoalsComponent implements OnInit {
 
   getDentistGoals(dentist_id ='' ) {
   this.dentistGoalsService.getDentistGoals(this.clinic_id,dentist_id).subscribe((res) => {
-       if(res.message == 'success'){
-          this.dentistprod =res.data[1].value;
-          this.treatmentplan =res.data[2].value;
-          this.planaverage =res.data[3].value;
-          this.recallrate =res.data[4].value;
-          this.rebookrate =res.data[5].value;
-          this.patientcomplaints =res.data[6].value;
-          this.hourlyrate =res.data[7].value;
-          this.newpatients =res.data[8].value;
+       if(res.body.message == 'success'){
+          this.dentistprod =res.body.data[1].value;
+          this.treatmentplan =res.body.data[2].value;
+          this.planaverage =res.body.data[3].value;
+          this.recallrate =res.body.data[4].value;
+          this.rebookrate =res.body.data[5].value;
+          this.patientcomplaints =res.body.data[6].value;
+          this.hourlyrate =res.body.data[7].value;
+          this.newpatients =res.body.data[8].value;
 
-          this.itempredictor =res.data[9].value;
-          this.ratio1 =res.data[10].value;
-          this.ratio2 =res.data[11].value;
-          this.ratio3 =res.data[12].value;
-          this.totalrevenue =res.data[13].value;
-          this.referralclinician =res.data[14].value;
+          this.itempredictor =res.body.data[9].value;
+          this.ratio1 =res.body.data[10].value;
+          this.ratio2 =res.body.data[11].value;
+          this.ratio3 =res.body.data[12].value;
+          this.totalrevenue =res.body.data[13].value;
+          this.referralclinician =res.body.data[14].value;
 
-          this.utilisationrate = res.data[15].value;
-          this.recallprebook = res.data[16].value;
-          this.treatmentprebook = res.data[17].value;
-          this.fta = res.data[18].value;
-          this.uta = res.data[19].value;
-          this.noticks = res.data[20].value;
-          this.attendancerate = res.data[21].value;
+          this.utilisationrate = res.body.data[15].value;
+          this.recallprebook = res.body.data[16].value;
+          this.treatmentprebook = res.body.data[17].value;
+          this.fta = res.body.data[18].value;
+          this.uta = res.body.data[19].value;
+          this.noticks = res.body.data[20].value;
+          this.attendancerate = res.body.data[21].value;
 
-          this.referralpatient = res.data[22].value;
-          this.revenuereferral = res.data[23].value;
-          this.visits = res.data[24].value;
-          this.newpatients2 = res.data[25].value;
-          this.patientcost = res.data[26].value;
+          this.referralpatient = res.body.data[22].value;
+          this.revenuereferral = res.body.data[23].value;
+          this.visits = res.body.data[24].value;
+          this.newpatients2 = res.body.data[25].value;
+          this.patientcost = res.body.data[26].value;
 
-          this.netprofit = res.data[27].value;
-          this.netprofitxero = res.data[28].value;
-          this.netprofitpms = res.data[29].value;
-          this.expenses = res.data[30].value;
-          this.productionclinician = res.data[31].value;
-          this.totalproduction = res.data[32].value;
-          this.collection = res.data[33].value;
-          this.visitproduction = res.data[34].value;
-          this.discount = res.data[35].value;
-          this.overdueaccount = res.data[36].value;
+          this.netprofit = res.body.data[27].value;
+          this.netprofitxero = res.body.data[28].value;
+          this.netprofitpms = res.body.data[29].value;
+          this.expenses = res.body.data[30].value;
+          this.productionclinician = res.body.data[31].value;
+          this.totalproduction = res.body.data[32].value;
+          this.collection = res.body.data[33].value;
+          this.visitproduction = res.body.data[34].value;
+          this.discount = res.body.data[35].value;
+          this.overdueaccount = res.body.data[36].value;
 
 
        }
@@ -284,7 +284,7 @@ export class DentistGoalsComponent implements OnInit {
   $('.ajax-loader').show();
    this.dentistGoalsService.updateDentistGoals(myJsonString, this.clinic_id, this.dentist_id).subscribe((res) => {
        $('.ajax-loader').hide();
-       if(res.message == 'success'){
+       if(res.body.message == 'success'){
          this.toastr.success('Dentist Goals Updated');
        }
     }, error => {
@@ -296,15 +296,15 @@ export class DentistGoalsComponent implements OnInit {
     // Get Dentist
     getDentists() {
       this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
-           if(res.message == 'success'){
-              this.dentists= res.data;
-              this.dentistCount= res.data.length;
+           if(res.body.message == 'success'){
+              this.dentists= res.body.data;
+              this.dentistCount= res.body.data.length;
               if(!this.dentist_id)
-                this.dentist_id = res.data[0].providerId;
+                this.dentist_id = res.body.data[0].providerId;
           this.getDentistGoals(this.dentist_id);
 
            }
-            else if(res.status == '401'){
+            else if(res.status == 401){
               this._cookieService.put("username",'');
               this._cookieService.put("email", '');
               this._cookieService.put("userid", '');

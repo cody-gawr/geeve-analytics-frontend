@@ -157,7 +157,7 @@
                 }
               ],
               "optimization": {
-                "scripts": true,
+                "scripts": false,
                 "styles": {
                      "minify": true,
                      "inlineCritical": false

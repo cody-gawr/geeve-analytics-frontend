@@ -1,6 +1,6 @@
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../environments/environment";
@@ -21,7 +21,7 @@ export class ClinicService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }       
-        let headers =  {headers: new HttpHeaders(), withCredentials: true};
+        let headers =  {headers: new HttpHeaders(), withCredentials: true, observe: 'response' as const };
         return headers;
     }
 
@@ -29,7 +29,7 @@ export class ClinicService {
     getClinics(): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/clinics/clinicGet", header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -42,7 +42,7 @@ export class ClinicService {
     formData.append('id', clinic_id);
     var header = this.getHeaders();
         return this.http.post(this.apiUrl +"/clinics/clinicDelete", formData, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -55,7 +55,7 @@ export class ClinicService {
         formData.append('clinic_id', '1');
         var header = this.getHeaders(); 
         return this.http.post(this.apiUrl +"/clinics/clinicUpdate", formData, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -74,7 +74,7 @@ export class ClinicService {
 
     var header = this.getHeaders();
         return this.http.post(this.apiUrl +"/clinics/clinicAdd", formData, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -83,7 +83,7 @@ export class ClinicService {
     getUserDetails(): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/users/userInfo", header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -92,7 +92,7 @@ export class ClinicService {
     getClinicProviders(selectedClinics): Observable<any> {  
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/clinics/clinicGetProviders?clinic_id="+selectedClinics, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -101,7 +101,7 @@ export class ClinicService {
     checkMappedLocations() : Observable<any>{
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/corepractice/checkMappedLocations", header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );

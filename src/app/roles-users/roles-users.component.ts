@@ -128,9 +128,9 @@ public clinics=[];
 public selectedClinicProviders=[];
   getClinicProviders() {
   this.clinicService.getClinicProviders(this.selectedClinics.value).subscribe((res) => {
-      if(res.message == 'success'){
-        this.selectedClinicProviders = res.data;
-      } else if(res.status == '401'){       
+      if(res.body.message == 'success'){
+        this.selectedClinicProviders = res.body.data;
+      } else if(res.status == 401){       
       }
     }, error => {
     });
@@ -173,8 +173,8 @@ export class EditDialogComponent {
   public loginUserType = this._cookieService.get("user_type");
   loadUserData(){
     this.rolesUsersService.getRoleUserDetails(this.data.id).subscribe((res) => {
-      if(res.message == 'success'){
-        this.userData = res.data;
+      if(res.body.message == 'success'){
+        this.userData = res.body.data;
         this.userData.config_users_clinics.forEach(res => {
          this.selClinics.push(res.clinic_id);
          this.selectedDentistList.push('clinic'+res.clinic_id+'-'+res.dentist_id);
@@ -184,7 +184,7 @@ export class EditDialogComponent {
         if(this.userData.user_type == '4')
         this.show_dentist = true;
          this.getClinicProviders(); 
-      } else if(res.status == '401'){       
+      } else if(res.status == 401){       
       }
     }, error => {
     });
@@ -253,9 +253,9 @@ export class EditDialogComponent {
   public selectedClinicProviders=[];
   getClinicProviders() {
     this.clinicService.getClinicProviders(this.selectedClinics.value).subscribe((res) => {
-        if(res.message == 'success'){
-          this.selectedClinicProviders = res.data;
-        } else if(res.status == '401'){}
+        if(res.body.message == 'success'){
+          this.selectedClinicProviders = res.body.data;
+        } else if(res.status == 401){}
     }, 
     error => {});
   }
@@ -380,16 +380,16 @@ initiate_clinic() {
         /* Generate Default Password*/
 
         this.rolesUsersService.checkUserEmail(result.email,result.user_type).subscribe((res) => {
-          if(res.message == 'success'){
-           if(res.data <=0 && res.consultant == null)
+          if(res.body.message == 'success'){
+           if(res.body.data <=0 && res.consultant == null)
            {
                this.add_user(result.display_name, result.email, result.user_type,result.selectedClinics, password,result.selected_dentist);
            }
-           else if(res.data > 0 && res.consultant != null && res.consultant != 'another_role')
+           else if(res.body.data > 0 && res.consultant != null && res.consultant != 'another_role')
            {
             this.add_clinic_consultant(res.consultant,result.selectedClinics,result.display_name, result.email);
            }
-           else if(res.data > 0  && res.consultant == 'another_role'){
+           else if(res.body.data > 0  && res.consultant == 'another_role'){
              this.toastr.error("Cannot add consultant user with email address " +result.email+ " - please contact the Jeeve support team for further information");
            }else{
              this.toastr.error("Email Already Exists!");
@@ -454,7 +454,7 @@ initiate_clinic() {
         
         var checkedRoles1 = checkedRoles.join();
         this.rolesUsersService.saveRoles(res1.id, checkedRoles1).subscribe((res) => {
-        if(res.message == 'success'){
+        if(res.body.message == 'success'){
           this.toastr.success('Permissions Saved!');
           this.getRoles();
         }
@@ -497,10 +497,10 @@ initiate_clinic() {
 //Get Clinics
   private getClinics() {
     this.headerService.getClinic.subscribe((res) => {
-      if(res.message == 'success'){
-        this.clinics = res.data;
-        this.hasPrimeClinics = res.hasPrimeClinics;
-      } else if(res.status == '401'){
+      if(res.body.message == 'success'){
+        this.clinics = res.body.data;
+        this.hasPrimeClinics = res.body.hasPrimeClinics;
+      } else if(res.status == 401){
         this._cookieService.put("username",'');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -517,8 +517,8 @@ initiate_clinic() {
     getDentists() {
       this.dentistService.currentDentistList.subscribe(res=>{
         this.dentists=[];
-           if(res.message == 'success'){
-            res.data.forEach(result => {
+           if(res.body.message == 'success'){
+            res.body.data.forEach(result => {
               var temp=[];
             temp['providerId'] = result.providerId;
             temp['name'] = result.name;
@@ -530,8 +530,8 @@ initiate_clinic() {
       });
       // this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
       //   this.dentists=[];
-      //      if(res.message == 'success'){
-      //       res.data.forEach(result => {
+      //      if(res.body.message == 'success'){
+      //       res.body.data.forEach(result => {
       //         var temp=[];
       //       temp['providerId'] = result.providerId;
       //       temp['name'] = result.name;
@@ -549,11 +549,11 @@ initiate_clinic() {
     $('.ajax-loader').show();
     this.rolesUsersService.addUserClinicConsultantMap(usrId,selectedClinics,display_name,email).subscribe((res) => {
       $('.ajax-loader').hide();
-         if(res.message == 'success'){
+         if(res.body.message == 'success'){
           this.toastr.success('User has been added successfully!');
           this.getUsers();
-         } else if(res.message == 'error'){
-            this.toastr.error(res.data.message);
+         } else if(res.body.message == 'error'){
+            this.toastr.error(res.body.data.message);
          }
       }, error => {
         $('.ajax-loader').hide();
@@ -565,11 +565,11 @@ initiate_clinic() {
   $('.ajax-loader').show();
   this.rolesUsersService.addRoleUser(display_name, email, user_type, selectedClinic, password,selected_dentist).subscribe((res) => {
     $('.ajax-loader').hide();
-       if(res.message == 'success'){
+       if(res.body.message == 'success'){
         this.toastr.success('User has been added successfully!');
         this.getUsers();
-       } else if(res.message == 'error'){
-          this.toastr.error(res.data.message);
+       } else if(res.body.message == 'error'){
+          this.toastr.error(res.body.data.message);
        }
     }, error => {
       $('.ajax-loader').hide();
@@ -581,11 +581,11 @@ initiate_clinic() {
   $('.ajax-loader').show();
   this.rolesUsersService.updateRoleUser(id,display_name, email, user_type, selectedClinic,selected_dentist,removedClinics,status).subscribe((res) => {
     $('.ajax-loader').hide();
-       if(res.message == 'success'){
+       if(res.body.message == 'success'){
         this.toastr.success('User has been updated successfully!');
         this.getUsers();
-       } else if(res.message == 'error'){
-          this.toastr.error(res.data.message);
+       } else if(res.body.message == 'error'){
+          this.toastr.error(res.body.data.message);
        }
     }, error => {
       $('.ajax-loader').hide();
@@ -603,7 +603,7 @@ initiate_clinic() {
       this.clinics.forEach(ele=>{
         clinics.push(ele.clinicName);
       })
-      res.data.forEach((ele)=>{
+      res.body.data.forEach((ele)=>{
         let cl = [];
         ele.clinics.split(',').forEach((e)=>{
           if(clinics.includes(e)){
@@ -614,13 +614,13 @@ initiate_clinic() {
       })
       
       this.rows=[];
-       if(res.message == 'success'){
+       if(res.body.message == 'success'){
         
         // isShowInactive 
-        res.data.filter(r=>{
+        res.body.data.filter(r=>{
           r.status == 1 ? this.activeData.push(r) : this.inactiveData.push(r);
         });
-        // this.rows = res.data;
+        // this.rows = res.body.data;
         this.rows = this.isShowInactive ? this.inactiveData : this.activeData;
         if(this.isShowInactive){
           this.temp = [...this.inactiveData];
@@ -644,11 +644,11 @@ initiate_clinic() {
   private getRoles() {      
     this.showRolesButton = false;
     this.rolesUsersService.getRoles().subscribe((res) => { 
-       if(res.message == 'success'){ 
+       if(res.body.message == 'success'){ 
         this.roles=[];
         var title = "Roles permissions";
         var tipDiscription = [];
-         res.data.forEach(result => {
+         res.body.data.forEach(result => {
           if(this.user_type == result.role_id ){
             if(result.permisions.indexOf('healthscreen') >= 0){
             }
@@ -695,7 +695,7 @@ initiate_clinic() {
           if(rowData.id) {
           this.rolesUsersService.deleteUser(rowData.id,rowData.usertype).subscribe((res) => {
             $('.ajax-loader').hide();
-               if(res.message == 'success'){
+               if(res.body.message == 'success'){
                 this.toastr.success('User Removed');
                   this.getUsers();
                }

@@ -79,8 +79,8 @@ export class SignupComponent implements OnInit {
   public openXero() {
 
      this.signupService.getUrl().subscribe((res) => {
-      if (res.message == "success") {
-        this.xeroUrl = res.data;
+      if (res.status == 200) {
+        this.xeroUrl = res.body.data;
         this.token = res.id;
         var win = window.open(this.xeroUrl, "MsgWindow", "width=400,height=400");
         var self = this;
@@ -100,9 +100,9 @@ export class SignupComponent implements OnInit {
 
   checkInfo() {
     this.signupService.getInfo(this.token).subscribe((res) => {
-      if (res.message == "success") {
-        $('form.ml-block-form input[aria-label="email"]').val(res.data.email);
-        $('form.ml-block-form input[aria-label="name"]').val(res.data.name);
+      if (res.status == 200) {
+        $('form.ml-block-form input[aria-label="email"]').val(res.body.data.email);
+        $('form.ml-block-form input[aria-label="name"]').val(res.body.data.name);
         $(
           'form.ml-block-form select[aria-label="country"] option:contains(Xero)'
         ).attr("selected", "selected");

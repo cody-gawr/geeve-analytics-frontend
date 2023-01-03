@@ -1,4 +1,4 @@
-import * as $ from 'jquery';
+ import * as $ from 'jquery';
 import { Component, AfterViewInit, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { FinancesService } from './finances.service';
 import { DentistService } from '../../dentist/dentist.service';
@@ -220,9 +220,9 @@ export class FinancesComponent implements AfterViewInit {
   public clinics = [];
   getAllClinics(){
     this.headerService.getClinic.subscribe(res=>{
-      if(res.status == '200'){
+      if(res.status == 200){
         let temp = [];
-        res.data.forEach(item=>{
+        res.body.data.forEach(item=>{
           temp.push(item.id);
         });
         this.clinics = [...temp];
@@ -234,9 +234,9 @@ export class FinancesComponent implements AfterViewInit {
     var self = this;
     return new Promise(function (resolve, reject) {
       self.clinicSettingsService.clinicGetAccountingPlatform(self.clinic_id).subscribe((res) => {
-        if (res.message == 'success') {
-          if (res.data != '') {
-            self.connectedwith = res.data;
+        if (res.body.message == 'success') {
+          if (res.body.data != '') {
+            self.connectedwith = res.body.data;
             resolve(true);
           } else {
             self.connectedwith = '';
@@ -1996,7 +1996,7 @@ export class FinancesComponent implements AfterViewInit {
     this.netProfitTrendIcon = "down";
     this.netProfitTrendTotal = 0;
     this.financesService.NetProfit(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
         this.netProfitVal = data.data.total_net_profit;
         this.netProfitTrendTotal = data.data.total_net_profit_ta;
         if (this.netProfitVal >= 0)
@@ -2025,7 +2025,7 @@ export class FinancesComponent implements AfterViewInit {
     this.netProfitProductionTrendIcon = "down";
     this.netProfitProductionTrendTotal = 0;
     this.financesService.NetProfitPercent(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
         this.netProfitProductionVal = data.data;
         this.netProfitProductionTrendTotal = data.data_ta;
 
@@ -2054,7 +2054,7 @@ export class FinancesComponent implements AfterViewInit {
     this.financesService.NetProfitPms(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
         this.netprofitstats = true;
         this.netProfitVal = Math.round(data.data);
       }
@@ -2077,7 +2077,7 @@ export class FinancesComponent implements AfterViewInit {
     this.financesService.netProfitPercentage(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((data) => {
        this.Apirequest = this.Apirequest - 1;
        this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
         this.netprofitpercentstats = true;
         this.netProfitPmsVal = Math.round(data.data);
       }
@@ -2124,7 +2124,7 @@ export class FinancesComponent implements AfterViewInit {
     this.financesService.categoryExpenses(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
         this.categoryExpensesLoader = false;
 
         this.pieChartLabelsres = [];
@@ -2192,7 +2192,7 @@ export class FinancesComponent implements AfterViewInit {
       this.productionChartTotal = 0;
       this.productionChartTrendIcon = "down";
       this.productionChartTrendTotal = 0;
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showClinicByclinic = true;
         }
@@ -2267,7 +2267,7 @@ export class FinancesComponent implements AfterViewInit {
       this.totalDiscountChartTotal = 0;
       this.totalDiscountChartTrendIcon = "down";
       this.totalDiscountChartTrendTotal = 0;
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showClinicBar = true;
         }else{
@@ -2286,7 +2286,7 @@ export class FinancesComponent implements AfterViewInit {
         }
         data.data.sort((a, b)=> b.discounts - a.discounts);
         data.data.forEach(res => {
-          if (res.total != 0) {
+          if (res.body.total != 0) {
             this.clinicsName.push(res.clinic_name);
             this.clinicsids.push(res.clinic_id);
             this.totalDiscountChartDatares.push(Math.round(res.discounts));
@@ -2360,7 +2360,7 @@ export class FinancesComponent implements AfterViewInit {
           hoverBackgroundColor: []
         }
       ];
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
 
         this.finTotalProductionLoader = false;
         this.totalProductionVal = (data.total) ? Math.round(data.total) : 0;
@@ -2430,7 +2430,7 @@ export class FinancesComponent implements AfterViewInit {
     this.financesService.finCollection(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
 
         this.finCollectionLoader = false;
         this.collectionVal = 0;
@@ -2498,7 +2498,7 @@ export class FinancesComponent implements AfterViewInit {
     this.financesService.finProductionPerVisit(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
         this.ProdPerVisit[0]['data'] = [];
         this.ProductionTrend1 = [];
         this.ProductionTrendLabels1 = [];       
@@ -2538,7 +2538,7 @@ export class FinancesComponent implements AfterViewInit {
     var clinic_id;
     this.finOverdueAccountsLoader = true;
     this.financesService.finOverdueAccounts(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
         this.finOverdueAccountsLoader = false;
 
         this.totalOverdueAccountLabels = [];
@@ -2747,12 +2747,12 @@ export class FinancesComponent implements AfterViewInit {
   // Get Dentist
   getDentists() {
     this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
-      if (res.message == 'success') {
-        this.dentists = res.data;
-        this.dentistCount = res.data.length;
+      if (res.body.message == 'success') {
+        this.dentists = res.body.data;
+        this.dentistCount = res.body.data.length;
 
       }
-      else if (res.status == '401') {
+      else if (res.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -2957,7 +2957,7 @@ export class FinancesComponent implements AfterViewInit {
       this.enableDiabaleButton(this.Apirequest);
       this.showClinic = false;
       this.finProductionByClinicianTrendLoader = false;
-      if (data.message == 'success') {        
+      if (data.body.message == 'success') {        
         data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         data.data.forEach(res => {
           const sumProd = res.val.reduce((accumulator, current) => accumulator + Number(current['production']), 0)
@@ -3063,7 +3063,7 @@ export class FinancesComponent implements AfterViewInit {
     this.financesService.finTotalDiscountsTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
         if(data.data == null || data.data.length <= 0){
           this.finTotalDiscountsTrendLoader = false;
           return;
@@ -3146,7 +3146,7 @@ export class FinancesComponent implements AfterViewInit {
     this.financesService.finOverdueAccountsTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
         this.finOverdueAccountsTrendLoader = false;
         data.data.forEach(res => {
           this.overdueChartTrend1.push(Math.round(res.val.total));
@@ -3216,7 +3216,7 @@ export class FinancesComponent implements AfterViewInit {
       this.netProfitPercentChartTrendMulti =[];
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showProdByclinic = true;
         }
@@ -3328,7 +3328,7 @@ export class FinancesComponent implements AfterViewInit {
       this.CMonthRange =[];
       this.CYearRange =[];
       this.collectionChartTrendMultiData = [];
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
         this.finCollectionTrendLoader = false;   
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
@@ -3433,7 +3433,7 @@ export class FinancesComponent implements AfterViewInit {
       this.finProductionPerVisitTrendLoader = false;
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data && data.message == 'success') {
+      if (data && data.body.message == 'success') {
         data.data.sort((a, b)=> a.year - b.year);
         data.data.forEach(res => {
           this.VMonthRange.push(res.year_month);
@@ -3510,7 +3510,7 @@ export class FinancesComponent implements AfterViewInit {
     this.financesService.finNetProfitTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
         this.finNetProfitTrendLoader = false;
         data.data.forEach(res => {
           this.netProfitChartTrend1.push(Math.round(res.val));
@@ -3563,7 +3563,7 @@ export class FinancesComponent implements AfterViewInit {
     this.financesService.finNetProfitPercentTrend(this.clinic_id, this.trendValue).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
         this.finNetProfitPercentTrendLoader = false;
 
         data.data.forEach(res => {
@@ -3609,8 +3609,8 @@ export class FinancesComponent implements AfterViewInit {
 
   public checkXeroStatus() {
     this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe((res) => {
-      if (res.message == 'success') {
-        if (res.data.xero_connect == 1) {
+      if (res.body.message == 'success') {
+        if (res.body.data.xero_connect == 1) {
           this.xeroConnect = true;
         }
         else {
@@ -3627,8 +3627,8 @@ export class FinancesComponent implements AfterViewInit {
 
   checkMyobStatus() {
     this.clinicSettingsService.checkMyobStatus(this.clinic_id).subscribe((res) => {
-      if (res.message == 'success') {
-        if (res.data.myob_connect == 1) {
+      if (res.body.message == 'success') {
+        if (res.body.data.myob_connect == 1) {
           this.myobConnect = true;
         } else {
           this.myobConnect = false;
@@ -3652,7 +3652,7 @@ export class FinancesComponent implements AfterViewInit {
       this.trendxero = false;
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
         if (data.data)
           data.data.forEach(res => {
             if (res.net_profit != null)
@@ -3688,7 +3688,7 @@ export class FinancesComponent implements AfterViewInit {
       this.trendxero = false;
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
         this.netProfitPmsChartTrend1 = [];
         this.netProfitChartTrendLabels1 = [];
         if (data.data) {
@@ -3727,7 +3727,7 @@ export class FinancesComponent implements AfterViewInit {
     this.financesService.finExpensesByCategoryTrend(this.clinic_id, this.trendValue, this.connectedwith).subscribe((data) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
         this.expensestrendstats = true;
         data.data.expenses.forEach((result, key) => {
           if (result.meta_key != 'Total Operating Expenses') {
@@ -3768,7 +3768,7 @@ export class FinancesComponent implements AfterViewInit {
 
   getChartsTips() {
     this.chartstipsService.getCharts(5).subscribe((data) => {
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
         this.charTips = data.data;
       }
     }, error => { });

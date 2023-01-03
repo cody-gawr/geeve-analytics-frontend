@@ -1,6 +1,6 @@
 import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../../environments/environment";
@@ -20,7 +20,7 @@ export class ClinicianAnalysisService {
         } else {
             this.token_id = this._cookieService.get("userid");
         }
-        let headers = { headers: new HttpHeaders(), withCredentials: true };
+        let headers = { headers: new HttpHeaders(), withCredentials: true, observe: 'response' as const };
         return headers;
     }
     // Dentist Production Service
@@ -29,13 +29,13 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caDentistProduction?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caDentistProduction?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -46,14 +46,14 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caDentistProductionDentist?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
 
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caDentistProductionDentist?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -64,13 +64,13 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caDentistProductionOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caDentistProductionOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -81,13 +81,13 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollection?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollection?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -98,13 +98,13 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionDentists?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionDentists?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -115,14 +115,14 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
 
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -133,13 +133,13 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExp?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExp?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -150,14 +150,14 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpDentists?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
 
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpDentists?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -168,13 +168,13 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -183,7 +183,7 @@ export class ClinicianAnalysisService {
     changeLoginStatus(): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/users/changeLoginStatus?token_id=" + this.token_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -192,7 +192,7 @@ export class ClinicianAnalysisService {
     DentistProductionSingle(dentist_id, clinic_id = '1', startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caDentistProduction?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -201,7 +201,7 @@ export class ClinicianAnalysisService {
     DentistProductionDentistSingle(dentist_id, clinic_id = '1', startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caDentistProductionDentist?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -210,7 +210,7 @@ export class ClinicianAnalysisService {
     DentistProductionOhtSingle(dentist_id, clinic_id = '1', startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caDentistProductionOht?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -219,7 +219,7 @@ export class ClinicianAnalysisService {
     DentistCollectionSingle(dentist_id, clinic_id = '1', startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollection?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -229,7 +229,7 @@ export class ClinicianAnalysisService {
     DentistCollectionDentistsSingle(dentist_id, clinic_id = '1', startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionDentists?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -239,7 +239,7 @@ export class ClinicianAnalysisService {
      DentistCollectionOhtSingle(dentist_id, clinic_id = '1', startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionOht?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -249,7 +249,7 @@ export class ClinicianAnalysisService {
     DentistCollectionExpSingle(dentist_id, clinic_id = '1', startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExp?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -259,7 +259,7 @@ export class ClinicianAnalysisService {
     DentistCollectionExpDentistsSingle(dentist_id, clinic_id = '1', startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpDentists?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -268,7 +268,7 @@ export class ClinicianAnalysisService {
     DentistCollectionExpOhtSingle(dentist_id, clinic_id = '1', startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpOht?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -278,7 +278,7 @@ export class ClinicianAnalysisService {
     caDentistProtectionTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caDentistProductionTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -287,7 +287,7 @@ export class ClinicianAnalysisService {
     caDentistProtectionDentistsTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caDentistProductionDentistTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -296,7 +296,7 @@ export class ClinicianAnalysisService {
     caDentistProtectionOhtTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caDentistProductionOhtTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -305,7 +305,7 @@ export class ClinicianAnalysisService {
     caDentistCollectionTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -315,7 +315,7 @@ export class ClinicianAnalysisService {
     caDentistCollectionDentistsTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionDentistsTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -324,7 +324,7 @@ export class ClinicianAnalysisService {
     caDentistCollectionOhtTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionOhtTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -334,7 +334,7 @@ export class ClinicianAnalysisService {
      caDentistCollectionExpTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -343,7 +343,7 @@ export class ClinicianAnalysisService {
     caDentistCollectionExpDentistsTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpDentistsTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -352,7 +352,7 @@ export class ClinicianAnalysisService {
     caDentistCollectionExpOhtTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpOhtTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -364,14 +364,14 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanAvgProposedFees?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
 
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanAvgProposedFees?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -381,7 +381,7 @@ export class ClinicianAnalysisService {
     TreatmentPlanDentist(dentist_id, clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanAvgProposedFees?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&provider_id=" + dentist_id + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -393,14 +393,14 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanAvgCompletedFees?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
 
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanAvgCompletedFees?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -410,7 +410,7 @@ export class ClinicianAnalysisService {
     TreatmentPlanCompletedFeesDentist(dentist_id, clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanAvgCompletedFees?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&provider_id=" + dentist_id + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -420,7 +420,7 @@ export class ClinicianAnalysisService {
     caNumberPatientComplaintsTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caNumComplaintsTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -429,7 +429,7 @@ export class ClinicianAnalysisService {
     caTreatmentPlanAverageCostTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanAvgProposedFeesTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -438,7 +438,7 @@ export class ClinicianAnalysisService {
     caTreatmentPlanAverageCompletedFeeTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanAvgCompletedFeesTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -447,7 +447,7 @@ export class ClinicianAnalysisService {
     //Recall Prebook Rate service
     /*    RecallPrebook(clinic_id, startDate = '', endDate = '', duration='' ): Observable<any> {
             return this.http.get(this.apiUrl +"/ClinicianAnalysis/caTreatmentPlanAverageCost?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                             return response;
                         })
             );
@@ -459,14 +459,14 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caNumComplaints?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
 
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caNumComplaints?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&provider_id=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -476,7 +476,7 @@ export class ClinicianAnalysisService {
     NoPatientsDentist(dentist_id, clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caNumComplaints?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -488,14 +488,14 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caRecallRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
 
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caRecallRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -505,7 +505,7 @@ export class ClinicianAnalysisService {
     RecallPrebookSingle(dentist_id, clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caRecallRate?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -517,13 +517,13 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caReappointRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caReappointRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -532,7 +532,7 @@ export class ClinicianAnalysisService {
     caReappointRateTrend(dentist_id, clinic_id, mode): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caReappointRateTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -542,7 +542,7 @@ export class ClinicianAnalysisService {
     caReappointRateSingle(dentist_id, clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caReappointRate?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -556,14 +556,14 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanCompRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
 
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanCompRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -573,7 +573,7 @@ export class ClinicianAnalysisService {
     TreatmentPlanRateSingle(dentist_id, clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanCompRate?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -584,13 +584,13 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caNumNewPatients?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caNumNewPatients?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -598,7 +598,7 @@ export class ClinicianAnalysisService {
     NewPatientsDentist(dentist_id, clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caNumNewPatients?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -609,14 +609,14 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );  
         }
 
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -626,14 +626,14 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRateDentists?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
 
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRateDentists?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -643,14 +643,14 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRateOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
 
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRateOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -660,7 +660,7 @@ export class ClinicianAnalysisService {
     cahourlyRateRateTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRateTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -672,14 +672,14 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionHourlyRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
 
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionHourlyRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -689,14 +689,14 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionHourlyRateDentist?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
 
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionHourlyRateDentist?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -706,14 +706,14 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionHourlyRateOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
 
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionHourlyRateOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -722,7 +722,7 @@ export class ClinicianAnalysisService {
     collectionHourlyRateSingle(dentist_id, clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionHourlyRate?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -731,7 +731,7 @@ export class ClinicianAnalysisService {
     collectionHourlyRateTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionHourlyRateTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -744,14 +744,14 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpHourlyRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
 
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpHourlyRate?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -761,14 +761,14 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpHourlyRateDentist?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
 
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpHourlyRateDentist?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -778,14 +778,14 @@ export class ClinicianAnalysisService {
 
         if(clinician == ''){
             return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpHourlyRateOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
                 })
             );
         }
 
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpHourlyRateOht?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -794,7 +794,7 @@ export class ClinicianAnalysisService {
     collectionExpHourlyRateSingle(dentist_id, clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpHourlyRate?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -803,7 +803,7 @@ export class ClinicianAnalysisService {
     collectionExpHourlyRateTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caCollectionExpHourlyRateTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -813,7 +813,7 @@ export class ClinicianAnalysisService {
      cahourlyRateChartDesntistsTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRateDentistsTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -823,7 +823,7 @@ export class ClinicianAnalysisService {
      cahourlyRateChartOhtTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRateOhtTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -834,7 +834,7 @@ export class ClinicianAnalysisService {
     canewPatientsRateTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caNumNewPatientsTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -844,7 +844,7 @@ export class ClinicianAnalysisService {
     catreatmentPlanRateTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caTxPlanCompRateTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -854,7 +854,7 @@ export class ClinicianAnalysisService {
     hourlyRateSingle(dentist_id, clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRate?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -862,7 +862,7 @@ export class ClinicianAnalysisService {
     hourlyRateDentistsSingle(dentist_id, clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRateDentists?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -870,7 +870,7 @@ export class ClinicianAnalysisService {
     hourlyRateOhtSingle(dentist_id, clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caHourlyRateOht?clinic_id=" + clinic_id + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -879,7 +879,7 @@ export class ClinicianAnalysisService {
     getAccountingDentist(clinic_id): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/getAccountingDentist?clinic_id=" + clinic_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -887,7 +887,7 @@ export class ClinicianAnalysisService {
     getStatusDentist(clinic_id): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/getStatusDentist?clinic_id=" + clinic_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -902,7 +902,7 @@ export class ClinicianAnalysisService {
 
         var header = this.getHeaders();
         return this.http.post(this.apiUrl + "/ClinicianAnalysis/saveDentistMapping/", formData, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -911,7 +911,7 @@ export class ClinicianAnalysisService {
     cpRecallPrebookRateTrend(dentist_id, clinic_id, mode = ''): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/ClinicianAnalysis/caRecallRateTrend?clinic_id=" + clinic_id + "&mode=" + mode + "&provider_id=" + dentist_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -920,12 +920,12 @@ export class ClinicianAnalysisService {
     /******** get clinic **********/
     getClinics(clinicId, clinicInfo): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/clinics/clinicGetInfo?clinic_id="+clinicId+"&clinic_info="+clinicInfo, header).pipe(map((response: Response) => { return response; }));
+        return this.http.get(this.apiUrl + "/clinics/clinicGetInfo?clinic_id="+clinicId+"&clinic_info="+clinicInfo, header).pipe(map((response: HttpResponse<Object>) => { return response; }));
     }
     /******** get clinic **********/
     getClinicSettings(clinicId): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/clinics/clinicGetSettings?clinic_id="+clinicId, header).pipe(map((response: Response) => { return response; }));
+        return this.http.get(this.apiUrl + "/clinics/clinicGetSettings?clinic_id="+clinicId, header).pipe(map((response: HttpResponse<Object>) => { return response; }));
     }
 
 }

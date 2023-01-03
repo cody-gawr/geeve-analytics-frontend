@@ -276,8 +276,8 @@ export class StaffMeetingsComponent implements OnInit{
       this.hasPermission = true;
     } else {
       this.rolesUsersService.getRolesIndividual().subscribe((res) => {
-        if (res.message == 'success') {
-          if (res.data.indexOf('createmeeting') >= 0) {
+        if (res.body.message == 'success') {
+          if (res.body.data.indexOf('createmeeting') >= 0) {
             this.hasPermission = true;
           }
         }
@@ -499,7 +499,7 @@ export class StaffMeetingsComponent implements OnInit{
         if(this.scheduleDrawer.opened)
           this.scheduleDrawer.close();
         this.boardMeetingPage = true;
-        this.meeting_details = [...res.data];
+        this.meeting_details = [...res.body.data];
         if(res.attended_status != null){
           this.notAttended = res.attended_status.attended == 0;
         }
@@ -515,8 +515,8 @@ export class StaffMeetingsComponent implements OnInit{
   getUsers() {
     this.tasksService.getUsers().subscribe((res) => {
       this.staff = [];
-        if (res.message == "success") {
-          res.data.forEach((user) => {
+        if (res.status == 200) {
+          res.body.data.forEach((user) => {
             if (user["displayName"] && user['id'] != this.user_id) {
               this.staff.push({
                 id: user["id"],
@@ -577,13 +577,13 @@ export class StaffMeetingsComponent implements OnInit{
   getDraftMeetings(){
     this.staffMeetingService.getDraftMeetings(this.clinic_id).subscribe(res=>{
       if(res.status == 200){
-        res.data.forEach(item=>{
+        res.body.data.forEach(item=>{
           item.meeting_date = this.datepipe.transform(item.meeting_date, 'dd-MM-yyyy');
         });
-        if(res.data.length > 0)
+        if(res.body.data.length > 0)
           this.hasDraftData = true;
         // add paginator and displaying data
-        this.setPagesForpaginator(res.data);
+        this.setPagesForpaginator(res.body.data);
       }
     },
     error=>{});
@@ -593,11 +593,11 @@ export class StaffMeetingsComponent implements OnInit{
   getCompletedMeetings(){
     this.staffMeetingService.getCompletedMeetings(this.clinic_id).subscribe(res=>{
       if(res.status == 200){
-        res.data.forEach(item=>{
+        res.body.data.forEach(item=>{
           item.meeting_date = this.datepipe.transform(item.meeting_date, 'dd-MM-yyyy');
         });
         // add paginator and displaying data
-        this.setPagesForpaginator(res.data);
+        this.setPagesForpaginator(res.body.data);
       }
     },
     error=>{});
@@ -607,7 +607,7 @@ export class StaffMeetingsComponent implements OnInit{
   getAdengaTemplate(){
     this.staffMeetingService.getAdengaTemplate().subscribe(res=>{
       if(res.status == 200){
-        this.templates = [...res.data];
+        this.templates = [...res.body.data];
         let none = {id:0, template_name:"None"};
         this.templates.unshift(none);
       }
@@ -621,7 +621,7 @@ export class StaffMeetingsComponent implements OnInit{
       if(res.status == 200){
         let now = new Date();
 
-        res.data.forEach(item=>{
+        res.body.data.forEach(item=>{
           let meeting_date = new Date(item.meeting_date);
           if(now.getTime() > meeting_date.getTime()){
             item.showAlert = true;
@@ -632,7 +632,7 @@ export class StaffMeetingsComponent implements OnInit{
         });
         
         // add paginator and displaying data
-        this.setPagesForpaginator(res.data);
+        this.setPagesForpaginator(res.body.data);
       }
     })
   }
@@ -660,10 +660,10 @@ export class StaffMeetingsComponent implements OnInit{
       if(res.status == 200){
         this.staffMeetingService.getMeeting(meeting_id,this.clinic_id).subscribe(res=>{
           if(res.status == 200){
-            this.agenda_heading = res.data[0].meeting_topic;
+            this.agenda_heading = res.body.data[0].meeting_topic;
           }
         });
-        this.agendaList = [...res.data];
+        this.agendaList = [...res.body.data];
         this.drawer.close();
         this.view_agenda_tab = false;
         this.agendaTab = true;
@@ -675,7 +675,7 @@ export class StaffMeetingsComponent implements OnInit{
   viewMeetingAgenda(meeting_id){
     this.staffMeetingService.getMeetingAgenda(meeting_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
-        this.view_agenda = [...res.data];
+        this.view_agenda = [...res.body.data];
         this.view_agenda_tab = true;
         this.agendaTab = true;
         this.drawer.close();
@@ -709,7 +709,7 @@ export class StaffMeetingsComponent implements OnInit{
       if(res.status == 200){
         if(this.scheduleDrawer.opened)
           this.scheduleDrawer.close();
-        this.agendaList = [...res.data];
+        this.agendaList = [...res.body.data];
         this.view_agenda_tab = false;
         this.agendaTab = true;
       }
@@ -848,7 +848,7 @@ export class StaffMeetingsComponent implements OnInit{
     this.showAttendees = false;
     this.staffMeetingService.getMeetingAttendees(meeting_id, this.clinic_id).subscribe(res=>{
       if(res.status == 200){
-        this.meeting_attendees = [...res.data];
+        this.meeting_attendees = [...res.body.data];
         this.showAttendees = true;
       }
     });
@@ -962,7 +962,7 @@ export class StaffMeetingsComponent implements OnInit{
   getTimezone(){
     this.staffMeetingService.getTimezone().subscribe(res=>{
       if(res.status == 200){
-        this.timezones = [...res.data];
+        this.timezones = [...res.body.data];
       }
     })
   }
@@ -1013,10 +1013,10 @@ export class StaffMeetingsComponent implements OnInit{
 
   getClinic(){
     this.headerService.getClinic.subscribe(res=>{
-      this.clinics = [...res.data];
+      this.clinics = [...res.body.data];
     });
     // this.headerService.getClinics().subscribe(res=>{
-    //   this.clinics = [...res.data];
+    //   this.clinics = [...res.body.data];
     // });
   }
 

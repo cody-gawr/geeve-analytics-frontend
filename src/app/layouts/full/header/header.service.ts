@@ -1,6 +1,6 @@
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable, BehaviorSubject } from 'rxjs';
 
 import { CookieService } from "ngx-cookie";
@@ -9,9 +9,8 @@ import { environment } from "../../../../environments/environment";
 @Injectable()
 export class HeaderService {
    public token: string;
-    private headers: HttpHeaders;
-    private apiUrl = environment.apiUrl;
-    public token_id;
+   private apiUrl = environment.apiUrl;
+   public token_id;
 
     constructor(private http: HttpClient,private _cookieService: CookieService,private router: Router) {  }
     getHeaders(){
@@ -20,7 +19,7 @@ export class HeaderService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        let headers =  {headers: new HttpHeaders(), withCredentials: true};
+        let headers =  {headers: new HttpHeaders(), observe: 'response' as const, withCredentials: true};
         return headers;
     }
     // Items Predictor Analysis 
@@ -28,7 +27,7 @@ export class HeaderService {
             const formData = new FormData();
             var header = this.getHeaders();            
             return this.http.post(this.apiUrl +"/users/userLogout", formData,  header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                             return response;
                         })
             );
@@ -36,7 +35,7 @@ export class HeaderService {
     getClinics(): Observable<any> {        
         var header = this.getHeaders();   
         return this.http.get(this.apiUrl +"/clinics/clinicGet",  header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -46,7 +45,7 @@ export class HeaderService {
     getNewFeature(): Observable<any> {        
         var header = this.getHeaders();         
         return this.http.get(this.apiUrl +"/users/getNewFeature", header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -54,7 +53,7 @@ export class HeaderService {
     getNewFeatureDisable(): Observable<any> {        
         var header = this.getHeaders();         
         return this.http.get(this.apiUrl +"/users/getNewFeatureDisable", header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -63,13 +62,14 @@ export class HeaderService {
     clinicGetAccountingPlatform(clinic_id): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/Clinics/clinicGetAccountingPlatform?clinic_id=" + clinic_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
     }
 
-    private data = {message:"", data: [], hasPrimeClinics: "", status: "", total: 0};
+    private data = { body: { message:"", data: [], hasPrimeClinics: "", total: 0 },
+                     status: 0 };
     private clincs = new BehaviorSubject(this.data);
     getClinic = this.clincs.asObservable();
 

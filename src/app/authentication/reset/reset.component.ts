@@ -46,8 +46,8 @@ public string;
   this.loading = true;
   $('.ajax-loader').show();
 this.loginService.checkValidString(this.string).subscribe((res) => {  
-  if(res && res.message == 'success'){
-    this.id= res.data;
+  if(res && res.body.message == 'success'){
+    this.id= res.body.data;
     this.loading = false;
     $('.ajax-loader').hide();
   }
@@ -93,14 +93,14 @@ onSubmit() {
           this.errorLoginText = '';
           this.successLogin = false;
           this.successLoginText = '';
-           if(res.message == 'success'){
+           if(res.body.message == 'success'){
               this.successLogin  =true;
               this.isPasswordSet =true;
-              this.successLoginText  =res.data;
+              this.successLoginText  =res.body.data;
             }
-           else if(res.message == 'error'){
+           else if(res.body.message == 'error'){
               this.errorLogin  =true;
-              this.errorLoginText  =res.data;
+              this.errorLoginText  =res.body.data;
            }
         }, error => {
           this.toastr.error('This link has expired');

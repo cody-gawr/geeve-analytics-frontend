@@ -1,6 +1,6 @@
 import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../environments/environment";
@@ -22,7 +22,7 @@ export class StaffMeetingService {
         } else {
             this.token_id = this._cookieService.get("userid");
         }
-        let headers = { headers: new HttpHeaders(), withCredentials: true };
+        let headers = { headers: new HttpHeaders(), withCredentials: true, observe: 'response' as const };
         return headers;
     }
 
@@ -42,7 +42,7 @@ export class StaffMeetingService {
         var header = this.getHeaders();
         return this.http.post(this.apiUrl + "/StaffMeeting/smCreateMeeting", formData, header)
         .pipe(
-            map((response: Response) => {
+            map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -51,7 +51,7 @@ export class StaffMeetingService {
     getAdengaTemplate(): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/StaffMeeting/smGetAgendaTemplate", header).pipe(
-            map((response: Response) => {
+            map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -60,7 +60,7 @@ export class StaffMeetingService {
     getUpcomingMeetings(clinic_id): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/StaffMeeting/smGetUpcommingMeetings?clinic_id="+clinic_id, header).pipe(
-            map((response: Response) => {
+            map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -69,7 +69,7 @@ export class StaffMeetingService {
     getCompletedMeetings(clinic_id): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/StaffMeeting/smGetCompletedMeetings?clinic_id="+clinic_id, header).pipe(
-            map((response: Response) => {
+            map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -83,7 +83,7 @@ export class StaffMeetingService {
         var header = this.getHeaders();
         return this.http.post(this.apiUrl + "/StaffMeeting/smPublishMeeting", formData, header)
         .pipe(
-            map((response: Response) => {
+            map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -92,7 +92,7 @@ export class StaffMeetingService {
     getMeetingAgenda(meeting_id, clinic_id): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/StaffMeeting/smGetMeetingAgenda?meeting_id="+meeting_id+"&clinic_id="+clinic_id, header).pipe(
-            map((response: Response) => {
+            map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -120,7 +120,7 @@ export class StaffMeetingService {
         var header = this.getHeaders();
         return this.http.post(this.apiUrl + "/StaffMeeting/smSaveMeetingAgenda", formData, header)
         .pipe(
-            map((response: Response) => {
+            map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -130,7 +130,7 @@ export class StaffMeetingService {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/StaffMeeting/smGetInvitedMeetings?clinic_id="
         +clinic_id, header).pipe(
-            map((response: Response) => {
+            map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -143,7 +143,7 @@ export class StaffMeetingService {
         formData.append("meeting_id",meeting_id);
         var header = this.getHeaders();
         return this.http.post(this.apiUrl + "/StaffMeeting/smSaveMeetingAttended", formData, header).pipe(
-            map((response : Response)=>{
+            map((response : HttpResponse<Object>)=>{
                 return response;
             })
         );
@@ -152,7 +152,7 @@ export class StaffMeetingService {
     getMeeting(meeting_id, clinic_id): Observable<any>{
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/StaffMeeting/smGetMeeting?id="+meeting_id+"&clinic_id="+clinic_id, header).pipe(
-            map((response : Response)=>{
+            map((response : HttpResponse<Object>)=>{
                 return response;
             })
         );
@@ -161,7 +161,7 @@ export class StaffMeetingService {
     // getInvitedUsers(meeting_id, clinic_id): Observable<any>{
     //     var header = this.getHeaders();
     //     return this.http.get(this.apiUrl + "/StaffMeeting/smGetInvitedUsers?meeting_id="+meeting_id+"&clinic_id="+clinic_id, header).pipe(
-    //         map((response : Response)=>{
+    //         map((response : HttpResponse<Object>)=>{
     //             return response;
     //         })
     //     );
@@ -170,7 +170,7 @@ export class StaffMeetingService {
     getPublishedMeeting(clinic_id): Observable<any>{
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/StaffMeeting/smGetPublishedMeetings?clinic_id="+clinic_id, header).pipe(
-            map((response : Response)=>{
+            map((response : HttpResponse<Object>)=>{
                 return response;
             })
         );
@@ -179,7 +179,7 @@ export class StaffMeetingService {
     getCompeleteInvitedMeetings(clinic_id): Observable<any>{
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/StaffMeeting/smGetInvitedCompleteMeetings?clinic_id="+clinic_id, header).pipe(
-            map((response: Response) => {
+            map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -191,7 +191,7 @@ export class StaffMeetingService {
         formData.append("clinic_id", clinic_id);
         var header = this.getHeaders();
         return this.http.post(this.apiUrl + "/StaffMeeting/smMarkCompleteMeeting",formData, header).pipe(
-            map((response: Response) => {
+            map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -200,7 +200,7 @@ export class StaffMeetingService {
     getMeetingDetails(meeting_id, clinic_id): Observable<any>{
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/StaffMeeting/smGetMeetingDetails?meeting_id="+meeting_id+"&clinic_id="+clinic_id, header).pipe(
-            map((response: Response) => {
+            map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -209,7 +209,7 @@ export class StaffMeetingService {
     getMeetingAttendees(meeting_id, clinic_id): Observable<any>{
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/StaffMeeting/smGetMeetingAttendees?meeting_id="+meeting_id+"&clinic_id="+clinic_id, header).pipe(
-            map((response: Response) => {
+            map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -220,7 +220,7 @@ export class StaffMeetingService {
         formData.append("agenda_items", agenda_items);
         var header = this.getHeaders();
         return this.http.post(this.apiUrl + "/StaffMeeting/smChangeAgendaItemOrder",formData, header).pipe(
-            map((response: Response) => {
+            map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -232,7 +232,7 @@ export class StaffMeetingService {
         formData.append("clinic_id", clinic_id);
         var header = this.getHeaders();
         return this.http.post(this.apiUrl + "/StaffMeeting/smSendReminder",formData, header).pipe(
-            map((response: Response) => {
+            map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -241,7 +241,7 @@ export class StaffMeetingService {
     getDraftMeetings(clinic_id): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/StaffMeeting/smGetDraftMeetings?clinic_id="+clinic_id, header).pipe(
-            map((response: Response) => {
+            map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -250,7 +250,7 @@ export class StaffMeetingService {
     getScheduledMeeting(clinic_id): Observable<any>{
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/StaffMeeting/smGetScheduledMeetings?clinic_id="+clinic_id, header).pipe(
-            map((response : Response)=>{
+            map((response : HttpResponse<Object>)=>{
                 return response;
             })
         );
@@ -259,7 +259,7 @@ export class StaffMeetingService {
     getTimezone(): Observable<any>{
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/StaffMeeting/smGetTimezone", header).pipe(
-            map((response : Response)=>{
+            map((response : HttpResponse<Object>)=>{
                 return response;
             })
         );
@@ -271,7 +271,7 @@ export class StaffMeetingService {
         const formData = new FormData();
         formData.append("agenda_item_id", id);
         return this.http.post(this.apiUrl + "/StaffMeeting/smDeleteAgendaItem", formData, header).pipe(
-            map((response : Response)=>{
+            map((response : HttpResponse<Object>)=>{
                 return response;
             })
         );
@@ -282,7 +282,7 @@ export class StaffMeetingService {
         const formData = new FormData();
         formData.append("agenda_item_ids", ids);
         return this.http.post(this.apiUrl + "/StaffMeeting/smDeleteAgenda", formData, header).pipe(
-            map((response : Response)=>{
+            map((response : HttpResponse<Object>)=>{
                 return response;
             })
         );

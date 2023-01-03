@@ -1,6 +1,6 @@
 import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../../environments/environment";
@@ -21,7 +21,7 @@ export class HealthScreenService {
         } else {
             this.token_id = this._cookieService.get("userid");
         }
-        let headers = { headers: new HttpHeaders(), withCredentials: true };
+        let headers = { headers: new HttpHeaders(), withCredentials: true, observe: 'response' as const };
         return headers;
     }
 
@@ -29,7 +29,7 @@ export class HealthScreenService {
     getCustomiseSettings(clinic_id): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/clinics/clinicGetSettings?clinic_id=" + clinic_id, header).pipe(
-                map((response: Response) => {
+                map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
@@ -39,14 +39,14 @@ export class HealthScreenService {
         var header = this.getHeaders();
         if(duration == ''){
             return this.http.get(this.apiUrl + "/health/chHourlyLeaders?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&limit=5", header)
-                .pipe(map((response: Response) => {
+                .pipe(map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
         }
         
         return this.http.get(this.apiUrl + "/health/chHourlyLeaders?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&limit=5", header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -57,14 +57,14 @@ export class HealthScreenService {
         var header = this.getHeaders();
         if(duration == ''){
             return this.http.get(this.apiUrl + "/health/chReferralLeaders?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&limit=" + limit, header)
-                .pipe(map((response: Response) => {
+                .pipe(map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
         }
         
         return this.http.get(this.apiUrl + "/health/chReferralLeaders?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&limit=" + limit, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -76,14 +76,14 @@ export class HealthScreenService {
         var header = this.getHeaders();
         if(duration == ''){
             return this.http.get(this.apiUrl + "/Health/chProductionPerVisit?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate, header)
-                .pipe(map((response: Response) => {
+                .pipe(map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
         }
         
         return this.http.get(this.apiUrl + "/Health/chProductionPerVisit?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -94,7 +94,7 @@ export class HealthScreenService {
     commonCall(clinic_id, startDate, endDate, functionName): Observable<any> { // Top production card service
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/health/" + functionName + "?clinic_id=" + clinic_id + "&start_date=" + startDate + "&end_date=" + endDate, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -104,7 +104,7 @@ export class HealthScreenService {
     getSetting(): Observable<any> { // Top production card service
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/health/chGetSetting", header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );

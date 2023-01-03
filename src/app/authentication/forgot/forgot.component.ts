@@ -52,13 +52,13 @@ export class ForgotComponent implements OnInit {
           this.errorLoginText = "";
           this.successLogin = false;
           this.successLoginText = "";
-          if (res.message == "success") {
+          if (res.status == 200) {
             this.successLogin = true;
             this.showCaptcha = false;
-            this.successLoginText = res.data;
-          } else if (res.message == "error") {
+            this.successLoginText = res.body.data;
+          } else if (res.body.message == "error") {
             this.errorLogin = true;
-            this.errorLoginText = res.data;
+            this.errorLoginText = res.body.data;
           }
         },
         (error) => {

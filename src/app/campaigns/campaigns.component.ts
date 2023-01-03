@@ -39,9 +39,9 @@ export class CampaignsDialogComponent {
     }
 
     this.followupsService.notes(data.notes, data.patientId, data.date, data.clinic_id, data.followup_date, data.type, data.treatItem).subscribe((res) => {
-      if (res.message == 'success') {
+      if (res.body.message == 'success') {
         this.dialogRef.close();
-      } else if (res.status == '401') {
+      } else if (res.status == 401) {
         this.handleUnAuthorization();
       }
     }, error => {
@@ -80,9 +80,9 @@ export class CampaignsStatusDialogComponent {
       return false;
     }
     this.followupsService.notes(data.notes, data.patientId, data.date, data.clinic_id, data.followup_date, data.type).subscribe((res) => {
-      if (res.message == 'success') {
+      if (res.body.message == 'success') {
         this.dialogRef.close();
-      } else if (res.status == '401') {
+      } else if (res.status == 401) {
         this.handleUnAuthorization();
       }
     }, error => {

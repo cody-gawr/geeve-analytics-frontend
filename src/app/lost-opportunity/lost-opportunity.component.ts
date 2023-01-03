@@ -125,7 +125,7 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
 	}
 	 getChartsTips() {
     this.chartstipsService.getCharts(8).subscribe((data) => {
-       if(data.message == 'success'){         
+       if(data.body.message == 'success'){         
         this.charTips = data.data;
        }
     }, error => {});

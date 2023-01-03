@@ -1,6 +1,6 @@
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../environments/environment";
@@ -20,7 +20,7 @@ export class SignupService {
     private apiUrl = environment.apiUrl;
     getUrl(): Observable<any> {
       return this.http.get(this.apiUrl +"/XeroSignup/getUrl", { headers: this.headers })
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                             return response;
                         })
             );
@@ -30,7 +30,7 @@ export class SignupService {
       const formData = new FormData();
       formData.append('id', token);
       return this.http.post(this.apiUrl +"/XeroSignup/getXeroInfo",formData, { headers: this.headers })
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                             return response;
                         })
             );

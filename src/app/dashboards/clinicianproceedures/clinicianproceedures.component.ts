@@ -96,9 +96,9 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
   public clinics = [];
   getAllClinics(){
     this.headerService.getClinic.subscribe(res=>{
-      if(res.status == '200'){
+      if(res.status == 200){
         let temp = [];
-        res.data.forEach(item=>{
+        res.body.data.forEach(item=>{
           temp.push(item.id);
         });
         this.clinics = [...temp];
@@ -1357,7 +1357,7 @@ if(this._cookieService.get("user_type") == '4'){
         this.stackedChartLabels =[];
         this.stackedChartDataMax = 0;
         this.paGeneralData = [];
-       if(data.message == 'success'){ 
+       if(data.body.message == 'success'){ 
         if(data && data.data && data.data.length <=0) {
 
         }else {
@@ -1412,7 +1412,7 @@ if(this._cookieService.get("user_type") == '4'){
                 this.paGeneralData.push(temp);
 
               }
-          //    this.productionTotal = this.productionTotal + parseInt(res.total);
+          //    this.productionTotal = this.productionTotal + parseInt(res.body.total);
             });
           this.stackedChartData[0]['data'] = this.stackedChartData1;
           this.stackedChartData[1]['data'] = this.stackedChartData2;
@@ -1517,7 +1517,7 @@ if(this._cookieService.get("user_type") == '4'){
         this.paSpecialistlData = [];
         this.ItemsPredictorAnalysisMulti = [];
         this.ItemsPredictorAnalysisLabels = [];
-       if(data.message == 'success'){   
+       if(data.body.message == 'success'){   
         if(data && data.data && data.data.length <= 0) {
         } else {
           if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
@@ -1637,7 +1637,7 @@ if(this._cookieService.get("user_type") == '4'){
   this.clinicianproceeduresService.ItemsPredictorAnalysisDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
         this.buildChartDentistLoader = false;
         this.itemPredictedChartDataMax = 0;
-       if(data.message == 'success' && data.data && data.data.length){
+       if(data.body.message == 'success' && data.data && data.data.length){
           this.itemPredictedChartData1 = [];
            this.itemPredictedChartLabels=[];
           var temp=[];
@@ -1689,7 +1689,7 @@ if(this._cookieService.get("user_type") == '4'){
     this.clinicianproceeduresService.ItemsPredictorAnalysisSpecialistDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
       this.procedureSpecialDentistLoader = false;
       this.procedureSpecialDataMax = 0;
-      if(data.message == 'success' && data.data && data.data.length) {
+      if(data.body.message == 'success' && data.data && data.data.length) {
         this.procedureSpecialTemp = [];
         this.procedureSpecialLabels=[];
         var temp=[];
@@ -1807,7 +1807,7 @@ public PRcolors;
       this.ratio5 =0;
       this.ratio6 =0;
 
-      if(data.message == 'success'){        
+      if(data.body.message == 'success'){        
         this.predictedstackedChartLabels1AvrPre = data.total_ta[0];
         this.predictedstackedChartLabels2AvrPre = data.total_ta[1];
         this.predictedstackedChartLabels3AvrPre = data.total_ta[2]; 
@@ -1975,7 +1975,7 @@ public predictedstackedChartLoader: boolean = false;
       this.predictedstackedChartLabels1Avr = 0;
       this.predictedstackedChartLabels2Avr = 0;
       this.predictedstackedChartLabels3Avr = 0;    
-      if(data.message == 'success'){    
+      if(data.body.message == 'success'){    
         this.predictedstackedChartLabels1AvrPre = data.total_ta[0];
         this.predictedstackedChartLabels2AvrPre = data.total_ta[1];
         this.predictedstackedChartLabels3AvrPre = data.total_ta[2];    
@@ -2023,14 +2023,14 @@ public buildChartProceedureLoader:any;
     }
     this.buildChartProceedureLoader =true;          
     this.clinic_id && this.clinicianproceeduresService.ClinicianProceedure( this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
-      if(data.message == 'success'){
+      if(data.body.message == 'success'){
         this.buildChartProceedureLoader =false;
         this.proceedureChartLabels1 = [];
         this.proceedureChartData1 =[];
         this.proceedureChartLabels =[];
         data.data.forEach(res => {
-          if(res.total > 0 ) {
-            this.proceedureChartData1.push(Math.round(res.total));
+          if(res.body.total > 0 ) {
+            this.proceedureChartData1.push(Math.round(res.body.total));
             if(res.item_name != null){
               this.proceedureChartLabels1.push(res.item_name);
             } else {
@@ -2073,12 +2073,12 @@ public buildChartProceedureDentistLoader:any;
     this.buildChartProceedureDentistLoader =true;
    
   this.clinic_id && this.clinicianproceeduresService.ClinicianProceedureDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
-    if (data.message == 'success' && data.data){
+    if (data.body.message == 'success' && data.data){
         this.buildChartProceedureDentistLoader =false;
         this.proceedureChartData1 = [];
         this.proceedureChartLabels1 = [];
          data.data.forEach(res => {
-           this.proceedureChartData1.push(Math.round(res.total));
+           this.proceedureChartData1.push(Math.round(res.body.total));
            if(res.item_name != null){
               this.proceedureChartLabels1.push(res.item_name);
             } else {
@@ -2137,7 +2137,7 @@ public doughnutChartColors1;
         this.pieChartInternalPrevTooltip = 'down';
         this.pieChartExternalPrevTooltip = 'down';
         this.pieChartCombinedPrevTooltip = 'down';
-      if (data.message == 'success' && data.data && data.data.length) {
+      if (data.body.message == 'success' && data.data && data.data.length) {
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           data.data.forEach(res => {
             res.val.forEach((result, key) => {
@@ -2170,14 +2170,14 @@ public doughnutChartColors1;
             this.pieChartDatares2.push(res.external);
             this.pieChartLabelsres2.push(res.treat_item_name);
           }
-          if(res.total>0) {
-            this.pieChartDatares3.push(res.total);
+          if(res.body.total>0) {
+            this.pieChartDatares3.push(res.body.total);
             this.pieChartLabelsres3.push(res.treat_item_name);
 
           }
             this.pieChartInternalTotal = this.pieChartInternalTotal + parseInt(res.internal);
             this.pieChartExternalTotal = this.pieChartExternalTotal + parseInt(res.external);
-            this.pieChartCombinedTotal = this.pieChartCombinedTotal + parseInt(res.total);
+            this.pieChartCombinedTotal = this.pieChartCombinedTotal + parseInt(res.body.total);
             if(res.label != 'Anonymous')
               this.crKey= i;
               i++;
@@ -2252,10 +2252,10 @@ public doughnutChartColors1;
       this.pieChartDataMax1 = 0;
       this.pieChartDataMax2 = 0;
       this.pieChartDataMax3 = 0;
-       if(data.message == 'success' && data.data.length){
+       if(data.body.message == 'success' && data.data.length){
      
         data.data.forEach(res => {
-          if(res.total>0) {
+          if(res.body.total>0) {
               if(res.internal>0) {
                  this.pieChartDatares1.push(res.internal);
                  this.pieChartLabelsres1.push(res.treat_item_name);
@@ -2265,14 +2265,14 @@ public doughnutChartColors1;
                  this.pieChartLabelsres2.push(res.treat_item_name);
 
                }
-               if(res.total>0) {
-                 this.pieChartDatares3.push(res.total);
+               if(res.body.total>0) {
+                 this.pieChartDatares3.push(res.body.total);
                  this.pieChartLabelsres3.push(res.treat_item_name);
 
                }
                this.pieChartInternalTotal = this.pieChartInternalTotal + parseInt(res.internal);
                this.pieChartExternalTotal = this.pieChartExternalTotal + parseInt(res.external);
-               this.pieChartCombinedTotal = this.pieChartCombinedTotal + parseInt(res.total);
+               this.pieChartCombinedTotal = this.pieChartCombinedTotal + parseInt(res.body.total);
             }
        });
       this.pieChartInternalPrevTotal = this.pieChartInternalPrevTotal + parseInt(data.total_ta.internal);
@@ -2537,11 +2537,11 @@ public currentText;
   // Get Dentist
     getDentists() {
       this.clinic_id && this.dentistService.currentDentistList.subscribe((res) => {
-           if(res.message == 'success'){
-              this.dentists= res.data;
-              this.dentistCount= res.data.length;
+           if(res.body.message == 'success'){
+              this.dentists= res.body.data;
+              this.dentistCount= res.body.data.length;
            }
-           else if(res.status == '401'){
+           else if(res.status == 401){
               this._cookieService.put("username",'');
               this._cookieService.put("email", '');              
               this._cookieService.put("userid", '');
@@ -2639,8 +2639,8 @@ toggleFilter(val) {
 //Get Clinics List of all clinics
  private getClinics() { 
       this.headerService.getClinics().subscribe((res) => {
-       if(res.message == 'success'){
-        this.clinicsData = res.data;
+       if(res.body.message == 'success'){
+        this.clinicsData = res.body.data;
        }
     }, error => {
      // this.warningMessage = "Please Provide Valid Inputs!";
@@ -2724,7 +2724,7 @@ toggleChangeProcess(){
       this.stackedChartDataMax = 0;
       this.buildChartDentistLoader = false;
       this.Apirequest = this.Apirequest -1;
-       if(data.message == 'success' && data.data){
+       if(data.body.message == 'success' && data.data){
          if(data.data.length <=0) {
                 }else {
                 data.data.forEach(res => {
@@ -2808,7 +2808,7 @@ toggleChangeProcess(){
         {data: [], label: 'Veneers (indirect)' } 
       ];
       this.Apirequest = this.Apirequest -1;
-       if(data.message == 'success' && data.data){
+       if(data.body.message == 'success' && data.data){
          if(data.data.length <=0) {
                 }else {
                 data.data.forEach(res => {
@@ -2906,7 +2906,7 @@ toggleChangeProcess(){
       this.stackedChartTrendData8 =[];
       this.stackedChartTrendData9 =[];
     if(this.mode == 'Internal') {
-       if(data.message == 'success' && data.data){
+       if(data.body.message == 'success' && data.data){
          if(data.data.internal.length > 0) {
                 data.data.internal.forEach(res => {
                    this.stackedChartTrendData1.push(res.val[0]);
@@ -2937,7 +2937,7 @@ toggleChangeProcess(){
            }
          }
          else if(this.mode== 'External') {
-       if(data.message == 'success'){
+       if(data.body.message == 'success'){
          if(data.data.external.length >0) { 
                 data.data.external.forEach(res => {
                   if(typeof(res.val) != 'undefined'){
@@ -2970,7 +2970,7 @@ toggleChangeProcess(){
            }
          }
          else if(this.mode== 'Combined') {
-       if(data.message == 'success'){
+       if(data.body.message == 'success'){
          if(data.data.combined.length >0) {
                 data.data.combined.forEach(res => {
                   if(typeof(res.val) != 'undefined'){
@@ -3063,7 +3063,7 @@ toggleChangeProcess(){
       this.predictorRatioLoader = false;
       this.ratioChartLabels1=[];
       this.Apirequest = this.Apirequest -1;
-       if(data.message == 'success' && data.data){
+       if(data.body.message == 'success' && data.data){
           if(data.data.length <=0) {
           } else {
             data.data.forEach(res => { 
@@ -3136,7 +3136,7 @@ toggleChangeProcess(){
 
     getChartsTips() {
       this.chartstipsService.getCharts(2).subscribe((data) => {
-       if(data.message == 'success'){         
+       if(data.body.message == 'success'){         
         this.charTips = data.data;
        }
     }, error => {});

@@ -1,6 +1,6 @@
 import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable, BehaviorSubject } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../environments/environment";
@@ -20,7 +20,7 @@ export class ClinicSettingsService {
         } else {
             this.token_id = this._cookieService.get("userid");
         }
-        let headers = { headers: new HttpHeaders(), withCredentials: true };
+        let headers = { headers: new HttpHeaders(), withCredentials: true, observe: 'response' as const };
         return headers;
     }
 
@@ -28,7 +28,7 @@ export class ClinicSettingsService {
     getClinicSettings(clinic_id): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/clinics/clinicGet?clinic_id=" + clinic_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -37,7 +37,7 @@ export class ClinicSettingsService {
     getClinicFollowUPSettings(clinic_id): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/clinics/clinicGetSettings?clinic_id=" + clinic_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -60,7 +60,7 @@ export class ClinicSettingsService {
 
         var header = this.getHeaders();
         return this.http.post(this.apiUrl + "/clinics/clinicUpdate", formData, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -69,7 +69,7 @@ export class ClinicSettingsService {
     getXeroLink(clinic_id): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/Xeros2/getAuthorizeUrl?getxero=1&clinic_id=" + clinic_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -78,7 +78,7 @@ export class ClinicSettingsService {
     checkXeroStatus(clinic_id): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/Xeros2/xeroGetStatus?getxero=1&clinic_id=" + clinic_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -87,7 +87,7 @@ export class ClinicSettingsService {
     getMyobLink(clinic_id): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/Myob/getAuthorizeUrl?clinic_id=" + clinic_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -95,7 +95,7 @@ export class ClinicSettingsService {
     checkMyobStatus(clinic_id): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/Myob/myobGetStatus?clinic_id=" + clinic_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -104,7 +104,7 @@ export class ClinicSettingsService {
     clinicGetAccountingPlatform(clinic_id): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/Clinics/clinicGetAccountingPlatform?clinic_id=" + clinic_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -115,7 +115,7 @@ export class ClinicSettingsService {
         const formData = new FormData();
         formData.append('clinic_id', clinic_id);
         return this.http.post(this.apiUrl + "/Xeros2/disconnectXero/", formData, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -126,7 +126,7 @@ export class ClinicSettingsService {
         const formData = new FormData();
         formData.append('clinic_id', clinic_id);
         return this.http.post(this.apiUrl + "/Myob/disconnectMyob/", formData, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -137,7 +137,7 @@ export class ClinicSettingsService {
         formData.append('clinic_id', clinic_id);
         formData.append(column, value);
         var header = this.getHeaders();
-        return this.http.post(this.apiUrl + "/clinics/clinicUpdate", formData, header).pipe(map((response: Response) => {
+        return this.http.post(this.apiUrl + "/clinics/clinicUpdate", formData, header).pipe(map((response: HttpResponse<Object>) => {
             return response;
         })
         );
@@ -148,7 +148,7 @@ export class ClinicSettingsService {
         formData.append('clinic_id', clinic_id);
         formData.append(column, value);
         var header = this.getHeaders();
-        return this.http.post(this.apiUrl + "/clinics/clinicSettingsSave", formData, header).pipe(map((response: Response) => {
+        return this.http.post(this.apiUrl + "/clinics/clinicSettingsSave", formData, header).pipe(map((response: HttpResponse<Object>) => {
             return response;
         })
         );
@@ -159,7 +159,7 @@ export class ClinicSettingsService {
         formData.append('clinic_id', clinic_id);
         formData.append('id', task_id);
         var header = this.getHeaders();
-        return this.http.post(this.apiUrl + "/clinics/clinicDeleteEndDayTasks", formData, header).pipe(map((response: Response) => {
+        return this.http.post(this.apiUrl + "/clinics/clinicDeleteEndDayTasks", formData, header).pipe(map((response: HttpResponse<Object>) => {
             return response;
         })
         );
@@ -170,7 +170,7 @@ export class ClinicSettingsService {
         formData.append('clinic_id', clinic_id);
         formData.append('id', task_id);
         var header = this.getHeaders();
-        return this.http.post(this.apiUrl + "/clinics/clinicDeleteEquipmentItem", formData, header).pipe(map((response: Response) => {
+        return this.http.post(this.apiUrl + "/clinics/clinicDeleteEquipmentItem", formData, header).pipe(map((response: HttpResponse<Object>) => {
             return response;
         })
         );
@@ -185,7 +185,7 @@ export class ClinicSettingsService {
                 header
             )
             .pipe(
-                map((response: Response) => {
+                map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
@@ -209,55 +209,58 @@ export class ClinicSettingsService {
         return this.http
             .post(this.apiUrl + "/clinics/clinicSettingsSave", formData, header)
             .pipe(
-                map((response: Response) => {
+                map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
     }
 
     private data = {
-        "status": Boolean,
-        "message": "",
-        "data": {
-            "clinic_id": 0,
-            "xray_months": 0,
-            "opg_months": 0,
-            "recall_code1": "",
-            "recall_code2": "",
-            "recall_code3": "",
-            "lab_code1": "",
-            "lab_code2": "",
-            "new_patients_main": 0,
-            "recall_rate_default": 0,
-            "hourly_rate_appt_hours": 0,
-            "fta_enable": 0,
-            "fta_days_later": 0,
-            "fta_followup_days": 0,
-            "uta_enable": 0,
-            "uta_days_later": 0,
-            "uta_followup_days": 0,
-            "post_op_enable": 0,
-            "post_op_days": 0,
-            "post_op_calls": "",
-            "tick_enable": 0,
-            "tick_days": 0,
-            "recall_enable": 0,
-            "recall_weeks": 0,
-            "referral_enable": 0,
-            "referral_weeks": 0,
-            "health_screen_mtd": 0,
-            "days": "",
-            "equip_list_enable": 0,
-            "daily_task_enable": 0,
-            "compare_mode": 0,
-            "net_profit_exclusions": "",
-            "custom_tx_codes": "",
-            "trial_end_date": null,
-            "utility_ver": "",
-            "connectedwith": "",
-            "consultant": "",
-            "max_chart_bars": 20
-        }
+        body: {
+            "message": "",
+            "data": {
+                "clinic_id": 0,
+                "xray_months": 0,
+                "opg_months": 0,
+                "recall_code1": "",
+                "recall_code2": "",
+                "recall_code3": "",
+                "lab_code1": "",
+                "lab_code2": "",
+                "new_patients_main": 0,
+                "recall_rate_default": 0,
+                "hourly_rate_appt_hours": 0,
+                "fta_enable": 0,
+                "fta_days_later": 0,
+                "fta_followup_days": 0,
+                "uta_enable": 0,
+                "uta_days_later": 0,
+                "uta_followup_days": 0,
+                "post_op_enable": 0,
+                "post_op_days": 0,
+                "post_op_calls": "",
+                "tick_enable": 0,
+                "tick_days": 0,
+                "recall_enable": 0,
+                "recall_weeks": 0,
+                "referral_enable": 0,
+                "referral_weeks": 0,
+                "health_screen_mtd": 0,
+                "days": "",
+                "equip_list_enable": 0,
+                "daily_task_enable": 0,
+                "compare_mode": 0,
+                "net_profit_exclusions": "",
+                "custom_tx_codes": "",
+                "trial_end_date": null,
+                "utility_ver": "",
+                "connectedwith": "",
+                "consultant": "",
+                "max_chart_bars": 20
+            },
+        },
+        status: 0
+   
     };
 
     private clincsSetting = new BehaviorSubject(this.data);
@@ -268,11 +271,14 @@ export class ClinicSettingsService {
     }
 
     private data1 = {
-        "status": "",
+        body: {
         "message": "",
         "data": [],
         "total": 0,
         "hasPrimeClinics": ""
+        },
+        "status": 0,
+
     };
 
     private clinicData = new BehaviorSubject(this.data1);

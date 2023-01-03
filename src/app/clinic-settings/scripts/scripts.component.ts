@@ -45,9 +45,9 @@ export class AddScriptsComponent {
       return false;
     }
     this.scriptsService.addUpdateScript(data.id, data.name, data.text, data.type, data.colour, data.clinic_id).subscribe((res) => {
-      if (res.message == 'success') {
+      if (res.body.message == 'success') {
         this.dialogRef.close();
-      } else if (res.status == '401') {
+      } else if (res.status == 401) {
         this.handleUnAuthorization();
       }
     }, error => {
@@ -159,12 +159,12 @@ export class ScriptsComponent extends BaseComponent implements AfterViewInit {
     this.scriptList = new MatTableDataSource([]);
     this.scriptsService.getScripts(id).subscribe((res) => {
       this.scriptsLoader = true;
-      if (res.message == 'success') {
+      if (res.body.message == 'success') {
         this.scriptsLoader = false;
-        this.scriptList.data = res.data;
-        this.setPaginationButtons(res.data.length);
+        this.scriptList.data = res.body.data;
+        this.setPaginationButtons(res.body.data.length);
       }
-      else if (res.status == '401') {
+      else if (res.status == 401) {
         this.handleUnAuthorization();
       }
     }, error => {
@@ -195,7 +195,7 @@ export class ScriptsComponent extends BaseComponent implements AfterViewInit {
     }).then((result) => {
       if (result.value) {
         this.scriptsService.deleteScript(this.clinic_id$.value, recordId).subscribe((res) => {
-          if (res.message == 'success') {
+          if (res.body.message == 'success') {
             this.getScripts(this.clinic_id$.value);
           }
         }, error => {

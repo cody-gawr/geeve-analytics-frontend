@@ -1,6 +1,6 @@
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../../environments/environment";
@@ -21,14 +21,14 @@ export class FrontDeskService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        let headers =  {headers: new HttpHeaders(), withCredentials: true};
+        let headers =  {headers: new HttpHeaders(), withCredentials: true, observe: 'response' as const };
         return headers;
     }
     // Items Predictor Analysis 
     fdWorkTimeAnalysis(clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/FrontDesk/fdUtilisationRate?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -36,7 +36,7 @@ export class FrontDeskService {
     fdWorkTimeAnalysisByDay(clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/FrontDesk/fdUtilisationRateByDay?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -46,7 +46,7 @@ export class FrontDeskService {
     fdFtaRatio(clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/FrontDesk/fdFtaRatio?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -56,7 +56,7 @@ export class FrontDeskService {
     fdUtaRatio(clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/FrontDesk/fdUtaRatio?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -66,7 +66,7 @@ export class FrontDeskService {
     fdNumberOfTicks(clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/FrontDesk/fdNumTicks?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -75,7 +75,7 @@ export class FrontDeskService {
     fdWorkTimeAnalysisTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/FrontDesk/fdUtilisationRateTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -84,7 +84,7 @@ export class FrontDeskService {
     fdFtaRatioTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/FrontDesk/fdFtaRatioTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -93,7 +93,7 @@ export class FrontDeskService {
     fdUtaRatioTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/FrontDesk/fdUtaRatioTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -103,7 +103,7 @@ export class FrontDeskService {
     fdNumberOfTicksTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/FrontDesk/fdNumTicksTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -113,7 +113,7 @@ export class FrontDeskService {
     fdRecallPrebookRate(clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/FrontDesk/fdRecallRate?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -123,7 +123,7 @@ export class FrontDeskService {
     fdReappointRate(clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/FrontDesk/fdReappointRate?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -133,7 +133,7 @@ export class FrontDeskService {
     fdRecallPrebookRateTrend(dentist_id,clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/FrontDesk/fdRecallRateTrend?clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -141,7 +141,7 @@ export class FrontDeskService {
     frontdeskdRecallPrebookRateTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/FrontDesk/fdRecallRateTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -150,7 +150,7 @@ export class FrontDeskService {
     // fdTreatmentPrebookRateTrend(dentist_id,clinic_id, mode ='' ): Observable<any> {
     //     var header = this.getHeaders(); 
     //     return this.http.get(this.apiUrl +"/FrontDesk/fdReappointRateTrend?clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, header)
-    //     .pipe(map((response: Response) => {
+    //     .pipe(map((response: HttpResponse<Object>) => {
     //                     return response;
     //                 })
     //     ); 
@@ -158,7 +158,7 @@ export class FrontDeskService {
       fdReappointRateTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/FrontDesk/fdReappointRateTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );

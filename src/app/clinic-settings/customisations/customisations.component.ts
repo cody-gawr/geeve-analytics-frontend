@@ -47,17 +47,17 @@ export class DialogSetColorsDialogComponent {
       return false;
     }
     this.CustomisationsService.addStatusColors(data.clinic_id,data.status_code, data.bgcolour, data.colour ).subscribe((res) => {
-      if (res.message == 'success') {
+      if (res.body.message == 'success') {
         this.CustomisationsService.getStatusCodeList(data.clinic_id).subscribe((res) => {
-          if (res.message == 'success') {
+          if (res.body.message == 'success') {
             this.dialogRef.componentInstance.data.status_code = "";
             this.dialogRef.componentInstance.data.bgcolour = "";
             this.dialogRef.componentInstance.data.colour = "";
-            this.dialogRef.componentInstance.data.statusCodeList = res.data;
+            this.dialogRef.componentInstance.data.statusCodeList = res.body.data;
           }
         });
         //this.dialogRef.close();
-      } else if (res.status == '401') {
+      } else if (res.status == 401) {
         this.handleUnAuthorization();
       }
     }, error => {
@@ -69,9 +69,9 @@ export class DialogSetColorsDialogComponent {
     let data = this.dialogRef.componentInstance.data.statusCodeList[i];
     if (data) {
       this.CustomisationsService.deleteStatusCode(data.clinic_id,data.status_code).subscribe((res) => {
-        if (res.message == 'success') {
+        if (res.body.message == 'success') {
           this.dialogRef.componentInstance.data.statusCodeList.splice(i, 1);
-        } else if (res.status == '401') {
+        } else if (res.status == 401) {
           this.handleUnAuthorization();
         }
       }, error => {
@@ -244,8 +244,8 @@ export class CustomisationsComponent
     this.customisationsService.clinicHuddleNotificationsSave(data).subscribe(
       (res) => {
         $(".ajax-loader").hide();
-        if (res.message == "success") {
-          if (res.message == "success") {
+        if (res.status == 200) {
+          if (res.status == 200) {
             this.toastr.success("Clinic Customisations Updated");
           } else if (res.status == "401") {
             this.handleUnAuthorization();
@@ -264,7 +264,7 @@ export class CustomisationsComponent
 
   setVisibilityOfMaxBar(){
     this.headerService.getClinic.subscribe(res => {
-      this.visibleMaxBarSetting = res.data.length > 1;
+      this.visibleMaxBarSetting = res.body.data.length > 1;
     });
   }
 
@@ -274,13 +274,13 @@ export class CustomisationsComponent
       .subscribe(
         (res) => {
           $(".ajax-loader").hide();
-          if (res.message == "success") {
-            if (res.data) {
-              this.recall_overdue_enable = (res.data.recall_overdue_enable) ? true : false;
-              this.lab_needed_enable = (res.data.lab_needed_enable) ? true : false;
-              this.opg_overdue_enable = (res.data.opg_overdue_enable) ? true : false;
-              this.xray_overdue_enable = (res.data.xray_overdue_enable) ? true : false;
-              this.status_codes_enable = (res.data.status_codes_enable) ? true : false;
+          if (res.status == 200) {
+            if (res.body.data) {
+              this.recall_overdue_enable = (res.body.data.recall_overdue_enable) ? true : false;
+              this.lab_needed_enable = (res.body.data.lab_needed_enable) ? true : false;
+              this.opg_overdue_enable = (res.body.data.opg_overdue_enable) ? true : false;
+              this.xray_overdue_enable = (res.body.data.xray_overdue_enable) ? true : false;
+              this.status_codes_enable = (res.body.data.status_codes_enable) ? true : false;
             }
           }
         },
@@ -294,22 +294,22 @@ export class CustomisationsComponent
   getCustomiseSettings() {
     this.clinicSettingsService.getClincsSetting.subscribe(res=>{
       $(".ajax-loader").hide();
-        if (res.message == "success") {
-          if (res.data) {
-            this.recallCode1 = res.data.recall_code1;
-            this.recallCode2 = res.data.recall_code2;
-            this.recallCode3 = res.data.recall_code3;
-            this.labCode1 = res.data.lab_code1;
-            this.labCode2 = res.data.lab_code2;
-            this.xrayMonths = res.data.xray_months;
-            this.opgMonths = res.data.opg_months;
-            this.newPatients = res.data.new_patients_main;
-            // this.health_screen_mtd = res.data.health_screen_mtd;
-            this.recall_rate_default = res.data.recall_rate_default;
-            this.hourly_rate_appt_hours = res.data.hourly_rate_appt_hours;
-            this.lab_code1 = res.data.lab_code1;
-            this.lab_code2 = res.data.lab_code2;
-            this.numberOfRecords = res.data.max_chart_bars;
+        if (res.status) {
+          if (res.body.data) {
+            this.recallCode1 = res.body.data.recall_code1;
+            this.recallCode2 = res.body.data.recall_code2;
+            this.recallCode3 = res.body.data.recall_code3;
+            this.labCode1 = res.body.data.lab_code1;
+            this.labCode2 = res.body.data.lab_code2;
+            this.xrayMonths = res.body.data.xray_months;
+            this.opgMonths = res.body.data.opg_months;
+            this.newPatients = res.body.data.new_patients_main;
+            // this.health_screen_mtd = res.body.data.health_screen_mtd;
+            this.recall_rate_default = res.body.data.recall_rate_default;
+            this.hourly_rate_appt_hours = res.body.data.hourly_rate_appt_hours;
+            this.lab_code1 = res.body.data.lab_code1;
+            this.lab_code2 = res.body.data.lab_code2;
+            this.numberOfRecords = res.body.data.max_chart_bars;
           }
         }
       },(error) => {
@@ -319,21 +319,21 @@ export class CustomisationsComponent
     // this.customisationsService.getCustomiseSettings(this.clinic_id$.value).subscribe(
     //     (res) => {
     //       $(".ajax-loader").hide();
-    //       if (res.message == "success") {
-    //         if (res.data) {
-    //           this.recallCode1 = res.data.recall_code1;
-    //           this.recallCode2 = res.data.recall_code2;
-    //           this.recallCode3 = res.data.recall_code3;
-    //           this.labCode1 = res.data.lab_code1;
-    //           this.labCode2 = res.data.lab_code2;
-    //           this.xrayMonths = res.data.xray_months;
-    //           this.opgMonths = res.data.opg_months;
-    //           this.newPatients = res.data.new_patients_main;
-    //          // this.health_screen_mtd = res.data.health_screen_mtd;
-    //           this.recall_rate_default = res.data.recall_rate_default;
-    //           this.hourly_rate_appt_hours = res.data.hourly_rate_appt_hours;
-    //           this.lab_code1 = res.data.lab_code1;
-    //           this.lab_code2 = res.data.lab_code2;
+    //       if (res.status == 200) {
+    //         if (res.body.data) {
+    //           this.recallCode1 = res.body.data.recall_code1;
+    //           this.recallCode2 = res.body.data.recall_code2;
+    //           this.recallCode3 = res.body.data.recall_code3;
+    //           this.labCode1 = res.body.data.lab_code1;
+    //           this.labCode2 = res.body.data.lab_code2;
+    //           this.xrayMonths = res.body.data.xray_months;
+    //           this.opgMonths = res.body.data.opg_months;
+    //           this.newPatients = res.body.data.new_patients_main;
+    //          // this.health_screen_mtd = res.body.data.health_screen_mtd;
+    //           this.recall_rate_default = res.body.data.recall_rate_default;
+    //           this.hourly_rate_appt_hours = res.body.data.hourly_rate_appt_hours;
+    //           this.lab_code1 = res.body.data.lab_code1;
+    //           this.lab_code2 = res.body.data.lab_code2;
     //         }
     //       }
     //     },
@@ -370,12 +370,12 @@ export class CustomisationsComponent
     this.customisationsService.updateCustomiseSettings(data).subscribe(
       (res) => {
         $(".ajax-loader").hide();
-        if (res.message == "success") {
-          if (res.data) {
+        if (res.status == 200) {
+          if (res.body.data) {
             this.xrayMonths = data.xray_months;
             this.opgMonths = data.opg_months;
           }
-          if (res.message == "success") {
+          if (res.status == 200) {
             this.toastr.success("Clinic Customisations Updated");
           } else if (res.status == "401") {
             this.handleUnAuthorization();
@@ -403,16 +403,16 @@ export class CustomisationsComponent
 
   openDialog(status_code = '', colour = '', bgcolour = ''): void {
       this.customisationsService.getStatusCodeList(this.clinic_id$.value).subscribe((res) => {
-        if (res.message == 'success') {
+        if (res.body.message == 'success') {
           const dialogRef = this.dialog.open(DialogSetColorsDialogComponent, {
             width: '500px',
-            data: {clinic_id: this.clinic_id$.value,statusCodeList: res.data ,status_code:status_code,colour:colour,bgcolour:bgcolour}
+            data: {clinic_id: this.clinic_id$.value,statusCodeList: res.body.data ,status_code:status_code,colour:colour,bgcolour:bgcolour}
           });
           dialogRef.afterClosed().subscribe(result => {
            
           });
         }
-        else if (res.status == '401') {
+        else if (res.status == 401) {
           this.handleUnAuthorization();
         }
       }, error => {

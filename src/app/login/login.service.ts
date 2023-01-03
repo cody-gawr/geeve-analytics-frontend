@@ -1,6 +1,6 @@
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../environments/environment";
@@ -25,8 +25,8 @@ export class LoginService {
 
             formData.append('email', uname);
             formData.append('password', password);
-            return this.http.post(this.apiUrl +"/users/userLogin", formData,{ headers: this.headers,withCredentials: true })
-            .pipe(map((response: Response) => {
+            return this.http.post(this.apiUrl +"/users/userLogin", formData,{ headers: this.headers,withCredentials: true, observe: 'response' as const })
+            .pipe(map((response: HttpResponse<Object>) => {
                
                             return response;
                         })
@@ -38,8 +38,8 @@ export class LoginService {
 
             formData.append('email', email);
             formData.append('captcha', captcha);
-            return this.http.post(this.apiUrl +"/users/userForgotPassword", formData)
-            .pipe(map((response: Response) => {
+            return this.http.post(this.apiUrl +"/users/userForgotPassword", formData, { observe: 'response' as const } )
+            .pipe(map((response: HttpResponse<Object>) => {
                             return response;
                         })
             );
@@ -50,8 +50,8 @@ export class LoginService {
             formData.append('password', password);
             formData.append('confirm_password', password);
             formData.append('id', id);
-            return this.http.post(this.apiUrl +"/users/userSetPassword", formData)
-            .pipe(map((response: Response) => {
+            return this.http.post(this.apiUrl +"/users/userSetPassword", formData, { observe: 'response' as const } )
+            .pipe(map((response: HttpResponse<Object>) => {
                             return response;
                         })
             );
@@ -60,8 +60,8 @@ export class LoginService {
     checkEmailExists(email): Observable<any> {
             const formData = new FormData();
             formData.append('email', email);
-            return this.http.post(this.apiUrl +"/users/userCheckEmailExists", formData)
-            .pipe(map((response: Response) => {
+            return this.http.post(this.apiUrl +"/users/userCheckEmailExists", formData, { observe: 'response' as const } )
+            .pipe(map((response: HttpResponse<Object>) => {
                             return response;
                         })
             );
@@ -75,15 +75,15 @@ export class LoginService {
             formData.append('plan_id', plan_id);  
             formData.append('status', '0');            
 
-            return this.http.post(this.apiUrl +"/users/addPracticeOwner", formData)
-            .pipe(map((response: Response) => {
+            return this.http.post(this.apiUrl +"/users/addPracticeOwner", formData, { observe: 'response' as const } )
+            .pipe(map((response: HttpResponse<Object>) => {
                             return response;
                         })
             );
     }
     getPlans(): Observable<any> {
             return this.http.get(this.apiUrl +"/plans/getPlans")
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                             return response;
                         })
             );
@@ -92,8 +92,8 @@ export class LoginService {
     checkuser(plan_id): Observable<any> {
             const formData = new FormData();
             formData.append('plan_id', plan_id);            
-            return this.http.post(this.apiUrl +"/users/userCheckPlan", formData)
-            .pipe(map((response: Response) => {
+            return this.http.post(this.apiUrl +"/users/userCheckPlan", formData, { observe: 'response' as const } )
+            .pipe(map((response: HttpResponse<Object>) => {
                             return response;
                         })
             );
@@ -106,8 +106,8 @@ export class LoginService {
             formData.append('email', token.email);            
             formData.append('plan_id', plan_id);
             
-            return this.http.post(this.apiUrl +"/users/createSubscription", formData)
-            .pipe(map((response: Response) => {
+            return this.http.post(this.apiUrl +"/users/createSubscription", formData, { observe: 'response' as const } )
+            .pipe(map((response: HttpResponse<Object>) => {
                             return response;
                         })
             );
@@ -115,8 +115,8 @@ export class LoginService {
     // Items Predictor Analysis 
     autoLogin(userId): Observable<any> {
             const formData = new FormData();
-            return this.http.post(this.apiUrl +"/users/autologin", formData)
-            .pipe(map((response: Response) => {
+            return this.http.post(this.apiUrl +"/users/autologin", formData, { observe: 'response' as const } )
+            .pipe(map((response: HttpResponse<Object>) => {
                             return response;
                         })
             );
@@ -125,8 +125,8 @@ export class LoginService {
             const formData = new FormData();
 
             formData.append('id', id);
-            return this.http.post(this.apiUrl +"/users/userCheckValidString", formData)
-            .pipe(map((response: Response) => {
+            return this.http.post(this.apiUrl +"/users/userCheckValidString", formData, { observe: 'response' as const } )
+            .pipe(map((response: HttpResponse<Object>) => {
                             return response;
                         })
             );

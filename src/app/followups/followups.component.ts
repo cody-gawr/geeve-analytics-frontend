@@ -54,7 +54,7 @@ export class ExportDataDialogComponent {
     }
     this.loader = true 
     this.followupsService.checkExportFollowUpData(clinic_id, startDate, endDate, showcompleted, followuptype).subscribe((res) => {
-      if (res.status == '200') {
+      if (res.status == 200) {
         this.followupsService.exportFollowUp(clinic_id, startDate, endDate, showcompleted, filetype, followuptype, filename).subscribe((data: File) => {
           const csvName = filename;
           let ftype = '';
@@ -82,7 +82,7 @@ export class ExportDataDialogComponent {
     
        
       } else if (res.status == '204') {
-        this.toastr.info(res.message);
+        this.toastr.info(res.body.message);
           this.loader = false
           return
       }
@@ -122,9 +122,9 @@ export class FollowupsDialogComponent {
     }
 
     this.followupsService.notes(data.notes, data.patientId, data.date, data.clinic_id, data.followup_date, data.type, data.treatItem).subscribe((res) => {
-      if (res.message == 'success') {
+      if (res.body.message == 'success') {
         this.dialogRef.close();
-      } else if (res.status == '401') {
+      } else if (res.status == 401) {
         this.handleUnAuthorization();
       }
     }, error => {
@@ -164,9 +164,9 @@ export class StatusDialogComponent {
       return false;
     }
     this.followupsService.notes(data.notes, data.patientId, data.date, data.clinic_id, data.followup_date, data.type).subscribe((res) => {
-      if (res.message == 'success') {
+      if (res.body.message == 'success') {
         this.dialogRef.close();
-      } else if (res.status == '401') {
+      } else if (res.status == 401) {
         this.handleUnAuthorization();
       }
     }, error => {
@@ -372,7 +372,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.clinic_id = val;
 
       this.clinicianAnalysisService.getClinicSettings(this.clinic_id).subscribe((data: any) => {
-        if (data.message == 'success') {
+        if (data.body.message == 'success') {
           this.isEnablePO = (data.data.post_op_enable == 1) ? true : false;
           this.isEnableOR = (data.data.recall_enable == 1) ? true : false;
           this.isEnableTH = (data.data.tick_enable == 1) ? true : false;
@@ -1081,7 +1081,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
 
   getChartsTips() {
     this.chartstipsService.getCharts(7).subscribe((data) => {
-      if (data.message == 'success') {
+      if (data.body.message == 'success') {
         this.charTips = data.data;
       }
     }, error => { });

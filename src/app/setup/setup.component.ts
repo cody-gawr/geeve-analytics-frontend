@@ -260,11 +260,11 @@ usersArray = new Array(this.userRows);
  private getClinics() {
     this.rows=[];
     this.clinicService.getClinics().subscribe((res) => {
-       if(res.message == "success"){
-          this.rows = res.data;
-          if(res.data.length > 0) {
-            this.clinic_id = res.data[0]['id'];
-            this.showCorePractice = res.data[0]['pms'] == 'core' ? true : false;
+       if(res.status == 200){
+          this.rows = res.body.data;
+          if(res.body.data.length > 0) {
+            this.clinic_id = res.body.data[0]['id'];
+            this.showCorePractice = res.body.data[0]['pms'] == 'core' ? true : false;
             if(this.clinic_id){
               //this.getClinicSettings();
               this.checkXeroStatus(false);
@@ -277,7 +277,7 @@ usersArray = new Array(this.userRows);
               this.refreshTabs();
               //this.getPlans();
           }
-       } else if(res.status == '401'){
+       } else if(res.status == 401){
           this._cookieService.put("username",'');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -334,10 +334,10 @@ usersArray = new Array(this.userRows);
 }
    getXeroLink(){
     this.setupService.getXeroLink(this.clinic_id).subscribe((res) => {
-       if(res.message == 'success'){
-        this.xero_link = res.data;
+       if(res.body.message == 'success'){
+        this.xero_link = res.body.data;
        }
-        else if(res.status == '401'){
+        else if(res.status == 401){
             this._cookieService.put("username",'');
               this._cookieService.put("email", '');
               this._cookieService.put("userid", '');
@@ -352,10 +352,10 @@ usersArray = new Array(this.userRows);
   getConnectCoreLink(){
     // this.clinic_id = 186;
     this.setupService.getConnectCoreLink(this.clinic_id).subscribe((res) => {
-       if(res.message == 'success'){
-         this.connectToCoreLink = res.data;
+       if(res.body.message == 'success'){
+         this.connectToCoreLink = res.body.data;
        }
-        else if(res.status == '401'){
+        else if(res.status == 401){
             this._cookieService.put("username",'');
               this._cookieService.put("email", '');
               this._cookieService.put("userid", '');
@@ -370,9 +370,9 @@ usersArray = new Array(this.userRows);
   //get myob authorization link
   getMyobLink(){ 
     this.setupService.getMyobLink(this.clinic_id).subscribe((res) => {
-       if(res.message == 'success'){
-        this.myob_link = res.data;
-       } else if(res.status == '401'){
+       if(res.body.message == 'success'){
+        this.myob_link = res.body.data;
+       } else if(res.status == 401){
             this._cookieService.put("username",'');
               this._cookieService.put("email", '');
               this._cookieService.put("userid", '');
@@ -410,11 +410,11 @@ usersArray = new Array(this.userRows);
 }
   public checkXeroStatus(close){
     this.setupService.checkXeroStatus(this.clinic_id).subscribe((res) => {
-       if(res.message == 'success'){
+       if(res.body.message == 'success'){
 
-        if(res.data.xero_connect == 1) {
+        if(res.body.data.xero_connect == 1) {
           this.xeroConnect = true;
-          this.xeroOrganization = res.data.Name;
+          this.xeroOrganization = res.body.data.Name;
           if(close){
             this.saveStripe();
           }
@@ -438,10 +438,10 @@ usersArray = new Array(this.userRows);
   //check status of myob connection
   public checkMyobStatus(close){
     this.setupService.checkMyobStatus(this.clinic_id).subscribe((res) => {
-       if(res.message == 'success'){
-        if(res.data.myob_connect == 1) {
+       if(res.body.message == 'success'){
+        if(res.body.data.myob_connect == 1) {
           this.myobConnect = true;
-          this.myobOrganization = res.data.Name;
+          this.myobOrganization = res.body.data.Name;
           if(close){
             this.saveStripe();
           }
@@ -464,7 +464,7 @@ usersArray = new Array(this.userRows);
  public disconnectXero() {
   
     this.setupService.clearSession(this.clinic_id).subscribe((res) => {
-       if(res.message == 'success'){
+       if(res.body.message == 'success'){
           this.xeroConnect = false;
           this.xeroOrganization = '';   
           this.getXeroLink();
@@ -479,7 +479,7 @@ usersArray = new Array(this.userRows);
  //disconnect myob connection
  public disconnectMyob() { 
   this.setupService.clearSessionMyob(this.clinic_id).subscribe((res) => {
-     if(res.message == 'success'){
+     if(res.body.message == 'success'){
         this.myobConnect = false;
         this.myobOrganization = '';   
         this.getMyobLink();
@@ -523,10 +523,10 @@ usersArray = new Array(this.userRows);
       // address,phone_no,clinicEmail,
        this.setupService.addClinic(name,displayName,days,pms,coreURL).subscribe((res) => {
        $('.ajax-loader').hide();
-        if(res.message == 'success'){
-          this.clinic_id = res.data.id;
+        if(res.body.message == 'success'){
+          this.clinic_id = res.body.data.id;
           this._cookieService.put("display_name", displayName);
-          if(res.data.pms == 'core'){
+          if(res.body.data.pms == 'core'){
             this.getConnectCoreLink();
           }else{
             this.getXeroLink();
@@ -536,7 +536,7 @@ usersArray = new Array(this.userRows);
        this.updateStepperStatus(); 
        //this.getClinic(); 
        //this.toastr.success('Clinic Added.');
-       }else if(res.status == '401'){
+       }else if(res.status == 401){
          this._cookieService.put("username",'');
          this._cookieService.put("email", '');
          this._cookieService.put("userid", '');
@@ -571,7 +571,7 @@ usersArray = new Array(this.userRows);
 
   checkUserEmail(display_name, email, user_type) { 
     this.rolesUsersService.checkUserEmail(email).subscribe((res) => {
-      if(res.message == 'success'){
+      if(res.body.message == 'success'){
         let length = 10;
         var randomPassword  = '';
         var characters  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
@@ -579,7 +579,7 @@ usersArray = new Array(this.userRows);
         for ( var i = 0; i < length; i++ ) {
           randomPassword += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
-        if(res.data <=0)
+        if(res.body.data <=0)
           this.add_user(display_name, email, user_type, randomPassword,this.clinic_id,this.inviteFormGroup.value.dentist_id);
         else
           this.toastr.error('Email Already Exists!');
@@ -605,7 +605,7 @@ usersArray = new Array(this.userRows);
       this.setupService.updateStepperStatus().subscribe((res) => {
         
        $('.ajax-loader').hide();
-        if(res.message == 'success'){
+        if(res.body.message == 'success'){
           if(this.stepVal < 4 ) {
           var stepper1 = parseInt(this.stepVal) + 1;
            this._cookieService.put("stepper", stepper1.toString());
@@ -618,7 +618,7 @@ usersArray = new Array(this.userRows);
           }
            // console.log(this._cookieService.get("stepper"));
            // this.ClickNext('step'+this._cookieService.get("stepper"),stepper);
-       }else if(res.status == '401'){
+       }else if(res.status == 401){
          this._cookieService.put("username",'');
          this._cookieService.put("email", '');
          this._cookieService.put("userid", '');
@@ -672,8 +672,8 @@ usersArray = new Array(this.userRows);
   }
   public checkCoreStatus(){
     this.setupService.checkCoreStatus(this.clinic_id).subscribe((res) => {
-       if(res.message == 'success'){
-         if(res.data.refresh_token && res.data.token && res.data.core_user_id)
+       if(res.body.message == 'success'){
+         if(res.body.data.refresh_token && res.body.data.token && res.body.data.core_user_id)
             this.getClinicLocation();
        }
     }, error => {
@@ -683,8 +683,8 @@ usersArray = new Array(this.userRows);
 
   public coreSyncStatus(){
     this.setupService.checkCoreSyncStatus(this.clinic_id).subscribe((res) => {
-      if(res.message == 'success'){
-        if(res.data == 1){
+      if(res.body.message == 'success'){
+        if(res.body.data == 1){
             this.stepVal = 3;
             this.updateStepperStatus();
         }else{
@@ -700,7 +700,7 @@ usersArray = new Array(this.userRows);
 
   downloadPMS(){
     this.setupService.getPMSLink().subscribe((res) => {
-        var winP = window.open(this.apiUrl+res.data+this.clinic_id, "_blank");    
+        var winP = window.open(this.apiUrl+res.body.data+this.clinic_id, "_blank");    
         this.stepVal = 2;
         this.updateStepperStatus();
       }, error => {
@@ -732,7 +732,7 @@ usersArray = new Array(this.userRows);
 
           let urlActive = this._location.path();
           this.reportsStatusInfo = true;
-          if(res.message == 'noStart')
+          if(res.body.message == 'noStart')
           {           
             selfO.reportsStatus = [];
             if(urlActive == '/setup'){
@@ -741,14 +741,14 @@ usersArray = new Array(this.userRows);
               }, 10000);
             }
             
-          } else if(res.message == 'Pending') {
-            selfO.reportsStatus = res.data;
+          } else if(res.body.message == 'Pending') {
+            selfO.reportsStatus = res.body.data;
             if(urlActive == '/setup'){
               setTimeout(function(){
                 selfO.checkRepotrs();
               }, 10000);
             }
-          } else if(res.message == 'Completed') {            
+          } else if(res.body.message == 'Completed') {            
             selfO.stepVal = 3;
             selfO.updateStepperStatus(); 
           }
@@ -769,9 +769,9 @@ usersArray = new Array(this.userRows);
         let urlActive = this._location.path();
         this.reportsStatusInfo = true;
         selfO.reportsStatus = [];
-        if(res.message == 'success'){    
-          if(res.data.length > 0){
-            selfO.reportsStatus = res.data;
+        if(res.body.message == 'success'){    
+          if(res.body.data.length > 0){
+            selfO.reportsStatus = res.body.data;
             selfO.stepVal = 3;
             selfO.updateStepperStatus(); 
           }else{
@@ -832,7 +832,7 @@ openLocationDialog(): void {
     if(result != undefined){
       let location_id = result;
       this.setupService.saveClinicLocation(this.clinic_id,location_id).subscribe(res=>{
-        if(res.message == 'success'){
+        if(res.body.message == 'success'){
           this.stepVal = 2;
           this.updateStepperStatus();
         }
@@ -843,8 +843,8 @@ openLocationDialog(): void {
 
 getClinicLocation(){
   this.setupService.getClinicLocation(this.clinic_id).subscribe(res=>{
-    if(res.message == 'success'){
-      this.LocationData = [...res.data];
+    if(res.body.message == 'success'){
+      this.LocationData = [...res.body.data];
       this.openLocationDialog();
     }
   })

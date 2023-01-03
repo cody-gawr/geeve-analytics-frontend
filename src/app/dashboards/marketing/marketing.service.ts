@@ -1,6 +1,6 @@
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../../environments/environment";
@@ -22,14 +22,14 @@ public token_id;
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        let headers =  {headers: new HttpHeaders(), withCredentials: true};
+        let headers =  {headers: new HttpHeaders(), withCredentials: true, observe: 'response' as const };
         return headers;
     }
     // Items Predictor Analysis 
     mkNewPatientsByReferral(clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Marketing/mkNumPatientsByReferral?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -40,7 +40,7 @@ public token_id;
       mkNewPatientsByReferralTrend(clinic_id, mode ='' ): Observable<any> {
       var header = this.getHeaders(); 
        return this.http.get(this.apiUrl +"/Marketing/mkNumPatientsByReferralTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-          .pipe(map((response: Response) => {
+          .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                  })
              );
@@ -50,7 +50,7 @@ public token_id;
     fdvisitsRatio(clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Marketing/mkTotalVisits?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -60,7 +60,7 @@ public token_id;
     mkRevenueByReferral(clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Marketing/mkRevByReferral?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -71,7 +71,7 @@ public token_id;
       mkRevenueByReferralTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Marketing/mkRevByReferralTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -80,7 +80,7 @@ public token_id;
     mkTotalVisitsTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Marketing/mkTotalVisitsTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -89,7 +89,7 @@ public token_id;
     fdnewPatientsRatio(clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Marketing/mkNumNewPatients?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -98,7 +98,7 @@ public token_id;
     fdActivePatient(clinic_id, startDate = '', endDate = '',duration=''   ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Marketing/mkActivePatients?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -107,7 +107,7 @@ public token_id;
     mkNoNewPatientsTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Marketing/mkNumNewPatientsTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -116,7 +116,7 @@ public token_id;
     mkNoActivePatientsTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Marketing/mkActivePatientsTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -126,7 +126,7 @@ public token_id;
    getAccounts(clinic_id,user_id = this._cookieService.get("userid")  ): Observable<any> {
     var header = this.getHeaders(); 
     return this.http.get(this.apiUrl +"/Marketing/mkGetXeroAcct?user_id="+user_id+"&clinic_id="+clinic_id, header)
-    .pipe(map((response: Response) => {
+    .pipe(map((response: HttpResponse<Object>) => {
                     return response;
                 })
         );
@@ -138,7 +138,7 @@ public token_id;
         formData.append('clinic_id', clinic_id);
         formData.append('categories', categories);
         return this.http.post(this.apiUrl +"/Marketing/mkSaveAcctXero", formData, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -147,7 +147,7 @@ public token_id;
      getMyobAccounts(clinic_id,user_id = this._cookieService.get("userid") ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Myob/mkGetMyobAcct?clinic_id="+clinic_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
             );
@@ -159,7 +159,7 @@ public token_id;
             formData.append('clinic_id', clinic_id);
             formData.append('categories', categories);
             return this.http.post(this.apiUrl +"/Myob/mkSaveAcctMyob", formData, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                             return response;
                         })
             );
@@ -169,13 +169,13 @@ public token_id;
         var header = this.getHeaders(); 
         if(connectedwith == 'xero'){
             return this.http.get(this.apiUrl +"/Marketing/mkNewPatientAcq?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
         }else if(connectedwith == 'myob'){
             return this.http.get(this.apiUrl +"/Marketing/mkMyobNewPatientAcq?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -188,13 +188,13 @@ public token_id;
         var header = this.getHeaders(); 
         if(connectedwith == 'xero'){
         return this.http.get(this.apiUrl +"/Marketing/mkNewPatientAcqTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
         }else if(connectedwith == 'myob'){
             return this.http.get(this.apiUrl +"/Marketing/mkMyobNewPatientAcqTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                             return response;
                         })
             );    
@@ -207,7 +207,7 @@ public token_id;
         formData.append('clinic_id', clinic_id);
         formData.append('xero_selected_accounts', categories);
         return this.http.post(this.apiUrl +"/Marketing/mkSaveAcctXeroNew", formData, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );

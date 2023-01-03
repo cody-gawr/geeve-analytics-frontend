@@ -10,7 +10,7 @@ import { Chart } from 'chart.js';
 import * as ChartAnnotation from 'chartjs-plugin-annotation';
 import { BaseChartDirective, PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';   
 import { ChartService } from '../chart.service';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
@@ -292,9 +292,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public clinics = [];
   getAllClinics(){
     this.headerService.getClinic.subscribe(res=>{
-        if(res.status == '200'){
+        if(res.status == 200){
           let temp = [];
-          res.data.forEach(item=>{
+          res.body.data.forEach(item=>{
             temp.push(item.id);
           });
           this.clinics = [...temp];
@@ -1884,7 +1884,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.accountingDentist.push(temp);
         });
       }
-      else if (data.status == '401') {
+      else if (data.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -1911,7 +1911,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.statusDentist.push(temp);
         });
       }
-      else if (data.status == '401') {
+      else if (data.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -1939,7 +1939,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     });
     var myJsonString = JSON.stringify(this.final_map);
     this.clinic_id && this.cliniciananalysisService.saveDentistMapping(myJsonString, this.clinic_id).subscribe((res) => {
-      if (res.data.message == 'success') {
+      if (res.body.data.message == 'success') {
         alert('Mapping Saved!');
         $('.nsm-dialog-btn-close').click();
       }
@@ -2213,7 +2213,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
 
         }
-        else if (data.status == '401') {
+        else if (data.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -2374,7 +2374,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
 
         }
-        else if (data.status == '401') {
+        else if (data.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -2534,7 +2534,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
 
         }
-        else if (data.status == '401') {
+        else if (data.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -2703,7 +2703,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
 
         }
-        else if (data.status == '401') {
+        else if (data.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -2867,7 +2867,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
 
         }
-        else if (data.status == '401') {
+        else if (data.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -3030,7 +3030,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
 
         }
-        else if (data.status == '401') {
+        else if (data.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -3192,7 +3192,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
 
         }
-        else if (data.status == '401') {
+        else if (data.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -3355,7 +3355,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
 
         }
-        else if (data.status == '401') {
+        else if (data.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -3518,7 +3518,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
 
         }
-        else if (data.status == '401') {
+        else if (data.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -3580,7 +3580,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           if (this.maxProductionGoal == 0)
             this.maxProductionGoal = '';
         }
-      } else if (data.status == '401') {
+      } else if (data.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -3639,7 +3639,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           if (this.maxProductionSingleDentistGoal == 0)
             this.maxProductionSingleDentistGoal = '';
         }
-      } else if (data.status == '401') {
+      } else if (data.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -3698,7 +3698,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           if (this.maxProductionSingleOhtGoal == 0)
             this.maxProductionSingleOhtGoal = '';
         }
-      } else if (data.status == '401') {
+      } else if (data.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -3759,7 +3759,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           if (this.maxCollectionGoal == 0)
             this.maxCollectionGoal = '';
         }
-      } else if (data.status == '401') {
+      } else if (data.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -3818,7 +3818,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           if (this.maxCollectionSingleDentistGoal == 0)
             this.maxCollectionSingleDentistGoal = '';
         }
-      } else if (data.status == '401') {
+      } else if (data.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -3877,7 +3877,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           if (this.maxCollectionSingleOhtGoal == 0)
             this.maxCollectionSingleOhtGoal = '';
         }
-      } else if (data.status == '401') {
+      } else if (data.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -3938,7 +3938,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             if (this.maxCollectionExpGoal == 0)
               this.maxCollectionExpGoal = '';
           }
-        } else if (data.status == '401') {
+        } else if (data.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -3997,7 +3997,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             if (this.maxCollectionExpSingleDentistGoal == 0)
               this.maxCollectionExpSingleDentistGoal = '';
           }
-        } else if (data.status == '401') {
+        } else if (data.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -4056,7 +4056,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             if (this.maxCollectionExpSingleOhtGoal == 0)
               this.maxCollectionExpSingleOhtGoal = '';
           }
-        } else if (data.status == '401') {
+        } else if (data.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -4246,7 +4246,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if (this.recallValue >= this.recallChartAveragePrev)
           this.recallChartTooltip = 'up';
       }
-      else if (data.status == '401') {
+      else if (data.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -6959,10 +6959,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           var dentistVal1 = this._cookieService.get("clinic_dentist").split('_');
           this.selectedDentist = dentistVal1[1];
       } 
-      if (res.message == 'success') {
-        this.dentists = res.data;
-        this.dentistCount = res.data.length;
-      } else if (res.status == '401') {
+      if (res.body.message == 'success') {
+        this.dentists = res.body.data;
+        this.dentistCount = res.body.data.length;
+      } else if (res.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');

@@ -81,38 +81,38 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
   getData(id,selectedGoalCategory,selectedYear) 
   {
     this.clinicSettingsService.getClinicData.subscribe(res=>{
-      if (res.message == 'success') {
-        this.Cconsultant = res.data[0]['consultant'];
+      if (res.body.message == 'success') {
+        this.Cconsultant = res.body.data[0]['consultant'];
           this.clinicGoalsService.getGoalAllData(id,selectedGoalCategory,selectedYear).subscribe((res) => {
-            if (res.message == 'success') {
-              this.getGoalsForTabsClinic(res.data);
-            } else if (res.status == '401') {
+            if (res.body.message == 'success') {
+              this.getGoalsForTabsClinic(res.body.data);
+            } else if (res.status == 401) {
               this.handleUnAuthorization();
             }
         }, error => {
           console.log('error', error)
         });
       }
-      else if (res.status == '401') {
+      else if (res.status == 401) {
         this.handleUnAuthorization();
       }
     }, error => {
       console.log('error', error)
     });
     // this.dentistService.getClinicSettings(this.clinic_id$.value).subscribe((res) => {
-    //   if (res.message == 'success') {
-    //     this.Cconsultant = res.data[0]['consultant'];
+    //   if (res.body.message == 'success') {
+    //     this.Cconsultant = res.body.data[0]['consultant'];
     //       this.clinicGoalsService.getGoalAllData(id,selectedGoalCategory,selectedYear).subscribe((res) => {
-    //         if (res.message == 'success') {
-    //           this.getGoalsForTabsClinic(res.data);
-    //         } else if (res.status == '401') {
+    //         if (res.body.message == 'success') {
+    //           this.getGoalsForTabsClinic(res.body.data);
+    //         } else if (res.status == 401) {
     //           this.handleUnAuthorization();
     //         }
     //     }, error => {
     //       console.log('error', error)
     //     });
     //   }
-    //   else if (res.status == '401') {
+    //   else if (res.status == 401) {
     //     this.handleUnAuthorization();
     //   }
     // }, error => {
@@ -123,10 +123,10 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
 
   getDentists(clinicID) {
     this.dentistService.getDentists(clinicID).subscribe((res) => {
-      if (res.message == 'success') {
-        this.dentists = res.data;
+      if (res.body.message == 'success') {
+        this.dentists = res.body.data;
       }
-      else if (res.status == '401') {
+      else if (res.status == 401) {
         this.handleUnAuthorization();
       }
     }, error => {
@@ -136,11 +136,11 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
 
   // getClinicSettings(clinicID) {
   //   this.dentistService.getClinicSettings(clinicID).subscribe((res) => {
-  //     if (res.message == 'success') {
-  //       this.Cconsultant = res.data[0]['consultant'];
+  //     if (res.body.message == 'success') {
+  //       this.Cconsultant = res.body.data[0]['consultant'];
   //       console.log(this.Cconsultant);
   //     }
-  //     else if (res.status == '401') {
+  //     else if (res.status == 401) {
   //       this.handleUnAuthorization();
   //     }
   //   }, error => {
@@ -289,11 +289,11 @@ setGoalsPerMonth(chartGoals)
   updateClinicGoals(formData) {
     this.clinicGoalsService.updateClinicGoals(formData, this.clinic_id$.value).subscribe((res) => {
       $('.ajax-loader').hide();
-      if (res.message == 'success') {
+      if (res.body.message == 'success') {
         this.toastr.success('Clinic Goals Updated');
         this.getData(this.clinic_id$.value,this.selectedGoalCategory$.value,this.selectedYear);
       }
-      else if (res.status == '401') {
+      else if (res.status == 401) {
         this.handleUnAuthorization();
       }
     }, error => {
@@ -305,10 +305,10 @@ setGoalsPerMonth(chartGoals)
   updateDentistGoals(formData) {
     this.dentistGoalsService.updateDentistGoals(formData, this.clinic_id$.value, this.selectedGoalCategory$.value).subscribe((res) => {
       $('.ajax-loader').hide();
-      if (res.message == 'success') {
+      if (res.body.message == 'success') {
         this.toastr.success('Dentist Goals Updated');
         this.getData(this.clinic_id$.value,this.selectedGoalCategory$.value,this.selectedYear);
-      } else if (res.status == '401') {
+      } else if (res.status == 401) {
         this.handleUnAuthorization();
       }
     }, error => {

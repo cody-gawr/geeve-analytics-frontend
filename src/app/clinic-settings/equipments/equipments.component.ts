@@ -35,10 +35,10 @@ export class DialogOverviewExampleComponent {
     }
 
     this.equipmentsService.addItem(data.id,data.item_name,data.quantity,data.clinic_id).subscribe((res) => {
-      if (res.message == 'success') {
+      if (res.body.message == 'success') {
         this.toastr.success('Equipment List Updated.');
         this.dialogRef.close();
-      } else if (res.status == '401') {
+      } else if (res.status == 401) {
         this.handleUnAuthorization();
       }
     }, error => {
@@ -170,12 +170,12 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
     this.EquipListloader = true;
     this.equipmentsService.getItems(id).subscribe((res) => {
         this.EquipListloader = false;
-      if (res.message == 'success') {
-        this.itemList.data = res.data;
-        this.setPaginationButtons(res.data.length);
+      if (res.body.message == 'success') {
+        this.itemList.data = res.body.data;
+        this.setPaginationButtons(res.body.data.length);
                
       }
-      else if (res.status == '401') {
+      else if (res.status == 401) {
         this.handleUnAuthorization();
       }
     }, error => {
@@ -208,7 +208,7 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
     var active = (event.checked == true)? 1 : 0;
     this.EquipListEnable = event.checked;
     this.clinicSettingsService.updatePartialSetting(this.clinic_id$.value,active,'equip_list_enable' ).subscribe((res) => {
-      if(res.message == 'success') {
+      if(res.body.message == 'success') {
         this.toastr.success('Equipment List Updated');
       }
     }, error => {});
@@ -227,7 +227,7 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
       if(result.value)
       {
         this.clinicSettingsService.deleteEqupList(this.clinic_id$.value,listId ).subscribe((res) => {
-        if(res.message == 'success')
+        if(res.body.message == 'success')
         {
           Swal.fire({
             position: 'top',

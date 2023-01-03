@@ -17,7 +17,7 @@ export class StepperHeaderComponent {
   public config: PerfectScrollbarConfigInterface = {};
   logout() {
       this.headerService.logout(this._cookieService.get("userid")).subscribe((res) => {
-       if(res.message == 'success'){
+       if(res.body.message == 'success'){
         this._cookieService.put("username",'');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');

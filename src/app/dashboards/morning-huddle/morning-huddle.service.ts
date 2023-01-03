@@ -1,6 +1,6 @@
 import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../../environments/environment";
@@ -22,7 +22,7 @@ export class MorningHuddleService {
         } else {
             this.token_id = this._cookieService.get("userid");
         }
-        let headers = { headers: new HttpHeaders(), withCredentials: true };
+        let headers = { headers: new HttpHeaders(), withCredentials: true, observe: 'response' as const };
         return headers;
     }
 
@@ -32,13 +32,13 @@ export class MorningHuddleService {
         previousDays = previousDays.slice(0,10);
         if(clinician == ""){
             return this.http.get(this.apiUrl + "/MorningHuddle/mhProductionCard?clinic_id=" + clinic_id + "&date=" + previousDays, header)
-                .pipe(map((response: Response) => {
+                .pipe(map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/MorningHuddle/mhProductionCard?clinic_id=" + clinic_id + "&date=" + previousDays + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
         );
@@ -49,13 +49,13 @@ export class MorningHuddleService {
         previousDays = previousDays.slice(0,10);
         if(clinician == ""){
             return this.http.get(this.apiUrl + "/MorningHuddle/mhRecallRateCard?clinic_id=" + clinic_id + "&date=" + previousDays, header)
-                .pipe(map((response: Response) => {
+                .pipe(map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/MorningHuddle/mhRecallRateCard?clinic_id=" + clinic_id + "&date=" + previousDays + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -66,13 +66,13 @@ export class MorningHuddleService {
         previousDays = previousDays.slice(0,10);
         if(clinician == ""){
             return this.http.get(this.apiUrl + "/MorningHuddle/mhReappointRateCard?clinic_id=" + clinic_id + "&date=" + previousDays, header)
-                .pipe(map((response: Response) => {
+                .pipe(map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/MorningHuddle/mhReappointRateCard?clinic_id=" + clinic_id + "&date=" + previousDays + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -84,13 +84,13 @@ export class MorningHuddleService {
         previousDays = previousDays.slice(0,10);
         if(clinician == ""){
             return this.http.get(this.apiUrl + "/MorningHuddle/mhDentistTable?clinic_id=" + clinic_id + "&date=" + previousDays, header)
-                .pipe(map((response: Response) => {
+                .pipe(map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/MorningHuddle/mhDentistTable?clinic_id=" + clinic_id + "&date=" + previousDays + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -100,13 +100,13 @@ export class MorningHuddleService {
         var header = this.getHeaders();
         if(clinician == ""){
             return this.http.get(this.apiUrl + "/MorningHuddle/mhPatientsCard?clinic_id=" + clinic_id + "&date=" + previousDay + "&provider_id=" + currentDentist, header)
-                .pipe(map((response: Response) => {
+                .pipe(map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/MorningHuddle/mhPatientsCard?clinic_id=" + clinic_id + "&date=" + previousDay + "&provider_id=" + currentDentist + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -117,13 +117,13 @@ export class MorningHuddleService {
         previousDay = previousDay.slice(0,10);
         if(clinician == ""){
             return this.http.get(this.apiUrl + "/MorningHuddle/mhNewPatCard?clinic_id=" + clinic_id + "&date=" + previousDay + "&provider_id=" + currentDentist, header)
-                .pipe(map((response: Response) => {
+                .pipe(map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/MorningHuddle/mhNewPatCard?clinic_id=" + clinic_id + "&date=" + previousDay + "&provider_id=" + currentDentist + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -134,13 +134,13 @@ export class MorningHuddleService {
         previousDay = previousDay.slice(0,10);
         if(clinician == ""){
             return this.http.get(this.apiUrl + "/MorningHuddle/mhSchedHoursCard?clinic_id=" + clinic_id + "&date=" + previousDay + "&provider_id=" + currentDentist, header)
-                .pipe(map((response: Response) => {
+                .pipe(map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/MorningHuddle/mhSchedHoursCard?clinic_id=" + clinic_id + "&date=" + previousDay + "&provider_id=" + currentDentist + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -151,13 +151,13 @@ export class MorningHuddleService {
         previousDay = previousDay.slice(0,10);
         if(clinician == ""){
             return this.http.get(this.apiUrl + "/MorningHuddle/mhUnschedBalCard?clinic_id=" + clinic_id + "&date=" + previousDay + "&provider_id=" + currentDentist, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
         }
         return this.http.get(this.apiUrl + "/MorningHuddle/mhUnschedBalCard?clinic_id=" + clinic_id + "&date=" + previousDay + "&provider_id=" + currentDentist + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -167,7 +167,7 @@ export class MorningHuddleService {
         var header = this.getHeaders();
         previousDays = previousDays.slice(0,10);
         return this.http.get(this.apiUrl + "/MorningHuddle/mhApptTable?clinic_id=" + clinic_id + "&date=" + previousDays + "&provider_id=" + currentDentist, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -177,7 +177,7 @@ export class MorningHuddleService {
     //  getReAppointment( clinic_id, previousDays,  user_type, clinician ="" ): Observable<any> {
     //     var header = this.getHeaders(); 
     //     return this.http.get(this.apiUrl +"/MorningHuddle/mhReappointPrev?clinic_id="+clinic_id+"&date="+previousDays+"&user_type="+user_type+"&clinician="+clinician, header)
-    //     .pipe(map((response: Response) => {
+    //     .pipe(map((response: HttpResponse<Object>) => {
     //                     return response;
     //                 })
     //     );
@@ -186,7 +186,7 @@ export class MorningHuddleService {
     /*getUnscheduledPatients( clinic_id, previousDays,  user_type, clinician ="" ): Observable<any> {
        var header = this.getHeaders(); 
        return this.http.get(this.apiUrl +"/MorningHuddle/mhUnschedPatPrev?clinic_id="+clinic_id+"&date="+previousDays+"&user_type="+user_type+"&clinician="+clinician, header)
-       .pipe(map((response: Response) => {
+       .pipe(map((response: HttpResponse<Object>) => {
                        return response;
                    })
        );
@@ -196,13 +196,13 @@ export class MorningHuddleService {
         var header = this.getHeaders();
         if(clinician == ""){
             return this.http.get(this.apiUrl + "/MorningHuddle/mhUnschedBalPrev?clinic_id=" + clinic_id + "&date=" + previousDays, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
         }
         return this.http.get(this.apiUrl + "/MorningHuddle/mhUnschedBalPrev?clinic_id=" + clinic_id + "&date=" + previousDays + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -212,13 +212,13 @@ export class MorningHuddleService {
         var header = this.getHeaders();
         if(clinician == ""){
             return this.http.get(this.apiUrl + "/MorningHuddle/mhPatientsCurrent?clinic_id=" + clinic_id + "&date=" + previousDays, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
         }
         return this.http.get(this.apiUrl + "/MorningHuddle/mhPatientsCurrent?clinic_id=" + clinic_id + "&date=" + previousDays + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -229,13 +229,13 @@ export class MorningHuddleService {
         previousDays = previousDays.slice(0,10);
         if(clinician == ""){
             return this.http.get(this.apiUrl + "/MorningHuddle/mhUnschedHoursCurrent?clinic_id=" + clinic_id + "&date=" + previousDays, header)
-                .pipe(map((response: Response) => {
+                .pipe(map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/MorningHuddle/mhUnschedHoursCurrent?clinic_id=" + clinic_id + "&date=" + previousDays + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -246,13 +246,13 @@ export class MorningHuddleService {
         previousDays = previousDays.slice(0,10);
         if(clinician == ""){
             return this.http.get(this.apiUrl + "/MorningHuddle/mhChairUtilRate?clinic_id=" + clinic_id + "&date=" + previousDays, header)
-                .pipe(map((response: Response) => {
+                .pipe(map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/MorningHuddle/mhChairUtilRate?clinic_id=" + clinic_id + "&date=" + previousDays + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -263,13 +263,13 @@ export class MorningHuddleService {
         previousDays = previousDays.slice(0,10);
         if(clinician == ""){
             return this.http.get(this.apiUrl + "/MorningHuddle/mhOverdueBalCurrent?clinic_id=" + clinic_id + "&date=" + previousDays, header)
-                .pipe(map((response: Response) => {
+                .pipe(map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/MorningHuddle/mhOverdueBalCurrent?clinic_id=" + clinic_id + "&date=" + previousDays + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -279,13 +279,13 @@ export class MorningHuddleService {
         var header = this.getHeaders();
         if(clinician == ""){
             return this.http.get(this.apiUrl + "/MorningHuddle/mhNoShowPrev?clinic_id=" + clinic_id + "&date=" + previousDays, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
         }
         return this.http.get(this.apiUrl + "/MorningHuddle/mhNoShowPrev?clinic_id=" + clinic_id + "&date=" + previousDays + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -294,13 +294,13 @@ export class MorningHuddleService {
         var header = this.getHeaders();
         if(clinician == ""){
             return this.http.get(this.apiUrl + "/MorningHuddle/mhPostOpPrev?clinic_id=" + clinic_id + "&date=" + previousDays, header)
-                .pipe(map((response: Response) => {
+                .pipe(map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/MorningHuddle/mhPostOpPrev?clinic_id=" + clinic_id + "&date=" + previousDays + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -311,13 +311,13 @@ export class MorningHuddleService {
         previousDays = previousDays.slice(0,10);
         if(clinician == ""){
             return this.http.get(this.apiUrl + "/MorningHuddle/mhReminders?clinic_id=" + clinic_id + "&date=" + previousDays, header)
-                .pipe(map((response: Response) => {
+                .pipe(map((response: HttpResponse<Object>) => {
                     return response;
                 })
             );
         }
         return this.http.get(this.apiUrl + "/MorningHuddle/mhReminders?clinic_id=" + clinic_id + "&date=" + previousDays + "&clinician=" + clinician, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -326,7 +326,7 @@ export class MorningHuddleService {
         getFollowupsUnscheduledPatients( clinic_id, previousDays,  days, clinician ="" ): Observable<any> {
             var header = this.getHeaders(); 
             return this.http.get(this.apiUrl +"/MorningHuddle/mhUnschedPatTable?clinic_id="+clinic_id+"&date="+previousDays, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                             return response;
                         })
             );
@@ -335,7 +335,7 @@ export class MorningHuddleService {
         var header = this.getHeaders();
         previousDays = previousDays.slice(0,10);
         return this.http.get(this.apiUrl + "/MorningHuddle/mhPostOpTable?clinic_id=" + clinic_id + "&date=" + previousDays, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -345,7 +345,7 @@ export class MorningHuddleService {
         var header = this.getHeaders();
         previousDays = previousDays.slice(0,10);
         return this.http.get(this.apiUrl + "/MorningHuddle/mhTickFollowupsTable?clinic_id=" + clinic_id + "&date=" + previousDays, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -355,7 +355,7 @@ export class MorningHuddleService {
         var header = this.getHeaders();
         previousDays = previousDays.slice(0,10);
         return this.http.get(this.apiUrl + "/MorningHuddle/mhFtaFollowupsTable?clinic_id=" + clinic_id + "&date=" + previousDays, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -365,7 +365,7 @@ export class MorningHuddleService {
         var header = this.getHeaders();
         previousDays = previousDays.slice(0,10);
         return this.http.get(this.apiUrl + "/MorningHuddle/mhUtaFollowupsTable?clinic_id=" + clinic_id + "&date=" + previousDays, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -375,7 +375,7 @@ export class MorningHuddleService {
         var header = this.getHeaders();
         previousDays = previousDays.slice(0,10);
         return this.http.get(this.apiUrl + "/MorningHuddle/mhOverdueRecallsTable?clinic_id=" + clinic_id + "&date=" + previousDays, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -386,7 +386,7 @@ export class MorningHuddleService {
     getDentists(clinic_id): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/Dentists/dentGet?clinic_id=" + clinic_id, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -402,7 +402,7 @@ export class MorningHuddleService {
         formData.append('fdate', fdate);
         formData.append('type', type);
         return this.http.post(this.apiUrl + "/MorningHuddle/mhUpdateFollowupStatus", formData, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -412,7 +412,7 @@ export class MorningHuddleService {
         var header = this.getHeaders();
         previousDays = previousDays.slice(0,10);
         return this.http.get(this.apiUrl + "/MorningHuddle/mhEndDayTasks?clinic_id=" + cid + "&date=" + previousDays, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -422,7 +422,7 @@ export class MorningHuddleService {
         var header = this.getHeaders();
         previousDays = previousDays.slice(0,10);
         return this.http.get(this.apiUrl + "/MorningHuddle/mhEquipmentList?clinic_id=" + cid + "&date=" + previousDays, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -431,7 +431,7 @@ export class MorningHuddleService {
     getScripts(cid): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/MorningHuddle/mhGetScripts?clinic_id=" + cid, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -447,7 +447,7 @@ export class MorningHuddleService {
         formData.append('fdate', fdate);
         formData.append('type', type);
         return this.http.post(this.apiUrl + "/MorningHuddle/mhUpdateStatus", formData, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -462,7 +462,7 @@ export class MorningHuddleService {
         formData.append('clinic_id', cid);
         formData.append('date', date);
         return this.http.post(this.apiUrl + "/MorningHuddle/mhUpdateEndDayTasks", formData, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -479,7 +479,7 @@ export class MorningHuddleService {
         formData.append('fdate', fdate);
         formData.append('type', type);
         return this.http.post(this.apiUrl + "/MorningHuddle/mhUpdateStatus", formData, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -494,7 +494,7 @@ export class MorningHuddleService {
         formData.append('clinic_id', clinic_id);
         formData.append('date', date);
         return this.http.post(this.apiUrl + "/MorningHuddle/mhUpdateEqulist", formData, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );
@@ -511,7 +511,7 @@ export class MorningHuddleService {
         formData.append('type', type);
         formData.append('next_reach', nextReach);
         return this.http.post(this.apiUrl + "/MorningHuddle/mhCloneStatus", formData, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
             );

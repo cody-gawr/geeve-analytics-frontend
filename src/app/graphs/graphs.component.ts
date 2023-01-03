@@ -1,4 +1,4 @@
-import { DatePipe, DecimalPipe } from "@angular/common";
+  import { DatePipe, DecimalPipe } from "@angular/common";
 import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { Router, NavigationEnd} from "@angular/router";
 import { ChartService } from "../dashboards/chart.service";
@@ -630,7 +630,7 @@ export class GraphsComponent{
         // let perUserTotal = 0;
         this.productionTotal = 0;
         if(res.status == 200){  
-          res.data.forEach((response) => {
+          res.body.data.forEach((response) => {
              this.perUserData1.push(response.num_ticks);
              this.perUserData2.push(response.num_postop);
              this.perUserData3.push(response.num_recall);
@@ -644,7 +644,7 @@ export class GraphsComponent{
           this.perUserData[3]['data'] = this.perUserData4;
           this.perUserData[4]['data'] = this.perUserData5;
 
-          this.productionTotal = res.total;
+          this.productionTotal = res.body.total;
           
         }
       }, error => {

@@ -184,35 +184,35 @@ export class ClinicSettingsComponent implements OnInit {
   getClinicSettings() {
     this.clinicSettingsService.getClinicSettings(this.id).subscribe(
       (res) => {
-        if (res.message == "success") {
+        if (res.status == 200) {
           this.clinicSettingsService.setClinicData(res);
-          this.clinicName = res.data[0].clinicName;
-          this.contactName = res.data[0].contactName;
-          this.address = res.data[0].address;
-          this.practice_size = res.data[0].practice_size;
-          this.subtracted_accounts = res.data[0].net_profit_exclusions === 'null' ? "" : res.data[0].net_profit_exclusions;
-          this.ftaUta = res.data[0].fta_uta;
-          this.timezone = res.data[0].timezone;
+          this.clinicName = res.body.data[0].clinicName;
+          this.contactName = res.body.data[0].contactName;
+          this.address = res.body.data[0].address;
+          this.practice_size = res.body.data[0].practice_size;
+          this.subtracted_accounts = res.body.data[0].net_profit_exclusions === 'null' ? "" : res.body.data[0].net_profit_exclusions;
+          this.ftaUta = res.body.data[0].fta_uta;
+          this.timezone = res.body.data[0].timezone;
           this.equipmentList =
-            res.data[0].equip_list_enable == 1 ? true : false;
-          this.dailyTasks = res.data[0].daily_task_enable == 1 ? true : false;
-          this.compareMode = res.data[0].compare_mode == 1 ? true : false;
+            res.body.data[0].equip_list_enable == 1 ? true : false;
+          this.dailyTasks = res.body.data[0].daily_task_enable == 1 ? true : false;
+          this.compareMode = res.body.data[0].compare_mode == 1 ? true : false;
 
-          // this.postOpCallsMh = res.data[0].post_op_days;
-          // this.post_op_calls = res.data[0].post_op_calls;
-          // this.tickDays = res.data[0].tick_days;
-          // this.recallWeeks = res.data[0].recall_weeks;
-          // this.ftaFollowupDays = res.data[0].fta_followup_days;
-          // this.postOpEnable = res.data[0].post_op_enable == 1 ? true : false;
-          // this.tickEnable = res.data[0].tick_enable == 1 ? true : false;
-          // this.recallEnable = res.data[0].recall_enable == 1 ? true : false;
-          // this.ftaEnable = res.data[0].fta_enable == 1 ? true : false;
-          // this.utaEnable = res.data[0].uta_enable == 1 ? true : false;
+          // this.postOpCallsMh = res.body.data[0].post_op_days;
+          // this.post_op_calls = res.body.data[0].post_op_calls;
+          // this.tickDays = res.body.data[0].tick_days;
+          // this.recallWeeks = res.body.data[0].recall_weeks;
+          // this.ftaFollowupDays = res.body.data[0].fta_followup_days;
+          // this.postOpEnable = res.body.data[0].post_op_enable == 1 ? true : false;
+          // this.tickEnable = res.body.data[0].tick_enable == 1 ? true : false;
+          // this.recallEnable = res.body.data[0].recall_enable == 1 ? true : false;
+          // this.ftaEnable = res.body.data[0].fta_enable == 1 ? true : false;
+          // this.utaEnable = res.body.data[0].uta_enable == 1 ? true : false;
 
           if (this.ftaUta == "") this.ftaUta = "status";
 
-          if (res.data[0].days != null && res.data[0].days != 0) {
-            this.workingDays = JSON.parse(res.data[0].days);
+          if (res.body.data[0].days != null && res.body.data[0].days != 0) {
+            this.workingDays = JSON.parse(res.body.data[0].days);
           }
         } else if (res.status == "401") {
           this._cookieService.put("username", "");
@@ -235,22 +235,22 @@ export class ClinicSettingsComponent implements OnInit {
     this.clinicSettingsService.getClinicFollowUPSettings(this.id).subscribe(
       (res) => {
         this.clinicSettingsService.setClincsSetting(res);
-        if (res.message == "success") {
-          this.postOpEnable = res.data.post_op_enable == 1 ? true : false;
-          this.tickEnable = res.data.tick_enable == 1 ? true : false;
-          this.recallEnable = res.data.recall_enable == 1 ? true : false;
-          this.ftaEnable = res.data.fta_enable == 1 ? true : false;
-          this.utaEnable = res.data.uta_enable == 1 ? true : false;
-          this.internalReferralEnable = res.data.referral_enable == 1 ? true : false;
-          this.ftaFollowupDays = res.data.fta_followup_days;
-          this.utaFollowupDays = res.data.uta_followup_days;
-          this.ftaFollowupDaysLater = res.data.fta_days_later;
-          this.utaFollowupDaysLater = res.data.uta_days_later;
-          this.postOpCallsMh = res.data.post_op_days;
-          this.post_op_calls = res.data.post_op_calls;
-          this.tickDays = res.data.tick_days;
-          this.recallWeeks = res.data.recall_weeks;
-          this.referralWeeks = res.data.referral_weeks;
+        if (res.status == 200) {
+          this.postOpEnable = res.body.data.post_op_enable == 1 ? true : false;
+          this.tickEnable = res.body.data.tick_enable == 1 ? true : false;
+          this.recallEnable = res.body.data.recall_enable == 1 ? true : false;
+          this.ftaEnable = res.body.data.fta_enable == 1 ? true : false;
+          this.utaEnable = res.body.data.uta_enable == 1 ? true : false;
+          this.internalReferralEnable = res.body.data.referral_enable == 1 ? true : false;
+          this.ftaFollowupDays = res.body.data.fta_followup_days;
+          this.utaFollowupDays = res.body.data.uta_followup_days;
+          this.ftaFollowupDaysLater = res.body.data.fta_days_later;
+          this.utaFollowupDaysLater = res.body.data.uta_days_later;
+          this.postOpCallsMh = res.body.data.post_op_days;
+          this.post_op_calls = res.body.data.post_op_calls;
+          this.tickDays = res.body.data.tick_days;
+          this.recallWeeks = res.body.data.recall_weeks;
+          this.referralWeeks = res.body.data.referral_weeks;
         }
       },
       (error) => {
@@ -264,17 +264,17 @@ export class ClinicSettingsComponent implements OnInit {
       .getFollowUpSettings(this.id)
       .subscribe(
         (res) => {
-          if (res.message == "success") {
-            if (res.data) {
-              this.ftaFollowupDays = res.data.fta_followup_days;
-              this.utaFollowupDays = res.data.uta_followup_days;
-              this.ftaFollowupDaysLater = res.data.fta_days_later;
-              this.utaFollowupDaysLater = res.data.uta_days_later;
-              this.postOpCallsMh = res.data.post_op_days;
-              this.post_op_calls = res.data.post_op_calls;
-              this.tickDays = res.data.tick_days;
-              this.recallWeeks = res.data.recall_weeks;
-              this.referralWeeks = res.data.referral_weeks;
+          if (res.status == 200) {
+            if (res.body.data) {
+              this.ftaFollowupDays = res.body.data.fta_followup_days;
+              this.utaFollowupDays = res.body.data.uta_followup_days;
+              this.ftaFollowupDaysLater = res.body.data.fta_days_later;
+              this.utaFollowupDaysLater = res.body.data.uta_days_later;
+              this.postOpCallsMh = res.body.data.post_op_days;
+              this.post_op_calls = res.body.data.post_op_calls;
+              this.tickDays = res.body.data.tick_days;
+              this.recallWeeks = res.body.data.recall_weeks;
+              this.referralWeeks = res.body.data.referral_weeks;
             }
           }
         },
@@ -322,7 +322,7 @@ export class ClinicSettingsComponent implements OnInit {
       .subscribe(
         (res) => {
           $(".ajax-loader").hide();
-          if (res.message == "success") {
+          if (res.status == 200) {
             this.toastr.success("Clinic Settings Updated");
           } else if (res.status == "401") {
             this._cookieService.put("username", "");
@@ -352,7 +352,7 @@ export class ClinicSettingsComponent implements OnInit {
       .subscribe(
         (res) => {
           $(".ajax-loader").hide();
-          if (res.message == "success") {
+          if (res.status == 200) {
             this.toastr.success("Clinic Settings Updated");
           } else if (res.status == "401") {
             this._cookieService.put("username", "");
@@ -370,8 +370,8 @@ export class ClinicSettingsComponent implements OnInit {
   getXeroLink() {
     this.clinicSettingsService.getXeroLink(this.id).subscribe(
       (res) => {
-        if (res.message == "success") {
-          this.xero_link = res.data;
+        if (res.status == 200) {
+          this.xero_link = res.body.data;
         } else if (res.status == "401") {
           this._cookieService.put("username", "");
           this._cookieService.put("email", "");
@@ -388,8 +388,8 @@ export class ClinicSettingsComponent implements OnInit {
   getMyobLink() {
     this.clinicSettingsService.getMyobLink(this.id).subscribe(
       (res) => {
-        if (res.message == "success") {
-          this.myob_link = res.data;
+        if (res.status == 200) {
+          this.myob_link = res.body.data;
         } else if (res.status == "401") {
           this._cookieService.put("username", "");
           this._cookieService.put("email", "");
@@ -432,10 +432,10 @@ export class ClinicSettingsComponent implements OnInit {
   public checkXeroStatus() {
     this.clinicSettingsService.checkXeroStatus(this.id).subscribe(
       (res) => {
-        if (res.message == "success") {
-          if (res.data.xero_connect == 1) {
+        if (res.status == 200) {
+          if (res.body.data.xero_connect == 1) {
             this.xeroConnect = true;
-            this.xeroOrganization = res.data.Name;
+            this.xeroOrganization = res.body.data.Name;
           } else {
             this.xeroConnect = false;
             this.xeroOrganization = "";
@@ -459,10 +459,10 @@ export class ClinicSettingsComponent implements OnInit {
   public checkMyobStatus() {
     this.clinicSettingsService.checkMyobStatus(this.id).subscribe(
       (res) => {
-        if (res.message == "success") {
-          if (res.data.myob_connect == 1) {
+        if (res.status == 200) {
+          if (res.body.data.myob_connect == 1) {
             this.myobConnect = true;
-            this.myobOrganization = res.data.Name;
+            this.myobOrganization = res.body.data.Name;
             //alert(this.myobOrganization);
           } else {
             this.myobConnect = false;
@@ -486,7 +486,7 @@ export class ClinicSettingsComponent implements OnInit {
   public disconnectXero() {
     this.clinicSettingsService.clearSession(this.id).subscribe(
       (res) => {
-        if (res.message == "success") {
+        if (res.status == 200) {
           this.xeroConnect = false;
           this.xeroOrganization = "";
           this.getXeroLink();
@@ -503,7 +503,7 @@ export class ClinicSettingsComponent implements OnInit {
   public disconnectMyob() {
     this.clinicSettingsService.clearSessionMyob(this.id).subscribe(
       (res) => {
-        if (res.message == "success") {
+        if (res.status == 200) {
           this.myobConnect = false;
           this.myobOrganization = "";
           this.getMyobLink();
@@ -572,7 +572,7 @@ export class ClinicSettingsComponent implements OnInit {
       .updatePartialClinicSetting(this.id, active, column)
       .subscribe(
         (res) => {
-          if (res.message == "success") {
+          if (res.status == 200) {
             this.toastr.success("Followups Settings Updated");
           }
         },

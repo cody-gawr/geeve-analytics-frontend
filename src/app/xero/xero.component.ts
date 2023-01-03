@@ -95,19 +95,19 @@ export class XeroComponent implements OnInit {
           this.errorLogin  =false;
 
   this.xeroService.login(this.form.value.uname, this.form.value.password).subscribe((res) => {
-       if(res.message == 'success'){
+       if(res.body.message == 'success'){
         var datares = [];
-        datares['username'] = res.data.data.username;
-        datares['email'] = res.data.data.email;
-        datares['token'] = res.data.data.token;        
-        datares['userid'] = res.data.data.id;      
-        datares['parentid'] = res.data.data.parent_id;   
-        datares['user_type'] = res.data.data.user_type;       
-    /*    datares['user_image'] = res.data.data.user_image; */       
+        datares['username'] = res.body.data.username;
+        datares['email'] = res.body.data.email;
+        datares['token'] = res.body.data.token;        
+        datares['userid'] = res.body.data.id;      
+        datares['parentid'] = res.body.data.parent_id;   
+        datares['user_type'] = res.body.data.user_type;       
+    /*    datares['user_image'] = res.body.data.user_image; */       
 
-        datares['login_status'] = res.data.data.login_status;        
-        datares['display_name'] = res.data.data.display_name;  
-        datares['dentistid'] = res.data.data.dentist_id;        
+        datares['login_status'] = res.body.data.login_status;        
+        datares['display_name'] = res.body.data.display_name;  
+        datares['dentistid'] = res.body.data.dentist_id;        
 
         let opts = this.constants.cookieOpt as CookieOptions;
         this._cookieService.put("userid", '', opts);
@@ -142,7 +142,7 @@ export class XeroComponent implements OnInit {
          this.router.navigate(['/profile-settings/1']);
       }
        }
-       else if(res.message == 'error'){
+       else if(res.body.message == 'error'){
           this.errorLogin  =true;
        }
     }, error => {

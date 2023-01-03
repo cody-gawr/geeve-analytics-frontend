@@ -1,7 +1,7 @@
 
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable, BehaviorSubject } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../environments/environment";
@@ -24,7 +24,7 @@ export class RolesUsersService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        let headers =  {headers: new HttpHeaders(), withCredentials: true};
+        let headers =  {headers: new HttpHeaders(), withCredentials: true, observe: 'response' as const};
         return headers;
     }
 
@@ -32,7 +32,7 @@ export class RolesUsersService {
     getUsers( ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Users/userGetRoles", header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -42,7 +42,7 @@ export class RolesUsersService {
     getRoles(): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Roles/rolesGet", header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -54,13 +54,13 @@ export class RolesUsersService {
         var header = this.getHeaders(); 
         if(clinic_id == ''){
             return this.http.get(this.apiUrl +"/Roles/rolesIndividual", header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                             return response;
                         })
             );
         }
         return this.http.get(this.apiUrl +"/Roles/rolesIndividual?clinic_id="+clinic_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -70,7 +70,7 @@ export class RolesUsersService {
     getRoleUserDetails(role_id): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Users/userGetRoleDetails?role_id="+role_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -80,7 +80,7 @@ export class RolesUsersService {
     checkUserEmail( email,user_roll =''): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Users/userCheckEmail?email="+email+ "&user_roll=" + user_roll , header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
          })
         );
@@ -93,7 +93,7 @@ export class RolesUsersService {
         formData.append('del_user_type', usertype);      
         var header = this.getHeaders(); 
         return this.http.post(this.apiUrl +"/Users/userDelete", formData, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -106,7 +106,7 @@ export class RolesUsersService {
         formData.append('permisions', checkedRoles);
         var header = this.getHeaders(); 
         return this.http.post(this.apiUrl +"/Roles/rolesUpdate", formData, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -124,7 +124,7 @@ export class RolesUsersService {
     formData.append('clinic_id', selectedClinic);     
     var header = this.getHeaders();     
     return this.http.post(this.apiUrl +"/Users/userAdd", formData, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -138,7 +138,7 @@ export class RolesUsersService {
         formData.append('email', email);     
         var header = this.getHeaders();     
         return this.http.post(this.apiUrl +"/Users/userClinicConsultantMap", formData, header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                             return response;
                         })
             );
@@ -160,7 +160,7 @@ export class RolesUsersService {
      var header = this.getHeaders(); 
     
         return this.http.post(this.apiUrl +"/Users/userUpdate", formData, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -169,14 +169,22 @@ export class RolesUsersService {
     getClinics(): Observable<any> {        
         var header = this.getHeaders();         
         return this.http.get(this.apiUrl +"/clinics/clinicGet", header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
     }
 
 
-    private body = {data: "", message: "", plan: "", status: "", type: 0};
+    private body =  { body: { message:"", 
+                              data: [],
+                              plan: "",
+                              type: 0 
+                            },
+                             status: 0 
+                    };
+    
+    
     private roleIndividual = new BehaviorSubject(this.body);
     getRoleIndividual = this.roleIndividual.asObservable();
 

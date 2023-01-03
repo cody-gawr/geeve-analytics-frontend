@@ -1,4 +1,4 @@
-import * as $ from 'jquery';
+ import * as $ from 'jquery';
 import { Component, AfterViewInit, ViewEncapsulation , ViewChild,ElementRef } from '@angular/core';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { ChartService } from '../chart.service';
@@ -557,9 +557,9 @@ export class FollowupsComponent implements AfterViewInit {
       this.perUserLabels = [];
       this.perUserTotal = 0;
       this.perUserPrev = 0;
-      if(res.message == 'success'){        
+      if(res.body.message == 'success'){        
         var allData = [];
-        res.data.forEach((response) => {
+        res.body.data.forEach((response) => {
           this.perUserData1.push(response.num_ticks);
           this.perUserData2.push(response.num_postop);
           this.perUserData3.push(response.num_recall);
@@ -572,8 +572,8 @@ export class FollowupsComponent implements AfterViewInit {
         this.perUserData[2]['data'] = this.perUserData3;
         this.perUserData[3]['data'] = this.perUserData4;
         this.perUserData[4]['data'] = this.perUserData5;
-        this.perUserTotal = res.total;
-        this.perUserPrev = res.total_ta;
+        this.perUserTotal = res.body.total;
+        this.perUserPrev = res.body.total_ta;
         this.perUserStatus = 'up';
         if(this.perUserPrev > this.perUserTotal){
           this.perUserStatus = 'down';
@@ -604,13 +604,13 @@ export class FollowupsComponent implements AfterViewInit {
       this.singleUta = [];
       this.outcomeTotal = 0;
       this.outcomePrev = 0;
-      if(res.message == 'success'){  
-        this.outcomeTotal = res.total;
-        this.outcomePrev = res.total_ta;
+      if(res.body.message == 'success'){  
+        this.outcomeTotal = res.body.total;
+        this.outcomePrev = res.body.total_ta;
         /****** Tick ******/
-        if(typeof(res.data.ticks) != 'undefined')
+        if(typeof(res.body.data.ticks) != 'undefined')
         {
-          res.data.ticks.forEach( (response) => {
+          res.body.data.ticks.forEach( (response) => {
             if(response.status){
               var temp = { name: response.status,value: response.status_percent};  
               this.singleTick.push(temp);
@@ -619,9 +619,9 @@ export class FollowupsComponent implements AfterViewInit {
         }        
         /****** Tick ******/
         /****** recalls ******/
-        if(typeof(res.data.recalls) != 'undefined')
+        if(typeof(res.body.data.recalls) != 'undefined')
         {
-          res.data.recalls.forEach( (response) => {
+          res.body.data.recalls.forEach( (response) => {
             if(response.status){
               var temp = { name: response.status,value: response.status_percent};  
               this.singleRecall.push(temp);  
@@ -631,18 +631,18 @@ export class FollowupsComponent implements AfterViewInit {
         }        
         /****** recalls ******/
         /****** ftas ******/
-        if(typeof(res.data.utas) != 'undefined')
+        if(typeof(res.body.data.utas) != 'undefined')
         {
-          res.data.utas.forEach( (response) => {
+          res.body.data.utas.forEach( (response) => {
             if(response.status && response.status_percent > 0 && response.status_percent != null){
               var temp = { name: response.status,value: response.status_percent};  
               this.singleUta.push(temp);
             }
           });          
         }
-        if(typeof(res.data.ftas) != 'undefined')
+        if(typeof(res.body.data.ftas) != 'undefined')
         {
-          res.data.ftas.forEach( (response) => {
+          res.body.data.ftas.forEach( (response) => {
             if(response.status){
               var temp = { name: response.status,value: response.status_percent};  
               this.singleFta.push(temp);
@@ -680,16 +680,16 @@ export class FollowupsComponent implements AfterViewInit {
       this.conversionData = [{ data: [] }];
       this.conversionLabels = [];
       this.conversionLoader = false;
-      if(res.message == 'success')
+      if(res.body.message == 'success')
       { 
           var allConversionFtas = [];  
-          res.data.forEach( (data) => {
+          res.body.data.forEach( (data) => {
             allConversionFtas.push(Math.round(data.booked_percent));
             this.conversionLabels.push(data.type);
           });
           this.conversionData[0]['data'] = allConversionFtas; 
-          this.conversionTotal = res.total; 
-          this.conversionPrev = res.total_ta; 
+          this.conversionTotal = res.body.total; 
+          this.conversionPrev = res.body.total_ta; 
           this.conversionGoal = res.goals; 
       }
       this.conversionStatus = 'up';
@@ -753,47 +753,47 @@ export class FollowupsComponent implements AfterViewInit {
       this.conversionPerUserPrevFta = 0;
       this.conversionPerUserPrevUta = 0;
 
-      if(res.message == 'success') {       
+      if(res.body.message == 'success') {       
         
-        this.conversionPerUserTotalFta = res.total_fta;
-        this.conversionPerUserTotalUta = res.total_uta;
-        this.conversionPerUserTotalRecalls = res.total_recall;
-        this.conversionPerUserTotalTicks = res.total_tick;
+        this.conversionPerUserTotalFta = res.body.total_fta;
+        this.conversionPerUserTotalUta = res.body.total_uta;
+        this.conversionPerUserTotalRecalls = res.body.total_recall;
+        this.conversionPerUserTotalTicks = res.body.total_tick;
 
-        this.conversionPerUserPrevTicks = res.total_ta_tick;
-        this.conversionPerUserPrevRecalls = res.total_ta_recall;
-        this.conversionPerUserPrevFta = res.total_ta_fta;
-        this.conversionPerUserPrevUta = res.total_ta_uta;
+        this.conversionPerUserPrevTicks = res.body.total_ta_tick;
+        this.conversionPerUserPrevRecalls = res.body.total_ta_recall;
+        this.conversionPerUserPrevFta = res.body.total_ta_fta;
+        this.conversionPerUserPrevUta = res.body.total_ta_uta;
 
-        if( typeof(res.data.ftas) != 'undefined'){
+        if( typeof(res.body.data.ftas) != 'undefined'){
           var allConversionFtas = [];  
-          res.data.ftas.forEach( (fta) => {
+          res.body.data.ftas.forEach( (fta) => {
             allConversionFtas.push(Math.round(fta.booked_percent));
             this.conversionPerUserLabelsFta.push(fta.completed_by);
           });
           this.conversionPerUserDataFta[0]['data'] = allConversionFtas; 
         }
 
-        if( typeof(res.data.utas) != 'undefined'){
+        if( typeof(res.body.data.utas) != 'undefined'){
           var allConversionUtas = [];  
-          res.data.utas.forEach( (fta) => {
+          res.body.data.utas.forEach( (fta) => {
             allConversionUtas.push(Math.round(fta.booked_percent));
             this.conversionPerUserLabelsUta.push(fta.completed_by);
           });
           this.conversionPerUserDataUta[0]['data'] = allConversionUtas; 
         }
 
-        if( typeof(res.data.recalls) != 'undefined'){
+        if( typeof(res.body.data.recalls) != 'undefined'){
           var allConversionrecalls = [];  
-          res.data.recalls.forEach( (recalls) => {
+          res.body.data.recalls.forEach( (recalls) => {
             allConversionrecalls.push(Math.round(recalls.booked_percent));
             this.conversionPerUserLabelsRecalls.push(recalls.completed_by);
           });
           this.conversionPerUserDataRecalls[0]['data'] = allConversionrecalls; 
         }
-        if( typeof(res.data.ticks) != 'undefined'){
+        if( typeof(res.body.data.ticks) != 'undefined'){
           var allConversionticks = [];  
-          res.data.ticks.forEach( (ticks) => {
+          res.body.data.ticks.forEach( (ticks) => {
             allConversionticks.push(Math.round(ticks.booked_percent));
             this.conversionPerUserLabelsTicks.push(ticks.completed_by);
           });
@@ -818,7 +818,7 @@ export class FollowupsComponent implements AfterViewInit {
           this.conversionPerUserStatusUta = 'down';
         }
         /*var allConversionPerUse = [];
-        res.data.forEach( (response) => {
+        res.body.data.forEach( (response) => {
            allConversionPerUse.push(response.percentage);
             this.conversionPerUserLabels.push(response.user_name);
         });
@@ -846,12 +846,12 @@ export class FollowupsComponent implements AfterViewInit {
       this.completionRateGoal = 0;
       this.completionRateTotal = 0;
       this.completionRatePrev = 0;
-      if(res.message == 'success') {  
+      if(res.body.message == 'success') {  
         var allCompletionRate = [];
-        this.completionRateTotal = res.total;
-        this.completionRatePrev = res.total_ta;
+        this.completionRateTotal = res.body.total;
+        this.completionRatePrev = res.body.total_ta;
         this.completionRateGoal = res.goals;
-        res.data.forEach( (response) => {
+        res.body.data.forEach( (response) => {
           if(parseInt(response.completion_rate) >= 0 && parseInt(response.num_total) > 0){
             allCompletionRate.push(response.completion_rate);
             this.completionRateLabels.push(response.type);
@@ -874,7 +874,7 @@ export class FollowupsComponent implements AfterViewInit {
   public charTips:any = [];
   getChartsTips() {
     this.chartstipsService.getCharts(9).subscribe((data) => {
-       if(data.message == 'success'){         
+       if(data.body.message == 'success'){         
         this.charTips = data.data;
        }
     }, error => {

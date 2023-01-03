@@ -1,7 +1,7 @@
 
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../environments/environment";
@@ -22,7 +22,7 @@ export class SetupService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        let headers =  {headers: new HttpHeaders(), withCredentials: true};
+        let headers =  {headers: new HttpHeaders(), withCredentials: true, observe: 'response' as const };
         return headers;
     }
 
@@ -31,7 +31,7 @@ export class SetupService {
     getXeroLink( clinic_id): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Xeros2/getAuthorizeUrl/?getxero=1&clinic_id="+clinic_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -41,7 +41,7 @@ export class SetupService {
     getConnectCoreLink(clinic_id): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/corepractice/getAuthorizeUrl?clinic_id="+clinic_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -50,7 +50,7 @@ export class SetupService {
     getPMSLink(): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/users/userGetPMS/token", header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -59,7 +59,7 @@ export class SetupService {
     checkXeroStatus( clinic_id): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Xeros2/xeroGetStatus?getxero=1&clinic_id="+clinic_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -67,7 +67,7 @@ export class SetupService {
     getMyobLink( clinic_id): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Myob/getAuthorizeUrl?clinic_id="+clinic_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -75,7 +75,7 @@ export class SetupService {
     checkMyobStatus( clinic_id): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Myob/myobGetStatus?clinic_id="+clinic_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -85,7 +85,7 @@ export class SetupService {
         const formData = new FormData();
         formData.append('clinic_id', clinic_id);
         return this.http.post(this.apiUrl +"/Xeros2/disconnectXero/", formData, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -95,7 +95,7 @@ export class SetupService {
         const formData = new FormData();
         formData.append('clinic_id', clinic_id);
         return this.http.post(this.apiUrl +"/Myob/disconnectMyob/", formData, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -103,7 +103,7 @@ export class SetupService {
     checkReportsStatus( clinicId, userId = this._cookieService.get("userid")): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/users/userCheckStatus/"+userId+"/"+clinicId, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -112,7 +112,7 @@ export class SetupService {
     checkExactRepotrStatus( clinicId, userId = this._cookieService.get("userid")): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/users/userExactCheckStatus/"+userId+"/"+clinicId, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -123,7 +123,7 @@ export class SetupService {
             formData.append('stepper_status', this._cookieService.get("stepper"));
             var header = this.getHeaders(); 
             return this.http.post(this.apiUrl +"/users/userUpdateStepper", formData,  header)
-            .pipe(map((response: Response) => {
+            .pipe(map((response: HttpResponse<Object>) => {
                             return response;
                         })
             );
@@ -146,7 +146,7 @@ export class SetupService {
     var header = this.getHeaders(); 
     
         return this.http.post(this.apiUrl +"/clinics/clinicAdd", formData,header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -155,7 +155,7 @@ export class SetupService {
     getClinicLocation(clinic_id): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/corepractice/getLocations?clinic_id="+clinic_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -164,7 +164,7 @@ export class SetupService {
     saveClinicLocation(clinic_id,location_id): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/corepractice/saveLocation?clinic_id="+clinic_id+"&location_id="+location_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -173,7 +173,7 @@ export class SetupService {
     checkCoreStatus(clinic_id): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/corepractice/checkStatus?clinic_id="+clinic_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -182,7 +182,7 @@ export class SetupService {
     checkCoreSyncStatus(clinic_id): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/corepractice/checkCoreSyncStatus?clinic_id="+clinic_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );

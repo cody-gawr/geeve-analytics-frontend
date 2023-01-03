@@ -73,7 +73,7 @@ export class DentisChartComponent {
   saveRecord(chart_id, clinic_id, providerId, status) {
     this.chartsService.addDentistRecord(chart_id, clinic_id, providerId, status).subscribe(
       (res) => {
-        if (res.message == "success") {
+        if (res.status == 200) {
           if(status == 'exclude'){
             this.toastr.success("Provider successfully disabled");
           }else{
@@ -94,7 +94,7 @@ export class DentisChartComponent {
     
     // this.dentistService.addDentistRecord(data.clinic_id, name).subscribe(
     //   (res) => {
-    //     if (res.message == "success") {
+    //     if (res.status == 200) {
     //       this.dialogRef.close();
     //     }
     //   },
@@ -178,18 +178,18 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
   getCharts() {
     this.chartsService.getCharts().subscribe(
       (res) => {
-        if (res.message == "success") {
+        if (res.status == 200) {
           this.jeeveProviderIds = [];
           this.dash1ListArray = [];
           this.dash3ListArray = [];
           for (let i = 1; i <= 9; i++) {
             this.jeeveProviderIds.push({ id: i, name: "Jeeve Provider " + i });
           }
-          this.chartData = res.data;
-          res.data.forEach((element) => { });
+          this.chartData = res.body.data;
+          res.body.data.forEach((element) => { });
 
-          for (let index = 0; index < res.data.length; index++) {
-            const element = res.data[index];
+          for (let index = 0; index < res.body.data.length; index++) {
+            const element = res.body.data[index];
             if (index == 0) {
               this.dash1Lable = element.dashboard;
               element.master_charts.forEach(ele => {
@@ -229,13 +229,13 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
   getDentists(id) {
     this.dentistService.getDentists(id, 1).subscribe(
       (res) => {
-        if (res.message == "success") {
+        if (res.status == 200) {
           this.jeeveProviderIds = [];
           for (let i = 1; i <= 9; i++) {
             this.jeeveProviderIds.push({ id: i, name: "Jeeve Provider " + i });
           }
-          this.dentistListData = res.data;
-          this.dentistList.data = res.data;
+          this.dentistListData = res.body.data;
+          this.dentistList.data = res.body.data;
         } else if (res.status == "401") {
           this.handleUnAuthorization();
         }
@@ -295,7 +295,7 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
       .subscribe(
         (res) => {
           this.editing[index + "-" + column] = false;
-          if (res.message == "success") {
+          if (res.status == 200) {
             this.toastr.success("Dentist Updated");
             this.getDentists(this.clinic_id$.value);
           }
@@ -310,9 +310,9 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
     let dentistsExclusions = [];
     this.chartsService.getDentistsExclusions(this.clinic_id$.value, chartID).subscribe(
       (res) => {
-        if (res.message == "success") {
+        if (res.status == 200) {
           
-          dentistsExclusions = res.data.map(function (data) {
+          dentistsExclusions = res.body.data.map(function (data) {
             return data.providerId;
           });
           this.dentistListData.map(function (data) {

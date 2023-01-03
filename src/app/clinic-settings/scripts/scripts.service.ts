@@ -1,6 +1,6 @@
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../../environments/environment";
@@ -20,7 +20,7 @@ export class ScriptsService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        let headers =  {headers: new HttpHeaders(), withCredentials: true};
+        let headers =  {headers: new HttpHeaders(), withCredentials: true, observe: 'response' as const };
         return headers;
 
     }
@@ -30,7 +30,7 @@ export class ScriptsService {
     {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/clinics/clinicGetScripts?clinic_id="+clinic_id, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -47,7 +47,7 @@ export class ScriptsService {
         formData.append('script_text', text);
         formData.append('colour', colour);
         return this.http.post(this.apiUrl +"/clinics/clinicAddUpdateScript", formData, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -60,7 +60,7 @@ export class ScriptsService {
         formData.append('clinic_id', clinic_id);                  
         formData.append(column, value);
         return this.http.post(this.apiUrl +"/clinics/clinicAddUpdateScript", formData, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -72,7 +72,7 @@ export class ScriptsService {
         formData.append('record_id', record_id);
         formData.append('clinic_id', clinic_id);                  
         return this.http.post(this.apiUrl +"/clinics/clinicDeleteScripts", formData, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );

@@ -203,14 +203,14 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
   public userPlan: any = '';
   async getRoles() {
     await this.rolesUsersService.getRoleIndividual.subscribe((res) => {
-      if (res.message == 'success') {
-        this.permisions = res.data;
+      if (res.body.message == 'success') {
+        this.permisions = res.body.data;
         let opts = this.constants.cookieOpt as CookieOptions;
-        this._cookieService.put("user_type", res.type+"", opts);
-        this._cookieService.put("user_plan", res.plan, opts);
-        this.userPlan = res.plan;
+        this._cookieService.put("user_type", res.body.type+"", opts);
+        this._cookieService.put("user_plan", res.body.plan, opts);
+        this.userPlan = res.body.plan;
         //Remove apis calls when user have not permission of any page form FE
-        if (res.type != 2 && res.type != 7) {
+        if (res.body.type != 2 && res.body.type != 7) {
           if (this.activeRoute == '/dashboards/healthscreen') {
             this.permisions_var = 'healthscreen';
           } else if (this.activeRoute == '/dashboards/cliniciananalysis') {
@@ -241,14 +241,14 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     }, error => {
     });
     // await this.rolesUsersService.getRolesIndividual(this.clinic_id).subscribe((res) => {
-    //   if (res.message == 'success') {
-    //     this.permisions = res.data;
+    //   if (res.body.message == 'success') {
+    //     this.permisions = res.body.data;
     //     let opts = this.constants.cookieOpt as CookieOptions;
-    //     this._cookieService.put("user_type", res.type, opts);
-    //     this._cookieService.put("user_plan", res.plan, opts);
-    //     this.userPlan = res.plan;
+    //     this._cookieService.put("user_type", res.body.type, opts);
+    //     this._cookieService.put("user_plan", res.body.plan, opts);
+    //     this.userPlan = res.body.plan;
     //     //Remove apis calls when user have not permission of any page form FE
-    //     if (res.type != '2' && res.type != 7) {
+    //     if (res.body.type != '2' && res.body.type != 7) {
     //       if (this.activeRoute == '/dashboards/healthscreen') {
     //         this.permisions_var = 'healthscreen';
     //       } else if (this.activeRoute == '/dashboards/cliniciananalysis') {
@@ -283,18 +283,18 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
   getClinic() {
 
     this.headerService.getClinic.subscribe((res) => {
-      if (res.message == 'success') {
-        this.clinic_id = res.data[0]['id'];
-        this.hasPrimeClinics = res.hasPrimeClinics;
+      if (res.body.message == 'success') {
+        this.clinic_id = res.body.data[0]['id'];
+        this.hasPrimeClinics = res.body.hasPrimeClinics;
         this.getRoles();
       }
     }, error => {
     });
 
     // this.headerService.getClinics().subscribe((res) => {
-    //   if (res.message == 'success') {
-    //     this.clinic_id = res.data[0]['id'];
-    //     this.hasPrimeClinics = res.hasPrimeClinics;
+    //   if (res.body.message == 'success') {
+    //     this.clinic_id = res.body.data[0]['id'];
+    //     this.hasPrimeClinics = res.body.hasPrimeClinics;
     //     this.getRoles();
     //   }
     // }, error => {

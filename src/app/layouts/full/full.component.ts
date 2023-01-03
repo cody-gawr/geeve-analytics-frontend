@@ -120,8 +120,8 @@ export class FullComponent implements OnDestroy, AfterViewInit {
   private getClinics() {
     this.headerService.getClinics().subscribe(
       (res) => {
-        if (res.message == "success") {
-          this.clinicsData = res.data;
+        if (res.status == 200) {
+          this.clinicsData = res.body.data;
         }
       },
       (error) => {

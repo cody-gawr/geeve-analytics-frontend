@@ -33,9 +33,9 @@ export class DialogOverviewExampleDialogComponent {
     }
 
     this.taskService.addTask(data.id, data.task_name, data.clinic_id).subscribe((res) => {
-      if (res.message == 'success') {
+      if (res.body.message == 'success') {
         this.dialogRef.close();
-      } else if (res.status == '401') {
+      } else if (res.status == 401) {
         this.handleUnAuthorization();
       }
     }, error => {
@@ -157,11 +157,11 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
 
   getTasks(id) {
     this.taskService.getTasks(id).subscribe((res) => {
-      if (res.message == 'success') {
-        this.tasksList.data = res.data;
-        this.setPaginationButtons(res.data.length);
+      if (res.body.message == 'success') {
+        this.tasksList.data = res.body.data;
+        this.setPaginationButtons(res.body.data.length);
       }
-      else if (res.status == '401') {
+      else if (res.status == 401) {
         this.handleUnAuthorization();
       }
     }, error => {
@@ -191,7 +191,7 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
     var active = (event.checked == true) ? 1 : 0;
     this.dailyTaskEnable = event.checked;
     this.clinicSettingsService.updatePartialSetting(this.clinic_id$.value, active, 'daily_task_enable').subscribe((res) => {
-      if (res.message == 'success') { }
+      if (res.body.message == 'success') { }
     }, error => { });
   }
 
@@ -206,7 +206,7 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
     }).then((result) => {
       if (result.value) {
         this.clinicSettingsService.deleteDailyTask(this.clinic_id$.value, taskId).subscribe((res) => {
-          if (res.message == 'success') {
+          if (res.body.message == 'success') {
             this.getTasks(this.clinic_id$.value);
           }
         }, error => {

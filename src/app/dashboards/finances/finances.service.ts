@@ -1,6 +1,6 @@
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../../environments/environment";
@@ -21,7 +21,7 @@ export class FinancesService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        let headers =  {headers: new HttpHeaders(), withCredentials: true};
+        let headers =  {headers: new HttpHeaders(), withCredentials: true, observe: 'response' as const };
         return headers;
     }
 
@@ -29,7 +29,7 @@ export class FinancesService {
     NetProfit(clinic_id, startDate = '', endDate = '', duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/finNetProfit?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -38,7 +38,7 @@ export class FinancesService {
     NetProfitPercent(clinic_id, startDate = '', endDate = '', duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/finNetProfitPercent?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -48,13 +48,13 @@ export class FinancesService {
         var header = this.getHeaders(); 
         if(connectedwith == 'xero'){
         return this.http.get(this.apiUrl +"/Finance/fnNetProfit?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
      }else if(connectedwith == 'myob'){
              return this.http.get(this.apiUrl +"/Finance/fnNetProfitMyob?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-              .pipe(map((response: Response) => {
+              .pipe(map((response: HttpResponse<Object>) => {
                     return response;
                          })
                     );   
@@ -65,13 +65,13 @@ export class FinancesService {
         var header = this.getHeaders(); 
         if(connectedwith == 'xero'){
         return this.http.get(this.apiUrl +"/Finance/fnNetProfitPercentage?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
         }else if(connectedwith == 'myob'){
             return this.http.get(this.apiUrl +"/Finance/fnNetProfitPercentageMyob?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -82,13 +82,13 @@ export class FinancesService {
         var header = this.getHeaders(); 
         if(connectedwith == 'xero'){
             return this.http.get(this.apiUrl +"/Finance/fnExpenses?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
         }else if(connectedwith == 'myob'){
             return this.http.get(this.apiUrl +"/Finance/fnExpensesMyob?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -98,7 +98,7 @@ export class FinancesService {
     finProductionByClinician(clinic_id, startDate = '', endDate = '', duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/fnProductionByClinician?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -108,7 +108,7 @@ export class FinancesService {
     finTotalDiscounts(clinic_id, startDate = '', endDate = '', duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/fnDiscounts?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -117,7 +117,7 @@ export class FinancesService {
     finTotalProduction(clinic_id, startDate = '', endDate = '', duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/fnTotalProduction?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -127,7 +127,7 @@ export class FinancesService {
     finCollection(clinic_id, startDate = '', endDate = '', duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/fnTotalCollection?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -137,7 +137,7 @@ export class FinancesService {
     finProductionPerVisit(clinic_id, startDate = '', endDate = '', duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/fnProductionPerVisit?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -148,7 +148,7 @@ export class FinancesService {
     finOverdueAccounts(clinic_id, startDate = '', endDate = '', duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/fnOverdues?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -158,7 +158,7 @@ export class FinancesService {
      finProductionByClinicianTrend(clinic_id, mode =''  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/fnProductionByClinicianTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -168,7 +168,7 @@ export class FinancesService {
     finTotalDiscountsTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/fnDiscountsTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -177,7 +177,7 @@ export class FinancesService {
     finOverdueAccountsTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/overduesTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -187,7 +187,7 @@ export class FinancesService {
     finTotalProductionTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/fnTotalProductionTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -196,7 +196,7 @@ export class FinancesService {
     finCollectionTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/fnTotalCollectionTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -206,7 +206,7 @@ export class FinancesService {
     finProductionPerVisitTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/fnProductionPerVisitTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -216,7 +216,7 @@ export class FinancesService {
     finNetProfitTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/finNetProfitTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -226,7 +226,7 @@ export class FinancesService {
     finNetProfitPercentTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/finNetProfitPercentTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -237,13 +237,13 @@ export class FinancesService {
         var header = this.getHeaders(); 
         if(connectedwith == 'xero'){
             return this.http.get(this.apiUrl +"/Finance/fnNetProfitTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
         }else if(connectedwith == 'myob'){
             return this.http.get(this.apiUrl +"/Finance/fnNetProfitMyobTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -256,13 +256,13 @@ export class FinancesService {
         var header = this.getHeaders(); 
         if(connectedwith == 'xero'){
             return this.http.get(this.apiUrl +"/Finance/fnNetProfitPercentageTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
         }else if(connectedwith == 'myob'){
             return this.http.get(this.apiUrl +"/Finance/fnNetProfitPercentageMyobTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -274,13 +274,13 @@ export class FinancesService {
         var header = this.getHeaders(); 
         if(connectedwith == 'xero'){
         return this.http.get(this.apiUrl +"/Finance/fnExpensesTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
         }else if(connectedwith == 'myob'){
             return this.http.get(this.apiUrl +"/Finance/fnExpensesMyobTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
@@ -290,7 +290,7 @@ export class FinancesService {
     finExpensesByCategoryMktTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/fnExpensesTrend?clinic_id="+clinic_id+"&mode="+mode, header)
-        .pipe(map((response: Response) => {
+        .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
