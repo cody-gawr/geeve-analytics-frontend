@@ -423,15 +423,15 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   public intrFollowupsScrps: any = [];
   /* Get Followups scripts **/
   getFollowupScripts() {
-    this.followupsService.getScripts(this.clinic_id).subscribe((scripts: any) => {
+    this.followupsService.getScripts(this.clinic_id).subscribe((res: any) => {
       this.postOpCallsScrps = [];
       this.overdueRecallsScrps = [];
       this.tickFollowupsScrps = [];
       this.ftaFollowupsScrps = [];
       this.utaFollowupsScrps = [];
       this.intrFollowupsScrps = [];
-      if (scripts.status && scripts.status == 200) {
-        scripts.data.forEach((script) => {
+      if (res.status && res.status == 200) {
+        res.body.data.forEach((script) => {
           if (script.followup_type == 'Post Op') {
             this.postOpCallsScrps.push(script);
           } else if (script.followup_type == 'Overdue Recalls') {
@@ -454,15 +454,15 @@ export class FollowupsComponent implements OnInit, OnDestroy {
 
   getFollowupPostOpCalls() {
     this.poLoadingLoading = true;
-    this.followupsService.followupPostOpCalls(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((production: any) => {
+    this.followupsService.followupPostOpCalls(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((res: any) => {
       this.followupPostOpCallsInComp = [];
       this.poLoadingLoading = false;
-      if (production.status== 200 ) {
-        this.nextBussinessDay = production.next_day;
-        if (production.data == '204') {
+      if (res.status== 200 ) {
+        this.nextBussinessDay = res.body.next_day;
+        if (res.body.data == '204') {
 
         } else {
-          this.followupPostOpCalls = production.data;
+          this.followupPostOpCalls = res.body.data;
           if (this.postopCallsPostOp == true) {
             this.followupPostOpCallsInComp = this.followupPostOpCalls;
           } else {
@@ -474,8 +474,8 @@ export class FollowupsComponent implements OnInit, OnDestroy {
           this.setPaginationButtons(this.followupPostOpCallsInComp, 'OP');
           this.followupPostOpCallsInComp = this.setPaginationData(this.followupPostOpCallsInComp, 'OP');
 
-          this.followupsPostopCallsDate = production.date;
-          this.postOpCallsDays = production.previous;
+          this.followupsPostopCallsDate = res.body.data.date;
+          this.postOpCallsDays = res.body.previous;
         }
       }
     });
@@ -485,16 +485,16 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (evn != 'close') {
       this.recallLoadingLoading = true;
     }
-    this.followupsService.followupOverdueRecalls(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((production: any) => {
+    this.followupsService.followupOverdueRecalls(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((res: any) => {
       this.followupOverDueRecallInCMP = [];
       this.recallLoadingLoading = false;
-      if (production.status== 200 ) {
-        this.nextBussinessDay = production.next_day;
-        this.followupsOverDueRecallDate = production.date;
-        if (production.data == '204') {
+      if (res.status== 200 ) {
+        this.nextBussinessDay = res.body.next_day;
+        this.followupsOverDueRecallDate = res.body.data.date;
+        if (res.body.data == '204') {
 
         } else {
-          this.followupOverDueRecall = production.data;
+          this.followupOverDueRecall = res.body.data;
           if (this.showCompleteOverdue == true) {
             this.followupOverDueRecallInCMP = this.followupOverDueRecall;
           } else {
@@ -505,7 +505,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
           }
           this.setPaginationButtons(this.followupOverDueRecallInCMP, 'OR');
           this.followupOverDueRecallInCMP = this.setPaginationData(this.followupOverDueRecallInCMP, 'OR');
-          this.OverDueRecallDays = production.previous;
+          this.OverDueRecallDays = res.body.previous;
         }
       }
     });
@@ -516,14 +516,14 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (evn != 'close') {
       this.IRLoadingLoading = true;
     }
-    this.followupsService.internalReferrals(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((production: any) => {
+    this.followupsService.internalReferrals(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((res: any) => {
       this.internalReferralRecallInCMP = [];
       // this.recallLoadingLoading = false;
 
-      if (production.status== 200 ) {
+      if (res.status== 200 ) {
         this.IRLoadingLoading = false;
-        this.nextBussinessDay = production.next_day;
-        this.internalReferrals = production.data;
+        this.nextBussinessDay = res.body.next_day;
+        this.internalReferrals = res.body.data;
         if (this.showCompleteReferrals == true) {
           this.internalReferralRecallInCMP = this.internalReferrals;
         } else {
@@ -548,15 +548,15 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (evn != 'close') {
       this.endTaksLoadingLoading = true;
     }
-    this.followupsService.followupTickFollowups(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((production: any) => {
+    this.followupsService.followupTickFollowups(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((res: any) => {
       this.followupTickFollowupsInCMP = [];
       this.endTaksLoadingLoading = false;
-      if (production.status== 200 ) {
-        this.nextBussinessDay = production.next_day;
-        if (production.data == '204') {
+      if (res.status== 200 ) {
+        this.nextBussinessDay = res.body.next_day;
+        if (res.body.data == '204') {
 
         } else {
-          this.followupTickFollowups = production.data;
+          this.followupTickFollowups = res.body.data;
           if (this.showCompleteTick == true) {
             this.followupTickFollowupsInCMP = this.followupTickFollowups;
           } else {
@@ -579,8 +579,8 @@ export class FollowupsComponent implements OnInit, OnDestroy {
             };
           });
 
-          this.followupsTickFollowupsDate = production.date;
-          this.TickFollowupsDays = production.previous;
+          this.followupsTickFollowupsDate = res.body.data.date;
+          this.TickFollowupsDays = res.body.previous;
         }
       }
     });
@@ -600,15 +600,15 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (evn != 'close') {
       this.ftaTaksLoadingLoading = true;
     }
-    this.followupsService.followupFtaFollowups(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((production: any) => {
+    this.followupsService.followupFtaFollowups(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((res: any) => {
       this.followupFtaFollowupsInCMP = [];
       this.ftaTaksLoadingLoading = false;
-      if (production.status== 200 ) {
-        this.nextBussinessDay = production.next_day;
-        if (production.data == '204') {
+      if (res.status== 200 ) {
+        this.nextBussinessDay = res.body.next_day;
+        if (res.body.data == '204') {
 
         } else {
-          this.followupFtaFollowups = production.data;
+          this.followupFtaFollowups = res.body.data;
           if (this.showCompleteFta == true) {
             this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
           } else {
@@ -651,15 +651,15 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (evn != 'close') {
       this.utaTaksLoadingLoading = true;
     }
-    this.followupsService.followupUtaFollowups(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((production: any) => {
+    this.followupsService.followupUtaFollowups(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((res: any) => {
       this.followupUtaFollowupsInCMP = [];
       this.utaTaksLoadingLoading = false;
-      if (production.status== 200 ) {
-        this.nextBussinessDay = production.next_day;
-        if (production.data == '204') {
+      if (res.status== 200 ) {
+        this.nextBussinessDay = res.body.next_day;
+        if (res.body.data == '204') {
 
         } else {
-          this.followupUtaFollowups = production.data;
+          this.followupUtaFollowups = res.body.data;
           if (this.showCompleteUta == true) {
             this.followupUtaFollowupsInCMP = this.followupUtaFollowups;
           } else {

@@ -7366,10 +7366,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           res.body.data.forEach(res => {
             // if (res.production > 0) {
               this.dentistProductionTrend1.push(Math.round(res.production));
-              if(res.body.goals == -1 || res.body.goals == null || res.body.goals == ''){
+              if(res.goals == -1 || res.goals == null || res.goals == ''){
                 this.targetData.push(null);
               }else{
-                this.targetData.push(res.body.goals);    
+                this.targetData.push(res.goals);    
               }       
               if (mode == 'c') {                            
                 this.dentistProductionTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -7632,10 +7632,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           res.body.data.forEach(res => {
             // if (res.collection > 0) {
               this.dentistCollectionTrend1.push(Math.round(res.collection));
-              if(res.body.goals == -1 || res.body.goals == null || res.body.goals == ''){
+              if(res.goals == -1 || res.goals == null || res.goals == ''){
                 this.collectiontargetData.push(null);
               }else{
-                this.collectiontargetData.push(res.body.goals); 
+                this.collectiontargetData.push(res.goals); 
               }  
               if (activeMode == 'c') {
                 this.dentistColleTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -8367,10 +8367,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.recallPrebookChartTrend1 = [];
         res.body.data.forEach(res => {
           this.recallPrebookChartTrend1.push(Math.round(res.recall_percent));
-          if(res.body.goals == -1 || res.body.goals == null || res.body.goals == ''){
+          if(res.goals == -1 || res.goals == null || res.goals == ''){
             this.fdRecallPrebookRatetargetData.push(null);
           }else{
-            this.fdRecallPrebookRatetargetData.push(res.body.goals);    
+            this.fdRecallPrebookRatetargetData.push(res.goals);    
           }
           if (this.trendValue == 'c')
             this.recallPrebookChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -8478,10 +8478,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.treatmentPrebookChartTrend1 = [];
         res.body.data.forEach(res => {
           this.treatmentPrebookChartTrend1.push(Math.round(res.reappoint_rate));
-          if(res.body.goals == -1 || res.body.goals == null || res.body.goals == ''){
+          if(res.goals == -1 || res.goals == null || res.goals == ''){
             this.fdTreatmentPrebookRatetargetData.push(null);
           }else{
-            this.fdTreatmentPrebookRatetargetData.push(res.body.goals);    
+            this.fdTreatmentPrebookRatetargetData.push(res.goals);    
           }  
           if (this.trendValue == 'c')
             this.treatmentPrebookChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -8584,10 +8584,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         res.body.data.forEach(res => {
           if (res.hourly_rate >= 0) {
             this.hourlyRateChartTrend1.push(Math.round(res.hourly_rate));
-            if(res.body.goals == -1 || res.body.goals == null || res.body.goals == ''){
+            if(res.goals == -1 || res.goals == null || res.goals == ''){
               this.hourlytargetData.push(null);
             }else{
-              this.hourlytargetData.push(res.body.goals); 
+              this.hourlytargetData.push(res.goals); 
             }              
             if (this.trendValue == 'c')
               this.hourlyRateChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -8711,10 +8711,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         res.body.data.forEach(res => {
           if (res.hourly_rate >= 0) {
             this.collhourlyRateChartTrend1.push(Math.round(res.hourly_rate));
-            if(res.body.goals == -1 || res.body.goals == null || res.body.goals == ''){
+            if(res.goals == -1 || res.goals == null || res.goals == ''){
               this.collhourlytargetData.push(null);
             }else{
-              this.collhourlytargetData.push(res.body.goals); 
+              this.collhourlytargetData.push(res.goals); 
             }              
             if (this.trendValue == 'c')
               this.collhourlyRateChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -8838,10 +8838,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         res.body.data.forEach(res => {
           if (res.hourly_rate >= 0) {
             this.collExphourlyRateChartTrend1.push(Math.round(res.hourly_rate));
-            if(res.body.goals == -1 || res.body.goals == null || res.body.goals == ''){
+            if(res.goals == -1 || res.goals == null || res.goals == ''){
               this.collExphourlytargetData.push(null);
             }else{
-              this.collExphourlytargetData.push(res.body.goals); 
+              this.collExphourlytargetData.push(res.goals); 
             }              
             if (this.trendValue == 'c')
               this.collExphourlyRateChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -9081,10 +9081,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           else
             this.newPatientsChartTrend1.push(0);
 
-          if(res.body.goals == -1 || res.body.goals == null || res.body.goals == ''){
+          if(res.goals == -1 || res.goals == null || res.goals == ''){
             this.newPatientstargetData.push(null);
           }else{
-            this.newPatientstargetData.push(res.body.goals);    
+            this.newPatientstargetData.push(res.goals);    
           }   
           if (this.trendValue == 'c')
             this.newPatientsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -9214,10 +9214,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             if (res.treatment_per_plan_percentage) {
               if (res.treatment_per_plan_percentage)
                 this.treatmentPlanChartTrend1.push(Math.round(res.treatment_per_plan_percentage));
-                if(res.body.goals == -1 || res.body.goals == null || res.body.goals == ''){
+                if(res.goals == -1 || res.goals == null || res.goals == ''){
                   this.fdtreatmentPlanRatetargetData.push(null);
                 }else{
-                  this.fdtreatmentPlanRatetargetData.push(res.body.goals);    
+                  this.fdtreatmentPlanRatetargetData.push(res.goals);    
                 }    
               if (this.trendValue == 'c')
                 this.treatmentPlanChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));

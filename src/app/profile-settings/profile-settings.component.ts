@@ -557,7 +557,7 @@ if(this.form.controls['newPassword'].hasError('required')){
       this.profileSettingsService.getChartsTips().subscribe((resp) => {
         this.chartsTipsLoader = false;
         if(resp.status == 200){
-          resp.data.forEach((tip) => {
+          resp.body.data.forEach((tip) => {
             if(typeof(this.dashboards[tip.dashboard_id] =='undefined')){
               this.dashboards[tip.dashboard_id] = tip.dashboard_name;
             

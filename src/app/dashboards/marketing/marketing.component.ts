@@ -1329,6 +1329,9 @@ export class MarketingComponent implements AfterViewInit {
   public showmulticlinicNewPatients:boolean = false;
   public mkNewPatientsByReferalLabels:any=[];
   //Items Predictor Analysis 
+
+
+  
   private mkNewPatientsByReferral() {
     this.mkNewPatientsByReferralLoader = true;
     this.newPatientsTimeLabels = [];
@@ -1390,7 +1393,7 @@ export class MarketingComponent implements AfterViewInit {
           });
           this.mkNewPatientsByReferralLoader = false;
         }else{
-          this.mkNewPatientsByReferralAll = res.body.data;
+          this.mkNewPatientsByReferralAll = res.body;
           this.totalNewPatientsReferral = Math.round(res.body.total);
           this.newPatientsReferral$.next(this.totalNewPatientsReferral)
           // this.noNewPatientsByReferralChartOptions.elements.center.text = this.decimalPipe.transform(this.totalNewPatientsReferral);
@@ -1464,6 +1467,8 @@ export class MarketingComponent implements AfterViewInit {
   public mkNewPatientsByReferalRevLabels:any=[];
   public totalNewPatientsReferralRev:any=0;
   //Items Predictor Analysis 
+
+
   private mkRevenueByReferral() {
     this.mkRevenueByReferralLoader = true;
     var user_id;
@@ -1528,9 +1533,9 @@ export class MarketingComponent implements AfterViewInit {
           });
           this.mkRevenueByReferralLoader = false;
         }else{
-            this.reffralAllData = res.body.data;
-            this.totalRevenueByReferral = this.decimalPipe.transform(Math.round(this.reffralAllData.total || 0));
-            this.revenueByReferralCount$.next(Math.round(this.reffralAllData.total || 0));
+            this.reffralAllData = res.body;
+            this.totalRevenueByReferral = this.decimalPipe.transform(Math.round(res.body.total || 0));
+            this.revenueByReferralCount$.next(Math.round(res.body.total || 0));
             //// this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
             if (this.revenueRefChart) {
               this.revenueRefChart.ngOnDestroy();
@@ -2950,6 +2955,7 @@ export class MarketingComponent implements AfterViewInit {
   public changeLevel(val) {
     if (val == 'newPatient') {
       this.newPatientsTimeLabelsl2 = [];
+      console.log(`gtt: changeLevel this.mkNewPatientsByReferralAll: ${JSON.stringify(this.mkNewPatientsByReferralAll)}`)
       this.totalNewPatientsReferral = Math.round(this.mkNewPatientsByReferralAll.total);
       this.newPatientsReferral$.next(this.totalNewPatientsReferral);
       this.newPatientsTimeData1 = [];
