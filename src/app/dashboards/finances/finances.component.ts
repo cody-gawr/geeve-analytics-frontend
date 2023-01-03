@@ -234,7 +234,7 @@ export class FinancesComponent implements AfterViewInit {
     var self = this;
     return new Promise(function (resolve, reject) {
       self.clinicSettingsService.clinicGetAccountingPlatform(self.clinic_id).subscribe((res) => {
-        if (res.body.message == 'success') {
+        if (res.status == 200) {
           if (res.body.data != '') {
             self.connectedwith = res.body.data;
             resolve(true);
@@ -1995,10 +1995,10 @@ export class FinancesComponent implements AfterViewInit {
     var clinic_id;
     this.netProfitTrendIcon = "down";
     this.netProfitTrendTotal = 0;
-    this.financesService.NetProfit(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
-      if (data.body.message == 'success') {
-        this.netProfitVal = data.body.data.total_net_profit;
-        this.netProfitTrendTotal = data.body.data.total_net_profit_ta;
+    this.financesService.NetProfit(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
+      if (res.status == 200) {
+        this.netProfitVal = res.body.data.total_net_profit;
+        this.netProfitTrendTotal = res.body.data.total_net_profit_ta;
         if (this.netProfitVal >= 0)
           this.netProfitIcon = "";
         else
@@ -2024,16 +2024,16 @@ export class FinancesComponent implements AfterViewInit {
     var clinic_id;
     this.netProfitProductionTrendIcon = "down";
     this.netProfitProductionTrendTotal = 0;
-    this.financesService.NetProfitPercent(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
-      if (data.body.message == 'success') {
-        this.netProfitProductionVal = data.body.data;
-        this.netProfitProductionTrendTotal = data.data_ta;
+    this.financesService.NetProfitPercent(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
+      if (res.status == 200) {
+        this.netProfitProductionVal = res.body.data;
+        this.netProfitProductionTrendTotal = res.data_ta;
 
         if (this.netProfitProductionVal >= 0)
           this.netProfitProductionIcon = "";
         else
           this.netProfitProductionIcon = "-";
-        this.netProfitProductionVal = data.body.data;
+        this.netProfitProductionVal = res.body.data;
         if (this.netProfitProductionVal >= this.netProfitProductionTrendTotal)
           this.netProfitProductionTrendIcon = "up";
       }
@@ -2051,12 +2051,12 @@ export class FinancesComponent implements AfterViewInit {
   private netProfitPms() {
     this.netProfitTrendTotal = 0;
     this.netprofitstatsError = false;
-    this.financesService.NetProfitPms(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((data) => {
+    this.financesService.NetProfitPms(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((res) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.body.message == 'success') {
+      if (res.status == 200) {
         this.netprofitstats = true;
-        this.netProfitVal = Math.round(data.body.data);
+        this.netProfitVal = Math.round(res.body.data);
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
@@ -2074,12 +2074,12 @@ export class FinancesComponent implements AfterViewInit {
     var clinic_id;
     this.netProfitPmsVal = 0;
     this.netprofitPerError = false;
-    this.financesService.netProfitPercentage(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((data) => {
+    this.financesService.netProfitPercentage(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((res) => {
        this.Apirequest = this.Apirequest - 1;
        this.enableDiabaleButton(this.Apirequest);
-      if (data.body.message == 'success') {
+      if (res.status == 200) {
         this.netprofitpercentstats = true;
-        this.netProfitPmsVal = Math.round(data.body.data);
+        this.netProfitPmsVal = Math.round(res.body.data);
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
@@ -2121,10 +2121,10 @@ export class FinancesComponent implements AfterViewInit {
     this.expensescChartTrendIcon = "down";
     this.expensescChartTrendTotal = 0;
     this.pieChartLabels = [];
-    this.financesService.categoryExpenses(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((data) => {
+    this.financesService.categoryExpenses(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((res) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.body.message == 'success') {
+      if (res.status == 200) {
         this.categoryExpensesLoader = false;
 
         this.pieChartLabelsres = [];
@@ -2134,7 +2134,7 @@ export class FinancesComponent implements AfterViewInit {
         this.pieChartDatares = [];
         this.pieChartDataPercentres = [];
         var i = 0;
-        data.body.data.forEach((res, key) => {
+        res.body.data.forEach((res, key) => {
           if (res.expenses_percent > 0 && res.expenses_percent < 1) {
             res.expenses_percent = 1;
           }
@@ -2153,7 +2153,7 @@ export class FinancesComponent implements AfterViewInit {
         });
         this.selectedDataFilter();
         this.unSelectedDataFilter();
-        this.expensescChartTrendTotal = data.data_ta;
+        this.expensescChartTrendTotal = res.data_ta;
         if (Math.round(this.pieChartTotal) >= Math.round(this.expensescChartTrendTotal))
           this.expensescChartTrendIcon = "up";
         this.pieChartData = this.pieChartDatares;
@@ -2185,26 +2185,26 @@ export class FinancesComponent implements AfterViewInit {
     this.productionChartTotal = 0;
     this.productionChartLabels = [];
     this.showClinicByclinic = false;
-    this.financesService.finProductionByClinician(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.financesService.finProductionByClinician(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       this.productionChartLabelsres = [];
       this.productionChartTotal = 0;
       this.productionChartTrendIcon = "down";
       this.productionChartTrendTotal = 0;
-      if (data.body.message == 'success') {
+      if (res.status == 200) {
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showClinicByclinic = true;
         }
         this.finProductionByClinicianLoader = false;
         this.productionChartDatares = [];
         var totalPer = 0;
-        if(data.body.data){
-          data.body.data.sort((a, b)=> b.prod_per_clinician - a.prod_per_clinician);
-          data.body.data.forEach(res => {
+        if(res.body.data){
+          res.body.data.sort((a, b)=> b.prod_per_clinician - a.prod_per_clinician);
+          res.body.data.forEach(res => {
             if(this.showClinicByclinic == true){
               if (res.production > 0) {
-                totalPer = Math.round(res.production) * 100 / data.total;
+                totalPer = Math.round(res.production) * 100 / res.total;
                 this.productionChartDatares.push(Math.round(totalPer));
                 this.productionChartLabelsres.push(res.clinic_name);
                 this.productionChartTotal = this.productionChartTotal + Math.round(totalPer);
@@ -2218,7 +2218,7 @@ export class FinancesComponent implements AfterViewInit {
             }           
           });
         }
-        this.productionChartTrendTotal = data.total_ta;
+        this.productionChartTrendTotal = res.total_ta;
         if (Math.round(this.productionChartTotal) >= Math.round(this.productionChartTrendTotal))
           this.productionChartTrendIcon = "up";
         if (this.productionChartDatares.every((item) => item == 0)) this.productionChartDatares = [];
@@ -2256,7 +2256,7 @@ export class FinancesComponent implements AfterViewInit {
     this.totalDiscountChartClinicsData1 = [];
     this.showClinicBar = false;
     this.finTotalDiscountsLoader = true;
-    this.financesService.finTotalDiscounts(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.financesService.finTotalDiscounts(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       this.totalDiscountChartDatares = [];
@@ -2267,7 +2267,7 @@ export class FinancesComponent implements AfterViewInit {
       this.totalDiscountChartTotal = 0;
       this.totalDiscountChartTrendIcon = "down";
       this.totalDiscountChartTrendTotal = 0;
-      if (data.body.message == 'success') {
+      if (res.status == 200) {
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showClinicBar = true;
         }else{
@@ -2280,12 +2280,12 @@ export class FinancesComponent implements AfterViewInit {
         this.finTotalDiscountsLoader = false;
         this.totalDiscountChartDatares = [];
         this.totalDiscountChartTotal = 0;
-        if(data.body.data == null || data.body.data.length <= 0){
+        if(res.body.data == null || res.body.data.length <= 0){
           this.finTotalDiscountsLoader = false;
           return;
         }
-        data.body.data.sort((a, b)=> b.discounts - a.discounts);
-        data.body.data.forEach(res => {
+        res.body.data.sort((a, b)=> b.discounts - a.discounts);
+        res.body.data.forEach(res => {
           if (res.body.total != 0) {
             this.clinicsName.push(res.clinic_name);
             this.clinicsids.push(res.clinic_id);
@@ -2300,16 +2300,16 @@ export class FinancesComponent implements AfterViewInit {
         this.clinicsName = [...new Set(this.clinicsName)];
         this.clinicsids = [...new Set(this.clinicsids)];
         this.totalDiscountChartLabelsClinics = this.clinicsName;
-        const sumOfId = (id:any) => data.body.data.filter(i => i.clinic_id === id).reduce((a, b) => a + Math.round(b.discounts), 0);
+        const sumOfId = (id:any) => res.body.data.filter(i => i.clinic_id === id).reduce((a, b) => a + Math.round(b.discounts), 0);
         this.clinicsids.forEach(element => {
           this.totalDiscountChartClinicsData1.push(sumOfId(element));
         });
         this.totalDiscountChartClinicsData = this.totalDiscountChartClinicsData1
         
-        this.totalDiscountChartTotal = Math.round(data.total);
+        this.totalDiscountChartTotal = Math.round(res.total);
         this.percentOfTotalDiscount$.next(this.totalDiscountChartTotal);
-        if (data.total_ta)
-          this.totalDiscountChartTrendTotal = Math.round(data.total_ta);
+        if (res.total_ta)
+          this.totalDiscountChartTrendTotal = Math.round(res.total_ta);
         else
           this.totalDiscountChartTrendTotal = 0;
 
@@ -2348,7 +2348,7 @@ export class FinancesComponent implements AfterViewInit {
     this.netProfitProductionVal = 0;
     var user_id;
     var clinic_id;
-    this.financesService.finTotalProduction(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.financesService.finTotalProduction(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       this.finCollection();
@@ -2360,19 +2360,19 @@ export class FinancesComponent implements AfterViewInit {
           hoverBackgroundColor: []
         }
       ];
-      if (data.body.message == 'success') {
+      if (res.status == 200) {
 
         this.finTotalProductionLoader = false;
-        this.totalProductionVal = (data.total) ? Math.round(data.total) : 0;
-        this.netProfitProductionVal = (data.total) ? Math.round(data.total) : 0;;
-        this.totalProductionTrendVal = (data.total_ta) ? Math.round(data.total_ta) : 0;
+        this.totalProductionVal = (res.total) ? Math.round(res.total) : 0;
+        this.netProfitProductionVal = (res.total) ? Math.round(res.total) : 0;;
+        this.totalProductionTrendVal = (res.total_ta) ? Math.round(res.total_ta) : 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.body.data.forEach((item, ind)=>{
+          res.body.data.forEach((item, ind)=>{
             this.totalProductionCollection1[ind] = {data:[], label: ''}
           });
 
-          data.body.data.forEach((item, ind)=>{
+          res.body.data.forEach((item, ind)=>{
             this.totalProductionCollection1[ind]['data'].push(Math.round(item.production));
             this.totalProductionCollection1[ind]['label'] = item.clinic_name;
             this.totalProductionCollection1[ind]['backgroundColor']= this.doughnutChartColors[ind];
@@ -2384,8 +2384,8 @@ export class FinancesComponent implements AfterViewInit {
           this.totalProductionCollection1[0]['data'] = [];
           this.productionstats = true;
 
-          if (data.body.data[0])
-            this.totalProductionLabel = data.body.data[0].provider_name;
+          if (res.body.data[0])
+            this.totalProductionLabel = res.body.data[0].provider_name;
           else
             this.totalProductionLabel = '';
 
@@ -2427,20 +2427,20 @@ export class FinancesComponent implements AfterViewInit {
     this.finCollectionLoader = true;
     this.collectionTrendIcon = "down";
     this.collectionTrendVal = 0;
-    this.financesService.finCollection(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.financesService.finCollection(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.body.message == 'success') {
+      if (res.status == 200) {
 
         this.finCollectionLoader = false;
         this.collectionVal = 0;
-        this.collectionVal = (data.total) ? Math.round(data.total) : 0;
-        this.collectionPercentage = (data.total_average) ? Math.round(data.total_average) : 0;
-        this.collectionTrendVal = (data.total_ta) ? Math.round(data.total_ta) : 0;
+        this.collectionVal = (res.total) ? Math.round(res.total) : 0;
+        this.collectionPercentage = (res.total_average) ? Math.round(res.total_average) : 0;
+        this.collectionTrendVal = (res.total_ta) ? Math.round(res.total_ta) : 0;
         
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;        
-          data.body.data.forEach((item, ind)=>{
+          res.body.data.forEach((item, ind)=>{
             this.totalProductionCollection1[ind]['data'].push(Math.round(item.collection));
             this.totalProductionCollection1[ind]['label'] = item.clinic_name;
             this.totalProductionCollection1[ind]['backgroundColor']= this.doughnutChartColors[ind];
@@ -2495,15 +2495,15 @@ export class FinancesComponent implements AfterViewInit {
     var clinic_id;
     this.productionTrendIcon = "down";
     this.productionTrendVal = 0;
-    this.financesService.finProductionPerVisit(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.financesService.finProductionPerVisit(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.body.message == 'success') {
+      if (res.status == 200) {
         this.ProdPerVisit[0]['data'] = [];
         this.ProductionTrend1 = [];
         this.ProductionTrendLabels1 = [];       
-        if (data.total > 0) {
-          data.body.data.forEach(res => { 
+        if (res.total > 0) {
+          res.body.data.forEach(res => { 
             this.ProductionTrend1.push(Math.round(res.prod_per_visit));
             this.ProductionTrendLabels1.push(res.clinic_name);
           });
@@ -2513,8 +2513,8 @@ export class FinancesComponent implements AfterViewInit {
         }
         this.ProdPerVisit[0]['data'] = this.ProductionTrend1;
         this.finProductionPerVisitLoader = false;
-        this.productionVal = Math.round(data.total);
-        this.productionTrendVal = Math.round(data.total_ta);
+        this.productionVal = Math.round(res.total);
+        this.productionTrendVal = Math.round(res.total_ta);
         if (Math.round(this.productionVal) >= Math.round(this.productionTrendVal))
           this.productionTrendIcon = "up";
       }
@@ -2537,21 +2537,21 @@ export class FinancesComponent implements AfterViewInit {
     var user_id;
     var clinic_id;
     this.finOverdueAccountsLoader = true;
-    this.financesService.finOverdueAccounts(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
-      if (data.body.message == 'success') {
+    this.financesService.finOverdueAccounts(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
+      if (res.status == 200) {
         this.finOverdueAccountsLoader = false;
 
         this.totalOverdueAccountLabels = [];
         this.totalOverdueAccountres = [];
         this.totalOverdueAccountLabelsres = [];
-        data.body.data.forEach(res => {
+        res.body.data.forEach(res => {
           if (res.overdue > 0) {
             this.totalOverdueAccountres.push(Math.round(res.overdue));
             this.totalOverdueAccountLabelsres.push(res.label);
           }
         });
-        this.totalOverdueAccount = data.total;
-        this.percentOfCurrentOverdue$.next(data.total);
+        this.totalOverdueAccount = res.total;
+        this.percentOfCurrentOverdue$.next(res.total);
         this.totalOverdueAccountData = this.totalOverdueAccountres;
         this.totalOverdueAccountLabels = this.totalOverdueAccountLabelsres;
         this.totalOverdueAccountDataMax = Math.max(...this.totalOverdueAccountData);
@@ -2747,7 +2747,7 @@ export class FinancesComponent implements AfterViewInit {
   // Get Dentist
   getDentists() {
     this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.dentists = res.body.data;
         this.dentistCount = res.body.data.length;
 
@@ -2952,14 +2952,14 @@ export class FinancesComponent implements AfterViewInit {
     this.productionChartTrend = [];
     var user_id;
     var clinic_id;
-    this.financesService.finProductionByClinicianTrend(this.clinic_id, this.trendValue).subscribe((data) => {
+    this.financesService.finProductionByClinicianTrend(this.clinic_id, this.trendValue).subscribe((res) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       this.showClinic = false;
       this.finProductionByClinicianTrendLoader = false;
-      if (data.body.message == 'success') {        
-        data.body.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
-        data.body.data.forEach(res => {
+      if (res.status == 200) {        
+        res.body.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
+        res.body.data.forEach(res => {
           const sumProd = res.val.reduce((accumulator, current) => accumulator + Number(current['production']), 0)
           res.val.forEach((result, key) => {
 
@@ -3060,21 +3060,21 @@ export class FinancesComponent implements AfterViewInit {
     var clinic_id;
     this.showByclinic = false;
     this.discountsChartTrendMulti =[];
-    this.financesService.finTotalDiscountsTrend(this.clinic_id, this.trendValue).subscribe((data) => {
+    this.financesService.finTotalDiscountsTrend(this.clinic_id, this.trendValue).subscribe((res) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.body.message == 'success') {
-        if(data.body.data == null || data.body.data.length <= 0){
+      if (res.status == 200) {
+        if(res.body.data == null || res.body.data.length <= 0){
           this.finTotalDiscountsTrendLoader = false;
           return;
         }
-        data.body.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
+        res.body.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showByclinic = true;
         }
         this.finTotalDiscountsTrendLoader = false;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          data.body.data.forEach(res => { 
+          res.body.data.forEach(res => { 
             res.val.forEach((reslt, key) => {
               if (typeof (this.discountsChartTrendMulti[key]) == 'undefined') {
                 this.discountsChartTrendMulti[key] = { data: [], label: '' };
@@ -3095,7 +3095,7 @@ export class FinancesComponent implements AfterViewInit {
           });
           this.discountsChartTrendMultiLabels = this.discountsChartTrendMultiLabels1;
         }else{
-          data.body.data.forEach(res => {         
+          res.body.data.forEach(res => {         
             this.discountsChartTrend1.push(Math.round(res.discounts));
             if (this.trendValue == 'c')
               this.discountsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -3143,12 +3143,12 @@ export class FinancesComponent implements AfterViewInit {
     this.overdueChartTrend1 = [];
     var user_id;
     var clinic_id;
-    this.financesService.finOverdueAccountsTrend(this.clinic_id, this.trendValue).subscribe((data) => {
+    this.financesService.finOverdueAccountsTrend(this.clinic_id, this.trendValue).subscribe((res) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.body.message == 'success') {
+      if (res.status == 200) {
         this.finOverdueAccountsTrendLoader = false;
-        data.body.data.forEach(res => {
+        res.body.data.forEach(res => {
           this.overdueChartTrend1.push(Math.round(res.val.total));
           if (this.trendValue == 'c')
             this.overdueChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
@@ -3204,7 +3204,7 @@ export class FinancesComponent implements AfterViewInit {
     var user_id;
     var clinic_id;
     this.showProdByclinic = false;
-    this.financesService.finTotalProductionTrend(this.clinic_id, this.trendValue).subscribe((data) => {
+    this.financesService.finTotalProductionTrend(this.clinic_id, this.trendValue).subscribe((res) => {
       this.netProfitChartTrendLabels = [];
       this.netProfitChartTrendLabels1 = [];
       this.totalProductionChartTrendLabels1 = [];
@@ -3216,14 +3216,14 @@ export class FinancesComponent implements AfterViewInit {
       this.netProfitPercentChartTrendMulti =[];
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.body.message == 'success') {
+      if (res.status == 200) {
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showProdByclinic = true;
         }
         this.finTotalProductionTrendLoader = false;
         this.finNetProfitTrendLoader = false;
-        data.body.data.sort((a, b)=> a.year - b.year);
-        data.body.data.forEach(res => {
+        res.body.data.sort((a, b)=> a.year - b.year);
+        res.body.data.forEach(res => {
           this.PMonthRange.push(res.year_month);
           this.PYearRange.push(res.year);
           this.cName.push(res.clinic_name);
@@ -3239,8 +3239,8 @@ export class FinancesComponent implements AfterViewInit {
           }
 
         });
-        const sumClinics = (range:any) => data.body.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.production), 0);
-        const sumClinics1 = (range:any) => data.body.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.production), 0);
+        const sumClinics = (range:any) => res.body.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.production), 0);
+        const sumClinics1 = (range:any) => res.body.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.production), 0);
         this.cName = [...new Set(this.cName)];
         this.cids = [...new Set(this.cids)];
         this.PMonthRange = [...new Set(this.PMonthRange)];
@@ -3265,8 +3265,8 @@ export class FinancesComponent implements AfterViewInit {
         this.finCollectionTrend();
         
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          data.data_combined.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
-          data.data_combined.forEach(res => {
+          res.data.data_combined.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
+          res.data.data_combined.forEach(res => {
             res.val.forEach((result, key) => {
               if (typeof (this.netProfitPercentChartTrendMulti[key]) == 'undefined') {
                 this.netProfitPercentChartTrendMulti[key] = { data: [], label: '' };
@@ -3322,18 +3322,18 @@ export class FinancesComponent implements AfterViewInit {
     this.collectionChartTrend1 = [];
     var user_id;
     var clinic_id;
-    this.financesService.finCollectionTrend(this.clinic_id, this.trendValue).subscribe((data) => {
+    this.financesService.finCollectionTrend(this.clinic_id, this.trendValue).subscribe((res) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       this.CMonthRange =[];
       this.CYearRange =[];
       this.collectionChartTrendMultiData = [];
-      if (data.body.message == 'success') {
+      if (res.status == 200) {
         this.finCollectionTrendLoader = false;   
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data_combined.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
-          data.data_combined.forEach(res => {
+          res.data.data_combined.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
+          res.data.data_combined.forEach(res => {
             res.val.forEach((result, key) => {
               if (typeof (this.collectionChartTrendMultiData[key]) == 'undefined') {
                 this.collectionChartTrendMultiData[key] = { data: [], label: '' };
@@ -3350,8 +3350,8 @@ export class FinancesComponent implements AfterViewInit {
         }else{
           this.isAllClinic = false;
         }
-        data.body.data.sort((a, b)=> a.year - b.year);    
-        data.body.data.forEach(res => {
+        res.body.data.sort((a, b)=> a.year - b.year);    
+        res.body.data.forEach(res => {
           this.CMonthRange.push(res.year_month);
           this.CYearRange.push(res.year);
           // this.collectionChartTrend1.push(Math.round(res.collection));
@@ -3361,8 +3361,8 @@ export class FinancesComponent implements AfterViewInit {
           //   this.collectionChartTrendLabels1.push(res.year);
 
         });
-        const CsumClinics = (range:any) => data.body.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.collection), 0);
-        const CsumClinics1 = (range:any) => data.body.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.collection), 0);
+        const CsumClinics = (range:any) => res.body.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.collection), 0);
+        const CsumClinics1 = (range:any) => res.body.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.collection), 0);
       
         this.CMonthRange = [...new Set(this.CMonthRange)];
         this.CYearRange = [...new Set(this.CYearRange)];
@@ -3427,15 +3427,15 @@ export class FinancesComponent implements AfterViewInit {
     this.VMonthRange=[];
     this.VYearRange =[];
     this.clinicIds =[];
-    this.financesService.finProductionPerVisitTrend(this.clinic_id, this.trendValue).subscribe((data) => {
+    this.financesService.finProductionPerVisitTrend(this.clinic_id, this.trendValue).subscribe((res) => {
       this.productionVisitChartTrendLabels = [];
       this.productionVisitChartTrendLabels1 = [];
       this.finProductionPerVisitTrendLoader = false;
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data && data.body.message == 'success') {
-        data.body.data.sort((a, b)=> a.year - b.year);
-        data.body.data.forEach(res => {
+      if (res.body.data && res.status == 200) {
+        res.body.data.sort((a, b)=> a.year - b.year);
+        res.body.data.forEach(res => {
           this.VMonthRange.push(res.year_month);
           this.VYearRange.push(res.year);
           this.clinicIds.push(res.clinic_id);
@@ -3447,10 +3447,10 @@ export class FinancesComponent implements AfterViewInit {
 
         });
 
-        const vsumClinics = (range:any) => data.body.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.production), 0);
-        const vsumClinicsVisits = (range:any) => data.body.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.num_visits), 0);
-        const vsumClinics1 = (range:any) => data.body.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.production), 0);
-        const vsumClinics1Visits = (range:any) => data.body.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.num_visits), 0);
+        const vsumClinics = (range:any) => res.body.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.production), 0);
+        const vsumClinicsVisits = (range:any) => res.body.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.num_visits), 0);
+        const vsumClinics1 = (range:any) => res.body.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.production), 0);
+        const vsumClinics1Visits = (range:any) => res.body.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.num_visits), 0);
        
         this.VMonthRange = [...new Set(this.VMonthRange)];
         this.VYearRange = [...new Set(this.VYearRange)];
@@ -3507,12 +3507,12 @@ export class FinancesComponent implements AfterViewInit {
     this.finNetProfitTrendLoader = true;
     var user_id;
     var clinic_id;
-    this.financesService.finNetProfitTrend(this.clinic_id, this.trendValue).subscribe((data) => {
+    this.financesService.finNetProfitTrend(this.clinic_id, this.trendValue).subscribe((res) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.body.message == 'success') {
+      if (res.status == 200) {
         this.finNetProfitTrendLoader = false;
-        data.body.data.forEach(res => {
+        res.body.data.forEach(res => {
           this.netProfitChartTrend1.push(Math.round(res.val));
           if (this.trendValue == 'c')
             this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
@@ -3560,13 +3560,13 @@ export class FinancesComponent implements AfterViewInit {
     this.finNetProfitPercentTrendLoader = true;
     var user_id;
     var clinic_id;
-    this.financesService.finNetProfitPercentTrend(this.clinic_id, this.trendValue).subscribe((data) => {
+    this.financesService.finNetProfitPercentTrend(this.clinic_id, this.trendValue).subscribe((res) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.body.message == 'success') {
+      if (res.status == 200) {
         this.finNetProfitPercentTrendLoader = false;
 
-        data.body.data.forEach(res => {
+        res.body.data.forEach(res => {
           this.netProfitPercentChartTrend1.push(Math.round(res.val));
           if (this.trendValue == 'c')
             this.netProfitPercentChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
@@ -3609,7 +3609,7 @@ export class FinancesComponent implements AfterViewInit {
 
   public checkXeroStatus() {
     this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         if (res.body.data.xero_connect == 1) {
           this.xeroConnect = true;
         }
@@ -3627,7 +3627,7 @@ export class FinancesComponent implements AfterViewInit {
 
   checkMyobStatus() {
     this.clinicSettingsService.checkMyobStatus(this.clinic_id).subscribe((res) => {
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         if (res.body.data.myob_connect == 1) {
           this.myobConnect = true;
         } else {
@@ -3648,13 +3648,13 @@ export class FinancesComponent implements AfterViewInit {
     this.netProfitPercentChartTrendLabels1 = [];
     this.netProfitPercentChartTrendLabels = [];
     this.trendxero = true;
-    this.financesService.finNetProfitPMSTrend(this.clinic_id, this.trendValue, this.connectedwith).subscribe((data) => {
+    this.financesService.finNetProfitPMSTrend(this.clinic_id, this.trendValue, this.connectedwith).subscribe((res) => {
       this.trendxero = false;
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.body.message == 'success') {
-        if (data.body.data)
-          data.body.data.forEach(res => {
+      if (res.status == 200) {
+        if (res.body.data)
+          res.body.data.forEach(res => {
             if (res.net_profit != null)
               this.netProfitChartTrend1.push(Math.round(res.net_profit));
             else
@@ -3684,15 +3684,15 @@ export class FinancesComponent implements AfterViewInit {
     this.netProfitPmsChartTrend1 = [];
     this.netProfitChartTrendLabels1 = [];
     this.trendxero = true;
-    this.financesService.finNetProfitPMSPercentTrend(this.clinic_id, this.trendValue, this.connectedwith).subscribe((data) => {
+    this.financesService.finNetProfitPMSPercentTrend(this.clinic_id, this.trendValue, this.connectedwith).subscribe((res) => {
       this.trendxero = false;
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.body.message == 'success') {
+      if (res.status == 200) {
         this.netProfitPmsChartTrend1 = [];
         this.netProfitChartTrendLabels1 = [];
-        if (data.body.data) {
-          data.body.data.forEach(res => {
+        if (res.body.data) {
+          res.body.data.forEach(res => {
             if (res.net_profit_percentage != null)
               this.netProfitPmsChartTrend1.push(Math.round(res.net_profit_percentage));
             else
@@ -3724,12 +3724,12 @@ export class FinancesComponent implements AfterViewInit {
     this.expensesChartTrendLabels = [];
     this.expensesChartTrend = [];
     this.expensesChartTrendError = false;
-    this.financesService.finExpensesByCategoryTrend(this.clinic_id, this.trendValue, this.connectedwith).subscribe((data) => {
+    this.financesService.finExpensesByCategoryTrend(this.clinic_id, this.trendValue, this.connectedwith).subscribe((res) => {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-      if (data.body.message == 'success') {
+      if (res.status == 200) {
         this.expensestrendstats = true;
-        data.body.data.expenses.forEach((result, key) => {
+        res.body.data.expenses.forEach((result, key) => {
           if (result.meta_key != 'Total Operating Expenses') {
             let tempO: any = [];
             result.expenses.forEach((res) => { tempO.push(res); });
@@ -3741,7 +3741,7 @@ export class FinancesComponent implements AfterViewInit {
             this.expensesChartTrend.push(temp);
           }
         });
-        this.expensesChartTrendLabels = data.body.data.duration;
+        this.expensesChartTrendLabels = res.body.data.duration;
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
@@ -3767,9 +3767,9 @@ export class FinancesComponent implements AfterViewInit {
   }
 
   getChartsTips() {
-    this.chartstipsService.getCharts(5).subscribe((data) => {
-      if (data.body.message == 'success') {
-        this.charTips = data.body.data;
+    this.chartstipsService.getCharts(5).subscribe((res) => {
+      if (res.status == 200) {
+        this.charTips = res.body.data;
       }
     }, error => { });
   }

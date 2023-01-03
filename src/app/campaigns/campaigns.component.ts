@@ -695,9 +695,9 @@ export class CampaignsComponent implements OnInit, OnDestroy {
   }
 
   getChartsTips() {
-    this.chartstipsService.getCharts(7).subscribe((data) => {
-      if (data.message == 'success') {
-        this.charTips = data.body.data;
+    this.chartstipsService.getCharts(7).subscribe((res) => {
+      if (res.message == 'success') {
+        this.charTips = res.body.data;
       }
     }, error => { });
   }
