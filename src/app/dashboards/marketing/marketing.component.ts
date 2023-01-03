@@ -2955,7 +2955,6 @@ export class MarketingComponent implements AfterViewInit {
   public changeLevel(val) {
     if (val == 'newPatient') {
       this.newPatientsTimeLabelsl2 = [];
-      console.log(`gtt: changeLevel this.mkNewPatientsByReferralAll: ${JSON.stringify(this.mkNewPatientsByReferralAll)}`)
       this.totalNewPatientsReferral = Math.round(this.mkNewPatientsByReferralAll.total);
       this.newPatientsReferral$.next(this.totalNewPatientsReferral);
       this.newPatientsTimeData1 = [];

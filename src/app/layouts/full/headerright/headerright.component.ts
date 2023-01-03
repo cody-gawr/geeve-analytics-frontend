@@ -246,7 +246,6 @@ export class AppHeaderrightComponent implements AfterViewInit {
     this.selectedClinic = [];
     this.headerService.getClinics().subscribe(
       (res) => {
-        console.log(`res status = ${res.status}  AND res = ${res}`)
         this.headerService.setClinics(res);
         if (res.status == 200) {
           this.clinicsData = res.body.data;

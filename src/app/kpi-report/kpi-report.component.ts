@@ -291,7 +291,6 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 			if (res.status == 200) {
 				this.reportloader = false;
 				this.reportData = res.body.data;
-				console.log(`res.body.data = ${JSON.stringify(res.body.data)}`);
 				this.reportData.forEach(element => {
 					if(element.kpi_type == "Production"){
 						element.val.forEach(ele => {
@@ -337,7 +336,6 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 				this.reportData[8]['kpi_type'] = 'Discounts';
 				this.reportData[5]['kpi_type'] = 'Dentist Production Per Hr';
 				this.reportMonths = res.body.months;
-				console.log(`gtt reportMonths: ${JSON.stringify(this.reportMonths)}`)
 			}
 		}, error => {
 			this.reportloader = false;	
