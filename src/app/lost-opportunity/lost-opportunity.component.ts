@@ -78,13 +78,13 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
 		this.isLoading = true;
 		this.lostOpportunityService.dentistProduction(this.clinic_id).subscribe( (data:any) => {
 			if(data.status){
-				this.discounts = data.data.discounts;
+				this.discounts = data.body.data.discounts;
 				this.discountsReal = this.discounts;
-				this.collectionProduction = data.data.collectionProduction;
+				this.collectionProduction = data.body.data.collectionProduction;
 				this.collectionProductionReal = this.collectionProduction;
-				this.caseAcceptance = data.data.caseAcceptance;
+				this.caseAcceptance = data.body.data.caseAcceptance;
 				this.caseAcceptanceReal = this.caseAcceptance;
-				this.production = data.data.production;
+				this.production = data.body.data.production;
 				this.productionReal = this.production;
 				this.lostOpportunity =  (this.discounts + this.collectionProduction + this.caseAcceptance );
 				this.lostOpportunityReal =  this.lostOpportunity
@@ -126,7 +126,7 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
 	 getChartsTips() {
     this.chartstipsService.getCharts(8).subscribe((data) => {
        if(data.body.message == 'success'){         
-        this.charTips = data.data;
+        this.charTips = data.body.data;
        }
     }, error => {});
   }

@@ -665,33 +665,33 @@ export class GraphsComponent{
             this.barChartData[0]['data'] =[];
     
             if(this.item.agenda_chart_id == 7){
-              data.data.sort((a,b) => b.hourly_rate - a.hourly_rate); 
-              data.data.forEach(res => {
+              data.body.data.sort((a,b) => b.hourly_rate - a.hourly_rate); 
+              data.body.data.forEach(res => {
                 this.barChartData1.push(Math.round(res.hourly_rate));
                 this.barChartLabels1.push(res.provider_name);
               });
             }else if(this.item.agenda_chart_id == 1){
-              data.data.sort((a,b) => b.production - a.production); 
-              data.data.forEach(res => {
+              data.body.data.sort((a,b) => b.production - a.production); 
+              data.body.data.forEach(res => {
                 this.barChartData1.push(Math.round(res.production));
                 this.barChartLabels1.push(res.provider_name);
               });
             }else if(this.item.agenda_chart_id == 4){
-              data.data.sort((a,b) => b.recall_percent - a.recall_percent); 
-              data.data.forEach(res => {
+              data.body.data.sort((a,b) => b.recall_percent - a.recall_percent); 
+              data.body.data.forEach(res => {
                 this.barChartData1.push(Math.round(res.recall_percent));
                 this.barChartLabels1.push(res.provider_name);
               });
             }else if(this.item.agenda_chart_id == 5){
-              data.data.sort((a,b) => b.reappoint_rate - a.reappoint_rate); 
-              data.data.forEach(res => {
+              data.body.data.sort((a,b) => b.reappoint_rate - a.reappoint_rate); 
+              data.body.data.forEach(res => {
                 this.barChartData1.push(Math.round(res.reappoint_rate));
                 this.barChartLabels1.push(res.provider_name);
               });
             }
             else if(this.item.agenda_chart_id == 15){
-              data.data.sort((a,b) => b.util_rate - a.util_rate); 
-              data.data.forEach(res => {
+              data.body.data.sort((a,b) => b.util_rate - a.util_rate); 
+              data.body.data.forEach(res => {
                 this.barChartData1.push(Math.round(res.util_rate * 100));
                 this.barChartLabels1.push(res.app_book_name+'--'+res.worked_hour+'--'+res.planned_hour +'--'+res.clinic_name); 
               });

@@ -1997,8 +1997,8 @@ export class FinancesComponent implements AfterViewInit {
     this.netProfitTrendTotal = 0;
     this.financesService.NetProfit(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       if (data.body.message == 'success') {
-        this.netProfitVal = data.data.total_net_profit;
-        this.netProfitTrendTotal = data.data.total_net_profit_ta;
+        this.netProfitVal = data.body.data.total_net_profit;
+        this.netProfitTrendTotal = data.body.data.total_net_profit_ta;
         if (this.netProfitVal >= 0)
           this.netProfitIcon = "";
         else
@@ -2026,14 +2026,14 @@ export class FinancesComponent implements AfterViewInit {
     this.netProfitProductionTrendTotal = 0;
     this.financesService.NetProfitPercent(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       if (data.body.message == 'success') {
-        this.netProfitProductionVal = data.data;
+        this.netProfitProductionVal = data.body.data;
         this.netProfitProductionTrendTotal = data.data_ta;
 
         if (this.netProfitProductionVal >= 0)
           this.netProfitProductionIcon = "";
         else
           this.netProfitProductionIcon = "-";
-        this.netProfitProductionVal = data.data;
+        this.netProfitProductionVal = data.body.data;
         if (this.netProfitProductionVal >= this.netProfitProductionTrendTotal)
           this.netProfitProductionTrendIcon = "up";
       }
@@ -2056,7 +2056,7 @@ export class FinancesComponent implements AfterViewInit {
       this.enableDiabaleButton(this.Apirequest);
       if (data.body.message == 'success') {
         this.netprofitstats = true;
-        this.netProfitVal = Math.round(data.data);
+        this.netProfitVal = Math.round(data.body.data);
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
@@ -2079,7 +2079,7 @@ export class FinancesComponent implements AfterViewInit {
        this.enableDiabaleButton(this.Apirequest);
       if (data.body.message == 'success') {
         this.netprofitpercentstats = true;
-        this.netProfitPmsVal = Math.round(data.data);
+        this.netProfitPmsVal = Math.round(data.body.data);
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
@@ -2134,7 +2134,7 @@ export class FinancesComponent implements AfterViewInit {
         this.pieChartDatares = [];
         this.pieChartDataPercentres = [];
         var i = 0;
-        data.data.forEach((res, key) => {
+        data.body.data.forEach((res, key) => {
           if (res.expenses_percent > 0 && res.expenses_percent < 1) {
             res.expenses_percent = 1;
           }
@@ -2199,9 +2199,9 @@ export class FinancesComponent implements AfterViewInit {
         this.finProductionByClinicianLoader = false;
         this.productionChartDatares = [];
         var totalPer = 0;
-        if(data.data){
-          data.data.sort((a, b)=> b.prod_per_clinician - a.prod_per_clinician);
-          data.data.forEach(res => {
+        if(data.body.data){
+          data.body.data.sort((a, b)=> b.prod_per_clinician - a.prod_per_clinician);
+          data.body.data.forEach(res => {
             if(this.showClinicByclinic == true){
               if (res.production > 0) {
                 totalPer = Math.round(res.production) * 100 / data.total;
@@ -2280,12 +2280,12 @@ export class FinancesComponent implements AfterViewInit {
         this.finTotalDiscountsLoader = false;
         this.totalDiscountChartDatares = [];
         this.totalDiscountChartTotal = 0;
-        if(data.data == null || data.data.length <= 0){
+        if(data.body.data == null || data.body.data.length <= 0){
           this.finTotalDiscountsLoader = false;
           return;
         }
-        data.data.sort((a, b)=> b.discounts - a.discounts);
-        data.data.forEach(res => {
+        data.body.data.sort((a, b)=> b.discounts - a.discounts);
+        data.body.data.forEach(res => {
           if (res.body.total != 0) {
             this.clinicsName.push(res.clinic_name);
             this.clinicsids.push(res.clinic_id);
@@ -2300,7 +2300,7 @@ export class FinancesComponent implements AfterViewInit {
         this.clinicsName = [...new Set(this.clinicsName)];
         this.clinicsids = [...new Set(this.clinicsids)];
         this.totalDiscountChartLabelsClinics = this.clinicsName;
-        const sumOfId = (id:any) => data.data.filter(i => i.clinic_id === id).reduce((a, b) => a + Math.round(b.discounts), 0);
+        const sumOfId = (id:any) => data.body.data.filter(i => i.clinic_id === id).reduce((a, b) => a + Math.round(b.discounts), 0);
         this.clinicsids.forEach(element => {
           this.totalDiscountChartClinicsData1.push(sumOfId(element));
         });
@@ -2368,11 +2368,11 @@ export class FinancesComponent implements AfterViewInit {
         this.totalProductionTrendVal = (data.total_ta) ? Math.round(data.total_ta) : 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.forEach((item, ind)=>{
+          data.body.data.forEach((item, ind)=>{
             this.totalProductionCollection1[ind] = {data:[], label: ''}
           });
 
-          data.data.forEach((item, ind)=>{
+          data.body.data.forEach((item, ind)=>{
             this.totalProductionCollection1[ind]['data'].push(Math.round(item.production));
             this.totalProductionCollection1[ind]['label'] = item.clinic_name;
             this.totalProductionCollection1[ind]['backgroundColor']= this.doughnutChartColors[ind];
@@ -2384,8 +2384,8 @@ export class FinancesComponent implements AfterViewInit {
           this.totalProductionCollection1[0]['data'] = [];
           this.productionstats = true;
 
-          if (data.data[0])
-            this.totalProductionLabel = data.data[0].provider_name;
+          if (data.body.data[0])
+            this.totalProductionLabel = data.body.data[0].provider_name;
           else
             this.totalProductionLabel = '';
 
@@ -2440,7 +2440,7 @@ export class FinancesComponent implements AfterViewInit {
         
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;        
-          data.data.forEach((item, ind)=>{
+          data.body.data.forEach((item, ind)=>{
             this.totalProductionCollection1[ind]['data'].push(Math.round(item.collection));
             this.totalProductionCollection1[ind]['label'] = item.clinic_name;
             this.totalProductionCollection1[ind]['backgroundColor']= this.doughnutChartColors[ind];
@@ -2503,7 +2503,7 @@ export class FinancesComponent implements AfterViewInit {
         this.ProductionTrend1 = [];
         this.ProductionTrendLabels1 = [];       
         if (data.total > 0) {
-          data.data.forEach(res => { 
+          data.body.data.forEach(res => { 
             this.ProductionTrend1.push(Math.round(res.prod_per_visit));
             this.ProductionTrendLabels1.push(res.clinic_name);
           });
@@ -2544,7 +2544,7 @@ export class FinancesComponent implements AfterViewInit {
         this.totalOverdueAccountLabels = [];
         this.totalOverdueAccountres = [];
         this.totalOverdueAccountLabelsres = [];
-        data.data.forEach(res => {
+        data.body.data.forEach(res => {
           if (res.overdue > 0) {
             this.totalOverdueAccountres.push(Math.round(res.overdue));
             this.totalOverdueAccountLabelsres.push(res.label);
@@ -2958,8 +2958,8 @@ export class FinancesComponent implements AfterViewInit {
       this.showClinic = false;
       this.finProductionByClinicianTrendLoader = false;
       if (data.body.message == 'success') {        
-        data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
-        data.data.forEach(res => {
+        data.body.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
+        data.body.data.forEach(res => {
           const sumProd = res.val.reduce((accumulator, current) => accumulator + Number(current['production']), 0)
           res.val.forEach((result, key) => {
 
@@ -3064,17 +3064,17 @@ export class FinancesComponent implements AfterViewInit {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       if (data.body.message == 'success') {
-        if(data.data == null || data.data.length <= 0){
+        if(data.body.data == null || data.body.data.length <= 0){
           this.finTotalDiscountsTrendLoader = false;
           return;
         }
-        data.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
+        data.body.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showByclinic = true;
         }
         this.finTotalDiscountsTrendLoader = false;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          data.data.forEach(res => { 
+          data.body.data.forEach(res => { 
             res.val.forEach((reslt, key) => {
               if (typeof (this.discountsChartTrendMulti[key]) == 'undefined') {
                 this.discountsChartTrendMulti[key] = { data: [], label: '' };
@@ -3095,7 +3095,7 @@ export class FinancesComponent implements AfterViewInit {
           });
           this.discountsChartTrendMultiLabels = this.discountsChartTrendMultiLabels1;
         }else{
-          data.data.forEach(res => {         
+          data.body.data.forEach(res => {         
             this.discountsChartTrend1.push(Math.round(res.discounts));
             if (this.trendValue == 'c')
               this.discountsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -3148,7 +3148,7 @@ export class FinancesComponent implements AfterViewInit {
       this.enableDiabaleButton(this.Apirequest);
       if (data.body.message == 'success') {
         this.finOverdueAccountsTrendLoader = false;
-        data.data.forEach(res => {
+        data.body.data.forEach(res => {
           this.overdueChartTrend1.push(Math.round(res.val.total));
           if (this.trendValue == 'c')
             this.overdueChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
@@ -3222,8 +3222,8 @@ export class FinancesComponent implements AfterViewInit {
         }
         this.finTotalProductionTrendLoader = false;
         this.finNetProfitTrendLoader = false;
-        data.data.sort((a, b)=> a.year - b.year);
-        data.data.forEach(res => {
+        data.body.data.sort((a, b)=> a.year - b.year);
+        data.body.data.forEach(res => {
           this.PMonthRange.push(res.year_month);
           this.PYearRange.push(res.year);
           this.cName.push(res.clinic_name);
@@ -3239,8 +3239,8 @@ export class FinancesComponent implements AfterViewInit {
           }
 
         });
-        const sumClinics = (range:any) => data.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.production), 0);
-        const sumClinics1 = (range:any) => data.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.production), 0);
+        const sumClinics = (range:any) => data.body.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.production), 0);
+        const sumClinics1 = (range:any) => data.body.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.production), 0);
         this.cName = [...new Set(this.cName)];
         this.cids = [...new Set(this.cids)];
         this.PMonthRange = [...new Set(this.PMonthRange)];
@@ -3350,8 +3350,8 @@ export class FinancesComponent implements AfterViewInit {
         }else{
           this.isAllClinic = false;
         }
-        data.data.sort((a, b)=> a.year - b.year);    
-        data.data.forEach(res => {
+        data.body.data.sort((a, b)=> a.year - b.year);    
+        data.body.data.forEach(res => {
           this.CMonthRange.push(res.year_month);
           this.CYearRange.push(res.year);
           // this.collectionChartTrend1.push(Math.round(res.collection));
@@ -3361,8 +3361,8 @@ export class FinancesComponent implements AfterViewInit {
           //   this.collectionChartTrendLabels1.push(res.year);
 
         });
-        const CsumClinics = (range:any) => data.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.collection), 0);
-        const CsumClinics1 = (range:any) => data.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.collection), 0);
+        const CsumClinics = (range:any) => data.body.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.collection), 0);
+        const CsumClinics1 = (range:any) => data.body.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.collection), 0);
       
         this.CMonthRange = [...new Set(this.CMonthRange)];
         this.CYearRange = [...new Set(this.CYearRange)];
@@ -3434,8 +3434,8 @@ export class FinancesComponent implements AfterViewInit {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       if (data && data.body.message == 'success') {
-        data.data.sort((a, b)=> a.year - b.year);
-        data.data.forEach(res => {
+        data.body.data.sort((a, b)=> a.year - b.year);
+        data.body.data.forEach(res => {
           this.VMonthRange.push(res.year_month);
           this.VYearRange.push(res.year);
           this.clinicIds.push(res.clinic_id);
@@ -3447,10 +3447,10 @@ export class FinancesComponent implements AfterViewInit {
 
         });
 
-        const vsumClinics = (range:any) => data.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.production), 0);
-        const vsumClinicsVisits = (range:any) => data.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.num_visits), 0);
-        const vsumClinics1 = (range:any) => data.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.production), 0);
-        const vsumClinics1Visits = (range:any) => data.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.num_visits), 0);
+        const vsumClinics = (range:any) => data.body.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.production), 0);
+        const vsumClinicsVisits = (range:any) => data.body.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.num_visits), 0);
+        const vsumClinics1 = (range:any) => data.body.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.production), 0);
+        const vsumClinics1Visits = (range:any) => data.body.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.num_visits), 0);
        
         this.VMonthRange = [...new Set(this.VMonthRange)];
         this.VYearRange = [...new Set(this.VYearRange)];
@@ -3512,7 +3512,7 @@ export class FinancesComponent implements AfterViewInit {
       this.enableDiabaleButton(this.Apirequest);
       if (data.body.message == 'success') {
         this.finNetProfitTrendLoader = false;
-        data.data.forEach(res => {
+        data.body.data.forEach(res => {
           this.netProfitChartTrend1.push(Math.round(res.val));
           if (this.trendValue == 'c')
             this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
@@ -3566,7 +3566,7 @@ export class FinancesComponent implements AfterViewInit {
       if (data.body.message == 'success') {
         this.finNetProfitPercentTrendLoader = false;
 
-        data.data.forEach(res => {
+        data.body.data.forEach(res => {
           this.netProfitPercentChartTrend1.push(Math.round(res.val));
           if (this.trendValue == 'c')
             this.netProfitPercentChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
@@ -3653,8 +3653,8 @@ export class FinancesComponent implements AfterViewInit {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       if (data.body.message == 'success') {
-        if (data.data)
-          data.data.forEach(res => {
+        if (data.body.data)
+          data.body.data.forEach(res => {
             if (res.net_profit != null)
               this.netProfitChartTrend1.push(Math.round(res.net_profit));
             else
@@ -3691,8 +3691,8 @@ export class FinancesComponent implements AfterViewInit {
       if (data.body.message == 'success') {
         this.netProfitPmsChartTrend1 = [];
         this.netProfitChartTrendLabels1 = [];
-        if (data.data) {
-          data.data.forEach(res => {
+        if (data.body.data) {
+          data.body.data.forEach(res => {
             if (res.net_profit_percentage != null)
               this.netProfitPmsChartTrend1.push(Math.round(res.net_profit_percentage));
             else
@@ -3729,7 +3729,7 @@ export class FinancesComponent implements AfterViewInit {
       this.enableDiabaleButton(this.Apirequest);
       if (data.body.message == 'success') {
         this.expensestrendstats = true;
-        data.data.expenses.forEach((result, key) => {
+        data.body.data.expenses.forEach((result, key) => {
           if (result.meta_key != 'Total Operating Expenses') {
             let tempO: any = [];
             result.expenses.forEach((res) => { tempO.push(res); });
@@ -3741,7 +3741,7 @@ export class FinancesComponent implements AfterViewInit {
             this.expensesChartTrend.push(temp);
           }
         });
-        this.expensesChartTrendLabels = data.data.duration;
+        this.expensesChartTrendLabels = data.body.data.duration;
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
@@ -3769,7 +3769,7 @@ export class FinancesComponent implements AfterViewInit {
   getChartsTips() {
     this.chartstipsService.getCharts(5).subscribe((data) => {
       if (data.body.message == 'success') {
-        this.charTips = data.data;
+        this.charTips = data.body.data;
       }
     }, error => { });
   }

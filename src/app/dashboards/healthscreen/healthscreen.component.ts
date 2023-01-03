@@ -199,8 +199,8 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   getScreenMTD(){
     var self = this;
     return new Promise(function (resolve, reject) {
-      self.healthscreenService.getSetting().subscribe((data) => {
-          self.health_screen_mtd = data.data;       
+      self.healthscreenService.getSetting().subscribe((res) => {
+          self.health_screen_mtd = res.body.data;       
           resolve(true);
       }, error => {
         self.health_screen_mtd = this._cookieService.get("health_screen_mtd"); 
@@ -361,59 +361,59 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.visits_dif = 0;
     this.productionVal = 0;
     this.productionPrev = 0;
-    this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chTopCards').subscribe((data) => {
-      if (data.body.message == 'success') {
+    this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chTopCards').subscribe((res) => {
+      if (res.status == 200) {
         let today = new Date().getDate();
-        let todayMinusOffdays =  today - data.data.offdays_count;
-        let avgDaysCount = 30 - data.data.offdays_count;
-        // this.mtdText = data.data.mtdText;
-        // this.mtdInnText = data.data.mtdInnText;
+        let todayMinusOffdays =  today - res.body.data.offdays_count;
+        let avgDaysCount = 30 - res.body.data.offdays_count;
+        // this.mtdText = data.body.data.mtdText;
+        // this.mtdInnText = data.body.data.mtdInnText;
         this.productionstats = true;
         this.totalvisitstats = true;
         this.prodpervisitstats = true;
         this.finProductionPerVisitLoader = false;
         // check for all clinic 
         if (Array.isArray(this.clinic_id) || this.clinic_id == 'all') {
-          this.production_p = Math.round(data.data.production_ta);
+          this.production_p = Math.round(res.body.data.production_ta);
 
           this.production_c = 0;
           let tooltip_p = '';
-          data.data.production.forEach((val) => {
+          res.body.data.production.forEach((val) => {
             this.production_c = this.production_c + Math.round(val.production);
             tooltip_p += '<span class="text">' + val.clinic_name + ': $' + Math.round(val.production) + '</span>';
           });
-          this.production_c_avg = Math.round(data.data.production_daily_avg);
+          this.production_c_avg = Math.round(res.body.data.production_daily_avg);
          // this.production_c_avg = Math.round(this.production_c / today);
           this.production_dif = Math.round(this.production_c - this.production_p);
           this.production_c_all = { 'title': '', 'info': tooltip_p };
 
-          this.visits_p = Math.round(data.data.num_visit_ta);
+          this.visits_p = Math.round(res.body.data.num_visit_ta);
 
           this.visits_c = 0;
           let tooltip_v = '';
-          data.data.num_visit.forEach((val) => {
+          res.body.data.num_visit.forEach((val) => {
             this.visits_c = this.visits_c + Math.round(val.num_visit);
             tooltip_v += '<span class="text">' + val.clinic_name + ': ' + Math.round(val.num_visit) + '</span>';
           });
-           this.visits_c_avg = Math.round(data.data.total_visits_avg);
+           this.visits_c_avg = Math.round(res.body.data.total_visits_avg);
          // this.visits_c_avg = Math.round(this.visits_c / today);
           this.visits_c_all = { 'title': '', 'info': tooltip_v };
           this.visits_dif = Math.round(this.visits_c - this.visits_p);
 
 
-          this.productionPrev = Math.round(data.data.production_visit_ta);
+          this.productionPrev = Math.round(res.body.data.production_visit_ta);
           this.productionVal = 0;
           let tooltip_pv = '';
           this.productionVal = Math.round(this.production_c / this.visits_c);
-          data.data.production_visit.forEach((val) => {
+          res.body.data.production_visit.forEach((val) => {
             tooltip_pv += '<span class="text">' + val.clinic_name + ': $' + Math.round(val.production_visit) + '</span>';
           });
           this.productionVal_all = { 'title': '', 'info': tooltip_pv };
           this.finProductionPerVisit_dif = Math.round(this.productionVal - this.productionPrev);
         } else {
-          this.production_c = data.data.production;
-          this.production_p = Math.round(data.data.production_ta);
-          // this.production_c_avg = Math.round(data.data.production_daily_avg);
+          this.production_c = res.body.data.production;
+          this.production_p = Math.round(res.body.data.production_ta);
+          // this.production_c_avg = Math.round(data.body.data.production_daily_avg);
           if(this.health_screen_mtd == 0){
             this.production_c_avg = Math.round(this.production_c / avgDaysCount);
           }else{
@@ -422,13 +422,13 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
           
           this.production_dif = Math.round(this.production_c - this.production_p);
 
-          this.productionVal = (data.data.production_visit) ? data.data.production_visit : 0;
-          this.productionPrev = Math.round(data.data.production_visit_ta);
+          this.productionVal = (res.body.data.production_visit) ? res.body.data.production_visit : 0;
+          this.productionPrev = Math.round(res.body.data.production_visit_ta);
           this.finProductionPerVisit_dif = Math.round(this.productionVal - this.productionPrev);
 
-          this.visits_c = Math.round(data.data.num_visit);
-          this.visits_p = Math.round(data.data.num_visit_ta);
-          // this.visits_c_avg = Math.round(data.data.total_visits_avg);
+          this.visits_c = Math.round(res.body.data.num_visit);
+          this.visits_p = Math.round(res.body.data.num_visit_ta);
+          // this.visits_c_avg = Math.round(data.body.data.total_visits_avg);
           if(this.health_screen_mtd == 0){
             this.visits_c_avg = Math.round(this.visits_c / avgDaysCount);
           }else{
@@ -451,7 +451,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
       this.production_c = 0;
       this.production_dif = 0;
       this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chProduction').subscribe((data) => {
-        if(data.body.message == 'success'){
+        if(data.status == 200){
           this.productionstats = true;
           this.production_c = data.total;
           this.production_p = Math.round(data.total_ta);
@@ -467,7 +467,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
       this.visits_c = 0;
       this.visits_dif = 0;
       this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chTotalVisits').subscribe((data) => {
-        if(data.body.message == 'success'){
+        if(data.status == 200){
           this.totalvisitstats = true;
           this.visits_c = data.total;
           this.visits_p = data.total_ta;
@@ -487,11 +487,11 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public dentistProductionLoader: boolean = true;
   public chGetProductionMCP() { // Total Vists top Card
     this.dentistProductionLoader = true;
-    this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chGetProductionMCP').subscribe((data) => {
+    this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chGetProductionMCP').subscribe((res) => {
       this.dentistProductionLoader = false;
-      if (data.body.message == 'success' && data.data) {
-        this.dentistProduction = Math.round(data.data[0].production);
-        this.dentistProductionTa = Math.round(data.data_ta[0].production);
+      if (res.status == 200 && res.body.data) {
+        this.dentistProduction = Math.round(res.body.data[0].production);
+        this.dentistProductionTa = Math.round(res.data_ta[0].production);
         this.dentistProductionDiff = Math.round(this.dentistProduction - this.dentistProductionTa);
       }
     }, error => {
@@ -506,11 +506,11 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public dentistHourlyRateLoader: boolean = true;
   public chGetHourlyRateMCP() { // Total Vists top Card
     this.dentistHourlyRateLoader = true;
-    this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chGetHourlyRateMCP').subscribe((data) => {
+    this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chGetHourlyRateMCP').subscribe((res) => {
       this.dentistHourlyRateLoader = false;
-      if (data.body.message == 'success' && data.data) {
-        this.dentistHourlyRate = Math.round(data.data[0].hourly_rate);
-        this.dentistHourlyRateTa = Math.round(data.data_ta[0].hourly_rate);
+      if (res.status == 200 && res.body.data) {
+        this.dentistHourlyRate = Math.round(res.body.data[0].hourly_rate);
+        this.dentistHourlyRateTa = Math.round(res.data_ta[0].hourly_rate);
         this.dentistHourlyRateDiff = Math.round(this.dentistHourlyRate - this.dentistHourlyRateTa);
       }
     }, error => {
@@ -523,16 +523,16 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public chGetDetistProdHorate() { // Total Vists top Card
     this.dentistHourlyRateLoader = true;
     this.dentistProductionLoader = true;
-    this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chGetProduHrRate').subscribe((data) => {
+    this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chGetProduHrRate').subscribe((res) => {
       this.dentistHourlyRateLoader = false;
       this.dentistProductionLoader = false;
-      if (data.body.message == 'success' && data.data) {
-        this.dentistProduction = Math.round(data.data.production);
-        this.dentistProductionTa = Math.round(data.data.production_ta);
+      if (res.status == 200 && res.body.data) {
+        this.dentistProduction = Math.round(res.body.data.production);
+        this.dentistProductionTa = Math.round(res.body.data.production_ta);
         this.dentistProductionDiff = Math.round(this.dentistProduction - this.dentistProductionTa);
 
-        this.dentistHourlyRate = Math.round(data.data.hourly_rate);
-        this.dentistHourlyRateTa = Math.round(data.data.hourly_rate_ta);
+        this.dentistHourlyRate = Math.round(res.body.data.hourly_rate);
+        this.dentistHourlyRateTa = Math.round(res.body.data.hourly_rate_ta);
         this.dentistHourlyRateDiff = Math.round(this.dentistHourlyRate - this.dentistHourlyRateTa);
       }
     }, error => {
@@ -543,11 +543,11 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
 
   public chGetDetistReappRate() { // Total Vists top Card
     this.dentistReappointRateLoader = true;
-    this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chGetReappointmentRate').subscribe((data) => {
+    this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chGetReappointmentRate').subscribe((res) => {
       this.dentistReappointRateLoader = false;
-      if (data.body.message == 'success' && data.data) {
-        this.dentistReappointRate = Math.round(data.data.reappoint_rate);
-        this.dentistReappointRateTa = Math.round(data.data.reappoint_rate_ta);
+      if (res.status == 200 && res.body.data) {
+        this.dentistReappointRate = Math.round(res.body.data.reappoint_rate);
+        this.dentistReappointRateTa = Math.round(res.body.data.reappoint_rate_ta);
         this.dentistReappointRateDiff = Math.round(this.dentistReappointRate - this.dentistReappointRateTa);
       }
     }, error => {
@@ -562,11 +562,11 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public dentistReappointRateLoader: boolean = true;
   public chGetReappointRateMCP() { // Total Vists top Card
     this.dentistReappointRateLoader = true;
-    this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chGetReappointRateMCP').subscribe((data) => {
+    this.healthscreenService.commonCall(this.clinic_id, this.startDate, this.endDate, 'chGetReappointRateMCP').subscribe((res) => {
       this.dentistReappointRateLoader = false;
-      if (data.body.message == 'success' && data.data) {
-        this.dentistReappointRate = Math.round(data.data[0].reappoint_rate);
-        this.dentistReappointRateTa = Math.round(data.data_ta[0].reappoint_rate);
+      if (res.status == 200 && res.body.data) {
+        this.dentistReappointRate = Math.round(res.body.data[0].reappoint_rate);
+        this.dentistReappointRateTa = Math.round(res.data_ta[0].reappoint_rate);
         this.dentistReappointRateDiff = Math.round(this.dentistReappointRate - this.dentistReappointRateTa);
       }
     }, error => {
@@ -583,10 +583,10 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     var startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1), 'yyyy-MM-dd');
     var endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7), 'yyyy-MM-dd');
     this.visits_f = 0;
-    this.healthscreenService.commonCall(this.clinic_id, startDate, endDate, 'chPrebookedVisits').subscribe((data) => {
-      if (data.body.message == 'success') {
+    this.healthscreenService.commonCall(this.clinic_id, startDate, endDate, 'chPrebookedVisits').subscribe((res) => {
+      if (res.status == 200) {
         this.prebookedvisitchart = true;
-        this.visits_f = data.data;
+        this.visits_f = res.body.data;
       }
     }, error => {
       $('.ajax-loader').hide();
@@ -601,10 +601,10 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     var startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1), 'yyyy-MM-dd');
     var endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7), 'yyyy-MM-dd');
     this.utilisation_rate_f = 0;
-    this.healthscreenService.commonCall(this.clinic_id, startDate, endDate, 'chUtilisationRate').subscribe((data) => {
-      if (data.body.message == 'success') {
+    this.healthscreenService.commonCall(this.clinic_id, startDate, endDate, 'chUtilisationRate').subscribe((res) => {
+      if (res.status == 200) {
         this.chairutilrate = true;
-        this.utilisation_rate_f = Math.round(data.data);
+        this.utilisation_rate_f = Math.round(res.body.data);
       }
     }, error => {
       $('.ajax-loader').hide();
@@ -619,10 +619,10 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     var startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1), 'yyyy-MM-dd');
     var endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7), 'yyyy-MM-dd');
     this.unscheduled_production_f = 0;
-    this.healthscreenService.commonCall(this.clinic_id, startDate, endDate, 'chUnscheduledProd').subscribe((data) => {
-      if (data.body.message == 'success') {
+    this.healthscreenService.commonCall(this.clinic_id, startDate, endDate, 'chUnscheduledProd').subscribe((res) => {
+      if (res.status == 200) {
         this.unscheduledproduction = true;
-        let value = (data.data >= 1000) ? data.data / 1000 : data.data;
+        let value = (res.body.data >= 1000) ? res.body.data / 1000 : res.body.data;
         this.unscheduled_production_f = Math.round(value);
       }
     }, error => {
@@ -655,10 +655,10 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.hourlyRateChartData = [];
     this.maxHourlyRate = 0;
     let colorCount = 0;
-    this.healthscreenService.hourlyRateChart(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
+    this.healthscreenService.hourlyRateChart(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res) => {
       this.hourlyRateChartData = [];
-      if (data.body.message == 'success') {
-        this.hourlyRateChartData = data.data;
+      if (res.status == 200) {
+        this.hourlyRateChartData = res.body.data;
         this.hoursrateleaders = true;
 
       }
@@ -691,9 +691,9 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.newPatientsTimeClinic = [];
     var user_id;
     var clinic_id;
-    this.healthscreenService.mkNewPatientsByReferral(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
-      if (data.body.message == 'success') {
-        this.newPatientsTimeData = data.data;
+    this.healthscreenService.mkNewPatientsByReferral(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
+      if (res.status == 200) {
+        this.newPatientsTimeData = res.body.data;
         this.refreralleaders = true;
       }
     }, error => {
@@ -702,9 +702,9 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     );
   }
   getChartsTips() {
-    this.chartstipsService.getCharts(6).subscribe((data) => {
-      if (data.body.message == 'success') {
-        this.charTips = data.data;
+    this.chartstipsService.getCharts(6).subscribe((res) => {
+      if (res.status == 200) {
+        this.charTips = res.body.data;
       }
     }, error => { });
   }
@@ -736,7 +736,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
       var user_id;
       var clinic_id;
       this.healthscreenService.finProductionPerVisit(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-         if(data.body.message == 'success'){
+         if(data.status == 200){
           this.prodpervisitstats = true;
           this.finProductionPerVisitLoader = false;
           this.productionVal = Math.round(data.total);

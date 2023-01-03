@@ -1358,12 +1358,12 @@ if(this._cookieService.get("user_type") == '4'){
         this.stackedChartDataMax = 0;
         this.paGeneralData = [];
        if(data.body.message == 'success'){ 
-        if(data && data.data && data.data.length <=0) {
+        if(data && data.body.data && data.body.data.length <=0) {
 
         }else {
           if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
             this.showmulticlinicGenPredictor = true;
-            data.data.forEach(res => {
+            data.body.data.forEach(res => {
               res.proval.forEach((result, key) => {
                 if (typeof (this.ItemsPredictorAnalysisGenMulti[key]) == 'undefined') {
                   this.ItemsPredictorAnalysisGenMulti[key] = { data: [], label: '' };
@@ -1379,7 +1379,7 @@ if(this._cookieService.get("user_type") == '4'){
             });
           }else{
                 var i=0
-          data && data.data && data.data.length && data.data.forEach(res => {
+          data && data.body.data && data.body.data.length && data.body.data.forEach(res => {
               if(res.provider_name != null){
                 if( (parseInt(res.crowns) + parseInt(res.splints) + parseInt(res.rct) + parseInt(res.perio) + parseInt(res.extract)  + parseInt(res.ss_crowns)  + parseInt(res.comp_veneers)  + parseInt(res.imp_crowns) ) > 0){
               
@@ -1518,11 +1518,11 @@ if(this._cookieService.get("user_type") == '4'){
         this.ItemsPredictorAnalysisMulti = [];
         this.ItemsPredictorAnalysisLabels = [];
        if(data.body.message == 'success'){   
-        if(data && data.data && data.data.length <= 0) {
+        if(data && data.body.data && data.body.data.length <= 0) {
         } else {
           if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
             this.showmulticlinicItemsPredictor = true;
-            data.data.forEach(res => {
+            data.body.data.forEach(res => {
               res.proval.forEach((result, key) => {
                 if (typeof (this.ItemsPredictorAnalysisMulti[key]) == 'undefined') {
                   this.ItemsPredictorAnalysisMulti[key] = { data: [], label: '' };
@@ -1544,7 +1544,7 @@ if(this._cookieService.get("user_type") == '4'){
           }else{
             var i=0
             var currentUser = 0;
-            data && data.data && data.data.length && data.data.forEach(res => {            
+            data && data.body.data && data.body.data.length && data.body.data.forEach(res => {            
               if(res.provider_name != null){
                 if(parseInt(res.imp_surg) + parseInt(res.ortho_fix) + parseInt(res.sleep) + parseInt(res.ortho_align) + parseInt(res.perio_surg) + parseInt(res.veneers_ind)> 0){
   
@@ -1637,23 +1637,23 @@ if(this._cookieService.get("user_type") == '4'){
   this.clinicianproceeduresService.ItemsPredictorAnalysisDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
         this.buildChartDentistLoader = false;
         this.itemPredictedChartDataMax = 0;
-       if(data.body.message == 'success' && data.data && data.data.length){
+       if(data.body.message == 'success' && data.body.data && data.body.data.length){
           this.itemPredictedChartData1 = [];
            this.itemPredictedChartLabels=[];
           var temp=[];
-          temp['Crowns'] = data.data[0].crowns;
+          temp['Crowns'] = data.body.data[0].crowns;
           
-          temp['Splints'] = data.data[0].splints;
+          temp['Splints'] = data.body.data[0].splints;
          
-          temp['Root Canals'] = data.data[0].rct;
+          temp['Root Canals'] = data.body.data[0].rct;
          
-          temp['Perio'] = data.data[0].perio;
+          temp['Perio'] = data.body.data[0].perio;
          
-          temp['Surgical Extractions'] = data.data[0].extract;
-          temp['Stainless Steel Crowns'] = data.data[0].ss_crowns;
-          temp['Composite Veneers'] = data.data[0].comp_veneers;
-          temp['Implant Crowns'] = data.data[0].imp_crowns;
-          temp['Whitening'] = data.data[0].whitening;
+          temp['Surgical Extractions'] = data.body.data[0].extract;
+          temp['Stainless Steel Crowns'] = data.body.data[0].ss_crowns;
+          temp['Composite Veneers'] = data.body.data[0].comp_veneers;
+          temp['Implant Crowns'] = data.body.data[0].imp_crowns;
+          temp['Whitening'] = data.body.data[0].whitening;
           var tupleArray=[];
    for (var key in temp) tupleArray.push([key, temp[key]]);
     tupleArray.sort(function (a, b) { return b[1] - a[1] });
@@ -1663,7 +1663,7 @@ if(this._cookieService.get("user_type") == '4'){
         this.itemPredictedChartLabels.push(res[0]);
       });
           this.itemPredictedChartData[0]['data'] = this.itemPredictedChartData1;
-          this.itemPredictedChartData[0]['label'] = 'DentistMode-'+data.data[0].provider_name;
+          this.itemPredictedChartData[0]['label'] = 'DentistMode-'+data.body.data[0].provider_name;
           //this.itemPredictedChartLabels= ['Crowns','Splints','Root Canals','Perio','Surgical Extractions'];
 
           this.itemPredictedChartDataMax = Math.max(...this.itemPredictedChartData[0]['data']);         
@@ -1689,17 +1689,17 @@ if(this._cookieService.get("user_type") == '4'){
     this.clinicianproceeduresService.ItemsPredictorAnalysisSpecialistDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
       this.procedureSpecialDentistLoader = false;
       this.procedureSpecialDataMax = 0;
-      if(data.body.message == 'success' && data.data && data.data.length) {
+      if(data.body.message == 'success' && data.body.data && data.body.data.length) {
         this.procedureSpecialTemp = [];
         this.procedureSpecialLabels=[];
         var temp=[];
-        temp['Implant Surg'] = data.data[0].imp_surg;
-        temp['Braces'] = data.data[0].ortho_fix;
-        temp['Aligners'] = data.data[0].ortho_align;
-        temp['MAS'] = data.data[0].sleep;
-        temp['Perio Surg'] = data.data[0].perio_surg;
-        temp['Endo Re-treat'] = data.data[0].endo_retreat;
-        temp['Veneers (indirect)'] = data.data[0].veneers_ind;
+        temp['Implant Surg'] = data.body.data[0].imp_surg;
+        temp['Braces'] = data.body.data[0].ortho_fix;
+        temp['Aligners'] = data.body.data[0].ortho_align;
+        temp['MAS'] = data.body.data[0].sleep;
+        temp['Perio Surg'] = data.body.data[0].perio_surg;
+        temp['Endo Re-treat'] = data.body.data[0].endo_retreat;
+        temp['Veneers (indirect)'] = data.body.data[0].veneers_ind;
         var tupleArray=[];
         for (var key in temp) tupleArray.push([key, temp[key]]);
         tupleArray.sort(function (a, b) { return b[1] - a[1] });
@@ -1708,7 +1708,7 @@ if(this._cookieService.get("user_type") == '4'){
           this.procedureSpecialLabels.push(res[0]);
         });
         this.itemPredictedChartSpecailData[0]['data'] = this.procedureSpecialTemp;
-        this.itemPredictedChartSpecailData[0]['label'] = 'DentistMode-'+data.data[0].provider_name;
+        this.itemPredictedChartSpecailData[0]['label'] = 'DentistMode-'+data.body.data[0].provider_name;
         this.procedureSpecialDataMax = Math.max(...this.itemPredictedChartData[0]['data']);         
       }
     }, error => {
@@ -1878,7 +1878,7 @@ public PRcolors;
              this.predictorLabels3.push(res.clinic_name);
           });          
         }else{
-          data.data.forEach((res,key) => {
+          data.body.data.forEach((res,key) => {
             var provider = res.provider_name;
             if(!provider)
               provider = '';
@@ -1979,7 +1979,7 @@ public predictedstackedChartLoader: boolean = false;
         this.predictedstackedChartLabels1AvrPre = data.total_ta[0];
         this.predictedstackedChartLabels2AvrPre = data.total_ta[1];
         this.predictedstackedChartLabels3AvrPre = data.total_ta[2];    
-        data.data.forEach((res,key) => {
+        data.body.data.forEach((res,key) => {
           var provider = res.provider_name;
           if(!provider)
             provider = '';
@@ -2028,7 +2028,7 @@ public buildChartProceedureLoader:any;
         this.proceedureChartLabels1 = [];
         this.proceedureChartData1 =[];
         this.proceedureChartLabels =[];
-        data.data.forEach(res => {
+        data.body.data.forEach(res => {
           if(res.body.total > 0 ) {
             this.proceedureChartData1.push(Math.round(res.body.total));
             if(res.item_name != null){
@@ -2073,11 +2073,11 @@ public buildChartProceedureDentistLoader:any;
     this.buildChartProceedureDentistLoader =true;
    
   this.clinic_id && this.clinicianproceeduresService.ClinicianProceedureDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
-    if (data.body.message == 'success' && data.data){
+    if (data.body.message == 'success' && data.body.data){
         this.buildChartProceedureDentistLoader =false;
         this.proceedureChartData1 = [];
         this.proceedureChartLabels1 = [];
-         data.data.forEach(res => {
+         data.body.data.forEach(res => {
            this.proceedureChartData1.push(Math.round(res.body.total));
            if(res.item_name != null){
               this.proceedureChartLabels1.push(res.item_name);
@@ -2137,9 +2137,9 @@ public doughnutChartColors1;
         this.pieChartInternalPrevTooltip = 'down';
         this.pieChartExternalPrevTooltip = 'down';
         this.pieChartCombinedPrevTooltip = 'down';
-      if (data.body.message == 'success' && data.data && data.data.length) {
+      if (data.body.message == 'success' && data.body.data && data.body.data.length) {
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          data.data.forEach(res => {
+          data.body.data.forEach(res => {
             res.val.forEach((result, key) => {
               if(result.internal > 0) {
                   this.pieChartDatares1.push(result.internal);
@@ -2161,7 +2161,7 @@ public doughnutChartColors1;
           });
         }else{
           var i=0;
-          data.data.forEach(res => {
+          data.body.data.forEach(res => {
             if(res.internal > 0) {
             this.pieChartDatares1.push(res.internal);
             this.pieChartLabelsres1.push(res.treat_item_name);
@@ -2252,9 +2252,9 @@ public doughnutChartColors1;
       this.pieChartDataMax1 = 0;
       this.pieChartDataMax2 = 0;
       this.pieChartDataMax3 = 0;
-       if(data.body.message == 'success' && data.data.length){
+       if(data.body.message == 'success' && data.body.data.length){
      
-        data.data.forEach(res => {
+        data.body.data.forEach(res => {
           if(res.body.total>0) {
               if(res.internal>0) {
                  this.pieChartDatares1.push(res.internal);
@@ -2724,10 +2724,10 @@ toggleChangeProcess(){
       this.stackedChartDataMax = 0;
       this.buildChartDentistLoader = false;
       this.Apirequest = this.Apirequest -1;
-       if(data.body.message == 'success' && data.data){
-         if(data.data.length <=0) {
+       if(data.body.message == 'success' && data.body.data){
+         if(data.body.data.length <=0) {
                 }else {
-                data.data.forEach(res => {
+                data.body.data.forEach(res => {
                    this.stackedChartData1.push(res.crowns);
                    this.stackedChartData2.push(res.splints);
                    this.stackedChartData3.push(res.rct);
@@ -2808,10 +2808,10 @@ toggleChangeProcess(){
         {data: [], label: 'Veneers (indirect)' } 
       ];
       this.Apirequest = this.Apirequest -1;
-       if(data.body.message == 'success' && data.data){
-         if(data.data.length <=0) {
+       if(data.body.message == 'success' && data.body.data){
+         if(data.body.data.length <=0) {
                 }else {
-                data.data.forEach(res => {
+                data.body.data.forEach(res => {
                   this.stackedChartDataSpecTrend1.push(res.imp_surg);
                   this.stackedChartDataSpecTrend2.push(res.ortho_fix);
                   this.stackedChartDataSpecTrend3.push(res.ortho_align);
@@ -2906,9 +2906,9 @@ toggleChangeProcess(){
       this.stackedChartTrendData8 =[];
       this.stackedChartTrendData9 =[];
     if(this.mode == 'Internal') {
-       if(data.body.message == 'success' && data.data){
-         if(data.data.internal.length > 0) {
-                data.data.internal.forEach(res => {
+       if(data.body.message == 'success' && data.body.data){
+         if(data.body.data.internal.length > 0) {
+                data.body.data.internal.forEach(res => {
                    this.stackedChartTrendData1.push(res.val[0]);
                    this.stackedChartTrendData2.push(res.val[1]);
                    this.stackedChartTrendData3.push(res.val[2]);
@@ -2938,8 +2938,8 @@ toggleChangeProcess(){
          }
          else if(this.mode== 'External') {
        if(data.body.message == 'success'){
-         if(data.data.external.length >0) { 
-                data.data.external.forEach(res => {
+         if(data.body.data.external.length >0) { 
+                data.body.data.external.forEach(res => {
                   if(typeof(res.val) != 'undefined'){
                     this.stackedChartTrendData1.push(res.val[0]);
                     this.stackedChartTrendData2.push(res.val[1]);
@@ -2971,8 +2971,8 @@ toggleChangeProcess(){
          }
          else if(this.mode== 'Combined') {
        if(data.body.message == 'success'){
-         if(data.data.combined.length >0) {
-                data.data.combined.forEach(res => {
+         if(data.body.data.combined.length >0) {
+                data.body.data.combined.forEach(res => {
                   if(typeof(res.val) != 'undefined'){
                     this.stackedChartTrendData1.push(res.val[0]);
                     this.stackedChartTrendData2.push(res.val[1]);
@@ -3063,10 +3063,10 @@ toggleChangeProcess(){
       this.predictorRatioLoader = false;
       this.ratioChartLabels1=[];
       this.Apirequest = this.Apirequest -1;
-       if(data.body.message == 'success' && data.data){
-          if(data.data.length <=0) {
+       if(data.body.message == 'success' && data.body.data){
+          if(data.body.data.length <=0) {
           } else {
-            data.data.forEach(res => { 
+            data.body.data.forEach(res => { 
               if(typeof(res.val) != 'undefined'){
                 this.ratioChartData1[0]['data'].push(res.val.crown[0]);
                 this.ratioChartData1[1]['data'].push(res.val.crown[1]);
@@ -3137,7 +3137,7 @@ toggleChangeProcess(){
     getChartsTips() {
       this.chartstipsService.getCharts(2).subscribe((data) => {
        if(data.body.message == 'success'){         
-        this.charTips = data.data;
+        this.charTips = data.body.data;
        }
     }, error => {});
   }

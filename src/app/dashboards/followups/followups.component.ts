@@ -875,7 +875,7 @@ export class FollowupsComponent implements AfterViewInit {
   getChartsTips() {
     this.chartstipsService.getCharts(9).subscribe((data) => {
        if(data.body.message == 'success'){         
-        this.charTips = data.data;
+        this.charTips = data.body.data;
        }
     }, error => {
       

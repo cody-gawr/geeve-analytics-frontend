@@ -152,8 +152,8 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
 
   //  getClinic(id){
   //     this.clinicianAnalysisService.getClinics(id,'EquipListEnable').subscribe((data: any) => {
-  //       if(data.data){
-  //         this.EquipListEnable = (data.data.equip_list_enable == 1)? true : false;
+  //       if(data.body.data){
+  //         this.EquipListEnable = (data.body.data.equip_list_enable == 1)? true : false;
   //       }
   //     }, error => {});
   //   }
@@ -161,7 +161,7 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
     getClinic(){
       this.clinicSettingsService.getClinicData.subscribe((data: any) => {
         if(data.status == 200){
-          this.EquipListEnable = (data.data[0].equip_list_enable == 1)? true : false;
+          this.EquipListEnable = (data.body.data[0].equip_list_enable == 1)? true : false;
         }
       }, error => {});
     }

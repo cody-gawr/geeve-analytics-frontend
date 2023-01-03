@@ -280,11 +280,11 @@ export class CampaignsComponent implements OnInit, OnDestroy {
 
       this.clinicianAnalysisService.getClinicSettings(this.clinic_id).subscribe((data: any) => {
         if (data.message == 'success') {
-          this.isEnablePO = (data.data.post_op_enable == 1) ? true : false;
-          this.isEnableOR = (data.data.recall_enable == 1) ? true : false;
-          this.isEnableTH = (data.data.tick_enable == 1) ? true : false;
-          this.isEnableFT = (data.data.fta_enable == 1) ? true : false;
-          this.isEnableUT = (data.data.uta_enable == 1) ? true : false;
+          this.isEnablePO = (data.body.data.post_op_enable == 1) ? true : false;
+          this.isEnableOR = (data.body.data.recall_enable == 1) ? true : false;
+          this.isEnableTH = (data.body.data.tick_enable == 1) ? true : false;
+          this.isEnableFT = (data.body.data.fta_enable == 1) ? true : false;
+          this.isEnableUT = (data.body.data.uta_enable == 1) ? true : false;
         }
       });
       $('#title').html('Campaigns');
@@ -697,7 +697,7 @@ export class CampaignsComponent implements OnInit, OnDestroy {
   getChartsTips() {
     this.chartstipsService.getCharts(7).subscribe((data) => {
       if (data.message == 'success') {
-        this.charTips = data.data;
+        this.charTips = data.body.data;
       }
     }, error => { });
   }

@@ -274,9 +274,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public compareModeEnable: boolean = false;
   /********** Get the clinic information ***********/
   getClinic() {
-    this.cliniciananalysisService.getClinics(this.clinic_id, 'CompareMode').subscribe((data: any) => {
-      if (data.data) {
-        this.compareModeEnable = (data.data.compare_mode == 1) ? true : false;
+    this.cliniciananalysisService.getClinics(this.clinic_id, 'CompareMode').subscribe((res: any) => {
+      if (res.body.data) {
+        this.compareModeEnable = (res.body.data.compare_mode == 1) ? true : false;
         if(!this.compareModeEnable){
           this.averageToggle = false;
         }else if(this.compareModeEnable && this._cookieService.get("dentist_toggle") == 'true'){
@@ -312,10 +312,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   getMaxBarLimit(){
     let ids = this.clinic_id;
     ids.sort((a, b) => a - b);
-    this.cliniciananalysisService.getClinicSettings(ids[0]).subscribe((data:any) => {
-      if(data.message == 'success'){
-        if(data.data.max_chart_bars)
-          this.numberOfRecords = data.data.max_chart_bars; 
+    this.cliniciananalysisService.getClinicSettings(ids[0]).subscribe((res:any) => {
+      if(res.status == 200){
+        if(res.body.data.max_chart_bars)
+          this.numberOfRecords = res.body.data.max_chart_bars; 
       }
     });
   }
@@ -324,7 +324,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     let dynamicColors = [];
     if(this.isAllClinic){
       dynamicColors=[];
-      data.data.forEach(res => {
+      data.forEach(res => {
         if(Array.isArray(this.clinic_id)){
           this.clinic_id.forEach((item,index)=>{
             if(res.clinic_id == item){
@@ -1637,8 +1637,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   //check status of login
   public dentistVal = 'all';
   changeLoginStatus() {
-    this.cliniciananalysisService.changeLoginStatus().subscribe((data: any) => {
-      if (data.message == 'success') {
+    this.cliniciananalysisService.changeLoginStatus().subscribe((res: any) => {
+      if (res.status == 200) {
       }
     }, error => {
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
@@ -1875,16 +1875,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   //Get provider details
   private getAccountingDentist() {
     this.accountingDentist = [];
-    this.cliniciananalysisService.getAccountingDentist(this.clinic_id).subscribe((data: any) => {
-      if (data.message == 'success') {
-        data.data.forEach(res => {
+    this.cliniciananalysisService.getAccountingDentist(this.clinic_id).subscribe((res: any) => {
+      if (res.status == 200) {
+        res.body.data.forEach(res => {
           var temp = [];
           temp['provider_id'] = res.provider_id;
           temp['name'] = res.name;
           this.accountingDentist.push(temp);
         });
       }
-      else if (data.status == 401) {
+      else if (res.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -1901,9 +1901,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   //Get status of dentist for modal of hourly rate chart
   private getStatusDentist() {
     this.statusDentist = [];
-    this.cliniciananalysisService.getStatusDentist(this.clinic_id).subscribe((data: any) => {
-      if (data.message == 'success') {
-        data.data.forEach(res => {
+    this.cliniciananalysisService.getStatusDentist(this.clinic_id).subscribe((res: any) => {
+      if (res.status == 200) {
+        res.body.data.forEach(res => {
           var temp = [];
           temp['book_desc'] = res.app_book_description;
           temp['provider_id'] = res.provider_id;
@@ -1911,7 +1911,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.statusDentist.push(temp);
         });
       }
-      else if (data.status == 401) {
+      else if (res.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -1939,7 +1939,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     });
     var myJsonString = JSON.stringify(this.final_map);
     this.clinic_id && this.cliniciananalysisService.saveDentistMapping(myJsonString, this.clinic_id).subscribe((res) => {
-      if (res.body.data.message == 'success') {
+      if (res.body.res.status == 200) {
         alert('Mapping Saved!');
         $('.nsm-dialog-btn-close').click();
       }
@@ -2059,13 +2059,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.productionTotal = 0;
     this.barChartLabels = [];
     this.barChartOptionsDP.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.DentistProduction(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.DentistProduction(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.barChartData1 = [];
       this.barChartLabels1 = [];
       this.barChartLabels = [];
       this.productionTotal = 0;
       this.dentistProductiontbl =[];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showGoals = false;
         }        
@@ -2078,19 +2078,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.production - b.production).reverse();
+          res.body.data.sort((a, b)=> a.production - b.production).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.dentistProductiontbl = data.data;
-        // if(data.data.length >= this.numberOfRecords){
-        //   this.dentistProductiontbl = data.data;
+        this.dentistProductiontbl = res.body.data;
+        // if(res.body.data.length >= this.numberOfRecords){
+        //   this.dentistProductiontbl = res.body.data;
         //   this.showprodAllTbl = true;
         // }else{
         //   this.showprodAllTbl = false;
         // }
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
           // if (res.production > 0) {
             this.barChartData1.push(Math.round(res.production));
             var name = res.provider_name;
@@ -2166,14 +2166,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.chartService.colors.odd
         ]; // this is static array for colors of bars
 
-        let dynamicColors = this.barBackgroundColor(data, this.barChartLabels1);
+        let dynamicColors = this.barBackgroundColor(res.body.data, this.barChartLabels1);
 
         this.barChartData[0].backgroundColor = dynamicColors;
         this.barChartLabels = this.barChartLabels1;
-        this.productionTotal = Math.round(data.total);
-        this.productionTotalAverage = Math.round(data.total_average);
-        this.productionTotalPrev = Math.round(data.total_ta);
-        this.productionGoal = data.goals;
+        this.productionTotal = Math.round(res.body.total);
+        this.productionTotalAverage = Math.round(res.body.total_average);
+        this.productionTotalPrev = Math.round(res.body.total_ta);
+        this.productionGoal = res.res.body.goals;
 
         if (this.productionTotal >= this.productionTotalPrev)
           this.productionTooltip = 'up';
@@ -2213,7 +2213,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
 
         }
-        else if (data.status == 401) {
+        else if (res.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -2256,13 +2256,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.productionDentistsTotal = 0;
     this.barChartDentistLabels = [];
     this.barChartOptionsDP2.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.DentistProductionDentist(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.DentistProductionDentist(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.barChartDentistsData1 = [];
       this.barChartDentistsLabels1 = [];
       this.barChartDentistLabels = [];
       this.productionDentistsTotal = 0;
       this.dentistProductionDentisttbl =[];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.dentistKey1 ='';
         this.barChartDataDentists[0]['data'] =[];
         this.Apirequest = this.Apirequest - 1;
@@ -2272,19 +2272,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.production - b.production).reverse();
+          res.body.data.sort((a, b)=> a.production - b.production).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.dentistProductionDentisttbl = data.data;
-        // if(data.data.length >= this.numberOfRecords){
-        //   this.dentistProductionDentisttbl = data.data;
+        this.dentistProductionDentisttbl = res.body.data;
+        // if(res.body.data.length >= this.numberOfRecords){
+        //   this.dentistProductionDentisttbl = res.body.data;
         //   this.showprodDentAllTbl = true;
         // }else{
         //   this.showprodDentAllTbl = false;
         // }
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
           // if (res.production > 0) {
             this.barChartDentistsData1.push(Math.round(res.production));
             var name = res.provider_name;
@@ -2326,14 +2326,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.chartService.colors.odd
         ]; // this is static array for colors of bars
 
-        let dynamicColors = this.barBackgroundColor(data, this.barChartDentistsLabels1);
+        let dynamicColors = this.barBackgroundColor(res.body.data, this.barChartDentistsLabels1);
         
         this.barChartDataDentists[0].backgroundColor = dynamicColors;
         this.barChartDentistLabels = this.barChartDentistsLabels1;
-        this.productionDentistsTotal = Math.round(data.total);
-        this.productionDentistTotalAverage = Math.round(data.total_average);
-        this.productionDentistsTotalPrev = Math.round(data.total_ta);
-        this.productionGoal = data.goals;
+        this.productionDentistsTotal = Math.round(res.body.total);
+        this.productionDentistTotalAverage = Math.round(res.body.total_average);
+        this.productionDentistsTotalPrev = Math.round(res.body.total_ta);
+        this.productionGoal = res.res.body.goals;
         this.productionTotalPrev = this.productionDentistsTotalPrev;
         if (this.productionDentistsTotal >= this.productionDentistsTotalPrev)
               this.productionTooltip = 'up';
@@ -2374,7 +2374,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
 
         }
-        else if (data.status == 401) {
+        else if (res.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -2416,13 +2416,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.productionOhtTotal = 0;
     this.barChartOhtLabels = [];
     this.barChartOptionsDP3.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.DentistProductionOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.DentistProductionOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.barChartOhtData1 = [];
       this.barChartOhtLabels1 = [];
       this.barChartOhtLabels = [];
       this.productionOhtTotal = 0;
       this.dentistProductionOhttbl = [];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.dentistKey2='';
         this.barChartDataOht[0]['data'] =[];
         this.Apirequest = this.Apirequest - 1;
@@ -2432,19 +2432,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.production - b.production).reverse();
+          res.body.data.sort((a, b)=> a.production - b.production).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.dentistProductionOhttbl = data.data;
-        // if(data.data.length >= this.numberOfRecords){
-        //   this.dentistProductionOhttbl = data.data;
+        this.dentistProductionOhttbl = res.body.data;
+        // if(res.body.data.length >= this.numberOfRecords){
+        //   this.dentistProductionOhttbl = res.body.data;
         //   this.showprodOhtAllTbl = true;
         // }else{
         //   this.showprodOhtAllTbl = false;
         // }
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
           // if (res.production > 0) {
             this.barChartOhtData1.push(Math.round(res.production));
             var name = res.provider_name;
@@ -2486,14 +2486,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.chartService.colors.odd
         ]; // this is static array for colors of bars
 
-        let dynamicColors = this.barBackgroundColor(data, this.barChartOhtLabels1);
+        let dynamicColors = this.barBackgroundColor(res.body.data, this.barChartOhtLabels1);
 
         this.barChartDataOht[0].backgroundColor = dynamicColors;
         this.barChartOhtLabels = this.barChartOhtLabels1;
-        this.productionOhtTotal = Math.round(data.total);
-        this.productionOhtTotalAverage = Math.round(data.total_average);
-        this.productionOhtTotalPrev = Math.round(data.total_ta);
-        this.productionGoal = data.goals;
+        this.productionOhtTotal = Math.round(res.body.total);
+        this.productionOhtTotalAverage = Math.round(res.body.total_average);
+        this.productionOhtTotalPrev = Math.round(res.body.total_ta);
+        this.productionGoal = res.res.body.goals;
         this.productionTotalPrev = this.productionOhtTotalPrev;
         if (this.productionOhtTotal >= this.productionOhtTotalPrev)
               this.productionTooltip = 'up';
@@ -2534,7 +2534,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
 
         }
-        else if (data.status == 401) {
+        else if (res.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -2580,7 +2580,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionTotalGoal = 0;
     this.collectionLabels = [];
     this.barChartOptionsDP.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.DentistCollection(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.DentistCollection(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.collectionData1 = [];
       this.collectionLabels1 = [];
       this.collectionLabels = [];
@@ -2588,7 +2588,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.collectionTotalGoal = 0;
       this.collectionData[0]['data']=[];
       this.dentistCollectiontbl =[];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.collectionLoader = false;
@@ -2597,19 +2597,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var selectedDen: any = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.collection - b.collection).reverse();
+          res.body.data.sort((a, b)=> a.collection - b.collection).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.dentistCollectiontbl = data.data;
-        // if(data.data.length >= this.numberOfRecords){
-        //   this.dentistCollectiontbl = data.data;
+        this.dentistCollectiontbl = res.body.data;
+        // if(res.body.data.length >= this.numberOfRecords){
+        //   this.dentistCollectiontbl = res.body.data;
         //   this.showCollAllTbl = true;
         // }else{
         //   this.showCollAllTbl = false;
         // }
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
 
           // if (res.collection > 0) {
             this.collectionData1.push(Math.round(res.collection));
@@ -2656,14 +2656,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         ]; // this is static array for colors of bars
 
 
-        let dynamicColors = this.barBackgroundColor(data, this.collectionLabels1);
+        let dynamicColors = this.barBackgroundColor(res.body.data, this.collectionLabels1);
 
         this.collectionData[0].backgroundColor = dynamicColors;
         this.collectionLabels = this.collectionLabels1;
-        this.collectionTotal = Math.round(data.total);
-        this.collectionTotalAverage = Math.round(data.total_average);
-        this.collectionTotalPrev = Math.round(data.total_ta);
-        this.collectionTotalGoal = data.goals;
+        this.collectionTotal = Math.round(res.body.total);
+        this.collectionTotalAverage = Math.round(res.body.total_average);
+        this.collectionTotalPrev = Math.round(res.body.total_ta);
+        this.collectionTotalGoal = res.res.body.goals;
 
         if (this.collectionTotal >= this.collectionTotalPrev)
           this.collectionTooltip = 'up';
@@ -2703,7 +2703,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
 
         }
-        else if (data.status == 401) {
+        else if (res.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -2745,14 +2745,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionDentistsTotal = 0;
     this.collectionDentistsLabels = [];
     this.barChartOptionsDP4.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.DentistCollectionDentists(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.DentistCollectionDentists(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.collectionDentistsData1 = [];
       this.collectionDentistsLabels1 = [];
       this.collectionDentistsLabels = [];
       this.collectionDentistsTotal = 0;
       this.dentistCollectionDenttbl =[];
       this.collectionDentistsData[0]['data'] =[];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.collectionDentistsLoader = false;
@@ -2761,19 +2761,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var selectedDen: any = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.collection - b.collection).reverse();
+          res.body.data.sort((a, b)=> a.collection - b.collection).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.dentistCollectionDenttbl = data.data;
-        // if(data.data.length >= this.numberOfRecords){
-        //   this.dentistCollectionDenttbl = data.data;
+        this.dentistCollectionDenttbl = res.body.data;
+        // if(res.body.data.length >= this.numberOfRecords){
+        //   this.dentistCollectionDenttbl = res.body.data;
         //   this.showCollDentTbl = true;
         // }else{
         //   this.showCollDentTbl = false;
         // }
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
 
           // if (res.collection > 0) {
             this.collectionDentistsData1.push(Math.round(res.collection));
@@ -2819,14 +2819,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.chartService.colors.odd
         ]; // this is static array for colors of bars
 
-        let dynamicColors = this.barBackgroundColor(data, this.collectionDentistsLabels1);
+        let dynamicColors = this.barBackgroundColor(res.body.data, this.collectionDentistsLabels1);
 
         this.collectionDentistsData[0].backgroundColor = dynamicColors;
         this.collectionDentistsLabels = this.collectionDentistsLabels1;
-        this.collectionDentistsTotal = Math.round(data.total);
-        this.collectionDentistsTotalAverage = Math.round(data.total_average);
-        this.collectionDentistsTotalPrev = Math.round(data.total_ta);
-        this.collectionDentistsTotalGoal = data.goals;
+        this.collectionDentistsTotal = Math.round(res.body.total);
+        this.collectionDentistsTotalAverage = Math.round(res.body.total_average);
+        this.collectionDentistsTotalPrev = Math.round(res.body.total_ta);
+        this.collectionDentistsTotalGoal = res.res.body.goals;
         this.collectionTotalPrev = this.collectionDentistsTotalPrev;
         if (this.collectionDentistsTotal >= this.collectionDentistsTotalPrev)
             this.collectionTooltip = 'up';
@@ -2867,7 +2867,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
 
         }
-        else if (data.status == 401) {
+        else if (res.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -2908,14 +2908,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionOhtTotal = 0;
     this.collectionOhtLabels = [];
     this.barChartOptionsDP5.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.DentistCollectionOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.DentistCollectionOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.collectionOhtData1 = [];
       this.collectionOhtLabels1 = [];
       this.collectionOhtLabels = [];
       this.collectionOhtTotal = 0;
       this.dentistCollectionOhttbl = [];
       this.collectionOhtData[0]['data']=[];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.collectionOhtLoader = false;
@@ -2924,19 +2924,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var selectedDen: any = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.collection - b.collection).reverse();
+          res.body.data.sort((a, b)=> a.collection - b.collection).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.dentistCollectionOhttbl = data.data;
-        // if(data.data.length >= this.numberOfRecords){
-        //   this.dentistCollectionOhttbl = data.data;
+        this.dentistCollectionOhttbl = res.body.data;
+        // if(res.body.data.length >= this.numberOfRecords){
+        //   this.dentistCollectionOhttbl = res.body.data;
         //   this.showCollOhtTbl = true;
         // }else{
         //   this.showCollOhtTbl = false;
         // }
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
 
           // if (res.collection > 0) {
             this.collectionOhtData1.push(Math.round(res.collection));
@@ -2982,14 +2982,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.chartService.colors.odd
         ]; // this is static array for colors of bars
 
-        let dynamicColors = this.barBackgroundColor(data, this.collectionOhtLabels1);
+        let dynamicColors = this.barBackgroundColor(res.body.data, this.collectionOhtLabels1);
 
         this.collectionOhtData[0].backgroundColor = dynamicColors;
         this.collectionOhtLabels = this.collectionOhtLabels1;
-        this.collectionOhtTotal = Math.round(data.total);
-        this.collectionOhtTotalAverage = Math.round(data.total_average);
-        this.collectionOhtTotalPrev = Math.round(data.total_ta);
-        this.collectionOhtTotalGoal = data.goals;
+        this.collectionOhtTotal = Math.round(res.body.total);
+        this.collectionOhtTotalAverage = Math.round(res.body.total_average);
+        this.collectionOhtTotalPrev = Math.round(res.body.total_ta);
+        this.collectionOhtTotalGoal = res.res.body.goals;
         this.collectionTotalPrev = this.collectionOhtTotalPrev;
         if (this.collectionOhtTotal >= this.collectionOhtTotalPrev)
               this.collectionTooltip = 'up';
@@ -3030,7 +3030,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
 
         }
-        else if (data.status == 401) {
+        else if (res.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -3071,14 +3071,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionExpTotal = 0;
     this.collectionLabelsExp = [];
     this.barChartOptionsDP6.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.DentistCollectionExp(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.DentistCollectionExp(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.collectionExpData1 = [];
       this.collectionLabelsExp1 = [];
       this.collectionLabelsExp = [];
       this.collectionExpTotal = 0;
       this.dentistCollectionExptbl =[];
       this.collectionExpData[0]['data']=[];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.collectionExpLoader = false;
@@ -3087,19 +3087,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var selectedDen: any = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.collection - b.collection).reverse();
+          res.body.data.sort((a, b)=> a.collection - b.collection).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.dentistCollectionExptbl = data.data;
-        // if(data.data.length >= this.numberOfRecords){
-        //   this.dentistCollectionExptbl = data.data;
+        this.dentistCollectionExptbl = res.body.data;
+        // if(res.body.data.length >= this.numberOfRecords){
+        //   this.dentistCollectionExptbl = res.body.data;
         //   this.showCollExpTbl = true;
         // }else{
         //   this.showCollExpTbl = false;
         // }
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
 
           // if (res.collection > 0) {
             this.collectionExpData1.push(Math.round(res.collection));
@@ -3145,14 +3145,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.chartService.colors.odd
         ]; // this is static array for colors of bars
 
-        let dynamicColors = this.barBackgroundColor(data, this.collectionLabelsExp1);
+        let dynamicColors = this.barBackgroundColor(res.body.data, this.collectionLabelsExp1);
 
         this.collectionExpData[0].backgroundColor = dynamicColors;
         this.collectionLabelsExp = this.collectionLabelsExp1;
-        this.collectionExpTotal = Math.round(data.total);
-        this.collectionExpTotalAverage = Math.round(data.total_average);
-        this.collectionExpTotalPrev = Math.round(data.total_ta);
-        this.collectionTotalExpGoal = data.goals;
+        this.collectionExpTotal = Math.round(res.body.total);
+        this.collectionExpTotalAverage = Math.round(res.body.total_average);
+        this.collectionExpTotalPrev = Math.round(res.body.total_ta);
+        this.collectionTotalExpGoal = res.body.goals;
 
         if (this.collectionExpTotal >= this.collectionExpTotalPrev)
           this.collectionExpTooltip = 'up';
@@ -3192,7 +3192,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
 
         }
-        else if (data.status == 401) {
+        else if (res.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -3233,14 +3233,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionExpDentistsTotal = 0;
     this.collectionLabelsDentistsExp = [];
     this.barChartOptionsDP7.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.DentistCollectionExpDentists(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.DentistCollectionExpDentists(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.collectionExpDentistsData1 = [];
       this.collectionLabelsDentistsExp1 = [];
       this.collectionLabelsDentistsExp = [];
       this.collectionExpDentistsTotal = 0;
       this.dentistCollectionExpDenttbl =[];
       this.collectionExpDentistsData[0]['data']=[];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.collectionExpDentistsLoader = false;
@@ -3249,19 +3249,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var selectedDen: any = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.collection - b.collection).reverse();
+          res.body.data.sort((a, b)=> a.collection - b.collection).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.dentistCollectionExpDenttbl = data.data;
-        // if(data.data.length >= this.numberOfRecords){
-        //   this.dentistCollectionExpDenttbl = data.data;
+        this.dentistCollectionExpDenttbl = res.body.data;
+        // if(res.body.data.length >= this.numberOfRecords){
+        //   this.dentistCollectionExpDenttbl = res.body.data;
         //   this.showCollExpDentTbl = true;
         // }else{
         //   this.showCollExpDentTbl = false;
         // }
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
 
           // if (res.collection > 0) {
             this.collectionExpDentistsData1.push(Math.round(res.collection));
@@ -3307,14 +3307,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.chartService.colors.odd
         ]; // this is static array for colors of bars
 
-        let dynamicColors = this.barBackgroundColor(data, this.collectionLabelsDentistsExp1);
+        let dynamicColors = this.barBackgroundColor(res.body.data, this.collectionLabelsDentistsExp1);
 
         this.collectionExpDentistsData[0].backgroundColor = dynamicColors;
         this.collectionLabelsDentistsExp = this.collectionLabelsDentistsExp1;
-        this.collectionExpDentistsTotal = Math.round(data.total);
-        this.collectionTotalExpDentistsAverage = Math.round(data.total_average);
-        this.collectionExpDentistsTotalPrev = Math.round(data.total_ta);
-        this.collectionTotalExpGoal = data.goals;
+        this.collectionExpDentistsTotal = Math.round(res.body.total);
+        this.collectionTotalExpDentistsAverage = Math.round(res.body.total_average);
+        this.collectionExpDentistsTotalPrev = Math.round(res.body.total_ta);
+        this.collectionTotalExpGoal = res.body.goals;
         this.collectionExpTotalPrev = this.collectionExpDentistsTotalPrev;
         if (this.collectionExpDentistsTotal >= this.collectionExpDentistsTotalPrev)
             this.collectionExpTooltip = 'up';
@@ -3355,7 +3355,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
 
         }
-        else if (data.status == 401) {
+        else if (res.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -3396,14 +3396,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionExpOhtTotal = 0;
     this.collectionLabelsOhtExp = [];
     this.barChartOptionsDP8.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.DentistCollectionExpOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.DentistCollectionExpOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.collectionExpOhtData1 = [];
       this.collectionLabelsOhtExp1 = [];
       this.collectionLabelsOhtExp = [];
       this.collectionExpOhtTotal = 0;
       this.dentistCollectionExpOhttbl =[];
       this.collectionExpOhtData[0]['data']=[];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.collectionExpOhtLoader = false;
@@ -3412,19 +3412,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var selectedDen: any = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.collection - b.collection).reverse();
+          res.body.data.sort((a, b)=> a.collection - b.collection).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.dentistCollectionExpOhttbl = data.data;
-        // if(data.data.length >= this.numberOfRecords){
-        //   this.dentistCollectionExpOhttbl = data.data;
+        this.dentistCollectionExpOhttbl = res.body.data;
+        // if(res.body.data.length >= this.numberOfRecords){
+        //   this.dentistCollectionExpOhttbl = res.body.data;
         //   this.showCollExpOhtTbl = true;
         // }else{
         //   this.showCollExpOhtTbl = false;
         // }
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
 
           // if (res.collection > 0) {
             this.collectionExpOhtData1.push(Math.round(res.collection));
@@ -3470,14 +3470,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.chartService.colors.odd
         ]; // this is static array for colors of bars
 
-        let dynamicColors = this.barBackgroundColor(data, this.collectionLabelsOhtExp1);
+        let dynamicColors = this.barBackgroundColor(res.body.data, this.collectionLabelsOhtExp1);
 
         this.collectionExpOhtData[0].backgroundColor = dynamicColors;
         this.collectionLabelsOhtExp = this.collectionLabelsOhtExp1;
-        this.collectionExpOhtTotal = Math.round(data.total);
-        this.collectionTotalExpOhtAverage = Math.round(data.total_average);
-        this.collectionExpOhtTotalPrev = Math.round(data.total_ta);
-        this.collectionTotalGoal = data.goals;
+        this.collectionExpOhtTotal = Math.round(res.body.total);
+        this.collectionTotalExpOhtAverage = Math.round(res.body.total_average);
+        this.collectionExpOhtTotalPrev = Math.round(res.body.total_ta);
+        this.collectionTotalGoal = res.body.goals;
         this.collectionExpTotalPrev = this.collectionExpOhtTotalPrev;
         if (this.collectionExpOhtTotal >= this.collectionExpOhtTotalPrev)
             this.collectionExpTooltip = 'up';
@@ -3518,7 +3518,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
 
         }
-        else if (data.status == 401) {
+        else if (res.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -3547,28 +3547,28 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.buildChartDentistLoader = true;
     this.gaugeLabel = '';
     this.productionTooltip = 'down';
-    this.clinic_id && this.cliniciananalysisService.DentistProductionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.DentistProductionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
       this.productionTotal = 0;
       this.productionTotalPrev = 0;
       this.productionTotalAverage = 0;
       this.maxProductionGoal = 0;
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.buildChartDentistLoader = false;
         this.gaugeValue = 0;
-        if (data.data != null) {
-          data.data.forEach((res) => {
+        if (res.body.data != null) {
+          res.body.data.forEach((res) => {
             if (res.production)
               this.gaugeValue = Math.round(res.production);
 
             this.gaugeLabel = res.provider_name;
             this.gaugeLabel = res.provider_name;
           });
-          this.productionTotal = Math.round(data.total);
-          this.productionTotalPrev = Math.round(data.total_ta);
-          this.productionTotalAverage = Math.round(data.total_average);
-          this.productionGoal = data.goals;
+          this.productionTotal = Math.round(res.body.total);
+          this.productionTotalPrev = Math.round(res.body.total_ta);
+          this.productionTotalAverage = Math.round(res.body.total_average);
+          this.productionGoal = res.body.goals;
           if (this.productionTotal > this.productionTotalPrev) {
             this.productionTooltip = 'up';
           }
@@ -3580,7 +3580,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           if (this.maxProductionGoal == 0)
             this.maxProductionGoal = '';
         }
-      } else if (data.status == 401) {
+      } else if (res.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -3606,28 +3606,28 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.buildChartsingleDentistLoader = true;
     this.gaugeSingleDentistLabel = '';
     this.productionTooltip = 'down';
-    this.clinic_id && this.cliniciananalysisService.DentistProductionDentistSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.DentistProductionDentistSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
       this.productionSingleDentistTotal = 0;
       this.productionSingleDentistTotalPrev = 0;
       this.productionTotalAverage = 0;
       this.maxProductionSingleDentistGoal = 0;
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.buildChartsingleDentistLoader = false;
         this.gaugeSingleDentistValue = 0;
-        if (data.data != null) {
-          data.data.forEach((res) => {
+        if (res.body.data != null) {
+          res.body.data.forEach((res) => {
             if (res.production)
               this.gaugeSingleDentistValue = Math.round(res.production);
 
             this.gaugeSingleDentistLabel = res.provider_name;
             this.gaugeSingleDentistLabel = res.provider_name;
           });
-          this.productionSingleDentistTotal = Math.round(data.total);
-          this.productionSingleDentistTotalPrev = Math.round(data.total_ta);
-          this.productionTotalAverage = Math.round(data.total_average);
-          this.productionSingleDentistGoal = data.goals;
+          this.productionSingleDentistTotal = Math.round(res.body.total);
+          this.productionSingleDentistTotalPrev = Math.round(res.body.total_ta);
+          this.productionTotalAverage = Math.round(res.body.total_average);
+          this.productionSingleDentistGoal = res.body.goals;
           if (this.productionSingleDentistTotal > this.productionSingleDentistTotalPrev) {
             this.productionTooltip = 'up';
           }
@@ -3639,7 +3639,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           if (this.maxProductionSingleDentistGoal == 0)
             this.maxProductionSingleDentistGoal = '';
         }
-      } else if (data.status == 401) {
+      } else if (res.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -3665,28 +3665,28 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.buildChartsingleOhtLoader = true;
     this.gaugeSingleOhtLabel = '';
     this.productionTooltip = 'down';
-    this.clinic_id && this.cliniciananalysisService.DentistProductionOhtSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.DentistProductionOhtSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
       this.productionSingleOhtTotal = 0;
       this.productionSingleOhtTotalPrev = 0;
       this.productionTotalAverage = 0;
       this.maxProductionSingleOhtGoal = 0;
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.buildChartsingleOhtLoader = false;
         this.gaugeSingleOhtValue = 0;
-        if (data.data != null) {
-          data.data.forEach((res) => {
+        if (res.body.data != null) {
+          res.body.data.forEach((res) => {
             if (res.production)
               this.gaugeSingleOhtValue = Math.round(res.production);
 
             this.gaugeSingleOhtLabel = res.provider_name;
             this.gaugeSingleOhtLabel = res.provider_name;
           });
-          this.productionSingleOhtTotal = Math.round(data.total);
-          this.productionSingleOhtTotalPrev = Math.round(data.total_ta);
-          this.productionTotalAverage = Math.round(data.total_average);
-          this.productionSingleOhtGoal = data.goals;
+          this.productionSingleOhtTotal = Math.round(res.body.total);
+          this.productionSingleOhtTotalPrev = Math.round(res.body.total_ta);
+          this.productionTotalAverage = Math.round(res.body.total_average);
+          this.productionSingleOhtGoal = res.body.goals;
           if (this.productionSingleOhtTotal > this.productionSingleOhtTotalPrev) {
             this.productionTooltip = 'up';
           }
@@ -3698,7 +3698,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           if (this.maxProductionSingleOhtGoal == 0)
             this.maxProductionSingleOhtGoal = '';
         }
-      } else if (data.status == 401) {
+      } else if (res.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -3726,7 +3726,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionDentistLoader = true;
     this.gaugeCollectionLabel = '';
     this.collectionTooltip = 'down';
-    this.clinic_id && this.cliniciananalysisService.DentistCollectionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.DentistCollectionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
       this.collectionDentistTotal = 0;
       this.collectionDentistTotalPrev = 0;
       this.productionTotalAverage = 0;
@@ -3734,20 +3734,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.gaugeCollectionValue = 0;
       this.collectionTotalGoal = 0;
       this.collectionDentistLoader = false;
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
-        if (data.data != null) {
-          data.data.forEach((res) => {
+        if (res.body.data != null) {
+          res.body.data.forEach((res) => {
             if (res.collection)
               this.gaugeCollectionValue = Math.round(res.collection);
 
             this.gaugeCollectionLabel = res.provider_name;
           });
-          this.collectionDentistTotal = Math.round(data.total);
-          this.collectionDentistTotalPrev = Math.round(data.total_ta);
-          this.productionTotalAverage = Math.round(data.total_average);
-          this.collectionTotalGoal = data.goals;
+          this.collectionDentistTotal = Math.round(res.body.total);
+          this.collectionDentistTotalPrev = Math.round(res.body.total_ta);
+          this.productionTotalAverage = Math.round(res.body.total_average);
+          this.collectionTotalGoal = res.body.goals;
           if (this.collectionDentistTotal > this.collectionDentistTotalPrev) {
             this.collectionTooltip = 'up';
           }
@@ -3759,7 +3759,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           if (this.maxCollectionGoal == 0)
             this.maxCollectionGoal = '';
         }
-      } else if (data.status == 401) {
+      } else if (res.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -3786,27 +3786,27 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionSingleDentistLoader = true;
     this.gaugeCollectionSingleDentistLabel = '';
     this.collectionTooltip = 'down';
-    this.clinic_id && this.cliniciananalysisService.DentistCollectionDentistsSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.DentistCollectionDentistsSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
       this.collectionSingleDentistTotal = 0;
       this.collectionSingleDentistTotalPrev = 0;
       this.productionTotalAverage = 0;
       this.maxCollectionSingleDentistGoal = 0;
       this.gaugeCollectionSingleDentistValue = 0;
       this.collectionSingleDentistLoader = false;
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
-        if (data.data != null) {
-          data.data.forEach((res) => {
+        if (res.body.data != null) {
+          res.body.data.forEach((res) => {
             if (res.collection)
               this.gaugeCollectionSingleDentistValue = Math.round(res.collection);
 
             this.gaugeCollectionSingleDentistLabel = res.provider_name;
           });
-          this.collectionSingleDentistTotal = Math.round(data.total);
-          this.collectionSingleDentistTotalPrev = Math.round(data.total_ta);
-          this.productionTotalAverage = Math.round(data.total_average);
-          this.dentistCollectionSingleDentistGoal = data.goals;
+          this.collectionSingleDentistTotal = Math.round(res.body.total);
+          this.collectionSingleDentistTotalPrev = Math.round(res.body.total_ta);
+          this.productionTotalAverage = Math.round(res.body.total_average);
+          this.dentistCollectionSingleDentistGoal = res.body.goals;
           if (this.productionTotal > this.productionTotalPrev) {
             this.collectionTooltip = 'up';
           }
@@ -3818,7 +3818,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           if (this.maxCollectionSingleDentistGoal == 0)
             this.maxCollectionSingleDentistGoal = '';
         }
-      } else if (data.status == 401) {
+      } else if (res.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -3845,27 +3845,27 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionSingleOhtLoader = true;
     this.gaugeCollectionSingleOhtLabel = '';
     this.collectionTooltip = 'down';
-    this.clinic_id && this.cliniciananalysisService.DentistCollectionOhtSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.DentistCollectionOhtSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
       this.collectionSingleOhtTotal = 0;
       this.collectionSingleOhtTotalPrev = 0;
       this.productionTotalAverage = 0;
       this.maxCollectionSingleOhtGoal = 0;
       this.gaugeCollectionSingleOhtValue = 0;
       this.collectionSingleOhtLoader = false;
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
-        if (data.data != null) {
-          data.data.forEach((res) => {
+        if (res.body.data != null) {
+          res.body.data.forEach((res) => {
             if (res.collection)
               this.gaugeCollectionSingleOhtValue = Math.round(res.collection);
 
             this.gaugeCollectionSingleOhtLabel = res.provider_name;
           });
-          this.collectionSingleOhtTotal = Math.round(data.total);
-          this.collectionSingleOhtTotalPrev = Math.round(data.total_ta);
-          this.productionTotalAverage = Math.round(data.total_average);
-          this.dentistCollectionSingleOhtGoal = data.goals;
+          this.collectionSingleOhtTotal = Math.round(res.body.total);
+          this.collectionSingleOhtTotalPrev = Math.round(res.body.total_ta);
+          this.productionTotalAverage = Math.round(res.body.total_average);
+          this.dentistCollectionSingleOhtGoal = res.body.goals;
           if (this.productionTotal > this.productionTotalPrev) {
             this.collectionTooltip = 'up';
           }
@@ -3877,7 +3877,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           if (this.maxCollectionSingleOhtGoal == 0)
             this.maxCollectionSingleOhtGoal = '';
         }
-      } else if (data.status == 401) {
+      } else if (res.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -3906,27 +3906,27 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.gaugeCollectionExpLabel = '';
       this.collectionTooltip = 'down';
       this.collectionExpTooltip = 'down';
-      this.clinic_id && this.cliniciananalysisService.DentistCollectionExpSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+      this.clinic_id && this.cliniciananalysisService.DentistCollectionExpSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
         this.collectionExpDentistTotal = 0;
         this.collectionExpDentistTotalPrev = 0;
         this.productionTotalAverage = 0;
         this.maxCollectionExpGoal = 0;
         this.gaugeCollectionExpValue = 0;
         this.collectionExpDentistLoader = false;
-        if (data.message == 'success') {
+        if (res.status == 200) {
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
-          if (data.data != null) {
-            data.data.forEach((res) => {
+          if (res.body.data != null) {
+            res.body.data.forEach((res) => {
               if (res.collection)
                 this.gaugeCollectionExpValue = Math.round(res.collection);
   
               this.gaugeCollectionExpLabel = res.provider_name;
             });
-            this.collectionExpDentistTotal = Math.round(data.total);
-            this.collectionExpDentistTotalPrev = Math.round(data.total_ta);
-            this.productionTotalAverage = Math.round(data.total_average);
-            this.dentistCollectionExpGoal = data.goals;
+            this.collectionExpDentistTotal = Math.round(res.body.total);
+            this.collectionExpDentistTotalPrev = Math.round(res.body.total_ta);
+            this.productionTotalAverage = Math.round(res.body.total_average);
+            this.dentistCollectionExpGoal = res.body.goals;
             if (this.collectionExpDentistTotal > this.collectionExpDentistTotalPrev) {
               this.collectionExpTooltip = 'up';
             }
@@ -3938,7 +3938,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             if (this.maxCollectionExpGoal == 0)
               this.maxCollectionExpGoal = '';
           }
-        } else if (data.status == 401) {
+        } else if (res.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -3965,27 +3965,27 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.collectionExpSingleDentistLoader = true;
       this.gaugeCollectionExpSingleDentistLabel = '';
       this.collectionTooltip = 'down';
-      this.clinic_id && this.cliniciananalysisService.DentistCollectionExpDentistsSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+      this.clinic_id && this.cliniciananalysisService.DentistCollectionExpDentistsSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
         this.collectionExpSingleDentistTotal = 0;
         this.collectionExpSingleDentistTotalPrev = 0;
         this.productionTotalAverage = 0;
         this.maxCollectionExpSingleDentistGoal = 0;
         this.gaugeCollectionExpSingleDentistValue = 0;
         this.collectionExpSingleDentistLoader = false;
-        if (data.message == 'success') {
+        if (res.status == 200) {
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
-          if (data.data != null) {
-            data.data.forEach((res) => {
+          if (res.body.data != null) {
+            res.body.data.forEach((res) => {
               if (res.collection)
                 this.gaugeCollectionExpSingleDentistValue = Math.round(res.collection);
   
               this.gaugeCollectionExpSingleDentistLabel = res.provider_name;
             });
-            this.collectionExpSingleDentistTotal = Math.round(data.total);
-            this.collectionExpSingleDentistTotalPrev = Math.round(data.total_ta);
-            this.productionTotalAverage = Math.round(data.total_average);
-            this.dentistCollectionExpSingleDentistGoal = data.goals;
+            this.collectionExpSingleDentistTotal = Math.round(res.body.total);
+            this.collectionExpSingleDentistTotalPrev = Math.round(res.body.total_ta);
+            this.productionTotalAverage = Math.round(res.body.total_average);
+            this.dentistCollectionExpSingleDentistGoal = res.body.goals;
             if (this.productionTotal > this.productionTotalPrev) {
               this.collectionTooltip = 'up';
             }
@@ -3997,7 +3997,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             if (this.maxCollectionExpSingleDentistGoal == 0)
               this.maxCollectionExpSingleDentistGoal = '';
           }
-        } else if (data.status == 401) {
+        } else if (res.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -4024,27 +4024,27 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.collectionExpSingleOhtLoader = true;
       this.gaugeCollectionExpSingleOhtLabel = '';
       this.collectionTooltip = 'down';
-      this.clinic_id && this.cliniciananalysisService.DentistCollectionExpOhtSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+      this.clinic_id && this.cliniciananalysisService.DentistCollectionExpOhtSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
         this.collectionExpSingleOhtTotal = 0;
         this.collectionExpSingleOhtTotalPrev = 0;
         this.productionTotalAverage = 0;
         this.maxCollectionExpSingleOhtGoal = 0;
         this.gaugeCollectionExpSingleOhtValue = 0;
         this.collectionExpSingleOhtLoader = false;
-        if (data.message == 'success') {
+        if (res.status == 200) {
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
-          if (data.data != null) {
-            data.data.forEach((res) => {
+          if (res.body.data != null) {
+            res.body.data.forEach((res) => {
               if (res.collection)
                 this.gaugeCollectionExpSingleOhtValue = Math.round(res.collection);
   
               this.gaugeCollectionExpSingleOhtLabel = res.provider_name;
             });
-            this.collectionExpSingleOhtTotal = Math.round(data.total);
-            this.collectionExpSingleOhtTotalPrev = Math.round(data.total_ta);
-            this.productionTotalAverage = Math.round(data.total_average);
-            this.dentistCollectionExpSingleOhtGoal = data.goals;
+            this.collectionExpSingleOhtTotal = Math.round(res.body.total);
+            this.collectionExpSingleOhtTotalPrev = Math.round(res.body.total_ta);
+            this.productionTotalAverage = Math.round(res.body.total_average);
+            this.dentistCollectionExpSingleOhtGoal = res.body.goals;
             if (this.productionTotal > this.productionTotalPrev) {
               this.collectionTooltip = 'up';
             }
@@ -4056,7 +4056,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             if (this.maxCollectionExpSingleOhtGoal == 0)
               this.maxCollectionExpSingleOhtGoal = '';
           }
-        } else if (data.status == 401) {
+        } else if (res.status == 401) {
           this._cookieService.put("username", '');
           this._cookieService.put("email", '');
           this._cookieService.put("userid", '');
@@ -4102,7 +4102,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.recallChartLabels = [];
     this.barChartOptionsRP.annotation = [];
 
-    this.clinic_id && this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.recallChartData1 = [];
       this.recallChartLabels1 = [];
 
@@ -4110,7 +4110,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.barChartOptionsRP.annotation = [];
       this.recalltbl =[];
       this.recallChartData[0]['data']=[];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.recallPrebookLoader = false;
@@ -4119,19 +4119,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.recall_percent - b.recall_percent).reverse();
+          res.body.data.sort((a, b)=> a.recall_percent - b.recall_percent).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.recalltbl = data.data;
-        // if(data.data.length >= this.numberOfRecords){
-        //   this.recalltbl = data.data;
+        this.recalltbl = res.body.data;
+        // if(res.body.data.length >= this.numberOfRecords){
+        //   this.recalltbl = res.body.data;
         //   this.showrecallTbl = true;
         // }else{
         //   this.showrecallTbl = false;
         // }
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
           if (res.recall_percent >= 0) {
             if (res.provider_name != null) {
               var pName ='';
@@ -4150,9 +4150,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         });
         this.recallChartData[0]['data'] = this.recallChartData1;
         this.recallChartLabels = this.recallChartLabels1;
-        this.recallChartAverage = Math.round(data.total);
-        this.recallChartAveragePrev = Math.round(data.total_ta);
-        this.recallChartGoal = data.goals;
+        this.recallChartAverage = Math.round(res.body.total);
+        this.recallChartAveragePrev = Math.round(res.body.total_ta);
+        this.recallChartGoal = res.body.goals;
 
         if (this.user_type == '4' && this.childid != '') {
           this.barChartColors = [
@@ -4163,7 +4163,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else {
           this.RPcolors = this.lineChartColors;
-          let dynamicColors = this.barBackgroundColor(data, this.recallChartLabels);      
+          let dynamicColors = this.barBackgroundColor(res.body.data, this.recallChartLabels);      
           this.recallChartData[0].backgroundColor = dynamicColors;
         }
         if (this.recallChartAverage >= this.recallChartAveragePrev)
@@ -4220,22 +4220,22 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.recallValue = 0;
     this.recallChartTooltip = 'down';
     this.recallLabel = '';
-    this.clinic_id && this.cliniciananalysisService.RecallPrebookSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.RecallPrebookSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
       this.maxrecallGoal = 0;
 
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.recallPrebookDentistLoader = false;
         this.recallValue = '0';
-        if (data.data.length > 0) {
-          this.recallValue = Math.round(data.data[0].recall_percent);
-          this.recallLabel = data.data[0].provider_name;
+        if (res.body.data.length > 0) {
+          this.recallValue = Math.round(res.body.data[0].recall_percent);
+          this.recallLabel = res.body.data[0].provider_name;
 
         }
-        this.recallChartAveragePrev = data.total_ta;
-        this.recallGoal = data.goals;
-        this.recallChartAverage = data.total;
+        this.recallChartAveragePrev = res.body.total_ta;
+        this.recallGoal = res.body.goals;
+        this.recallChartAverage = res.body.total;
         if (this.recallValue > this.recallGoal)
           this.maxrecallGoal = this.recallValue;
         else
@@ -4246,7 +4246,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if (this.recallValue >= this.recallChartAveragePrev)
           this.recallChartTooltip = 'up';
       }
-      else if (data.status == 401) {
+      else if (res.status == 401) {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
@@ -4297,14 +4297,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.treatmentPreChartLabels = [];
     this.barChartOptionsTPB.annotation = [];
 
-    this.clinic_id && this.cliniciananalysisService.caReappointRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.caReappointRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.treatmentPreChartData1 = [];
       this.treatmentPreChartLabels1 = [];
       this.reappointtbl =[];
       this.treatmentPreChartLabels = [];
       this.barChartOptionsTPB.annotation = [];
       this.treatmentPreChartData[0]['data']=[];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.treatmentPrebookLoader = false;
@@ -4312,19 +4312,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.reappoint_rate - b.reappoint_rate).reverse();
+          res.body.data.sort((a, b)=> a.reappoint_rate - b.reappoint_rate).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.reappointtbl = data.data;
-        // if(data.data.length >= this.numberOfRecords){
-        //   this.reappointtbl = data.data;
+        this.reappointtbl = res.body.data;
+        // if(res.body.data.length >= this.numberOfRecords){
+        //   this.reappointtbl = res.body.data;
         //   this.showreappointTbl = true;
         // }else{
         //   this.showreappointTbl = false;
         // }
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
           if (res.reappoint_rate >= 0) {
             if (res.provider_name != null) {
               var pName ='';
@@ -4343,9 +4343,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         });
         this.treatmentPreChartData[0]['data'] = this.treatmentPreChartData1;
         this.treatmentPreChartLabels = this.treatmentPreChartLabels1;
-        this.treatmentPreChartAverage = Math.round(data.total);
-        this.treatmentPreChartAveragePrev = Math.round(data.total_ta);
-        this.treatmentPreChartGoal = data.goals;
+        this.treatmentPreChartAverage = Math.round(res.body.total);
+        this.treatmentPreChartAveragePrev = Math.round(res.body.total_ta);
+        this.treatmentPreChartGoal = res.body.goals;
         if (this.user_type == '4' && this.childid != '') {
           this.barChartColors = [
             { backgroundColor: [] }
@@ -4356,7 +4356,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         else {
           this.TPcolors = this.lineChartColors;
 
-          let dynamicColors = this.barBackgroundColor(data, this.treatmentPreChartLabels);       
+          let dynamicColors = this.barBackgroundColor(res.body.data, this.treatmentPreChartLabels);       
           this.treatmentPreChartData[0].backgroundColor = dynamicColors;
         }
         if (this.treatmentPreChartAverage >= this.treatmentPreChartAveragePrev)
@@ -4411,23 +4411,23 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.treatmentPrebookDentistLoader = true;
     this.treatmentPreValue = '0';
     this.treatmentPreLabel = '';
-    this.clinic_id && this.cliniciananalysisService.caReappointRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
-      if (data.message == 'success') {
+    this.clinic_id && this.cliniciananalysisService.caReappointRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.treatmentPrebookDentistLoader = false;
-        this.treatmentPreGoal = data.goals;
-        if (data.data.length > 0) {
-          this.treatmentPreValue = Math.round(data.data[0].reappoint_rate);
-          this.treatmentPreLabel = data.data[0].provider_name;
+        this.treatmentPreGoal = res.body.goals;
+        if (res.body.data.length > 0) {
+          this.treatmentPreValue = Math.round(res.body.data[0].reappoint_rate);
+          this.treatmentPreLabel = res.body.data[0].provider_name;
         }
-        this.prePrebookMax = data.goals;
+        this.prePrebookMax = res.body.goals;
         if (this.treatmentPreValue > this.prePrebookMax)
           this.prePrebookMax = this.treatmentPreValue;
 
 
-        this.treatmentPreChartAveragePrev = data.total_ta;
-        this.treatmentPreGoal = data.goals;
+        this.treatmentPreChartAveragePrev = res.body.total_ta;
+        this.treatmentPreGoal = res.body.goals;
 
       }
     }, error => {
@@ -4474,14 +4474,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.treatmentChartLabels = [];
     this.barChartOptionsTP.annotation = []
 
-    this.clinic_id && this.cliniciananalysisService.TreatmentPlanRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.TreatmentPlanRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.treatmentChartData1 = [];
       this.treatmentChartLabels1 = [];
       this.tprtbl=[];
       this.treatmentChartLabels = [];
       this.barChartOptionsTP.annotation = [];
       this.treatmentChartData[0]['data'] =[];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.treatmentPlanRateLoader = false;
@@ -4489,19 +4489,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.treatment_per_plan_percentage - b.treatment_per_plan_percentage).reverse();
+          res.body.data.sort((a, b)=> a.treatment_per_plan_percentage - b.treatment_per_plan_percentage).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.tprtbl = data.data;
-        // if(data.data.length >= this.numberOfRecords){
-        //   this.tprtbl = data.data;
+        this.tprtbl = res.body.data;
+        // if(res.body.data.length >= this.numberOfRecords){
+        //   this.tprtbl = res.body.data;
         //   this.showpTprTbl = true;
         // }else{
         //   this.showpTprTbl = false;
         // }	
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
           if (res.treatment_per_plan_percentage) {
             this.treatmentChartData1.push(Math.round(res.treatment_per_plan_percentage));
             var name = res.provider_name;
@@ -4522,9 +4522,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         });
         this.treatmentChartData[0]['data'] = this.treatmentChartData1;
         this.treatmentChartLabels = this.treatmentChartLabels1;
-        this.treatmentChartAverage = Math.round(data.total);
-        this.treatmentChartAveragePrev = (data.total_ta) ? Math.round(data.total_ta) : 0;
-        this.treatmentChartGoal = data.goals;
+        this.treatmentChartAverage = Math.round(res.body.total);
+        this.treatmentChartAveragePrev = (res.body.total_ta) ? Math.round(res.res.body.total_ta) : 0;
+        this.treatmentChartGoal = res.body.goals;
         if (this.user_type == '4' && this.childid != '') {
           this.barChartColors = [
             { backgroundColor: [] }
@@ -4535,7 +4535,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         else {
           this.TPRcolors = this.lineChartColors;
 
-          let dynamicColors = this.barBackgroundColor(data, this.treatmentChartLabels);       
+          let dynamicColors = this.barBackgroundColor(res.body.data, this.treatmentChartLabels);       
           this.treatmentChartData[0].backgroundColor = dynamicColors;
         }
         if (this.treatmentChartAverage >= this.treatmentChartAveragePrev)
@@ -4599,19 +4599,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.treatmentPlanLabel = '';
     this.treatmentChartAveragePrev = 0;
     this.treatmentChartTooltip = 'down';
-    this.clinic_id && this.cliniciananalysisService.TreatmentPlanRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
-      if (data && data.message == 'success') {
+    this.clinic_id && this.cliniciananalysisService.TreatmentPlanRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
+      if (res.body.data && res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.treatmentPlanRateDentistLoader = false;
         this.treatmentPlanValue = '0';
-        if (data.data.length > 0) {
-          this.treatmentPlanValue = Math.round(data.data[0].treatment_per_plan_percentage);
-          this.treatmentPlanLabel = data.data[0].provider_name;
+        if (res.body.data.length > 0) {
+          this.treatmentPlanValue = Math.round(res.body.data[0].treatment_per_plan_percentage);
+          this.treatmentPlanLabel = res.body.data[0].provider_name;
         }
-        this.treatmentPlanGoal = Math.round(data.goals);
-        this.treatmentChartAveragePrev = (data.total_ta) ? Math.round(data.total_ta) : 0;
-        this.treatmentChartAverage = Math.round(data.total);
+        this.treatmentPlanGoal = Math.round(res.body.goals);
+        this.treatmentChartAveragePrev = (res.body.total_ta) ? Math.round(res.res.body.total_ta) : 0;
+        this.treatmentChartAverage = Math.round(res.body.total);
         if (this.treatmentChartAverage >= this.treatmentChartAveragePrev)
           this.treatmentChartTooltip = 'up';
         if (this.treatmentPlanValue > this.treatmentPlanGoal)
@@ -4718,7 +4718,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.planTotal = 0;
     this.planChartLabels = [];
     this.barChartOptionsTC.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.TreatmentPlan(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.TreatmentPlan(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.planChartData1 = [];
       this.planChartLabels1 = [];
       this.planTotalAverage = 0;
@@ -4727,7 +4727,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.planChartLabels = [];
       this.planChartDataP[0]['data'] =[];
       this.barChartOptionsTC.annotation = [];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.buildChartTreatmentLoader = false;
@@ -4737,13 +4737,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.planChartPtbl = [];
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.average_fees - b.average_fees).reverse();
+          res.body.data.sort((a, b)=> a.average_fees - b.average_fees).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.planChartPtbl = data.data;
-        if (data.data.length > this.numberOfRecords) data.data= data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        this.planChartPtbl = res.body.data;
+        if (res.body.data.length > this.numberOfRecords) res.body.data= res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
           if (res.average_fees > 0) {
             if (res.provider_name != null) {
               var pName ='';
@@ -4761,17 +4761,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             }
           }
         });
-        this.planAllTotal = Math.round(data.total);
-        this.planAllTotalTrend = Math.round(data.total_ta);
+        this.planAllTotal = Math.round(res.body.total);
+        this.planAllTotalTrend = Math.round(res.body.total_ta);
        
-       let dynamicColors = this.barBackgroundColor(data, this.planChartLabels1);       
+       let dynamicColors = this.barBackgroundColor(res.body.data, this.planChartLabels1);       
         this.planChartDataP[0].backgroundColor = dynamicColors;
 
         this.planChartDataP[0]['data'] = this.planChartData1;
         this.planChartDataP[0]['label'] = '';
         this.planChartLabels = this.planChartLabels1;
         this.planTotalAverage = this.planAllTotal;
-        this.planTotalGoal = data.goals;
+        this.planTotalGoal = res.body.goals;
         this.planTotalPrev = this.planAllTotalTrend;
         if (this.user_type == '4' && this.childid != '') {
           this.barChartColors = [
@@ -4789,7 +4789,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         else {
           this.TPACAcolors = this.lineChartColors;
           this.TPACCcolors = this.lineChartColors;
-          let dynamicColors1 = this.barBackgroundColor(data, this.planChartLabels1);     
+          let dynamicColors1 = this.barBackgroundColor(res.body.data, this.planChartLabels1);     
           this.planChartDataP[0].backgroundColor = dynamicColors1;
         }
         if (this.planTotalAverage >= this.planTotalPrev)
@@ -4853,7 +4853,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.planTotal = 0;
       this.planChartLabels = [];
       this.barChartOptionsTC.annotation = [];
-      this.clinic_id && this.cliniciananalysisService.TreatmentPlanCompletedFees(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+      this.clinic_id && this.cliniciananalysisService.TreatmentPlanCompletedFees(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
         this.planChartData2 = [];
         this.planChartLabels2 = [];
         this.planTotalAverage = 0;
@@ -4862,7 +4862,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.planChartLabels = [];
         this.planChartDataC[0]['data'] = [];
         this.barChartOptionsTC.annotation = [];
-        if (data.message == 'success') {
+        if (res.status == 200) {
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
           this.buildChartTreatmentLoader = false;
@@ -4872,14 +4872,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.planChartCtbl = [];
           if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
             this.isAllClinic = true;
-            data.data.sort((a, b)=> a.average_fees - b.average_fees).reverse();
+            res.body.data.sort((a, b)=> a.average_fees - b.average_fees).reverse();
           }else{
             this.isAllClinic = false;
           }
           var ic = 0;
-          this.planChartCtbl = data.data;
-          if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-          data.data.forEach(res => {
+          this.planChartCtbl = res.body.data;
+          if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+          res.body.data.forEach(res => {
             if (res.average_fees) {
                var prName ='';
                 if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
@@ -4895,16 +4895,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               ic++;
             }
           });
-          this.planCompletedTotal = Math.round(data.total);
-          this.planCompletedTotalTrend = Math.round(data.total_ta);
-          let dynamicColors = this.barBackgroundColor(data, this.planChartLabels1);          
+          this.planCompletedTotal = Math.round(res.body.total);
+          this.planCompletedTotalTrend = Math.round(res.body.total_ta);
+          let dynamicColors = this.barBackgroundColor(res.body.data, this.planChartLabels1);          
           this.planChartDataP[0].backgroundColor = dynamicColors;
   
           this.planChartDataC[0]['data'] = this.planChartData2;
           this.planChartDataC[0]['label'] = '';
           this.planChartLabels = this.planChartLabels1;
           this.planTotalAverage = this.planCompletedTotal;
-          this.planTotalGoal = data.goals;
+          this.planTotalGoal = res.body.goals;
           this.planTotalPrev = this.planCompletedTotalTrend;
           if (this.user_type == '4' && this.childid != '') {
             this.barChartColors = [
@@ -4922,7 +4922,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           else {
             this.TPACAcolors = this.lineChartColors;
             this.TPACCcolors = this.lineChartColors;  
-            let dynamicColors2 = this.barBackgroundColor(data, this.planChartLabels1);      
+            let dynamicColors2 = this.barBackgroundColor(res.body.data, this.planChartLabels1);      
             this.planChartDataC[0].backgroundColor = dynamicColors2;
   
           }
@@ -4984,22 +4984,22 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.buildChartTreatmentDentistLoader = true;
 
 
-    this.clinic_id && this.cliniciananalysisService.TreatmentPlanDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.TreatmentPlanDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
       this.gaugeValueTreatment = 0;
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.buildChartTreatmentDentistLoader = false;
         this.gaugeValueTreatmentP = 0;
         this.gaugeValueTreatment = 0;
-        if (data.data != null) {
-          if (data.data[0] && data.data[0].average_fees != undefined)
-            this.gaugeValueTreatmentP = Math.round(data.data[0].average_fees);
-          if (data.data[0] && data.data[0].provider_name != undefined)
-            this.gaugeLabelTreatment = data.data[0].provider_name;
-          this.planTotalAll = Math.round(data.total);
+        if (res.body.data != null) {
+          if (res.body.data[0] && res.body.data[0].average_fees != undefined)
+            this.gaugeValueTreatmentP = Math.round(res.body.data[0].average_fees);
+          if (res.body.data[0] && res.body.data[0].provider_name != undefined)
+            this.gaugeLabelTreatment = res.body.data[0].provider_name;
+          this.planTotalAll = Math.round(res.body.total);
           this.planTotal = this.planTotalAll;
-          this.planAllTotalTrend = Math.round(data.total_ta);
+          this.planAllTotalTrend = Math.round(res.body.total_ta);
           this.planTotalPrev = this.planAllTotalTrend;
         }
         else {
@@ -5012,7 +5012,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.planTotalAll = 0;
         }
         this.gaugeValueTreatment = this.gaugeValueTreatmentP;
-        this.planTotalGoal = data.goals;
+        this.planTotalGoal = res.body.goals;
         if (this.gaugeValueTreatment > this.planTotalGoal)
           this.maxplanTotalGoal = this.gaugeValueTreatment;
         else
@@ -5040,24 +5040,24 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.buildChartTreatmentDentistLoader = true;
 
 
-    this.clinic_id && this.cliniciananalysisService.TreatmentPlanCompletedFeesDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.TreatmentPlanCompletedFeesDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
       this.gaugeValueTreatmentCmp = 0;
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.buildChartTreatmentDentistLoader = false;
         this.gaugeValueTreatmentC = 0;
         this.gaugeValueTreatmentCmp = 0;
-        if (data.data != null) {
-          if (data.data[0] && data.data[0].average_fees != undefined)
-            this.gaugeValueTreatmentC = Math.round(data.data[0].average_fees);
-          if (data.data[0] && data.data[0].provider_name != undefined)
-            this.gaugeLabelTreatment = data.data[0].provider_name;
-          this.planTotalAll = Math.round(data.total_all);
-          this.planTotalCompleted = Math.round(data.total);
+        if (res.body.data != null) {
+          if (res.body.data[0] && res.body.data[0].average_fees != undefined)
+            this.gaugeValueTreatmentC = Math.round(res.body.data[0].average_fees);
+          if (res.body.data[0] && res.body.data[0].provider_name != undefined)
+            this.gaugeLabelTreatment = res.body.data[0].provider_name;
+          this.planTotalAll = Math.round(res.body.total_all);
+          this.planTotalCompleted = Math.round(res.body.total);
           this.planTotal = this.planTotalAll;
-          this.planCompletedTotalTrend = Math.round(data.total_ta);
-          this.planAllTotalTrend = Math.round(data.total_ta);
+          this.planCompletedTotalTrend = Math.round(res.body.total_ta);
+          this.planAllTotalTrend = Math.round(res.body.total_ta);
           this.planTotalPrev = this.planAllTotalTrend;
         }
         else {
@@ -5072,7 +5072,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.planTotalCompleted = 0;
         }
         this.gaugeValueTreatmentCmp = this.gaugeValueTreatmentC;
-        this.planTotalGoal = data.goals;
+        this.planTotalGoal = res.body.goals;
         if (this.gaugeValueTreatmentCmp > this.planTotalGoal)
           this.maxplanTotalGoal = this.gaugeValueTreatmentCmp;
         else
@@ -5094,12 +5094,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   private recallChartTreatment() {
     this.planTotal = 0;
-    this.clinic_id && this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
       this.planTotal = 0;
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
-        data.data.forEach(res => {
+        res.body.data.forEach(res => {
           if (res.average_cost) {
             this.planChartData1.push(Math.round(res.average_cost));
             this.planChartLabels1.push(res.provider);
@@ -5136,29 +5136,29 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.doughnutTotalAverage = 0;
     this.doughnutChartData = [];
     this.doughnutChartLabels = [];
-    this.clinic_id && this.cliniciananalysisService.NoPatients(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.NoPatients(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.doughnutChartData1 = [];
       this.doughnutChartLabels1 = [];
       this.doughnutTotal = 0;
       this.patientCtbl=[];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.buildChartNopatientsLoader = false;
         this.doughnutTotalTooltip = 'up';
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          data.data.sort((a, b)=> a.num_complaints - b.num_complaints).reverse();
+          res.body.data.sort((a, b)=> a.num_complaints - b.num_complaints).reverse();
         }
-        this.patientCtbl = data.data;
-        // if(data.data.length >= this.numberOfRecords){
-        //   this.patientCtbl = data.data;
+        this.patientCtbl = res.body.data;
+        // if(res.body.data.length >= this.numberOfRecords){
+        //   this.patientCtbl = res.body.data;
         //   this.showpatientCtblTbl = true;
         // }else{
         //   this.showpatientCtblTbl = false;
         // }
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
           if (res.provider_name != null && res.num_complaints > 0) {
             var pName ='';
             if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
@@ -5176,9 +5176,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         });
         this.doughnutChartData = this.doughnutChartData1;
         this.doughnutChartLabels = this.doughnutChartLabels1;
-        this.doughnutTotalAverage = data.total;
-        this.doughnutTotalPrev = data.total_ta;
-        this.doughnutGoals = data.goals;
+        this.doughnutTotalAverage = res.body.total;
+        this.doughnutTotalPrev = res.body.total_ta;
+        this.doughnutGoals = res.body.goals;
         if (this.user_type == '4' && this.childid != '') {
           this.doughnutChartColors1 = [{ backgroundColor: [] }];
 
@@ -5207,19 +5207,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   private buildChartNopatientsDentist() {
     this.buildChartNopatientsDentistLoader = true;
     this.gaugeLabelPatients = '';
-    this.clinic_id && this.cliniciananalysisService.NoPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.NoPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
       this.doughnutTotal = 0;
       this.maxdoughnutGoals = 0;
-      if (data && data.message == 'success') {
+      if (res.body.data && res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
         this.doughnutTotalTooltip = 'up';
         this.buildChartNopatientsDentistLoader = false;
-        if (data.data[0]) {
-          this.gaugeValuePatients = data.data[0].num_complaints;
-          this.gaugeLabelPatients = data.data[0].provider_name;
-          this.doughnutTotal = data.total;
-          this.doughnutTotalPrev = data.total_ta;
+        if (res.body.data[0]) {
+          this.gaugeValuePatients = res.body.data[0].num_complaints;
+          this.gaugeLabelPatients = res.body.data[0].provider_name;
+          this.doughnutTotal = res.body.total;
+          this.doughnutTotalPrev = res.body.total_ta;
         }
         else {
           this.gaugeValuePatients = 0;
@@ -5227,11 +5227,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.doughnutTotal = 0;
           this.doughnutTotalAverage = 0;
         }
-        this.doughnutTotalAverage = data.total;
-        this.doughnutTotalPrev = data.total_ta;
+        this.doughnutTotalAverage = res.body.total;
+        this.doughnutTotalPrev = res.body.total_ta;
         if (this.doughnutTotalAverage >= this.doughnutTotalPrev)
           this.doughnutTotalTooltip = 'down';
-        this.doughnutGoals = data.goals;
+        this.doughnutGoals = res.body.goals;
         if (this.gaugeValuePatients > this.doughnutGoals)
           this.maxdoughnutGoals = this.gaugeValuePatients;
         else
@@ -5275,8 +5275,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.newPatientsDataMax = 0;
     this.newPatienttbl =[];
     this.newPatientChartData=[];
-    this.clinic_id && this.cliniciananalysisService.NewPatients(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
-      if (data && data.message == 'success') {
+    this.clinic_id && this.cliniciananalysisService.NewPatients(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
+      if (res.body.data && res.status == 200) {
         this.newpKey = '';
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
@@ -5286,16 +5286,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.newPatientChartLabels1 = []; // reset on api call
         this.newPatientChartData1 = []; // reset on api call
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          data.data.sort((a, b)=> a.new_patients - b.new_patients).reverse();
+          res.body.data.sort((a, b)=> a.new_patients - b.new_patients).reverse();
         }
-        this.newPatienttbl = data.data;
-        // if(data.data.length >= this.numberOfRecords){
+        this.newPatienttbl = res.body.data;
+        // if(res.body.data.length >= this.numberOfRecords){
         //   this.shownewPatientTbl = true;
         // }else{
         //   this.shownewPatientTbl = false;
         // }
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
           if (res.new_patients) {
             var pName ='';
             if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
@@ -5314,11 +5314,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.newPatientChartData = this.newPatientChartData1;
         this.newPatientChartLabels = this.newPatientChartLabels1;
 
-        this.newPatientTotal = data.total;
-        this.newPatientTotal$.next(data.total);
+        this.newPatientTotal = res.body.total;
+        this.newPatientTotal$.next(res.body.total);
         //this.doughnutChartOptions.elements.center.text = this.newPatientTotal;
-        this.newPatientTotalPrev = data.total_ta;
-        this.newPatientGoals = data.goals;
+        this.newPatientTotalPrev = res.body.total_ta;
+        this.newPatientGoals = res.body.goals;
         if (this.user_type == '4' && this.childid != '') {
           this.doughnutChartColors2 = [{ backgroundColor: [] }];
 
@@ -5347,18 +5347,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.buildChartNewpatientsDentistLoader = true;
     this.newPatientPercent = 0;
     this.newPatientTotal = 0;
-    this.clinic_id && this.cliniciananalysisService.NewPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
-      if (data && data.message == 'success') {
+    this.clinic_id && this.cliniciananalysisService.NewPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
+      if (res.body.data && res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
         this.buildChartNewpatientsDentistLoader = false;
-        this.newPatientGoals = data.goals;
-        if (data.data != null && data.data[0]) {
-          this.newPatientValuePatients = data.data[0].new_patients;
-          this.newPatientLabelPatients = data.data[0].provider_name;
-          this.newPatientTotal = Math.round(data.total);
+        this.newPatientGoals = res.body.goals;
+        if (res.body.data != null && res.body.data[0]) {
+          this.newPatientValuePatients = res.body.data[0].new_patients;
+          this.newPatientLabelPatients = res.body.data[0].provider_name;
+          this.newPatientTotal = Math.round(res.body.total);
           // this.newPatientTotalAverage = data.total_average;
-          this.newPatientTotalPrev = Math.round(data.total_ta);
+          this.newPatientTotalPrev = Math.round(res.body.total_ta);
         } else {
           this.newPatientValuePatients = 0;
           this.newPatientLabelPatients = "";
@@ -5367,7 +5367,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           // this.newPatientTotalAverage = data.total_average;
         }
         //this.doughnutChartOptions.elements.center.text = this.newPatientValuePatients;
-        this.maxnewPatientGoal = data.goals;
+        this.maxnewPatientGoal = res.body.goals;
         if (this.maxnewPatientGoal == 0)
           this.maxnewPatientGoal = '';
       }
@@ -5415,14 +5415,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     this.hourlyRateChartLabels = [];
     this.barChartOptionsHR.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.hourlyRateChart(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.hourlyRateChart(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.hourlyRateChartData1 = [];
       this.hourlyRateChartLabels1 = [];
       this.hourlyRateChartLabels = [];
       this.barChartOptionsHR.annotation = [];
       this.hourlyRatetbl = [];
       this.hourlyRateChartData[0]['data']=[];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.hrKey ='';
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
@@ -5431,19 +5431,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
+          res.body.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.hourlyRatetbl = data.data;
-        // if(data.data.length >= this.numberOfRecords){
-        //   this.hourlyRatetbl = data.data;
+        this.hourlyRatetbl = res.body.data;
+        // if(res.body.data.length >= this.numberOfRecords){
+        //   this.hourlyRatetbl = res.body.data;
         //   this.showHrTbl = true;
         // }else{
         //   this.showHrTbl = false;
         // }
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
           if (res.hourly_rate > 0) {
             this.hourlyRateChartData1.push(Math.round(res.hourly_rate));
             var pName ='';
@@ -5471,9 +5471,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         this.hourlyRateChartData[0]['data'] = this.hourlyRateChartData1;
         this.hourlyRateChartLabels = this.hourlyRateChartLabels1;
-        this.hourlyRateChartAverage = Math.round(data.total);
-        this.hourlyRateChartAveragePrev = Math.round(data.total_ta);
-        this.hourlyRateChartGoal = data.goals;
+        this.hourlyRateChartAverage = Math.round(res.body.total);
+        this.hourlyRateChartAveragePrev = Math.round(res.body.total_ta);
+        this.hourlyRateChartGoal = res.body.goals;
         if (this.user_type == '4' && this.childid != '') {
           this.barChartColors = [
             { backgroundColor: [] }
@@ -5483,7 +5483,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else {
           this.HRcolors = this.lineChartColors;
-          let dynamicColors = this.barBackgroundColor(data, this.hourlyRateChartLabels);       
+          let dynamicColors = this.barBackgroundColor(res.body.data, this.hourlyRateChartLabels);       
           this.hourlyRateChartData[0].backgroundColor = dynamicColors;
         }
 
@@ -5558,7 +5558,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     this.hourlyRateChartDesntistsLabels = [];
     this.barChartOptionsHR1.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.hourlyRateChartDesntists(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.hourlyRateChartDesntists(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.hourlyRateChartDesntistsData1 = [];
       this.hourlyRateChartDesntistsLabels1 = [];
 
@@ -5566,7 +5566,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.barChartOptionsHR1.annotation = [];
       this.hourlyRateDenttbl =[];
       this.hourlyRateChartDentistsData[0]['data'] =[];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.hrKey ='';
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
@@ -5575,19 +5575,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
+          res.body.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.hourlyRateDenttbl = data.data;
-        // if(data.data.length >= this.numberOfRecords){
-        //   this.hourlyRateDenttbl = data.data;
+        this.hourlyRateDenttbl = res.body.data;
+        // if(res.body.data.length >= this.numberOfRecords){
+        //   this.hourlyRateDenttbl = res.body.data;
         //   this.showHrDentTbl = true;
         // }else{
         //   this.showHrDentTbl = false;
         // }
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
           if (res.hourly_rate > 0) {
             var pName ='';
             if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
@@ -5615,9 +5615,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         this.hourlyRateChartDentistsData[0]['data'] = this.hourlyRateChartDesntistsData1;
         this.hourlyRateChartDesntistsLabels = this.hourlyRateChartDesntistsLabels1;
-        this.hourlyRateChartDesntistsAverage = Math.round(data.total);
-        this.hourlyRateChartDesntistsAveragePrev = Math.round(data.total_ta);
-        this.hourlyRateChartGoal = data.goals;
+        this.hourlyRateChartDesntistsAverage = Math.round(res.body.total);
+        this.hourlyRateChartDesntistsAveragePrev = Math.round(res.body.total_ta);
+        this.hourlyRateChartGoal = res.body.goals;
         if (this.user_type == '4' && this.childid != '') {
           this.barChartColorsHrDent = [
             { backgroundColor: [] }
@@ -5627,7 +5627,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else {
           this.HRcolorsDent = this.lineChartColors;
-          let dynamicColors = this.barBackgroundColor(data, this.hourlyRateChartDesntistsLabels);      
+          let dynamicColors = this.barBackgroundColor(res.body.data, this.hourlyRateChartDesntistsLabels);      
           this.hourlyRateChartDentistsData[0].backgroundColor = dynamicColors;
         }
 
@@ -5701,7 +5701,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     this.hourlyRateChartOhtLabels = [];
     this.barChartOptionsHR2.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.hourlyRateChartOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.hourlyRateChartOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.hourlyRateChartOhtData1 = [];
       this.hourlyRateChartOhtLabels1 = [];
       this.hourlyRateOhttbl =[];
@@ -5709,7 +5709,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.barChartOptionsHR2.annotation = [];
       this.hourlyRateChartOhtData[0]['data']=[];
       this.hourlyRateChartOhtAverage =0;
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.hrKey ='';
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
@@ -5718,19 +5718,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
+          res.body.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.hourlyRateOhttbl = data.data;
-        // if(data.data.length >= this.numberOfRecords){
-        //   this.hourlyRateOhttbl = data.data;
+        this.hourlyRateOhttbl = res.body.data;
+        // if(res.body.data.length >= this.numberOfRecords){
+        //   this.hourlyRateOhttbl = res.body.data;
         //   this.showHrOhtTbl = true;
         // }else{
         //   this.showHrOhtTbl = false;
         // }
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
           if (res.hourly_rate > 0) {
             this.hourlyRateChartOhtData1.push(Math.round(res.hourly_rate));
             var pName ='';
@@ -5758,9 +5758,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         this.hourlyRateChartOhtData[0]['data'] = this.hourlyRateChartOhtData1;
         this.hourlyRateChartOhtLabels = this.hourlyRateChartOhtLabels1;
-        this.hourlyRateChartOhtAverage = Math.round(data.total);
-        this.hourlyRateChartOhtAveragePrev = Math.round(data.total_ta);
-        this.hourlyRateChartGoal = data.goals;
+        this.hourlyRateChartOhtAverage = Math.round(res.body.total);
+        this.hourlyRateChartOhtAveragePrev = Math.round(res.body.total_ta);
+        this.hourlyRateChartGoal = res.body.goals;
         if (this.user_type == '4' && this.childid != '') {
           this.barChartColorsHrOht = [
             { backgroundColor: [] }
@@ -5770,7 +5770,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else {
           this.HRcolorsOht = this.lineChartColors;
-          let dynamicColors = this.barBackgroundColor(data, this.hourlyRateChartOhtLabels);      
+          let dynamicColors = this.barBackgroundColor(res.body.data, this.hourlyRateChartOhtLabels);      
           this.hourlyRateChartOhtData[0].backgroundColor = dynamicColors;
         }
 
@@ -5833,16 +5833,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.hourlyRateChartAverage = 0;
     this.hourlyRateChartTooltip = 'down';
     this.hourlyLabel = '';
-    this.clinic_id && this.cliniciananalysisService.hourlyRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.hourlyRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
       this.hourlyValue = '0';
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
         this.hourlyRateDentistLoader = false;
         this.hourlyValue = '0';
-        if (data.data.length > 0) {
-          this.hourlyValue = Math.round(data.data[0].hourly_rate);
-          var name = data.data[0].provider_name;
+        if (res.body.data.length > 0) {
+          this.hourlyValue = Math.round(res.body.data[0].hourly_rate);
+          var name = res.body.data[0].provider_name;
           if (name != null && name != '') {
             name = name.split(')');
             if (name.length > 0 && name[1] != undefined) {
@@ -5853,12 +5853,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             this.hourlyLabel = name;
           }
           else
-            this.hourlyLabel = data.data[0].provider;
+            this.hourlyLabel = res.body.data[0].provider;
 
         }
-        this.hourlyGoal = data.goals;
-        this.hourlyRateChartAveragePrev = data.total_ta;
-        this.hourlyRateChartAverage = data.total;
+        this.hourlyGoal = res.body.goals;
+        this.hourlyRateChartAveragePrev = res.body.total_ta;
+        this.hourlyRateChartAverage = res.body.total;
         if (this.hourlyValue >= this.hourlyRateChartAveragePrev)
           this.hourlyRateChartTooltip = 'up';
         if (this.hourlyValue > this.hourlyGoal)
@@ -5891,16 +5891,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.hourlyRateChartAverage = 0;
     this.hourlyRateChartTooltip = 'down';
     this.collhourlyLabel = '';
-    this.clinic_id && this.cliniciananalysisService.collectionHourlyRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.collectionHourlyRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
       this.collhourlyValue = '0';
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
         this.collhourlyRateDentistLoader = false;
         this.collhourlyValue = '0';
-        if (data.data.length > 0) {
-          this.collhourlyValue = Math.round(data.data[0].hourly_rate);
-          var name = data.data[0].provider_name;
+        if (res.body.data.length > 0) {
+          this.collhourlyValue = Math.round(res.body.data[0].hourly_rate);
+          var name = res.body.data[0].provider_name;
           if (name != null && name != '') {
             name = name.split(')');
             if (name.length > 0 && name[1] != undefined) {
@@ -5911,13 +5911,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             this.collhourlyLabel = name;
           }
           else
-            this.collhourlyLabel = data.data[0].provider;
+            this.collhourlyLabel = res.body.data[0].provider;
 
         }
-        this.collhourlyGoal = data.goals;
-        this.collhourlyRateChartAveragePrev = data.total_ta;
-        this.hourlyRateChartAverage = data.total;
-        this.hourlyRateChartAveragePrev = data.total_ta;
+        this.collhourlyGoal = res.body.goals;
+        this.collhourlyRateChartAveragePrev = res.body.total_ta;
+        this.hourlyRateChartAverage = res.body.total;
+        this.hourlyRateChartAveragePrev = res.body.total_ta;
         if (this.collhourlyValue >= this.collhourlyRateChartAveragePrev)
           this.hourlyRateChartTooltip = 'up';
         if (this.collhourlyValue > this.collhourlyGoal)
@@ -5950,16 +5950,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.hourlyRateChartAverage = 0;
     this.hourlyRateChartTooltip = 'down';
     this.collExphourlyLabel = '';
-    this.clinic_id && this.cliniciananalysisService.collectionExpHourlyRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.collectionExpHourlyRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
       this.collExphourlyValue = '0';
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
         this.collExphourlyRateDentistLoader = false;
         this.collExphourlyValue = '0';
-        if (data.data.length > 0) {
-          this.collExphourlyValue = Math.round(data.data[0].hourly_rate);
-          var name = data.data[0].provider_name;
+        if (res.body.data.length > 0) {
+          this.collExphourlyValue = Math.round(res.body.data[0].hourly_rate);
+          var name = res.body.data[0].provider_name;
           if (name != null && name != '') {
             name = name.split(')');
             if (name.length > 0 && name[1] != undefined) {
@@ -5970,13 +5970,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             this.collExphourlyLabel = name;
           }
           else
-            this.collExphourlyLabel = data.data[0].provider;
+            this.collExphourlyLabel = res.body.data[0].provider;
 
         }
-        this.collExphourlyGoal = data.goals;
-        this.collExphourlyRateChartAveragePrevs = data.total_ta;
-        this.hourlyRateChartAveragePrev = data.total_ta;
-        this.hourlyRateChartAverage = data.total;
+        this.collExphourlyGoal = res.body.goals;
+        this.collExphourlyRateChartAveragePrevs = res.body.total_ta;
+        this.hourlyRateChartAveragePrev = res.body.total_ta;
+        this.hourlyRateChartAverage = res.body.total;
         if (this.collExphourlyValue >= this.collExphourlyRateChartAveragePrevs)
           this.hourlyRateChartTooltip = 'up';
         if (this.collExphourlyValue > this.collExphourlyGoal)
@@ -6008,16 +6008,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.hourlyRateChartAverage = 0;
     this.hourlyRateChartTooltip = 'down';
     this.hourlyLabelSingleDentists = '';
-    this.clinic_id && this.cliniciananalysisService.hourlyRateDentistsSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.hourlyRateDentistsSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
       this.hourlyValueSingleDentists = '0';
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
         this.hourlyRateSingleDentistsLoader = false;
         this.hourlyValueSingleDentists = '0';
-        if (data.data.length > 0) {
-          this.hourlyValueSingleDentists = Math.round(data.data[0].hourly_rate);
-          var name = data.data[0].provider_name;
+        if (res.body.data.length > 0) {
+          this.hourlyValueSingleDentists = Math.round(res.body.data[0].hourly_rate);
+          var name = res.body.data[0].provider_name;
           if (name != null && name != '') {
             name = name.split(')');
             if (name.length > 0 && name[1] != undefined) {
@@ -6028,12 +6028,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             this.hourlyLabelSingleDentists = name;
           }
           else
-            this.hourlyLabelSingleDentists = data.data[0].provider;
+            this.hourlyLabelSingleDentists = res.body.data[0].provider;
 
         }
-        this.hourlyGoalSingleDentists = data.goals;
-        this.hourlyRateChartAveragePrev = data.total_ta;
-        this.hourlyRateChartAverage = data.total;
+        this.hourlyGoalSingleDentists = res.body.goals;
+        this.hourlyRateChartAveragePrev = res.body.total_ta;
+        this.hourlyRateChartAverage = res.body.total;
         if (this.hourlyValueSingleDentists >= this.hourlyRateChartAveragePrev)
           this.hourlyRateChartTooltip = 'up';
         if (this.hourlyValueSingleDentists > this.hourlyGoalSingleDentists)
@@ -6066,16 +6066,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.hourlyRateChartAverage = 0;
     this.hourlyRateChartTooltip = 'down';
     this.hourlyLabelSingleOht = '';
-    this.clinic_id && this.cliniciananalysisService.hourlyRateOhtSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.hourlyRateOhtSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
       this.hourlyValueSingleOht = '0';
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
         this.hourlyRateSingleOhtLoader = false;
         this.hourlyValueSingleOht = '0';
-        if (data.data.length > 0) {
-          this.hourlyValueSingleOht = Math.round(data.data[0].hourly_rate);
-          var name = data.data[0].provider_name;
+        if (res.body.data.length > 0) {
+          this.hourlyValueSingleOht = Math.round(res.body.data[0].hourly_rate);
+          var name = res.body.data[0].provider_name;
           if (name != null && name != '') {
             name = name.split(')');
             if (name.length > 0 && name[1] != undefined) {
@@ -6086,12 +6086,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             this.hourlyLabelSingleOht = name;
           }
           else
-            this.hourlyLabelSingleOht = data.data[0].provider;
+            this.hourlyLabelSingleOht = res.body.data[0].provider;
 
         }
-        this.hourlyGoalSingleOht = data.goals;
-        this.hourlyRateChartAveragePrev = data.total_ta;
-        this.hourlyRateChartAverage = data.total;
+        this.hourlyGoalSingleOht = res.body.goals;
+        this.hourlyRateChartAveragePrev = res.body.total_ta;
+        this.hourlyRateChartAverage = res.body.total;
         if (this.hourlyValueSingleOht >= this.hourlyRateChartAveragePrev)
           this.hourlyRateChartTooltip = 'up';
         if (this.hourlyValueSingleOht > this.hourlyGoalSingleOht)
@@ -6146,14 +6146,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     this.collhourlyRateChartLabels = [];
     this.barChartOptionsHR.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.collectionHourlyRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.collectionHourlyRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.collhourlyRateChartData1 = [];
       this.collectionhourlyRateChartLabels1 = [];
       this.collhourlyRateChartLabels = [];
       this.barChartOptionsHR.annotation = [];
       this.collhourlyRatetbl = [];
       this.collectionhourlyRateChartData[0]['data']=[];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.chrKey ='';
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
@@ -6162,13 +6162,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
+          res.body.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.collhourlyRatetbl = data.data;
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        this.collhourlyRatetbl = res.body.data;
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
           if (res.hourly_rate > 0) {
             this.collhourlyRateChartData1.push(Math.round(res.hourly_rate));
             var pName ='';
@@ -6196,9 +6196,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         this.collectionhourlyRateChartData[0]['data'] = this.collhourlyRateChartData1;
         this.collhourlyRateChartLabels = this.collectionhourlyRateChartLabels1;
-        this.collectionhourlyRateChartAverage = Math.round(data.total);
-        this.collectionhourlyRateChartAveragePrev = Math.round(data.total_ta);
-        this.collectionhourlyRateChartGoal = data.goals;
+        this.collectionhourlyRateChartAverage = Math.round(res.body.total);
+        this.collectionhourlyRateChartAveragePrev = Math.round(res.body.total_ta);
+        this.collectionhourlyRateChartGoal = res.body.goals;
         if (this.user_type == '4' && this.childid != '') {
           this.barChartColors = [
             { backgroundColor: [] }
@@ -6208,7 +6208,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else {
           this.cHRcolors = this.lineChartColors;
-          let dynamicColors = this.barBackgroundColor(data, this.collhourlyRateChartLabels);      
+          let dynamicColors = this.barBackgroundColor(res.body.data, this.collhourlyRateChartLabels);      
           this.collectionhourlyRateChartData[0].backgroundColor = dynamicColors;
         }
 
@@ -6281,7 +6281,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     this.collhourlyRateChartDesntistsLabels = [];
     this.barChartOptionsHR1.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.collectionHourlyRateDentist(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.collectionHourlyRateDentist(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.collhourlyRateChartDesntistsData1 = [];
       this.collhourlyRateChartDesntistsLabels1 = [];
 
@@ -6289,7 +6289,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.barChartOptionsHR1.annotation = [];
       this.collhourlyRateDenttbl =[];
       this.collhourlyRateChartDentistsData[0]['data'] =[];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.hrKey ='';
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
@@ -6298,13 +6298,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
+          res.body.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.collhourlyRateDenttbl = data.data;
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        this.collhourlyRateDenttbl = res.body.data;
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
           if (res.hourly_rate > 0) {
             var pName ='';
             if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
@@ -6332,9 +6332,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         this.collhourlyRateChartDentistsData[0]['data'] = this.collhourlyRateChartDesntistsData1;
         this.collhourlyRateChartDesntistsLabels = this.collhourlyRateChartDesntistsLabels1;
-        this.collhourlyRateChartDesntistsAverage = Math.round(data.total);
-        this.collhourlyRateChartDesntistsAveragePrev = Math.round(data.total_ta);
-        this.hourlyRateChartGoal = data.goals;
+        this.collhourlyRateChartDesntistsAverage = Math.round(res.body.total);
+        this.collhourlyRateChartDesntistsAveragePrev = Math.round(res.body.total_ta);
+        this.hourlyRateChartGoal = res.body.goals;
         if (this.user_type == '4' && this.childid != '') {
           this.barChartColorsHrDent = [
             { backgroundColor: [] }
@@ -6344,7 +6344,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else {
           this.HRcolorsDent = this.lineChartColors;
-          let dynamicColors = this.barBackgroundColor(data, this.collhourlyRateChartDesntistsLabels); 
+          let dynamicColors = this.barBackgroundColor(res.body.data, this.collhourlyRateChartDesntistsLabels); 
           this.collhourlyRateChartDentistsData[0].backgroundColor = dynamicColors;
         }
 
@@ -6417,7 +6417,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     this.collhourlyRateChartOhtLabels = [];
     this.barChartOptionsHR2.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.collectionHourlyRateOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.collectionHourlyRateOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.collhourlyRateChartOhtData1 = [];
       this.collhourlyRateChartOhtLabels1 = [];
       this.collhourlyRateOhttbl =[];
@@ -6425,7 +6425,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.barChartOptionsHR2.annotation = [];
       this.collhourlyRateChartOhtData[0]['data']=[];
       this.collhourlyRateChartOhtAverage =0;
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.hrKey ='';
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
@@ -6434,13 +6434,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
+          res.body.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.collhourlyRateOhttbl = data.data;
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        this.collhourlyRateOhttbl = res.body.data;
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
           if (res.hourly_rate > 0) {
             this.collhourlyRateChartOhtData1.push(Math.round(res.hourly_rate));
             var pName ='';
@@ -6468,9 +6468,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         this.collhourlyRateChartOhtData[0]['data'] = this.collhourlyRateChartOhtData1;
         this.collhourlyRateChartOhtLabels = this.collhourlyRateChartOhtLabels1;
-        this.collhourlyRateChartOhtAverage = Math.round(data.total);
-        this.collhourlyRateChartOhtAveragePrev = Math.round(data.total_ta);
-        this.hourlyRateChartGoal = data.goals;
+        this.collhourlyRateChartOhtAverage = Math.round(res.body.total);
+        this.collhourlyRateChartOhtAveragePrev = Math.round(res.body.total_ta);
+        this.hourlyRateChartGoal = res.body.goals;
         if (this.user_type == '4' && this.childid != '') {
           this.barChartColorsHrOht = [
             { backgroundColor: [] }
@@ -6480,7 +6480,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else {
           this.HRcolorsOht = this.lineChartColors;
-          let dynamicColors =  this.barBackgroundColor(data, this.collhourlyRateChartOhtLabels);     
+          let dynamicColors =  this.barBackgroundColor(res.body.data, this.collhourlyRateChartOhtLabels);     
           this.collhourlyRateChartOhtData[0].backgroundColor = dynamicColors;
         }
 
@@ -6566,14 +6566,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     this.collExphourlyRateChartLabels = [];
     this.barChartOptionsHR.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.collectionExpHourlyRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.collectionExpHourlyRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.collExphourlyRateChartData1 = [];
       this.collExphourlyRateChartLabels1 = [];
       this.collExphourlyRateChartLabels = [];
       this.barChartOptionsHR.annotation = [];
       this.collExphourlyRatetbl = [];
       this.collExphourlyRateChartData[0]['data']=[];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.collExphrKey ='';
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
@@ -6582,13 +6582,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
+          res.body.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.collExphourlyRatetbl = data.data;
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        this.collExphourlyRatetbl = res.body.data;
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
           if (res.hourly_rate > 0) {
             this.collExphourlyRateChartData1.push(Math.round(res.hourly_rate));
             var pName ='';
@@ -6616,9 +6616,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         this.collExphourlyRateChartData[0]['data'] = this.collExphourlyRateChartData1;
         this.collExphourlyRateChartLabels = this.collExphourlyRateChartLabels1;
-        this.collExphourlyRateChartAverage = Math.round(data.total);
-        this.collExphourlyRateChartAveragePrev = Math.round(data.total_ta);
-        this.collExphourlyRateChartGoal = data.goals;
+        this.collExphourlyRateChartAverage = Math.round(res.body.total);
+        this.collExphourlyRateChartAveragePrev = Math.round(res.body.total_ta);
+        this.collExphourlyRateChartGoal = res.body.goals;
         if (this.user_type == '4' && this.childid != '') {
           this.barChartColors = [
             { backgroundColor: [] }
@@ -6628,7 +6628,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else {
           this.collExpHRcolors = this.lineChartColors;
-          let dynamicColors = this.barBackgroundColor(data, this.collExphourlyRateChartLabels); 
+          let dynamicColors = this.barBackgroundColor(res.body.data, this.collExphourlyRateChartLabels); 
           this.collExphourlyRateChartData[0].backgroundColor = dynamicColors;
         }
 
@@ -6701,7 +6701,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     this.collExphourlyRateChartDesntistsLabels = [];
     this.barChartOptionsHR1.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.collectionExpHourlyRateDentist(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.collectionExpHourlyRateDentist(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.collExphourlyRateChartDesntistsData1 = [];
       this.collExphourlyRateChartDesntistsLabels1 = [];
 
@@ -6709,7 +6709,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.barChartOptionsHR1.annotation = [];
       this.collExphourlyRateDenttbl =[];
       this.collExphourlyRateChartDentistsData[0]['data'] =[];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.hrKey ='';
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
@@ -6718,13 +6718,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
+          res.body.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.collExphourlyRateDenttbl = data.data;
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        this.collExphourlyRateDenttbl = res.body.data;
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
           if (res.hourly_rate > 0) {
             var pName ='';
             if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
@@ -6752,9 +6752,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         this.collExphourlyRateChartDentistsData[0]['data'] = this.collExphourlyRateChartDesntistsData1;
         this.collExphourlyRateChartDesntistsLabels = this.collExphourlyRateChartDesntistsLabels1;
-        this.collExphourlyRateChartDesntistsAverage = Math.round(data.total);
-        this.collExphourlyRateChartDesntistsAveragePrev = Math.round(data.total_ta);
-        this.hourlyRateChartGoal = data.goals;
+        this.collExphourlyRateChartDesntistsAverage = Math.round(res.body.total);
+        this.collExphourlyRateChartDesntistsAveragePrev = Math.round(res.body.total_ta);
+        this.hourlyRateChartGoal = res.body.goals;
         if (this.user_type == '4' && this.childid != '') {
           this.barChartColorsHrDent = [
             { backgroundColor: [] }
@@ -6764,7 +6764,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else {
           this.HRcolorsDent = this.lineChartColors;
-          let dynamicColors = this.barBackgroundColor(data, this.collExphourlyRateChartDesntistsLabels);       
+          let dynamicColors = this.barBackgroundColor(res.body.data, this.collExphourlyRateChartDesntistsLabels);       
           this.collExphourlyRateChartDentistsData[0].backgroundColor = dynamicColors;
         }
 
@@ -6837,7 +6837,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     this.collExphourlyRateChartOhtLabels = [];
     this.barChartOptionsHR2.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.collectionExpHourlyRateOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.collectionExpHourlyRateOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
       this.collExphourlyRateChartOhtData1 = [];
       this.collExphourlyRateChartOhtLabels1 = [];
       this.collExphourlyRateOhttbl =[];
@@ -6845,7 +6845,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.barChartOptionsHR2.annotation = [];
       this.collExphourlyRateChartOhtData[0]['data']=[];
       this.collExphourlyRateChartOhtAverage =0;
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.hrKey ='';
         this.Apirequest = this.Apirequest - 1;
         this.enableDiabaleButton(this.Apirequest);
@@ -6854,13 +6854,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var i = 0;
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.isAllClinic = true;
-          data.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
+          res.body.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
         }else{
           this.isAllClinic = false;
         }
-        this.collExphourlyRateOhttbl = data.data;
-        if (data.data.length > this.numberOfRecords) data.data = data.data.slice(0, this.numberOfRecords);
-        data.data.forEach(res => {
+        this.collExphourlyRateOhttbl = res.body.data;
+        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
+        res.body.data.forEach(res => {
           if (res.hourly_rate > 0) {
             this.collExphourlyRateChartOhtData1.push(Math.round(res.hourly_rate));
             var pName ='';
@@ -6888,9 +6888,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         this.collExphourlyRateChartOhtData[0]['data'] = this.collExphourlyRateChartOhtData1;
         this.collExphourlyRateChartOhtLabels = this.collExphourlyRateChartOhtLabels1;
-        this.collExphourlyRateChartOhtAverage = Math.round(data.total);
-        this.collExphourlyRateChartOhtAveragePrev = Math.round(data.total_ta);
-        this.hourlyRateChartGoal = data.goals;
+        this.collExphourlyRateChartOhtAverage = Math.round(res.body.total);
+        this.collExphourlyRateChartOhtAveragePrev = Math.round(res.body.total_ta);
+        this.hourlyRateChartGoal = res.body.goals;
         if (this.user_type == '4' && this.childid != '') {
           this.barChartColorsHrOht = [
             { backgroundColor: [] }
@@ -6900,7 +6900,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else {
           this.HRcolorsOht = this.lineChartColors;
-          let dynamicColors = this.barBackgroundColor(data, this.collExphourlyRateChartOhtLabels);
+          let dynamicColors = this.barBackgroundColor(res.body.data, this.collExphourlyRateChartOhtLabels);
           this.collExphourlyRateChartOhtData[0].backgroundColor = dynamicColors;
         }
 
@@ -6959,7 +6959,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           var dentistVal1 = this._cookieService.get("clinic_dentist").split('_');
           this.selectedDentist = dentistVal1[1];
       } 
-      if (res.body.message == 'success') {
+      if (res.status == 200) {
         this.dentists = res.body.data;
         this.dentistCount = res.body.data.length;
       } else if (res.status == 401) {
@@ -7349,7 +7349,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       mode = this.trendValue
     }
 
-    this.clinic_id && this.cliniciananalysisService.caDentistProtectionTrend(this.selectedDentist, this.clinic_id, mode).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.caDentistProtectionTrend(this.selectedDentist, this.clinic_id, mode).subscribe((res: any) => {
       this.dentistProductionTrendLabels1 = [];
       this.dentistProductionTrend1 = [];
       this.dentistProductionTrendLabels = [];
@@ -7358,18 +7358,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.dentistProductionWeeklyTrendLabels = [];
       let dynamicColors = [];
       this.targetData=[];
-      if (data && data.message == 'success') {
+      if (res.body.data && res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
 
-        if (data.data) {
-          data.data.forEach(res => {
+        if (res.body.data) {
+          res.body.data.forEach(res => {
             // if (res.production > 0) {
               this.dentistProductionTrend1.push(Math.round(res.production));
-              if(res.goals == -1 || res.goals == null || res.goals == ''){
+              if(res.body.goals == -1 || res.body.goals == null || res.body.goals == ''){
                 this.targetData.push(null);
               }else{
-                this.targetData.push(res.goals);    
+                this.targetData.push(res.body.goals);    
               }       
               if (mode == 'c') {                            
                 this.dentistProductionTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -7430,7 +7430,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             this.gaugeValue = '0';
           }
           if (mode == 'w') {
-            this.dentistProductionWeeklyTrend =  data.data;
+            this.dentistProductionWeeklyTrend =  res.body.data;
             this.dentistProductionWeeklyTrendLabels = this.dentistProductionTrendLabels;
           }
         } else {
@@ -7467,7 +7467,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       mode = this.trendValue
     }
 
-    this.clinic_id && this.cliniciananalysisService.caDentistProtectionDentistsTrend(this.selectedDentist, this.clinic_id, mode).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.caDentistProtectionDentistsTrend(this.selectedDentist, this.clinic_id, mode).subscribe((res: any) => {
       this.dentistProductionTrendDentistsLabels1 = [];
       this.dentistProductionDentistsTrend1 = [];
       this.dentistProductionTrendDentistsLabels = [];
@@ -7475,12 +7475,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.dentistProductionWeeklyDentistsTrend = [];
       this.dentistProductionWeeklyTrendDentistsLabels = [];
       let dynamicColors = [];
-      if (data && data.message == 'success') {
+      if (res.body.data && res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
 
-        if (data.data.total > 0) {
-          data.data.data.forEach(res => {
+        if (res.body.data.total > 0) {
+          res.body.data.data.forEach(res => {
             // if (res.production > 0) {
               this.dentistProductionDentistsTrend1.push(Math.round(res.production));
               if (mode == 'c') {
@@ -7506,7 +7506,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             this.gaugeValue = '0';
           }
           if (mode == 'w') {
-            this.dentistProductionWeeklyDentistsTrend =  data.data.data;
+            this.dentistProductionWeeklyDentistsTrend =  res.body.data.data;
             this.dentistProductionWeeklyTrendDentistsLabels = this.dentistProductionTrendDentistsLabels;
           }
         } else {
@@ -7543,7 +7543,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       mode = this.trendValue
     }
 
-    this.clinic_id && this.cliniciananalysisService.caDentistProtectionOhtTrend(this.selectedDentist, this.clinic_id, mode).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.caDentistProtectionOhtTrend(this.selectedDentist, this.clinic_id, mode).subscribe((res: any) => {
       this.dentistProductionTrendOhtLabels1 = [];
       this.dentistProductionOhtTrend1 = [];
       this.dentistProductionTrendOhtLabels = [];
@@ -7551,12 +7551,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.dentistProductionWeeklyOhtTrend = [];
       this.dentistProductionWeeklyTrendOhtLabels = [];
       let dynamicColors = [];
-      if (data && data.message == 'success') {
+      if (res.body.data && res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
 
-        if (data.data.total > 0) {
-          data.data.data.forEach(res => {
+        if (res.body.data.total > 0) {
+          res.body.data.data.forEach(res => {
             // if (res.production > 0) {
               this.dentistProductionOhtTrend1.push(Math.round(res.production));
               if (mode == 'c') {
@@ -7582,7 +7582,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             this.gaugeValue = '0';
           }
           if (mode == 'w') {
-            this.dentistProductionWeeklyOhtTrend =  data.data.data;
+            this.dentistProductionWeeklyOhtTrend =  res.body.data.data;
             this.dentistProductionWeeklyTrendOhtLabels = this.dentistProductionTrendOhtLabels;
           }
         } else {
@@ -7615,7 +7615,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       activeMode = mode;
     }
     this.dentistCollectionTrendLoader = true;
-    this.clinic_id && this.cliniciananalysisService.caDentistCollectionTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.caDentistCollectionTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((res: any) => {
       this.dentistColleTrendLabels1 = [];
       this.dentistColleWeeklyTrendLabels1 = [];
       this.dentistCollectionTrend1 = [];
@@ -7625,17 +7625,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.collectiontargetData=[];
 
       let dynamicColors = [];
-      if (data && data.message == 'success') {
+      if (res.body.data && res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-        if (data.data) {
-          data.data.forEach(res => {
+        if (res.body.data) {
+          res.body.data.forEach(res => {
             // if (res.collection > 0) {
               this.dentistCollectionTrend1.push(Math.round(res.collection));
-              if(res.goals == -1 || res.goals == null || res.goals == ''){
+              if(res.body.goals == -1 || res.body.goals == null || res.body.goals == ''){
                 this.collectiontargetData.push(null);
               }else{
-                this.collectiontargetData.push(res.goals); 
+                this.collectiontargetData.push(res.body.goals); 
               }  
               if (activeMode == 'c') {
                 this.dentistColleTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -7690,7 +7690,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.dentistColTrend[0].backgroundColor = dynamicColors;
           this.dentistCollectionTrendLabels = this.dentistColleTrendLabels1;
           if (activeMode == 'w') {
-            this.dentistCollectionWeeklyTrend1 = data.data;
+            this.dentistCollectionWeeklyTrend1 = res.body.data;
             this.dentistCollectionWeeklyTrendLabels = this.dentistColleTrendLabels1;
           }
         } else {
@@ -7725,7 +7725,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       activeMode = mode;
     }
     this.dentistCollectionDentistsTrendLoader = true;
-    this.clinic_id && this.cliniciananalysisService.caDentistCollectionDentistsTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.caDentistCollectionDentistsTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((res: any) => {
       this.dentistColleTrendDentistsLabels1 = [];
       this.dentistColleWeeklyTrendDentistsLabels1 = [];
       this.dentistCollectionDentistsTrend1 = [];
@@ -7734,11 +7734,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.dentistCollectionWeeklyDentistsTrendLabels = [];
 
       let dynamicColors = [];
-      if (data && data.message == 'success') {
+      if (res.body.data && res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-        if (data.data) {
-          data.data.forEach(res => {
+        if (res.body.data) {
+          res.body.data.forEach(res => {
             // if (res.collection > 0) {
               this.dentistCollectionDentistsTrend1.push(Math.round(res.collection));
               if (activeMode == 'c') {
@@ -7759,7 +7759,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.dentistColDentistsTrend[0].backgroundColor = dynamicColors;
           this.dentistCollectionDentistsTrendLabels = this.dentistColleTrendDentistsLabels1;
           if (activeMode == 'w') {
-            this.dentistCollectionWeeklyDentistsTrend1 = data.data;
+            this.dentistCollectionWeeklyDentistsTrend1 = res.body.data;
             this.dentistCollectionWeeklyDentistsTrendLabels = this.dentistColleTrendDentistsLabels1;
           }
         } else {
@@ -7794,7 +7794,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       activeMode = mode;
     }
     this.dentistCollectionOhtTrendLoader = true;
-    this.clinic_id && this.cliniciananalysisService.caDentistCollectionOhtTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.caDentistCollectionOhtTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((res: any) => {
       this.dentistColleTrendOhtLabels1 = [];
       this.dentistColleWeeklyTrendOhtLabels1 = [];
       this.dentistCollectionOhtTrend1 = [];
@@ -7803,11 +7803,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.dentistCollectionWeeklyOhtTrendLabels = [];
 
       let dynamicColors = [];
-      if (data && data.message == 'success') {
+      if (res.body.data && res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-        if (data.data) {
-          data.data.forEach(res => {
+        if (res.body.data) {
+          res.body.data.forEach(res => {
             // if (res.collection > 0) {
               this.dentistCollectionOhtTrend1.push(Math.round(res.collection));
               if (activeMode == 'c') {
@@ -7828,7 +7828,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.dentistColOhtTrend[0].backgroundColor = dynamicColors;
           this.dentistCollectionOhtTrendLabels = this.dentistColleTrendOhtLabels1;
           if (activeMode == 'w') {
-            this.dentistCollectionWeeklyOhtTrend1 = data.data;
+            this.dentistCollectionWeeklyOhtTrend1 = res.body.data;
             this.dentistCollectionWeeklyOhtTrendLabels = this.dentistColleTrendOhtLabels1;
           }
         } else {
@@ -7860,7 +7860,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
      activeMode = mode;
    }
    this.dentistCollectionExpTrendLoader = true;
-   this.clinic_id && this.cliniciananalysisService.caDentistCollectionExpTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((data: any) => {
+   this.clinic_id && this.cliniciananalysisService.caDentistCollectionExpTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((res: any) => {
      this.dentistColleExpTrendLabels1 = [];
      this.dentistColleExpWeeklyTrendLabels1 = [];
      this.dentistCollectionExpTrend1 = [];
@@ -7869,11 +7869,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
      this.dentistCollectionExpWeeklyTrendLabels = [];
 
      let dynamicColors = [];
-     if (data && data.message == 'success') {
+     if (res.body.data && res.status == 200) {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-       if (data.data) {
-         data.data.forEach(res => {
+       if (res.body.data) {
+         res.body.data.forEach(res => {
            // if (res.collection > 0) {
              this.dentistCollectionExpTrend1.push(Math.round(res.collection));
              if (activeMode == 'c') {
@@ -7894,7 +7894,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
          this.dentistColExpTrend[0].backgroundColor = dynamicColors;
          this.dentistCollectionExpTrendLabels = this.dentistColleExpTrendLabels1;
          if (activeMode == 'w') {
-           this.dentistCollectionExpWeeklyTrend1 = data.data;
+           this.dentistCollectionExpWeeklyTrend1 = res.body.data;
            this.dentistCollectionExpWeeklyTrendLabels = this.dentistColleExpTrendLabels1;
          }
        } else {
@@ -7929,7 +7929,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
      activeMode = mode;
    }
    this.dentistCollectionExpDentistsTrendLoader = true;
-   this.clinic_id && this.cliniciananalysisService.caDentistCollectionExpDentistsTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((data: any) => {
+   this.clinic_id && this.cliniciananalysisService.caDentistCollectionExpDentistsTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((res: any) => {
      this.dentistColleExpDentistsTrendLabels1 = [];
      this.dentistColleExpWeeklyDentistsTrendLabels1 = [];
      this.dentistCollectionExpDentistsTrend1 = [];
@@ -7938,11 +7938,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
      this.dentistCollectionExpWeeklyDentistsTrendLabels = [];
 
      let dynamicColors = [];
-     if (data && data.message == 'success') {
+     if (res.body.data && res.status == 200) {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-       if (data.data) {
-         data.data.forEach(res => {
+       if (res.body.data) {
+         res.body.data.forEach(res => {
            // if (res.collection > 0) {
              this.dentistCollectionExpDentistsTrend1.push(Math.round(res.collection));
              if (activeMode == 'c') {
@@ -7963,7 +7963,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
          this.dentistColExpDentistsTrend[0].backgroundColor = dynamicColors;
          this.dentistCollectionExpDentistsTrendLabels = this.dentistColleExpDentistsTrendLabels1;
          if (activeMode == 'w') {
-           this.dentistCollectionExpWeeklyDentistsTrend1 = data.data;
+           this.dentistCollectionExpWeeklyDentistsTrend1 = res.body.data;
            this.dentistCollectionExpWeeklyDentistsTrendLabels = this.dentistColleExpDentistsTrendLabels1;
          }
        } else {
@@ -7998,7 +7998,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
      activeMode = mode;
    }
    this.dentistCollectionExpOhtTrendLoader = true;
-   this.clinic_id && this.cliniciananalysisService.caDentistCollectionExpOhtTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((data: any) => {
+   this.clinic_id && this.cliniciananalysisService.caDentistCollectionExpOhtTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((res: any) => {
      this.dentistColleExpOhtTrendLabels1 = [];
      this.dentistColleExpWeeklyOhtTrendLabels1 = [];
      this.dentistCollectionExpOhtTrend1 = [];
@@ -8007,11 +8007,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
      this.dentistCollectionExpWeeklyOhtTrendLabels = [];
 
      let dynamicColors = [];
-     if (data && data.message == 'success') {
+     if (res.body.data && res.status == 200) {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-       if (data.data) {
-         data.data.forEach(res => {
+       if (res.body.data) {
+         res.body.data.forEach(res => {
            // if (res.collection > 0) {
              this.dentistCollectionExpOhtTrend1.push(Math.round(res.collection));
              if (activeMode == 'c') {
@@ -8032,7 +8032,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
          this.dentistColExpOhtTrend[0].backgroundColor = dynamicColors;
          this.dentistCollectionExpOhtTrendLabels = this.dentistColleExpOhtTrendLabels1;
          if (activeMode == 'w') {
-           this.dentistCollectionExpWeeklyOhtTrend1 = data.data;
+           this.dentistCollectionExpWeeklyOhtTrend1 = res.body.data;
            this.dentistCollectionExpWeeklyOhtTrendLabels = this.dentistColleExpOhtTrendLabels1;
          }
        } else {
@@ -8087,18 +8087,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.treatmentPlanTrendLoader = true;
     var user_id;
     var clinic_id;
-    this.clinic_id && this.cliniciananalysisService.caTreatmentPlanAverageCostTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.caTreatmentPlanAverageCostTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
       this.treatmentPlanTrendLabels1 = [];
       this.treatmentPlanTrendLabels = [];
       this.treatPlanTrend[0]['data']=[];
       this.treatmentPlanTrend1 = [];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
         this.treatmentPlanTrendLoader = false;
-        if (data.data) {
-          if (data.data) {
-            data.data.forEach(res => {
+        if (res.body.data) {
+          if (res.body.data) {
+            res.body.data.forEach(res => {
               if (res.average_fees >= 0) {
                 if (res.average_fees)
                   this.treatmentPlanTrend1.push(Math.round(res.average_fees));
@@ -8172,17 +8172,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.treatmentPlanTrendLoader = true;
     var user_id;
     var clinic_id;
-    this.clinic_id && this.cliniciananalysisService.caTreatmentPlanAverageCompletedFeeTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.caTreatmentPlanAverageCompletedFeeTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
       this.treatmentPlanTrendLabels1 = [];
       this.treatmentPlanTrendLabels = [];
       this.treatmentPlanTrend2 = [];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
         this.treatmentPlanTrendLoader = false;
-        if (data.data) {
-          if (data.data) {
-            data.data.forEach(res => {
+        if (res.body.data) {
+          if (res.body.data) {
+            res.body.data.forEach(res => {
               if (res.average_fees >= 0) {
                 if (res.average_fees)
                   this.treatmentPlanTrend2.push(Math.round(res.average_fees));
@@ -8262,16 +8262,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     var user_id;
     var clinic_id;
-    this.clinic_id && this.cliniciananalysisService.caNumberPatientComplaintsTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.caNumberPatientComplaintsTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
       this.patientComplaintsTrendLabels1 = [];
       this.patientComplaintsTrendLabels = [];
       this.patientComplaintsTrendLoader = false;
       this.patientComplaintsTrend1 = [];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
-        if (data.data) {
-          data.data.forEach(res => {
+        if (res.body.data) {
+          res.body.data.forEach(res => {
             if (res.num_complaints)
               this.patientComplaintsTrend1.push(res.num_complaints);
             if (this.trendValue == 'c')
@@ -8357,20 +8357,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.fdRecallPrebookRatetargetData=[];
     var user_id;
     var clinic_id;
-    this.cliniciananalysisService.cpRecallPrebookRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+    this.cliniciananalysisService.cpRecallPrebookRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
       
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
         this.fdRecallPrebookRateTrendLoader = false;
         this.recallPrebookChartTrendLabels1 = [];
         this.recallPrebookChartTrend1 = [];
-        data.data.forEach(res => {
+        res.body.data.forEach(res => {
           this.recallPrebookChartTrend1.push(Math.round(res.recall_percent));
-          if(res.goals == -1 || res.goals == null || res.goals == ''){
+          if(res.body.goals == -1 || res.body.goals == null || res.body.goals == ''){
             this.fdRecallPrebookRatetargetData.push(null);
           }else{
-            this.fdRecallPrebookRatetargetData.push(res.goals);    
+            this.fdRecallPrebookRatetargetData.push(res.body.goals);    
           }
           if (this.trendValue == 'c')
             this.recallPrebookChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -8468,20 +8468,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.fdTreatmentPrebookRatetargetData=[];
     var user_id;
     var clinic_id;
-    this.cliniciananalysisService.caReappointRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+    this.cliniciananalysisService.caReappointRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
      
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
         this.fdTreatmentPrebookRateTrendLoader = false;
         this.treatmentPrebookChartTrendLabels1 = [];
         this.treatmentPrebookChartTrend1 = [];
-        data.data.forEach(res => {
+        res.body.data.forEach(res => {
           this.treatmentPrebookChartTrend1.push(Math.round(res.reappoint_rate));
-          if(res.goals == -1 || res.goals == null || res.goals == ''){
+          if(res.body.goals == -1 || res.body.goals == null || res.body.goals == ''){
             this.fdTreatmentPrebookRatetargetData.push(null);
           }else{
-            this.fdTreatmentPrebookRatetargetData.push(res.goals);    
+            this.fdTreatmentPrebookRatetargetData.push(res.body.goals);    
           }  
           if (this.trendValue == 'c')
             this.treatmentPrebookChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -8573,21 +8573,21 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var user_id;
     var clinic_id;
     this.hourlytargetData =[];
-    this.clinic_id && this.cliniciananalysisService.cahourlyRateRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.cahourlyRateRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
       this.hourlyRateChartTrendLabels = [];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
         this.fdhourlyRateRateTrendLoader = false;
         this.hourlyRateChartTrendLabels1 = [];
         this.hourlyRateChartTrend1 = [];
-        data.data.forEach(res => {
+        res.body.data.forEach(res => {
           if (res.hourly_rate >= 0) {
             this.hourlyRateChartTrend1.push(Math.round(res.hourly_rate));
-            if(res.goals == -1 || res.goals == null || res.goals == ''){
+            if(res.body.goals == -1 || res.body.goals == null || res.body.goals == ''){
               this.hourlytargetData.push(null);
             }else{
-              this.hourlytargetData.push(res.goals); 
+              this.hourlytargetData.push(res.body.goals); 
             }              
             if (this.trendValue == 'c')
               this.hourlyRateChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -8700,21 +8700,21 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var user_id;
     var clinic_id;
     this.collhourlytargetData =[];
-    this.clinic_id && this.cliniciananalysisService.collectionHourlyRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.collectionHourlyRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
       this.collhourlyRateChartTrendLabels = [];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
         this.collhourlyRateRateTrendLoader = false;
         this.collhourlyRateChartTrendLabels1 = [];
         this.collhourlyRateChartTrend1 = [];
-        data.data.forEach(res => {
+        res.body.data.forEach(res => {
           if (res.hourly_rate >= 0) {
             this.collhourlyRateChartTrend1.push(Math.round(res.hourly_rate));
-            if(res.goals == -1 || res.goals == null || res.goals == ''){
+            if(res.body.goals == -1 || res.body.goals == null || res.body.goals == ''){
               this.collhourlytargetData.push(null);
             }else{
-              this.collhourlytargetData.push(res.goals); 
+              this.collhourlytargetData.push(res.body.goals); 
             }              
             if (this.trendValue == 'c')
               this.collhourlyRateChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -8827,21 +8827,21 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var user_id;
     var clinic_id;
     this.collExphourlytargetData =[];
-    this.clinic_id && this.cliniciananalysisService.collectionExpHourlyRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.collectionExpHourlyRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
       this.collExphourlyRateChartTrendLabels = [];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
         this.collExphourlyRateRateTrendLoader = false;
         this.collExphourlyRateChartTrendLabels1 = [];
         this.collExphourlyRateChartTrend1 = [];
-        data.data.forEach(res => {
+        res.body.data.forEach(res => {
           if (res.hourly_rate >= 0) {
             this.collExphourlyRateChartTrend1.push(Math.round(res.hourly_rate));
-            if(res.goals == -1 || res.goals == null || res.goals == ''){
+            if(res.body.goals == -1 || res.body.goals == null || res.body.goals == ''){
               this.collExphourlytargetData.push(null);
             }else{
-              this.collExphourlytargetData.push(res.goals); 
+              this.collExphourlytargetData.push(res.body.goals); 
             }              
             if (this.trendValue == 'c')
               this.collExphourlyRateChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -8923,15 +8923,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.fdhourlyRateRateDentistsTrendLoader = true;
     var user_id;
     var clinic_id;
-    this.clinic_id && this.cliniciananalysisService.cahourlyRateChartDesntistsTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.cahourlyRateChartDesntistsTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
       this.hourlyRateChartDentistsTrendLabels = [];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
         this.fdhourlyRateRateDentistsTrendLoader = false;
         this.hourlyRateChartDentistsTrendLabels1 = [];
         this.hourlyRateChartDentistsTrend1 = [];
-        data.data.forEach(res => {
+        res.body.data.forEach(res => {
           if (res.hourly_rate >= 0) {
             this.hourlyRateChartDentistsTrend1.push(Math.round(res.hourly_rate));
             if (this.trendValue == 'c')
@@ -8976,15 +8976,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.fdhourlyRateRateOhtTrendLoader = true;
     var user_id;
     var clinic_id;
-    this.clinic_id && this.cliniciananalysisService.cahourlyRateChartOhtTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.cahourlyRateChartOhtTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
       this.hourlyRateChartOhtTrendLabels = [];
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
         this.fdhourlyRateRateOhtTrendLoader = false;
         this.hourlyRateChartOhtTrendLabels1 = [];
         this.hourlyRateChartOhtTrend1 = [];
-        data.data.forEach(res => {
+        res.body.data.forEach(res => {
           if (res.hourly_rate >= 0) {
             this.hourlyRateChartOhtTrend1.push(Math.round(res.hourly_rate));
             if (this.trendValue == 'c')
@@ -9067,24 +9067,24 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.newPatientstargetData=[];
     var user_id;
     var clinic_id;
-    this.clinic_id && this.cliniciananalysisService.canewPatientsRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.canewPatientsRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
      
-      if (data != null && data.message == 'success') {
+      if (res.body.data != null && res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
         this.fdnewPatientsRateTrendLoader = false;
         this.newPatientsChartTrendLabels1 = [];
         this.newPatientsChartTrend1 = [];
-        data.data.forEach(res => {
+        res.body.data.forEach(res => {
           if (res.new_patients)
             this.newPatientsChartTrend1.push(Math.round(res.new_patients));
           else
             this.newPatientsChartTrend1.push(0);
 
-          if(res.goals == -1 || res.goals == null || res.goals == ''){
+          if(res.body.goals == -1 || res.body.goals == null || res.body.goals == ''){
             this.newPatientstargetData.push(null);
           }else{
-            this.newPatientstargetData.push(res.goals);    
+            this.newPatientstargetData.push(res.body.goals);    
           }   
           if (this.trendValue == 'c')
             this.newPatientsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -9202,22 +9202,22 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     var user_id;
     var clinic_id;
-    this.clinic_id && this.cliniciananalysisService.catreatmentPlanRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.catreatmentPlanRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
       this.fdtreatmentPlanRateTrendLoader = false;
-      if (data.message == 'success') {
+      if (res.status == 200) {
         this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
         this.treatmentPlanChartTrendLabels1 = [];
         this.treatmentPlanChartTrend1 = [];
-        if (data.data) {
-          data.data.forEach(res => {
+        if (res.body.data) {
+          res.body.data.forEach(res => {
             if (res.treatment_per_plan_percentage) {
               if (res.treatment_per_plan_percentage)
                 this.treatmentPlanChartTrend1.push(Math.round(res.treatment_per_plan_percentage));
-                if(res.goals == -1 || res.goals == null || res.goals == ''){
+                if(res.body.goals == -1 || res.body.goals == null || res.body.goals == ''){
                   this.fdtreatmentPlanRatetargetData.push(null);
                 }else{
-                  this.fdtreatmentPlanRatetargetData.push(res.goals);    
+                  this.fdtreatmentPlanRatetargetData.push(res.body.goals);    
                 }    
               if (this.trendValue == 'c')
                 this.treatmentPlanChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -9688,9 +9688,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   }
 
   getChartsTips() {
-    this.chartstipsService.getCharts(1).subscribe((data) => {
-      if (data.message == 'success') {
-        this.charTips = data.data;
+    this.chartstipsService.getCharts(1).subscribe((res) => {
+      if (res.status == 200) {
+        this.charTips = res.body.data;
       }
     }, error => { });
   }
