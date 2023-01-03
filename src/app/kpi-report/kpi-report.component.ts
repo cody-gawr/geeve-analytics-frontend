@@ -287,10 +287,11 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 		this.startDate = this.datepipe.transform(new Date(this.startDate), 'yyyy-MM-dd');
 		this.endDate = this.datepipe.transform(new Date(this.endDate), 'yyyy-MM-dd');
 
-		this.KpiReportService.getKpiReport(this.clinic_id, this.startDate, this.endDate, this.selectedDentist).subscribe((data: any) => {
-			if (data.status == 200) {
+		this.KpiReportService.getKpiReport(this.clinic_id, this.startDate, this.endDate, this.selectedDentist).subscribe((res: any) => {
+			if (res.status == 200) {
 				this.reportloader = false;
-				this.reportData = data.body.data;
+				this.reportData = res.body.data;
+				console.log(`res.body.data = ${JSON.stringify(res.body.data)}`);
 				this.reportData.forEach(element => {
 					if(element.kpi_type == "Production"){
 						element.val.forEach(ele => {
@@ -335,7 +336,8 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 				});
 				this.reportData[8]['kpi_type'] = 'Discounts';
 				this.reportData[5]['kpi_type'] = 'Dentist Production Per Hr';
-				this.reportMonths = data.months;
+				this.reportMonths = res.body.months;
+				console.log(`gtt reportMonths: ${JSON.stringify(this.reportMonths)}`)
 			}
 		}, error => {
 			this.reportloader = false;	
