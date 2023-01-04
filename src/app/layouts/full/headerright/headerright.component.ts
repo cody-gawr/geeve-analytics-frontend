@@ -249,9 +249,6 @@ export class AppHeaderrightComponent implements AfterViewInit {
         this.headerService.setClinics(res);
         if (res.status == 200) {
           this.clinicsData = res.body.data;
-          console.log(`res.body.data = ${res.body.data}`);
-          console.log(`res.body.data = ${res.body.data}`);
-          console.log(`res = ${JSON.stringify(res)}`);
           if (res.body.data.length > 0) {            
             
             if (this.route == "/dashboards/healthscreen") { 

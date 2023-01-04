@@ -929,7 +929,6 @@ initiate_clinic() {
         {
           //this.isEnabletasks = true;
           this.endOfDaysTasks = res.body.data;
-          console.log(`isEnabletasks: ${this.isEnabletasks} endOfDaysTasks.length: ${this.endOfDaysTasks.length} user_type: ${this.user_type}`)
           this.endOfDaysTasksDate = this.datepipe.transform( res.body.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
           if(this.showComplete == true) {
             this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
@@ -969,14 +968,17 @@ initiate_clinic() {
         }
         else 
         {
-          this.endOfDaysTasks = res.body.data;            
-          this.endOfDaysTasksDate = this.datepipe.transform( res.body.data.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
-          if(this.showComplete) {
+          this.endOfDaysTasks = res.body.data;  
+          console.log(`GTT: getEndDaysTasks: ${JSON.stringify(this.endOfDaysTasks)}`);          
+          this.endOfDaysTasksDate = this.datepipe.transform( res.body.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
+          if(this.showComplete == true) {
            this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
           } else {
             this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
           }  
-          // this.endOfDaysTasksInComp.sort = this.sort1; 
+          // this.endOfDaysTasksInComp.sort = this.sort1;
+          console.log(`GTT: after IF endOfDaysTasksInComp.data: ${JSON.stringify(this.endOfDaysTasksInComp.data)}`);          
+
         }       
       } else if (res.status == 401) {
          this.handleUnAuthorization();         
