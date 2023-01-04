@@ -389,6 +389,7 @@ export class ClinicSettingsComponent implements OnInit {
     this.clinicSettingsService.getMyobLink(this.id).subscribe(
       (res) => {
         if (res.status == 200) {
+          console.log(`gtt: in getmyoblink, res.body: ${JSON.stringify(res.body)}`)
           this.myob_link = res.body.data;
         } else if (res.status == "401") {
           this._cookieService.put("username", "");
@@ -418,7 +419,7 @@ export class ClinicSettingsComponent implements OnInit {
   //create myob connection model
   public openMyob() {
     var success;
-
+    console.log(`in openmyob, myob link: ${this.myob_link}`);
     var win = window.open(this.myob_link, "MsgWindow", "width=400,height=400");
     var self = this;
     var timer = setInterval(function () {
@@ -459,7 +460,7 @@ export class ClinicSettingsComponent implements OnInit {
   public checkMyobStatus() {
     this.clinicSettingsService.checkMyobStatus(this.id).subscribe(
       (res) => {
-        if (res.status == 200) {
+        if (res.body.message != 'error') {
           if (res.body.data.myob_connect == 1) {
             this.myobConnect = true;
             this.myobOrganization = res.body.data.Name;
@@ -501,6 +502,8 @@ export class ClinicSettingsComponent implements OnInit {
   }
   //disconnect myob connection
   public disconnectMyob() {
+    console.log(`in disconnect myob`);
+
     this.clinicSettingsService.clearSessionMyob(this.id).subscribe(
       (res) => {
         if (res.status == 200) {
