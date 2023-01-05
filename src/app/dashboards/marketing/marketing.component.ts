@@ -2850,7 +2850,7 @@ export class MarketingComponent implements AfterViewInit {
           this.expenseDataTrend1 = [];
           this.expenseDataTrendLabels1 = [];
           this.newPatientsChartTemp.forEach((res, key) => {
-            res.body.data.forEach((res1, key1) => {
+            res.forEach((res1, key1) => {
               if (this.trendValue == 'c' && res1.duration == res.year_month) {
                 let dataX: number = 0;
                 this.dataY = 0;
