@@ -359,7 +359,7 @@ export class AppConstants {
         direction: 'right'
     };
     public tipMaxChartBar: ITooltipData = {
-        title: 'Max Chart Bar',
+        title: 'Max Chart Bars',
         info: 'This setting controls the maximum number of bars shown on bar charts for certain multi clinic selections.',
         direction: 'right'
     };
