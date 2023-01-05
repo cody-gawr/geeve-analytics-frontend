@@ -2849,9 +2849,9 @@ export class MarketingComponent implements AfterViewInit {
           this.newAcqValueError = false;
           this.expenseDataTrend1 = [];
           this.expenseDataTrendLabels1 = [];
-          this.newPatientsChartTemp.forEach((res, key) => {
-            res.forEach((res1, key1) => {
-              if (this.trendValue == 'c' && res1.duration == res.year_month) {
+          this.newPatientsChartTemp.forEach((data, key) => {
+            res.body.data.forEach((res1, key1) => {
+              if (this.trendValue == 'c' && res1.duration == data.year_month) {
                 let dataX: number = 0;
                 this.dataY = 0;
                 let percent: any = 0;
@@ -2862,17 +2862,17 @@ export class MarketingComponent implements AfterViewInit {
                   });
                 }
 
-                if (res.val != '') {
-                  dataX = res.new_patients;
+                if (data.val != '') {
+                  dataX = data.new_patients;
                 }
 
                 if (dataX != 0)
                   percent = this.dataY / dataX;
 
                 this.expenseDataTrend1.push(Math.round(percent));
-                this.expenseDataTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+                this.expenseDataTrendLabels1.push(this.datePipe.transform(data.year_month, 'MMM y'));
 
-              } else if (this.trendValue == 'h' && res1.duration == res.year) {
+              } else if (this.trendValue == 'h' && res1.duration == data.year) {
                 let dataX: number = 0;
                 this.dataY = 0;
                 let percent: any = 0;
@@ -2883,15 +2883,15 @@ export class MarketingComponent implements AfterViewInit {
                   });
                 }
 
-                if (res.val != '') {
-                  dataX = res.new_patients;
+                if (data.val != '') {
+                  dataX = data.new_patients;
                 }
 
                 if (dataX != 0)
                   percent = this.dataY / dataX;
 
                 this.expenseDataTrend1.push(Math.round(percent));
-                this.expenseDataTrendLabels1.push(res.year);
+                this.expenseDataTrendLabels1.push(data.year);
               }
             });
 
