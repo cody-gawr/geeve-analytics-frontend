@@ -1081,7 +1081,7 @@ initiate_clinic() {
       this.todayUnscheduledHoursLoader =  false;
       if(res.status == 200) {
         this.apiSuccessCount += 1;
-        this.todayUnscheduledHours = res.body.hour;
+        this.todayUnscheduledHours = res.body.data.hour;
         this.todayPatientsDate = res.body.data.date;    
       } else if (res.status == 401) {
          this.handleUnAuthorization();      
