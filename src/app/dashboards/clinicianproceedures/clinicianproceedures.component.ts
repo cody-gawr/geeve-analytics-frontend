@@ -1814,7 +1814,7 @@ public PRcolors;
 
         if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
           this.showmulticlinicPredictor = true;
-          res.body.data.data_crown_large.forEach(res => {
+          res.body.data_crown_large.forEach(res => {
             res.proval.forEach((result, key) => {
               if (typeof (this.predictedMulti1[key]) == 'undefined') {
                 this.predictedMulti1[key] = { data: [], label: '' };
@@ -1835,7 +1835,7 @@ public PRcolors;
              this.multifulratio1 = this.ratio1 +':'+ this.ratio2;
              this.predictorLabels1.push(res.clinic_name);
           });
-          res.body.data.data_rct_ext.forEach(res => {
+          res.body.data_rct_ext.forEach(res => {
             res.proval.forEach((result, key) => {
               if (typeof (this.predictedMulti2[key]) == 'undefined') {
                 this.predictedMulti2[key] = { data: [], label: '' };
@@ -1856,7 +1856,7 @@ public PRcolors;
              this.multifulratio2 = this.ratio3 +':'+ this.ratio4;
              this.predictorLabels2.push(res.clinic_name);
           });
-          res.body.data.data_rctsta_comp.forEach(res => {
+          res.body.data_rctsta_comp.forEach(res => {
             res.proval.forEach((result, key) => {
               if (typeof (this.predictedMulti3[key]) == 'undefined') {
                 this.predictedMulti3[key] = { data: [], label: '' };
