@@ -331,7 +331,7 @@ setGoalsPerMonth(chartGoals)
     return name;
   }
 
-  onKeyUp(id,val,event,sn){
+  onKeyUp(id,val,event,sn, tab){
     if($(event.target).hasClass('sign%') && val > 100){
       val = 100;
     }  else if(val == ''){
@@ -340,11 +340,11 @@ setGoalsPerMonth(chartGoals)
     $(event.target).val(val);
     val = +val;
     this.goalsData['goals'][id][sn] = val == 0 ? -1 : val;
-
-    let product = +$( "input[name='goal63"+sn+"']" ).val() * +$( "input[name='goal64"+sn+"']" ).val();
-    $( "input[name='goal1"+sn+"']" ).val(product == 0 ? "" : product);
-    this.goalsData['goals'][1][sn] = product == 0 ? -1 : product;
-
+    if(tab === "Prime KPI Report"){
+      let product = +$( "input[name='goal63"+sn+"']" ).val() * +$( "input[name='goal64"+sn+"']" ).val();
+      $( "input[name='goal1"+sn+"']" ).val(product == 0 ? "" : product);
+      this.goalsData['goals'][1][sn] = product == 0 ? -1 : product;
+    }
   }
 
 //   onBlur(id,val,event,sn){    
