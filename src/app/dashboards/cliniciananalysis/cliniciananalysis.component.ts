@@ -651,10 +651,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               // if (names.length > 1) {
               //   return `${names[0][0]} ${names[1]}`
               // } else return `${names[0]}`;
+              const name = names[0].split(' ');
               if (names.length == 3) {
                 return `${names[0]}`
               } else if (names.length == 2){
-                return `${names[0][0]} ${names[1]}`
+                if (name.length == 2) {
+                  return `${names[0][0]} ${name[1]}`
+                } else {
+                  return `${names[0][0]} ${names[1]}`
+                }
               } else {
                 return `${names[0]}`;
               }
@@ -742,10 +747,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               // if (names.length > 1) {
               //   return `${names[0][0]} ${names[1]}`
               // } else return `${names[0]}`;
+              const name = names[0].split(' ');
               if (names.length == 3) {
                 return `${names[0]}`
               } else if (names.length == 2){
-                return `${names[0][0]} ${names[1]}`
+                if (name.length == 2) {
+                  return `${names[0][0]} ${name[1]}`
+                } else {
+                  return `${names[0][0]} ${names[1]}`
+                }
               } else {
                 return `${names[0]}`;
               }
@@ -833,10 +843,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               // if (names.length > 1) {
               //   return `${names[0][0]} ${names[1]}`
               // } else return `${names[0]}`;
+              const name = names[0].split(' ');
               if (names.length == 3) {
                 return `${names[0]}`
               } else if (names.length == 2){
-                return `${names[0][0]} ${names[1]}`
+                if (name.length == 2) {
+                  return `${names[0][0]} ${name[1]}`
+                } else {
+                  return `${names[0][0]} ${names[1]}`
+                }
               } else {
                 return `${names[0]}`;
               }
@@ -924,10 +939,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               // if (names.length > 1) {
               //   return `${names[0][0]} ${names[1]}`
               // } else return `${names[0]}`;
+              const name = names[0].split(' ');
               if (names.length == 3) {
                 return `${names[0]}`
               } else if (names.length == 2){
-                return `${names[0][0]} ${names[1]}`
+                if (name.length == 2) {
+                  return `${names[0][0]} ${name[1]}`
+                } else {
+                  return `${names[0][0]} ${names[1]}`
+                }
               } else {
                 return `${names[0]}`;
               }
@@ -1015,10 +1035,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               // if (names.length > 1) {
               //   return `${names[0][0]} ${names[1]}`
               // } else return `${names[0]}`;
+              const name = names[0].split(' ');
               if (names.length == 3) {
                 return `${names[0]}`
               } else if (names.length == 2){
-                return `${names[0][0]} ${names[1]}`
+                if (name.length == 2) {
+                  return `${names[0][0]} ${name[1]}`
+                } else {
+                  return `${names[0][0]} ${names[1]}`
+                }
               } else {
                 return `${names[0]}`;
               }
@@ -1142,8 +1167,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           autoSkip: false,
           userCallback: (label: string) => {
             const names = this.splitName(label);
+            const name = names[0].split(' ');
             if (names.length > 1) {
-              return `${names[0][0]} ${names[1]}`
+              if (name.length == 2) {
+                return `${names[0][0]} ${name[1]}`
+              } else {
+                return `${names[0][0]} ${names[1]}`
+              }
             } else
               return `${names[0]}`;
           }
@@ -1299,10 +1329,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             // if (names.length > 1) {
             //   return `${names[0][0]} ${names[1]}`
             // } else return `${names[0]}`;
+            const name = names[0].split(' ');
              if (names.length == 3) {
                 return `${names[0]}`
               } else if (names.length == 2){
-                return `${names[0][0]} ${names[1]}`
+                if (name.length == 2) {
+                  return `${names[0][0]} ${name[1]}`
+                } else {
+                  return `${names[0][0]} ${names[1]}`
+                }
               } else {
                 return `${names[0]}`;
               }
@@ -1585,10 +1620,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               const regex = /\w+\s\w+(?=\s)|\w+/g;
               var names = label.toString().trim().match(regex);
               var labls ='';
+              var name = names[0].split(' ');
               if (names.length == 3) {
                 labls = `${names[0]}`
               } else if (names.length == 2){
-                labls = `${names[0][0]} ${names[1]}`
+                if (name.length == 2) {
+                  labls = `${names[0][0]} ${name[1]}`
+                } else {
+                  labls = `${names[0][0]} ${names[1]}`
+                }
               } else {
                 labls = `${names[0]}`;
               }return { 
@@ -4661,10 +4701,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             // if (names.length > 1) {
             //   return `${names[0][0]} ${names[1]}`
             // } else return `${names[0]}`;
+            const name = names[0].split(' ');
             if (names.length == 3) {
               return `${names[0]}`
             } else if (names.length == 2){
-              return `${names[0][0]} ${names[1]}`
+              if (name.length == 2) {
+                return `${names[0][0]} ${name[1]}`
+              } else {
+                return `${names[0][0]} ${names[1]}`
+              }
             } else {
               return `${names[0]}`;
             }
