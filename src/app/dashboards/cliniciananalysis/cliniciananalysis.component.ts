@@ -550,15 +550,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         ticks: {
           autoSkip: false,
           userCallback: (label: string) => {
-            if(label != ''){
+            if (label != '') {
               const names = this.splitName(label);
               // if (names.length > 1) {
               //   return `${names[0][0]} ${names[1]}`
               // } else return `${names[0]}`;
+              const name = names[0].split(' ');
               if (names.length == 3) {
                 return `${names[0]}`
-              } else if (names.length == 2){
-                return `${names[0][0]} ${names[1]}`
+              } else if (names.length == 2) {
+                if (name.length == 2) {
+                  return `${names[0][0]} ${name[1]}`
+                } else {
+                  return `${names[0][0]} ${names[1]}`
+                }
               } else {
                 return `${names[0]}`;
               }
