@@ -11,7 +11,7 @@ before_script:
   - npm -v
   - node -v
   - npm install
- # - npm audit fix --omit=dev
+  - npm audit fix --omit=dev
 
    # Make test Build
 build_test: 
