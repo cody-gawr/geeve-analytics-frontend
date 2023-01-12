@@ -2201,19 +2201,19 @@ export class FinancesComponent implements AfterViewInit {
         var totalPer = 0;
         if(res.body.data){
           res.body.data.sort((a, b)=> b.prod_per_clinician - a.prod_per_clinician);
-          res.body.data.forEach(res => {
+          res.body.data.forEach(val => {
             if(this.showClinicByclinic == true){
-              if (res.production > 0) {
-                totalPer = Math.round(res.production) * 100 / res.body.total;
+              if (val.production > 0) {
+                totalPer = Math.round(val.production) * 100 / res.body.total;
                 this.productionChartDatares.push(Math.round(totalPer));
-                this.productionChartLabelsres.push(res.clinic_name);
+                this.productionChartLabelsres.push(val.clinic_name);
                 this.productionChartTotal = this.productionChartTotal + Math.round(totalPer);
               }
             }else{
-              if (res.prod_per_clinician > 0) {
-                this.productionChartDatares.push(Math.round(res.prod_per_clinician));
-                this.productionChartLabelsres.push(res.provider_name);
-                this.productionChartTotal = this.productionChartTotal + parseInt(res.prod_per_clinician);
+              if (val.prod_per_clinician > 0) {
+                this.productionChartDatares.push(Math.round(val.prod_per_clinician));
+                this.productionChartLabelsres.push(val.provider_name);
+                this.productionChartTotal = this.productionChartTotal + parseInt(val.prod_per_clinician);
               }
             }           
           });
@@ -3434,7 +3434,7 @@ export class FinancesComponent implements AfterViewInit {
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       if (res.body.data && res.status == 200) {
-        res.body.data.sort((a, b)=> a.year - b.year);
+        res.body.data.sort((a, b)=> a.year_month === b.year_month ? 0 : a.year_month > b.year_month || -1);
         res.body.data.forEach(res => {
           this.VMonthRange.push(res.year_month);
           this.VYearRange.push(res.year);
