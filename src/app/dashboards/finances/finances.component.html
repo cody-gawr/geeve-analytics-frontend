@@ -795,9 +795,9 @@ expenses_card custom_ngx_cw01">
                 </div>
                 <div class="chart-clinician">
                   <canvas
-                    *ngIf="netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  > 0 && finNetProfitTrendLoader == false && showProdByclinic == false"
+                    *ngIf="netProfitDisplayVal == 1 && netProfitPercentChartTrendLabels.length  > 0 && finNetProfitTrendLoader == false && showProdByclinic == false"
                     class="profit1 net_profit" baseChart [datasets]="netProfitPercentChartTrend"
-                    [labels]="netProfitChartTrendLabels" [options]="labelBarOptionsSingleValue" [legend]="false"
+                    [labels]="netProfitPercentChartTrendLabels" [options]="labelBarOptionsSingleValue" [legend]="false"
                     [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"> </canvas>
                     <canvas
@@ -807,7 +807,7 @@ expenses_card custom_ngx_cw01">
                     [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
                     (chartClick)="chartClicked($event)"> </canvas>
                   <div
-                    *ngIf="netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  <= 0 && finNetProfitTrendLoader == false"
+                    *ngIf="netProfitDisplayVal == 1 && netProfitPercentChartTrendLabels.length  <= 0 && finNetProfitTrendLoader == false"
                     class="no-data-placeholder">
                     <div class="sa_nodata_div">
                     </div>
@@ -819,7 +819,7 @@ expenses_card custom_ngx_cw01">
                     [labels]="netProfitPmsChartTrendLabels" [options]="labelBarOptionsSingleValue" [legend]="false"
                     [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"> </canvas>
-                  <div
+                  <!-- <div
                     *ngIf="(xeroConnect || myobConnect) && netProfitDisplayVal == 2  && netProfitPercentChartTrendLabels.length <=0 && finNetProfitPercentTrendLoader == false"
                     class="no-data-placeholder">
                     <div class="sa_nodata_div">
@@ -836,7 +836,7 @@ expenses_card custom_ngx_cw01">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
-                  </div>
+                  </div> -->
 
                   <canvas *ngIf="(xeroConnect || myobConnect) && netProfitDisplayVal == 3 && netProfitPmsChartTrendLabels.length  > 0" #myCanvas2
                     class="profit3 net_profit" baseChart [datasets]="netProfitPmsChartTrend"

@@ -3645,8 +3645,8 @@ export class FinancesComponent implements AfterViewInit {
   public trendxero = false;
   private finNetProfitPMSTrend() {
     this.netProfitChartTrend1 = [];
-    this.netProfitPercentChartTrendLabels1 = [];
-    this.netProfitPercentChartTrendLabels = [];
+    this.netProfitPmsChartTrendLabels1 = [];
+    this.netProfitPmsChartTrendLabels = [];
     this.trendxero = true;
     this.financesService.finNetProfitPMSTrend(this.clinic_id, this.trendValue, this.connectedwith).subscribe((res) => {
       this.trendxero = false;
@@ -3660,13 +3660,13 @@ export class FinancesComponent implements AfterViewInit {
             else
               this.netProfitChartTrend1.push(0);
             if (this.trendValue == 'c') {
-              this.netProfitPercentChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+              this.netProfitPmsChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
             } else {
-              this.netProfitPercentChartTrendLabels1.push(res.duration);
+              this.netProfitPmsChartTrendLabels1.push(res.duration);
             }
           });
         this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
-        this.netProfitPercentChartTrendLabels = this.netProfitPercentChartTrendLabels1;
+        this.netProfitPmsChartTrendLabels = this.netProfitPmsChartTrendLabels1;
       }
     }, error => {
       this.Apirequest = this.Apirequest - 1;
@@ -3681,30 +3681,28 @@ export class FinancesComponent implements AfterViewInit {
   // Added by Hanney Sharma on 09-04-2021 for net profit %
 
   private finNetProfitPMSPercentTrend() {
-    this.netProfitPmsChartTrend1 = [];
-    this.netProfitChartTrendLabels1 = [];
+    this.netProfitPercentChartTrendLabels1 = [];
+    this.netProfitPercentChartTrendLabels = [];
     this.trendxero = true;
     this.financesService.finNetProfitPMSPercentTrend(this.clinic_id, this.trendValue, this.connectedwith).subscribe((res) => {
       this.trendxero = false;
       this.Apirequest = this.Apirequest - 1;
       this.enableDiabaleButton(this.Apirequest);
       if (res.status == 200) {
-        this.netProfitPmsChartTrend1 = [];
-        this.netProfitChartTrendLabels1 = [];
         if (res.body.data) {
           res.body.data.forEach(res => {
             if (res.net_profit_percentage != null)
-              this.netProfitPmsChartTrend1.push(Math.round(res.net_profit_percentage));
+              this.netProfitPercentChartTrendLabels1.push(Math.round(res.net_profit_percentage));
             else
-              this.netProfitPmsChartTrend1.push(0);
+              this.netProfitPercentChartTrendLabels1.push(0);
             if (this.trendValue == 'c') {
               this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
             } else {
               this.netProfitChartTrendLabels1.push(res.duration);
             }
           });
-          this.netProfitPmsChartTrend[0]['data'] = this.netProfitPmsChartTrend1;
-          this.netProfitPmsChartTrendLabels = this.netProfitChartTrendLabels1;
+          this.netProfitPercentChartTrend[0]['data'] = this.netProfitPercentChartTrendLabels1;
+          this.netProfitPercentChartTrendLabels = this.netProfitChartTrendLabels1;
         }
       }
     }, error => {
