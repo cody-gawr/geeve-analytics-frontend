@@ -1835,7 +1835,7 @@ public fdPrebookRateTrnd:any=[];
           res.body.data.sort((a, b)=> a.recall_patient === b.recall_patient ? 0 : a.recall_patient < b.recall_patient || -1);
           res.body.data.forEach(res => {
             if(res.clinic_id){
-              this.fdPrebookRateTrnd.push(Math.round(res.recall_patient/res.body.total_patient * 100));
+              this.fdPrebookRateTrnd.push(Math.round(res.recall_patient/res.total_patient * 100));
               this.fdPrebookRateLabels.push(res.clinic_name);
             } 
           });
