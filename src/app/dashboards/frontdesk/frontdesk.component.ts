@@ -1466,10 +1466,10 @@ public fdUtiData:any = [];
                   'day':  res.duration, 
                   'scheduled_hours':  reslt.planned_hour, 
                   'clinican_hours':  reslt.worked_hour, 
-                  'util_rate':  Math.round(reslt.util_rate * 100 / res.body.data.cCount), 
+                  'util_rate':  Math.round(reslt.util_rate * 100 / res.body.cCount), 
                   };
                   this.byDayDataTable.push(temp);
-                  this.byDayDataTemp.push(Math.round(reslt.util_rate * 100 / res.body.data.cCount ));
+                  this.byDayDataTemp.push(Math.round(reslt.util_rate * 100 / res.body.cCount ));
                   this.byDayLabelsTemp.push(res.duration+'--'+reslt.worked_hour+'--'+reslt.planned_hour);
               });
             });
