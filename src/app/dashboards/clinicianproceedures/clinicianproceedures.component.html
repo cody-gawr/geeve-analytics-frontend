@@ -2,103 +2,272 @@
 <!-- Grid-->
 <!-- ============================================================== -->
 
-<select class="sa_select internal_dentist" [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)"
-  [style.display]="'none'">
+<select
+  class="sa_select internal_dentist"
+  [(ngModel)]="selectedDentist"
+  (ngModelChange)="loadDentist($event)"
+  [style.display]="'none'"
+>
   <option value="all">All Dentist</option>
-  <option *ngFor="let dentist of dentists" [value]="dentist.providerId"> {{dentist.name}}</option>
+  <option *ngFor="let dentist of dentists" [value]="dentist.providerId">
+    {{ dentist.name }}
+  </option>
 </select>
-<input type="button" id="dentist_initiate" (click)="initiate_dentist()" [style.display]="'none'">
-<input type="button" id="clinic_initiate" (click)="initiate_clinic()" [style.display]="'none'">
-<input type="text" id="page_title" value="Clinician Procedures & Referrals" [style.display]="'none'">
+<input
+  type="button"
+  id="dentist_initiate"
+  (click)="initiate_dentist()"
+  [style.display]="'none'"
+/>
+<input
+  type="button"
+  id="clinic_initiate"
+  (click)="initiate_clinic()"
+  [style.display]="'none'"
+/>
+<input
+  type="text"
+  id="page_title"
+  value="Clinician Procedures & Referrals"
+  [style.display]="'none'"
+/>
 <div class="sa_dashboard_inner_content sa_dentist_graphs_area">
   <div class="sa_card topbar-strip">
-    <div class="dashboard-top-header" fxLayout="row wrap" fxLayoutGap="0px" fxLayoutGap.md="0" fxLayoutGap.sm="0"
-      fxLayoutGap.xs="0">
-
+    <div
+      class="dashboard-top-header"
+      fxLayout="row wrap"
+      fxLayoutGap="0px"
+      fxLayoutGap.md="0"
+      fxLayoutGap.sm="0"
+      fxLayoutGap.xs="0"
+    >
       <div fxFlex>
-        <app-date-menu-bar #dateBar [isAllClinic]="multiclinic" (filter)="filterDate($event)" (changeDate)="choosedDate($event)">
+        <app-date-menu-bar
+          #dateBar
+          [isAllClinic]="multiclinic"
+          (filter)="filterDate($event)"
+          (changeDate)="choosedDate($event)"
+        >
         </app-date-menu-bar>
       </div>
 
       <div class="dh-target">
         <div class="onofftoogle" [style.display]="'none'">
           <span class="trend_mode_title">Trend:</span>
-          <mat-button-toggle-group #group="matButtonToggleGroup" name="fontStyle"
-            class="trendToggle sa_toogle_group2 toggle_switcher" aria-label="Font Style">
-            <mat-button-toggle checked value="off" class="target_off target_filter" (click)="toggleFilter('off')">
+          <mat-button-toggle-group
+            #group="matButtonToggleGroup"
+            name="fontStyle"
+            class="trendToggle sa_toogle_group2 toggle_switcher"
+            aria-label="Font Style"
+          >
+            <mat-button-toggle
+              checked
+              value="off"
+              class="target_off target_filter"
+              (click)="toggleFilter('off')"
+            >
               <span>Off</span>
             </mat-button-toggle>
-            <mat-button-toggle value="current" class="target_current target_filter"
-            [disabled]="Apirequest <= 0?false:true" (click)="Apirequest <= 0?toggleFilter('current'):false">
+            <mat-button-toggle
+              value="current"
+              class="target_current target_filter"
+              [disabled]="Apirequest <= 0 ? false : true"
+              (click)="Apirequest <= 0 ? toggleFilter('current') : false"
+            >
               <span>Monthly</span>
             </mat-button-toggle>
-            <mat-button-toggle value="historic" class="target_historic target_filter"
-            [disabled]="Apirequest <= 0?false:true" (click)="Apirequest <= 0?toggleFilter('historic'):false">
+            <mat-button-toggle
+              value="historic"
+              class="target_historic target_filter"
+              [disabled]="Apirequest <= 0 ? false : true"
+              (click)="Apirequest <= 0 ? toggleFilter('historic') : false"
+            >
               <span>Annual</span>
             </mat-button-toggle>
           </mat-button-toggle-group>
         </div>
       </div>
-
     </div>
   </div>
 
-  <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
-    <div fxFlex="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flex_transparent">
-      {{startDate}}- {{endDate}}
+  <div
+    fxLayout="row wrap"
+    fxLayoutGap="20px"
+    fxLayoutGap.md="0"
+    fxLayoutGap.sm="0"
+    fxLayoutGap.xs="0"
+  >
+    <div
+      fxFlex="100"
+      fxFlex.sm="100"
+      fxFlex.xs="100"
+      class="sa_flex_transparent"
+    >
+      {{ startDate }}- {{ endDate }}
     </div>
 
     <!-- Column-->
-    <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
-      class="sa_flexbg items_predictor md_mrn">
+    <div
+      fxFlex="calc(49% - 10px)"
+      fxFlex.md="100"
+      fxFlex.sm="100"
+      fxFlex.xs="100"
+      class="sa_flexbg items_predictor md_mrn"
+    >
       <mat-card class="itemsPredictor sa_no_tabs_area">
         <mat-card-content class="sa_matcard_content">
-          <mat-card-title class="text-center">Procedure Analysis
+          <mat-card-title class="text-center"
+            >Procedure Analysis
             <div class="sa_box_title_right_buttons"></div>
             <div class="info-icon-container">
-              <i *ngIf="!multiclinic && !showPaTable && !showTrend && !dentistMode && ( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 1 && clinic_id <= 4) )"class="fa fa-table fa-margin" (click) = "showTable(true)"></i>
-              <i *ngIf="!multiclinic && showPaTable && !showTrend && !dentistMode && ( ( apiUrl.includes('test-') || apiUrl.includes('staging-') ) ||  ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && clinic_id >= 1 && clinic_id <= 4) )" class="fa fa-table greenIcon fa-margin-color" (click) = "showTable(false)"></i>
-              <img *ngIf="procedureAnalysisVisibility == 'General'" [tooltip]="charTips['9']" src="../assets/images/info-icon.png" alt="info-icon"
-                class="info-icon" />
-              <img *ngIf="procedureAnalysisVisibility == 'Specialist'" [tooltip]="charTips['50']" src="../assets/images/info-icon.png" alt="info-icon"
-                class="info-icon" />
+              <i
+                *ngIf="
+                  !multiclinic &&
+                  !showPaTable &&
+                  !showTrend &&
+                  !dentistMode &&
+                  (apiUrl.includes('test-') ||
+                    apiUrl.includes('staging-') ||
+                    (!apiUrl.includes('test-') &&
+                      !apiUrl.includes('staging-') &&
+                      clinic_id >= 1 &&
+                      clinic_id <= 4))
+                "
+                class="fa fa-table fa-margin"
+                (click)="showTable(true)"
+              ></i>
+              <i
+                *ngIf="
+                  !multiclinic &&
+                  showPaTable &&
+                  !showTrend &&
+                  !dentistMode &&
+                  (apiUrl.includes('test-') ||
+                    apiUrl.includes('staging-') ||
+                    (!apiUrl.includes('test-') &&
+                      !apiUrl.includes('staging-') &&
+                      clinic_id >= 1 &&
+                      clinic_id <= 4))
+                "
+                class="fa fa-table greenIcon fa-margin-color"
+                (click)="showTable(false)"
+              ></i>
+              <img
+                *ngIf="procedureAnalysisVisibility == 'General'"
+                [tooltip]="charTips['9']"
+                src="../assets/images/info-icon.png"
+                alt="info-icon"
+                class="info-icon"
+              />
+              <img
+                *ngIf="procedureAnalysisVisibility == 'Specialist'"
+                [tooltip]="charTips['50']"
+                src="../assets/images/info-icon.png"
+                alt="info-icon"
+                class="info-icon"
+              />
             </div>
-           
           </mat-card-title>
           <div class="card-body">
-            <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center center">
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center btn-group">
-                <small class="sa_tab_btn" [ngClass]="procedureAnalysisVisibility == 'General'? 'active' : ''"
-                  (click)="changeProcedureAnalysis('General')">General</small>
+            <div
+              fxLayout="row wrap"
+              class="sa_tabs_main_sec"
+              fxLayoutAlign="center center"
+            >
+              <div
+                fxFlex.gt-sm="33.33%"
+                fxFlex.gt-xs="33.33%"
+                fxFlex="100"
+                class="text-center btn-group"
+              >
+                <small
+                  class="sa_tab_btn"
+                  [ngClass]="
+                    procedureAnalysisVisibility == 'General' ? 'active' : ''
+                  "
+                  (click)="changeProcedureAnalysis('General')"
+                  >General</small
+                >
               </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center btn-group">
-                <small class="sa_tab_btn" [ngClass]="procedureAnalysisVisibility == 'Specialist'? 'active' : ''"
-                  (click)="changeProcedureAnalysis('Specialist')">Specialist</small>
+              <div
+                fxFlex.gt-sm="33.33%"
+                fxFlex.gt-xs="33.33%"
+                fxFlex="100"
+                class="text-center btn-group"
+              >
+                <small
+                  class="sa_tab_btn"
+                  [ngClass]="
+                    procedureAnalysisVisibility == 'Specialist' ? 'active' : ''
+                  "
+                  (click)="changeProcedureAnalysis('Specialist')"
+                  >Specialist</small
+                >
               </div>
             </div>
             <!--  Procedure Analysis All dentist -->
 
             <!--  Procedure Analysis All dentist General-->
-            <div class="procedureAnalysisGeneral" *ngIf="procedureAnalysisVisibility == 'General'">
-            
+            <div
+              class="procedureAnalysisGeneral"
+              *ngIf="procedureAnalysisVisibility == 'General'"
+            >
               <!--  Procedure Analysis All dentist General-->
-              <div class="Item_Predictor_clinicianproceedures" *ngIf="dentistMode == false ">
-                <div class="chart-item-predictor" *ngIf="stackedChartDataMax > 0 && !buildChartLoader && !showPaTable  && showmulticlinicGenPredictor == false">
-                  <canvas #myCanvas baseChart [datasets]="stackedChartData" [labels]="stackedChartLabels"
-                    [options]="stackedChartOptions" [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
-                    [legend]="true" [colors]="IPcolors" (chartClick)="chartClicked($event)">
+              <div
+                class="Item_Predictor_clinicianproceedures"
+                *ngIf="dentistMode == false"
+              >
+                <div
+                  class="chart-item-predictor"
+                  *ngIf="
+                    stackedChartDataMax > 0 &&
+                    !buildChartLoader &&
+                    !showPaTable &&
+                    showmulticlinicGenPredictor == false
+                  "
+                >
+                  <canvas
+                    #myCanvas
+                    baseChart
+                    [datasets]="stackedChartData"
+                    [labels]="stackedChartLabels"
+                    [options]="stackedChartOptions"
+                    [chartType]="stackedChartType"
+                    (chartHover)="chartHovered($event)"
+                    [legend]="true"
+                    [colors]="IPcolors"
+                    (chartClick)="chartClicked($event)"
+                  >
                   </canvas>
                 </div>
-                <div class="chart-item-predictor" *ngIf="!showPaTable && showmulticlinicGenPredictor == true && !buildChartLoader">
-                  <canvas #myCanvas baseChart [datasets]="ItemsPredictorAnalysisGenMulti"
-                    [labels]="ItemsPredictorAnalysisGenLabels" [options]="stackedChartOptionsmulti" [chartType]="stackedChartType"
-                    (chartHover)="chartHovered($event)" [legend]="true" [colors]="predictorAnalysisChartColors"
-                    (chartClick)="chartClicked($event)"></canvas>
+                <div
+                  class="chart-item-predictor"
+                  *ngIf="
+                    !showPaTable &&
+                    showmulticlinicGenPredictor == true &&
+                    !buildChartLoader
+                  "
+                >
+                  <canvas
+                    #myCanvas
+                    baseChart
+                    [datasets]="ItemsPredictorAnalysisGenMulti"
+                    [labels]="ItemsPredictorAnalysisGenLabels"
+                    [options]="stackedChartOptionsmulti"
+                    [chartType]="stackedChartType"
+                    (chartHover)="chartHovered($event)"
+                    [legend]="true"
+                    [colors]="predictorAnalysisChartColors"
+                    (chartClick)="chartClicked($event)"
+                  ></canvas>
                 </div>
-                 <!-- Procedure Analysis General table view -->
-                  <div class="paTablecon" *ngIf="!showTrend  && showPaTable && stackedChartDataMax > 0">
-                    <table class="paTable">
-                      <thead>
+                <!-- Procedure Analysis General table view -->
+                <div
+                  class="paTablecon"
+                  *ngIf="!showTrend && showPaTable && stackedChartDataMax > 0"
+                >
+                  <table class="paTable">
+                    <thead>
                       <tr>
                         <th>Name</th>
                         <th>Crowns/Onlays</th>
@@ -109,95 +278,194 @@
                         <th>Imp Crowns</th>
                         <th>SS Crowns</th>
                         <th>Comp Veneers</th>
-                        <th>Whitening </th>
+                        <th>Whitening</th>
                       </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let paInfo of paGeneralData">
-                          <td>{{ paInfo.name }}</td> 
-                          <td>{{ paInfo.Crowns_Onlays }}</td>
-                          <td>{{ paInfo.Splints }}</td>
-                          <td>{{ paInfo.RCT }}</td>
-                          <td>{{ paInfo.Perio }}</td>
-                          <td>{{ paInfo.Surg_Ext }}</td>
-                          <td>{{ paInfo.Imp_Crowns }}</td>
-                          <td>{{ paInfo.SS_Crowns }}</td>
-                          <td>{{ paInfo.Comp_Veneers }}</td>
-                          <td>{{ paInfo.Whitening }}</td>
-                        </tr>
-                        <tr class="patable-total" [innerHTML]="generatePaGeneralTotal(paGeneralData)"></tr> 
-                      </tbody>
-                    </table>
-                  </div>
-                   <!-- Procedure Analysis General table view -->
-                <div *ngIf="ItemsPredictorAnalysisGenLabels <= 0 && stackedChartDataMax <= 0 && buildChartLoader == false" class="fullWidth">
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let paInfo of paGeneralData">
+                        <td>{{ paInfo.name }}</td>
+                        <td>{{ paInfo.Crowns_Onlays }}</td>
+                        <td>{{ paInfo.Splints }}</td>
+                        <td>{{ paInfo.RCT }}</td>
+                        <td>{{ paInfo.Perio }}</td>
+                        <td>{{ paInfo.Surg_Ext }}</td>
+                        <td>{{ paInfo.Imp_Crowns }}</td>
+                        <td>{{ paInfo.SS_Crowns }}</td>
+                        <td>{{ paInfo.Comp_Veneers }}</td>
+                        <td>{{ paInfo.Whitening }}</td>
+                      </tr>
+                      <tr
+                        class="patable-total"
+                        [innerHTML]="generatePaGeneralTotal(paGeneralData)"
+                      ></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- Procedure Analysis General table view -->
+                <div
+                  *ngIf="
+                    ItemsPredictorAnalysisGenLabels <= 0 &&
+                    stackedChartDataMax <= 0 &&
+                    buildChartLoader == false
+                  "
+                  class="fullWidth"
+                >
                   <div class="sa_nodata_div"></div>
-                  <p class="chart-placeholder-text">You have no Crowns, Splints, RCTs, Perio, Stainless Steel Crowns, Composite Veneers, Implant Crowns, Whitening or Extractions in this period</p>
+                  <p class="chart-placeholder-text">
+                    You have no Crowns, Splints, RCTs, Perio, Stainless Steel
+                    Crowns, Composite Veneers, Implant Crowns, Whitening or
+                    Extractions in this period
+                  </p>
                 </div>
               </div>
               <!--  Procedure Analysis All dentist General-->
 
               <!--  Procedure Analysis dentist General-->
-              <div fxLayout="row wrap" class="Item_Predictor_clinicianproceedures" *ngIf="dentistMode == true">
-                <div class="item-predic"
-                  *ngIf="itemPredictedChartDataMax > 0 && buildChartDentistLoader == false && showTrend == false">
-                  <canvas baseChart [datasets]="itemPredictedChartData" [labels]="itemPredictedChartLabels"
-                    [options]="stackedChartOptions" [legend]="false" [chartType]="lineChartType"
-                    (chartHover)="chartHovered($event)" [colors]="IPcolors"
-                    (chartClick)="chartClicked($event)"></canvas>
+              <div
+                fxLayout="row wrap"
+                class="Item_Predictor_clinicianproceedures"
+                *ngIf="dentistMode == true"
+              >
+                <div
+                  class="item-predic"
+                  *ngIf="
+                    itemPredictedChartDataMax > 0 &&
+                    buildChartDentistLoader == false &&
+                    showTrend == false
+                  "
+                >
+                  <canvas
+                    baseChart
+                    [datasets]="itemPredictedChartData"
+                    [labels]="itemPredictedChartLabels"
+                    [options]="stackedChartOptions"
+                    [legend]="false"
+                    [chartType]="lineChartType"
+                    (chartHover)="chartHovered($event)"
+                    [colors]="IPcolors"
+                    (chartClick)="chartClicked($event)"
+                  ></canvas>
                 </div>
                 <!-- Trend Mode -->
-                <div *ngIf="showTrend == true && stackedChartDataMax > 0 && !buildChartDentistLoader" class="chart-trend">
-                  <canvas baseChart [datasets]="stackedChartData" [labels]="stackedChartLabels"
-                    [options]="stackedChartOptions" [legend]="false" [chartType]="stackedChartType"
-                    (chartHover)="chartHovered($event)" [colors]="IPcolors"
-                    (chartClick)="chartClicked($event)"></canvas>
+                <div
+                  *ngIf="
+                    showTrend == true &&
+                    stackedChartDataMax > 0 &&
+                    !buildChartDentistLoader
+                  "
+                  class="chart-trend"
+                >
+                  <canvas
+                    baseChart
+                    [datasets]="stackedChartData"
+                    [labels]="stackedChartLabels"
+                    [options]="stackedChartOptions"
+                    [legend]="false"
+                    [chartType]="stackedChartType"
+                    (chartHover)="chartHovered($event)"
+                    [colors]="IPcolors"
+                    (chartClick)="chartClicked($event)"
+                  ></canvas>
                 </div>
                 <!-- Trend Mode -->
-                <div *ngIf="stackedChartDataMax <= 0 && showTrend == true" class="fullWidth">
+                <div
+                  *ngIf="stackedChartDataMax <= 0 && showTrend == true"
+                  class="fullWidth"
+                >
                   <div class="sa_nodata_div"></div>
-                  <p class="chart-placeholder-text">You have no Crowns, Splints, RCTs, Perio, Stainless Steel Crowns, Composite Veneers, Implant Crowns, Whitening or Extractions in this period</p>
+                  <p class="chart-placeholder-text">
+                    You have no Crowns, Splints, RCTs, Perio, Stainless Steel
+                    Crowns, Composite Veneers, Implant Crowns, Whitening or
+                    Extractions in this period
+                  </p>
                 </div>
-                <div *ngIf="itemPredictedChartDataMax <= 0 && buildChartDentistLoader == false && showTrend == false"
-                class="fullWidth">
+                <div
+                  *ngIf="
+                    itemPredictedChartDataMax <= 0 &&
+                    buildChartDentistLoader == false &&
+                    showTrend == false
+                  "
+                  class="fullWidth"
+                >
                   <div class="sa_nodata_div"></div>
-                  <p class="chart-placeholder-text">You have no Crowns, Splints, RCTs, Perio, Stainless Steel Crowns, Composite Veneers, Implant Crowns, Whitening or Extractions in this period</p>
+                  <p class="chart-placeholder-text">
+                    You have no Crowns, Splints, RCTs, Perio, Stainless Steel
+                    Crowns, Composite Veneers, Implant Crowns, Whitening or
+                    Extractions in this period
+                  </p>
                 </div>
-
               </div>
             </div>
             <!--  Procedure Analysis dentist General-->
 
             <!--  Procedure Analysis All dentist Specialist-->
-            <div class="procedureAnalysisSpecialist" *ngIf="procedureAnalysisVisibility == 'Specialist'">
+            <div
+              class="procedureAnalysisSpecialist"
+              *ngIf="procedureAnalysisVisibility == 'Specialist'"
+            >
               <!--  Procedure Analysis All dentist Specialist-->
-              <div class="Item_Predictor_clinicianproceedures" *ngIf="dentistMode == false">
-                <div class="chart-item-predictor" *ngIf="predictorAnalysisDataMax > 0 && !showPaTable && showmulticlinicItemsPredictor == false && !predictorAnalysisSpecialLoader">
-                  <canvas #myCanvas baseChart [datasets]="stackedChartDataItemSpecial"
-                    [labels]="predictorAnalysisLablesSpe" [options]="stackedChartOptions" [chartType]="stackedChartType"
-                    (chartHover)="chartHovered($event)" [legend]="true" [colors]="predictorAnalysisChartColors"
-                    (chartClick)="chartClicked($event)"></canvas>
+              <div
+                class="Item_Predictor_clinicianproceedures"
+                *ngIf="dentistMode == false"
+              >
+                <div
+                  class="chart-item-predictor"
+                  *ngIf="
+                    predictorAnalysisDataMax > 0 &&
+                    !showPaTable &&
+                    showmulticlinicItemsPredictor == false &&
+                    !predictorAnalysisSpecialLoader
+                  "
+                >
+                  <canvas
+                    #myCanvas
+                    baseChart
+                    [datasets]="stackedChartDataItemSpecial"
+                    [labels]="predictorAnalysisLablesSpe"
+                    [options]="stackedChartOptions"
+                    [chartType]="stackedChartType"
+                    (chartHover)="chartHovered($event)"
+                    [legend]="true"
+                    [colors]="predictorAnalysisChartColors"
+                    (chartClick)="chartClicked($event)"
+                  ></canvas>
                 </div>
-                <div class="chart-item-predictor" *ngIf="showmulticlinicItemsPredictor == true && !showPaTable">
-                  <canvas #myCanvas baseChart [datasets]="ItemsPredictorAnalysisMulti"
-                    [labels]="ItemsPredictorAnalysisLabels" [options]="stackedChartOptionsmulti" [chartType]="stackedChartType"
-                    (chartHover)="chartHovered($event)" [legend]="true" [colors]="predictorAnalysisChartColors"
-                    (chartClick)="chartClicked($event)"></canvas>
+                <div
+                  class="chart-item-predictor"
+                  *ngIf="showmulticlinicItemsPredictor == true && !showPaTable"
+                >
+                  <canvas
+                    #myCanvas
+                    baseChart
+                    [datasets]="ItemsPredictorAnalysisMulti"
+                    [labels]="ItemsPredictorAnalysisLabels"
+                    [options]="stackedChartOptionsmulti"
+                    [chartType]="stackedChartType"
+                    (chartHover)="chartHovered($event)"
+                    [legend]="true"
+                    [colors]="predictorAnalysisChartColors"
+                    (chartClick)="chartClicked($event)"
+                  ></canvas>
                 </div>
                 <!-- Procedure Analysis Specialist table view -->
-                <div class="paTablecon" *ngIf="!showTrend  && showPaTable && predictorAnalysisDataMax > 0">
+                <div
+                  class="paTablecon"
+                  *ngIf="
+                    !showTrend && showPaTable && predictorAnalysisDataMax > 0
+                  "
+                >
                   <table class="paTable">
                     <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Implant Surg</th>
-                      <th>Braces</th>
-                      <th>Aligners</th>
-                      <th>MAS</th>
-                      <th>Perio Surg</th>
-                      <th>Endo Re-treat</th>
-                      <th>Veneers(indirect)</th>
-                    </tr>
+                      <tr>
+                        <th>Name</th>
+                        <th>Implant Surg</th>
+                        <th>Braces</th>
+                        <th>Aligners</th>
+                        <th>MAS</th>
+                        <th>Perio Surg</th>
+                        <th>Endo Re-treat</th>
+                        <th>Veneers(indirect)</th>
+                      </tr>
                     </thead>
                     <tbody>
                       <tr *ngFor="let paInfo of paSpecialistlData">
@@ -210,159 +478,369 @@
                         <td>{{ paInfo.Endo_Re_treat }}</td>
                         <td>{{ paInfo.Veneers_ind }}</td>
                       </tr>
-                      <tr class="patable-total" [innerHTML]="generatePaSpecialTotal(paSpecialistlData)"></tr> 
+                      <tr
+                        class="patable-total"
+                        [innerHTML]="generatePaSpecialTotal(paSpecialistlData)"
+                      ></tr>
                     </tbody>
                   </table>
                 </div>
-                 <!-- Procedure Analysis Specialist table view -->
-                <div *ngIf="ItemsPredictorAnalysisLabels <=0 && predictorAnalysisDataMax <= 0 && ItemsPredictorAnalysisSpecialStatus == false"
-                class="fullWidth">
-                  <div class="sa_nodata_div"> </div>
-                  <p class="chart-placeholder-text">You have no specialist items in this period</p>
+                <!-- Procedure Analysis Specialist table view -->
+                <div
+                  *ngIf="
+                    ItemsPredictorAnalysisLabels <= 0 &&
+                    predictorAnalysisDataMax <= 0 &&
+                    ItemsPredictorAnalysisSpecialStatus == false
+                  "
+                  class="fullWidth"
+                >
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">
+                    You have no specialist items in this period
+                  </p>
                 </div>
               </div>
               <!--  Procedure Analysis All dentist Specialist-->
               <!--  Procedure Analysis dentist Specialist-->
               <div class="chart" *ngIf="dentistMode == true">
-                <div class="dentist-mode"
-                  *ngIf="procedureSpecialDataMax > 0 && procedureSpecialDentistLoader == false && showTrend == false">
-                  <canvas baseChart [datasets]="itemPredictedChartSpecailData" [labels]="procedureSpecialLabels"
-                    [options]="stackedChartOptions" [legend]="false" [chartType]="lineChartType"
-                    (chartHover)="chartHovered($event)" [colors]="predictorAnalysisChartColors"
-                    (chartClick)="chartClicked($event)"></canvas>
+                <div
+                  class="dentist-mode"
+                  *ngIf="
+                    procedureSpecialDataMax > 0 &&
+                    procedureSpecialDentistLoader == false &&
+                    showTrend == false
+                  "
+                >
+                  <canvas
+                    baseChart
+                    [datasets]="itemPredictedChartSpecailData"
+                    [labels]="procedureSpecialLabels"
+                    [options]="stackedChartOptions"
+                    [legend]="false"
+                    [chartType]="lineChartType"
+                    (chartHover)="chartHovered($event)"
+                    [colors]="predictorAnalysisChartColors"
+                    (chartClick)="chartClicked($event)"
+                  ></canvas>
                 </div>
                 <!-- Trend Mode -->
-                <div *ngIf="showTrend == true && stackedChartSpecialDataMax > 0 && !buildChartDentistSpecLoader" class="chart-trend">
-                  <canvas baseChart [datasets]="stackedChartDataItemSpecialTrend" [labels]="stackedChartLabelsSpecTrend"
-                    [options]="stackedChartOptions" [legend]="false" [chartType]="stackedChartType"
-                    (chartHover)="chartHovered($event)" [colors]="predictorAnalysisChartColors"
-                    (chartClick)="chartClicked($event)"></canvas>
+                <div
+                  *ngIf="
+                    showTrend == true &&
+                    stackedChartSpecialDataMax > 0 &&
+                    !buildChartDentistSpecLoader
+                  "
+                  class="chart-trend"
+                >
+                  <canvas
+                    baseChart
+                    [datasets]="stackedChartDataItemSpecialTrend"
+                    [labels]="stackedChartLabelsSpecTrend"
+                    [options]="stackedChartOptions"
+                    [legend]="false"
+                    [chartType]="stackedChartType"
+                    (chartHover)="chartHovered($event)"
+                    [colors]="predictorAnalysisChartColors"
+                    (chartClick)="chartClicked($event)"
+                  ></canvas>
                 </div>
                 <!-- Trend Mode -->
 
                 <div
-                  *ngIf="procedureSpecialDataMax <= 0 && procedureSpecialDentistLoader == false && showTrend == false"
-                  class="fullWidth">
-                  <div class="sa_nodata_div"> </div>
-                  <p class="chart-placeholder-text">You have no specialist items in this period</p>
+                  *ngIf="
+                    procedureSpecialDataMax <= 0 &&
+                    procedureSpecialDentistLoader == false &&
+                    showTrend == false
+                  "
+                  class="fullWidth"
+                >
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">
+                    You have no specialist items in this period
+                  </p>
                 </div>
 
                 <div
-                  *ngIf="stackedChartSpecialDataMax <= 0 && buildChartDentistSpecLoader == false && showTrend == true"
-                  class="fullWidth">
-                  <div class="sa_nodata_div"> </div>
-                  <p class="chart-placeholder-text">You have no specialist items in this period</p>
+                  *ngIf="
+                    stackedChartSpecialDataMax <= 0 &&
+                    buildChartDentistSpecLoader == false &&
+                    showTrend == true
+                  "
+                  class="fullWidth"
+                >
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">
+                    You have no specialist items in this period
+                  </p>
                 </div>
               </div>
               <!--  Procedure Analysis dentist Specialist-->
-
-
             </div>
           </div>
           <!--  Procedure Analysis All dentist General-->
           <!--  Procedure Analysis All dentist -->
 
           <div
-            *ngIf="buildChartLoader || buildChartDentistLoader || ItemsPredictorAnalysisSpecialStatus || procedureSpecialDentistLoader"
-            class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+            *ngIf="
+              buildChartLoader ||
+              buildChartDentistLoader ||
+              ItemsPredictorAnalysisSpecialStatus ||
+              procedureSpecialDentistLoader
+            "
+            class="loader_container loader_container_middle"
+          >
+            <img class="loader_ico" src="../assets/images/720.gif" />
             <div class="loader-text">Calculating...</div>
           </div>
           <div
             *ngIf="buildChartDentistSpecLoader"
-            class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+            class="loader_container loader_container_middle"
+          >
+            <img class="loader_ico" src="../assets/images/720.gif" />
             <div class="loader-text">Calculating...</div>
           </div>
         </mat-card-content>
       </mat-card>
-
     </div>
 
-
-    <div *ngIf="toggleChecked == false" fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
-      class="sa_flexbg last revenue_proceedure">
+    <div
+      *ngIf="toggleChecked == false"
+      fxFlex="calc(49% - 10px)"
+      fxFlex.md="100"
+      fxFlex.sm="100"
+      fxFlex.xs="100"
+      class="sa_flexbg last revenue_proceedure"
+    >
       <mat-card class="revenueProceedure sa_no_tabs_area">
         <mat-card-content class="sa_matcard_content">
-          <mat-card-title class="text-center">Revenue Per Procedure
-            <div class="sa_box_title_right_buttons">
-            </div>
+          <mat-card-title class="text-center"
+            >Revenue Per Procedure
+            <div class="sa_box_title_right_buttons"></div>
             <div class="info-icon-container">
-              <i  *ngIf="!showTopVlaues" class="far fa-chart-bar fa-icon-margin" (click) = "setTopValues()"></i>
-                <i  *ngIf="showTopVlaues" class="far fa-chart-bar greenIcon fa-icon-color" (click) = "setTopValues()"></i>
-              <img [tooltip]="charTips['13']" src="../assets/images/info-icon.png" alt="info-icon"
-                class="info-icon" />
+              <i
+                *ngIf="!showTopVlaues"
+                class="far fa-chart-bar fa-icon-margin"
+                (click)="setTopValues()"
+              ></i>
+              <i
+                *ngIf="showTopVlaues"
+                class="far fa-chart-bar greenIcon fa-icon-color"
+                (click)="setTopValues()"
+              ></i>
+              <img
+                [tooltip]="charTips['13']"
+                src="../assets/images/info-icon.png"
+                alt="info-icon"
+                class="info-icon"
+              />
             </div>
           </mat-card-title>
           <div class="card-body">
-
-            <div fxLayout="row wrap" class="predictor_ratio_main sa_tabs_main_sec hide-item"
-              *ngIf="proceedureChartData1.length <= 0 && buildChartProceedureLoader == false">
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
-                <small class="sa_tab_btn prmain1 active" (click)="changeDentistPredictorMain('1')">Indirect to Large Direct Fillings</small>
+            <div
+              fxLayout="row wrap"
+              class="predictor_ratio_main sa_tabs_main_sec hide-item"
+              *ngIf="
+                proceedureChartData1.length <= 0 &&
+                buildChartProceedureLoader == false
+              "
+            >
+              <div
+                fxFlex.gt-sm="33.33%"
+                fxFlex.gt-xs="33.33%"
+                fxFlex="100"
+                class="btn-group"
+              >
+                <small
+                  class="sa_tab_btn prmain1 active"
+                  (click)="changeDentistPredictorMain('1')"
+                  >Indirect to Large Direct Fillings</small
+                >
               </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
-                <small class="sa_tab_btn prmain2" (click)="changeDentistPredictorMain('2')">RCT to Extraction</small>
+              <div
+                fxFlex.gt-sm="33.33%"
+                fxFlex.gt-xs="33.33%"
+                fxFlex="100"
+                class="btn-group"
+              >
+                <small
+                  class="sa_tab_btn prmain2"
+                  (click)="changeDentistPredictorMain('2')"
+                  >RCT to Extraction</small
+                >
               </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
-                <small class="sa_tab_btn prmain3" (click)="changeDentistPredictorMain('3')">RCT Conversion</small>
+              <div
+                fxFlex.gt-sm="33.33%"
+                fxFlex.gt-xs="33.33%"
+                fxFlex="100"
+                class="btn-group"
+              >
+                <small
+                  class="sa_tab_btn prmain3"
+                  (click)="changeDentistPredictorMain('3')"
+                  >RCT Conversion</small
+                >
               </div>
             </div>
             <div class="Item_Predictor_TotalRevenue">
-              <div class="dentist-mode" *ngIf="proceedureChartLabels.length > 0 && buildChartProceedureLoader == false">
-                <canvas baseChart class="chart" [datasets]="proceedureChartData" [labels]="proceedureChartLabels"
-                  [options]="proceedureChartOptionsDP" [legend]="false" [chartType]="proceedureChartType"
-                  (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+              <div
+                class="dentist-mode"
+                *ngIf="
+                  proceedureChartLabels.length > 0 &&
+                  buildChartProceedureLoader == false
+                "
+              >
+                <canvas
+                  baseChart
+                  class="chart"
+                  [datasets]="proceedureChartData"
+                  [labels]="proceedureChartLabels"
+                  [options]="proceedureChartOptionsDP"
+                  [legend]="false"
+                  [chartType]="proceedureChartType"
+                  (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)"
+                ></canvas>
               </div>
             </div>
-            <div *ngIf="proceedureChartLabels.length <= 0 && buildChartProceedureLoader == false"
-              class="no-data-placeholder">
-              <div class="sa_nodata_div">
-              </div>
-              <p class="chart-placeholder-text">You have no revenue in the selected period</p>
+            <div
+              *ngIf="
+                proceedureChartLabels.length <= 0 &&
+                buildChartProceedureLoader == false
+              "
+              class="no-data-placeholder"
+            >
+              <div class="sa_nodata_div"></div>
+              <p class="chart-placeholder-text">
+                You have no revenue in the selected period
+              </p>
             </div>
             <!-- <img src='../assets/images/nodata02.png'
             *ngIf="proceedureChartLabels.length <= 0 && buildChartProceedureLoader == false" class="blankChart"> -->
           </div>
-          <div class="card-footer hide-item"
-            *ngIf="proceedureChartLabels.length <= 0 && buildChartProceedureLoader == false">
-            <div fxLayout="row wrap" class="m-t-40 predicted_main predicted1 sa_chart_details_sec"
-              fxLayoutAlign="center center">
-              <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
+          <div
+            class="card-footer hide-item"
+            *ngIf="
+              proceedureChartLabels.length <= 0 &&
+              buildChartProceedureLoader == false
+            "
+          >
+            <div
+              fxLayout="row wrap"
+              class="m-t-40 predicted_main predicted1 sa_chart_details_sec"
+              fxLayoutAlign="center center"
+            >
+              <div
+                fxFlex.gt-sm="50%"
+                fxFlex.gt-xs="50%"
+                fxFlex="100"
+                class="text-center"
+              >
                 <!--    <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
-                <h3 class="m-0 value-num">{{crowns}}:{{large_fillings}}</h3>
-                <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
-                <span class="value-text" *ngIf="currentText == ''">Average</span>
+                <h3 class="m-0 value-num">{{ crowns }}:{{ large_fillings }}</h3>
+                <span class="value-text" *ngIf="currentText != ''"
+                  >{{ currentText }} Average</span
+                >
+                <span class="value-text" *ngIf="currentText == ''"
+                  >Average</span
+                >
               </div>
-              <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
+              <div
+                fxFlex.gt-sm="50%"
+                fxFlex.gt-xs="50%"
+                fxFlex="100"
+                class="text-center"
+                *ngIf="duration != 'custom'"
+              >
                 <!--           <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
-                <h3 class="m-0 value-num">{{crowns_ta}}:{{large_fillings_ta}}</h3>
-                <span class="value-text" *ngIf="trendText != ''">{{trendText}} Average</span>
-                <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
+                <h3 class="m-0 value-num">
+                  {{ crowns_ta }}:{{ large_fillings_ta }}
+                </h3>
+                <span class="value-text" *ngIf="trendText != ''"
+                  >{{ trendText }} Average</span
+                >
+                <span class="value-text" *ngIf="trendText == ''"
+                  >Previous Average</span
+                >
               </div>
             </div>
-            <div fxLayout="row wrap" fxLayoutAlign="center center"
-              class="m-t-40 predicted_main predicted2 sa_chart_details_sec" [style.display]="'none'">
-              <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                <h3 class="m-0 value-num">{{root_canals}}:{{extractions}}</h3>
-                <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
-                <span class="value-text" *ngIf="currentText == ''">Average</span>
+            <div
+              fxLayout="row wrap"
+              fxLayoutAlign="center center"
+              class="m-t-40 predicted_main predicted2 sa_chart_details_sec"
+              [style.display]="'none'"
+            >
+              <div
+                fxFlex.gt-sm="50%"
+                fxFlex.gt-xs="50%"
+                fxFlex="100"
+                class="text-center"
+              >
+                <h3 class="m-0 value-num">
+                  {{ root_canals }}:{{ extractions }}
+                </h3>
+                <span class="value-text" *ngIf="currentText != ''"
+                  >{{ currentText }} Average</span
+                >
+                <span class="value-text" *ngIf="currentText == ''"
+                  >Average</span
+                >
               </div>
-              <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
-                <h3 class="m-0 value-num">{{root_canals_ta}}:{{extractions_ta}}</h3>
-                <span class="value-text" *ngIf="trendText != ''">{{trendText}} Average</span>
-                <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
+              <div
+                fxFlex.gt-sm="50%"
+                fxFlex.gt-xs="50%"
+                fxFlex="100"
+                class="text-center"
+                *ngIf="duration != 'custom'"
+              >
+                <h3 class="m-0 value-num">
+                  {{ root_canals_ta }}:{{ extractions_ta }}
+                </h3>
+                <span class="value-text" *ngIf="trendText != ''"
+                  >{{ trendText }} Average</span
+                >
+                <span class="value-text" *ngIf="trendText == ''"
+                  >Previous Average</span
+                >
               </div>
             </div>
-            <div fxLayout="row wrap" fxLayoutAlign="center center"
-              class="m-t-40 predicted_main predicted3 sa_chart_details_sec" [style.display]="'none'">
-              <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                <h3 class="m-0 value-num">{{rct_started}}:{{rct_completed}}</h3>
-                <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
-                <span class="value-text" *ngIf="currentText == ''">Average</span>
+            <div
+              fxLayout="row wrap"
+              fxLayoutAlign="center center"
+              class="m-t-40 predicted_main predicted3 sa_chart_details_sec"
+              [style.display]="'none'"
+            >
+              <div
+                fxFlex.gt-sm="50%"
+                fxFlex.gt-xs="50%"
+                fxFlex="100"
+                class="text-center"
+              >
+                <h3 class="m-0 value-num">
+                  {{ rct_started }}:{{ rct_completed }}
+                </h3>
+                <span class="value-text" *ngIf="currentText != ''"
+                  >{{ currentText }} Average</span
+                >
+                <span class="value-text" *ngIf="currentText == ''"
+                  >Average</span
+                >
               </div>
-              <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
-                <h3 class="m-0 value-num">{{rct_started_ta}}:{{rct_completed}}</h3>
-                <span class="value-text" *ngIf="trendText != ''">{{trendText}} Average</span>
-                <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
+              <div
+                fxFlex.gt-sm="50%"
+                fxFlex.gt-xs="50%"
+                fxFlex="100"
+                class="text-center"
+                *ngIf="duration != 'custom'"
+              >
+                <h3 class="m-0 value-num">
+                  {{ rct_started_ta }}:{{ rct_completed }}
+                </h3>
+                <span class="value-text" *ngIf="trendText != ''"
+                  >{{ trendText }} Average</span
+                >
+                <span class="value-text" *ngIf="trendText == ''"
+                  >Previous Average</span
+                >
               </div>
             </div>
           </div>
@@ -370,7 +848,8 @@
       </mat-card>
       <mat-card class="revenueProceedureSingle" [style.display]="'none'">
         <mat-card-content class="sa_matcard_content">
-          <mat-card-title class="text-center">Revenue Per Procedure 
+          <mat-card-title class="text-center"
+            >Revenue Per Procedure
             <div class="sa_box_title_right_buttons">
               <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
                 <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
@@ -380,145 +859,352 @@
                 </mat-menu> -->
             </div>
             <div class="info-icon-container">
-              <img [tooltip]="charTips['13']" src="../assets/images/info-icon.png" alt="info-icon"
-                class="info-icon" />
+              <img
+                [tooltip]="charTips['13']"
+                src="../assets/images/info-icon.png"
+                alt="info-icon"
+                class="info-icon"
+              />
             </div>
           </mat-card-title>
           <div class="card-body">
-            <div fxLayout="row wrap" class="predictor_ratio_main sa_tabs_main_sec hide-item">
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
-                <small class="sa_tab_btn prmain1 active" (click)="changeDentistPredictorMain('1')">Indirect to Large Direct Fillings</small>
+            <div
+              fxLayout="row wrap"
+              class="predictor_ratio_main sa_tabs_main_sec hide-item"
+            >
+              <div
+                fxFlex.gt-sm="33.33%"
+                fxFlex.gt-xs="33.33%"
+                fxFlex="100"
+                class="btn-group"
+              >
+                <small
+                  class="sa_tab_btn prmain1 active"
+                  (click)="changeDentistPredictorMain('1')"
+                  >Indirect to Large Direct Fillings</small
+                >
               </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
-                <small class="sa_tab_btn prmain2" (click)="changeDentistPredictorMain('2')">RCT to Extraction</small>
+              <div
+                fxFlex.gt-sm="33.33%"
+                fxFlex.gt-xs="33.33%"
+                fxFlex="100"
+                class="btn-group"
+              >
+                <small
+                  class="sa_tab_btn prmain2"
+                  (click)="changeDentistPredictorMain('2')"
+                  >RCT to Extraction</small
+                >
               </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
-                <small class="sa_tab_btn prmain3" (click)="changeDentistPredictorMain('3')">RCT Conversion</small>
+              <div
+                fxFlex.gt-sm="33.33%"
+                fxFlex.gt-xs="33.33%"
+                fxFlex="100"
+                class="btn-group"
+              >
+                <small
+                  class="sa_tab_btn prmain3"
+                  (click)="changeDentistPredictorMain('3')"
+                  >RCT Conversion</small
+                >
               </div>
             </div>
-            <div class="dentist-mode" *ngIf="proceedureDentistChartLabels.length > 0">
-              <canvas baseChart class="chart" [datasets]="proceedureDentistChartData"
-                [labels]="proceedureDentistChartLabels" [options]="proceedureChartOptions" [legend]="false"
-                [chartType]="proceedureChartType" (chartHover)="chartHovered($event)"
-                (chartClick)="chartClicked($event)"></canvas>
+            <div
+              class="dentist-mode"
+              *ngIf="proceedureDentistChartLabels.length > 0"
+            >
+              <canvas
+                baseChart
+                class="chart"
+                [datasets]="proceedureDentistChartData"
+                [labels]="proceedureDentistChartLabels"
+                [options]="proceedureChartOptions"
+                [legend]="false"
+                [chartType]="proceedureChartType"
+                (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"
+              ></canvas>
             </div>
             <!-- <div *ngIf="proceedureDentistChartLabels.length <= 0 && buildChartProceedureDentistLoader == false"
           class="sa_nodata_div">
           <h4>You have no total revenue per procedure in this period</h4>
           <p></p>
         </div> -->
-            <div *ngIf="proceedureDentistChartLabels.length <= 0 && buildChartProceedureDentistLoader == false"
-              class="no-data-placeholder">
-              <div class="sa_nodata_div">
-              </div>
-              <p class="chart-placeholder-text">You have no revenue in the selected period</p>
+            <div
+              *ngIf="
+                proceedureDentistChartLabels.length <= 0 &&
+                buildChartProceedureDentistLoader == false
+              "
+              class="no-data-placeholder"
+            >
+              <div class="sa_nodata_div"></div>
+              <p class="chart-placeholder-text">
+                You have no revenue in the selected period
+              </p>
             </div>
           </div>
         </mat-card-content>
       </mat-card>
-      <div *ngIf="buildChartProceedureLoader == true" class="loader_container loader_container_middle"><img
-          class="loader_ico" src="../assets/images/720.gif">
+      <div
+        *ngIf="buildChartProceedureLoader == true"
+        class="loader_container loader_container_middle"
+      >
+        <img class="loader_ico" src="../assets/images/720.gif" />
         <div class="loader-text">Calculating...</div>
       </div>
-
     </div>
 
     <!-- Column-->
-    <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio">
+    <div
+      fxFlex="calc(49% - 10px)"
+      fxFlex.md="100"
+      fxFlex.sm="100"
+      fxFlex.xs="100"
+      class="sa_flexbg predictor_ratio"
+    >
       <mat-card class="ratioPredictor">
         <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center">
             Conversion Predictor Ratio
-            <div class="sa_box_title_right_buttons">
-
-            </div>
+            <div class="sa_box_title_right_buttons"></div>
             <div *ngIf="predictorRatioTab == '1'" class="info-icon-container">
-              <img [tooltip]="charTips['10']" src="../assets/images/info-icon.png" alt="info-icon"
-                class="info-icon" />
+              <img
+                [tooltip]="charTips['10']"
+                src="../assets/images/info-icon.png"
+                alt="info-icon"
+                class="info-icon"
+              />
             </div>
             <div *ngIf="predictorRatioTab == '2'" class="info-icon-container">
-              <img [tooltip]="charTips['11']" src="../assets/images/info-icon.png" alt="info-icon"
-                class="info-icon" />
+              <img
+                [tooltip]="charTips['11']"
+                src="../assets/images/info-icon.png"
+                alt="info-icon"
+                class="info-icon"
+              />
             </div>
             <div *ngIf="predictorRatioTab == '3'" class="info-icon-container">
-              <img [tooltip]="charTips['12']" src="../assets/images/info-icon.png" alt="info-icon"
-                class="info-icon" />
+              <img
+                [tooltip]="charTips['12']"
+                src="../assets/images/info-icon.png"
+                alt="info-icon"
+                class="info-icon"
+              />
             </div>
           </mat-card-title>
           <div class="card-body">
-            <div fxLayout="row wrap" class="predictor_ratio_main sa_tabs_main_sec">
-              <div fxFlex.gt-sm="35.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
-                <small class="sa_tab_btn prmain1 active" (click)="changeDentistPredictorMain('1')">Indirect to Large Direct Fillings</small>
+            <div
+              fxLayout="row wrap"
+              class="predictor_ratio_main sa_tabs_main_sec"
+            >
+              <div
+                fxFlex.gt-sm="35.33%"
+                fxFlex.gt-xs="33.33%"
+                fxFlex="100"
+                class="btn-group"
+              >
+                <small
+                  class="sa_tab_btn prmain1 active"
+                  (click)="changeDentistPredictorMain('1')"
+                  >Indirect to Large Direct Fillings</small
+                >
               </div>
-              <div fxFlex.gt-sm="31.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
-                <small class="sa_tab_btn prmain2" (click)="changeDentistPredictorMain('2')">RCT to Extraction</small>
+              <div
+                fxFlex.gt-sm="31.33%"
+                fxFlex.gt-xs="33.33%"
+                fxFlex="100"
+                class="btn-group"
+              >
+                <small
+                  class="sa_tab_btn prmain2"
+                  (click)="changeDentistPredictorMain('2')"
+                  >RCT to Extraction</small
+                >
               </div>
-              <div fxFlex.gt-sm="31.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
-                <small class="sa_tab_btn prmain3" (click)="changeDentistPredictorMain('3')">RCT Conversion</small>
+              <div
+                fxFlex.gt-sm="31.33%"
+                fxFlex.gt-xs="33.33%"
+                fxFlex="100"
+                class="btn-group"
+              >
+                <small
+                  class="sa_tab_btn prmain3"
+                  (click)="changeDentistPredictorMain('3')"
+                  >RCT Conversion</small
+                >
               </div>
             </div>
 
-            <div class="chart-predicted-stacked" *ngIf="predictorLabels1.length > 0 && predictorRatioTab == 1 && showmulticlinicPredictor == true && !buildChartPredictorLoader">
-              <canvas #myCanvas baseChart [datasets]="predictedMulti1"
-                [labels]="predictorLabels1" [options]="stackedChartOptionsmulti" [chartType]="stackedChartType"
-                (chartHover)="chartHovered($event)" [legend]="true" [colors]="predictorAnalysisChartColors"
-                (chartClick)="chartClicked($event)"></canvas>
-            </div>
-            <div *ngIf="showmulticlinicPredictor == true &&  predictorLabels1.length <= 0 && predictorRatioTab == '1'"  class="no-data-placeholder">
-              <div class="sa_nodata_div">
-              </div><p class="chart-placeholder-text">You have no indirect or large direct fillings in the selected period</p>
-            </div>
-            <div class="chart-predicted-stacked" *ngIf="predictorLabels2.length > 0 && predictorRatioTab == 2 && showmulticlinicPredictor == true">
-              <canvas #myCanvas baseChart [datasets]="predictedMulti2"
-                [labels]="predictorLabels3" [options]="stackedChartOptionsmulti" [chartType]="stackedChartType"
-                (chartHover)="chartHovered($event)" [legend]="true" [colors]="predictorAnalysisChartColors"
-                (chartClick)="chartClicked($event)"></canvas>
-            </div>
-            <div *ngIf="showmulticlinicPredictor == true &&  predictorLabels2.length <= 0 && predictorRatioTab == '2'"  class="no-data-placeholder">
-              <div class="sa_nodata_div">
-              </div><p class="chart-placeholder-text">You have no RCTs or extractions in the selected period</p>
-            </div>
-            <div class="chart-predicted-stacked" *ngIf="predictorLabels3.length > 0 && predictorRatioTab == 3 && showmulticlinicPredictor == true">
-              <canvas #myCanvas baseChart [datasets]="predictedMulti3"
-                [labels]="predictorLabels3" [options]="stackedChartOptionsmulti" [chartType]="stackedChartType"
-                (chartHover)="chartHovered($event)" [legend]="true" [colors]="predictorAnalysisChartColors"
-                (chartClick)="chartClicked($event)"></canvas>
-            </div>
-            <div *ngIf="showmulticlinicPredictor == true &&  predictorLabels3.length <= 0 && predictorRatioTab == '3'"  class="no-data-placeholder">
-              <div class="sa_nodata_div">
-              </div><p class="chart-placeholder-text">You have no RCTs in the selected period</p>
-            </div>
-
-            <div class="chart-predicted-stacked"
-              *ngIf="(showmulticlinicPredictor == false && predictedstackedChartData[0]['data'].length > 0 || predictedstackedChartData[1]['data'].length > 0 ) && !predictedstackedChartLoader">
-              <canvas baseChart class="chart" [datasets]="predictedstackedChartData"
-                [labels]="predictedstackedChartLabels" [options]="stackedChartOptions" [chartType]="stackedChartType"
-                (chartHover)="chartHovered($event)" [colors]="predictorRatioColors"
-                (chartClick)="chartClicked($event)"></canvas>
+            <div
+              class="chart-predicted-stacked"
+              *ngIf="
+                predictorLabels1.length > 0 &&
+                predictorRatioTab == 1 &&
+                showmulticlinicPredictor == true &&
+                !buildChartPredictorLoader
+              "
+            >
+              <canvas
+                #myCanvas
+                baseChart
+                [datasets]="predictedMulti1"
+                [labels]="predictorLabels1"
+                [options]="stackedChartOptionsmulti"
+                [chartType]="stackedChartType"
+                (chartHover)="chartHovered($event)"
+                [legend]="true"
+                [colors]="predictorAnalysisChartColors"
+                (chartClick)="chartClicked($event)"
+              ></canvas>
             </div>
             <div
-              *ngIf="showmulticlinicPredictor == false && (predictedstackedChartData1[0]['data'].length <= 0 && predictedstackedChartData1[1]['data'].length <= 0) && predictorRatioTab == '1'"
-              class="no-data-placeholder">
-              <div class="sa_nodata_div">
-              </div>
-              <p class="chart-placeholder-text">You have no indirect or large direct fillings in the selected period
+              *ngIf="
+                showmulticlinicPredictor == true &&
+                predictorLabels1.length == 0 &&
+                predictorRatioTab == '1'
+              "
+              class="no-data-placeholder"
+            >
+              <div class="sa_nodata_div"></div>
+              <p class="chart-placeholder-text">
+                You have no indirect or large direct fillings in the selected
+                period
+              </p>
+            </div>
+            <div
+              class="chart-predicted-stacked"
+              *ngIf="
+                predictorLabels2.length > 0 &&
+                predictorRatioTab == 2 &&
+                showmulticlinicPredictor == true
+              "
+            >
+              <canvas
+                #myCanvas
+                baseChart
+                [datasets]="predictedMulti2"
+                [labels]="predictorLabels3"
+                [options]="stackedChartOptionsmulti"
+                [chartType]="stackedChartType"
+                (chartHover)="chartHovered($event)"
+                [legend]="true"
+                [colors]="predictorAnalysisChartColors"
+                (chartClick)="chartClicked($event)"
+              ></canvas>
+            </div>
+            <div
+              *ngIf="
+                showmulticlinicPredictor == true &&
+                predictorLabels2.length <= 0 &&
+                predictorRatioTab == '2'
+              "
+              class="no-data-placeholder"
+            >
+              <div class="sa_nodata_div"></div>
+              <p class="chart-placeholder-text">
+                You have no RCTs or extractions in the selected period
+              </p>
+            </div>
+            <div
+              class="chart-predicted-stacked"
+              *ngIf="
+                predictorLabels3.length > 0 &&
+                predictorRatioTab == 3 &&
+                showmulticlinicPredictor == true
+              "
+            >
+              <canvas
+                #myCanvas
+                baseChart
+                [datasets]="predictedMulti3"
+                [labels]="predictorLabels3"
+                [options]="stackedChartOptionsmulti"
+                [chartType]="stackedChartType"
+                (chartHover)="chartHovered($event)"
+                [legend]="true"
+                [colors]="predictorAnalysisChartColors"
+                (chartClick)="chartClicked($event)"
+              ></canvas>
+            </div>
+            <div
+              *ngIf="
+                showmulticlinicPredictor == true &&
+                predictorLabels3.length <= 0 &&
+                predictorRatioTab == '3'
+              "
+              class="no-data-placeholder"
+            >
+              <div class="sa_nodata_div"></div>
+              <p class="chart-placeholder-text">
+                You have no RCTs in the selected period
               </p>
             </div>
 
             <div
-              *ngIf="showmulticlinicPredictor == false && (predictedstackedChartData2[0]['data'].length <= 0 && predictedstackedChartData2[1]['data'].length <= 0) && predictorRatioTab == '2'"
-              class="no-data-placeholder">
-              <div class="sa_nodata_div">
-              </div>
-              <p class="chart-placeholder-text">You have no RCTs or extractions in the selected period</p>
+              class="chart-predicted-stacked"
+              *ngIf="
+                ((showmulticlinicPredictor == false &&
+                  predictedstackedChartData[0]['data'].length > 0) ||
+                  predictedstackedChartData[1]['data'].length > 0) &&
+                !predictedstackedChartLoader
+              "
+            >
+              <canvas
+                baseChart
+                class="chart"
+                [datasets]="predictedstackedChartData"
+                [labels]="predictedstackedChartLabels"
+                [options]="stackedChartOptions"
+                [chartType]="stackedChartType"
+                (chartHover)="chartHovered($event)"
+                [colors]="predictorRatioColors"
+                (chartClick)="chartClicked($event)"
+              ></canvas>
+            </div>
+            <div
+              *ngIf="
+                showmulticlinicPredictor == false &&
+                predictedstackedChartData1[0]['data'].length == 0 &&
+                predictedstackedChartData1[1]['data'].length == 0 &&
+                predictorRatioTab == '1'
+              "
+              class="no-data-placeholder"
+            >
+              <div class="sa_nodata_div"></div>
+              <p class="chart-placeholder-text">
+                You have no indirect or large direct fillings in the selected
+                period
+              </p>
             </div>
 
             <div
-              *ngIf="showmulticlinicPredictor == false && (predictedstackedChartData3[0]['data'].length <= 0 && predictedstackedChartData3[1]['data'].length <= 0) && predictorRatioTab == '3'"
-              class="no-data-placeholder">
-              <div class="sa_nodata_div">
-              </div>
-              <p class="chart-placeholder-text">You have no RCTs in the selected period</p>
+              *ngIf="
+                showmulticlinicPredictor == false &&
+                predictedstackedChartData2[0]['data'].length <= 0 &&
+                predictedstackedChartData2[1]['data'].length <= 0 &&
+                predictorRatioTab == '2'
+              "
+              class="no-data-placeholder"
+            >
+              <div class="sa_nodata_div"></div>
+              <p class="chart-placeholder-text">
+                You have no RCTs or extractions in the selected period
+              </p>
+            </div>
+
+            <div
+              *ngIf="
+                showmulticlinicPredictor == false &&
+                predictedstackedChartData3[0]['data'].length <= 0 &&
+                predictedstackedChartData3[1]['data'].length <= 0 &&
+                predictorRatioTab == '3'
+              "
+              class="no-data-placeholder"
+            >
+              <div class="sa_nodata_div"></div>
+              <p class="chart-placeholder-text">
+                You have no RCTs in the selected period
+              </p>
             </div>
 
             <!-- <div *ngIf="(predictedMax <= 0 || predictedMax == ''  ) && buildChartPredictorLoader == false" class="sa_nodata_div">
@@ -527,48 +1213,161 @@
           </div> -->
           </div>
           <div class="card-footer">
-            <div fxLayout="row wrap" class="m-t-40 predicted_main predicted1 sa_chart_details_sec"
-              fxLayoutAlign="center center" *ngIf="buildChartPredictorLoader == false && predictorRatioTab == '1'">
-              <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
+            <div
+              fxLayout="row wrap"
+              class="m-t-40 predicted_main predicted1 sa_chart_details_sec"
+              fxLayoutAlign="center center"
+              *ngIf="
+                buildChartPredictorLoader == false && predictorRatioTab == '1'
+              "
+            >
+              <div
+                fxFlex.gt-sm="50%"
+                fxFlex.gt-xs="50%"
+                fxFlex="100"
+                class="text-center"
+              >
                 <!--    <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
-                <h3 *ngIf="showmulticlinicPredictor == false " class="m-0 value-num">{{ predictedstackedChartAvr }}</h3>
-                <h3 *ngIf="showmulticlinicPredictor == true" class="m-0 value-num">{{ multifulratio1 }}</h3>
-                <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
-                <span class="value-text" *ngIf="currentText == ''">Average</span>
+                <h3
+                  *ngIf="showmulticlinicPredictor == false"
+                  class="m-0 value-num"
+                >
+                  {{ predictedstackedChartAvr }}
+                </h3>
+                <h3
+                  *ngIf="showmulticlinicPredictor == true"
+                  class="m-0 value-num"
+                >
+                  {{ multifulratio1 }}
+                </h3>
+                <span class="value-text" *ngIf="currentText != ''"
+                  >{{ currentText }} Average</span
+                >
+                <span class="value-text" *ngIf="currentText == ''"
+                  >Average</span
+                >
               </div>
-              <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
+              <div
+                fxFlex.gt-sm="50%"
+                fxFlex.gt-xs="50%"
+                fxFlex="100"
+                class="text-center"
+                *ngIf="duration != 'custom'"
+              >
                 <!--           <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
-                <h3 class="m-0 value-num">{{ predictedstackedChartLabels1AvrPre }}</h3>
-                <span class="value-text" *ngIf="trendText != ''">{{trendText}} Average</span>
-                <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
+                <h3 class="m-0 value-num">
+                  {{ predictedstackedChartLabels1AvrPre }}
+                </h3>
+                <span class="value-text" *ngIf="trendText != ''"
+                  >{{ trendText }} Average</span
+                >
+                <span class="value-text" *ngIf="trendText == ''"
+                  >Previous Average</span
+                >
               </div>
             </div>
-            <div fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="buildChartPredictorLoader == false && predictorRatioTab == '2'"
-              class="m-t-40 predicted_main predicted2 sa_chart_details_sec" [style.display]="'none'">
-              <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                <h3 *ngIf="showmulticlinicPredictor == false " class="m-0 value-num">{{ predictedstackedChartAvr }}</h3>
-                <h3 *ngIf="showmulticlinicPredictor == true" class="m-0 value-num">{{ multifulratio2 }}</h3>
-                <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
-                <span class="value-text" *ngIf="currentText == ''">Average</span>
+            <div
+              fxLayout="row wrap"
+              fxLayoutAlign="center center"
+              *ngIf="
+                buildChartPredictorLoader == false && predictorRatioTab == '2'
+              "
+              class="m-t-40 predicted_main predicted2 sa_chart_details_sec"
+              [style.display]="'none'"
+            >
+              <div
+                fxFlex.gt-sm="50%"
+                fxFlex.gt-xs="50%"
+                fxFlex="100"
+                class="text-center"
+              >
+                <h3
+                  *ngIf="showmulticlinicPredictor == false"
+                  class="m-0 value-num"
+                >
+                  {{ predictedstackedChartAvr }}
+                </h3>
+                <h3
+                  *ngIf="showmulticlinicPredictor == true"
+                  class="m-0 value-num"
+                >
+                  {{ multifulratio2 }}
+                </h3>
+                <span class="value-text" *ngIf="currentText != ''"
+                  >{{ currentText }} Average</span
+                >
+                <span class="value-text" *ngIf="currentText == ''"
+                  >Average</span
+                >
               </div>
-              <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
-                <h3 class="m-0 value-num">{{ predictedstackedChartLabels2AvrPre }}</h3>
-                <span class="value-text" *ngIf="trendText != ''">{{trendText}} Average</span>
-                <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
+              <div
+                fxFlex.gt-sm="50%"
+                fxFlex.gt-xs="50%"
+                fxFlex="100"
+                class="text-center"
+                *ngIf="duration != 'custom'"
+              >
+                <h3 class="m-0 value-num">
+                  {{ predictedstackedChartLabels2AvrPre }}
+                </h3>
+                <span class="value-text" *ngIf="trendText != ''"
+                  >{{ trendText }} Average</span
+                >
+                <span class="value-text" *ngIf="trendText == ''"
+                  >Previous Average</span
+                >
               </div>
             </div>
-            <div fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="buildChartPredictorLoader == false && predictorRatioTab == '3'"
-              class="m-t-40 predicted_main predicted3 sa_chart_details_sec" [style.display]="'none'">
-              <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                <h3  *ngIf="showmulticlinicPredictor == false "class="m-0 value-num">{{ predictedstackedChartAvr }}</h3>
-                <h3 *ngIf="showmulticlinicPredictor == true" class="m-0 value-num">{{ multifulratio3 }}</h3>
-                <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
-                <span class="value-text" *ngIf="currentText == ''">Average</span>
+            <div
+              fxLayout="row wrap"
+              fxLayoutAlign="center center"
+              *ngIf="
+                buildChartPredictorLoader == false && predictorRatioTab == '3'
+              "
+              class="m-t-40 predicted_main predicted3 sa_chart_details_sec"
+              [style.display]="'none'"
+            >
+              <div
+                fxFlex.gt-sm="50%"
+                fxFlex.gt-xs="50%"
+                fxFlex="100"
+                class="text-center"
+              >
+                <h3
+                  *ngIf="showmulticlinicPredictor == false"
+                  class="m-0 value-num"
+                >
+                  {{ predictedstackedChartAvr }}
+                </h3>
+                <h3
+                  *ngIf="showmulticlinicPredictor == true"
+                  class="m-0 value-num"
+                >
+                  {{ multifulratio3 }}
+                </h3>
+                <span class="value-text" *ngIf="currentText != ''"
+                  >{{ currentText }} Average</span
+                >
+                <span class="value-text" *ngIf="currentText == ''"
+                  >Average</span
+                >
               </div>
-              <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
-                <h3 class="m-0 value-num">{{ predictedstackedChartLabels3AvrPre }}</h3>
-                <span class="value-text" *ngIf="trendText != ''">{{trendText}} Average</span>
-                <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
+              <div
+                fxFlex.gt-sm="50%"
+                fxFlex.gt-xs="50%"
+                fxFlex="100"
+                class="text-center"
+                *ngIf="duration != 'custom'"
+              >
+                <h3 class="m-0 value-num">
+                  {{ predictedstackedChartLabels3AvrPre }}
+                </h3>
+                <span class="value-text" *ngIf="trendText != ''"
+                  >{{ trendText }} Average</span
+                >
+                <span class="value-text" *ngIf="trendText == ''"
+                  >Previous Average</span
+                >
               </div>
             </div>
           </div>
@@ -577,7 +1376,6 @@
               class="loader_ico" src="../assets/images/720.gif">
             <div class="loader-text">Calculating...</div>
           </div> -->
-
         </mat-card-content>
       </mat-card>
       <mat-card class="ratioPredictorSingle" [style.display]="'none'">
@@ -593,114 +1391,253 @@
                   </mat-menu> -->
             </div>
             <div *ngIf="predictorRatioTab == '1'" class="info-icon-container">
-              <img [tooltip]="charTips['10']" src="../assets/images/info-icon.png" alt="info-icon"
-                class="info-icon" />
+              <img
+                [tooltip]="charTips['10']"
+                src="../assets/images/info-icon.png"
+                alt="info-icon"
+                class="info-icon"
+              />
             </div>
             <div *ngIf="predictorRatioTab == '2'" class="info-icon-container">
-              <img [tooltip]="charTips['11']" src="../assets/images/info-icon.png" alt="info-icon"
-                class="info-icon" />
+              <img
+                [tooltip]="charTips['11']"
+                src="../assets/images/info-icon.png"
+                alt="info-icon"
+                class="info-icon"
+              />
             </div>
             <div *ngIf="predictorRatioTab == '3'" class="info-icon-container">
-              <img [tooltip]="charTips['12']" src="../assets/images/info-icon.png" alt="info-icon"
-                class="info-icon" />
+              <img
+                [tooltip]="charTips['12']"
+                src="../assets/images/info-icon.png"
+                alt="info-icon"
+                class="info-icon"
+              />
             </div>
           </mat-card-title>
           <div class="card-body">
             <div fxLayout="row wrap" class="predictor_ratio sa_tabs_main_sec">
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
-                <small class="sa_tab_btn pr1 active" (click)="changeDentistPredictor('1')">Indirect to Large Direct Fillings</small>
+              <div
+                fxFlex.gt-sm="33.33%"
+                fxFlex.gt-xs="33.33%"
+                fxFlex="100"
+                class="btn-group"
+              >
+                <small
+                  class="sa_tab_btn pr1 active"
+                  (click)="changeDentistPredictor('1')"
+                  >Indirect to Large Direct Fillings</small
+                >
               </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
-                <small class="sa_tab_btn pr2" (click)="changeDentistPredictor('2')">RCT to Extraction</small>
+              <div
+                fxFlex.gt-sm="33.33%"
+                fxFlex.gt-xs="33.33%"
+                fxFlex="100"
+                class="btn-group"
+              >
+                <small
+                  class="sa_tab_btn pr2"
+                  (click)="changeDentistPredictor('2')"
+                  >RCT to Extraction</small
+                >
               </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
-                <small class="sa_tab_btn pr3" (click)="changeDentistPredictor('3')">RCT Conversion</small>
+              <div
+                fxFlex.gt-sm="33.33%"
+                fxFlex.gt-xs="33.33%"
+                fxFlex="100"
+                class="btn-group"
+              >
+                <small
+                  class="sa_tab_btn pr3"
+                  (click)="changeDentistPredictor('3')"
+                  >RCT Conversion</small
+                >
               </div>
             </div>
 
-
-            <div class="predictor-ratio-div" *ngIf="toggleChecked == false && gaugeValuePredicted > 0">
-              <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="gaugeValuePredicted"
-                [label]="gaugeLabelPredicted" [thick]="gaugeThick" [max]="predictedDentistTotal"
-                [foregroundColor]="foregroundColor" [cap]="cap" [size]="size" [duration]="gaugeDuration">
-              </ngx-gauge>a
+            <div
+              class="predictor-ratio-div"
+              *ngIf="toggleChecked == false && gaugeValuePredicted > 0"
+            >
+              <ngx-gauge
+                class="singleRatio"
+                [type]="gaugeType"
+                [value]="gaugeValuePredicted"
+                [label]="gaugeLabelPredicted"
+                [thick]="gaugeThick"
+                [max]="predictedDentistTotal"
+                [foregroundColor]="foregroundColor"
+                [cap]="cap"
+                [size]="size"
+                [duration]="gaugeDuration"
+              >
+              </ngx-gauge
+              >a
             </div>
-            <div *ngIf="toggleChecked == false && gaugeValuePredicted <= 0 && buildChartPredictorDentistLoader == false"
-              class="sa_nodata_div">
+            <div
+              *ngIf="
+                toggleChecked == false &&
+                gaugeValuePredicted <= 0 &&
+                buildChartPredictorDentistLoader == false
+              "
+              class="sa_nodata_div"
+            >
               <h4>You have no predictor ratio in this period</h4>
               <p></p>
             </div>
-            <div class="chart-ratio-div"
-              *ngIf="toggleChecked == true && (ratioChartData[0]['data'].length > 0 || ratioChartData[1]['data'].length) && !predictorRatioLoader">
-              <canvas class="trendRatio" baseChart [datasets]="ratioChartData" [labels]="ratioChartLabels"
-                [options]="stackedChartOptions" [legend]="false" [options]="stackedChartOptions"
-                [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true" [colors]="IPcolors"
-                (chartClick)="chartClicked($event)">
+            <div
+              class="chart-ratio-div"
+              *ngIf="
+                toggleChecked == true &&
+                (ratioChartData[0]['data'].length > 0 ||
+                  ratioChartData[1]['data'].length) &&
+                !predictorRatioLoader
+              "
+            >
+              <canvas
+                class="trendRatio"
+                baseChart
+                [datasets]="ratioChartData"
+                [labels]="ratioChartLabels"
+                [options]="stackedChartOptions"
+                [legend]="false"
+                [options]="stackedChartOptions"
+                [chartType]="stackedChartType"
+                (chartHover)="chartHovered($event)"
+                [legend]="true"
+                [colors]="IPcolors"
+                (chartClick)="chartClicked($event)"
+              >
               </canvas>
             </div>
             <div
-              *ngIf="(ratioChartData1[0]['data'].length <= 0 && ratioChartData1[1]['data'].length <= 0) && predictorRatioTab == '1' && toggleChecked == true && !predictorRatioLoader"
-              class="no-data-placeholder">
-              <div class="sa_nodata_div">
-              </div>
-              <p class="chart-placeholder-text">You have no indirect or large direct fillings in the selected period
+              *ngIf="
+                ratioChartData1[0]['data'].length == 0 &&
+                ratioChartData1[1]['data'].length == 0 &&
+                predictorRatioTab == '1' &&
+                toggleChecked == true &&
+                !predictorRatioLoader
+              "
+              class="no-data-placeholder"
+            >
+              <div class="sa_nodata_div"></div>
+              <p class="chart-placeholder-text">
+                You have no indirect or large direct fillings in the selected
+                period
               </p>
             </div>
 
             <div
-              *ngIf="(ratioChartData2[0]['data'].length <= 0 && ratioChartData2[1]['data'].length <= 0) && predictorRatioTab == '2' && toggleChecked == true && !predictorRatioLoader"
-              class="no-data-placeholder">
-              <div class="sa_nodata_div">
-              </div>
-              <p class="chart-placeholder-text">You have no RCTs or extractions in the selected period</p>
+              *ngIf="
+                ratioChartData2[0]['data'].length <= 0 &&
+                ratioChartData2[1]['data'].length <= 0 &&
+                predictorRatioTab == '2' &&
+                toggleChecked == true &&
+                !predictorRatioLoader
+              "
+              class="no-data-placeholder"
+            >
+              <div class="sa_nodata_div"></div>
+              <p class="chart-placeholder-text">
+                You have no RCTs or extractions in the selected period
+              </p>
             </div>
 
             <div
-              *ngIf="(ratioChartData3[0]['data'].length <= 0 && ratioChartData3[1]['data'].length <= 0) && predictorRatioTab == '3' && toggleChecked == true && !predictorRatioLoader"
-              class="no-data-placeholder">
-              <div class="sa_nodata_div">
-              </div>
-              <p class="chart-placeholder-text">You have no RCTs in the selected period</p>
+              *ngIf="
+                ratioChartData3[0]['data'].length <= 0 &&
+                ratioChartData3[1]['data'].length <= 0 &&
+                predictorRatioTab == '3' &&
+                toggleChecked == true &&
+                !predictorRatioLoader
+              "
+              class="no-data-placeholder"
+            >
+              <div class="sa_nodata_div"></div>
+              <p class="chart-placeholder-text">
+                You have no RCTs in the selected period
+              </p>
             </div>
-
           </div>
           <div class="card-footer">
-            <div fxLayout="row wrap" class="predicted1 sa_chart_details_sec predictorRatioDetails"
-              *ngIf="toggleChecked == false" fxLayoutAlign="center center">
-              <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                <h3 class="m-0 value-num">{{predictedDentistTotal | number:'1.0-0'}}</h3>
-                <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
-                <span class="value-text" *ngIf="currentText == ''">Current</span>
+            <div
+              fxLayout="row wrap"
+              class="predicted1 sa_chart_details_sec predictorRatioDetails"
+              *ngIf="toggleChecked == false"
+              fxLayoutAlign="center center"
+            >
+              <div
+                fxFlex.gt-sm="50%"
+                fxFlex.gt-xs="50%"
+                fxFlex="100"
+                class="text-center"
+              >
+                <h3 class="m-0 value-num">
+                  {{ predictedDentistTotal | number : '1.0-0' }}
+                </h3>
+                <span class="value-text" *ngIf="currentText != ''">{{
+                  currentText
+                }}</span>
+                <span class="value-text" *ngIf="currentText == ''"
+                  >Current</span
+                >
               </div>
-              <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
-                <h3 class="m-0 value-num">{{predictedDentistPrevTotal | number:'1.0-0'}}</h3>
-                <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+              <div
+                fxFlex.gt-sm="50%"
+                fxFlex.gt-xs="50%"
+                fxFlex="100"
+                class="text-center"
+                *ngIf="duration != 'custom'"
+              >
+                <h3 class="m-0 value-num">
+                  {{ predictedDentistPrevTotal | number : '1.0-0' }}
+                </h3>
+                <span class="value-text" *ngIf="trendText != ''">{{
+                  trendText
+                }}</span>
                 <span class="value-text" *ngIf="trendText == ''">Previous</span>
               </div>
             </div>
           </div>
         </mat-card-content>
       </mat-card>
-      <div *ngIf="buildChartPredictorLoader == true" class="loader_container loader_container_middle"><img
-          class="loader_ico" src="../assets/images/720.gif">
+      <div
+        *ngIf="buildChartPredictorLoader == true"
+        class="loader_container loader_container_middle"
+      >
+        <img class="loader_ico" src="../assets/images/720.gif" />
         <div class="loader-text">Calculating...</div>
       </div>
-      <div *ngIf="predictorRatioLoader" class="loader_container loader_container_middle"><img
-        class="loader_ico" src="../assets/images/720.gif">
-      <div class="loader-text">Calculating...</div>
-    </div>
-    <div *ngIf="buildChartPredictorDentistLoader == true" class="loader_container loader_container_middle"><img
-        class="loader_ico" src="../assets/images/720.gif">
-      <div class="loader-text">Calculating...</div>
-    </div>
-    <div *ngIf="predictedstackedChartLoader" class="loader_container loader_container_middle"><img
-      class="loader_ico" src="../assets/images/720.gif">
-    <div class="loader-text">Calculating...</div>
-  </div>
+      <div
+        *ngIf="predictorRatioLoader"
+        class="loader_container loader_container_middle"
+      >
+        <img class="loader_ico" src="../assets/images/720.gif" />
+        <div class="loader-text">Calculating...</div>
+      </div>
+      <div
+        *ngIf="buildChartPredictorDentistLoader == true"
+        class="loader_container loader_container_middle"
+      >
+        <img class="loader_ico" src="../assets/images/720.gif" />
+        <div class="loader-text">Calculating...</div>
+      </div>
+      <div
+        *ngIf="predictedstackedChartLoader"
+        class="loader_container loader_container_middle"
+      >
+        <img class="loader_ico" src="../assets/images/720.gif" />
+        <div class="loader-text">Calculating...</div>
+      </div>
     </div>
     <!-- Column-->
-    <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
-      class="sa_flexbg referral_clinicians last">
+    <div
+      fxFlex="calc(49% - 10px)"
+      fxFlex.md="100"
+      fxFlex.sm="100"
+      fxFlex.xs="100"
+      class="sa_flexbg referral_clinicians last"
+    >
       <mat-card>
         <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center">
@@ -719,129 +1656,299 @@
               Clinician Referrals
             </div>
 
-            <div class="sa_box_title_right_buttons">
-            </div>
+            <div class="sa_box_title_right_buttons"></div>
             <div class="info-icon-container">
-              <img [tooltip]="charTips['14']" src="../assets/images/info-icon.png" alt="info-icon"
-                class="info-icon" />
+              <img
+                [tooltip]="charTips['14']"
+                src="../assets/images/info-icon.png"
+                alt="info-icon"
+                class="info-icon"
+              />
             </div>
-            
           </mat-card-title>
           <div class="card-body">
-            <div fxLayout="row wrap" class="sa_tabs_main_sec sa_tabs_clinician_referrals">
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center btn-group">
-                <small class="sa_tab_btn referall_btn Combined active"
-                  (click)="changePieReferral('Combined')">All</small>
+            <div
+              fxLayout="row wrap"
+              class="sa_tabs_main_sec sa_tabs_clinician_referrals"
+            >
+              <div
+                fxFlex.gt-sm="33.33%"
+                fxFlex.gt-xs="33.33%"
+                fxFlex="100"
+                class="text-center btn-group"
+              >
+                <small
+                  class="sa_tab_btn referall_btn Combined active"
+                  (click)="changePieReferral('Combined')"
+                  >All</small
+                >
               </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center btn-group">
-                <small class="sa_tab_btn referall_btn Internal" (click)="changePieReferral('Internal')">Internal</small>
+              <div
+                fxFlex.gt-sm="33.33%"
+                fxFlex.gt-xs="33.33%"
+                fxFlex="100"
+                class="text-center btn-group"
+              >
+                <small
+                  class="sa_tab_btn referall_btn Internal"
+                  (click)="changePieReferral('Internal')"
+                  >Internal</small
+                >
               </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center btn-group">
-                <small class="sa_tab_btn referall_btn External" (click)="changePieReferral('External')">External</small>
+              <div
+                fxFlex.gt-sm="33.33%"
+                fxFlex.gt-xs="33.33%"
+                fxFlex="100"
+                class="text-center btn-group"
+              >
+                <small
+                  class="sa_tab_btn referall_btn External"
+                  (click)="changePieReferral('External')"
+                  >External</small
+                >
               </div>
-
             </div>
             <div class="chart">
-              <div *ngIf="showInternal == true && pieChartDataMax1 > 0 && showTrend == false && !clinicianReferralLoader" class="trend-show">
-                <canvas baseChart [data]="pieChartData1" [labels]="pieChartLabels1" [chartType]="pieChartType"
-                  (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)" [legend]="true"
-                  [options]="pieChartOptions" [colors]="doughnutChartColors">
+              <div
+                *ngIf="
+                  showInternal == true &&
+                  pieChartDataMax1 > 0 &&
+                  showTrend == false &&
+                  !clinicianReferralLoader
+                "
+                class="trend-show"
+              >
+                <canvas
+                  baseChart
+                  [data]="pieChartData1"
+                  [labels]="pieChartLabels1"
+                  [chartType]="pieChartType"
+                  (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)"
+                  [legend]="true"
+                  [options]="pieChartOptions"
+                  [colors]="doughnutChartColors"
+                >
                 </canvas>
               </div>
-              <div *ngIf="pieChartDataMax1 <= 0 && showInternal == true && showTrend == false && !clinicianReferralLoader">
-                <div class="sa_nodata_div">
-                </div>
-                <p class="chart-placeholder-text">You have no internal referrals in the selected period</p>
+              <div
+                *ngIf="
+                  pieChartDataMax1 <= 0 &&
+                  showInternal == true &&
+                  showTrend == false &&
+                  !clinicianReferralLoader
+                "
+              >
+                <div class="sa_nodata_div"></div>
+                <p class="chart-placeholder-text">
+                  You have no internal referrals in the selected period
+                </p>
               </div>
 
-              <div *ngIf="showExternal == true && pieChartDataMax2 > 0 && showTrend == false && !clinicianReferralLoader" class="trend-show">
-                <canvas baseChart [data]="pieChartData2" [labels]="pieChartLabels2" [chartType]="pieChartType"
-                  (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)" [options]="pieChartOptions"
-                  [colors]="doughnutChartColors">
+              <div
+                *ngIf="
+                  showExternal == true &&
+                  pieChartDataMax2 > 0 &&
+                  showTrend == false &&
+                  !clinicianReferralLoader
+                "
+                class="trend-show"
+              >
+                <canvas
+                  baseChart
+                  [data]="pieChartData2"
+                  [labels]="pieChartLabels2"
+                  [chartType]="pieChartType"
+                  (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)"
+                  [options]="pieChartOptions"
+                  [colors]="doughnutChartColors"
+                >
                 </canvas>
                 <!-- <div *ngIf="pieChartDataMax2 <= 0 && showExternal == true" class="sa_nodata_div">
             <h4>No Data</h4>
             <p></p>
         </div> -->
               </div>
-              <div *ngIf="pieChartDataMax2 <= 0 && showExternal == true && showTrend == false && !clinicianReferralLoader">
-                <div class="sa_nodata_div">
-                </div>
-                <p class="chart-placeholder-text">You have no external referrals in the selected period</p>
+              <div
+                *ngIf="
+                  pieChartDataMax2 <= 0 &&
+                  showExternal == true &&
+                  showTrend == false &&
+                  !clinicianReferralLoader
+                "
+              >
+                <div class="sa_nodata_div"></div>
+                <p class="chart-placeholder-text">
+                  You have no external referrals in the selected period
+                </p>
               </div>
 
-              <div *ngIf="showCombined == true  && pieChartDataMax3 > 0  && showTrend == false && !clinicianReferralLoader" class="trend-show">
-                <canvas baseChart [data]="pieChartData3" [labels]="pieChartLabels3" [chartType]="pieChartType"
-                  (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)" [options]="pieChartOptions"
-                  [colors]="doughnutChartColors">
+              <div
+                *ngIf="
+                  showCombined == true &&
+                  pieChartDataMax3 > 0 &&
+                  showTrend == false &&
+                  !clinicianReferralLoader
+                "
+                class="trend-show"
+              >
+                <canvas
+                  baseChart
+                  [data]="pieChartData3"
+                  [labels]="pieChartLabels3"
+                  [chartType]="pieChartType"
+                  (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)"
+                  [options]="pieChartOptions"
+                  [colors]="doughnutChartColors"
+                >
                 </canvas>
                 <!-- <div *ngIf="pieChartDataMax3 <= 0 && showCombined == true" class="sa_nodata_div">
             <h4>No Data</h4>
             <p></p>
         </div> -->
               </div>
-              <div *ngIf="pieChartDataMax3 <= 0 && showCombined == true && showTrend == false && !clinicianReferralLoader">
-                <div class="sa_nodata_div">
-                </div>
-                <p class="chart-placeholder-text">You have no referrals in the selected period</p>
+              <div
+                *ngIf="
+                  pieChartDataMax3 <= 0 &&
+                  showCombined == true &&
+                  showTrend == false &&
+                  !clinicianReferralLoader
+                "
+              >
+                <div class="sa_nodata_div"></div>
+                <p class="chart-placeholder-text">
+                  You have no referrals in the selected period
+                </p>
               </div>
 
-              <div *ngIf="showTrend == true && stackedChartTrendDataMax > 0 && !clinicianReferralLoader" class="chart-trend-show">
-                <canvas baseChart [datasets]="stackedChartTrendData" [labels]="stackedChartTrendLabels"
-                  [options]="stackedChartOptions" [legend]="false" [chartType]="stackedChartType"
-                  (chartHover)="chartHovered($event)" [colors]="stackedChartColors"
-                  (chartClick)="chartClicked($event)"></canvas>
+              <div
+                *ngIf="
+                  showTrend == true &&
+                  stackedChartTrendDataMax > 0 &&
+                  !clinicianReferralLoader
+                "
+                class="chart-trend-show"
+              >
+                <canvas
+                  baseChart
+                  [datasets]="stackedChartTrendData"
+                  [labels]="stackedChartTrendLabels"
+                  [options]="stackedChartOptions"
+                  [legend]="false"
+                  [chartType]="stackedChartType"
+                  (chartHover)="chartHovered($event)"
+                  [colors]="stackedChartColors"
+                  (chartClick)="chartClicked($event)"
+                ></canvas>
                 <!-- <div *ngIf="stackedChartTrendDataMax <= 0 && showTrend == true" class="sa_nodata_div">
             <h4>No Data</h4>
             <p></p>
         </div> -->
               </div>
-              <div *ngIf="stackedChartTrendDataMax <= 0 && showTrend == true && showInternal == true && !clinicianReferralLoader"
-                class="no-data-placeholder">
-                <div class="sa_nodata_div">
-                </div>
-                <p class="chart-placeholder-text">You have no referrals in the selected period</p>
+              <div
+                *ngIf="
+                  stackedChartTrendDataMax <= 0 &&
+                  showTrend == true &&
+                  showInternal == true &&
+                  !clinicianReferralLoader
+                "
+                class="no-data-placeholder"
+              >
+                <div class="sa_nodata_div"></div>
+                <p class="chart-placeholder-text">
+                  You have no referrals in the selected period
+                </p>
               </div>
-              <div *ngIf="stackedChartTrendDataMax <= 0 && showTrend == true && showExternal == true && !clinicianReferralLoader"
-                class="no-data-placeholder">
-                <div class="sa_nodata_div">
-                </div>
-                <p class="chart-placeholder-text">You have no referrals in the selected period</p>
+              <div
+                *ngIf="
+                  stackedChartTrendDataMax <= 0 &&
+                  showTrend == true &&
+                  showExternal == true &&
+                  !clinicianReferralLoader
+                "
+                class="no-data-placeholder"
+              >
+                <div class="sa_nodata_div"></div>
+                <p class="chart-placeholder-text">
+                  You have no referrals in the selected period
+                </p>
               </div>
-              <div *ngIf="stackedChartTrendDataMax <= 0 && showTrend == true && showCombined == true && !clinicianReferralLoader">
-                <div class="sa_nodata_div">
-                </div>
-                <p class="chart-placeholder-text">You have no referrals in the selected period</p>
+              <div
+                *ngIf="
+                  stackedChartTrendDataMax <= 0 &&
+                  showTrend == true &&
+                  showCombined == true &&
+                  !clinicianReferralLoader
+                "
+              >
+                <div class="sa_nodata_div"></div>
+                <p class="chart-placeholder-text">
+                  You have no referrals in the selected period
+                </p>
               </div>
-
             </div>
           </div>
           <div class="card-footer">
-            <div *ngIf="toggleChecked == false" fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails"
-              fxLayoutAlign="center center">
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                <h3 class="m-0 value-num">{{pieChartCombinedTotal | number:'1.0-0'}}</h3>
+            <div
+              *ngIf="toggleChecked == false"
+              fxLayout="row wrap"
+              class="m-t-40 sa_chart_details_sec pieChartDetails"
+              fxLayoutAlign="center center"
+            >
+              <div
+                fxFlex.gt-sm="33.33%"
+                fxFlex.gt-xs="33.33%"
+                fxFlex="100"
+                class="text-center"
+              >
+                <h3 class="m-0 value-num">
+                  {{ pieChartCombinedTotal | number : '1.0-0' }}
+                </h3>
                 <span class="value-text">Total</span>
               </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                <h3 class="m-0 value-num">{{pieChartInternalTotal | number:'1.0-0'}}</h3>
+              <div
+                fxFlex.gt-sm="33.33%"
+                fxFlex.gt-xs="33.33%"
+                fxFlex="100"
+                class="text-center"
+              >
+                <h3 class="m-0 value-num">
+                  {{ pieChartInternalTotal | number : '1.0-0' }}
+                </h3>
                 <span class="value-text">Internal</span>
               </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                <h3 class="m-0 value-num">{{pieChartExternalTotal | number:'1.0-0'}}</h3>
+              <div
+                fxFlex.gt-sm="33.33%"
+                fxFlex.gt-xs="33.33%"
+                fxFlex="100"
+                class="text-center"
+              >
+                <h3 class="m-0 value-num">
+                  {{ pieChartExternalTotal | number : '1.0-0' }}
+                </h3>
                 <span class="value-text">External</span>
               </div>
-
             </div>
           </div>
         </mat-card-content>
-        <div *ngIf="clinicianReferralLoader" class="loader_container loader_container_middle">
-          <img class="loader_ico" src="../assets/images/720.gif">
+        <div
+          *ngIf="clinicianReferralLoader"
+          class="loader_container loader_container_middle"
+        >
+          <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
       </mat-card>
     </div>
   </div>
-
-</div><canvas #myCanvas baseChart [style.display]="'none'" [datasets]="chartData1" [labels]="chartLabels1"
-  [chartType]="stackedChartType"></canvas>
+</div>
+<canvas
+  #myCanvas
+  baseChart
+  [style.display]="'none'"
+  [datasets]="chartData1"
+  [labels]="chartLabels1"
+  [chartType]="stackedChartType"
+></canvas>

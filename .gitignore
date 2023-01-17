@@ -3,3 +3,5 @@
 /dist/*
 /*.log
 /.angular/*
+.prettier*
+.vscode/
