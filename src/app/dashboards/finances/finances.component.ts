@@ -3057,6 +3057,7 @@ export class FinancesComponent implements AfterViewInit {
   public currentText;
 
   filterDate(duration) {
+    console.log(duration);
     $('.customRange').css('display', 'none');
     if (this.toggleChecked)
       // $('.target_off').click();
@@ -3211,6 +3212,7 @@ export class FinancesComponent implements AfterViewInit {
     } else if (duration == 'lcytd') {
       this.trendText = 'Previous Year';
       this.currentText = 'Last Year';
+      this.duration = 'lcytd';
 
       var date = new Date();
       this.startDate = this.datePipe.transform(
@@ -3244,6 +3246,7 @@ export class FinancesComponent implements AfterViewInit {
     } else if (duration == 'lfytd') {
       this.trendText = 'Previous Financial Year';
       this.currentText = 'Last Financial Year';
+      this.duration = 'lfytd';
       var date = new Date();
       if (date.getMonth() + 1 <= 6) {
         this.startDate = this.datePipe.transform(
@@ -3273,6 +3276,7 @@ export class FinancesComponent implements AfterViewInit {
     } else if (duration == 'custom') {
       this.trendText = '';
       this.currentText = '';
+      this.duration = 'custom';
       // $('.customRange').css('display', 'block');
       let selectedDate = this.chartService.customSelectedDate$.value;
       this.startDate = this.datePipe.transform(
