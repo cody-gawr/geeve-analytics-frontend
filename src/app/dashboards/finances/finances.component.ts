@@ -3057,7 +3057,6 @@ export class FinancesComponent implements AfterViewInit {
   public currentText;
 
   filterDate(duration) {
-    console.log(duration);
     $('.customRange').css('display', 'none');
     if (this.toggleChecked)
       // $('.target_off').click();
