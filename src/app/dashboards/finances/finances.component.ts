@@ -1,11 +1,17 @@
- import * as $ from 'jquery';
-import { Component, AfterViewInit, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
+import * as $ from 'jquery';
+import {
+  Component,
+  AfterViewInit,
+  ViewEncapsulation,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { FinancesService } from './finances.service';
 import { DentistService } from '../../dentist/dentist.service';
-import { DatePipe, DecimalPipe} from '@angular/common';
-import { ActivatedRoute, Router } from "@angular/router";
+import { DatePipe, DecimalPipe } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderService } from '../../layouts/full/header/header.service';
-import { CookieService } from "ngx-cookie";
+import { CookieService } from 'ngx-cookie';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
@@ -16,7 +22,7 @@ import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.ser
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
-import { environment } from "../../../environments/environment";
+import { environment } from '../../../environments/environment';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 export interface Dentist {
   providerId: string;
@@ -26,12 +32,11 @@ export interface Dentist {
 @Component({
   templateUrl: './finances.component.html',
   styleUrls: ['./finances.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
-
 export class FinancesComponent implements AfterViewInit {
-  @ViewChild("myCanvas") canvas: ElementRef;
-  @ViewChild("myCanvas2") canvas2: ElementRef;
+  @ViewChild('myCanvas') canvas: ElementRef;
+  @ViewChild('myCanvas2') canvas2: ElementRef;
 
   lineChartColors;
   doughnutChartColors;
@@ -55,7 +60,6 @@ export class FinancesComponent implements AfterViewInit {
   public user_type: string = '';
   public isCompleteMonth: boolean = true;
 
-
   public pieChartColors = [
     {
       backgroundColor: [
@@ -66,11 +70,22 @@ export class FinancesComponent implements AfterViewInit {
         // '#fffcac',
         // '#D7F8EF',
         // '#FEEFB8'
-        '#6edbbb', '#b0fffa', '#abb3ff', '#ffb4b5', '#fffcac', '#FFE4E4', '#FFD578', '#54D2FF', '#E58DD7', '#A9AABC', '#F2ECFF', '#5689C9', '#F9F871'
-
-      ]
-    }
-  ]
+        '#6edbbb',
+        '#b0fffa',
+        '#abb3ff',
+        '#ffb4b5',
+        '#fffcac',
+        '#FFE4E4',
+        '#FFD578',
+        '#54D2FF',
+        '#E58DD7',
+        '#A9AABC',
+        '#F2ECFF',
+        '#5689C9',
+        '#F9F871',
+      ],
+    },
+  ];
 
   preoceedureChartColors;
   subtitle: string;
@@ -89,10 +104,18 @@ export class FinancesComponent implements AfterViewInit {
   public trendText;
   public apiUrl = environment.apiUrl;
   colorScheme = {
-    domain: ['#6edbba', '#abb3ff', '#b0fffa', '#ffb4b5', '#d7f8ef', '#fffdac', '#fef0b8', '#4ccfae']
+    domain: [
+      '#6edbba',
+      '#abb3ff',
+      '#b0fffa',
+      '#ffb4b5',
+      '#d7f8ef',
+      '#fffdac',
+      '#fef0b8',
+      '#4ccfae',
+    ],
   };
-  single = [
-  ];
+  single = [];
   dateData: any[];
   dateDataWithRange: any[];
   range = false;
@@ -115,16 +138,28 @@ export class FinancesComponent implements AfterViewInit {
   arcWidth = 0.75;
   rangeFillOpacity = 0.75;
   pluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
-  totalDiscountPluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
-  currentOverduePluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
+  totalDiscountPluginObservable$: Observable<
+    PluginServiceGlobalRegistrationAndOptions[]
+  >;
+  currentOverduePluginObservable$: Observable<
+    PluginServiceGlobalRegistrationAndOptions[]
+  >;
   destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   public percentOfProductionCount$ = new BehaviorSubject<number>(99);
   public percentOfTotalDiscount$ = new BehaviorSubject<number>(0);
   public percentOfCurrentOverdue$ = new BehaviorSubject<number>(0);
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
-  profitChartTitles = ['Production', 'Net Profit', 'Net Profit %', 'Collection'];
-  barChartColors = [{ backgroundColor: '#39acac' }, { backgroundColor: '#48daba' }];
+  profitChartTitles = [
+    'Production',
+    'Net Profit',
+    'Net Profit %',
+    'Collection',
+  ];
+  barChartColors = [
+    { backgroundColor: '#39acac' },
+    { backgroundColor: '#48daba' },
+  ];
   public isVisibleAccountGraphs: boolean = false;
   public maxLegendLabelLimit = 10;
   constructor(
@@ -141,10 +176,10 @@ export class FinancesComponent implements AfterViewInit {
     public constants: AppConstants,
     public ngxModalService: NgxSmartModalService,
     public chartstipsService: ChartstipsService,
-    private decimalPipe: DecimalPipe,
+    private decimalPipe: DecimalPipe
   ) {
-    this.user_type = this._cookieService.get("user_type");
-    this.connectedwith = this._cookieService.get("a_connect");
+    this.user_type = this._cookieService.get('user_type');
+    this.connectedwith = this._cookieService.get('a_connect');
     this.isVisibleAccountGraphs = this.connectedwith == 'none' ? false : true;
     this.getChartsTips();
     this.getAllClinics();
@@ -152,49 +187,50 @@ export class FinancesComponent implements AfterViewInit {
 
   public stackLegendGenerator = {
     display: true,
-    position: "bottom",
+    position: 'bottom',
     labels: {
-      boxWidth : 8,
+      boxWidth: 8,
       usePointStyle: true,
-      generateLabels : (chart)=>{
+      generateLabels: (chart) => {
         let labels = [];
         let bg_color = {};
-        chart.data.datasets.forEach((item)=>{
-          item.data.forEach(val=>{
-            if(val > 0){
+        chart.data.datasets.forEach((item) => {
+          item.data.forEach((val) => {
+            if (val > 0) {
               labels.push(item.label);
               bg_color[item.label] = item.backgroundColor;
             }
-          })
-        })
-        labels = [...new Set(labels)]; 
-        labels = labels.splice(0,this.maxLegendLabelLimit);
-        return labels.map((item)=>({
+          });
+        });
+        labels = [...new Set(labels)];
+        labels = labels.splice(0, this.maxLegendLabelLimit);
+        return labels.map((item) => ({
           text: item,
-          strokeStyle : bg_color[item],
-          fillStyle : bg_color[item],
+          strokeStyle: bg_color[item],
+          fillStyle: bg_color[item],
         }));
-      }
+      },
     },
-    onClick : (event, legendItem, legend)=>{
+    onClick: (event, legendItem, legend) => {
       return;
-    }
-  }
+    },
+  };
   private warningMessage: string;
   async initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
     // this.clinic_id = val;
-    if (val != undefined && val != '') {     
-      if(val == 'all'){
+    if (val != undefined && val != '') {
+      if (val == 'all') {
         this.clinic_id = this.clinics;
-      }else{
+      } else {
         this.clinic_id = val;
       }
-      if( val.indexOf(',') == -1 && val != 'all'){
+      if (val.indexOf(',') == -1 && val != 'all') {
         this.multipleClinicsSelected = false;
         this.clinic_id = val;
         await this.clinicGetAccountingPlatform();
-        this.isVisibleAccountGraphs = this.connectedwith == 'none' ? false : true;
+        this.isVisibleAccountGraphs =
+          this.connectedwith == 'none' ? false : true;
         if (this.connectedwith == 'myob') {
           this.xeroConnect = false;
           this.checkMyobStatus();
@@ -204,25 +240,25 @@ export class FinancesComponent implements AfterViewInit {
         } else {
           this.xeroConnect = false;
           this.myobConnect = false;
-        }      
+        }
         this.filterDate(this.chartService.duration$.value);
-      }else{
+      } else {
         this.isVisibleAccountGraphs = true;
         this.multipleClinicsSelected = true;
         // this.filterDate(this.chartService.duration$.value);
-        this.filterDate("m");
+        this.filterDate('m');
       }
-    }else{
+    } else {
       this.multipleClinicsSelected = true;
     }
   }
 
   public clinics = [];
-  getAllClinics(){
-    this.headerService.getClinic.subscribe(res=>{
-      if(res.status == 200){
+  getAllClinics() {
+    this.headerService.getClinic.subscribe((res) => {
+      if (res.status == 200) {
         let temp = [];
-        res.body.data.forEach(item=>{
+        res.body.data.forEach((item) => {
           temp.push(item.id);
         });
         this.clinics = [...temp];
@@ -233,45 +269,47 @@ export class FinancesComponent implements AfterViewInit {
   clinicGetAccountingPlatform() {
     var self = this;
     return new Promise(function (resolve, reject) {
-      self.clinicSettingsService.clinicGetAccountingPlatform(self.clinic_id).subscribe((res) => {
-        if (res.status == 200) {
-          if (res.body.data != '') {
-            self.connectedwith = res.body.data;
-            resolve(true);
-          } else {
-            self.connectedwith = '';
+      self.clinicSettingsService
+        .clinicGetAccountingPlatform(self.clinic_id)
+        .subscribe(
+          (res) => {
+            if (res.status == 200) {
+              if (res.body.data != '') {
+                self.connectedwith = res.body.data;
+                resolve(true);
+              } else {
+                self.connectedwith = '';
+                resolve(true);
+              }
+            } else {
+              self.connectedwith = '';
+              resolve(true);
+            }
+          },
+          (error) => {
+            self.warningMessage = 'Please Provide Valid Inputs!';
             resolve(true);
           }
-        } else {
-          self.connectedwith = '';
-          resolve(true);
-        }
-      }, error => {
-        self.warningMessage = "Please Provide Valid Inputs!";
-        resolve(true);
-      });
+        );
     });
-
-
   }
 
   formatDate(date) {
     if (date) {
-      var dateArray = date.split("-")
+      var dateArray = date.split('-');
       const d = new Date();
-      d.setFullYear(+dateArray[2], (+dateArray[1] - 1), +dateArray[0])
+      d.setFullYear(+dateArray[2], +dateArray[1] - 1, +dateArray[0]);
       const formattedDate = this.datePipe.transform(d, 'dd MMM yyyy');
       return formattedDate;
     } else return date;
   }
-
 
   ngAfterViewInit() {
     //plugin for Percentage of Production by Clinician chart
     this.pluginObservable$ = this.percentOfProductionCount$.pipe(
       takeUntil(this.destroyed$),
       map((productionCount) => {
-        return this.chartService.beforeDrawChart(productionCount)
+        return this.chartService.beforeDrawChart(productionCount);
       })
     );
 
@@ -279,20 +317,20 @@ export class FinancesComponent implements AfterViewInit {
     this.totalDiscountPluginObservable$ = this.percentOfTotalDiscount$.pipe(
       takeUntil(this.destroyed$),
       map((discountCount) => {
-        return this.chartService.beforeDrawChart(discountCount, true)
+        return this.chartService.beforeDrawChart(discountCount, true);
       })
-    )
+    );
 
     //plugin for Current Overdue chart
     this.currentOverduePluginObservable$ = this.percentOfCurrentOverdue$.pipe(
       takeUntil(this.destroyed$),
       map((overDueCount) => {
-        return this.chartService.beforeDrawChart(overDueCount, true)
+        return this.chartService.beforeDrawChart(overDueCount, true);
       })
-    )
+    );
 
     $('#currentDentist').attr('did', 'all');
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       $('.external_clinic').show();
       //$('.dentist_dropdown').hide();
       $('.header_filters').removeClass('hide_header');
@@ -300,7 +338,9 @@ export class FinancesComponent implements AfterViewInit {
       $('.external_clinic').show();
       //$('.external_dentist').show();
       $('#title').html('<span>Finances</span>');
-      $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate));
+      $('#sa_datepicker').val(
+        this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate)
+      );
       $(document).on('click', function (e) {
         if ($(document.activeElement).attr('id') == 'sa_datepicker') {
           $('.customRange').show();
@@ -309,93 +349,153 @@ export class FinancesComponent implements AfterViewInit {
         } else {
           $('.customRange').hide();
         }
-      })
+      });
     });
-    let gradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
+    let gradient = this.canvas.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 400);
     gradient.addColorStop(0, '#17a2a6');
     gradient.addColorStop(1, '#17a2a6');
-    let gradient1 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    let gradient1 = this.canvas.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 100);
     gradient1.addColorStop(1, '#82edd8');
     gradient1.addColorStop(0, '#82edd8');
-    let gradient2 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    let gradient2 = this.canvas.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 100);
     gradient2.addColorStop(1, '#2C7294');
     gradient2.addColorStop(0, '#2C7294');
-    let gradient3 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    let gradient3 = this.canvas.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 100);
     gradient3.addColorStop(1, '#3c7cb7');
     gradient3.addColorStop(0, '#3c7cb7');
-    let gradient4 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    let gradient4 = this.canvas.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 100);
     gradient4.addColorStop(1, '#175088');
     gradient4.addColorStop(0, '#175088');
-    let gradient5 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    let gradient5 = this.canvas.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 100);
     gradient5.addColorStop(1, '#1fd6b1');
     gradient5.addColorStop(0, '#1fd6b1');
-    let gradient6 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    let gradient6 = this.canvas.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 100);
     gradient6.addColorStop(1, '#09b391');
     gradient6.addColorStop(0, '#09b391');
-    let gradient7 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    let gradient7 = this.canvas.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 100);
     gradient7.addColorStop(1, '#168F7F');
     gradient7.addColorStop(0, '#168F7F');
 
     // this.doughnutChartColors = [{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}];
-    this.doughnutChartColors = ['#6cd8ba', '#b0fffa', '#abb3ff', '#feefb8', '#91ADEA', '#ffb4b5', '#F2C6C6', '#FDC6C0', '#FEEEE1', '#FFDD99', '#A8DDDD', '#F4F4A0', '#C3DDFF', '#9FDBDB', '#CCFDCC', '#B1F2EC', '#D7ECF3', '#C8CDF0', '#F7C4F5', '#BBEBFA', '#D7ECF3', '#BBE7FF', '#9BD0F5', '#36A2EB', '#FF6384', '#fe7b85', '#87ada9', '#386087', '#54D2FF', '#E58DD7'];
-    let stackedGradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
+    this.doughnutChartColors = [
+      '#6cd8ba',
+      '#b0fffa',
+      '#abb3ff',
+      '#feefb8',
+      '#91ADEA',
+      '#ffb4b5',
+      '#F2C6C6',
+      '#FDC6C0',
+      '#FEEEE1',
+      '#FFDD99',
+      '#A8DDDD',
+      '#F4F4A0',
+      '#C3DDFF',
+      '#9FDBDB',
+      '#CCFDCC',
+      '#B1F2EC',
+      '#D7ECF3',
+      '#C8CDF0',
+      '#F7C4F5',
+      '#BBEBFA',
+      '#D7ECF3',
+      '#BBE7FF',
+      '#9BD0F5',
+      '#36A2EB',
+      '#FF6384',
+      '#fe7b85',
+      '#87ada9',
+      '#386087',
+      '#54D2FF',
+      '#E58DD7',
+    ];
+    let stackedGradient = this.canvas.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 400);
     stackedGradient.addColorStop(0, '#168F7F');
     stackedGradient.addColorStop(1, '#168F7F');
-    let stackedGradient1 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    let stackedGradient1 = this.canvas.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 100);
     stackedGradient1.addColorStop(1, '#1fd6b1');
     stackedGradient1.addColorStop(0, '#1fd6b1');
-    let stackedGradient2 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    let stackedGradient2 = this.canvas.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 100);
     stackedGradient2.addColorStop(1, '#09b391');
     stackedGradient2.addColorStop(0, '#09b391');
-    let stackedGradient3 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    let stackedGradient3 = this.canvas.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 100);
     stackedGradient3.addColorStop(1, '#82EDD8');
     stackedGradient3.addColorStop(0, '#82EDD8');
-    let stackedGradient4 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    let stackedGradient4 = this.canvas.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 100);
     stackedGradient4.addColorStop(1, '#17A2A6');
     stackedGradient4.addColorStop(0, '#17A2A6');
-    let stackedGradient5 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    let stackedGradient5 = this.canvas.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 100);
     stackedGradient5.addColorStop(1, 'rgba(22, 82, 141, 1)');
     stackedGradient5.addColorStop(0, 'rgba(12, 209,169,1)');
-
 
     this.stackedChartColors = [
       {
         backgroundColor: stackedGradient,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(255,255,255,0.6)'
+        borderColor: 'rgba(255,255,255,0.6)',
       },
       {
         backgroundColor: stackedGradient1,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(255,255,255,0.6)'
+        borderColor: 'rgba(255,255,255,0.6)',
       },
       {
         backgroundColor: stackedGradient2,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(255,255,255,0.6)'
+        borderColor: 'rgba(255,255,255,0.6)',
       },
       {
         backgroundColor: stackedGradient3,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(255,255,255,0.6)'
+        borderColor: 'rgba(255,255,255,0.6)',
       },
       {
         backgroundColor: stackedGradient4,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(255,255,255,0.6)'
+        borderColor: 'rgba(255,255,255,0.6)',
       },
       {
         backgroundColor: stackedGradient5,
         hoverBorderWidth: 2,
-        hoverBorderColor: 'rgba(255,255,255,0.6)'
-      }
+        hoverBorderColor: 'rgba(255,255,255,0.6)',
+      },
     ];
-    let stackedGradient6 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    let stackedGradient6 = this.canvas2.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 100);
     stackedGradient6.addColorStop(1, 'rgba(22, 82, 141, 0.4)');
     stackedGradient6.addColorStop(0, 'rgba(12, 209,169,0.4)');
     this.stackedChartColorsBar = [
@@ -403,9 +503,12 @@ export class FinancesComponent implements AfterViewInit {
         backgroundColor: stackedGradient6,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: '#1CA49F'
-      }];
-    let stackedGradient7 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+        borderColor: '#1CA49F',
+      },
+    ];
+    let stackedGradient7 = this.canvas2.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 100);
     stackedGradient7.addColorStop(1, 'rgba(94, 232,205,0.8)');
     stackedGradient7.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
     this.stackedChartColorsBar1 = [
@@ -413,24 +516,37 @@ export class FinancesComponent implements AfterViewInit {
         backgroundColor: stackedGradient7,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: '#1CA49F'
-      }];
-    let proceedureGradient = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
+        borderColor: '#1CA49F',
+      },
+    ];
+    let proceedureGradient = this.canvas2.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 400);
     proceedureGradient.addColorStop(0, 'rgba(22, 82, 141, 0.8)');
     proceedureGradient.addColorStop(1, 'rgba(12, 209,169,0.9)');
-    let proceedureGradient1 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    let proceedureGradient1 = this.canvas2.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 100);
     proceedureGradient1.addColorStop(1, 'rgba(12, 209,169,0.8)');
     proceedureGradient1.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
-    let proceedureGradient2 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    let proceedureGradient2 = this.canvas2.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 100);
     proceedureGradient2.addColorStop(1, 'rgba(59, 227,193,0.8');
     proceedureGradient2.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
-    let proceedureGradient3 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    let proceedureGradient3 = this.canvas2.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 100);
     proceedureGradient3.addColorStop(1, 'rgba(94, 232,205,0.8)');
     proceedureGradient3.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
-    let proceedureGradient4 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    let proceedureGradient4 = this.canvas2.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 100);
     proceedureGradient4.addColorStop(1, 'rgba(148, 240,221,0.8)');
     proceedureGradient4.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
-    let proceedureGradient5 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    let proceedureGradient5 = this.canvas2.nativeElement
+      .getContext('2d')
+      .createLinearGradient(0, 0, 0, 100);
     proceedureGradient5.addColorStop(1, 'rgba(201, 247,238,0.8)');
     proceedureGradient5.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
 
@@ -439,37 +555,37 @@ export class FinancesComponent implements AfterViewInit {
         backgroundColor: proceedureGradient,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)'
+        borderColor: 'rgba(25,179,148,0.7)',
       },
       {
         backgroundColor: proceedureGradient1,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)'
+        borderColor: 'rgba(25,179,148,0.7)',
       },
       {
         backgroundColor: proceedureGradient2,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)'
+        borderColor: 'rgba(25,179,148,0.7)',
       },
       {
         backgroundColor: proceedureGradient3,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)'
+        borderColor: 'rgba(25,179,148,0.7)',
       },
       {
         backgroundColor: proceedureGradient4,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)'
+        borderColor: 'rgba(25,179,148,0.7)',
       },
       {
         backgroundColor: proceedureGradient5,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F'
-      }
+        hoverBorderColor: '#1CA49F',
+      },
     ];
     //this.filterDate(this.chartService.duration$.value);
   }
@@ -477,8 +593,6 @@ export class FinancesComponent implements AfterViewInit {
   splitName(name: string) {
     const regex = /\w+\s\w+(?=\s)|\w+/g;
     return name.toString().trim().match(regex);
-    
-
   }
   public barChartOptionsTrend: any = {
     scaleShowVerticalLines: false,
@@ -487,20 +601,20 @@ export class FinancesComponent implements AfterViewInit {
     curvature: 1,
     animation: {
       duration: 1500,
-      easing: 'easeOutSine'
+      easing: 'easeOutSine',
     },
     responsive: true,
     maintainAspectRatio: false,
-    scaleStartValue : 0,
+    scaleStartValue: 0,
     scales: {
-      xAxes: [{
-       stacked: true,
-
-      },
-      {
-          gridLines: { 
-            display: true , 
-            offsetGridLines: true
+      xAxes: [
+        {
+          stacked: true,
+        },
+        {
+          gridLines: {
+            display: true,
+            offsetGridLines: true,
           },
           ticks: {
             autoSkip: false,
@@ -508,22 +622,23 @@ export class FinancesComponent implements AfterViewInit {
           display: false,
           offset: true,
           stacked: true,
-        }
-    ],
-      yAxes: [{
-       suggestedMin: 0,
-        ticks: {
-          min:0,
-          beginAtZero: true,
-          userCallback: (label, index, labels) => {
-            // when the floored value is the same as the value we have a whole number
-            if (Math.floor(label) === label) {
-              return '$' + this.decimalPipe.transform(label);
-            }
-
+        },
+      ],
+      yAxes: [
+        {
+          suggestedMin: 0,
+          ticks: {
+            min: 0,
+            beginAtZero: true,
+            userCallback: (label, index, labels) => {
+              // when the floored value is the same as the value we have a whole number
+              if (Math.floor(label) === label) {
+                return '$' + this.decimalPipe.transform(label);
+              }
+            },
           },
         },
-      }],
+      ],
     },
     tooltips: {
       mode: 'x-axis',
@@ -534,24 +649,30 @@ export class FinancesComponent implements AfterViewInit {
       },
       callbacks: {
         // use label callback to return the desired label
-        label: (tooltipItem, data) => {          
-          const v = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+        label: (tooltipItem, data) => {
+          const v =
+            data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
           let Tlable = data.datasets[tooltipItem.datasetIndex].label;
-          if(Tlable !=''){
-            Tlable = Tlable + ": "
+          if (Tlable != '') {
+            Tlable = Tlable + ': ';
           }
-         let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-         if(ylable == 0 && Tlable =='Target: '){
+          let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+          if (ylable == 0 && Tlable == 'Target: ') {
             //return  Tlable + this.splitName(tooltipItem.xLabel).join(' ');
-         }else{
-           return  Tlable + this.splitName(tooltipItem.xLabel).join(' ') + ": $" + ylable;
-         }
+          } else {
+            return (
+              Tlable +
+              this.splitName(tooltipItem.xLabel).join(' ') +
+              ': $' +
+              ylable
+            );
+          }
         },
         // remove title
         title: function (tooltipItem, data) {
           return;
-        }
-      }
+        },
+      },
     },
     legend: {
       position: 'top',
@@ -561,8 +682,7 @@ export class FinancesComponent implements AfterViewInit {
         if (index == 0) {
           ci.getDatasetMeta(1).hidden = true;
           ci.getDatasetMeta(index).hidden = false;
-        }
-        else if (index == 1) {
+        } else if (index == 1) {
           ci.getDatasetMeta(0).hidden = true;
           ci.getDatasetMeta(index).hidden = false;
         }
@@ -573,16 +693,14 @@ export class FinancesComponent implements AfterViewInit {
   public date = new Date();
   public lineChartOptions: any = { responsive: true };
 
-  dentists: Dentist[] = [
-    { providerId: 'all', name: 'All Dentists' },
-  ];
+  dentists: Dentist[] = [{ providerId: 'all', name: 'All Dentists' }];
   public stackedChartOptions: any = {
     elements: {
       point: {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7
+        hoverBorderWidth: 7,
       },
     },
     scaleShowVerticalLines: false,
@@ -591,30 +709,38 @@ export class FinancesComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine'
+      easing: 'easeOutSine',
     },
     scales: {
-      xAxes: [{
-        stacked: true,
-        ticks: {
-          autoSkip: false
-        }
-      }],
-      yAxes: [{
-        stacked: true,
-        ticks: {
-          userCallback: function (label, index, labels) {
-            // when the floored value is the same as the value we have a whole number
-            if (Math.floor(label) === label) {
-              let currency = label < 0 ? label.toString().split('-').join('') : label.toString();
-              currency = currency.split(/(?=(?:...)*$)/).join(',');
-              return `${label < 0 ? '- $' : '$'}${currency}`;
-            }
+      xAxes: [
+        {
+          stacked: true,
+          ticks: {
+            autoSkip: false,
           },
         },
-      }],
-    }, legend: {
-      display: true
+      ],
+      yAxes: [
+        {
+          stacked: true,
+          ticks: {
+            userCallback: function (label, index, labels) {
+              // when the floored value is the same as the value we have a whole number
+              if (Math.floor(label) === label) {
+                let currency =
+                  label < 0
+                    ? label.toString().split('-').join('')
+                    : label.toString();
+                currency = currency.split(/(?=(?:...)*$)/).join(',');
+                return `${label < 0 ? '- $' : '$'}${currency}`;
+              }
+            },
+          },
+        },
+      ],
+    },
+    legend: {
+      display: true,
     },
     tooltips: {
       mode: 'x-axis',
@@ -625,20 +751,20 @@ export class FinancesComponent implements AfterViewInit {
         if (!tooltipEl) {
           tooltipEl = document.createElement('div');
           tooltipEl.id = 'chartjs-tooltip';
-          tooltipEl.style.backgroundColor = "#FFFFFF";
-          tooltipEl.style.borderColor = "#B2BABB";
-          tooltipEl.style.borderWidth = "thin";
-          tooltipEl.style.borderStyle = "solid";
-          tooltipEl.style.zIndex = "999999";
-          tooltipEl.style.backgroundColor = "#000000";
-          tooltipEl.style.color = "#FFFFFF";
+          tooltipEl.style.backgroundColor = '#FFFFFF';
+          tooltipEl.style.borderColor = '#B2BABB';
+          tooltipEl.style.borderWidth = 'thin';
+          tooltipEl.style.borderStyle = 'solid';
+          tooltipEl.style.zIndex = '999999';
+          tooltipEl.style.backgroundColor = '#000000';
+          tooltipEl.style.color = '#FFFFFF';
           document.body.appendChild(tooltipEl);
         }
         if (tooltip.opacity === 0) {
-          tooltipEl.style.opacity = "0";
+          tooltipEl.style.opacity = '0';
           return;
         } else {
-          tooltipEl.style.opacity = "0.8";
+          tooltipEl.style.opacity = '0.8';
         }
 
         tooltipEl.classList.remove('above', 'below', 'no-transform');
@@ -660,9 +786,9 @@ export class FinancesComponent implements AfterViewInit {
 
           let total: any = 0;
           bodyLines.forEach(function (body, i) {
-            if (!body[0].includes("$0")) {
+            if (!body[0].includes('$0')) {
               var singleval = body[0].split(':');
-              if (singleval[1].includes("-")) {
+              if (singleval[1].includes('-')) {
                 var temp = singleval[1].split('$');
                 var amount = temp[1].replace(/,/g, '');
                 total -= parseFloat(amount);
@@ -671,39 +797,47 @@ export class FinancesComponent implements AfterViewInit {
                 var amount = temp[1].replace(/,/g, '');
                 total += parseFloat(amount);
               }
-
             }
           });
           total = Math.round(total);
           if (total != 0) {
-            var num_parts = total.toString().split(".");
-            num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            total = num_parts.join(".");
+            var num_parts = total.toString().split('.');
+            num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            total = num_parts.join('.');
           }
           titleLines.forEach(function (title) {
-            innerHtml += '<tr><th colspan="2" style="text-align: left;">' + title + ': $' + total + '</th></tr>';
-
+            innerHtml +=
+              '<tr><th colspan="2" style="text-align: left;">' +
+              title +
+              ': $' +
+              total +
+              '</th></tr>';
           });
           bodyLines.forEach(function (body, i) {
-            if (!body[0].includes("$0")) {
+            if (!body[0].includes('$0')) {
               var body_custom = body[0];
-              body_custom = body_custom.split(":");
-              if (body_custom[1].includes("-")) {
+              body_custom = body_custom.split(':');
+              if (body_custom[1].includes('-')) {
                 var temp_ = body_custom[1].split('$');
                 temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[1] = temp_.join("$");
+                body_custom[1] = temp_.join('$');
               } else {
                 var temp_ = body_custom[1].split('$');
                 temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[1] = temp_.join("$");
+                body_custom[1] = temp_.join('$');
               }
 
-              body[0] = body_custom.join(":");
-              innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' + labelColorscustom[i].backgroundColor + '"></span></td><td style="padding: 0px">' + body[0] + '</td></tr>';
+              body[0] = body_custom.join(':');
+              innerHtml +=
+                '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
+                labelColorscustom[i].backgroundColor +
+                '"></span></td><td style="padding: 0px">' +
+                body[0] +
+                '</td></tr>';
             }
           });
           innerHtml += '</tbody></table>';
@@ -714,27 +848,36 @@ export class FinancesComponent implements AfterViewInit {
         var position = this._chart.canvas.getBoundingClientRect();
         // Display, position, and set styles for font
         tooltipEl.style.position = 'fixed';
-        tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 130) + 'px';
-        tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 70) + 'px';
+        tooltipEl.style.left =
+          position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
+        tooltipEl.style.top =
+          position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
         tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
         tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
         tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-        tooltipEl.style.padding = tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+        tooltipEl.style.padding =
+          tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
         tooltipEl.style.pointerEvents = 'none';
         tooltip.displayColors = false;
       },
       callbacks: {
         label: function (tooltipItems, data) {
           let currency = tooltipItems.yLabel.toString();
-          currency = currency.split(".");
-          currency[0] = currency[0].split('-').join('').split(/(?=(?:...)*$)/).join(',');
-          currency = currency.join(".");
+          currency = currency.split('.');
+          currency[0] = currency[0]
+            .split('-')
+            .join('')
+            .split(/(?=(?:...)*$)/)
+            .join(',');
+          currency = currency.join('.');
 
-          return data.datasets[tooltipItems.datasetIndex].label + `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`;;
+          return (
+            data.datasets[tooltipItems.datasetIndex].label +
+            `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`
+          );
         },
-
-      }
-    }
+      },
+    },
   };
 
   public stackedChartOptionsDiscount: any = {
@@ -743,7 +886,7 @@ export class FinancesComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7
+        hoverBorderWidth: 7,
       },
     },
     scaleShowVerticalLines: false,
@@ -752,29 +895,36 @@ export class FinancesComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine'
+      easing: 'easeOutSine',
     },
     scales: {
-      xAxes: [{
-        stacked: true,
-        ticks: {
-          autoSkip: false
-        }
-      }],
-      yAxes: [{
-        stacked: true,
-        ticks: {
-          userCallback: function (label, index, labels) {
-            // when the floored value is the same as the value we have a whole number
-            if (Math.floor(label) === label) {
-              let currency = label < 0 ? label.toString().split('-').join('') : label.toString();
-              currency = currency.split(/(?=(?:...)*$)/).join(',');
-              return `${label < 0 ? '- $' : '$'}${currency}`;
-            }
+      xAxes: [
+        {
+          stacked: true,
+          ticks: {
+            autoSkip: false,
           },
         },
-      }],
-    }, 
+      ],
+      yAxes: [
+        {
+          stacked: true,
+          ticks: {
+            userCallback: function (label, index, labels) {
+              // when the floored value is the same as the value we have a whole number
+              if (Math.floor(label) === label) {
+                let currency =
+                  label < 0
+                    ? label.toString().split('-').join('')
+                    : label.toString();
+                currency = currency.split(/(?=(?:...)*$)/).join(',');
+                return `${label < 0 ? '- $' : '$'}${currency}`;
+              }
+            },
+          },
+        },
+      ],
+    },
     legend: this.stackLegendGenerator,
     tooltips: {
       mode: 'x-axis',
@@ -785,20 +935,20 @@ export class FinancesComponent implements AfterViewInit {
         if (!tooltipEl) {
           tooltipEl = document.createElement('div');
           tooltipEl.id = 'chartjs-tooltip';
-          tooltipEl.style.backgroundColor = "#FFFFFF";
-          tooltipEl.style.borderColor = "#B2BABB";
-          tooltipEl.style.borderWidth = "thin";
-          tooltipEl.style.borderStyle = "solid";
-          tooltipEl.style.zIndex = "999999";
-          tooltipEl.style.backgroundColor = "#000000";
-          tooltipEl.style.color = "#FFFFFF";
+          tooltipEl.style.backgroundColor = '#FFFFFF';
+          tooltipEl.style.borderColor = '#B2BABB';
+          tooltipEl.style.borderWidth = 'thin';
+          tooltipEl.style.borderStyle = 'solid';
+          tooltipEl.style.zIndex = '999999';
+          tooltipEl.style.backgroundColor = '#000000';
+          tooltipEl.style.color = '#FFFFFF';
           document.body.appendChild(tooltipEl);
         }
         if (tooltip.opacity === 0) {
-          tooltipEl.style.opacity = "0";
+          tooltipEl.style.opacity = '0';
           return;
         } else {
-          tooltipEl.style.opacity = "0.8";
+          tooltipEl.style.opacity = '0.8';
         }
 
         tooltipEl.classList.remove('above', 'below', 'no-transform');
@@ -820,9 +970,9 @@ export class FinancesComponent implements AfterViewInit {
 
           let total: any = 0;
           bodyLines.forEach(function (body, i) {
-            if (!body[0].includes("$0")) {
+            if (!body[0].includes('$0')) {
               var singleval = body[0].split(':');
-              if (singleval[1].includes("-")) {
+              if (singleval[1].includes('-')) {
                 var temp = singleval[1].split('$');
                 var amount = temp[1].replace(/,/g, '');
                 total -= parseFloat(amount);
@@ -831,39 +981,47 @@ export class FinancesComponent implements AfterViewInit {
                 var amount = temp[1].replace(/,/g, '');
                 total += parseFloat(amount);
               }
-
             }
           });
           total = Math.round(total);
           if (total != 0) {
-            var num_parts = total.toString().split(".");
-            num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            total = num_parts.join(".");
+            var num_parts = total.toString().split('.');
+            num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            total = num_parts.join('.');
           }
           titleLines.forEach(function (title) {
-            innerHtml += '<tr><th colspan="2" style="text-align: left;">' + title + ': $' + total + '</th></tr>';
-
+            innerHtml +=
+              '<tr><th colspan="2" style="text-align: left;">' +
+              title +
+              ': $' +
+              total +
+              '</th></tr>';
           });
           bodyLines.forEach(function (body, i) {
-            if (!body[0].includes("$0")) {
+            if (!body[0].includes('$0')) {
               var body_custom = body[0];
-              body_custom = body_custom.split(":");
-              if (body_custom[1].includes("-")) {
+              body_custom = body_custom.split(':');
+              if (body_custom[1].includes('-')) {
                 var temp_ = body_custom[1].split('$');
                 temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[1] = temp_.join("$");
+                body_custom[1] = temp_.join('$');
               } else {
                 var temp_ = body_custom[1].split('$');
                 temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[1] = temp_.join("$");
+                body_custom[1] = temp_.join('$');
               }
 
-              body[0] = body_custom.join(":");
-              innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' + labelColorscustom[i].backgroundColor + '"></span></td><td style="padding: 0px">' + body[0] + '</td></tr>';
+              body[0] = body_custom.join(':');
+              innerHtml +=
+                '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
+                labelColorscustom[i].backgroundColor +
+                '"></span></td><td style="padding: 0px">' +
+                body[0] +
+                '</td></tr>';
             }
           });
           innerHtml += '</tbody></table>';
@@ -874,26 +1032,35 @@ export class FinancesComponent implements AfterViewInit {
         var position = this._chart.canvas.getBoundingClientRect();
         // Display, position, and set styles for font
         tooltipEl.style.position = 'fixed';
-        tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 130) + 'px';
-        tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 70) + 'px';
+        tooltipEl.style.left =
+          position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
+        tooltipEl.style.top =
+          position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
         tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
         tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
         tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-        tooltipEl.style.padding = tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+        tooltipEl.style.padding =
+          tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
         tooltipEl.style.pointerEvents = 'none';
         tooltip.displayColors = false;
       },
       callbacks: {
         label: function (tooltipItems, data) {
           let currency = tooltipItems.yLabel.toString();
-          currency = currency.split(".");
-          currency[0] = currency[0].split('-').join('').split(/(?=(?:...)*$)/).join(',');
-          currency = currency.join(".");
-          return data.datasets[tooltipItems.datasetIndex].label + `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`;;
+          currency = currency.split('.');
+          currency[0] = currency[0]
+            .split('-')
+            .join('')
+            .split(/(?=(?:...)*$)/)
+            .join(',');
+          currency = currency.join('.');
+          return (
+            data.datasets[tooltipItems.datasetIndex].label +
+            `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`
+          );
         },
-
-      }
-    }
+      },
+    },
   };
 
   public labelBarOptionsMultiTC: any = {
@@ -902,7 +1069,7 @@ export class FinancesComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7
+        hoverBorderWidth: 7,
       },
     },
     scaleShowVerticalLines: false,
@@ -911,29 +1078,36 @@ export class FinancesComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine'
+      easing: 'easeOutSine',
     },
     scales: {
-      xAxes: [{
-        stacked: true,
-        ticks: {
-          autoSkip: false
-        }
-      }],
-      yAxes: [{
-        stacked: true,
-        ticks: {
-          userCallback: function (label, index, labels) {
-            // when the floored value is the same as the value we have a whole number
-            if (Math.floor(label) === label) {
-              let currency = label < 0 ? label.toString().split('-').join('') : label.toString();
-              currency = currency.split(/(?=(?:...)*$)/).join(',');
-              return `${label < 0 ? '- $' : '$'}${currency}`;
-            }
+      xAxes: [
+        {
+          stacked: true,
+          ticks: {
+            autoSkip: false,
           },
         },
-      }],
-    }, 
+      ],
+      yAxes: [
+        {
+          stacked: true,
+          ticks: {
+            userCallback: function (label, index, labels) {
+              // when the floored value is the same as the value we have a whole number
+              if (Math.floor(label) === label) {
+                let currency =
+                  label < 0
+                    ? label.toString().split('-').join('')
+                    : label.toString();
+                currency = currency.split(/(?=(?:...)*$)/).join(',');
+                return `${label < 0 ? '- $' : '$'}${currency}`;
+              }
+            },
+          },
+        },
+      ],
+    },
     legend: this.stackLegendGenerator,
     tooltips: {
       mode: 'x-axis',
@@ -944,20 +1118,20 @@ export class FinancesComponent implements AfterViewInit {
         if (!tooltipEl) {
           tooltipEl = document.createElement('div');
           tooltipEl.id = 'chartjs-tooltip';
-          tooltipEl.style.backgroundColor = "#FFFFFF";
-          tooltipEl.style.borderColor = "#B2BABB";
-          tooltipEl.style.borderWidth = "thin";
-          tooltipEl.style.borderStyle = "solid";
-          tooltipEl.style.zIndex = "999999";
-          tooltipEl.style.backgroundColor = "#000000";
-          tooltipEl.style.color = "#FFFFFF";
+          tooltipEl.style.backgroundColor = '#FFFFFF';
+          tooltipEl.style.borderColor = '#B2BABB';
+          tooltipEl.style.borderWidth = 'thin';
+          tooltipEl.style.borderStyle = 'solid';
+          tooltipEl.style.zIndex = '999999';
+          tooltipEl.style.backgroundColor = '#000000';
+          tooltipEl.style.color = '#FFFFFF';
           document.body.appendChild(tooltipEl);
         }
         if (tooltip.opacity === 0) {
-          tooltipEl.style.opacity = "0";
+          tooltipEl.style.opacity = '0';
           return;
         } else {
-          tooltipEl.style.opacity = "0.8";
+          tooltipEl.style.opacity = '0.8';
         }
 
         tooltipEl.classList.remove('above', 'below', 'no-transform');
@@ -979,9 +1153,9 @@ export class FinancesComponent implements AfterViewInit {
 
           let total: any = 0;
           bodyLines.forEach(function (body, i) {
-            if (!body[0].includes("$0")) {
+            if (!body[0].includes('$0')) {
               var singleval = body[0].split(':');
-              if (singleval[1].includes("-")) {
+              if (singleval[1].includes('-')) {
                 var temp = singleval[1].split('$');
                 var amount = temp[1].replace(/,/g, '');
                 total -= parseFloat(amount);
@@ -990,39 +1164,47 @@ export class FinancesComponent implements AfterViewInit {
                 var amount = temp[1].replace(/,/g, '');
                 total += parseFloat(amount);
               }
-
             }
           });
           total = Math.round(total);
           if (total != 0) {
-            var num_parts = total.toString().split(".");
-            num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            total = num_parts.join(".");
+            var num_parts = total.toString().split('.');
+            num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            total = num_parts.join('.');
           }
           titleLines.forEach(function (title) {
-            innerHtml += '<tr><th colspan="2" style="text-align: left;">' + title + ': $' + total + '</th></tr>';
-
+            innerHtml +=
+              '<tr><th colspan="2" style="text-align: left;">' +
+              title +
+              ': $' +
+              total +
+              '</th></tr>';
           });
           bodyLines.forEach(function (body, i) {
-            if (!body[0].includes("$0")) {
+            if (!body[0].includes('$0')) {
               var body_custom = body[0];
-              body_custom = body_custom.split(":");
-              if (body_custom[1].includes("-")) {
+              body_custom = body_custom.split(':');
+              if (body_custom[1].includes('-')) {
                 var temp_ = body_custom[1].split('$');
                 temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[1] = temp_.join("$");
+                body_custom[1] = temp_.join('$');
               } else {
                 var temp_ = body_custom[1].split('$');
                 temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[1] = temp_.join("$");
+                body_custom[1] = temp_.join('$');
               }
 
-              body[0] = body_custom.join(":");
-              innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' + labelColorscustom[i].backgroundColor + '"></span></td><td style="padding: 0px">' + body[0] + '</td></tr>';
+              body[0] = body_custom.join(':');
+              innerHtml +=
+                '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
+                labelColorscustom[i].backgroundColor +
+                '"></span></td><td style="padding: 0px">' +
+                body[0] +
+                '</td></tr>';
             }
           });
           innerHtml += '</tbody></table>';
@@ -1033,26 +1215,35 @@ export class FinancesComponent implements AfterViewInit {
         var position = this._chart.canvas.getBoundingClientRect();
         // Display, position, and set styles for font
         tooltipEl.style.position = 'fixed';
-        tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 130) + 'px';
-        tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 70) + 'px';
+        tooltipEl.style.left =
+          position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
+        tooltipEl.style.top =
+          position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
         tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
         tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
         tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-        tooltipEl.style.padding = tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+        tooltipEl.style.padding =
+          tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
         tooltipEl.style.pointerEvents = 'none';
         tooltip.displayColors = false;
       },
       callbacks: {
         label: function (tooltipItems, data) {
           let currency = tooltipItems.yLabel.toString();
-          currency = currency.split(".");
-          currency[0] = currency[0].split('-').join('').split(/(?=(?:...)*$)/).join(',');
-          currency = currency.join(".");
-          return data.datasets[tooltipItems.datasetIndex].label + `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`;;
+          currency = currency.split('.');
+          currency[0] = currency[0]
+            .split('-')
+            .join('')
+            .split(/(?=(?:...)*$)/)
+            .join(',');
+          currency = currency.join('.');
+          return (
+            data.datasets[tooltipItems.datasetIndex].label +
+            `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`
+          );
         },
-
-      }
-    }
+      },
+    },
   };
 
   public labelBarOptionsTC: any = {
@@ -1061,49 +1252,57 @@ export class FinancesComponent implements AfterViewInit {
     maintainAspectRatio: false,
     animation: {
       duration: 500,
-      easing: 'easeOutSine'
+      easing: 'easeOutSine',
     },
     barPercentage: 0.4,
     scales: {
-      xAxes: [{
-        stacked: false,
-        gridLines: {
-          color: "transparent",
-        }
-      }],
-      yAxes: [{
-        stacked: false,
-        gridLines: {
-          color: "transparent",
-        },
-        ticks: {
-          suggestedMin: 0,
-          userCallback: function (label, index, labels) {
-            // when the floored value is the same as the value we have a whole number
-            if (Math.floor(label) === label) {
-              let currency = label < 0 ? label.toString().split('-').join('') : label.toString();
-              currency = currency.split(/(?=(?:...)*$)/).join(',');
-              return `${label < 0 ? '- $' : '$'}${currency}`;
-            }
+      xAxes: [
+        {
+          stacked: false,
+          gridLines: {
+            color: 'transparent',
           },
-          autoSkip: false
         },
-      }],
+      ],
+      yAxes: [
+        {
+          stacked: false,
+          gridLines: {
+            color: 'transparent',
+          },
+          ticks: {
+            suggestedMin: 0,
+            userCallback: function (label, index, labels) {
+              // when the floored value is the same as the value we have a whole number
+              if (Math.floor(label) === label) {
+                let currency =
+                  label < 0
+                    ? label.toString().split('-').join('')
+                    : label.toString();
+                currency = currency.split(/(?=(?:...)*$)/).join(',');
+                return `${label < 0 ? '- $' : '$'}${currency}`;
+              }
+            },
+            autoSkip: false,
+          },
+        },
+      ],
     },
     legend: {
-      display: true
+      display: true,
     },
     tooltips: {
       mode: 'x-axis',
       callbacks: {
         label: function (tooltipItems, data) {
-          let currency = data['datasets'][0]['data'][tooltipItems['index']].toString();
+          let currency =
+            data['datasets'][0]['data'][tooltipItems['index']].toString();
           // Convert the number to a string and split the string every 3 characters from the end and join comma separator
           currency = currency.split(/(?=(?:...)*$)/).join(',');
-          return "$ " + currency;
+          return '$ ' + currency;
         },
-      }
-    }
+      },
+    },
   };
 
   public labelBarOptions: any = {
@@ -1112,7 +1311,7 @@ export class FinancesComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7
+        hoverBorderWidth: 7,
       },
     },
     scaleShowVerticalLines: false,
@@ -1121,35 +1320,43 @@ export class FinancesComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine'
+      easing: 'easeOutSine',
     },
     scales: {
-      xAxes: [{
-        stacked: false,
-        ticks: {
-          autoSkip: false
-        }
-      }],
-      yAxes: [{
-        stacked: false,
-        ticks: {
-          callback: function (label, index, labels) {
-            // when the floored value is the same as the value we have a whole number
-            if (Math.floor(label) === label) {
-              let currency = label < 0 ? label.toString().split('-').join('') : label.toString();
-              //  if (currency.length > 3) {
-              //    currency = currency.substring(0, 1) + 'K'
-              //  } else{
-              currency = currency.split(/(?=(?:...)*$)/).join(',');
-              //  }
-
-              return `${label < 0 ? '- $' : '$'}${currency}`;
-            }
+      xAxes: [
+        {
+          stacked: false,
+          ticks: {
+            autoSkip: false,
           },
         },
-      }],
-    }, legend: {
-      display: true
+      ],
+      yAxes: [
+        {
+          stacked: false,
+          ticks: {
+            callback: function (label, index, labels) {
+              // when the floored value is the same as the value we have a whole number
+              if (Math.floor(label) === label) {
+                let currency =
+                  label < 0
+                    ? label.toString().split('-').join('')
+                    : label.toString();
+                //  if (currency.length > 3) {
+                //    currency = currency.substring(0, 1) + 'K'
+                //  } else{
+                currency = currency.split(/(?=(?:...)*$)/).join(',');
+                //  }
+
+                return `${label < 0 ? '- $' : '$'}${currency}`;
+              }
+            },
+          },
+        },
+      ],
+    },
+    legend: {
+      display: true,
     },
     tooltips: {
       //             mode: 'x-axis',
@@ -1162,14 +1369,21 @@ export class FinancesComponent implements AfterViewInit {
         label: function (tooltipItems, data) {
           let label = data['datasets'][tooltipItems.datasetIndex]['label'];
           let currency = tooltipItems.yLabel;
-          currency = currency.toString().split('-').join('').split(/(?=(?:...)*$)/).join(',');
-          return `${label} : ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`;
+          currency = currency
+            .toString()
+            .split('-')
+            .join('')
+            .split(/(?=(?:...)*$)/)
+            .join(',');
+          return `${label} : ${
+            tooltipItems.yLabel < 0 ? '- $' : '$'
+          }${currency}`;
         },
         //  title: function(tooltipItem, data) {
         //     return;
         //   }
-      }
-    }
+      },
+    },
   };
 
   public labelBarOptionsSingleValue: any = {
@@ -1178,7 +1392,7 @@ export class FinancesComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7
+        hoverBorderWidth: 7,
       },
     },
     scaleShowVerticalLines: false,
@@ -1187,29 +1401,37 @@ export class FinancesComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine'
+      easing: 'easeOutSine',
     },
     scales: {
-      xAxes: [{
-        stacked: false,
-        ticks: {
-          autoSkip: false
-        }
-      }],
-      yAxes: [{
-        stacked: false,
-        ticks: {
-          callback: function (label, index, labels) {
-            if (Math.floor(label) === label) {
-              let currency = label < 0 ? label.toString().split('-').join('') : label.toString();
-              currency = currency.split(/(?=(?:...)*$)/).join(',');
-              return `${label < 0 ? '- $' : '$'}${currency}`;
-            }
+      xAxes: [
+        {
+          stacked: false,
+          ticks: {
+            autoSkip: false,
           },
         },
-      }],
-    }, legend: {
-      display: true
+      ],
+      yAxes: [
+        {
+          stacked: false,
+          ticks: {
+            callback: function (label, index, labels) {
+              if (Math.floor(label) === label) {
+                let currency =
+                  label < 0
+                    ? label.toString().split('-').join('')
+                    : label.toString();
+                currency = currency.split(/(?=(?:...)*$)/).join(',');
+                return `${label < 0 ? '- $' : '$'}${currency}`;
+              }
+            },
+          },
+        },
+      ],
+    },
+    legend: {
+      display: true,
     },
     tooltips: {
       mode: 'x-axis',
@@ -1222,14 +1444,21 @@ export class FinancesComponent implements AfterViewInit {
         label: function (tooltipItems, data) {
           let label = tooltipItems.xLabel;
           let currency = tooltipItems.yLabel;
-          currency = currency.toString().split('-').join('').split(/(?=(?:...)*$)/).join(',');
-          return `${label} : ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`;
+          currency = currency
+            .toString()
+            .split('-')
+            .join('')
+            .split(/(?=(?:...)*$)/)
+            .join(',');
+          return `${label} : ${
+            tooltipItems.yLabel < 0 ? '- $' : '$'
+          }${currency}`;
         },
         title: function (tooltipItem, data) {
           return;
-        }
-      }
-    }
+        },
+      },
+    },
   };
 
   /************ Net Profit Percentage trend *************/
@@ -1239,7 +1468,7 @@ export class FinancesComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7
+        hoverBorderWidth: 7,
       },
     },
     scaleShowVerticalLines: false,
@@ -1248,29 +1477,37 @@ export class FinancesComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine'
+      easing: 'easeOutSine',
     },
     scales: {
-      xAxes: [{
-        stacked: false,
-        ticks: {
-          autoSkip: false
-        }
-      }],
-      yAxes: [{
-        stacked: false,
-        ticks: {
-          callback: function (label, index, labels) {
-            if (Math.floor(label) === label) {
-              let currency = label < 0 ? label.toString().split('-').join('') : label.toString();
-              currency = currency.split(/(?=(?:...)*$)/).join(',');
-              return `${label < 0 ? '-' : ''}${currency}%`;
-            }
+      xAxes: [
+        {
+          stacked: false,
+          ticks: {
+            autoSkip: false,
           },
         },
-      }],
-    }, legend: {
-      display: true
+      ],
+      yAxes: [
+        {
+          stacked: false,
+          ticks: {
+            callback: function (label, index, labels) {
+              if (Math.floor(label) === label) {
+                let currency =
+                  label < 0
+                    ? label.toString().split('-').join('')
+                    : label.toString();
+                currency = currency.split(/(?=(?:...)*$)/).join(',');
+                return `${label < 0 ? '-' : ''}${currency}%`;
+              }
+            },
+          },
+        },
+      ],
+    },
+    legend: {
+      display: true,
     },
     tooltips: {
       mode: 'x-axis',
@@ -1283,21 +1520,21 @@ export class FinancesComponent implements AfterViewInit {
         label: function (tooltipItems, data) {
           let label = tooltipItems.xLabel;
           let currency = tooltipItems.yLabel;
-          currency = currency.toString().split('-').join('').split(/(?=(?:...)*$)/).join(',');
+          currency = currency
+            .toString()
+            .split('-')
+            .join('')
+            .split(/(?=(?:...)*$)/)
+            .join(',');
           return `${label} : ${tooltipItems.yLabel < 0 ? '-' : ''}${currency}%`;
         },
         title: function (tooltipItem, data) {
           return;
-        }
-      }
-    }
+        },
+      },
+    },
   };
   /************ Net Profit Percentage trend *************/
-
-
-
-
-
 
   public labelBarPercentOptions: any = {
     elements: {
@@ -1305,7 +1542,7 @@ export class FinancesComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7
+        hoverBorderWidth: 7,
       },
     },
     scaleShowVerticalLines: false,
@@ -1314,26 +1551,31 @@ export class FinancesComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine'
+      easing: 'easeOutSine',
     },
     scales: {
-      xAxes: [{
-        stacked: true,
-        ticks: {
-          autoSkip: false
-        }
-      }],
-      yAxes: [{
-        stacked: true,
-
-        ticks: {
-          userCallback: function (item) {
-            return item + "%";
+      xAxes: [
+        {
+          stacked: true,
+          ticks: {
+            autoSkip: false,
           },
         },
-      }],
-    }, legend: {
-      display: true
+      ],
+      yAxes: [
+        {
+          stacked: true,
+
+          ticks: {
+            userCallback: function (item) {
+              return item + '%';
+            },
+          },
+        },
+      ],
+    },
+    legend: {
+      display: true,
     },
     tooltips: {
       mode: 'x-axis',
@@ -1345,16 +1587,15 @@ export class FinancesComponent implements AfterViewInit {
       callbacks: {
         // use label callback to return the desired label
         label: function (tooltipItem, data) {
-          return tooltipItem.xLabel + ": " + tooltipItem.yLabel + "%";
+          return tooltipItem.xLabel + ': ' + tooltipItem.yLabel + '%';
         },
         // remove title
         title: function (tooltipItem, data) {
           return;
-        }
-      }
+        },
+      },
     },
   };
-
 
   public labelBarPercentOptionsStacked: any = {
     elements: {
@@ -1362,7 +1603,7 @@ export class FinancesComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7
+        hoverBorderWidth: 7,
       },
     },
     scaleShowVerticalLines: false,
@@ -1371,25 +1612,29 @@ export class FinancesComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine'
+      easing: 'easeOutSine',
     },
     scales: {
-      xAxes: [{
-        stacked: true,
-        ticks: {
-          autoSkip: false
-        }
-      }],
-      yAxes: [{
-        stacked: true,
-
-        ticks: {
-          userCallback: function (item) {
-            return item + "%";
+      xAxes: [
+        {
+          stacked: true,
+          ticks: {
+            autoSkip: false,
           },
         },
-      }],
-    }, 
+      ],
+      yAxes: [
+        {
+          stacked: true,
+
+          ticks: {
+            userCallback: function (item) {
+              return item + '%';
+            },
+          },
+        },
+      ],
+    },
     legend: this.stackLegendGenerator,
     tooltips: {
       mode: 'x-axis',
@@ -1400,20 +1645,20 @@ export class FinancesComponent implements AfterViewInit {
         if (!tooltipEl) {
           tooltipEl = document.createElement('div');
           tooltipEl.id = 'chartjs-tooltip';
-          tooltipEl.style.backgroundColor = "#FFFFFF";
-          tooltipEl.style.borderColor = "#B2BABB";
-          tooltipEl.style.borderWidth = "thin";
-          tooltipEl.style.borderStyle = "solid";
-          tooltipEl.style.zIndex = "999999";
-          tooltipEl.style.backgroundColor = "#000000";
-          tooltipEl.style.color = "#FFFFFF";
+          tooltipEl.style.backgroundColor = '#FFFFFF';
+          tooltipEl.style.borderColor = '#B2BABB';
+          tooltipEl.style.borderWidth = 'thin';
+          tooltipEl.style.borderStyle = 'solid';
+          tooltipEl.style.zIndex = '999999';
+          tooltipEl.style.backgroundColor = '#000000';
+          tooltipEl.style.color = '#FFFFFF';
           document.body.appendChild(tooltipEl);
         }
         if (tooltip.opacity === 0) {
-          tooltipEl.style.opacity = "0";
+          tooltipEl.style.opacity = '0';
           return;
         } else {
-          tooltipEl.style.opacity = "0.8";
+          tooltipEl.style.opacity = '0.8';
         }
 
         tooltipEl.classList.remove('above', 'below', 'no-transform');
@@ -1434,14 +1679,27 @@ export class FinancesComponent implements AfterViewInit {
           var innerHtml = '<table><thead>';
           innerHtml += '</thead><tbody>';
           titleLines.forEach(function (title) {
-            innerHtml += '<tr><th colspan="2" style="text-align: left;">' + title + '</th></tr>';
+            innerHtml +=
+              '<tr><th colspan="2" style="text-align: left;">' +
+              title +
+              '</th></tr>';
           });
           bodyLines.forEach(function (body, i) {
-            if (body[0].includes("100%")) {
-              innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' + labelColorscustom[i].backgroundColor + '"></span></td><td style="padding: 0px">' + body[0] + '</td></tr>';
+            if (body[0].includes('100%')) {
+              innerHtml +=
+                '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
+                labelColorscustom[i].backgroundColor +
+                '"></span></td><td style="padding: 0px">' +
+                body[0] +
+                '</td></tr>';
               bodyLineCont = bodyLineCont + 1;
-            } else if (!body[0].split(":")[1].trim().startsWith("0")) {
-              innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' + labelColorscustom[i].backgroundColor + '"></span></td><td style="padding: 0px">' + body[0] + '</td></tr>';
+            } else if (!body[0].split(':')[1].trim().startsWith('0')) {
+              innerHtml +=
+                '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
+                labelColorscustom[i].backgroundColor +
+                '"></span></td><td style="padding: 0px">' +
+                body[0] +
+                '</td></tr>';
               bodyLineCont = bodyLineCont + 1;
             }
           });
@@ -1453,22 +1711,33 @@ export class FinancesComponent implements AfterViewInit {
         var position = this._chart.canvas.getBoundingClientRect();
         // Display, position, and set styles for font
         tooltipEl.style.position = 'fixed';
-        tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 130) + 'px';
-        tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - (70 + (bodyLineCont * 15))) + 'px';
+        tooltipEl.style.left =
+          position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
+        tooltipEl.style.top =
+          position.top +
+          window.pageYOffset +
+          tooltip.caretY -
+          (70 + bodyLineCont * 15) +
+          'px';
         tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
         tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
         tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-        tooltipEl.style.padding = tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+        tooltipEl.style.padding =
+          tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
         tooltipEl.style.pointerEvents = 'none';
         tooltip.displayColors = false;
       },
       callbacks: {
         label: function (tooltipItems, data) {
-          return data.datasets[tooltipItems.datasetIndex].label + ": " + Math.round(tooltipItems.yLabel) + "%";
+          return (
+            data.datasets[tooltipItems.datasetIndex].label +
+            ': ' +
+            Math.round(tooltipItems.yLabel) +
+            '%'
+          );
         },
-
-      }
-    }
+      },
+    },
   };
 
   public pieChartOptions: any = {
@@ -1479,27 +1748,31 @@ export class FinancesComponent implements AfterViewInit {
       position: 'bottom',
       labels: {
         usePointStyle: true,
-        padding: 20
+        padding: 20,
       },
       onClick: (event: MouseEvent) => {
         event.stopPropagation();
-      }
+      },
     },
     elements: {
       center: {
         text: '',
         // sidePadding: 60
-      }
+      },
     },
     tooltips: {
       callbacks: {
         label: function (tooltipItem, data) {
-          return data['labels'][tooltipItem['index']] + ": " + data['datasets'][0]['data'][tooltipItem['index']] + "%";
-        }
-      }
+          return (
+            data['labels'][tooltipItem['index']] +
+            ': ' +
+            data['datasets'][0]['data'][tooltipItem['index']] +
+            '%'
+          );
+        },
+      },
     },
   };
-
 
   public pieChartOptions2: any = {
     responsive: true,
@@ -1509,30 +1782,31 @@ export class FinancesComponent implements AfterViewInit {
       position: 'bottom',
       labels: {
         usePointStyle: true,
-        padding: 20
+        padding: 20,
       },
       onClick: (event: MouseEvent) => {
         event.stopPropagation();
-      }
+      },
     },
     tooltips: {
       callbacks: {
         label: function (tooltipItem, data, index) {
-          let currency = data['datasets'][0]['data'][tooltipItem['index']].toString();
+          let currency =
+            data['datasets'][0]['data'][tooltipItem['index']].toString();
           // Convert the number to a string and split the string every 3 characters from the end and join comma separator
           currency = currency.split(/(?=(?:...)*$)/).join(',');
-          return data['labels'][tooltipItem['index']] + ": $" + currency;
-        }
-      }
-    }
+          return data['labels'][tooltipItem['index']] + ': $' + currency;
+        },
+      },
+    },
   };
   public pieChartOptions1: any = {
     responsive: true,
     maintainAspectRatio: false,
     legend: {
       display: true,
-      position: 'right'
-    }
+      position: 'right',
+    },
   };
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
@@ -1540,20 +1814,24 @@ export class FinancesComponent implements AfterViewInit {
     maintainAspectRatio: false,
     animation: {
       duration: 1500,
-      easing: 'easeOutSine'
+      easing: 'easeOutSine',
     },
     barThickness: 10,
     scales: {
-      xAxes: [{
-        ticks: {
-          autoSkip: false
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          suggestedMin: 0
+      xAxes: [
+        {
+          ticks: {
+            autoSkip: false,
+          },
         },
-      }],
+      ],
+      yAxes: [
+        {
+          ticks: {
+            suggestedMin: 0,
+          },
+        },
+      ],
     },
     legend: {
       position: 'top',
@@ -1561,32 +1839,39 @@ export class FinancesComponent implements AfterViewInit {
         var index = legendItem.datasetIndex;
         var ci = this.chart;
         if (index == 0) {
-          (<HTMLElement>document.querySelector('.predicted1')).style.display = 'flex';
-          (<HTMLElement>document.querySelector('.predicted2')).style.display = 'none';
-          (<HTMLElement>document.querySelector('.predicted3')).style.display = 'none';
+          (<HTMLElement>document.querySelector('.predicted1')).style.display =
+            'flex';
+          (<HTMLElement>document.querySelector('.predicted2')).style.display =
+            'none';
+          (<HTMLElement>document.querySelector('.predicted3')).style.display =
+            'none';
           ci.getDatasetMeta(1).hidden = true;
           ci.getDatasetMeta(2).hidden = true;
           ci.getDatasetMeta(index).hidden = false;
-        }
-        else if (index == 1) {
-          (<HTMLElement>document.querySelector('.predicted1')).style.display = 'none';
-          (<HTMLElement>document.querySelector('.predicted2')).style.display = 'flex';
-          (<HTMLElement>document.querySelector('.predicted3')).style.display = 'none';
+        } else if (index == 1) {
+          (<HTMLElement>document.querySelector('.predicted1')).style.display =
+            'none';
+          (<HTMLElement>document.querySelector('.predicted2')).style.display =
+            'flex';
+          (<HTMLElement>document.querySelector('.predicted3')).style.display =
+            'none';
           ci.getDatasetMeta(0).hidden = true;
           ci.getDatasetMeta(2).hidden = true;
           ci.getDatasetMeta(index).hidden = false;
-        }
-        else if (index == 2) {
-          (<HTMLElement>document.querySelector('.predicted1')).style.display = 'none';
-          (<HTMLElement>document.querySelector('.predicted2')).style.display = 'none';
-          (<HTMLElement>document.querySelector('.predicted3')).style.display = 'flex';
+        } else if (index == 2) {
+          (<HTMLElement>document.querySelector('.predicted1')).style.display =
+            'none';
+          (<HTMLElement>document.querySelector('.predicted2')).style.display =
+            'none';
+          (<HTMLElement>document.querySelector('.predicted3')).style.display =
+            'flex';
           ci.getDatasetMeta(0).hidden = true;
           ci.getDatasetMeta(1).hidden = true;
           ci.getDatasetMeta(index).hidden = false;
         }
         ci.update();
       },
-    }
+    },
   };
 
   public proceedureChartOptions: any = {
@@ -1596,18 +1881,21 @@ export class FinancesComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 1500,
-      easing: 'easeOutSine'
+      easing: 'easeOutSine',
     },
     scales: {
-      xAxes: [{
-        ticks: {
-          autoSkip: false
-        }
-      }],
-      yAxes: [{
-        ticks: {
+      xAxes: [
+        {
+          ticks: {
+            autoSkip: false,
+          },
         },
-      }],
+      ],
+      yAxes: [
+        {
+          ticks: {},
+        },
+      ],
     },
     legend: {
       position: 'top',
@@ -1616,9 +1904,13 @@ export class FinancesComponent implements AfterViewInit {
       mode: 'x-axis',
       callbacks: {
         label: function (tooltipItems, data) {
-          return data.datasets[tooltipItems.datasetIndex].label + ": $" + tooltipItems.yLabel;
-        }
-      }
+          return (
+            data.datasets[tooltipItems.datasetIndex].label +
+            ': $' +
+            tooltipItems.yLabel
+          );
+        },
+      },
     },
   };
 
@@ -1631,7 +1923,7 @@ export class FinancesComponent implements AfterViewInit {
   public showCombined: boolean = false;
   public stackedChartType = 'bar';
   public stackedChartTypeHorizontal = 'horizontalBar';
-  public stackedChartLegend = true;   
+  public stackedChartLegend = true;
 
   //labels
   public stackedChartLabels: string[] = [];
@@ -1645,7 +1937,9 @@ export class FinancesComponent implements AfterViewInit {
   public lineChartType = 'line';
   public stackedChartData: any[] = [
     {
-      data: [], label: 'Crowns', shadowOffsetX: 3,
+      data: [],
+      label: 'Crowns',
+      shadowOffsetX: 3,
       shadowOffsetY: 3,
       shadowBlur: 5,
       shadowColor: 'rgba(0, 0, 0, 0.5)',
@@ -1656,10 +1950,12 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
+      backgroundOverlayMode: 'multiply',
     },
     {
-      data: [], label: 'Splints ', shadowOffsetX: 3,
+      data: [],
+      label: 'Splints ',
+      shadowOffsetX: 3,
       shadowOffsetY: 3,
       shadowBlur: 5,
       shadowColor: 'rgba(0, 0, 0, 0.5)',
@@ -1670,10 +1966,12 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
+      backgroundOverlayMode: 'multiply',
     },
     {
-      data: [], label: 'Root Canals', shadowOffsetX: 3,
+      data: [],
+      label: 'Root Canals',
+      shadowOffsetX: 3,
       shadowOffsetY: 3,
       shadowBlur: 5,
       shadowColor: 'rgba(0, 0, 0, 0.5)',
@@ -1684,10 +1982,12 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
+      backgroundOverlayMode: 'multiply',
     },
     {
-      data: [], label: 'Perio Charts', shadowOffsetX: 3,
+      data: [],
+      label: 'Perio Charts',
+      shadowOffsetX: 3,
       shadowOffsetY: 3,
       shadowBlur: 5,
       shadowColor: 'rgba(0, 0, 0, 0.5)',
@@ -1698,10 +1998,12 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
+      backgroundOverlayMode: 'multiply',
     },
     {
-      data: [], label: 'Surgical Extractions', shadowOffsetX: 3,
+      data: [],
+      label: 'Surgical Extractions',
+      shadowOffsetX: 3,
       shadowOffsetY: 3,
       shadowBlur: 5,
       shadowColor: 'rgba(0, 0, 0, 0.5)',
@@ -1712,8 +2014,9 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
-    }];
+      backgroundOverlayMode: 'multiply',
+    },
+  ];
 
   public stackedChartData1: any[] = [];
   public stackedChartData2: any[] = [];
@@ -1723,7 +2026,9 @@ export class FinancesComponent implements AfterViewInit {
 
   public predictedChartData: any[] = [
     {
-      data: [], label: 'Indirect to Large Direct Fillings', shadowOffsetX: 3,
+      data: [],
+      label: 'Indirect to Large Direct Fillings',
+      shadowOffsetX: 3,
       shadowOffsetY: 3,
       shadowBlur: 5,
       shadowColor: 'rgba(0, 0, 0, 0.5)',
@@ -1734,10 +2039,13 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
+      backgroundOverlayMode: 'multiply',
     },
     {
-      data: [], label: 'Extraction to RCT', hidden: true, shadowOffsetX: 3,
+      data: [],
+      label: 'Extraction to RCT',
+      hidden: true,
+      shadowOffsetX: 3,
       shadowOffsetY: 3,
       shadowBlur: 5,
       shadowColor: 'rgba(0, 0, 0, 0.5)',
@@ -1748,10 +2056,13 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
+      backgroundOverlayMode: 'multiply',
     },
     {
-      data: [], label: 'RCT Conversion', hidden: true, shadowOffsetX: 3,
+      data: [],
+      label: 'RCT Conversion',
+      hidden: true,
+      shadowOffsetX: 3,
       shadowOffsetY: 3,
       shadowBlur: 5,
       shadowColor: 'rgba(0, 0, 0, 0.5)',
@@ -1762,9 +2073,8 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
+      backgroundOverlayMode: 'multiply',
     },
-
   ];
 
   public predictedChartData1: any[] = [];
@@ -1775,7 +2085,9 @@ export class FinancesComponent implements AfterViewInit {
 
   public proceedureChartData: any[] = [
     {
-      data: [], label: 'Total Revenue of Clinician Per Procedure', shadowOffsetX: 3,
+      data: [],
+      label: 'Total Revenue of Clinician Per Procedure',
+      shadowOffsetX: 3,
       shadowOffsetY: 3,
       shadowBlur: 5,
       shadowColor: 'rgba(0, 0, 0, 0.5)',
@@ -1786,12 +2098,14 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
-    }
+      backgroundOverlayMode: 'multiply',
+    },
   ];
   public proceedureDentistChartData: any[] = [
     {
-      data: [], label: 'Total Revenue of Clinician Per Procedure', shadowOffsetX: 3,
+      data: [],
+      label: 'Total Revenue of Clinician Per Procedure',
+      shadowOffsetX: 3,
       shadowOffsetY: 3,
       shadowBlur: 5,
       shadowColor: 'rgba(0, 0, 0, 0.5)',
@@ -1802,13 +2116,12 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
-    }
+      backgroundOverlayMode: 'multiply',
+    },
   ];
   public proceedureChartData1: any[] = [];
 
-
-  //Total  
+  //Total
   public predictedTotal1 = 0;
   public predictedTotal2 = 0;
   public predictedTotal3 = 0;
@@ -1820,42 +2133,35 @@ export class FinancesComponent implements AfterViewInit {
   public pieChartTotal = 0;
 
   // Pie
-  public pieChartLabels: string[] = [
-  ];
+  public pieChartLabels: string[] = [];
   public pieChartData: number[] = [];
   public pieChartType = 'doughnut';
   public pieChartDatares: number[] = [];
 
-  public pieChartLabelsres: string[] = [
-  ];
+  public pieChartLabelsres: string[] = [];
 
   public productionChartTotal = 0;
 
   // production
-  public productionChartLabels: string[] = [
-  ];
+  public productionChartLabels: string[] = [];
   public productionChartData: number[] = [];
   public productionChartType = 'doughnut';
   public productionChartDatares: number[] = [];
 
-  public productionChartLabelsres: string[] = [
-  ];
+  public productionChartLabelsres: string[] = [];
   public totalDiscountChartTotal = 0;
 
   // totalDiscount
-  public totalDiscountChartLabels: string[] = [
-  ];
+  public totalDiscountChartLabels: string[] = [];
   public totalDiscountChartData: number[] = [];
   public totalDiscountChartType = 'doughnut';
   public totalDiscountChartDatares: number[] = [];
 
-  public totalDiscountChartLabelsres: string[] = [
-  ];
+  public totalDiscountChartLabelsres: string[] = [];
 
   public totalOverdueAccount = 0;
 
-  public totalOverdueAccountLabels: string[] = [
-  ];
+  public totalOverdueAccountLabels: string[] = [];
   public totalOverdueAccountData: number[] = [];
   public totalOverdueAccountres: number[] = [];
 
@@ -1863,7 +2169,9 @@ export class FinancesComponent implements AfterViewInit {
 
   public itemPredictedChartData: any[] = [
     {
-      data: [10, 1, 5], label: 'Items Predictor Analysis ', shadowOffsetX: 3,
+      data: [10, 1, 5],
+      label: 'Items Predictor Analysis ',
+      shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -1874,9 +2182,8 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
-    }
-
+      backgroundOverlayMode: 'multiply',
+    },
   ];
 
   public itemPredictedChartData1: any[] = [];
@@ -1884,22 +2191,18 @@ export class FinancesComponent implements AfterViewInit {
   public itemPredictedChartLabels: string[] = [];
 
   // events
-  public chartClicked(e: any): void {
+  public chartClicked(e: any): void {}
 
-  }
-
-  public chartHovered(e: any): void {
-
-  }
-  public gaugeType = "arch";
+  public chartHovered(e: any): void {}
+  public gaugeType = 'arch';
   public gaugeValue = '';
-  public totalProductionLabel = "";
-  public gaugeThick = "20";
-  public foregroundColor = "#4ccfae";
-  public foregroundColor2 = "#4ccfae";
+  public totalProductionLabel = '';
+  public gaugeThick = '20';
+  public foregroundColor = '#4ccfae';
+  public foregroundColor2 = '#4ccfae';
   public backgroundColor = '#f4f0fa';
-  public cap = "round";
-  public size = "250"
+  public cap = 'round';
+  public size = '250';
   public totalProductionVal: any = 10;
   public gaugeValuePredicted1 = 0;
   public gaugeValuePredicted = 0;
@@ -1907,7 +2210,7 @@ export class FinancesComponent implements AfterViewInit {
   public gaugeValuePredicted2 = 0;
 
   public gaugeValuePredicted3 = 0;
-  public gaugeLabelPredicted = "";
+  public gaugeLabelPredicted = '';
   public predictedDentistTotal = 0;
   public gaugePrependText = '$';
   public startDate = '';
@@ -1919,27 +2222,29 @@ export class FinancesComponent implements AfterViewInit {
 
   public collectionVal = 0;
 
-
-
-
-
   loadDentist(newValue) {
-    $('.sa_tabs_data button').prop('disabled',true); 
+    $('.sa_tabs_data button').prop('disabled', true);
     this.Apirequest = 5;
 
     $('#title').html('<span>Finances</span>');
-    $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate));
+    $('#sa_datepicker').val(
+      this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate)
+    );
     if (newValue == 'all') {
-      $(".trend_toggle").hide();
+      $('.trend_toggle').hide();
       this.finTotalProduction();
 
       //this.netProfit();
       // this.netProfitPercent();
 
-      
       this.netprofitstats = false;
       this.netprofitpercentstats = false;
-      if (this.connectedwith != '' && this.connectedwith != 'none' && this.connectedwith != undefined && this.multipleClinicsSelected == false) {
+      if (
+        this.connectedwith != '' &&
+        this.connectedwith != 'none' &&
+        this.connectedwith != undefined &&
+        this.multipleClinicsSelected == false
+      ) {
         this.Apirequest = 8;
         this.productionstats = false;
         this.netProfitPms();
@@ -1959,21 +2264,30 @@ export class FinancesComponent implements AfterViewInit {
       
           (<HTMLElement>document.querySelector('.noPatientsSingle')).style.display = 'none';
           (<HTMLElement>document.querySelector('.noPatients')).style.display = 'block';*/
-    }
-    else {
-      $(".trendToggle").show();
+    } else {
+      $('.trendToggle').show();
       this.selectedDentist = newValue;
       //   this.buildChartDentist();
-      (<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'block';
-      (<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'none';
+      (<HTMLElement>(
+        document.querySelector('.itemsPredictorSingle')
+      )).style.display = 'block';
+      (<HTMLElement>document.querySelector('.itemsPredictor')).style.display =
+        'none';
 
       //  this.buildChartPredictorDentist();
-      (<HTMLElement>document.querySelector('.ratioPredictorSingle')).style.display = 'block';
-      (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'none';
+      (<HTMLElement>(
+        document.querySelector('.ratioPredictorSingle')
+      )).style.display = 'block';
+      (<HTMLElement>document.querySelector('.ratioPredictor')).style.display =
+        'none';
 
       //   this.buildChartProceedureDentist();
-      (<HTMLElement>document.querySelector('.revenueProceedureSingle')).style.display = 'block';
-      (<HTMLElement>document.querySelector('.revenueProceedure')).style.display = 'none';
+      (<HTMLElement>(
+        document.querySelector('.revenueProceedureSingle')
+      )).style.display = 'block';
+      (<HTMLElement>(
+        document.querySelector('.revenueProceedure')
+      )).style.display = 'none';
       //   this.buildChartReferralDentist();
       /*    this.buildChartTreatmentDentist();
           (<HTMLElement>document.querySelector('.treatmentPlanSingle')).style.display = 'block';
@@ -1983,37 +2297,36 @@ export class FinancesComponent implements AfterViewInit {
           (<HTMLElement>document.querySelector('.noPatientsSingle')).style.display = 'block';
           (<HTMLElement>document.querySelector('.noPatients')).style.display = 'none';*/
     }
-
   }
 
   public netProfitTrendIcon;
   public netProfitTrendTotal;
   //netProfit
   private netProfit() {
-
     var user_id;
     var clinic_id;
-    this.netProfitTrendIcon = "down";
+    this.netProfitTrendIcon = 'down';
     this.netProfitTrendTotal = 0;
-    this.financesService.NetProfit(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
-      if (res.status == 200) {
-        this.netProfitVal = res.data.total_net_profit;
-        this.netProfitTrendTotal = res.data.total_net_profit_ta;
-        if (this.netProfitVal >= 0)
-          this.netProfitIcon = "";
-        else
-          this.netProfitIcon = "-";
+    this.financesService
+      .NetProfit(this.clinic_id, this.startDate, this.endDate, this.duration)
+      .subscribe(
+        (res) => {
+          if (res.status == 200) {
+            this.netProfitVal = res.data.total_net_profit;
+            this.netProfitTrendTotal = res.data.total_net_profit_ta;
+            if (this.netProfitVal >= 0) this.netProfitIcon = '';
+            else this.netProfitIcon = '-';
 
-        this.netProfitVal = this.netProfitVal;
-        // console.log(this.netProfitVal,this.netProfitTrendTotal);
-        if (this.netProfitVal >= this.netProfitTrendTotal)
-          this.netProfitTrendIcon = "up";
-      }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    }
-    );
+            this.netProfitVal = this.netProfitVal;
+            // console.log(this.netProfitVal,this.netProfitTrendTotal);
+            if (this.netProfitVal >= this.netProfitTrendTotal)
+              this.netProfitTrendIcon = 'up';
+          }
+        },
+        (error) => {
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
   }
 
   public netProfitProductionTrendIcon;
@@ -2022,26 +2335,35 @@ export class FinancesComponent implements AfterViewInit {
   private netProfitPercent() {
     var user_id;
     var clinic_id;
-    this.netProfitProductionTrendIcon = "down";
+    this.netProfitProductionTrendIcon = 'down';
     this.netProfitProductionTrendTotal = 0;
-    this.financesService.NetProfitPercent(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
-      if (res.status == 200) {
-        this.netProfitProductionVal = res.body.data;
-        this.netProfitProductionTrendTotal = res.data_ta;
+    this.financesService
+      .NetProfitPercent(
+        this.clinic_id,
+        this.startDate,
+        this.endDate,
+        this.duration
+      )
+      .subscribe(
+        (res) => {
+          if (res.status == 200) {
+            this.netProfitProductionVal = res.body.data;
+            this.netProfitProductionTrendTotal = res.data_ta;
 
-        if (this.netProfitProductionVal >= 0)
-          this.netProfitProductionIcon = "";
-        else
-          this.netProfitProductionIcon = "-";
-        this.netProfitProductionVal = res.body.data;
-        if (this.netProfitProductionVal >= this.netProfitProductionTrendTotal)
-          this.netProfitProductionTrendIcon = "up";
-      }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    }
-    );
+            if (this.netProfitProductionVal >= 0)
+              this.netProfitProductionIcon = '';
+            else this.netProfitProductionIcon = '-';
+            this.netProfitProductionVal = res.body.data;
+            if (
+              this.netProfitProductionVal >= this.netProfitProductionTrendTotal
+            )
+              this.netProfitProductionTrendIcon = 'up';
+          }
+        },
+        (error) => {
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
   }
 
   public netProfitPmsTrendIcon;
@@ -2051,20 +2373,31 @@ export class FinancesComponent implements AfterViewInit {
   private netProfitPms() {
     this.netProfitTrendTotal = 0;
     this.netprofitstatsError = false;
-    this.financesService.NetProfitPms(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((res) => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      if (res.status == 200) {
-        this.netprofitstats = true;
-        this.netProfitVal = Math.round(res.body.data);
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.netprofitstatsError = true;
-      this.netprofitstats = true;
-      this.warningMessage = "Please Provide Valid Inputs!";
-    });
+    this.financesService
+      .NetProfitPms(
+        this.clinic_id,
+        this.startDate,
+        this.endDate,
+        this.duration,
+        this.connectedwith
+      )
+      .subscribe(
+        (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
+            this.netprofitstats = true;
+            this.netProfitVal = Math.round(res.body.data);
+          }
+        },
+        (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.netprofitstatsError = true;
+          this.netprofitstats = true;
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
   }
 
   // Added by Hanney Sharma on 07-04-2021 for Net Profit %
@@ -2074,27 +2407,39 @@ export class FinancesComponent implements AfterViewInit {
     var clinic_id;
     this.netProfitPmsVal = 0;
     this.netprofitPerError = false;
-    this.financesService.netProfitPercentage(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((res) => {
-       this.Apirequest = this.Apirequest - 1;
-       this.enableDiabaleButton(this.Apirequest);
-      if (res.status == 200) {
-        this.netprofitpercentstats = true;
-        this.netProfitPmsVal = Math.round(res.body.data);
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.netprofitpercentstats = true;
-      this.netprofitPerError = true;
-      this.warningMessage = "Please Provide Valid Inputs!";
-    });
+    this.financesService
+      .netProfitPercentage(
+        this.clinic_id,
+        this.startDate,
+        this.endDate,
+        this.duration,
+        this.connectedwith
+      )
+      .subscribe(
+        (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
+            this.netprofitpercentstats = true;
+            this.netProfitPmsVal = Math.round(res.body.data);
+          }
+        },
+        (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.netprofitpercentstats = true;
+          this.netprofitPerError = true;
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
   }
 
-
   pieTooltipText({ data, index }) {
-    const labl = data.name.split("--");
+    const labl = data.name.split('--');
     const label = labl[0];
-    const exp = Math.round(labl[1]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const exp = Math.round(labl[1])
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     const val = data.value;
     return `
       <span class="tooltip-label">${label}</span>
@@ -2103,7 +2448,7 @@ export class FinancesComponent implements AfterViewInit {
   }
 
   pieLabelText(labels) {
-    const labl = labels.split("--");
+    const labl = labels.split('--');
     return labl[0];
   }
 
@@ -2118,56 +2463,70 @@ export class FinancesComponent implements AfterViewInit {
     this.categoryExpensesError = false;
     var user_id;
     var clinic_id;
-    this.expensescChartTrendIcon = "down";
+    this.expensescChartTrendIcon = 'down';
     this.expensescChartTrendTotal = 0;
     this.pieChartLabels = [];
-    this.financesService.categoryExpenses(this.clinic_id, this.startDate, this.endDate, this.duration, this.connectedwith).subscribe((res) => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      if (res.status == 200) {
-        this.categoryExpensesLoader = false;
+    this.financesService
+      .categoryExpenses(
+        this.clinic_id,
+        this.startDate,
+        this.endDate,
+        this.duration,
+        this.connectedwith
+      )
+      .subscribe(
+        (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
+            this.categoryExpensesLoader = false;
 
-        this.pieChartLabelsres = [];
-        this.single = [];
-        this.selectedData = [];
-        this.unSelectedData = [];
-        this.pieChartDatares = [];
-        this.pieChartDataPercentres = [];
-        var i = 0;
-        res.body.data.forEach((res, key) => {
-          if (res.expenses_percent > 0 && res.expenses_percent < 1) {
-            res.expenses_percent = 1;
+            this.pieChartLabelsres = [];
+            this.single = [];
+            this.selectedData = [];
+            this.unSelectedData = [];
+            this.pieChartDatares = [];
+            this.pieChartDataPercentres = [];
+            var i = 0;
+            res.body.data.forEach((res, key) => {
+              if (res.expenses_percent > 0 && res.expenses_percent < 1) {
+                res.expenses_percent = 1;
+              }
+              if (Math.round(res.expenses_percent) >= 1) {
+                var temp = { name: '', value: 1 };
+                temp.name = res.meta_key + '--' + res.expenses;
+                temp.value = Math.round(res.expenses_percent);
+                this.single.push(temp);
+                //this.single[i].value =Math.round(res.expenses_percent);
+                this.pieChartDatares.push(Math.round(res.expenses));
+                this.pieChartDataPercentres.push(
+                  Math.round(res.expenses_percent)
+                );
+                this.pieChartLabelsres.push(res.meta_key);
+                this.pieChartTotal =
+                  this.pieChartTotal + parseInt(res.expenses);
+                i++;
+              }
+            });
+            this.selectedDataFilter();
+            this.unSelectedDataFilter();
+            this.expensescChartTrendTotal = res.data_ta;
+            if (
+              Math.round(this.pieChartTotal) >=
+              Math.round(this.expensescChartTrendTotal)
+            )
+              this.expensescChartTrendIcon = 'up';
+            this.pieChartData = this.pieChartDatares;
+            this.pieChartLabels = this.pieChartLabelsres;
           }
-          if (Math.round(res.expenses_percent) >= 1) {
-            var temp = { name: '', value: 1 };
-            temp.name = res.meta_key + '--' + res.expenses;
-            temp.value = Math.round(res.expenses_percent);
-            this.single.push(temp);
-            //this.single[i].value =Math.round(res.expenses_percent);  
-            this.pieChartDatares.push(Math.round(res.expenses));
-            this.pieChartDataPercentres.push(Math.round(res.expenses_percent));
-            this.pieChartLabelsres.push(res.meta_key);
-            this.pieChartTotal = this.pieChartTotal + parseInt(res.expenses);
-            i++;
-          }
-        });
-        this.selectedDataFilter();
-        this.unSelectedDataFilter();
-        this.expensescChartTrendTotal = res.data_ta;
-        if (Math.round(this.pieChartTotal) >= Math.round(this.expensescChartTrendTotal))
-          this.expensescChartTrendIcon = "up";
-        this.pieChartData = this.pieChartDatares;
-        this.pieChartLabels = this.pieChartLabelsres;
-
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.categoryExpensesError = true;
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    }
-    );
+        },
+        (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.categoryExpensesError = true;
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
   }
 
   public productionChartTrendIcon;
@@ -2185,62 +2544,88 @@ export class FinancesComponent implements AfterViewInit {
     this.productionChartTotal = 0;
     this.productionChartLabels = [];
     this.showClinicByclinic = false;
-    this.financesService.finProductionByClinician(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.productionChartLabelsres = [];
-      this.productionChartTotal = 0;
-      this.productionChartTrendIcon = "down";
-      this.productionChartTrendTotal = 0;
-      if (res.status == 200) {
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.showClinicByclinic = true;
+    this.financesService
+      .finProductionByClinician(
+        this.clinic_id,
+        this.startDate,
+        this.endDate,
+        this.duration
+      )
+      .subscribe(
+        (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.productionChartLabelsres = [];
+          this.productionChartTotal = 0;
+          this.productionChartTrendIcon = 'down';
+          this.productionChartTrendTotal = 0;
+          if (res.status == 200) {
+            if (
+              this.clinic_id.indexOf(',') >= 0 ||
+              Array.isArray(this.clinic_id)
+            ) {
+              this.showClinicByclinic = true;
+            }
+            this.finProductionByClinicianLoader = false;
+            this.productionChartDatares = [];
+            var totalPer = 0;
+            if (res.body.data) {
+              res.body.data.sort(
+                (a, b) => b.prod_per_clinician - a.prod_per_clinician
+              );
+              res.body.data.forEach((val) => {
+                if (this.showClinicByclinic == true) {
+                  if (val.production > 0) {
+                    totalPer =
+                      (Math.round(val.production) * 100) / res.body.total;
+                    this.productionChartDatares.push(Math.round(totalPer));
+                    this.productionChartLabelsres.push(val.clinic_name);
+                    this.productionChartTotal =
+                      this.productionChartTotal + Math.round(totalPer);
+                  }
+                } else {
+                  if (val.prod_per_clinician > 0) {
+                    this.productionChartDatares.push(
+                      Math.round(val.prod_per_clinician)
+                    );
+                    this.productionChartLabelsres.push(val.provider_name);
+                    this.productionChartTotal =
+                      this.productionChartTotal +
+                      parseInt(val.prod_per_clinician);
+                  }
+                }
+              });
+            }
+            this.productionChartTrendTotal = res.body.total_ta;
+            if (
+              Math.round(this.productionChartTotal) >=
+              Math.round(this.productionChartTrendTotal)
+            )
+              this.productionChartTrendIcon = 'up';
+            if (this.productionChartDatares.every((item) => item == 0))
+              this.productionChartDatares = [];
+            this.productionChartData = this.productionChartDatares;
+            this.productionChartLabels = this.productionChartLabelsres;
+          }
+        },
+        (error) => {
+          this.finProductionByClinicianError = true;
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (this.user_type != '7') {
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
         }
-        this.finProductionByClinicianLoader = false;
-        this.productionChartDatares = [];
-        var totalPer = 0;
-        if(res.body.data){
-          res.body.data.sort((a, b)=> b.prod_per_clinician - a.prod_per_clinician);
-          res.body.data.forEach(val => {
-            if(this.showClinicByclinic == true){
-              if (val.production > 0) {
-                totalPer = Math.round(val.production) * 100 / res.body.total;
-                this.productionChartDatares.push(Math.round(totalPer));
-                this.productionChartLabelsres.push(val.clinic_name);
-                this.productionChartTotal = this.productionChartTotal + Math.round(totalPer);
-              }
-            }else{
-              if (val.prod_per_clinician > 0) {
-                this.productionChartDatares.push(Math.round(val.prod_per_clinician));
-                this.productionChartLabelsres.push(val.provider_name);
-                this.productionChartTotal = this.productionChartTotal + parseInt(val.prod_per_clinician);
-              }
-            }           
-          });
-        }
-        this.productionChartTrendTotal = res.body.total_ta;
-        if (Math.round(this.productionChartTotal) >= Math.round(this.productionChartTrendTotal))
-          this.productionChartTrendIcon = "up";
-        if (this.productionChartDatares.every((item) => item == 0)) this.productionChartDatares = [];
-        this.productionChartData = this.productionChartDatares;
-        this.productionChartLabels = this.productionChartLabelsres;
-      }
-    }, error => {
-      this.finProductionByClinicianError = true;
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      if(this.user_type !='7'){
-        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-        this.warningMessage = "Please Provide Valid Inputs!";
-      }
-    }
-    );
+      );
   }
-  public totalDiscountChartTrendIcon = "down";
+  public totalDiscountChartTrendIcon = 'down';
   public totalDiscountChartTrendTotal;
-  public finTotalDiscountsLoader: any;  
-  public clinicsName: any; 
-  public clinicsids: any; 
+  public finTotalDiscountsLoader: any;
+  public clinicsName: any;
+  public clinicsids: any;
   public totalDiscountChartLabelsClinics: any;
   public totalDiscountChartClinicsData: any;
   public totalDiscountChartClinicsData1: any;
@@ -2256,76 +2641,94 @@ export class FinancesComponent implements AfterViewInit {
     this.totalDiscountChartClinicsData1 = [];
     this.showClinicBar = false;
     this.finTotalDiscountsLoader = true;
-    this.financesService.finTotalDiscounts(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.totalDiscountChartDatares = [];
-      this.totalDiscountChartLabelsres = [];
-      this.totalDiscountChartLabelsClinics =[];
-      this.clinicsName =[];
-      this.clinicsids =[];
-      this.totalDiscountChartTotal = 0;
-      this.totalDiscountChartTrendIcon = "down";
-      this.totalDiscountChartTrendTotal = 0;
-      if (res.status == 200) {
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.showClinicBar = true;
-        }else{
-          this.showClinicBar = false;
-        }
-        this.totalDiscountChartClinicsData=[];
-        this.totalDiscountChartClinicsData1 =[];
-        this.clinicsName =[];
-        this.clinicsids =[];
-        this.finTotalDiscountsLoader = false;
-        this.totalDiscountChartDatares = [];
-        this.totalDiscountChartTotal = 0;
-        if(res.body.data == null || res.body.data.length <= 0){
-          this.finTotalDiscountsLoader = false;
-          return;
-        }
-        res.body.data.sort((a, b)=> b.discounts - a.discounts);
-        res.body.data.forEach(res => {
-          if (res.total != 0) {
-            this.clinicsName.push(res.clinic_name);
-            this.clinicsids.push(res.clinic_id);
-            this.totalDiscountChartDatares.push(Math.round(res.discounts));
-            var name = '';
-            if (res.provider_name != '' && res.provider_name != null) {
-              name = res.provider_name;
-            }
-            this.totalDiscountChartLabelsres.push(name);
-          }
-        });
-        this.clinicsName = [...new Set(this.clinicsName)];
-        this.clinicsids = [...new Set(this.clinicsids)];
-        this.totalDiscountChartLabelsClinics = this.clinicsName;
-        const sumOfId = (id:any) => res.body.data.filter(i => i.clinic_id === id).reduce((a, b) => a + Math.round(b.discounts), 0);
-        this.clinicsids.forEach(element => {
-          this.totalDiscountChartClinicsData1.push(sumOfId(element));
-        });
-        this.totalDiscountChartClinicsData = this.totalDiscountChartClinicsData1
-        
-        this.totalDiscountChartTotal = Math.round(res.body.total);
-        this.percentOfTotalDiscount$.next(this.totalDiscountChartTotal);
-        if (res.body.total_ta)
-          this.totalDiscountChartTrendTotal = Math.round(res.body.total_ta);
-        else
+    this.financesService
+      .finTotalDiscounts(
+        this.clinic_id,
+        this.startDate,
+        this.endDate,
+        this.duration
+      )
+      .subscribe(
+        (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.totalDiscountChartDatares = [];
+          this.totalDiscountChartLabelsres = [];
+          this.totalDiscountChartLabelsClinics = [];
+          this.clinicsName = [];
+          this.clinicsids = [];
+          this.totalDiscountChartTotal = 0;
+          this.totalDiscountChartTrendIcon = 'down';
           this.totalDiscountChartTrendTotal = 0;
+          if (res.status == 200) {
+            if (
+              this.clinic_id.indexOf(',') >= 0 ||
+              Array.isArray(this.clinic_id)
+            ) {
+              this.showClinicBar = true;
+            } else {
+              this.showClinicBar = false;
+            }
+            this.totalDiscountChartClinicsData = [];
+            this.totalDiscountChartClinicsData1 = [];
+            this.clinicsName = [];
+            this.clinicsids = [];
+            this.finTotalDiscountsLoader = false;
+            this.totalDiscountChartDatares = [];
+            this.totalDiscountChartTotal = 0;
+            if (res.body.data == null || res.body.data.length <= 0) {
+              this.finTotalDiscountsLoader = false;
+              return;
+            }
+            res.body.data.sort((a, b) => b.discounts - a.discounts);
+            res.body.data.forEach((res) => {
+              if (res.total != 0) {
+                this.clinicsName.push(res.clinic_name);
+                this.clinicsids.push(res.clinic_id);
+                this.totalDiscountChartDatares.push(Math.round(res.discounts));
+                var name = '';
+                if (res.provider_name != '' && res.provider_name != null) {
+                  name = res.provider_name;
+                }
+                this.totalDiscountChartLabelsres.push(name);
+              }
+            });
+            this.clinicsName = [...new Set(this.clinicsName)];
+            this.clinicsids = [...new Set(this.clinicsids)];
+            this.totalDiscountChartLabelsClinics = this.clinicsName;
+            const sumOfId = (id: any) =>
+              res.body.data
+                .filter((i) => i.clinic_id === id)
+                .reduce((a, b) => a + Math.round(b.discounts), 0);
+            this.clinicsids.forEach((element) => {
+              this.totalDiscountChartClinicsData1.push(sumOfId(element));
+            });
+            this.totalDiscountChartClinicsData =
+              this.totalDiscountChartClinicsData1;
 
-        if (Math.round(this.totalDiscountChartTotal) >= Math.round(this.totalDiscountChartTrendTotal))
-          this.totalDiscountChartTrendIcon = "up";
-        if (this.totalDiscountChartDatares.every((item) => item == 0)) this.totalDiscountChartDatares = []
-        this.totalDiscountChartData = this.totalDiscountChartDatares;
-        this.totalDiscountChartLabels = this.totalDiscountChartLabelsres;
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.warningMessage = "Please Provide Valid Inputs!";
+            this.totalDiscountChartTotal = Math.round(res.body.total);
+            this.percentOfTotalDiscount$.next(this.totalDiscountChartTotal);
+            if (res.body.total_ta)
+              this.totalDiscountChartTrendTotal = Math.round(res.body.total_ta);
+            else this.totalDiscountChartTrendTotal = 0;
 
-    }
-    );
+            if (
+              Math.round(this.totalDiscountChartTotal) >=
+              Math.round(this.totalDiscountChartTrendTotal)
+            )
+              this.totalDiscountChartTrendIcon = 'up';
+            if (this.totalDiscountChartDatares.every((item) => item == 0))
+              this.totalDiscountChartDatares = [];
+            this.totalDiscountChartData = this.totalDiscountChartDatares;
+            this.totalDiscountChartLabels = this.totalDiscountChartLabelsres;
+          }
+        },
+        (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
   }
   public totalProductionTrendIcon;
   public totalProductionTrendVal;
@@ -2335,84 +2738,105 @@ export class FinancesComponent implements AfterViewInit {
       data: [],
       label: '',
       backgroundColor: [],
-      hoverBackgroundColor: []
-    }
+      hoverBackgroundColor: [],
+    },
   ];
   public totalProductionCollectionLabel1 = [];
   public finTotalProductionLoader: any;
   //finTotalProduction
   private finTotalProduction() {
     this.finTotalProductionLoader = true;
-    this.totalProductionTrendIcon = "down";
+    this.totalProductionTrendIcon = 'down';
     this.totalProductionTrendVal = 0;
     this.netProfitProductionVal = 0;
     var user_id;
     var clinic_id;
-    this.financesService.finTotalProduction(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.finCollection();
-      this.totalProductionCollection1 = [
-        {
-          data: [],
-          label: '',
-          backgroundColor: [],
-          hoverBackgroundColor: []
+    this.financesService
+      .finTotalProduction(
+        this.clinic_id,
+        this.startDate,
+        this.endDate,
+        this.duration
+      )
+      .subscribe(
+        (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.finCollection();
+          this.totalProductionCollection1 = [
+            {
+              data: [],
+              label: '',
+              backgroundColor: [],
+              hoverBackgroundColor: [],
+            },
+          ];
+          if (res.status == 200) {
+            this.finTotalProductionLoader = false;
+            this.totalProductionVal = res.body.total
+              ? Math.round(res.body.total)
+              : 0;
+            this.netProfitProductionVal = res.body.total
+              ? Math.round(res.body.total)
+              : 0;
+            this.totalProductionTrendVal = res.body.total_ta
+              ? Math.round(res.body.total_ta)
+              : 0;
+            if (
+              this.clinic_id.indexOf(',') >= 0 ||
+              Array.isArray(this.clinic_id)
+            ) {
+              this.isAllClinic = true;
+              res.body.data.forEach((item, ind) => {
+                this.totalProductionCollection1[ind] = { data: [], label: '' };
+              });
+
+              res.body.data.forEach((item, ind) => {
+                this.totalProductionCollection1[ind]['data'].push(
+                  Math.round(item.production)
+                );
+                this.totalProductionCollection1[ind]['label'] =
+                  item.clinic_name;
+                this.totalProductionCollection1[ind]['backgroundColor'] =
+                  this.doughnutChartColors[ind];
+                this.totalProductionCollection1[ind]['hoverBackgroundColor'] =
+                  this.doughnutChartColors[ind];
+              });
+            } else {
+              this.isAllClinic = false;
+              this.totalProductionCollection1[0]['data'] = [];
+              this.productionstats = true;
+
+              if (res.body.data[0])
+                this.totalProductionLabel = res.body.data[0].provider_name;
+              else this.totalProductionLabel = '';
+
+              this.totalProductionCollection1[0]['data'].push(
+                this.totalProductionVal
+              );
+
+              if (
+                Math.round(this.totalProductionVal) >=
+                Math.round(this.totalProductionTrendVal)
+              )
+                this.totalProductionTrendIcon = 'up';
+            }
+          }
+        },
+        (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = 'Please Provide Valid Inputs!';
         }
-      ];
-      if (res.status == 200) {
-
-        this.finTotalProductionLoader = false;
-        this.totalProductionVal = (res.body.total) ? Math.round(res.body.total) : 0;
-        this.netProfitProductionVal = (res.body.total) ? Math.round(res.body.total) : 0;;
-        this.totalProductionTrendVal = (res.body.total_ta) ? Math.round(res.body.total_ta) : 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.forEach((item, ind)=>{
-            this.totalProductionCollection1[ind] = {data:[], label: ''}
-          });
-
-          res.body.data.forEach((item, ind)=>{
-            this.totalProductionCollection1[ind]['data'].push(Math.round(item.production));
-            this.totalProductionCollection1[ind]['label'] = item.clinic_name;
-            this.totalProductionCollection1[ind]['backgroundColor']= this.doughnutChartColors[ind];
-            this.totalProductionCollection1[ind]['hoverBackgroundColor']= this.doughnutChartColors[ind];
-          });
-
-        }else{
-          this.isAllClinic = false;
-          this.totalProductionCollection1[0]['data'] = [];
-          this.productionstats = true;
-
-          if (res.body.data[0])
-            this.totalProductionLabel = res.body.data[0].provider_name;
-          else
-            this.totalProductionLabel = '';
-
-          this.totalProductionCollection1[0]['data'].push(this.totalProductionVal);
-
-          if (Math.round(this.totalProductionVal) >= Math.round(this.totalProductionTrendVal))
-            this.totalProductionTrendIcon = "up";
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    }
-    );
+      );
   }
-
 
   //validate if input is decimal
   isDecimal(value) {
     if (typeof value != 'undefined') {
-      if (String(value).includes("."))
-        return true;
+      if (String(value).includes('.')) return true;
     }
   }
-
 
   public collectionPercentageC;
   public collectionTrendIcon;
@@ -2425,59 +2849,102 @@ export class FinancesComponent implements AfterViewInit {
     var user_id;
     var clinic_id;
     this.finCollectionLoader = true;
-    this.collectionTrendIcon = "down";
+    this.collectionTrendIcon = 'down';
     this.collectionTrendVal = 0;
-    this.financesService.finCollection(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      if (res.status == 200) {
+    this.financesService
+      .finCollection(
+        this.clinic_id,
+        this.startDate,
+        this.endDate,
+        this.duration
+      )
+      .subscribe(
+        (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
+            this.finCollectionLoader = false;
+            this.collectionVal = 0;
+            this.collectionVal = res.body.total
+              ? Math.round(res.body.total)
+              : 0;
+            this.collectionPercentage = res.body.total_average
+              ? Math.round(res.body.total_average)
+              : 0;
+            this.collectionTrendVal = res.body.total_ta
+              ? Math.round(res.body.total_ta)
+              : 0;
 
-        this.finCollectionLoader = false;
-        this.collectionVal = 0;
-        this.collectionVal = (res.body.total) ? Math.round(res.body.total) : 0;
-        this.collectionPercentage = (res.body.total_average) ? Math.round(res.body.total_average) : 0;
-        this.collectionTrendVal = (res.body.total_ta) ? Math.round(res.body.total_ta) : 0;
-        
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;        
-          res.body.data.forEach((item, ind)=>{
-            this.totalProductionCollection1[ind]['data'].push(Math.round(item.collection));
-            this.totalProductionCollection1[ind]['label'] = item.clinic_name;
-            this.totalProductionCollection1[ind]['backgroundColor']= this.doughnutChartColors[ind];
-            this.totalProductionCollection1[ind]['hoverBackgroundColor']= this.doughnutChartColors[ind];
-          });
+            if (
+              this.clinic_id.indexOf(',') >= 0 ||
+              Array.isArray(this.clinic_id)
+            ) {
+              this.isAllClinic = true;
+              res.body.data.forEach((item, ind) => {
+                this.totalProductionCollection1[ind]['data'].push(
+                  Math.round(item.collection)
+                );
+                this.totalProductionCollection1[ind]['label'] =
+                  item.clinic_name;
+                this.totalProductionCollection1[ind]['backgroundColor'] =
+                  this.doughnutChartColors[ind];
+                this.totalProductionCollection1[ind]['hoverBackgroundColor'] =
+                  this.doughnutChartColors[ind];
+              });
 
-          this.totalProductionCollectionLabel1 = ['Production', 'Collection'];
-        }else{
-          this.isAllClinic = false;
-          this.totalProductionCollection1[0]['data'].push(this.collectionVal);
-          this.totalProductionCollectionLabel1 = ['Production', 'Collection'];
-          this.totalProductionCollection1[0]['hoverBackgroundColor'] = ['#ffb4b5', '#4ccfae'];
-          this.totalProductionCollection1[0]['backgroundColor'] = ['#ffb4b5', '#4ccfae']; //as label are static we can add background color for that particular column as static
+              this.totalProductionCollectionLabel1 = [
+                'Production',
+                'Collection',
+              ];
+            } else {
+              this.isAllClinic = false;
+              this.totalProductionCollection1[0]['data'].push(
+                this.collectionVal
+              );
+              this.totalProductionCollectionLabel1 = [
+                'Production',
+                'Collection',
+              ];
+              this.totalProductionCollection1[0]['hoverBackgroundColor'] = [
+                '#ffb4b5',
+                '#4ccfae',
+              ];
+              this.totalProductionCollection1[0]['backgroundColor'] = [
+                '#ffb4b5',
+                '#4ccfae',
+              ]; //as label are static we can add background color for that particular column as static
+            }
+            this.totalProductionCollectionMax = Math.max(
+              ...this.totalProductionCollection1[0]['data']
+            );
+            if (this.totalProductionVal)
+              this.collectionPercentageC = Math.round(
+                (this.collectionVal / this.totalProductionVal) * 100
+              );
+            else this.collectionPercentageC = 0;
+
+            if (
+              Math.round(this.collectionVal) >=
+              Math.round(this.collectionTrendVal)
+            )
+              this.collectionTrendIcon = 'up';
+          }
+        },
+        (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = 'Please Provide Valid Inputs!';
         }
-        this.totalProductionCollectionMax = Math.max(...this.totalProductionCollection1[0]['data']);
-        if (this.totalProductionVal)
-          this.collectionPercentageC = Math.round((this.collectionVal / this.totalProductionVal) * 100);
-        else
-          this.collectionPercentageC = 0;
-
-        if (Math.round(this.collectionVal) >= Math.round(this.collectionTrendVal))
-          this.collectionTrendIcon = "up";
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    }
-    );
+      );
   }
 
   public ProdPerVisit: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,
+      data: [],
+      label: '',
+      shadowOffsetX: 3,
       backgroundColor: 'rgba(0, 0, 255, 0.2)',
-    }
+    },
   ];
   public productionTrendIcon;
   public showBar: boolean = false;
@@ -2493,38 +2960,52 @@ export class FinancesComponent implements AfterViewInit {
     this.ProductionTrendLabels1 = [];
     var user_id;
     var clinic_id;
-    this.productionTrendIcon = "down";
+    this.productionTrendIcon = 'down';
     this.productionTrendVal = 0;
-    this.financesService.finProductionPerVisit(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      if (res.status == 200) {
-        this.ProdPerVisit[0]['data'] = [];
-        this.ProductionTrend1 = [];
-        this.ProductionTrendLabels1 = [];       
-        if (res.body.total > 0) {
-          res.body.data.forEach(res => { 
-            this.ProductionTrend1.push(Math.round(res.prod_per_visit));
-            this.ProductionTrendLabels1.push(res.clinic_name);
-          });
+    this.financesService
+      .finProductionPerVisit(
+        this.clinic_id,
+        this.startDate,
+        this.endDate,
+        this.duration
+      )
+      .subscribe(
+        (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
+            this.ProdPerVisit[0]['data'] = [];
+            this.ProductionTrend1 = [];
+            this.ProductionTrendLabels1 = [];
+            if (res.body.total > 0) {
+              res.body.data.forEach((res) => {
+                this.ProductionTrend1.push(Math.round(res.prod_per_visit));
+                this.ProductionTrendLabels1.push(res.clinic_name);
+              });
+            }
+            if (
+              this.clinic_id.indexOf(',') >= 0 ||
+              Array.isArray(this.clinic_id)
+            ) {
+              this.showBar = true;
+            }
+            this.ProdPerVisit[0]['data'] = this.ProductionTrend1;
+            this.finProductionPerVisitLoader = false;
+            this.productionVal = Math.round(res.body.total);
+            this.productionTrendVal = Math.round(res.body.total_ta);
+            if (
+              Math.round(this.productionVal) >=
+              Math.round(this.productionTrendVal)
+            )
+              this.productionTrendIcon = 'up';
+          }
+        },
+        (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = 'Please Provide Valid Inputs!';
         }
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.showBar = true;
-        }
-        this.ProdPerVisit[0]['data'] = this.ProductionTrend1;
-        this.finProductionPerVisitLoader = false;
-        this.productionVal = Math.round(res.body.total);
-        this.productionTrendVal = Math.round(res.body.total_ta);
-        if (Math.round(this.productionVal) >= Math.round(this.productionTrendVal))
-          this.productionTrendIcon = "up";
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    }
-    );
+      );
   }
 
   public totalOverdueTrendAccount;
@@ -2537,38 +3018,49 @@ export class FinancesComponent implements AfterViewInit {
     var user_id;
     var clinic_id;
     this.finOverdueAccountsLoader = true;
-    this.financesService.finOverdueAccounts(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res) => {
-      if (res.status == 200) {
-        this.finOverdueAccountsLoader = false;
+    this.financesService
+      .finOverdueAccounts(
+        this.clinic_id,
+        this.startDate,
+        this.endDate,
+        this.duration
+      )
+      .subscribe(
+        (res) => {
+          if (res.status == 200) {
+            this.finOverdueAccountsLoader = false;
 
-        this.totalOverdueAccountLabels = [];
-        this.totalOverdueAccountres = [];
-        this.totalOverdueAccountLabelsres = [];
-        res.body.data.forEach(res => {
-          if (res.overdue > 0) {
-            this.totalOverdueAccountres.push(Math.round(res.overdue));
-            this.totalOverdueAccountLabelsres.push(res.label);
+            this.totalOverdueAccountLabels = [];
+            this.totalOverdueAccountres = [];
+            this.totalOverdueAccountLabelsres = [];
+            res.body.data.forEach((res) => {
+              if (res.overdue > 0) {
+                this.totalOverdueAccountres.push(Math.round(res.overdue));
+                this.totalOverdueAccountLabelsres.push(res.label);
+              }
+            });
+            this.totalOverdueAccount = res.body.total;
+            this.percentOfCurrentOverdue$.next(res.body.total);
+            this.totalOverdueAccountData = this.totalOverdueAccountres;
+            this.totalOverdueAccountLabels = this.totalOverdueAccountLabelsres;
+            this.totalOverdueAccountDataMax = Math.max(
+              ...this.totalOverdueAccountData
+            );
           }
-        });
-        this.totalOverdueAccount = res.body.total;
-        this.percentOfCurrentOverdue$.next(res.body.total);
-        this.totalOverdueAccountData = this.totalOverdueAccountres;
-        this.totalOverdueAccountLabels = this.totalOverdueAccountLabelsres;
-        this.totalOverdueAccountDataMax = Math.max(...this.totalOverdueAccountData);
-      }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+        },
+        (error) => {
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
   }
 
   public currentText;
 
-  filterDate(duration) {    
+  filterDate(duration) {
     $('.customRange').css('display', 'none');
     if (this.toggleChecked)
       // $('.target_off').click();
-    this.toggleChecked = false;
+      this.toggleChecked = false;
     this.isCompleteMonth = true;
     $('.trendMode').hide();
     $('.nonTrendMode').css('display', 'block');
@@ -2581,10 +3073,8 @@ export class FinancesComponent implements AfterViewInit {
       this.currentText = 'This Week';
 
       const now = new Date();
-      if (now.getDay() == 0)
-        var day = 7;
-      else
-        var day = now.getDay();
+      if (now.getDay() == 0) var day = 7;
+      else var day = now.getDay();
 
       var first = now.getDate() - day + 1;
       var last = first + 6;
@@ -2592,30 +3082,39 @@ export class FinancesComponent implements AfterViewInit {
 
       this.startDate = this.datePipe.transform(sd.toUTCString(), 'dd-MM-yyyy');
       var end = now.setDate(sd.getDate() + 6);
-      this.endDate = this.datePipe.transform(new Date(end).toUTCString(), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(
+        new Date(end).toUTCString(),
+        'dd-MM-yyyy'
+      );
       this.loadDentist('all');
-    }
-    else if (duration == 'm') {
+    } else if (duration == 'm') {
       this.duration = 'm';
       this.trendText = 'Last Month';
       this.currentText = 'This Month';
 
       var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
+      this.startDate = this.datePipe.transform(
+        new Date(date.getFullYear(), date.getMonth(), 1),
+        'dd-MM-yyyy'
+      );
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.loadDentist('all');
-    }
-    else if (duration == 'lm') {
+    } else if (duration == 'lm') {
       this.trendText = 'Previous Month';
       this.currentText = 'Last Month';
 
       const date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd-MM-yyyy');
-      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd-MM-yyyy');
+      this.startDate = this.datePipe.transform(
+        new Date(date.getFullYear(), date.getMonth() - 1, 1),
+        'dd-MM-yyyy'
+      );
+      this.endDate = this.datePipe.transform(
+        new Date(date.getFullYear(), date.getMonth(), 0),
+        'dd-MM-yyyy'
+      );
       this.duration = 'lm';
       this.loadDentist('all');
-    }
-    else if (duration == 'q') {
+    } else if (duration == 'q') {
       this.duration = 'q';
       this.trendText = 'Last Quarter';
       this.currentText = 'This Quarter';
@@ -2624,25 +3123,33 @@ export class FinancesComponent implements AfterViewInit {
       var cmonth = now.getMonth() + 1;
       var cyear = now.getFullYear();
       if (cmonth >= 1 && cmonth <= 3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(
+          new Date(now.getFullYear(), 0, 1),
+          'dd-MM-yyyy'
+        );
         // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy')
-      }
-      else if (cmonth >= 4 && cmonth <= 6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
-        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); 
-      }
-      else if (cmonth >= 7 && cmonth <= 9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
-        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy'); 
-      }
-      else if (cmonth >= 10 && cmonth <= 12) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
-        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');  
+      } else if (cmonth >= 4 && cmonth <= 6) {
+        this.startDate = this.datePipe.transform(
+          new Date(now.getFullYear(), 3, 1),
+          'dd-MM-yyyy'
+        );
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy');
+      } else if (cmonth >= 7 && cmonth <= 9) {
+        this.startDate = this.datePipe.transform(
+          new Date(now.getFullYear(), 6, 1),
+          'dd-MM-yyyy'
+        );
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');
+      } else if (cmonth >= 10 && cmonth <= 12) {
+        this.startDate = this.datePipe.transform(
+          new Date(now.getFullYear(), 9, 1),
+          'dd-MM-yyyy'
+        );
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');
       }
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.loadDentist('all');
-    }
-    else if (duration == 'lq') {
+    } else if (duration == 'lq') {
       this.duration = 'lq';
       this.trendText = 'Previous Quarter';
       this.currentText = 'Last Quarter';
@@ -2652,31 +3159,53 @@ export class FinancesComponent implements AfterViewInit {
       var cyear = now.getFullYear();
 
       if (cmonth >= 1 && cmonth <= 3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 9, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 12, 0), 'dd-MM-yyyy');
-      }
-      else if (cmonth >= 4 && cmonth <= 6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
-      }
-      else if (cmonth >= 7 && cmonth <= 9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy');
-      }
-      else if (cmonth >= 10 && cmonth <= 12) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(
+          new Date(now.getFullYear() - 1, 9, 1),
+          'dd-MM-yyyy'
+        );
+        this.endDate = this.datePipe.transform(
+          new Date(now.getFullYear() - 1, 12, 0),
+          'dd-MM-yyyy'
+        );
+      } else if (cmonth >= 4 && cmonth <= 6) {
+        this.startDate = this.datePipe.transform(
+          new Date(now.getFullYear(), 0, 1),
+          'dd-MM-yyyy'
+        );
+        this.endDate = this.datePipe.transform(
+          new Date(now.getFullYear(), 3, 0),
+          'dd-MM-yyyy'
+        );
+      } else if (cmonth >= 7 && cmonth <= 9) {
+        this.startDate = this.datePipe.transform(
+          new Date(now.getFullYear(), 3, 1),
+          'dd-MM-yyyy'
+        );
+        this.endDate = this.datePipe.transform(
+          new Date(now.getFullYear(), 6, 0),
+          'dd-MM-yyyy'
+        );
+      } else if (cmonth >= 10 && cmonth <= 12) {
+        this.startDate = this.datePipe.transform(
+          new Date(now.getFullYear(), 6, 1),
+          'dd-MM-yyyy'
+        );
+        this.endDate = this.datePipe.transform(
+          new Date(now.getFullYear(), 9, 0),
+          'dd-MM-yyyy'
+        );
       }
       this.loadDentist('all');
-
-    }
-    else if (duration == 'cytd') {
+    } else if (duration == 'cytd') {
       this.trendText = 'Last Year';
       this.currentText = 'This Year';
 
       this.duration = 'cytd';
       var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
+      this.startDate = this.datePipe.transform(
+        new Date(date.getFullYear(), 0, 1),
+        'dd-MM-yyyy'
+      );
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.loadDentist('all');
     } else if (duration == 'lcytd') {
@@ -2684,20 +3213,31 @@ export class FinancesComponent implements AfterViewInit {
       this.currentText = 'Last Year';
 
       var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 0, 1), 'dd-MM-yyyy');
-      this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 11, 31), 'dd-MM-yyyy');
+      this.startDate = this.datePipe.transform(
+        new Date(date.getFullYear() - 1, 0, 1),
+        'dd-MM-yyyy'
+      );
+      this.endDate = this.datePipe.transform(
+        new Date(date.getFullYear() - 1, 11, 31),
+        'dd-MM-yyyy'
+      );
       this.loadDentist('all');
-    }
-    else if (duration == 'fytd') {
+    } else if (duration == 'fytd') {
       this.duration = 'fytd';
       this.trendText = 'Last Financial Year';
       this.currentText = 'This Financial Year';
 
       var date = new Date();
-      if ((date.getMonth() + 1) <= 6) {
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 6, 1), 'dd-MM-yyyy');
+      if (date.getMonth() + 1 <= 6) {
+        this.startDate = this.datePipe.transform(
+          new Date(date.getFullYear() - 1, 6, 1),
+          'dd-MM-yyyy'
+        );
       } else {
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(
+          new Date(date.getFullYear(), 6, 1),
+          'dd-MM-yyyy'
+        );
       }
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.loadDentist('all');
@@ -2705,86 +3245,110 @@ export class FinancesComponent implements AfterViewInit {
       this.trendText = 'Previous Financial Year';
       this.currentText = 'Last Financial Year';
       var date = new Date();
-      if ((date.getMonth() + 1) <= 6) {
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'dd-MM-yyyy');
+      if (date.getMonth() + 1 <= 6) {
+        this.startDate = this.datePipe.transform(
+          new Date(date.getFullYear() - 2, 6, 1),
+          'dd-MM-yyyy'
+        );
       } else {
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 6, 1), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(
+          new Date(date.getFullYear() - 1, 6, 1),
+          'dd-MM-yyyy'
+        );
       }
-      if ((date.getMonth() + 1) <= 6) {
-        this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'dd-MM-yyyy');
+      if (date.getMonth() + 1 <= 6) {
+        this.endDate = this.datePipe.transform(
+          new Date(date.getFullYear() - 1, 5, 30),
+          'dd-MM-yyyy'
+        );
       } else {
-        this.endDate = this.datePipe.transform(new Date(date.getFullYear(), 5, 30), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(
+          new Date(date.getFullYear(), 5, 30),
+          'dd-MM-yyyy'
+        );
       }
       /* this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'dd-MM-yyyy');
        this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'dd-MM-yyyy');       */
       this.loadDentist('all');
-    }
-    else if (duration == 'custom') {
+    } else if (duration == 'custom') {
       this.trendText = '';
       this.currentText = '';
       // $('.customRange').css('display', 'block');
       let selectedDate = this.chartService.customSelectedDate$.value;
-      this.startDate = this.datePipe.transform(selectedDate.startDate, 'dd-MM-yyyy');
-      this.endDate = this.datePipe.transform(selectedDate.endDate, 'dd-MM-yyyy');
+      this.startDate = this.datePipe.transform(
+        selectedDate.startDate,
+        'dd-MM-yyyy'
+      );
+      this.endDate = this.datePipe.transform(
+        selectedDate.endDate,
+        'dd-MM-yyyy'
+      );
       var selectedMonth = this.datePipe.transform(selectedDate.startDate, 'M');
-      var selectedYear = this.datePipe.transform(selectedDate.startDate, 'yyyy');
-      var selectedStartDate = this.datePipe.transform(selectedDate.startDate, 'd');
+      var selectedYear = this.datePipe.transform(
+        selectedDate.startDate,
+        'yyyy'
+      );
+      var selectedStartDate = this.datePipe.transform(
+        selectedDate.startDate,
+        'd'
+      );
       var selectedEndDate = this.datePipe.transform(selectedDate.endDate, 'd');
-      var LastDay = new Date(parseInt(selectedYear), parseInt(selectedMonth) , 0).getDate();
-      if(parseInt(selectedStartDate) == 1 && parseInt(selectedEndDate) == LastDay){
+      var LastDay = new Date(
+        parseInt(selectedYear),
+        parseInt(selectedMonth),
+        0
+      ).getDate();
+      if (
+        parseInt(selectedStartDate) == 1 &&
+        parseInt(selectedEndDate) == LastDay
+      ) {
         this.isCompleteMonth = true;
-      }else{
+      } else {
         this.isCompleteMonth = false;
       }
       this.loadDentist('all');
     }
     $('.filter').removeClass('active');
-    $('.filter_' + duration).addClass("active");
+    $('.filter_' + duration).addClass('active');
     // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
-
   }
 
   // Get Dentist
   getDentists() {
-    this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
-      if (res.status == 200) {
-        this.dentists = res.body.data;
-        this.dentistCount = res.body.data.length;
-
+    this.dentistService.getDentists(this.clinic_id).subscribe(
+      (res) => {
+        if (res.status == 200) {
+          this.dentists = res.body.data;
+          this.dentistCount = res.body.data.length;
+        } else if (res.status == 401) {
+          this._cookieService.put('username', '');
+          this._cookieService.put('email', '');
+          this._cookieService.put('userid', '');
+          this.router.navigateByUrl('/login');
+        }
+      },
+      (error) => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
       }
-      else if (res.status == 401) {
-        this._cookieService.put("username", '');
-        this._cookieService.put("email", '');
-        this._cookieService.put("userid", '');
-        this.router.navigateByUrl('/login');
-      }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
     );
   }
   changeDentistPredictor(val) {
     if (val == '1') {
       this.gaugeValuePredicted = this.gaugeValuePredicted1 * 100;
       this.predictedDentistTotal = this.gaugeValuePredicted1;
-
-    }
-    else if (val == '2') {
+    } else if (val == '2') {
       this.gaugeValuePredicted = this.gaugeValuePredicted2 * 100;
       this.predictedDentistTotal = this.gaugeValuePredicted2;
-
-    }
-    else if (val == '3') {
+    } else if (val == '3') {
       this.gaugeValuePredicted = this.gaugeValuePredicted3 * 100;
       this.predictedDentistTotal = this.gaugeValuePredicted3;
-
     }
   }
   ytd_load(val) {
     alert(this.datePipe.transform(val, 'dd-MM-yyyy'));
   }
   choosedDate(val) {
-    val = (val.chosenLabel);
+    val = val.chosenLabel;
     var val = val.toString().split(' - ');
 
     var date2: any = new Date(val[1]);
@@ -2798,15 +3362,13 @@ export class FinancesComponent implements AfterViewInit {
       // this.loadDentist('all');
       // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
       $('.customRange').css('display', 'none');
-    }
-    else {
+    } else {
       Swal.fire({
         text: 'Please select date range within 365 Days',
         icon: 'warning',
         showCancelButton: false,
         confirmButtonText: 'Ok',
-      }).then((result) => {
-      });
+      }).then((result) => {});
     }
   }
   myDateParser(dateStr: string): string {
@@ -2814,10 +3376,10 @@ export class FinancesComponent implements AfterViewInit {
 
     let date = dateStr.substring(0, 10);
     let time = dateStr.substring(11, 19);
-    let millisecond = dateStr.substring(20)
+    let millisecond = dateStr.substring(20);
 
     let validDate = date;
-    return validDate
+    return validDate;
   }
   toggleFilter(val) {
     $('.target_filter').removeClass('mat-button-toggle-checked');
@@ -2830,20 +3392,24 @@ export class FinancesComponent implements AfterViewInit {
     if (val == 'current') {
       this.toggleChecked = true;
       this.trendValue = 'c';
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, date.getMonth(), 1), 'dd-MM-yyyy');
+      this.startDate = this.datePipe.transform(
+        new Date(date.getFullYear() - 1, date.getMonth(), 1),
+        'dd-MM-yyyy'
+      );
 
       this.toggleChangeProcess();
       this.displayProfit(1);
-    }
-    else if (val == 'historic') {
+    } else if (val == 'historic') {
       this.toggleChecked = true;
       this.trendValue = 'h';
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 10, date.getMonth(), 1), 'dd-MM-yyyy');
+      this.startDate = this.datePipe.transform(
+        new Date(date.getFullYear() - 10, date.getMonth(), 1),
+        'dd-MM-yyyy'
+      );
 
       this.toggleChangeProcess();
       this.displayProfit(1);
-    }
-    else if (val == 'off') {
+    } else if (val == 'off') {
       this.filterDate('m');
       // $('.filter_m').addClass("active");
       $('.trendMode').hide();
@@ -2872,13 +3438,10 @@ export class FinancesComponent implements AfterViewInit {
     //   $('.nonTrendMode').css('display','block');
     //   }
     $('.expenses_card').removeClass('active');
-
   }
   flipcard(div) {
-    if ($('.' + div).hasClass('active'))
-      $('.' + div).removeClass('active');
-    else
-      $('.' + div).addClass('active');
+    if ($('.' + div).hasClass('active')) $('.' + div).removeClass('active');
+    else $('.' + div).addClass('active');
   }
   initiate_dentist() {
     var val = $('.internal_dentist').val();
@@ -2896,11 +3459,9 @@ export class FinancesComponent implements AfterViewInit {
       this.trendValue = 'c';
       this.isChecked = true;
       this.toggleChangeProcess();
-    }
-    else if (this.toggleChecked == false) {
+    } else if (this.toggleChecked == false) {
       this.isDisabled = true;
       //    this.showTrend =false;
-
     }
   }
   onChange(mrChange) {
@@ -2909,7 +3470,9 @@ export class FinancesComponent implements AfterViewInit {
     this.toggleChangeProcess();
   }
   public totalProductionCollection: any[] = [
-    { data: [], label: 'Production' }, { data: [], label: 'Collection' }];
+    { data: [], label: 'Production' },
+    { data: [], label: 'Collection' },
+  ];
   public totalProductionCollectionLabel = [];
   public netProfitDisplayVal;
 
@@ -2921,7 +3484,12 @@ export class FinancesComponent implements AfterViewInit {
       $('.nonTrendMode').hide();
 
       this.finTotalProductionTrend();
-      if (this.connectedwith != '' && this.connectedwith != 'none' && this.connectedwith != undefined && this.multipleClinicsSelected == false) {
+      if (
+        this.connectedwith != '' &&
+        this.connectedwith != 'none' &&
+        this.connectedwith != undefined &&
+        this.multipleClinicsSelected == false
+      ) {
         this.Apirequest = 8;
         this.expensestrendstats = false;
         this.finNetProfitPMSTrend();
@@ -2930,20 +3498,42 @@ export class FinancesComponent implements AfterViewInit {
       }
 
       this.finProductionPerVisitTrend();
-      this.finTotalDiscountsTrend(); 
+      this.finTotalDiscountsTrend();
       this.finProductionByClinicianTrend();
       this.netProfitDisplayVal = '1';
     }
   }
 
-
   public productionChartTrend: any[] = [
-    { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }];
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+  ];
   public productionChartTrendLabels = [];
   public productionChartTrendLabels1 = [];
   public finProductionByClinicianTrendLoader: any;
   public finProductionByClinicianTrendError: any;
-  public showClinic:boolean =false;  
+  public showClinic: boolean = false;
   private finProductionByClinicianTrend() {
     this.finProductionByClinicianTrendLoader = true;
     this.finProductionByClinicianTrendError = false;
@@ -2952,82 +3542,114 @@ export class FinancesComponent implements AfterViewInit {
     this.productionChartTrend = [];
     var user_id;
     var clinic_id;
-    this.financesService.finProductionByClinicianTrend(this.clinic_id, this.trendValue).subscribe((res) => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.showClinic = false;
-      this.finProductionByClinicianTrendLoader = false;
-      if (res.status == 200) {        
-        res.body.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
-        res.body.data.forEach(res => {
-          const sumProd = res.val.reduce((accumulator, current) => accumulator + Number(current['production']), 0)
-          res.val.forEach((result, key) => {
-
-            if (typeof (this.productionChartTrend[key]) == 'undefined') {
-              this.productionChartTrend[key] = { data: [], label: '' };
-            }
-            if (typeof (this.productionChartTrend[key]['data']) == 'undefined') {
-              this.productionChartTrend[key]['data'] = [];
-            }
-            if(this.clinic_id.indexOf(',') >= 0){
-              this.showClinic = true;
-                var total = Math.trunc(result.production);
-                if (result.production > 0 && result.production.toString().includes('.')) {
-                  var num_parts = result.production.split(".");
-                  num_parts[1] = num_parts[1].charAt(0);
-                  total = num_parts.join(".");
+    this.financesService
+      .finProductionByClinicianTrend(this.clinic_id, this.trendValue)
+      .subscribe(
+        (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.showClinic = false;
+          this.finProductionByClinicianTrendLoader = false;
+          if (res.status == 200) {
+            res.body.data.sort((a, b) =>
+              a.duration === b.duration ? 0 : a.duration > b.duration || -1
+            );
+            res.body.data.forEach((res) => {
+              const sumProd = res.val.reduce(
+                (accumulator, current) =>
+                  accumulator + Number(current['production']),
+                0
+              );
+              res.val.forEach((result, key) => {
+                if (typeof this.productionChartTrend[key] == 'undefined') {
+                  this.productionChartTrend[key] = { data: [], label: '' };
                 }
-                this.productionChartTrend[key]['data'].push(total / sumProd * 100);
-                this.productionChartTrend[key]['label'] = result.clinic_name;
-            }else{
-              if(Array.isArray(this.clinic_id)){
-                this.showClinic = true;
-                var total1 = Math.trunc(result.production);
-                if (result.production > 0 && result.production.toString().includes('.')) {
-                  var num_parts = result.production.split(".");
-                  num_parts[1] = num_parts[1].charAt(0);
-                  total1 = num_parts.join(".");
+                if (
+                  typeof this.productionChartTrend[key]['data'] == 'undefined'
+                ) {
+                  this.productionChartTrend[key]['data'] = [];
                 }
-                this.productionChartTrend[key]['data'].push(total1  / sumProd * 100 );
-                this.productionChartTrend[key]['label'] = result.clinic_name;  
-              }else{
-                this.showClinic = false;
-                var total2 = result.prod_per_clinician;
-                if (result.prod_per_clinician > 0 && result.prod_per_clinician.toString().includes('.')) {
-                  var num_parts = result.prod_per_clinician.split(".");
-                  num_parts[1] = num_parts[1].charAt(0);
-                  total2 = num_parts.join(".");
+                if (this.clinic_id.indexOf(',') >= 0) {
+                  this.showClinic = true;
+                  var total = Math.trunc(result.production);
+                  if (
+                    result.production > 0 &&
+                    result.production.toString().includes('.')
+                  ) {
+                    var num_parts = result.production.split('.');
+                    num_parts[1] = num_parts[1].charAt(0);
+                    total = num_parts.join('.');
+                  }
+                  this.productionChartTrend[key]['data'].push(
+                    (total / sumProd) * 100
+                  );
+                  this.productionChartTrend[key]['label'] = result.clinic_name;
+                } else {
+                  if (Array.isArray(this.clinic_id)) {
+                    this.showClinic = true;
+                    var total1 = Math.trunc(result.production);
+                    if (
+                      result.production > 0 &&
+                      result.production.toString().includes('.')
+                    ) {
+                      var num_parts = result.production.split('.');
+                      num_parts[1] = num_parts[1].charAt(0);
+                      total1 = num_parts.join('.');
+                    }
+                    this.productionChartTrend[key]['data'].push(
+                      (total1 / sumProd) * 100
+                    );
+                    this.productionChartTrend[key]['label'] =
+                      result.clinic_name;
+                  } else {
+                    this.showClinic = false;
+                    var total2 = result.prod_per_clinician;
+                    if (
+                      result.prod_per_clinician > 0 &&
+                      result.prod_per_clinician.toString().includes('.')
+                    ) {
+                      var num_parts = result.prod_per_clinician.split('.');
+                      num_parts[1] = num_parts[1].charAt(0);
+                      total2 = num_parts.join('.');
+                    }
+                    this.productionChartTrend[key]['data'].push(
+                      parseFloat(total2)
+                    );
+                    this.productionChartTrend[key]['label'] =
+                      result.provider_name;
+                  }
                 }
-                this.productionChartTrend[key]['data'].push(parseFloat(total2));
-                this.productionChartTrend[key]['label'] = result.provider_name;
-              }
-            }
-            this.productionChartTrend[key]['backgroundColor'] = this.doughnutChartColors[key];
-            this.productionChartTrend[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
-
-          });
-          if (this.trendValue == 'c')
-            this.productionChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-          else
-            this.productionChartTrendLabels1.push(res.duration);
-        });
-        this.productionChartTrendLabels = this.productionChartTrendLabels1;
-
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.finProductionByClinicianTrendError = true;
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+                this.productionChartTrend[key]['backgroundColor'] =
+                  this.doughnutChartColors[key];
+                this.productionChartTrend[key]['hoverBackgroundColor'] =
+                  this.doughnutChartColors[key];
+              });
+              if (this.trendValue == 'c')
+                this.productionChartTrendLabels1.push(
+                  this.datePipe.transform(res.duration, 'MMM y')
+                );
+              else this.productionChartTrendLabels1.push(res.duration);
+            });
+            this.productionChartTrendLabels = this.productionChartTrendLabels1;
+          }
+        },
+        (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.finProductionByClinicianTrendError = true;
+          this.toastr.error(
+            'There was an error retrieving your report data, please contact our support team.'
+          );
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
   }
-
 
   public discountsChartTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,
+      data: [],
+      label: '',
+      shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -3038,17 +3660,17 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
-    }];
-    public discountsChartTrendMulti: any[] = [
-      { data: [], label: '' }];
+      backgroundOverlayMode: 'multiply',
+    },
+  ];
+  public discountsChartTrendMulti: any[] = [{ data: [], label: '' }];
   public discountsChartTrend1 = [];
   public discountsChartTrendLabels = [];
   public discountsChartTrendLabels1 = [];
   public discountsChartTrendMultiLabels = [];
   public discountsChartTrendMultiLabels1 = [];
   public finTotalDiscountsTrendLoader: any;
-  public showByclinic : boolean =false;
+  public showByclinic: boolean = false;
   private finTotalDiscountsTrend() {
     this.discountsChartTrendLabels = [];
     this.discountsChartTrendLabels1 = [];
@@ -3059,66 +3681,96 @@ export class FinancesComponent implements AfterViewInit {
     var user_id;
     var clinic_id;
     this.showByclinic = false;
-    this.discountsChartTrendMulti =[];
-    this.financesService.finTotalDiscountsTrend(this.clinic_id, this.trendValue).subscribe((res) => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      if (res.status == 200) {
-        if(res.body.data == null || res.body.data.length <= 0){
-          this.finTotalDiscountsTrendLoader = false;
-          return;
-        }
-        res.body.data.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.showByclinic = true;
-        }
-        this.finTotalDiscountsTrendLoader = false;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          res.body.data.forEach(res => { 
-            res.val.forEach((reslt, key) => {
-              if (typeof (this.discountsChartTrendMulti[key]) == 'undefined') {
-                this.discountsChartTrendMulti[key] = { data: [], label: '' };
-              }
-              if (typeof (this.discountsChartTrendMulti[key]['data']) == 'undefined') {
-                this.discountsChartTrendMulti[key]['data'] = [];
-              }
-              
-                this.discountsChartTrendMulti[key]['data'].push(Math.round(reslt.discounts));
-                this.discountsChartTrendMulti[key]['label'] = reslt.clinic_name;
-                this.discountsChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
-                this.discountsChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
-             }); 
-             if (this.trendValue == 'c')
-              this.discountsChartTrendMultiLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-            else
-              this.discountsChartTrendMultiLabels1.push(res.duration);
-          });
-          this.discountsChartTrendMultiLabels = this.discountsChartTrendMultiLabels1;
-        }else{
-          res.body.data.forEach(res => {         
-            this.discountsChartTrend1.push(Math.round(res.discounts));
-            if (this.trendValue == 'c')
-              this.discountsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-            else
-              this.discountsChartTrendLabels1.push(res.year);
-  
-          });         
-          if (this.discountsChartTrend1.every((item) => item == 0)) this.discountsChartTrend1 = [];
-          this.discountsChartTrend[0]['data'] = this.discountsChartTrend1;
-          this.discountsChartTrendLabels = this.discountsChartTrendLabels1;
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.warningMessage = "Please Provide Valid Inputs!";
+    this.discountsChartTrendMulti = [];
+    this.financesService
+      .finTotalDiscountsTrend(this.clinic_id, this.trendValue)
+      .subscribe(
+        (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
+            if (res.body.data == null || res.body.data.length <= 0) {
+              this.finTotalDiscountsTrendLoader = false;
+              return;
+            }
+            res.body.data.sort((a, b) =>
+              a.duration === b.duration ? 0 : a.duration > b.duration || -1
+            );
+            if (
+              this.clinic_id.indexOf(',') >= 0 ||
+              Array.isArray(this.clinic_id)
+            ) {
+              this.showByclinic = true;
+            }
+            this.finTotalDiscountsTrendLoader = false;
+            if (
+              this.clinic_id.indexOf(',') >= 0 ||
+              Array.isArray(this.clinic_id)
+            ) {
+              res.body.data.forEach((res) => {
+                res.val.forEach((reslt, key) => {
+                  if (
+                    typeof this.discountsChartTrendMulti[key] == 'undefined'
+                  ) {
+                    this.discountsChartTrendMulti[key] = {
+                      data: [],
+                      label: '',
+                    };
+                  }
+                  if (
+                    typeof this.discountsChartTrendMulti[key]['data'] ==
+                    'undefined'
+                  ) {
+                    this.discountsChartTrendMulti[key]['data'] = [];
+                  }
 
-    });
+                  this.discountsChartTrendMulti[key]['data'].push(
+                    Math.round(reslt.discounts)
+                  );
+                  this.discountsChartTrendMulti[key]['label'] =
+                    reslt.clinic_name;
+                  this.discountsChartTrendMulti[key]['backgroundColor'] =
+                    this.doughnutChartColors[key];
+                  this.discountsChartTrendMulti[key]['hoverBackgroundColor'] =
+                    this.doughnutChartColors[key];
+                });
+                if (this.trendValue == 'c')
+                  this.discountsChartTrendMultiLabels1.push(
+                    this.datePipe.transform(res.duration, 'MMM y')
+                  );
+                else this.discountsChartTrendMultiLabels1.push(res.duration);
+              });
+              this.discountsChartTrendMultiLabels =
+                this.discountsChartTrendMultiLabels1;
+            } else {
+              res.body.data.forEach((res) => {
+                this.discountsChartTrend1.push(Math.round(res.discounts));
+                if (this.trendValue == 'c')
+                  this.discountsChartTrendLabels1.push(
+                    this.datePipe.transform(res.year_month, 'MMM y')
+                  );
+                else this.discountsChartTrendLabels1.push(res.year);
+              });
+              if (this.discountsChartTrend1.every((item) => item == 0))
+                this.discountsChartTrend1 = [];
+              this.discountsChartTrend[0]['data'] = this.discountsChartTrend1;
+              this.discountsChartTrendLabels = this.discountsChartTrendLabels1;
+            }
+          }
+        },
+        (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
   }
 
   public overdueChartTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,
+      data: [],
+      label: '',
+      shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -3129,8 +3781,9 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
-    }];
+      backgroundOverlayMode: 'multiply',
+    },
+  ];
   public overdueChartTrend1 = [];
   public overdueChartTrendLabels = [];
   public overdueChartTrendLabels1 = [];
@@ -3143,35 +3796,40 @@ export class FinancesComponent implements AfterViewInit {
     this.overdueChartTrend1 = [];
     var user_id;
     var clinic_id;
-    this.financesService.finOverdueAccountsTrend(this.clinic_id, this.trendValue).subscribe((res) => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      if (res.status == 200) {
-        this.finOverdueAccountsTrendLoader = false;
-        res.body.data.forEach(res => {
-          this.overdueChartTrend1.push(Math.round(res.val.total));
-          if (this.trendValue == 'c')
-            this.overdueChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-          else
-            this.overdueChartTrendLabels1.push(res.duration);
+    this.financesService
+      .finOverdueAccountsTrend(this.clinic_id, this.trendValue)
+      .subscribe(
+        (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
+            this.finOverdueAccountsTrendLoader = false;
+            res.body.data.forEach((res) => {
+              this.overdueChartTrend1.push(Math.round(res.val.total));
+              if (this.trendValue == 'c')
+                this.overdueChartTrendLabels1.push(
+                  this.datePipe.transform(res.duration, 'MMM y')
+                );
+              else this.overdueChartTrendLabels1.push(res.duration);
+            });
+            this.overdueChartTrend[0]['data'] = this.overdueChartTrend1;
 
-        });
-        this.overdueChartTrend[0]['data'] = this.overdueChartTrend1;
-
-        this.overdueChartTrendLabels = this.overdueChartTrendLabels1;
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+            this.overdueChartTrendLabels = this.overdueChartTrendLabels1;
+          }
+        },
+        (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
   }
-
 
   public totalProductionChartTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,
+      data: [],
+      label: '',
+      shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -3182,10 +3840,19 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
-    }];
-    public netProfitPercentChartTrendMulti: any[] = [
-      { data: [], label: '' },{ data: [], label: '' },{ data: [], label: '' },{ data: [], label: '' },{ data: [], label: '' },{ data: [], label: '' },{ data: [], label: '' },{ data: [], label: '' } ];  
+      backgroundOverlayMode: 'multiply',
+    },
+  ];
+  public netProfitPercentChartTrendMulti: any[] = [
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+  ];
   public totalProductionChartTrend1 = [];
   public totalProductionChartTrendLabels = [];
   public totalProductionChartTrendLabels1 = [];
@@ -3194,7 +3861,7 @@ export class FinancesComponent implements AfterViewInit {
   public PYearRange;
   public cName;
   public cids;
-  public netProfitChartTrendLabelsMulti =[];
+  public netProfitChartTrendLabelsMulti = [];
   public showProdByclinic: boolean = false;
   private finTotalProductionTrend() {
     this.finTotalProductionTrendLoader = true;
@@ -3204,98 +3871,139 @@ export class FinancesComponent implements AfterViewInit {
     var user_id;
     var clinic_id;
     this.showProdByclinic = false;
-    this.financesService.finTotalProductionTrend(this.clinic_id, this.trendValue).subscribe((res) => {
-      this.netProfitChartTrendLabels = [];
-      this.netProfitChartTrendLabels1 = [];
-      this.totalProductionChartTrendLabels1 = [];
-      this.netProfitPercentChartTrend1 = [];      
-      this.PMonthRange =[];
-      this.PYearRange =[];
-      this.cName =[];
-      this.cids =[];
-      this.netProfitPercentChartTrendMulti =[];
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      if (res.status == 200) {
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.showProdByclinic = true;
-        }
-        this.finTotalProductionTrendLoader = false;
-        this.finNetProfitTrendLoader = false;
-        res.body.data.sort((a, b)=> a.year - b.year);
-        res.body.data.forEach(res => {
-          this.PMonthRange.push(res.year_month);
-          this.PYearRange.push(res.year);
-          this.cName.push(res.clinic_name);
-          this.cids.push(res.clinic_id);
-         // this.totalProductionChartTrend1.push(Math.round(res.production));
-          this.netProfitPercentChartTrend1.push(Math.round(res.production));
-          if (this.trendValue == 'c') {
-            //this.totalProductionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-            this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-          } else {
-           // this.totalProductionChartTrendLabels1.push(res.year);
-            this.netProfitChartTrendLabels1.push(res.year);
-          }
-
-        });
-        const sumClinics = (range:any) => res.body.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.production), 0);
-        const sumClinics1 = (range:any) => res.body.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.production), 0);
-        this.cName = [...new Set(this.cName)];
-        this.cids = [...new Set(this.cids)];
-        this.PMonthRange = [...new Set(this.PMonthRange)];
-        this.PYearRange = [...new Set(this.PYearRange)];
-        if (this.trendValue == 'c') {
-          this.PMonthRange.forEach(ele => {
-            this.totalProductionChartTrend1.push(sumClinics(ele));
-            this.totalProductionChartTrendLabels1.push(this.datePipe.transform(ele, 'MMM y'));
-          });
-        }else{
-          this.PYearRange.forEach(ele => {
-            this.totalProductionChartTrend1.push(sumClinics1(ele));
-            this.totalProductionChartTrendLabels1.push(ele);
-          });
-        }
-       
-        this.netProfitPercentChartTrend[0]['data'] = this.totalProductionChartTrend1 ;//this.netProfitPercentChartTrend1;
-        this.netProfitPercentChartTrend[0]['label'] = this.cName;
-        this.netProfitChartTrendLabels = this.totalProductionChartTrendLabels1; //this.netProfitChartTrendLabels1;
-        this.totalProductionChartTrend[0]['data'] = this.totalProductionChartTrend1;
-        this.totalProductionChartTrendLabels = this.totalProductionChartTrendLabels1;
-        this.finCollectionTrend();
-        
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          res.body.data_combined.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
-          res.body.data_combined.forEach(res => {
-            res.val.forEach((result, key) => {
-              if (typeof (this.netProfitPercentChartTrendMulti[key]) == 'undefined') {
-                this.netProfitPercentChartTrendMulti[key] = { data: [], label: '' };
+    this.financesService
+      .finTotalProductionTrend(this.clinic_id, this.trendValue)
+      .subscribe(
+        (res) => {
+          this.netProfitChartTrendLabels = [];
+          this.netProfitChartTrendLabels1 = [];
+          this.totalProductionChartTrendLabels1 = [];
+          this.netProfitPercentChartTrend1 = [];
+          this.PMonthRange = [];
+          this.PYearRange = [];
+          this.cName = [];
+          this.cids = [];
+          this.netProfitPercentChartTrendMulti = [];
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
+            if (
+              this.clinic_id.indexOf(',') >= 0 ||
+              Array.isArray(this.clinic_id)
+            ) {
+              this.showProdByclinic = true;
+            }
+            this.finTotalProductionTrendLoader = false;
+            this.finNetProfitTrendLoader = false;
+            res.body.data.sort((a, b) => a.year - b.year);
+            res.body.data.forEach((res) => {
+              this.PMonthRange.push(res.year_month);
+              this.PYearRange.push(res.year);
+              this.cName.push(res.clinic_name);
+              this.cids.push(res.clinic_id);
+              // this.totalProductionChartTrend1.push(Math.round(res.production));
+              this.netProfitPercentChartTrend1.push(Math.round(res.production));
+              if (this.trendValue == 'c') {
+                //this.totalProductionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+                this.netProfitChartTrendLabels1.push(
+                  this.datePipe.transform(res.year_month, 'MMM y')
+                );
+              } else {
+                // this.totalProductionChartTrendLabels1.push(res.year);
+                this.netProfitChartTrendLabels1.push(res.year);
               }
-              if (typeof (this.netProfitPercentChartTrendMulti[key]['data']) == 'undefined') {
-                this.netProfitPercentChartTrendMulti[key]['data'] = [];
-              }
-              this.netProfitPercentChartTrendMulti[key]['data'].push(Math.round(result.production));
-              this.netProfitPercentChartTrendMulti[key]['label'] = result.clinic_name;
-              this.netProfitPercentChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
-              this.netProfitPercentChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
             });
-          });
-          this.netProfitChartTrendLabelsMulti = this.totalProductionChartTrendLabels1;
+            const sumClinics = (range: any) =>
+              res.body.data
+                .filter((i) => i.year_month === range)
+                .reduce((a, b) => a + Math.round(b.production), 0);
+            const sumClinics1 = (range: any) =>
+              res.body.data
+                .filter((i) => i.year === range)
+                .reduce((a, b) => a + Math.round(b.production), 0);
+            this.cName = [...new Set(this.cName)];
+            this.cids = [...new Set(this.cids)];
+            this.PMonthRange = [...new Set(this.PMonthRange)];
+            this.PYearRange = [...new Set(this.PYearRange)];
+            if (this.trendValue == 'c') {
+              this.PMonthRange.forEach((ele) => {
+                this.totalProductionChartTrend1.push(sumClinics(ele));
+                this.totalProductionChartTrendLabels1.push(
+                  this.datePipe.transform(ele, 'MMM y')
+                );
+              });
+            } else {
+              this.PYearRange.forEach((ele) => {
+                this.totalProductionChartTrend1.push(sumClinics1(ele));
+                this.totalProductionChartTrendLabels1.push(ele);
+              });
+            }
+
+            this.netProfitPercentChartTrend[0]['data'] =
+              this.totalProductionChartTrend1; //this.netProfitPercentChartTrend1;
+            this.netProfitPercentChartTrend[0]['label'] = this.cName;
+            this.netProfitChartTrendLabels =
+              this.totalProductionChartTrendLabels1; //this.netProfitChartTrendLabels1;
+            this.totalProductionChartTrend[0]['data'] =
+              this.totalProductionChartTrend1;
+            this.totalProductionChartTrendLabels =
+              this.totalProductionChartTrendLabels1;
+            this.finCollectionTrend();
+
+            if (
+              this.clinic_id.indexOf(',') >= 0 ||
+              Array.isArray(this.clinic_id)
+            ) {
+              res.body.data_combined.sort((a, b) =>
+                a.duration === b.duration ? 0 : a.duration > b.duration || -1
+              );
+              res.body.data_combined.forEach((res) => {
+                res.val.forEach((result, key) => {
+                  if (
+                    typeof this.netProfitPercentChartTrendMulti[key] ==
+                    'undefined'
+                  ) {
+                    this.netProfitPercentChartTrendMulti[key] = {
+                      data: [],
+                      label: '',
+                    };
+                  }
+                  if (
+                    typeof this.netProfitPercentChartTrendMulti[key]['data'] ==
+                    'undefined'
+                  ) {
+                    this.netProfitPercentChartTrendMulti[key]['data'] = [];
+                  }
+                  this.netProfitPercentChartTrendMulti[key]['data'].push(
+                    Math.round(result.production)
+                  );
+                  this.netProfitPercentChartTrendMulti[key]['label'] =
+                    result.clinic_name;
+                  this.netProfitPercentChartTrendMulti[key]['backgroundColor'] =
+                    this.doughnutChartColors[key];
+                  this.netProfitPercentChartTrendMulti[key][
+                    'hoverBackgroundColor'
+                  ] = this.doughnutChartColors[key];
+                });
+              });
+              this.netProfitChartTrendLabelsMulti =
+                this.totalProductionChartTrendLabels1;
+            }
+          }
+        },
+        (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = 'Please Provide Valid Inputs!';
         }
-        
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+      );
   }
-
 
   public collectionChartTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,
+      data: [],
+      label: '',
+      shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -3306,8 +4014,9 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
-    }];
+      backgroundOverlayMode: 'multiply',
+    },
+  ];
   public collectionChartTrend1 = [];
   public collectionChartTrendLabels = [];
   public collectionChartTrendLabels1 = [];
@@ -3322,82 +4031,118 @@ export class FinancesComponent implements AfterViewInit {
     this.collectionChartTrend1 = [];
     var user_id;
     var clinic_id;
-    this.financesService.finCollectionTrend(this.clinic_id, this.trendValue).subscribe((res) => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.CMonthRange =[];
-      this.CYearRange =[];
-      this.collectionChartTrendMultiData = [];
-      if (res.status == 200) {
-        this.finCollectionTrendLoader = false;   
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data_combined.sort((a, b)=> a.duration === b.duration ? 0 : a.duration > b.duration || -1);
-          res.body.data_combined.forEach(res => {
-            res.val.forEach((result, key) => {
-              if (typeof (this.collectionChartTrendMultiData[key]) == 'undefined') {
-                this.collectionChartTrendMultiData[key] = { data: [], label: '' };
-              }
-              if (typeof (this.collectionChartTrendMultiData[key]['data']) == 'undefined') {
-                this.collectionChartTrendMultiData[key]['data'] = [];
-              }
-              this.collectionChartTrendMultiData[key]['data'].push(Math.round(result.collection));
-              this.collectionChartTrendMultiData[key]['label'] = result.clinic_name;
-              this.collectionChartTrendMultiData[key]['backgroundColor'] = this.doughnutChartColors[key];
-              this.collectionChartTrendMultiData[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+    this.financesService
+      .finCollectionTrend(this.clinic_id, this.trendValue)
+      .subscribe(
+        (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.CMonthRange = [];
+          this.CYearRange = [];
+          this.collectionChartTrendMultiData = [];
+          if (res.status == 200) {
+            this.finCollectionTrendLoader = false;
+            if (
+              this.clinic_id.indexOf(',') >= 0 ||
+              Array.isArray(this.clinic_id)
+            ) {
+              this.isAllClinic = true;
+              res.body.data_combined.sort((a, b) =>
+                a.duration === b.duration ? 0 : a.duration > b.duration || -1
+              );
+              res.body.data_combined.forEach((res) => {
+                res.val.forEach((result, key) => {
+                  if (
+                    typeof this.collectionChartTrendMultiData[key] ==
+                    'undefined'
+                  ) {
+                    this.collectionChartTrendMultiData[key] = {
+                      data: [],
+                      label: '',
+                    };
+                  }
+                  if (
+                    typeof this.collectionChartTrendMultiData[key]['data'] ==
+                    'undefined'
+                  ) {
+                    this.collectionChartTrendMultiData[key]['data'] = [];
+                  }
+                  this.collectionChartTrendMultiData[key]['data'].push(
+                    Math.round(result.collection)
+                  );
+                  this.collectionChartTrendMultiData[key]['label'] =
+                    result.clinic_name;
+                  this.collectionChartTrendMultiData[key]['backgroundColor'] =
+                    this.doughnutChartColors[key];
+                  this.collectionChartTrendMultiData[key][
+                    'hoverBackgroundColor'
+                  ] = this.doughnutChartColors[key];
+                });
+              });
+            } else {
+              this.isAllClinic = false;
+            }
+            res.body.data.sort((a, b) => a.year - b.year);
+            res.body.data.forEach((res) => {
+              this.CMonthRange.push(res.year_month);
+              this.CYearRange.push(res.year);
+              // this.collectionChartTrend1.push(Math.round(res.collection));
+              // if (this.trendValue == 'c')
+              //   this.collectionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+              // else
+              //   this.collectionChartTrendLabels1.push(res.year);
             });
-          });
-        }else{
-          this.isAllClinic = false;
+            const CsumClinics = (range: any) =>
+              res.body.data
+                .filter((i) => i.year_month === range)
+                .reduce((a, b) => a + Math.round(b.collection), 0);
+            const CsumClinics1 = (range: any) =>
+              res.body.data
+                .filter((i) => i.year === range)
+                .reduce((a, b) => a + Math.round(b.collection), 0);
+
+            this.CMonthRange = [...new Set(this.CMonthRange)];
+            this.CYearRange = [...new Set(this.CYearRange)];
+            if (this.trendValue == 'c') {
+              this.CMonthRange.forEach((ele) => {
+                this.collectionChartTrend1.push(CsumClinics(ele));
+                this.collectionChartTrendLabels1.push(
+                  this.datePipe.transform(ele, 'MMM y')
+                );
+              });
+            } else {
+              this.CYearRange.forEach((ele) => {
+                this.collectionChartTrend1.push(CsumClinics1(ele));
+                this.collectionChartTrendLabels1.push(ele);
+              });
+            }
+
+            this.totalProductionCollection[0]['data'] =
+              this.totalProductionChartTrend1;
+            this.totalProductionCollection[1]['data'] =
+              this.collectionChartTrend1;
+            this.totalProductionCollectionLabel =
+              this.totalProductionChartTrendLabels1;
+            this.collectionChartTrendMultiLabels =
+              this.collectionChartTrendLabels1;
+
+            this.collectionChartTrend[0]['data'] = this.collectionChartTrend1;
+            this.collectionChartTrendLabels = this.collectionChartTrendLabels1;
+          }
+        },
+        (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = 'Please Provide Valid Inputs!';
         }
-        res.body.data.sort((a, b)=> a.year - b.year);    
-        res.body.data.forEach(res => {
-          this.CMonthRange.push(res.year_month);
-          this.CYearRange.push(res.year);
-          // this.collectionChartTrend1.push(Math.round(res.collection));
-          // if (this.trendValue == 'c')
-          //   this.collectionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-          // else
-          //   this.collectionChartTrendLabels1.push(res.year);
-
-        });
-        const CsumClinics = (range:any) => res.body.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.collection), 0);
-        const CsumClinics1 = (range:any) => res.body.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.collection), 0);
-      
-        this.CMonthRange = [...new Set(this.CMonthRange)];
-        this.CYearRange = [...new Set(this.CYearRange)];
-        if (this.trendValue == 'c') {
-          this.CMonthRange.forEach(ele => {
-            this.collectionChartTrend1.push(CsumClinics(ele));
-            this.collectionChartTrendLabels1.push(this.datePipe.transform(ele, 'MMM y'));
-          });
-        }else{
-          this.CYearRange.forEach(ele => {
-            this.collectionChartTrend1.push(CsumClinics1(ele));
-            this.collectionChartTrendLabels1.push(ele);
-          });
-        }
-       
-        this.totalProductionCollection[0]['data'] = this.totalProductionChartTrend1;
-        this.totalProductionCollection[1]['data'] = this.collectionChartTrend1;
-        this.totalProductionCollectionLabel = this.totalProductionChartTrendLabels1;
-        this.collectionChartTrendMultiLabels = this.collectionChartTrendLabels1;
-
-        this.collectionChartTrend[0]['data'] = this.collectionChartTrend1;
-        this.collectionChartTrendLabels =this.collectionChartTrendLabels1; 
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+      );
   }
-
 
   public productionVisitChartTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,
+      data: [],
+      label: '',
+      shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -3408,14 +4153,15 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
-    }];
+      backgroundOverlayMode: 'multiply',
+    },
+  ];
   public productionVisitChartTrend1 = [];
   public productionVisitChartTrendLabels = [];
   public productionVisitChartTrendLabels1 = [];
   public finProductionPerVisitTrendLoader: any;
   public VMonthRange;
-  public VYearRange; 
+  public VYearRange;
   public clinicIds;
   private finProductionPerVisitTrend() {
     this.finProductionPerVisitTrendLoader = true;
@@ -3424,65 +4170,92 @@ export class FinancesComponent implements AfterViewInit {
     this.productionVisitChartTrend1 = [];
     var user_id;
     var clinic_id;
-    this.VMonthRange=[];
-    this.VYearRange =[];
-    this.clinicIds =[];
-    this.financesService.finProductionPerVisitTrend(this.clinic_id, this.trendValue).subscribe((res) => {
-      this.productionVisitChartTrendLabels = [];
-      this.productionVisitChartTrendLabels1 = [];
-      this.finProductionPerVisitTrendLoader = false;
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      if (res.body.data && res.status == 200) {
-        res.body.data.sort((a, b)=> a.year_month === b.year_month ? 0 : a.year_month > b.year_month || -1);
-        res.body.data.forEach(res => {
-          this.VMonthRange.push(res.year_month);
-          this.VYearRange.push(res.year);
-          this.clinicIds.push(res.clinic_id);
-          // this.productionVisitChartTrend1.push(Math.round(res.production));
-          // if (this.trendValue == 'c')
-          //   this.productionVisitChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-          // else
-          //   this.productionVisitChartTrendLabels1.push(res.year);
+    this.VMonthRange = [];
+    this.VYearRange = [];
+    this.clinicIds = [];
+    this.financesService
+      .finProductionPerVisitTrend(this.clinic_id, this.trendValue)
+      .subscribe(
+        (res) => {
+          this.productionVisitChartTrendLabels = [];
+          this.productionVisitChartTrendLabels1 = [];
+          this.finProductionPerVisitTrendLoader = false;
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.body.data && res.status == 200) {
+            res.body.data.sort((a, b) =>
+              a.year_month === b.year_month
+                ? 0
+                : a.year_month > b.year_month || -1
+            );
+            res.body.data.forEach((res) => {
+              this.VMonthRange.push(res.year_month);
+              this.VYearRange.push(res.year);
+              this.clinicIds.push(res.clinic_id);
+              // this.productionVisitChartTrend1.push(Math.round(res.production));
+              // if (this.trendValue == 'c')
+              //   this.productionVisitChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+              // else
+              //   this.productionVisitChartTrendLabels1.push(res.year);
+            });
 
-        });
+            const vsumClinics = (range: any) =>
+              res.body.data
+                .filter((i) => i.year_month === range)
+                .reduce((a, b) => a + Math.round(b.production), 0);
+            const vsumClinicsVisits = (range: any) =>
+              res.body.data
+                .filter((i) => i.year_month === range)
+                .reduce((a, b) => a + Math.round(b.num_visits), 0);
+            const vsumClinics1 = (range: any) =>
+              res.body.data
+                .filter((i) => i.year === range)
+                .reduce((a, b) => a + Math.round(b.production), 0);
+            const vsumClinics1Visits = (range: any) =>
+              res.body.data
+                .filter((i) => i.year === range)
+                .reduce((a, b) => a + Math.round(b.num_visits), 0);
 
-        const vsumClinics = (range:any) => res.body.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.production), 0);
-        const vsumClinicsVisits = (range:any) => res.body.data.filter(i => i.year_month === range).reduce((a, b) => a + Math.round(b.num_visits), 0);
-        const vsumClinics1 = (range:any) => res.body.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.production), 0);
-        const vsumClinics1Visits = (range:any) => res.body.data.filter(i => i.year === range).reduce((a, b) => a + Math.round(b.num_visits), 0);
-       
-        this.VMonthRange = [...new Set(this.VMonthRange)];
-        this.VYearRange = [...new Set(this.VYearRange)];
-        this.clinicIds = [...new Set(this.clinicIds)];
-        if (this.trendValue == 'c') {
-          this.VMonthRange.forEach(ele => {
-            this.productionVisitChartTrend1.push(Math.round(vsumClinics(ele) / vsumClinicsVisits(ele)));
-            this.productionVisitChartTrendLabels1.push(this.datePipe.transform(ele, 'MMM y'));
-          });
-        }else{
-          this.VYearRange.forEach(ele => {
-            this.productionVisitChartTrend1.push(Math.round(vsumClinics1(ele) / vsumClinics1Visits(ele)));
-            this.productionVisitChartTrendLabels1.push(ele);
-          });
-        }	
-        this.productionVisitChartTrend[0]['data'] = this.productionVisitChartTrend1;
+            this.VMonthRange = [...new Set(this.VMonthRange)];
+            this.VYearRange = [...new Set(this.VYearRange)];
+            this.clinicIds = [...new Set(this.clinicIds)];
+            if (this.trendValue == 'c') {
+              this.VMonthRange.forEach((ele) => {
+                this.productionVisitChartTrend1.push(
+                  Math.round(vsumClinics(ele) / vsumClinicsVisits(ele))
+                );
+                this.productionVisitChartTrendLabels1.push(
+                  this.datePipe.transform(ele, 'MMM y')
+                );
+              });
+            } else {
+              this.VYearRange.forEach((ele) => {
+                this.productionVisitChartTrend1.push(
+                  Math.round(vsumClinics1(ele) / vsumClinics1Visits(ele))
+                );
+                this.productionVisitChartTrendLabels1.push(ele);
+              });
+            }
+            this.productionVisitChartTrend[0]['data'] =
+              this.productionVisitChartTrend1;
 
-        this.productionVisitChartTrendLabels = this.productionVisitChartTrendLabels1;
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+            this.productionVisitChartTrendLabels =
+              this.productionVisitChartTrendLabels1;
+          }
+        },
+        (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
   }
-
-
 
   public netProfitChartTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,
+      data: [],
+      label: '',
+      shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -3493,8 +4266,9 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
-    }];
+      backgroundOverlayMode: 'multiply',
+    },
+  ];
   public netProfitChartTrend1 = [];
   public netProfitChartTrendLabels = [];
   public netProfitChartTrendLabels1 = [];
@@ -3507,34 +4281,43 @@ export class FinancesComponent implements AfterViewInit {
     this.finNetProfitTrendLoader = true;
     var user_id;
     var clinic_id;
-    this.financesService.finNetProfitTrend(this.clinic_id, this.trendValue).subscribe((res) => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      if (res.status == 200) {
-        this.finNetProfitTrendLoader = false;
-        res.body.data.forEach(res => {
-          this.netProfitChartTrend1.push(Math.round(res.val));
-          if (this.trendValue == 'c')
-            this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-          else
-            this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.duration, 'y'));
+    this.financesService
+      .finNetProfitTrend(this.clinic_id, this.trendValue)
+      .subscribe(
+        (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
+            this.finNetProfitTrendLoader = false;
+            res.body.data.forEach((res) => {
+              this.netProfitChartTrend1.push(Math.round(res.val));
+              if (this.trendValue == 'c')
+                this.netProfitChartTrendLabels1.push(
+                  this.datePipe.transform(res.duration, 'MMM y')
+                );
+              else
+                this.netProfitChartTrendLabels1.push(
+                  this.datePipe.transform(res.duration, 'y')
+                );
+            });
+            //this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
 
-        });
-        //this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
-
-        //this.netProfitChartTrendLabels =this.netProfitChartTrendLabels1; 
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+            //this.netProfitChartTrendLabels =this.netProfitChartTrendLabels1;
+          }
+        },
+        (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
   }
 
   public netProfitPercentChartTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,
+      data: [],
+      label: '',
+      shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -3545,8 +4328,9 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
-    }];
+      backgroundOverlayMode: 'multiply',
+    },
+  ];
   public netProfitPercentChartTrend1 = [];
   public netProfitPercentChartTrendLabels = [];
   public netProfitPercentChartTrendLabels1 = [];
@@ -3560,36 +4344,43 @@ export class FinancesComponent implements AfterViewInit {
     this.finNetProfitPercentTrendLoader = true;
     var user_id;
     var clinic_id;
-    this.financesService.finNetProfitPercentTrend(this.clinic_id, this.trendValue).subscribe((res) => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      if (res.status == 200) {
-        this.finNetProfitPercentTrendLoader = false;
+    this.financesService
+      .finNetProfitPercentTrend(this.clinic_id, this.trendValue)
+      .subscribe(
+        (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
+            this.finNetProfitPercentTrendLoader = false;
 
-        res.body.data.forEach(res => {
-          this.netProfitPercentChartTrend1.push(Math.round(res.val));
-          if (this.trendValue == 'c')
-            this.netProfitPercentChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-          else
-            this.netProfitPercentChartTrendLabels1.push(res.duration);
+            res.body.data.forEach((res) => {
+              this.netProfitPercentChartTrend1.push(Math.round(res.val));
+              if (this.trendValue == 'c')
+                this.netProfitPercentChartTrendLabels1.push(
+                  this.datePipe.transform(res.duration, 'MMM y')
+                );
+              else this.netProfitPercentChartTrendLabels1.push(res.duration);
+            });
+            this.netProfitPercentChartTrend[0]['data'] =
+              this.netProfitPercentChartTrend1;
 
-        });
-        this.netProfitPercentChartTrend[0]['data'] = this.netProfitPercentChartTrend1;
-
-        this.netProfitPercentChartTrendLabels = this.netProfitPercentChartTrendLabels1;
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+            this.netProfitPercentChartTrendLabels =
+              this.netProfitPercentChartTrendLabels1;
+          }
+        },
+        (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
   }
-
 
   public netProfitPmsChartTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,
+      data: [],
+      label: '',
+      shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -3600,47 +4391,51 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
-    }];
+      backgroundOverlayMode: 'multiply',
+    },
+  ];
   public netProfitPmsChartTrend1 = [];
   public netProfitPmsChartTrendLabels = [];
   public netProfitPmsChartTrendLabels1 = [];
   public finNetProfitPMSTrendLoader: any;
 
   public checkXeroStatus() {
-    this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe((res) => {
-      if (res.status == 200) {
-        if (res.body.data.xero_connect == 1) {
-          this.xeroConnect = true;
-        }
-        else {
+    this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe(
+      (res) => {
+        if (res.status == 200) {
+          if (res.body.data.xero_connect == 1) {
+            this.xeroConnect = true;
+          } else {
+            this.xeroConnect = false;
+          }
+        } else {
           this.xeroConnect = false;
         }
+      },
+      (error) => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
       }
-      else {
-        this.xeroConnect = false;
-      }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-    });
+    );
   }
 
   checkMyobStatus() {
-    this.clinicSettingsService.checkMyobStatus(this.clinic_id).subscribe((res) => {
-      if (res.status == 200) {
-        if (res.body.data.myob_connect == 1) {
-          this.myobConnect = true;
+    this.clinicSettingsService.checkMyobStatus(this.clinic_id).subscribe(
+      (res) => {
+        if (res.status == 200) {
+          if (res.body.data.myob_connect == 1) {
+            this.myobConnect = true;
+          } else {
+            this.myobConnect = false;
+          }
         } else {
           this.myobConnect = false;
         }
-      } else {
-        this.myobConnect = false;
+      },
+      (error) => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
       }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-    });
+    );
   }
-
 
   public trendxero = false;
   private finNetProfitPMSTrend() {
@@ -3648,35 +4443,39 @@ export class FinancesComponent implements AfterViewInit {
     this.netProfitPmsChartTrendLabels1 = [];
     this.netProfitPmsChartTrendLabels = [];
     this.trendxero = true;
-    this.financesService.finNetProfitPMSTrend(this.clinic_id, this.trendValue, this.connectedwith).subscribe((res) => {
-      this.trendxero = false;
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      if (res.status == 200) {
-        if (res.body.data)
-          res.body.data.forEach(res => {
-            if (res.net_profit != null)
-              this.netProfitChartTrend1.push(Math.round(res.net_profit));
-            else
-              this.netProfitChartTrend1.push(0);
-            if (this.trendValue == 'c') {
-              this.netProfitPmsChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-            } else {
-              this.netProfitPmsChartTrendLabels1.push(res.duration);
-            }
-          });
-        this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
-        this.netProfitPmsChartTrendLabels = this.netProfitPmsChartTrendLabels1;
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+    this.financesService
+      .finNetProfitPMSTrend(this.clinic_id, this.trendValue, this.connectedwith)
+      .subscribe(
+        (res) => {
+          this.trendxero = false;
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
+            if (res.body.data)
+              res.body.data.forEach((res) => {
+                if (res.net_profit != null)
+                  this.netProfitChartTrend1.push(Math.round(res.net_profit));
+                else this.netProfitChartTrend1.push(0);
+                if (this.trendValue == 'c') {
+                  this.netProfitPmsChartTrendLabels1.push(
+                    this.datePipe.transform(res.duration, 'MMM y')
+                  );
+                } else {
+                  this.netProfitPmsChartTrendLabels1.push(res.duration);
+                }
+              });
+            this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
+            this.netProfitPmsChartTrendLabels =
+              this.netProfitPmsChartTrendLabels1;
+          }
+        },
+        (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
   }
-
-
 
   // Added by Hanney Sharma on 09-04-2021 for net profit %
 
@@ -3684,36 +4483,49 @@ export class FinancesComponent implements AfterViewInit {
     this.netProfitPercentChartTrendLabels1 = [];
     this.netProfitPercentChartTrendLabels = [];
     this.trendxero = true;
-    this.financesService.finNetProfitPMSPercentTrend(this.clinic_id, this.trendValue, this.connectedwith).subscribe((res) => {
-      this.trendxero = false;
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      if (res.status == 200) {
-        if (res.body.data) {
-          res.body.data.forEach(res => {
-            if (res.net_profit_percentage != null)
-              this.netProfitPercentChartTrendLabels1.push(Math.round(res.net_profit_percentage));
-            else
-              this.netProfitPercentChartTrendLabels1.push(0);
-            if (this.trendValue == 'c') {
-              this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-            } else {
-              this.netProfitChartTrendLabels1.push(res.duration);
+    this.financesService
+      .finNetProfitPMSPercentTrend(
+        this.clinic_id,
+        this.trendValue,
+        this.connectedwith
+      )
+      .subscribe(
+        (res) => {
+          this.trendxero = false;
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
+            if (res.body.data) {
+              res.body.data.forEach((res) => {
+                if (res.net_profit_percentage != null)
+                  this.netProfitPercentChartTrendLabels1.push(
+                    Math.round(res.net_profit_percentage)
+                  );
+                else this.netProfitPercentChartTrendLabels1.push(0);
+                if (this.trendValue == 'c') {
+                  this.netProfitChartTrendLabels1.push(
+                    this.datePipe.transform(res.duration, 'MMM y')
+                  );
+                } else {
+                  this.netProfitChartTrendLabels1.push(res.duration);
+                }
+              });
+              this.netProfitPercentChartTrend[0]['data'] =
+                this.netProfitPercentChartTrendLabels1;
+              this.netProfitPercentChartTrendLabels =
+                this.netProfitChartTrendLabels1;
             }
-          });
-          this.netProfitPercentChartTrend[0]['data'] = this.netProfitPercentChartTrendLabels1;
-          this.netProfitPercentChartTrendLabels = this.netProfitChartTrendLabels1;
+          }
+        },
+        (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = 'Please Provide Valid Inputs!';
         }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.warningMessage = "Please Provide Valid Inputs!";
-    });
+      );
   }
 
-  public expensesChartTrend: any[] = [
-  ];
+  public expensesChartTrend: any[] = [];
   public expensesChartTrendLabels = [];
   public expensesChartTrendLabels1 = [];
   public expensesChartTrendError: boolean = false;
@@ -3722,111 +4534,132 @@ export class FinancesComponent implements AfterViewInit {
     this.expensesChartTrendLabels = [];
     this.expensesChartTrend = [];
     this.expensesChartTrendError = false;
-    this.financesService.finExpensesByCategoryTrend(this.clinic_id, this.trendValue, this.connectedwith).subscribe((res) => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      if (res.status == 200) {
-        this.expensestrendstats = true;
-        res.body.data.expenses.forEach((result, key) => {
-          if (result.meta_key != 'Total Operating Expenses') {
-            let tempO: any = [];
-            result.expenses.forEach((res) => { tempO.push(res); });
-            let temp = { data: [], label: '', backgroundColor: '', hoverBackgroundColor: '' };
-            temp.data = tempO;
-            temp.backgroundColor = this.doughnutChartColors[key];
-            temp.hoverBackgroundColor = this.doughnutChartColors[key];
-            temp.label = result.meta_key;
-            this.expensesChartTrend.push(temp);
+    this.financesService
+      .finExpensesByCategoryTrend(
+        this.clinic_id,
+        this.trendValue,
+        this.connectedwith
+      )
+      .subscribe(
+        (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
+            this.expensestrendstats = true;
+            res.body.data.expenses.forEach((result, key) => {
+              if (result.meta_key != 'Total Operating Expenses') {
+                let tempO: any = [];
+                result.expenses.forEach((res) => {
+                  tempO.push(res);
+                });
+                let temp = {
+                  data: [],
+                  label: '',
+                  backgroundColor: '',
+                  hoverBackgroundColor: '',
+                };
+                temp.data = tempO;
+                temp.backgroundColor = this.doughnutChartColors[key];
+                temp.hoverBackgroundColor = this.doughnutChartColors[key];
+                temp.label = result.meta_key;
+                this.expensesChartTrend.push(temp);
+              }
+            });
+            this.expensesChartTrendLabels = res.body.data.duration;
           }
-        });
-        this.expensesChartTrendLabels = res.body.data.duration;
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.expensesChartTrendError = true;
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+        },
+        (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.expensesChartTrendError = true;
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
   }
 
   displayProfit(val) {
-    $(".net_profit").hide();
-    $(".profit" + val).show();
+    $('.net_profit').hide();
+    $('.profit' + val).show();
     $('.profit_btn').removeClass('active');
-    $(".netProfit" + val).addClass('active');
+    $('.netProfit' + val).addClass('active');
     this.netProfitDisplayVal = val;
   }
 
   thousands_separators(num) {
-    var num_parts = num.toString().split(".");
-    num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return num_parts.join(".");
+    var num_parts = num.toString().split('.');
+    num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return num_parts.join('.');
   }
 
   getChartsTips() {
-    this.chartstipsService.getCharts(5).subscribe((res) => {
-      if (res.status == 200) {
-        this.charTips = res.body.data;
-      }
-    }, error => { });
+    this.chartstipsService.getCharts(5).subscribe(
+      (res) => {
+        if (res.status == 200) {
+          this.charTips = res.body.data;
+        }
+      },
+      (error) => {}
+    );
   }
   enableDiabaleButton(val) {
-    if(val <= 0 ){
-      $('.sa_tabs_data button').prop('disabled',false);
-    }else{
-      $('.sa_tabs_data button').prop('disabled',true);     
+    if (val <= 0) {
+      $('.sa_tabs_data button').prop('disabled', false);
+    } else {
+      $('.sa_tabs_data button').prop('disabled', true);
     }
   }
 
-
-// ------------------------------------------------------
-  selectedDataFilter(){
+  // ------------------------------------------------------
+  selectedDataFilter() {
     let length = this.single.length;
-    if(length > 15){
+    if (length > 15) {
       length = 15;
     }
-     for(let i=0; i<length; i++){
-       this.selectedData.push(this.single[i]);
-     }
+    for (let i = 0; i < length; i++) {
+      this.selectedData.push(this.single[i]);
+    }
   }
- 
-  unSelectedDataFilter(){
-   for(let i=15; i<this.single.length; i++){
-     this.unSelectedData.push(this.single[i]);
-   }
+
+  unSelectedDataFilter() {
+    for (let i = 15; i < this.single.length; i++) {
+      this.unSelectedData.push(this.single[i]);
+    }
   }
- 
-  removeFromSelected(index){
-    if(this.selectedData.length <= this.lowerLimit){
+
+  removeFromSelected(index) {
+    if (this.selectedData.length <= this.lowerLimit) {
       Swal.fire({
         icon: 'error',
         title: 'Oops....',
-        text: 'Minimum '+this.lowerLimit+' expense account will remain selected',
-      })
-    }else{
+        text:
+          'Minimum ' +
+          this.lowerLimit +
+          ' expense account will remain selected',
+      });
+    } else {
       this.unSelectedData.push(this.selectedData[index]);
-      this.selectedData.splice(index,1);
+      this.selectedData.splice(index, 1);
     }
-   
   }
-  addToSelected(index){
-   if(this.selectedData.length >= this.upperLimit){
-     Swal.fire({
-       icon: 'error',
-       title: 'Oops....',
-       text: 'You can select a maximum of '+ this.upperLimit +' expense accounts at a time',
-     })
-   }else{
-     this.selectedData.push(this.unSelectedData[index]);
-     this.unSelectedData.splice(index,1);
-   }
+  addToSelected(index) {
+    if (this.selectedData.length >= this.upperLimit) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops....',
+        text:
+          'You can select a maximum of ' +
+          this.upperLimit +
+          ' expense accounts at a time',
+      });
+    } else {
+      this.selectedData.push(this.unSelectedData[index]);
+      this.unSelectedData.splice(index, 1);
+    }
   }
- 
-  refreshFinanceChart(){
-   Object.assign(this, {selectedData: [...this.selectedData]});
-   $('.close_modal').click();
-  }
- // -----------------------------------
 
+  refreshFinanceChart() {
+    Object.assign(this, { selectedData: [...this.selectedData] });
+    $('.close_modal').click();
+  }
+  // -----------------------------------
 }
