@@ -794,25 +794,34 @@ expenses_card custom_ngx_cw01">
                   </div>
                 </div>
                 <div class="chart-clinician">
+
+                  <!-- *****************-->
+                  <!-- PRODUCTION TREND -->
+                  <!-- **************** -->
+
                   <canvas
-                    *ngIf="netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  > 0 && finNetProfitTrendLoader == false && showProdByclinic == false"
-                    class="profit1 net_profit" baseChart [datasets]="netProfitPercentChartTrend"
-                    [labels]="netProfitChartTrendLabels" [options]="labelBarOptionsSingleValue" [legend]="false"
+                    *ngIf="netProfitDisplayVal == 1 && totalProductionChartTrendLabels.length  > 0 && finTotalProductionTrendLoader == false && showProdByclinic == false"
+                    class="profit1 net_profit" baseChart [datasets]="totalProductionChartTrend"
+                    [labels]="totalProductionChartTrendLabels" [options]="labelBarOptionsSingleValue" [legend]="false"
                     [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"> </canvas>
                     <canvas
-                    *ngIf="finNetProfitTrendLoader == false && showProdByclinic == true"
-                    class="profit1 net_profit" baseChart [datasets]="netProfitPercentChartTrendMulti"
-                    [labels]="netProfitChartTrendLabelsMulti" [options]="stackedChartOptionsDiscount" [legend]="true"
+                    *ngIf="finTotalProductionTrendLoader == false && showProdByclinic == true"
+                    class="profit1 net_profit" baseChart [datasets]="totalProductionChartTrendMulti"
+                    [labels]="totalProductionChartTrendLabelsMulti" [options]="stackedChartOptionsDiscount" [legend]="true"
                     [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
                     (chartClick)="chartClicked($event)"> </canvas>
                   <div
-                    *ngIf="netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  <= 0 && finNetProfitTrendLoader == false"
+                    *ngIf="netProfitDisplayVal == 1 && totalProductionChartTrendLabels.length  <= 0 && finTotalProductionTrendLoader == false"
                     class="no-data-placeholder">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">You have no production in the selected period</p>
                   </div>
+
+                  <!-- *****************-->
+                  <!-- NET PROFIT TREND -->
+                  <!-- **************** -->
 
                   <canvas *ngIf="(xeroConnect || myobConnect) &&  netProfitDisplayVal == 2 && netProfitPmsChartTrendLabels.length  >0"
                     class="profit2 net_profit" baseChart [datasets]="netProfitChartTrend"
@@ -838,13 +847,17 @@ expenses_card custom_ngx_cw01">
                     <p class="chart-placeholder-text">Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
                   </div>
 
-                  <canvas *ngIf="(xeroConnect || myobConnect) && netProfitDisplayVal == 3 && netProfitPmsChartTrendLabels.length  > 0" #myCanvas2
-                    class="profit3 net_profit" baseChart [datasets]="netProfitPmsChartTrend"
-                    [labels]="netProfitPmsChartTrendLabels" [options]="labelBarOptionsSingleValue1" [legend]="false"
+                  <!-- ********************-->
+                  <!-- NET PROFIT % TREND  -->
+                  <!-- ******************* -->
+
+                  <canvas *ngIf="(xeroConnect || myobConnect) && netProfitDisplayVal == 3 && netProfitPercentChartTrendLabels.length  > 0" #myCanvas2
+                    class="profit3 net_profit" baseChart [datasets]="netProfitPercentChartTrend"
+                    [labels]="netProfitPercentChartTrendLabels" [options]="labelBarOptionsSingleValue1" [legend]="false"
                     [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"> </canvas>
                   <div
-                    *ngIf="(xeroConnect || myobConnect) && netProfitDisplayVal == 3  && netProfitPmsChartTrendLabels.length  <=0 && finNetProfitPMSTrendLoader == false"
+                    *ngIf="(xeroConnect || myobConnect) && netProfitDisplayVal == 3  && netProfitPercentChartTrendLabels.length  <=0 && finNetProfitPercentTrendLoader == false"
                     class="no-data-placeholder">
                     <div class="sa_nodata_div">
                     </div>
@@ -861,6 +874,11 @@ expenses_card custom_ngx_cw01">
                     </div>
                     <p class="chart-placeholder-text">Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
                   </div>  
+
+                  <!-- *****************-->
+                  <!-- COLLECTION TREND -->
+                  <!-- **************** -->
+
                   <canvas
                     *ngIf="!finCollectionTrendLoader && netProfitDisplayVal == 4 && !isAllClinic"
                     class="profit1 net_profit" baseChart [datasets]="collectionChartTrend"
