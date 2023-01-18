@@ -2,3 +2,4 @@
 /node_modules/*
 /dist/*
 /*.log
+/src/environments/environment.staging.ts
