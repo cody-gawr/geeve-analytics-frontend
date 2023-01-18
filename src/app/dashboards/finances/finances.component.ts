@@ -3856,6 +3856,18 @@ export class FinancesComponent implements AfterViewInit {
     { data: [], label: '' },
     { data: [], label: '' },
   ];
+
+  public totalProductionChartTrendMulti: any[] = [
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+    { data: [], label: '' },
+  ];
+
   public totalProductionChartTrend1 = [];
   public totalProductionChartTrendLabels = [];
   public totalProductionChartTrendLabels1 = [];
@@ -3864,7 +3876,7 @@ export class FinancesComponent implements AfterViewInit {
   public PYearRange;
   public cName;
   public cids;
-  public netProfitChartTrendLabelsMulti = [];
+  public totalProductionChartTrendLabelsMulti = [];
   public showProdByclinic: boolean = false;
   private finTotalProductionTrend() {
     this.finTotalProductionTrendLoader = true;
@@ -3878,15 +3890,12 @@ export class FinancesComponent implements AfterViewInit {
       .finTotalProductionTrend(this.clinic_id, this.trendValue)
       .subscribe(
         (res) => {
-          this.netProfitChartTrendLabels = [];
-          this.netProfitChartTrendLabels1 = [];
+
           this.totalProductionChartTrendLabels1 = [];
-          this.netProfitPercentChartTrend1 = [];
           this.PMonthRange = [];
           this.PYearRange = [];
           this.cName = [];
           this.cids = [];
-          this.netProfitPercentChartTrendMulti = [];
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
           if (res.status == 200) {
@@ -3904,17 +3913,6 @@ export class FinancesComponent implements AfterViewInit {
               this.PYearRange.push(res.year);
               this.cName.push(res.clinic_name);
               this.cids.push(res.clinic_id);
-              // this.totalProductionChartTrend1.push(Math.round(res.production));
-              this.netProfitPercentChartTrend1.push(Math.round(res.production));
-              if (this.trendValue == 'c') {
-                //this.totalProductionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-                this.netProfitChartTrendLabels1.push(
-                  this.datePipe.transform(res.year_month, 'MMM y')
-                );
-              } else {
-                // this.totalProductionChartTrendLabels1.push(res.year);
-                this.netProfitChartTrendLabels1.push(res.year);
-              }
             });
             const sumClinics = (range: any) =>
               res.body.data
@@ -3942,17 +3940,12 @@ export class FinancesComponent implements AfterViewInit {
               });
             }
 
-            this.netProfitPercentChartTrend[0]['data'] =
-              this.totalProductionChartTrend1; //this.netProfitPercentChartTrend1;
-            this.netProfitPercentChartTrend[0]['label'] = this.cName;
-            this.netProfitChartTrendLabels =
-              this.totalProductionChartTrendLabels1; //this.netProfitChartTrendLabels1;
             this.totalProductionChartTrend[0]['data'] =
               this.totalProductionChartTrend1;
             this.totalProductionChartTrendLabels =
               this.totalProductionChartTrendLabels1;
-            this.finCollectionTrend();
-
+              this.finCollectionTrend();
+            
             if (
               this.clinic_id.indexOf(',') >= 0 ||
               Array.isArray(this.clinic_id)
@@ -3963,33 +3956,33 @@ export class FinancesComponent implements AfterViewInit {
               res.body.data_combined.forEach((res) => {
                 res.val.forEach((result, key) => {
                   if (
-                    typeof this.netProfitPercentChartTrendMulti[key] ==
+                    typeof this.totalProductionChartTrendMulti[key] ==
                     'undefined'
                   ) {
-                    this.netProfitPercentChartTrendMulti[key] = {
+                    this.totalProductionChartTrendMulti[key] = {
                       data: [],
                       label: '',
                     };
                   }
                   if (
-                    typeof this.netProfitPercentChartTrendMulti[key]['data'] ==
+                    typeof this.totalProductionChartTrendMulti[key]['data'] ==
                     'undefined'
                   ) {
-                    this.netProfitPercentChartTrendMulti[key]['data'] = [];
+                    this.totalProductionChartTrendMulti[key]['data'] = [];
                   }
-                  this.netProfitPercentChartTrendMulti[key]['data'].push(
+                  this.totalProductionChartTrendMulti[key]['data'].push(
                     Math.round(result.production)
                   );
-                  this.netProfitPercentChartTrendMulti[key]['label'] =
+                  this.totalProductionChartTrendMulti[key]['label'] =
                     result.clinic_name;
-                  this.netProfitPercentChartTrendMulti[key]['backgroundColor'] =
+                  this.totalProductionChartTrendMulti[key]['backgroundColor'] =
                     this.doughnutChartColors[key];
-                  this.netProfitPercentChartTrendMulti[key][
+                  this.totalProductionChartTrendMulti[key][
                     'hoverBackgroundColor'
                   ] = this.doughnutChartColors[key];
                 });
               });
-              this.netProfitChartTrendLabelsMulti =
+              this.totalProductionChartTrendLabelsMulti =
                 this.totalProductionChartTrendLabels1;
             }
           }
