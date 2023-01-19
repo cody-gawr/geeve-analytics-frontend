@@ -24,6 +24,7 @@ import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
 import { environment } from '../../../environments/environment';
 import { NgxSmartModalService } from 'ngx-smart-modal';
+import * as _ from 'lodash';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -3890,7 +3891,6 @@ export class FinancesComponent implements AfterViewInit {
       .finTotalProductionTrend(this.clinic_id, this.trendValue)
       .subscribe(
         (res) => {
-
           this.totalProductionChartTrendLabels1 = [];
           this.PMonthRange = [];
           this.PYearRange = [];
@@ -3944,44 +3944,29 @@ export class FinancesComponent implements AfterViewInit {
               this.totalProductionChartTrend1;
             this.totalProductionChartTrendLabels =
               this.totalProductionChartTrendLabels1;
-              this.finCollectionTrend();
-            
+            this.finCollectionTrend();
+
             if (
               this.clinic_id.indexOf(',') >= 0 ||
               Array.isArray(this.clinic_id)
             ) {
-              res.body.data_combined.sort((a, b) =>
-                a.duration === b.duration ? 0 : a.duration > b.duration || -1
-              );
-              res.body.data_combined.forEach((res) => {
-                res.val.forEach((result, key) => {
-                  if (
-                    typeof this.totalProductionChartTrendMulti[key] ==
-                    'undefined'
-                  ) {
-                    this.totalProductionChartTrendMulti[key] = {
-                      data: [],
-                      label: '',
-                    };
-                  }
-                  if (
-                    typeof this.totalProductionChartTrendMulti[key]['data'] ==
-                    'undefined'
-                  ) {
-                    this.totalProductionChartTrendMulti[key]['data'] = [];
-                  }
-                  this.totalProductionChartTrendMulti[key]['data'].push(
-                    Math.round(result.production)
-                  );
-                  this.totalProductionChartTrendMulti[key]['label'] =
-                    result.clinic_name;
-                  this.totalProductionChartTrendMulti[key]['backgroundColor'] =
-                    this.doughnutChartColors[key];
-                  this.totalProductionChartTrendMulti[key][
-                    'hoverBackgroundColor'
-                  ] = this.doughnutChartColors[key];
+              this.totalProductionChartTrendMulti = [];
+              Object.entries(
+                _.chain(res.body.data).groupBy('clinic_id').value()
+              ).forEach(([, items], index) => {
+                const data: number[] = items.map((item) =>
+                  Math.round(parseInt(item.production))
+                );
+                const label = items[0].clinic_name;
+                const backgroundColor = this.doughnutChartColors[index];
+                this.totalProductionChartTrendMulti.push({
+                  data,
+                  label,
+                  backgroundColor,
+                  hoverBackgroundColor: backgroundColor,
                 });
               });
+
               this.totalProductionChartTrendLabelsMulti =
                 this.totalProductionChartTrendLabels1;
             }
