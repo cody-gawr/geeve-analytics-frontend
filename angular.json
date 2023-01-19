@@ -17,10 +17,7 @@
             "main": "src/main.ts",
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
-            "assets": [
-              "src/assets",
-              "src/favicon.ico"
-            ],
+            "assets": ["src/assets", "src/favicon.ico"],
             "allowedCommonJsDependencies": [
               "rxjs/add/operator/filter",
               "rxjs/add/operator/do",
@@ -33,7 +30,7 @@
               "babel-runtime/helpers/createClass",
               "clone-deep",
               "chartjs-plugin-annotation"
-           ],
+            ],
             "styles": [
               "src/styles.css",
               "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
@@ -43,9 +40,7 @@
               "src/assets/styles/style.scss",
               "node_modules/ngx-toastr/toastr.css"
             ],
-            "scripts": [
-              "node_modules/jquery/dist/jquery.min.js"
-            ]
+            "scripts": ["node_modules/jquery/dist/jquery.min.js"]
           },
           "configurations": {
             "production": {
@@ -58,9 +53,9 @@
               "optimization": {
                 "scripts": true,
                 "styles": {
-                     "minify": true,
-                     "inlineCritical": false
-                     },
+                  "minify": true,
+                  "inlineCritical": false
+                },
                 "fonts": true
               },
               "outputHashing": "all",
@@ -87,9 +82,9 @@
               "optimization": {
                 "scripts": true,
                 "styles": {
-                     "minify": true,
-                     "inlineCritical": false
-                     },
+                  "minify": true,
+                  "inlineCritical": false
+                },
                 "fonts": true
               },
               "outputHashing": "all",
@@ -130,9 +125,9 @@
               "optimization": {
                 "scripts": true,
                 "styles": {
-                     "minify": true,
-                     "inlineCritical": false
-                     },
+                  "minify": true,
+                  "inlineCritical": false
+                },
                 "fonts": true
               },
               "outputHashing": "all",
@@ -159,9 +154,9 @@
               "optimization": {
                 "scripts": false,
                 "styles": {
-                     "minify": true,
-                     "inlineCritical": false
-                     },
+                  "minify": true,
+                  "inlineCritical": false
+                },
                 "fonts": true
               },
               "outputHashing": "all",
@@ -188,9 +183,9 @@
               "optimization": {
                 "scripts": true,
                 "styles": {
-                     "minify": true,
-                     "inlineCritical": false
-                     },
+                  "minify": true,
+                  "inlineCritical": false
+                },
                 "fonts": true
               },
               "outputHashing": "all",
@@ -203,7 +198,7 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.staging.ts"
+                  "with": "src/environments/environment.dev.ts"
                 }
               ]
             }
@@ -226,6 +221,9 @@
             },
             "staging": {
               "browserTarget": "material:build:staging"
+            },
+            "dev": {
+              "browserTarget": "material:build:dev"
             }
           }
         },
@@ -242,9 +240,7 @@
             "karmaConfig": "./karma.conf.js",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
-            "scripts": [
-              "node_modules/jquery/dist/jquery.min.js"
-            ],
+            "scripts": ["node_modules/jquery/dist/jquery.min.js"],
             "styles": [
               "src/styles.css",
               "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
@@ -254,22 +250,14 @@
               "src/assets/styles/style.scss",
               "node_modules/ngx-toastr/toastr.css"
             ],
-            "assets": [
-              "src/assets",
-              "src/favicon.ico"
-            ]
+            "assets": ["src/assets", "src/favicon.ico"]
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["src/tsconfig.app.json", "src/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -289,12 +277,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "e2e/tsconfig.e2e.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }

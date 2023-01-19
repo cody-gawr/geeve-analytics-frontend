@@ -1,4 +1,5 @@
 import * as $ from 'jquery';
+import * as _ from 'lodash';
 import {
   Component,
   AfterViewInit,
@@ -2293,7 +2294,6 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
 
   //Predictor Ratio :All Dentist
   private buildChartPredictor() {
-    console.log('buildChartPredictor');
     if (this.clinic_id == null || this.clinic_id == 'null') return true;
     this.buildChartPredictorLoader = true;
     this.clinicianproceeduresService
@@ -2365,73 +2365,140 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
               Array.isArray(this.clinic_id)
             ) {
               this.showmulticlinicPredictor = true;
-              res.body.data.forEach((item) => {});
-              res.body.data_crown_large.forEach((res) => {
-                res.proval.forEach((result, key) => {
-                  if (typeof this.predictedMulti1[key] == 'undefined') {
-                    this.predictedMulti1[key] = { data: [], label: '' };
-                  }
-                  if (typeof this.predictedMulti1[key]['data'] == 'undefined') {
-                    this.predictedMulti1[key]['data'] = [];
-                  }
-                  var total = Math.trunc(result.total);
-                  this.predictedMulti1[key]['data'].push(total);
-                  this.predictedMulti1[key]['label'] = result.desc;
-                  if (key == 0) {
-                    this.ratio1 = this.ratio1 + total;
-                  }
-                  if (key == 1) {
-                    this.ratio2 = this.ratio2 + total;
-                  }
-                });
-                this.multifulratio1 = this.ratio1 + ':' + this.ratio2;
-                this.predictorLabels1.push(res.clinic_name);
+              const types = [
+                'crown-largefilling',
+                'rct-extraction',
+                'rctstarted-rctcompleted',
+              ];
+              this.predictedMulti1 = [
+                { data: [], label: '' },
+                { data: [], label: '' },
+              ];
+              this.predictedMulti2 = [
+                { data: [], label: '' },
+                { data: [], label: '' },
+              ];
+              this.predictedMulti3 = [
+                { data: [], label: '' },
+                { data: [], label: '' },
+              ];
+
+              types.forEach((type) => {
+                res.body.data
+                  .filter((item: any) => item.type == type)
+                  .forEach((ele: any) => {
+                    console.log(ele);
+
+                    switch (type) {
+                      case 'crown-largefilling':
+                        this.predictedMulti1[0]['data'].push(ele.first_value);
+                        this.predictedMulti1[1]['data'].push(ele.second_value);
+                        this.predictedMulti1[0]['label'] =
+                          'Indirect Restorations';
+                        this.predictedMulti1[1]['label'] =
+                          'Large Direct Restorations';
+                        this.ratio1 += parseInt(ele.first_value) || 0;
+                        this.ratio2 += parseInt(ele.second_value) || 0;
+                        this.multifulratio1 = this.ratio1 + ':' + this.ratio2;
+                        this.predictorLabels1.push(ele.clinic_name);
+                        break;
+                      case 'rct-extraction':
+                        this.predictedMulti2[0]['data'].push(ele.first_value);
+                        this.predictedMulti2[1]['data'].push(ele.second_value);
+                        this.predictedMulti2[0]['label'] =
+                          'Indirect Restorations';
+                        this.predictedMulti2[1]['label'] =
+                          'Large Direct Restorations';
+                        this.ratio3 += parseInt(ele.first_value) || 0;
+                        this.ratio4 += parseInt(ele.second_value) || 0;
+                        this.multifulratio2 = this.ratio3 + ':' + this.ratio4;
+                        this.predictorLabels2.push(ele.clinic_name);
+                        break;
+                      case 'rctstarted-rctcompleted':
+                        this.predictedMulti3[0]['data'].push(ele.first_value);
+                        this.predictedMulti3[1]['data'].push(ele.second_value);
+                        this.predictedMulti3[0]['label'] =
+                          'Indirect Restorations';
+                        this.predictedMulti3[1]['label'] =
+                          'Large Direct Restorations';
+                        this.ratio5 += parseInt(ele.first_value) || 0;
+                        this.ratio6 += parseInt(ele.second_value) || 0;
+                        this.multifulratio3 = this.ratio5 + ':' + this.ratio6;
+                        this.predictorLabels3.push(ele.clinic_name);
+                        break;
+                      default:
+                        break;
+                    }
+                  });
               });
-              res.body.data_rct_ext.forEach((res) => {
-                res.proval.forEach((result, key) => {
-                  if (typeof this.predictedMulti2[key] == 'undefined') {
-                    this.predictedMulti2[key] = { data: [], label: '' };
-                  }
-                  if (typeof this.predictedMulti2[key]['data'] == 'undefined') {
-                    this.predictedMulti2[key]['data'] = [];
-                  }
-                  var total = Math.trunc(result.total);
-                  this.predictedMulti2[key]['data'].push(total);
-                  this.predictedMulti2[key]['label'] = result.desc;
-                  if (key == 0) {
-                    this.ratio3 = this.ratio3 + total;
-                  }
-                  if (key == 1) {
-                    this.ratio4 = this.ratio4 + total;
-                  }
-                });
-                this.multifulratio2 = this.ratio3 + ':' + this.ratio4;
-                this.predictorLabels2.push(res.clinic_name);
-              });
-              res.body.data_rctsta_comp.forEach((res) => {
-                res.proval.forEach((result, key) => {
-                  if (typeof this.predictedMulti3[key] == 'undefined') {
-                    this.predictedMulti3[key] = { data: [], label: '' };
-                  }
-                  if (typeof this.predictedMulti3[key]['data'] == 'undefined') {
-                    this.predictedMulti3[key]['data'] = [];
-                  }
-                  var total = Math.trunc(result.total);
-                  this.predictedMulti3[key]['data'].push(total);
-                  this.predictedMulti3[key]['label'] = result.desc;
-                  if (key == 0) {
-                    this.ratio5 = this.ratio5 + total;
-                  }
-                  if (key == 1) {
-                    this.ratio6 = this.ratio6 + total;
-                  }
-                });
-                this.multifulratio3 = this.ratio5 + ':' + this.ratio6;
-                this.predictorLabels3.push(res.clinic_name);
-              });
+
+              // res.body.data_crown_large.forEach((res) => {
+              //   console.log(this.predictedMulti1);
+              //   res.proval.forEach((result, key) => {
+              //     console.log(key);
+              //     if (typeof this.predictedMulti1[key] == 'undefined') {
+              //       this.predictedMulti1[key] = { data: [], label: '' };
+              //     }
+              //     if (typeof this.predictedMulti1[key]['data'] == 'undefined') {
+              //       this.predictedMulti1[key]['data'] = [];
+              //     }
+              //     var total = Math.trunc(result.total);
+              //     this.predictedMulti1[key]['data'].push(total);
+              //     this.predictedMulti1[key]['label'] = result.desc;
+              //     if (key == 0) {
+              //       this.ratio1 = this.ratio1 + total;
+              //     }
+              //     if (key == 1) {
+              //       this.ratio2 = this.ratio2 + total;
+              //     }
+              //   });
+              //   this.multifulratio1 = this.ratio1 + ':' + this.ratio2;
+              //   this.predictorLabels1.push(res.clinic_name);
+              // });
+              // res.body.data_rct_ext.forEach((res) => {
+              //   res.proval.forEach((result, key) => {
+              //     if (typeof this.predictedMulti2[key] == 'undefined') {
+              //       this.predictedMulti2[key] = { data: [], label: '' };
+              //     }
+              //     if (typeof this.predictedMulti2[key]['data'] == 'undefined') {
+              //       this.predictedMulti2[key]['data'] = [];
+              //     }
+              //     var total = Math.trunc(result.total);
+              //     this.predictedMulti2[key]['data'].push(total);
+              //     this.predictedMulti2[key]['label'] = result.desc;
+              //     if (key == 0) {
+              //       this.ratio3 = this.ratio3 + total;
+              //     }
+              //     if (key == 1) {
+              //       this.ratio4 = this.ratio4 + total;
+              //     }
+              //   });
+              //   this.multifulratio2 = this.ratio3 + ':' + this.ratio4;
+              //   this.predictorLabels2.push(res.clinic_name);
+              // });
+              // res.body.data_rctsta_comp.forEach((res) => {
+              //   res.proval.forEach((result, key) => {
+              //     if (typeof this.predictedMulti3[key] == 'undefined') {
+              //       this.predictedMulti3[key] = { data: [], label: '' };
+              //     }
+              //     if (typeof this.predictedMulti3[key]['data'] == 'undefined') {
+              //       this.predictedMulti3[key]['data'] = [];
+              //     }
+              //     var total = Math.trunc(result.total);
+              //     this.predictedMulti3[key]['data'].push(total);
+              //     this.predictedMulti3[key]['label'] = result.desc;
+              //     if (key == 0) {
+              //       this.ratio5 = this.ratio5 + total;
+              //     }
+              //     if (key == 1) {
+              //       this.ratio6 = this.ratio6 + total;
+              //     }
+              //   });
+              //   this.multifulratio3 = this.ratio5 + ':' + this.ratio6;
+              //   this.predictorLabels3.push(res.clinic_name);
+              // });
             } else {
               res.body.data.forEach((item, key) => {
-                console.log(item);
                 var provider = item.provider_name;
                 if (!provider) provider = '';
                 if (key == 0) {
