@@ -433,7 +433,7 @@ export class ClinicSettingsComponent implements OnInit {
   public checkXeroStatus() {
     this.clinicSettingsService.checkXeroStatus(this.id).subscribe(
       (res) => {
-        if (res.status == 200) {
+        if (res.body.message != 'error') {
           if (res.body.data.xero_connect == 1) {
             this.xeroConnect = true;
             this.xeroOrganization = res.body.data.Name;
