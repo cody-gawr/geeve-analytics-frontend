@@ -1546,40 +1546,75 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
             this.stackedChartDataMax = 0;
             this.paGeneralData = [];
             if (res.status == 200) {
-              if (res && res.body.data && res.body.data.length <= 0) {
+              if (res && res.body.data && res.body.data.length == 0) {
               } else {
                 if (
                   this.clinic_id.indexOf(',') >= 0 ||
                   Array.isArray(this.clinic_id)
                 ) {
                   this.showmulticlinicGenPredictor = true;
-                  res.body.data.forEach((res) => {
-                    res.proval.forEach((result, key) => {
-                      if (
-                        typeof this.ItemsPredictorAnalysisGenMulti[key] ==
-                        'undefined'
-                      ) {
-                        this.ItemsPredictorAnalysisGenMulti[key] = {
-                          data: [],
-                          label: '',
-                        };
-                      }
-                      if (
-                        typeof this.ItemsPredictorAnalysisGenMulti[key][
-                          'data'
-                        ] == 'undefined'
-                      ) {
-                        this.ItemsPredictorAnalysisGenMulti[key]['data'] = [];
-                      }
-                      var total = Math.trunc(result.total);
-                      this.ItemsPredictorAnalysisGenMulti[key]['data'].push(
-                        total
-                      );
-                      this.ItemsPredictorAnalysisGenMulti[key]['label'] =
-                        result.desc;
+                  const mapPropAnalysisType: Record<string, string> = {
+                    crowns: 'Crowns & Onlays',
+                    splints: 'Splints',
+                    rct: 'Root Canals',
+                    perio: 'Perio Charts',
+                    extract: 'Surgical Extractions',
+                    ss_crowns: 'Stainless Steel Crowns',
+                    comp_veneers: 'Composite Veneers',
+                    imp_crowns: 'Implant Crowns',
+                    whitening: 'Whitening',
+                  };
+                  Object.keys(mapPropAnalysisType).forEach(() => {
+                    this.ItemsPredictorAnalysisGenMulti.push({
+                      data: [],
+                      label: '',
                     });
-                    this.ItemsPredictorAnalysisGenLabels.push(res.clinic_name);
                   });
+                  _.chain(res.body.data)
+                    .groupBy('clinic_id')
+                    .map((items: any[]) => {
+                      return {
+                        ...items[0],
+                        whitening: _.sumBy(items, (item: any) =>
+                          parseInt(item.whitening)
+                        ),
+                        imp_crowns: _.sumBy(items, (item: any) =>
+                          parseInt(item.imp_crowns)
+                        ),
+                        crowns: _.sumBy(items, (item: any) =>
+                          parseInt(item.crowns)
+                        ),
+                        splints: _.sumBy(items, (item: any) =>
+                          parseInt(item.splints)
+                        ),
+                        rct: _.sumBy(items, (item: any) => parseInt(item.rct)),
+                        perio: _.sumBy(items, (item: any) =>
+                          parseInt(item.perio)
+                        ),
+                        extract: _.sumBy(items, (item: any) =>
+                          parseInt(item.extract)
+                        ),
+                        ss_crowns: _.sumBy(items, (item: any) =>
+                          parseInt(item.ss_crowns)
+                        ),
+                        comp_veneers: _.sumBy(items, (item: any) =>
+                          parseInt(item.comp_veneers)
+                        ),
+                      };
+                    })
+                    .value()
+                    .forEach((item: any) => {
+                      this.ItemsPredictorAnalysisGenLabels.push(
+                        item.clinic_name
+                      );
+                      Object.keys(mapPropAnalysisType).map((key, index) => {
+                        this.ItemsPredictorAnalysisGenMulti[index]['data'].push(
+                          Math.trunc(item[key])
+                        );
+                        this.ItemsPredictorAnalysisGenMulti[index]['label'] =
+                          mapPropAnalysisType[key];
+                      });
+                    });
                 } else {
                   var i = 0;
                   res &&
@@ -2387,8 +2422,6 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                 res.body.data
                   .filter((item: any) => item.type == type)
                   .forEach((ele: any) => {
-                    console.log(ele);
-
                     switch (type) {
                       case 'crown-largefilling':
                         this.predictedMulti1[0]['data'].push(ele.first_value);
@@ -2629,7 +2662,6 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
             this.predictedstackedChartLabels2AvrPre = res.body.total_ta[1];
             this.predictedstackedChartLabels3AvrPre = res.body.total_ta[2];
             res.body.data.forEach((item, key) => {
-              console.log(item);
               var provider = item.provider_name;
               if (!provider) provider = '';
               if (key == 0) {
