@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://staging-api.jeeve.com.au/staging/analytics',
+  apiUrl: 'https://staging-api.jeeve.com.au/staging/node/analytics',
   homeUrl: 'https://staging-analytics.jeeve.com.au/',
   solutionsUrl: 'https://staging-api.jeeve.com.au/staging/solutions',
   stripeKey:
