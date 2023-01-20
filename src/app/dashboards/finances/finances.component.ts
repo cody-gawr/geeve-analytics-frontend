@@ -2537,8 +2537,6 @@ export class FinancesComponent implements AfterViewInit {
   public finProductionByClinicianLoader: any;
   public showClinicByclinic: boolean = false;
   private finProductionByClinician() {
-    var user_id;
-    var clinic_id;
     this.productionChartDatares = [];
     this.finProductionByClinicianLoader = true;
     this.finProductionByClinicianError = false;
@@ -2574,18 +2572,20 @@ export class FinancesComponent implements AfterViewInit {
               res.body.data.sort(
                 (a, b) => b.prod_per_clinician - a.prod_per_clinician
               );
+
               res.body.data.forEach((val) => {
                 if (this.showClinicByclinic == true) {
-                  if (val.production > 0) {
+                  if (parseInt(val.production_per_clinic) > 0) {
                     totalPer =
-                      (Math.round(val.production) * 100) / res.body.total;
+                      (Math.round(val.production_per_clinic) * 100) /
+                      res.body.total;
                     this.productionChartDatares.push(Math.round(totalPer));
                     this.productionChartLabelsres.push(val.clinic_name);
                     this.productionChartTotal =
                       this.productionChartTotal + Math.round(totalPer);
                   }
                 } else {
-                  if (val.prod_per_clinician > 0) {
+                  if (parseInt(val.prod_per_clinician) > 0) {
                     this.productionChartDatares.push(
                       Math.round(val.prod_per_clinician)
                     );
@@ -3544,8 +3544,6 @@ export class FinancesComponent implements AfterViewInit {
     this.productionChartTrendLabels = [];
     this.productionChartTrendLabels1 = [];
     this.productionChartTrend = [];
-    var user_id;
-    var clinic_id;
     this.financesService
       .finProductionByClinicianTrend(this.clinic_id, this.trendValue)
       .subscribe(
