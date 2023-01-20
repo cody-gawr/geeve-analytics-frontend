@@ -410,7 +410,7 @@ usersArray = new Array(this.userRows);
 }
   public checkXeroStatus(close){
     this.setupService.checkXeroStatus(this.clinic_id).subscribe((res) => {
-       if(res.status == 200){
+       if(res.body.message != 'error'){
 
         if(res.body.data.xero_connect == 1) {
           this.xeroConnect = true;
@@ -438,7 +438,7 @@ usersArray = new Array(this.userRows);
   //check status of myob connection
   public checkMyobStatus(close){
     this.setupService.checkMyobStatus(this.clinic_id).subscribe((res) => {
-       if(res.status == 200){
+       if(res.body.message != 'error'){
         if(res.body.data.myob_connect == 1) {
           this.myobConnect = true;
           this.myobOrganization = res.body.data.Name;

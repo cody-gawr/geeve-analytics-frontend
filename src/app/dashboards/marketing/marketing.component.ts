@@ -3020,7 +3020,7 @@ export class MarketingComponent implements AfterViewInit {
   checkXeroStatus() {
     this.newAcqValueError = false;
     this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe((res) => {
-      if (res.status == 200) {
+      if (res.body.message != 'error') {
         if (res.body.data.xero_connect == 1) {
           this.xeroConnect = true;
         } else {
@@ -3036,7 +3036,7 @@ export class MarketingComponent implements AfterViewInit {
   checkMyobStatus() {
     this.newAcqValueError = false;
     this.clinicSettingsService.checkMyobStatus(this.clinic_id).subscribe((res) => {
-      if (res.status == 200) {
+      if (res.body.message != 'error') {
         if (res.body.data.myob_connect == 1) {
           this.myobConnect = true;
         } else {
