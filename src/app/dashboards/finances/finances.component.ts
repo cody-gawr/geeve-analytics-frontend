@@ -3873,8 +3873,6 @@ export class FinancesComponent implements AfterViewInit {
     this.finNetProfitTrendLoader = true;
     this.totalProductionChartTrendLabels1 = [];
     this.totalProductionChartTrend1 = [];
-    var user_id;
-    var clinic_id;
     this.showProdByclinic = false;
     this.financesService
       .finTotalProductionTrend(this.clinic_id, this.trendValue)
