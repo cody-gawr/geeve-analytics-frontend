@@ -4264,8 +4264,6 @@ export class FinancesComponent implements AfterViewInit {
     this.netProfitChartTrendLabels = [];
     this.netProfitChartTrend1 = [];
     this.finNetProfitTrendLoader = true;
-    var user_id;
-    var clinic_id;
     this.financesService
       .finNetProfitTrend(this.clinic_id, this.trendValue)
       .subscribe(
@@ -4435,6 +4433,7 @@ export class FinancesComponent implements AfterViewInit {
           this.trendxero = false;
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
+          console.log(res);
           if (res.status == 200) {
             if (res.body.data)
               res.body.data.forEach((res) => {
@@ -4443,10 +4442,10 @@ export class FinancesComponent implements AfterViewInit {
                 else this.netProfitChartTrend1.push(0);
                 if (this.trendValue == 'c') {
                   this.netProfitPmsChartTrendLabels1.push(
-                    this.datePipe.transform(res.duration, 'MMM y')
+                    this.datePipe.transform(res.year_month, 'MMM y')
                   );
                 } else {
-                  this.netProfitPmsChartTrendLabels1.push(res.duration);
+                  this.netProfitPmsChartTrendLabels1.push(res.year);
                 }
               });
             this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
@@ -4467,7 +4466,10 @@ export class FinancesComponent implements AfterViewInit {
   private finNetProfitPMSPercentTrend() {
     this.netProfitPercentChartTrendLabels1 = [];
     this.netProfitPercentChartTrendLabels = [];
+    const data: number[] = [];
+    const labels: string[] = [];
     this.trendxero = true;
+
     this.financesService
       .finNetProfitPMSPercentTrend(
         this.clinic_id,
@@ -4482,23 +4484,19 @@ export class FinancesComponent implements AfterViewInit {
           if (res.status == 200) {
             if (res.body.data) {
               res.body.data.forEach((res) => {
-                if (res.net_profit_percentage != null)
-                  this.netProfitPercentChartTrendLabels1.push(
-                    Math.round(res.net_profit_percentage)
-                  );
-                else this.netProfitPercentChartTrendLabels1.push(0);
-                if (this.trendValue == 'c') {
-                  this.netProfitChartTrendLabels1.push(
-                    this.datePipe.transform(res.duration, 'MMM y')
-                  );
+                if (res.net_profit_percentage != null) {
+                  data.push(Math.round(res.net_profit_percentage));
                 } else {
-                  this.netProfitChartTrendLabels1.push(res.duration);
+                  data.push(0);
+                }
+                if (this.trendValue == 'c') {
+                  labels.push(this.datePipe.transform(res.duration, 'MMM y'));
+                } else {
+                  labels.push(res.duration);
                 }
               });
-              this.netProfitPercentChartTrend[0]['data'] =
-                this.netProfitPercentChartTrendLabels1;
-              this.netProfitPercentChartTrendLabels =
-                this.netProfitChartTrendLabels1;
+              this.netProfitPercentChartTrend[0]['data'] = data;
+              this.netProfitPercentChartTrendLabels = labels;
             }
           }
         },

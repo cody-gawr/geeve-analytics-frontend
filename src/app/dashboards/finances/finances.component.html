@@ -1916,7 +1916,7 @@
                   ></canvas>
                   <div
                     *ngIf="
-                      productionVisitChartTrendLabels.length <= 0 &&
+                      productionVisitChartTrendLabels.length == 0 &&
                       finProductionPerVisitTrendLoader == false
                     "
                     class="no-data-placeholder"
@@ -2248,7 +2248,7 @@
                       totalProductionCollectionLabel &&
                       totalProductionCollectionLabel.length > 0 &&
                       finCollectionTrendLoader == false &&
-                        finTotalProductionTrendLoader == false
+                      finTotalProductionTrendLoader == false
                     "
                     baseChart
                     [datasets]="totalProductionCollection"
@@ -2266,7 +2266,7 @@
                       totalProductionCollectionLabel &&
                       totalProductionCollectionLabel.length <= 0 &&
                       finCollectionTrendLoader == false &&
-                        finTotalProductionTrendLoader == false
+                      finTotalProductionTrendLoader == false
                     "
                     class="no-data-placeholder"
                   >
