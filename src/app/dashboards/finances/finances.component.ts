@@ -2301,75 +2301,14 @@ export class FinancesComponent implements AfterViewInit {
 
   public netProfitTrendIcon;
   public netProfitTrendTotal;
-  //netProfit
-  private netProfit() {
-    var user_id;
-    var clinic_id;
-    this.netProfitTrendIcon = 'down';
-    this.netProfitTrendTotal = 0;
-    this.financesService
-      .NetProfit(this.clinic_id, this.startDate, this.endDate, this.duration)
-      .subscribe(
-        (res) => {
-          if (res.status == 200) {
-            this.netProfitVal = res.data.total_net_profit;
-            this.netProfitTrendTotal = res.data.total_net_profit_ta;
-            if (this.netProfitVal >= 0) this.netProfitIcon = '';
-            else this.netProfitIcon = '-';
-
-            this.netProfitVal = this.netProfitVal;
-            // console.log(this.netProfitVal,this.netProfitTrendTotal);
-            if (this.netProfitVal >= this.netProfitTrendTotal)
-              this.netProfitTrendIcon = 'up';
-          }
-        },
-        (error) => {
-          this.warningMessage = 'Please Provide Valid Inputs!';
-        }
-      );
-  }
 
   public netProfitProductionTrendIcon;
   public netProfitProductionTrendTotal;
-  //netProfit
-  private netProfitPercent() {
-    var user_id;
-    var clinic_id;
-    this.netProfitProductionTrendIcon = 'down';
-    this.netProfitProductionTrendTotal = 0;
-    this.financesService
-      .NetProfitPercent(
-        this.clinic_id,
-        this.startDate,
-        this.endDate,
-        this.duration
-      )
-      .subscribe(
-        (res) => {
-          if (res.status == 200) {
-            this.netProfitProductionVal = res.body.data;
-            this.netProfitProductionTrendTotal = res.data_ta;
-
-            if (this.netProfitProductionVal >= 0)
-              this.netProfitProductionIcon = '';
-            else this.netProfitProductionIcon = '-';
-            this.netProfitProductionVal = res.body.data;
-            if (
-              this.netProfitProductionVal >= this.netProfitProductionTrendTotal
-            )
-              this.netProfitProductionTrendIcon = 'up';
-          }
-        },
-        (error) => {
-          this.warningMessage = 'Please Provide Valid Inputs!';
-        }
-      );
-  }
 
   public netProfitPmsTrendIcon;
   public netProfitPmsTrendTotal;
   public netprofitstatsError: boolean = false;
-  //netProfit
+
   private netProfitPms() {
     this.netProfitTrendTotal = 0;
     this.netprofitstatsError = false;

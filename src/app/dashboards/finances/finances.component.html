@@ -161,7 +161,6 @@
                 *ngIf="
                   (xeroConnect || myobConnect) &&
                   !netprofitstatsError &&
-                  multipleClinicsSelected === false &&
                   isCompleteMonth
                 "
               >
@@ -185,11 +184,7 @@
                 </div>
               </ng-container>
               <ng-container
-                *ngIf="
-                  !netprofitstats &&
-                  !multipleClinicsSelected &&
-                  (xeroConnect || myobConnect)
-                "
+                *ngIf="!netprofitstats && (xeroConnect || myobConnect)"
               >
                 <div class="stats-icon">
                   <img src="../assets/images/net-profit.png" alt />
@@ -202,26 +197,19 @@
                   </h1>
                 </div>
               </ng-container>
-              <div
-                *ngIf="
-                  !xeroConnect &&
-                  !myobConnect &&
-                  multipleClinicsSelected === false
-                "
-                class="w-100"
-              >
+              <div *ngIf="!xeroConnect && !myobConnect" class="w-100">
                 <div class="sa_nodata_div no-found-data">
                   <p>Please ensure your Xero/MYOB account is connected</p>
                 </div>
               </div>
-              <div *ngIf="multipleClinicsSelected === true" class="w-100">
+              <!-- <div *ngIf="multipleClinicsSelected === true" class="w-100">
                 <div class="sa_nodata_div no-found-data">
                   <p>
                     Xero/MYOB charts can only be viewed per clinic - please
                     select one clinic to view
                   </p>
                 </div>
-              </div>
+              </div> -->
               <div
                 *ngIf="
                   !multipleClinicsSelected &&
