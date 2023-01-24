@@ -1759,19 +1759,19 @@
                       Please connect to Xero/MYOB to display this chart
                     </p>
                   </div>
-                  <div
-                    *ngIf="
-                      multipleClinicsSelected == true &&
-                      netProfitDisplayVal == 3
-                    "
-                    class="no-data-placeholder"
+                  <canvas
+                    *ngIf="isMultipleNetProfitPercentTrendChartVisible"
+                    class="profit1 net_profit"
+                    baseChart
+                    [datasets]="netProfitPmsPercentChartTrendMulti"
+                    [labels]="netProfitPmsChartTrendLabels"
+                    [options]="stackedChartOptionsDiscount"
+                    [legend]="true"
+                    [chartType]="stackedChartType"
+                    (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)"
                   >
-                    <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">
-                      Xero/MYOB charts can only be viewed per clinic - please
-                      select one clinic to view
-                    </p>
-                  </div>
+                  </canvas>
 
                   <!-- *****************-->
                   <!-- COLLECTION TREND -->

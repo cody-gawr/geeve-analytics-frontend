@@ -2756,6 +2756,7 @@ export class FinancesComponent implements AfterViewInit {
       )
       .subscribe(
         (res) => {
+          console.log(res);
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
           this.finCollection();
@@ -2768,6 +2769,7 @@ export class FinancesComponent implements AfterViewInit {
             },
           ];
           if (res.status == 200) {
+            this.productionstats = true;
             this.finTotalProductionLoader = false;
             this.totalProductionVal = res.body.total
               ? Math.round(res.body.total)
@@ -2783,25 +2785,30 @@ export class FinancesComponent implements AfterViewInit {
               Array.isArray(this.clinic_id)
             ) {
               this.isAllClinic = true;
-              res.body.data.forEach((item, ind) => {
-                this.totalProductionCollection1[ind] = { data: [], label: '' };
-              });
+              const collection: any[] = [];
 
-              res.body.data.forEach((item, ind) => {
-                this.totalProductionCollection1[ind]['data'].push(
-                  Math.round(item.production)
-                );
-                this.totalProductionCollection1[ind]['label'] =
-                  item.clinic_name;
-                this.totalProductionCollection1[ind]['backgroundColor'] =
-                  this.doughnutChartColors[ind];
-                this.totalProductionCollection1[ind]['hoverBackgroundColor'] =
-                  this.doughnutChartColors[ind];
+              res.body.data.forEach((item, idx) => {
+                collection.push({
+                  data: [Math.round(item.production)],
+                  label: item.clinic_name,
+                  backgroundColor: this.doughnutChartColors[idx],
+                  hoverBackgroundColor: this.doughnutChartColors[idx],
+                });
+                // this.totalProductionCollection1[ind]['data'].push(
+                //   Math.round(item.production)
+                // );
+                // this.totalProductionCollection1[ind]['label'] =
+                //   item.clinic_name;
+                // this.totalProductionCollection1[ind]['backgroundColor'] =
+                //   this.doughnutChartColors[ind];
+                // this.totalProductionCollection1[ind]['hoverBackgroundColor'] =
+                //   this.doughnutChartColors[ind];
               });
+              this.totalProductionCollection1 = collection;
+              console.log(collection);
             } else {
               this.isAllClinic = false;
               this.totalProductionCollection1[0]['data'] = [];
-              this.productionstats = true;
 
               if (res.body.data[0])
                 this.totalProductionLabel = res.body.data[0].provider_name;
@@ -3668,8 +3675,6 @@ export class FinancesComponent implements AfterViewInit {
     this.discountsChartTrendMultiLabels1 = [];
     this.discountsChartTrend1 = [];
     this.finTotalDiscountsTrendLoader = true;
-    var user_id;
-    var clinic_id;
     this.showByclinic = false;
     this.discountsChartTrendMulti = [];
     this.financesService
@@ -3849,6 +3854,11 @@ export class FinancesComponent implements AfterViewInit {
     { data: [], label: '' },
   ];
 
+  public netProfitPmsPercentChartTrendMulti: any[] = [
+    { data: [], label: '' },
+    { data: [], label: '' },
+  ];
+
   public totalProductionChartTrend1 = [];
   public totalProductionChartTrendLabels = [];
   public totalProductionChartTrendLabels1 = [];
@@ -3874,6 +3884,15 @@ export class FinancesComponent implements AfterViewInit {
       (this.xeroConnect || this.myobConnect) &&
       this.multipleClinicsSelected &&
       this.netProfitDisplayVal == 2 &&
+      this.netProfitPercentChartTrendLabels.length > 0
+    );
+  }
+
+  public get isMultipleNetProfitPercentTrendChartVisible(): boolean {
+    return (
+      (this.xeroConnect || this.myobConnect) &&
+      this.multipleClinicsSelected &&
+      this.netProfitDisplayVal == 3 &&
       this.netProfitPercentChartTrendLabels.length > 0
     );
   }
@@ -4454,7 +4473,6 @@ export class FinancesComponent implements AfterViewInit {
           this.trendxero = false;
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
-          console.log(res.body);
           if (res.status == 200) {
             if (res.body.data) {
               res.body.data.forEach((res) => {
