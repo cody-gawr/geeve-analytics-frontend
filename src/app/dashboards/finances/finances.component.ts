@@ -4395,10 +4395,9 @@ export class FinancesComponent implements AfterViewInit {
   // Added by Hanney Sharma on 09-04-2021 for net profit %
 
   private finNetProfitPMSPercentTrend() {
-    this.netProfitPercentChartTrendLabels1 = [];
     this.netProfitPercentChartTrendLabels = [];
     const data: number[] = [];
-    const labels: string[] = [];
+    let labels: string[] = [];
     this.trendxero = true;
 
     this.financesService
@@ -4414,19 +4413,44 @@ export class FinancesComponent implements AfterViewInit {
           this.enableDiabaleButton(this.Apirequest);
           if (res.status == 200) {
             if (res.body.data) {
-              res.body.data.forEach((res) => {
-                if (res.net_profit_percentage != null) {
-                  data.push(Math.round(res.net_profit_percentage));
-                } else {
-                  data.push(0);
-                }
-                if (this.trendValue == 'c') {
-                  labels.push(this.datePipe.transform(res.duration, 'MMM y'));
-                } else {
-                  labels.push(res.duration);
-                }
-              });
-              this.netProfitPercentChartTrend[0]['data'] = data;
+              if (this.multipleClinicsSelected) {
+                Object.entries(
+                  _.chain(res.body.data).groupBy('clinic_id').value()
+                ).forEach(([, items], index) => {
+                  const data: number[] = items.map((item) =>
+                    Math.round(parseInt(item.net_profit_percent))
+                  );
+                  const label = items[0].clinic_name;
+                  const backgroundColor = this.doughnutChartColors[index];
+                  this.netProfitPmsPercentChartTrendMulti.push({
+                    data,
+                    label,
+                    backgroundColor,
+                    hoverBackgroundColor: backgroundColor,
+                  });
+                  labels = items.map((item) => {
+                    return this.trendValue == 'c'
+                      ? this.datePipe.transform(item.year_month, 'MMM y')
+                      : item.year;
+                  });
+                });
+                console.log(this.netProfitPmsPercentChartTrendMulti);
+              } else {
+                res.body.data.forEach((res) => {
+                  if (res.net_profit_percentage != null) {
+                    data.push(Math.round(res.net_profit_percentage));
+                  } else {
+                    data.push(0);
+                  }
+                  if (this.trendValue == 'c') {
+                    labels.push(this.datePipe.transform(res.duration, 'MMM y'));
+                  } else {
+                    labels.push(res.duration);
+                  }
+                });
+                this.netProfitPercentChartTrend[0]['data'] = data;
+              }
+
               this.netProfitPercentChartTrendLabels = labels;
             }
           }

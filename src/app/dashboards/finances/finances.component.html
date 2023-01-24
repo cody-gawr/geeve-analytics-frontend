@@ -1691,6 +1691,7 @@
                     *ngIf="
                       (xeroConnect || myobConnect) &&
                       netProfitDisplayVal == 3 &&
+                      !multipleClinicsSelected &&
                       netProfitPercentChartTrendLabels.length > 0
                     "
                     #myCanvas2
@@ -1710,7 +1711,7 @@
                     *ngIf="
                       (xeroConnect || myobConnect) &&
                       netProfitDisplayVal == 3 &&
-                      netProfitPercentChartTrendLabels.length <= 0 &&
+                      netProfitPercentChartTrendLabels.length == 0 &&
                       finNetProfitPercentTrendLoader == false
                     "
                     class="no-data-placeholder"
@@ -1722,10 +1723,11 @@
                   </div>
                   <div
                     *ngIf="
-                      !xeroConnect &&
-                      !myobConnect &&
-                      netProfitDisplayVal == 3 &&
-                      multipleClinicsSelected == false
+                      !(
+                        xeroConnect ||
+                        myobConnect ||
+                        multipleClinicsSelected
+                      ) && netProfitDisplayVal == 3
                     "
                     class="no-data-placeholder"
                   >
@@ -1739,8 +1741,8 @@
                     class="profit1 net_profit"
                     baseChart
                     [datasets]="netProfitPmsPercentChartTrendMulti"
-                    [labels]="netProfitPmsChartTrendLabels"
-                    [options]="stackedChartOptionsDiscount"
+                    [labels]="netProfitPercentChartTrendLabels"
+                    [options]="labelBarPercentOptionsStacked"
                     [legend]="true"
                     [chartType]="stackedChartType"
                     (chartHover)="chartHovered($event)"
