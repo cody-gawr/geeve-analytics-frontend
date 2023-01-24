@@ -2243,8 +2243,7 @@ export class FinancesComponent implements AfterViewInit {
       if (
         this.connectedwith != '' &&
         this.connectedwith != 'none' &&
-        this.connectedwith != undefined &&
-        this.multipleClinicsSelected == false
+        this.connectedwith != undefined
       ) {
         this.Apirequest = 8;
         this.productionstats = false;
@@ -2633,8 +2632,6 @@ export class FinancesComponent implements AfterViewInit {
   public showClinicBar: boolean = false;
   //finProductionByClinician
   private finTotalDiscounts() {
-    var user_id;
-    var clinic_id;
     this.totalDiscountChartLabels = [];
     this.totalDiscountChartLabelsClinics = [];
     this.totalDiscountChartData = [];
@@ -2750,8 +2747,6 @@ export class FinancesComponent implements AfterViewInit {
     this.totalProductionTrendIcon = 'down';
     this.totalProductionTrendVal = 0;
     this.netProfitProductionVal = 0;
-    var user_id;
-    var clinic_id;
     this.financesService
       .finTotalProduction(
         this.clinic_id,
@@ -2847,8 +2842,6 @@ export class FinancesComponent implements AfterViewInit {
 
   //Collection
   private finCollection() {
-    var user_id;
-    var clinic_id;
     this.finCollectionLoader = true;
     this.collectionTrendIcon = 'down';
     this.collectionTrendVal = 0;
@@ -2959,8 +2952,6 @@ export class FinancesComponent implements AfterViewInit {
     this.productionVal = 0;
     this.ProductionTrend1 = [];
     this.ProductionTrendLabels1 = [];
-    var user_id;
-    var clinic_id;
     this.productionTrendIcon = 'down';
     this.productionTrendVal = 0;
     this.financesService
@@ -3016,8 +3007,6 @@ export class FinancesComponent implements AfterViewInit {
 
   //finOverdueAccounts
   private finOverdueAccounts() {
-    var user_id;
-    var clinic_id;
     this.finOverdueAccountsLoader = true;
     this.financesService
       .finOverdueAccounts(
@@ -3491,8 +3480,7 @@ export class FinancesComponent implements AfterViewInit {
       if (
         this.connectedwith != '' &&
         this.connectedwith != 'none' &&
-        this.connectedwith != undefined &&
-        this.multipleClinicsSelected == false
+        this.connectedwith != undefined
       ) {
         this.Apirequest = 8;
         this.expensestrendstats = false;
@@ -3787,8 +3775,6 @@ export class FinancesComponent implements AfterViewInit {
     this.overdueChartTrendLabels1 = [];
     this.overdueChartTrendLabels = [];
     this.overdueChartTrend1 = [];
-    var user_id;
-    var clinic_id;
     this.financesService
       .finOverdueAccountsTrend(this.clinic_id, this.trendValue)
       .subscribe(
@@ -3858,6 +3844,11 @@ export class FinancesComponent implements AfterViewInit {
     { data: [], label: '' },
   ];
 
+  public netProfitPmsChartTrendMulti: any[] = [
+    { data: [], label: '' },
+    { data: [], label: '' },
+  ];
+
   public totalProductionChartTrend1 = [];
   public totalProductionChartTrendLabels = [];
   public totalProductionChartTrendLabels1 = [];
@@ -3868,6 +3859,42 @@ export class FinancesComponent implements AfterViewInit {
   public cids;
   public totalProductionChartTrendLabelsMulti = [];
   public showProdByclinic: boolean = false;
+
+  public get isSingleNetProfitTrendChartVisible(): boolean {
+    return (
+      (this.xeroConnect || this.myobConnect) &&
+      !this.multipleClinicsSelected &&
+      this.netProfitDisplayVal == 2 &&
+      this.netProfitPercentChartTrendLabels.length > 0
+    );
+  }
+
+  public get isMultipleNetProfitTrendChartVisible(): boolean {
+    return (
+      (this.xeroConnect || this.myobConnect) &&
+      this.multipleClinicsSelected &&
+      this.netProfitDisplayVal == 2 &&
+      this.netProfitPercentChartTrendLabels.length > 0
+    );
+  }
+
+  public get hasNoSingleOrMultipleNetProfitPercentChartTrend(): boolean {
+    return (
+      (this.xeroConnect || this.myobConnect) &&
+      this.netProfitDisplayVal == 2 &&
+      !this.finNetProfitPercentTrendLoader &&
+      this.netProfitPercentChartTrendLabels.length == 0
+    );
+  }
+
+  public get isXeroOrMyobDisconnected(): boolean {
+    return (
+      !(this.xeroConnect || this.myobConnect) &&
+      this.netProfitDisplayVal == 2 &&
+      !this.multipleClinicsSelected
+    );
+  }
+
   private finTotalProductionTrend() {
     this.finTotalProductionTrendLoader = true;
     this.finNetProfitTrendLoader = true;
@@ -3997,8 +4024,7 @@ export class FinancesComponent implements AfterViewInit {
     this.finCollectionTrendLoader = true;
     this.collectionChartTrendLabels1 = [];
     this.collectionChartTrend1 = [];
-    var user_id;
-    var clinic_id;
+
     this.financesService
       .finCollectionTrend(this.clinic_id, this.trendValue)
       .subscribe(
@@ -4063,7 +4089,6 @@ export class FinancesComponent implements AfterViewInit {
               //     ] = this.doughnutChartColors[key];
               //   });
               // });
-              console.log(this.collectionChartTrendMultiData);
             } else {
               this.isAllClinic = false;
             }
@@ -4259,43 +4284,6 @@ export class FinancesComponent implements AfterViewInit {
   public netProfitChartTrendLabels1 = [];
   public finNetProfitTrendLoader: any;
 
-  private finNetProfitTrend() {
-    this.netProfitChartTrendLabels1 = [];
-    this.netProfitChartTrendLabels = [];
-    this.netProfitChartTrend1 = [];
-    this.finNetProfitTrendLoader = true;
-    this.financesService
-      .finNetProfitTrend(this.clinic_id, this.trendValue)
-      .subscribe(
-        (res) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          if (res.status == 200) {
-            this.finNetProfitTrendLoader = false;
-            res.body.data.forEach((res) => {
-              this.netProfitChartTrend1.push(Math.round(res.val));
-              if (this.trendValue == 'c')
-                this.netProfitChartTrendLabels1.push(
-                  this.datePipe.transform(res.duration, 'MMM y')
-                );
-              else
-                this.netProfitChartTrendLabels1.push(
-                  this.datePipe.transform(res.duration, 'y')
-                );
-            });
-            //this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
-
-            //this.netProfitChartTrendLabels =this.netProfitChartTrendLabels1;
-          }
-        },
-        (error) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.warningMessage = 'Please Provide Valid Inputs!';
-        }
-      );
-  }
-
   public netProfitPercentChartTrend: any[] = [
     {
       data: [],
@@ -4317,47 +4305,7 @@ export class FinancesComponent implements AfterViewInit {
   public netProfitPercentChartTrend1 = [];
   public netProfitPercentChartTrendLabels = [];
   public netProfitPercentChartTrendLabels1 = [];
-  public finNetProfitPercentTrendLoader: any;
-
-  private finNetProfitPercentTrend() {
-    this.netProfitPercentChartTrendLabels1 = [];
-    this.netProfitPercentChartTrendLabels = [];
-
-    this.netProfitPercentChartTrend1 = [];
-    this.finNetProfitPercentTrendLoader = true;
-    var user_id;
-    var clinic_id;
-    this.financesService
-      .finNetProfitPercentTrend(this.clinic_id, this.trendValue)
-      .subscribe(
-        (res) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          if (res.status == 200) {
-            this.finNetProfitPercentTrendLoader = false;
-
-            res.body.data.forEach((res) => {
-              this.netProfitPercentChartTrend1.push(Math.round(res.val));
-              if (this.trendValue == 'c')
-                this.netProfitPercentChartTrendLabels1.push(
-                  this.datePipe.transform(res.duration, 'MMM y')
-                );
-              else this.netProfitPercentChartTrendLabels1.push(res.duration);
-            });
-            this.netProfitPercentChartTrend[0]['data'] =
-              this.netProfitPercentChartTrend1;
-
-            this.netProfitPercentChartTrendLabels =
-              this.netProfitPercentChartTrendLabels1;
-          }
-        },
-        (error) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.warningMessage = 'Please Provide Valid Inputs!';
-        }
-      );
-  }
+  public finNetProfitPercentTrendLoader: boolean;
 
   public netProfitPmsChartTrend: any[] = [
     {
@@ -4423,7 +4371,7 @@ export class FinancesComponent implements AfterViewInit {
   public trendxero = false;
   private finNetProfitPMSTrend() {
     this.netProfitChartTrend1 = [];
-    this.netProfitPmsChartTrendLabels1 = [];
+    let labels: string[] = [];
     this.netProfitPmsChartTrendLabels = [];
     this.trendxero = true;
     this.financesService
@@ -4433,24 +4381,49 @@ export class FinancesComponent implements AfterViewInit {
           this.trendxero = false;
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
-          console.log(res);
+
           if (res.status == 200) {
-            if (res.body.data)
-              res.body.data.forEach((res) => {
-                if (res.net_profit != null)
-                  this.netProfitChartTrend1.push(Math.round(res.net_profit));
-                else this.netProfitChartTrend1.push(0);
-                if (this.trendValue == 'c') {
-                  this.netProfitPmsChartTrendLabels1.push(
-                    this.datePipe.transform(res.year_month, 'MMM y')
+            if (res.body.data) {
+              if (this.multipleClinicsSelected) {
+                this.netProfitPmsChartTrendMulti = [];
+
+                Object.entries(
+                  _.chain(res.body.data).groupBy('clinic_id').value()
+                ).forEach(([, items], index) => {
+                  const data: number[] = items.map((item) =>
+                    Math.round(parseInt(item.net_profit))
                   );
-                } else {
-                  this.netProfitPmsChartTrendLabels1.push(res.year);
-                }
-              });
-            this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
-            this.netProfitPmsChartTrendLabels =
-              this.netProfitPmsChartTrendLabels1;
+                  const label = items[0].clinic_name;
+                  const backgroundColor = this.doughnutChartColors[index];
+                  this.netProfitPmsChartTrendMulti.push({
+                    data,
+                    label,
+                    backgroundColor,
+                    hoverBackgroundColor: backgroundColor,
+                  });
+                  labels = items.map((item) => {
+                    return this.trendValue == 'c'
+                      ? this.datePipe.transform(item.year_month, 'MMM y')
+                      : item.year;
+                  });
+                });
+              } else {
+                res.body.data.forEach((res) => {
+                  if (res.net_profit != null)
+                    this.netProfitChartTrend1.push(Math.round(res.net_profit));
+                  else this.netProfitChartTrend1.push(0);
+                  if (this.trendValue == 'c') {
+                    labels.push(
+                      this.datePipe.transform(res.year_month, 'MMM y')
+                    );
+                  } else {
+                    labels.push(res.year);
+                  }
+                });
+                this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
+              }
+            }
+            this.netProfitPmsChartTrendLabels = labels;
           }
         },
         (error) => {
@@ -4481,6 +4454,7 @@ export class FinancesComponent implements AfterViewInit {
           this.trendxero = false;
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
+          console.log(res.body);
           if (res.status == 200) {
             if (res.body.data) {
               res.body.data.forEach((res) => {

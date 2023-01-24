@@ -1646,7 +1646,7 @@
                   <div
                     *ngIf="
                       netProfitDisplayVal == 1 &&
-                      totalProductionChartTrendLabels.length <= 0 &&
+                      totalProductionChartTrendLabels.length == 0 &&
                       finTotalProductionTrendLoader == false
                     "
                     class="no-data-placeholder"
@@ -1662,11 +1662,7 @@
                   <!-- **************** -->
 
                   <canvas
-                    *ngIf="
-                      (xeroConnect || myobConnect) &&
-                      netProfitDisplayVal == 2 &&
-                      netProfitPmsChartTrendLabels.length > 0
-                    "
+                    *ngIf="isSingleNetProfitTrendChartVisible"
                     class="profit2 net_profit"
                     baseChart
                     [datasets]="netProfitChartTrend"
@@ -1679,27 +1675,9 @@
                     (chartClick)="chartClicked($event)"
                   >
                   </canvas>
+
                   <div
-                    *ngIf="
-                      (xeroConnect || myobConnect) &&
-                      netProfitDisplayVal == 2 &&
-                      netProfitPercentChartTrendLabels.length <= 0 &&
-                      finNetProfitPercentTrendLoader == false
-                    "
-                    class="no-data-placeholder"
-                  >
-                    <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">
-                      You have no net profit in the selected period
-                    </p>
-                  </div>
-                  <div
-                    *ngIf="
-                      !xeroConnect &&
-                      !myobConnect &&
-                      netProfitDisplayVal == 2 &&
-                      multipleClinicsSelected == false
-                    "
+                    *ngIf="isXeroOrMyobDisconnected"
                     class="no-data-placeholder"
                   >
                     <div class="sa_nodata_div"></div>
@@ -1708,18 +1686,27 @@
                     </p>
                   </div>
                   <div
-                    *ngIf="
-                      multipleClinicsSelected == true &&
-                      netProfitDisplayVal == 2
-                    "
+                    *ngIf="hasNoSingleOrMultipleNetProfitPercentChartTrend"
                     class="no-data-placeholder"
                   >
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">
-                      Xero/MYOB charts can only be viewed per clinic - please
-                      select one clinic to view
+                      You have no net profit in the selected period
                     </p>
                   </div>
+                  <canvas
+                    *ngIf="isMultipleNetProfitTrendChartVisible"
+                    class="profit1 net_profit"
+                    baseChart
+                    [datasets]="netProfitPmsChartTrendMulti"
+                    [labels]="netProfitPmsChartTrendLabels"
+                    [options]="stackedChartOptionsDiscount"
+                    [legend]="true"
+                    [chartType]="stackedChartType"
+                    (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)"
+                  >
+                  </canvas>
 
                   <!-- ********************-->
                   <!-- NET PROFIT % TREND  -->
