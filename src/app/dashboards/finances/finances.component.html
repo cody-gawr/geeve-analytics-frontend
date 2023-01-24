@@ -290,7 +290,6 @@
                 *ngIf="
                   (xeroConnect || myobConnect) &&
                   !netprofitPerError &&
-                  multipleClinicsSelected === false &&
                   isCompleteMonth
                 "
               >
@@ -320,11 +319,7 @@
                 </div>
               </ng-container>
               <ng-container
-                *ngIf="
-                  !netprofitpercentstats &&
-                  !multipleClinicsSelected &&
-                  (xeroConnect || myobConnect)
-                "
+                *ngIf="!netprofitpercentstats && (xeroConnect || myobConnect)"
               >
                 <div class="stats-icon">
                   <img src="../assets/images/net-profit-PMS.png" alt />
@@ -337,31 +332,23 @@
                   </h1>
                 </div>
               </ng-container>
-              <div
-                *ngIf="
-                  !xeroConnect &&
-                  !myobConnect &&
-                  multipleClinicsSelected === false
-                "
-                class="w-100"
-              >
+              <div *ngIf="!xeroConnect && !myobConnect" class="w-100">
                 <div class="sa_nodata_div no-found-data">
                   <p>Please ensure your Xero/MYOB account is connected</p>
                 </div>
               </div>
-              <div *ngIf="multipleClinicsSelected === true" class="w-100">
+              <!-- <div *ngIf="multipleClinicsSelected === true" class="w-100">
                 <div class="sa_nodata_div no-found-data">
                   <p>
                     Xero/MYOB charts can only be viewed per clinic - please
                     select one clinic to view
                   </p>
                 </div>
-              </div>
+              </div> -->
               <div
                 *ngIf="
                   !multipleClinicsSelected &&
                   (xeroConnect || myobConnect) &&
-                  netprofitpercentstats &&
                   !isCompleteMonth
                 "
                 class="w-100"
