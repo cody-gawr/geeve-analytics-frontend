@@ -1691,7 +1691,6 @@
                     *ngIf="
                       (xeroConnect || myobConnect) &&
                       netProfitDisplayVal == 3 &&
-                      !multipleClinicsSelected &&
                       netProfitPercentChartTrendLabels.length > 0
                     "
                     #myCanvas2
@@ -1736,19 +1735,6 @@
                       Please connect to Xero/MYOB to display this chart
                     </p>
                   </div>
-                  <canvas
-                    *ngIf="isMultipleNetProfitPercentTrendChartVisible"
-                    class="profit1 net_profit"
-                    baseChart
-                    [datasets]="netProfitPmsPercentChartTrendMulti"
-                    [labels]="netProfitPercentChartTrendLabels"
-                    [options]="labelBarPercentOptionsStacked"
-                    [legend]="true"
-                    [chartType]="stackedChartType"
-                    (chartHover)="chartHovered($event)"
-                    (chartClick)="chartClicked($event)"
-                  >
-                  </canvas>
 
                   <!-- *****************-->
                   <!-- COLLECTION TREND -->

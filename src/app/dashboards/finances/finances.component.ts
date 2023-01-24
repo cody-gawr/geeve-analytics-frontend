@@ -2695,7 +2695,6 @@ export class FinancesComponent implements AfterViewInit {
       )
       .subscribe(
         (res) => {
-          console.log(res);
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
           this.finCollection();
@@ -2744,7 +2743,6 @@ export class FinancesComponent implements AfterViewInit {
                 //   this.doughnutChartColors[ind];
               });
               this.totalProductionCollection1 = collection;
-              console.log(collection);
             } else {
               this.isAllClinic = false;
               this.totalProductionCollection1[0]['data'] = [];
@@ -3973,7 +3971,7 @@ export class FinancesComponent implements AfterViewInit {
   public collectionChartTrend1 = [];
   public collectionChartTrendLabels = [];
   public collectionChartTrendLabels1 = [];
-  public collectionChartTrendMultiData = [];
+  public collectionChartTrendMultiData: any[] = [];
   public collectionChartTrendMultiLabels = [];
   public finCollectionTrendLoader: boolean;
   public CMonthRange;
@@ -4396,10 +4394,7 @@ export class FinancesComponent implements AfterViewInit {
 
   private finNetProfitPMSPercentTrend() {
     this.netProfitPercentChartTrendLabels = [];
-    const data: number[] = [];
-    let labels: string[] = [];
     this.trendxero = true;
-
     this.financesService
       .finNetProfitPMSPercentTrend(
         this.clinic_id,
@@ -4411,41 +4406,43 @@ export class FinancesComponent implements AfterViewInit {
           this.trendxero = false;
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
+          this.netProfitPmsPercentChartTrendMulti = [];
+          const data: number[] = [];
+          let labels: string[] = [];
           if (res.status == 200) {
             if (res.body.data) {
               if (this.multipleClinicsSelected) {
+                const totalCollection = _.chain(res.body.data)
+                  .sumBy((item: any) => Number(item.collection) || 0)
+                  .value();
+
                 Object.entries(
-                  _.chain(res.body.data).groupBy('clinic_id').value()
-                ).forEach(([, items], index) => {
-                  const data: number[] = items.map((item) =>
-                    Math.round(parseInt(item.net_profit_percent))
+                  _.chain(res.body.data)
+                    .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                    .value()
+                ).forEach(([duration, items], index) => {
+                  data.push(
+                    _.round(
+                      (_.chain(items)
+                        .sumBy((item) => Number(item.net_profit) || 0)
+                        .value() /
+                        totalCollection) *
+                        100,
+                      2
+                    )
                   );
-                  const label = items[0].clinic_name;
-                  const backgroundColor = this.doughnutChartColors[index];
-                  this.netProfitPmsPercentChartTrendMulti.push({
-                    data,
-                    label,
-                    backgroundColor,
-                    hoverBackgroundColor: backgroundColor,
-                  });
-                  labels = items.map((item) => {
-                    return this.trendValue == 'c'
-                      ? this.datePipe.transform(item.year_month, 'MMM y')
-                      : item.year;
-                  });
+                  labels.push(duration);
                 });
-                console.log(this.netProfitPmsPercentChartTrendMulti);
+                this.netProfitPercentChartTrend[0]['data'] = data;
               } else {
-                res.body.data.forEach((res) => {
-                  if (res.net_profit_percentage != null) {
-                    data.push(Math.round(res.net_profit_percentage));
-                  } else {
-                    data.push(0);
-                  }
+                res.body.data.forEach((item: any) => {
+                  data.push(Math.round(parseInt(item.net_profit_percent) || 0));
                   if (this.trendValue == 'c') {
-                    labels.push(this.datePipe.transform(res.duration, 'MMM y'));
+                    labels.push(
+                      this.datePipe.transform(item.year_month, 'MMM y')
+                    );
                   } else {
-                    labels.push(res.duration);
+                    labels.push(item.year);
                   }
                 });
                 this.netProfitPercentChartTrend[0]['data'] = data;
@@ -4455,7 +4452,7 @@ export class FinancesComponent implements AfterViewInit {
             }
           }
         },
-        (error) => {
+        (_) => {
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
           this.warningMessage = 'Please Provide Valid Inputs!';
@@ -4465,7 +4462,6 @@ export class FinancesComponent implements AfterViewInit {
 
   public expensesChartTrend: any[] = [];
   public expensesChartTrendLabels = [];
-  public expensesChartTrendLabels1 = [];
   public expensesChartTrendError: boolean = false;
 
   private finExpensesByCategoryTrend() {
@@ -4483,6 +4479,8 @@ export class FinancesComponent implements AfterViewInit {
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
           if (res.status == 200) {
+            console.log('expense');
+            console.log(res);
             this.expensestrendstats = true;
             res.body.data.expenses.forEach((result, key) => {
               if (result.meta_key != 'Total Operating Expenses') {
