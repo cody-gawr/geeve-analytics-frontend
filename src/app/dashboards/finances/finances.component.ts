@@ -1500,6 +1500,7 @@ export class FinancesComponent implements AfterViewInit {
                     ? label.toString().split('-').join('')
                     : label.toString();
                 currency = currency.split(/(?=(?:...)*$)/).join(',');
+
                 return `${label < 0 ? '-' : ''}${currency}%`;
               }
             },
@@ -1519,14 +1520,8 @@ export class FinancesComponent implements AfterViewInit {
       },
       callbacks: {
         label: function (tooltipItems, data) {
-          let label = tooltipItems.xLabel;
-          let currency = tooltipItems.yLabel;
-          currency = currency
-            .toString()
-            .split('-')
-            .join('')
-            .split(/(?=(?:...)*$)/)
-            .join(',');
+          const label = tooltipItems.xLabel;
+          const currency = tooltipItems.yLabel;
           return `${label} : ${tooltipItems.yLabel < 0 ? '-' : ''}${currency}%`;
         },
         title: function (tooltipItem, data) {
@@ -4013,6 +4008,8 @@ export class FinancesComponent implements AfterViewInit {
                 });
               });
               this.isAllClinic = true;
+              console.log('finCollectionTrend');
+              console.log(this.collectionChartTrendMultiData);
               // res.body.data_combined.sort((a, b) =>
               //   a.duration === b.duration ? 0 : a.duration > b.duration || -1
               // );
@@ -4409,6 +4406,7 @@ export class FinancesComponent implements AfterViewInit {
           this.netProfitPmsPercentChartTrendMulti = [];
           const data: number[] = [];
           let labels: string[] = [];
+
           if (res.status == 200) {
             if (res.body.data) {
               if (this.multipleClinicsSelected) {
@@ -4428,25 +4426,28 @@ export class FinancesComponent implements AfterViewInit {
                         .value() /
                         totalCollection) *
                         100,
-                      2
+                      1
                     )
                   );
-                  labels.push(duration);
+                  labels.push(
+                    this.trendValue == 'c'
+                      ? this.datePipe.transform(duration, 'MMM y')
+                      : duration
+                  );
                 });
                 this.netProfitPercentChartTrend[0]['data'] = data;
               } else {
                 res.body.data.forEach((item: any) => {
-                  data.push(Math.round(parseInt(item.net_profit_percent) || 0));
-                  if (this.trendValue == 'c') {
-                    labels.push(
-                      this.datePipe.transform(item.year_month, 'MMM y')
-                    );
-                  } else {
-                    labels.push(item.year);
-                  }
+                  data.push(_.round(parseInt(item.net_profit_percent) || 0), 1);
+                  labels.push(
+                    this.trendValue == 'c'
+                      ? this.datePipe.transform(item.year_month, 'MMM y')
+                      : item.year
+                  );
                 });
                 this.netProfitPercentChartTrend[0]['data'] = data;
               }
+              console.log('netProfitPercentChartTrend');
 
               this.netProfitPercentChartTrendLabels = labels;
             }
