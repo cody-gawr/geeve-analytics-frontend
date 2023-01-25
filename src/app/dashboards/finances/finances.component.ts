@@ -1359,7 +1359,10 @@ export class FinancesComponent implements AfterViewInit {
       //         tooltip.displayColors = false;
       //       },
       callbacks: {
-        label: function (tooltipItems, data) {
+        label: (
+          tooltipItems: Chart.ChartTooltipItem,
+          data: Chart.ChartData
+        ) => {
           let label = data['datasets'][tooltipItems.datasetIndex]['label'];
           let currency = tooltipItems.yLabel;
           currency = currency
@@ -1372,9 +1375,7 @@ export class FinancesComponent implements AfterViewInit {
             tooltipItems.yLabel < 0 ? '- $' : '$'
           }${currency}`;
         },
-        //  title: function(tooltipItem, data) {
-        //     return;
-        //   }
+        title: () => '',
       },
     },
   };
@@ -1428,7 +1429,10 @@ export class FinancesComponent implements AfterViewInit {
         tooltip.displayColors = false;
       },
       callbacks: {
-        label: function (tooltipItems, data) {
+        label: (
+          tooltipItems: Chart.ChartTooltipItem,
+          data: Chart.ChartData
+        ) => {
           let label = tooltipItems.xLabel;
           let currency = tooltipItems.yLabel;
 
@@ -1437,6 +1441,7 @@ export class FinancesComponent implements AfterViewInit {
             currency: 'USD',
           }).format(Number(currency))}`;
         },
+        title: () => '',
       },
     },
   };
@@ -1445,13 +1450,15 @@ export class FinancesComponent implements AfterViewInit {
     ...this.labelBarOptionsSingleValue,
     tooltips: {
       mode: 'x-axis',
-      custom: function (tooltip) {
-        if (!tooltip) return;
+      custom: (tooltip: Chart.ChartTooltipModel) => {
         // disable displaying the color box;
         tooltip.displayColors = false;
       },
       callbacks: {
-        label: function (tooltipItems, data) {
+        label: (
+          tooltipItems: Chart.ChartTooltipItem,
+          data: Chart.ChartData
+        ) => {
           const currency = tooltipItems.yLabel;
           const datasetIndex = tooltipItems.datasetIndex;
           const label = data.datasets[datasetIndex].label;
@@ -1460,6 +1467,7 @@ export class FinancesComponent implements AfterViewInit {
             currency: 'USD',
           }).format(Number(currency))}`;
         },
+        title: () => '',
       },
     },
   };
@@ -1514,6 +1522,7 @@ export class FinancesComponent implements AfterViewInit {
         label: function (tooltipItems: Chart.ChartTooltipItem) {
           return `${tooltipItems.xLabel} : ${tooltipItems.yLabel}%`;
         },
+        title: () => '',
       },
     },
   };
