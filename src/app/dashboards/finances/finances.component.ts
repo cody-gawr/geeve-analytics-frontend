@@ -1511,11 +1511,8 @@ export class FinancesComponent implements AfterViewInit {
         tooltip.displayColors = false;
       },
       callbacks: {
-        label: function (tooltipItems, data) {
-          const currency = tooltipItems.yLabel;
-          const datasetIndex = tooltipItems.datasetIndex;
-          const label = data.datasets[datasetIndex].label;
-          return `${label} : ${currency}%`;
+        label: function (tooltipItems: Chart.ChartTooltipItem) {
+          return `${tooltipItems.xLabel} : ${tooltipItems.yLabel}%`;
         },
       },
     },
