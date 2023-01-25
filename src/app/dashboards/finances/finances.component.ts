@@ -1491,7 +1491,7 @@ export class FinancesComponent implements AfterViewInit {
       ],
       yAxes: [
         {
-          stacked: false,
+          stacked: true,
           ticks: {
             callback: function (label, index, labels) {
               if (Math.floor(label) === label) {
@@ -1520,9 +1520,10 @@ export class FinancesComponent implements AfterViewInit {
       },
       callbacks: {
         label: function (tooltipItems, data) {
-          const label = tooltipItems.xLabel;
           const currency = tooltipItems.yLabel;
-          return `${label} : ${tooltipItems.yLabel < 0 ? '-' : ''}${currency}%`;
+          const datasetIndex = tooltipItems.datasetIndex;
+          const label = data.datasets[datasetIndex].label;
+          return `${label} : ${currency}%`;
         },
         title: function (tooltipItem, data) {
           return;
@@ -2337,8 +2338,6 @@ export class FinancesComponent implements AfterViewInit {
   // Added by Hanney Sharma on 07-04-2021 for Net Profit %
   public netprofitPerError: boolean = false;
   private netProfitPercentage() {
-    var user_id;
-    var clinic_id;
     this.netProfitPmsVal = 0;
     this.netprofitPerError = false;
     this.financesService
@@ -2395,8 +2394,6 @@ export class FinancesComponent implements AfterViewInit {
   private categoryExpenses() {
     this.categoryExpensesLoader = true;
     this.categoryExpensesError = false;
-    var user_id;
-    var clinic_id;
     this.expensescChartTrendIcon = 'down';
     this.expensescChartTrendTotal = 0;
     this.pieChartLabels = [];
@@ -4404,22 +4401,23 @@ export class FinancesComponent implements AfterViewInit {
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
           this.netProfitPmsPercentChartTrendMulti = [];
-          const data: number[] = [];
           let labels: string[] = [];
 
           if (res.status == 200) {
             if (res.body.data) {
               if (this.multipleClinicsSelected) {
+                const data: any[] = [];
                 const totalCollection = _.chain(res.body.data)
                   .sumBy((item: any) => Number(item.collection) || 0)
                   .value();
 
+                const totalValues: number[] = [];
                 Object.entries(
                   _.chain(res.body.data)
                     .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
                     .value()
                 ).forEach(([duration, items], index) => {
-                  data.push(
+                  totalValues.push(
                     _.round(
                       (_.chain(items)
                         .sumBy((item) => Number(item.net_profit) || 0)
@@ -4435,8 +4433,47 @@ export class FinancesComponent implements AfterViewInit {
                       : duration
                   );
                 });
-                this.netProfitPercentChartTrend[0]['data'] = data;
+                data.push({
+                  label: 'Total',
+                  data: totalValues,
+                  shadowOffsetX: 3,
+                  shadowOffsetY: 2,
+                  shadowBlur: 3,
+                  shadowColor: 'rgba(0, 0, 0, 0.3)',
+                  pointBevelWidth: 2,
+                  pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+                  pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+                  pointShadowOffsetX: 3,
+                  pointShadowOffsetY: 3,
+                  pointShadowBlur: 10,
+                  pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+                  backgroundOverlayMode: 'multiply',
+                });
+
+                Object.entries(
+                  _.chain(res.body.data).groupBy('clinic_id').value()
+                ).forEach(([, items]) => {
+                  const clinicName = items[0].clinic_name;
+                  data.push({
+                    label: clinicName,
+                    data: items.map((item) =>
+                      _.round(
+                        ((Number(item.net_profit) || 0) / totalCollection) *
+                          100,
+                        1
+                      )
+                    ),
+                    backgroundColor: '#ffffff00',
+                    borderColor: '#ffffff00',
+                    radius: 0,
+                    hoverRadius: 0,
+                    pointStyle: false,
+                  });
+                });
+
+                this.netProfitPercentChartTrend = data;
               } else {
+                const data: number[] = [];
                 res.body.data.forEach((item: any) => {
                   data.push(_.round(parseInt(item.net_profit_percent) || 0), 1);
                   labels.push(
