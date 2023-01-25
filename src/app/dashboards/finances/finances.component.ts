@@ -25,6 +25,7 @@ import { ChartstipsService } from '../../shared/chartstips.service';
 import { environment } from '../../../environments/environment';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import * as _ from 'lodash';
+import * as Chart from 'chart.js';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -43,7 +44,6 @@ export class FinancesComponent implements AfterViewInit {
   doughnutChartColors;
   stackedChartColors;
   stackedChartColorsBar;
-  stackedChartColorsBar1;
   public xeroConnect: boolean = true;
   public myobConnect: boolean = true;
   public netprofitstats: boolean = true;
@@ -512,14 +512,6 @@ export class FinancesComponent implements AfterViewInit {
       .createLinearGradient(0, 0, 0, 100);
     stackedGradient7.addColorStop(1, 'rgba(94, 232,205,0.8)');
     stackedGradient7.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
-    this.stackedChartColorsBar1 = [
-      {
-        backgroundColor: stackedGradient7,
-        hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-        borderColor: '#1CA49F',
-      },
-    ];
     let proceedureGradient = this.canvas2.nativeElement
       .getContext('2d')
       .createLinearGradient(0, 0, 0, 400);
@@ -1387,7 +1379,7 @@ export class FinancesComponent implements AfterViewInit {
     },
   };
 
-  public labelBarOptionsSingleValue: any = {
+  public labelBarOptionsSingleValue: Chart.ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -1396,10 +1388,8 @@ export class FinancesComponent implements AfterViewInit {
         hoverBorderWidth: 7,
       },
     },
-    scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine',
@@ -1418,14 +1408,10 @@ export class FinancesComponent implements AfterViewInit {
           stacked: false,
           ticks: {
             callback: function (label, index, labels) {
-              if (Math.floor(label) === label) {
-                let currency =
-                  label < 0
-                    ? label.toString().split('-').join('')
-                    : label.toString();
-                currency = currency.split(/(?=(?:...)*$)/).join(',');
-                return `${label < 0 ? '- $' : '$'}${currency}`;
-              }
+              return `${new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+              }).format(Number(label))}`;
             },
           },
         },
@@ -1445,25 +1431,41 @@ export class FinancesComponent implements AfterViewInit {
         label: function (tooltipItems, data) {
           let label = tooltipItems.xLabel;
           let currency = tooltipItems.yLabel;
-          currency = currency
-            .toString()
-            .split('-')
-            .join('')
-            .split(/(?=(?:...)*$)/)
-            .join(',');
-          return `${label} : ${
-            tooltipItems.yLabel < 0 ? '- $' : '$'
-          }${currency}`;
+
+          return `${label} : ${new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          }).format(Number(currency))}`;
         },
-        title: function (tooltipItem, data) {
-          return;
+      },
+    },
+  };
+
+  public netProfitTrendMultiChartOptions: Chart.ChartOptions = {
+    ...this.labelBarOptionsSingleValue,
+    tooltips: {
+      mode: 'x-axis',
+      custom: function (tooltip) {
+        if (!tooltip) return;
+        // disable displaying the color box;
+        tooltip.displayColors = false;
+      },
+      callbacks: {
+        label: function (tooltipItems, data) {
+          const currency = tooltipItems.yLabel;
+          const datasetIndex = tooltipItems.datasetIndex;
+          const label = data.datasets[datasetIndex].label;
+          return `${label} : ${new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          }).format(Number(currency))}`;
         },
       },
     },
   };
 
   /************ Net Profit Percentage trend *************/
-  public labelBarOptionsSingleValue1: any = {
+  public labelBarOptionsSingleValue1: Chart.ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -1472,10 +1474,8 @@ export class FinancesComponent implements AfterViewInit {
         hoverBorderWidth: 7,
       },
     },
-    scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine',
@@ -1494,15 +1494,7 @@ export class FinancesComponent implements AfterViewInit {
           stacked: true,
           ticks: {
             callback: function (label, index, labels) {
-              if (Math.floor(label) === label) {
-                let currency =
-                  label < 0
-                    ? label.toString().split('-').join('')
-                    : label.toString();
-                currency = currency.split(/(?=(?:...)*$)/).join(',');
-
-                return `${label < 0 ? '-' : ''}${currency}%`;
-              }
+              return `${Number(label)}%`;
             },
           },
         },
@@ -1524,9 +1516,6 @@ export class FinancesComponent implements AfterViewInit {
           const datasetIndex = tooltipItems.datasetIndex;
           const label = data.datasets[datasetIndex].label;
           return `${label} : ${currency}%`;
-        },
-        title: function (tooltipItem, data) {
-          return;
         },
       },
     },
@@ -1585,10 +1574,6 @@ export class FinancesComponent implements AfterViewInit {
         // use label callback to return the desired label
         label: function (tooltipItem, data) {
           return tooltipItem.xLabel + ': ' + tooltipItem.yLabel + '%';
-        },
-        // remove title
-        title: function (tooltipItem, data) {
-          return;
         },
       },
     },
@@ -4005,8 +3990,6 @@ export class FinancesComponent implements AfterViewInit {
                 });
               });
               this.isAllClinic = true;
-              console.log('finCollectionTrend');
-              console.log(this.collectionChartTrendMultiData);
               // res.body.data_combined.sort((a, b) =>
               //   a.duration === b.duration ? 0 : a.duration > b.duration || -1
               // );
@@ -4336,39 +4319,75 @@ export class FinancesComponent implements AfterViewInit {
             if (res.body.data) {
               if (this.multipleClinicsSelected) {
                 this.netProfitPmsChartTrendMulti = [];
+                const datasets: any[] = [];
+                const totalData: number[] = [];
+
+                Object.entries(
+                  _.chain(res.body.data)
+                    .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                    .value()
+                ).forEach(([duration, items], index) => {
+                  totalData.push(
+                    _.sumBy(items, (item) => Number(item.net_profit) || 0)
+                  );
+                  labels.push(duration);
+                });
+                datasets.push({
+                  label: 'Total',
+                  data: totalData,
+                });
 
                 Object.entries(
                   _.chain(res.body.data).groupBy('clinic_id').value()
                 ).forEach(([, items], index) => {
                   const data: number[] = items.map((item) =>
-                    Math.round(parseInt(item.net_profit))
+                    Math.round(parseInt(item.net_profit) || 0)
                   );
                   const label = items[0].clinic_name;
-                  const backgroundColor = this.doughnutChartColors[index];
-                  this.netProfitPmsChartTrendMulti.push({
+                  datasets.push({
                     data,
                     label,
-                    backgroundColor,
-                    hoverBackgroundColor: backgroundColor,
-                  });
-                  labels = items.map((item) => {
-                    return this.trendValue == 'c'
-                      ? this.datePipe.transform(item.year_month, 'MMM y')
-                      : item.year;
+                    backgroundColor: '#ffffff00',
+                    borderColor: '#ffffff00',
+                    radius: 0,
+                    hoverRadius: 0,
+                    pointStyle: false,
                   });
                 });
+
+                this.netProfitPmsChartTrendMulti = datasets;
+
+                // Object.entries(
+                //   _.chain(res.body.data).groupBy('clinic_id').value()
+                // ).forEach(([, items], index) => {
+                //   const data: number[] = items.map((item) =>
+                //     Math.round(parseInt(item.net_profit))
+                //   );
+                //   const label = items[0].clinic_name;
+                //   const backgroundColor = this.doughnutChartColors[index];
+                //   this.netProfitPmsChartTrendMulti.push({
+                //     data,
+                //     label,
+                //     backgroundColor,
+                //     hoverBackgroundColor: backgroundColor,
+                //   });
+                //   labels = items.map((item) => {
+                //     return this.trendValue == 'c'
+                //       ? this.datePipe.transform(item.year_month, 'MMM y')
+                //       : item.year;
+                //   });
+                // });
               } else {
-                res.body.data.forEach((res) => {
-                  if (res.net_profit != null)
-                    this.netProfitChartTrend1.push(Math.round(res.net_profit));
-                  else this.netProfitChartTrend1.push(0);
-                  if (this.trendValue == 'c') {
-                    labels.push(
-                      this.datePipe.transform(res.year_month, 'MMM y')
-                    );
-                  } else {
-                    labels.push(res.year);
-                  }
+                res.body.data.forEach((item) => {
+                  this.netProfitChartTrend1.push(
+                    Math.round(item.net_profit || 0)
+                  );
+
+                  labels.push(
+                    this.trendValue == 'c'
+                      ? this.datePipe.transform(item.year_month, 'MMM y')
+                      : item.year
+                  );
                 });
                 this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
               }
@@ -4405,19 +4424,18 @@ export class FinancesComponent implements AfterViewInit {
 
           if (res.status == 200) {
             if (res.body.data) {
+              const data: number[] = [];
               if (this.multipleClinicsSelected) {
-                const data: any[] = [];
                 const totalCollection = _.chain(res.body.data)
                   .sumBy((item: any) => Number(item.collection) || 0)
                   .value();
 
-                const totalValues: number[] = [];
                 Object.entries(
                   _.chain(res.body.data)
                     .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
                     .value()
                 ).forEach(([duration, items], index) => {
-                  totalValues.push(
+                  data.push(
                     _.round(
                       (_.chain(items)
                         .sumBy((item) => Number(item.net_profit) || 0)
@@ -4433,47 +4451,7 @@ export class FinancesComponent implements AfterViewInit {
                       : duration
                   );
                 });
-                data.push({
-                  label: 'Total',
-                  data: totalValues,
-                  shadowOffsetX: 3,
-                  shadowOffsetY: 2,
-                  shadowBlur: 3,
-                  shadowColor: 'rgba(0, 0, 0, 0.3)',
-                  pointBevelWidth: 2,
-                  pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-                  pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-                  pointShadowOffsetX: 3,
-                  pointShadowOffsetY: 3,
-                  pointShadowBlur: 10,
-                  pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-                  backgroundOverlayMode: 'multiply',
-                });
-
-                Object.entries(
-                  _.chain(res.body.data).groupBy('clinic_id').value()
-                ).forEach(([, items]) => {
-                  const clinicName = items[0].clinic_name;
-                  data.push({
-                    label: clinicName,
-                    data: items.map((item) =>
-                      _.round(
-                        ((Number(item.net_profit) || 0) / totalCollection) *
-                          100,
-                        1
-                      )
-                    ),
-                    backgroundColor: '#ffffff00',
-                    borderColor: '#ffffff00',
-                    radius: 0,
-                    hoverRadius: 0,
-                    pointStyle: false,
-                  });
-                });
-
-                this.netProfitPercentChartTrend = data;
               } else {
-                const data: number[] = [];
                 res.body.data.forEach((item: any) => {
                   data.push(_.round(parseInt(item.net_profit_percent) || 0), 1);
                   labels.push(
@@ -4482,10 +4460,8 @@ export class FinancesComponent implements AfterViewInit {
                       : item.year
                   );
                 });
-                this.netProfitPercentChartTrend[0]['data'] = data;
               }
-              console.log('netProfitPercentChartTrend');
-
+              this.netProfitPercentChartTrend[0]['data'] = data;
               this.netProfitPercentChartTrendLabels = labels;
             }
           }
@@ -4635,5 +4611,4 @@ export class FinancesComponent implements AfterViewInit {
     Object.assign(this, { selectedData: [...this.selectedData] });
     $('.close_modal').click();
   }
-  // -----------------------------------
 }

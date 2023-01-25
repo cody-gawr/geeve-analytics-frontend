@@ -1675,9 +1675,10 @@
                     baseChart
                     [datasets]="netProfitPmsChartTrendMulti"
                     [labels]="netProfitPmsChartTrendLabels"
-                    [options]="stackedChartOptionsDiscount"
-                    [legend]="true"
-                    [chartType]="stackedChartType"
+                    [options]="netProfitTrendMultiChartOptions"
+                    [legend]="false"
+                    [chartType]="lineChartType"
+                    [colors]="stackedChartColorsBar"
                     (chartHover)="chartHovered($event)"
                     (chartClick)="chartClicked($event)"
                   >
