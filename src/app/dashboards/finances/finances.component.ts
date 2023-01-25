@@ -1465,6 +1465,8 @@ export class FinancesComponent implements AfterViewInit {
           return `${label} : ${new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
           }).format(Number(currency))}`;
         },
         title: () => '',
@@ -1501,7 +1503,7 @@ export class FinancesComponent implements AfterViewInit {
         {
           stacked: true,
           ticks: {
-            callback: function (label, index, labels) {
+            callback: (label: string | number) => {
               return `${Number(label)}%`;
             },
           },
@@ -4440,7 +4442,7 @@ export class FinancesComponent implements AfterViewInit {
                   _.chain(res.body.data)
                     .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
                     .value()
-                ).forEach(([duration, items], index) => {
+                ).forEach(([duration, items]) => {
                   data.push(
                     _.round(
                       (_.chain(items)
@@ -4448,7 +4450,7 @@ export class FinancesComponent implements AfterViewInit {
                         .value() /
                         totalCollection) *
                         100,
-                      1
+                      0
                     )
                   );
                   labels.push(
@@ -4459,7 +4461,7 @@ export class FinancesComponent implements AfterViewInit {
                 });
               } else {
                 res.body.data.forEach((item: any) => {
-                  data.push(_.round(parseInt(item.net_profit_percent) || 0), 1);
+                  data.push(_.round(parseInt(item.net_profit_percent) || 0), 0);
                   labels.push(
                     this.trendValue == 'c'
                       ? this.datePipe.transform(item.year_month, 'MMM y')
