@@ -22,6 +22,7 @@ import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
 import { environment } from '../../../environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
+
 export interface Dentist {
   providerId: string;
   name: string;
@@ -39,10 +40,12 @@ export interface Dentist {
 export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
   @ViewChild('myCanvas') canvas: ElementRef;
   lineChartColors;
-  doughnutChartColors;
   predictedChartColors;
   preoceedureChartColors;
 
+  private doughnutChartColors: {
+    backgroundColor: Chart.ChartColor[];
+  }[];
   public procedureAnalysisVisibility: string = 'General';
   public dentistMode: boolean = false;
   subtitle: string;
@@ -1849,9 +1852,9 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
   public predictorAnalysisDataMax = 0;
   public predictorAnalysisChartColors;
   public paSpecialistlData: any = [];
-  public ItemsPredictorAnalysisMulti: any[] = [{ data: [], label: '' }];
+  public ItemsPredictorAnalysisMulti: Chart.ChartDataSets[] = [];
   public showmulticlinicItemsPredictor: boolean = false;
-  public ItemsPredictorAnalysisLabels: any = [];
+  public ItemsPredictorAnalysisLabels: string[] = [];
   public predictorAnalysisSpecialLoader: boolean = true;
   //Items Predictor Analysis special - All dentist Chart
   private predictorAnalysisSpecial() {
@@ -1869,6 +1872,16 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
       { data: [], label: 'Endo Re-treat' },
       { data: [], label: 'Veneers (indirect)' },
     ];
+
+    const descriptionMap: Record<string, string> = {
+      imp_surg: 'Implant Surg',
+      ortho_fix: 'Braces',
+      ortho_align: 'Aligners',
+      sleep: 'MAS',
+      perio_surg: 'Perio Surg',
+      endo_retreat: 'Endo Re-treat',
+      veneers_ind: 'Veneers (indirect)',
+    };
     this.clinic_id &&
       this.clinicianproceeduresService
         .ItemsPredictorAnalysisSpecial(
@@ -1896,45 +1909,68 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
             this.ItemsPredictorAnalysisMulti = [];
             this.ItemsPredictorAnalysisLabels = [];
             if (res.status == 200) {
-              if (res && res.body.data && res.body.data.length <= 0) {
-              } else {
+              if (!!res.body.data && res.body.data.length >= 0) {
                 if (
                   this.clinic_id.indexOf(',') >= 0 ||
                   Array.isArray(this.clinic_id)
                 ) {
+                  this.ItemsPredictorAnalysisLabels = _.chain(res.body.data)
+                    .uniqBy((item: any) => item.clinic_id)
+                    .map((item) => item.clinic_name)
+                    .value();
+                  Object.entries(descriptionMap).forEach(
+                    ([property, description], index) => {
+                      const data: number[] = _.chain(res.body.data)
+                        .groupBy('clinic_id')
+                        .map((items) => {
+                          return _.chain(items)
+                            .sumBy((item) => Number(item[property]) || 0)
+                            .value();
+                        })
+                        .value();
+                      this.ItemsPredictorAnalysisMulti.push({
+                        data,
+                        label: description,
+                        backgroundColor:
+                          this.doughnutChartColors[0].backgroundColor[index],
+                        hoverBackgroundColor:
+                          this.doughnutChartColors[0].backgroundColor[index],
+                      });
+                    }
+                  );
                   this.showmulticlinicItemsPredictor = true;
-                  res.body.data.forEach((res) => {
-                    res.proval.forEach((result, key) => {
-                      if (
-                        typeof this.ItemsPredictorAnalysisMulti[key] ==
-                        'undefined'
-                      ) {
-                        this.ItemsPredictorAnalysisMulti[key] = {
-                          data: [],
-                          label: '',
-                        };
-                      }
-                      if (
-                        typeof this.ItemsPredictorAnalysisMulti[key]['data'] ==
-                        'undefined'
-                      ) {
-                        this.ItemsPredictorAnalysisMulti[key]['data'] = [];
-                      }
-                      var total = Math.trunc(result.total);
-                      if (
-                        result.production > 0 &&
-                        result.production.toString().includes('.')
-                      ) {
-                        var num_parts = result.production.split('.');
-                        num_parts[1] = num_parts[1].charAt(0);
-                        total = num_parts.join('.');
-                      }
-                      this.ItemsPredictorAnalysisMulti[key]['data'].push(total);
-                      this.ItemsPredictorAnalysisMulti[key]['label'] =
-                        result.desc;
-                    });
-                    this.ItemsPredictorAnalysisLabels.push(res.clinic_name);
-                  });
+                  // res.body.data.forEach((res) => {
+                  //   res.proval.forEach((result, key) => {
+                  //     if (
+                  //       typeof this.ItemsPredictorAnalysisMulti[key] ==
+                  //       'undefined'
+                  //     ) {
+                  //       this.ItemsPredictorAnalysisMulti[key] = {
+                  //         data: [],
+                  //         label: '',
+                  //       };
+                  //     }
+                  //     if (
+                  //       typeof this.ItemsPredictorAnalysisMulti[key]['data'] ==
+                  //       'undefined'
+                  //     ) {
+                  //       this.ItemsPredictorAnalysisMulti[key]['data'] = [];
+                  //     }
+                  //     var total = Math.trunc(result.total);
+                  //     if (
+                  //       result.production > 0 &&
+                  //       result.production.toString().includes('.')
+                  //     ) {
+                  //       var num_parts = result.production.split('.');
+                  //       num_parts[1] = num_parts[1].charAt(0);
+                  //       total = num_parts.join('.');
+                  //     }
+                  //     this.ItemsPredictorAnalysisMulti[key]['data'].push(total);
+                  //     this.ItemsPredictorAnalysisMulti[key]['label'] =
+                  //       result.desc;
+                  //   });
+                  //   this.ItemsPredictorAnalysisLabels.push(res.clinic_name);
+                  // });
                 } else {
                   var i = 0;
                   var currentUser = 0;
