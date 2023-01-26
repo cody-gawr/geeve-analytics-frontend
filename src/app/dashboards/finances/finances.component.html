@@ -499,8 +499,10 @@
                               (xeroConnect || myobConnect) &&
                               pieChartLabels &&
                               pieChartLabels.length <= 0 &&
-                              categoryExpensesLoader == false &&
-                              multipleClinicsSelected === false &&
+                              !(
+                                categoryExpensesLoader ||
+                                multipleClinicsSelected
+                              ) &&
                               isCompleteMonth
                             "
                             class="no-data-placeholder"
@@ -512,11 +514,7 @@
                           </div>
 
                           <div
-                            *ngIf="
-                              !xeroConnect &&
-                              !myobConnect &&
-                              multipleClinicsSelected === false
-                            "
+                            *ngIf="!(xeroConnect || myobConnect)"
                             class="w-100"
                           >
                             <div class="sa_nodata_div no-found-data">
@@ -527,22 +525,28 @@
                             </div>
                           </div>
                           <div
-                            *ngIf="multipleClinicsSelected === true"
+                            *ngIf="
+                              multipleClinicsSelected &&
+                              expenseMultiChartLabels.length > 0
+                            "
                             class="w-100"
                           >
-                            <div class="sa_nodata_div no-found-data">
-                              <p>
-                                Xero/MYOB charts can only be viewed per clinic -
-                                please select one clinic to view
-                              </p>
-                            </div>
+                            <canvas
+                              #myCanvas2
+                              baseChart
+                              [datasets]="expenseMultiChartData"
+                              [labels]="expenseMultiChartLabels"
+                              [options]="labelBarOptionsMultiPercentage"
+                              [legend]="true"
+                              [chartType]="stackedChartType"
+                              (chartHover)="chartHovered($event)"
+                              (chartClick)="chartClicked($event)"
+                            ></canvas>
                           </div>
                           <div
                             *ngIf="
-                              !isCompleteMonth &&
                               (xeroConnect || myobConnect) &&
-                              !categoryExpensesLoader &&
-                              !multipleClinicsSelected
+                              !(isCompleteMonth || categoryExpensesLoader)
                             "
                             class="w-100"
                           >
@@ -1235,7 +1239,7 @@
           <mat-card class="">
             <mat-card-content class="sa_matcard_content">
               <mat-card-title class="text-center"
-                >Production & Collection
+                >Production & Collection AAA
                 <div class="info-icon-container">
                   <img
                     [tooltip]="charTips['33']"
@@ -1280,7 +1284,7 @@
                       class="chart-prod-coll"
                       *ngIf="
                         totalProductionCollectionMax > 0 &&
-                        finTotalProductionLoader == false &&
+                        !finTotalProductionLoader &&
                         isAllClinic
                       "
                     >
