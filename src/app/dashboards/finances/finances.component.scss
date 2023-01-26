@@ -11,6 +11,12 @@
   padding-bottom: 6px;
 }
 
+.mat-card-content {
+  &.sa_matcard_content {
+    height: 100%;
+  }
+}
+
 .sa_matcard_content {
   position: relative;
   .info-button {
@@ -18,15 +24,15 @@
     right: 16px;
     top: 16px;
     img {
-        width: 15px;
+      width: 15px;
     }
   }
- 
+
   .total-dicount-title {
-    justify-content: start; 
+    justify-content: start;
     .title {
       flex-grow: 1;
-    } 
+    }
   }
 
   .chart-spacing {
@@ -50,8 +56,7 @@
   width: 100%;
 }
 
-
-.no-found-data{
+.no-found-data {
   margin: 0 !important;
   max-width: 100%;
   background-size: auto 100%;
@@ -60,62 +65,64 @@
   min-height: 100px;
   margin-bottom: -3px !important;
 
-  p{
+  p {
     margin: 0;
     position: absolute;
     left: 50%;
     width: 100%;
     top: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     font-size: 18px;
   }
-
 }
 
-@media(max-width:991px){
+@media (max-width: 991px) {
   .md_mrn {
     margin-bottom: 15px;
   }
 }
 
-
-
-.header_filters.finances { flex-direction: row-reverse !important }
-.header_filters.multi { flex-direction: row-reverse !important }
+.header_filters.finances {
+  flex-direction: row-reverse !important;
+}
+.header_filters.multi {
+  flex-direction: row-reverse !important;
+}
 
 .custom-tooltip-color {
-  display:block;
-  height:15px;
-  width:15px;
-  margin:2px;border:1px solid #ffffff;
+  display: block;
+  height: 15px;
+  width: 15px;
+  margin: 2px;
+  border: 1px solid #ffffff;
 }
 .td-custom-tooltip-color {
-   width:10%;
+  width: 10%;
 }
 
-.sa_matcard_content .info-button img.white-heart-icon{
-  width : 25px !important;
+.sa_matcard_content .info-button img.white-heart-icon {
+  width: 25px !important;
 }
-.clinician-chart{
-  height: 280px; 
+.clinician-chart {
+  height: 280px;
   width: 100%;
 }
-.chart-per-visit{
-  height: 200px; 
+.chart-per-visit {
+  height: 200px;
   width: 100%;
 }
-.chart-prod-coll{
+.chart-prod-coll {
   height: 330px;
 }
-.chart-clinician{
+.chart-clinician {
   height: 280px;
 }
-.chart-prod-pr-visit{
+.chart-prod-pr-visit {
   height: 320px;
 }
-.btn-mar{
+.btn-mar {
   margin-right: 10px;
 }
-.swal2-styled.swal2-confirm{
+.swal2-styled.swal2-confirm {
   background-color: #18a689;
 }

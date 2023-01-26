@@ -4435,10 +4435,6 @@ export class FinancesComponent implements AfterViewInit {
             if (res.body.data) {
               const data: number[] = [];
               if (this.multipleClinicsSelected) {
-                const totalCollection = _.chain(res.body.data)
-                  .sumBy((item: any) => Number(item.collection) || 0)
-                  .value();
-
                 Object.entries(
                   _.chain(res.body.data)
                     .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
@@ -4449,8 +4445,9 @@ export class FinancesComponent implements AfterViewInit {
                       (_.chain(items)
                         .sumBy((item) => Number(item.net_profit) || 0)
                         .value() /
-                        totalCollection) *
-                        100,
+                        _.chain(items)
+                          .sumBy((item) => Number(item.collection) || 0)
+                          .value() || 0) * 100,
                       0
                     )
                   );
