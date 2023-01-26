@@ -463,9 +463,11 @@
                           <div
                             *ngIf="
                               (xeroConnect || myobConnect) &&
-                              !categoryExpensesError &&
-                              multipleClinicsSelected === false &&
-                              categoryExpensesLoader == false &&
+                              !(
+                                categoryExpensesError ||
+                                multipleClinicsSelected ||
+                                categoryExpensesLoader
+                              ) &&
                               isCompleteMonth
                             "
                           >
@@ -581,12 +583,12 @@
                     >
                       <div
                         class="sa_list_show"
-                        *ngFor="let a of pieChartData; let i = index"
+                        *ngFor="let expense of pieChartData; let i = index"
                       >
                         <span class="sa_clr_box sa_clr{{ i }}m"></span>
                         <span class="frl">{{ pieChartLabels[i] }}</span>
                         <span class="frv"
-                          >{{ a | number : '1.0-0' }} ({{
+                          >{{ expense | number : '1.0-0' }} ({{
                             pieChartDataPercentres[i]
                           }}%)</span
                         >

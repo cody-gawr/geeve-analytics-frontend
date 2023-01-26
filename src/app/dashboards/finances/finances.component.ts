@@ -2412,35 +2412,31 @@ export class FinancesComponent implements AfterViewInit {
             this.unSelectedData = [];
             this.pieChartDatares = [];
             this.pieChartDataPercentres = [];
-            var i = 0;
-            res.body.data.forEach((res, key) => {
-              if (res.expenses_percent > 0 && res.expenses_percent < 1) {
-                res.expenses_percent = 1;
-              }
-              if (Math.round(res.expenses_percent) >= 1) {
-                var temp = { name: '', value: 1 };
-                temp.name = res.meta_key + '--' + res.expenses;
-                temp.value = Math.round(res.expenses_percent);
-                this.single.push(temp);
-                //this.single[i].value =Math.round(res.expenses_percent);
-                this.pieChartDatares.push(Math.round(res.expenses));
+            if (this.multipleClinicsSelected) {
+            } else {
+              res.body.data.forEach((item: any) => {
+                this.single.push({
+                  name: `${item.account_name}--${item.expense}`,
+                  value: _.ceil((item.expense / res.body.production) * 100),
+                });
+
+                this.pieChartDatares.push(Math.round(item.expense));
                 this.pieChartDataPercentres.push(
-                  Math.round(res.expenses_percent)
+                  _.round((item.expense / res.body.production) * 100)
                 );
-                this.pieChartLabelsres.push(res.meta_key);
-                this.pieChartTotal =
-                  this.pieChartTotal + parseInt(res.expenses);
-                i++;
-              }
-            });
+                this.pieChartLabelsres.push(item.account_name);
+                this.pieChartTotal += item.expense;
+              });
+            }
             this.selectedDataFilter();
             this.unSelectedDataFilter();
             this.expensescChartTrendTotal = res.data_ta;
             if (
               Math.round(this.pieChartTotal) >=
               Math.round(this.expensescChartTrendTotal)
-            )
+            ) {
               this.expensescChartTrendIcon = 'up';
+            }
             this.pieChartData = this.pieChartDatares;
             this.pieChartLabels = this.pieChartLabelsres;
           }
@@ -4567,10 +4563,8 @@ export class FinancesComponent implements AfterViewInit {
 
   // ------------------------------------------------------
   selectedDataFilter() {
-    let length = this.single.length;
-    if (length > 15) {
-      length = 15;
-    }
+    const length = this.single.length > 15 ? 15 : this.single.length;
+
     for (let i = 0; i < length; i++) {
       this.selectedData.push(this.single[i]);
     }
