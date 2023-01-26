@@ -2464,103 +2464,43 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                     }
                   });
               });
-
-              // res.body.data_crown_large.forEach((res) => {
-              //   console.log(this.predictedMulti1);
-              //   res.proval.forEach((result, key) => {
-              //     console.log(key);
-              //     if (typeof this.predictedMulti1[key] == 'undefined') {
-              //       this.predictedMulti1[key] = { data: [], label: '' };
-              //     }
-              //     if (typeof this.predictedMulti1[key]['data'] == 'undefined') {
-              //       this.predictedMulti1[key]['data'] = [];
-              //     }
-              //     var total = Math.trunc(result.total);
-              //     this.predictedMulti1[key]['data'].push(total);
-              //     this.predictedMulti1[key]['label'] = result.desc;
-              //     if (key == 0) {
-              //       this.ratio1 = this.ratio1 + total;
-              //     }
-              //     if (key == 1) {
-              //       this.ratio2 = this.ratio2 + total;
-              //     }
-              //   });
-              //   this.multifulratio1 = this.ratio1 + ':' + this.ratio2;
-              //   this.predictorLabels1.push(res.clinic_name);
-              // });
-              // res.body.data_rct_ext.forEach((res) => {
-              //   res.proval.forEach((result, key) => {
-              //     if (typeof this.predictedMulti2[key] == 'undefined') {
-              //       this.predictedMulti2[key] = { data: [], label: '' };
-              //     }
-              //     if (typeof this.predictedMulti2[key]['data'] == 'undefined') {
-              //       this.predictedMulti2[key]['data'] = [];
-              //     }
-              //     var total = Math.trunc(result.total);
-              //     this.predictedMulti2[key]['data'].push(total);
-              //     this.predictedMulti2[key]['label'] = result.desc;
-              //     if (key == 0) {
-              //       this.ratio3 = this.ratio3 + total;
-              //     }
-              //     if (key == 1) {
-              //       this.ratio4 = this.ratio4 + total;
-              //     }
-              //   });
-              //   this.multifulratio2 = this.ratio3 + ':' + this.ratio4;
-              //   this.predictorLabels2.push(res.clinic_name);
-              // });
-              // res.body.data_rctsta_comp.forEach((res) => {
-              //   res.proval.forEach((result, key) => {
-              //     if (typeof this.predictedMulti3[key] == 'undefined') {
-              //       this.predictedMulti3[key] = { data: [], label: '' };
-              //     }
-              //     if (typeof this.predictedMulti3[key]['data'] == 'undefined') {
-              //       this.predictedMulti3[key]['data'] = [];
-              //     }
-              //     var total = Math.trunc(result.total);
-              //     this.predictedMulti3[key]['data'].push(total);
-              //     this.predictedMulti3[key]['label'] = result.desc;
-              //     if (key == 0) {
-              //       this.ratio5 = this.ratio5 + total;
-              //     }
-              //     if (key == 1) {
-              //       this.ratio6 = this.ratio6 + total;
-              //     }
-              //   });
-              //   this.multifulratio3 = this.ratio5 + ':' + this.ratio6;
-              //   this.predictorLabels3.push(res.clinic_name);
-              // });
             } else {
-              res.body.data.forEach((item, key) => {
+              res.body.data.forEach((item: any, key) => {
                 var provider = item.provider_name;
                 if (!provider) provider = '';
-                if (key == 0) {
-                  this.predictedstackedChartData1[0]['data'].push(
-                    parseInt(item.first_value)
-                  );
-                  this.predictedstackedChartData1[1]['data'].push(
-                    parseInt(item.second_value)
-                  );
-                  this.predictedstackedChartLabels1Avr = item.ratio;
-                  this.predictedstackedChartLabels1.push(provider);
-                } else if (key == 1) {
-                  this.predictedstackedChartData2[0]['data'].push(
-                    parseInt(item.first_value)
-                  );
-                  this.predictedstackedChartData2[1]['data'].push(
-                    parseInt(item.second_value)
-                  );
-                  this.predictedstackedChartLabels2Avr = item.ratio;
-                  this.predictedstackedChartLabels2.push(provider);
-                } else if (key == 2) {
-                  this.predictedstackedChartData3[0]['data'].push(
-                    parseInt(item.first_value)
-                  );
-                  this.predictedstackedChartData3[1]['data'].push(
-                    parseInt(item.second_value)
-                  );
-                  this.predictedstackedChartLabels3Avr = item.ratio;
-                  this.predictedstackedChartLabels3.push(provider);
+                switch (item.type) {
+                  case 'crown-largefilling':
+                    this.predictedstackedChartData1[0]['data'].push(
+                      parseInt(item.first_value)
+                    );
+                    this.predictedstackedChartData1[1]['data'].push(
+                      parseInt(item.second_value)
+                    );
+                    this.predictedstackedChartLabels1Avr = item.ratio;
+                    this.predictedstackedChartLabels1.push(provider);
+                    break;
+                  case 'rct-extraction':
+                    this.predictedstackedChartData2[0]['data'].push(
+                      parseInt(item.first_value)
+                    );
+                    this.predictedstackedChartData2[1]['data'].push(
+                      parseInt(item.second_value)
+                    );
+                    this.predictedstackedChartLabels2Avr = item.ratio;
+                    this.predictedstackedChartLabels2.push(provider);
+                    break;
+                  case 'rctstarted-rctcompleted':
+                    this.predictedstackedChartData3[0]['data'].push(
+                      parseInt(item.first_value)
+                    );
+                    this.predictedstackedChartData3[1]['data'].push(
+                      parseInt(item.second_value)
+                    );
+                    this.predictedstackedChartLabels3Avr = item.ratio;
+                    this.predictedstackedChartLabels3.push(provider);
+                    break;
+                  default:
+                    break;
                 }
               });
               this.buildChartPredictorLoader = false;

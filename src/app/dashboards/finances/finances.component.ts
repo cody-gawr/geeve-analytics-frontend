@@ -1431,16 +1431,15 @@ export class FinancesComponent implements AfterViewInit {
         tooltip.displayColors = false;
       },
       callbacks: {
-        label: (
-          tooltipItems: Chart.ChartTooltipItem,
-          data: Chart.ChartData
-        ) => {
+        label: (tooltipItems: Chart.ChartTooltipItem) => {
           let label = tooltipItems.xLabel;
           let currency = tooltipItems.yLabel;
 
           return `${label} : ${new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
           }).format(Number(currency))}`;
         },
         title: () => '',
