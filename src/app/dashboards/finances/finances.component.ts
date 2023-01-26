@@ -4471,7 +4471,6 @@ export class FinancesComponent implements AfterViewInit {
                   );
                 });
               }
-              console.log(this.netProfitPercentChartTrend);
               this.netProfitPercentChartTrend[0]['data'] = data;
               this.netProfitPercentChartTrendLabels = labels;
             }
