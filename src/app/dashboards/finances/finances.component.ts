@@ -4504,7 +4504,7 @@ export class FinancesComponent implements AfterViewInit {
       );
   }
 
-  public expensesChartTrend: any[] = [];
+  public expensesChartTrend: Chart.ChartDataSets[] = [];
   public expensesChartTrendLabels = [];
   public expensesChartTrendError: boolean = false;
 
@@ -4523,29 +4523,34 @@ export class FinancesComponent implements AfterViewInit {
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
           if (res.status == 200) {
-            console.log('expense');
-            console.log(res);
             this.expensestrendstats = true;
-            res.body.data.expenses.forEach((result, key) => {
-              if (result.meta_key != 'Total Operating Expenses') {
-                let tempO: any = [];
-                result.expenses.forEach((res) => {
-                  tempO.push(res);
-                });
-                let temp = {
-                  data: [],
-                  label: '',
-                  backgroundColor: '',
-                  hoverBackgroundColor: '',
-                };
-                temp.data = tempO;
-                temp.backgroundColor = this.doughnutChartColors[key];
-                temp.hoverBackgroundColor = this.doughnutChartColors[key];
-                temp.label = result.meta_key;
-                this.expensesChartTrend.push(temp);
-              }
+            const durations: string[] = res.body.durations;
+            Object.entries(
+              _.chain(res.body.data).groupBy('account_name').value()
+            ).forEach(([accountName, items], index) => {
+              const dataByDuration: { duration: string; expense: number }[] =
+                _.chain(items)
+                  .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                  .map((eles: any[], duration) => {
+                    return {
+                      duration,
+                      expense: _.chain(eles)
+                        .sumBy((ele) => ele.expense)
+                        .value(),
+                    };
+                  })
+                  .value();
+              this.expensesChartTrend.push({
+                data: durations.map((d) => {
+                  const data = dataByDuration.find((e) => e.duration === d);
+                  return !!data ? data.expense : 0;
+                }),
+                label: accountName,
+                backgroundColor: this.doughnutChartColors[index],
+                hoverBackgroundColor: this.doughnutChartColors[index],
+              });
             });
-            this.expensesChartTrendLabels = res.body.data.duration;
+            this.expensesChartTrendLabels = durations;
           }
         },
         (error) => {

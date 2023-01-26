@@ -1239,7 +1239,7 @@
           <mat-card class="">
             <mat-card-content class="sa_matcard_content">
               <mat-card-title class="text-center"
-                >Production & Collection AAA
+                >Production & Collection
                 <div class="info-icon-container">
                   <img
                     [tooltip]="charTips['33']"
@@ -1897,9 +1897,8 @@
               <div
                 *ngIf="
                   (xeroConnect || myobConnect) &&
-                  expensestrendstats == true &&
-                  !expensesChartTrendError &&
-                  multipleClinicsSelected == false
+                  expensestrendstats &&
+                  !expensesChartTrendError
                 "
                 class="card-body sa_chart_summary_flip_main"
               >
@@ -1910,7 +1909,7 @@
                         #myCanvas2
                         class="trendProductionPercentage"
                         *ngIf="
-                          expensesChartTrendLabels &&
+                          !!expensesChartTrendLabels &&
                           expensesChartTrendLabels.length > 0
                         "
                         baseChart
@@ -1926,8 +1925,8 @@
 
                       <div
                         *ngIf="
-                          expensesChartTrendLabels &&
-                          expensesChartTrendLabels.length <= 0
+                          !!expensesChartTrendLabels &&
+                          expensesChartTrendLabels.length == 0
                         "
                         class="no-data-placeholder"
                       >
@@ -1944,8 +1943,7 @@
               <div
                 *ngIf="
                   (xeroConnect || myobConnect) &&
-                  expensestrendstats == false &&
-                  !expensesChartTrendError
+                  !(expensestrendstats || expensesChartTrendError)
                 "
                 class="loader_container loader_container_middle"
               >
@@ -1953,26 +1951,12 @@
                 <div class="loader-text">Calculating...</div>
               </div>
               <div
-                *ngIf="
-                  !xeroConnect &&
-                  !myobConnect &&
-                  multipleClinicsSelected == false
-                "
+                *ngIf="!(xeroConnect || myobConnect)"
                 class="no-data-placeholder"
               >
                 <div class="sa_nodata_div"></div>
                 <p class="chart-placeholder-text">
                   Please connect to Xero/MYOB to display this chart
-                </p>
-              </div>
-              <div
-                *ngIf="multipleClinicsSelected == true"
-                class="no-data-placeholder"
-              >
-                <div class="sa_nodata_div"></div>
-                <p class="chart-placeholder-text">
-                  Xero/MYOB charts can only be viewed per clinic - please select
-                  one clinic to view
                 </p>
               </div>
             </mat-card-content>
@@ -2164,7 +2148,6 @@
                     class="info-icon"
                   />
                 </div>
-                <div>AAA</div>
               </mat-card-title>
               <div class="card-body">
                 <div class="chart-clinician">
