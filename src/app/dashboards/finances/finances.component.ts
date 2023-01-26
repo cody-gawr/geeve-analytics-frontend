@@ -4463,7 +4463,7 @@ export class FinancesComponent implements AfterViewInit {
                 });
               } else {
                 res.body.data.forEach((item: any) => {
-                  data.push(_.round(parseInt(item.net_profit_percent) || 0), 0);
+                  data.push(_.round(parseInt(item.net_profit_percent) || 0));
                   labels.push(
                     this.trendValue == 'c'
                       ? this.datePipe.transform(item.year_month, 'MMM y')
@@ -4471,6 +4471,7 @@ export class FinancesComponent implements AfterViewInit {
                   );
                 });
               }
+              console.log(this.netProfitPercentChartTrend);
               this.netProfitPercentChartTrend[0]['data'] = data;
               this.netProfitPercentChartTrendLabels = labels;
             }
