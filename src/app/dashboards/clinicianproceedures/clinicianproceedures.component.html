@@ -1641,20 +1641,7 @@
       <mat-card>
         <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center">
-            <div>
-              <!-- <span *ngIf="trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
-                matTooltip="{{trendText}} : {{pieChartInternalPrevTotal}}"><img class="trend_ico"
-                  src="../assets/images/trend_{{pieChartInternalPrevTooltip}}.png"></span>
-
-              <span *ngIf="trendText" class="referral2Tool referral sa_inc_dec_arrows trend_arrow"
-                matTooltip="{{trendText}} : {{pieChartExternalPrevTotal}}" [style.display]="'none'"><img
-                  class="trend_ico" src="../assets/images/trend_{{pieChartExternalPrevTooltip}}.png"></span>
-
-              <span *ngIf="trendText" class="referral3Tool referral sa_inc_dec_arrows trend_arrow"
-                matTooltip="{{trendText}} : {{pieChartCombinedPrevTotal}}" [style.display]="'none'"><img
-                  class="trend_ico" src="../assets/images/trend_{{pieChartCombinedPrevTooltip}}.png"></span> -->
-              Clinician Referrals
-            </div>
+            <div>Clinician Referrals</div>
 
             <div class="sa_box_title_right_buttons"></div>
             <div class="info-icon-container">
@@ -1765,10 +1752,6 @@
                   [colors]="doughnutChartColors"
                 >
                 </canvas>
-                <!-- <div *ngIf="pieChartDataMax2 <= 0 && showExternal == true" class="sa_nodata_div">
-            <h4>No Data</h4>
-            <p></p>
-        </div> -->
               </div>
               <div
                 *ngIf="
@@ -1804,10 +1787,6 @@
                   [colors]="doughnutChartColors"
                 >
                 </canvas>
-                <!-- <div *ngIf="pieChartDataMax3 <= 0 && showCombined == true" class="sa_nodata_div">
-            <h4>No Data</h4>
-            <p></p>
-        </div> -->
               </div>
               <div
                 *ngIf="

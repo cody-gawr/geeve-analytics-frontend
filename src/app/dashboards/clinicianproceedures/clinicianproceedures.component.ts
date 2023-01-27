@@ -1939,38 +1939,6 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                     }
                   );
                   this.showmulticlinicItemsPredictor = true;
-                  // res.body.data.forEach((res) => {
-                  //   res.proval.forEach((result, key) => {
-                  //     if (
-                  //       typeof this.ItemsPredictorAnalysisMulti[key] ==
-                  //       'undefined'
-                  //     ) {
-                  //       this.ItemsPredictorAnalysisMulti[key] = {
-                  //         data: [],
-                  //         label: '',
-                  //       };
-                  //     }
-                  //     if (
-                  //       typeof this.ItemsPredictorAnalysisMulti[key]['data'] ==
-                  //       'undefined'
-                  //     ) {
-                  //       this.ItemsPredictorAnalysisMulti[key]['data'] = [];
-                  //     }
-                  //     var total = Math.trunc(result.total);
-                  //     if (
-                  //       result.production > 0 &&
-                  //       result.production.toString().includes('.')
-                  //     ) {
-                  //       var num_parts = result.production.split('.');
-                  //       num_parts[1] = num_parts[1].charAt(0);
-                  //       total = num_parts.join('.');
-                  //     }
-                  //     this.ItemsPredictorAnalysisMulti[key]['data'].push(total);
-                  //     this.ItemsPredictorAnalysisMulti[key]['label'] =
-                  //       result.desc;
-                  //   });
-                  //   this.ItemsPredictorAnalysisLabels.push(res.clinic_name);
-                  // });
                 } else {
                   var i = 0;
                   var currentUser = 0;
@@ -2794,8 +2762,6 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
   public doughnutChartColors1;
   //Referral to Other Clinicians Internal / External
   private buildChartReferral() {
-    var user_id;
-    var clinic_id;
     this.pieChartDatares1 = [];
     this.pieChartDatares2 = [];
     this.pieChartDatares3 = [];
@@ -2842,28 +2808,52 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                 this.clinic_id.indexOf(',') >= 0 ||
                 Array.isArray(this.clinic_id)
               ) {
-                res.body.data.forEach((res) => {
-                  res.val.forEach((result, key) => {
-                    if (result.internal > 0) {
-                      this.pieChartDatares1.push(result.internal);
-                      this.pieChartLabelsres1.push(result.treat_item_name);
-                    }
-                    if (result.external > 0) {
-                      this.pieChartDatares2.push(result.external);
-                      this.pieChartLabelsres2.push(result.treat_item_name);
-                    }
-                    if (result.total > 0) {
-                      this.pieChartDatares3.push(result.total);
-                      this.pieChartLabelsres3.push(result.treat_item_name);
-                    }
-                    this.pieChartInternalTotal =
-                      this.pieChartInternalTotal + parseInt(result.internal);
-                    this.pieChartExternalTotal =
-                      this.pieChartExternalTotal + parseInt(result.external);
-                    this.pieChartCombinedTotal =
-                      this.pieChartCombinedTotal + parseInt(result.total);
-                  });
-                });
+                console.log(res.body.data);
+                const data: {
+                  treatItemName: string;
+                  internal: number;
+                  external: number;
+                  total: number;
+                }[] = _.chain(res.body.data)
+                  .groupBy('treat_item_name')
+                  .map((items: any[], treatItemName: string) => {
+                    return {
+                      treatItemName,
+                      internal: _.sumBy(items, (item) => Number(item.internal)),
+                      external: _.sumBy(items, (item) => Number(item.external)),
+                      total: _.sumBy(items, (item) => Number(item.total)),
+                    };
+                  })
+                  .value();
+                this.pieChartDatares1 = data
+                  .filter((item) => item.internal > 0)
+                  .map((v) => v.internal);
+                this.pieChartLabelsres1 = data
+                  .filter((item) => item.internal > 0)
+                  .map((v) => v.treatItemName);
+                this.pieChartInternalTotal = _.chain(data)
+                  .sumBy((item) => item.internal)
+                  .value();
+
+                this.pieChartDatares2 = data
+                  .filter((item) => item.external > 0)
+                  .map((v) => v.external);
+                this.pieChartLabelsres2 = data
+                  .filter((item) => item.external > 0)
+                  .map((v) => v.treatItemName);
+                this.pieChartExternalTotal = _.chain(data)
+                  .sumBy((item) => item.external)
+                  .value();
+
+                this.pieChartDatares3 = data
+                  .filter((item) => item.total > 0)
+                  .map((v) => v.total);
+                this.pieChartLabelsres3 = data
+                  .filter((item) => item.total > 0)
+                  .map((v) => v.treatItemName);
+                this.pieChartCombinedTotal = _.chain(data)
+                  .sumBy((item) => item.total)
+                  .value();
               } else {
                 var i = 0;
                 res.body.data.forEach((res) => {
@@ -3701,8 +3691,6 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
   public stackedChartTrendDataMax;
   // Load Predcitor chart - Individual Dentist
   referralTrendSingle() {
-    var user_id;
-    var clinic_id;
     this.stackedChartTrendData = [
       { data: [], label: 'Oral Surgeon' },
       { data: [], label: 'Orthodontics' },
