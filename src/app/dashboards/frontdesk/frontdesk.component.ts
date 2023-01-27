@@ -20,6 +20,7 @@ import { AppConstants } from '../../app.constants';
 import { environment } from '../../../environments/environment';
 import { ChartstipsService } from '../../shared/chartstips.service';
 import { ClinicianAnalysisService } from '../cliniciananalysis/cliniciananalysis.service';
+import * as _ from 'lodash';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -286,7 +287,7 @@ export class FrontDeskComponent implements AfterViewInit {
       });
   }
 
-  public legendGenerator = {
+  public legendGenerator: Chart.ChartLegendOptions = {
     display: true,
     position: 'bottom',
     labels: {
@@ -294,7 +295,7 @@ export class FrontDeskComponent implements AfterViewInit {
       usePointStyle: true,
       generateLabels: (chart) => {
         let bgColor = {};
-        let labels = chart.data.labels.map((value, i) => {
+        let labels = chart.data.labels.map((value: string, i) => {
           bgColor[value.split('--')[3]] =
             chart.data.datasets[0].backgroundColor[i];
           return value.split('--')[3];
@@ -308,10 +309,7 @@ export class FrontDeskComponent implements AfterViewInit {
         }));
       },
     },
-    onClick: (event, legendItem, legend) => {
-      return;
-    },
-    // align : 'start',
+    onClick: () => {},
   };
 
   public barBackgroundColor(data) {
@@ -421,63 +419,6 @@ export class FrontDeskComponent implements AfterViewInit {
       display: true,
     },
   };
-  //   public stackedChartOptionsTC: any = {
-  //     //   elements: {
-  //     //   point: {
-  //     //     radius: 5,
-  //     //     hoverRadius: 7,
-  //     //     pointStyle:'rectRounded',
-  //     //     hoverBorderWidth:7
-  //     //   },
-  //     // },
-  //     scaleShowVerticalLines: false,
-  //     responsive: true,
-  //     maintainAspectRatio: false,
-  //     // barThickness: 10,
-  //       animation: {
-  //         duration: 500,
-  //         easing: 'easeOutSine'
-  //       },
-  //       fill:false,
-  //     scales: {
-  //           xAxes: [{
-  //             stacked:true,
-  //             ticks: {
-  //                 autoSkip: false
-  //             }
-  //             }],
-  //           yAxes: [{
-  //             // stacked:true,
-  //             ticks: {
-  //               min:0,
-  //               max:100,
-  //               userCallback: function(label, index, labels) {
-  //                      // when the floored value is the same as the value we have a whole number
-  //                      if (Math.floor(label) === label) {
-  //                          return label+"%";
-  //                      }
-  //                  },
-  //             },
-  //             }],
-  //         },
-  //     tooltips: {
-  //       mode: 'x-axis',
-  //             custom: function(tooltip) {
-  //       if (!tooltip) return;
-  //       // disable displaying the color box;
-  //       tooltip.displayColors = false;
-  //     },
-  //     callbacks: {
-  //       label: function (tooltipItems, data) {
-  //         return data.datasets[tooltipItems.datasetIndex].label + ": " + Math.round(tooltipItems.yLabel) + "%";
-  //       },
-
-  //     }
-  // },
-  //   legend: {
-  //             display: true
-  //          }
-  //   };
 
   public stackLegendGenerator = {
     display: true,
@@ -879,8 +820,7 @@ export class FrontDeskComponent implements AfterViewInit {
     },
   };
 
-  public stackedChartOptionsT: any = {
-    scaleShowVerticalLines: false,
+  public stackedChartOptionsT: Chart.ChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     // barThickness: 10,
@@ -888,13 +828,12 @@ export class FrontDeskComponent implements AfterViewInit {
       duration: 1,
       easing: 'linear',
     },
-    fill: false,
     scales: {
       xAxes: [
         {
           ticks: {
             autoSkip: false,
-            callback: function (value, index, values) {
+            callback: function (value: string) {
               if (value.indexOf('--') >= 0) {
                 let lbl = value.split('--');
                 value = lbl[0];
@@ -911,7 +850,7 @@ export class FrontDeskComponent implements AfterViewInit {
           ticks: {
             min: 0,
             // max:100,
-            userCallback: function (label, index, labels) {
+            callback: function (label: number) {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return label;
@@ -928,10 +867,10 @@ export class FrontDeskComponent implements AfterViewInit {
         tooltip.displayColors = false;
       },
       callbacks: {
-        label: function (tooltipItems, data) {
+        label: function (tooltipItems: Chart.ChartTooltipItem, data) {
           let total = tooltipItems.yLabel > 100 ? 100 : tooltipItems.yLabel;
-          if (tooltipItems.xLabel.indexOf('--') >= 0) {
-            let lbl = tooltipItems.xLabel.split('--');
+          if ((<string>tooltipItems.xLabel).indexOf('--') >= 0) {
+            let lbl = (<string>tooltipItems.xLabel).split('--');
             if (typeof lbl[3] === 'undefined') {
               tooltipItems.xLabel = lbl[0];
             } else {
@@ -964,8 +903,8 @@ export class FrontDeskComponent implements AfterViewInit {
           }
         },
         afterLabel: function (tooltipItems, data) {
-          let hour = 0;
-          let phour = 0;
+          let hour = '0';
+          let phour = '0';
           if (
             tooltipItems.label.indexOf('--') >= 0 &&
             tooltipItems.datasetIndex == 0
@@ -1096,9 +1035,8 @@ export class FrontDeskComponent implements AfterViewInit {
     },
     legend: this.legendGenerator,
   };
-  public stackedChartOptionsUti1: any = {
+  public stackedChartOptionsUti1: Chart.ChartOptions = {
     hover: { mode: null },
-    scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
     // barThickness: 10,
@@ -1108,6 +1046,7 @@ export class FrontDeskComponent implements AfterViewInit {
       onComplete: function () {
         var chartInstance = this.chart,
           ctx = chartInstance.ctx;
+        console.log(this.chart);
         ctx.textAlign = 'center';
         ctx.fillStyle = 'rgba(0, 0, 0, 1)';
         ctx.textBaseline = 'bottom';
@@ -1124,8 +1063,8 @@ export class FrontDeskComponent implements AfterViewInit {
             ctx.fillText(dataDisplay, bar._model.x, bar._model.y + 2);
 
             function shortenLargeNumber(num, digits) {
-              var units = ['k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'],
-                decimal;
+              let units = ['k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
+              let decimal: number = 0;
 
               for (var i = units.length - 1; i >= 0; i--) {
                 decimal = Math.pow(1000, i + 1);
@@ -1141,13 +1080,12 @@ export class FrontDeskComponent implements AfterViewInit {
         });
       },
     },
-    fill: false,
     scales: {
       xAxes: [
         {
           ticks: {
             autoSkip: false,
-            callback: function (value, index, values) {
+            callback: function (value: string, index, values) {
               if (value.indexOf('--') >= 0) {
                 let lbl = value.split('--');
                 value = lbl[0];
@@ -1163,11 +1101,9 @@ export class FrontDeskComponent implements AfterViewInit {
           ticks: {
             min: 0,
             max: 100,
-            userCallback: function (label, index, labels) {
+            callback: function (label: string | number, index, labels) {
               // when the floored value is the same as the value we have a whole number
-              if (Math.floor(label) === label) {
-                return label + '%';
-              }
+              return `${Number(label)}%`;
             },
           },
         },
@@ -1549,7 +1485,7 @@ export class FrontDeskComponent implements AfterViewInit {
     }
   }
 
-  public byDayData: any = [
+  public byDayData: Chart.ChartDataSets[] = [
     {
       data: [],
       label: '',
@@ -1614,6 +1550,8 @@ export class FrontDeskComponent implements AfterViewInit {
               this.clinic_id.indexOf(',') >= 0 ||
               Array.isArray(this.clinic_id)
             ) {
+              console.log(res.body.data);
+              _.chain(res.body.data);
               this.isAllClinic = true;
               res.body.data.forEach((res) => {
                 res.val.forEach((reslt, key) => {
@@ -3485,13 +3423,8 @@ export class FrontDeskComponent implements AfterViewInit {
   }
 
   setTopValues() {
-    if (this.showTopVlaues == false) {
-      this.showTopVlaues = true;
-      this.stackedChartOptionsUtiDP = this.stackedChartOptionsUti1;
-    } else {
-      this.showTopVlaues = false;
-      this.stackedChartOptionsUtiDP = this.stackedChartOptionsUti;
-    }
+    this.showTopVlaues = !this.showTopVlaues;
+    this.stackedChartOptionsUtiDP = this.stackedChartOptionsUti1;
   }
   showTable(val) {
     this.showUtiTable = val;
