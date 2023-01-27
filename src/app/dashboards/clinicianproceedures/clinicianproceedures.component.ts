@@ -2601,42 +2601,61 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
           this.predictedstackedChartLabels1Avr = 0;
           this.predictedstackedChartLabels2Avr = 0;
           this.predictedstackedChartLabels3Avr = 0;
+          console.log(res);
           if (res.status == 200) {
-            this.predictedstackedChartLabels1AvrPre = res.body.total_ta[0];
-            this.predictedstackedChartLabels2AvrPre = res.body.total_ta[1];
-            this.predictedstackedChartLabels3AvrPre = res.body.total_ta[2];
-            res.body.data.forEach((item, key) => {
+            this.predictedstackedChartLabels1AvrPre =
+              res.body.data.find(
+                (item: any) => item.type == 'crown-largefilling'
+              )?.total_ta || '';
+            this.predictedstackedChartLabels2AvrPre =
+              res.body.data.find((item: any) => item.type == 'rct-extraction')
+                ?.total_ta || '';
+            this.predictedstackedChartLabels3AvrPre =
+              res.body.data.find(
+                (item: any) => item.type == 'rctstarted-rctcompleted'
+              )?.total_ta || '';
+
+            console.log(res.body.data);
+
+            res.body.data.forEach((item: any) => {
               var provider = item.provider_name;
               if (!provider) provider = '';
-              if (key == 0) {
-                this.predictedstackedChartData1[0]['data'].push(
-                  parseInt(item.first_value)
-                );
-                this.predictedstackedChartData1[1]['data'].push(
-                  parseInt(item.second_value)
-                );
-                this.predictedstackedChartLabels1Avr = item.ratio;
-                this.predictedstackedChartLabels1.push(provider);
-              } else if (key == 1) {
-                this.predictedstackedChartData2[0]['data'].push(
-                  parseInt(item.first_value)
-                );
-                this.predictedstackedChartData2[1]['data'].push(
-                  parseInt(item.second_value)
-                );
-                this.predictedstackedChartLabels2Avr = item.ratio;
-                this.predictedstackedChartLabels2.push(provider);
-              } else if (key == 2) {
-                this.predictedstackedChartData3[0]['data'].push(
-                  parseInt(item.first_value)
-                );
-                this.predictedstackedChartData3[1]['data'].push(
-                  parseInt(item.second_value)
-                );
-                this.predictedstackedChartLabels3Avr = item.ratio;
-                this.predictedstackedChartLabels3.push(provider);
+              switch (item.type) {
+                case 'crown-largefilling':
+                  this.predictedstackedChartData1[0]['data'].push(
+                    parseInt(item.first_value)
+                  );
+                  this.predictedstackedChartData1[1]['data'].push(
+                    parseInt(item.second_value)
+                  );
+                  this.predictedstackedChartLabels1Avr = item.ratio;
+                  this.predictedstackedChartLabels1.push(provider);
+                  break;
+                case 'rct-extraction':
+                  this.predictedstackedChartData2[0]['data'].push(
+                    parseInt(item.first_value)
+                  );
+                  this.predictedstackedChartData2[1]['data'].push(
+                    parseInt(item.second_value)
+                  );
+                  this.predictedstackedChartLabels2Avr = item.ratio;
+                  this.predictedstackedChartLabels2.push(provider);
+                  break;
+                case 'rctstarted-rctcompleted':
+                  this.predictedstackedChartData3[0]['data'].push(
+                    parseInt(item.first_value)
+                  );
+                  this.predictedstackedChartData3[1]['data'].push(
+                    parseInt(item.second_value)
+                  );
+                  this.predictedstackedChartLabels3Avr = item.ratio;
+                  this.predictedstackedChartLabels3.push(provider);
+                  break;
+                default:
+                  break;
               }
             });
+
             this.predictorRatioTab = '1';
             this.predictedstackedChartData = this.predictedstackedChartData1;
             this.predictedstackedChartLabels =
