@@ -25,6 +25,7 @@ import { environment } from '../../../environments/environment';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import * as _ from 'lodash';
 import * as Chart from 'chart.js';
+import * as moment from 'moment';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -4550,7 +4551,12 @@ export class FinancesComponent implements AfterViewInit {
                 hoverBackgroundColor: this.doughnutChartColors[index],
               });
             });
-            this.expensesChartTrendLabels = durations;
+            this.expensesChartTrendLabels =
+              this.trendValue == 'c'
+                ? durations.map((d: string) =>
+                    moment(d, 'YYYY-MM').format('MMM YYYY')
+                  )
+                : durations;
           }
         },
         (error) => {
