@@ -21,6 +21,7 @@ import { environment } from '../../../environments/environment';
 import { ChartstipsService } from '../../shared/chartstips.service';
 import { ClinicianAnalysisService } from '../cliniciananalysis/cliniciananalysis.service';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -1550,34 +1551,73 @@ export class FrontDeskComponent implements AfterViewInit {
               this.clinic_id.indexOf(',') >= 0 ||
               Array.isArray(this.clinic_id)
             ) {
-              console.log(res.body.data);
-              _.chain(res.body.data);
               this.isAllClinic = true;
-              res.body.data.forEach((res) => {
-                res.val.forEach((reslt, key) => {
-                  var temp = {
-                    day: res.duration,
-                    scheduled_hours: reslt.planned_hour,
-                    clinican_hours: reslt.worked_hour,
-                    util_rate: Math.round(
-                      (reslt.util_rate * 100) / res.body.cCount
-                    ),
+              const weekdays = moment.weekdays();
+              const data: {
+                day: string;
+                plannedHour: number;
+                workedHour: number;
+              }[] = _.chain(res.body.data)
+                .groupBy('day')
+                .map((items: any, day: string) => {
+                  return {
+                    day,
+                    plannedHour: _.chain(items)
+                      .sumBy((item) => Number(item.planned_hour))
+                      .value(),
+                    workedHour: _.chain(items)
+                      .sumBy((item) => Number(item.worked_hour))
+                      .value(),
                   };
-                  this.byDayDataTable.push(temp);
-                  this.byDayDataTemp.push(
-                    Math.round((reslt.util_rate * 100) / res.body.cCount)
-                  );
-                  this.byDayLabelsTemp.push(
-                    res.duration +
-                      '--' +
-                      reslt.worked_hour +
-                      '--' +
-                      reslt.planned_hour
-                  );
-                });
-              });
-              this.byDayData[0]['data'] = this.byDayDataTemp;
-              this.byDayLabels = this.byDayLabelsTemp;
+                })
+                .orderBy(
+                  (item) =>
+                    weekdays.findIndex((weekday) => weekday == item.day),
+                  'asc'
+                )
+                .value();
+              this.byDayDataTable = data.map(
+                ({ day, plannedHour, workedHour }) => ({
+                  day,
+                  scheduled_hours: plannedHour,
+                  clinican_hours: workedHour,
+                  util_rate: _.round((workedHour / plannedHour) * 100),
+                })
+              );
+              this.byDayData[0]['data'] = data.map(
+                ({ workedHour, plannedHour }) =>
+                  _.round((workedHour / plannedHour) * 100)
+              );
+              this.byDayLabels = data.map(
+                ({ day, workedHour, plannedHour }) =>
+                  `${day}--${workedHour}--${plannedHour}`
+              );
+
+              // res.body.data.forEach((res) => {
+              //   res.val.forEach((reslt, key) => {
+              //     var temp = {
+              //       day: res.duration,
+              //       scheduled_hours: reslt.planned_hour,
+              //       clinican_hours: reslt.worked_hour,
+              //       util_rate: Math.round(
+              //         (reslt.util_rate * 100) / res.body.cCount
+              //       ),
+              //     };
+              //     this.byDayDataTable.push(temp);
+              //     this.byDayDataTemp.push(
+              //       Math.round((reslt.util_rate * 100) / res.body.cCount)
+              //     );
+              //     this.byDayLabelsTemp.push(
+              //       res.duration +
+              //         '--' +
+              //         reslt.worked_hour +
+              //         '--' +
+              //         reslt.planned_hour
+              //     );
+              //   });
+              // });
+              // this.byDayData[0]['data'] = this.byDayDataTemp;
+              // this.byDayLabels = this.byDayLabelsTemp;
             } else {
               res.body.data.forEach((res) => {
                 this.isAllClinic = false;

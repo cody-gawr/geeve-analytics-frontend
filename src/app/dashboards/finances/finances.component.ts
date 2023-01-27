@@ -1266,7 +1266,7 @@ export class FinancesComponent implements AfterViewInit {
       ],
     },
     legend: {
-      display: true,
+      display: false,
     },
     tooltips: {
       mode: 'x-axis',
