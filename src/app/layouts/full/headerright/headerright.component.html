@@ -1,4 +1,8 @@
-<div fxLayout="row wrap" [ngClass]="showDropDown == false ? 'singleD': ''" class="header_filters dynamicDropdown{{ user_type_dentist }} {{ classUrl }}">
+<div
+  fxLayout="row wrap"
+  [ngClass]="showDropDown == false ? 'singleD' : ''"
+  class="header_filters dynamicDropdown{{ user_type_dentist }} {{ classUrl }}"
+>
   <div fxLayout="row" fxFlex="50" fxFlex.md="50" fxFlex.sm="50" fxFlex.xs="100">
     <!-- <div fxFlexAlign="center" *ngIf="user_type_dentist==='4' && showCompare">
             <button 
@@ -16,58 +20,146 @@
         !route.includes('/profile-settings')
       "
     >
-    <div class="vertical_center_header_content">
-      <div class="sa_mat_select_topbar" *ngIf= "((route != '/dashboards/finances' && route != '/dashboards/clinicianproceedures' && route != '/dashboards/cliniciananalysis' && route != '/dashboards/marketing' && route != '/dashboards/frontdesk') && apiUrl.includes('test')) && ((route != '/dashboards/finances/multi' && route != '/dashboards/clinicianproceedures/multi' && route != '/dashboards/cliniciananalysis/multi' && route != '/dashboards/marketing/multi' && route != '/dashboards/frontdesk/multi')) || (apiUrl.includes('staging') && (route != '/dashboards/finances/multi' && route != '/dashboards/clinicianproceedures/multi' && route != '/dashboards/cliniciananalysis/multi' && route != '/dashboards/marketing/multi' && route != '/dashboards/frontdesk/multi'))|| ( !apiUrl.includes('test-') && !apiUrl.includes('staging-') && (route != '/dashboards/finances/multi' && route != '/dashboards/clinicianproceedures/multi' && route != '/dashboards/cliniciananalysis/multi' && route != '/dashboards/marketing/multi' && route != '/dashboards/frontdesk/multi')) || (route == '/dashboards/cliniciananalysis' && user_type == 4) || (route == '/dashboards/clinicianproceedures' && user_type == 4)  || (route == '/dashboards/finances' && user_type == 7) || (route == '/dashboards/clinicianproceedures' && user_type == 7) || (route == '/dashboards/cliniciananalysis' && user_type == 7) || (route == '/dashboards/marketing' && user_type == 7) || (route == '/dashboards/frontdesk' && user_type == 7)">
-        <mat-form-field floatLabel="never" >
-          <mat-select
-            class="external_clinic"
-            [(ngModel)]="selectedClinic"
-            (ngModelChange)="loadClinic($event)"
-            [placeholder]="placeHolder"
-          >
-            <mat-option value="all" *ngIf="route == '/dashboards/healthscreen' && clinicsData.length > 1 && user_type !=7">All Clinics</mat-option>
-            <mat-option
-              *ngFor="let clinicData of clinicsData"
-              [value]="clinicData.id"
-            >
-              {{ clinicData.clinicName }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="sa_mat_select_topbar multi-clinic-pro" *ngIf= "((route == '/dashboards/finances' || route == '/dashboards/marketing' || route == '/dashboards/frontdesk' || (route == '/dashboards/cliniciananalysis' && user_type !=4) || (route == '/dashboards/clinicianproceedures' && user_type !=4))  && apiUrl.includes('test') && user_type !=7) || ((route == '/dashboards/finances/multi' || route == '/dashboards/marketing/multi' || route == '/dashboards/frontdesk/multi' || (route == '/dashboards/cliniciananalysis/multi' && user_type !=4) || (route == '/dashboards/clinicianproceedures/multi' && user_type !=4))  && (apiUrl.includes('test') || apiUrl.includes('staging') || !apiUrl.includes('test-') && !apiUrl.includes('staging-')) && user_type !=7)">
-        <mat-form-field floatLabel="never" class="multi-clinic-dis">
-        <mat-select
-          id="multi_clinic"
-          class="external_clinic"
-          [(ngModel)]="selectedClinic"
-          (ngModelChange)="changeClinic($event,allChecked)"
-          [placeholder]="placeHolder"
-          [multiple]="true"
-          (openedChange)="loadClinicEvent($event)"
-          #multiSelect
+      <div class="vertical_center_header_content">
+        <div
+          class="sa_mat_select_topbar"
+          *ngIf="
+            (route != '/dashboards/finances' &&
+              route != '/dashboards/clinicianproceedures' &&
+              route != '/dashboards/cliniciananalysis' &&
+              route != '/dashboards/marketing' &&
+              route != '/dashboards/frontdesk' &&
+              apiUrl.includes('test') &&
+              route != '/dashboards/finances/multi' &&
+                route != '/dashboards/clinicianproceedures/multi' &&
+                route != '/dashboards/cliniciananalysis/multi' &&
+                route != '/dashboards/marketing/multi' &&
+                route != '/dashboards/frontdesk/multi') ||
+            (apiUrl.includes('staging') &&
+              route != '/dashboards/finances/multi' &&
+                route != '/dashboards/clinicianproceedures/multi' &&
+                route != '/dashboards/cliniciananalysis/multi' &&
+                route != '/dashboards/marketing/multi' &&
+                route != '/dashboards/frontdesk/multi') ||
+            (!apiUrl.includes('test-') &&
+              !apiUrl.includes('staging-') &&
+              route != '/dashboards/finances/multi' &&
+                route != '/dashboards/clinicianproceedures/multi' &&
+                route != '/dashboards/cliniciananalysis/multi' &&
+                route != '/dashboards/marketing/multi' &&
+                route != '/dashboards/frontdesk/multi') ||
+            (route == '/dashboards/cliniciananalysis' && user_type == 4) ||
+            (route == '/dashboards/clinicianproceedures' && user_type == 4) ||
+            (route == '/dashboards/finances' && user_type == 7) ||
+            (route == '/dashboards/clinicianproceedures' && user_type == 7) ||
+            (route == '/dashboards/cliniciananalysis' && user_type == 7) ||
+            (route == '/dashboards/marketing' && user_type == 7) ||
+            (route == '/dashboards/frontdesk' && user_type == 7)
+          "
         >
-        <mat-select-trigger *ngIf="allChecked == true">
-          {{'All Clinics'}}
-        </mat-select-trigger>
-          <mat-option value="all" *ngIf="(route == '/dashboards/finances' || route == '/dashboards/marketing' || route == '/dashboards/frontdesk' || route == '/dashboards/cliniciananalysis' || route == '/dashboards/clinicianproceedures' ) || (route == '/dashboards/finances/multi' || route == '/dashboards/marketing/multi' || route == '/dashboards/frontdesk/multi' || route == '/dashboards/cliniciananalysis/multi' || route == '/dashboards/clinicianproceedures/multi' ) && clinicsData.length > 1 && user_type !=7">All Clinics</mat-option>
-          <mat-option
-            *ngFor="let clinicData of clinicsData"
-            [value]="clinicData.id"
-          >
-            {{ clinicData.clinicName }}
-          </mat-option>
-          <button id ="cllclinic" class="mat-raised-button mat-dc float-right" (click)="multiSelect.close()">OK</button>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    </div>
+          <mat-form-field floatLabel="never">
+            <mat-select
+              class="external_clinic"
+              [(ngModel)]="selectedClinic"
+              (ngModelChange)="loadClinic($event)"
+              [placeholder]="placeHolder"
+            >
+              <mat-option
+                value="all"
+                *ngIf="
+                  route == '/dashboards/healthscreen' &&
+                  clinicsData.length > 1 &&
+                  user_type != 7
+                "
+                >All Clinics</mat-option
+              >
+              <mat-option
+                *ngFor="let clinicData of clinicsData"
+                [value]="clinicData.id"
+              >
+                {{ clinicData.clinicName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div
+          class="sa_mat_select_topbar multi-clinic-pro"
+          *ngIf="
+            ((route == '/dashboards/finances' ||
+              route == '/dashboards/marketing' ||
+              route == '/dashboards/frontdesk' ||
+              (route == '/dashboards/cliniciananalysis' && user_type != 4) ||
+              (route == '/dashboards/clinicianproceedures' &&
+                user_type != 4)) &&
+              apiUrl.includes('test') &&
+              user_type != 7) ||
+            ((route == '/dashboards/finances/multi' ||
+              route == '/dashboards/marketing/multi' ||
+              route == '/dashboards/frontdesk/multi' ||
+              (route == '/dashboards/cliniciananalysis/multi' &&
+                user_type != 4) ||
+              (route == '/dashboards/clinicianproceedures/multi' &&
+                user_type != 4)) &&
+              (apiUrl.includes('test') ||
+                apiUrl.includes('staging') ||
+                (!apiUrl.includes('test-') && !apiUrl.includes('staging-'))) &&
+              user_type != 7)
+          "
+        >
+          <mat-form-field floatLabel="never" class="multi-clinic-dis">
+            <mat-select
+              id="multi_clinic"
+              class="external_clinic"
+              [(ngModel)]="selectedClinic"
+              (ngModelChange)="changeClinic($event, allChecked)"
+              [placeholder]="placeHolder"
+              [multiple]="true"
+              (openedChange)="loadClinicEvent($event)"
+              #multiSelect
+            >
+              <mat-select-trigger *ngIf="allChecked == true">
+                {{ 'All Clinics' }}
+              </mat-select-trigger>
+              <mat-option
+                value="all"
+                *ngIf="
+                  route == '/dashboards/finances' ||
+                  route == '/dashboards/marketing' ||
+                  route == '/dashboards/frontdesk' ||
+                  route == '/dashboards/cliniciananalysis' ||
+                  route == '/dashboards/clinicianproceedures' ||
+                  ((route == '/dashboards/finances/multi' ||
+                    route == '/dashboards/marketing/multi' ||
+                    route == '/dashboards/frontdesk/multi' ||
+                    route == '/dashboards/cliniciananalysis/multi' ||
+                    route == '/dashboards/clinicianproceedures/multi') &&
+                    clinicsData.length > 1 &&
+                    user_type != 7)
+                "
+                >All Clinics</mat-option
+              >
+              <mat-option
+                *ngFor="let clinicData of clinicsData"
+                [value]="clinicData.id"
+              >
+                {{ clinicData.clinicName }}
+              </mat-option>
+              <button
+                id="cllclinic"
+                class="mat-raised-button mat-dc float-right"
+                (click)="multiSelect.close()"
+              >
+                OK
+              </button>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
     </div>
   </div>
   <div class="prime-logo" *ngIf="route == '/kpi-report'">
-      <img src="../../assets/images/prime-practice.png" alt="prime-practice"/>
-    
- </div>
+    <img src="../../assets/images/prime-practice.png" alt="prime-practice" />
+  </div>
   <div fxFlex="50" fxFlex.md="50" fxFlex.sm="50" fxFlex.xs="100">
     <div
       class="dentist_dropdown"

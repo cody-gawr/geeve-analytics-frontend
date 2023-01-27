@@ -1547,97 +1547,59 @@ export class FrontDeskComponent implements AfterViewInit {
           this.byTotal = 0;
           this.prevByDayTotal = 0;
           if (res.status == 200) {
-            if (
-              this.clinic_id.indexOf(',') >= 0 ||
-              Array.isArray(this.clinic_id)
-            ) {
-              this.isAllClinic = true;
-              const weekdays = moment.weekdays();
-              const data: {
-                day: string;
-                plannedHour: number;
-                workedHour: number;
-              }[] = _.chain(res.body.data)
-                .groupBy('day')
-                .map((items: any, day: string) => {
-                  return {
-                    day,
-                    plannedHour: _.chain(items)
-                      .sumBy((item) => Number(item.planned_hour))
-                      .value(),
-                    workedHour: _.chain(items)
-                      .sumBy((item) => Number(item.worked_hour))
-                      .value(),
-                  };
-                })
-                .orderBy(
-                  (item) =>
-                    weekdays.findIndex((weekday) => weekday == item.day),
-                  'asc'
-                )
-                .value();
-              this.byDayDataTable = data.map(
-                ({ day, plannedHour, workedHour }) => ({
+            moment.updateLocale('en-au', {
+              week: {
+                dow: 1,
+              },
+            });
+            const weekdays: string[] = moment.weekdays(true);
+            const fillableData: {
+              day: string;
+              plannedHour: number;
+              workedHour: number;
+            }[] = _.chain(res.body.data)
+              .groupBy('day')
+              .map((items: any, day: string) => {
+                return {
                   day,
-                  scheduled_hours: plannedHour,
-                  clinican_hours: workedHour,
-                  util_rate: _.round((workedHour / plannedHour) * 100),
-                })
-              );
-              this.byDayData[0]['data'] = data.map(
-                ({ workedHour, plannedHour }) =>
-                  _.round((workedHour / plannedHour) * 100)
-              );
-              this.byDayLabels = data.map(
-                ({ day, workedHour, plannedHour }) =>
-                  `${day}--${workedHour}--${plannedHour}`
-              );
-
-              // res.body.data.forEach((res) => {
-              //   res.val.forEach((reslt, key) => {
-              //     var temp = {
-              //       day: res.duration,
-              //       scheduled_hours: reslt.planned_hour,
-              //       clinican_hours: reslt.worked_hour,
-              //       util_rate: Math.round(
-              //         (reslt.util_rate * 100) / res.body.cCount
-              //       ),
-              //     };
-              //     this.byDayDataTable.push(temp);
-              //     this.byDayDataTemp.push(
-              //       Math.round((reslt.util_rate * 100) / res.body.cCount)
-              //     );
-              //     this.byDayLabelsTemp.push(
-              //       res.duration +
-              //         '--' +
-              //         reslt.worked_hour +
-              //         '--' +
-              //         reslt.planned_hour
-              //     );
-              //   });
-              // });
-              // this.byDayData[0]['data'] = this.byDayDataTemp;
-              // this.byDayLabels = this.byDayLabelsTemp;
-            } else {
-              res.body.data.forEach((res) => {
-                this.isAllClinic = false;
-                // if(res.worked_hour > 0) {
-                var temp = {
-                  day: res.day,
-                  scheduled_hours: res.planned_hour,
-                  clinican_hours: res.worked_hour,
-                  util_rate: Math.round(res.util_rate * 100),
+                  plannedHour: _.chain(items)
+                    .sumBy((item) => Number(item.planned_hour))
+                    .value(),
+                  workedHour: _.chain(items)
+                    .sumBy((item) => Number(item.worked_hour))
+                    .value(),
                 };
-                this.byDayDataTable.push(temp);
-                this.byDayDataTemp.push(Math.round(res.util_rate * 100));
-                this.byDayLabelsTemp.push(
-                  res.day + '--' + res.worked_hour + '--' + res.planned_hour
-                );
-                // }
-              });
-              this.byDayData[0]['data'] = this.byDayDataTemp;
-              this.byDayLabels = this.byDayLabelsTemp;
-            }
+              })
+              .value();
+            const data: {
+              day: string;
+              plannedHour: number;
+              workedHour: number;
+            }[] = weekdays.map((weekday) => {
+              const item = fillableData.find((ele) => ele.day == weekday);
+              return item
+                ? item
+                : { day: weekday, plannedHour: 0, workedHour: 0 };
+            });
+            this.byDayDataTable = data.map(
+              ({ day, plannedHour, workedHour }) => ({
+                day,
+                scheduled_hours: plannedHour,
+                clinican_hours: workedHour,
+                util_rate: _.round((workedHour / plannedHour || 0) * 100),
+              })
+            );
+            this.byDayData[0]['data'] = data.map(
+              ({ workedHour, plannedHour }) =>
+                _.round((workedHour / plannedHour || 0) * 100)
+            );
+            this.byDayLabels = data.map(
+              ({ day, workedHour, plannedHour }) =>
+                `${day}--${workedHour}--${plannedHour}`
+            );
+
+            this.isAllClinic =
+              this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id);
             this.byTotal = Math.round(res.body.total);
             this.prevByDayTotal = Math.round(res.body.total_ta);
           }
