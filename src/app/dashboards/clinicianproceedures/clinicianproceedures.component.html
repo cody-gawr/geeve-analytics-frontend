@@ -1698,9 +1698,9 @@
             <div class="chart">
               <div
                 *ngIf="
-                  showInternal == true &&
+                  showInternal &&
                   pieChartDataMax1 > 0 &&
-                  showTrend == false &&
+                  !showTrend &&
                   !clinicianReferralLoader
                 "
                 class="trend-show"
@@ -1821,10 +1821,6 @@
                   [colors]="stackedChartColors"
                   (chartClick)="chartClicked($event)"
                 ></canvas>
-                <!-- <div *ngIf="stackedChartTrendDataMax <= 0 && showTrend == true" class="sa_nodata_div">
-            <h4>No Data</h4>
-            <p></p>
-        </div> -->
               </div>
               <div
                 *ngIf="

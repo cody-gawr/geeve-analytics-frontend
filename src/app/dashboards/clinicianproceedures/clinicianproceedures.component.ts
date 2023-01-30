@@ -2785,6 +2785,22 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     this.pieChartLabelsres = [];
     this.pieChartLabelsres3 = [];
     this.clinicianReferralLoader = true;
+    this.pieChartInternalTotal = 0;
+    this.pieChartExternalTotal = 0;
+    this.pieChartCombinedTotal = 0;
+    this.pieChartInternalTotal = 0;
+    this.pieChartExternalTotal = 0;
+    this.pieChartCombinedTotal = 0;
+    this.pieChartDataMax1 = 0;
+    this.pieChartDataMax2 = 0;
+    this.pieChartDataMax3 = 0;
+    this.pieChartInternalPrevTotal = 0;
+    this.pieChartExternalPrevTotal = 0;
+    this.pieChartCombinedPrevTotal = 0;
+    this.pieChartInternalPrevTooltip = 'down';
+    this.pieChartExternalPrevTooltip = 'down';
+    this.pieChartCombinedPrevTooltip = 'down';
+
     this.clinic_id &&
       this.clinicianproceeduresService
         .ClinicianReferral(
@@ -2796,40 +2812,17 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
         .subscribe(
           (res) => {
             this.clinicianReferralLoader = false;
-            this.pieChartDatares1 = [];
-            this.pieChartDatares2 = [];
-            this.pieChartDatares3 = [];
-            this.pieChartLabelsres1 = [];
-            this.pieChartLabelsres2 = [];
-            this.pieChartLabelsres3 = [];
-
-            this.pieChartInternalTotal = 0;
-            this.pieChartExternalTotal = 0;
-            this.pieChartCombinedTotal = 0;
-            this.pieChartInternalTotal = 0;
-            this.pieChartExternalTotal = 0;
-            this.pieChartCombinedTotal = 0;
-            this.pieChartDataMax1 = 0;
-            this.pieChartDataMax2 = 0;
-            this.pieChartDataMax3 = 0;
-            this.pieChartInternalPrevTotal = 0;
-            this.pieChartExternalPrevTotal = 0;
-            this.pieChartCombinedPrevTotal = 0;
-            this.pieChartInternalPrevTooltip = 'down';
-            this.pieChartExternalPrevTooltip = 'down';
-            this.pieChartCombinedPrevTooltip = 'down';
             if (res.status == 200 && res.body.data && res.body.data.length) {
               if (
                 this.clinic_id.indexOf(',') >= 0 ||
                 Array.isArray(this.clinic_id)
               ) {
-                console.log(res.body.data);
-                const data: {
+                const data: _.CollectionChain<{
                   treatItemName: string;
                   internal: number;
                   external: number;
                   total: number;
-                }[] = _.chain(res.body.data)
+                }> = _.chain(res.body.data)
                   .groupBy('treat_item_name')
                   .map((items: any[], treatItemName: string) => {
                     return {
@@ -2838,59 +2831,64 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                       external: _.sumBy(items, (item) => Number(item.external)),
                       total: _.sumBy(items, (item) => Number(item.total)),
                     };
-                  })
+                  });
+                const data1 = data
+                  .orderBy((item) => item.internal, 'desc')
+                  .filter((item) => item.internal > 0);
+                const data2 = data
+                  .orderBy((item) => item.external, 'desc')
+                  .filter((item) => item.external > 0);
+                const data3 = data
+                  .orderBy((item) => item.total, 'desc')
+                  .filter((item) => item.total > 0);
+                this.pieChartDatares1 = data1.map((v) => v.internal).value();
+                this.pieChartLabelsres1 = data1
+                  .map((v) => v.treatItemName)
                   .value();
-                this.pieChartDatares1 = data
-                  .filter((item) => item.internal > 0)
-                  .map((v) => v.internal);
-                this.pieChartLabelsres1 = data
-                  .filter((item) => item.internal > 0)
-                  .map((v) => v.treatItemName);
-                this.pieChartInternalTotal = _.chain(data)
+                this.pieChartInternalTotal = data1
                   .sumBy((item) => item.internal)
                   .value();
 
-                this.pieChartDatares2 = data
-                  .filter((item) => item.external > 0)
-                  .map((v) => v.external);
-                this.pieChartLabelsres2 = data
-                  .filter((item) => item.external > 0)
-                  .map((v) => v.treatItemName);
-                this.pieChartExternalTotal = _.chain(data)
+                this.pieChartDatares2 = data2.map((v) => v.external).value();
+                this.pieChartLabelsres2 = data2
+                  .map((v) => v.treatItemName)
+                  .value();
+                this.pieChartExternalTotal = data2
                   .sumBy((item) => item.external)
                   .value();
 
-                this.pieChartDatares3 = data
-                  .filter((item) => item.total > 0)
-                  .map((v) => v.total);
-                this.pieChartLabelsres3 = data
-                  .filter((item) => item.total > 0)
-                  .map((v) => v.treatItemName);
-                this.pieChartCombinedTotal = _.chain(data)
+                this.pieChartDatares3 = data3.map((v) => v.total).value();
+                this.pieChartLabelsres3 = data3
+                  .map((v) => v.treatItemName)
+                  .value();
+                this.pieChartCombinedTotal = data3
                   .sumBy((item) => item.total)
                   .value();
               } else {
-                var i = 0;
-                res.body.data.forEach((res) => {
-                  if (res.internal > 0) {
-                    this.pieChartDatares1.push(res.internal);
-                    this.pieChartLabelsres1.push(res.treat_item_name);
+                let i = 0;
+                res.body.data.forEach((item) => {
+                  if (item.internal > 0) {
+                    this.pieChartDatares1.push(item.internal);
+                    this.pieChartLabelsres1.push(item.treat_item_name);
                   }
-                  if (res.external > 0) {
-                    this.pieChartDatares2.push(res.external);
-                    this.pieChartLabelsres2.push(res.treat_item_name);
+                  if (item.external > 0) {
+                    this.pieChartDatares2.push(item.external);
+                    this.pieChartLabelsres2.push(item.treat_item_name);
                   }
-                  if (res.total > 0) {
-                    this.pieChartDatares3.push(res.total);
-                    this.pieChartLabelsres3.push(res.treat_item_name);
+                  if (item.total > 0) {
+                    this.pieChartDatares3.push(item.total);
+                    this.pieChartLabelsres3.push(item.treat_item_name);
                   }
                   this.pieChartInternalTotal =
-                    this.pieChartInternalTotal + parseInt(res.internal);
+                    this.pieChartInternalTotal + parseInt(item.internal);
                   this.pieChartExternalTotal =
-                    this.pieChartExternalTotal + parseInt(res.external);
+                    this.pieChartExternalTotal + parseInt(item.external);
                   this.pieChartCombinedTotal =
-                    this.pieChartCombinedTotal + parseInt(res.total);
-                  if (res.label != 'Anonymous') this.crKey = i;
+                    this.pieChartCombinedTotal + parseInt(item.total);
+                  if (item.label != 'Anonymous') {
+                    this.crKey = i;
+                  }
+
                   i++;
                 });
 
