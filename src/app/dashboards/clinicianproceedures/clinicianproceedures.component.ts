@@ -2442,10 +2442,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                       case 'rct-extraction':
                         this.predictedMulti2[0]['data'].push(ele.first_value);
                         this.predictedMulti2[1]['data'].push(ele.second_value);
-                        this.predictedMulti2[0]['label'] =
-                          'Indirect Restorations';
-                        this.predictedMulti2[1]['label'] =
-                          'Large Direct Restorations';
+                        this.predictedMulti2[0]['label'] = 'RCT';
+                        this.predictedMulti2[1]['label'] = 'Extractions';
                         this.ratio3 += parseInt(ele.first_value) || 0;
                         this.ratio4 += parseInt(ele.second_value) || 0;
                         this.multifulratio2 = this.ratio3 + ':' + this.ratio4;
@@ -2454,10 +2452,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                       case 'rctstarted-rctcompleted':
                         this.predictedMulti3[0]['data'].push(ele.first_value);
                         this.predictedMulti3[1]['data'].push(ele.second_value);
-                        this.predictedMulti3[0]['label'] =
-                          'Indirect Restorations';
-                        this.predictedMulti3[1]['label'] =
-                          'Large Direct Restorations';
+                        this.predictedMulti3[0]['label'] = "RCT's Started";
+                        this.predictedMulti3[1]['label'] = "RCT's Completed";
                         this.ratio5 += parseInt(ele.first_value) || 0;
                         this.ratio6 += parseInt(ele.second_value) || 0;
                         this.multifulratio3 = this.ratio5 + ':' + this.ratio6;
