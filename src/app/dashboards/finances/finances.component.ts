@@ -2466,7 +2466,7 @@ export class FinancesComponent implements AfterViewInit {
                   data: _.chain(items)
                     .orderBy('clinic_id', 'asc')
                     .value()
-                    .map((item) => _.ceil((item.expense / production) * 100)),
+                    .map((item) => _.round((item.expense / production) * 100)),
                   label: accountName,
                   backgroundColor: this.doughnutChartColors[index],
                   hoverBackgroundColor: this.doughnutChartColors[index],
@@ -2480,7 +2480,7 @@ export class FinancesComponent implements AfterViewInit {
               res.body.data.forEach((item: any) => {
                 this.single.push({
                   name: `${item.account_name}--${item.expense}`,
-                  value: _.ceil((item.expense / res.body.production) * 100),
+                  value: _.round((item.expense / res.body.production) * 100),
                 });
 
                 this.pieChartDatares.push(Math.round(item.expense));
