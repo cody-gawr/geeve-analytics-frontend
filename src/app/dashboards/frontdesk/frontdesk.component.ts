@@ -2553,20 +2553,16 @@ export class FrontDeskComponent implements AfterViewInit {
   public fdFtaRatioTrendLoader: boolean;
   public ftaChartTrendMulti: any[] = [{ data: [], label: '' }];
   public ftaTrendMultiLabels = [];
-  public ftaChartTrendMultiLabels1 = [];
   public showByclinicfta: boolean = false;
   private fdFtaRatioTrend() {
     this.fdFtaRatioTrendLoader = true;
     this.ftaChartTrendLabels = [];
-
     this.ftaChartTrendLabels1 = [];
     this.ftaChartTrend1 = [];
-    var user_id;
-    var clinic_id;
     this.showByclinicfta = false;
     this.ftaChartTrendMulti = [];
     this.ftaTrendMultiLabels = [];
-    this.ftaChartTrendMultiLabels1 = [];
+
     this.clinic_id &&
       this.frontdeskService
         .fdFtaRatioTrend(this.clinic_id, this.trendValue)
@@ -2586,35 +2582,60 @@ export class FrontDeskComponent implements AfterViewInit {
                 Array.isArray(this.clinic_id)
               ) {
                 this.showByclinicfta = true;
-                res.body.data.forEach((res) => {
-                  let ftaSum = 0;
-                  res.val.forEach((reslt, key) => {
-                    ftaSum += Math.round(reslt.fta_ratio);
-                    // if (typeof (this.ftaChartTrendMulti[key]) == 'undefined') {
-                    //   this.ftaChartTrendMulti[key] = { data: [], label: '' };
-                    // }
-                    // if (typeof (this.ftaChartTrendMulti[key]['data']) == 'undefined') {
-                    //   this.ftaChartTrendMulti[key]['data'] = [];
-                    // }
+                const data = _.chain(res.body.data)
+                  .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                  .map((items: any[], duration) => {
+                    const totalFta = _.chain(items)
+                      .sumBy((item) => Number(item.total_fta))
+                      .value();
+                    const totalAppts = _.chain(items)
+                      .sumBy((item) => Number(item.total_appts))
+                      .value();
+                    return {
+                      duration:
+                        this.trendValue == 'c'
+                          ? this.datePipe.transform(duration, 'MMM y')
+                          : duration,
+                      fta_ratio: _.round((totalFta / totalAppts || 0) * 100),
+                    };
+                  })
+                  .value();
+                this.ftaChartTrendMulti[0]['data'] = data.map(
+                  (item) => item.fta_ratio
+                );
+                this.ftaChartTrendMulti[0]['backgroundColor'] =
+                  this.doughnutChartColors[0];
 
-                    //   this.ftaChartTrendMulti[key]['data'].push(Math.round(reslt.fta_ratio));
-                    //   this.ftaChartTrendMulti[key]['label'] = reslt.clinic_name;
-                    //   this.ftaChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
-                    //   this.ftaChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
-                  });
-                  // this.ftaChartTrendMulti[0]['data'].push(Math.round(((ftaSum / res.val.length) + Number.EPSILON) * 100) / 100);
-                  this.ftaChartTrendMulti[0]['data'].push(
-                    ftaSum / res.val.length
-                  );
-                  this.ftaChartTrendMulti[0]['backgroundColor'] =
-                    this.doughnutChartColors[0];
-                  if (this.trendValue == 'c')
-                    this.ftaChartTrendMultiLabels1.push(
-                      this.datePipe.transform(res.duration, 'MMM y')
-                    );
-                  else this.ftaChartTrendMultiLabels1.push(res.duration);
-                });
-                this.ftaTrendMultiLabels = this.ftaChartTrendMultiLabels1;
+                this.ftaTrendMultiLabels = data.map((item) => item.duration);
+                // res.body.data.forEach((res) => {
+                //   let ftaSum = 0;
+                //   res.val.forEach((reslt, key) => {
+                //     ftaSum += Math.round(reslt.fta_ratio);
+                //     // if (typeof (this.ftaChartTrendMulti[key]) == 'undefined') {
+                //     //   this.ftaChartTrendMulti[key] = { data: [], label: '' };
+                //     // }
+                //     // if (typeof (this.ftaChartTrendMulti[key]['data']) == 'undefined') {
+                //     //   this.ftaChartTrendMulti[key]['data'] = [];
+                //     // }
+
+                //     //   this.ftaChartTrendMulti[key]['data'].push(Math.round(reslt.fta_ratio));
+                //     //   this.ftaChartTrendMulti[key]['label'] = reslt.clinic_name;
+                //     //   this.ftaChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
+                //     //   this.ftaChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+                //   });
+                //   // this.ftaChartTrendMulti[0]['data'].push(Math.round(((ftaSum / res.val.length) + Number.EPSILON) * 100) / 100);
+                //   this.ftaChartTrendMulti[0]['data'].push(
+                //     ftaSum / res.val.length
+                //   );
+                //   this.ftaChartTrendMulti[0]['backgroundColor'] =
+                //     this.doughnutChartColors[0];
+                //   if (this.trendValue == 'c')
+                //     this.ftaChartTrendMultiLabels1.push(
+                //       this.datePipe.transform(res.duration, 'MMM y')
+                //     );
+                //   else this.ftaChartTrendMultiLabels1.push(res.duration);
+                // });
+                // this.ftaTrendMultiLabels = this.ftaChartTrendMultiLabels1;
               } else {
                 res.body.data.forEach((res) => {
                   if (res.val > 100) res.val = 100;
