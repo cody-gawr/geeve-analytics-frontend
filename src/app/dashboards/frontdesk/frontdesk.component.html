@@ -1092,9 +1092,9 @@
 
                 <div
                   *ngIf="
-                    showByclinictic == false &&
+                    !showByclinictic &&
                     showTrend &&
-                    tickChartTrend1.length > 0 &&
+                    tickChartTrend.length > 0 &&
                     !fdNumberOfTicksTrendLoader
                   "
                   class="chart-recall-rate-trend"
@@ -1115,9 +1115,9 @@
                 </div>
                 <div
                   *ngIf="
-                    showByclinictic == true &&
+                    showByclinictic &&
                     showTrend &&
-                    ticPChartTrendMultiLabels1.length > 0 &&
+                    ticChartTrendMultiLabels.length > 0 &&
                     !fdNumberOfTicksTrendLoader
                   "
                   class="chart-recall-rate-trend"
@@ -1139,8 +1139,8 @@
                 <div
                   *ngIf="
                     showTrend &&
-                    tickChartTrend1.length <= 0 &&
-                    ticPChartTrendMultiLabels1.length <= 0 &&
+                    tickChartTrend.length <= 0 &&
+                    ticChartTrendMultiLabels.length <= 0 &&
                     !fdNumberOfTicksTrendLoader
                   "
                 >

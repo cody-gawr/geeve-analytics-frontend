@@ -2976,8 +2976,6 @@ export class FrontDeskComponent implements AfterViewInit {
     this.tickChartTrendLabels = [];
     this.tickChartTrendLabels1 = [];
     this.tickChartTrend1 = [];
-    var user_id;
-    var clinic_id;
     this.showByclinictic = false;
     this.ticChartTrendMulti = [];
     this.ticChartTrendMultiLabels = [];
@@ -2991,42 +2989,36 @@ export class FrontDeskComponent implements AfterViewInit {
             this.tickChartTrend1 = [];
             this.Apirequest = this.Apirequest - 1;
             if (res.status == 200) {
-              res.body.data.sort((a, b) =>
-                a.duration === b.duration ? 0 : a.duration > b.duration || -1
-              );
               this.fdNumberOfTicksTrendLoader = false;
               if (
                 this.clinic_id.indexOf(',') >= 0 ||
                 Array.isArray(this.clinic_id)
               ) {
                 this.showByclinictic = true;
-                res.body.data.forEach((res) => {
-                  res.val.forEach((reslt, key) => {
-                    if (typeof this.ticChartTrendMulti[key] == 'undefined') {
-                      this.ticChartTrendMulti[key] = { data: [], label: '' };
-                    }
-                    if (
-                      typeof this.ticChartTrendMulti[key]['data'] == 'undefined'
-                    ) {
-                      this.ticChartTrendMulti[key]['data'] = [];
-                    }
-
-                    this.ticChartTrendMulti[key]['data'].push(
-                      Math.round(reslt.num_ticks)
-                    );
-                    this.ticChartTrendMulti[key]['label'] = reslt.clinic_name;
-                    this.ticChartTrendMulti[key]['backgroundColor'] =
-                      this.doughnutChartColors[key];
-                    this.ticChartTrendMulti[key]['hoverBackgroundColor'] =
-                      this.doughnutChartColors[key];
-                  });
-                  if (this.trendValue == 'c')
-                    this.ticPChartTrendMultiLabels1.push(
-                      this.datePipe.transform(res.duration, 'MMM y')
-                    );
-                  else this.ticPChartTrendMultiLabels1.push(res.duration);
-                });
-                this.ticChartTrendMultiLabels = this.ticPChartTrendMultiLabels1;
+                this.ticChartTrendMultiLabels = _.chain(res.body.data)
+                  .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                  .map((items, duration) => duration)
+                  .value()
+                  .map((item) =>
+                    this.trendValue == 'c'
+                      ? this.datePipe.transform(item, 'MMM y')
+                      : item
+                  );
+                this.ticChartTrendMulti = _.chain(res.body.data)
+                  .groupBy('clinic_id')
+                  .map((items: any[]) => {
+                    const clinicName = items[0].clinic_name;
+                    return {
+                      label: clinicName,
+                      data: items.map((item) => Number(item.num_ticks)),
+                    };
+                  })
+                  .value()
+                  .map((item, index: number) => ({
+                    ...item,
+                    backgroundColor: this.doughnutChartColors[index],
+                    hoverBackgroundColor: this.doughnutChartColors[index],
+                  }));
               } else {
                 res.body.data.forEach((res) => {
                   this.tickChartTrend1.push(res.num_ticks);
