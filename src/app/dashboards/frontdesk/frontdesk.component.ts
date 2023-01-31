@@ -3156,43 +3156,15 @@ export class FrontDeskComponent implements AfterViewInit {
                     };
                   })
                   .value();
-                // res.body.data.forEach((res) => {
-                //   let recallSum = 0;
-                //   res.val.forEach((reslt, key) => {
-                //     recallSum += Math.round(reslt.recall_percent);
-                //     // if (typeof (this.rPChartTrendMulti[key]) == 'undefined') {
-                //     //   this.rPChartTrendMulti[key] = { data: [], label: '' };
-                //     // }
-                //     // if (typeof (this.rPChartTrendMulti[key]['data']) == 'undefined') {
-                //     //   this.rPChartTrendMulti[key]['data'] = [];
-                //     // }
-
-                //     //   this.rPChartTrendMulti[key]['data'].push(Math.round(reslt.recall_percent));
-                //     //   this.rPChartTrendMulti[key]['label'] = reslt.clinic_name;
-                //     //   this.rPChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
-                //     //   this.rPChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
-                //   });
-                //   // this.rPChartTrendMulti[0]['data'].push(Math.round(((recallSum / res.val.length) + Number.EPSILON) * 100) / 100);
-                //   if (recallSum > 0) {
-                //     this.rPChartTrendMulti[0]['data'].push(
-                //       recallSum / res.val.length
-                //     );
-                //     this.rPChartTrendMulti[0]['backgroundColor'] =
-                //       this.doughnutChartColors[0];
-                //     if (this.trendValue == 'c')
-                //       this.rPChartTrendMultiLabels1.push(
-                //         this.datePipe.transform(res.duration, 'MMM y')
-                //       );
-                //     else this.rPChartTrendMultiLabels1.push(res.duration);
-                //   }
-                // });
                 this.rPChartTrendMulti[0]['data'] = data.map(
                   (item) => item.recall_percent
                 );
                 this.rPChartTrendMulti[0]['backgroundColor'] =
                   this.doughnutChartColors[0];
-                this.rPChartTrendMultiLabels = data.map(
-                  (item) => item.duration
+                this.rPChartTrendMultiLabels = data.map((item) =>
+                  this.trendValue == 'c'
+                    ? this.datePipe.transform(item.duration, 'MMM y')
+                    : item.duration
                 );
               } else {
                 this.recallPrebookChartTrendLabels1 = [];
