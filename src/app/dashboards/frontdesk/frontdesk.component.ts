@@ -2695,22 +2695,17 @@ export class FrontDeskComponent implements AfterViewInit {
   public targetData = [];
   public uRChartTrendMulti: any[] = [{ data: [], label: '' }];
   public uRChartTrendMultiLabels = [];
-  public uRChartTrendMultiLabels1 = [];
   public showByclinicUR: boolean = false;
 
   private fdwtaRatioTrend() {
     this.fdwtaRatioTrendLoader = true;
     this.wtaChartTrendLabels = [];
-
     this.wtaChartTrendLabels1 = [];
     this.wtaChartTrend1 = [];
     this.targetData = [];
-    var user_id;
-    var clinic_id;
     this.showByclinicUR = false;
     this.uRChartTrendMulti = [];
     this.uRChartTrendMultiLabels = [];
-    this.uRChartTrendMultiLabels1 = [];
     if (this.trendValue == 'h') {
       // utilisation rate showing messageif more than 12 months
       this.utilityratemessage = true;
@@ -2723,6 +2718,7 @@ export class FrontDeskComponent implements AfterViewInit {
           .fdWorkTimeAnalysisTrend(this.clinic_id, this.trendValue)
           .subscribe(
             (res) => {
+              console.log(res);
               this.wtaChartTrendLabels1 = [];
               this.wtaChartTrend1 = [];
               this.Apirequest = this.Apirequest - 1;
@@ -2742,34 +2738,29 @@ export class FrontDeskComponent implements AfterViewInit {
                   this.clinic_id.indexOf(',') >= 0 ||
                   Array.isArray(this.clinic_id)
                 ) {
-                  res.body.data.forEach((res) => {
-                    let utiSum = 0;
-                    res.val.forEach((reslt, key) => {
-                      utiSum += Math.round(reslt.util_rate * 100);
-                      // if (typeof (this.uRChartTrendMulti[key]) == 'undefined') {
-                      //   this.uRChartTrendMulti[key] = { data: [], label: '' };
-                      // }
-                      // if (typeof (this.uRChartTrendMulti[key]['data']) == 'undefined') {
-                      //   this.uRChartTrendMulti[key]['data'] = [];
-                      // }
-                      // this.uRChartTrendMulti[key]['data'].push(Math.round(reslt.util_rate * 100));
-                      // this.uRChartTrendMulti[key]['label'] = reslt.clinic_name;
-                      // this.uRChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
-                      // this.uRChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
-                    });
-                    // this.uRChartTrendMulti[0]['data'].push(Math.round(((utiSum / res.val.length) + Number.EPSILON) * 100) / 100);
-                    this.uRChartTrendMulti[0]['data'].push(
-                      utiSum / res.val.length
-                    );
-                    this.uRChartTrendMulti[0]['backgroundColor'] =
-                      this.doughnutChartColors[0];
-                    if (this.trendValue == 'c')
-                      this.uRChartTrendMultiLabels1.push(
-                        this.datePipe.transform(res.duration, 'MMM y')
-                      );
-                    else this.uRChartTrendMultiLabels1.push(res.duration);
-                  });
-                  this.uRChartTrendMultiLabels = this.uRChartTrendMultiLabels1;
+                  const data = _.chain(res.body.data)
+                    .groupBy('year_month')
+                    .map((items: any[], duration: string) => {
+                      const plannedHour = _.chain(items)
+                        .sumBy((item) => Number(item.planned_hour))
+                        .value();
+                      const workedHour = _.chain(items)
+                        .sumBy((item) => Number(item.worked_hour))
+                        .value();
+                      return {
+                        duration,
+                        util_rate: _.round((workedHour / plannedHour) * 100, 0),
+                      };
+                    })
+                    .value();
+                  this.uRChartTrendMultiLabels = data.map((item) =>
+                    this.datePipe.transform(item.duration, 'MMM y')
+                  );
+                  this.uRChartTrendMulti[0]['data'] = data.map(
+                    (item) => item.util_rate
+                  );
+                  this.uRChartTrendMulti[0]['backgroundColor'] =
+                    this.doughnutChartColors[0];
                 } else {
                   res.body.data.forEach((res) => {
                     this.wtaChartTrend1.push(Math.round(res.util_rate * 100));
