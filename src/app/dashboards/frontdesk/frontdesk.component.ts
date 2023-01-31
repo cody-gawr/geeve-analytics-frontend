@@ -1965,8 +1965,6 @@ export class FrontDeskComponent implements AfterViewInit {
     if (this.duration) {
       this.fdRecallPrebookRateLoader = true;
       this.recallPrebookTotal = 0;
-      var user_id;
-      var clinic_id;
       this.showmulticlinicPrebook = false;
       this.clinic_id &&
         this.frontdeskService
@@ -2076,8 +2074,6 @@ export class FrontDeskComponent implements AfterViewInit {
       this.fdtreatmentPrebookRateLoader = true;
       this.treatmentPrebookTotal = 0;
       this.showmulticlinicReappointRate = false;
-      var user_id;
-      var clinic_id;
 
       this.clinic_id &&
         this.frontdeskService
@@ -2718,7 +2714,6 @@ export class FrontDeskComponent implements AfterViewInit {
           .fdWorkTimeAnalysisTrend(this.clinic_id, this.trendValue)
           .subscribe(
             (res) => {
-              console.log(res);
               this.wtaChartTrendLabels1 = [];
               this.wtaChartTrend1 = [];
               this.Apirequest = this.Apirequest - 1;
@@ -3114,12 +3109,9 @@ export class FrontDeskComponent implements AfterViewInit {
   private fdRecallPrebookRateTrend() {
     this.fdRecallPrebookRateTrendLoader = true;
     this.recallPrebookChartTrendLabels = [];
-
     this.recallPrebookChartTrendLabels1 = [];
     this.recallPrebookChartTrend1 = [];
     this.fdRecallPrebookRatetargetData = [];
-    var user_id;
-    var clinic_id;
     this.showByclinicRP = false;
     this.rPChartTrendMulti = [];
     this.rPChartTrendMultiLabels = [];
@@ -3146,37 +3138,62 @@ export class FrontDeskComponent implements AfterViewInit {
                 this.clinic_id.indexOf(',') >= 0 ||
                 Array.isArray(this.clinic_id)
               ) {
-                res.body.data.forEach((res) => {
-                  let recallSum = 0;
-                  res.val.forEach((reslt, key) => {
-                    recallSum += Math.round(reslt.recall_percent);
-                    // if (typeof (this.rPChartTrendMulti[key]) == 'undefined') {
-                    //   this.rPChartTrendMulti[key] = { data: [], label: '' };
-                    // }
-                    // if (typeof (this.rPChartTrendMulti[key]['data']) == 'undefined') {
-                    //   this.rPChartTrendMulti[key]['data'] = [];
-                    // }
+                const data = _.chain(res.body.data)
+                  .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                  .map((items: any[], duration) => {
+                    const totalPatient = _.chain(items)
+                      .sumBy((item) => Number(item.total_patient))
+                      .value();
+                    const recallPatient = _.chain(items)
+                      .sumBy((item) => Number(item.recall_patient))
+                      .value();
+                    return {
+                      duration,
+                      recall_percent: _.round(
+                        (recallPatient / totalPatient) * 100,
+                        0
+                      ),
+                    };
+                  })
+                  .value();
+                // res.body.data.forEach((res) => {
+                //   let recallSum = 0;
+                //   res.val.forEach((reslt, key) => {
+                //     recallSum += Math.round(reslt.recall_percent);
+                //     // if (typeof (this.rPChartTrendMulti[key]) == 'undefined') {
+                //     //   this.rPChartTrendMulti[key] = { data: [], label: '' };
+                //     // }
+                //     // if (typeof (this.rPChartTrendMulti[key]['data']) == 'undefined') {
+                //     //   this.rPChartTrendMulti[key]['data'] = [];
+                //     // }
 
-                    //   this.rPChartTrendMulti[key]['data'].push(Math.round(reslt.recall_percent));
-                    //   this.rPChartTrendMulti[key]['label'] = reslt.clinic_name;
-                    //   this.rPChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
-                    //   this.rPChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
-                  });
-                  // this.rPChartTrendMulti[0]['data'].push(Math.round(((recallSum / res.val.length) + Number.EPSILON) * 100) / 100);
-                  if (recallSum > 0) {
-                    this.rPChartTrendMulti[0]['data'].push(
-                      recallSum / res.val.length
-                    );
-                    this.rPChartTrendMulti[0]['backgroundColor'] =
-                      this.doughnutChartColors[0];
-                    if (this.trendValue == 'c')
-                      this.rPChartTrendMultiLabels1.push(
-                        this.datePipe.transform(res.duration, 'MMM y')
-                      );
-                    else this.rPChartTrendMultiLabels1.push(res.duration);
-                  }
-                });
-                this.rPChartTrendMultiLabels = this.rPChartTrendMultiLabels1;
+                //     //   this.rPChartTrendMulti[key]['data'].push(Math.round(reslt.recall_percent));
+                //     //   this.rPChartTrendMulti[key]['label'] = reslt.clinic_name;
+                //     //   this.rPChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
+                //     //   this.rPChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+                //   });
+                //   // this.rPChartTrendMulti[0]['data'].push(Math.round(((recallSum / res.val.length) + Number.EPSILON) * 100) / 100);
+                //   if (recallSum > 0) {
+                //     this.rPChartTrendMulti[0]['data'].push(
+                //       recallSum / res.val.length
+                //     );
+                //     this.rPChartTrendMulti[0]['backgroundColor'] =
+                //       this.doughnutChartColors[0];
+                //     if (this.trendValue == 'c')
+                //       this.rPChartTrendMultiLabels1.push(
+                //         this.datePipe.transform(res.duration, 'MMM y')
+                //       );
+                //     else this.rPChartTrendMultiLabels1.push(res.duration);
+                //   }
+                // });
+                this.rPChartTrendMulti[0]['data'] = data.map(
+                  (item) => item.recall_percent
+                );
+                this.rPChartTrendMulti[0]['backgroundColor'] =
+                  this.doughnutChartColors[0];
+                this.rPChartTrendMultiLabels = data.map(
+                  (item) => item.duration
+                );
               } else {
                 this.recallPrebookChartTrendLabels1 = [];
                 this.recallPrebookChartTrend1 = [];
@@ -3286,7 +3303,7 @@ export class FrontDeskComponent implements AfterViewInit {
   public fdTreatmentPrebookRatetargetData = [];
   public tPChartTrendMulti: any[] = [{ data: [], label: '' }];
   public tPChartTrendMultiLabels = [];
-  public tPChartTrendMultiLabels1 = [];
+
   public showByclinic: boolean = false;
   private fdTreatmentPrebookRateTrend() {
     this.fdTreatmentPrebookRateTrendLoader = true;
@@ -3295,12 +3312,10 @@ export class FrontDeskComponent implements AfterViewInit {
 
     this.treatmentPrebookChartTrend1 = [];
     this.fdTreatmentPrebookRatetargetData = [];
-    var user_id;
-    var clinic_id;
     this.showByclinic = false;
     this.tPChartTrendMulti = [];
     this.tPChartTrendMultiLabels = [];
-    this.tPChartTrendMultiLabels1 = [];
+
     this.clinic_id &&
       this.frontdeskService
         .fdReappointRateTrend(this.clinic_id, this.trendValue)
@@ -3309,44 +3324,68 @@ export class FrontDeskComponent implements AfterViewInit {
             this.Apirequest = this.Apirequest - 1;
             if (res.status == 200) {
               this.tPChartTrendMulti[0] = { data: [], label: '' };
-              res.body.data.sort((a, b) =>
-                a.duration === b.duration ? 0 : a.duration > b.duration || -1
-              );
               this.fdTreatmentPrebookRateTrendLoader = false;
               if (
                 this.clinic_id.indexOf(',') >= 0 ||
                 Array.isArray(this.clinic_id)
               ) {
                 this.showByclinic = true;
-                res.body.data.forEach((res) => {
-                  let reappointSum = 0;
-                  res.val.forEach((reslt, key) => {
-                    reappointSum += Math.round(reslt.reappoint_rate);
-                    // if (typeof (this.tPChartTrendMulti[key]) == 'undefined') {
-                    //   this.tPChartTrendMulti[key] = { data: [], label: '' };
-                    // }
-                    // if (typeof (this.tPChartTrendMulti[key]['data']) == 'undefined') {
-                    //   this.tPChartTrendMulti[key]['data'] = [];
-                    // }
+                const data = _.chain(res.body.data)
+                  .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                  .map((items: any[], duration: string) => {
+                    const totalAppts = _.chain(items)
+                      .sumBy((item) => Number(item.total_appts))
+                      .value();
+                    const reappointments = _.chain(items)
+                      .sumBy((item) => Number(item.reappointments))
+                      .value();
+                    return {
+                      duration,
+                      reappoint_rate: _.round(
+                        (reappointments / totalAppts || 0) * 100
+                      ),
+                    };
+                  })
+                  .value();
+                this.tPChartTrendMulti[0]['data'] = data.map(
+                  (item) => item.reappoint_rate
+                );
+                this.tPChartTrendMulti[0]['backgroundColor'] =
+                  this.doughnutChartColors[0];
+                this.tPChartTrendMultiLabels = data.map((item) =>
+                  this.trendValue == 'c'
+                    ? this.datePipe.transform(item.duration, 'MMM y')
+                    : item.duration
+                );
+                // res.body.data.forEach((res) => {
+                //   let reappointSum = 0;
+                //   res.val.forEach((reslt, key) => {
+                //     reappointSum += Math.round(reslt.reappoint_rate);
+                //     // if (typeof (this.tPChartTrendMulti[key]) == 'undefined') {
+                //     //   this.tPChartTrendMulti[key] = { data: [], label: '' };
+                //     // }
+                //     // if (typeof (this.tPChartTrendMulti[key]['data']) == 'undefined') {
+                //     //   this.tPChartTrendMulti[key]['data'] = [];
+                //     // }
 
-                    //   this.tPChartTrendMulti[key]['data'].push(Math.round(reslt.reappoint_rate));
-                    //   this.tPChartTrendMulti[key]['label'] = reslt.clinic_name;
-                    //   this.tPChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
-                    //   this.tPChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
-                  });
-                  // this.tPChartTrendMulti[0]['data'].push(Math.round(((reappointSum / res.val.length) + Number.EPSILON) * 100) / 100);
-                  this.tPChartTrendMulti[0]['data'].push(
-                    reappointSum / res.val.length
-                  );
-                  this.tPChartTrendMulti[0]['backgroundColor'] =
-                    this.doughnutChartColors[0];
-                  if (this.trendValue == 'c')
-                    this.tPChartTrendMultiLabels1.push(
-                      this.datePipe.transform(res.duration, 'MMM y')
-                    );
-                  else this.tPChartTrendMultiLabels1.push(res.duration);
-                });
-                this.tPChartTrendMultiLabels = this.tPChartTrendMultiLabels1;
+                //     //   this.tPChartTrendMulti[key]['data'].push(Math.round(reslt.reappoint_rate));
+                //     //   this.tPChartTrendMulti[key]['label'] = reslt.clinic_name;
+                //     //   this.tPChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
+                //     //   this.tPChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+                //   });
+                //   // this.tPChartTrendMulti[0]['data'].push(Math.round(((reappointSum / res.val.length) + Number.EPSILON) * 100) / 100);
+                //   this.tPChartTrendMulti[0]['data'].push(
+                //     reappointSum / res.val.length
+                //   );
+                //   this.tPChartTrendMulti[0]['backgroundColor'] =
+                //     this.doughnutChartColors[0];
+                //   if (this.trendValue == 'c')
+                //     this.tPChartTrendMultiLabels1.push(
+                //       this.datePipe.transform(res.duration, 'MMM y')
+                //     );
+                //   else this.tPChartTrendMultiLabels1.push(res.duration);
+                // });
+                // this.tPChartTrendMultiLabels = this.tPChartTrendMultiLabels1;
               } else {
                 this.treatmentPrebookChartTrendLabels1 = [];
                 this.treatmentPrebookChartTrend1 = [];
