@@ -2861,20 +2861,15 @@ export class FrontDeskComponent implements AfterViewInit {
   public fdUtaRatioTrendLoader: boolean;
   public utaChartTrendMulti: any[] = [{ data: [], label: '' }];
   public utaTrendMultiLabels = [];
-  public utaChartTrendMultiLabels1 = [];
   public showByclinicUta: boolean = false;
   private fdUtaRatioTrend() {
     this.fdUtaRatioTrendLoader = true;
     this.utaChartTrendLabels1 = [];
     this.utaChartTrendLabels = [];
-
     this.utaChartTrend1 = [];
-    var user_id;
-    var clinic_id;
     this.showByclinicUta = false;
     this.utaChartTrendMulti = [];
     this.utaTrendMultiLabels = [];
-    this.utaChartTrendMultiLabels1 = [];
     this.clinic_id &&
       this.frontdeskService
         .fdUtaRatioTrend(this.clinic_id, this.trendValue)
@@ -2894,35 +2889,30 @@ export class FrontDeskComponent implements AfterViewInit {
                 Array.isArray(this.clinic_id)
               ) {
                 this.showByclinicUta = true;
-                res.body.data.forEach((res) => {
-                  let utaSum = 0;
-                  res.val.forEach((reslt, key) => {
-                    utaSum += Math.round(reslt.uta_ratio);
-                    // if (typeof (this.utaChartTrendMulti[key]) == 'undefined') {
-                    //   this.utaChartTrendMulti[key] = { data: [], label: '' };
-                    // }
-                    // if (typeof (this.utaChartTrendMulti[key]['data']) == 'undefined') {
-                    //   this.utaChartTrendMulti[key]['data'] = [];
-                    // }
-
-                    //   this.utaChartTrendMulti[key]['data'].push(Math.round(reslt.uta_ratio));
-                    //   this.utaChartTrendMulti[key]['label'] = reslt.clinic_name;
-                    //   this.utaChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
-                    //   this.utaChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
-                  });
-                  // this.utaChartTrendMulti[0]['data'].push(Math.round(((utaSum / res.val.length) + Number.EPSILON) * 100) / 100);
-                  this.utaChartTrendMulti[0]['data'].push(
-                    utaSum / res.val.length
-                  );
-                  this.utaChartTrendMulti[0]['backgroundColor'] =
-                    this.doughnutChartColors[0];
-                  if (this.trendValue == 'c')
-                    this.utaChartTrendMultiLabels1.push(
-                      this.datePipe.transform(res.duration, 'MMM y')
-                    );
-                  else this.utaChartTrendMultiLabels1.push(res.duration);
-                });
-                this.utaTrendMultiLabels = this.utaChartTrendMultiLabels1;
+                const data = _.chain(res.body.data)
+                  .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                  .map((items: any[], duration: string) => {
+                    const totalUta = _.chain(items)
+                      .sumBy((item) => Number(item.total_uta))
+                      .value();
+                    const totalAppts = _.chain(items)
+                      .sumBy((item) => Number(item.total_appts))
+                      .value();
+                    return {
+                      duration:
+                        this.trendValue == 'c'
+                          ? this.datePipe.transform(duration, 'MMM y')
+                          : duration,
+                      uta_ratio: _.round((totalUta / totalAppts || 0) * 100),
+                    };
+                  })
+                  .value();
+                this.utaChartTrendMulti[0]['data'] = data.map(
+                  (item) => item.uta_ratio
+                );
+                this.utaChartTrendMulti[0]['backgroundColor'] =
+                  this.doughnutChartColors[0];
+                this.utaTrendMultiLabels = data.map((item) => item.duration);
               } else {
                 res.body.data.forEach((res) => {
                   if (res.val > 100) res.val = 100;
