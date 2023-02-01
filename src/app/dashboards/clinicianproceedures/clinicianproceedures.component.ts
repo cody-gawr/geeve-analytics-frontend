@@ -6,7 +6,7 @@ import {
   ViewEncapsulation,
   ViewChild,
   ElementRef,
-  OnDestroy,
+  OnDestroy
 } from '@angular/core';
 import { ClinicianProceeduresService } from './clinicianproceedures.service';
 import { DentistService } from '../../dentist/dentist.service';
@@ -31,7 +31,7 @@ export interface Dentist {
 @Component({
   templateUrl: './clinicianproceedures.component.html',
   styleUrls: ['./clinicianproceedures.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 /**
  *Clinician Proceedure Graph Dashboard
@@ -67,11 +67,11 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
   private legendLabelOptions = {
     labels: {
       usePointStyle: true,
-      padding: 20,
+      padding: 20
     },
     onClick: function (e) {
       e.stopPropagation();
-    },
+    }
   };
   constructor(
     private toastr: ToastrService,
@@ -304,41 +304,41 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
           '#FF6384',
           '#fe7b85',
           '#87ada9',
-          '#386087',
-        ],
-      },
+          '#386087'
+        ]
+      }
     ];
     this.lineChartColors = [
       {
         backgroundColor: gradient,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
+        hoverBorderColor: '#1CA49F'
       },
       {
         backgroundColor: gradient1,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
+        hoverBorderColor: '#1CA49F'
       },
       {
         backgroundColor: gradient2,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
+        hoverBorderColor: '#1CA49F'
       },
       {
         backgroundColor: gradient3,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
+        hoverBorderColor: '#1CA49F'
       },
       {
         backgroundColor: gradient4,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
+        hoverBorderColor: '#1CA49F'
       },
       {
         backgroundColor: gradient5,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-      },
+        hoverBorderColor: '#1CA49F'
+      }
     ];
 
     let stackedGradient = this.canvas.nativeElement
@@ -377,37 +377,37 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
         backgroundColor: stackedGradient,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(255,255,255,0.6)',
+        borderColor: 'rgba(255,255,255,0.6)'
       },
       {
         backgroundColor: stackedGradient1,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(255,255,255,0.6)',
+        borderColor: 'rgba(255,255,255,0.6)'
       },
       {
         backgroundColor: stackedGradient2,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(255,255,255,0.6)',
+        borderColor: 'rgba(255,255,255,0.6)'
       },
       {
         backgroundColor: stackedGradient3,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(255,255,255,0.6)',
+        borderColor: 'rgba(255,255,255,0.6)'
       },
       {
         backgroundColor: stackedGradient4,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(255,255,255,0.6)',
+        borderColor: 'rgba(255,255,255,0.6)'
       },
       {
         backgroundColor: stackedGradient5,
         hoverBorderWidth: 2,
-        hoverBorderColor: 'rgba(255,255,255,0.6)',
-      },
+        hoverBorderColor: 'rgba(255,255,255,0.6)'
+      }
     ];
 
     let doughnutGradient = this.canvas.nativeElement
@@ -478,37 +478,37 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
         backgroundColor: predictedGradient,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: predictedGradient1,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: predictedGradient2,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: predictedGradient3,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: predictedGradient4,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: predictedGradient5,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-      },
+        hoverBorderColor: '#1CA49F'
+      }
     ];
 
     let proceedureGradient = this.canvas.nativeElement
@@ -547,37 +547,37 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
         backgroundColor: proceedureGradient,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: proceedureGradient1,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: proceedureGradient2,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: proceedureGradient3,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: proceedureGradient4,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: proceedureGradient5,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-      },
+        hoverBorderColor: '#1CA49F'
+      }
     ];
     //this.filterDate(this.chartService.duration$.value);
   }
@@ -587,15 +587,15 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
   dentists: Dentist[] = [{ providerId: 'all', name: 'All Dentists' }];
   public stackedChartOptions: any = {
     hover: {
-      mode: null,
+      mode: null
     },
     elements: {
       point: {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -603,16 +603,16 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -623,15 +623,15 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
               if (Math.floor(label) === label) {
                 return label;
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: {
       display: true,
       position: 'top',
-      ...this.legendLabelOptions,
+      ...this.legendLabelOptions
     },
     tooltips: {
       mode: 'x-axis',
@@ -668,21 +668,21 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
           } else {
             return tooltip[0].label;
           }
-        },
-      },
-    },
+        }
+      }
+    }
   };
   public stackedChartOptionsmulti: any = {
     hover: {
-      mode: null,
+      mode: null
     },
     elements: {
       point: {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -690,16 +690,16 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -710,15 +710,15 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
               if (Math.floor(label) === label) {
                 return label;
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: {
       display: true,
       position: 'top',
-      ...this.legendLabelOptions,
+      ...this.legendLabelOptions
     },
     tooltips: {
       mode: 'x-axis',
@@ -755,9 +755,9 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
           } else {
             return tooltip[0].label;
           }
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   public lineChartColors1: Array<any> = [
@@ -768,7 +768,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
       pointBackgroundColor: 'rgba(25,118,210,1)',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(25,118,210,0.5)',
+      pointHoverBorderColor: 'rgba(25,118,210,0.5)'
     },
     {
       // dark grey
@@ -777,8 +777,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
       pointBackgroundColor: 'rgba(38,218,210,1)',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(38,218,210,0.5)',
-    },
+      pointHoverBorderColor: 'rgba(38,218,210,0.5)'
+    }
   ];
   public pieChartOptions: any = {
     responsive: true,
@@ -786,8 +786,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     legend: {
       display: true,
       position: 'right',
-      ...this.legendLabelOptions,
-    },
+      ...this.legendLabelOptions
+    }
   };
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
@@ -795,16 +795,16 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     maintainAspectRatio: false,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     barThickness: 10,
     scales: {
       xAxes: [
         {
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -815,10 +815,10 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
               if (Math.floor(label) === label) {
                 return label;
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: {
       position: 'top',
@@ -896,8 +896,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
             this.predictedTotalAverageTooltip3;
         }
         ci.update();
-      },
-    },
+      }
+    }
   };
   public lineChartType = 'bar';
 
@@ -909,7 +909,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     barThickness: 10,
     animation: {
       duration: 1,
-      easing: 'linear',
+      easing: 'linear'
     },
     scales: {
       xAxes: [
@@ -924,9 +924,9 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
             callback: function (value) {
               return value; //truncate
             },
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -936,16 +936,16 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
               if (value.length > 20)
                 return value.substr(0, 20) + '....'; //truncate
               else return value; //truncate
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: {
       position: 'top',
       onClick: function (e) {
         e.stopPropagation();
-      },
+      }
     },
     tooltips: {
       enabled: true,
@@ -963,9 +963,9 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
             ': $' +
             this.numPipe.transform(tooltipItems.xLabel)
           );
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   /************ for top values on graph *******/
@@ -1010,7 +1010,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
             }
           });
         });
-      },
+      }
     },
     scales: {
       xAxes: [
@@ -1028,9 +1028,9 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
             callback: function (value) {
               return value; //truncate
             },
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -1039,20 +1039,20 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
               if (value.length > 20)
                 return value.substr(0, 20) + '....'; //truncate
               else return value; //truncate
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: {
       position: 'top',
       onClick: function (e) {
         e.stopPropagation();
-      },
+      }
     },
     tooltips: {
-      enabled: false,
-    },
+      enabled: false
+    }
   };
 
   /************ for top values on graph *******/
@@ -1072,7 +1072,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     { backgroundColor: '#68D8D6' },
     { backgroundColor: '#3DCCC7' },
     { backgroundColor: '#68FFF9' },
-    { backgroundColor: '#07BEB8' },
+    { backgroundColor: '#07BEB8' }
   ];
   public ItemPredictorColors = [
     { backgroundColor: '#6cd8ba' },
@@ -1080,7 +1080,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     { backgroundColor: '#abb3ff' },
     { backgroundColor: '#feefb8' },
     { backgroundColor: '#ffb4b5' },
-    { backgroundColor: '#fffcac' },
+    { backgroundColor: '#fffcac' }
   ];
 
   public ItemPredictorSpecialColors = [
@@ -1091,15 +1091,15 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     { backgroundColor: '#ffb4b5' },
     { backgroundColor: '#fffcac' },
     { backgroundColor: '#6cd8ba' },
-    { backgroundColor: '#feefb8' },
+    { backgroundColor: '#feefb8' }
   ];
   public predictorRatioColors = [
     {
-      backgroundColor: '#119682',
+      backgroundColor: '#119682'
     },
     {
-      backgroundColor: '#1fd6b1',
-    },
+      backgroundColor: '#1fd6b1'
+    }
   ];
   public stackedChartType = 'bar';
   public stackedChartLegend = true;
@@ -1124,7 +1124,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     { data: [], label: 'Stainless Steel Crowns' },
     { data: [], label: 'Composite Veneers' },
     { data: [], label: 'Implant Crowns' },
-    { data: [], label: 'Whitening' },
+    { data: [], label: 'Whitening' }
   ];
 
   public stackedChartDataItemSpecial: any[] = [
@@ -1134,7 +1134,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     { data: [], label: 'MAS' },
     { data: [], label: 'Perio Surg' },
     { data: [], label: 'Endo Re-treat' },
-    { data: [], label: 'Veneers (indirect)' },
+    { data: [], label: 'Veneers (indirect)' }
   ];
 
   public stackedChartData1: any[] = [];
@@ -1162,8 +1162,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
 
   public predictedChartData1: any[] = [];
@@ -1190,7 +1190,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
         '#119682',
         '#eeeef8',
         '#119682',
-        '#eeeef8',
+        '#eeeef8'
       ],
       pointBevelWidth: 2,
       pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
@@ -1199,8 +1199,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public proceedureDentistChartData: any[] = [
     {
@@ -1215,7 +1215,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
         '#119682',
         '#eeeef8',
         '#119682',
-        '#eeeef8',
+        '#eeeef8'
       ],
 
       label: 'Total Revenue of Clinician Per Procedure',
@@ -1230,8 +1230,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public proceedureChartData1: any[] = [];
 
@@ -1304,8 +1304,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public itemPredictedChartSpecailData: any[] = [
     {
@@ -1322,8 +1322,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
 
   public itemPredictedChartData1: any[] = [];
@@ -1493,7 +1493,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     { data: [], label: '' },
     { data: [], label: '' },
     { data: [], label: '' },
-    { data: [], label: '' },
+    { data: [], label: '' }
   ];
   public showmulticlinicGenPredictor: boolean = false;
   public ItemsPredictorAnalysisGenLabels: any = [];
@@ -1517,7 +1517,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
       { data: [], label: 'Stainless Steel Crowns' },
       { data: [], label: 'Composite Veneers' },
       { data: [], label: 'Implant Crowns' },
-      { data: [], label: 'Whitening' },
+      { data: [], label: 'Whitening' }
     ];
 
     this.clinic_id &&
@@ -1565,12 +1565,12 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                     ss_crowns: 'Stainless Steel Crowns',
                     comp_veneers: 'Composite Veneers',
                     imp_crowns: 'Implant Crowns',
-                    whitening: 'Whitening',
+                    whitening: 'Whitening'
                   };
                   Object.keys(mapPropAnalysisType).forEach(() => {
                     this.ItemsPredictorAnalysisGenMulti.push({
                       data: [],
-                      label: '',
+                      label: ''
                     });
                   });
                   _.chain(res.body.data)
@@ -1602,7 +1602,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                         ),
                         comp_veneers: _.sumBy(items, (item: any) =>
                           parseInt(item.comp_veneers)
-                        ),
+                        )
                       };
                     })
                     .value()
@@ -1659,7 +1659,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                           Imp_Crowns: parseInt(res.imp_crowns),
                           SS_Crowns: parseInt(res.ss_crowns),
                           Comp_Veneers: parseInt(res.comp_veneers),
-                          Whitening: parseInt(res.whitening),
+                          Whitening: parseInt(res.whitening)
                         };
                         this.paGeneralData.push(temp);
                       }
@@ -1688,8 +1688,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                           '#B3B6B7',
                           '#B3B6B7',
                           '#B3B6B7',
-                          '#B3B6B7',
-                        ],
+                          '#B3B6B7'
+                        ]
                       },
                       {
                         backgroundColor: [
@@ -1701,8 +1701,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                           '#A3A6A7',
                           '#A3A6A7',
                           '#A3A6A7',
-                          '#A3A6A7',
-                        ],
+                          '#A3A6A7'
+                        ]
                       },
                       {
                         backgroundColor: [
@@ -1714,8 +1714,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                           '#D5D7D7',
                           '#D5D7D7',
                           '#D5D7D7',
-                          '#D5D7D7',
-                        ],
+                          '#D5D7D7'
+                        ]
                       },
                       {
                         backgroundColor: [
@@ -1727,8 +1727,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                           '#B9BCBD',
                           '#B9BCBD',
                           '#B9BCBD',
-                          '#B9BCBD',
-                        ],
+                          '#B9BCBD'
+                        ]
                       },
                       {
                         backgroundColor: [
@@ -1740,8 +1740,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                           '#DCDDDE',
                           '#DCDDDE',
                           '#DCDDDE',
-                          '#DCDDDE',
-                        ],
+                          '#DCDDDE'
+                        ]
                       },
                       {
                         backgroundColor: [
@@ -1753,8 +1753,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                           '#B3B6B7',
                           '#B3B6B7',
                           '#B3B6B7',
-                          '#B3B6B7',
-                        ],
+                          '#B3B6B7'
+                        ]
                       },
                       {
                         backgroundColor: [
@@ -1766,8 +1766,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                           '#D5D7D7',
                           '#D5D7D7',
                           '#D5D7D7',
-                          '#D5D7D7',
-                        ],
+                          '#D5D7D7'
+                        ]
                       },
                       {
                         backgroundColor: [
@@ -1779,8 +1779,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                           '#DCDDDE',
                           '#DCDDDE',
                           '#DCDDDE',
-                          '#DCDDDE',
-                        ],
+                          '#DCDDDE'
+                        ]
                       },
                       {
                         backgroundColor: [
@@ -1792,9 +1792,9 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                           '#DCDDDE',
                           '#DCDDDE',
                           '#DCDDDE',
-                          '#DCDDDE',
-                        ],
-                      },
+                          '#DCDDDE'
+                        ]
+                      }
                     ];
                     this.barChartColors[0].backgroundColor[this.ipKey] =
                       '#1CA49F';
@@ -1870,7 +1870,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
       { data: [], label: 'MAS' },
       { data: [], label: 'Perio Surg' },
       { data: [], label: 'Endo Re-treat' },
-      { data: [], label: 'Veneers (indirect)' },
+      { data: [], label: 'Veneers (indirect)' }
     ];
 
     const descriptionMap: Record<string, string> = {
@@ -1880,7 +1880,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
       sleep: 'MAS',
       perio_surg: 'Perio Surg',
       endo_retreat: 'Endo Re-treat',
-      veneers_ind: 'Veneers (indirect)',
+      veneers_ind: 'Veneers (indirect)'
     };
     this.clinic_id &&
       this.clinicianproceeduresService
@@ -1934,7 +1934,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                         backgroundColor:
                           this.doughnutChartColors[0].backgroundColor[index],
                         hoverBackgroundColor:
-                          this.doughnutChartColors[0].backgroundColor[index],
+                          this.doughnutChartColors[0].backgroundColor[index]
                       });
                     }
                   );
@@ -1978,7 +1978,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                           MAS: parseInt(res.sleep),
                           Perio_Surg: parseInt(res.perio_surg),
                           Endo_Re_treat: parseInt(res.endo_retreat),
-                          Veneers_ind: parseInt(res.veneers_ind),
+                          Veneers_ind: parseInt(res.veneers_ind)
                         };
                         this.paSpecialistlData.push(temp);
                       }
@@ -2012,8 +2012,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                           '#B3B6B7',
                           '#B3B6B7',
                           '#B3B6B7',
-                          '#B3B6B7',
-                        ],
+                          '#B3B6B7'
+                        ]
                       },
                       {
                         backgroundColor: [
@@ -2025,8 +2025,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                           '#A3A6A7',
                           '#A3A6A7',
                           '#A3A6A7',
-                          '#A3A6A7',
-                        ],
+                          '#A3A6A7'
+                        ]
                       },
                       {
                         backgroundColor: [
@@ -2038,8 +2038,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                           '#D5D7D7',
                           '#D5D7D7',
                           '#D5D7D7',
-                          '#D5D7D7',
-                        ],
+                          '#D5D7D7'
+                        ]
                       },
                       {
                         backgroundColor: [
@@ -2051,8 +2051,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                           '#B9BCBD',
                           '#B9BCBD',
                           '#B9BCBD',
-                          '#B9BCBD',
-                        ],
+                          '#B9BCBD'
+                        ]
                       },
                       {
                         backgroundColor: [
@@ -2064,8 +2064,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                           '#DCDDDE',
                           '#DCDDDE',
                           '#DCDDDE',
-                          '#DCDDDE',
-                        ],
+                          '#DCDDDE'
+                        ]
                       },
                       {
                         backgroundColor: [
@@ -2077,8 +2077,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                           '#B3B6B7',
                           '#B3B6B7',
                           '#B3B6B7',
-                          '#B3B6B7',
-                        ],
+                          '#B3B6B7'
+                        ]
                       },
                       {
                         backgroundColor: [
@@ -2090,9 +2090,9 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                           '#D5D7D7',
                           '#D5D7D7',
                           '#D5D7D7',
-                          '#D5D7D7',
-                        ],
-                      },
+                          '#D5D7D7'
+                        ]
+                      }
                     ];
                     this.predictorAnalysisChartColors[0].backgroundColor[
                       currentUser
@@ -2267,15 +2267,15 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
 
   public predictedMulti1: any[] = [
     { data: [], label: '' },
-    { data: [], label: '' },
+    { data: [], label: '' }
   ];
   public predictedMulti2: any[] = [
     { data: [], label: '' },
-    { data: [], label: '' },
+    { data: [], label: '' }
   ];
   public predictedMulti3: any[] = [
     { data: [], label: '' },
-    { data: [], label: '' },
+    { data: [], label: '' }
   ];
 
   public showmulticlinicPredictor: boolean = false;
@@ -2295,20 +2295,20 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
   public PRcolors;
   public predictedstackedChartData = [
     { data: [], label: '' },
-    { data: [], label: '' },
+    { data: [], label: '' }
   ];
 
   public predictedstackedChartData1 = [
     { data: [], label: 'Indirect Restorations' },
-    { data: [], label: 'Large Direct Restorations' },
+    { data: [], label: 'Large Direct Restorations' }
   ];
   public predictedstackedChartData2 = [
     { data: [], label: 'RCT' },
-    { data: [], label: 'Extractions' },
+    { data: [], label: 'Extractions' }
   ];
   public predictedstackedChartData3 = [
     { data: [], label: "RCT's Started" },
-    { data: [], label: "RCT's Completed" },
+    { data: [], label: "RCT's Completed" }
   ];
   public predictedstackedChartLabels = [];
   public predictedstackedChartLabels1 = [];
@@ -2349,15 +2349,15 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
           this.buildChartPredictorLoader = false;
           this.predictedstackedChartData1 = [
             { data: [], label: 'Indirect Restorations' },
-            { data: [], label: 'Large Direct Restorations' },
+            { data: [], label: 'Large Direct Restorations' }
           ];
           this.predictedstackedChartData2 = [
             { data: [], label: 'RCT' },
-            { data: [], label: 'Extractions' },
+            { data: [], label: 'Extractions' }
           ];
           this.predictedstackedChartData3 = [
             { data: [], label: "RCT's Started" },
-            { data: [], label: "RCT's Completed" },
+            { data: [], label: "RCT's Completed" }
           ];
           this.predictedstackedChartLabels1 = [];
           this.predictedstackedChartLabels2 = [];
@@ -2407,19 +2407,19 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
               const types = [
                 'crown-largefilling',
                 'rct-extraction',
-                'rctstarted-rctcompleted',
+                'rctstarted-rctcompleted'
               ];
               this.predictedMulti1 = [
                 { data: [], label: '' },
-                { data: [], label: '' },
+                { data: [], label: '' }
               ];
               this.predictedMulti2 = [
                 { data: [], label: '' },
-                { data: [], label: '' },
+                { data: [], label: '' }
               ];
               this.predictedMulti3 = [
                 { data: [], label: '' },
-                { data: [], label: '' },
+                { data: [], label: '' }
               ];
 
               types.forEach((type) => {
@@ -2581,15 +2581,15 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
           this.predictedstackedChartLoader = false;
           this.predictedstackedChartData1 = [
             { data: [], label: 'Indirect Restorations' },
-            { data: [], label: 'Large Direct Restorations' },
+            { data: [], label: 'Large Direct Restorations' }
           ];
           this.predictedstackedChartData2 = [
             { data: [], label: 'RCT' },
-            { data: [], label: 'Extractions' },
+            { data: [], label: 'Extractions' }
           ];
           this.predictedstackedChartData3 = [
             { data: [], label: "RCT's Started" },
-            { data: [], label: "RCT's Completed" },
+            { data: [], label: "RCT's Completed" }
           ];
           this.predictedstackedChartLabels1 = [];
           this.predictedstackedChartLabels2 = [];
@@ -2812,6 +2812,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
         .subscribe(
           (res) => {
             this.clinicianReferralLoader = false;
+            console.log(res.body.data);
             if (res.status == 200 && res.body.data && res.body.data.length) {
               if (
                 this.clinic_id.indexOf(',') >= 0 ||
@@ -2829,7 +2830,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                       treatItemName,
                       internal: _.sumBy(items, (item) => Number(item.internal)),
                       external: _.sumBy(items, (item) => Number(item.external)),
-                      total: _.sumBy(items, (item) => Number(item.total)),
+                      total: _.sumBy(items, (item) => Number(item.total))
                     };
                   });
                 const data1 = data
@@ -2866,7 +2867,14 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
                   .value();
               } else {
                 let i = 0;
-                res.body.data.forEach((item) => {
+                this.pieChartLabelsres = [];
+                this.pieChartDatares1 = [];
+                this.pieChartDatares2 = [];
+                this.pieChartDatares3 = [];
+                this.pieChartLabelsres1 = [];
+                this.pieChartLabelsres2 = [];
+                this.pieChartLabelsres3 = [];
+                res.body.data.forEach((item: any) => {
                   if (item.internal > 0) {
                     this.pieChartDatares1.push(item.internal);
                     this.pieChartLabelsres1.push(item.treat_item_name);
@@ -2937,8 +2945,6 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
   //Referral to Other Clinicians Internal / External
   public clinicianReferralLoader: boolean = false;
   private buildChartReferralDentist() {
-    var user_id;
-    var clinic_id;
     this.pieChartLabelsres1 = [];
     this.pieChartLabelsres2 = [];
     this.pieChartLabelsres3 = [];
@@ -3507,7 +3513,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
       { data: [], label: 'Stainless Steel Crowns' },
       { data: [], label: 'Composite Veneers' },
       { data: [], label: 'Implant Crowns' },
-      { data: [], label: 'Whitening' },
+      { data: [], label: 'Whitening' }
     ];
     this.clinic_id &&
       this.clinicianproceeduresService
@@ -3594,7 +3600,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     { data: [], label: 'MAS' },
     { data: [], label: 'Perio Surg' },
     { data: [], label: 'Endo Re-treat' },
-    { data: [], label: 'Veneers (indirect)' },
+    { data: [], label: 'Veneers (indirect)' }
   ];
   public stackedChartSpecialDataMax: any = 0;
   public buildChartDentistSpecLoader: boolean = false;
@@ -3628,7 +3634,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
               { data: [], label: 'MAS' },
               { data: [], label: 'Perio Surg' },
               { data: [], label: 'Endo Re-treat' },
-              { data: [], label: 'Veneers (indirect)' },
+              { data: [], label: 'Veneers (indirect)' }
             ];
             this.Apirequest = this.Apirequest - 1;
             if (res.status == 200 && res.body.data) {
@@ -3713,7 +3719,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
       { data: [], label: 'Periodontics' },
       { data: [], label: 'Sleep Consult' },
       { data: [], label: 'Implants' },
-      { data: [], label: 'Oral Medicine' },
+      { data: [], label: 'Oral Medicine' }
     ];
 
     this.showTrend = true;
@@ -3905,15 +3911,15 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
   public predictorRatioLoader: boolean = false;
   public ratioChartData1 = [
     { data: [], label: 'Indirect Restorations' },
-    { data: [], label: 'Large Direct Restorations' },
+    { data: [], label: 'Large Direct Restorations' }
   ];
   public ratioChartData2 = [
     { data: [], label: 'Indirect Restorations' },
-    { data: [], label: 'Large Direct Restorations' },
+    { data: [], label: 'Large Direct Restorations' }
   ];
   public ratioChartData3 = [
     { data: [], label: 'Indirect Restorations' },
-    { data: [], label: 'Large Direct Restorations' },
+    { data: [], label: 'Large Direct Restorations' }
   ];
   public ratioChartLabels;
   public ratioChartLabels1 = [];
@@ -3933,8 +3939,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
 
   public ratioChartDataMax;
@@ -3946,15 +3952,15 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     var clinic_id;
     this.ratioChartData1 = [
       { data: [], label: 'Indirect Restorations' },
-      { data: [], label: 'Large Direct Restorations' },
+      { data: [], label: 'Large Direct Restorations' }
     ];
     this.ratioChartData2 = [
       { data: [], label: 'RCT' },
-      { data: [], label: 'Extractions' },
+      { data: [], label: 'Extractions' }
     ];
     this.ratioChartData3 = [
       { data: [], label: "RCT's Started" },
-      { data: [], label: "RCT's Completed" },
+      { data: [], label: "RCT's Completed" }
     ];
     this.predictorRatioLoader = true;
     this.ratioChartLabels1 = [];
