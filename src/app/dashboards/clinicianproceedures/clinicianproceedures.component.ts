@@ -2595,7 +2595,6 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
           this.predictedstackedChartLabels1Avr = 0;
           this.predictedstackedChartLabels2Avr = 0;
           this.predictedstackedChartLabels3Avr = 0;
-          console.log(res);
           if (res.status == 200) {
             this.predictedstackedChartLabels1AvrPre =
               res.body.data.find(
@@ -2608,8 +2607,6 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
               res.body.data.find(
                 (item: any) => item.type == 'rctstarted-rctcompleted'
               )?.total_ta || '';
-
-            console.log(res.body.data);
 
             res.body.data.forEach((item: any) => {
               var provider = item.provider_name;
@@ -2786,15 +2783,13 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     this.pieChartInternalTotal = 0;
     this.pieChartExternalTotal = 0;
     this.pieChartCombinedTotal = 0;
-    this.pieChartInternalTotal = 0;
-    this.pieChartExternalTotal = 0;
-    this.pieChartCombinedTotal = 0;
     this.pieChartDataMax1 = 0;
     this.pieChartDataMax2 = 0;
     this.pieChartDataMax3 = 0;
     this.pieChartInternalPrevTotal = 0;
     this.pieChartExternalPrevTotal = 0;
     this.pieChartCombinedPrevTotal = 0;
+
     this.pieChartInternalPrevTooltip = 'down';
     this.pieChartExternalPrevTooltip = 'down';
     this.pieChartCombinedPrevTooltip = 'down';
@@ -2810,7 +2805,15 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
         .subscribe(
           (res) => {
             this.clinicianReferralLoader = false;
-            console.log(res.body.data);
+            this.pieChartInternalTotal = 0;
+            this.pieChartExternalTotal = 0;
+            this.pieChartCombinedTotal = 0;
+            this.pieChartDataMax1 = 0;
+            this.pieChartDataMax2 = 0;
+            this.pieChartDataMax3 = 0;
+            this.pieChartInternalPrevTotal = 0;
+            this.pieChartExternalPrevTotal = 0;
+            this.pieChartCombinedPrevTotal = 0;
             if (res.status == 200 && res.body.data && res.body.data.length) {
               if (
                 this.clinic_id.indexOf(',') >= 0 ||
