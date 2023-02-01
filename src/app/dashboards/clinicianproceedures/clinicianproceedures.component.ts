@@ -198,9 +198,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
       } else {
         $('.external_dentist').val('all');
       }
-      //this.filterDate('cytd');
-      // this.getClinics();
-      //$('.dentist_dropdown').show();
+
       $('.header_filters').removeClass('flex_direct_mar');
       $('.header_filters').removeClass('hide_header');
       $('#title').html('<span>Clinician Procedures & Referrals</span>');
