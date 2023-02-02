@@ -21,7 +21,7 @@
       "
     >
       <div class="vertical_center_header_content">
-        <div
+        <!-- <div
           class="sa_mat_select_topbar"
           *ngIf="
             (route != '/dashboards/finances' &&
@@ -31,23 +31,23 @@
               route != '/dashboards/frontdesk' &&
               apiUrl.includes('test') &&
               route != '/dashboards/finances/multi' &&
-                route != '/dashboards/clinicianproceedures/multi' &&
-                route != '/dashboards/cliniciananalysis/multi' &&
-                route != '/dashboards/marketing/multi' &&
-                route != '/dashboards/frontdesk/multi') ||
+              route != '/dashboards/clinicianproceedures/multi' &&
+              route != '/dashboards/cliniciananalysis/multi' &&
+              route != '/dashboards/marketing/multi' &&
+              route != '/dashboards/frontdesk/multi') ||
             (apiUrl.includes('staging') &&
               route != '/dashboards/finances/multi' &&
-                route != '/dashboards/clinicianproceedures/multi' &&
-                route != '/dashboards/cliniciananalysis/multi' &&
-                route != '/dashboards/marketing/multi' &&
-                route != '/dashboards/frontdesk/multi') ||
+              route != '/dashboards/clinicianproceedures/multi' &&
+              route != '/dashboards/cliniciananalysis/multi' &&
+              route != '/dashboards/marketing/multi' &&
+              route != '/dashboards/frontdesk/multi') ||
             (!apiUrl.includes('test-') &&
               !apiUrl.includes('staging-') &&
               route != '/dashboards/finances/multi' &&
-                route != '/dashboards/clinicianproceedures/multi' &&
-                route != '/dashboards/cliniciananalysis/multi' &&
-                route != '/dashboards/marketing/multi' &&
-                route != '/dashboards/frontdesk/multi') ||
+              route != '/dashboards/clinicianproceedures/multi' &&
+              route != '/dashboards/cliniciananalysis/multi' &&
+              route != '/dashboards/marketing/multi' &&
+              route != '/dashboards/frontdesk/multi') ||
             (route == '/dashboards/cliniciananalysis' && user_type == 4) ||
             (route == '/dashboards/clinicianproceedures' && user_type == 4) ||
             (route == '/dashboards/finances' && user_type == 7) ||
@@ -81,31 +81,9 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-        </div>
-        <div
-          class="sa_mat_select_topbar multi-clinic-pro"
-          *ngIf="
-            ((route == '/dashboards/finances' ||
-              route == '/dashboards/marketing' ||
-              route == '/dashboards/frontdesk' ||
-              (route == '/dashboards/cliniciananalysis' && user_type != 4) ||
-              (route == '/dashboards/clinicianproceedures' &&
-                user_type != 4)) &&
-              apiUrl.includes('test') &&
-              user_type != 7) ||
-            ((route == '/dashboards/finances/multi' ||
-              route == '/dashboards/marketing/multi' ||
-              route == '/dashboards/frontdesk/multi' ||
-              (route == '/dashboards/cliniciananalysis/multi' &&
-                user_type != 4) ||
-              (route == '/dashboards/clinicianproceedures/multi' &&
-                user_type != 4)) &&
-              (apiUrl.includes('test') ||
-                apiUrl.includes('staging') ||
-                (!apiUrl.includes('test-') && !apiUrl.includes('staging-'))) &&
-              user_type != 7)
-          "
-        >
+        </div> -->
+        <div>{{ isMultiClinicsVisible }}</div>
+        <div class="sa_mat_select_topbar multi-clinic-pro" *ngIf="true">
           <mat-form-field floatLabel="never" class="multi-clinic-dis">
             <mat-select
               id="multi_clinic"
