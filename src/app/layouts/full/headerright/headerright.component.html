@@ -56,7 +56,9 @@
             (route == '/dashboards/marketing' && user_type == 7) ||
             (route == '/dashboards/frontdesk' && user_type == 7)
           "
-        >
+        > -->
+
+        <div class="sa_mat_select_topbar" *ngIf="isSingleClinicVisible">
           <mat-form-field floatLabel="never">
             <mat-select
               class="external_clinic"
@@ -81,9 +83,12 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-        </div> -->
-        <div>{{ isMultiClinicsVisible }}</div>
-        <div class="sa_mat_select_topbar multi-clinic-pro" *ngIf="true">
+        </div>
+
+        <div
+          class="sa_mat_select_topbar multi-clinic-pro"
+          *ngIf="isMultiClinicsVisible"
+        >
           <mat-form-field floatLabel="never" class="multi-clinic-dis">
             <mat-select
               id="multi_clinic"
@@ -98,7 +103,7 @@
               <mat-select-trigger *ngIf="allChecked == true">
                 {{ 'All Clinics' }}
               </mat-select-trigger>
-              <mat-option
+              <!-- <mat-option
                 value="all"
                 *ngIf="
                   route == '/dashboards/finances' ||
@@ -113,6 +118,22 @@
                     route == '/dashboards/clinicianproceedures/multi') &&
                     clinicsData.length > 1 &&
                     user_type != 7)
+                "
+                >All Clinics</mat-option
+              > -->
+              <mat-option
+                value="all"
+                *ngIf="
+                  route;
+                  in: [
+                    '/dashboards/finances',
+                    '/dashboards/marketing',
+                    '/dashboards/frontdesk',
+                    '/dashboards/cliniciananalysis',
+                    '/dashboards/clinicianproceedures'
+                  ] &&
+                    clinicsData.length > 1 &&
+                    user_type != 7
                 "
                 >All Clinics</mat-option
               >

@@ -253,15 +253,46 @@ export class AppHeaderrightComponent implements AfterViewInit {
   public get isMultiClinicsVisible(): boolean {
     return (
       (this.user_type != 7 &&
-        this.route in
-          [
-            '/dashboards/finances',
-            '/dashboards/marketing',
-            '/dashboards/frontdesk'
-          ]) ||
+        [
+          '/dashboards/finances',
+          '/dashboards/marketing',
+          '/dashboards/frontdesk'
+        ].includes(this.route)) ||
       (this.route == '/dashboards/cliniciananalysis' && this.user_type != 4) ||
       (this.route == '/dashboards/clinicianproceedures' && this.user_type != 4)
     );
+  }
+
+  public get isSingleClinicVisible(): boolean {
+    return (
+      ![
+        '/dashboards/finances',
+        '/dashboards/clinicianproceedures',
+        '/dashboards/cliniciananalysis',
+        '/dashboards/marketing',
+        '/dashboards/frontdesk'
+      ].includes(this.route) ||
+      (this.user_type == 4 &&
+        [
+          '/dashboards/cliniciananalysis',
+          '/dashboards/clinicianproceedures'
+        ].includes(this.route)) ||
+      (this.user_type == 7 &&
+        [
+          '/dashboards/finances',
+          '/dashboards/clinicianproceedures',
+          '/dashboards/cliniciananalysis',
+          '/dashboards/marketing',
+          '/dashboards/frontdesk'
+        ].includes(this.route))
+    );
+    // (route == '/dashboards/cliniciananalysis' && user_type == 4) ||
+    // (route == '/dashboards/clinicianproceedures' && user_type == 4) ||
+    // (route == '/dashboards/finances' && user_type == 7) ||
+    // (route == '/dashboards/clinicianproceedures' && user_type == 7) ||
+    // (route == '/dashboards/cliniciananalysis' && user_type == 7) ||
+    // (route == '/dashboards/marketing' && user_type == 7) ||
+    // (route == '/dashboards/frontdesk' && user_type == 7)
   }
 
   /*
@@ -287,16 +318,13 @@ export class AppHeaderrightComponent implements AfterViewInit {
   */
 
   public get isAllOptionVisible(): boolean {
-    return (
-      this.route in
-      [
-        '/dashboards/finances',
-        '/dashboards/marketing',
-        '/dashboards/frontdesk',
-        '/dashboards/cliniciananalysis',
-        '/dashboards/clinicianproceedures'
-      ]
-    );
+    return [
+      '/dashboards/finances',
+      '/dashboards/marketing',
+      '/dashboards/frontdesk',
+      '/dashboards/cliniciananalysis',
+      '/dashboards/clinicianproceedures'
+    ].includes(this.route);
   }
 
   private getClinics() {
