@@ -58,36 +58,9 @@
           "
         > -->
 
-        <div class="sa_mat_select_topbar" *ngIf="isSingleClinicVisible">
-          <mat-form-field floatLabel="never">
-            <mat-select
-              class="external_clinic"
-              [(ngModel)]="selectedClinic"
-              (ngModelChange)="loadClinic($event)"
-              [placeholder]="placeHolder"
-            >
-              <mat-option
-                value="all"
-                *ngIf="
-                  route == '/dashboards/healthscreen' &&
-                  clinicsData.length > 1 &&
-                  user_type != 7
-                "
-                >All Clinics</mat-option
-              >
-              <mat-option
-                *ngFor="let clinicData of clinicsData"
-                [value]="clinicData.id"
-              >
-                {{ clinicData.clinicName }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
         <div
           class="sa_mat_select_topbar multi-clinic-pro"
-          *ngIf="isMultiClinicsVisible"
+          *ngIf="isMultiClinicsVisible; else singleClinicSelection"
         >
           <mat-form-field floatLabel="never" class="multi-clinic-dis">
             <mat-select
@@ -153,6 +126,34 @@
             </mat-select>
           </mat-form-field>
         </div>
+        <ng-template #singleClinicSelection>
+          <div class="sa_mat_select_topbar">
+            <mat-form-field floatLabel="never">
+              <mat-select
+                class="external_clinic"
+                [(ngModel)]="selectedClinic"
+                (ngModelChange)="loadClinic($event)"
+                [placeholder]="placeHolder"
+              >
+                <mat-option
+                  value="all"
+                  *ngIf="
+                    route == '/dashboards/healthscreen' &&
+                    clinicsData.length > 1 &&
+                    user_type != 7
+                  "
+                  >All Clinics</mat-option
+                >
+                <mat-option
+                  *ngFor="let clinicData of clinicsData"
+                  [value]="clinicData.id"
+                >
+                  {{ clinicData.clinicName }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </ng-template>
       </div>
     </div>
   </div>

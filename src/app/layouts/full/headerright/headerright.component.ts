@@ -63,6 +63,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
   referFriendEmailPError: boolean = false;
   user_type: any = 0;
   unAuth: boolean = false;
+  userId: number = null;
 
   classUrl: string = '';
   @Inject(MAT_DIALOG_DATA) public data: any;
@@ -111,6 +112,9 @@ export class AppHeaderrightComponent implements AfterViewInit {
           this.warningMessage = 'Please Provide Valid Inputs!';
         }
       );
+    }
+    if (this._cookieService.get('userid')) {
+      this.userId = Number(this._cookieService.get('userid'));
     }
     this.getRoles();
     this.user_type_dentist = this._cookieService.get('user_type');
@@ -252,70 +256,17 @@ export class AppHeaderrightComponent implements AfterViewInit {
 
   public get isMultiClinicsVisible(): boolean {
     return (
-      (this.user_type != 7 &&
-        [
-          '/dashboards/finances',
-          '/dashboards/marketing',
-          '/dashboards/frontdesk'
-        ].includes(this.route)) ||
-      (this.route == '/dashboards/cliniciananalysis' && this.user_type != 4) ||
-      (this.route == '/dashboards/clinicianproceedures' && this.user_type != 4)
-    );
-  }
-
-  public get isSingleClinicVisible(): boolean {
-    return (
-      ![
-        '/dashboards/finances',
-        '/dashboards/clinicianproceedures',
+      [
         '/dashboards/cliniciananalysis',
+        '/dashboards/clinicianproceedures',
+        '/dashboards/finances',
         '/dashboards/marketing',
         '/dashboards/frontdesk'
-      ].includes(this.route) ||
-      (this.user_type == 4 &&
-        [
-          '/dashboards/cliniciananalysis',
-          '/dashboards/clinicianproceedures'
-        ].includes(this.route)) ||
-      (this.user_type == 7 &&
-        [
-          '/dashboards/finances',
-          '/dashboards/clinicianproceedures',
-          '/dashboards/cliniciananalysis',
-          '/dashboards/marketing',
-          '/dashboards/frontdesk'
-        ].includes(this.route))
+      ].includes(this.route) &&
+      ![4, 7].includes(this.user_type) &&
+      this.userId == 1
     );
-    // (route == '/dashboards/cliniciananalysis' && user_type == 4) ||
-    // (route == '/dashboards/clinicianproceedures' && user_type == 4) ||
-    // (route == '/dashboards/finances' && user_type == 7) ||
-    // (route == '/dashboards/clinicianproceedures' && user_type == 7) ||
-    // (route == '/dashboards/cliniciananalysis' && user_type == 7) ||
-    // (route == '/dashboards/marketing' && user_type == 7) ||
-    // (route == '/dashboards/frontdesk' && user_type == 7)
   }
-
-  /*
-  ((route == '/dashboards/finances' ||
-              route == '/dashboards/marketing' ||
-              route == '/dashboards/frontdesk' ||
-              (route == '/dashboards/cliniciananalysis' && user_type != 4) ||
-              (route == '/dashboards/clinicianproceedures' &&
-                user_type != 4)) &&
-              apiUrl.includes('test') &&
-              user_type != 7) ||
-            ((route == '/dashboards/finances/multi' ||
-              route == '/dashboards/marketing/multi' ||
-              route == '/dashboards/frontdesk/multi' ||
-              (route == '/dashboards/cliniciananalysis/multi' &&
-                user_type != 4) ||
-              (route == '/dashboards/clinicianproceedures/multi' &&
-                user_type != 4)) &&
-              (apiUrl.includes('test') ||
-                apiUrl.includes('staging') ||
-                (!apiUrl.includes('test-') && !apiUrl.includes('staging-'))) &&
-              user_type != 7)
-  */
 
   public get isAllOptionVisible(): boolean {
     return [
