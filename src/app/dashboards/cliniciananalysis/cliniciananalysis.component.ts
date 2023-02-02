@@ -1,24 +1,33 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  ViewChild,
+  ElementRef,
+  OnDestroy,
+  ViewEncapsulation
+} from '@angular/core';
 import { ClinicianAnalysisService } from './cliniciananalysis.service';
 import { DentistService } from '../../dentist/dentist.service';
 import { FrontDeskService } from '../frontdesk/frontdesk.service';
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { ActivatedRoute, Router, NavigationEnd, Event } from "@angular/router";
+import { ActivatedRoute, Router, NavigationEnd, Event } from '@angular/router';
 import { HeaderService } from '../../layouts/full/header/header.service';
-import { CookieService } from "ngx-cookie";
+import { CookieService } from 'ngx-cookie';
 import { Chart } from 'chart.js';
 import * as ChartAnnotation from 'chartjs-plugin-annotation';
-import { BaseChartDirective, PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
+import {
+  BaseChartDirective,
+  PluginServiceGlobalRegistrationAndOptions
+} from 'ng2-charts';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';   
+import { Subscription } from 'rxjs';
 import { ChartService } from '../chart.service';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { TooltipLayoutComponent } from '../../shared/tooltip/tooltip-layout.component';
 import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
-import { environment } from "../../../environments/environment";
-
+import { environment } from '../../../environments/environment';
 
 export interface Dentist {
   providerId: string;
@@ -30,14 +39,13 @@ export interface Dentist {
   encapsulation: ViewEncapsulation.None
 })
 /**
-  *Clinician analysis graph Dashboard
-  *AUTHOR - Teq Mavens
-  */
+ *Clinician analysis graph Dashboard
+ *AUTHOR - Teq Mavens
+ */
 export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   TooltipLayout = TooltipLayoutComponent;
-  @ViewChild("myCanvas") canvas: ElementRef;
+  @ViewChild('myCanvas') canvas: ElementRef;
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
-
 
   lineChartColors;
   subtitle: string;
@@ -62,17 +70,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public showGoals: boolean = false;
   public legendBackgroundColor = [
     '#6edbbb',
-    '#b0fffa', 
-    '#abb3ff', 
-    '#ffb4b5', 
-    '#fffcac', 
-    '#FFE4E4', 
-    '#FFD578', 
-    '#54D2FF', 
-    '#E58DD7', 
-    '#A9AABC', 
-    '#F2ECFF', 
-    '#5689C9', 
+    '#b0fffa',
+    '#abb3ff',
+    '#ffb4b5',
+    '#fffcac',
+    '#FFE4E4',
+    '#FFD578',
+    '#54D2FF',
+    '#E58DD7',
+    '#A9AABC',
+    '#F2ECFF',
+    '#5689C9',
     '#F9F871'
   ];
   public maxLegendLabelLimit = 10;
@@ -80,14 +88,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public proCollShow: number = 1;
   public hrCollShow: number = 1;
   public proSelectShow: any = 'production_all';
-  public hrSelectShow: any = "hr_all";
+  public hrSelectShow: any = 'hr_all';
   public charTips: any = [];
   public userPlan: any = 'lite';
-  public numberOfRecords:number = 20;
+  public numberOfRecords: number = 20;
   public showPreBookReapointRate: boolean = false;
   public flag = false;
   private _routerSub = Subscription.EMPTY;
-  newPatientPluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
+  newPatientPluginObservable$: Observable<
+    PluginServiceGlobalRegistrationAndOptions[]
+  >;
   destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   newPatientTotal$ = new BehaviorSubject<number>(0);
 
@@ -113,32 +123,30 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     public chartstipsService: ChartstipsService
   ) {
     this.getChartsTips();
-    this._routerSub = this.router.events
-      .subscribe((event: Event) => {
-        if (event instanceof NavigationEnd){
-          this.user_type = this._cookieService.get("user_type");
-          if (this._cookieService.get("childid"))
-            this.childid = this._cookieService.get("dentistid");
-        }
-        // this.initiate_clinic();
-      });
-    this.user_type = this._cookieService.get("user_type");
+    this._routerSub = this.router.events.subscribe((event: Event) => {
+      if (event instanceof NavigationEnd) {
+        this.user_type = this._cookieService.get('user_type');
+        if (this._cookieService.get('childid'))
+          this.childid = this._cookieService.get('dentistid');
+      }
+      // this.initiate_clinic();
+    });
+    this.user_type = this._cookieService.get('user_type');
     this.getAllClinics();
   }
 
   ngOnDestroy(): void {
-    $('.multi-clinic-dis').removeClass("disablePointer"); 
-    $('.multi-clinic-pro').removeClass("disablePointerProgress");
+    $('.multi-clinic-dis').removeClass('disablePointer');
+    $('.multi-clinic-pro').removeClass('disablePointerProgress');
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
     $('.topbar-strip').removeClass('responsive-top');
   }
   /**
-  *Check If logged in user is eligible to access this page.
-  *AUTHOR - Teq Mavens
-  */
+   *Check If logged in user is eligible to access this page.
+   *AUTHOR - Teq Mavens
+   */
   private warningMessage: string;
-
 
   private getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
@@ -151,9 +159,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   formatDate(date) {
     if (date) {
-      var dateArray = date.split("-")
+      var dateArray = date.split('-');
       const d = new Date();
-      d.setFullYear(+dateArray[2], (+dateArray[1] - 1), +dateArray[0])
+      d.setFullYear(+dateArray[2], +dateArray[1] - 1, +dateArray[0]);
       const formattedDate = this.datePipe.transform(d, 'dd MMM yyyy');
       return formattedDate;
     } else return date;
@@ -161,22 +169,24 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   //initialize component
   ngAfterViewInit() {
-    this.userPlan = this._cookieService.get("user_plan");
+    this.userPlan = this._cookieService.get('user_plan');
     this.newPatientPluginObservable$ = this.newPatientTotal$.pipe(
       takeUntil(this.destroyed$),
       map((count) => {
-        return this.chartService.beforeDrawChart(count)
+        return this.chartService.beforeDrawChart(count);
       })
     );
 
     //this.initiate_clinic();
-    this.user_type = this._cookieService.get("user_type");
-    if (this._cookieService.get("dentistid"))
-      this.childid = this._cookieService.get("dentistid");
+    this.user_type = this._cookieService.get('user_type');
+    if (this._cookieService.get('dentistid'))
+      this.childid = this._cookieService.get('dentistid');
 
     //   $('.external_dentist').val('all');
     $('#title').html('<span> Clinician Analysis </span>');
-    $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate));
+    $('#sa_datepicker').val(
+      this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate)
+    );
 
     $('.external_clinic').show();
     //$('.dentist_dropdown').show();
@@ -190,8 +200,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     if ($('body').find('span#currentDentist').length > 0) {
       var did = $('body').find('span#currentDentist').attr('did');
       $('.external_dentist').val(did);
-    }
-    else {
+    } else {
       $('.external_dentist').val('all');
     }
     //  this.filterDate('cytd');
@@ -199,31 +208,66 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     $(document).on('click', function (e) {
       if ($(document.activeElement).attr('id') == 'sa_datepicker') {
         $('.customRange').show();
-      }
-      else if ($(document.activeElement).attr('id') == 'customRange') {
+      } else if ($(document.activeElement).attr('id') == 'customRange') {
         $('.customRange').show();
-      }
-      else {
+      } else {
         $('.customRange').hide();
       }
-    })
+    });
 
     $('.topbar-strip').addClass('responsive-top');
     this.doughnutChartColors = [
       {
         backgroundColor: [
-          '#6edbbb', '#b0fffa', '#abb3ff', '#ffb4b5', '#fffcac', '#FFE4E4', '#FFD578', '#54D2FF', '#E58DD7', '#A9AABC', '#F2ECFF', '#5689C9', '#F9F871','#6cd8ba', '#feefb8', '#91ADEA', '#F2C6C6', '#FDC6C0', '#FEEEE1', '#FFDD99', '#A8DDDD', '#F4F4A0', '#C3DDFF', '#9FDBDB', '#CCFDCC', '#B1F2EC', '#BBEBFA', '#D7ECF3', '#BBE7FF', '#C8CDF0', '#F7C4F5', '#9BD0F5', '#36A2EB', '#FF6384', '#fe7b85', '#87ada9', '#386087'
+          '#6edbbb',
+          '#b0fffa',
+          '#abb3ff',
+          '#ffb4b5',
+          '#fffcac',
+          '#FFE4E4',
+          '#FFD578',
+          '#54D2FF',
+          '#E58DD7',
+          '#A9AABC',
+          '#F2ECFF',
+          '#5689C9',
+          '#F9F871',
+          '#6cd8ba',
+          '#feefb8',
+          '#91ADEA',
+          '#F2C6C6',
+          '#FDC6C0',
+          '#FEEEE1',
+          '#FFDD99',
+          '#A8DDDD',
+          '#F4F4A0',
+          '#C3DDFF',
+          '#9FDBDB',
+          '#CCFDCC',
+          '#B1F2EC',
+          '#BBEBFA',
+          '#D7ECF3',
+          '#BBE7FF',
+          '#C8CDF0',
+          '#F7C4F5',
+          '#9BD0F5',
+          '#36A2EB',
+          '#FF6384',
+          '#fe7b85',
+          '#87ada9',
+          '#386087'
         ]
-      }];
+      }
+    ];
 
     // this.filterDate(this.chartService.duration$.value);
   }
 
   ngOnInit() {
     let namedChartAnnotation = ChartAnnotation;
-    namedChartAnnotation["id"] = "annotation";
+    namedChartAnnotation['id'] = 'annotation';
     Chart.pluginService.register(namedChartAnnotation);
-    if (this._cookieService.get("dentist_toggle") === 'true') {
+    if (this._cookieService.get('dentist_toggle') === 'true') {
       this.averageToggle = true;
       this.showTrend = false;
     }
@@ -236,122 +280,134 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     var val = $('#currentClinic').attr('cid');
     this.showWeekTrend = false;
-    if (this._cookieService.get("dentistid")) {
-      this.childid = this._cookieService.get("dentistid");
-      this.selectedDentist = this._cookieService.get("dentistid");
+    if (this._cookieService.get('dentistid')) {
+      this.childid = this._cookieService.get('dentistid');
+      this.selectedDentist = this._cookieService.get('dentistid');
     }
     if (val != undefined) {
-      if(val == 'all'){
+      if (val == 'all') {
         this.clinic_id = this.clinics;
-      }else{
+      } else {
         this.clinic_id = val;
       }
       if (this.user_type == '4') {
         this.getClinic();
       }
-      
-      if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-      // this.getDentists();
-       this.isAllClinic = true;
-      this.getMaxBarLimit();
-      }else{
-       this.isAllClinic = false;
+
+      if (this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)) {
+        // this.getDentists();
+        this.isAllClinic = true;
+        this.getMaxBarLimit();
+      } else {
+        this.isAllClinic = false;
         this.getDentists();
       }
-      if(this.isAllClinic){
+      if (this.isAllClinic) {
         if (this.user_type != '4') {
           this.filterDate('m');
         }
-      }else{
+      } else {
         if (this.user_type != '4') {
           this.filterDate(this.chartService.duration$.value);
         }
       }
     }
-
   }
 
   public compareModeEnable: boolean = false;
   /********** Get the clinic information ***********/
   getClinic() {
-    this.cliniciananalysisService.getClinics(this.clinic_id, 'CompareMode').subscribe((res: any) => {
-      if (res.body.data) {
-        this.compareModeEnable = (res.body.data.compare_mode == 1) ? true : false;
-        if(!this.compareModeEnable){
-          this.averageToggle = false;
-        }else if(this.compareModeEnable && this._cookieService.get("dentist_toggle") == 'true'){
-          this.averageToggle = true;
-        }
-        this.filterDate(this.chartService.duration$.value);
-      }
-    }, error => { });
+    this.cliniciananalysisService
+      .getClinics(this.clinic_id, 'CompareMode')
+      .subscribe(
+        (res: any) => {
+          if (res.body.data) {
+            this.compareModeEnable =
+              res.body.data.compare_mode == 1 ? true : false;
+            if (!this.compareModeEnable) {
+              this.averageToggle = false;
+            } else if (
+              this.compareModeEnable &&
+              this._cookieService.get('dentist_toggle') == 'true'
+            ) {
+              this.averageToggle = true;
+            }
+            this.filterDate(this.chartService.duration$.value);
+          }
+        },
+        (error) => {}
+      );
   }
 
   /**************************************************/
 
   public clinics = [];
-  getAllClinics(){
-    this.headerService.getClinic.subscribe(res=>{
-        if(res.status == 200){
-          let temp = [];
-          res.body.data.forEach(item=>{
-            temp.push(item.id);
-          });
-          this.clinics = [...temp];
-        }
+  getAllClinics() {
+    this.headerService.getClinic.subscribe((res) => {
+      if (res.status == 200) {
+        let temp = [];
+        res.body.data.forEach((item) => {
+          temp.push(item.id);
+        });
+        this.clinics = [...temp];
+      }
     });
   }
 
   splitName(name: string) {
     const regex = /\w+\s\w+(?=\s)|\w+/g;
     return name.toString().trim().match(regex);
-    
-
   }
 
-  getMaxBarLimit(){
-    let ids = this.clinic_id;
+  getMaxBarLimit() {
+    const ids: number[] =
+      typeof this.clinic_id == 'string'
+        ? this.clinic_id.split(',').map((id) => Number(id))
+        : this.clinic_id;
     ids.sort((a, b) => a - b);
-    this.cliniciananalysisService.getClinicSettings(ids[0]).subscribe((res:any) => {
-      if(res.status == 200){
-        if(res.body.data.max_chart_bars)
-          this.numberOfRecords = res.body.data.max_chart_bars; 
-      }
-    });
+    this.cliniciananalysisService
+      .getClinicSettings(ids[0])
+      .subscribe((res: any) => {
+        if (res.status == 200) {
+          if (res.body.data.max_chart_bars)
+            this.numberOfRecords = res.body.data.max_chart_bars;
+        }
+      });
   }
 
   public barBackgroundColor(data, labels) {
     let dynamicColors = [];
-    if(this.isAllClinic){
-      dynamicColors=[];
-      data.forEach(res => {
-        if(Array.isArray(this.clinic_id)){
-          this.clinic_id.forEach((item,index)=>{
-            if(res.clinic_id == item){
+    if (this.isAllClinic) {
+      dynamicColors = [];
+      data.forEach((res) => {
+        if (Array.isArray(this.clinic_id)) {
+          this.clinic_id.forEach((item, index) => {
+            if (res.clinic_id == item) {
               dynamicColors.push(this.legendBackgroundColor[index]);
             }
-          })
-        }else{
-          this.clinic_id.split(",").forEach((item,index)=>{
-            if(res.clinic_id == item){
+          });
+        } else {
+          this.clinic_id.split(',').forEach((item, index) => {
+            if (res.clinic_id == item) {
               dynamicColors.push(this.legendBackgroundColor[index]);
             }
           });
         }
       });
-    }else{
+    } else {
       dynamicColors = [];
       labels.forEach((label, labelIndex) => {
-        dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+        dynamicColors.push(
+          labelIndex % 2 === 0
+            ? this.chartService.colors.odd
+            : this.chartService.colors.even
+        );
       });
     }
     return dynamicColors;
   }
 
-
-  dentists: Dentist[] = [
-    { providerId: 'all', name: 'All Dentists' },
-  ];
+  dentists: Dentist[] = [{ providerId: 'all', name: 'All Dentists' }];
   public barChartColors: Array<any>;
   public barChartColorsDent: Array<any>;
   public barChartColorsOht: Array<any>;
@@ -364,10 +420,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public barChartType = 'bar';
   public barChartLegend = false;
   public gradient = 'bar';
-  public barChartBorder = "#1CA49F";
+  public barChartBorder = '#1CA49F';
   public barChartColorsHrDent: Array<any>;
   public barChartColorsHrOht: Array<any>;
-  
 
   //labels
   public barChartLabels: string[] = [];
@@ -394,12 +449,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public barChartData: any[] = [
     {
       ...this.chartService.baseChartData,
-      data: [],
+      data: []
     }
   ];
-  public pieChartData: any[] = [
-    { data: [10], label: 'Dentist Production' }
-  ];
+  public pieChartData: any[] = [{ data: [10], label: 'Dentist Production' }];
 
   public planChartDataP: any[] = [
     {
@@ -446,7 +499,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public doughnutChartData1: number[] = [];
   public newPatientChartData: number[] = [350, 450, 100];
   public newPatientChartData1: number[] = [];
-  //Total  
+  //Total
   public productionTotal = 0;
   public productionTotalAverage = 0;
   public productionGoal = 0;
@@ -467,69 +520,65 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public newPatientTotal = 0;
   public newPatientTotalAverage = 0;
   public newPatientGoals = 0;
-  public gaugePrependText = "$";
-  public gaugeAppendText = "%";
+  public gaugePrependText = '$';
+  public gaugeAppendText = '%';
   public gaugeDuration = '2500';
   // events
-  public chartClicked(e: any): void {
+  public chartClicked(e: any): void {}
 
-  }
-
-  public chartHovered(e: any): void {
-
-  }
-  public gaugeType = "arch";
+  public chartHovered(e: any): void {}
+  public gaugeType = 'arch';
   public gaugeValue: any = 0;
-  public gaugeLabel = "";
-  public gaugeThick = "20";
-  public foregroundColor = "#4ccfae";
+  public gaugeLabel = '';
+  public gaugeThick = '20';
+  public foregroundColor = '#4ccfae';
   public backgroundColor = '#f4f0fa';
-  public cap = "round";
-  public size = "300"
+  public cap = 'round';
+  public size = '300';
 
   public gaugeValueTreatment = 0;
   public treatmentPlanAverageCostTab = '1';
 
-  public gaugeLabelTreatment = "";
+  public gaugeLabelTreatment = '';
 
   public gaugeValuePatients = 0;
-  public gaugeLabelPatients = "";
+  public gaugeLabelPatients = '';
 
   public newPatientValuePatients: number = 0;
-  public newPatientLabelPatients = "";
+  public newPatientLabelPatients = '';
   public recallValue: any;
-  public recallLabel = "";
+  public recallLabel = '';
   public recallGoal = 0;
   public treatmentPreValue: any = '';
-  public treatmentPreLabel = "";
+  public treatmentPreLabel = '';
   public treatmentPreGoal = 0;
   public legendGenerator = {
     display: true,
-      position: "bottom",
-      labels: {
-        boxWidth : 8,
-        usePointStyle: true,
-        generateLabels : (chart)=>{
-          let bgColor = {};
-          let labels = chart.data.labels.map((value,i)=>{
-            bgColor[value.split(" - ")[1]] = chart.data.datasets[0].backgroundColor[i];
-            return value.split(" - ")[1];
-          });
-          labels = [...new Set(labels)];
-          labels = labels.splice(0,this.maxLegendLabelLimit);
-          return labels.map((label,index)=>({
-            text: label,
-            strokeStyle : bgColor[label],
-            fillStyle : bgColor[label],
-          }));
-          
-        }
-      },
-      onClick : (event, legendItem, legend)=>{
-        return;
-      },
-      // align : 'start',
-  }
+    position: 'bottom',
+    labels: {
+      boxWidth: 8,
+      usePointStyle: true,
+      generateLabels: (chart) => {
+        let bgColor = {};
+        let labels = chart.data.labels.map((value, i) => {
+          bgColor[value.split(' - ')[1]] =
+            chart.data.datasets[0].backgroundColor[i];
+          return value.split(' - ')[1];
+        });
+        labels = [...new Set(labels)];
+        labels = labels.splice(0, this.maxLegendLabelLimit);
+        return labels.map((label, index) => ({
+          text: label,
+          strokeStyle: bgColor[label],
+          fillStyle: bgColor[label]
+        }));
+      }
+    },
+    onClick: (event, legendItem, legend) => {
+      return;
+    }
+    // align : 'start',
+  };
   public barChartOptions: any = {
     borderRadius: 50,
     hover: { mode: null },
@@ -543,49 +592,52 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [{
-        gridLines: {
-          display: true
-        },
-        ticks: {
-          autoSkip: false,
-          userCallback: (label: string) => {
-            if (label != '') {
-              const names = this.splitName(label);
-              // if (names.length > 1) {
-              //   return `${names[0][0]} ${names[1]}`
-              // } else return `${names[0]}`;
-              const name = names[0].split(' ');
-              if (names.length == 3) {
-                return `${names[0]}`
-              } else if (names.length == 2) {
-                if (name.length == 2) {
-                  return `${names[0][0]} ${name[1]}`
-                } else {
-                  return `${names[0][0]} ${names[1]}`
-                }
-              } else {
-                return `${names[0]}`;
-              }
-            }            
-          }
-        },
-      }],
-      yAxes: [{
-        ticks: {
-          suggestedMin: 0,
-          userCallback: (label, index, labels) => {
-            // when the floored value is the same as the value we have a whole number
-            if (Math.floor(label) === label) {
-              return '$' + this.decimalPipe.transform(label);
-            }
-
+      xAxes: [
+        {
+          gridLines: {
+            display: true
           },
-        },
-        gridLines: {
-          // color: '#fbfbfc'
+          ticks: {
+            autoSkip: false,
+            userCallback: (label: string) => {
+              if (label != '') {
+                const names = this.splitName(label);
+                // if (names.length > 1) {
+                //   return `${names[0][0]} ${names[1]}`
+                // } else return `${names[0]}`;
+                const name = names[0].split(' ');
+                if (names.length == 3) {
+                  return `${names[0]}`;
+                } else if (names.length == 2) {
+                  if (name.length == 2) {
+                    return `${names[0][0]} ${name[1]}`;
+                  } else {
+                    return `${names[0][0]} ${names[1]}`;
+                  }
+                } else {
+                  return `${names[0]}`;
+                }
+              }
+            }
+          }
         }
-      }],
+      ],
+      yAxes: [
+        {
+          ticks: {
+            suggestedMin: 0,
+            userCallback: (label, index, labels) => {
+              // when the floored value is the same as the value we have a whole number
+              if (Math.floor(label) === label) {
+                return '$' + this.decimalPipe.transform(label);
+              }
+            }
+          },
+          gridLines: {
+            // color: '#fbfbfc'
+          }
+        }
+      ]
     },
     legend: this.legendGenerator,
     tooltips: {
@@ -598,9 +650,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       // borderColor: '#000',
       callbacks: {
         label: (tooltipItem) => {
-          if(tooltipItem.xLabel != ''){
-          //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
-            return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+          if (tooltipItem.xLabel != '') {
+            //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+            return (
+              tooltipItem.xLabel +
+              ': $' +
+              this.decimalPipe.transform(tooltipItem.yLabel)
+            );
           }
         },
         // remove title
@@ -608,7 +664,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           return;
         }
       }
-    },
+    }
     // legend: {
     //   position: 'top',
     //   onClick: function (e, legendItem) {
@@ -639,49 +695,52 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [{
-        gridLines: {
-          display: true
-        },
-        ticks: {
-          autoSkip: false,
-          userCallback: (label: string) => {
-            if(label != ''){
-              const names = this.splitName(label);
-              // if (names.length > 1) {
-              //   return `${names[0][0]} ${names[1]}`
-              // } else return `${names[0]}`;
-              const name = names[0].split(' ');
-              if (names.length == 3) {
-                return `${names[0]}`
-              } else if (names.length == 2){
-                if (name.length == 2) {
-                  return `${names[0][0]} ${name[1]}`
-                } else {
-                  return `${names[0][0]} ${names[1]}`
-                }
-              } else {
-                return `${names[0]}`;
-              }
-            }            
-          }
-        },
-      }],
-      yAxes: [{
-        ticks: {
-          suggestedMin: 0,
-          userCallback: (label, index, labels) => {
-            // when the floored value is the same as the value we have a whole number
-            if (Math.floor(label) === label) {
-              return '$' + this.decimalPipe.transform(label);
-            }
-
+      xAxes: [
+        {
+          gridLines: {
+            display: true
           },
-        },
-        gridLines: {
-          // color: '#fbfbfc'
+          ticks: {
+            autoSkip: false,
+            userCallback: (label: string) => {
+              if (label != '') {
+                const names = this.splitName(label);
+                // if (names.length > 1) {
+                //   return `${names[0][0]} ${names[1]}`
+                // } else return `${names[0]}`;
+                const name = names[0].split(' ');
+                if (names.length == 3) {
+                  return `${names[0]}`;
+                } else if (names.length == 2) {
+                  if (name.length == 2) {
+                    return `${names[0][0]} ${name[1]}`;
+                  } else {
+                    return `${names[0][0]} ${names[1]}`;
+                  }
+                } else {
+                  return `${names[0]}`;
+                }
+              }
+            }
+          }
         }
-      }],
+      ],
+      yAxes: [
+        {
+          ticks: {
+            suggestedMin: 0,
+            userCallback: (label, index, labels) => {
+              // when the floored value is the same as the value we have a whole number
+              if (Math.floor(label) === label) {
+                return '$' + this.decimalPipe.transform(label);
+              }
+            }
+          },
+          gridLines: {
+            // color: '#fbfbfc'
+          }
+        }
+      ]
     },
     legend: this.legendGenerator,
     tooltips: {
@@ -694,9 +753,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       // borderColor: '#000',
       callbacks: {
         label: (tooltipItem) => {
-          if(tooltipItem.xLabel != ''){
-          //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
-            return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+          if (tooltipItem.xLabel != '') {
+            //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+            return (
+              tooltipItem.xLabel +
+              ': $' +
+              this.decimalPipe.transform(tooltipItem.yLabel)
+            );
           }
         },
         // remove title
@@ -704,7 +767,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           return;
         }
       }
-    },
+    }
     // legend: {
     //   position: 'top',
     //   onClick: function (e, legendItem) {
@@ -735,49 +798,52 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [{
-        gridLines: {
-          display: true
-        },
-        ticks: {
-          autoSkip: false,
-          userCallback: (label: string) => {
-            if(label != ''){
-              const names = this.splitName(label);
-              // if (names.length > 1) {
-              //   return `${names[0][0]} ${names[1]}`
-              // } else return `${names[0]}`;
-              const name = names[0].split(' ');
-              if (names.length == 3) {
-                return `${names[0]}`
-              } else if (names.length == 2){
-                if (name.length == 2) {
-                  return `${names[0][0]} ${name[1]}`
-                } else {
-                  return `${names[0][0]} ${names[1]}`
-                }
-              } else {
-                return `${names[0]}`;
-              }
-            }            
-          }
-        },
-      }],
-      yAxes: [{
-        ticks: {
-          suggestedMin: 0,
-          userCallback: (label, index, labels) => {
-            // when the floored value is the same as the value we have a whole number
-            if (Math.floor(label) === label) {
-              return '$' + this.decimalPipe.transform(label);
-            }
-
+      xAxes: [
+        {
+          gridLines: {
+            display: true
           },
-        },
-        gridLines: {
-          // color: '#fbfbfc'
+          ticks: {
+            autoSkip: false,
+            userCallback: (label: string) => {
+              if (label != '') {
+                const names = this.splitName(label);
+                // if (names.length > 1) {
+                //   return `${names[0][0]} ${names[1]}`
+                // } else return `${names[0]}`;
+                const name = names[0].split(' ');
+                if (names.length == 3) {
+                  return `${names[0]}`;
+                } else if (names.length == 2) {
+                  if (name.length == 2) {
+                    return `${names[0][0]} ${name[1]}`;
+                  } else {
+                    return `${names[0][0]} ${names[1]}`;
+                  }
+                } else {
+                  return `${names[0]}`;
+                }
+              }
+            }
+          }
         }
-      }],
+      ],
+      yAxes: [
+        {
+          ticks: {
+            suggestedMin: 0,
+            userCallback: (label, index, labels) => {
+              // when the floored value is the same as the value we have a whole number
+              if (Math.floor(label) === label) {
+                return '$' + this.decimalPipe.transform(label);
+              }
+            }
+          },
+          gridLines: {
+            // color: '#fbfbfc'
+          }
+        }
+      ]
     },
     legend: this.legendGenerator,
     tooltips: {
@@ -790,9 +856,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       // borderColor: '#000',
       callbacks: {
         label: (tooltipItem) => {
-          if(tooltipItem.xLabel != ''){
-          //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
-            return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+          if (tooltipItem.xLabel != '') {
+            //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+            return (
+              tooltipItem.xLabel +
+              ': $' +
+              this.decimalPipe.transform(tooltipItem.yLabel)
+            );
           }
         },
         // remove title
@@ -800,7 +870,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           return;
         }
       }
-    },
+    }
     // legend: {
     //   position: 'top',
     //   onClick: function (e, legendItem) {
@@ -831,49 +901,52 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [{
-        gridLines: {
-          display: true
-        },
-        ticks: {
-          autoSkip: false,
-          userCallback: (label: string) => {
-            if(label != ''){
-              const names = this.splitName(label);
-              // if (names.length > 1) {
-              //   return `${names[0][0]} ${names[1]}`
-              // } else return `${names[0]}`;
-              const name = names[0].split(' ');
-              if (names.length == 3) {
-                return `${names[0]}`
-              } else if (names.length == 2){
-                if (name.length == 2) {
-                  return `${names[0][0]} ${name[1]}`
-                } else {
-                  return `${names[0][0]} ${names[1]}`
-                }
-              } else {
-                return `${names[0]}`;
-              }
-            }            
-          }
-        },
-      }],
-      yAxes: [{
-        ticks: {
-          suggestedMin: 0,
-          userCallback: (label, index, labels) => {
-            // when the floored value is the same as the value we have a whole number
-            if (Math.floor(label) === label) {
-              return '$' + this.decimalPipe.transform(label);
-            }
-
+      xAxes: [
+        {
+          gridLines: {
+            display: true
           },
-        },
-        gridLines: {
-          // color: '#fbfbfc'
+          ticks: {
+            autoSkip: false,
+            userCallback: (label: string) => {
+              if (label != '') {
+                const names = this.splitName(label);
+                // if (names.length > 1) {
+                //   return `${names[0][0]} ${names[1]}`
+                // } else return `${names[0]}`;
+                const name = names[0].split(' ');
+                if (names.length == 3) {
+                  return `${names[0]}`;
+                } else if (names.length == 2) {
+                  if (name.length == 2) {
+                    return `${names[0][0]} ${name[1]}`;
+                  } else {
+                    return `${names[0][0]} ${names[1]}`;
+                  }
+                } else {
+                  return `${names[0]}`;
+                }
+              }
+            }
+          }
         }
-      }],
+      ],
+      yAxes: [
+        {
+          ticks: {
+            suggestedMin: 0,
+            userCallback: (label, index, labels) => {
+              // when the floored value is the same as the value we have a whole number
+              if (Math.floor(label) === label) {
+                return '$' + this.decimalPipe.transform(label);
+              }
+            }
+          },
+          gridLines: {
+            // color: '#fbfbfc'
+          }
+        }
+      ]
     },
     legend: this.legendGenerator,
     tooltips: {
@@ -886,9 +959,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       // borderColor: '#000',
       callbacks: {
         label: (tooltipItem) => {
-          if(tooltipItem.xLabel != ''){
-          //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
-            return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+          if (tooltipItem.xLabel != '') {
+            //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+            return (
+              tooltipItem.xLabel +
+              ': $' +
+              this.decimalPipe.transform(tooltipItem.yLabel)
+            );
           }
         },
         // remove title
@@ -896,7 +973,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           return;
         }
       }
-    },
+    }
     // legend: {
     //   position: 'top',
     //   onClick: function (e, legendItem) {
@@ -927,49 +1004,52 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [{
-        gridLines: {
-          display: true
-        },
-        ticks: {
-          autoSkip: false,
-          userCallback: (label: string) => {
-            if(label != ''){
-              const names = this.splitName(label);
-              // if (names.length > 1) {
-              //   return `${names[0][0]} ${names[1]}`
-              // } else return `${names[0]}`;
-              const name = names[0].split(' ');
-              if (names.length == 3) {
-                return `${names[0]}`
-              } else if (names.length == 2){
-                if (name.length == 2) {
-                  return `${names[0][0]} ${name[1]}`
-                } else {
-                  return `${names[0][0]} ${names[1]}`
-                }
-              } else {
-                return `${names[0]}`;
-              }
-            }            
-          }
-        },
-      }],
-      yAxes: [{
-        ticks: {
-          suggestedMin: 0,
-          userCallback: (label, index, labels) => {
-            // when the floored value is the same as the value we have a whole number
-            if (Math.floor(label) === label) {
-              return '$' + this.decimalPipe.transform(label);
-            }
-
+      xAxes: [
+        {
+          gridLines: {
+            display: true
           },
-        },
-        gridLines: {
-          // color: '#fbfbfc'
+          ticks: {
+            autoSkip: false,
+            userCallback: (label: string) => {
+              if (label != '') {
+                const names = this.splitName(label);
+                // if (names.length > 1) {
+                //   return `${names[0][0]} ${names[1]}`
+                // } else return `${names[0]}`;
+                const name = names[0].split(' ');
+                if (names.length == 3) {
+                  return `${names[0]}`;
+                } else if (names.length == 2) {
+                  if (name.length == 2) {
+                    return `${names[0][0]} ${name[1]}`;
+                  } else {
+                    return `${names[0][0]} ${names[1]}`;
+                  }
+                } else {
+                  return `${names[0]}`;
+                }
+              }
+            }
+          }
         }
-      }],
+      ],
+      yAxes: [
+        {
+          ticks: {
+            suggestedMin: 0,
+            userCallback: (label, index, labels) => {
+              // when the floored value is the same as the value we have a whole number
+              if (Math.floor(label) === label) {
+                return '$' + this.decimalPipe.transform(label);
+              }
+            }
+          },
+          gridLines: {
+            // color: '#fbfbfc'
+          }
+        }
+      ]
     },
     legend: this.legendGenerator,
     tooltips: {
@@ -982,9 +1062,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       // borderColor: '#000',
       callbacks: {
         label: (tooltipItem) => {
-          if(tooltipItem.xLabel != ''){
-          //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
-            return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+          if (tooltipItem.xLabel != '') {
+            //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+            return (
+              tooltipItem.xLabel +
+              ': $' +
+              this.decimalPipe.transform(tooltipItem.yLabel)
+            );
           }
         },
         // remove title
@@ -992,7 +1076,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           return;
         }
       }
-    },
+    }
     // legend: {
     //   position: 'top',
     //   onClick: function (e, legendItem) {
@@ -1023,49 +1107,52 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [{
-        gridLines: {
-          display: true
-        },
-        ticks: {
-          autoSkip: false,
-          userCallback: (label: string) => {
-            if(label != ''){
-              const names = this.splitName(label);
-              // if (names.length > 1) {
-              //   return `${names[0][0]} ${names[1]}`
-              // } else return `${names[0]}`;
-              const name = names[0].split(' ');
-              if (names.length == 3) {
-                return `${names[0]}`
-              } else if (names.length == 2){
-                if (name.length == 2) {
-                  return `${names[0][0]} ${name[1]}`
-                } else {
-                  return `${names[0][0]} ${names[1]}`
-                }
-              } else {
-                return `${names[0]}`;
-              }
-            }            
-          }
-        },
-      }],
-      yAxes: [{
-        ticks: {
-          suggestedMin: 0,
-          userCallback: (label, index, labels) => {
-            // when the floored value is the same as the value we have a whole number
-            if (Math.floor(label) === label) {
-              return '$' + this.decimalPipe.transform(label);
-            }
-
+      xAxes: [
+        {
+          gridLines: {
+            display: true
           },
-        },
-        gridLines: {
-          // color: '#fbfbfc'
+          ticks: {
+            autoSkip: false,
+            userCallback: (label: string) => {
+              if (label != '') {
+                const names = this.splitName(label);
+                // if (names.length > 1) {
+                //   return `${names[0][0]} ${names[1]}`
+                // } else return `${names[0]}`;
+                const name = names[0].split(' ');
+                if (names.length == 3) {
+                  return `${names[0]}`;
+                } else if (names.length == 2) {
+                  if (name.length == 2) {
+                    return `${names[0][0]} ${name[1]}`;
+                  } else {
+                    return `${names[0][0]} ${names[1]}`;
+                  }
+                } else {
+                  return `${names[0]}`;
+                }
+              }
+            }
+          }
         }
-      }],
+      ],
+      yAxes: [
+        {
+          ticks: {
+            suggestedMin: 0,
+            userCallback: (label, index, labels) => {
+              // when the floored value is the same as the value we have a whole number
+              if (Math.floor(label) === label) {
+                return '$' + this.decimalPipe.transform(label);
+              }
+            }
+          },
+          gridLines: {
+            // color: '#fbfbfc'
+          }
+        }
+      ]
     },
     legend: this.legendGenerator,
     tooltips: {
@@ -1078,9 +1165,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       // borderColor: '#000',
       callbacks: {
         label: (tooltipItem) => {
-          if(tooltipItem.xLabel != ''){
-          //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
-            return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+          if (tooltipItem.xLabel != '') {
+            //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+            return (
+              tooltipItem.xLabel +
+              ': $' +
+              this.decimalPipe.transform(tooltipItem.yLabel)
+            );
           }
         },
         // remove title
@@ -1088,7 +1179,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           return;
         }
       }
-    },
+    }
     // legend: {
     //   position: 'top',
     //   onClick: function (e, legendItem) {
@@ -1107,22 +1198,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     // },
   };
 
-
   public barChartOptions1: any = {
     borderRadius: 50,
     hover: { mode: null },
     scaleShowVerticalLines: false,
     cornerRadius: 60,
     curvature: 1,
-    animation:
-    {
+    animation: {
       duration: 1,
       easing: 'linear',
       onComplete: function () {
         var chartInstance = this.chart,
           ctx = chartInstance.ctx;
         ctx.textAlign = 'center';
-        ctx.fillStyle = "rgba(0, 0, 0, 1)";
+        ctx.fillStyle = 'rgba(0, 0, 0, 1)';
         ctx.textBaseline = 'bottom';
         // Loop through each data in the datasets
         this.data.datasets.forEach(function (dataset, i) {
@@ -1156,49 +1245,48 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     },
     responsive: true,
     maintainAspectRatio: false,
-    scales:
-    {
-      xAxes: [{
-        gridLines:
+    scales: {
+      xAxes: [
         {
-          display: true
-        },
-        ticks: {
-          autoSkip: false,
-          userCallback: (label: string) => {
-            const names = this.splitName(label);
-            const name = names[0].split(' ');
-            if (names.length > 1) {
-              if (name.length == 2) {
-                return `${names[0][0]} ${name[1]}`
-              } else {
-                return `${names[0][0]} ${names[1]}`
-              }
-            } else
-              return `${names[0]}`;
-          }
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          suggestedMin: 0,
-          max: 10000,
-          userCallback: (label, index, labels) => {
-            // when the floored value is the same as the value we have a whole number
-            if (Math.floor(label) === label) {
-              return '$' + this.decimalPipe.transform(label);
+          gridLines: {
+            display: true
+          },
+          ticks: {
+            autoSkip: false,
+            userCallback: (label: string) => {
+              const names = this.splitName(label);
+              const name = names[0].split(' ');
+              if (names.length > 1) {
+                if (name.length == 2) {
+                  return `${names[0][0]} ${name[1]}`;
+                } else {
+                  return `${names[0][0]} ${names[1]}`;
+                }
+              } else return `${names[0]}`;
             }
           }
-        },
-        gridLines: {}
-      }]
+        }
+      ],
+      yAxes: [
+        {
+          ticks: {
+            suggestedMin: 0,
+            max: 10000,
+            userCallback: (label, index, labels) => {
+              // when the floored value is the same as the value we have a whole number
+              if (Math.floor(label) === label) {
+                return '$' + this.decimalPipe.transform(label);
+              }
+            }
+          },
+          gridLines: {}
+        }
+      ]
     },
     tooltips: {
       enabled: false
-    },
+    }
   };
-
-
 
   public barChartOptionsTrend: any = {
     scaleShowVerticalLines: false,
@@ -1211,39 +1299,40 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     },
     responsive: true,
     maintainAspectRatio: false,
-    scaleStartValue : 0,
+    scaleStartValue: 0,
     scales: {
-      xAxes: [{
-       stacked: true,
-
-      },
-      {
-          gridLines: { 
-            display: true , 
+      xAxes: [
+        {
+          stacked: true
+        },
+        {
+          gridLines: {
+            display: true,
             offsetGridLines: true
           },
           ticks: {
-            autoSkip: false,
+            autoSkip: false
           },
           display: false,
           offset: true,
-          stacked: true,
+          stacked: true
         }
-    ],
-      yAxes: [{
-       suggestedMin: 0,
-        ticks: {
-          min:0,
-          beginAtZero: true,
-          userCallback: (label, index, labels) => {
-            // when the floored value is the same as the value we have a whole number
-            if (Math.floor(label) === label) {
-              return '$' + this.decimalPipe.transform(label);
+      ],
+      yAxes: [
+        {
+          suggestedMin: 0,
+          ticks: {
+            min: 0,
+            beginAtZero: true,
+            userCallback: (label, index, labels) => {
+              // when the floored value is the same as the value we have a whole number
+              if (Math.floor(label) === label) {
+                return '$' + this.decimalPipe.transform(label);
+              }
             }
-
-          },
-        },
-      }],
+          }
+        }
+      ]
     },
     tooltips: {
       mode: 'x-axis',
@@ -1256,33 +1345,42 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         // use label callback to return the desired label
         label: (tooltipItem, data) => {
           if (tooltipItem.xLabel.includes('WE ')) {
-            return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
-          } 
-          var Targetlable = '';       
-          const v = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+            return (
+              tooltipItem.xLabel +
+              ': $' +
+              this.decimalPipe.transform(tooltipItem.yLabel)
+            );
+          }
+          var Targetlable = '';
+          const v =
+            data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
           let Tlable = data.datasets[tooltipItem.datasetIndex].label;
-          if(Tlable !=''){
-            Tlable = Tlable + ": "
-            Targetlable = Tlable
+          if (Tlable != '') {
+            Tlable = Tlable + ': ';
+            Targetlable = Tlable;
           }
-         let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;  
-         var tlab = 0; 
-         if(typeof data.datasets[1] === 'undefined') {
-          }
-          else {
-            const tval  = data.datasets[1].data[tooltipItem.index];
-            if(Array.isArray(tval)){
-              tlab =  Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
-              if(tlab == 0){
+          let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+          var tlab = 0;
+          if (typeof data.datasets[1] === 'undefined') {
+          } else {
+            const tval = data.datasets[1].data[tooltipItem.index];
+            if (Array.isArray(tval)) {
+              tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
+              if (tlab == 0) {
                 Tlable = '';
               }
-             }
-          }  
-         if(tlab == 0 && Targetlable =='Target: '){
+            }
+          }
+          if (tlab == 0 && Targetlable == 'Target: ') {
             //return  Tlable + this.splitName(tooltipItem.xLabel).join(' ');
-         }else{
-            return  Tlable + this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(ylable);
-         }
+          } else {
+            return (
+              Tlable +
+              this.splitName(tooltipItem.xLabel).join(' ') +
+              ': $' +
+              this.decimalPipe.transform(ylable)
+            );
+          }
         },
         // remove title
         title: function (tooltipItem, data) {
@@ -1298,14 +1396,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if (index == 0) {
           ci.getDatasetMeta(1).hidden = true;
           ci.getDatasetMeta(index).hidden = false;
-        }
-        else if (index == 1) {
+        } else if (index == 1) {
           ci.getDatasetMeta(0).hidden = true;
           ci.getDatasetMeta(index).hidden = false;
         }
         ci.update();
-      },
-    },
+      }
+    }
   };
 
   public barChartOptionsPercent: any = {
@@ -1320,45 +1417,51 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [{
-        gridLines: { display: true },
-        ticks: {
-          autoSkip: false,
-          userCallback: (label: any) => {
-            const names = typeof label === "string" ? this.splitName(label) : this.splitName(label[0]);
-            // if (names.length > 1) {
-            //   return `${names[0][0]} ${names[1]}`
-            // } else return `${names[0]}`;
-            const name = names[0].split(' ');
-             if (names.length == 3) {
-                return `${names[0]}`
-              } else if (names.length == 2){
+      xAxes: [
+        {
+          gridLines: { display: true },
+          ticks: {
+            autoSkip: false,
+            userCallback: (label: any) => {
+              const names =
+                typeof label === 'string'
+                  ? this.splitName(label)
+                  : this.splitName(label[0]);
+              // if (names.length > 1) {
+              //   return `${names[0][0]} ${names[1]}`
+              // } else return `${names[0]}`;
+              const name = names[0].split(' ');
+              if (names.length == 3) {
+                return `${names[0]}`;
+              } else if (names.length == 2) {
                 if (name.length == 2) {
-                  return `${names[0][0]} ${name[1]}`
+                  return `${names[0][0]} ${name[1]}`;
                 } else {
-                  return `${names[0][0]} ${names[1]}`
+                  return `${names[0][0]} ${names[1]}`;
                 }
               } else {
                 return `${names[0]}`;
               }
+            }
           }
         }
-      }],
-      yAxes: [{
-        suggestedMin: 0,
-        // suggestedMax:100,
-        ticks: {
-          beginAtZero: true,
-          max: 100,
-          userCallback: function (label, index, labels) {
-            // when the floored value is the same as the value we have a whole number
-            if (Math.floor(label) === label) {
-              return label + ' %';
+      ],
+      yAxes: [
+        {
+          suggestedMin: 0,
+          // suggestedMax:100,
+          ticks: {
+            beginAtZero: true,
+            max: 100,
+            userCallback: function (label, index, labels) {
+              // when the floored value is the same as the value we have a whole number
+              if (Math.floor(label) === label) {
+                return label + ' %';
+              }
             }
-
-          },
-        },
-      }],
+          }
+        }
+      ]
     },
     elements: {
       line: {
@@ -1376,14 +1479,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       callbacks: {
         // use label callback to return the desired label
         label: function (tooltipItem, data) {
-          return tooltipItem.xLabel + ": " + tooltipItem.yLabel + "%";
+          return tooltipItem.xLabel + ': ' + tooltipItem.yLabel + '%';
         },
         // remove title
         title: function (tooltipItem, data) {
           return;
         }
       }
-    },
+    }
     // legend: {
     //   position: 'top',
     //   onClick: function (e, legendItem) {
@@ -1414,28 +1517,31 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [{
-        gridLines: { display: true },
-        ticks: {
-          autoSkip: false
-        },
-        stacked:true,
-      }],
-      yAxes: [{
-        suggestedMin: 0,
-        suggestedMax: 100,
-        ticks: {
-          beginAtZero: true,
-          max: 100,
-          userCallback: function (label, index, labels) {
-            // when the floored value is the same as the value we have a whole number
-            if (Math.floor(label) === label) {
-              return label + ' %';
-            }
-
+      xAxes: [
+        {
+          gridLines: { display: true },
+          ticks: {
+            autoSkip: false
           },
-        },
-      }],
+          stacked: true
+        }
+      ],
+      yAxes: [
+        {
+          suggestedMin: 0,
+          suggestedMax: 100,
+          ticks: {
+            beginAtZero: true,
+            max: 100,
+            userCallback: function (label, index, labels) {
+              // when the floored value is the same as the value we have a whole number
+              if (Math.floor(label) === label) {
+                return label + ' %';
+              }
+            }
+          }
+        }
+      ]
     },
     elements: {
       line: {
@@ -1452,31 +1558,30 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       callbacks: {
         // use label callback to return the desired label
         label: function (tooltipItem, data) {
-          var Targetlable = '';  
-          const v = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+          var Targetlable = '';
+          const v =
+            data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
           let Tlable = data.datasets[tooltipItem.datasetIndex].label;
-          if(Tlable !=''){
-            Tlable = Tlable + ": "
-            Targetlable = Tlable
+          if (Tlable != '') {
+            Tlable = Tlable + ': ';
+            Targetlable = Tlable;
           }
-         let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-         var tlab = 0; 
-         if(typeof data.datasets[1] === 'undefined') {
-          }
-          else {
-            const tval  = data.datasets[1].data[tooltipItem.index];
-            if(Array.isArray(tval)){
-              tlab =  Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
-              if(tlab == 0){
+          let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+          var tlab = 0;
+          if (typeof data.datasets[1] === 'undefined') {
+          } else {
+            const tval = data.datasets[1].data[tooltipItem.index];
+            if (Array.isArray(tval)) {
+              tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
+              if (tlab == 0) {
                 Tlable = '';
               }
-             }
-          } 
-         if(tlab == 0 && Targetlable =='Target: '){
-         }else{
-          return Tlable + tooltipItem.xLabel + ": " + ylable + "%";
-         }
-          
+            }
+          }
+          if (tlab == 0 && Targetlable == 'Target: ') {
+          } else {
+            return Tlable + tooltipItem.xLabel + ': ' + ylable + '%';
+          }
         },
         // remove title
         title: function (tooltipItem, data) {
@@ -1492,16 +1597,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if (index == 0) {
           ci.getDatasetMeta(1).hidden = true;
           ci.getDatasetMeta(index).hidden = false;
-        }
-        else if (index == 1) {
+        } else if (index == 1) {
           ci.getDatasetMeta(0).hidden = true;
           ci.getDatasetMeta(index).hidden = false;
         }
         ci.update();
-      },
-    },
+      }
+    }
   };
-
 
   public barChartOptionstrend: any = {
     scaleShowVerticalLines: false,
@@ -1515,25 +1618,29 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [{
-        gridLines: { display: true },
-        ticks: {
-          autoSkip: false
-        },
-        stacked: true,
-      }],
-      yAxes: [{
-        suggestedMin: 0,
-        ticks: {
-          beginAtZero: true,
-          userCallback: function (label, index, labels) {
-            // when the floored value is the same as the value we have a whole number
-            if (Math.floor(label) === label) {
-              return label;
-            }
+      xAxes: [
+        {
+          gridLines: { display: true },
+          ticks: {
+            autoSkip: false
           },
-        },
-      }],
+          stacked: true
+        }
+      ],
+      yAxes: [
+        {
+          suggestedMin: 0,
+          ticks: {
+            beginAtZero: true,
+            userCallback: function (label, index, labels) {
+              // when the floored value is the same as the value we have a whole number
+              if (Math.floor(label) === label) {
+                return label;
+              }
+            }
+          }
+        }
+      ]
     },
     tooltips: {
       mode: 'x-axis',
@@ -1545,30 +1652,30 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       callbacks: {
         // use label callback to return the desired label
         label: function (tooltipItem, data) {
-          var Targetlable = '';   
-          const v = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+          var Targetlable = '';
+          const v =
+            data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
           let Tlable = data.datasets[tooltipItem.datasetIndex].label;
-          if(Tlable !=''){
-            Tlable = Tlable + ": "
-            Targetlable = Tlable
+          if (Tlable != '') {
+            Tlable = Tlable + ': ';
+            Targetlable = Tlable;
           }
-         let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-         var tlab = 0; 
-         if(typeof data.datasets[1] === 'undefined') {
-          }
-          else {
-            const tval  = data.datasets[1].data[tooltipItem.index];
-            if(Array.isArray(tval)){
-              tlab =  Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
-              if(tlab == 0){
+          let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+          var tlab = 0;
+          if (typeof data.datasets[1] === 'undefined') {
+          } else {
+            const tval = data.datasets[1].data[tooltipItem.index];
+            if (Array.isArray(tval)) {
+              tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
+              if (tlab == 0) {
                 Tlable = '';
               }
-             }
+            }
           }
-         if(tlab == 0 && Targetlable =='Target: '){
-         }else{
-            return Tlable + tooltipItem.xLabel + ": " + ylable;
-         }
+          if (tlab == 0 && Targetlable == 'Target: ') {
+          } else {
+            return Tlable + tooltipItem.xLabel + ': ' + ylable;
+          }
         },
         // remove title
         title: function (tooltipItem, data) {
@@ -1584,13 +1691,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if (index == 0) {
           ci.getDatasetMeta(1).hidden = true;
           ci.getDatasetMeta(index).hidden = false;
-        }
-        else if (index == 1) {
+        } else if (index == 1) {
           ci.getDatasetMeta(0).hidden = true;
           ci.getDatasetMeta(index).hidden = false;
         }
         ci.update();
-      },
+      }
     }
   };
   public doughnutChartOptions: any = {
@@ -1609,32 +1715,33 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       labels: {
         usePointStyle: true,
         padding: 5,
-        generateLabels: function(chart) {
+        generateLabels: function (chart) {
           var data = chart.data;
           if (data.labels.length && data.datasets.length) {
-            return data.labels.map(function(label, i) {
+            return data.labels.map(function (label, i) {
               var meta = chart.getDatasetMeta(0);
-              var ds = data.datasets[0];              
+              var ds = data.datasets[0];
               var arc = meta.data[i];
-              var custom = arc && arc.custom || {};
+              var custom = (arc && arc.custom) || {};
               const regex = /\w+\s\w+(?=\s)|\w+/g;
               var names = label.toString().trim().match(regex);
-              var labls ='';
+              var labls = '';
               var name = names[0].split(' ');
               if (names.length == 3) {
-                labls = `${names[0]}`
-              } else if (names.length == 2){
+                labls = `${names[0]}`;
+              } else if (names.length == 2) {
                 if (name.length == 2) {
-                  labls = `${names[0][0]} ${name[1]}`
+                  labls = `${names[0][0]} ${name[1]}`;
                 } else {
-                  labls = `${names[0][0]} ${names[1]}`
+                  labls = `${names[0][0]} ${names[1]}`;
                 }
               } else {
                 labls = `${names[0]}`;
-              }return { 
+              }
+              return {
                 text: labls,
                 fillStyle: ds.backgroundColor[i],
-                strokeStyle: "#fff",
+                strokeStyle: '#fff',
                 hidden: isNaN(ds.data[i]) || meta.data[i].hidden,
                 index: i
               };
@@ -1674,7 +1781,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     tooltips: {
       callbacks: {
         label: function (tooltipItem, data) {
-          return data['labels'][tooltipItem['index']] + ": " + data['datasets'][0]['data'][tooltipItem['index']] + "%";
+          return (
+            data['labels'][tooltipItem['index']] +
+            ': ' +
+            data['datasets'][0]['data'][tooltipItem['index']] +
+            '%'
+          );
         }
       }
     }
@@ -1682,41 +1794,49 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   //check status of login
   public dentistVal = 'all';
   changeLoginStatus() {
-    this.cliniciananalysisService.changeLoginStatus().subscribe((res: any) => {
-      if (res.status == 200) {
+    this.cliniciananalysisService.changeLoginStatus().subscribe(
+      (res: any) => {
+        if (res.status == 200) {
+        }
+      },
+      (error) => {
+        this.toastr.error(
+          'There was an error retrieving your report data, please contact our support team.'
+        );
+        this.warningMessage = 'Please Provide Valid Inputs!';
       }
-    }, error => {
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    });
+    );
   }
   myDateParser(dateStr: string): string {
     // 2018-01-01T12:12:12.123456; - converting valid date format like this
 
     let date = dateStr.substring(0, 10);
     let time = dateStr.substring(11, 19);
-    let millisecond = dateStr.substring(20)
+    let millisecond = dateStr.substring(20);
 
     let validDate = date;
 
-    return validDate
+    return validDate;
   }
 
   //Load Dentist Data
   loadDentist(newValue) {
-    $('.sa_tabs_data button').prop('disabled',true); 
-    if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+    $('.sa_tabs_data button').prop('disabled', true);
+    if (this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)) {
       this.Apirequest = 7;
       newValue = 'all';
-      $('.multi-clinic-dis').addClass("disablePointer");
-      $('.multi-clinic-pro').addClass("disablePointerProgress");
-    }else{
+      $('.multi-clinic-dis').addClass('disablePointer');
+      $('.multi-clinic-pro').addClass('disablePointerProgress');
+    } else {
       this.Apirequest = 7;
-    }    
-    if (this._cookieService.get("user_type") == '4') {
-      if (this._cookieService.get("dentist_toggle") === 'false' || !this.compareModeEnable){
-        newValue =this._cookieService.get("dentistid");
-      }else{
+    }
+    if (this._cookieService.get('user_type') == '4') {
+      if (
+        this._cookieService.get('dentist_toggle') === 'false' ||
+        !this.compareModeEnable
+      ) {
+        newValue = this._cookieService.get('dentistid');
+      } else {
         newValue = 'all';
       }
     }
@@ -1725,59 +1845,60 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       return false;
     }
 
-
     $('#title').html('<span> Clinician Analysis </span>');
-    $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate));
+    $('#sa_datepicker').val(
+      this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate)
+    );
     //this.changePrebookRate('recall','all');
-    if (this._cookieService.get("dentistid"))
-      this.childid = this._cookieService.get("dentistid");
+    if (this._cookieService.get('dentistid'))
+      this.childid = this._cookieService.get('dentistid');
     if (newValue == 'all') {
       this.dentistVal = 'all';
       this.showTrend = false;
       this.toggleChecked = false;
       this.showTrendChart = false;
-      if(this.user_type != '4'){
-        if (this.proSelectShow == "production_all") {
+      if (this.user_type != '4') {
+        if (this.proSelectShow == 'production_all') {
           this.buildChart();
-        } else if (this.proSelectShow == "production_dentists") {
-         this.buildChartDentists();
-        }else if (this.proSelectShow == "production_oht") {
-         this.buildChartOht();
-        }else if (this.proSelectShow == "collection_all") {
+        } else if (this.proSelectShow == 'production_dentists') {
+          this.buildChartDentists();
+        } else if (this.proSelectShow == 'production_oht') {
+          this.buildChartOht();
+        } else if (this.proSelectShow == 'collection_all') {
           this.collectionChart();
-         }else if (this.proSelectShow == "collection_dentists") {
+        } else if (this.proSelectShow == 'collection_dentists') {
           this.collectionChartDentists();
-         }else if (this.proSelectShow == "collection_oht") {
+        } else if (this.proSelectShow == 'collection_oht') {
           this.collectionChartOht();
-         }else if (this.proSelectShow == "collection_exp_all") {
+        } else if (this.proSelectShow == 'collection_exp_all') {
           this.collectionExpChart();
-         }else if (this.proSelectShow == "collection_exp_dentists") {
+        } else if (this.proSelectShow == 'collection_exp_dentists') {
           this.collectionExpChartDentists();
-         }else if (this.proSelectShow == "collection_exp_oht") {
+        } else if (this.proSelectShow == 'collection_exp_oht') {
           this.collectionExpChartOht();
-         }
+        }
 
-         if(this.hrSelectShow == "hr_all"){ 
+        if (this.hrSelectShow == 'hr_all') {
           this.hourlyRateChart();
-        }else if(this.hrSelectShow == "hr_dentists"){
+        } else if (this.hrSelectShow == 'hr_dentists') {
           this.hourlyRateChartDesntists();
-        }else if(this.hrSelectShow == "hr_oht"){
+        } else if (this.hrSelectShow == 'hr_oht') {
           this.hourlyRateChartOht();
-        }else if(this.hrSelectShow == "hr_collection_all"){
+        } else if (this.hrSelectShow == 'hr_collection_all') {
           this.collectionHourlyRate();
-        }else if(this.hrSelectShow == "hr_collection_dentists"){
+        } else if (this.hrSelectShow == 'hr_collection_dentists') {
           this.collectionHourlyRateDentist();
-        }else if(this.hrSelectShow == "hr_collection_oht"){
+        } else if (this.hrSelectShow == 'hr_collection_oht') {
           this.collectionHourlyRateOht();
-        }else if(this.hrSelectShow == "hr_collection_exp_all"){
+        } else if (this.hrSelectShow == 'hr_collection_exp_all') {
           this.collectionExpHourlyRate();
-        }else if(this.hrSelectShow == "hr_collection_exp_dentists"){
+        } else if (this.hrSelectShow == 'hr_collection_exp_dentists') {
           this.collectionExpHourlyRateDentist();
-        }else if(this.hrSelectShow == "hr_collection_exp_oht"){
+        } else if (this.hrSelectShow == 'hr_collection_exp_oht') {
           this.collectionExpHourlyRateOht();
         }
       }
-      if(this.user_type == '4'){
+      if (this.user_type == '4') {
         this.buildChart();
         this.collectionChart();
         this.collectionExpChart();
@@ -1791,48 +1912,69 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       }
       this.buildChartNewpatients();
       this.treatmentPlanRate();
-      if(this.user_type != '4'){
-        if(this.tcmain == 1){
+      if (this.user_type != '4') {
+        if (this.tcmain == 1) {
           this.buildChartTreatment();
-        }else if(this.tcmain == 2){
+        } else if (this.tcmain == 2) {
           this.buildChartTreatmentCompletedFees();
         }
-        if(this.prebook =="recall"){
+        if (this.prebook == 'recall') {
           this.recallPrebook();
-        }else if(this.prebook =="treatment"){
+        } else if (this.prebook == 'treatment') {
           this.treatmentPrePrebook();
         }
       }
       this.buildChartNopatients();
-      (<HTMLElement>document.querySelector('.dentistProductionSingle')).style.display = 'none';
-      (<HTMLElement>document.querySelector('.dentistProduction')).style.display = 'block';
-      (<HTMLElement>document.querySelector('.treatmentPlanSingle')).style.display = 'none';
-      (<HTMLElement>document.querySelector('.treatmentPlan')).style.display = 'block';
-      (<HTMLElement>document.querySelector('.noPatientsSingle')).style.display = 'none';
-      (<HTMLElement>document.querySelector('.noPatients')).style.display = 'block';
-      (<HTMLElement>document.querySelector('.newPatientsSingle')).style.display = 'none';
-      (<HTMLElement>document.querySelector('.newPatients')).style.display = 'block';
-      (<HTMLElement>document.querySelector('.recallPrebookSingle')).style.display = 'none';
-      (<HTMLElement>document.querySelector('.recallPrebook')).style.display = 'block';
-      (<HTMLElement>document.querySelector('.treatmentPlanRateSingle')).style.display = 'none';
-      (<HTMLElement>document.querySelector('.treatmentPlanRate')).style.display = 'block';
-      (<HTMLElement>document.querySelector('.hourlyRateSingle')).style.display = 'none';
-      (<HTMLElement>document.querySelector('.hourlyRate')).style.display = 'block';
-     // this.changeTreatmentCost('1','all');
+      (<HTMLElement>(
+        document.querySelector('.dentistProductionSingle')
+      )).style.display = 'none';
+      (<HTMLElement>(
+        document.querySelector('.dentistProduction')
+      )).style.display = 'block';
+      (<HTMLElement>(
+        document.querySelector('.treatmentPlanSingle')
+      )).style.display = 'none';
+      (<HTMLElement>document.querySelector('.treatmentPlan')).style.display =
+        'block';
+      (<HTMLElement>document.querySelector('.noPatientsSingle')).style.display =
+        'none';
+      (<HTMLElement>document.querySelector('.noPatients')).style.display =
+        'block';
+      (<HTMLElement>(
+        document.querySelector('.newPatientsSingle')
+      )).style.display = 'none';
+      (<HTMLElement>document.querySelector('.newPatients')).style.display =
+        'block';
+      (<HTMLElement>(
+        document.querySelector('.recallPrebookSingle')
+      )).style.display = 'none';
+      (<HTMLElement>document.querySelector('.recallPrebook')).style.display =
+        'block';
+      (<HTMLElement>(
+        document.querySelector('.treatmentPlanRateSingle')
+      )).style.display = 'none';
+      (<HTMLElement>(
+        document.querySelector('.treatmentPlanRate')
+      )).style.display = 'block';
+      (<HTMLElement>document.querySelector('.hourlyRateSingle')).style.display =
+        'none';
+      (<HTMLElement>document.querySelector('.hourlyRate')).style.display =
+        'block';
+      // this.changeTreatmentCost('1','all');
     } else {
       this.dentistVal = newValue;
       this.showTrend = true;
       this.selectedDentist = newValue;
-      if(this.user_type != '4' && this.toggleChecked == false){
-        if(this.proCollShow == 1){
+      if (this.user_type != '4' && this.toggleChecked == false) {
+        if (this.proCollShow == 1) {
           this.dentistProductionTrend('w');
-        }else if(this.proCollShow == 2 ){
+        } else if (this.proCollShow == 2) {
           this.dentistCollectionTrend('w');
-        }else if(this.proCollShow == 3){
+        } else if (this.proCollShow == 3) {
           this.dentistCollectionExpTrend('w');
         }
       }
-      if(this.user_type == '4'){
+      if (this.user_type == '4') {
         this.dentistProductionTrend('w');
         this.dentistCollectionTrend('w');
         this.dentistCollectionExpTrend('w');
@@ -1840,27 +1982,26 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       if (this.toggleChecked) {
         this.toggleChangeProcess();
         this.showTrendChart = true;
-
       } else {
         this.showTrendChart = false;
-        if(this.user_type != '4'){
-          if(this.proCollShow == 1){
+        if (this.user_type != '4') {
+          if (this.proCollShow == 1) {
             this.buildChartDentist();
-          }else if(this.proCollShow == 2){
+          } else if (this.proCollShow == 2) {
             this.collectionDentist();
-          }else if(this.proCollShow == 3){
+          } else if (this.proCollShow == 3) {
             this.collectionExpDentist();
           }
 
-          if(this.hrCollShow == 1){
+          if (this.hrCollShow == 1) {
             this.hourlyRateDentist();
-          }else if(this.hrCollShow == 2){
+          } else if (this.hrCollShow == 2) {
             this.collectionHourlyRateSingle();
-          }else if(this.hrCollShow == 3){
+          } else if (this.hrCollShow == 3) {
             this.collectionExpHourlyRateSingle();
-          } 
-        }              
-        if(this.user_type == '4'){
+          }
+        }
+        if (this.user_type == '4') {
           this.buildChartDentist();
           this.collectionDentist();
           this.collectionExpDentist();
@@ -1868,77 +2009,103 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.collectionHourlyRateSingle();
           this.collectionExpHourlyRateSingle();
         }
-        (<HTMLElement>document.querySelector('.dentistProductionSingle')).style.display = 'block';
-        (<HTMLElement>document.querySelector('.dentistProduction')).style.display = 'none';
-       // this.buildChartTreatmentDentist();
-    //    this.buildChartTreatmentCompletedFeeDentist();
-        (<HTMLElement>document.querySelector('.treatmentPlanSingle')).style.display = 'block';
-        (<HTMLElement>document.querySelector('.treatmentPlan')).style.display = 'none';
+        (<HTMLElement>(
+          document.querySelector('.dentistProductionSingle')
+        )).style.display = 'block';
+        (<HTMLElement>(
+          document.querySelector('.dentistProduction')
+        )).style.display = 'none';
+        // this.buildChartTreatmentDentist();
+        //    this.buildChartTreatmentCompletedFeeDentist();
+        (<HTMLElement>(
+          document.querySelector('.treatmentPlanSingle')
+        )).style.display = 'block';
+        (<HTMLElement>document.querySelector('.treatmentPlan')).style.display =
+          'none';
         this.buildChartNopatientsDentist();
         this.buildChartNewpatientsDentist();
 
-        (<HTMLElement>document.querySelector('.noPatientsSingle')).style.display = 'block';
-        (<HTMLElement>document.querySelector('.noPatients')).style.display = 'none';
-        if(this.user_type != '4'){
-          if(this.tcmain == 1){
+        (<HTMLElement>(
+          document.querySelector('.noPatientsSingle')
+        )).style.display = 'block';
+        (<HTMLElement>document.querySelector('.noPatients')).style.display =
+          'none';
+        if (this.user_type != '4') {
+          if (this.tcmain == 1) {
             this.buildChartTreatmentDentist();
-          }else if(this.tcmain == 2){
+          } else if (this.tcmain == 2) {
             this.buildChartTreatmentCompletedFeeDentist();
           }
-          if(this.prebook =="recall"){
+          if (this.prebook == 'recall') {
             this.recallPrebookDentist();
-          }else if(this.prebook =="treatment"){
+          } else if (this.prebook == 'treatment') {
             this.treatmentPrePrebookDentist();
           }
-        }       
-        if(this.user_type == '4'){
+        }
+        if (this.user_type == '4') {
           this.buildChartTreatmentDentist();
           this.buildChartTreatmentCompletedFeeDentist();
           this.recallPrebookDentist();
-          this.treatmentPrePrebookDentist();          
+          this.treatmentPrePrebookDentist();
         }
 
-        (<HTMLElement>document.querySelector('.recallPrebookSingle')).style.display = 'block';
-        (<HTMLElement>document.querySelector('.recallPrebook')).style.display = 'none';
-        (<HTMLElement>document.querySelector('.treatmentPlanRateSingle')).style.display = 'block';
-        (<HTMLElement>document.querySelector('.treatmentPlanRate')).style.display = 'none';
-        (<HTMLElement>document.querySelector('.newPatientsSingle')).style.display = 'block';
-        (<HTMLElement>document.querySelector('.newPatients')).style.display = 'none';
+        (<HTMLElement>(
+          document.querySelector('.recallPrebookSingle')
+        )).style.display = 'block';
+        (<HTMLElement>document.querySelector('.recallPrebook')).style.display =
+          'none';
+        (<HTMLElement>(
+          document.querySelector('.treatmentPlanRateSingle')
+        )).style.display = 'block';
+        (<HTMLElement>(
+          document.querySelector('.treatmentPlanRate')
+        )).style.display = 'none';
+        (<HTMLElement>(
+          document.querySelector('.newPatientsSingle')
+        )).style.display = 'block';
+        (<HTMLElement>document.querySelector('.newPatients')).style.display =
+          'none';
 
-       
-        
         this.treatmentPlanRateDentist();
 
-        (<HTMLElement>document.querySelector('.hourlyRateSingle')).style.display = 'block';
-        (<HTMLElement>document.querySelector('.hourlyRate')).style.display = 'none';
+        (<HTMLElement>(
+          document.querySelector('.hourlyRateSingle')
+        )).style.display = 'block';
+        (<HTMLElement>document.querySelector('.hourlyRate')).style.display =
+          'none';
       }
-     // this.changeTreatmentCostSingle('1');
-
+      // this.changeTreatmentCostSingle('1');
     }
   }
   public accountingDentist: any = [];
   //Get provider details
   private getAccountingDentist() {
     this.accountingDentist = [];
-    this.cliniciananalysisService.getAccountingDentist(this.clinic_id).subscribe((res: any) => {
-      if (res.status == 200) {
-        res.body.data.forEach(res => {
-          var temp = [];
-          temp['provider_id'] = res.provider_id;
-          temp['name'] = res.name;
-          this.accountingDentist.push(temp);
-        });
-      }
-      else if (res.status == 401) {
-        this._cookieService.put("username", '');
-        this._cookieService.put("email", '');
-        this._cookieService.put("userid", '');
-        this.router.navigateByUrl('/login');
-      }
-    }, error => {
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    });
+    this.cliniciananalysisService
+      .getAccountingDentist(this.clinic_id)
+      .subscribe(
+        (res: any) => {
+          if (res.status == 200) {
+            res.body.data.forEach((res) => {
+              var temp = [];
+              temp['provider_id'] = res.provider_id;
+              temp['name'] = res.name;
+              this.accountingDentist.push(temp);
+            });
+          } else if (res.status == 401) {
+            this._cookieService.put('username', '');
+            this._cookieService.put('email', '');
+            this._cookieService.put('userid', '');
+            this.router.navigateByUrl('/login');
+          }
+        },
+        (error) => {
+          this.toastr.error(
+            'There was an error retrieving your report data, please contact our support team.'
+          );
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
   }
   public statusDentist: any = [];
   public final_map: any = {};
@@ -1946,118 +2113,120 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   //Get status of dentist for modal of hourly rate chart
   private getStatusDentist() {
     this.statusDentist = [];
-    this.cliniciananalysisService.getStatusDentist(this.clinic_id).subscribe((res: any) => {
-      if (res.status == 200) {
-        res.body.data.forEach(res => {
-          var temp = [];
-          temp['book_desc'] = res.app_book_description;
-          temp['provider_id'] = res.provider_id;
+    this.cliniciananalysisService.getStatusDentist(this.clinic_id).subscribe(
+      (res: any) => {
+        if (res.status == 200) {
+          res.body.data.forEach((res) => {
+            var temp = [];
+            temp['book_desc'] = res.app_book_description;
+            temp['provider_id'] = res.provider_id;
 
-          this.statusDentist.push(temp);
-        });
+            this.statusDentist.push(temp);
+          });
+        } else if (res.status == 401) {
+          this._cookieService.put('username', '');
+          this._cookieService.put('email', '');
+          this._cookieService.put('userid', '');
+          this.router.navigateByUrl('/login');
+        }
+      },
+      (error) => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
+        this.toastr.error(
+          'There was an error retrieving your report data, please contact our support team.'
+        );
       }
-      else if (res.status == 401) {
-        this._cookieService.put("username", '');
-        this._cookieService.put("email", '');
-        this._cookieService.put("userid", '');
-        this.router.navigateByUrl('/login');
-      }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-    }
     );
   }
   //Save hourly rate chart mapping
   save_mapping() {
     var i = 0;
-    this.accountingDentist.forEach(res => {
+    this.accountingDentist.forEach((res) => {
       var id = res.provider_id;
 
-      if ($("#dentistMap_" + id).val() != '') {
+      if ($('#dentistMap_' + id).val() != '') {
         var temp = {};
         temp['id'] = id;
-        temp['book_desc'] = $("#dentistMap_" + id).val();
+        temp['book_desc'] = $('#dentistMap_' + id).val();
         this.final_map[i] = JSON.stringify(temp);
         i++;
       }
     });
     var myJsonString = JSON.stringify(this.final_map);
-    this.clinic_id && this.cliniciananalysisService.saveDentistMapping(myJsonString, this.clinic_id).subscribe((res) => {
-      if (res.body.res.status == 200) {
-        alert('Mapping Saved!');
-        $('.nsm-dialog-btn-close').click();
-      }
-    }, error => {
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .saveDentistMapping(myJsonString, this.clinic_id)
+        .subscribe(
+          (res) => {
+            if (res.body.res.status == 200) {
+              alert('Mapping Saved!');
+              $('.nsm-dialog-btn-close').click();
+            }
+          },
+          (error) => {
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        );
   }
-
 
   //Activate average /Goal line on Treatment Cost Chart
   public planCompletedTotal;
   public planCompletedTotalTrend;
-  changeTreatmentCost(val,dentType) {
+  changeTreatmentCost(val, dentType) {
     this.treatmentPlanAverageCostTab = val;
     if (val == 1 && dentType == 'all' && this.user_type != '4') {
       this.buildChartTreatment();
-     // this.showPreBookReapointRate = false;
-    } else if (val == 2  && dentType == 'all' && this.user_type != '4') {
+      // this.showPreBookReapointRate = false;
+    } else if (val == 2 && dentType == 'all' && this.user_type != '4') {
       this.buildChartTreatmentCompletedFees();
-    //  this.showPreBookReapointRate = true;
-    }else if (val == 1  && dentType == 'single' && this.user_type != '4') {
-      if(this.showTrendChart){
+      //  this.showPreBookReapointRate = true;
+    } else if (val == 1 && dentType == 'single' && this.user_type != '4') {
+      if (this.showTrendChart) {
         this.treatmentPlanTrend();
-      }else{
+      } else {
         this.buildChartTreatmentDentist();
       }
-    }else if (val == 2  && dentType == 'single'&& this.user_type != '4') {
-      if(this.showTrendChart){
+    } else if (val == 2 && dentType == 'single' && this.user_type != '4') {
+      if (this.showTrendChart) {
         this.treatmentPlanCompletedFeesTrend();
-      }else{
+      } else {
         this.buildChartTreatmentCompletedFeeDentist();
       }
     }
 
-    
-    if(this.user_type == '4'){
+    if (this.user_type == '4') {
       if (val == 1) {
         if (this.toggleChecked) {
-          if (this.treatmentPlanTrend1.every((value) => value == 0)) this.treatmentPlanTrend1 = [];
+          if (this.treatmentPlanTrend1.every((value) => value == 0))
+            this.treatmentPlanTrend1 = [];
           this.treatPlanTrend[0]['data'] = this.treatmentPlanTrend1;
-        }
-        else {
+        } else {
           this.gaugeValueTreatment = Math.floor(this.gaugeValueTreatmentP);
           this.planTotalPrev = this.planAllTotalTrend;
           this.planTotal = this.planTotalAll;
         }
 
         if (this.gaugeValueTreatment > this.planTotalGoal)
-         this.maxplanTotalGoal = this.gaugeValueTreatment;
-        else
-          this.maxplanTotalGoal = this.planTotalGoal;
-      }
-      else {
+          this.maxplanTotalGoal = this.gaugeValueTreatment;
+        else this.maxplanTotalGoal = this.planTotalGoal;
+      } else {
         if (this.toggleChecked) {
-          if (this.treatmentPlanTrend2.every((value) => value == 0)) this.treatmentPlanTrend2 = [];
+          if (this.treatmentPlanTrend2.every((value) => value == 0))
+            this.treatmentPlanTrend2 = [];
           this.treatPlanTrendCmp[0]['data'] = this.treatmentPlanTrend2;
-        }
-        else {
+        } else {
           this.gaugeValueTreatmentCmp = Math.floor(this.gaugeValueTreatmentC);
           this.planTotalPrev = this.planCompletedTotalTrend;
           this.planTotal = this.planTotalCompleted;
-  
         }
         if (this.gaugeValueTreatmentCmp > this.planTotalGoal)
-         this.maxplanTotalGoal = this.gaugeValueTreatmentCmp;
-        else
-          this.maxplanTotalGoal = this.planTotalGoal;
+          this.maxplanTotalGoal = this.gaugeValueTreatmentCmp;
+        else this.maxplanTotalGoal = this.planTotalGoal;
       }
-      if (this.maxplanTotalGoal == 0)
-        this.maxplanTotalGoal = '';
-      
+      if (this.maxplanTotalGoal == 0) this.maxplanTotalGoal = '';
     }
 
     $('.treatmentPlan .treatment_cost .sa_tab_btn').removeClass('active');
@@ -2066,7 +2235,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     $('.treatmentPlanSingle .tcmain' + val).addClass('active');
     this.planTotalTooltip = 'down';
     this.tcmain = val;
-
   }
   public productionTooltip = 'down';
   public productionTotalPrev;
@@ -2093,10 +2261,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public DPcolors2: any;
   public DPcolors2Dent: any;
   public DPcolors2Oht: any;
-  public isAllClinic : boolean;
+  public isAllClinic: boolean;
   //Dentist Production Chart for all Dentist
-  public dentistProductiontbl :any = [];
-  public showprodAllTbl:boolean = false;
+  public dentistProductiontbl: any = [];
+  public showprodAllTbl: boolean = false;
   private buildChart() {
     this.buildChartLoader = true;
     this.barChartData1 = [];
@@ -2104,177 +2272,236 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.productionTotal = 0;
     this.barChartLabels = [];
     this.barChartOptionsDP.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.DentistProduction(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.barChartData1 = [];
-      this.barChartLabels1 = [];
-      this.barChartLabels = [];
-      this.productionTotal = 0;
-      this.dentistProductiontbl =[];
-      if (res.status == 200) {
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.showGoals = false;
-        }        
-        this.dentistKey ='';
-        this.barChartData[0]['data'] =[];
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.buildChartLoader = false;
-        this.productionTooltip = 'down';
-        var i = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.production - b.production).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.dentistProductiontbl = res.body.data;
-        // if(res.body.data.length >= this.numberOfRecords){
-        //   this.dentistProductiontbl = res.body.data;
-        //   this.showprodAllTbl = true;
-        // }else{
-        //   this.showprodAllTbl = false;
-        // }
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-          // if (res.production > 0) {
-            this.barChartData1.push(Math.round(res.production));
-            var name = res.provider_name;
-            var pName ='';
-            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                pName = res.provider_name + " - " + res.clinic_name;
-              }else{
-                pName = res.provider_name;
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .DentistProduction(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.barChartData1 = [];
+            this.barChartLabels1 = [];
+            this.barChartLabels = [];
+            this.productionTotal = 0;
+            this.dentistProductiontbl = [];
+            if (res.status == 200) {
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.showGoals = false;
               }
-            if (res.provider_name != null && res.provider_name != 'Anonymous') {
-              this.barChartLabels1.push(pName);
-              this.dentistKey = i;
-            } else {
-              this.barChartLabels1.push(pName);
+              this.dentistKey = '';
+              this.barChartData[0]['data'] = [];
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.buildChartLoader = false;
+              this.productionTooltip = 'down';
+              var i = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.production - b.production)
+                  .reverse();
+              } else {
+                this.isAllClinic = false;
+              }
+              this.dentistProductiontbl = res.body.data;
+              // if(res.body.data.length >= this.numberOfRecords){
+              //   this.dentistProductiontbl = res.body.data;
+              //   this.showprodAllTbl = true;
+              // }else{
+              //   this.showprodAllTbl = false;
+              // }
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                // if (res.production > 0) {
+                this.barChartData1.push(Math.round(res.production));
+                var name = res.provider_name;
+                var pName = '';
+                if (
+                  this.clinic_id.indexOf(',') >= 0 ||
+                  Array.isArray(this.clinic_id)
+                ) {
+                  pName = res.provider_name + ' - ' + res.clinic_name;
+                } else {
+                  pName = res.provider_name;
+                }
+                if (
+                  res.provider_name != null &&
+                  res.provider_name != 'Anonymous'
+                ) {
+                  this.barChartLabels1.push(pName);
+                  this.dentistKey = i;
+                } else {
+                  this.barChartLabels1.push(pName);
+                }
+                i++;
+                // }
+              });
+              /********** Add Space to top of graph ****/
+              let maxY = Math.max(...this.barChartData1);
+              if (maxY < 1000) {
+                this.barChartOptions1.scales.yAxes[0].ticks.max =
+                  Math.ceil(maxY / 100) * 100;
+                if (
+                  maxY + 50 >=
+                  this.barChartOptions1.scales.yAxes[0].ticks.max
+                ) {
+                  this.barChartOptions1.scales.yAxes[0].ticks.max =
+                    this.barChartOptions1.scales.yAxes[0].ticks.max + 100;
+                }
+              } else if (maxY < 10000) {
+                this.barChartOptions1.scales.yAxes[0].ticks.max =
+                  Math.ceil(maxY / 1000) * 1000;
+                if (
+                  maxY + 500 >=
+                  this.barChartOptions1.scales.yAxes[0].ticks.max
+                ) {
+                  this.barChartOptions1.scales.yAxes[0].ticks.max =
+                    this.barChartOptions1.scales.yAxes[0].ticks.max + 1000;
+                }
+              } else if (maxY < 100000) {
+                this.barChartOptions1.scales.yAxes[0].ticks.max =
+                  Math.ceil(maxY / 10000) * 10000;
+                if (
+                  maxY + 5000 >=
+                  this.barChartOptions1.scales.yAxes[0].ticks.max
+                ) {
+                  this.barChartOptions1.scales.yAxes[0].ticks.max =
+                    this.barChartOptions1.scales.yAxes[0].ticks.max + 10000;
+                }
+              } else if (maxY < 1000000) {
+                this.barChartOptions1.scales.yAxes[0].ticks.max =
+                  Math.ceil(maxY / 100000) * 100000;
+                if (
+                  maxY + 50000 >=
+                  this.barChartOptions1.scales.yAxes[0].ticks.max
+                ) {
+                  this.barChartOptions1.scales.yAxes[0].ticks.max =
+                    this.barChartOptions1.scales.yAxes[0].ticks.max + 100000;
+                }
+              } else if (maxY < 5000000) {
+                this.barChartOptions1.scales.yAxes[0].ticks.max =
+                  Math.ceil(maxY / 1000000) * 1000000;
+                if (
+                  maxY + 500000 >=
+                  this.barChartOptions1.scales.yAxes[0].ticks.max
+                ) {
+                  this.barChartOptions1.scales.yAxes[0].ticks.max =
+                    this.barChartOptions1.scales.yAxes[0].ticks.max + 1000000;
+                }
+              } else if (maxY > 5000000) {
+                this.barChartOptions1.scales.yAxes[0].ticks.max =
+                  Math.ceil(maxY / 1000000) * 1000000;
+                if (
+                  maxY + 500000 >=
+                  this.barChartOptions1.scales.yAxes[0].ticks.max
+                ) {
+                  this.barChartOptions1.scales.yAxes[0].ticks.max =
+                    this.barChartOptions1.scales.yAxes[0].ticks.max + 1000000;
+                }
+              }
+              /********** Add Space to top of graph ****/
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColors = [
+                  {
+                    backgroundColor: [],
+                    hoverBorderColor: '#000'
+                  }
+                ];
+                this.barChartColors[0].backgroundColor[this.dentistKey] =
+                  '#1CA49F';
+                this.DPcolors = this.barChartColors;
+              } else this.DPcolors = this.lineChartColors;
+              this.barChartData[0]['data'] = this.barChartData1;
+              const colors = [
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd
+              ]; // this is static array for colors of bars
+
+              let dynamicColors = this.barBackgroundColor(
+                res.body.data,
+                this.barChartLabels1
+              );
+
+              this.barChartData[0].backgroundColor = dynamicColors;
+              this.barChartLabels = this.barChartLabels1;
+              this.productionTotal = Math.round(res.body.total);
+              this.productionTotalAverage = Math.round(res.body.total_average);
+              this.productionTotalPrev = Math.round(res.body.total_ta);
+              this.productionGoal = res.body.goals;
+
+              if (this.productionTotal >= this.productionTotalPrev)
+                this.productionTooltip = 'up';
+              this.barChartOptionsDP1.annotation = [];
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsDP1.annotation = {
+                  drawTime: 'afterDatasetsDraw',
+                  annotations: [
+                    {
+                      drawTime: 'afterDraw',
+                      type: 'line',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.productionTotalAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsDP1.annotation = {
+                  drawTime: 'afterDatasetsDraw',
+                  annotations: [
+                    {
+                      drawTime: 'afterDraw',
+                      type: 'line',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.productionGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (res.status == 401) {
+                this._cookieService.put('username', '');
+                this._cookieService.put('email', '');
+                this._cookieService.put('userid', '');
+                this.router.navigateByUrl('/login');
+              }
             }
-            i++;
-          // }
-        });
-        /********** Add Space to top of graph ****/
-        let maxY = Math.max(...this.barChartData1);
-        if (maxY < 1000) {
-          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY / 100) * 100);
-          if ((maxY + 50) >= this.barChartOptions1.scales.yAxes[0].ticks.max) {
-            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max + 100;
-          }
-        } else if (maxY < 10000) {
-          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY / 1000) * 1000);
-          if ((maxY + 500) >= this.barChartOptions1.scales.yAxes[0].ticks.max) {
-            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max + 1000;
-          }
-        } else if (maxY < 100000) {
-          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY / 10000) * 10000);
-          if ((maxY + 5000) >= this.barChartOptions1.scales.yAxes[0].ticks.max) {
-            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max + 10000;
-          }
-        } else if (maxY < 1000000) {
-          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY / 100000) * 100000);
-          if ((maxY + 50000) >= this.barChartOptions1.scales.yAxes[0].ticks.max) {
-            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max + 100000;
-          }
-        } else if (maxY < 5000000) {
-          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY / 1000000) * 1000000);
-          if ((maxY + 500000) >= this.barChartOptions1.scales.yAxes[0].ticks.max) {
-            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max + 1000000;
-          }
-        } else if (maxY > 5000000) {
-          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY / 1000000) * 1000000);
-          if ((maxY + 500000) >= this.barChartOptions1.scales.yAxes[0].ticks.max) {
-            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max + 1000000;
-          }
-        }
-        /********** Add Space to top of graph ****/
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors = [
-            {
-              backgroundColor: [],
-              hoverBorderColor: '#000'
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            if (this.user_type != '7') {
+              this.toastr.error(
+                'There was an error retrieving your report data, please contact our support team.'
+              );
+              this.warningMessage = 'Please Provide Valid Inputs!';
             }
-          ];
-          this.barChartColors[0].backgroundColor[this.dentistKey] = '#1CA49F';
-          this.DPcolors = this.barChartColors;
-        }
-        else
-          this.DPcolors = this.lineChartColors;
-        this.barChartData[0]['data'] = this.barChartData1;
-        const colors = [
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd
-        ]; // this is static array for colors of bars
-
-        let dynamicColors = this.barBackgroundColor(res.body.data, this.barChartLabels1);
-
-        this.barChartData[0].backgroundColor = dynamicColors;
-        this.barChartLabels = this.barChartLabels1;
-        this.productionTotal = Math.round(res.body.total);
-        this.productionTotalAverage = Math.round(res.body.total_average);
-        this.productionTotalPrev = Math.round(res.body.total_ta);
-        this.productionGoal = res.body.goals;
-
-        if (this.productionTotal >= this.productionTotalPrev)
-          this.productionTooltip = 'up';
-        this.barChartOptionsDP1.annotation = [];
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsDP1.annotation = {
-            drawTime: 'afterDatasetsDraw',
-            annotations: [{
-              drawTime: 'afterDraw',
-              type: 'line',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.productionTotalAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
           }
-        }
-        else if (this.goalchecked == 'goal') {
-
-          this.barChartOptionsDP1.annotation = {
-            drawTime: 'afterDatasetsDraw',
-            annotations: [{
-              drawTime: 'afterDraw',
-              type: 'line',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.productionGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            }]
-          }
-
-        }
-        else if (res.status == 401) {
-          this._cookieService.put("username", '');
-          this._cookieService.put("email", '');
-          this._cookieService.put("userid", '');
-          this.router.navigateByUrl('/login');
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      if(this.user_type !='7'){
-        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-        this.warningMessage = "Please Provide Valid Inputs!"; 
-      }
-    }
-
-    );
+        );
   }
 
   public productionDentists1Tooltip = 'down';
@@ -2288,12 +2515,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public barChartDataDentists: any[] = [
     {
       ...this.chartService.baseChartData,
-      data: [],
+      data: []
     }
   ];
   public dentistKey1;
-  public dentistProductionDentisttbl:any=[];
-  public showprodDentAllTbl:boolean =false;
+  public dentistProductionDentisttbl: any = [];
+  public showprodDentAllTbl: boolean = false;
   private buildChartDentists() {
     this.buildChartDentistsLoader = true;
     this.barChartDentistsData1 = [];
@@ -2301,140 +2528,169 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.productionDentistsTotal = 0;
     this.barChartDentistLabels = [];
     this.barChartOptionsDP2.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.DentistProductionDentist(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.barChartDentistsData1 = [];
-      this.barChartDentistsLabels1 = [];
-      this.barChartDentistLabels = [];
-      this.productionDentistsTotal = 0;
-      this.dentistProductionDentisttbl =[];
-      if (res.status == 200) {
-        this.dentistKey1 ='';
-        this.barChartDataDentists[0]['data'] =[];
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.buildChartDentistsLoader = false;
-        this.productionDentists1Tooltip = 'down';
-        var i = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.production - b.production).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.dentistProductionDentisttbl = res.body.data;
-        // if(res.body.data.length >= this.numberOfRecords){
-        //   this.dentistProductionDentisttbl = res.body.data;
-        //   this.showprodDentAllTbl = true;
-        // }else{
-        //   this.showprodDentAllTbl = false;
-        // }
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-          // if (res.production > 0) {
-            this.barChartDentistsData1.push(Math.round(res.production));
-            var name = res.provider_name;
-            var pName ='';
-            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                pName = res.provider_name + " - " + res.clinic_name;
-              }else{
-                pName = res.provider_name;
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .DentistProductionDentist(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.barChartDentistsData1 = [];
+            this.barChartDentistsLabels1 = [];
+            this.barChartDentistLabels = [];
+            this.productionDentistsTotal = 0;
+            this.dentistProductionDentisttbl = [];
+            if (res.status == 200) {
+              this.dentistKey1 = '';
+              this.barChartDataDentists[0]['data'] = [];
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.buildChartDentistsLoader = false;
+              this.productionDentists1Tooltip = 'down';
+              var i = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.production - b.production)
+                  .reverse();
+              } else {
+                this.isAllClinic = false;
               }
-            if (res.provider_name != null && res.provider_name != 'Anonymous') {
-              this.barChartDentistsLabels1.push(pName);
-              this.dentistKey1 = i;
-            } else {
-              this.barChartDentistsLabels1.push(pName);
+              this.dentistProductionDentisttbl = res.body.data;
+              // if(res.body.data.length >= this.numberOfRecords){
+              //   this.dentistProductionDentisttbl = res.body.data;
+              //   this.showprodDentAllTbl = true;
+              // }else{
+              //   this.showprodDentAllTbl = false;
+              // }
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                // if (res.production > 0) {
+                this.barChartDentistsData1.push(Math.round(res.production));
+                var name = res.provider_name;
+                var pName = '';
+                if (
+                  this.clinic_id.indexOf(',') >= 0 ||
+                  Array.isArray(this.clinic_id)
+                ) {
+                  pName = res.provider_name + ' - ' + res.clinic_name;
+                } else {
+                  pName = res.provider_name;
+                }
+                if (
+                  res.provider_name != null &&
+                  res.provider_name != 'Anonymous'
+                ) {
+                  this.barChartDentistsLabels1.push(pName);
+                  this.dentistKey1 = i;
+                } else {
+                  this.barChartDentistsLabels1.push(pName);
+                }
+                i++;
+                // }
+              });
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColorsDent = [
+                  {
+                    backgroundColor: [],
+                    hoverBorderColor: '#000'
+                  }
+                ];
+                this.barChartColorsDent[0].backgroundColor[this.dentistKey1] =
+                  '#1CA49F';
+                this.DPcolorsDent = this.barChartColorsDent;
+              } else this.DPcolorsDent = this.lineChartColors;
+              this.barChartDataDentists[0]['data'] = this.barChartDentistsData1;
+              const colors = [
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd
+              ]; // this is static array for colors of bars
+
+              let dynamicColors = this.barBackgroundColor(
+                res.body.data,
+                this.barChartDentistsLabels1
+              );
+
+              this.barChartDataDentists[0].backgroundColor = dynamicColors;
+              this.barChartDentistLabels = this.barChartDentistsLabels1;
+              this.productionDentistsTotal = Math.round(res.body.total);
+              this.productionDentistTotalAverage = Math.round(
+                res.body.total_average
+              );
+              this.productionDentistsTotalPrev = Math.round(res.body.total_ta);
+              this.productionGoal = res.body.goals;
+              this.productionTotalPrev = this.productionDentistsTotalPrev;
+              if (
+                this.productionDentistsTotal >= this.productionDentistsTotalPrev
+              )
+                this.productionTooltip = 'up';
+              // this.productionDentists1Tooltip = 'up';
+              this.barChartOptionsDP2.annotation = [];
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsDP2.annotation = {
+                  drawTime: 'afterDatasetsDraw',
+                  annotations: [
+                    {
+                      drawTime: 'afterDraw',
+                      type: 'line',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.productionDentistTotalAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsDP2.annotation = {
+                  drawTime: 'afterDatasetsDraw',
+                  annotations: [
+                    {
+                      drawTime: 'afterDraw',
+                      type: 'line',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.productionGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (res.status == 401) {
+                this._cookieService.put('username', '');
+                this._cookieService.put('email', '');
+                this._cookieService.put('userid', '');
+                this.router.navigateByUrl('/login');
+              }
             }
-            i++;
-          // }
-        });
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColorsDent = [
-            {
-              backgroundColor: [],
-              hoverBorderColor: '#000'
-            }
-          ];
-          this.barChartColorsDent[0].backgroundColor[this.dentistKey1] = '#1CA49F';
-          this.DPcolorsDent = this.barChartColorsDent;
-        }
-        else
-          this.DPcolorsDent = this.lineChartColors;
-        this.barChartDataDentists[0]['data'] = this.barChartDentistsData1;
-        const colors = [
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd
-        ]; // this is static array for colors of bars
-
-        let dynamicColors = this.barBackgroundColor(res.body.data, this.barChartDentistsLabels1);
-        
-        this.barChartDataDentists[0].backgroundColor = dynamicColors;
-        this.barChartDentistLabels = this.barChartDentistsLabels1;
-        this.productionDentistsTotal = Math.round(res.body.total);
-        this.productionDentistTotalAverage = Math.round(res.body.total_average);
-        this.productionDentistsTotalPrev = Math.round(res.body.total_ta);
-        this.productionGoal = res.body.goals;
-        this.productionTotalPrev = this.productionDentistsTotalPrev;
-        if (this.productionDentistsTotal >= this.productionDentistsTotalPrev)
-              this.productionTooltip = 'up';
-          // this.productionDentists1Tooltip = 'up';
-        this.barChartOptionsDP2.annotation = [];
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsDP2.annotation = {
-            drawTime: 'afterDatasetsDraw',
-            annotations: [{
-              drawTime: 'afterDraw',
-              type: 'line',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.productionDentistTotalAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        }
-        else if (this.goalchecked == 'goal') {
-
-          this.barChartOptionsDP2.annotation = {
-            drawTime: 'afterDatasetsDraw',
-            annotations: [{
-              drawTime: 'afterDraw',
-              type: 'line',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.productionGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            }]
-          }
-
-        }
-        else if (res.status == 401) {
-          this._cookieService.put("username", '');
-          this._cookieService.put("email", '');
-          this._cookieService.put("userid", '');
-          this.router.navigateByUrl('/login');
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-
-
-    );
+        );
   }
 
   public productionOhtTooltip = 'down';
@@ -2448,12 +2704,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public barChartDataOht: any[] = [
     {
       ...this.chartService.baseChartData,
-      data: [],
+      data: []
     }
   ];
   public dentistKey2;
-  public dentistProductionOhttbl:any=[];
-  public showprodOhtAllTbl:boolean =false;
+  public dentistProductionOhttbl: any = [];
+  public showprodOhtAllTbl: boolean = false;
   private buildChartOht() {
     this.buildChartOhtLoader = true;
     this.barChartOhtData1 = [];
@@ -2461,162 +2717,186 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.productionOhtTotal = 0;
     this.barChartOhtLabels = [];
     this.barChartOptionsDP3.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.DentistProductionOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.barChartOhtData1 = [];
-      this.barChartOhtLabels1 = [];
-      this.barChartOhtLabels = [];
-      this.productionOhtTotal = 0;
-      this.dentistProductionOhttbl = [];
-      if (res.status == 200) {
-        this.dentistKey2='';
-        this.barChartDataOht[0]['data'] =[];
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.buildChartOhtLoader = false;
-        this.productionOhtTooltip = 'down';
-        var i = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.production - b.production).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.dentistProductionOhttbl = res.body.data;
-        // if(res.body.data.length >= this.numberOfRecords){
-        //   this.dentistProductionOhttbl = res.body.data;
-        //   this.showprodOhtAllTbl = true;
-        // }else{
-        //   this.showprodOhtAllTbl = false;
-        // }
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-          // if (res.production > 0) {
-            this.barChartOhtData1.push(Math.round(res.production));
-            var name = res.provider_name;
-            var pName ='';
-            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                pName = res.provider_name + " - " + res.clinic_name;
-              }else{
-                pName = res.provider_name;
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .DentistProductionOht(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.barChartOhtData1 = [];
+            this.barChartOhtLabels1 = [];
+            this.barChartOhtLabels = [];
+            this.productionOhtTotal = 0;
+            this.dentistProductionOhttbl = [];
+            if (res.status == 200) {
+              this.dentistKey2 = '';
+              this.barChartDataOht[0]['data'] = [];
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.buildChartOhtLoader = false;
+              this.productionOhtTooltip = 'down';
+              var i = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.production - b.production)
+                  .reverse();
+              } else {
+                this.isAllClinic = false;
               }
-            if (res.provider_name != null && res.provider_name != 'Anonymous') {
-              this.barChartOhtLabels1.push(pName);
-              this.dentistKey2 = i;
-            } else {
-              this.barChartOhtLabels1.push(pName);
+              this.dentistProductionOhttbl = res.body.data;
+              // if(res.body.data.length >= this.numberOfRecords){
+              //   this.dentistProductionOhttbl = res.body.data;
+              //   this.showprodOhtAllTbl = true;
+              // }else{
+              //   this.showprodOhtAllTbl = false;
+              // }
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                // if (res.production > 0) {
+                this.barChartOhtData1.push(Math.round(res.production));
+                var name = res.provider_name;
+                var pName = '';
+                if (
+                  this.clinic_id.indexOf(',') >= 0 ||
+                  Array.isArray(this.clinic_id)
+                ) {
+                  pName = res.provider_name + ' - ' + res.clinic_name;
+                } else {
+                  pName = res.provider_name;
+                }
+                if (
+                  res.provider_name != null &&
+                  res.provider_name != 'Anonymous'
+                ) {
+                  this.barChartOhtLabels1.push(pName);
+                  this.dentistKey2 = i;
+                } else {
+                  this.barChartOhtLabels1.push(pName);
+                }
+                i++;
+                // }
+              });
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColorsOht = [
+                  {
+                    backgroundColor: [],
+                    hoverBorderColor: '#000'
+                  }
+                ];
+                this.barChartColorsOht[0].backgroundColor[this.dentistKey2] =
+                  '#1CA49F';
+                this.DPcolorsOht = this.barChartColorsOht;
+              } else this.DPcolorsOht = this.lineChartColors;
+              this.barChartDataOht[0]['data'] = this.barChartOhtData1;
+              const colors = [
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd
+              ]; // this is static array for colors of bars
+
+              let dynamicColors = this.barBackgroundColor(
+                res.body.data,
+                this.barChartOhtLabels1
+              );
+
+              this.barChartDataOht[0].backgroundColor = dynamicColors;
+              this.barChartOhtLabels = this.barChartOhtLabels1;
+              this.productionOhtTotal = Math.round(res.body.total);
+              this.productionOhtTotalAverage = Math.round(
+                res.body.total_average
+              );
+              this.productionOhtTotalPrev = Math.round(res.body.total_ta);
+              this.productionGoal = res.body.goals;
+              this.productionTotalPrev = this.productionOhtTotalPrev;
+              if (this.productionOhtTotal >= this.productionOhtTotalPrev)
+                this.productionTooltip = 'up';
+              // this.productionOhtTooltip = 'up';
+              this.barChartOptionsDP3.annotation = [];
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsDP3.annotation = {
+                  drawTime: 'afterDatasetsDraw',
+                  annotations: [
+                    {
+                      drawTime: 'afterDraw',
+                      type: 'line',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.productionOhtTotalAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsDP3.annotation = {
+                  drawTime: 'afterDatasetsDraw',
+                  annotations: [
+                    {
+                      drawTime: 'afterDraw',
+                      type: 'line',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.productionGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (res.status == 401) {
+                this._cookieService.put('username', '');
+                this._cookieService.put('email', '');
+                this._cookieService.put('userid', '');
+                this.router.navigateByUrl('/login');
+              }
             }
-            i++;
-          // }
-        });
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColorsOht = [
-            {
-              backgroundColor: [],
-              hoverBorderColor: '#000'
-            }
-          ];
-          this.barChartColorsOht[0].backgroundColor[this.dentistKey2] = '#1CA49F';
-          this.DPcolorsOht = this.barChartColorsOht;
-        }
-        else
-          this.DPcolorsOht = this.lineChartColors;
-        this.barChartDataOht[0]['data'] = this.barChartOhtData1;
-        const colors = [
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd
-        ]; // this is static array for colors of bars
-
-        let dynamicColors = this.barBackgroundColor(res.body.data, this.barChartOhtLabels1);
-
-        this.barChartDataOht[0].backgroundColor = dynamicColors;
-        this.barChartOhtLabels = this.barChartOhtLabels1;
-        this.productionOhtTotal = Math.round(res.body.total);
-        this.productionOhtTotalAverage = Math.round(res.body.total_average);
-        this.productionOhtTotalPrev = Math.round(res.body.total_ta);
-        this.productionGoal = res.body.goals;
-        this.productionTotalPrev = this.productionOhtTotalPrev;
-        if (this.productionOhtTotal >= this.productionOhtTotalPrev)
-              this.productionTooltip = 'up';
-          // this.productionOhtTooltip = 'up';
-        this.barChartOptionsDP3.annotation = [];
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsDP3.annotation = {
-            drawTime: 'afterDatasetsDraw',
-            annotations: [{
-              drawTime: 'afterDraw',
-              type: 'line',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.productionOhtTotalAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        }
-        else if (this.goalchecked == 'goal') {
-
-          this.barChartOptionsDP3.annotation = {
-            drawTime: 'afterDatasetsDraw',
-            annotations: [{
-              drawTime: 'afterDraw',
-              type: 'line',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.productionGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            }]
-          }
-
-        }
-        else if (res.status == 401) {
-          this._cookieService.put("username", '');
-          this._cookieService.put("email", '');
-          this._cookieService.put("userid", '');
-          this.router.navigateByUrl('/login');
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-
-
-    );
+        );
   }
-
-
-
-
 
   public collectionLoader: boolean = true;
   public collectionData1: any = [];
   public collectionLabels1: any = [];
   public collectionTotal: any = 0;
   public collectionLabels: any = [];
-  public collectionData: any[] = [{
-    ...this.chartService.baseChartData,
-    data: [],
-  }
+  public collectionData: any[] = [
+    {
+      ...this.chartService.baseChartData,
+      data: []
+    }
   ];
   public collectionTotalAverage: any = 0;
   public collectionTotalPrev: any = 0;
   // public collectionTotalGoal: any = 0;
-  public collectionTooltip: string = '';  
-  public dentistCollectiontbl:any =[];
-  public showCollAllTbl :boolean =false;
+  public collectionTooltip: string = '';
+  public dentistCollectiontbl: any = [];
+  public showCollAllTbl: boolean = false;
   private collectionChart() {
     this.collectionLoader = true;
     this.collectionData1 = [];
@@ -2625,164 +2905,188 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionTotalGoal = 0;
     this.collectionLabels = [];
     this.barChartOptionsDP.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.DentistCollection(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.collectionData1 = [];
-      this.collectionLabels1 = [];
-      this.collectionLabels = [];
-      this.collectionTotal = 0;
-      this.collectionTotalGoal = 0;
-      this.collectionData[0]['data']=[];
-      this.dentistCollectiontbl =[];
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.collectionLoader = false;
-        this.collectionTooltip = 'down';
-        var i = 0;
-        var selectedDen: any = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.collection - b.collection).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.dentistCollectiontbl = res.body.data;
-        // if(res.body.data.length >= this.numberOfRecords){
-        //   this.dentistCollectiontbl = res.body.data;
-        //   this.showCollAllTbl = true;
-        // }else{
-        //   this.showCollAllTbl = false;
-        // }
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-
-          // if (res.collection > 0) {
-            this.collectionData1.push(Math.round(res.collection));
-            var name = res.provider_name;
-            var pName ='';
-            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                pName = res.provider_name + " - " + res.clinic_name;
-              }else{
-                pName = res.provider_name;
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .DentistCollection(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.collectionData1 = [];
+            this.collectionLabels1 = [];
+            this.collectionLabels = [];
+            this.collectionTotal = 0;
+            this.collectionTotalGoal = 0;
+            this.collectionData[0]['data'] = [];
+            this.dentistCollectiontbl = [];
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.collectionLoader = false;
+              this.collectionTooltip = 'down';
+              var i = 0;
+              var selectedDen: any = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.collection - b.collection)
+                  .reverse();
+              } else {
+                this.isAllClinic = false;
               }
-            if (res.provider_name != null && res.provider_name != 'Anonymous') {
-              this.collectionLabels1.push(pName);
-              selectedDen = i;
-            } else {
-              this.collectionLabels1.push(pName);
+              this.dentistCollectiontbl = res.body.data;
+              // if(res.body.data.length >= this.numberOfRecords){
+              //   this.dentistCollectiontbl = res.body.data;
+              //   this.showCollAllTbl = true;
+              // }else{
+              //   this.showCollAllTbl = false;
+              // }
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                // if (res.collection > 0) {
+                this.collectionData1.push(Math.round(res.collection));
+                var name = res.provider_name;
+                var pName = '';
+                if (
+                  this.clinic_id.indexOf(',') >= 0 ||
+                  Array.isArray(this.clinic_id)
+                ) {
+                  pName = res.provider_name + ' - ' + res.clinic_name;
+                } else {
+                  pName = res.provider_name;
+                }
+                if (
+                  res.provider_name != null &&
+                  res.provider_name != 'Anonymous'
+                ) {
+                  this.collectionLabels1.push(pName);
+                  selectedDen = i;
+                } else {
+                  this.collectionLabels1.push(pName);
+                }
+                i++;
+                // }
+              });
+
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColors1 = [
+                  {
+                    backgroundColor: [],
+                    hoverBorderColor: '#000'
+                  }
+                ];
+                this.barChartColors1[0].backgroundColor[selectedDen] =
+                  '#1CA49F';
+                this.DPcolors1 = this.barChartColors1;
+              } else {
+                this.DPcolors1 = this.lineChartColors;
+              }
+
+              this.collectionData[0]['data'] = this.collectionData1;
+              const colors = [
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd
+              ]; // this is static array for colors of bars
+
+              let dynamicColors = this.barBackgroundColor(
+                res.body.data,
+                this.collectionLabels1
+              );
+
+              this.collectionData[0].backgroundColor = dynamicColors;
+              this.collectionLabels = this.collectionLabels1;
+              this.collectionTotal = Math.round(res.body.total);
+              this.collectionTotalAverage = Math.round(res.body.total_average);
+              this.collectionTotalPrev = Math.round(res.body.total_ta);
+              this.collectionTotalGoal = res.body.goals;
+
+              if (this.collectionTotal >= this.collectionTotalPrev)
+                this.collectionTooltip = 'up';
+              this.barChartOptionsDP.annotation = [];
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsDP.annotation = {
+                  drawTime: 'afterDatasetsDraw',
+                  annotations: [
+                    {
+                      drawTime: 'afterDraw',
+                      type: 'line',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.collectionTotalAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsDP.annotation = {
+                  drawTime: 'afterDatasetsDraw',
+                  annotations: [
+                    {
+                      drawTime: 'afterDraw',
+                      type: 'line',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.collectionTotalGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (res.status == 401) {
+                this._cookieService.put('username', '');
+                this._cookieService.put('email', '');
+                this._cookieService.put('userid', '');
+                this.router.navigateByUrl('/login');
+              }
             }
-            i++;
-          // }
-        });
-
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors1 = [
-            {
-              backgroundColor: [],
-              hoverBorderColor: '#000'
-            }
-          ];
-          this.barChartColors1[0].backgroundColor[selectedDen] = '#1CA49F';
-          this.DPcolors1 = this.barChartColors1;
-        } else {
-          this.DPcolors1 = this.lineChartColors;
-        }
-
-
-        this.collectionData[0]['data'] = this.collectionData1;
-        const colors = [
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd
-        ]; // this is static array for colors of bars
-
-
-        let dynamicColors = this.barBackgroundColor(res.body.data, this.collectionLabels1);
-
-        this.collectionData[0].backgroundColor = dynamicColors;
-        this.collectionLabels = this.collectionLabels1;
-        this.collectionTotal = Math.round(res.body.total);
-        this.collectionTotalAverage = Math.round(res.body.total_average);
-        this.collectionTotalPrev = Math.round(res.body.total_ta);
-        this.collectionTotalGoal = res.body.goals;
-
-        if (this.collectionTotal >= this.collectionTotalPrev)
-          this.collectionTooltip = 'up';
-        this.barChartOptionsDP.annotation = [];
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsDP.annotation = {
-            drawTime: 'afterDatasetsDraw',
-            annotations: [{
-              drawTime: 'afterDraw',
-              type: 'line',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.collectionTotalAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        }
-        else if (this.goalchecked == 'goal') {
-
-          this.barChartOptionsDP.annotation = {
-            drawTime: 'afterDatasetsDraw',
-            annotations: [{
-              drawTime: 'afterDraw',
-              type: 'line',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.collectionTotalGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            }]
-          }
-
-        }
-        else if (res.status == 401) {
-          this._cookieService.put("username", '');
-          this._cookieService.put("email", '');
-          this._cookieService.put("userid", '');
-          this.router.navigateByUrl('/login');
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-
-
-    );
+        );
   }
-
 
   public collectionDentistsLoader: boolean = true;
   public collectionDentistsData1: any = [];
   public collectionDentistsLabels1: any = [];
   public collectionDentistsTotal: any = 0;
   public collectionDentistsLabels: any = [];
-  public collectionDentistsData: any[] = [{
-    ...this.chartService.baseChartData,
-    data: [],
-  }
+  public collectionDentistsData: any[] = [
+    {
+      ...this.chartService.baseChartData,
+      data: []
+    }
   ];
   public collectionDentistsTotalAverage: any = 0;
   public collectionDentistsTotalPrev: any = 0;
   public collectionDentistsTotalGoal: any = 0;
   public collectionDentistsTooltip: string = '';
-  public dentistCollectionDenttbl : any =[];
-  public showCollDentTbl:boolean = false;
+  public dentistCollectionDenttbl: any = [];
+  public showCollDentTbl: boolean = false;
   private collectionChartDentists() {
     this.collectionDentistsLoader = true;
     this.collectionDentistsData1 = [];
@@ -2790,144 +3094,174 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionDentistsTotal = 0;
     this.collectionDentistsLabels = [];
     this.barChartOptionsDP4.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.DentistCollectionDentists(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.collectionDentistsData1 = [];
-      this.collectionDentistsLabels1 = [];
-      this.collectionDentistsLabels = [];
-      this.collectionDentistsTotal = 0;
-      this.dentistCollectionDenttbl =[];
-      this.collectionDentistsData[0]['data'] =[];
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.collectionDentistsLoader = false;
-        this.collectionDentistsTooltip = 'down';
-        var i = 0;
-        var selectedDen: any = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.collection - b.collection).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.dentistCollectionDenttbl = res.body.data;
-        // if(res.body.data.length >= this.numberOfRecords){
-        //   this.dentistCollectionDenttbl = res.body.data;
-        //   this.showCollDentTbl = true;
-        // }else{
-        //   this.showCollDentTbl = false;
-        // }
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-
-          // if (res.collection > 0) {
-            this.collectionDentistsData1.push(Math.round(res.collection));
-            var name = res.provider_name;
-            var pName ='';
-            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                pName = res.provider_name + " - " + res.clinic_name;
-              }else{
-                pName = res.provider_name;
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .DentistCollectionDentists(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.collectionDentistsData1 = [];
+            this.collectionDentistsLabels1 = [];
+            this.collectionDentistsLabels = [];
+            this.collectionDentistsTotal = 0;
+            this.dentistCollectionDenttbl = [];
+            this.collectionDentistsData[0]['data'] = [];
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.collectionDentistsLoader = false;
+              this.collectionDentistsTooltip = 'down';
+              var i = 0;
+              var selectedDen: any = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.collection - b.collection)
+                  .reverse();
+              } else {
+                this.isAllClinic = false;
               }
-            if (res.provider_name != null && res.provider_name != 'Anonymous') {
-              this.collectionDentistsLabels1.push(pName);
-              selectedDen = i;
-            } else {
-              this.collectionDentistsLabels1.push(pName);
+              this.dentistCollectionDenttbl = res.body.data;
+              // if(res.body.data.length >= this.numberOfRecords){
+              //   this.dentistCollectionDenttbl = res.body.data;
+              //   this.showCollDentTbl = true;
+              // }else{
+              //   this.showCollDentTbl = false;
+              // }
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                // if (res.collection > 0) {
+                this.collectionDentistsData1.push(Math.round(res.collection));
+                var name = res.provider_name;
+                var pName = '';
+                if (
+                  this.clinic_id.indexOf(',') >= 0 ||
+                  Array.isArray(this.clinic_id)
+                ) {
+                  pName = res.provider_name + ' - ' + res.clinic_name;
+                } else {
+                  pName = res.provider_name;
+                }
+                if (
+                  res.provider_name != null &&
+                  res.provider_name != 'Anonymous'
+                ) {
+                  this.collectionDentistsLabels1.push(pName);
+                  selectedDen = i;
+                } else {
+                  this.collectionDentistsLabels1.push(pName);
+                }
+                i++;
+                // }
+              });
+
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColors1Dent = [
+                  {
+                    backgroundColor: [],
+                    hoverBorderColor: '#000'
+                  }
+                ];
+                this.barChartColors1Dent[0].backgroundColor[selectedDen] =
+                  '#1CA49F';
+                this.DPcolors1Dent = this.barChartColors1Dent;
+              } else {
+                this.DPcolors1Dent = this.lineChartColors;
+              }
+
+              this.collectionDentistsData[0]['data'] =
+                this.collectionDentistsData1;
+              const colors = [
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd
+              ]; // this is static array for colors of bars
+
+              let dynamicColors = this.barBackgroundColor(
+                res.body.data,
+                this.collectionDentistsLabels1
+              );
+
+              this.collectionDentistsData[0].backgroundColor = dynamicColors;
+              this.collectionDentistsLabels = this.collectionDentistsLabels1;
+              this.collectionDentistsTotal = Math.round(res.body.total);
+              this.collectionDentistsTotalAverage = Math.round(
+                res.body.total_average
+              );
+              this.collectionDentistsTotalPrev = Math.round(res.body.total_ta);
+              this.collectionDentistsTotalGoal = res.body.goals;
+              this.collectionTotalPrev = this.collectionDentistsTotalPrev;
+              if (
+                this.collectionDentistsTotal >= this.collectionDentistsTotalPrev
+              )
+                this.collectionTooltip = 'up';
+              // this.collectionDentistsTooltip = 'up';
+              this.barChartOptionsDP4.annotation = [];
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsDP4.annotation = {
+                  drawTime: 'afterDatasetsDraw',
+                  annotations: [
+                    {
+                      drawTime: 'afterDraw',
+                      type: 'line',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.collectionDentistsTotalAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsDP4.annotation = {
+                  drawTime: 'afterDatasetsDraw',
+                  annotations: [
+                    {
+                      drawTime: 'afterDraw',
+                      type: 'line',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.productionGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (res.status == 401) {
+                this._cookieService.put('username', '');
+                this._cookieService.put('email', '');
+                this._cookieService.put('userid', '');
+                this.router.navigateByUrl('/login');
+              }
             }
-            i++;
-          // }
-        });
-
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors1Dent = [
-            {
-              backgroundColor: [],
-              hoverBorderColor: '#000'
-            }
-          ];
-          this.barChartColors1Dent[0].backgroundColor[selectedDen] = '#1CA49F';
-          this.DPcolors1Dent = this.barChartColors1Dent;
-        } else {
-          this.DPcolors1Dent = this.lineChartColors;
-        }
-
-
-        this.collectionDentistsData[0]['data'] = this.collectionDentistsData1;
-        const colors = [
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd
-        ]; // this is static array for colors of bars
-
-        let dynamicColors = this.barBackgroundColor(res.body.data, this.collectionDentistsLabels1);
-
-        this.collectionDentistsData[0].backgroundColor = dynamicColors;
-        this.collectionDentistsLabels = this.collectionDentistsLabels1;
-        this.collectionDentistsTotal = Math.round(res.body.total);
-        this.collectionDentistsTotalAverage = Math.round(res.body.total_average);
-        this.collectionDentistsTotalPrev = Math.round(res.body.total_ta);
-        this.collectionDentistsTotalGoal = res.body.goals;
-        this.collectionTotalPrev = this.collectionDentistsTotalPrev;
-        if (this.collectionDentistsTotal >= this.collectionDentistsTotalPrev)
-            this.collectionTooltip = 'up';
-          // this.collectionDentistsTooltip = 'up';
-        this.barChartOptionsDP4.annotation = [];
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsDP4.annotation = {
-            drawTime: 'afterDatasetsDraw',
-            annotations: [{
-              drawTime: 'afterDraw',
-              type: 'line',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.collectionDentistsTotalAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        }
-        else if (this.goalchecked == 'goal') {
-
-          this.barChartOptionsDP4.annotation = {
-            drawTime: 'afterDatasetsDraw',
-            annotations: [{
-              drawTime: 'afterDraw',
-              type: 'line',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.productionGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            }]
-          }
-
-        }
-        else if (res.status == 401) {
-          this._cookieService.put("username", '');
-          this._cookieService.put("email", '');
-          this._cookieService.put("userid", '');
-          this.router.navigateByUrl('/login');
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-
-
-    );
+        );
   }
 
   public collectionOhtLoader: boolean = true;
@@ -2935,17 +3269,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public collectionOhtLabels1: any = [];
   public collectionOhtTotal: any = 0;
   public collectionOhtLabels: any = [];
-  public collectionOhtData: any[] = [{
-    ...this.chartService.baseChartData,
-    data: [],
-  }
+  public collectionOhtData: any[] = [
+    {
+      ...this.chartService.baseChartData,
+      data: []
+    }
   ];
   public collectionOhtTotalAverage: any = 0;
   public collectionOhtTotalPrev: any = 0;
   public collectionOhtTotalGoal: any = 0;
   public collectionOhtTooltip: string = '';
-  public dentistCollectionOhttbl : any =[];
-  public showCollOhtTbl: boolean =false;
+  public dentistCollectionOhttbl: any = [];
+  public showCollOhtTbl: boolean = false;
   private collectionChartOht() {
     this.collectionOhtLoader = true;
     this.collectionOhtData1 = [];
@@ -2953,162 +3288,190 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionOhtTotal = 0;
     this.collectionOhtLabels = [];
     this.barChartOptionsDP5.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.DentistCollectionOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.collectionOhtData1 = [];
-      this.collectionOhtLabels1 = [];
-      this.collectionOhtLabels = [];
-      this.collectionOhtTotal = 0;
-      this.dentistCollectionOhttbl = [];
-      this.collectionOhtData[0]['data']=[];
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.collectionOhtLoader = false;
-        this.collectionOhtTooltip = 'down';
-        var i = 0;
-        var selectedDen: any = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.collection - b.collection).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.dentistCollectionOhttbl = res.body.data;
-        // if(res.body.data.length >= this.numberOfRecords){
-        //   this.dentistCollectionOhttbl = res.body.data;
-        //   this.showCollOhtTbl = true;
-        // }else{
-        //   this.showCollOhtTbl = false;
-        // }
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-
-          // if (res.collection > 0) {
-            this.collectionOhtData1.push(Math.round(res.collection));
-            var name = res.provider_name;
-            var pName ='';
-            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                pName = res.provider_name + " - " + res.clinic_name;
-              }else{
-                pName = res.provider_name;
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .DentistCollectionOht(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.collectionOhtData1 = [];
+            this.collectionOhtLabels1 = [];
+            this.collectionOhtLabels = [];
+            this.collectionOhtTotal = 0;
+            this.dentistCollectionOhttbl = [];
+            this.collectionOhtData[0]['data'] = [];
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.collectionOhtLoader = false;
+              this.collectionOhtTooltip = 'down';
+              var i = 0;
+              var selectedDen: any = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.collection - b.collection)
+                  .reverse();
+              } else {
+                this.isAllClinic = false;
               }
-            if (res.provider_name != null && res.provider_name != 'Anonymous') {
-              this.collectionOhtLabels1.push(pName);
-              selectedDen = i;
-            } else {
-              this.collectionOhtLabels1.push(pName);
+              this.dentistCollectionOhttbl = res.body.data;
+              // if(res.body.data.length >= this.numberOfRecords){
+              //   this.dentistCollectionOhttbl = res.body.data;
+              //   this.showCollOhtTbl = true;
+              // }else{
+              //   this.showCollOhtTbl = false;
+              // }
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                // if (res.collection > 0) {
+                this.collectionOhtData1.push(Math.round(res.collection));
+                var name = res.provider_name;
+                var pName = '';
+                if (
+                  this.clinic_id.indexOf(',') >= 0 ||
+                  Array.isArray(this.clinic_id)
+                ) {
+                  pName = res.provider_name + ' - ' + res.clinic_name;
+                } else {
+                  pName = res.provider_name;
+                }
+                if (
+                  res.provider_name != null &&
+                  res.provider_name != 'Anonymous'
+                ) {
+                  this.collectionOhtLabels1.push(pName);
+                  selectedDen = i;
+                } else {
+                  this.collectionOhtLabels1.push(pName);
+                }
+                i++;
+                // }
+              });
+
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColors1Oht = [
+                  {
+                    backgroundColor: [],
+                    hoverBorderColor: '#000'
+                  }
+                ];
+                this.barChartColors1Oht[0].backgroundColor[selectedDen] =
+                  '#1CA49F';
+                this.DPcolors1Oht = this.barChartColors1Oht;
+              } else {
+                this.DPcolors1Oht = this.lineChartColors;
+              }
+
+              this.collectionOhtData[0]['data'] = this.collectionOhtData1;
+              const colors = [
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd
+              ]; // this is static array for colors of bars
+
+              let dynamicColors = this.barBackgroundColor(
+                res.body.data,
+                this.collectionOhtLabels1
+              );
+
+              this.collectionOhtData[0].backgroundColor = dynamicColors;
+              this.collectionOhtLabels = this.collectionOhtLabels1;
+              this.collectionOhtTotal = Math.round(res.body.total);
+              this.collectionOhtTotalAverage = Math.round(
+                res.body.total_average
+              );
+              this.collectionOhtTotalPrev = Math.round(res.body.total_ta);
+              this.collectionOhtTotalGoal = res.body.goals;
+              this.collectionTotalPrev = this.collectionOhtTotalPrev;
+              if (this.collectionOhtTotal >= this.collectionOhtTotalPrev)
+                this.collectionTooltip = 'up';
+              // this.collectionOhtTooltip = 'up';
+              this.barChartOptionsDP5.annotation = [];
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsDP5.annotation = {
+                  drawTime: 'afterDatasetsDraw',
+                  annotations: [
+                    {
+                      drawTime: 'afterDraw',
+                      type: 'line',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.collectionOhtTotalAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsDP5.annotation = {
+                  drawTime: 'afterDatasetsDraw',
+                  annotations: [
+                    {
+                      drawTime: 'afterDraw',
+                      type: 'line',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.productionGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (res.status == 401) {
+                this._cookieService.put('username', '');
+                this._cookieService.put('email', '');
+                this._cookieService.put('userid', '');
+                this.router.navigateByUrl('/login');
+              }
             }
-            i++;
-          // }
-        });
-
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors1Oht = [
-            {
-              backgroundColor: [],
-              hoverBorderColor: '#000'
-            }
-          ];
-          this.barChartColors1Oht[0].backgroundColor[selectedDen] = '#1CA49F';
-          this.DPcolors1Oht = this.barChartColors1Oht;
-        } else {
-          this.DPcolors1Oht = this.lineChartColors;
-        }
-
-
-        this.collectionOhtData[0]['data'] = this.collectionOhtData1;
-        const colors = [
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd
-        ]; // this is static array for colors of bars
-
-        let dynamicColors = this.barBackgroundColor(res.body.data, this.collectionOhtLabels1);
-
-        this.collectionOhtData[0].backgroundColor = dynamicColors;
-        this.collectionOhtLabels = this.collectionOhtLabels1;
-        this.collectionOhtTotal = Math.round(res.body.total);
-        this.collectionOhtTotalAverage = Math.round(res.body.total_average);
-        this.collectionOhtTotalPrev = Math.round(res.body.total_ta);
-        this.collectionOhtTotalGoal = res.body.goals;
-        this.collectionTotalPrev = this.collectionOhtTotalPrev;
-        if (this.collectionOhtTotal >= this.collectionOhtTotalPrev)
-              this.collectionTooltip = 'up';
-          // this.collectionOhtTooltip = 'up';
-        this.barChartOptionsDP5.annotation = [];
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsDP5.annotation = {
-            drawTime: 'afterDatasetsDraw',
-            annotations: [{
-              drawTime: 'afterDraw',
-              type: 'line',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.collectionOhtTotalAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        }
-        else if (this.goalchecked == 'goal') {
-
-          this.barChartOptionsDP5.annotation = {
-            drawTime: 'afterDatasetsDraw',
-            annotations: [{
-              drawTime: 'afterDraw',
-              type: 'line',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.productionGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            }]
-          }
-
-        }
-        else if (res.status == 401) {
-          this._cookieService.put("username", '');
-          this._cookieService.put("email", '');
-          this._cookieService.put("userid", '');
-          this.router.navigateByUrl('/login');
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-
-
-    );
+        );
   }
 
   public collectionExpLoader: boolean = true;
   public collectionExpData1: any = [];
   public collectionExpTotalPrev: any = 0;
-  public collectionTotalExpGoal =0;
+  public collectionTotalExpGoal = 0;
   public collectionExpTooltip: string = '';
   public collectionLabelsExp1: any = [];
   public collectionLabelsExp: any = [];
-  public collectionExpData: any[] = [{
-    ...this.chartService.baseChartData,
-    data: [],
-  }
+  public collectionExpData: any[] = [
+    {
+      ...this.chartService.baseChartData,
+      data: []
+    }
   ];
   public collectionExpTotalAverage = 0;
   public collectionExpTotal: any = 0;
-  public dentistCollectionExptbl :any =[];
-  public showCollExpTbl :boolean =false;
+  public dentistCollectionExptbl: any = [];
+  public showCollExpTbl: boolean = false;
   private collectionExpChart() {
     this.collectionExpLoader = true;
     this.collectionExpData1 = [];
@@ -3116,145 +3479,171 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionExpTotal = 0;
     this.collectionLabelsExp = [];
     this.barChartOptionsDP6.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.DentistCollectionExp(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.collectionExpData1 = [];
-      this.collectionLabelsExp1 = [];
-      this.collectionLabelsExp = [];
-      this.collectionExpTotal = 0;
-      this.dentistCollectionExptbl =[];
-      this.collectionExpData[0]['data']=[];
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.collectionExpLoader = false;
-        this.collectionExpTooltip = 'down';
-        var i = 0;
-        var selectedDen: any = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.collection - b.collection).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.dentistCollectionExptbl = res.body.data;
-        // if(res.body.data.length >= this.numberOfRecords){
-        //   this.dentistCollectionExptbl = res.body.data;
-        //   this.showCollExpTbl = true;
-        // }else{
-        //   this.showCollExpTbl = false;
-        // }
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-
-          // if (res.collection > 0) {
-            this.collectionExpData1.push(Math.round(res.collection));
-            var name = res.provider_name;
-            var pName ='';
-            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                pName = res.provider_name + " - " + res.clinic_name;
-              }else{
-                pName = res.provider_name;
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .DentistCollectionExp(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.collectionExpData1 = [];
+            this.collectionLabelsExp1 = [];
+            this.collectionLabelsExp = [];
+            this.collectionExpTotal = 0;
+            this.dentistCollectionExptbl = [];
+            this.collectionExpData[0]['data'] = [];
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.collectionExpLoader = false;
+              this.collectionExpTooltip = 'down';
+              var i = 0;
+              var selectedDen: any = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.collection - b.collection)
+                  .reverse();
+              } else {
+                this.isAllClinic = false;
               }
-            if (res.provider_name != null && res.provider_name != 'Anonymous') {
-              this.collectionLabelsExp1.push(pName);
-              selectedDen = i;
-            } else {
-              this.collectionLabelsExp1.push(pName);
+              this.dentistCollectionExptbl = res.body.data;
+              // if(res.body.data.length >= this.numberOfRecords){
+              //   this.dentistCollectionExptbl = res.body.data;
+              //   this.showCollExpTbl = true;
+              // }else{
+              //   this.showCollExpTbl = false;
+              // }
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                // if (res.collection > 0) {
+                this.collectionExpData1.push(Math.round(res.collection));
+                var name = res.provider_name;
+                var pName = '';
+                if (
+                  this.clinic_id.indexOf(',') >= 0 ||
+                  Array.isArray(this.clinic_id)
+                ) {
+                  pName = res.provider_name + ' - ' + res.clinic_name;
+                } else {
+                  pName = res.provider_name;
+                }
+                if (
+                  res.provider_name != null &&
+                  res.provider_name != 'Anonymous'
+                ) {
+                  this.collectionLabelsExp1.push(pName);
+                  selectedDen = i;
+                } else {
+                  this.collectionLabelsExp1.push(pName);
+                }
+                i++;
+                // }
+              });
+
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColors2 = [
+                  {
+                    backgroundColor: [],
+                    hoverBorderColor: '#000'
+                  }
+                ];
+                this.barChartColors2[0].backgroundColor[selectedDen] =
+                  '#1CA49F';
+                this.DPcolors2 = this.barChartColors2;
+              } else {
+                this.DPcolors2 = this.lineChartColors;
+              }
+
+              this.collectionExpData[0]['data'] = this.collectionExpData1;
+              const colors = [
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd
+              ]; // this is static array for colors of bars
+
+              let dynamicColors = this.barBackgroundColor(
+                res.body.data,
+                this.collectionLabelsExp1
+              );
+
+              this.collectionExpData[0].backgroundColor = dynamicColors;
+              this.collectionLabelsExp = this.collectionLabelsExp1;
+              this.collectionExpTotal = Math.round(res.body.total);
+              this.collectionExpTotalAverage = Math.round(
+                res.body.total_average
+              );
+              this.collectionExpTotalPrev = Math.round(res.body.total_ta);
+              this.collectionTotalExpGoal = res.body.goals;
+
+              if (this.collectionExpTotal >= this.collectionExpTotalPrev)
+                this.collectionExpTooltip = 'up';
+              this.barChartOptionsDP6.annotation = [];
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsDP6.annotation = {
+                  drawTime: 'afterDatasetsDraw',
+                  annotations: [
+                    {
+                      drawTime: 'afterDraw',
+                      type: 'line',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.collectionExpTotalAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsDP6.annotation = {
+                  drawTime: 'afterDatasetsDraw',
+                  annotations: [
+                    {
+                      drawTime: 'afterDraw',
+                      type: 'line',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.collectionTotalExpGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (res.status == 401) {
+                this._cookieService.put('username', '');
+                this._cookieService.put('email', '');
+                this._cookieService.put('userid', '');
+                this.router.navigateByUrl('/login');
+              }
             }
-            i++;
-          // }
-        });
-
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors2 = [
-            {
-              backgroundColor: [],
-              hoverBorderColor: '#000'
-            }
-          ];
-          this.barChartColors2[0].backgroundColor[selectedDen] = '#1CA49F';
-          this.DPcolors2 = this.barChartColors2;
-        } else {
-          this.DPcolors2 = this.lineChartColors;
-        }
-
-
-        this.collectionExpData[0]['data'] = this.collectionExpData1;
-        const colors = [
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd
-        ]; // this is static array for colors of bars
-
-        let dynamicColors = this.barBackgroundColor(res.body.data, this.collectionLabelsExp1);
-
-        this.collectionExpData[0].backgroundColor = dynamicColors;
-        this.collectionLabelsExp = this.collectionLabelsExp1;
-        this.collectionExpTotal = Math.round(res.body.total);
-        this.collectionExpTotalAverage = Math.round(res.body.total_average);
-        this.collectionExpTotalPrev = Math.round(res.body.total_ta);
-        this.collectionTotalExpGoal = res.body.goals;
-
-        if (this.collectionExpTotal >= this.collectionExpTotalPrev)
-          this.collectionExpTooltip = 'up';
-        this.barChartOptionsDP6.annotation = [];
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsDP6.annotation = {
-            drawTime: 'afterDatasetsDraw',
-            annotations: [{
-              drawTime: 'afterDraw',
-              type: 'line',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.collectionExpTotalAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        }
-        else if (this.goalchecked == 'goal') {
-
-          this.barChartOptionsDP6.annotation = {
-            drawTime: 'afterDatasetsDraw',
-            annotations: [{
-              drawTime: 'afterDraw',
-              type: 'line',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.collectionTotalExpGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            }]
-          }
-
-        }
-        else if (res.status == 401) {
-          this._cookieService.put("username", '');
-          this._cookieService.put("email", '');
-          this._cookieService.put("userid", '');
-          this.router.navigateByUrl('/login');
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-
-
-    );
+        );
   }
-
 
   public collectionExpDentistsLoader: boolean = true;
   public collectionExpDentistsData1: any = [];
@@ -3262,15 +3651,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public collectionExpDentistsTooltip: string = '';
   public collectionLabelsDentistsExp1: any = [];
   public collectionLabelsDentistsExp: any = [];
-  public collectionExpDentistsData: any[] = [{
-    ...this.chartService.baseChartData,
-    data: [],
-  }
+  public collectionExpDentistsData: any[] = [
+    {
+      ...this.chartService.baseChartData,
+      data: []
+    }
   ];
   public collectionExpDentistsTotal: any = 0;
-  public collectionTotalExpDentistsAverage:any= 0;
-  public dentistCollectionExpDenttbl: any =[];
-  public showCollExpDentTbl:boolean =false;
+  public collectionTotalExpDentistsAverage: any = 0;
+  public dentistCollectionExpDenttbl: any = [];
+  public showCollExpDentTbl: boolean = false;
   private collectionExpChartDentists() {
     this.collectionExpDentistsLoader = true;
     this.collectionExpDentistsData1 = [];
@@ -3278,146 +3668,181 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionExpDentistsTotal = 0;
     this.collectionLabelsDentistsExp = [];
     this.barChartOptionsDP7.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.DentistCollectionExpDentists(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.collectionExpDentistsData1 = [];
-      this.collectionLabelsDentistsExp1 = [];
-      this.collectionLabelsDentistsExp = [];
-      this.collectionExpDentistsTotal = 0;
-      this.dentistCollectionExpDenttbl =[];
-      this.collectionExpDentistsData[0]['data']=[];
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.collectionExpDentistsLoader = false;
-        this.collectionExpDentistsTooltip = 'down';
-        var i = 0;
-        var selectedDen: any = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.collection - b.collection).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.dentistCollectionExpDenttbl = res.body.data;
-        // if(res.body.data.length >= this.numberOfRecords){
-        //   this.dentistCollectionExpDenttbl = res.body.data;
-        //   this.showCollExpDentTbl = true;
-        // }else{
-        //   this.showCollExpDentTbl = false;
-        // }
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-
-          // if (res.collection > 0) {
-            this.collectionExpDentistsData1.push(Math.round(res.collection));
-            var name = res.provider_name;
-            var pName ='';
-            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                pName = res.provider_name + " - " + res.clinic_name;
-              }else{
-                pName = res.provider_name;
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .DentistCollectionExpDentists(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.collectionExpDentistsData1 = [];
+            this.collectionLabelsDentistsExp1 = [];
+            this.collectionLabelsDentistsExp = [];
+            this.collectionExpDentistsTotal = 0;
+            this.dentistCollectionExpDenttbl = [];
+            this.collectionExpDentistsData[0]['data'] = [];
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.collectionExpDentistsLoader = false;
+              this.collectionExpDentistsTooltip = 'down';
+              var i = 0;
+              var selectedDen: any = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.collection - b.collection)
+                  .reverse();
+              } else {
+                this.isAllClinic = false;
               }
-            if (res.provider_name != null && res.provider_name != 'Anonymous') {
-              this.collectionLabelsDentistsExp1.push(pName);
-              selectedDen = i;
-            } else {
-              this.collectionLabelsDentistsExp1.push(pName);
+              this.dentistCollectionExpDenttbl = res.body.data;
+              // if(res.body.data.length >= this.numberOfRecords){
+              //   this.dentistCollectionExpDenttbl = res.body.data;
+              //   this.showCollExpDentTbl = true;
+              // }else{
+              //   this.showCollExpDentTbl = false;
+              // }
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                // if (res.collection > 0) {
+                this.collectionExpDentistsData1.push(
+                  Math.round(res.collection)
+                );
+                var name = res.provider_name;
+                var pName = '';
+                if (
+                  this.clinic_id.indexOf(',') >= 0 ||
+                  Array.isArray(this.clinic_id)
+                ) {
+                  pName = res.provider_name + ' - ' + res.clinic_name;
+                } else {
+                  pName = res.provider_name;
+                }
+                if (
+                  res.provider_name != null &&
+                  res.provider_name != 'Anonymous'
+                ) {
+                  this.collectionLabelsDentistsExp1.push(pName);
+                  selectedDen = i;
+                } else {
+                  this.collectionLabelsDentistsExp1.push(pName);
+                }
+                i++;
+                // }
+              });
+
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColors2Dent = [
+                  {
+                    backgroundColor: [],
+                    hoverBorderColor: '#000'
+                  }
+                ];
+                this.barChartColors2Dent[0].backgroundColor[selectedDen] =
+                  '#1CA49F';
+                this.DPcolors2Dent = this.barChartColors2Dent;
+              } else {
+                this.DPcolors2Dent = this.lineChartColors;
+              }
+
+              this.collectionExpDentistsData[0]['data'] =
+                this.collectionExpDentistsData1;
+              const colors = [
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd
+              ]; // this is static array for colors of bars
+
+              let dynamicColors = this.barBackgroundColor(
+                res.body.data,
+                this.collectionLabelsDentistsExp1
+              );
+
+              this.collectionExpDentistsData[0].backgroundColor = dynamicColors;
+              this.collectionLabelsDentistsExp =
+                this.collectionLabelsDentistsExp1;
+              this.collectionExpDentistsTotal = Math.round(res.body.total);
+              this.collectionTotalExpDentistsAverage = Math.round(
+                res.body.total_average
+              );
+              this.collectionExpDentistsTotalPrev = Math.round(
+                res.body.total_ta
+              );
+              this.collectionTotalExpGoal = res.body.goals;
+              this.collectionExpTotalPrev = this.collectionExpDentistsTotalPrev;
+              if (
+                this.collectionExpDentistsTotal >=
+                this.collectionExpDentistsTotalPrev
+              )
+                this.collectionExpTooltip = 'up';
+              // this.collectionExpDentistsTooltip = 'up';
+              this.barChartOptionsDP7.annotation = [];
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsDP7.annotation = {
+                  drawTime: 'afterDatasetsDraw',
+                  annotations: [
+                    {
+                      drawTime: 'afterDraw',
+                      type: 'line',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.collectionTotalExpDentistsAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsDP7.annotation = {
+                  drawTime: 'afterDatasetsDraw',
+                  annotations: [
+                    {
+                      drawTime: 'afterDraw',
+                      type: 'line',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.collectionTotalExpGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (res.status == 401) {
+                this._cookieService.put('username', '');
+                this._cookieService.put('email', '');
+                this._cookieService.put('userid', '');
+                this.router.navigateByUrl('/login');
+              }
             }
-            i++;
-          // }
-        });
-
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors2Dent = [
-            {
-              backgroundColor: [],
-              hoverBorderColor: '#000'
-            }
-          ];
-          this.barChartColors2Dent[0].backgroundColor[selectedDen] = '#1CA49F';
-          this.DPcolors2Dent = this.barChartColors2Dent;
-        } else {
-          this.DPcolors2Dent = this.lineChartColors;
-        }
-
-
-        this.collectionExpDentistsData[0]['data'] = this.collectionExpDentistsData1;
-        const colors = [
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd
-        ]; // this is static array for colors of bars
-
-        let dynamicColors = this.barBackgroundColor(res.body.data, this.collectionLabelsDentistsExp1);
-
-        this.collectionExpDentistsData[0].backgroundColor = dynamicColors;
-        this.collectionLabelsDentistsExp = this.collectionLabelsDentistsExp1;
-        this.collectionExpDentistsTotal = Math.round(res.body.total);
-        this.collectionTotalExpDentistsAverage = Math.round(res.body.total_average);
-        this.collectionExpDentistsTotalPrev = Math.round(res.body.total_ta);
-        this.collectionTotalExpGoal = res.body.goals;
-        this.collectionExpTotalPrev = this.collectionExpDentistsTotalPrev;
-        if (this.collectionExpDentistsTotal >= this.collectionExpDentistsTotalPrev)
-            this.collectionExpTooltip = 'up';
-          // this.collectionExpDentistsTooltip = 'up';
-        this.barChartOptionsDP7.annotation = [];
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsDP7.annotation = {
-            drawTime: 'afterDatasetsDraw',
-            annotations: [{
-              drawTime: 'afterDraw',
-              type: 'line',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.collectionTotalExpDentistsAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        }
-        else if (this.goalchecked == 'goal') {
-
-          this.barChartOptionsDP7.annotation = {
-            drawTime: 'afterDatasetsDraw',
-            annotations: [{
-              drawTime: 'afterDraw',
-              type: 'line',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.collectionTotalExpGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            }]
-          }
-
-        }
-        else if (res.status == 401) {
-          this._cookieService.put("username", '');
-          this._cookieService.put("email", '');
-          this._cookieService.put("userid", '');
-          this.router.navigateByUrl('/login');
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-
-
-    );
+        );
   }
-
 
   public collectionExpOhtLoader: boolean = true;
   public collectionExpOhtData1: any = [];
@@ -3425,15 +3850,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public collectionExpOhtTooltip: string = '';
   public collectionLabelsOhtExp1: any = [];
   public collectionLabelsOhtExp: any = [];
-  public collectionExpOhtData: any[] = [{
-    ...this.chartService.baseChartData,
-    data: [],
-  }
+  public collectionExpOhtData: any[] = [
+    {
+      ...this.chartService.baseChartData,
+      data: []
+    }
   ];
   public collectionExpOhtTotal: any = 0;
-  public collectionTotalExpOhtAverage:any= 0;
-  public dentistCollectionExpOhttbl:any =[];
-  public showCollExpOhtTbl:boolean = false
+  public collectionTotalExpOhtAverage: any = 0;
+  public dentistCollectionExpOhttbl: any = [];
+  public showCollExpOhtTbl: boolean = false;
   private collectionExpChartOht() {
     this.collectionExpOhtLoader = true;
     this.collectionExpOhtData1 = [];
@@ -3441,149 +3867,172 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionExpOhtTotal = 0;
     this.collectionLabelsOhtExp = [];
     this.barChartOptionsDP8.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.DentistCollectionExpOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.collectionExpOhtData1 = [];
-      this.collectionLabelsOhtExp1 = [];
-      this.collectionLabelsOhtExp = [];
-      this.collectionExpOhtTotal = 0;
-      this.dentistCollectionExpOhttbl =[];
-      this.collectionExpOhtData[0]['data']=[];
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.collectionExpOhtLoader = false;
-        this.collectionExpOhtTooltip = 'down';
-        var i = 0;
-        var selectedDen: any = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.collection - b.collection).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.dentistCollectionExpOhttbl = res.body.data;
-        // if(res.body.data.length >= this.numberOfRecords){
-        //   this.dentistCollectionExpOhttbl = res.body.data;
-        //   this.showCollExpOhtTbl = true;
-        // }else{
-        //   this.showCollExpOhtTbl = false;
-        // }
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-
-          // if (res.collection > 0) {
-            this.collectionExpOhtData1.push(Math.round(res.collection));
-            var name = res.provider_name;
-            var pName ='';
-            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                pName = res.provider_name + " - " + res.clinic_name;
-              }else{
-                pName = res.provider_name;
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .DentistCollectionExpOht(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.collectionExpOhtData1 = [];
+            this.collectionLabelsOhtExp1 = [];
+            this.collectionLabelsOhtExp = [];
+            this.collectionExpOhtTotal = 0;
+            this.dentistCollectionExpOhttbl = [];
+            this.collectionExpOhtData[0]['data'] = [];
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.collectionExpOhtLoader = false;
+              this.collectionExpOhtTooltip = 'down';
+              var i = 0;
+              var selectedDen: any = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.collection - b.collection)
+                  .reverse();
+              } else {
+                this.isAllClinic = false;
               }
-            if (res.provider_name != null && res.provider_name != 'Anonymous') {
-              this.collectionLabelsOhtExp1.push(pName);
-              selectedDen = i;
-            } else {
-              this.collectionLabelsOhtExp1.push(pName);
+              this.dentistCollectionExpOhttbl = res.body.data;
+              // if(res.body.data.length >= this.numberOfRecords){
+              //   this.dentistCollectionExpOhttbl = res.body.data;
+              //   this.showCollExpOhtTbl = true;
+              // }else{
+              //   this.showCollExpOhtTbl = false;
+              // }
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                // if (res.collection > 0) {
+                this.collectionExpOhtData1.push(Math.round(res.collection));
+                var name = res.provider_name;
+                var pName = '';
+                if (
+                  this.clinic_id.indexOf(',') >= 0 ||
+                  Array.isArray(this.clinic_id)
+                ) {
+                  pName = res.provider_name + ' - ' + res.clinic_name;
+                } else {
+                  pName = res.provider_name;
+                }
+                if (
+                  res.provider_name != null &&
+                  res.provider_name != 'Anonymous'
+                ) {
+                  this.collectionLabelsOhtExp1.push(pName);
+                  selectedDen = i;
+                } else {
+                  this.collectionLabelsOhtExp1.push(pName);
+                }
+                i++;
+                // }
+              });
+
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColors2Oht = [
+                  {
+                    backgroundColor: [],
+                    hoverBorderColor: '#000'
+                  }
+                ];
+                this.barChartColors2Oht[0].backgroundColor[selectedDen] =
+                  '#1CA49F';
+                this.DPcolors2Oht = this.barChartColors2Oht;
+              } else {
+                this.DPcolors2Oht = this.lineChartColors;
+              }
+
+              this.collectionExpOhtData[0]['data'] = this.collectionExpOhtData1;
+              const colors = [
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd,
+                this.chartService.colors.even,
+                this.chartService.colors.odd
+              ]; // this is static array for colors of bars
+
+              let dynamicColors = this.barBackgroundColor(
+                res.body.data,
+                this.collectionLabelsOhtExp1
+              );
+
+              this.collectionExpOhtData[0].backgroundColor = dynamicColors;
+              this.collectionLabelsOhtExp = this.collectionLabelsOhtExp1;
+              this.collectionExpOhtTotal = Math.round(res.body.total);
+              this.collectionTotalExpOhtAverage = Math.round(
+                res.body.total_average
+              );
+              this.collectionExpOhtTotalPrev = Math.round(res.body.total_ta);
+              this.collectionTotalGoal = res.body.goals;
+              this.collectionExpTotalPrev = this.collectionExpOhtTotalPrev;
+              if (this.collectionExpOhtTotal >= this.collectionExpOhtTotalPrev)
+                this.collectionExpTooltip = 'up';
+              // this.collectionExpOhtTooltip = 'up';
+              this.barChartOptionsDP8.annotation = [];
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsDP8.annotation = {
+                  drawTime: 'afterDatasetsDraw',
+                  annotations: [
+                    {
+                      drawTime: 'afterDraw',
+                      type: 'line',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.collectionTotalExpOhtAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsDP8.annotation = {
+                  drawTime: 'afterDatasetsDraw',
+                  annotations: [
+                    {
+                      drawTime: 'afterDraw',
+                      type: 'line',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.productionGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (res.status == 401) {
+                this._cookieService.put('username', '');
+                this._cookieService.put('email', '');
+                this._cookieService.put('userid', '');
+                this.router.navigateByUrl('/login');
+              }
             }
-            i++;
-          // }
-        });
-
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors2Oht = [
-            {
-              backgroundColor: [],
-              hoverBorderColor: '#000'
-            }
-          ];
-          this.barChartColors2Oht[0].backgroundColor[selectedDen] = '#1CA49F';
-          this.DPcolors2Oht = this.barChartColors2Oht;
-        } else {
-          this.DPcolors2Oht = this.lineChartColors;
-        }
-
-
-        this.collectionExpOhtData[0]['data'] = this.collectionExpOhtData1;
-        const colors = [
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd
-        ]; // this is static array for colors of bars
-
-        let dynamicColors = this.barBackgroundColor(res.body.data, this.collectionLabelsOhtExp1);
-
-        this.collectionExpOhtData[0].backgroundColor = dynamicColors;
-        this.collectionLabelsOhtExp = this.collectionLabelsOhtExp1;
-        this.collectionExpOhtTotal = Math.round(res.body.total);
-        this.collectionTotalExpOhtAverage = Math.round(res.body.total_average);
-        this.collectionExpOhtTotalPrev = Math.round(res.body.total_ta);
-        this.collectionTotalGoal = res.body.goals;
-        this.collectionExpTotalPrev = this.collectionExpOhtTotalPrev;
-        if (this.collectionExpOhtTotal >= this.collectionExpOhtTotalPrev)
-            this.collectionExpTooltip = 'up';
-          // this.collectionExpOhtTooltip = 'up';
-        this.barChartOptionsDP8.annotation = [];
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsDP8.annotation = {
-            drawTime: 'afterDatasetsDraw',
-            annotations: [{
-              drawTime: 'afterDraw',
-              type: 'line',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.collectionTotalExpOhtAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        }
-        else if (this.goalchecked == 'goal') {
-
-          this.barChartOptionsDP8.annotation = {
-            drawTime: 'afterDatasetsDraw',
-            annotations: [{
-              drawTime: 'afterDraw',
-              type: 'line',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.productionGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            }]
-          }
-
-        }
-        else if (res.status == 401) {
-          this._cookieService.put("username", '');
-          this._cookieService.put("email", '');
-          this._cookieService.put("userid", '');
-          this.router.navigateByUrl('/login');
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-
-
-    );
+        );
   }
-
-
-
-
 
   public buildChartDentistLoader: boolean;
   public maxProductionGoal: any = 0;
@@ -3592,51 +4041,65 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.buildChartDentistLoader = true;
     this.gaugeLabel = '';
     this.productionTooltip = 'down';
-    this.clinic_id && this.cliniciananalysisService.DentistProductionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-      this.productionTotal = 0;
-      this.productionTotalPrev = 0;
-      this.productionTotalAverage = 0;
-      this.maxProductionGoal = 0;
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.buildChartDentistLoader = false;
-        this.gaugeValue = 0;
-        if (res.body.data != null) {
-          res.body.data.forEach((res) => {
-            if (res.production)
-              this.gaugeValue = Math.round(res.production);
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .DentistProductionSingle(
+          this.selectedDentist,
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            this.productionTotal = 0;
+            this.productionTotalPrev = 0;
+            this.productionTotalAverage = 0;
+            this.maxProductionGoal = 0;
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.buildChartDentistLoader = false;
+              this.gaugeValue = 0;
+              if (res.body.data != null) {
+                res.body.data.forEach((res) => {
+                  if (res.production)
+                    this.gaugeValue = Math.round(res.production);
 
-            this.gaugeLabel = res.provider_name;
-            this.gaugeLabel = res.provider_name;
-          });
-          this.productionTotal = Math.round(res.body.total);
-          this.productionTotalPrev = Math.round(res.body.total_ta);
-          this.productionTotalAverage = Math.round(res.body.total_average);
-          this.productionGoal = res.body.goals;
-          if (this.productionTotal > this.productionTotalPrev) {
-            this.productionTooltip = 'up';
+                  this.gaugeLabel = res.provider_name;
+                  this.gaugeLabel = res.provider_name;
+                });
+                this.productionTotal = Math.round(res.body.total);
+                this.productionTotalPrev = Math.round(res.body.total_ta);
+                this.productionTotalAverage = Math.round(
+                  res.body.total_average
+                );
+                this.productionGoal = res.body.goals;
+                if (this.productionTotal > this.productionTotalPrev) {
+                  this.productionTooltip = 'up';
+                }
+                if (this.gaugeValue > this.productionGoal)
+                  this.maxProductionGoal = this.gaugeValue;
+                else this.maxProductionGoal = this.productionGoal;
+
+                if (this.maxProductionGoal == 0) this.maxProductionGoal = '';
+              }
+            } else if (res.status == 401) {
+              this._cookieService.put('username', '');
+              this._cookieService.put('email', '');
+              this._cookieService.put('userid', '');
+              this.router.navigateByUrl('/login');
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-          if (this.gaugeValue > this.productionGoal)
-            this.maxProductionGoal = this.gaugeValue;
-          else
-            this.maxProductionGoal = this.productionGoal;
-
-          if (this.maxProductionGoal == 0)
-            this.maxProductionGoal = '';
-        }
-      } else if (res.status == 401) {
-        this._cookieService.put("username", '');
-        this._cookieService.put("email", '');
-        this._cookieService.put("userid", '');
-        this.router.navigateByUrl('/login');
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    });
+        );
   }
 
   public buildChartsingleDentistLoader: boolean;
@@ -3651,51 +4114,77 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.buildChartsingleDentistLoader = true;
     this.gaugeSingleDentistLabel = '';
     this.productionTooltip = 'down';
-    this.clinic_id && this.cliniciananalysisService.DentistProductionDentistSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-      this.productionSingleDentistTotal = 0;
-      this.productionSingleDentistTotalPrev = 0;
-      this.productionTotalAverage = 0;
-      this.maxProductionSingleDentistGoal = 0;
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.buildChartsingleDentistLoader = false;
-        this.gaugeSingleDentistValue = 0;
-        if (res.body.data != null) {
-          res.body.data.forEach((res) => {
-            if (res.production)
-              this.gaugeSingleDentistValue = Math.round(res.production);
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .DentistProductionDentistSingle(
+          this.selectedDentist,
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            this.productionSingleDentistTotal = 0;
+            this.productionSingleDentistTotalPrev = 0;
+            this.productionTotalAverage = 0;
+            this.maxProductionSingleDentistGoal = 0;
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.buildChartsingleDentistLoader = false;
+              this.gaugeSingleDentistValue = 0;
+              if (res.body.data != null) {
+                res.body.data.forEach((res) => {
+                  if (res.production)
+                    this.gaugeSingleDentistValue = Math.round(res.production);
 
-            this.gaugeSingleDentistLabel = res.provider_name;
-            this.gaugeSingleDentistLabel = res.provider_name;
-          });
-          this.productionSingleDentistTotal = Math.round(res.body.total);
-          this.productionSingleDentistTotalPrev = Math.round(res.body.total_ta);
-          this.productionTotalAverage = Math.round(res.body.total_average);
-          this.productionSingleDentistGoal = res.body.goals;
-          if (this.productionSingleDentistTotal > this.productionSingleDentistTotalPrev) {
-            this.productionTooltip = 'up';
+                  this.gaugeSingleDentistLabel = res.provider_name;
+                  this.gaugeSingleDentistLabel = res.provider_name;
+                });
+                this.productionSingleDentistTotal = Math.round(res.body.total);
+                this.productionSingleDentistTotalPrev = Math.round(
+                  res.body.total_ta
+                );
+                this.productionTotalAverage = Math.round(
+                  res.body.total_average
+                );
+                this.productionSingleDentistGoal = res.body.goals;
+                if (
+                  this.productionSingleDentistTotal >
+                  this.productionSingleDentistTotalPrev
+                ) {
+                  this.productionTooltip = 'up';
+                }
+                if (
+                  this.gaugeSingleDentistValue >
+                  this.productionSingleDentistGoal
+                )
+                  this.maxProductionSingleDentistGoal =
+                    this.gaugeSingleDentistValue;
+                else
+                  this.maxProductionSingleDentistGoal =
+                    this.productionSingleDentistGoal;
+
+                if (this.maxProductionSingleDentistGoal == 0)
+                  this.maxProductionSingleDentistGoal = '';
+              }
+            } else if (res.status == 401) {
+              this._cookieService.put('username', '');
+              this._cookieService.put('email', '');
+              this._cookieService.put('userid', '');
+              this.router.navigateByUrl('/login');
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-          if (this.gaugeSingleDentistValue > this.productionSingleDentistGoal)
-            this.maxProductionSingleDentistGoal = this.gaugeSingleDentistValue;
-          else
-            this.maxProductionSingleDentistGoal = this.productionSingleDentistGoal;
-
-          if (this.maxProductionSingleDentistGoal == 0)
-            this.maxProductionSingleDentistGoal = '';
-        }
-      } else if (res.status == 401) {
-        this._cookieService.put("username", '');
-        this._cookieService.put("email", '');
-        this._cookieService.put("userid", '');
-        this.router.navigateByUrl('/login');
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    });
+        );
   }
 
   public buildChartsingleOhtLoader: boolean;
@@ -3710,51 +4199,73 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.buildChartsingleOhtLoader = true;
     this.gaugeSingleOhtLabel = '';
     this.productionTooltip = 'down';
-    this.clinic_id && this.cliniciananalysisService.DentistProductionOhtSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-      this.productionSingleOhtTotal = 0;
-      this.productionSingleOhtTotalPrev = 0;
-      this.productionTotalAverage = 0;
-      this.maxProductionSingleOhtGoal = 0;
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.buildChartsingleOhtLoader = false;
-        this.gaugeSingleOhtValue = 0;
-        if (res.body.data != null) {
-          res.body.data.forEach((res) => {
-            if (res.production)
-              this.gaugeSingleOhtValue = Math.round(res.production);
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .DentistProductionOhtSingle(
+          this.selectedDentist,
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            this.productionSingleOhtTotal = 0;
+            this.productionSingleOhtTotalPrev = 0;
+            this.productionTotalAverage = 0;
+            this.maxProductionSingleOhtGoal = 0;
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.buildChartsingleOhtLoader = false;
+              this.gaugeSingleOhtValue = 0;
+              if (res.body.data != null) {
+                res.body.data.forEach((res) => {
+                  if (res.production)
+                    this.gaugeSingleOhtValue = Math.round(res.production);
 
-            this.gaugeSingleOhtLabel = res.provider_name;
-            this.gaugeSingleOhtLabel = res.provider_name;
-          });
-          this.productionSingleOhtTotal = Math.round(res.body.total);
-          this.productionSingleOhtTotalPrev = Math.round(res.body.total_ta);
-          this.productionTotalAverage = Math.round(res.body.total_average);
-          this.productionSingleOhtGoal = res.body.goals;
-          if (this.productionSingleOhtTotal > this.productionSingleOhtTotalPrev) {
-            this.productionTooltip = 'up';
+                  this.gaugeSingleOhtLabel = res.provider_name;
+                  this.gaugeSingleOhtLabel = res.provider_name;
+                });
+                this.productionSingleOhtTotal = Math.round(res.body.total);
+                this.productionSingleOhtTotalPrev = Math.round(
+                  res.body.total_ta
+                );
+                this.productionTotalAverage = Math.round(
+                  res.body.total_average
+                );
+                this.productionSingleOhtGoal = res.body.goals;
+                if (
+                  this.productionSingleOhtTotal >
+                  this.productionSingleOhtTotalPrev
+                ) {
+                  this.productionTooltip = 'up';
+                }
+                if (this.gaugeSingleOhtValue > this.productionSingleOhtGoal)
+                  this.maxProductionSingleOhtGoal = this.gaugeSingleOhtValue;
+                else
+                  this.maxProductionSingleOhtGoal =
+                    this.productionSingleOhtGoal;
+
+                if (this.maxProductionSingleOhtGoal == 0)
+                  this.maxProductionSingleOhtGoal = '';
+              }
+            } else if (res.status == 401) {
+              this._cookieService.put('username', '');
+              this._cookieService.put('email', '');
+              this._cookieService.put('userid', '');
+              this.router.navigateByUrl('/login');
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-          if (this.gaugeSingleOhtValue > this.productionSingleOhtGoal)
-            this.maxProductionSingleOhtGoal = this.gaugeSingleOhtValue;
-          else
-            this.maxProductionSingleOhtGoal = this.productionSingleOhtGoal;
-
-          if (this.maxProductionSingleOhtGoal == 0)
-            this.maxProductionSingleOhtGoal = '';
-        }
-      } else if (res.status == 401) {
-        this._cookieService.put("username", '');
-        this._cookieService.put("email", '');
-        this._cookieService.put("userid", '');
-        this.router.navigateByUrl('/login');
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    });
+        );
   }
 
   // Dentist collection data
@@ -3766,56 +4277,71 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   // public dentistCollectionGoal: any = 0;
   public maxCollectionGoal: any = 0;
 
-
   private collectionDentist() {
     this.collectionDentistLoader = true;
     this.gaugeCollectionLabel = '';
     this.collectionTooltip = 'down';
-    this.clinic_id && this.cliniciananalysisService.DentistCollectionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-      this.collectionDentistTotal = 0;
-      this.collectionDentistTotalPrev = 0;
-      this.productionTotalAverage = 0;
-      this.maxCollectionGoal = 0;
-      this.gaugeCollectionValue = 0;
-      this.collectionTotalGoal = 0;
-      this.collectionDentistLoader = false;
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        if (res.body.data != null) {
-          res.body.data.forEach((res) => {
-            if (res.collection)
-              this.gaugeCollectionValue = Math.round(res.collection);
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .DentistCollectionSingle(
+          this.selectedDentist,
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            this.collectionDentistTotal = 0;
+            this.collectionDentistTotalPrev = 0;
+            this.productionTotalAverage = 0;
+            this.maxCollectionGoal = 0;
+            this.gaugeCollectionValue = 0;
+            this.collectionTotalGoal = 0;
+            this.collectionDentistLoader = false;
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              if (res.body.data != null) {
+                res.body.data.forEach((res) => {
+                  if (res.collection)
+                    this.gaugeCollectionValue = Math.round(res.collection);
 
-            this.gaugeCollectionLabel = res.provider_name;
-          });
-          this.collectionDentistTotal = Math.round(res.body.total);
-          this.collectionDentistTotalPrev = Math.round(res.body.total_ta);
-          this.productionTotalAverage = Math.round(res.body.total_average);
-          this.collectionTotalGoal = res.body.goals;
-          if (this.collectionDentistTotal > this.collectionDentistTotalPrev) {
-            this.collectionTooltip = 'up';
+                  this.gaugeCollectionLabel = res.provider_name;
+                });
+                this.collectionDentistTotal = Math.round(res.body.total);
+                this.collectionDentistTotalPrev = Math.round(res.body.total_ta);
+                this.productionTotalAverage = Math.round(
+                  res.body.total_average
+                );
+                this.collectionTotalGoal = res.body.goals;
+                if (
+                  this.collectionDentistTotal > this.collectionDentistTotalPrev
+                ) {
+                  this.collectionTooltip = 'up';
+                }
+                if (this.gaugeCollectionValue > this.collectionTotalGoal)
+                  this.maxCollectionGoal = this.gaugeValue;
+                else this.maxCollectionGoal = this.collectionTotalGoal;
+
+                if (this.maxCollectionGoal == 0) this.maxCollectionGoal = '';
+              }
+            } else if (res.status == 401) {
+              this._cookieService.put('username', '');
+              this._cookieService.put('email', '');
+              this._cookieService.put('userid', '');
+              this.router.navigateByUrl('/login');
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-          if (this.gaugeCollectionValue > this.collectionTotalGoal)
-            this.maxCollectionGoal = this.gaugeValue;
-          else
-            this.maxCollectionGoal = this.collectionTotalGoal;
-
-          if (this.maxCollectionGoal == 0)
-            this.maxCollectionGoal = '';
-        }
-      } else if (res.status == 401) {
-        this._cookieService.put("username", '');
-        this._cookieService.put("email", '');
-        this._cookieService.put("userid", '');
-        this.router.navigateByUrl('/login');
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    });
+        );
   }
 
   public collectionSingleDentistLoader: boolean = true;
@@ -3826,55 +4352,78 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public dentistCollectionSingleDentistGoal: any = 0;
   public maxCollectionSingleDentistGoal: any = 0;
 
-
   private collectionSingleDentist() {
     this.collectionSingleDentistLoader = true;
     this.gaugeCollectionSingleDentistLabel = '';
     this.collectionTooltip = 'down';
-    this.clinic_id && this.cliniciananalysisService.DentistCollectionDentistsSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-      this.collectionSingleDentistTotal = 0;
-      this.collectionSingleDentistTotalPrev = 0;
-      this.productionTotalAverage = 0;
-      this.maxCollectionSingleDentistGoal = 0;
-      this.gaugeCollectionSingleDentistValue = 0;
-      this.collectionSingleDentistLoader = false;
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        if (res.body.data != null) {
-          res.body.data.forEach((res) => {
-            if (res.collection)
-              this.gaugeCollectionSingleDentistValue = Math.round(res.collection);
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .DentistCollectionDentistsSingle(
+          this.selectedDentist,
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            this.collectionSingleDentistTotal = 0;
+            this.collectionSingleDentistTotalPrev = 0;
+            this.productionTotalAverage = 0;
+            this.maxCollectionSingleDentistGoal = 0;
+            this.gaugeCollectionSingleDentistValue = 0;
+            this.collectionSingleDentistLoader = false;
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              if (res.body.data != null) {
+                res.body.data.forEach((res) => {
+                  if (res.collection)
+                    this.gaugeCollectionSingleDentistValue = Math.round(
+                      res.collection
+                    );
 
-            this.gaugeCollectionSingleDentistLabel = res.provider_name;
-          });
-          this.collectionSingleDentistTotal = Math.round(res.body.total);
-          this.collectionSingleDentistTotalPrev = Math.round(res.body.total_ta);
-          this.productionTotalAverage = Math.round(res.body.total_average);
-          this.dentistCollectionSingleDentistGoal = res.body.goals;
-          if (this.productionTotal > this.productionTotalPrev) {
-            this.collectionTooltip = 'up';
+                  this.gaugeCollectionSingleDentistLabel = res.provider_name;
+                });
+                this.collectionSingleDentistTotal = Math.round(res.body.total);
+                this.collectionSingleDentistTotalPrev = Math.round(
+                  res.body.total_ta
+                );
+                this.productionTotalAverage = Math.round(
+                  res.body.total_average
+                );
+                this.dentistCollectionSingleDentistGoal = res.body.goals;
+                if (this.productionTotal > this.productionTotalPrev) {
+                  this.collectionTooltip = 'up';
+                }
+                if (
+                  this.gaugeCollectionSingleDentistValue >
+                  this.dentistCollectionSingleDentistGoal
+                )
+                  this.maxCollectionSingleDentistGoal = this.gaugeValue;
+                else
+                  this.maxCollectionSingleDentistGoal =
+                    this.dentistCollectionSingleDentistGoal;
+
+                if (this.maxCollectionSingleDentistGoal == 0)
+                  this.maxCollectionSingleDentistGoal = '';
+              }
+            } else if (res.status == 401) {
+              this._cookieService.put('username', '');
+              this._cookieService.put('email', '');
+              this._cookieService.put('userid', '');
+              this.router.navigateByUrl('/login');
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-          if (this.gaugeCollectionSingleDentistValue > this.dentistCollectionSingleDentistGoal)
-            this.maxCollectionSingleDentistGoal = this.gaugeValue;
-          else
-            this.maxCollectionSingleDentistGoal = this.dentistCollectionSingleDentistGoal;
-
-          if (this.maxCollectionSingleDentistGoal == 0)
-            this.maxCollectionSingleDentistGoal = '';
-        }
-      } else if (res.status == 401) {
-        this._cookieService.put("username", '');
-        this._cookieService.put("email", '');
-        this._cookieService.put("userid", '');
-        this.router.navigateByUrl('/login');
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    });
+        );
   }
 
   public collectionSingleOhtLoader: boolean = true;
@@ -3885,235 +4434,327 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public dentistCollectionSingleOhtGoal: any = 0;
   public maxCollectionSingleOhtGoal: any = 0;
 
-
   private collectionSingleOht() {
     this.collectionSingleOhtLoader = true;
     this.gaugeCollectionSingleOhtLabel = '';
     this.collectionTooltip = 'down';
-    this.clinic_id && this.cliniciananalysisService.DentistCollectionOhtSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-      this.collectionSingleOhtTotal = 0;
-      this.collectionSingleOhtTotalPrev = 0;
-      this.productionTotalAverage = 0;
-      this.maxCollectionSingleOhtGoal = 0;
-      this.gaugeCollectionSingleOhtValue = 0;
-      this.collectionSingleOhtLoader = false;
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        if (res.body.data != null) {
-          res.body.data.forEach((res) => {
-            if (res.collection)
-              this.gaugeCollectionSingleOhtValue = Math.round(res.collection);
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .DentistCollectionOhtSingle(
+          this.selectedDentist,
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            this.collectionSingleOhtTotal = 0;
+            this.collectionSingleOhtTotalPrev = 0;
+            this.productionTotalAverage = 0;
+            this.maxCollectionSingleOhtGoal = 0;
+            this.gaugeCollectionSingleOhtValue = 0;
+            this.collectionSingleOhtLoader = false;
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              if (res.body.data != null) {
+                res.body.data.forEach((res) => {
+                  if (res.collection)
+                    this.gaugeCollectionSingleOhtValue = Math.round(
+                      res.collection
+                    );
 
-            this.gaugeCollectionSingleOhtLabel = res.provider_name;
-          });
-          this.collectionSingleOhtTotal = Math.round(res.body.total);
-          this.collectionSingleOhtTotalPrev = Math.round(res.body.total_ta);
-          this.productionTotalAverage = Math.round(res.body.total_average);
-          this.dentistCollectionSingleOhtGoal = res.body.goals;
-          if (this.productionTotal > this.productionTotalPrev) {
-            this.collectionTooltip = 'up';
+                  this.gaugeCollectionSingleOhtLabel = res.provider_name;
+                });
+                this.collectionSingleOhtTotal = Math.round(res.body.total);
+                this.collectionSingleOhtTotalPrev = Math.round(
+                  res.body.total_ta
+                );
+                this.productionTotalAverage = Math.round(
+                  res.body.total_average
+                );
+                this.dentistCollectionSingleOhtGoal = res.body.goals;
+                if (this.productionTotal > this.productionTotalPrev) {
+                  this.collectionTooltip = 'up';
+                }
+                if (
+                  this.gaugeCollectionSingleOhtValue >
+                  this.dentistCollectionSingleOhtGoal
+                )
+                  this.maxCollectionSingleOhtGoal = this.gaugeValue;
+                else
+                  this.maxCollectionSingleOhtGoal =
+                    this.dentistCollectionSingleOhtGoal;
+
+                if (this.maxCollectionSingleOhtGoal == 0)
+                  this.maxCollectionSingleOhtGoal = '';
+              }
+            } else if (res.status == 401) {
+              this._cookieService.put('username', '');
+              this._cookieService.put('email', '');
+              this._cookieService.put('userid', '');
+              this.router.navigateByUrl('/login');
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-          if (this.gaugeCollectionSingleOhtValue > this.dentistCollectionSingleOhtGoal)
-            this.maxCollectionSingleOhtGoal = this.gaugeValue;
-          else
-            this.maxCollectionSingleOhtGoal = this.dentistCollectionSingleOhtGoal;
-
-          if (this.maxCollectionSingleOhtGoal == 0)
-            this.maxCollectionSingleOhtGoal = '';
-        }
-      } else if (res.status == 401) {
-        this._cookieService.put("username", '');
-        this._cookieService.put("email", '');
-        this._cookieService.put("userid", '');
-        this.router.navigateByUrl('/login');
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    });
+        );
   }
 
-    // Dentist collection exp data
-    public collectionExpDentistLoader: boolean = true;
-    public gaugeCollectionExpLabel: any = '';
-    public gaugeCollectionExpValue: any = 0;
-    public collectionExpDentistTotal: any = 0;
-    public collectionExpDentistTotalPrev: any = 0;
-    public dentistCollectionExpGoal: any = 0;
-    public maxCollectionExpGoal: any = 0;
-  
-  
-    private collectionExpDentist() {
-      this.collectionExpDentistLoader = true;
-      this.gaugeCollectionExpLabel = '';
-      this.collectionTooltip = 'down';
-      this.collectionExpTooltip = 'down';
-      this.clinic_id && this.cliniciananalysisService.DentistCollectionExpSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-        this.collectionExpDentistTotal = 0;
-        this.collectionExpDentistTotalPrev = 0;
-        this.productionTotalAverage = 0;
-        this.maxCollectionExpGoal = 0;
-        this.gaugeCollectionExpValue = 0;
-        this.collectionExpDentistLoader = false;
-        if (res.status == 200) {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          if (res.body.data != null) {
-            res.body.data.forEach((res) => {
-              if (res.collection)
-                this.gaugeCollectionExpValue = Math.round(res.collection);
-  
-              this.gaugeCollectionExpLabel = res.provider_name;
-            });
-            this.collectionExpDentistTotal = Math.round(res.body.total);
-            this.collectionExpDentistTotalPrev = Math.round(res.body.total_ta);
-            this.productionTotalAverage = Math.round(res.body.total_average);
-            this.dentistCollectionExpGoal = res.body.goals;
-            if (this.collectionExpDentistTotal > this.collectionExpDentistTotalPrev) {
-              this.collectionExpTooltip = 'up';
-            }
-            if (this.gaugeCollectionExpValue > this.dentistCollectionExpGoal)
-              this.maxCollectionExpGoal = this.gaugeValue;
-            else
-              this.maxCollectionExpGoal = this.dentistCollectionExpGoal;
-  
-            if (this.maxCollectionExpGoal == 0)
-              this.maxCollectionExpGoal = '';
-          }
-        } else if (res.status == 401) {
-          this._cookieService.put("username", '');
-          this._cookieService.put("email", '');
-          this._cookieService.put("userid", '');
-          this.router.navigateByUrl('/login');
-        }
-      }, error => {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-        this.warningMessage = "Please Provide Valid Inputs!";
-      });
-    }
+  // Dentist collection exp data
+  public collectionExpDentistLoader: boolean = true;
+  public gaugeCollectionExpLabel: any = '';
+  public gaugeCollectionExpValue: any = 0;
+  public collectionExpDentistTotal: any = 0;
+  public collectionExpDentistTotalPrev: any = 0;
+  public dentistCollectionExpGoal: any = 0;
+  public maxCollectionExpGoal: any = 0;
 
-    public collectionExpSingleDentistLoader: boolean = true;
-    public gaugeCollectionExpSingleDentistLabel: any = '';
-    public gaugeCollectionExpSingleDentistValue: any = 0;
-    public collectionExpSingleDentistTotal: any = 0;
-    public collectionExpSingleDentistTotalPrev: any = 0;
-    public dentistCollectionExpSingleDentistGoal: any = 0;
-    public maxCollectionExpSingleDentistGoal: any = 0;
-  
-  
-    private collectionExpSingleDentist() {
-      this.collectionExpSingleDentistLoader = true;
-      this.gaugeCollectionExpSingleDentistLabel = '';
-      this.collectionTooltip = 'down';
-      this.clinic_id && this.cliniciananalysisService.DentistCollectionExpDentistsSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-        this.collectionExpSingleDentistTotal = 0;
-        this.collectionExpSingleDentistTotalPrev = 0;
-        this.productionTotalAverage = 0;
-        this.maxCollectionExpSingleDentistGoal = 0;
-        this.gaugeCollectionExpSingleDentistValue = 0;
-        this.collectionExpSingleDentistLoader = false;
-        if (res.status == 200) {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          if (res.body.data != null) {
-            res.body.data.forEach((res) => {
-              if (res.collection)
-                this.gaugeCollectionExpSingleDentistValue = Math.round(res.collection);
-  
-              this.gaugeCollectionExpSingleDentistLabel = res.provider_name;
-            });
-            this.collectionExpSingleDentistTotal = Math.round(res.body.total);
-            this.collectionExpSingleDentistTotalPrev = Math.round(res.body.total_ta);
-            this.productionTotalAverage = Math.round(res.body.total_average);
-            this.dentistCollectionExpSingleDentistGoal = res.body.goals;
-            if (this.productionTotal > this.productionTotalPrev) {
-              this.collectionTooltip = 'up';
-            }
-            if (this.gaugeCollectionExpSingleDentistValue > this.dentistCollectionExpSingleDentistGoal)
-              this.maxCollectionExpSingleDentistGoal = this.gaugeValue;
-            else
-              this.maxCollectionExpSingleDentistGoal = this.dentistCollectionExpSingleDentistGoal;
-  
-            if (this.maxCollectionExpSingleDentistGoal == 0)
-              this.maxCollectionExpSingleDentistGoal = '';
-          }
-        } else if (res.status == 401) {
-          this._cookieService.put("username", '');
-          this._cookieService.put("email", '');
-          this._cookieService.put("userid", '');
-          this.router.navigateByUrl('/login');
-        }
-      }, error => {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-        this.warningMessage = "Please Provide Valid Inputs!";
-      });
-    }
+  private collectionExpDentist() {
+    this.collectionExpDentistLoader = true;
+    this.gaugeCollectionExpLabel = '';
+    this.collectionTooltip = 'down';
+    this.collectionExpTooltip = 'down';
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .DentistCollectionExpSingle(
+          this.selectedDentist,
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            this.collectionExpDentistTotal = 0;
+            this.collectionExpDentistTotalPrev = 0;
+            this.productionTotalAverage = 0;
+            this.maxCollectionExpGoal = 0;
+            this.gaugeCollectionExpValue = 0;
+            this.collectionExpDentistLoader = false;
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              if (res.body.data != null) {
+                res.body.data.forEach((res) => {
+                  if (res.collection)
+                    this.gaugeCollectionExpValue = Math.round(res.collection);
 
-    public collectionExpSingleOhtLoader: boolean = true;
-    public gaugeCollectionExpSingleOhtLabel: any = '';
-    public gaugeCollectionExpSingleOhtValue: any = 0;
-    public collectionExpSingleOhtTotal: any = 0;
-    public collectionExpSingleOhtTotalPrev: any = 0;
-    public dentistCollectionExpSingleOhtGoal: any = 0;
-    public maxCollectionExpSingleOhtGoal: any = 0;
-  
-  
-    private collectionExpSingleOht() {
-      this.collectionExpSingleOhtLoader = true;
-      this.gaugeCollectionExpSingleOhtLabel = '';
-      this.collectionTooltip = 'down';
-      this.clinic_id && this.cliniciananalysisService.DentistCollectionExpOhtSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-        this.collectionExpSingleOhtTotal = 0;
-        this.collectionExpSingleOhtTotalPrev = 0;
-        this.productionTotalAverage = 0;
-        this.maxCollectionExpSingleOhtGoal = 0;
-        this.gaugeCollectionExpSingleOhtValue = 0;
-        this.collectionExpSingleOhtLoader = false;
-        if (res.status == 200) {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          if (res.body.data != null) {
-            res.body.data.forEach((res) => {
-              if (res.collection)
-                this.gaugeCollectionExpSingleOhtValue = Math.round(res.collection);
-  
-              this.gaugeCollectionExpSingleOhtLabel = res.provider_name;
-            });
-            this.collectionExpSingleOhtTotal = Math.round(res.body.total);
-            this.collectionExpSingleOhtTotalPrev = Math.round(res.body.total_ta);
-            this.productionTotalAverage = Math.round(res.body.total_average);
-            this.dentistCollectionExpSingleOhtGoal = res.body.goals;
-            if (this.productionTotal > this.productionTotalPrev) {
-              this.collectionTooltip = 'up';
+                  this.gaugeCollectionExpLabel = res.provider_name;
+                });
+                this.collectionExpDentistTotal = Math.round(res.body.total);
+                this.collectionExpDentistTotalPrev = Math.round(
+                  res.body.total_ta
+                );
+                this.productionTotalAverage = Math.round(
+                  res.body.total_average
+                );
+                this.dentistCollectionExpGoal = res.body.goals;
+                if (
+                  this.collectionExpDentistTotal >
+                  this.collectionExpDentistTotalPrev
+                ) {
+                  this.collectionExpTooltip = 'up';
+                }
+                if (
+                  this.gaugeCollectionExpValue > this.dentistCollectionExpGoal
+                )
+                  this.maxCollectionExpGoal = this.gaugeValue;
+                else this.maxCollectionExpGoal = this.dentistCollectionExpGoal;
+
+                if (this.maxCollectionExpGoal == 0)
+                  this.maxCollectionExpGoal = '';
+              }
+            } else if (res.status == 401) {
+              this._cookieService.put('username', '');
+              this._cookieService.put('email', '');
+              this._cookieService.put('userid', '');
+              this.router.navigateByUrl('/login');
             }
-            if (this.gaugeCollectionExpSingleOhtValue > this.dentistCollectionExpSingleOhtGoal)
-              this.maxCollectionExpSingleOhtGoal = this.gaugeValue;
-            else
-              this.maxCollectionExpSingleOhtGoal = this.dentistCollectionExpSingleOhtGoal;
-  
-            if (this.maxCollectionExpSingleOhtGoal == 0)
-              this.maxCollectionExpSingleOhtGoal = '';
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        } else if (res.status == 401) {
-          this._cookieService.put("username", '');
-          this._cookieService.put("email", '');
-          this._cookieService.put("userid", '');
-          this.router.navigateByUrl('/login');
-        }
-      }, error => {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-        this.warningMessage = "Please Provide Valid Inputs!";
-      });
-    }
+        );
+  }
+
+  public collectionExpSingleDentistLoader: boolean = true;
+  public gaugeCollectionExpSingleDentistLabel: any = '';
+  public gaugeCollectionExpSingleDentistValue: any = 0;
+  public collectionExpSingleDentistTotal: any = 0;
+  public collectionExpSingleDentistTotalPrev: any = 0;
+  public dentistCollectionExpSingleDentistGoal: any = 0;
+  public maxCollectionExpSingleDentistGoal: any = 0;
+
+  private collectionExpSingleDentist() {
+    this.collectionExpSingleDentistLoader = true;
+    this.gaugeCollectionExpSingleDentistLabel = '';
+    this.collectionTooltip = 'down';
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .DentistCollectionExpDentistsSingle(
+          this.selectedDentist,
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            this.collectionExpSingleDentistTotal = 0;
+            this.collectionExpSingleDentistTotalPrev = 0;
+            this.productionTotalAverage = 0;
+            this.maxCollectionExpSingleDentistGoal = 0;
+            this.gaugeCollectionExpSingleDentistValue = 0;
+            this.collectionExpSingleDentistLoader = false;
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              if (res.body.data != null) {
+                res.body.data.forEach((res) => {
+                  if (res.collection)
+                    this.gaugeCollectionExpSingleDentistValue = Math.round(
+                      res.collection
+                    );
+
+                  this.gaugeCollectionExpSingleDentistLabel = res.provider_name;
+                });
+                this.collectionExpSingleDentistTotal = Math.round(
+                  res.body.total
+                );
+                this.collectionExpSingleDentistTotalPrev = Math.round(
+                  res.body.total_ta
+                );
+                this.productionTotalAverage = Math.round(
+                  res.body.total_average
+                );
+                this.dentistCollectionExpSingleDentistGoal = res.body.goals;
+                if (this.productionTotal > this.productionTotalPrev) {
+                  this.collectionTooltip = 'up';
+                }
+                if (
+                  this.gaugeCollectionExpSingleDentistValue >
+                  this.dentistCollectionExpSingleDentistGoal
+                )
+                  this.maxCollectionExpSingleDentistGoal = this.gaugeValue;
+                else
+                  this.maxCollectionExpSingleDentistGoal =
+                    this.dentistCollectionExpSingleDentistGoal;
+
+                if (this.maxCollectionExpSingleDentistGoal == 0)
+                  this.maxCollectionExpSingleDentistGoal = '';
+              }
+            } else if (res.status == 401) {
+              this._cookieService.put('username', '');
+              this._cookieService.put('email', '');
+              this._cookieService.put('userid', '');
+              this.router.navigateByUrl('/login');
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        );
+  }
+
+  public collectionExpSingleOhtLoader: boolean = true;
+  public gaugeCollectionExpSingleOhtLabel: any = '';
+  public gaugeCollectionExpSingleOhtValue: any = 0;
+  public collectionExpSingleOhtTotal: any = 0;
+  public collectionExpSingleOhtTotalPrev: any = 0;
+  public dentistCollectionExpSingleOhtGoal: any = 0;
+  public maxCollectionExpSingleOhtGoal: any = 0;
+
+  private collectionExpSingleOht() {
+    this.collectionExpSingleOhtLoader = true;
+    this.gaugeCollectionExpSingleOhtLabel = '';
+    this.collectionTooltip = 'down';
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .DentistCollectionExpOhtSingle(
+          this.selectedDentist,
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            this.collectionExpSingleOhtTotal = 0;
+            this.collectionExpSingleOhtTotalPrev = 0;
+            this.productionTotalAverage = 0;
+            this.maxCollectionExpSingleOhtGoal = 0;
+            this.gaugeCollectionExpSingleOhtValue = 0;
+            this.collectionExpSingleOhtLoader = false;
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              if (res.body.data != null) {
+                res.body.data.forEach((res) => {
+                  if (res.collection)
+                    this.gaugeCollectionExpSingleOhtValue = Math.round(
+                      res.collection
+                    );
+
+                  this.gaugeCollectionExpSingleOhtLabel = res.provider_name;
+                });
+                this.collectionExpSingleOhtTotal = Math.round(res.body.total);
+                this.collectionExpSingleOhtTotalPrev = Math.round(
+                  res.body.total_ta
+                );
+                this.productionTotalAverage = Math.round(
+                  res.body.total_average
+                );
+                this.dentistCollectionExpSingleOhtGoal = res.body.goals;
+                if (this.productionTotal > this.productionTotalPrev) {
+                  this.collectionTooltip = 'up';
+                }
+                if (
+                  this.gaugeCollectionExpSingleOhtValue >
+                  this.dentistCollectionExpSingleOhtGoal
+                )
+                  this.maxCollectionExpSingleOhtGoal = this.gaugeValue;
+                else
+                  this.maxCollectionExpSingleOhtGoal =
+                    this.dentistCollectionExpSingleOhtGoal;
+
+                if (this.maxCollectionExpSingleOhtGoal == 0)
+                  this.maxCollectionExpSingleOhtGoal = '';
+              }
+            } else if (res.status == 401) {
+              this._cookieService.put('username', '');
+              this._cookieService.put('email', '');
+              this._cookieService.put('userid', '');
+              this.router.navigateByUrl('/login');
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        );
+  }
 
   public recallChartData: any[] = [
     {
@@ -4138,8 +4779,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public recallPrebookLoader: boolean;
   public rpKey: any;
   public RPcolors: any;
-  public recalltbl :any =[];
-  public showrecallTbl:boolean =false;
+  public recalltbl: any = [];
+  public showrecallTbl: boolean = false;
   private recallPrebook() {
     this.recallPrebookLoader = true;
     this.recallChartData1 = [];
@@ -4147,115 +4788,138 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.recallChartLabels = [];
     this.barChartOptionsRP.annotation = [];
 
-    this.clinic_id && this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.recallChartData1 = [];
-      this.recallChartLabels1 = [];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .RecallPrebook(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.recallChartData1 = [];
+            this.recallChartLabels1 = [];
 
-      this.recallChartLabels = [];
-      this.barChartOptionsRP.annotation = [];
-      this.recalltbl =[];
-      this.recallChartData[0]['data']=[];
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.recallPrebookLoader = false;
+            this.recallChartLabels = [];
+            this.barChartOptionsRP.annotation = [];
+            this.recalltbl = [];
+            this.recallChartData[0]['data'] = [];
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.recallPrebookLoader = false;
 
-        this.recallChartTooltip = 'down';
-        var i = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.recall_percent - b.recall_percent).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.recalltbl = res.body.data;
-        // if(res.body.data.length >= this.numberOfRecords){
-        //   this.recalltbl = res.body.data;
-        //   this.showrecallTbl = true;
-        // }else{
-        //   this.showrecallTbl = false;
-        // }
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-          if (res.recall_percent >= 0) {
-            if (res.provider_name != null) {
-              var pName ='';
-              if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                  pName = res.provider_name + " - " + res.clinic_name;
-                }else{
-                  pName = res.provider_name;
+              this.recallChartTooltip = 'down';
+              var i = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.recall_percent - b.recall_percent)
+                  .reverse();
+              } else {
+                this.isAllClinic = false;
+              }
+              this.recalltbl = res.body.data;
+              // if(res.body.data.length >= this.numberOfRecords){
+              //   this.recalltbl = res.body.data;
+              //   this.showrecallTbl = true;
+              // }else{
+              //   this.showrecallTbl = false;
+              // }
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                if (res.recall_percent >= 0) {
+                  if (res.provider_name != null) {
+                    var pName = '';
+                    if (
+                      this.clinic_id.indexOf(',') >= 0 ||
+                      Array.isArray(this.clinic_id)
+                    ) {
+                      pName = res.provider_name + ' - ' + res.clinic_name;
+                    } else {
+                      pName = res.provider_name;
+                    }
+                    this.recallChartData1.push(Math.round(res.recall_percent));
+                    this.recallChartLabels1.push(pName);
+                    if (res.provider_name != 'Anonymous') this.rpKey = i;
+                    i++;
+                  }
                 }
-              this.recallChartData1.push(Math.round(res.recall_percent));
-              this.recallChartLabels1.push(pName);
-              if (res.provider_name != 'Anonymous')
-                this.rpKey = i;
-              i++;
+              });
+              this.recallChartData[0]['data'] = this.recallChartData1;
+              this.recallChartLabels = this.recallChartLabels1;
+              this.recallChartAverage = Math.round(res.body.total);
+              this.recallChartAveragePrev = Math.round(res.body.total_ta);
+              this.recallChartGoal = res.body.goals;
+
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColors = [{ backgroundColor: [] }];
+                this.barChartColors[0].backgroundColor[this.rpKey] = '#1CA49F';
+                this.RPcolors = this.barChartColors;
+              } else {
+                this.RPcolors = this.lineChartColors;
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.recallChartLabels
+                );
+                this.recallChartData[0].backgroundColor = dynamicColors;
+              }
+              if (this.recallChartAverage >= this.recallChartAveragePrev)
+                this.recallChartTooltip = 'up';
+              this.barChartOptionsRP.annotation = [];
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsRP.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.recallChartAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsRP.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.recallChartGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              }
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            if (this.user_type != '7') {
+              this.toastr.error(
+                'There was an error retrieving your report data, please contact our support team.'
+              );
+              this.warningMessage = 'Please Provide Valid Inputs!';
             }
           }
-        });
-        this.recallChartData[0]['data'] = this.recallChartData1;
-        this.recallChartLabels = this.recallChartLabels1;
-        this.recallChartAverage = Math.round(res.body.total);
-        this.recallChartAveragePrev = Math.round(res.body.total_ta);
-        this.recallChartGoal = res.body.goals;
-
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors = [
-            { backgroundColor: [] }
-          ];
-          this.barChartColors[0].backgroundColor[this.rpKey] = '#1CA49F';
-          this.RPcolors = this.barChartColors;
-        }
-        else {
-          this.RPcolors = this.lineChartColors;
-          let dynamicColors = this.barBackgroundColor(res.body.data, this.recallChartLabels);      
-          this.recallChartData[0].backgroundColor = dynamicColors;
-        }
-        if (this.recallChartAverage >= this.recallChartAveragePrev)
-          this.recallChartTooltip = 'up';
-        this.barChartOptionsRP.annotation = [];
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsRP.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.recallChartAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-        else if (this.goalchecked == 'goal') {
-          this.barChartOptionsRP.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.recallChartGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      if(this.user_type !='7'){
-        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-        this.warningMessage = "Please Provide Valid Inputs!";
-      }
-    }
-    );
+        );
   }
   public recallPrebookDentistLoader: boolean;
   public maxrecallGoal: any = 0;
@@ -4265,45 +4929,54 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.recallValue = 0;
     this.recallChartTooltip = 'down';
     this.recallLabel = '';
-    this.clinic_id && this.cliniciananalysisService.RecallPrebookSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-      this.maxrecallGoal = 0;
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .RecallPrebookSingle(
+          this.selectedDentist,
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            this.maxrecallGoal = 0;
 
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.recallPrebookDentistLoader = false;
-        this.recallValue = '0';
-        if (res.body.data.length > 0) {
-          this.recallValue = Math.round(res.body.data[0].recall_percent);
-          this.recallLabel = res.body.data[0].provider_name;
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.recallPrebookDentistLoader = false;
+              this.recallValue = '0';
+              if (res.body.data.length > 0) {
+                this.recallValue = Math.round(res.body.data[0].recall_percent);
+                this.recallLabel = res.body.data[0].provider_name;
+              }
+              this.recallChartAveragePrev = res.body.total_ta;
+              this.recallGoal = res.body.goals;
+              this.recallChartAverage = res.body.total;
+              if (this.recallValue > this.recallGoal)
+                this.maxrecallGoal = this.recallValue;
+              else this.maxrecallGoal = this.recallGoal;
 
-        }
-        this.recallChartAveragePrev = res.body.total_ta;
-        this.recallGoal = res.body.goals;
-        this.recallChartAverage = res.body.total;
-        if (this.recallValue > this.recallGoal)
-          this.maxrecallGoal = this.recallValue;
-        else
-          this.maxrecallGoal = this.recallGoal;
-
-        if (this.maxrecallGoal == 0)
-          this.maxrecallGoal = '';
-        if (this.recallValue >= this.recallChartAveragePrev)
-          this.recallChartTooltip = 'up';
-      }
-      else if (res.status == 401) {
-        this._cookieService.put("username", '');
-        this._cookieService.put("email", '');
-        this._cookieService.put("userid", '');
-        this.router.navigateByUrl('/login');
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+              if (this.maxrecallGoal == 0) this.maxrecallGoal = '';
+              if (this.recallValue >= this.recallChartAveragePrev)
+                this.recallChartTooltip = 'up';
+            } else if (res.status == 401) {
+              this._cookieService.put('username', '');
+              this._cookieService.put('email', '');
+              this._cookieService.put('userid', '');
+              this.router.navigateByUrl('/login');
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        );
   }
 
   public treatmentPreChartData: any[] = [
@@ -4331,10 +5004,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public tpKey: any;
   public TPcolors: any;
   //All dentist Treatment Prebook Chart
-  public reappointtbl:any =[];
-  public showreappointTbl:boolean =false;
+  public reappointtbl: any = [];
+  public showreappointTbl: boolean = false;
   private treatmentPrePrebook() {
-
     this.treatmentPrebookLoader = true;
     this.treatmentPreChartData1 = [];
     this.treatmentPreChartLabels1 = [];
@@ -4342,111 +5014,140 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.treatmentPreChartLabels = [];
     this.barChartOptionsTPB.annotation = [];
 
-    this.clinic_id && this.cliniciananalysisService.caReappointRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.treatmentPreChartData1 = [];
-      this.treatmentPreChartLabels1 = [];
-      this.reappointtbl =[];
-      this.treatmentPreChartLabels = [];
-      this.barChartOptionsTPB.annotation = [];
-      this.treatmentPreChartData[0]['data']=[];
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.treatmentPrebookLoader = false;
-        this.treatmentPreChartTooltip = 'down';
-        var i = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.reappoint_rate - b.reappoint_rate).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.reappointtbl = res.body.data;
-        // if(res.body.data.length >= this.numberOfRecords){
-        //   this.reappointtbl = res.body.data;
-        //   this.showreappointTbl = true;
-        // }else{
-        //   this.showreappointTbl = false;
-        // }
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-          if (res.reappoint_rate >= 0) {
-            if (res.provider_name != null) {
-              var pName ='';
-              if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                  pName = res.provider_name + " - " + res.clinic_name;
-                }else{
-                  pName = res.provider_name;
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .caReappointRate(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.treatmentPreChartData1 = [];
+            this.treatmentPreChartLabels1 = [];
+            this.reappointtbl = [];
+            this.treatmentPreChartLabels = [];
+            this.barChartOptionsTPB.annotation = [];
+            this.treatmentPreChartData[0]['data'] = [];
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.treatmentPrebookLoader = false;
+              this.treatmentPreChartTooltip = 'down';
+              var i = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.reappoint_rate - b.reappoint_rate)
+                  .reverse();
+              } else {
+                this.isAllClinic = false;
+              }
+              this.reappointtbl = res.body.data;
+              // if(res.body.data.length >= this.numberOfRecords){
+              //   this.reappointtbl = res.body.data;
+              //   this.showreappointTbl = true;
+              // }else{
+              //   this.showreappointTbl = false;
+              // }
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                if (res.reappoint_rate >= 0) {
+                  if (res.provider_name != null) {
+                    var pName = '';
+                    if (
+                      this.clinic_id.indexOf(',') >= 0 ||
+                      Array.isArray(this.clinic_id)
+                    ) {
+                      pName = res.provider_name + ' - ' + res.clinic_name;
+                    } else {
+                      pName = res.provider_name;
+                    }
+                    this.treatmentPreChartData1.push(
+                      Math.round(res.reappoint_rate)
+                    );
+                    this.treatmentPreChartLabels1.push(pName);
+                    if (res.provider_name != 'Anonymous') this.tpKey = i;
+                    i++;
+                  }
                 }
-              this.treatmentPreChartData1.push(Math.round(res.reappoint_rate));
-              this.treatmentPreChartLabels1.push(pName);
-              if (res.provider_name != 'Anonymous')
-                this.tpKey = i;
-              i++;
+              });
+              this.treatmentPreChartData[0]['data'] =
+                this.treatmentPreChartData1;
+              this.treatmentPreChartLabels = this.treatmentPreChartLabels1;
+              this.treatmentPreChartAverage = Math.round(res.body.total);
+              this.treatmentPreChartAveragePrev = Math.round(res.body.total_ta);
+              this.treatmentPreChartGoal = res.body.goals;
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColors = [{ backgroundColor: [] }];
+                this.barChartColors[0].backgroundColor[this.tpKey] = '#1CA49F';
+                this.TPcolors = this.barChartColors;
+              } else {
+                this.TPcolors = this.lineChartColors;
+
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.treatmentPreChartLabels
+                );
+                this.treatmentPreChartData[0].backgroundColor = dynamicColors;
+              }
+              if (
+                this.treatmentPreChartAverage >=
+                this.treatmentPreChartAveragePrev
+              )
+                this.treatmentPreChartTooltip = 'up';
+
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsTPB.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.treatmentPreChartAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsTPB.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.treatmentPreChartGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              }
             }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.warningMessage = 'Please Provide Valid Inputs!';
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
           }
-        });
-        this.treatmentPreChartData[0]['data'] = this.treatmentPreChartData1;
-        this.treatmentPreChartLabels = this.treatmentPreChartLabels1;
-        this.treatmentPreChartAverage = Math.round(res.body.total);
-        this.treatmentPreChartAveragePrev = Math.round(res.body.total_ta);
-        this.treatmentPreChartGoal = res.body.goals;
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors = [
-            { backgroundColor: [] }
-          ];
-          this.barChartColors[0].backgroundColor[this.tpKey] = '#1CA49F';
-          this.TPcolors = this.barChartColors;
-        }
-        else {
-          this.TPcolors = this.lineChartColors;
-
-          let dynamicColors = this.barBackgroundColor(res.body.data, this.treatmentPreChartLabels);       
-          this.treatmentPreChartData[0].backgroundColor = dynamicColors;
-        }
-        if (this.treatmentPreChartAverage >= this.treatmentPreChartAveragePrev)
-          this.treatmentPreChartTooltip = 'up';
-
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsTPB.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.treatmentPreChartAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-        else if (this.goalchecked == 'goal') {
-          this.barChartOptionsTPB.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.treatmentPreChartGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.warningMessage = "Please Provide Valid Inputs!";
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-    }
-    );
+        );
   }
   public treatmentPrebookDentistLoader: boolean;
 
@@ -4456,34 +5157,46 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.treatmentPrebookDentistLoader = true;
     this.treatmentPreValue = '0';
     this.treatmentPreLabel = '';
-    this.clinic_id && this.cliniciananalysisService.caReappointRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.treatmentPrebookDentistLoader = false;
-        this.treatmentPreGoal = res.body.goals;
-        if (res.body.data.length > 0) {
-          this.treatmentPreValue = Math.round(res.body.data[0].reappoint_rate);
-          this.treatmentPreLabel = res.body.data[0].provider_name;
-        }
-        this.prePrebookMax = res.body.goals;
-        if (this.treatmentPreValue > this.prePrebookMax)
-          this.prePrebookMax = this.treatmentPreValue;
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .caReappointRateSingle(
+          this.selectedDentist,
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.treatmentPrebookDentistLoader = false;
+              this.treatmentPreGoal = res.body.goals;
+              if (res.body.data.length > 0) {
+                this.treatmentPreValue = Math.round(
+                  res.body.data[0].reappoint_rate
+                );
+                this.treatmentPreLabel = res.body.data[0].provider_name;
+              }
+              this.prePrebookMax = res.body.goals;
+              if (this.treatmentPreValue > this.prePrebookMax)
+                this.prePrebookMax = this.treatmentPreValue;
 
-
-        this.treatmentPreChartAveragePrev = res.body.total_ta;
-        this.treatmentPreGoal = res.body.goals;
-
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+              this.treatmentPreChartAveragePrev = res.body.total_ta;
+              this.treatmentPreGoal = res.body.goals;
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        );
   }
-
 
   public treatmentChartData: any[] = [
     {
@@ -4509,126 +5222,158 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public TPRKey: any;
   public TPRcolors: any;
   //Treatment pLAn Rate chart for all dentists
-  public tprtbl:any=[];
-  public showpTprTbl:boolean=false;
+  public tprtbl: any = [];
+  public showpTprTbl: boolean = false;
   private treatmentPlanRate() {
     this.treatmentPlanRateLoader = true;
     this.treatmentChartData1 = [];
     this.treatmentChartLabels1 = [];
 
     this.treatmentChartLabels = [];
-    this.barChartOptionsTP.annotation = []
+    this.barChartOptionsTP.annotation = [];
 
-    this.clinic_id && this.cliniciananalysisService.TreatmentPlanRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.treatmentChartData1 = [];
-      this.treatmentChartLabels1 = [];
-      this.tprtbl=[];
-      this.treatmentChartLabels = [];
-      this.barChartOptionsTP.annotation = [];
-      this.treatmentChartData[0]['data'] =[];
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.treatmentPlanRateLoader = false;
-        this.treatmentChartTooltip = 'down';
-        var i = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.treatment_per_plan_percentage - b.treatment_per_plan_percentage).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.tprtbl = res.body.data;
-        // if(res.body.data.length >= this.numberOfRecords){
-        //   this.tprtbl = res.body.data;
-        //   this.showpTprTbl = true;
-        // }else{
-        //   this.showpTprTbl = false;
-        // }	
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-          if (res.treatment_per_plan_percentage) {
-            this.treatmentChartData1.push(Math.round(res.treatment_per_plan_percentage));
-            var name = res.provider_name;
-            var pName ='';
-            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                pName = res.provider_name + " - " + res.clinic_name;
-              }else{
-                pName = res.provider_name;
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .TreatmentPlanRate(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.treatmentChartData1 = [];
+            this.treatmentChartLabels1 = [];
+            this.tprtbl = [];
+            this.treatmentChartLabels = [];
+            this.barChartOptionsTP.annotation = [];
+            this.treatmentChartData[0]['data'] = [];
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.treatmentPlanRateLoader = false;
+              this.treatmentChartTooltip = 'down';
+              var i = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort(
+                    (a, b) =>
+                      a.treatment_per_plan_percentage -
+                      b.treatment_per_plan_percentage
+                  )
+                  .reverse();
+              } else {
+                this.isAllClinic = false;
               }
-            if (res.provider_name != null && res.provider_name != 'Anonymous') {
-              this.treatmentChartLabels1.push(pName);
-              this.TPRKey = i;
+              this.tprtbl = res.body.data;
+              // if(res.body.data.length >= this.numberOfRecords){
+              //   this.tprtbl = res.body.data;
+              //   this.showpTprTbl = true;
+              // }else{
+              //   this.showpTprTbl = false;
+              // }
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                if (res.treatment_per_plan_percentage) {
+                  this.treatmentChartData1.push(
+                    Math.round(res.treatment_per_plan_percentage)
+                  );
+                  var name = res.provider_name;
+                  var pName = '';
+                  if (
+                    this.clinic_id.indexOf(',') >= 0 ||
+                    Array.isArray(this.clinic_id)
+                  ) {
+                    pName = res.provider_name + ' - ' + res.clinic_name;
+                  } else {
+                    pName = res.provider_name;
+                  }
+                  if (
+                    res.provider_name != null &&
+                    res.provider_name != 'Anonymous'
+                  ) {
+                    this.treatmentChartLabels1.push(pName);
+                    this.TPRKey = i;
+                  } else this.treatmentChartLabels1.push(pName);
+                  i++;
+                }
+              });
+              this.treatmentChartData[0]['data'] = this.treatmentChartData1;
+              this.treatmentChartLabels = this.treatmentChartLabels1;
+              this.treatmentChartAverage = Math.round(res.body.total);
+              this.treatmentChartAveragePrev = res.body.total_ta
+                ? Math.round(res.body.total_ta)
+                : 0;
+              this.treatmentChartGoal = res.body.goals;
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColors = [{ backgroundColor: [] }];
+                this.barChartColors[0].backgroundColor[this.TPRKey] = '#1CA49F';
+                this.TPRcolors = this.barChartColors;
+              } else {
+                this.TPRcolors = this.lineChartColors;
+
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.treatmentChartLabels
+                );
+                this.treatmentChartData[0].backgroundColor = dynamicColors;
+              }
+              if (this.treatmentChartAverage >= this.treatmentChartAveragePrev)
+                this.treatmentChartTooltip = 'up';
+
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsTP.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.treatmentChartAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsTP.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.treatmentChartGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              }
             }
-            else
-              this.treatmentChartLabels1.push(pName);
-            i++;
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            if (this.user_type != '7') {
+              this.toastr.error(
+                'There was an error retrieving your report data, please contact our support team.'
+              );
+              this.warningMessage = 'Please Provide Valid Inputs!';
+            }
           }
-        });
-        this.treatmentChartData[0]['data'] = this.treatmentChartData1;
-        this.treatmentChartLabels = this.treatmentChartLabels1;
-        this.treatmentChartAverage = Math.round(res.body.total);
-        this.treatmentChartAveragePrev = (res.body.total_ta) ? Math.round(res.body.total_ta) : 0;
-        this.treatmentChartGoal = res.body.goals;
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors = [
-            { backgroundColor: [] }
-          ];
-          this.barChartColors[0].backgroundColor[this.TPRKey] = '#1CA49F';
-          this.TPRcolors = this.barChartColors;
-        }
-        else {
-          this.TPRcolors = this.lineChartColors;
-
-          let dynamicColors = this.barBackgroundColor(res.body.data, this.treatmentChartLabels);       
-          this.treatmentChartData[0].backgroundColor = dynamicColors;
-        }
-        if (this.treatmentChartAverage >= this.treatmentChartAveragePrev)
-          this.treatmentChartTooltip = 'up';
-
-        ;
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsTP.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.treatmentChartAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-        else if (this.goalchecked == 'goal') {
-          this.barChartOptionsTP.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.treatmentChartGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      if(this.user_type !='7'){
-        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-        this.warningMessage = "Please Provide Valid Inputs!";
-      }
-    }
-    );
+        );
   }
 
   public treatmentPlanValue: any = 0;
@@ -4644,34 +5389,48 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.treatmentPlanLabel = '';
     this.treatmentChartAveragePrev = 0;
     this.treatmentChartTooltip = 'down';
-    this.clinic_id && this.cliniciananalysisService.TreatmentPlanRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-      if (res.body.data && res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.treatmentPlanRateDentistLoader = false;
-        this.treatmentPlanValue = '0';
-        if (res.body.data.length > 0) {
-          this.treatmentPlanValue = Math.round(res.body.data[0].treatment_per_plan_percentage);
-          this.treatmentPlanLabel = res.body.data[0].provider_name;
-        }
-        this.treatmentPlanGoal = Math.round(res.body.goals);
-        this.treatmentChartAveragePrev = (res.body.total_ta) ? Math.round(res.body.total_ta) : 0;
-        this.treatmentChartAverage = Math.round(res.body.total);
-        if (this.treatmentChartAverage >= this.treatmentChartAveragePrev)
-          this.treatmentChartTooltip = 'up';
-        if (this.treatmentPlanValue > this.treatmentPlanGoal)
-          this.maxtreatmentPlanGoal = this.treatmentPlanValue;
-        else
-          this.maxtreatmentPlanGoal = this.treatmentPlanGoal;
-        if (this.maxtreatmentPlanGoal == 0)
-          this.maxtreatmentPlanGoal = '';
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .TreatmentPlanRateSingle(
+          this.selectedDentist,
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            if (res.body.data && res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.treatmentPlanRateDentistLoader = false;
+              this.treatmentPlanValue = '0';
+              if (res.body.data.length > 0) {
+                this.treatmentPlanValue = Math.round(
+                  res.body.data[0].treatment_per_plan_percentage
+                );
+                this.treatmentPlanLabel = res.body.data[0].provider_name;
+              }
+              this.treatmentPlanGoal = Math.round(res.body.goals);
+              this.treatmentChartAveragePrev = res.body.total_ta
+                ? Math.round(res.body.total_ta)
+                : 0;
+              this.treatmentChartAverage = Math.round(res.body.total);
+              if (this.treatmentChartAverage >= this.treatmentChartAveragePrev)
+                this.treatmentChartTooltip = 'up';
+              if (this.treatmentPlanValue > this.treatmentPlanGoal)
+                this.maxtreatmentPlanGoal = this.treatmentPlanValue;
+              else this.maxtreatmentPlanGoal = this.treatmentPlanGoal;
+              if (this.maxtreatmentPlanGoal == 0)
+                this.maxtreatmentPlanGoal = '';
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        );
   }
 
   public tcmain = 1;
@@ -4693,41 +5452,44 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [{
-        ticks: {
-          autoSkip: false,
-          userCallback: (label: string) => {
-            const names = this.splitName(label);
-            // if (names.length > 1) {
-            //   return `${names[0][0]} ${names[1]}`
-            // } else return `${names[0]}`;
-            const name = names[0].split(' ');
-            if (names.length == 3) {
-              return `${names[0]}`
-            } else if (names.length == 2){
-              if (name.length == 2) {
-                return `${names[0][0]} ${name[1]}`
+      xAxes: [
+        {
+          ticks: {
+            autoSkip: false,
+            userCallback: (label: string) => {
+              const names = this.splitName(label);
+              // if (names.length > 1) {
+              //   return `${names[0][0]} ${names[1]}`
+              // } else return `${names[0]}`;
+              const name = names[0].split(' ');
+              if (names.length == 3) {
+                return `${names[0]}`;
+              } else if (names.length == 2) {
+                if (name.length == 2) {
+                  return `${names[0][0]} ${name[1]}`;
+                } else {
+                  return `${names[0][0]} ${names[1]}`;
+                }
               } else {
-                return `${names[0][0]} ${names[1]}`
+                return `${names[0]}`;
               }
-            } else {
-              return `${names[0]}`;
             }
           }
         }
-      }],
-      yAxes: [{
-        ticks: {
-          suggestedMin: 0,
-          userCallback: (label, index, labels) => {
-            // when the floored value is the same as the value we have a whole number
-            if (Math.floor(label) === label) {
-              return '$' + this.decimalPipe.transform(label);
+      ],
+      yAxes: [
+        {
+          ticks: {
+            suggestedMin: 0,
+            userCallback: (label, index, labels) => {
+              // when the floored value is the same as the value we have a whole number
+              if (Math.floor(label) === label) {
+                return '$' + this.decimalPipe.transform(label);
+              }
             }
-
-          },
+          }
         }
-      }],
+      ]
     },
     legend: this.legendGenerator,
     tooltips: {
@@ -4741,7 +5503,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       callbacks: {
         label: (tooltipItem) => {
           // return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
-          return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+          return (
+            tooltipItem.xLabel +
+            ': $' +
+            this.decimalPipe.transform(tooltipItem.yLabel)
+          );
         },
         // remove title
         title: function () {
@@ -4755,10 +5521,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public TPACCcolors: any;
   public tpacAKey;
 
-
   //Treatment Plan Average Cost proposed Fee for all dentist
-  public planChartPtbl:any=[];
-  public showplanChartPTbl:boolean = false;
+  public planChartPtbl: any = [];
+  public showplanChartPTbl: boolean = false;
   private buildChartTreatment() {
     this.buildChartTreatmentLoader = true;
     // $('.treatment_cost .sa_tab_btn').removeClass('active');
@@ -4768,260 +5533,309 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.planTotal = 0;
     this.planChartLabels = [];
     this.barChartOptionsTC.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.TreatmentPlan(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.planChartData1 = [];
-      this.planChartLabels1 = [];
-      this.planTotalAverage = 0;
-      this.planTotalPrev = 0;
-      this.planTotal = 0;
-      this.planChartLabels = [];
-      this.planChartDataP[0]['data'] =[];
-      this.barChartOptionsTC.annotation = [];
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.buildChartTreatmentLoader = false;
-        this.planTotalTooltip = 'down';
-        var ia = 0;
-        this.treatmentPlanProposedProvidersByInx = [];
-        this.planChartPtbl = [];
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.average_fees - b.average_fees).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.planChartPtbl = res.body.data;
-        if (res.body.data.length > this.numberOfRecords) res.body.data= res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-          if (res.average_fees > 0) {
-            if (res.provider_name != null) {
-              var pName ='';
-              if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                  pName = res.provider_name + " - " + res.clinic_name;
-                }else{
-                  pName = res.provider_name;
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .TreatmentPlan(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.planChartData1 = [];
+            this.planChartLabels1 = [];
+            this.planTotalAverage = 0;
+            this.planTotalPrev = 0;
+            this.planTotal = 0;
+            this.planChartLabels = [];
+            this.planChartDataP[0]['data'] = [];
+            this.barChartOptionsTC.annotation = [];
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.buildChartTreatmentLoader = false;
+              this.planTotalTooltip = 'down';
+              var ia = 0;
+              this.treatmentPlanProposedProvidersByInx = [];
+              this.planChartPtbl = [];
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.average_fees - b.average_fees)
+                  .reverse();
+              } else {
+                this.isAllClinic = false;
+              }
+              this.planChartPtbl = res.body.data;
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                if (res.average_fees > 0) {
+                  if (res.provider_name != null) {
+                    var pName = '';
+                    if (
+                      this.clinic_id.indexOf(',') >= 0 ||
+                      Array.isArray(this.clinic_id)
+                    ) {
+                      pName = res.provider_name + ' - ' + res.clinic_name;
+                    } else {
+                      pName = res.provider_name;
+                    }
+                    this.planChartData1.push(Math.round(res.average_fees));
+                    this.planChartLabels1.push(pName);
+                    this.treatmentPlanProposedProvidersByInx.push(pName);
+                    if (res.provider_name != 'Anonymous') this.tpacAKey = ia;
+                    ia++;
+                  }
                 }
-              this.planChartData1.push(Math.round(res.average_fees));
-              this.planChartLabels1.push(pName);
-              this.treatmentPlanProposedProvidersByInx.push(pName);
-              if (res.provider_name != 'Anonymous')
-                this.tpacAKey = ia;
-              ia++;
+              });
+              this.planAllTotal = Math.round(res.body.total);
+              this.planAllTotalTrend = Math.round(res.body.total_ta);
+
+              let dynamicColors = this.barBackgroundColor(
+                res.body.data,
+                this.planChartLabels1
+              );
+              this.planChartDataP[0].backgroundColor = dynamicColors;
+
+              this.planChartDataP[0]['data'] = this.planChartData1;
+              this.planChartDataP[0]['label'] = '';
+              this.planChartLabels = this.planChartLabels1;
+              this.planTotalAverage = this.planAllTotal;
+              this.planTotalGoal = res.body.goals;
+              this.planTotalPrev = this.planAllTotalTrend;
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColors = [{ backgroundColor: [] }];
+                this.barChartColors[0].backgroundColor[this.tpacAKey] =
+                  '#1CA49F';
+                this.TPACAcolors = this.barChartColors;
+                this.barChartColors = [{ backgroundColor: [] }];
+                //this.barChartColors[0].backgroundColor[this.tpacCKey] = '#1CA49F';
+                this.TPACCcolors = this.barChartColors;
+              } else {
+                this.TPACAcolors = this.lineChartColors;
+                this.TPACCcolors = this.lineChartColors;
+                let dynamicColors1 = this.barBackgroundColor(
+                  res.body.data,
+                  this.planChartLabels1
+                );
+                this.planChartDataP[0].backgroundColor = dynamicColors1;
+              }
+              if (this.planTotalAverage >= this.planTotalPrev)
+                this.planTotalTooltip = 'up';
+              var index = 0;
+              this.barChartOptionsTC.annotation = [];
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsTC.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.planTotalAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsTC.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.planTotalGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              }
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            if (this.user_type != '7') {
+              this.toastr.error(
+                'There was an error retrieving your report data, please contact our support team.'
+              );
+              this.warningMessage = 'Please Provide Valid Inputs!';
             }
           }
-        });
-        this.planAllTotal = Math.round(res.body.total);
-        this.planAllTotalTrend = Math.round(res.body.total_ta);
-       
-       let dynamicColors = this.barBackgroundColor(res.body.data, this.planChartLabels1);       
-        this.planChartDataP[0].backgroundColor = dynamicColors;
-
-        this.planChartDataP[0]['data'] = this.planChartData1;
-        this.planChartDataP[0]['label'] = '';
-        this.planChartLabels = this.planChartLabels1;
-        this.planTotalAverage = this.planAllTotal;
-        this.planTotalGoal = res.body.goals;
-        this.planTotalPrev = this.planAllTotalTrend;
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors = [
-            { backgroundColor: [] }
-          ];
-          this.barChartColors[0].backgroundColor[this.tpacAKey] = '#1CA49F';
-          this.TPACAcolors = this.barChartColors;
-          this.barChartColors = [
-            { backgroundColor: [] }
-          ];
-          //this.barChartColors[0].backgroundColor[this.tpacCKey] = '#1CA49F';
-          this.TPACCcolors = this.barChartColors;
-
-        }
-        else {
-          this.TPACAcolors = this.lineChartColors;
-          this.TPACCcolors = this.lineChartColors;
-          let dynamicColors1 = this.barBackgroundColor(res.body.data, this.planChartLabels1);     
-          this.planChartDataP[0].backgroundColor = dynamicColors1;
-        }
-        if (this.planTotalAverage >= this.planTotalPrev)
-          this.planTotalTooltip = 'up';
-        var index = 0;
-        this.barChartOptionsTC.annotation = [];
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsTC.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.planTotalAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-        else if (this.goalchecked == 'goal') {
-          this.barChartOptionsTC.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.planTotalGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      if(this.user_type !='7'){
-        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-        this.warningMessage = "Please Provide Valid Inputs!";
-      } 
-    });
+        );
   }
 
-
-    //Treatment Plan Average Cost Completed fees for all dentist
-    public tpacCKey;
-    public planChartCtbl:any=[];
-    public showplanChartCTbl :boolean = false;
-    private buildChartTreatmentCompletedFees() {
-      this.buildChartTreatmentLoader = true;
-      // $('.treatment_cost .sa_tab_btn').removeClass('active');
-      // $('.tcmain1').addClass('active');
-      this.planChartData2 = [];
-      this.planChartLabels2 = [];
-      this.planTotal = 0;
-      this.planChartLabels = [];
-      this.barChartOptionsTC.annotation = [];
-      this.clinic_id && this.cliniciananalysisService.TreatmentPlanCompletedFees(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-        this.planChartData2 = [];
-        this.planChartLabels2 = [];
-        this.planTotalAverage = 0;
-        this.planTotalPrev = 0;
-        this.planTotal = 0;
-        this.planChartLabels = [];
-        this.planChartDataC[0]['data'] = [];
-        this.barChartOptionsTC.annotation = [];
-        if (res.status == 200) {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.buildChartTreatmentLoader = false;
-          this.planTotalTooltip = 'down';
-          var ia = 0;
-          this.treatmentPlanProposedProvidersByInx = [];
-          this.planChartCtbl = [];
-          if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-            this.isAllClinic = true;
-            res.body.data.sort((a, b)=> a.average_fees - b.average_fees).reverse();
-          }else{
-            this.isAllClinic = false;
-          }
-          var ic = 0;
-          this.planChartCtbl = res.body.data;
-          if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-          res.body.data.forEach(res => {
-            if (res.average_fees) {
-               var prName ='';
-                if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                    prName = res.provider_name + " - " + res.clinic_name;
-                  }else{
+  //Treatment Plan Average Cost Completed fees for all dentist
+  public tpacCKey;
+  public planChartCtbl: any = [];
+  public showplanChartCTbl: boolean = false;
+  private buildChartTreatmentCompletedFees() {
+    this.buildChartTreatmentLoader = true;
+    // $('.treatment_cost .sa_tab_btn').removeClass('active');
+    // $('.tcmain1').addClass('active');
+    this.planChartData2 = [];
+    this.planChartLabels2 = [];
+    this.planTotal = 0;
+    this.planChartLabels = [];
+    this.barChartOptionsTC.annotation = [];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .TreatmentPlanCompletedFees(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.planChartData2 = [];
+            this.planChartLabels2 = [];
+            this.planTotalAverage = 0;
+            this.planTotalPrev = 0;
+            this.planTotal = 0;
+            this.planChartLabels = [];
+            this.planChartDataC[0]['data'] = [];
+            this.barChartOptionsTC.annotation = [];
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.buildChartTreatmentLoader = false;
+              this.planTotalTooltip = 'down';
+              var ia = 0;
+              this.treatmentPlanProposedProvidersByInx = [];
+              this.planChartCtbl = [];
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.average_fees - b.average_fees)
+                  .reverse();
+              } else {
+                this.isAllClinic = false;
+              }
+              var ic = 0;
+              this.planChartCtbl = res.body.data;
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                if (res.average_fees) {
+                  var prName = '';
+                  if (
+                    this.clinic_id.indexOf(',') >= 0 ||
+                    Array.isArray(this.clinic_id)
+                  ) {
+                    prName = res.provider_name + ' - ' + res.clinic_name;
+                  } else {
                     prName = res.provider_name;
                   }
-              this.planChartData2.push(Math.round(res.average_fees));
-              this.planChartLabels2.push(prName);
-              this.treatmentPlanProposedProvidersByInx.push(prName);
-              if (res.provider_name != 'Anonymous')
-                this.tpacCKey = ic;
-              ic++;
+                  this.planChartData2.push(Math.round(res.average_fees));
+                  this.planChartLabels2.push(prName);
+                  this.treatmentPlanProposedProvidersByInx.push(prName);
+                  if (res.provider_name != 'Anonymous') this.tpacCKey = ic;
+                  ic++;
+                }
+              });
+              this.planCompletedTotal = Math.round(res.body.total);
+              this.planCompletedTotalTrend = Math.round(res.body.total_ta);
+              let dynamicColors = this.barBackgroundColor(
+                res.body.data,
+                this.planChartLabels1
+              );
+              this.planChartDataP[0].backgroundColor = dynamicColors;
+
+              this.planChartDataC[0]['data'] = this.planChartData2;
+              this.planChartDataC[0]['label'] = '';
+              this.planChartLabels = this.planChartLabels1;
+              this.planTotalAverage = this.planCompletedTotal;
+              this.planTotalGoal = res.body.goals;
+              this.planTotalPrev = this.planCompletedTotalTrend;
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColors = [{ backgroundColor: [] }];
+                this.barChartColors[0].backgroundColor[this.tpacAKey] =
+                  '#1CA49F';
+                this.TPACAcolors = this.barChartColors;
+                this.barChartColors = [{ backgroundColor: [] }];
+                this.barChartColors[0].backgroundColor[this.tpacCKey] =
+                  '#1CA49F';
+                this.TPACCcolors = this.barChartColors;
+              } else {
+                this.TPACAcolors = this.lineChartColors;
+                this.TPACCcolors = this.lineChartColors;
+                let dynamicColors2 = this.barBackgroundColor(
+                  res.body.data,
+                  this.planChartLabels1
+                );
+                this.planChartDataC[0].backgroundColor = dynamicColors2;
+              }
+              if (this.planTotalAverage >= this.planTotalPrev)
+                this.planTotalTooltip = 'up';
+              var index = 0;
+              this.barChartOptionsTC.annotation = [];
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsTC.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.planTotalAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsTC.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.planTotalGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              }
             }
-          });
-          this.planCompletedTotal = Math.round(res.body.total);
-          this.planCompletedTotalTrend = Math.round(res.body.total_ta);
-          let dynamicColors = this.barBackgroundColor(res.body.data, this.planChartLabels1);          
-          this.planChartDataP[0].backgroundColor = dynamicColors;
-  
-          this.planChartDataC[0]['data'] = this.planChartData2;
-          this.planChartDataC[0]['label'] = '';
-          this.planChartLabels = this.planChartLabels1;
-          this.planTotalAverage = this.planCompletedTotal;
-          this.planTotalGoal = res.body.goals;
-          this.planTotalPrev = this.planCompletedTotalTrend;
-          if (this.user_type == '4' && this.childid != '') {
-            this.barChartColors = [
-              { backgroundColor: [] }
-            ];
-            this.barChartColors[0].backgroundColor[this.tpacAKey] = '#1CA49F';
-            this.TPACAcolors = this.barChartColors;
-            this.barChartColors = [
-              { backgroundColor: [] }
-            ];
-            this.barChartColors[0].backgroundColor[this.tpacCKey] = '#1CA49F';
-            this.TPACCcolors = this.barChartColors;
-  
-          }
-          else {
-            this.TPACAcolors = this.lineChartColors;
-            this.TPACCcolors = this.lineChartColors;  
-            let dynamicColors2 = this.barBackgroundColor(res.body.data, this.planChartLabels1);      
-            this.planChartDataC[0].backgroundColor = dynamicColors2;
-  
-          }
-          if (this.planTotalAverage >= this.planTotalPrev)
-            this.planTotalTooltip = 'up';
-          var index = 0;
-          this.barChartOptionsTC.annotation = [];
-          if (this.goalchecked == 'average') {
-            this.barChartOptionsTC.annotation = {
-              annotations: [{
-                type: 'line',
-                drawTime: 'afterDatasetsDraw',
-                mode: 'horizontal',
-                scaleID: 'y-axis-0',
-                value: this.planTotalAverage,
-                borderColor: '#0e3459',
-                borderWidth: 2,
-                borderDash: [2, 2],
-                borderDashOffset: 0,
-              },
-              ]
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            if (this.user_type != '7') {
+              this.toastr.error(
+                'There was an error retrieving your report data, please contact our support team.'
+              );
+              this.warningMessage = 'Please Provide Valid Inputs!';
             }
           }
-          else if (this.goalchecked == 'goal') {
-            this.barChartOptionsTC.annotation = {
-              annotations: [{
-                type: 'line',
-                drawTime: 'afterDatasetsDraw',
-                mode: 'horizontal',
-                scaleID: 'y-axis-0',
-                value: this.planTotalGoal * this.goalCount,
-                borderColor: 'red',
-                borderWidth: 2,
-                borderDash: [2, 2],
-                borderDashOffset: 0,
-              },
-              ]
-            }
-          }
-        }
-      }, error => {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        if(this.user_type !='7'){
-          this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-          this.warningMessage = "Please Provide Valid Inputs!";
-        } 
-      });
-    }
+        );
+  }
 
   public gaugeValueTreatmentP: any = 0;
   public maxplanTotalGoal: any = 0;
@@ -5033,51 +5847,67 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     // $('.treatmentPlanSingle .tcmain1').addClass('active');
     this.buildChartTreatmentDentistLoader = true;
 
-
-    this.clinic_id && this.cliniciananalysisService.TreatmentPlanDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-      this.gaugeValueTreatment = 0;
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.buildChartTreatmentDentistLoader = false;
-        this.gaugeValueTreatmentP = 0;
-        this.gaugeValueTreatment = 0;
-        if (res.body.data != null) {
-          if (res.body.data[0] && res.body.data[0].average_fees != undefined)
-            this.gaugeValueTreatmentP = Math.round(res.body.data[0].average_fees);
-          if (res.body.data[0] && res.body.data[0].provider_name != undefined)
-            this.gaugeLabelTreatment = res.body.data[0].provider_name;
-          this.planTotalAll = Math.round(res.body.total);
-          this.planTotal = this.planTotalAll;
-          this.planAllTotalTrend = Math.round(res.body.total_ta);
-          this.planTotalPrev = this.planAllTotalTrend;
-        }
-        else {
-          this.gaugeValueTreatmentP = 0;
-          this.gaugeLabelTreatment = "";
-          this.planTotal = 0;
-          this.planTotalAverage = 0;
-          this.planAllTotalTrend = 0;
-          this.planTotalPrev = this.planAllTotalTrend;
-          this.planTotalAll = 0;
-        }
-        this.gaugeValueTreatment = this.gaugeValueTreatmentP;
-        this.planTotalGoal = res.body.goals;
-        if (this.gaugeValueTreatment > this.planTotalGoal)
-          this.maxplanTotalGoal = this.gaugeValueTreatment;
-        else
-          this.maxplanTotalGoal = this.planTotalGoal;
-        if (this.maxplanTotalGoal == 0)
-          this.maxplanTotalGoal = '';
-
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .TreatmentPlanDentist(
+          this.selectedDentist,
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            this.gaugeValueTreatment = 0;
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.buildChartTreatmentDentistLoader = false;
+              this.gaugeValueTreatmentP = 0;
+              this.gaugeValueTreatment = 0;
+              if (res.body.data != null) {
+                if (
+                  res.body.data[0] &&
+                  res.body.data[0].average_fees != undefined
+                )
+                  this.gaugeValueTreatmentP = Math.round(
+                    res.body.data[0].average_fees
+                  );
+                if (
+                  res.body.data[0] &&
+                  res.body.data[0].provider_name != undefined
+                )
+                  this.gaugeLabelTreatment = res.body.data[0].provider_name;
+                this.planTotalAll = Math.round(res.body.total);
+                this.planTotal = this.planTotalAll;
+                this.planAllTotalTrend = Math.round(res.body.total_ta);
+                this.planTotalPrev = this.planAllTotalTrend;
+              } else {
+                this.gaugeValueTreatmentP = 0;
+                this.gaugeLabelTreatment = '';
+                this.planTotal = 0;
+                this.planTotalAverage = 0;
+                this.planAllTotalTrend = 0;
+                this.planTotalPrev = this.planAllTotalTrend;
+                this.planTotalAll = 0;
+              }
+              this.gaugeValueTreatment = this.gaugeValueTreatmentP;
+              this.planTotalGoal = res.body.goals;
+              if (this.gaugeValueTreatment > this.planTotalGoal)
+                this.maxplanTotalGoal = this.gaugeValueTreatment;
+              else this.maxplanTotalGoal = this.planTotalGoal;
+              if (this.maxplanTotalGoal == 0) this.maxplanTotalGoal = '';
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        );
   }
 
   public gaugeValueTreatmentC: any = 0;
@@ -5089,86 +5919,114 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     // $('.treatmentPlanSingle .tcmain1').addClass('active');
     this.buildChartTreatmentDentistLoader = true;
 
-
-    this.clinic_id && this.cliniciananalysisService.TreatmentPlanCompletedFeesDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-      this.gaugeValueTreatmentCmp = 0;
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.buildChartTreatmentDentistLoader = false;
-        this.gaugeValueTreatmentC = 0;
-        this.gaugeValueTreatmentCmp = 0;
-        if (res.body.data != null) {
-          if (res.body.data[0] && res.body.data[0].average_fees != undefined)
-            this.gaugeValueTreatmentC = Math.round(res.body.data[0].average_fees);
-          if (res.body.data[0] && res.body.data[0].provider_name != undefined)
-            this.gaugeLabelTreatment = res.body.data[0].provider_name;
-          this.planTotalAll = Math.round(res.body.total_all);
-          this.planTotalCompleted = Math.round(res.body.total);
-          this.planTotal = this.planTotalAll;
-          this.planCompletedTotalTrend = Math.round(res.body.total_ta);
-          this.planAllTotalTrend = Math.round(res.body.total_ta);
-          this.planTotalPrev = this.planAllTotalTrend;
-        }
-        else {
-          this.gaugeValueTreatmentC = 0;
-          this.gaugeLabelTreatment = "";
-          this.planTotal = 0;
-          this.planTotalAverage = 0;
-          this.planCompletedTotalTrend = 0;
-          this.planAllTotalTrend = 0;
-          this.planTotalPrev = this.planAllTotalTrend;
-          this.planTotalAll = 0;
-          this.planTotalCompleted = 0;
-        }
-        this.gaugeValueTreatmentCmp = this.gaugeValueTreatmentC;
-        this.planTotalGoal = res.body.goals;
-        if (this.gaugeValueTreatmentCmp > this.planTotalGoal)
-          this.maxplanTotalGoal = this.gaugeValueTreatmentCmp;
-        else
-          this.maxplanTotalGoal = this.planTotalGoal;
-        if (this.maxplanTotalGoal == 0)
-          this.maxplanTotalGoal = '';
-
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .TreatmentPlanCompletedFeesDentist(
+          this.selectedDentist,
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            this.gaugeValueTreatmentCmp = 0;
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.buildChartTreatmentDentistLoader = false;
+              this.gaugeValueTreatmentC = 0;
+              this.gaugeValueTreatmentCmp = 0;
+              if (res.body.data != null) {
+                if (
+                  res.body.data[0] &&
+                  res.body.data[0].average_fees != undefined
+                )
+                  this.gaugeValueTreatmentC = Math.round(
+                    res.body.data[0].average_fees
+                  );
+                if (
+                  res.body.data[0] &&
+                  res.body.data[0].provider_name != undefined
+                )
+                  this.gaugeLabelTreatment = res.body.data[0].provider_name;
+                this.planTotalAll = Math.round(res.body.total_all);
+                this.planTotalCompleted = Math.round(res.body.total);
+                this.planTotal = this.planTotalAll;
+                this.planCompletedTotalTrend = Math.round(res.body.total_ta);
+                this.planAllTotalTrend = Math.round(res.body.total_ta);
+                this.planTotalPrev = this.planAllTotalTrend;
+              } else {
+                this.gaugeValueTreatmentC = 0;
+                this.gaugeLabelTreatment = '';
+                this.planTotal = 0;
+                this.planTotalAverage = 0;
+                this.planCompletedTotalTrend = 0;
+                this.planAllTotalTrend = 0;
+                this.planTotalPrev = this.planAllTotalTrend;
+                this.planTotalAll = 0;
+                this.planTotalCompleted = 0;
+              }
+              this.gaugeValueTreatmentCmp = this.gaugeValueTreatmentC;
+              this.planTotalGoal = res.body.goals;
+              if (this.gaugeValueTreatmentCmp > this.planTotalGoal)
+                this.maxplanTotalGoal = this.gaugeValueTreatmentCmp;
+              else this.maxplanTotalGoal = this.planTotalGoal;
+              if (this.maxplanTotalGoal == 0) this.maxplanTotalGoal = '';
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        );
   }
 
   //Recall Chart Rate for all dentists
 
   private recallChartTreatment() {
     this.planTotal = 0;
-    this.clinic_id && this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-      this.planTotal = 0;
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        res.body.data.forEach(res => {
-          if (res.average_cost) {
-            this.planChartData1.push(Math.round(res.average_cost));
-            this.planChartLabels1.push(res.provider);
-            this.planTotal = this.planTotal + parseInt(res.average_cost);
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .RecallPrebook(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            this.planTotal = 0;
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              res.body.data.forEach((res) => {
+                if (res.average_cost) {
+                  this.planChartData1.push(Math.round(res.average_cost));
+                  this.planChartLabels1.push(res.provider);
+                  this.planTotal = this.planTotal + parseInt(res.average_cost);
+                }
+              });
+              this.planChartLabels = this.planChartLabels1;
+              this.planTotalAverage =
+                this.planTotal / this.planChartData1.length;
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            if (this.user_type != '7') {
+              this.toastr.error(
+                'There was an error retrieving your report data, please contact our support team.'
+              );
+              this.warningMessage = 'Please Provide Valid Inputs!';
+            }
           }
-        });
-        this.planChartLabels = this.planChartLabels1;
-        this.planTotalAverage = this.planTotal / this.planChartData1.length;
-
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      if(this.user_type !='7'){
-        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-        this.warningMessage = "Please Provide Valid Inputs!";
-      }
-    }
-    );
+        );
   }
 
   public doughnutTotalTooltip = 'up';
@@ -5178,77 +6036,99 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public npColors: any;
   public doughnutChartColors1: any;
   //No of patient Complaints chart for all dentists
-  public patientCtbl:any =[];
-  public showpatientCtblTbl:boolean =false;
+  public patientCtbl: any = [];
+  public showpatientCtblTbl: boolean = false;
   private buildChartNopatients() {
     this.buildChartNopatientsLoader = true;
     this.doughnutTotalPrev = 0;
     this.doughnutTotalAverage = 0;
     this.doughnutChartData = [];
     this.doughnutChartLabels = [];
-    this.clinic_id && this.cliniciananalysisService.NoPatients(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.doughnutChartData1 = [];
-      this.doughnutChartLabels1 = [];
-      this.doughnutTotal = 0;
-      this.patientCtbl=[];
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.buildChartNopatientsLoader = false;
-        this.doughnutTotalTooltip = 'up';
-        var i = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          res.body.data.sort((a, b)=> a.num_complaints - b.num_complaints).reverse();
-        }
-        this.patientCtbl = res.body.data;
-        // if(res.body.data.length >= this.numberOfRecords){
-        //   this.patientCtbl = res.body.data;
-        //   this.showpatientCtblTbl = true;
-        // }else{
-        //   this.showpatientCtblTbl = false;
-        // }
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-          if (res.provider_name != null && res.num_complaints > 0) {
-            var pName ='';
-            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                pName = res.provider_name + " - " + res.clinic_name;
-              }else{
-                pName = res.provider_name;
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .NoPatients(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.doughnutChartData1 = [];
+            this.doughnutChartLabels1 = [];
+            this.doughnutTotal = 0;
+            this.patientCtbl = [];
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.buildChartNopatientsLoader = false;
+              this.doughnutTotalTooltip = 'up';
+              var i = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                res.body.data
+                  .sort((a, b) => a.num_complaints - b.num_complaints)
+                  .reverse();
               }
-            this.doughnutChartData1.push(Math.round(res.num_complaints));
-            this.doughnutChartLabels1.push(pName);
-            this.doughnutTotal = this.doughnutTotal + parseInt(res.num_complaints);
-            if (res.provider_name != 'Anonymous')
-              this.npKey = i;
-            i++;
-          }
-        });
-        this.doughnutChartData = this.doughnutChartData1;
-        this.doughnutChartLabels = this.doughnutChartLabels1;
-        this.doughnutTotalAverage = res.body.total;
-        this.doughnutTotalPrev = res.body.total_ta;
-        this.doughnutGoals = res.body.goals;
-        if (this.user_type == '4' && this.childid != '') {
-          this.doughnutChartColors1 = [{ backgroundColor: [] }];
+              this.patientCtbl = res.body.data;
+              // if(res.body.data.length >= this.numberOfRecords){
+              //   this.patientCtbl = res.body.data;
+              //   this.showpatientCtblTbl = true;
+              // }else{
+              //   this.showpatientCtblTbl = false;
+              // }
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                if (res.provider_name != null && res.num_complaints > 0) {
+                  var pName = '';
+                  if (
+                    this.clinic_id.indexOf(',') >= 0 ||
+                    Array.isArray(this.clinic_id)
+                  ) {
+                    pName = res.provider_name + ' - ' + res.clinic_name;
+                  } else {
+                    pName = res.provider_name;
+                  }
+                  this.doughnutChartData1.push(Math.round(res.num_complaints));
+                  this.doughnutChartLabels1.push(pName);
+                  this.doughnutTotal =
+                    this.doughnutTotal + parseInt(res.num_complaints);
+                  if (res.provider_name != 'Anonymous') this.npKey = i;
+                  i++;
+                }
+              });
+              this.doughnutChartData = this.doughnutChartData1;
+              this.doughnutChartLabels = this.doughnutChartLabels1;
+              this.doughnutTotalAverage = res.body.total;
+              this.doughnutTotalPrev = res.body.total_ta;
+              this.doughnutGoals = res.body.goals;
+              if (this.user_type == '4' && this.childid != '') {
+                this.doughnutChartColors1 = [{ backgroundColor: [] }];
 
-          this.doughnutChartColors1[0].backgroundColor[this.npKey] = '#1CA49F';
-          this.npColors = this.doughnutChartColors1;
-        }
-        else
-          this.npColors = this.doughnutChartColors;
-        if (this.doughnutTotalAverage >= this.doughnutTotalPrev)
-          this.doughnutTotalTooltip = 'down';
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      if(this.user_type !='7'){
-        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-        this.warningMessage = "Please Provide Valid Inputs!";
-      }  
-    }
-    );
+                this.doughnutChartColors1[0].backgroundColor[this.npKey] =
+                  '#1CA49F';
+                this.npColors = this.doughnutChartColors1;
+              } else this.npColors = this.doughnutChartColors;
+              if (this.doughnutTotalAverage >= this.doughnutTotalPrev)
+                this.doughnutTotalTooltip = 'down';
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            if (this.user_type != '7') {
+              this.toastr.error(
+                'There was an error retrieving your report data, please contact our support team.'
+              );
+              this.warningMessage = 'Please Provide Valid Inputs!';
+            }
+          }
+        );
   }
 
   public buildChartNopatientsDentistLoader: boolean;
@@ -5257,47 +6137,56 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   private buildChartNopatientsDentist() {
     this.buildChartNopatientsDentistLoader = true;
     this.gaugeLabelPatients = '';
-    this.clinic_id && this.cliniciananalysisService.NoPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-      this.doughnutTotal = 0;
-      this.maxdoughnutGoals = 0;
-      if (res.body.data && res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.doughnutTotalTooltip = 'up';
-        this.buildChartNopatientsDentistLoader = false;
-        if (res.body.data[0]) {
-          this.gaugeValuePatients = res.body.data[0].num_complaints;
-          this.gaugeLabelPatients = res.body.data[0].provider_name;
-          this.doughnutTotal = res.body.total;
-          this.doughnutTotalPrev = res.body.total_ta;
-        }
-        else {
-          this.gaugeValuePatients = 0;
-          this.gaugeLabelPatients = "";
-          this.doughnutTotal = 0;
-          this.doughnutTotalAverage = 0;
-        }
-        this.doughnutTotalAverage = res.body.total;
-        this.doughnutTotalPrev = res.body.total_ta;
-        if (this.doughnutTotalAverage >= this.doughnutTotalPrev)
-          this.doughnutTotalTooltip = 'down';
-        this.doughnutGoals = res.body.goals;
-        if (this.gaugeValuePatients > this.doughnutGoals)
-          this.maxdoughnutGoals = this.gaugeValuePatients;
-        else
-          this.maxdoughnutGoals = this.doughnutGoals;
-        if (this.maxdoughnutGoals == 0)
-          this.maxdoughnutGoals = '';
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .NoPatientsDentist(
+          this.selectedDentist,
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            this.doughnutTotal = 0;
+            this.maxdoughnutGoals = 0;
+            if (res.body.data && res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.doughnutTotalTooltip = 'up';
+              this.buildChartNopatientsDentistLoader = false;
+              if (res.body.data[0]) {
+                this.gaugeValuePatients = res.body.data[0].num_complaints;
+                this.gaugeLabelPatients = res.body.data[0].provider_name;
+                this.doughnutTotal = res.body.total;
+                this.doughnutTotalPrev = res.body.total_ta;
+              } else {
+                this.gaugeValuePatients = 0;
+                this.gaugeLabelPatients = '';
+                this.doughnutTotal = 0;
+                this.doughnutTotalAverage = 0;
+              }
+              this.doughnutTotalAverage = res.body.total;
+              this.doughnutTotalPrev = res.body.total_ta;
+              if (this.doughnutTotalAverage >= this.doughnutTotalPrev)
+                this.doughnutTotalTooltip = 'down';
+              this.doughnutGoals = res.body.goals;
+              if (this.gaugeValuePatients > this.doughnutGoals)
+                this.maxdoughnutGoals = this.gaugeValuePatients;
+              else this.maxdoughnutGoals = this.doughnutGoals;
+              if (this.maxdoughnutGoals == 0) this.maxdoughnutGoals = '';
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        );
   }
-
 
   public newPatientTotalTooltip = 'down';
   public newPatientTotalPrev = 0;
@@ -5312,10 +6201,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     labels: {
       usePointStyle: true
     }
-  }
+  };
   //New Patients Chart for all dentist
-  public newPatienttbl :any =[];
-  public shownewPatientTbl :boolean =false;
+  public newPatienttbl: any = [];
+  public shownewPatientTbl: boolean = false;
   private buildChartNewpatients() {
     this.newPatientChartData1 = [];
     this.newPatientChartLabels1 = [];
@@ -5323,70 +6212,89 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.buildChartNewpatientsLoader = true;
     this.newPatientChartLabels = [];
     this.newPatientsDataMax = 0;
-    this.newPatienttbl =[];
-    this.newPatientChartData=[];
-    this.clinic_id && this.cliniciananalysisService.NewPatients(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      if (res.body.data && res.status == 200) {
-        this.newpKey = '';
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.buildChartNewpatientsLoader = false;
-        this.newPatientTotalTooltip = 'down';
-        var i = 0;
-        this.newPatientChartLabels1 = []; // reset on api call
-        this.newPatientChartData1 = []; // reset on api call
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          res.body.data.sort((a, b)=> a.new_patients - b.new_patients).reverse();
-        }
-        this.newPatienttbl = res.body.data;
-        // if(res.body.data.length >= this.numberOfRecords){
-        //   this.shownewPatientTbl = true;
-        // }else{
-        //   this.shownewPatientTbl = false;
-        // }
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-          if (res.new_patients) {
-            var pName ='';
-            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                pName = res.provider_name + " - " + res.clinic_name;
-              }else{
-                pName = res.provider_name;
+    this.newPatienttbl = [];
+    this.newPatientChartData = [];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .NewPatients(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            if (res.body.data && res.status == 200) {
+              this.newpKey = '';
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.buildChartNewpatientsLoader = false;
+              this.newPatientTotalTooltip = 'down';
+              var i = 0;
+              this.newPatientChartLabels1 = []; // reset on api call
+              this.newPatientChartData1 = []; // reset on api call
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                res.body.data
+                  .sort((a, b) => a.new_patients - b.new_patients)
+                  .reverse();
               }
-            this.newPatientChartData1.push(parseInt(res.new_patients));
-            this.newPatientChartLabels1.push(pName);
-            if (res.provider_name != 'Anonymous')
-              this.newpKey = i;
-            i++;
+              this.newPatienttbl = res.body.data;
+              // if(res.body.data.length >= this.numberOfRecords){
+              //   this.shownewPatientTbl = true;
+              // }else{
+              //   this.shownewPatientTbl = false;
+              // }
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                if (res.new_patients) {
+                  var pName = '';
+                  if (
+                    this.clinic_id.indexOf(',') >= 0 ||
+                    Array.isArray(this.clinic_id)
+                  ) {
+                    pName = res.provider_name + ' - ' + res.clinic_name;
+                  } else {
+                    pName = res.provider_name;
+                  }
+                  this.newPatientChartData1.push(parseInt(res.new_patients));
+                  this.newPatientChartLabels1.push(pName);
+                  if (res.provider_name != 'Anonymous') this.newpKey = i;
+                  i++;
+                }
+              });
+
+              this.newPatientChartData = this.newPatientChartData1;
+              this.newPatientChartLabels = this.newPatientChartLabels1;
+
+              this.newPatientTotal = res.body.total;
+              this.newPatientTotal$.next(res.body.total);
+              //this.doughnutChartOptions.elements.center.text = this.newPatientTotal;
+              this.newPatientTotalPrev = res.body.total_ta;
+              this.newPatientGoals = res.body.goals;
+              if (this.user_type == '4' && this.childid != '') {
+                this.doughnutChartColors2 = [{ backgroundColor: [] }];
+
+                this.doughnutChartColors2[0].backgroundColor[this.newpKey] =
+                  '#1CA49F';
+                this.newpColors = this.doughnutChartColors2;
+              } else this.newpColors = this.doughnutChartColors;
+              if (this.newPatientTotal >= this.newPatientTotalPrev)
+                this.newPatientTotalTooltip = 'up';
+              this.newPatientsDataMax = Math.max(...this.newPatientChartData);
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        });
-
-        this.newPatientChartData = this.newPatientChartData1;
-        this.newPatientChartLabels = this.newPatientChartLabels1;
-
-        this.newPatientTotal = res.body.total;
-        this.newPatientTotal$.next(res.body.total);
-        //this.doughnutChartOptions.elements.center.text = this.newPatientTotal;
-        this.newPatientTotalPrev = res.body.total_ta;
-        this.newPatientGoals = res.body.goals;
-        if (this.user_type == '4' && this.childid != '') {
-          this.doughnutChartColors2 = [{ backgroundColor: [] }];
-
-          this.doughnutChartColors2[0].backgroundColor[this.newpKey] = '#1CA49F';
-          this.newpColors = this.doughnutChartColors2;
-        }
-        else
-          this.newpColors = this.doughnutChartColors;
-        if (this.newPatientTotal >= this.newPatientTotalPrev)
-          this.newPatientTotalTooltip = 'up';
-        this.newPatientsDataMax = Math.max(...this.newPatientChartData);
-      }
-    }, error => {
-       this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+        );
   }
 
   public newPatientPercent = 0;
@@ -5397,37 +6305,49 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.buildChartNewpatientsDentistLoader = true;
     this.newPatientPercent = 0;
     this.newPatientTotal = 0;
-    this.clinic_id && this.cliniciananalysisService.NewPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-      if (res.body.data && res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-        this.buildChartNewpatientsDentistLoader = false;
-        this.newPatientGoals = res.body.goals;
-        if (res.body.data != null && res.body.data[0]) {
-          this.newPatientValuePatients = res.body.data[0].new_patients;
-          this.newPatientLabelPatients = res.body.data[0].provider_name;
-          this.newPatientTotal = Math.round(res.body.total);
-          // this.newPatientTotalAverage = data.total_average;
-          this.newPatientTotalPrev = Math.round(res.body.total_ta);
-        } else {
-          this.newPatientValuePatients = 0;
-          this.newPatientLabelPatients = "";
-          this.newPatientTotalPrev = 0;
-          // this.newPatientTotalAverage = 0;
-          // this.newPatientTotalAverage = data.total_average;
-        }
-        //this.doughnutChartOptions.elements.center.text = this.newPatientValuePatients;
-        this.maxnewPatientGoal = res.body.goals;
-        if (this.maxnewPatientGoal == 0)
-          this.maxnewPatientGoal = '';
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .NewPatientsDentist(
+          this.selectedDentist,
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            if (res.body.data && res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.buildChartNewpatientsDentistLoader = false;
+              this.newPatientGoals = res.body.goals;
+              if (res.body.data != null && res.body.data[0]) {
+                this.newPatientValuePatients = res.body.data[0].new_patients;
+                this.newPatientLabelPatients = res.body.data[0].provider_name;
+                this.newPatientTotal = Math.round(res.body.total);
+                // this.newPatientTotalAverage = data.total_average;
+                this.newPatientTotalPrev = Math.round(res.body.total_ta);
+              } else {
+                this.newPatientValuePatients = 0;
+                this.newPatientLabelPatients = '';
+                this.newPatientTotalPrev = 0;
+                // this.newPatientTotalAverage = 0;
+                // this.newPatientTotalAverage = data.total_average;
+              }
+              //this.doughnutChartOptions.elements.center.text = this.newPatientValuePatients;
+              this.maxnewPatientGoal = res.body.goals;
+              if (this.maxnewPatientGoal == 0) this.maxnewPatientGoal = '';
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        );
   }
 
   public hourlyRateChartData: any[] = [
@@ -5449,15 +6369,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public hourlyRateChartAverage;
   public hourlyRateChartGoal;
   public hourlyRateChartAveragePrev;
-  public hourlyRateChartTooltip = 'down'; 
+  public hourlyRateChartTooltip = 'down';
   public hourlyRateChartLoader: boolean = true;
   public hrKey: any;
   public HRcolors: any;
   public HRcolorsDent: any;
   public HRcolorsOht: any;
   //All dentist Hourly ratechart
-  public hourlyRatetbl:any =[];
-  public showHrTbl :boolean =false;
+  public hourlyRatetbl: any = [];
+  public showHrTbl: boolean = false;
   private hourlyRateChart() {
     this.hourlyRateChartLoader = true;
     this.hourlyRateChartData1 = [];
@@ -5465,130 +6385,155 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     this.hourlyRateChartLabels = [];
     this.barChartOptionsHR.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.hourlyRateChart(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.hourlyRateChartData1 = [];
-      this.hourlyRateChartLabels1 = [];
-      this.hourlyRateChartLabels = [];
-      this.barChartOptionsHR.annotation = [];
-      this.hourlyRatetbl = [];
-      this.hourlyRateChartData[0]['data']=[];
-      if (res.status == 200) {
-        this.hrKey ='';
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.hourlyRateChartLoader = false;
-        this.hourlyRateChartTooltip = 'down';
-        var i = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.hourlyRatetbl = res.body.data;
-        // if(res.body.data.length >= this.numberOfRecords){
-        //   this.hourlyRatetbl = res.body.data;
-        //   this.showHrTbl = true;
-        // }else{
-        //   this.showHrTbl = false;
-        // }
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-          if (res.hourly_rate > 0) {
-            this.hourlyRateChartData1.push(Math.round(res.hourly_rate));
-            var pName ='';
-            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                pName = res.provider_name + " - " + res.clinic_name;
-              }else{
-                pName = res.provider_name;
-              }
-            if (res.provider_name != null && res.provider_name != 'Anonymous') {
-              if (res.provider_name.includes(',')) {
-                let namet: any = res.provider_name.split(',');
-                var name: any = namet[1] + " " + namet[0];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .hourlyRateChart(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.hourlyRateChartData1 = [];
+            this.hourlyRateChartLabels1 = [];
+            this.hourlyRateChartLabels = [];
+            this.barChartOptionsHR.annotation = [];
+            this.hourlyRatetbl = [];
+            this.hourlyRateChartData[0]['data'] = [];
+            if (res.status == 200) {
+              this.hrKey = '';
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.hourlyRateChartLoader = false;
+              this.hourlyRateChartTooltip = 'down';
+              var i = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.hourly_rate - b.hourly_rate)
+                  .reverse();
               } else {
-                var name: any = res.provider_name;
+                this.isAllClinic = false;
               }
-              this.hourlyRateChartLabels1.push(pName);
-              this.hrKey = i;
+              this.hourlyRatetbl = res.body.data;
+              // if(res.body.data.length >= this.numberOfRecords){
+              //   this.hourlyRatetbl = res.body.data;
+              //   this.showHrTbl = true;
+              // }else{
+              //   this.showHrTbl = false;
+              // }
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                if (res.hourly_rate > 0) {
+                  this.hourlyRateChartData1.push(Math.round(res.hourly_rate));
+                  var pName = '';
+                  if (
+                    this.clinic_id.indexOf(',') >= 0 ||
+                    Array.isArray(this.clinic_id)
+                  ) {
+                    pName = res.provider_name + ' - ' + res.clinic_name;
+                  } else {
+                    pName = res.provider_name;
+                  }
+                  if (
+                    res.provider_name != null &&
+                    res.provider_name != 'Anonymous'
+                  ) {
+                    if (res.provider_name.includes(',')) {
+                      let namet: any = res.provider_name.split(',');
+                      var name: any = namet[1] + ' ' + namet[0];
+                    } else {
+                      var name: any = res.provider_name;
+                    }
+                    this.hourlyRateChartLabels1.push(pName);
+                    this.hrKey = i;
+                  } else this.hourlyRateChartLabels1.push(pName);
+                  i++;
+                }
+              });
+
+              this.hourlyRateChartData[0]['data'] = this.hourlyRateChartData1;
+              this.hourlyRateChartLabels = this.hourlyRateChartLabels1;
+              this.hourlyRateChartAverage = Math.round(res.body.total);
+              this.hourlyRateChartAveragePrev = Math.round(res.body.total_ta);
+              this.hourlyRateChartGoal = res.body.goals;
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColors = [{ backgroundColor: [] }];
+                this.barChartColors[0].backgroundColor[this.hrKey] = '#1CA49F';
+                this.HRcolors = this.barChartColors;
+              } else {
+                this.HRcolors = this.lineChartColors;
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.hourlyRateChartLabels
+                );
+                this.hourlyRateChartData[0].backgroundColor = dynamicColors;
+              }
+
+              if (
+                this.hourlyRateChartAverage >= this.hourlyRateChartAveragePrev
+              )
+                this.hourlyRateChartTooltip = 'up';
+
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsHR.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.hourlyRateChartAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsHR.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.hourlyRateChartGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              }
             }
-            else
-              this.hourlyRateChartLabels1.push(pName);
-            i++;
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            if (this.user_type != '7') {
+              this.toastr.error(
+                'There was an error retrieving your report data, please contact our support team.'
+              );
+              this.warningMessage = 'Please Provide Valid Inputs!';
+            }
           }
-
-        });
-
-        this.hourlyRateChartData[0]['data'] = this.hourlyRateChartData1;
-        this.hourlyRateChartLabels = this.hourlyRateChartLabels1;
-        this.hourlyRateChartAverage = Math.round(res.body.total);
-        this.hourlyRateChartAveragePrev = Math.round(res.body.total_ta);
-        this.hourlyRateChartGoal = res.body.goals;
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors = [
-            { backgroundColor: [] }
-          ];
-          this.barChartColors[0].backgroundColor[this.hrKey] = '#1CA49F';
-          this.HRcolors = this.barChartColors;
-        }
-        else {
-          this.HRcolors = this.lineChartColors;
-          let dynamicColors = this.barBackgroundColor(res.body.data, this.hourlyRateChartLabels);       
-          this.hourlyRateChartData[0].backgroundColor = dynamicColors;
-        }
-
-        if (this.hourlyRateChartAverage >= this.hourlyRateChartAveragePrev)
-          this.hourlyRateChartTooltip = 'up';
-
-
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsHR.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.hourlyRateChartAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-        else if (this.goalchecked == 'goal') {
-          this.barChartOptionsHR.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.hourlyRateChartGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      if(this.user_type !='7'){
-        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-        this.warningMessage = "Please Provide Valid Inputs!";
-      }      
-    }
-    );
+        );
   }
 
   public hourlyRateChartDentistsData: any[] = [
     {
       ...this.chartService.baseChartData,
-      data: [],
+      data: []
     }
   ];
   public hourlyRateChartDesntistsData1: any[] = [];
@@ -5597,10 +6542,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public hourlyRateChartDesntistsAveragePrev;
   public hourlyRateChartDesntistsTooltip = 'down';
   public hourlyRateChartDentistsLoader: boolean = true;
-  public hourlyRateChartDesntistsLabels :any;
+  public hourlyRateChartDesntistsLabels: any;
   //All dentist Hourly ratechart
-  public hourlyRateDenttbl :any =[];
-  public showHrDentTbl:boolean =false;
+  public hourlyRateDenttbl: any = [];
+  public showHrDentTbl: boolean = false;
   private hourlyRateChartDesntists() {
     this.hourlyRateChartDentistsLoader = true;
     this.hourlyRateChartDesntistsData1 = [];
@@ -5608,130 +6553,163 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     this.hourlyRateChartDesntistsLabels = [];
     this.barChartOptionsHR1.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.hourlyRateChartDesntists(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.hourlyRateChartDesntistsData1 = [];
-      this.hourlyRateChartDesntistsLabels1 = [];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .hourlyRateChartDesntists(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.hourlyRateChartDesntistsData1 = [];
+            this.hourlyRateChartDesntistsLabels1 = [];
 
-      this.hourlyRateChartDesntistsLabels = [];
-      this.barChartOptionsHR1.annotation = [];
-      this.hourlyRateDenttbl =[];
-      this.hourlyRateChartDentistsData[0]['data'] =[];
-      if (res.status == 200) {
-        this.hrKey ='';
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.hourlyRateChartDentistsLoader = false;
-        this.hourlyRateChartDesntistsTooltip = 'down';
-        var i = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.hourlyRateDenttbl = res.body.data;
-        // if(res.body.data.length >= this.numberOfRecords){
-        //   this.hourlyRateDenttbl = res.body.data;
-        //   this.showHrDentTbl = true;
-        // }else{
-        //   this.showHrDentTbl = false;
-        // }
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-          if (res.hourly_rate > 0) {
-            var pName ='';
-            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                pName = res.provider_name + " - " + res.clinic_name;
-              }else{
-                pName = res.provider_name;
-              }
-            this.hourlyRateChartDesntistsData1.push(Math.round(res.hourly_rate));
-            if (res.provider_name != null && res.provider_name != 'Anonymous') {
-              if (res.provider_name.includes(',')) {
-                let namet: any = res.provider_name.split(',');
-                var name: any = namet[1] + " " + namet[0];
+            this.hourlyRateChartDesntistsLabels = [];
+            this.barChartOptionsHR1.annotation = [];
+            this.hourlyRateDenttbl = [];
+            this.hourlyRateChartDentistsData[0]['data'] = [];
+            if (res.status == 200) {
+              this.hrKey = '';
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.hourlyRateChartDentistsLoader = false;
+              this.hourlyRateChartDesntistsTooltip = 'down';
+              var i = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.hourly_rate - b.hourly_rate)
+                  .reverse();
               } else {
-                var name: any = res.provider_name;
+                this.isAllClinic = false;
               }
-              this.hourlyRateChartDesntistsLabels1.push(pName);
-              this.hrKey = i;
+              this.hourlyRateDenttbl = res.body.data;
+              // if(res.body.data.length >= this.numberOfRecords){
+              //   this.hourlyRateDenttbl = res.body.data;
+              //   this.showHrDentTbl = true;
+              // }else{
+              //   this.showHrDentTbl = false;
+              // }
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                if (res.hourly_rate > 0) {
+                  var pName = '';
+                  if (
+                    this.clinic_id.indexOf(',') >= 0 ||
+                    Array.isArray(this.clinic_id)
+                  ) {
+                    pName = res.provider_name + ' - ' + res.clinic_name;
+                  } else {
+                    pName = res.provider_name;
+                  }
+                  this.hourlyRateChartDesntistsData1.push(
+                    Math.round(res.hourly_rate)
+                  );
+                  if (
+                    res.provider_name != null &&
+                    res.provider_name != 'Anonymous'
+                  ) {
+                    if (res.provider_name.includes(',')) {
+                      let namet: any = res.provider_name.split(',');
+                      var name: any = namet[1] + ' ' + namet[0];
+                    } else {
+                      var name: any = res.provider_name;
+                    }
+                    this.hourlyRateChartDesntistsLabels1.push(pName);
+                    this.hrKey = i;
+                  } else this.hourlyRateChartDesntistsLabels1.push(pName);
+                  i++;
+                }
+              });
+
+              this.hourlyRateChartDentistsData[0]['data'] =
+                this.hourlyRateChartDesntistsData1;
+              this.hourlyRateChartDesntistsLabels =
+                this.hourlyRateChartDesntistsLabels1;
+              this.hourlyRateChartDesntistsAverage = Math.round(res.body.total);
+              this.hourlyRateChartDesntistsAveragePrev = Math.round(
+                res.body.total_ta
+              );
+              this.hourlyRateChartGoal = res.body.goals;
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColorsHrDent = [{ backgroundColor: [] }];
+                this.barChartColorsHrDent[0].backgroundColor[this.hrKey] =
+                  '#1CA49F';
+                this.HRcolorsDent = this.barChartColorsHrDent;
+              } else {
+                this.HRcolorsDent = this.lineChartColors;
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.hourlyRateChartDesntistsLabels
+                );
+                this.hourlyRateChartDentistsData[0].backgroundColor =
+                  dynamicColors;
+              }
+
+              if (
+                this.hourlyRateChartDesntistsAverage >=
+                this.hourlyRateChartDesntistsAveragePrev
+              )
+                this.hourlyRateChartDesntistsTooltip = 'up';
+
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsHR1.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.hourlyRateChartDesntistsAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsHR1.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.hourlyRateChartGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              }
             }
-            else
-              this.hourlyRateChartDesntistsLabels1.push(pName);
-            i++;
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-
-        });
-
-        this.hourlyRateChartDentistsData[0]['data'] = this.hourlyRateChartDesntistsData1;
-        this.hourlyRateChartDesntistsLabels = this.hourlyRateChartDesntistsLabels1;
-        this.hourlyRateChartDesntistsAverage = Math.round(res.body.total);
-        this.hourlyRateChartDesntistsAveragePrev = Math.round(res.body.total_ta);
-        this.hourlyRateChartGoal = res.body.goals;
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColorsHrDent = [
-            { backgroundColor: [] }
-          ];
-          this.barChartColorsHrDent[0].backgroundColor[this.hrKey] = '#1CA49F';
-          this.HRcolorsDent = this.barChartColorsHrDent;
-        }
-        else {
-          this.HRcolorsDent = this.lineChartColors;
-          let dynamicColors = this.barBackgroundColor(res.body.data, this.hourlyRateChartDesntistsLabels);      
-          this.hourlyRateChartDentistsData[0].backgroundColor = dynamicColors;
-        }
-
-        if (this.hourlyRateChartDesntistsAverage >= this.hourlyRateChartDesntistsAveragePrev)
-          this.hourlyRateChartDesntistsTooltip = 'up';
-
-
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsHR1.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.hourlyRateChartDesntistsAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-        else if (this.goalchecked == 'goal') {
-          this.barChartOptionsHR1.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.hourlyRateChartGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+        );
   }
-
 
   public hourlyRateChartOhtData: any[] = [
     {
       ...this.chartService.baseChartData,
-      data: [],
+      data: []
     }
   ];
   public hourlyRateChartOhtLabels1 = [];
@@ -5740,10 +6718,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public hourlyRateChartOhtTooltip = 'down';
   public hourlyRateChartOhtLoader: boolean = true;
   public hourlyRateChartOhtData1: any[] = [];
-  public hourlyRateChartOhtLabels:any;
+  public hourlyRateChartOhtLabels: any;
   //All dentist Hourly ratechart
-  public hourlyRateOhttbl:any =[];
-  public showHrOhtTbl:boolean =false;
+  public hourlyRateOhttbl: any = [];
+  public showHrOhtTbl: boolean = false;
   private hourlyRateChartOht() {
     this.hourlyRateChartOhtLoader = true;
     this.hourlyRateChartOhtData1 = [];
@@ -5751,125 +6729,156 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     this.hourlyRateChartOhtLabels = [];
     this.barChartOptionsHR2.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.hourlyRateChartOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.hourlyRateChartOhtData1 = [];
-      this.hourlyRateChartOhtLabels1 = [];
-      this.hourlyRateOhttbl =[];
-      this.hourlyRateChartOhtLabels = [];
-      this.barChartOptionsHR2.annotation = [];
-      this.hourlyRateChartOhtData[0]['data']=[];
-      this.hourlyRateChartOhtAverage =0;
-      if (res.status == 200) {
-        this.hrKey ='';
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.hourlyRateChartOhtLoader = false;
-        this.hourlyRateChartOhtTooltip = 'down';
-        var i = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.hourlyRateOhttbl = res.body.data;
-        // if(res.body.data.length >= this.numberOfRecords){
-        //   this.hourlyRateOhttbl = res.body.data;
-        //   this.showHrOhtTbl = true;
-        // }else{
-        //   this.showHrOhtTbl = false;
-        // }
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-          if (res.hourly_rate > 0) {
-            this.hourlyRateChartOhtData1.push(Math.round(res.hourly_rate));
-            var pName ='';
-            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                pName = res.provider_name + " - " + res.clinic_name;
-              }else{
-                pName = res.provider_name;
-              }
-            if (res.provider_name != null && res.provider_name != 'Anonymous') {
-              if (res.provider_name.includes(',')) {
-                let namet: any = res.provider_name.split(',');
-                var name: any = namet[1] + " " + namet[0];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .hourlyRateChartOht(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.hourlyRateChartOhtData1 = [];
+            this.hourlyRateChartOhtLabels1 = [];
+            this.hourlyRateOhttbl = [];
+            this.hourlyRateChartOhtLabels = [];
+            this.barChartOptionsHR2.annotation = [];
+            this.hourlyRateChartOhtData[0]['data'] = [];
+            this.hourlyRateChartOhtAverage = 0;
+            if (res.status == 200) {
+              this.hrKey = '';
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.hourlyRateChartOhtLoader = false;
+              this.hourlyRateChartOhtTooltip = 'down';
+              var i = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.hourly_rate - b.hourly_rate)
+                  .reverse();
               } else {
-                var name: any = res.provider_name;
+                this.isAllClinic = false;
               }
-              this.hourlyRateChartOhtLabels1.push(pName);
-              this.hrKey = i;
+              this.hourlyRateOhttbl = res.body.data;
+              // if(res.body.data.length >= this.numberOfRecords){
+              //   this.hourlyRateOhttbl = res.body.data;
+              //   this.showHrOhtTbl = true;
+              // }else{
+              //   this.showHrOhtTbl = false;
+              // }
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                if (res.hourly_rate > 0) {
+                  this.hourlyRateChartOhtData1.push(
+                    Math.round(res.hourly_rate)
+                  );
+                  var pName = '';
+                  if (
+                    this.clinic_id.indexOf(',') >= 0 ||
+                    Array.isArray(this.clinic_id)
+                  ) {
+                    pName = res.provider_name + ' - ' + res.clinic_name;
+                  } else {
+                    pName = res.provider_name;
+                  }
+                  if (
+                    res.provider_name != null &&
+                    res.provider_name != 'Anonymous'
+                  ) {
+                    if (res.provider_name.includes(',')) {
+                      let namet: any = res.provider_name.split(',');
+                      var name: any = namet[1] + ' ' + namet[0];
+                    } else {
+                      var name: any = res.provider_name;
+                    }
+                    this.hourlyRateChartOhtLabels1.push(pName);
+                    this.hrKey = i;
+                  } else this.hourlyRateChartOhtLabels1.push(pName);
+                  i++;
+                }
+              });
+
+              this.hourlyRateChartOhtData[0]['data'] =
+                this.hourlyRateChartOhtData1;
+              this.hourlyRateChartOhtLabels = this.hourlyRateChartOhtLabels1;
+              this.hourlyRateChartOhtAverage = Math.round(res.body.total);
+              this.hourlyRateChartOhtAveragePrev = Math.round(
+                res.body.total_ta
+              );
+              this.hourlyRateChartGoal = res.body.goals;
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColorsHrOht = [{ backgroundColor: [] }];
+                this.barChartColorsHrOht[0].backgroundColor[this.hrKey] =
+                  '#1CA49F';
+                this.HRcolorsOht = this.barChartColorsHrOht;
+              } else {
+                this.HRcolorsOht = this.lineChartColors;
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.hourlyRateChartOhtLabels
+                );
+                this.hourlyRateChartOhtData[0].backgroundColor = dynamicColors;
+              }
+
+              if (
+                this.hourlyRateChartOhtAverage >=
+                this.hourlyRateChartOhtAveragePrev
+              )
+                this.hourlyRateChartOhtTooltip = 'up';
+
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsHR2.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.hourlyRateChartOhtAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsHR2.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.hourlyRateChartGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              }
             }
-            else
-              this.hourlyRateChartOhtLabels1.push(pName);
-            i++;
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-
-        });
-
-        this.hourlyRateChartOhtData[0]['data'] = this.hourlyRateChartOhtData1;
-        this.hourlyRateChartOhtLabels = this.hourlyRateChartOhtLabels1;
-        this.hourlyRateChartOhtAverage = Math.round(res.body.total);
-        this.hourlyRateChartOhtAveragePrev = Math.round(res.body.total_ta);
-        this.hourlyRateChartGoal = res.body.goals;
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColorsHrOht = [
-            { backgroundColor: [] }
-          ];
-          this.barChartColorsHrOht[0].backgroundColor[this.hrKey] = '#1CA49F';
-          this.HRcolorsOht = this.barChartColorsHrOht;
-        }
-        else {
-          this.HRcolorsOht = this.lineChartColors;
-          let dynamicColors = this.barBackgroundColor(res.body.data, this.hourlyRateChartOhtLabels);      
-          this.hourlyRateChartOhtData[0].backgroundColor = dynamicColors;
-        }
-
-        if (this.hourlyRateChartOhtAverage >= this.hourlyRateChartOhtAveragePrev)
-          this.hourlyRateChartOhtTooltip = 'up';
-
-
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsHR2.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.hourlyRateChartOhtAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-        else if (this.goalchecked == 'goal') {
-          this.barChartOptionsHR2.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.hourlyRateChartGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+        );
   }
-
 
   public hourlyValue: any = 0;
   public hourlyLabel = '';
@@ -5883,49 +6892,56 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.hourlyRateChartAverage = 0;
     this.hourlyRateChartTooltip = 'down';
     this.hourlyLabel = '';
-    this.clinic_id && this.cliniciananalysisService.hourlyRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-      this.hourlyValue = '0';
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-        this.hourlyRateDentistLoader = false;
-        this.hourlyValue = '0';
-        if (res.body.data.length > 0) {
-          this.hourlyValue = Math.round(res.body.data[0].hourly_rate);
-          var name = res.body.data[0].provider_name;
-          if (name != null && name != '') {
-            name = name.split(')');
-            if (name.length > 0 && name[1] != undefined) {
-              name = name[1].split(',');
-              if (name.length > 0)
-                name = name[1] + " " + name[0];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .hourlyRateSingle(
+          this.selectedDentist,
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            this.hourlyValue = '0';
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.hourlyRateDentistLoader = false;
+              this.hourlyValue = '0';
+              if (res.body.data.length > 0) {
+                this.hourlyValue = Math.round(res.body.data[0].hourly_rate);
+                var name = res.body.data[0].provider_name;
+                if (name != null && name != '') {
+                  name = name.split(')');
+                  if (name.length > 0 && name[1] != undefined) {
+                    name = name[1].split(',');
+                    if (name.length > 0) name = name[1] + ' ' + name[0];
+                  }
+                  this.hourlyLabel = name;
+                } else this.hourlyLabel = res.body.data[0].provider;
+              }
+              this.hourlyGoal = res.body.goals;
+              this.hourlyRateChartAveragePrev = res.body.total_ta;
+              this.hourlyRateChartAverage = res.body.total;
+              if (this.hourlyValue >= this.hourlyRateChartAveragePrev)
+                this.hourlyRateChartTooltip = 'up';
+              if (this.hourlyValue > this.hourlyGoal)
+                this.maxhourlyGoal = this.hourlyValue;
+              else this.maxhourlyGoal = this.hourlyGoal;
+
+              if (this.maxhourlyGoal == 0) this.maxhourlyGoal = '';
             }
-            this.hourlyLabel = name;
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-          else
-            this.hourlyLabel = res.body.data[0].provider;
-
-        }
-        this.hourlyGoal = res.body.goals;
-        this.hourlyRateChartAveragePrev = res.body.total_ta;
-        this.hourlyRateChartAverage = res.body.total;
-        if (this.hourlyValue >= this.hourlyRateChartAveragePrev)
-          this.hourlyRateChartTooltip = 'up';
-        if (this.hourlyValue > this.hourlyGoal)
-          this.maxhourlyGoal = this.hourlyValue;
-        else
-          this.maxhourlyGoal = this.hourlyGoal;
-
-        if (this.maxhourlyGoal == 0)
-          this.maxhourlyGoal = '';
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+        );
   }
 
   public collhourlyValue: any = 0;
@@ -5941,50 +6957,57 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.hourlyRateChartAverage = 0;
     this.hourlyRateChartTooltip = 'down';
     this.collhourlyLabel = '';
-    this.clinic_id && this.cliniciananalysisService.collectionHourlyRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-      this.collhourlyValue = '0';
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-        this.collhourlyRateDentistLoader = false;
-        this.collhourlyValue = '0';
-        if (res.body.data.length > 0) {
-          this.collhourlyValue = Math.round(res.body.data[0].hourly_rate);
-          var name = res.body.data[0].provider_name;
-          if (name != null && name != '') {
-            name = name.split(')');
-            if (name.length > 0 && name[1] != undefined) {
-              name = name[1].split(',');
-              if (name.length > 0)
-                name = name[1] + " " + name[0];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .collectionHourlyRateSingle(
+          this.selectedDentist,
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            this.collhourlyValue = '0';
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.collhourlyRateDentistLoader = false;
+              this.collhourlyValue = '0';
+              if (res.body.data.length > 0) {
+                this.collhourlyValue = Math.round(res.body.data[0].hourly_rate);
+                var name = res.body.data[0].provider_name;
+                if (name != null && name != '') {
+                  name = name.split(')');
+                  if (name.length > 0 && name[1] != undefined) {
+                    name = name[1].split(',');
+                    if (name.length > 0) name = name[1] + ' ' + name[0];
+                  }
+                  this.collhourlyLabel = name;
+                } else this.collhourlyLabel = res.body.data[0].provider;
+              }
+              this.collhourlyGoal = res.body.goals;
+              this.collhourlyRateChartAveragePrev = res.body.total_ta;
+              this.hourlyRateChartAverage = res.body.total;
+              this.hourlyRateChartAveragePrev = res.body.total_ta;
+              if (this.collhourlyValue >= this.collhourlyRateChartAveragePrev)
+                this.hourlyRateChartTooltip = 'up';
+              if (this.collhourlyValue > this.collhourlyGoal)
+                this.collmaxhourlyGoal = this.collhourlyValue;
+              else this.collmaxhourlyGoal = this.collhourlyGoal;
+
+              if (this.collmaxhourlyGoal == 0) this.collmaxhourlyGoal = '';
             }
-            this.collhourlyLabel = name;
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-          else
-            this.collhourlyLabel = res.body.data[0].provider;
-
-        }
-        this.collhourlyGoal = res.body.goals;
-        this.collhourlyRateChartAveragePrev = res.body.total_ta;
-        this.hourlyRateChartAverage = res.body.total;
-        this.hourlyRateChartAveragePrev = res.body.total_ta;
-        if (this.collhourlyValue >= this.collhourlyRateChartAveragePrev)
-          this.hourlyRateChartTooltip = 'up';
-        if (this.collhourlyValue > this.collhourlyGoal)
-          this.collmaxhourlyGoal = this.collhourlyValue;
-        else
-          this.collmaxhourlyGoal = this.collhourlyGoal;
-
-        if (this.collmaxhourlyGoal == 0)
-          this.collmaxhourlyGoal = '';
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+        );
   }
 
   public collExphourlyValue: any = 0;
@@ -5994,56 +7017,69 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public collExpmaxhourlyGoal: any = 0;
   public collExphourlyRateChartAveragePrevs: any = 0;
   //Individual Dentist Hourly Rate chart
-  private collectionExpHourlyRateSingle() { 
+  private collectionExpHourlyRateSingle() {
     this.collExphourlyRateDentistLoader = true;
     this.collExphourlyRateChartAveragePrevs = 0;
     this.hourlyRateChartAverage = 0;
     this.hourlyRateChartTooltip = 'down';
     this.collExphourlyLabel = '';
-    this.clinic_id && this.cliniciananalysisService.collectionExpHourlyRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-      this.collExphourlyValue = '0';
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-        this.collExphourlyRateDentistLoader = false;
-        this.collExphourlyValue = '0';
-        if (res.body.data.length > 0) {
-          this.collExphourlyValue = Math.round(res.body.data[0].hourly_rate);
-          var name = res.body.data[0].provider_name;
-          if (name != null && name != '') {
-            name = name.split(')');
-            if (name.length > 0 && name[1] != undefined) {
-              name = name[1].split(',');
-              if (name.length > 0)
-                name = name[1] + " " + name[0];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .collectionExpHourlyRateSingle(
+          this.selectedDentist,
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            this.collExphourlyValue = '0';
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.collExphourlyRateDentistLoader = false;
+              this.collExphourlyValue = '0';
+              if (res.body.data.length > 0) {
+                this.collExphourlyValue = Math.round(
+                  res.body.data[0].hourly_rate
+                );
+                var name = res.body.data[0].provider_name;
+                if (name != null && name != '') {
+                  name = name.split(')');
+                  if (name.length > 0 && name[1] != undefined) {
+                    name = name[1].split(',');
+                    if (name.length > 0) name = name[1] + ' ' + name[0];
+                  }
+                  this.collExphourlyLabel = name;
+                } else this.collExphourlyLabel = res.body.data[0].provider;
+              }
+              this.collExphourlyGoal = res.body.goals;
+              this.collExphourlyRateChartAveragePrevs = res.body.total_ta;
+              this.hourlyRateChartAveragePrev = res.body.total_ta;
+              this.hourlyRateChartAverage = res.body.total;
+              if (
+                this.collExphourlyValue >=
+                this.collExphourlyRateChartAveragePrevs
+              )
+                this.hourlyRateChartTooltip = 'up';
+              if (this.collExphourlyValue > this.collExphourlyGoal)
+                this.collExpmaxhourlyGoal = this.collExphourlyValue;
+              else this.collExpmaxhourlyGoal = this.collExphourlyGoal;
+
+              if (this.collExpmaxhourlyGoal == 0)
+                this.collExpmaxhourlyGoal = '';
             }
-            this.collExphourlyLabel = name;
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-          else
-            this.collExphourlyLabel = res.body.data[0].provider;
-
-        }
-        this.collExphourlyGoal = res.body.goals;
-        this.collExphourlyRateChartAveragePrevs = res.body.total_ta;
-        this.hourlyRateChartAveragePrev = res.body.total_ta;
-        this.hourlyRateChartAverage = res.body.total;
-        if (this.collExphourlyValue >= this.collExphourlyRateChartAveragePrevs)
-          this.hourlyRateChartTooltip = 'up';
-        if (this.collExphourlyValue > this.collExphourlyGoal)
-          this.collExpmaxhourlyGoal = this.collExphourlyValue;
-        else
-          this.collExpmaxhourlyGoal = this.collExphourlyGoal;
-
-        if (this.collExpmaxhourlyGoal == 0)
-          this.collExpmaxhourlyGoal = '';
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+        );
   }
 
   public hourlyValueSingleDentists: any = 0;
@@ -6058,51 +7094,69 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.hourlyRateChartAverage = 0;
     this.hourlyRateChartTooltip = 'down';
     this.hourlyLabelSingleDentists = '';
-    this.clinic_id && this.cliniciananalysisService.hourlyRateDentistsSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-      this.hourlyValueSingleDentists = '0';
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-        this.hourlyRateSingleDentistsLoader = false;
-        this.hourlyValueSingleDentists = '0';
-        if (res.body.data.length > 0) {
-          this.hourlyValueSingleDentists = Math.round(res.body.data[0].hourly_rate);
-          var name = res.body.data[0].provider_name;
-          if (name != null && name != '') {
-            name = name.split(')');
-            if (name.length > 0 && name[1] != undefined) {
-              name = name[1].split(',');
-              if (name.length > 0)
-                name = name[1] + " " + name[0];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .hourlyRateDentistsSingle(
+          this.selectedDentist,
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            this.hourlyValueSingleDentists = '0';
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.hourlyRateSingleDentistsLoader = false;
+              this.hourlyValueSingleDentists = '0';
+              if (res.body.data.length > 0) {
+                this.hourlyValueSingleDentists = Math.round(
+                  res.body.data[0].hourly_rate
+                );
+                var name = res.body.data[0].provider_name;
+                if (name != null && name != '') {
+                  name = name.split(')');
+                  if (name.length > 0 && name[1] != undefined) {
+                    name = name[1].split(',');
+                    if (name.length > 0) name = name[1] + ' ' + name[0];
+                  }
+                  this.hourlyLabelSingleDentists = name;
+                } else
+                  this.hourlyLabelSingleDentists = res.body.data[0].provider;
+              }
+              this.hourlyGoalSingleDentists = res.body.goals;
+              this.hourlyRateChartAveragePrev = res.body.total_ta;
+              this.hourlyRateChartAverage = res.body.total;
+              if (
+                this.hourlyValueSingleDentists >=
+                this.hourlyRateChartAveragePrev
+              )
+                this.hourlyRateChartTooltip = 'up';
+              if (
+                this.hourlyValueSingleDentists > this.hourlyGoalSingleDentists
+              )
+                this.maxhourlyGoalSingleDentists =
+                  this.hourlyValueSingleDentists;
+              else
+                this.maxhourlyGoalSingleDentists =
+                  this.hourlyGoalSingleDentists;
+
+              if (this.maxhourlyGoalSingleDentists == 0)
+                this.maxhourlyGoalSingleDentists = '';
             }
-            this.hourlyLabelSingleDentists = name;
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-          else
-            this.hourlyLabelSingleDentists = res.body.data[0].provider;
-
-        }
-        this.hourlyGoalSingleDentists = res.body.goals;
-        this.hourlyRateChartAveragePrev = res.body.total_ta;
-        this.hourlyRateChartAverage = res.body.total;
-        if (this.hourlyValueSingleDentists >= this.hourlyRateChartAveragePrev)
-          this.hourlyRateChartTooltip = 'up';
-        if (this.hourlyValueSingleDentists > this.hourlyGoalSingleDentists)
-          this.maxhourlyGoalSingleDentists = this.hourlyValueSingleDentists;
-        else
-          this.maxhourlyGoalSingleDentists = this.hourlyGoalSingleDentists;
-
-        if (this.maxhourlyGoalSingleDentists == 0)
-          this.maxhourlyGoalSingleDentists = '';
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+        );
   }
-
 
   public hourlyValueSingleOht: any = 0;
   public hourlyLabelSingleOht = '';
@@ -6116,49 +7170,59 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.hourlyRateChartAverage = 0;
     this.hourlyRateChartTooltip = 'down';
     this.hourlyLabelSingleOht = '';
-    this.clinic_id && this.cliniciananalysisService.hourlyRateOhtSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((res: any) => {
-      this.hourlyValueSingleOht = '0';
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-        this.hourlyRateSingleOhtLoader = false;
-        this.hourlyValueSingleOht = '0';
-        if (res.body.data.length > 0) {
-          this.hourlyValueSingleOht = Math.round(res.body.data[0].hourly_rate);
-          var name = res.body.data[0].provider_name;
-          if (name != null && name != '') {
-            name = name.split(')');
-            if (name.length > 0 && name[1] != undefined) {
-              name = name[1].split(',');
-              if (name.length > 0)
-                name = name[1] + " " + name[0];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .hourlyRateOhtSingle(
+          this.selectedDentist,
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .subscribe(
+          (res: any) => {
+            this.hourlyValueSingleOht = '0';
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.hourlyRateSingleOhtLoader = false;
+              this.hourlyValueSingleOht = '0';
+              if (res.body.data.length > 0) {
+                this.hourlyValueSingleOht = Math.round(
+                  res.body.data[0].hourly_rate
+                );
+                var name = res.body.data[0].provider_name;
+                if (name != null && name != '') {
+                  name = name.split(')');
+                  if (name.length > 0 && name[1] != undefined) {
+                    name = name[1].split(',');
+                    if (name.length > 0) name = name[1] + ' ' + name[0];
+                  }
+                  this.hourlyLabelSingleOht = name;
+                } else this.hourlyLabelSingleOht = res.body.data[0].provider;
+              }
+              this.hourlyGoalSingleOht = res.body.goals;
+              this.hourlyRateChartAveragePrev = res.body.total_ta;
+              this.hourlyRateChartAverage = res.body.total;
+              if (this.hourlyValueSingleOht >= this.hourlyRateChartAveragePrev)
+                this.hourlyRateChartTooltip = 'up';
+              if (this.hourlyValueSingleOht > this.hourlyGoalSingleOht)
+                this.maxhourlyGoalSingleOht = this.hourlyValueSingleOht;
+              else this.maxhourlyGoalSingleOht = this.hourlyGoalSingleOht;
+
+              if (this.maxhourlyGoalSingleOht == 0)
+                this.maxhourlyGoalSingleOht = '';
             }
-            this.hourlyLabelSingleOht = name;
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-          else
-            this.hourlyLabelSingleOht = res.body.data[0].provider;
-
-        }
-        this.hourlyGoalSingleOht = res.body.goals;
-        this.hourlyRateChartAveragePrev = res.body.total_ta;
-        this.hourlyRateChartAverage = res.body.total;
-        if (this.hourlyValueSingleOht >= this.hourlyRateChartAveragePrev)
-          this.hourlyRateChartTooltip = 'up';
-        if (this.hourlyValueSingleOht > this.hourlyGoalSingleOht)
-          this.maxhourlyGoalSingleOht = this.hourlyValueSingleOht;
-        else
-          this.maxhourlyGoalSingleOht = this.hourlyGoalSingleOht;
-
-        if (this.maxhourlyGoalSingleOht == 0)
-          this.maxhourlyGoalSingleOht = '';
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+        );
   }
 
   public collectionhourlyRateChartData: any[] = [
@@ -6180,15 +7244,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public collectionhourlyRateChartAverage;
   public collectionhourlyRateChartGoal;
   public collectionhourlyRateChartAveragePrev;
-  public collhourlyRateChartTooltip = 'down'; 
+  public collhourlyRateChartTooltip = 'down';
   public collhourlyRateChartLoader: boolean = true;
   public collhourlyRateChartData1: any[] = [];
   public chrKey: any;
   public cHRcolors: any;
-  public showCollHrTbl:boolean = false;
-  public collhourlyRateChartLabels:any =[];
+  public showCollHrTbl: boolean = false;
+  public collhourlyRateChartLabels: any = [];
   //All dentist Hourly ratechart
-  public collhourlyRatetbl:any =[];
+  public collhourlyRatetbl: any = [];
   private collectionHourlyRate() {
     this.collhourlyRateChartLoader = true;
     this.collhourlyRateChartData1 = [];
@@ -6196,122 +7260,158 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     this.collhourlyRateChartLabels = [];
     this.barChartOptionsHR.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.collectionHourlyRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.collhourlyRateChartData1 = [];
-      this.collectionhourlyRateChartLabels1 = [];
-      this.collhourlyRateChartLabels = [];
-      this.barChartOptionsHR.annotation = [];
-      this.collhourlyRatetbl = [];
-      this.collectionhourlyRateChartData[0]['data']=[];
-      if (res.status == 200) {
-        this.chrKey ='';
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.collhourlyRateChartLoader = false;
-        this.collhourlyRateChartTooltip = 'down';
-        var i = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.collhourlyRatetbl = res.body.data;
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-          if (res.hourly_rate > 0) {
-            this.collhourlyRateChartData1.push(Math.round(res.hourly_rate));
-            var pName ='';
-            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                pName = res.provider_name + " - " + res.clinic_name;
-              }else{
-                pName = res.provider_name;
-              }
-            if (res.provider_name != null && res.provider_name != 'Anonymous') {
-              if (res.provider_name.includes(',')) {
-                let namet: any = res.provider_name.split(',');
-                var name: any = namet[1] + " " + namet[0];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .collectionHourlyRate(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.collhourlyRateChartData1 = [];
+            this.collectionhourlyRateChartLabels1 = [];
+            this.collhourlyRateChartLabels = [];
+            this.barChartOptionsHR.annotation = [];
+            this.collhourlyRatetbl = [];
+            this.collectionhourlyRateChartData[0]['data'] = [];
+            if (res.status == 200) {
+              this.chrKey = '';
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.collhourlyRateChartLoader = false;
+              this.collhourlyRateChartTooltip = 'down';
+              var i = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.hourly_rate - b.hourly_rate)
+                  .reverse();
               } else {
-                var name: any = res.provider_name;
+                this.isAllClinic = false;
               }
-              this.collectionhourlyRateChartLabels1.push(pName);
-              this.chrKey = i;
+              this.collhourlyRatetbl = res.body.data;
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                if (res.hourly_rate > 0) {
+                  this.collhourlyRateChartData1.push(
+                    Math.round(res.hourly_rate)
+                  );
+                  var pName = '';
+                  if (
+                    this.clinic_id.indexOf(',') >= 0 ||
+                    Array.isArray(this.clinic_id)
+                  ) {
+                    pName = res.provider_name + ' - ' + res.clinic_name;
+                  } else {
+                    pName = res.provider_name;
+                  }
+                  if (
+                    res.provider_name != null &&
+                    res.provider_name != 'Anonymous'
+                  ) {
+                    if (res.provider_name.includes(',')) {
+                      let namet: any = res.provider_name.split(',');
+                      var name: any = namet[1] + ' ' + namet[0];
+                    } else {
+                      var name: any = res.provider_name;
+                    }
+                    this.collectionhourlyRateChartLabels1.push(pName);
+                    this.chrKey = i;
+                  } else this.collectionhourlyRateChartLabels1.push(pName);
+                  i++;
+                }
+              });
+
+              this.collectionhourlyRateChartData[0]['data'] =
+                this.collhourlyRateChartData1;
+              this.collhourlyRateChartLabels =
+                this.collectionhourlyRateChartLabels1;
+              this.collectionhourlyRateChartAverage = Math.round(
+                res.body.total
+              );
+              this.collectionhourlyRateChartAveragePrev = Math.round(
+                res.body.total_ta
+              );
+              this.collectionhourlyRateChartGoal = res.body.goals;
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColors = [{ backgroundColor: [] }];
+                this.barChartColors[0].backgroundColor[this.chrKey] = '#1CA49F';
+                this.cHRcolors = this.barChartColors;
+              } else {
+                this.cHRcolors = this.lineChartColors;
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.collhourlyRateChartLabels
+                );
+                this.collectionhourlyRateChartData[0].backgroundColor =
+                  dynamicColors;
+              }
+
+              if (
+                this.collectionhourlyRateChartAverage >=
+                this.collectionhourlyRateChartAveragePrev
+              )
+                this.collhourlyRateChartTooltip = 'up';
+
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsHR.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.collectionhourlyRateChartAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsHR.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value:
+                        this.collectionhourlyRateChartGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              }
             }
-            else
-              this.collectionhourlyRateChartLabels1.push(pName);
-            i++;
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-
-        });
-
-        this.collectionhourlyRateChartData[0]['data'] = this.collhourlyRateChartData1;
-        this.collhourlyRateChartLabels = this.collectionhourlyRateChartLabels1;
-        this.collectionhourlyRateChartAverage = Math.round(res.body.total);
-        this.collectionhourlyRateChartAveragePrev = Math.round(res.body.total_ta);
-        this.collectionhourlyRateChartGoal = res.body.goals;
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors = [
-            { backgroundColor: [] }
-          ];
-          this.barChartColors[0].backgroundColor[this.chrKey] = '#1CA49F';
-          this.cHRcolors = this.barChartColors;
-        }
-        else {
-          this.cHRcolors = this.lineChartColors;
-          let dynamicColors = this.barBackgroundColor(res.body.data, this.collhourlyRateChartLabels);      
-          this.collectionhourlyRateChartData[0].backgroundColor = dynamicColors;
-        }
-
-        if (this.collectionhourlyRateChartAverage >= this.collectionhourlyRateChartAveragePrev)
-          this.collhourlyRateChartTooltip = 'up';
-
-
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsHR.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.collectionhourlyRateChartAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-        else if (this.goalchecked == 'goal') {
-          this.barChartOptionsHR.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.collectionhourlyRateChartGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+        );
   }
 
   public collhourlyRateChartDentistsData: any[] = [
     {
       ...this.chartService.baseChartData,
-      data: [],
+      data: []
     }
   ];
   public collhourlyRateChartDesntistsData1: any[] = [];
@@ -6320,10 +7420,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public collhourlyRateChartDesntistsAveragePrev;
   public collhourlyRateChartDesntistsTooltip = 'down';
   public collhourlyRateChartDentistsLoader: boolean = true;
-  public collhourlyRateChartDesntistsLabels :any;
-  public showCollHrDentTbl:boolean = false;
+  public collhourlyRateChartDesntistsLabels: any;
+  public showCollHrDentTbl: boolean = false;
   //All dentist Hourly ratechart
-  public collhourlyRateDenttbl :any =[];
+  public collhourlyRateDenttbl: any = [];
   private collectionHourlyRateDentist() {
     this.collhourlyRateChartDentistsLoader = true;
     this.collhourlyRateChartDesntistsData1 = [];
@@ -6331,123 +7431,159 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     this.collhourlyRateChartDesntistsLabels = [];
     this.barChartOptionsHR1.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.collectionHourlyRateDentist(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.collhourlyRateChartDesntistsData1 = [];
-      this.collhourlyRateChartDesntistsLabels1 = [];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .collectionHourlyRateDentist(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.collhourlyRateChartDesntistsData1 = [];
+            this.collhourlyRateChartDesntistsLabels1 = [];
 
-      this.collhourlyRateChartDesntistsLabels = [];
-      this.barChartOptionsHR1.annotation = [];
-      this.collhourlyRateDenttbl =[];
-      this.collhourlyRateChartDentistsData[0]['data'] =[];
-      if (res.status == 200) {
-        this.hrKey ='';
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.collhourlyRateChartDentistsLoader = false;
-        this.collhourlyRateChartDesntistsTooltip = 'down';
-        var i = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.collhourlyRateDenttbl = res.body.data;
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-          if (res.hourly_rate > 0) {
-            var pName ='';
-            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                pName = res.provider_name + " - " + res.clinic_name;
-              }else{
-                pName = res.provider_name;
-              }
-            this.collhourlyRateChartDesntistsData1.push(Math.round(res.hourly_rate));
-            if (res.provider_name != null && res.provider_name != 'Anonymous') {
-              if (res.provider_name.includes(',')) {
-                let namet: any = res.provider_name.split(',');
-                var name: any = namet[1] + " " + namet[0];
+            this.collhourlyRateChartDesntistsLabels = [];
+            this.barChartOptionsHR1.annotation = [];
+            this.collhourlyRateDenttbl = [];
+            this.collhourlyRateChartDentistsData[0]['data'] = [];
+            if (res.status == 200) {
+              this.hrKey = '';
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.collhourlyRateChartDentistsLoader = false;
+              this.collhourlyRateChartDesntistsTooltip = 'down';
+              var i = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.hourly_rate - b.hourly_rate)
+                  .reverse();
               } else {
-                var name: any = res.provider_name;
+                this.isAllClinic = false;
               }
-              this.collhourlyRateChartDesntistsLabels1.push(pName);
-              this.hrKey = i;
+              this.collhourlyRateDenttbl = res.body.data;
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                if (res.hourly_rate > 0) {
+                  var pName = '';
+                  if (
+                    this.clinic_id.indexOf(',') >= 0 ||
+                    Array.isArray(this.clinic_id)
+                  ) {
+                    pName = res.provider_name + ' - ' + res.clinic_name;
+                  } else {
+                    pName = res.provider_name;
+                  }
+                  this.collhourlyRateChartDesntistsData1.push(
+                    Math.round(res.hourly_rate)
+                  );
+                  if (
+                    res.provider_name != null &&
+                    res.provider_name != 'Anonymous'
+                  ) {
+                    if (res.provider_name.includes(',')) {
+                      let namet: any = res.provider_name.split(',');
+                      var name: any = namet[1] + ' ' + namet[0];
+                    } else {
+                      var name: any = res.provider_name;
+                    }
+                    this.collhourlyRateChartDesntistsLabels1.push(pName);
+                    this.hrKey = i;
+                  } else this.collhourlyRateChartDesntistsLabels1.push(pName);
+                  i++;
+                }
+              });
+
+              this.collhourlyRateChartDentistsData[0]['data'] =
+                this.collhourlyRateChartDesntistsData1;
+              this.collhourlyRateChartDesntistsLabels =
+                this.collhourlyRateChartDesntistsLabels1;
+              this.collhourlyRateChartDesntistsAverage = Math.round(
+                res.body.total
+              );
+              this.collhourlyRateChartDesntistsAveragePrev = Math.round(
+                res.body.total_ta
+              );
+              this.hourlyRateChartGoal = res.body.goals;
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColorsHrDent = [{ backgroundColor: [] }];
+                this.barChartColorsHrDent[0].backgroundColor[this.hrKey] =
+                  '#1CA49F';
+                this.HRcolorsDent = this.barChartColorsHrDent;
+              } else {
+                this.HRcolorsDent = this.lineChartColors;
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.collhourlyRateChartDesntistsLabels
+                );
+                this.collhourlyRateChartDentistsData[0].backgroundColor =
+                  dynamicColors;
+              }
+
+              if (
+                this.collhourlyRateChartDesntistsAverage >=
+                this.collhourlyRateChartDesntistsAveragePrev
+              )
+                this.collhourlyRateChartDesntistsTooltip = 'up';
+
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsHR1.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.collhourlyRateChartDesntistsAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsHR1.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.hourlyRateChartGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              }
             }
-            else
-              this.collhourlyRateChartDesntistsLabels1.push(pName);
-            i++;
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-
-        });
-
-        this.collhourlyRateChartDentistsData[0]['data'] = this.collhourlyRateChartDesntistsData1;
-        this.collhourlyRateChartDesntistsLabels = this.collhourlyRateChartDesntistsLabels1;
-        this.collhourlyRateChartDesntistsAverage = Math.round(res.body.total);
-        this.collhourlyRateChartDesntistsAveragePrev = Math.round(res.body.total_ta);
-        this.hourlyRateChartGoal = res.body.goals;
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColorsHrDent = [
-            { backgroundColor: [] }
-          ];
-          this.barChartColorsHrDent[0].backgroundColor[this.hrKey] = '#1CA49F';
-          this.HRcolorsDent = this.barChartColorsHrDent;
-        }
-        else {
-          this.HRcolorsDent = this.lineChartColors;
-          let dynamicColors = this.barBackgroundColor(res.body.data, this.collhourlyRateChartDesntistsLabels); 
-          this.collhourlyRateChartDentistsData[0].backgroundColor = dynamicColors;
-        }
-
-        if (this.collhourlyRateChartDesntistsAverage >= this.collhourlyRateChartDesntistsAveragePrev)
-          this.collhourlyRateChartDesntistsTooltip = 'up';
-
-
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsHR1.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.collhourlyRateChartDesntistsAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-        else if (this.goalchecked == 'goal') {
-          this.barChartOptionsHR1.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.hourlyRateChartGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+        );
   }
 
   public collhourlyRateChartOhtData: any[] = [
     {
       ...this.chartService.baseChartData,
-      data: [],
+      data: []
     }
   ];
   public collhourlyRateChartOhtLabels1 = [];
@@ -6456,10 +7592,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public collhourlyRateChartOhtTooltip = 'down';
   public collhourlyRateChartOhtLoader: boolean = true;
   public collhourlyRateChartOhtData1: any[] = [];
-  public collhourlyRateChartOhtLabels:any;
-  public showCollHrOhtTbl:boolean = false;
+  public collhourlyRateChartOhtLabels: any;
+  public showCollHrOhtTbl: boolean = false;
   //All dentist Hourly ratechart
-  public collhourlyRateOhttbl:any =[];
+  public collhourlyRateOhttbl: any = [];
   private collectionHourlyRateOht() {
     this.collhourlyRateChartOhtLoader = true;
     this.collhourlyRateChartOhtData1 = [];
@@ -6467,119 +7603,152 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     this.collhourlyRateChartOhtLabels = [];
     this.barChartOptionsHR2.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.collectionHourlyRateOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.collhourlyRateChartOhtData1 = [];
-      this.collhourlyRateChartOhtLabels1 = [];
-      this.collhourlyRateOhttbl =[];
-      this.collhourlyRateChartOhtLabels = [];
-      this.barChartOptionsHR2.annotation = [];
-      this.collhourlyRateChartOhtData[0]['data']=[];
-      this.collhourlyRateChartOhtAverage =0;
-      if (res.status == 200) {
-        this.hrKey ='';
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.collhourlyRateChartOhtLoader = false;
-        this.collhourlyRateChartOhtTooltip = 'down';
-        var i = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.collhourlyRateOhttbl = res.body.data;
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-          if (res.hourly_rate > 0) {
-            this.collhourlyRateChartOhtData1.push(Math.round(res.hourly_rate));
-            var pName ='';
-            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                pName = res.provider_name + " - " + res.clinic_name;
-              }else{
-                pName = res.provider_name;
-              }
-            if (res.provider_name != null && res.provider_name != 'Anonymous') {
-              if (res.provider_name.includes(',')) {
-                let namet: any = res.provider_name.split(',');
-                var name: any = namet[1] + " " + namet[0];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .collectionHourlyRateOht(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.collhourlyRateChartOhtData1 = [];
+            this.collhourlyRateChartOhtLabels1 = [];
+            this.collhourlyRateOhttbl = [];
+            this.collhourlyRateChartOhtLabels = [];
+            this.barChartOptionsHR2.annotation = [];
+            this.collhourlyRateChartOhtData[0]['data'] = [];
+            this.collhourlyRateChartOhtAverage = 0;
+            if (res.status == 200) {
+              this.hrKey = '';
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.collhourlyRateChartOhtLoader = false;
+              this.collhourlyRateChartOhtTooltip = 'down';
+              var i = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.hourly_rate - b.hourly_rate)
+                  .reverse();
               } else {
-                var name: any = res.provider_name;
+                this.isAllClinic = false;
               }
-              this.collhourlyRateChartOhtLabels1.push(pName);
-              this.hrKey = i;
+              this.collhourlyRateOhttbl = res.body.data;
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                if (res.hourly_rate > 0) {
+                  this.collhourlyRateChartOhtData1.push(
+                    Math.round(res.hourly_rate)
+                  );
+                  var pName = '';
+                  if (
+                    this.clinic_id.indexOf(',') >= 0 ||
+                    Array.isArray(this.clinic_id)
+                  ) {
+                    pName = res.provider_name + ' - ' + res.clinic_name;
+                  } else {
+                    pName = res.provider_name;
+                  }
+                  if (
+                    res.provider_name != null &&
+                    res.provider_name != 'Anonymous'
+                  ) {
+                    if (res.provider_name.includes(',')) {
+                      let namet: any = res.provider_name.split(',');
+                      var name: any = namet[1] + ' ' + namet[0];
+                    } else {
+                      var name: any = res.provider_name;
+                    }
+                    this.collhourlyRateChartOhtLabels1.push(pName);
+                    this.hrKey = i;
+                  } else this.collhourlyRateChartOhtLabels1.push(pName);
+                  i++;
+                }
+              });
+
+              this.collhourlyRateChartOhtData[0]['data'] =
+                this.collhourlyRateChartOhtData1;
+              this.collhourlyRateChartOhtLabels =
+                this.collhourlyRateChartOhtLabels1;
+              this.collhourlyRateChartOhtAverage = Math.round(res.body.total);
+              this.collhourlyRateChartOhtAveragePrev = Math.round(
+                res.body.total_ta
+              );
+              this.hourlyRateChartGoal = res.body.goals;
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColorsHrOht = [{ backgroundColor: [] }];
+                this.barChartColorsHrOht[0].backgroundColor[this.hrKey] =
+                  '#1CA49F';
+                this.HRcolorsOht = this.barChartColorsHrOht;
+              } else {
+                this.HRcolorsOht = this.lineChartColors;
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.collhourlyRateChartOhtLabels
+                );
+                this.collhourlyRateChartOhtData[0].backgroundColor =
+                  dynamicColors;
+              }
+
+              if (
+                this.collhourlyRateChartOhtAverage >=
+                this.collhourlyRateChartOhtAveragePrev
+              )
+                this.collhourlyRateChartOhtTooltip = 'up';
+
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsHR2.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.collhourlyRateChartOhtAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsHR2.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.hourlyRateChartGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              }
             }
-            else
-              this.collhourlyRateChartOhtLabels1.push(pName);
-            i++;
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-
-        });
-
-        this.collhourlyRateChartOhtData[0]['data'] = this.collhourlyRateChartOhtData1;
-        this.collhourlyRateChartOhtLabels = this.collhourlyRateChartOhtLabels1;
-        this.collhourlyRateChartOhtAverage = Math.round(res.body.total);
-        this.collhourlyRateChartOhtAveragePrev = Math.round(res.body.total_ta);
-        this.hourlyRateChartGoal = res.body.goals;
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColorsHrOht = [
-            { backgroundColor: [] }
-          ];
-          this.barChartColorsHrOht[0].backgroundColor[this.hrKey] = '#1CA49F';
-          this.HRcolorsOht = this.barChartColorsHrOht;
-        }
-        else {
-          this.HRcolorsOht = this.lineChartColors;
-          let dynamicColors =  this.barBackgroundColor(res.body.data, this.collhourlyRateChartOhtLabels);     
-          this.collhourlyRateChartOhtData[0].backgroundColor = dynamicColors;
-        }
-
-        if (this.collhourlyRateChartOhtAverage >= this.collhourlyRateChartOhtAveragePrev)
-          this.collhourlyRateChartOhtTooltip = 'up';
-
-
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsHR2.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.collhourlyRateChartOhtAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-        else if (this.goalchecked == 'goal') {
-          this.barChartOptionsHR2.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.hourlyRateChartGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+        );
   }
-
 
   public collExphourlyRateChartData: any[] = [
     {
@@ -6600,15 +7769,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public collExphourlyRateChartAverage;
   public collExphourlyRateChartGoal;
   public collExphourlyRateChartAveragePrev;
-  public collExphourlyRateChartTooltip = 'down'; 
+  public collExphourlyRateChartTooltip = 'down';
   public collExphourlyRateChartLoader: boolean = true;
   public collExphrKey: any;
   public collExpHRcolors: any;
-  public showCollexpHrTbl:boolean = false;
+  public showCollexpHrTbl: boolean = false;
   public collExphourlyRateChartData1: any[] = [];
-  public collExphourlyRateChartLabels: any =[];
+  public collExphourlyRateChartLabels: any = [];
   //All dentist Hourly ratechart
-  public collExphourlyRatetbl:any =[];
+  public collExphourlyRatetbl: any = [];
   private collectionExpHourlyRate() {
     this.collExphourlyRateChartLoader = true;
     this.collExphourlyRateChartData1 = [];
@@ -6616,122 +7785,156 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     this.collExphourlyRateChartLabels = [];
     this.barChartOptionsHR.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.collectionExpHourlyRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.collExphourlyRateChartData1 = [];
-      this.collExphourlyRateChartLabels1 = [];
-      this.collExphourlyRateChartLabels = [];
-      this.barChartOptionsHR.annotation = [];
-      this.collExphourlyRatetbl = [];
-      this.collExphourlyRateChartData[0]['data']=[];
-      if (res.status == 200) {
-        this.collExphrKey ='';
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.collExphourlyRateChartLoader = false;
-        this.collExphourlyRateChartTooltip = 'down';
-        var i = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.collExphourlyRatetbl = res.body.data;
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-          if (res.hourly_rate > 0) {
-            this.collExphourlyRateChartData1.push(Math.round(res.hourly_rate));
-            var pName ='';
-            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                pName = res.provider_name + " - " + res.clinic_name;
-              }else{
-                pName = res.provider_name;
-              }
-            if (res.provider_name != null && res.provider_name != 'Anonymous') {
-              if (res.provider_name.includes(',')) {
-                let namet: any = res.provider_name.split(',');
-                var name: any = namet[1] + " " + namet[0];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .collectionExpHourlyRate(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.collExphourlyRateChartData1 = [];
+            this.collExphourlyRateChartLabels1 = [];
+            this.collExphourlyRateChartLabels = [];
+            this.barChartOptionsHR.annotation = [];
+            this.collExphourlyRatetbl = [];
+            this.collExphourlyRateChartData[0]['data'] = [];
+            if (res.status == 200) {
+              this.collExphrKey = '';
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.collExphourlyRateChartLoader = false;
+              this.collExphourlyRateChartTooltip = 'down';
+              var i = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.hourly_rate - b.hourly_rate)
+                  .reverse();
               } else {
-                var name: any = res.provider_name;
+                this.isAllClinic = false;
               }
-              this.collExphourlyRateChartLabels1.push(pName);
-              this.collExphrKey = i;
+              this.collExphourlyRatetbl = res.body.data;
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                if (res.hourly_rate > 0) {
+                  this.collExphourlyRateChartData1.push(
+                    Math.round(res.hourly_rate)
+                  );
+                  var pName = '';
+                  if (
+                    this.clinic_id.indexOf(',') >= 0 ||
+                    Array.isArray(this.clinic_id)
+                  ) {
+                    pName = res.provider_name + ' - ' + res.clinic_name;
+                  } else {
+                    pName = res.provider_name;
+                  }
+                  if (
+                    res.provider_name != null &&
+                    res.provider_name != 'Anonymous'
+                  ) {
+                    if (res.provider_name.includes(',')) {
+                      let namet: any = res.provider_name.split(',');
+                      var name: any = namet[1] + ' ' + namet[0];
+                    } else {
+                      var name: any = res.provider_name;
+                    }
+                    this.collExphourlyRateChartLabels1.push(pName);
+                    this.collExphrKey = i;
+                  } else this.collExphourlyRateChartLabels1.push(pName);
+                  i++;
+                }
+              });
+
+              this.collExphourlyRateChartData[0]['data'] =
+                this.collExphourlyRateChartData1;
+              this.collExphourlyRateChartLabels =
+                this.collExphourlyRateChartLabels1;
+              this.collExphourlyRateChartAverage = Math.round(res.body.total);
+              this.collExphourlyRateChartAveragePrev = Math.round(
+                res.body.total_ta
+              );
+              this.collExphourlyRateChartGoal = res.body.goals;
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColors = [{ backgroundColor: [] }];
+                this.barChartColors[0].backgroundColor[this.collExphrKey] =
+                  '#1CA49F';
+                this.collExpHRcolors = this.barChartColors;
+              } else {
+                this.collExpHRcolors = this.lineChartColors;
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.collExphourlyRateChartLabels
+                );
+                this.collExphourlyRateChartData[0].backgroundColor =
+                  dynamicColors;
+              }
+
+              if (
+                this.collExphourlyRateChartAverage >=
+                this.collExphourlyRateChartAveragePrev
+              )
+                this.collExphourlyRateChartTooltip = 'up';
+
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsHR.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.collExphourlyRateChartAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsHR.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.collExphourlyRateChartGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              }
             }
-            else
-              this.collExphourlyRateChartLabels1.push(pName);
-            i++;
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-
-        });
-
-        this.collExphourlyRateChartData[0]['data'] = this.collExphourlyRateChartData1;
-        this.collExphourlyRateChartLabels = this.collExphourlyRateChartLabels1;
-        this.collExphourlyRateChartAverage = Math.round(res.body.total);
-        this.collExphourlyRateChartAveragePrev = Math.round(res.body.total_ta);
-        this.collExphourlyRateChartGoal = res.body.goals;
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColors = [
-            { backgroundColor: [] }
-          ];
-          this.barChartColors[0].backgroundColor[this.collExphrKey] = '#1CA49F';
-          this.collExpHRcolors = this.barChartColors;
-        }
-        else {
-          this.collExpHRcolors = this.lineChartColors;
-          let dynamicColors = this.barBackgroundColor(res.body.data, this.collExphourlyRateChartLabels); 
-          this.collExphourlyRateChartData[0].backgroundColor = dynamicColors;
-        }
-
-        if (this.collExphourlyRateChartAverage >= this.collExphourlyRateChartAveragePrev)
-          this.collExphourlyRateChartTooltip = 'up';
-
-
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsHR.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.collExphourlyRateChartAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-        else if (this.goalchecked == 'goal') {
-          this.barChartOptionsHR.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.collExphourlyRateChartGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+        );
   }
 
   public collExphourlyRateChartDentistsData: any[] = [
     {
       ...this.chartService.baseChartData,
-      data: [],
+      data: []
     }
   ];
   public collExphourlyRateChartDesntistsData1: any[] = [];
@@ -6740,10 +7943,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public collExphourlyRateChartDesntistsAveragePrev;
   public collExphourlyRateChartDesntistsTooltip = 'down';
   public collExphourlyRateChartDentistsLoader: boolean = true;
-  public collExphourlyRateChartDesntistsLabels :any;
-  public showCollexpHrDentTbl:boolean = false;
+  public collExphourlyRateChartDesntistsLabels: any;
+  public showCollexpHrDentTbl: boolean = false;
   //All dentist Hourly ratechart
-  public collExphourlyRateDenttbl :any =[];
+  public collExphourlyRateDenttbl: any = [];
   private collectionExpHourlyRateDentist() {
     this.collExphourlyRateChartDentistsLoader = true;
     this.collExphourlyRateChartDesntistsData1 = [];
@@ -6751,123 +7954,160 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     this.collExphourlyRateChartDesntistsLabels = [];
     this.barChartOptionsHR1.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.collectionExpHourlyRateDentist(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.collExphourlyRateChartDesntistsData1 = [];
-      this.collExphourlyRateChartDesntistsLabels1 = [];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .collectionExpHourlyRateDentist(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.collExphourlyRateChartDesntistsData1 = [];
+            this.collExphourlyRateChartDesntistsLabels1 = [];
 
-      this.collExphourlyRateChartDesntistsLabels = [];
-      this.barChartOptionsHR1.annotation = [];
-      this.collExphourlyRateDenttbl =[];
-      this.collExphourlyRateChartDentistsData[0]['data'] =[];
-      if (res.status == 200) {
-        this.hrKey ='';
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.collExphourlyRateChartDentistsLoader = false;
-        this.collExphourlyRateChartDesntistsTooltip = 'down';
-        var i = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.collExphourlyRateDenttbl = res.body.data;
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-          if (res.hourly_rate > 0) {
-            var pName ='';
-            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                pName = res.provider_name + " - " + res.clinic_name;
-              }else{
-                pName = res.provider_name;
-              }
-            this.collExphourlyRateChartDesntistsData1.push(Math.round(res.hourly_rate));
-            if (res.provider_name != null && res.provider_name != 'Anonymous') {
-              if (res.provider_name.includes(',')) {
-                let namet: any = res.provider_name.split(',');
-                var name: any = namet[1] + " " + namet[0];
+            this.collExphourlyRateChartDesntistsLabels = [];
+            this.barChartOptionsHR1.annotation = [];
+            this.collExphourlyRateDenttbl = [];
+            this.collExphourlyRateChartDentistsData[0]['data'] = [];
+            if (res.status == 200) {
+              this.hrKey = '';
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.collExphourlyRateChartDentistsLoader = false;
+              this.collExphourlyRateChartDesntistsTooltip = 'down';
+              var i = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.hourly_rate - b.hourly_rate)
+                  .reverse();
               } else {
-                var name: any = res.provider_name;
+                this.isAllClinic = false;
               }
-              this.collExphourlyRateChartDesntistsLabels1.push(pName);
-              this.hrKey = i;
+              this.collExphourlyRateDenttbl = res.body.data;
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                if (res.hourly_rate > 0) {
+                  var pName = '';
+                  if (
+                    this.clinic_id.indexOf(',') >= 0 ||
+                    Array.isArray(this.clinic_id)
+                  ) {
+                    pName = res.provider_name + ' - ' + res.clinic_name;
+                  } else {
+                    pName = res.provider_name;
+                  }
+                  this.collExphourlyRateChartDesntistsData1.push(
+                    Math.round(res.hourly_rate)
+                  );
+                  if (
+                    res.provider_name != null &&
+                    res.provider_name != 'Anonymous'
+                  ) {
+                    if (res.provider_name.includes(',')) {
+                      let namet: any = res.provider_name.split(',');
+                      var name: any = namet[1] + ' ' + namet[0];
+                    } else {
+                      var name: any = res.provider_name;
+                    }
+                    this.collExphourlyRateChartDesntistsLabels1.push(pName);
+                    this.hrKey = i;
+                  } else
+                    this.collExphourlyRateChartDesntistsLabels1.push(pName);
+                  i++;
+                }
+              });
+
+              this.collExphourlyRateChartDentistsData[0]['data'] =
+                this.collExphourlyRateChartDesntistsData1;
+              this.collExphourlyRateChartDesntistsLabels =
+                this.collExphourlyRateChartDesntistsLabels1;
+              this.collExphourlyRateChartDesntistsAverage = Math.round(
+                res.body.total
+              );
+              this.collExphourlyRateChartDesntistsAveragePrev = Math.round(
+                res.body.total_ta
+              );
+              this.hourlyRateChartGoal = res.body.goals;
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColorsHrDent = [{ backgroundColor: [] }];
+                this.barChartColorsHrDent[0].backgroundColor[this.hrKey] =
+                  '#1CA49F';
+                this.HRcolorsDent = this.barChartColorsHrDent;
+              } else {
+                this.HRcolorsDent = this.lineChartColors;
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.collExphourlyRateChartDesntistsLabels
+                );
+                this.collExphourlyRateChartDentistsData[0].backgroundColor =
+                  dynamicColors;
+              }
+
+              if (
+                this.collExphourlyRateChartDesntistsAverage >=
+                this.collExphourlyRateChartDesntistsAveragePrev
+              )
+                this.collExphourlyRateChartDesntistsTooltip = 'up';
+
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsHR1.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.collExphourlyRateChartDesntistsAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsHR1.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.hourlyRateChartGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              }
             }
-            else
-              this.collExphourlyRateChartDesntistsLabels1.push(pName);
-            i++;
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-
-        });
-
-        this.collExphourlyRateChartDentistsData[0]['data'] = this.collExphourlyRateChartDesntistsData1;
-        this.collExphourlyRateChartDesntistsLabels = this.collExphourlyRateChartDesntistsLabels1;
-        this.collExphourlyRateChartDesntistsAverage = Math.round(res.body.total);
-        this.collExphourlyRateChartDesntistsAveragePrev = Math.round(res.body.total_ta);
-        this.hourlyRateChartGoal = res.body.goals;
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColorsHrDent = [
-            { backgroundColor: [] }
-          ];
-          this.barChartColorsHrDent[0].backgroundColor[this.hrKey] = '#1CA49F';
-          this.HRcolorsDent = this.barChartColorsHrDent;
-        }
-        else {
-          this.HRcolorsDent = this.lineChartColors;
-          let dynamicColors = this.barBackgroundColor(res.body.data, this.collExphourlyRateChartDesntistsLabels);       
-          this.collExphourlyRateChartDentistsData[0].backgroundColor = dynamicColors;
-        }
-
-        if (this.collExphourlyRateChartDesntistsAverage >= this.collExphourlyRateChartDesntistsAveragePrev)
-          this.collExphourlyRateChartDesntistsTooltip = 'up';
-
-
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsHR1.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.collExphourlyRateChartDesntistsAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-        else if (this.goalchecked == 'goal') {
-          this.barChartOptionsHR1.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.hourlyRateChartGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+        );
   }
 
   public collExphourlyRateChartOhtData: any[] = [
     {
       ...this.chartService.baseChartData,
-      data: [],
+      data: []
     }
   ];
   public collExphourlyRateChartOhtLabels1 = [];
@@ -6876,10 +8116,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public collExphourlyRateChartOhtTooltip = 'down';
   public collExphourlyRateChartOhtLoader: boolean = true;
   public collExphourlyRateChartOhtData1: any[] = [];
-  public collExphourlyRateChartOhtLabels:any;
+  public collExphourlyRateChartOhtLabels: any;
   //All dentist Hourly ratechart
-  public showCollexpHrOhtTbl:boolean = false;
-  public collExphourlyRateOhttbl:any =[];
+  public showCollexpHrOhtTbl: boolean = false;
+  public collExphourlyRateOhttbl: any = [];
   private collectionExpHourlyRateOht() {
     this.collExphourlyRateChartOhtLoader = true;
     this.collExphourlyRateChartOhtData1 = [];
@@ -6887,141 +8127,183 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     this.collExphourlyRateChartOhtLabels = [];
     this.barChartOptionsHR2.annotation = [];
-    this.clinic_id && this.cliniciananalysisService.collectionExpHourlyRateOht(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((res: any) => {
-      this.collExphourlyRateChartOhtData1 = [];
-      this.collExphourlyRateChartOhtLabels1 = [];
-      this.collExphourlyRateOhttbl =[];
-      this.collExphourlyRateChartOhtLabels = [];
-      this.barChartOptionsHR2.annotation = [];
-      this.collExphourlyRateChartOhtData[0]['data']=[];
-      this.collExphourlyRateChartOhtAverage =0;
-      if (res.status == 200) {
-        this.hrKey ='';
-        this.Apirequest = this.Apirequest - 1;
-        this.enableDiabaleButton(this.Apirequest);
-        this.collExphourlyRateChartOhtLoader = false;
-        this.collExphourlyRateChartOhtTooltip = 'down';
-        var i = 0;
-        if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-          this.isAllClinic = true;
-          res.body.data.sort((a, b)=> a.hourly_rate - b.hourly_rate).reverse();
-        }else{
-          this.isAllClinic = false;
-        }
-        this.collExphourlyRateOhttbl = res.body.data;
-        if (res.body.data.length > this.numberOfRecords) res.body.data = res.body.data.slice(0, this.numberOfRecords);
-        res.body.data.forEach(res => {
-          if (res.hourly_rate > 0) {
-            this.collExphourlyRateChartOhtData1.push(Math.round(res.hourly_rate));
-            var pName ='';
-            if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-                pName = res.provider_name + " - " + res.clinic_name;
-              }else{
-                pName = res.provider_name;
-              }
-            if (res.provider_name != null && res.provider_name != 'Anonymous') {
-              if (res.provider_name.includes(',')) {
-                let namet: any = res.provider_name.split(',');
-                var name: any = namet[1] + " " + namet[0];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .collectionExpHourlyRateOht(
+          this.clinic_id,
+          this.startDate,
+          this.endDate,
+          this.duration,
+          this.user_type,
+          this.childid
+        )
+        .subscribe(
+          (res: any) => {
+            this.collExphourlyRateChartOhtData1 = [];
+            this.collExphourlyRateChartOhtLabels1 = [];
+            this.collExphourlyRateOhttbl = [];
+            this.collExphourlyRateChartOhtLabels = [];
+            this.barChartOptionsHR2.annotation = [];
+            this.collExphourlyRateChartOhtData[0]['data'] = [];
+            this.collExphourlyRateChartOhtAverage = 0;
+            if (res.status == 200) {
+              this.hrKey = '';
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.collExphourlyRateChartOhtLoader = false;
+              this.collExphourlyRateChartOhtTooltip = 'down';
+              var i = 0;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                res.body.data
+                  .sort((a, b) => a.hourly_rate - b.hourly_rate)
+                  .reverse();
               } else {
-                var name: any = res.provider_name;
+                this.isAllClinic = false;
               }
-              this.collExphourlyRateChartOhtLabels1.push(pName);
-              this.hrKey = i;
+              this.collExphourlyRateOhttbl = res.body.data;
+              if (res.body.data.length > this.numberOfRecords)
+                res.body.data = res.body.data.slice(0, this.numberOfRecords);
+              res.body.data.forEach((res) => {
+                if (res.hourly_rate > 0) {
+                  this.collExphourlyRateChartOhtData1.push(
+                    Math.round(res.hourly_rate)
+                  );
+                  var pName = '';
+                  if (
+                    this.clinic_id.indexOf(',') >= 0 ||
+                    Array.isArray(this.clinic_id)
+                  ) {
+                    pName = res.provider_name + ' - ' + res.clinic_name;
+                  } else {
+                    pName = res.provider_name;
+                  }
+                  if (
+                    res.provider_name != null &&
+                    res.provider_name != 'Anonymous'
+                  ) {
+                    if (res.provider_name.includes(',')) {
+                      let namet: any = res.provider_name.split(',');
+                      var name: any = namet[1] + ' ' + namet[0];
+                    } else {
+                      var name: any = res.provider_name;
+                    }
+                    this.collExphourlyRateChartOhtLabels1.push(pName);
+                    this.hrKey = i;
+                  } else this.collExphourlyRateChartOhtLabels1.push(pName);
+                  i++;
+                }
+              });
+
+              this.collExphourlyRateChartOhtData[0]['data'] =
+                this.collExphourlyRateChartOhtData1;
+              this.collExphourlyRateChartOhtLabels =
+                this.collExphourlyRateChartOhtLabels1;
+              this.collExphourlyRateChartOhtAverage = Math.round(
+                res.body.total
+              );
+              this.collExphourlyRateChartOhtAveragePrev = Math.round(
+                res.body.total_ta
+              );
+              this.hourlyRateChartGoal = res.body.goals;
+              if (this.user_type == '4' && this.childid != '') {
+                this.barChartColorsHrOht = [{ backgroundColor: [] }];
+                this.barChartColorsHrOht[0].backgroundColor[this.hrKey] =
+                  '#1CA49F';
+                this.HRcolorsOht = this.barChartColorsHrOht;
+              } else {
+                this.HRcolorsOht = this.lineChartColors;
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.collExphourlyRateChartOhtLabels
+                );
+                this.collExphourlyRateChartOhtData[0].backgroundColor =
+                  dynamicColors;
+              }
+
+              if (
+                this.collExphourlyRateChartOhtAverage >=
+                this.collExphourlyRateChartOhtAveragePrev
+              )
+                this.collExphourlyRateChartOhtTooltip = 'up';
+
+              if (this.goalchecked == 'average') {
+                this.barChartOptionsHR2.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.collExphourlyRateChartOhtAverage,
+                      borderColor: '#0e3459',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              } else if (this.goalchecked == 'goal') {
+                this.barChartOptionsHR2.annotation = {
+                  annotations: [
+                    {
+                      type: 'line',
+                      drawTime: 'afterDatasetsDraw',
+                      mode: 'horizontal',
+                      scaleID: 'y-axis-0',
+                      value: this.hourlyRateChartGoal * this.goalCount,
+                      borderColor: 'red',
+                      borderWidth: 2,
+                      borderDash: [2, 2],
+                      borderDashOffset: 0
+                    }
+                  ]
+                };
+              }
             }
-            else
-              this.collExphourlyRateChartOhtLabels1.push(pName);
-            i++;
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-
-        });
-
-        this.collExphourlyRateChartOhtData[0]['data'] = this.collExphourlyRateChartOhtData1;
-        this.collExphourlyRateChartOhtLabels = this.collExphourlyRateChartOhtLabels1;
-        this.collExphourlyRateChartOhtAverage = Math.round(res.body.total);
-        this.collExphourlyRateChartOhtAveragePrev = Math.round(res.body.total_ta);
-        this.hourlyRateChartGoal = res.body.goals;
-        if (this.user_type == '4' && this.childid != '') {
-          this.barChartColorsHrOht = [
-            { backgroundColor: [] }
-          ];
-          this.barChartColorsHrOht[0].backgroundColor[this.hrKey] = '#1CA49F';
-          this.HRcolorsOht = this.barChartColorsHrOht;
-        }
-        else {
-          this.HRcolorsOht = this.lineChartColors;
-          let dynamicColors = this.barBackgroundColor(res.body.data, this.collExphourlyRateChartOhtLabels);
-          this.collExphourlyRateChartOhtData[0].backgroundColor = dynamicColors;
-        }
-
-        if (this.collExphourlyRateChartOhtAverage >= this.collExphourlyRateChartOhtAveragePrev)
-          this.collExphourlyRateChartOhtTooltip = 'up';
-
-
-        if (this.goalchecked == 'average') {
-          this.barChartOptionsHR2.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.collExphourlyRateChartOhtAverage,
-              borderColor: '#0e3459',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-        else if (this.goalchecked == 'goal') {
-          this.barChartOptionsHR2.annotation = {
-            annotations: [{
-              type: 'line',
-              drawTime: 'afterDatasetsDraw',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: this.hourlyRateChartGoal * this.goalCount,
-              borderColor: 'red',
-              borderWidth: 2,
-              borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-            ]
-          }
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+        );
   }
 
   // Get Dentist
   private getDentists() {
-    this.dentists =[];
-    this.dentistService.currentDentistList.subscribe((res) => {
-      this.selectedDentist = 'all';
-      if (this._cookieService.get("clinic_dentist")) {
-          var dentistVal1 = this._cookieService.get("clinic_dentist").split('_');
+    this.dentists = [];
+    this.dentistService.currentDentistList.subscribe(
+      (res) => {
+        this.selectedDentist = 'all';
+        if (this._cookieService.get('clinic_dentist')) {
+          var dentistVal1 = this._cookieService
+            .get('clinic_dentist')
+            .split('_');
           this.selectedDentist = dentistVal1[1];
-      } 
-      if (res.status == 200) {
-        this.dentists = res.body.data;
-        this.dentistCount = res.body.data.length;
-      } else if (res.status == 401) {
-        this._cookieService.put("username", '');
-        this._cookieService.put("email", '');
-        this._cookieService.put("userid", '');
-        this.router.navigateByUrl('/login');
+        }
+        if (res.status == 200) {
+          this.dentists = res.body.data;
+          this.dentistCount = res.body.data.length;
+        } else if (res.status == 401) {
+          this._cookieService.put('username', '');
+          this._cookieService.put('email', '');
+          this._cookieService.put('userid', '');
+          this.router.navigateByUrl('/login');
+        }
+      },
+      (error) => {
+        this.toastr.error(
+          'There was an error retrieving your report data, please contact our support team.'
+        );
+        this.warningMessage = 'Please Provide Valid Inputs!';
       }
-    }, error => {
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
     );
   }
 
@@ -7044,14 +8326,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
       if ($('.internal_dentist').val())
         dentistVal = $('.internal_dentist').val();
-      else
-        dentistVal = $('.external_dentist').val();
+      else dentistVal = $('.external_dentist').val();
       if (dentistVal == '') {
-        if (this._cookieService.get("clinic_dentist")) {
-          var dentistVal1 = this._cookieService.get("clinic_dentist").split('_');
+        if (this._cookieService.get('clinic_dentist')) {
+          var dentistVal1 = this._cookieService
+            .get('clinic_dentist')
+            .split('_');
           dentistVal = dentistVal1[1];
         }
-
       }
       this.duration = duration;
       if (duration == 'w') {
@@ -7062,46 +8344,54 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.currentText = 'This Week';
 
         const now = new Date();
-        if (now.getDay() == 0)
-          var day = 7;
-        else
-          var day = now.getDay();
+        if (now.getDay() == 0) var day = 7;
+        else var day = now.getDay();
 
         var first = now.getDate() - day + 1;
         var last = first + 6;
         var sd = new Date(now.setDate(first));
 
-        this.startDate = this.datePipe.transform(sd.toUTCString(), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(
+          sd.toUTCString(),
+          'dd-MM-yyyy'
+        );
         var end = now.setDate(sd.getDate() + 6);
-        this.endDate = this.datePipe.transform(new Date(end).toUTCString(), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(
+          new Date(end).toUTCString(),
+          'dd-MM-yyyy'
+        );
         this.loadDentist(dentistVal);
-      }
-      else if (duration == 'm') {
+      } else if (duration == 'm') {
         this.goalCount = 1;
         this.showGoals = true;
         this.trendText = 'Last Month';
         this.currentText = 'This Month';
 
         var date = new Date();
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(
+          new Date(date.getFullYear(), date.getMonth(), 1),
+          'dd-MM-yyyy'
+        );
         this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
         this.loadDentist(dentistVal);
-
-      }
-      else if (duration == 'lm') {
+      } else if (duration == 'lm') {
         this.goalCount = 1;
         this.showGoals = true;
         this.trendText = 'Previous Month';
         this.currentText = 'Last Month';
 
         const date = new Date();
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(
+          new Date(date.getFullYear(), date.getMonth() - 1, 1),
+          'dd-MM-yyyy'
+        );
+        this.endDate = this.datePipe.transform(
+          new Date(date.getFullYear(), date.getMonth(), 0),
+          'dd-MM-yyyy'
+        );
 
         this.loadDentist(dentistVal);
-
-      }
-      else if (duration == 'q') {
+      } else if (duration == 'q') {
         this.goalCount = 3;
         this.showGoals = false;
         this.trendText = 'Last Quarter';
@@ -7112,26 +8402,33 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var cyear = now.getFullYear();
 
         if (cmonth >= 1 && cmonth <= 3) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
+          this.startDate = this.datePipe.transform(
+            new Date(now.getFullYear(), 0, 1),
+            'dd-MM-yyyy'
+          );
           // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
-        }
-        else if (cmonth >= 4 && cmonth <= 6) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
+        } else if (cmonth >= 4 && cmonth <= 6) {
+          this.startDate = this.datePipe.transform(
+            new Date(now.getFullYear(), 3, 1),
+            'dd-MM-yyyy'
+          );
           // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy');
-        }
-        else if (cmonth >= 7 && cmonth <= 9) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
+        } else if (cmonth >= 7 && cmonth <= 9) {
+          this.startDate = this.datePipe.transform(
+            new Date(now.getFullYear(), 6, 1),
+            'dd-MM-yyyy'
+          );
           // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');
-        }
-        else if (cmonth >= 10 && cmonth <= 12) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
+        } else if (cmonth >= 10 && cmonth <= 12) {
+          this.startDate = this.datePipe.transform(
+            new Date(now.getFullYear(), 9, 1),
+            'dd-MM-yyyy'
+          );
           // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');
         }
         this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
         this.loadDentist(dentistVal);
-
-      }
-      else if (duration == 'lq') {
+      } else if (duration == 'lq') {
         this.goalCount = 3;
         this.showGoals = false;
         this.trendText = 'Previous Quarter';
@@ -7142,106 +8439,181 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         var cyear = now.getFullYear();
 
         if (cmonth >= 1 && cmonth <= 3) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 9, 1), 'dd-MM-yyyy');
-          this.endDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 12, 0), 'dd-MM-yyyy');
-        }
-        else if (cmonth >= 4 && cmonth <= 6) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
-          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
-        }
-        else if (cmonth >= 7 && cmonth <= 9) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
-          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy');
-        }
-        else if (cmonth >= 10 && cmonth <= 12) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
-          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');
+          this.startDate = this.datePipe.transform(
+            new Date(now.getFullYear() - 1, 9, 1),
+            'dd-MM-yyyy'
+          );
+          this.endDate = this.datePipe.transform(
+            new Date(now.getFullYear() - 1, 12, 0),
+            'dd-MM-yyyy'
+          );
+        } else if (cmonth >= 4 && cmonth <= 6) {
+          this.startDate = this.datePipe.transform(
+            new Date(now.getFullYear(), 0, 1),
+            'dd-MM-yyyy'
+          );
+          this.endDate = this.datePipe.transform(
+            new Date(now.getFullYear(), 3, 0),
+            'dd-MM-yyyy'
+          );
+        } else if (cmonth >= 7 && cmonth <= 9) {
+          this.startDate = this.datePipe.transform(
+            new Date(now.getFullYear(), 3, 1),
+            'dd-MM-yyyy'
+          );
+          this.endDate = this.datePipe.transform(
+            new Date(now.getFullYear(), 6, 0),
+            'dd-MM-yyyy'
+          );
+        } else if (cmonth >= 10 && cmonth <= 12) {
+          this.startDate = this.datePipe.transform(
+            new Date(now.getFullYear(), 6, 1),
+            'dd-MM-yyyy'
+          );
+          this.endDate = this.datePipe.transform(
+            new Date(now.getFullYear(), 9, 0),
+            'dd-MM-yyyy'
+          );
         }
         this.loadDentist(dentistVal);
-      }
-      else if (duration == 'cytd') {
+      } else if (duration == 'cytd') {
         this.trendText = 'Last Year';
         this.currentText = 'This Year';
         this.showGoals = false;
         var date = new Date();
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(
+          new Date(date.getFullYear(), 0, 1),
+          'dd-MM-yyyy'
+        );
         this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
-        var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 0, 1).getMonth();
+        var difMonths =
+          new Date().getMonth() - new Date(date.getFullYear(), 0, 1).getMonth();
         this.goalCount = difMonths + 1;
         this.loadDentist(dentistVal);
-      }
-      else if (duration == 'lcytd') {
+      } else if (duration == 'lcytd') {
         this.trendText = 'Previous Year';
         this.currentText = 'Last Year';
         this.showGoals = false;
         var date = new Date();
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 0, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 11, 31), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(
+          new Date(date.getFullYear() - 1, 0, 1),
+          'dd-MM-yyyy'
+        );
+        this.endDate = this.datePipe.transform(
+          new Date(date.getFullYear() - 1, 11, 31),
+          'dd-MM-yyyy'
+        );
         this.goalCount = 12;
         this.loadDentist(dentistVal);
-      }
-      else if (duration == 'fytd') {
+      } else if (duration == 'fytd') {
         this.trendText = 'Last Financial Year';
         this.currentText = 'This Financial Year';
         this.showGoals = false;
         var date = new Date();
-        if ((date.getMonth() + 1) <= 6) {
-          this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 6, 1), 'dd-MM-yyyy');
+        if (date.getMonth() + 1 <= 6) {
+          this.startDate = this.datePipe.transform(
+            new Date(date.getFullYear() - 1, 6, 1),
+            'dd-MM-yyyy'
+          );
         } else {
-          this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
+          this.startDate = this.datePipe.transform(
+            new Date(date.getFullYear(), 6, 1),
+            'dd-MM-yyyy'
+          );
         }
         this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
-        if ((date.getMonth() + 1) <= 6) {
-          this.goalCount = this.monthDiff(new Date(date.getFullYear() - 1, 6, 1), new Date());
+        if (date.getMonth() + 1 <= 6) {
+          this.goalCount = this.monthDiff(
+            new Date(date.getFullYear() - 1, 6, 1),
+            new Date()
+          );
         } else {
-          this.goalCount = this.monthDiff(new Date(date.getFullYear(), 6, 1), new Date());
+          this.goalCount = this.monthDiff(
+            new Date(date.getFullYear(), 6, 1),
+            new Date()
+          );
         }
         //var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 6, 1).getMonth();
         //this.goalCount = Math.abs(difMonths + 1);
         this.loadDentist(dentistVal);
-      }
-      else if (duration == 'lfytd') {
+      } else if (duration == 'lfytd') {
         this.trendText = 'Previous Financial Year';
         this.currentText = 'Last Financial Year';
         this.showGoals = false;
         var date = new Date();
-        if ((date.getMonth() + 1) <= 6) {
-          this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'dd-MM-yyyy');
+        if (date.getMonth() + 1 <= 6) {
+          this.startDate = this.datePipe.transform(
+            new Date(date.getFullYear() - 2, 6, 1),
+            'dd-MM-yyyy'
+          );
         } else {
-          this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 6, 1), 'dd-MM-yyyy');
+          this.startDate = this.datePipe.transform(
+            new Date(date.getFullYear() - 1, 6, 1),
+            'dd-MM-yyyy'
+          );
         }
-        if ((date.getMonth() + 1) <= 6) {
-          this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'dd-MM-yyyy');
+        if (date.getMonth() + 1 <= 6) {
+          this.endDate = this.datePipe.transform(
+            new Date(date.getFullYear() - 1, 5, 30),
+            'dd-MM-yyyy'
+          );
         } else {
-          this.endDate = this.datePipe.transform(new Date(date.getFullYear(), 5, 30), 'dd-MM-yyyy');
+          this.endDate = this.datePipe.transform(
+            new Date(date.getFullYear(), 5, 30),
+            'dd-MM-yyyy'
+          );
         }
         /*this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'dd-MM-yyyy');*/
         /*this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'dd-MM-yyyy');*/
         this.goalCount = 12;
         this.loadDentist(dentistVal);
-      }
-      else if (duration == 'custom') {
+      } else if (duration == 'custom') {
         this.trendText = '';
         this.currentText = '';
         // $('.customRange').css('display', 'block');
         let selectedDate = this.chartService.customSelectedDate$.value;
-        this.startDate = this.datePipe.transform(selectedDate.startDate, 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(selectedDate.endDate, 'dd-MM-yyyy');
-        var selectedMonth = this.datePipe.transform(selectedDate.startDate, 'M');
-        var selectedYear = this.datePipe.transform(selectedDate.startDate, 'yyyy');
-        var selectedStartDate = this.datePipe.transform(selectedDate.startDate, 'd');
-        var selectedEndDate = this.datePipe.transform(selectedDate.endDate, 'd');
-        var LastDay = new Date(parseInt(selectedYear), parseInt(selectedMonth) , 0).getDate();
-        if(parseInt(selectedStartDate) == 1 && parseInt(selectedEndDate) == LastDay){
+        this.startDate = this.datePipe.transform(
+          selectedDate.startDate,
+          'dd-MM-yyyy'
+        );
+        this.endDate = this.datePipe.transform(
+          selectedDate.endDate,
+          'dd-MM-yyyy'
+        );
+        var selectedMonth = this.datePipe.transform(
+          selectedDate.startDate,
+          'M'
+        );
+        var selectedYear = this.datePipe.transform(
+          selectedDate.startDate,
+          'yyyy'
+        );
+        var selectedStartDate = this.datePipe.transform(
+          selectedDate.startDate,
+          'd'
+        );
+        var selectedEndDate = this.datePipe.transform(
+          selectedDate.endDate,
+          'd'
+        );
+        var LastDay = new Date(
+          parseInt(selectedYear),
+          parseInt(selectedMonth),
+          0
+        ).getDate();
+        if (
+          parseInt(selectedStartDate) == 1 &&
+          parseInt(selectedEndDate) == LastDay
+        ) {
           this.goalCount = 1;
           this.showGoals = true;
-        }else{
+        } else {
           this.showGoals = false;
         }
         this.loadDentist(dentistVal);
       }
       $('.filter').removeClass('active');
-      $('.filter_' + duration).addClass("active");
+      $('.filter_' + duration).addClass('active');
       // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
     }
   }
@@ -7249,50 +8621,46 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   initiate_dentist() {
     var val = $('#currentDentist').attr('did');
     // var val = $('.internal_dentist').val();
-    if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
+    if (this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)) {
       //this.loadDentist(val);
-    }else{
+    } else {
       this.loadDentist(val);
     }
-  
   }
   choosedDate(val) {
-    val = (val.chosenLabel);
+    val = val.chosenLabel;
     var val = val.toString().split(' - ');
     this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
     this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
     this.filterDate('custom');
-    $('.page-title-date').val(this.startDate + " - " + this.endDate);
+    $('.page-title-date').val(this.startDate + ' - ' + this.endDate);
     $('.customRange').css('display', 'none');
-
   }
 
   toggleFilter(val) {
-    if (this._cookieService.get("clinic_dentist")) {
-          var dentistVal1 = this._cookieService.get("clinic_dentist").split('_');
-          this.selectedDentist = dentistVal1[1];
-      }
-      if (this._cookieService.get("dentistid") && this.user_type == '4') { 
-        this.selectedDentist = this._cookieService.get("dentistid");
-        }
+    if (this._cookieService.get('clinic_dentist')) {
+      var dentistVal1 = this._cookieService.get('clinic_dentist').split('_');
+      this.selectedDentist = dentistVal1[1];
+    }
+    if (this._cookieService.get('dentistid') && this.user_type == '4') {
+      this.selectedDentist = this._cookieService.get('dentistid');
+    }
     $('.target_filter').removeClass('mat-button-toggle-checked');
     $('.target_' + val).addClass('mat-button-toggle-checked');
     $('.filter').removeClass('active');
     this.Apirequest = 0;
-    this.showWeekTrend = false
+    this.showWeekTrend = false;
     if (val == 'current') {
       this.toggleChecked = true;
       this.showTrendChart = true;
       this.trendValue = 'c';
       this.toggleChangeProcess();
-    }
-    else if (val == 'historic') {
+    } else if (val == 'historic') {
       this.toggleChecked = true;
       this.trendValue = 'h';
       this.showTrendChart = true;
       this.toggleChangeProcess();
-    }
-    else if (val == 'off') {
+    } else if (val == 'off') {
       this.filterDate('m');
       this.toggleChecked = false;
       this.showTrendChart = false;
@@ -7303,26 +8671,31 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   isDisabled = true;
   isChecked = true;
 
- 
   public targetData = [];
   public dentistProdTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,
-  //   xAxisID: "x-axis-actual",
+      data: [],
+      label: '',
+      shadowOffsetX: 3,
+      //   xAxisID: "x-axis-actual",
       backgroundColor: 'rgba(0, 0, 255, 0.2)',
-      order: 2,
+      order: 2
     },
-    { 
-      data: [], label: '',
-   //  xAxisID: "x-axis-target",
+    {
+      data: [],
+      label: '',
+      //  xAxisID: "x-axis-target",
       backgroundColor: 'rgba(255, 0, 128, 1)',
       order: 1,
-      minHeight: 5,
+      minHeight: 5
     }
   ];
   public dentistColTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,order: 2,
+      data: [],
+      label: '',
+      shadowOffsetX: 3,
+      order: 2,
       backgroundColor: [
         this.chartService.colors.odd,
         this.chartService.colors.even,
@@ -7348,41 +8721,47 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
-    }, { 
-      data: [], label: '',
+    },
+    {
+      data: [],
+      label: '',
       backgroundColor: 'rgba(255, 0, 128, 1)',
-      order: 1,
-    }];
+      order: 1
+    }
+  ];
 
-    public dentistColExpTrend: any[] = [
-      {
-        data: [], label: '', shadowOffsetX: 3,
-        backgroundColor: [
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even
-        ],
-        shadowOffsetY: 2,
-        shadowBlur: 3,
-        shadowColor: 'rgba(0, 0, 0, 0.3)',
-        pointBevelWidth: 2,
-        pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-        pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-        pointShadowOffsetX: 3,
-        pointShadowOffsetY: 3,
-        pointShadowBlur: 10,
-        pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-        backgroundOverlayMode: 'multiply'
-      }];
+  public dentistColExpTrend: any[] = [
+    {
+      data: [],
+      label: '',
+      shadowOffsetX: 3,
+      backgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even
+      ],
+      shadowOffsetY: 2,
+      shadowBlur: 3,
+      shadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointBevelWidth: 2,
+      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointShadowOffsetX: 3,
+      pointShadowOffsetY: 3,
+      pointShadowBlur: 10,
+      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+      backgroundOverlayMode: 'multiply'
+    }
+  ];
 
   public dentistProductionWeeklyTrend = [];
   public dentistProductionWeeklyTrendLabels = [];
@@ -7396,112 +8775,132 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var user_id;
     var clinic_id;
     if (!mode) {
-      mode = this.trendValue
+      mode = this.trendValue;
     }
 
-    this.clinic_id && this.cliniciananalysisService.caDentistProtectionTrend(this.selectedDentist, this.clinic_id, mode).subscribe((res: any) => {
-      this.dentistProductionTrendLabels1 = [];
-      this.dentistProductionTrend1 = [];
-      this.dentistProductionTrendLabels = [];
-      this.dentistProductionTrendLabels = [];
-      this.dentistProductionWeeklyTrend = [];
-      this.dentistProductionWeeklyTrendLabels = [];
-      let dynamicColors = [];
-      this.targetData=[];
-      if (res.body.data && res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .caDentistProtectionTrend(this.selectedDentist, this.clinic_id, mode)
+        .subscribe(
+          (res: any) => {
+            this.dentistProductionTrendLabels1 = [];
+            this.dentistProductionTrend1 = [];
+            this.dentistProductionTrendLabels = [];
+            this.dentistProductionTrendLabels = [];
+            this.dentistProductionWeeklyTrend = [];
+            this.dentistProductionWeeklyTrendLabels = [];
+            let dynamicColors = [];
+            this.targetData = [];
+            if (res.body.data && res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
 
-        if (res.body.data) {
-          res.body.data.forEach(res => {
-            // if (res.production > 0) {
-              this.dentistProductionTrend1.push(Math.round(res.production));
-              if(res.goals == -1 || res.goals == null || res.goals == ''){
-                this.targetData.push(null);
-              }else{
-                this.targetData.push(res.goals);    
-              }       
-              if (mode == 'c') {                            
-                this.dentistProductionTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-              } else if (mode == 'w') {
-                this.dentistProductionTrendLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
-              }
-              else {
-                this.dentistProductionTrendLabels1.push(res.year);
-              }
-            // }
-          });
-          if (this.dentistProductionTrend1.every((value) => value == 0)) this.dentistProductionTrend1 = [];
-          this.dentistProdTrend[0]['data'] = this.dentistProductionTrend1;
-          let maxVal = Math.max(...this.dentistProductionTrend1);
-          var subVal = 1;
-          if(maxVal >= 20001){
-            subVal = 200;
-          }else if(maxVal > 5000 && maxVal < 20000){
-            subVal = 100;
-          }else if(maxVal > 3000 && maxVal < 5000){
-            subVal = 50;
-          }else if(maxVal > 2000 && maxVal < 3000){
-            subVal = 10;
-          }else if(maxVal > 100 && maxVal < 2000){
-            subVal = 1;
-          }else if(maxVal > 51 && maxVal < 100){
-            subVal = 0.2;
-          }else if(maxVal <= 50){
-            subVal = 0.1;
-          }
+              if (res.body.data) {
+                res.body.data.forEach((res) => {
+                  // if (res.production > 0) {
+                  this.dentistProductionTrend1.push(Math.round(res.production));
+                  if (res.goals == -1 || res.goals == null || res.goals == '') {
+                    this.targetData.push(null);
+                  } else {
+                    this.targetData.push(res.goals);
+                  }
+                  if (mode == 'c') {
+                    this.dentistProductionTrendLabels1.push(
+                      this.datePipe.transform(res.year_month, 'MMM y')
+                    );
+                  } else if (mode == 'w') {
+                    this.dentistProductionTrendLabels1.push(
+                      'WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd')
+                    );
+                  } else {
+                    this.dentistProductionTrendLabels1.push(res.year);
+                  }
+                  // }
+                });
+                if (this.dentistProductionTrend1.every((value) => value == 0))
+                  this.dentistProductionTrend1 = [];
+                this.dentistProdTrend[0]['data'] = this.dentistProductionTrend1;
+                let maxVal = Math.max(...this.dentistProductionTrend1);
+                var subVal = 1;
+                if (maxVal >= 20001) {
+                  subVal = 200;
+                } else if (maxVal > 5000 && maxVal < 20000) {
+                  subVal = 100;
+                } else if (maxVal > 3000 && maxVal < 5000) {
+                  subVal = 50;
+                } else if (maxVal > 2000 && maxVal < 3000) {
+                  subVal = 10;
+                } else if (maxVal > 100 && maxVal < 2000) {
+                  subVal = 1;
+                } else if (maxVal > 51 && maxVal < 100) {
+                  subVal = 0.2;
+                } else if (maxVal <= 50) {
+                  subVal = 0.1;
+                }
 
-          var mappedtargetData = [];
-          this.targetData.map(function (v){
-            if(v == null ){
-              mappedtargetData.push([v - 0, v + 0]);
-            }else{
-              mappedtargetData.push([v - subVal, v + subVal]);
+                var mappedtargetData = [];
+                this.targetData.map(function (v) {
+                  if (v == null) {
+                    mappedtargetData.push([v - 0, v + 0]);
+                  } else {
+                    mappedtargetData.push([v - subVal, v + subVal]);
+                  }
+                });
+                if (mode == 'c') {
+                  this.dentistProdTrend[0]['label'] = 'Actual';
+                  this.dentistProdTrend[1]['label'] = 'Target';
+                  this.dentistProdTrend[1]['data'] = mappedtargetData; //this.targetData.map(v => [v - subVal, v + subVal]);
+                } else {
+                  this.dentistProdTrend[0]['label'] = '';
+                  this.dentistProdTrend[1]['label'] = '';
+                  this.dentistProdTrend[1]['data'] = [];
+                }
+
+                this.dentistProductionTrendLabels1.forEach(
+                  (label, labelIndex) => {
+                    dynamicColors.push(
+                      labelIndex % 2 === 0
+                        ? this.chartService.colors.odd
+                        : this.chartService.colors.even
+                    );
+                  }
+                ); // This is dynamic array for colors of bars
+                this.dentistProdTrend[0].backgroundColor = dynamicColors;
+
+                this.dentistProductionTrendLabels =
+                  this.dentistProductionTrendLabels1;
+                if (this.dentistProductionTrendLabels.length <= 0) {
+                  this.gaugeValue = '0';
+                }
+                if (mode == 'w') {
+                  this.dentistProductionWeeklyTrend = res.body.data;
+                  this.dentistProductionWeeklyTrendLabels =
+                    this.dentistProductionTrendLabels;
+                }
+              } else {
+                this.dentistProductionTrendLabels = [];
+              }
+              this.dentistProductionTrendLoader = false;
             }
-          });
-          if(mode == 'c'){
-            this.dentistProdTrend[0]['label'] = 'Actual';
-            this.dentistProdTrend[1]['label'] = 'Target';
-           this.dentistProdTrend[1]['data'] =  mappedtargetData;//this.targetData.map(v => [v - subVal, v + subVal]);
-          }else{
-            this.dentistProdTrend[0]['label'] = '';
-            this.dentistProdTrend[1]['label'] = '';
-            this.dentistProdTrend[1]['data'] =  [];
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-         
-
-          this.dentistProductionTrendLabels1.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
-          this.dentistProdTrend[0].backgroundColor = dynamicColors;
-
-          this.dentistProductionTrendLabels = this.dentistProductionTrendLabels1;
-          if (this.dentistProductionTrendLabels.length <= 0) {
-            this.gaugeValue = '0';
-          }
-          if (mode == 'w') {
-            this.dentistProductionWeeklyTrend =  res.body.data;
-            this.dentistProductionWeeklyTrendLabels = this.dentistProductionTrendLabels;
-          }
-        } else {
-          this.dentistProductionTrendLabels = [];
-        }
-        this.dentistProductionTrendLoader = false;
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+        );
   }
 
   public dentistProdDentistsTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3
-      
-    }];
+      data: [],
+      label: '',
+      shadowOffsetX: 3
+    }
+  ];
   public dentistProductionWeeklyDentistsTrend = [];
   public dentistProductionWeeklyTrendDentistsLabels = [];
   public dentistProductionDentistsTrend1 = [];
@@ -7514,70 +8913,104 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var user_id;
     var clinic_id;
     if (!mode) {
-      mode = this.trendValue
+      mode = this.trendValue;
     }
 
-    this.clinic_id && this.cliniciananalysisService.caDentistProtectionDentistsTrend(this.selectedDentist, this.clinic_id, mode).subscribe((res: any) => {
-      this.dentistProductionTrendDentistsLabels1 = [];
-      this.dentistProductionDentistsTrend1 = [];
-      this.dentistProductionTrendDentistsLabels = [];
-      this.dentistProductionTrendDentistsLabels = [];
-      this.dentistProductionWeeklyDentistsTrend = [];
-      this.dentistProductionWeeklyTrendDentistsLabels = [];
-      let dynamicColors = [];
-      if (res.body.data && res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .caDentistProtectionDentistsTrend(
+          this.selectedDentist,
+          this.clinic_id,
+          mode
+        )
+        .subscribe(
+          (res: any) => {
+            this.dentistProductionTrendDentistsLabels1 = [];
+            this.dentistProductionDentistsTrend1 = [];
+            this.dentistProductionTrendDentistsLabels = [];
+            this.dentistProductionTrendDentistsLabels = [];
+            this.dentistProductionWeeklyDentistsTrend = [];
+            this.dentistProductionWeeklyTrendDentistsLabels = [];
+            let dynamicColors = [];
+            if (res.body.data && res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
 
-        if (res.body.data.total > 0) {
-          res.body.data.data.forEach(res => {
-            // if (res.production > 0) {
-              this.dentistProductionDentistsTrend1.push(Math.round(res.production));
-              if (mode == 'c') {
-                this.dentistProductionTrendDentistsLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-              } else if (mode == 'w') {
-                this.dentistProductionTrendDentistsLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
+              if (res.body.data.total > 0) {
+                res.body.data.data.forEach((res) => {
+                  // if (res.production > 0) {
+                  this.dentistProductionDentistsTrend1.push(
+                    Math.round(res.production)
+                  );
+                  if (mode == 'c') {
+                    this.dentistProductionTrendDentistsLabels1.push(
+                      this.datePipe.transform(res.year_month, 'MMM y')
+                    );
+                  } else if (mode == 'w') {
+                    this.dentistProductionTrendDentistsLabels1.push(
+                      'WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd')
+                    );
+                  } else {
+                    this.dentistProductionTrendDentistsLabels1.push(res.year);
+                  }
+                  // }
+                });
+                if (
+                  this.dentistProductionDentistsTrend1.every(
+                    (value) => value == 0
+                  )
+                )
+                  this.dentistProductionDentistsTrend1 = [];
+                this.dentistProdDentistsTrend[0]['data'] =
+                  this.dentistProductionDentistsTrend1;
+
+                this.dentistProductionTrendDentistsLabels1.forEach(
+                  (label, labelIndex) => {
+                    dynamicColors.push(
+                      labelIndex % 2 === 0
+                        ? this.chartService.colors.odd
+                        : this.chartService.colors.even
+                    );
+                  }
+                ); // This is dynamic array for colors of bars
+                this.dentistProdDentistsTrend[0].backgroundColor =
+                  dynamicColors;
+
+                this.dentistProductionTrendDentistsLabels =
+                  this.dentistProductionTrendDentistsLabels1;
+                if (this.dentistProductionTrendDentistsLabels.length <= 0) {
+                  this.gaugeValue = '0';
+                }
+                if (mode == 'w') {
+                  this.dentistProductionWeeklyDentistsTrend =
+                    res.body.data.data;
+                  this.dentistProductionWeeklyTrendDentistsLabels =
+                    this.dentistProductionTrendDentistsLabels;
+                }
+              } else {
+                this.dentistProductionTrendDentistsLabels = [];
               }
-              else {
-                this.dentistProductionTrendDentistsLabels1.push(res.year);
-              }
-            // }
-          });
-          if (this.dentistProductionDentistsTrend1.every((value) => value == 0)) this.dentistProductionDentistsTrend1 = [];
-          this.dentistProdDentistsTrend[0]['data'] = this.dentistProductionDentistsTrend1;
-
-          this.dentistProductionTrendDentistsLabels1.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
-          this.dentistProdDentistsTrend[0].backgroundColor = dynamicColors;
-
-          this.dentistProductionTrendDentistsLabels = this.dentistProductionTrendDentistsLabels1;
-          if (this.dentistProductionTrendDentistsLabels.length <= 0) {
-            this.gaugeValue = '0';
+              this.dentistProductionTrendDentistsLoader = false;
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-          if (mode == 'w') {
-            this.dentistProductionWeeklyDentistsTrend =  res.body.data.data;
-            this.dentistProductionWeeklyTrendDentistsLabels = this.dentistProductionTrendDentistsLabels;
-          }
-        } else {
-          this.dentistProductionTrendDentistsLabels = [];
-        }
-        this.dentistProductionTrendDentistsLoader = false;
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+        );
   }
 
   public dentistProdOhtTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3
-      
-    }];
+      data: [],
+      label: '',
+      shadowOffsetX: 3
+    }
+  ];
   public dentistProductionWeeklyOhtTrend = [];
   public dentistProductionWeeklyTrendOhtLabels = [];
   public dentistProductionOhtTrend1 = [];
@@ -7590,66 +9023,90 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var user_id;
     var clinic_id;
     if (!mode) {
-      mode = this.trendValue
+      mode = this.trendValue;
     }
 
-    this.clinic_id && this.cliniciananalysisService.caDentistProtectionOhtTrend(this.selectedDentist, this.clinic_id, mode).subscribe((res: any) => {
-      this.dentistProductionTrendOhtLabels1 = [];
-      this.dentistProductionOhtTrend1 = [];
-      this.dentistProductionTrendOhtLabels = [];
-      this.dentistProductionTrendOhtLabels = [];
-      this.dentistProductionWeeklyOhtTrend = [];
-      this.dentistProductionWeeklyTrendOhtLabels = [];
-      let dynamicColors = [];
-      if (res.body.data && res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .caDentistProtectionOhtTrend(this.selectedDentist, this.clinic_id, mode)
+        .subscribe(
+          (res: any) => {
+            this.dentistProductionTrendOhtLabels1 = [];
+            this.dentistProductionOhtTrend1 = [];
+            this.dentistProductionTrendOhtLabels = [];
+            this.dentistProductionTrendOhtLabels = [];
+            this.dentistProductionWeeklyOhtTrend = [];
+            this.dentistProductionWeeklyTrendOhtLabels = [];
+            let dynamicColors = [];
+            if (res.body.data && res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
 
-        if (res.body.data.total > 0) {
-          res.body.data.data.forEach(res => {
-            // if (res.production > 0) {
-              this.dentistProductionOhtTrend1.push(Math.round(res.production));
-              if (mode == 'c') {
-                this.dentistProductionTrendOhtLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-              } else if (mode == 'w') {
-                this.dentistProductionTrendOhtLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
+              if (res.body.data.total > 0) {
+                res.body.data.data.forEach((res) => {
+                  // if (res.production > 0) {
+                  this.dentistProductionOhtTrend1.push(
+                    Math.round(res.production)
+                  );
+                  if (mode == 'c') {
+                    this.dentistProductionTrendOhtLabels1.push(
+                      this.datePipe.transform(res.year_month, 'MMM y')
+                    );
+                  } else if (mode == 'w') {
+                    this.dentistProductionTrendOhtLabels1.push(
+                      'WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd')
+                    );
+                  } else {
+                    this.dentistProductionTrendOhtLabels1.push(res.year);
+                  }
+                  // }
+                });
+                if (
+                  this.dentistProductionOhtTrend1.every((value) => value == 0)
+                )
+                  this.dentistProductionOhtTrend1 = [];
+                this.dentistProdOhtTrend[0]['data'] =
+                  this.dentistProductionOhtTrend1;
+
+                this.dentistProductionTrendOhtLabels1.forEach(
+                  (label, labelIndex) => {
+                    dynamicColors.push(
+                      labelIndex % 2 === 0
+                        ? this.chartService.colors.odd
+                        : this.chartService.colors.even
+                    );
+                  }
+                ); // This is dynamic array for colors of bars
+                this.dentistProdOhtTrend[0].backgroundColor = dynamicColors;
+
+                this.dentistProductionTrendOhtLabels =
+                  this.dentistProductionTrendOhtLabels1;
+                if (this.dentistProductionTrendOhtLabels.length <= 0) {
+                  this.gaugeValue = '0';
+                }
+                if (mode == 'w') {
+                  this.dentistProductionWeeklyOhtTrend = res.body.data.data;
+                  this.dentistProductionWeeklyTrendOhtLabels =
+                    this.dentistProductionTrendOhtLabels;
+                }
+              } else {
+                this.dentistProductionTrendOhtLabels = [];
               }
-              else {
-                this.dentistProductionTrendOhtLabels1.push(res.year);
-              }
-            // }
-          });
-          if (this.dentistProductionOhtTrend1.every((value) => value == 0)) this.dentistProductionOhtTrend1 = [];
-          this.dentistProdOhtTrend[0]['data'] = this.dentistProductionOhtTrend1;
-
-          this.dentistProductionTrendOhtLabels1.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
-          this.dentistProdOhtTrend[0].backgroundColor = dynamicColors;
-
-          this.dentistProductionTrendOhtLabels = this.dentistProductionTrendOhtLabels1;
-          if (this.dentistProductionTrendOhtLabels.length <= 0) {
-            this.gaugeValue = '0';
+              this.dentistProductionTrendOhtLoader = false;
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-          if (mode == 'w') {
-            this.dentistProductionWeeklyOhtTrend =  res.body.data.data;
-            this.dentistProductionWeeklyTrendOhtLabels = this.dentistProductionTrendOhtLabels;
-          }
-        } else {
-          this.dentistProductionTrendOhtLabels = [];
-        }
-        this.dentistProductionTrendOhtLoader = false;
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+        );
   }
 
-  // Collection Trend mode 
+  // Collection Trend mode
   public dentistCollectionTrend1: any = [];
   public dentistCollectionWeeklyTrend1: any = [];
   public dentistCollectionTrendLabels: any = [];
@@ -7665,102 +9122,127 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       activeMode = mode;
     }
     this.dentistCollectionTrendLoader = true;
-    this.clinic_id && this.cliniciananalysisService.caDentistCollectionTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((res: any) => {
-      this.dentistColleTrendLabels1 = [];
-      this.dentistColleWeeklyTrendLabels1 = [];
-      this.dentistCollectionTrend1 = [];
-      this.dentistCollectionWeeklyTrend1 = [];
-      this.dentistCollectionTrendLabels = [];
-      this.dentistCollectionWeeklyTrendLabels = [];
-      this.collectiontargetData=[];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .caDentistCollectionTrend(
+          this.selectedDentist,
+          this.clinic_id,
+          activeMode
+        )
+        .subscribe(
+          (res: any) => {
+            this.dentistColleTrendLabels1 = [];
+            this.dentistColleWeeklyTrendLabels1 = [];
+            this.dentistCollectionTrend1 = [];
+            this.dentistCollectionWeeklyTrend1 = [];
+            this.dentistCollectionTrendLabels = [];
+            this.dentistCollectionWeeklyTrendLabels = [];
+            this.collectiontargetData = [];
 
-      let dynamicColors = [];
-      if (res.body.data && res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-        if (res.body.data) {
-          res.body.data.forEach(res => {
-            // if (res.collection > 0) {
-              this.dentistCollectionTrend1.push(Math.round(res.collection));
-              if(res.goals == -1 || res.goals == null || res.goals == ''){
-                this.collectiontargetData.push(null);
-              }else{
-                this.collectiontargetData.push(res.goals); 
-              }  
-              if (activeMode == 'c') {
-                this.dentistColleTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-              } else if (activeMode == 'w') {
-                this.dentistColleTrendLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
+            let dynamicColors = [];
+            if (res.body.data && res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              if (res.body.data) {
+                res.body.data.forEach((res) => {
+                  // if (res.collection > 0) {
+                  this.dentistCollectionTrend1.push(Math.round(res.collection));
+                  if (res.goals == -1 || res.goals == null || res.goals == '') {
+                    this.collectiontargetData.push(null);
+                  } else {
+                    this.collectiontargetData.push(res.goals);
+                  }
+                  if (activeMode == 'c') {
+                    this.dentistColleTrendLabels1.push(
+                      this.datePipe.transform(res.year_month, 'MMM y')
+                    );
+                  } else if (activeMode == 'w') {
+                    this.dentistColleTrendLabels1.push(
+                      'WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd')
+                    );
+                  } else {
+                    this.dentistColleTrendLabels1.push(res.year);
+                  }
+                  // }
+                });
+                if (this.dentistCollectionTrend1.every((value) => value == 0))
+                  this.dentistCollectionTrend1 = [];
+                this.dentistColTrend[0]['data'] = this.dentistCollectionTrend1;
+
+                let maxVal = Math.max(...this.dentistCollectionTrend1);
+                var subVal = 1;
+                if (maxVal >= 20001) {
+                  subVal = 200;
+                } else if (maxVal > 5000 && maxVal < 20000) {
+                  subVal = 100;
+                } else if (maxVal > 3000 && maxVal < 5000) {
+                  subVal = 50;
+                } else if (maxVal > 2000 && maxVal < 3000) {
+                  subVal = 10;
+                } else if (maxVal > 100 && maxVal < 2000) {
+                  subVal = 1;
+                } else if (maxVal > 51 && maxVal < 100) {
+                  subVal = 0.2;
+                } else if (maxVal <= 50) {
+                  subVal = 0.1;
+                }
+                var mappedcollectiontargetData = [];
+                this.collectiontargetData.map(function (v) {
+                  if (v == null) {
+                    mappedcollectiontargetData.push([v - 0, v + 0]);
+                  } else {
+                    mappedcollectiontargetData.push([v - subVal, v + subVal]);
+                  }
+                });
+                if (activeMode == 'c') {
+                  this.dentistColTrend[0]['label'] = 'Actual';
+                  this.dentistColTrend[1]['label'] = 'Target';
+                  this.dentistColTrend[1]['data'] = mappedcollectiontargetData; //this.collectiontargetData.map(v => [v - subVal, v + subVal]);
+                } else {
+                  this.dentistColTrend[0]['label'] = '';
+                  this.dentistColTrend[1]['label'] = '';
+                  this.dentistColTrend[1]['data'] = [];
+                }
+
+                this.dentistColleTrendLabels1.forEach((label, labelIndex) => {
+                  dynamicColors.push(
+                    labelIndex % 2 === 0
+                      ? this.chartService.colors.odd
+                      : this.chartService.colors.even
+                  );
+                }); // This is dynamic array for colors of bars
+                this.dentistColTrend[0].backgroundColor = dynamicColors;
+                this.dentistCollectionTrendLabels =
+                  this.dentistColleTrendLabels1;
+                if (activeMode == 'w') {
+                  this.dentistCollectionWeeklyTrend1 = res.body.data;
+                  this.dentistCollectionWeeklyTrendLabels =
+                    this.dentistColleTrendLabels1;
+                }
               } else {
-                this.dentistColleTrendLabels1.push(res.year);
+                this.dentistCollectionTrendLabels = [];
               }
-            // }
-          });
-          if (this.dentistCollectionTrend1.every((value) => value == 0)) this.dentistCollectionTrend1 = [];
-          this.dentistColTrend[0]['data'] = this.dentistCollectionTrend1;
-
-          let maxVal = Math.max(...this.dentistCollectionTrend1);
-            var subVal = 1;
-            if(maxVal >= 20001){
-              subVal = 200;
-            }else if(maxVal > 5000 && maxVal < 20000){
-              subVal = 100;
-            }else if(maxVal > 3000 && maxVal < 5000){
-              subVal = 50;
-            }else if(maxVal > 2000 && maxVal < 3000){
-              subVal = 10;
-            }else if(maxVal > 100 && maxVal < 2000){
-              subVal = 1;
-            }else if(maxVal > 51 && maxVal < 100){
-              subVal = 0.2;
-            }else if(maxVal <= 50){
-              subVal = 0.1;
+              this.dentistCollectionTrendLoader = false;
             }
-            var mappedcollectiontargetData = [];
-            this.collectiontargetData.map(function (v){
-              if(v == null ){
-                mappedcollectiontargetData.push([v - 0, v + 0]);
-              }else{
-                mappedcollectiontargetData.push([v - subVal, v + subVal]);
-              }
-            });
-          if(activeMode == 'c'){
-            this.dentistColTrend[0]['label'] = 'Actual';
-            this.dentistColTrend[1]['label'] = 'Target';
-            this.dentistColTrend[1]['data'] =  mappedcollectiontargetData;//this.collectiontargetData.map(v => [v - subVal, v + subVal]);
-          }else{
-            this.dentistColTrend[0]['label'] = '';
-            this.dentistColTrend[1]['label'] = '';
-            this.dentistColTrend[1]['data'] =  [];
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-
-          this.dentistColleTrendLabels1.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
-          this.dentistColTrend[0].backgroundColor = dynamicColors;
-          this.dentistCollectionTrendLabels = this.dentistColleTrendLabels1;
-          if (activeMode == 'w') {
-            this.dentistCollectionWeeklyTrend1 = res.body.data;
-            this.dentistCollectionWeeklyTrendLabels = this.dentistColleTrendLabels1;
-          }
-        } else {
-          this.dentistCollectionTrendLabels = [];
-        }
-        this.dentistCollectionTrendLoader = false;
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+        );
   }
 
   public dentistColDentistsTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3
-    }];
+      data: [],
+      label: '',
+      shadowOffsetX: 3
+    }
+  ];
   public dentistCollectionDentistsTrend1: any = [];
   public dentistCollectionWeeklyDentistsTrend1: any = [];
   public dentistCollectionDentistsTrendLabels: any = [];
@@ -7775,61 +9257,95 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       activeMode = mode;
     }
     this.dentistCollectionDentistsTrendLoader = true;
-    this.clinic_id && this.cliniciananalysisService.caDentistCollectionDentistsTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((res: any) => {
-      this.dentistColleTrendDentistsLabels1 = [];
-      this.dentistColleWeeklyTrendDentistsLabels1 = [];
-      this.dentistCollectionDentistsTrend1 = [];
-      this.dentistCollectionWeeklyDentistsTrend1 = [];
-      this.dentistCollectionDentistsTrendLabels = [];
-      this.dentistCollectionWeeklyDentistsTrendLabels = [];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .caDentistCollectionDentistsTrend(
+          this.selectedDentist,
+          this.clinic_id,
+          activeMode
+        )
+        .subscribe(
+          (res: any) => {
+            this.dentistColleTrendDentistsLabels1 = [];
+            this.dentistColleWeeklyTrendDentistsLabels1 = [];
+            this.dentistCollectionDentistsTrend1 = [];
+            this.dentistCollectionWeeklyDentistsTrend1 = [];
+            this.dentistCollectionDentistsTrendLabels = [];
+            this.dentistCollectionWeeklyDentistsTrendLabels = [];
 
-      let dynamicColors = [];
-      if (res.body.data && res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-        if (res.body.data) {
-          res.body.data.forEach(res => {
-            // if (res.collection > 0) {
-              this.dentistCollectionDentistsTrend1.push(Math.round(res.collection));
-              if (activeMode == 'c') {
-                this.dentistColleTrendDentistsLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-              } else if (activeMode == 'w') {
-                this.dentistColleTrendDentistsLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
+            let dynamicColors = [];
+            if (res.body.data && res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              if (res.body.data) {
+                res.body.data.forEach((res) => {
+                  // if (res.collection > 0) {
+                  this.dentistCollectionDentistsTrend1.push(
+                    Math.round(res.collection)
+                  );
+                  if (activeMode == 'c') {
+                    this.dentistColleTrendDentistsLabels1.push(
+                      this.datePipe.transform(res.year_month, 'MMM y')
+                    );
+                  } else if (activeMode == 'w') {
+                    this.dentistColleTrendDentistsLabels1.push(
+                      'WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd')
+                    );
+                  } else {
+                    this.dentistColleTrendDentistsLabels1.push(res.year);
+                  }
+                  // }
+                });
+                if (
+                  this.dentistCollectionDentistsTrend1.every(
+                    (value) => value == 0
+                  )
+                )
+                  this.dentistCollectionDentistsTrend1 = [];
+                this.dentistColDentistsTrend[0]['data'] =
+                  this.dentistCollectionDentistsTrend1;
+
+                this.dentistColleTrendDentistsLabels1.forEach(
+                  (label, labelIndex) => {
+                    dynamicColors.push(
+                      labelIndex % 2 === 0
+                        ? this.chartService.colors.odd
+                        : this.chartService.colors.even
+                    );
+                  }
+                ); // This is dynamic array for colors of bars
+                this.dentistColDentistsTrend[0].backgroundColor = dynamicColors;
+                this.dentistCollectionDentistsTrendLabels =
+                  this.dentistColleTrendDentistsLabels1;
+                if (activeMode == 'w') {
+                  this.dentistCollectionWeeklyDentistsTrend1 = res.body.data;
+                  this.dentistCollectionWeeklyDentistsTrendLabels =
+                    this.dentistColleTrendDentistsLabels1;
+                }
               } else {
-                this.dentistColleTrendDentistsLabels1.push(res.year);
+                this.dentistCollectionDentistsTrendLabels = [];
               }
-            // }
-          });
-          if (this.dentistCollectionDentistsTrend1.every((value) => value == 0)) this.dentistCollectionDentistsTrend1 = [];
-          this.dentistColDentistsTrend[0]['data'] = this.dentistCollectionDentistsTrend1;
-
-          this.dentistColleTrendDentistsLabels1.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
-          this.dentistColDentistsTrend[0].backgroundColor = dynamicColors;
-          this.dentistCollectionDentistsTrendLabels = this.dentistColleTrendDentistsLabels1;
-          if (activeMode == 'w') {
-            this.dentistCollectionWeeklyDentistsTrend1 = res.body.data;
-            this.dentistCollectionWeeklyDentistsTrendLabels = this.dentistColleTrendDentistsLabels1;
+              this.dentistCollectionDentistsTrendLoader = false;
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        } else {
-          this.dentistCollectionDentistsTrendLabels = [];
-        }
-        this.dentistCollectionDentistsTrendLoader = false;
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+        );
   }
 
   public dentistColOhtTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3
-    }];
+      data: [],
+      label: '',
+      shadowOffsetX: 3
+    }
+  ];
   public dentistCollectionOhtTrend1: any = [];
   public dentistCollectionWeeklyOhtTrend1: any = [];
   public dentistCollectionOhtTrendLabels: any = [];
@@ -7844,264 +9360,393 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       activeMode = mode;
     }
     this.dentistCollectionOhtTrendLoader = true;
-    this.clinic_id && this.cliniciananalysisService.caDentistCollectionOhtTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((res: any) => {
-      this.dentistColleTrendOhtLabels1 = [];
-      this.dentistColleWeeklyTrendOhtLabels1 = [];
-      this.dentistCollectionOhtTrend1 = [];
-      this.dentistCollectionWeeklyOhtTrend1 = [];
-      this.dentistCollectionOhtTrendLabels = [];
-      this.dentistCollectionWeeklyOhtTrendLabels = [];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .caDentistCollectionOhtTrend(
+          this.selectedDentist,
+          this.clinic_id,
+          activeMode
+        )
+        .subscribe(
+          (res: any) => {
+            this.dentistColleTrendOhtLabels1 = [];
+            this.dentistColleWeeklyTrendOhtLabels1 = [];
+            this.dentistCollectionOhtTrend1 = [];
+            this.dentistCollectionWeeklyOhtTrend1 = [];
+            this.dentistCollectionOhtTrendLabels = [];
+            this.dentistCollectionWeeklyOhtTrendLabels = [];
 
-      let dynamicColors = [];
-      if (res.body.data && res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-        if (res.body.data) {
-          res.body.data.forEach(res => {
-            // if (res.collection > 0) {
-              this.dentistCollectionOhtTrend1.push(Math.round(res.collection));
-              if (activeMode == 'c') {
-                this.dentistColleTrendOhtLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-              } else if (activeMode == 'w') {
-                this.dentistColleTrendOhtLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
+            let dynamicColors = [];
+            if (res.body.data && res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              if (res.body.data) {
+                res.body.data.forEach((res) => {
+                  // if (res.collection > 0) {
+                  this.dentistCollectionOhtTrend1.push(
+                    Math.round(res.collection)
+                  );
+                  if (activeMode == 'c') {
+                    this.dentistColleTrendOhtLabels1.push(
+                      this.datePipe.transform(res.year_month, 'MMM y')
+                    );
+                  } else if (activeMode == 'w') {
+                    this.dentistColleTrendOhtLabels1.push(
+                      'WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd')
+                    );
+                  } else {
+                    this.dentistColleTrendOhtLabels1.push(res.year);
+                  }
+                  // }
+                });
+                if (
+                  this.dentistCollectionOhtTrend1.every((value) => value == 0)
+                )
+                  this.dentistCollectionOhtTrend1 = [];
+                this.dentistColOhtTrend[0]['data'] =
+                  this.dentistCollectionOhtTrend1;
+
+                this.dentistColleTrendOhtLabels1.forEach(
+                  (label, labelIndex) => {
+                    dynamicColors.push(
+                      labelIndex % 2 === 0
+                        ? this.chartService.colors.odd
+                        : this.chartService.colors.even
+                    );
+                  }
+                ); // This is dynamic array for colors of bars
+                this.dentistColOhtTrend[0].backgroundColor = dynamicColors;
+                this.dentistCollectionOhtTrendLabels =
+                  this.dentistColleTrendOhtLabels1;
+                if (activeMode == 'w') {
+                  this.dentistCollectionWeeklyOhtTrend1 = res.body.data;
+                  this.dentistCollectionWeeklyOhtTrendLabels =
+                    this.dentistColleTrendOhtLabels1;
+                }
               } else {
-                this.dentistColleTrendOhtLabels1.push(res.year);
+                this.dentistCollectionOhtTrendLabels = [];
               }
-            // }
-          });
-          if (this.dentistCollectionOhtTrend1.every((value) => value == 0)) this.dentistCollectionOhtTrend1 = [];
-          this.dentistColOhtTrend[0]['data'] = this.dentistCollectionOhtTrend1;
-
-          this.dentistColleTrendOhtLabels1.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
-          this.dentistColOhtTrend[0].backgroundColor = dynamicColors;
-          this.dentistCollectionOhtTrendLabels = this.dentistColleTrendOhtLabels1;
-          if (activeMode == 'w') {
-            this.dentistCollectionWeeklyOhtTrend1 = res.body.data;
-            this.dentistCollectionWeeklyOhtTrendLabels = this.dentistColleTrendOhtLabels1;
+              this.dentistCollectionOhtTrendLoader = false;
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        } else {
-          this.dentistCollectionOhtTrendLabels = [];
-        }
-        this.dentistCollectionOhtTrendLoader = false;
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+        );
   }
 
- // Collection Exp Trend mode 
- public dentistCollectionExpTrend1: any = [];
- public dentistCollectionExpWeeklyTrend1: any = [];
- public dentistCollectionExpTrendLabels: any = [];
- public dentistCollectionExpWeeklyTrendLabels: any = [];
- public dentistCollectionExpTrendLoader: boolean = true;
- public dentistColleExpTrendLabels1: any = [];
- public dentistColleExpWeeklyTrendLabels1: any = [];
+  // Collection Exp Trend mode
+  public dentistCollectionExpTrend1: any = [];
+  public dentistCollectionExpWeeklyTrend1: any = [];
+  public dentistCollectionExpTrendLabels: any = [];
+  public dentistCollectionExpWeeklyTrendLabels: any = [];
+  public dentistCollectionExpTrendLoader: boolean = true;
+  public dentistColleExpTrendLabels1: any = [];
+  public dentistColleExpWeeklyTrendLabels1: any = [];
 
- private dentistCollectionExpTrend(mode = null) {
-   let activeMode = this.trendValue;
-   if (mode) {
-     activeMode = mode;
-   }
-   this.dentistCollectionExpTrendLoader = true;
-   this.clinic_id && this.cliniciananalysisService.caDentistCollectionExpTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((res: any) => {
-     this.dentistColleExpTrendLabels1 = [];
-     this.dentistColleExpWeeklyTrendLabels1 = [];
-     this.dentistCollectionExpTrend1 = [];
-     this.dentistCollectionExpWeeklyTrend1 = [];
-     this.dentistCollectionExpTrendLabels = [];
-     this.dentistCollectionExpWeeklyTrendLabels = [];
+  private dentistCollectionExpTrend(mode = null) {
+    let activeMode = this.trendValue;
+    if (mode) {
+      activeMode = mode;
+    }
+    this.dentistCollectionExpTrendLoader = true;
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .caDentistCollectionExpTrend(
+          this.selectedDentist,
+          this.clinic_id,
+          activeMode
+        )
+        .subscribe(
+          (res: any) => {
+            this.dentistColleExpTrendLabels1 = [];
+            this.dentistColleExpWeeklyTrendLabels1 = [];
+            this.dentistCollectionExpTrend1 = [];
+            this.dentistCollectionExpWeeklyTrend1 = [];
+            this.dentistCollectionExpTrendLabels = [];
+            this.dentistCollectionExpWeeklyTrendLabels = [];
 
-     let dynamicColors = [];
-     if (res.body.data && res.status == 200) {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-       if (res.body.data) {
-         res.body.data.forEach(res => {
-           // if (res.collection > 0) {
-             this.dentistCollectionExpTrend1.push(Math.round(res.collection));
-             if (activeMode == 'c') {
-               this.dentistColleExpTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-             } else if (activeMode == 'w') {
-               this.dentistColleExpTrendLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
-             } else {
-               this.dentistColleExpTrendLabels1.push(res.year);
-             }
-           // }
-         });
-         if (this.dentistCollectionExpTrend1.every((value) => value == 0)) this.dentistCollectionExpTrend1 = [];
-         this.dentistColExpTrend[0]['data'] = this.dentistCollectionExpTrend1;
+            let dynamicColors = [];
+            if (res.body.data && res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              if (res.body.data) {
+                res.body.data.forEach((res) => {
+                  // if (res.collection > 0) {
+                  this.dentistCollectionExpTrend1.push(
+                    Math.round(res.collection)
+                  );
+                  if (activeMode == 'c') {
+                    this.dentistColleExpTrendLabels1.push(
+                      this.datePipe.transform(res.year_month, 'MMM y')
+                    );
+                  } else if (activeMode == 'w') {
+                    this.dentistColleExpTrendLabels1.push(
+                      'WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd')
+                    );
+                  } else {
+                    this.dentistColleExpTrendLabels1.push(res.year);
+                  }
+                  // }
+                });
+                if (
+                  this.dentistCollectionExpTrend1.every((value) => value == 0)
+                )
+                  this.dentistCollectionExpTrend1 = [];
+                this.dentistColExpTrend[0]['data'] =
+                  this.dentistCollectionExpTrend1;
 
-         this.dentistColleExpTrendLabels1.forEach((label, labelIndex) => {
-           dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-         }); // This is dynamic array for colors of bars        
-         this.dentistColExpTrend[0].backgroundColor = dynamicColors;
-         this.dentistCollectionExpTrendLabels = this.dentistColleExpTrendLabels1;
-         if (activeMode == 'w') {
-           this.dentistCollectionExpWeeklyTrend1 = res.body.data;
-           this.dentistCollectionExpWeeklyTrendLabels = this.dentistColleExpTrendLabels1;
-         }
-       } else {
-         this.dentistCollectionExpTrendLabels = [];
-       }
-       this.dentistCollectionExpTrendLoader = false;
-     }
-   }, error => {
-    this.Apirequest = this.Apirequest - 1;
-    this.enableDiabaleButton(this.Apirequest);
-     this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-     this.warningMessage = "Please Provide Valid Inputs!";
+                this.dentistColleExpTrendLabels1.forEach(
+                  (label, labelIndex) => {
+                    dynamicColors.push(
+                      labelIndex % 2 === 0
+                        ? this.chartService.colors.odd
+                        : this.chartService.colors.even
+                    );
+                  }
+                ); // This is dynamic array for colors of bars
+                this.dentistColExpTrend[0].backgroundColor = dynamicColors;
+                this.dentistCollectionExpTrendLabels =
+                  this.dentistColleExpTrendLabels1;
+                if (activeMode == 'w') {
+                  this.dentistCollectionExpWeeklyTrend1 = res.body.data;
+                  this.dentistCollectionExpWeeklyTrendLabels =
+                    this.dentistColleExpTrendLabels1;
+                }
+              } else {
+                this.dentistCollectionExpTrendLabels = [];
+              }
+              this.dentistCollectionExpTrendLoader = false;
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        );
+  }
 
-   });
- }
+  public dentistColExpDentistsTrend: any[] = [
+    {
+      data: [],
+      label: '',
+      shadowOffsetX: 3
+    }
+  ];
+  public dentistCollectionExpDentistsTrend1: any = [];
+  public dentistCollectionExpWeeklyDentistsTrend1: any = [];
+  public dentistCollectionExpDentistsTrendLabels: any = [];
+  public dentistCollectionExpWeeklyDentistsTrendLabels: any = [];
+  public dentistCollectionExpDentistsTrendLoader: boolean = true;
+  public dentistColleExpDentistsTrendLabels1: any = [];
+  public dentistColleExpWeeklyDentistsTrendLabels1: any = [];
 
- public dentistColExpDentistsTrend: any[] = [
-  {
-    data: [], label: '', shadowOffsetX: 3
-  }];
- public dentistCollectionExpDentistsTrend1: any = [];
- public dentistCollectionExpWeeklyDentistsTrend1: any = [];
- public dentistCollectionExpDentistsTrendLabels: any = [];
- public dentistCollectionExpWeeklyDentistsTrendLabels: any = [];
- public dentistCollectionExpDentistsTrendLoader: boolean = true;
- public dentistColleExpDentistsTrendLabels1: any = [];
- public dentistColleExpWeeklyDentistsTrendLabels1: any = [];
+  private dentistCollectionExpDentistsTrend(mode = null) {
+    let activeMode = this.trendValue;
+    if (mode) {
+      activeMode = mode;
+    }
+    this.dentistCollectionExpDentistsTrendLoader = true;
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .caDentistCollectionExpDentistsTrend(
+          this.selectedDentist,
+          this.clinic_id,
+          activeMode
+        )
+        .subscribe(
+          (res: any) => {
+            this.dentistColleExpDentistsTrendLabels1 = [];
+            this.dentistColleExpWeeklyDentistsTrendLabels1 = [];
+            this.dentistCollectionExpDentistsTrend1 = [];
+            this.dentistCollectionExpWeeklyDentistsTrend1 = [];
+            this.dentistCollectionExpDentistsTrendLabels = [];
+            this.dentistCollectionExpWeeklyDentistsTrendLabels = [];
 
- private dentistCollectionExpDentistsTrend(mode = null) {
-   let activeMode = this.trendValue;
-   if (mode) {
-     activeMode = mode;
-   }
-   this.dentistCollectionExpDentistsTrendLoader = true;
-   this.clinic_id && this.cliniciananalysisService.caDentistCollectionExpDentistsTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((res: any) => {
-     this.dentistColleExpDentistsTrendLabels1 = [];
-     this.dentistColleExpWeeklyDentistsTrendLabels1 = [];
-     this.dentistCollectionExpDentistsTrend1 = [];
-     this.dentistCollectionExpWeeklyDentistsTrend1 = [];
-     this.dentistCollectionExpDentistsTrendLabels = [];
-     this.dentistCollectionExpWeeklyDentistsTrendLabels = [];
+            let dynamicColors = [];
+            if (res.body.data && res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              if (res.body.data) {
+                res.body.data.forEach((res) => {
+                  // if (res.collection > 0) {
+                  this.dentistCollectionExpDentistsTrend1.push(
+                    Math.round(res.collection)
+                  );
+                  if (activeMode == 'c') {
+                    this.dentistColleExpDentistsTrendLabels1.push(
+                      this.datePipe.transform(res.year_month, 'MMM y')
+                    );
+                  } else if (activeMode == 'w') {
+                    this.dentistColleExpDentistsTrendLabels1.push(
+                      'WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd')
+                    );
+                  } else {
+                    this.dentistColleExpDentistsTrendLabels1.push(res.year);
+                  }
+                  // }
+                });
+                if (
+                  this.dentistCollectionExpDentistsTrend1.every(
+                    (value) => value == 0
+                  )
+                )
+                  this.dentistCollectionExpDentistsTrend1 = [];
+                this.dentistColExpDentistsTrend[0]['data'] =
+                  this.dentistCollectionExpDentistsTrend1;
 
-     let dynamicColors = [];
-     if (res.body.data && res.status == 200) {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-       if (res.body.data) {
-         res.body.data.forEach(res => {
-           // if (res.collection > 0) {
-             this.dentistCollectionExpDentistsTrend1.push(Math.round(res.collection));
-             if (activeMode == 'c') {
-               this.dentistColleExpDentistsTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-             } else if (activeMode == 'w') {
-               this.dentistColleExpDentistsTrendLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
-             } else {
-               this.dentistColleExpDentistsTrendLabels1.push(res.year);
-             }
-           // }
-         });
-         if (this.dentistCollectionExpDentistsTrend1.every((value) => value == 0)) this.dentistCollectionExpDentistsTrend1 = [];
-         this.dentistColExpDentistsTrend[0]['data'] = this.dentistCollectionExpDentistsTrend1;
+                this.dentistColleExpDentistsTrendLabels1.forEach(
+                  (label, labelIndex) => {
+                    dynamicColors.push(
+                      labelIndex % 2 === 0
+                        ? this.chartService.colors.odd
+                        : this.chartService.colors.even
+                    );
+                  }
+                ); // This is dynamic array for colors of bars
+                this.dentistColExpDentistsTrend[0].backgroundColor =
+                  dynamicColors;
+                this.dentistCollectionExpDentistsTrendLabels =
+                  this.dentistColleExpDentistsTrendLabels1;
+                if (activeMode == 'w') {
+                  this.dentistCollectionExpWeeklyDentistsTrend1 = res.body.data;
+                  this.dentistCollectionExpWeeklyDentistsTrendLabels =
+                    this.dentistColleExpDentistsTrendLabels1;
+                }
+              } else {
+                this.dentistCollectionExpDentistsTrendLabels = [];
+              }
+              this.dentistCollectionExpDentistsTrendLoader = false;
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        );
+  }
 
-         this.dentistColleExpDentistsTrendLabels1.forEach((label, labelIndex) => {
-           dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-         }); // This is dynamic array for colors of bars        
-         this.dentistColExpDentistsTrend[0].backgroundColor = dynamicColors;
-         this.dentistCollectionExpDentistsTrendLabels = this.dentistColleExpDentistsTrendLabels1;
-         if (activeMode == 'w') {
-           this.dentistCollectionExpWeeklyDentistsTrend1 = res.body.data;
-           this.dentistCollectionExpWeeklyDentistsTrendLabels = this.dentistColleExpDentistsTrendLabels1;
-         }
-       } else {
-         this.dentistCollectionExpDentistsTrendLabels = [];
-       }
-       this.dentistCollectionExpDentistsTrendLoader = false;
-     }
-   }, error => {
-    this.Apirequest = this.Apirequest - 1;
-    this.enableDiabaleButton(this.Apirequest);
-     this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-     this.warningMessage = "Please Provide Valid Inputs!";
+  public dentistColExpOhtTrend: any[] = [
+    {
+      data: [],
+      label: '',
+      shadowOffsetX: 3
+    }
+  ];
+  public dentistCollectionExpOhtTrend1: any = [];
+  public dentistCollectionExpWeeklyOhtTrend1: any = [];
+  public dentistCollectionExpOhtTrendLabels: any = [];
+  public dentistCollectionExpWeeklyOhtTrendLabels: any = [];
+  public dentistCollectionExpOhtTrendLoader: boolean = true;
+  public dentistColleExpOhtTrendLabels1: any = [];
+  public dentistColleExpWeeklyOhtTrendLabels1: any = [];
 
-   });
- }
+  private dentistCollectionExpOhtTrend(mode = null) {
+    let activeMode = this.trendValue;
+    if (mode) {
+      activeMode = mode;
+    }
+    this.dentistCollectionExpOhtTrendLoader = true;
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .caDentistCollectionExpOhtTrend(
+          this.selectedDentist,
+          this.clinic_id,
+          activeMode
+        )
+        .subscribe(
+          (res: any) => {
+            this.dentistColleExpOhtTrendLabels1 = [];
+            this.dentistColleExpWeeklyOhtTrendLabels1 = [];
+            this.dentistCollectionExpOhtTrend1 = [];
+            this.dentistCollectionExpWeeklyOhtTrend1 = [];
+            this.dentistCollectionExpOhtTrendLabels = [];
+            this.dentistCollectionExpWeeklyOhtTrendLabels = [];
 
- public dentistColExpOhtTrend: any[] = [
-  {
-    data: [], label: '', shadowOffsetX: 3
-  }];
- public dentistCollectionExpOhtTrend1: any = [];
- public dentistCollectionExpWeeklyOhtTrend1: any = [];
- public dentistCollectionExpOhtTrendLabels: any = [];
- public dentistCollectionExpWeeklyOhtTrendLabels: any = [];
- public dentistCollectionExpOhtTrendLoader: boolean = true;
- public dentistColleExpOhtTrendLabels1: any = [];
- public dentistColleExpWeeklyOhtTrendLabels1: any = [];
+            let dynamicColors = [];
+            if (res.body.data && res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              if (res.body.data) {
+                res.body.data.forEach((res) => {
+                  // if (res.collection > 0) {
+                  this.dentistCollectionExpOhtTrend1.push(
+                    Math.round(res.collection)
+                  );
+                  if (activeMode == 'c') {
+                    this.dentistColleExpOhtTrendLabels1.push(
+                      this.datePipe.transform(res.year_month, 'MMM y')
+                    );
+                  } else if (activeMode == 'w') {
+                    this.dentistColleExpOhtTrendLabels1.push(
+                      'WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd')
+                    );
+                  } else {
+                    this.dentistColleExpOhtTrendLabels1.push(res.year);
+                  }
+                  // }
+                });
+                if (
+                  this.dentistCollectionExpOhtTrend1.every(
+                    (value) => value == 0
+                  )
+                )
+                  this.dentistCollectionExpOhtTrend1 = [];
+                this.dentistColExpOhtTrend[0]['data'] =
+                  this.dentistCollectionExpOhtTrend1;
 
- private dentistCollectionExpOhtTrend(mode = null) {
-   let activeMode = this.trendValue;
-   if (mode) {
-     activeMode = mode;
-   }
-   this.dentistCollectionExpOhtTrendLoader = true;
-   this.clinic_id && this.cliniciananalysisService.caDentistCollectionExpOhtTrend(this.selectedDentist, this.clinic_id, activeMode).subscribe((res: any) => {
-     this.dentistColleExpOhtTrendLabels1 = [];
-     this.dentistColleExpWeeklyOhtTrendLabels1 = [];
-     this.dentistCollectionExpOhtTrend1 = [];
-     this.dentistCollectionExpWeeklyOhtTrend1 = [];
-     this.dentistCollectionExpOhtTrendLabels = [];
-     this.dentistCollectionExpWeeklyOhtTrendLabels = [];
-
-     let dynamicColors = [];
-     if (res.body.data && res.status == 200) {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-       if (res.body.data) {
-         res.body.data.forEach(res => {
-           // if (res.collection > 0) {
-             this.dentistCollectionExpOhtTrend1.push(Math.round(res.collection));
-             if (activeMode == 'c') {
-               this.dentistColleExpOhtTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-             } else if (activeMode == 'w') {
-               this.dentistColleExpOhtTrendLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd'));
-             } else {
-               this.dentistColleExpOhtTrendLabels1.push(res.year);
-             }
-           // }
-         });
-         if (this.dentistCollectionExpOhtTrend1.every((value) => value == 0)) this.dentistCollectionExpOhtTrend1 = [];
-         this.dentistColExpOhtTrend[0]['data'] = this.dentistCollectionExpOhtTrend1;
-
-         this.dentistColleExpOhtTrendLabels1.forEach((label, labelIndex) => {
-           dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-         }); // This is dynamic array for colors of bars        
-         this.dentistColExpOhtTrend[0].backgroundColor = dynamicColors;
-         this.dentistCollectionExpOhtTrendLabels = this.dentistColleExpOhtTrendLabels1;
-         if (activeMode == 'w') {
-           this.dentistCollectionExpWeeklyOhtTrend1 = res.body.data;
-           this.dentistCollectionExpWeeklyOhtTrendLabels = this.dentistColleExpOhtTrendLabels1;
-         }
-       } else {
-         this.dentistCollectionExpOhtTrendLabels = [];
-       }
-       this.dentistCollectionExpOhtTrendLoader = false;
-     }
-   }, error => {
-    this.Apirequest = this.Apirequest - 1;
-    this.enableDiabaleButton(this.Apirequest);
-     this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-     this.warningMessage = "Please Provide Valid Inputs!";
-
-   });
- }
+                this.dentistColleExpOhtTrendLabels1.forEach(
+                  (label, labelIndex) => {
+                    dynamicColors.push(
+                      labelIndex % 2 === 0
+                        ? this.chartService.colors.odd
+                        : this.chartService.colors.even
+                    );
+                  }
+                ); // This is dynamic array for colors of bars
+                this.dentistColExpOhtTrend[0].backgroundColor = dynamicColors;
+                this.dentistCollectionExpOhtTrendLabels =
+                  this.dentistColleExpOhtTrendLabels1;
+                if (activeMode == 'w') {
+                  this.dentistCollectionExpWeeklyOhtTrend1 = res.body.data;
+                  this.dentistCollectionExpWeeklyOhtTrendLabels =
+                    this.dentistColleExpOhtTrendLabels1;
+                }
+              } else {
+                this.dentistCollectionExpOhtTrendLabels = [];
+              }
+              this.dentistCollectionExpOhtTrendLoader = false;
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        );
+  }
 
   public treatPlanTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,
+      data: [],
+      label: '',
+      shadowOffsetX: 3,
       backgroundColor: [
         this.chartService.colors.odd,
         this.chartService.colors.even,
@@ -8127,7 +9772,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
-    }];
+    }
+  ];
   public treatmentPlanTrend1 = [];
   public treatmentPlanTrendLabels = [];
   public treatmentPlanTrendLabels1 = [];
@@ -8137,59 +9783,77 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.treatmentPlanTrendLoader = true;
     var user_id;
     var clinic_id;
-    this.clinic_id && this.cliniciananalysisService.caTreatmentPlanAverageCostTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
-      this.treatmentPlanTrendLabels1 = [];
-      this.treatmentPlanTrendLabels = [];
-      this.treatPlanTrend[0]['data']=[];
-      this.treatmentPlanTrend1 = [];
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-        this.treatmentPlanTrendLoader = false;
-        if (res.body.data) {
-          if (res.body.data) {
-            res.body.data.forEach(res => {
-              if (res.average_fees >= 0) {
-                if (res.average_fees)
-                  this.treatmentPlanTrend1.push(Math.round(res.average_fees));
-                else
-                  this.treatmentPlanTrend1.push(0);
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .caTreatmentPlanAverageCostTrend(
+          this.selectedDentist,
+          this.clinic_id,
+          this.trendValue
+        )
+        .subscribe(
+          (res: any) => {
+            this.treatmentPlanTrendLabels1 = [];
+            this.treatmentPlanTrendLabels = [];
+            this.treatPlanTrend[0]['data'] = [];
+            this.treatmentPlanTrend1 = [];
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.treatmentPlanTrendLoader = false;
+              if (res.body.data) {
+                if (res.body.data) {
+                  res.body.data.forEach((res) => {
+                    if (res.average_fees >= 0) {
+                      if (res.average_fees)
+                        this.treatmentPlanTrend1.push(
+                          Math.round(res.average_fees)
+                        );
+                      else this.treatmentPlanTrend1.push(0);
+                    }
+                    if (this.trendValue == 'c')
+                      this.treatmentPlanTrendLabels1.push(
+                        this.datePipe.transform(res.year_month, 'MMM y')
+                      );
+                    else this.treatmentPlanTrendLabels1.push(res.year);
+                  });
+                }
               }
-              if (this.trendValue == 'c')
-                this.treatmentPlanTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-              else
-                this.treatmentPlanTrendLabels1.push(res.year);
-            });
+              if (this.treatmentPlanTrend1.every((value) => value == 0))
+                this.treatmentPlanTrend1 = [];
+              this.treatPlanTrend[0]['data'] = this.treatmentPlanTrend1;
+              this.treatmentPlanTrendLabels = this.treatmentPlanTrendLabels1;
+
+              let dynamicColors = [];
+              this.treatmentPlanTrendLabels.forEach((label, labelIndex) => {
+                dynamicColors.push(
+                  labelIndex % 2 === 0
+                    ? this.chartService.colors.odd
+                    : this.chartService.colors.even
+                );
+              }); // This is dynamic array for colors of bars
+              this.treatPlanTrend[0].backgroundColor = dynamicColors;
+
+              if (this.treatmentPlanTrendLabels.length <= 0) {
+                this.gaugeValueTreatment = 0;
+              }
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        }
-        if (this.treatmentPlanTrend1.every((value) => value == 0)) this.treatmentPlanTrend1 = [];
-        this.treatPlanTrend[0]['data'] = this.treatmentPlanTrend1;
-        this.treatmentPlanTrendLabels = this.treatmentPlanTrendLabels1;
-
-        let dynamicColors = [];
-        this.treatmentPlanTrendLabels.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars        
-        this.treatPlanTrend[0].backgroundColor = dynamicColors;
-
-
-        if (this.treatmentPlanTrendLabels.length <= 0) {
-          this.gaugeValueTreatment = 0;
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+        );
   }
-
 
   public treatPlanTrendCmp: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,
+      data: [],
+      label: '',
+      shadowOffsetX: 3,
       backgroundColor: [
         this.chartService.colors.odd,
         this.chartService.colors.even,
@@ -8215,67 +9879,84 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
-    }];
+    }
+  ];
   public treatmentPlanTrend2 = [];
   //Trend mode for Treatment PLan Chart Conpleted fees
   private treatmentPlanCompletedFeesTrend() {
     this.treatmentPlanTrendLoader = true;
     var user_id;
     var clinic_id;
-    this.clinic_id && this.cliniciananalysisService.caTreatmentPlanAverageCompletedFeeTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
-      this.treatmentPlanTrendLabels1 = [];
-      this.treatmentPlanTrendLabels = [];
-      this.treatmentPlanTrend2 = [];
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-        this.treatmentPlanTrendLoader = false;
-        if (res.body.data) {
-          if (res.body.data) {
-            res.body.data.forEach(res => {
-              if (res.average_fees >= 0) {
-                if (res.average_fees)
-                  this.treatmentPlanTrend2.push(Math.round(res.average_fees));
-                else
-                  this.treatmentPlanTrend2.push(0);
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .caTreatmentPlanAverageCompletedFeeTrend(
+          this.selectedDentist,
+          this.clinic_id,
+          this.trendValue
+        )
+        .subscribe(
+          (res: any) => {
+            this.treatmentPlanTrendLabels1 = [];
+            this.treatmentPlanTrendLabels = [];
+            this.treatmentPlanTrend2 = [];
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.treatmentPlanTrendLoader = false;
+              if (res.body.data) {
+                if (res.body.data) {
+                  res.body.data.forEach((res) => {
+                    if (res.average_fees >= 0) {
+                      if (res.average_fees)
+                        this.treatmentPlanTrend2.push(
+                          Math.round(res.average_fees)
+                        );
+                      else this.treatmentPlanTrend2.push(0);
+                    }
+                    if (this.trendValue == 'c')
+                      this.treatmentPlanTrendLabels1.push(
+                        this.datePipe.transform(res.year_month, 'MMM y')
+                      );
+                    else this.treatmentPlanTrendLabels1.push(res.year);
+                  });
+                }
               }
-               if (this.trendValue == 'c')
-                   this.treatmentPlanTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-                 else
-                   this.treatmentPlanTrendLabels1.push(res.year);
-            });
+              if (this.treatmentPlanTrend2.every((value) => value == 0))
+                this.treatmentPlanTrend2 = [];
+              this.treatPlanTrendCmp[0]['data'] = this.treatmentPlanTrend2;
+              this.treatmentPlanTrendLabels = this.treatmentPlanTrendLabels1;
+
+              let dynamicColors = [];
+              this.treatmentPlanTrendLabels.forEach((label, labelIndex) => {
+                dynamicColors.push(
+                  labelIndex % 2 === 0
+                    ? this.chartService.colors.odd
+                    : this.chartService.colors.even
+                );
+              }); // This is dynamic array for colors of bars
+              this.treatPlanTrendCmp[0].backgroundColor = dynamicColors;
+
+              if (this.treatmentPlanTrendLabels.length <= 0) {
+                this.gaugeValueTreatment = 0;
+              }
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-
-        }
-        if (this.treatmentPlanTrend2.every((value) => value == 0)) this.treatmentPlanTrend2 = [];
-        this.treatPlanTrendCmp[0]['data'] = this.treatmentPlanTrend2;
-        this.treatmentPlanTrendLabels = this.treatmentPlanTrendLabels1;
-
-        let dynamicColors = [];
-        this.treatmentPlanTrendLabels.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars        
-        this.treatPlanTrendCmp[0].backgroundColor = dynamicColors;
-
-
-        if (this.treatmentPlanTrendLabels.length <= 0) {
-          this.gaugeValueTreatment = 0;
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+        );
   }
-
-
 
   public patientComplaintTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,
+      data: [],
+      label: '',
+      shadowOffsetX: 3,
       backgroundColor: [
         this.chartService.colors.odd,
         this.chartService.colors.even,
@@ -8301,7 +9982,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
-    }];
+    }
+  ];
   public patientComplaintsTrend1 = [];
   public patientComplaintsTrendLabels = [];
   public patientComplaintsTrendLabels1 = [];
@@ -8312,49 +9994,63 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     var user_id;
     var clinic_id;
-    this.clinic_id && this.cliniciananalysisService.caNumberPatientComplaintsTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
-      this.patientComplaintsTrendLabels1 = [];
-      this.patientComplaintsTrendLabels = [];
-      this.patientComplaintsTrendLoader = false;
-      this.patientComplaintsTrend1 = [];
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-        if (res.body.data) {
-          res.body.data.forEach(res => {
-            if (res.num_complaints)
-              this.patientComplaintsTrend1.push(res.num_complaints);
-            if (this.trendValue == 'c')
-              this.patientComplaintsTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-            else
-              this.patientComplaintsTrendLabels1.push(res.year);
-          });
-        }
-        this.patientComplaintTrend[0]['data'] = this.patientComplaintsTrend1;
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .caNumberPatientComplaintsTrend(
+          this.selectedDentist,
+          this.clinic_id,
+          this.trendValue
+        )
+        .subscribe(
+          (res: any) => {
+            this.patientComplaintsTrendLabels1 = [];
+            this.patientComplaintsTrendLabels = [];
+            this.patientComplaintsTrendLoader = false;
+            this.patientComplaintsTrend1 = [];
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              if (res.body.data) {
+                res.body.data.forEach((res) => {
+                  if (res.num_complaints)
+                    this.patientComplaintsTrend1.push(res.num_complaints);
+                  if (this.trendValue == 'c')
+                    this.patientComplaintsTrendLabels1.push(
+                      this.datePipe.transform(res.year_month, 'MMM y')
+                    );
+                  else this.patientComplaintsTrendLabels1.push(res.year);
+                });
+              }
+              this.patientComplaintTrend[0]['data'] =
+                this.patientComplaintsTrend1;
 
+              this.patientComplaintsTrendLabels =
+                this.patientComplaintsTrendLabels1;
+              let dynamicColors = [];
+              this.patientComplaintsTrendLabels.forEach((label, labelIndex) => {
+                dynamicColors.push(
+                  labelIndex % 2 === 0
+                    ? this.chartService.colors.odd
+                    : this.chartService.colors.even
+                );
+              }); // This is dynamic array for colors of bars
+              this.patientComplaintTrend[0].backgroundColor = dynamicColors;
 
-        this.patientComplaintsTrendLabels = this.patientComplaintsTrendLabels1;
-        let dynamicColors = [];
-        this.patientComplaintsTrendLabels.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars        
-        this.patientComplaintTrend[0].backgroundColor = dynamicColors;
-
-
-        if (this.patientComplaintsTrendLabels.length <= 0) {
-          this.gaugeValuePatients = 0;
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+              if (this.patientComplaintsTrendLabels.length <= 0) {
+                this.gaugeValuePatients = 0;
+              }
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        );
   }
-
-
 
   public recallPrebookChartTrend: any[] = [
     {
@@ -8388,11 +10084,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
     },
-    { 
-      data: [], label: '',
+    {
+      data: [],
+      label: '',
       shadowOffsetX: 3,
       backgroundColor: 'rgba(255, 0, 128, 1)',
-      order: 1,
+      order: 1
     }
   ];
   public recallPrebookChartTrend1 = [];
@@ -8404,74 +10101,89 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   private fdRecallPrebookRateTrend() {
     this.fdRecallPrebookRateTrendLoader = true;
     this.recallPrebookChartTrendLabels = [];
-    this.fdRecallPrebookRatetargetData=[];
+    this.fdRecallPrebookRatetargetData = [];
     var user_id;
     var clinic_id;
-    this.cliniciananalysisService.cpRecallPrebookRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
-      
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-        this.fdRecallPrebookRateTrendLoader = false;
-        this.recallPrebookChartTrendLabels1 = [];
-        this.recallPrebookChartTrend1 = [];
-        res.body.data.forEach(res => {
-          this.recallPrebookChartTrend1.push(Math.round(res.recall_percent));
-          if(res.goals == -1 || res.goals == null || res.goals == ''){
-            this.fdRecallPrebookRatetargetData.push(null);
-          }else{
-            this.fdRecallPrebookRatetargetData.push(res.goals);    
-          }
-          if (this.trendValue == 'c')
-            this.recallPrebookChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-          else
-            this.recallPrebookChartTrendLabels1.push(res.year);
+    this.cliniciananalysisService
+      .cpRecallPrebookRateTrend(
+        this.selectedDentist,
+        this.clinic_id,
+        this.trendValue
+      )
+      .subscribe(
+        (res: any) => {
+          if (res.status == 200) {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.fdRecallPrebookRateTrendLoader = false;
+            this.recallPrebookChartTrendLabels1 = [];
+            this.recallPrebookChartTrend1 = [];
+            res.body.data.forEach((res) => {
+              this.recallPrebookChartTrend1.push(
+                Math.round(res.recall_percent)
+              );
+              if (res.goals == -1 || res.goals == null || res.goals == '') {
+                this.fdRecallPrebookRatetargetData.push(null);
+              } else {
+                this.fdRecallPrebookRatetargetData.push(res.goals);
+              }
+              if (this.trendValue == 'c')
+                this.recallPrebookChartTrendLabels1.push(
+                  this.datePipe.transform(res.year_month, 'MMM y')
+                );
+              else this.recallPrebookChartTrendLabels1.push(res.year);
+            });
 
-        });
-       
-          var mappedfdRecallPrebookRatetargetData = [];
-          this.fdRecallPrebookRatetargetData.map(function (v){
-            if(v == null ){
-              mappedfdRecallPrebookRatetargetData.push([v - 0, v + 0]);
-            }else{
-              mappedfdRecallPrebookRatetargetData.push([v - 0.5, v + 0.5]);
+            var mappedfdRecallPrebookRatetargetData = [];
+            this.fdRecallPrebookRatetargetData.map(function (v) {
+              if (v == null) {
+                mappedfdRecallPrebookRatetargetData.push([v - 0, v + 0]);
+              } else {
+                mappedfdRecallPrebookRatetargetData.push([v - 0.5, v + 0.5]);
+              }
+            });
+            if (this.trendValue == 'c') {
+              this.recallPrebookChartTrend[0]['label'] = 'Actual';
+              this.recallPrebookChartTrend[1]['label'] = 'Target';
+              this.recallPrebookChartTrend[1]['data'] =
+                mappedfdRecallPrebookRatetargetData; //this.targetData.map(v => [v - subVal, v + subVal]);
+            } else {
+              this.recallPrebookChartTrend[0]['label'] = '';
+              this.recallPrebookChartTrend[1]['label'] = '';
+              this.recallPrebookChartTrend[1]['data'] = [];
             }
-          });
-          if(this.trendValue == 'c'){
-            this.recallPrebookChartTrend[0]['label'] = 'Actual';
-            this.recallPrebookChartTrend[1]['label'] = 'Target';
-           this.recallPrebookChartTrend[1]['data'] =  mappedfdRecallPrebookRatetargetData;//this.targetData.map(v => [v - subVal, v + subVal]);
-          }else{
-            this.recallPrebookChartTrend[0]['label'] = '';
-            this.recallPrebookChartTrend[1]['label'] = '';
-            this.recallPrebookChartTrend[1]['data'] =  [];
-          }	
-        this.recallPrebookChartTrend[0]['data'] = this.recallPrebookChartTrend1;
+            this.recallPrebookChartTrend[0]['data'] =
+              this.recallPrebookChartTrend1;
 
-        this.recallPrebookChartTrendLabels = this.recallPrebookChartTrendLabels1;
-        let dynamicColors = [];
-        this.recallPrebookChartTrendLabels.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars        
-        this.recallPrebookChartTrend[0].backgroundColor = dynamicColors;
-
-
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+            this.recallPrebookChartTrendLabels =
+              this.recallPrebookChartTrendLabels1;
+            let dynamicColors = [];
+            this.recallPrebookChartTrendLabels.forEach((label, labelIndex) => {
+              dynamicColors.push(
+                labelIndex % 2 === 0
+                  ? this.chartService.colors.odd
+                  : this.chartService.colors.even
+              );
+            }); // This is dynamic array for colors of bars
+            this.recallPrebookChartTrend[0].backgroundColor = dynamicColors;
+          }
+        },
+        (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.toastr.error(
+            'There was an error retrieving your report data, please contact our support team.'
+          );
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
   }
-
 
   public treatmentPrebookChartTrend: any[] = [
     {
       data: [],
       label: '',
-      order:2,
+      order: 2,
       backgroundColor: [
         this.chartService.colors.odd,
         this.chartService.colors.even,
@@ -8499,11 +10211,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
     },
-    { 
-      data: [], label: '',
+    {
+      data: [],
+      label: '',
       shadowOffsetX: 3,
       backgroundColor: 'rgba(255, 0, 128, 1)',
-      order: 1,
+      order: 1
     }
   ];
   public treatmentPrebookChartTrend1 = [];
@@ -8515,73 +10228,91 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   private fdTreatmentPrebookRateTrend() {
     this.fdTreatmentPrebookRateTrendLoader = true;
     this.treatmentPrebookChartTrendLabels = [];
-    this.fdTreatmentPrebookRatetargetData=[];
+    this.fdTreatmentPrebookRatetargetData = [];
     var user_id;
     var clinic_id;
-    this.cliniciananalysisService.caReappointRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
-     
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-        this.fdTreatmentPrebookRateTrendLoader = false;
-        this.treatmentPrebookChartTrendLabels1 = [];
-        this.treatmentPrebookChartTrend1 = [];
-        res.body.data.forEach(res => {
-          this.treatmentPrebookChartTrend1.push(Math.round(res.reappoint_rate));
-          if(res.goals == -1 || res.goals == null || res.goals == ''){
-            this.fdTreatmentPrebookRatetargetData.push(null);
-          }else{
-            this.fdTreatmentPrebookRatetargetData.push(res.goals);    
-          }  
-          if (this.trendValue == 'c')
-            this.treatmentPrebookChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-          else
-            this.treatmentPrebookChartTrendLabels1.push(res.year);
+    this.cliniciananalysisService
+      .caReappointRateTrend(
+        this.selectedDentist,
+        this.clinic_id,
+        this.trendValue
+      )
+      .subscribe(
+        (res: any) => {
+          if (res.status == 200) {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.fdTreatmentPrebookRateTrendLoader = false;
+            this.treatmentPrebookChartTrendLabels1 = [];
+            this.treatmentPrebookChartTrend1 = [];
+            res.body.data.forEach((res) => {
+              this.treatmentPrebookChartTrend1.push(
+                Math.round(res.reappoint_rate)
+              );
+              if (res.goals == -1 || res.goals == null || res.goals == '') {
+                this.fdTreatmentPrebookRatetargetData.push(null);
+              } else {
+                this.fdTreatmentPrebookRatetargetData.push(res.goals);
+              }
+              if (this.trendValue == 'c')
+                this.treatmentPrebookChartTrendLabels1.push(
+                  this.datePipe.transform(res.year_month, 'MMM y')
+                );
+              else this.treatmentPrebookChartTrendLabels1.push(res.year);
+            });
 
-        });
-        
-          var mappedfdTreatmentPrebookRatetargetData = [];
-          this.fdTreatmentPrebookRatetargetData.map(function (v){
-            if(v == null ){
-              mappedfdTreatmentPrebookRatetargetData.push([v - 0, v + 0]);
-            }else{
-              mappedfdTreatmentPrebookRatetargetData.push([v - 0.5, v + 0.5]);
+            var mappedfdTreatmentPrebookRatetargetData = [];
+            this.fdTreatmentPrebookRatetargetData.map(function (v) {
+              if (v == null) {
+                mappedfdTreatmentPrebookRatetargetData.push([v - 0, v + 0]);
+              } else {
+                mappedfdTreatmentPrebookRatetargetData.push([v - 0.5, v + 0.5]);
+              }
+            });
+            if (this.trendValue == 'c') {
+              this.treatmentPrebookChartTrend[0]['label'] = 'Actual';
+              this.treatmentPrebookChartTrend[1]['label'] = 'Target';
+              this.treatmentPrebookChartTrend[1]['data'] =
+                mappedfdTreatmentPrebookRatetargetData; //this.targetData.map(v => [v - subVal, v + subVal]);
+            } else {
+              this.treatmentPrebookChartTrend[0]['label'] = '';
+              this.treatmentPrebookChartTrend[1]['label'] = '';
+              this.treatmentPrebookChartTrend[1]['data'] = [];
             }
-          });
-          if(this.trendValue == 'c'){
-            this.treatmentPrebookChartTrend[0]['label'] = 'Actual';
-            this.treatmentPrebookChartTrend[1]['label'] = 'Target';
-           this.treatmentPrebookChartTrend[1]['data'] =  mappedfdTreatmentPrebookRatetargetData;//this.targetData.map(v => [v - subVal, v + subVal]);
-          }else{
-            this.treatmentPrebookChartTrend[0]['label'] = '';
-            this.treatmentPrebookChartTrend[1]['label'] = '';
-            this.treatmentPrebookChartTrend[1]['data'] =  [];
-          }			  
-        this.treatmentPrebookChartTrend[0]['data'] = this.treatmentPrebookChartTrend1;
+            this.treatmentPrebookChartTrend[0]['data'] =
+              this.treatmentPrebookChartTrend1;
 
-        this.treatmentPrebookChartTrendLabels = this.treatmentPrebookChartTrendLabels1;
+            this.treatmentPrebookChartTrendLabels =
+              this.treatmentPrebookChartTrendLabels1;
 
-        let dynamicColors = [];
-        this.treatmentPrebookChartTrendLabels.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars        
-        this.treatmentPrebookChartTrend[0].backgroundColor = dynamicColors;
-
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+            let dynamicColors = [];
+            this.treatmentPrebookChartTrendLabels.forEach(
+              (label, labelIndex) => {
+                dynamicColors.push(
+                  labelIndex % 2 === 0
+                    ? this.chartService.colors.odd
+                    : this.chartService.colors.even
+                );
+              }
+            ); // This is dynamic array for colors of bars
+            this.treatmentPrebookChartTrend[0].backgroundColor = dynamicColors;
+          }
+        },
+        (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.toastr.error(
+            'There was an error retrieving your report data, please contact our support team.'
+          );
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
   }
-
-
 
   public hourlyRateChartTrend: any[] = [
     {
-      data: [], order:2,
+      data: [],
+      order: 2,
       backgroundColor: [
         this.chartService.colors.odd,
         this.chartService.colors.even,
@@ -8596,7 +10327,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.chartService.colors.odd,
         this.chartService.colors.even
       ],
-      label: '', shadowOffsetX: 3,
+      label: '',
+      shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -8608,8 +10340,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
-    },{
-      data: [], order:1, label: '', shadowOffsetX: 3,  backgroundColor: 'rgba(255, 0, 128, 1)',
+    },
+    {
+      data: [],
+      order: 1,
+      label: '',
+      shadowOffsetX: 3,
+      backgroundColor: 'rgba(255, 0, 128, 1)'
     }
   ];
   public hourlyRateChartTrend1 = [];
@@ -8622,93 +10359,111 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.fdhourlyRateRateTrendLoader = true;
     var user_id;
     var clinic_id;
-    this.hourlytargetData =[];
-    this.clinic_id && this.cliniciananalysisService.cahourlyRateRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
-      this.hourlyRateChartTrendLabels = [];
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-        this.fdhourlyRateRateTrendLoader = false;
-        this.hourlyRateChartTrendLabels1 = [];
-        this.hourlyRateChartTrend1 = [];
-        res.body.data.forEach(res => {
-          if (res.hourly_rate >= 0) {
-            this.hourlyRateChartTrend1.push(Math.round(res.hourly_rate));
-            if(res.goals == -1 || res.goals == null || res.goals == ''){
-              this.hourlytargetData.push(null);
-            }else{
-              this.hourlytargetData.push(res.goals); 
-            }              
-            if (this.trendValue == 'c')
-              this.hourlyRateChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-            else
-              this.hourlyRateChartTrendLabels1.push(res.year);
-          }
-        });
+    this.hourlytargetData = [];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .cahourlyRateRateTrend(
+          this.selectedDentist,
+          this.clinic_id,
+          this.trendValue
+        )
+        .subscribe(
+          (res: any) => {
+            this.hourlyRateChartTrendLabels = [];
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.fdhourlyRateRateTrendLoader = false;
+              this.hourlyRateChartTrendLabels1 = [];
+              this.hourlyRateChartTrend1 = [];
+              res.body.data.forEach((res) => {
+                if (res.hourly_rate >= 0) {
+                  this.hourlyRateChartTrend1.push(Math.round(res.hourly_rate));
+                  if (res.goals == -1 || res.goals == null || res.goals == '') {
+                    this.hourlytargetData.push(null);
+                  } else {
+                    this.hourlytargetData.push(res.goals);
+                  }
+                  if (this.trendValue == 'c')
+                    this.hourlyRateChartTrendLabels1.push(
+                      this.datePipe.transform(res.year_month, 'MMM y')
+                    );
+                  else this.hourlyRateChartTrendLabels1.push(res.year);
+                }
+              });
 
-        let maxVal1 = Math.max(...this.hourlyRateChartTrend1);
-          var subVal = 1;
-          
-          if(maxVal1 >=20000){
-            subVal = 100;
-          }else if(maxVal1 > 5000 && maxVal1 < 20000){
-            subVal = 50;
-          }else if(maxVal1 > 3000 && maxVal1 < 5000){
-            subVal = 15;
-          }else if(maxVal1 > 2000 && maxVal1 < 3000){
-            subVal = 10;
-          }else if(maxVal1 > 1000 && maxVal1 < 2000){
-            subVal = 5;
-          }else if(maxVal1 > 500 && maxVal1 < 1000){
-            subVal = 3;
-          }else if(maxVal1 > 100 && maxVal1 < 500){
-            subVal = 1;
-          }else if(maxVal1 > 51 && maxVal1 < 100){
-            subVal = 0.2;
-          }else if(maxVal1 <= 50){
-            subVal = 0.1;
-          }
-         var mappedhourlytargetData = [];
-          this.hourlytargetData.map(function (v){
-            if(v == null ){
-              mappedhourlytargetData.push([v - 0, v + 0]);
-            }else{
-              mappedhourlytargetData.push([v - subVal, v + subVal]);
+              let maxVal1 = Math.max(...this.hourlyRateChartTrend1);
+              var subVal = 1;
+
+              if (maxVal1 >= 20000) {
+                subVal = 100;
+              } else if (maxVal1 > 5000 && maxVal1 < 20000) {
+                subVal = 50;
+              } else if (maxVal1 > 3000 && maxVal1 < 5000) {
+                subVal = 15;
+              } else if (maxVal1 > 2000 && maxVal1 < 3000) {
+                subVal = 10;
+              } else if (maxVal1 > 1000 && maxVal1 < 2000) {
+                subVal = 5;
+              } else if (maxVal1 > 500 && maxVal1 < 1000) {
+                subVal = 3;
+              } else if (maxVal1 > 100 && maxVal1 < 500) {
+                subVal = 1;
+              } else if (maxVal1 > 51 && maxVal1 < 100) {
+                subVal = 0.2;
+              } else if (maxVal1 <= 50) {
+                subVal = 0.1;
+              }
+              var mappedhourlytargetData = [];
+              this.hourlytargetData.map(function (v) {
+                if (v == null) {
+                  mappedhourlytargetData.push([v - 0, v + 0]);
+                } else {
+                  mappedhourlytargetData.push([v - subVal, v + subVal]);
+                }
+              });
+              if (this.trendValue == 'c') {
+                this.hourlyRateChartTrend[0]['label'] = 'Actual';
+                this.hourlyRateChartTrend[1]['label'] = 'Target';
+                this.hourlyRateChartTrend[1]['data'] = mappedhourlytargetData; //this.hourlytargetData.map(v => [v - subVal, v + subVal]);
+              } else {
+                this.hourlyRateChartTrend[0]['label'] = '';
+                this.hourlyRateChartTrend[1]['label'] = '';
+                this.hourlyRateChartTrend[1]['data'] = [];
+              }
+              this.hourlyRateChartTrend[0]['data'] = this.hourlyRateChartTrend1;
+              this.hourlyRateChartTrendLabels =
+                this.hourlyRateChartTrendLabels1;
+
+              let dynamicColors = [];
+              this.hourlyRateChartTrendLabels.forEach((label, labelIndex) => {
+                dynamicColors.push(
+                  labelIndex % 2 === 0
+                    ? this.chartService.colors.odd
+                    : this.chartService.colors.even
+                );
+              }); // This is dynamic array for colors of bars
+              this.hourlyRateChartTrend[0].backgroundColor = dynamicColors;
+              if (this.hourlyRateChartTrendLabels.length <= 0) {
+                this.hourlyValue = 0;
+              }
             }
-          });
-        if(this.trendValue == 'c'){
-          this.hourlyRateChartTrend[0]['label'] = 'Actual';
-          this.hourlyRateChartTrend[1]['label'] = 'Target';
-          this.hourlyRateChartTrend[1]['data'] =  mappedhourlytargetData; //this.hourlytargetData.map(v => [v - subVal, v + subVal]);
-        }else{
-          this.hourlyRateChartTrend[0]['label'] = '';
-          this.hourlyRateChartTrend[1]['label'] = '';
-          this.hourlyRateChartTrend[1]['data'] =  [];
-        }
-        this.hourlyRateChartTrend[0]['data'] = this.hourlyRateChartTrend1;
-        this.hourlyRateChartTrendLabels = this.hourlyRateChartTrendLabels1;
-
-        let dynamicColors = [];
-        this.hourlyRateChartTrendLabels.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars        
-        this.hourlyRateChartTrend[0].backgroundColor = dynamicColors;
-        if (this.hourlyRateChartTrendLabels.length <= 0) {
-          this.hourlyValue = 0;
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        );
   }
 
   public collhourlyRateChartTrend: any[] = [
     {
-      data: [], order:2,
+      data: [],
+      order: 2,
       backgroundColor: [
         this.chartService.colors.odd,
         this.chartService.colors.even,
@@ -8723,7 +10478,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.chartService.colors.odd,
         this.chartService.colors.even
       ],
-      label: '', shadowOffsetX: 3,
+      label: '',
+      shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -8735,8 +10491,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
-    },{
-      data: [], order:1, label: '', shadowOffsetX: 3,  backgroundColor: 'rgba(255, 0, 128, 1)',
+    },
+    {
+      data: [],
+      order: 1,
+      label: '',
+      shadowOffsetX: 3,
+      backgroundColor: 'rgba(255, 0, 128, 1)'
     }
   ];
   public collhourlyRateChartTrend1 = [];
@@ -8749,93 +10510,117 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collhourlyRateRateTrendLoader = true;
     var user_id;
     var clinic_id;
-    this.collhourlytargetData =[];
-    this.clinic_id && this.cliniciananalysisService.collectionHourlyRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
-      this.collhourlyRateChartTrendLabels = [];
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-        this.collhourlyRateRateTrendLoader = false;
-        this.collhourlyRateChartTrendLabels1 = [];
-        this.collhourlyRateChartTrend1 = [];
-        res.body.data.forEach(res => {
-          if (res.hourly_rate >= 0) {
-            this.collhourlyRateChartTrend1.push(Math.round(res.hourly_rate));
-            if(res.goals == -1 || res.goals == null || res.goals == ''){
-              this.collhourlytargetData.push(null);
-            }else{
-              this.collhourlytargetData.push(res.goals); 
-            }              
-            if (this.trendValue == 'c')
-              this.collhourlyRateChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-            else
-              this.collhourlyRateChartTrendLabels1.push(res.year);
-          }
-        });
+    this.collhourlytargetData = [];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .collectionHourlyRateTrend(
+          this.selectedDentist,
+          this.clinic_id,
+          this.trendValue
+        )
+        .subscribe(
+          (res: any) => {
+            this.collhourlyRateChartTrendLabels = [];
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.collhourlyRateRateTrendLoader = false;
+              this.collhourlyRateChartTrendLabels1 = [];
+              this.collhourlyRateChartTrend1 = [];
+              res.body.data.forEach((res) => {
+                if (res.hourly_rate >= 0) {
+                  this.collhourlyRateChartTrend1.push(
+                    Math.round(res.hourly_rate)
+                  );
+                  if (res.goals == -1 || res.goals == null || res.goals == '') {
+                    this.collhourlytargetData.push(null);
+                  } else {
+                    this.collhourlytargetData.push(res.goals);
+                  }
+                  if (this.trendValue == 'c')
+                    this.collhourlyRateChartTrendLabels1.push(
+                      this.datePipe.transform(res.year_month, 'MMM y')
+                    );
+                  else this.collhourlyRateChartTrendLabels1.push(res.year);
+                }
+              });
 
-        let maxVal1 = Math.max(...this.collhourlyRateChartTrend1);
-          var subVal = 1;
-          
-          if(maxVal1 >=20000){
-            subVal = 100;
-          }else if(maxVal1 > 5000 && maxVal1 < 20000){
-            subVal = 50;
-          }else if(maxVal1 > 3000 && maxVal1 < 5000){
-            subVal = 15;
-          }else if(maxVal1 > 2000 && maxVal1 < 3000){
-            subVal = 10;
-          }else if(maxVal1 > 1000 && maxVal1 < 2000){
-            subVal = 5;
-          }else if(maxVal1 > 500 && maxVal1 < 1000){
-            subVal = 3;
-          }else if(maxVal1 > 100 && maxVal1 < 500){
-            subVal = 1;
-          }else if(maxVal1 > 51 && maxVal1 < 100){
-            subVal = 0.2;
-          }else if(maxVal1 <= 50){
-            subVal = 0.1;
-          }
-         var mappedhourlytargetData = [];
-          this.collhourlytargetData.map(function (v){
-            if(v == null ){
-              mappedhourlytargetData.push([v - 0, v + 0]);
-            }else{
-              mappedhourlytargetData.push([v - subVal, v + subVal]);
+              let maxVal1 = Math.max(...this.collhourlyRateChartTrend1);
+              var subVal = 1;
+
+              if (maxVal1 >= 20000) {
+                subVal = 100;
+              } else if (maxVal1 > 5000 && maxVal1 < 20000) {
+                subVal = 50;
+              } else if (maxVal1 > 3000 && maxVal1 < 5000) {
+                subVal = 15;
+              } else if (maxVal1 > 2000 && maxVal1 < 3000) {
+                subVal = 10;
+              } else if (maxVal1 > 1000 && maxVal1 < 2000) {
+                subVal = 5;
+              } else if (maxVal1 > 500 && maxVal1 < 1000) {
+                subVal = 3;
+              } else if (maxVal1 > 100 && maxVal1 < 500) {
+                subVal = 1;
+              } else if (maxVal1 > 51 && maxVal1 < 100) {
+                subVal = 0.2;
+              } else if (maxVal1 <= 50) {
+                subVal = 0.1;
+              }
+              var mappedhourlytargetData = [];
+              this.collhourlytargetData.map(function (v) {
+                if (v == null) {
+                  mappedhourlytargetData.push([v - 0, v + 0]);
+                } else {
+                  mappedhourlytargetData.push([v - subVal, v + subVal]);
+                }
+              });
+              if (this.trendValue == 'c') {
+                this.collhourlyRateChartTrend[0]['label'] = 'Actual';
+                this.collhourlyRateChartTrend[1]['label'] = 'Target';
+                this.collhourlyRateChartTrend[1]['data'] =
+                  mappedhourlytargetData; //this.collhourlytargetData.map(v => [v - subVal, v + subVal]);
+              } else {
+                this.collhourlyRateChartTrend[0]['label'] = '';
+                this.collhourlyRateChartTrend[1]['label'] = '';
+                this.collhourlyRateChartTrend[1]['data'] = [];
+              }
+              this.collhourlyRateChartTrend[0]['data'] =
+                this.collhourlyRateChartTrend1;
+              this.collhourlyRateChartTrendLabels =
+                this.collhourlyRateChartTrendLabels1;
+
+              let dynamicColors = [];
+              this.collhourlyRateChartTrendLabels.forEach(
+                (label, labelIndex) => {
+                  dynamicColors.push(
+                    labelIndex % 2 === 0
+                      ? this.chartService.colors.odd
+                      : this.chartService.colors.even
+                  );
+                }
+              ); // This is dynamic array for colors of bars
+              this.collhourlyRateChartTrend[0].backgroundColor = dynamicColors;
+              if (this.collhourlyRateChartTrendLabels.length <= 0) {
+                this.hourlyValue = 0;
+              }
             }
-          });
-        if(this.trendValue == 'c'){
-          this.collhourlyRateChartTrend[0]['label'] = 'Actual';
-          this.collhourlyRateChartTrend[1]['label'] = 'Target';
-          this.collhourlyRateChartTrend[1]['data'] =  mappedhourlytargetData; //this.collhourlytargetData.map(v => [v - subVal, v + subVal]);
-        }else{
-          this.collhourlyRateChartTrend[0]['label'] = '';
-          this.collhourlyRateChartTrend[1]['label'] = '';
-          this.collhourlyRateChartTrend[1]['data'] =  [];
-        }
-        this.collhourlyRateChartTrend[0]['data'] = this.collhourlyRateChartTrend1;
-        this.collhourlyRateChartTrendLabels = this.collhourlyRateChartTrendLabels1;
-
-        let dynamicColors = [];
-        this.collhourlyRateChartTrendLabels.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars        
-        this.collhourlyRateChartTrend[0].backgroundColor = dynamicColors;
-        if (this.collhourlyRateChartTrendLabels.length <= 0) {
-          this.hourlyValue = 0;
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        );
   }
 
   public collExphourlyRateChartTrend: any[] = [
     {
-      data: [], order:2,
+      data: [],
+      order: 2,
       backgroundColor: [
         this.chartService.colors.odd,
         this.chartService.colors.even,
@@ -8850,7 +10635,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.chartService.colors.odd,
         this.chartService.colors.even
       ],
-      label: '', shadowOffsetX: 3,
+      label: '',
+      shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -8862,8 +10648,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
-    },{
-      data: [], order:1, label: '', shadowOffsetX: 3,  backgroundColor: 'rgba(255, 0, 128, 1)',
+    },
+    {
+      data: [],
+      order: 1,
+      label: '',
+      shadowOffsetX: 3,
+      backgroundColor: 'rgba(255, 0, 128, 1)'
     }
   ];
   public collExphourlyRateChartTrend1 = [];
@@ -8876,94 +10667,119 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collExphourlyRateRateTrendLoader = true;
     var user_id;
     var clinic_id;
-    this.collExphourlytargetData =[];
-    this.clinic_id && this.cliniciananalysisService.collectionExpHourlyRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
-      this.collExphourlyRateChartTrendLabels = [];
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-        this.collExphourlyRateRateTrendLoader = false;
-        this.collExphourlyRateChartTrendLabels1 = [];
-        this.collExphourlyRateChartTrend1 = [];
-        res.body.data.forEach(res => {
-          if (res.hourly_rate >= 0) {
-            this.collExphourlyRateChartTrend1.push(Math.round(res.hourly_rate));
-            if(res.goals == -1 || res.goals == null || res.goals == ''){
-              this.collExphourlytargetData.push(null);
-            }else{
-              this.collExphourlytargetData.push(res.goals); 
-            }              
-            if (this.trendValue == 'c')
-              this.collExphourlyRateChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-            else
-              this.collExphourlyRateChartTrendLabels1.push(res.year);
-          }
-        });
+    this.collExphourlytargetData = [];
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .collectionExpHourlyRateTrend(
+          this.selectedDentist,
+          this.clinic_id,
+          this.trendValue
+        )
+        .subscribe(
+          (res: any) => {
+            this.collExphourlyRateChartTrendLabels = [];
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.collExphourlyRateRateTrendLoader = false;
+              this.collExphourlyRateChartTrendLabels1 = [];
+              this.collExphourlyRateChartTrend1 = [];
+              res.body.data.forEach((res) => {
+                if (res.hourly_rate >= 0) {
+                  this.collExphourlyRateChartTrend1.push(
+                    Math.round(res.hourly_rate)
+                  );
+                  if (res.goals == -1 || res.goals == null || res.goals == '') {
+                    this.collExphourlytargetData.push(null);
+                  } else {
+                    this.collExphourlytargetData.push(res.goals);
+                  }
+                  if (this.trendValue == 'c')
+                    this.collExphourlyRateChartTrendLabels1.push(
+                      this.datePipe.transform(res.year_month, 'MMM y')
+                    );
+                  else this.collExphourlyRateChartTrendLabels1.push(res.year);
+                }
+              });
 
-        let maxVal1 = Math.max(...this.collExphourlyRateChartTrend1);
-          var subVal = 1;
-          
-          if(maxVal1 >=20000){
-            subVal = 100;
-          }else if(maxVal1 > 5000 && maxVal1 < 20000){
-            subVal = 50;
-          }else if(maxVal1 > 3000 && maxVal1 < 5000){
-            subVal = 15;
-          }else if(maxVal1 > 2000 && maxVal1 < 3000){
-            subVal = 10;
-          }else if(maxVal1 > 1000 && maxVal1 < 2000){
-            subVal = 5;
-          }else if(maxVal1 > 500 && maxVal1 < 1000){
-            subVal = 3;
-          }else if(maxVal1 > 100 && maxVal1 < 500){
-            subVal = 1;
-          }else if(maxVal1 > 51 && maxVal1 < 100){
-            subVal = 0.2;
-          }else if(maxVal1 <= 50){
-            subVal = 0.1;
-          }
-         var mappedhourlytargetData = [];
-          this.collExphourlytargetData.map(function (v){
-            if(v == null ){
-              mappedhourlytargetData.push([v - 0, v + 0]);
-            }else{
-              mappedhourlytargetData.push([v - subVal, v + subVal]);
+              let maxVal1 = Math.max(...this.collExphourlyRateChartTrend1);
+              var subVal = 1;
+
+              if (maxVal1 >= 20000) {
+                subVal = 100;
+              } else if (maxVal1 > 5000 && maxVal1 < 20000) {
+                subVal = 50;
+              } else if (maxVal1 > 3000 && maxVal1 < 5000) {
+                subVal = 15;
+              } else if (maxVal1 > 2000 && maxVal1 < 3000) {
+                subVal = 10;
+              } else if (maxVal1 > 1000 && maxVal1 < 2000) {
+                subVal = 5;
+              } else if (maxVal1 > 500 && maxVal1 < 1000) {
+                subVal = 3;
+              } else if (maxVal1 > 100 && maxVal1 < 500) {
+                subVal = 1;
+              } else if (maxVal1 > 51 && maxVal1 < 100) {
+                subVal = 0.2;
+              } else if (maxVal1 <= 50) {
+                subVal = 0.1;
+              }
+              var mappedhourlytargetData = [];
+              this.collExphourlytargetData.map(function (v) {
+                if (v == null) {
+                  mappedhourlytargetData.push([v - 0, v + 0]);
+                } else {
+                  mappedhourlytargetData.push([v - subVal, v + subVal]);
+                }
+              });
+              if (this.trendValue == 'c') {
+                this.collExphourlyRateChartTrend[0]['label'] = 'Actual';
+                this.collExphourlyRateChartTrend[1]['label'] = 'Target';
+                this.collExphourlyRateChartTrend[1]['data'] =
+                  mappedhourlytargetData; //this.collExphourlytargetData.map(v => [v - subVal, v + subVal]);
+              } else {
+                this.collExphourlyRateChartTrend[0]['label'] = '';
+                this.collExphourlyRateChartTrend[1]['label'] = '';
+                this.collExphourlyRateChartTrend[1]['data'] = [];
+              }
+              this.collExphourlyRateChartTrend[0]['data'] =
+                this.collExphourlyRateChartTrend1;
+              this.collExphourlyRateChartTrendLabels =
+                this.collExphourlyRateChartTrendLabels1;
+
+              let dynamicColors = [];
+              this.collExphourlyRateChartTrendLabels.forEach(
+                (label, labelIndex) => {
+                  dynamicColors.push(
+                    labelIndex % 2 === 0
+                      ? this.chartService.colors.odd
+                      : this.chartService.colors.even
+                  );
+                }
+              ); // This is dynamic array for colors of bars
+              this.collExphourlyRateChartTrend[0].backgroundColor =
+                dynamicColors;
+              if (this.collExphourlyRateChartTrendLabels.length <= 0) {
+                this.hourlyValue = 0;
+              }
             }
-          });
-        if(this.trendValue == 'c'){
-          this.collExphourlyRateChartTrend[0]['label'] = 'Actual';
-          this.collExphourlyRateChartTrend[1]['label'] = 'Target';
-          this.collExphourlyRateChartTrend[1]['data'] =  mappedhourlytargetData; //this.collExphourlytargetData.map(v => [v - subVal, v + subVal]);
-        }else{
-          this.collExphourlyRateChartTrend[0]['label'] = '';
-          this.collExphourlyRateChartTrend[1]['label'] = '';
-          this.collExphourlyRateChartTrend[1]['data'] =  [];
-        }
-        this.collExphourlyRateChartTrend[0]['data'] = this.collExphourlyRateChartTrend1;
-        this.collExphourlyRateChartTrendLabels = this.collExphourlyRateChartTrendLabels1;
-
-        let dynamicColors = [];
-        this.collExphourlyRateChartTrendLabels.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars        
-        this.collExphourlyRateChartTrend[0].backgroundColor = dynamicColors;
-        if (this.collExphourlyRateChartTrendLabels.length <= 0) {
-          this.hourlyValue = 0;
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        );
   }
 
   public hourlyRateChartDentistsTrend: any[] = [
     {
-      data: [],
-    }];
+      data: []
+    }
+  ];
   public hourlyRateChartDentistsTrend1 = [];
   public hourlyRateChartDentistsTrendLabels = [];
   public hourlyRateChartDentistsTrendLabels1 = [];
@@ -8973,50 +10789,73 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.fdhourlyRateRateDentistsTrendLoader = true;
     var user_id;
     var clinic_id;
-    this.clinic_id && this.cliniciananalysisService.cahourlyRateChartDesntistsTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
-      this.hourlyRateChartDentistsTrendLabels = [];
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-        this.fdhourlyRateRateDentistsTrendLoader = false;
-        this.hourlyRateChartDentistsTrendLabels1 = [];
-        this.hourlyRateChartDentistsTrend1 = [];
-        res.body.data.forEach(res => {
-          if (res.hourly_rate >= 0) {
-            this.hourlyRateChartDentistsTrend1.push(Math.round(res.hourly_rate));
-            if (this.trendValue == 'c')
-              this.hourlyRateChartDentistsTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-            else
-              this.hourlyRateChartDentistsTrendLabels1.push(res.year);
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .cahourlyRateChartDesntistsTrend(
+          this.selectedDentist,
+          this.clinic_id,
+          this.trendValue
+        )
+        .subscribe(
+          (res: any) => {
+            this.hourlyRateChartDentistsTrendLabels = [];
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.fdhourlyRateRateDentistsTrendLoader = false;
+              this.hourlyRateChartDentistsTrendLabels1 = [];
+              this.hourlyRateChartDentistsTrend1 = [];
+              res.body.data.forEach((res) => {
+                if (res.hourly_rate >= 0) {
+                  this.hourlyRateChartDentistsTrend1.push(
+                    Math.round(res.hourly_rate)
+                  );
+                  if (this.trendValue == 'c')
+                    this.hourlyRateChartDentistsTrendLabels1.push(
+                      this.datePipe.transform(res.year_month, 'MMM y')
+                    );
+                  else this.hourlyRateChartDentistsTrendLabels1.push(res.year);
+                }
+              });
+              this.hourlyRateChartDentistsTrend[0]['data'] =
+                this.hourlyRateChartDentistsTrend1;
+              this.hourlyRateChartDentistsTrendLabels =
+                this.hourlyRateChartDentistsTrendLabels1;
+
+              let dynamicColors = [];
+              this.hourlyRateChartDentistsTrendLabels.forEach(
+                (label, labelIndex) => {
+                  dynamicColors.push(
+                    labelIndex % 2 === 0
+                      ? this.chartService.colors.odd
+                      : this.chartService.colors.even
+                  );
+                }
+              ); // This is dynamic array for colors of bars
+              this.hourlyRateChartDentistsTrend[0].backgroundColor =
+                dynamicColors;
+
+              if (this.hourlyRateChartDentistsTrendLabels.length <= 0) {
+                this.hourlyValue = 0;
+              }
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        });
-        this.hourlyRateChartDentistsTrend[0]['data'] = this.hourlyRateChartDentistsTrend1;
-        this.hourlyRateChartDentistsTrendLabels = this.hourlyRateChartDentistsTrendLabels1;
-
-        let dynamicColors = [];
-        this.hourlyRateChartDentistsTrendLabels.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars        
-        this.hourlyRateChartDentistsTrend[0].backgroundColor = dynamicColors;
-
-        if (this.hourlyRateChartDentistsTrendLabels.length <= 0) {
-          this.hourlyValue = 0;
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+        );
   }
-
 
   public hourlyRateChartOhtTrend: any[] = [
     {
-      data: [],
-    }];
+      data: []
+    }
+  ];
   public hourlyRateChartOhtTrend1 = [];
   public hourlyRateChartOhtTrendLabels = [];
   public hourlyRateChartOhtTrendLabels1 = [];
@@ -9026,45 +10865,66 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.fdhourlyRateRateOhtTrendLoader = true;
     var user_id;
     var clinic_id;
-    this.clinic_id && this.cliniciananalysisService.cahourlyRateChartOhtTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
-      this.hourlyRateChartOhtTrendLabels = [];
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-        this.fdhourlyRateRateOhtTrendLoader = false;
-        this.hourlyRateChartOhtTrendLabels1 = [];
-        this.hourlyRateChartOhtTrend1 = [];
-        res.body.data.forEach(res => {
-          if (res.hourly_rate >= 0) {
-            this.hourlyRateChartOhtTrend1.push(Math.round(res.hourly_rate));
-            if (this.trendValue == 'c')
-              this.hourlyRateChartOhtTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-            else
-              this.hourlyRateChartOhtTrendLabels1.push(res.year);
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .cahourlyRateChartOhtTrend(
+          this.selectedDentist,
+          this.clinic_id,
+          this.trendValue
+        )
+        .subscribe(
+          (res: any) => {
+            this.hourlyRateChartOhtTrendLabels = [];
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.fdhourlyRateRateOhtTrendLoader = false;
+              this.hourlyRateChartOhtTrendLabels1 = [];
+              this.hourlyRateChartOhtTrend1 = [];
+              res.body.data.forEach((res) => {
+                if (res.hourly_rate >= 0) {
+                  this.hourlyRateChartOhtTrend1.push(
+                    Math.round(res.hourly_rate)
+                  );
+                  if (this.trendValue == 'c')
+                    this.hourlyRateChartOhtTrendLabels1.push(
+                      this.datePipe.transform(res.year_month, 'MMM y')
+                    );
+                  else this.hourlyRateChartOhtTrendLabels1.push(res.year);
+                }
+              });
+              this.hourlyRateChartOhtTrend[0]['data'] =
+                this.hourlyRateChartOhtTrend1;
+              this.hourlyRateChartOhtTrendLabels =
+                this.hourlyRateChartOhtTrendLabels1;
+
+              let dynamicColors = [];
+              this.hourlyRateChartOhtTrendLabels.forEach(
+                (label, labelIndex) => {
+                  dynamicColors.push(
+                    labelIndex % 2 === 0
+                      ? this.chartService.colors.odd
+                      : this.chartService.colors.even
+                  );
+                }
+              ); // This is dynamic array for colors of bars
+              this.hourlyRateChartOhtTrend[0].backgroundColor = dynamicColors;
+
+              if (this.hourlyRateChartOhtTrendLabels.length <= 0) {
+                this.hourlyValue = 0;
+              }
+            }
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        });
-        this.hourlyRateChartOhtTrend[0]['data'] = this.hourlyRateChartOhtTrend1;
-        this.hourlyRateChartOhtTrendLabels = this.hourlyRateChartOhtTrendLabels1;
-
-        let dynamicColors = [];
-        this.hourlyRateChartOhtTrendLabels.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars        
-        this.hourlyRateChartOhtTrend[0].backgroundColor = dynamicColors;
-
-        if (this.hourlyRateChartOhtTrendLabels.length <= 0) {
-          this.hourlyValue = 0;
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+        );
   }
-
 
   public newPatientsChartTrend: any[] = [
     {
@@ -9098,11 +10958,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
     },
-    { 
-      data: [], label: '',
+    {
+      data: [],
+      label: '',
       shadowOffsetX: 3,
       backgroundColor: 'rgba(255, 0, 128, 1)',
-      order: 1,
+      order: 1
     }
   ];
   public newPatientsChartTrend1 = [];
@@ -9110,94 +10971,111 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public newPatientsChartTrendLabels1 = [];
   public fdnewPatientsRateTrendLoader: any;
   public newPatientstargetData = [];
-  //Trend Mode for New Patient 
+  //Trend Mode for New Patient
   private fdnewPatientsRateTrend() {
     this.fdnewPatientsRateTrendLoader = true;
     this.newPatientsChartTrendLabels = [];
-    this.newPatientstargetData=[];
+    this.newPatientstargetData = [];
     var user_id;
     var clinic_id;
-    this.clinic_id && this.cliniciananalysisService.canewPatientsRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
-     
-      if (res.body.data != null && res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-        this.fdnewPatientsRateTrendLoader = false;
-        this.newPatientsChartTrendLabels1 = [];
-        this.newPatientsChartTrend1 = [];
-        res.body.data.forEach(res => {
-          if (res.new_patients)
-            this.newPatientsChartTrend1.push(Math.round(res.new_patients));
-          else
-            this.newPatientsChartTrend1.push(0);
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .canewPatientsRateTrend(
+          this.selectedDentist,
+          this.clinic_id,
+          this.trendValue
+        )
+        .subscribe(
+          (res: any) => {
+            if (res.body.data != null && res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.fdnewPatientsRateTrendLoader = false;
+              this.newPatientsChartTrendLabels1 = [];
+              this.newPatientsChartTrend1 = [];
+              res.body.data.forEach((res) => {
+                if (res.new_patients)
+                  this.newPatientsChartTrend1.push(
+                    Math.round(res.new_patients)
+                  );
+                else this.newPatientsChartTrend1.push(0);
 
-          if(res.goals == -1 || res.goals == null || res.goals == ''){
-            this.newPatientstargetData.push(null);
-          }else{
-            this.newPatientstargetData.push(res.goals);    
-          }   
-          if (this.trendValue == 'c')
-            this.newPatientsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-          else
-            this.newPatientsChartTrendLabels1.push(res.year);
+                if (res.goals == -1 || res.goals == null || res.goals == '') {
+                  this.newPatientstargetData.push(null);
+                } else {
+                  this.newPatientstargetData.push(res.goals);
+                }
+                if (this.trendValue == 'c')
+                  this.newPatientsChartTrendLabels1.push(
+                    this.datePipe.transform(res.year_month, 'MMM y')
+                  );
+                else this.newPatientsChartTrendLabels1.push(res.year);
+              });
 
-        });
+              let maxVal = Math.max(...this.newPatientsChartTrend1);
+              var subVal = 1;
+              if (maxVal >= 5000) {
+                subVal = 100;
+              } else if (maxVal > 3000 && maxVal < 5000) {
+                subVal = 50;
+              } else if (maxVal > 2000 && maxVal < 3000) {
+                subVal = 10;
+              } else if (maxVal > 100 && maxVal < 2000) {
+                subVal = 1;
+              } else if (maxVal > 51 && maxVal < 100) {
+                subVal = 0.2;
+              } else if (maxVal <= 50) {
+                subVal = 0.1;
+              }
 
-        let maxVal = Math.max(...this.newPatientsChartTrend1);
-          var subVal = 1;
-          if(maxVal >= 5000){
-            subVal = 100;
-          }else if(maxVal > 3000 && maxVal < 5000){
-            subVal = 50;
-          }else if(maxVal > 2000 && maxVal < 3000){
-            subVal = 10;
-          }else if(maxVal > 100 && maxVal < 2000){
-            subVal = 1;
-          }else if(maxVal > 51 && maxVal < 100){
-            subVal = 0.2;
-          }else if(maxVal <= 50){
-            subVal = 0.1;
-          }
+              var mappednewPatientstargetData = [];
+              this.newPatientstargetData.map(function (v) {
+                if (v == null) {
+                  mappednewPatientstargetData.push([v - 0, v + 0]);
+                } else {
+                  mappednewPatientstargetData.push([v - subVal, v + subVal]);
+                }
+              });
+              if (this.trendValue == 'c') {
+                this.newPatientsChartTrend[0]['label'] = 'Actual';
+                this.newPatientsChartTrend[1]['label'] = 'Target';
+                this.newPatientsChartTrend[1]['data'] =
+                  mappednewPatientstargetData; //this.targetData.map(v => [v - subVal, v + subVal]);
+              } else {
+                this.newPatientsChartTrend[0]['label'] = '';
+                this.newPatientsChartTrend[1]['label'] = '';
+                this.newPatientsChartTrend[1]['data'] = [];
+              }
 
-          var mappednewPatientstargetData = [];
-          this.newPatientstargetData.map(function (v){
-            if(v == null ){
-              mappednewPatientstargetData.push([v - 0, v + 0]);
-            }else{
-              mappednewPatientstargetData.push([v - subVal, v + subVal]);
+              this.newPatientsChartTrend[0]['data'] =
+                this.newPatientsChartTrend1;
+
+              this.newPatientsChartTrendLabels =
+                this.newPatientsChartTrendLabels1;
+              let dynamicColors = [];
+              this.newPatientsChartTrendLabels.forEach((label, labelIndex) => {
+                dynamicColors.push(
+                  labelIndex % 2 === 0
+                    ? this.chartService.colors.odd
+                    : this.chartService.colors.even
+                );
+              }); // This is dynamic array for colors of bars
+              this.newPatientsChartTrend[0].backgroundColor = dynamicColors;
+
+              if (this.newPatientsChartTrendLabels.length <= 0) {
+                this.newPatientPercent = 0;
+              }
             }
-          });
-          if(this.trendValue == 'c'){
-            this.newPatientsChartTrend[0]['label'] = 'Actual';
-            this.newPatientsChartTrend[1]['label'] = 'Target';
-           this.newPatientsChartTrend[1]['data'] =  mappednewPatientstargetData;//this.targetData.map(v => [v - subVal, v + subVal]);
-          }else{
-            this.newPatientsChartTrend[0]['label'] = '';
-            this.newPatientsChartTrend[1]['label'] = '';
-            this.newPatientsChartTrend[1]['data'] =  [];
-          }			  
-
-        this.newPatientsChartTrend[0]['data'] = this.newPatientsChartTrend1;
-
-        this.newPatientsChartTrendLabels = this.newPatientsChartTrendLabels1;
-        let dynamicColors = [];
-        this.newPatientsChartTrendLabels.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars        
-        this.newPatientsChartTrend[0].backgroundColor = dynamicColors;
-
-        if (this.newPatientsChartTrendLabels.length <= 0) {
-          this.newPatientPercent = 0;
-
-        }
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        );
   }
 
   public treatmentPlanChartTrend: any[] = [
@@ -9232,11 +11110,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
     },
-    { 
-      data: [], label: '',
+    {
+      data: [],
+      label: '',
       shadowOffsetX: 3,
       backgroundColor: 'rgba(255, 0, 128, 1)',
-      order: 1,
+      order: 1
     }
   ];
   public treatmentPlanChartTrend1 = [];
@@ -9248,81 +11127,112 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   private fdtreatmentPlanRateTrend() {
     this.fdtreatmentPlanRateTrendLoader = true;
     this.treatmentPlanChartTrendLabels = [];
-    this.fdtreatmentPlanRatetargetData =[];
+    this.fdtreatmentPlanRatetargetData = [];
 
     var user_id;
     var clinic_id;
-    this.clinic_id && this.cliniciananalysisService.catreatmentPlanRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((res: any) => {
-      this.fdtreatmentPlanRateTrendLoader = false;
-      if (res.status == 200) {
-        this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-        this.treatmentPlanChartTrendLabels1 = [];
-        this.treatmentPlanChartTrend1 = [];
-        if (res.body.data) {
-          res.body.data.forEach(res => {
-            if (res.treatment_per_plan_percentage) {
-              if (res.treatment_per_plan_percentage)
-                this.treatmentPlanChartTrend1.push(Math.round(res.treatment_per_plan_percentage));
-                if(res.goals == -1 || res.goals == null || res.goals == ''){
-                  this.fdtreatmentPlanRatetargetData.push(null);
-                }else{
-                  this.fdtreatmentPlanRatetargetData.push(res.goals);    
-                }    
-              if (this.trendValue == 'c')
-                this.treatmentPlanChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-              else
-                this.treatmentPlanChartTrendLabels1.push(res.year);
+    this.clinic_id &&
+      this.cliniciananalysisService
+        .catreatmentPlanRateTrend(
+          this.selectedDentist,
+          this.clinic_id,
+          this.trendValue
+        )
+        .subscribe(
+          (res: any) => {
+            this.fdtreatmentPlanRateTrendLoader = false;
+            if (res.status == 200) {
+              this.Apirequest = this.Apirequest - 1;
+              this.enableDiabaleButton(this.Apirequest);
+              this.treatmentPlanChartTrendLabels1 = [];
+              this.treatmentPlanChartTrend1 = [];
+              if (res.body.data) {
+                res.body.data.forEach((res) => {
+                  if (res.treatment_per_plan_percentage) {
+                    if (res.treatment_per_plan_percentage)
+                      this.treatmentPlanChartTrend1.push(
+                        Math.round(res.treatment_per_plan_percentage)
+                      );
+                    if (
+                      res.goals == -1 ||
+                      res.goals == null ||
+                      res.goals == ''
+                    ) {
+                      this.fdtreatmentPlanRatetargetData.push(null);
+                    } else {
+                      this.fdtreatmentPlanRatetargetData.push(res.goals);
+                    }
+                    if (this.trendValue == 'c')
+                      this.treatmentPlanChartTrendLabels1.push(
+                        this.datePipe.transform(res.year_month, 'MMM y')
+                      );
+                    else this.treatmentPlanChartTrendLabels1.push(res.year);
+                  }
+                });
+              }
+              var sumpercantagevalue = this.treatmentPlanChartTrend1.reduce(
+                (acc, cur) => acc + cur,
+                0
+              );
+              if (sumpercantagevalue > 0) {
+                this.treatmentPlanChartTrend[0]['data'] =
+                  this.treatmentPlanChartTrend1;
+                this.treatmentPlanChartTrendLabels =
+                  this.treatmentPlanChartTrendLabels1;
+
+                let dynamicColors = [];
+                this.treatmentPlanChartTrendLabels.forEach(
+                  (label, labelIndex) => {
+                    dynamicColors.push(
+                      labelIndex % 2 === 0
+                        ? this.chartService.colors.odd
+                        : this.chartService.colors.even
+                    );
+                  }
+                ); // This is dynamic array for colors of bars
+                this.treatmentPlanChartTrend[0].backgroundColor = dynamicColors;
+                var mappedfdtreatmentPlanRatetargetData = [];
+                this.fdtreatmentPlanRatetargetData.map(function (v) {
+                  if (v == null) {
+                    mappedfdtreatmentPlanRatetargetData.push([v - 0, v + 0]);
+                  } else {
+                    mappedfdtreatmentPlanRatetargetData.push([
+                      v - 0.5,
+                      v + 0.5
+                    ]);
+                  }
+                });
+                if (this.trendValue == 'c') {
+                  this.treatmentPlanChartTrend[0]['label'] = 'Actual';
+                  this.treatmentPlanChartTrend[1]['label'] = 'Target';
+                  this.treatmentPlanChartTrend[1]['data'] =
+                    mappedfdtreatmentPlanRatetargetData; //this.targetData.map(v => [v - subVal, v + subVal]);
+                } else {
+                  this.treatmentPlanChartTrend[0]['label'] = '';
+                  this.treatmentPlanChartTrend[1]['label'] = '';
+                  this.treatmentPlanChartTrend[1]['data'] = [];
+                }
+              } else {
+                this.treatmentPlanChartTrendLabels = [];
+              }
             }
-          });
-        }
-        var sumpercantagevalue = this.treatmentPlanChartTrend1.reduce((acc, cur) => acc + cur, 0);
-        if (sumpercantagevalue > 0) {
-
-          this.treatmentPlanChartTrend[0]['data'] = this.treatmentPlanChartTrend1;
-          this.treatmentPlanChartTrendLabels = this.treatmentPlanChartTrendLabels1;
-
-          let dynamicColors = [];
-          this.treatmentPlanChartTrendLabels.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
-          this.treatmentPlanChartTrend[0].backgroundColor = dynamicColors;
-          var mappedfdtreatmentPlanRatetargetData = [];
-          this.fdtreatmentPlanRatetargetData.map(function (v){
-            if(v == null ){
-              mappedfdtreatmentPlanRatetargetData.push([v - 0, v + 0]);
-            }else{
-              mappedfdtreatmentPlanRatetargetData.push([v - 0.5, v + 0.5]);
-            }
-          });
-          if(this.trendValue == 'c'){
-            this.treatmentPlanChartTrend[0]['label'] = 'Actual';
-            this.treatmentPlanChartTrend[1]['label'] = 'Target';
-           this.treatmentPlanChartTrend[1]['data'] =  mappedfdtreatmentPlanRatetargetData;//this.targetData.map(v => [v - subVal, v + subVal]);
-          }else{
-            this.treatmentPlanChartTrend[0]['label'] = '';
-            this.treatmentPlanChartTrend[1]['label'] = '';
-            this.treatmentPlanChartTrend[1]['data'] =  [];
-          } 
-        } else {
-          this.treatmentPlanChartTrendLabels = [];
-        }
-
-      }
-    }, error => {
-      this.Apirequest = this.Apirequest - 1;
-      this.enableDiabaleButton(this.Apirequest);
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      this.warningMessage = "Please Provide Valid Inputs!";
-
-    });
+          },
+          (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        );
   }
 
   setWeeklyTrend() {
     if (this.showWeekTrend) {
-      this.showWeekTrend = false
+      this.showWeekTrend = false;
     } else {
-      this.showWeekTrend = true
+      this.showWeekTrend = true;
       // this.showTrendChart = false
       // this.dentistProductionTrend('w');
     }
@@ -9333,7 +11243,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.Apirequest = 7;
       $('.filter').removeClass('active');
       // this.dentistProductionTrend();
-     // this.dentistProductionDentistsTrend();
+      // this.dentistProductionDentistsTrend();
       // this.dentistProductionOhtTrend();
       // this.dentistCollectionTrend();
       // this.dentistCollectionDentistsTrend();
@@ -9341,26 +11251,25 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       // this.dentistCollectionExpTrend();
       // this.dentistCollectionExpDentistsTrend();
       // this.dentistCollectionExpOhtTrend();
-      if(this.user_type != '4'){
-        if(this.proCollShow == 1){
+      if (this.user_type != '4') {
+        if (this.proCollShow == 1) {
           this.dentistProductionTrend();
-        }else if(this.proCollShow == 2 ){
+        } else if (this.proCollShow == 2) {
           this.dentistCollectionTrend();
-        }else if(this.proCollShow == 3){
+        } else if (this.proCollShow == 3) {
           this.dentistCollectionExpTrend();
         }
 
-        if(this.hrCollShow == 1){
+        if (this.hrCollShow == 1) {
           this.fdhourlyRateRateTrend();
-        }else if(this.hrCollShow == 2){
+        } else if (this.hrCollShow == 2) {
           this.collectionHourlyRateTrend();
-        }else if(this.hrCollShow == 3){
+        } else if (this.hrCollShow == 3) {
           this.collectionExpHourlyRateTrend();
         }
+      }
 
-      } 
-      
-      if(this.user_type == '4'){
+      if (this.user_type == '4') {
         this.dentistProductionTrend();
         this.dentistCollectionTrend();
         this.dentistCollectionExpTrend();
@@ -9370,189 +11279,265 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       }
       this.fdnewPatientsRateTrend();
       this.fdtreatmentPlanRateTrend();
-      if(this.user_type != '4'){
-        if(this.tcmain == 1){
+      if (this.user_type != '4') {
+        if (this.tcmain == 1) {
           this.treatmentPlanTrend();
-        }else if(this.tcmain == 2){
+        } else if (this.tcmain == 2) {
           this.treatmentPlanCompletedFeesTrend();
         }
-        if(this.prebook =="recall"){
+        if (this.prebook == 'recall') {
           this.fdRecallPrebookRateTrend();
-        }else if(this.prebook =="treatment"){
+        } else if (this.prebook == 'treatment') {
           this.fdTreatmentPrebookRateTrend();
         }
-      }      
-      if(this.user_type == '4'){
+      }
+      if (this.user_type == '4') {
         this.treatmentPlanTrend();
         this.treatmentPlanCompletedFeesTrend();
         this.fdRecallPrebookRateTrend();
         this.fdTreatmentPrebookRateTrend();
       }
       this.patientComplaintsTrend();
-      
+
       // this.fdhourlyRateRateDentistsTrend();
-     // this.fdhourlyRateRateOhtTrend();     
-      
-     // this.changeTreatmentCostSingle('1');
-     // this.changePrebookRate('recall','single');
+      // this.fdhourlyRateRateOhtTrend();
+
+      // this.changeTreatmentCostSingle('1');
+      // this.changePrebookRate('recall','single');
     }
   }
 
-  public showAvg: boolean =false;
+  public showAvg: boolean = false;
   goalToggle(val) {
     this.goalchecked = val;
-    if(val == 'average'){
+    if (val == 'average') {
       this.showAvg = true;
-      if(this.productionTotalAverage > 0 ){
-        this.ChartsAvg(this.productionTotalAverage,this.barChartOptionsDP1);
+      if (this.productionTotalAverage > 0) {
+        this.ChartsAvg(this.productionTotalAverage, this.barChartOptionsDP1);
       }
-      if(this.productionDentistTotalAverage > 0){
-        this.ChartsAvg(this.productionDentistTotalAverage,this.barChartOptionsDP2);
+      if (this.productionDentistTotalAverage > 0) {
+        this.ChartsAvg(
+          this.productionDentistTotalAverage,
+          this.barChartOptionsDP2
+        );
       }
-      if(this.productionOhtTotalAverage > 0){
-        this.ChartsAvg(this.productionOhtTotalAverage,this.barChartOptionsDP3);
+      if (this.productionOhtTotalAverage > 0) {
+        this.ChartsAvg(this.productionOhtTotalAverage, this.barChartOptionsDP3);
       }
-      if(this.collectionTotalAverage > 0){
-        this.ChartsAvg(this.collectionTotalAverage,this.barChartOptionsDP);
+      if (this.collectionTotalAverage > 0) {
+        this.ChartsAvg(this.collectionTotalAverage, this.barChartOptionsDP);
       }
-      if(this.collectionDentistsTotalAverage > 0){
-        this.ChartsAvg(this.collectionDentistsTotalAverage,this.barChartOptionsDP4);
+      if (this.collectionDentistsTotalAverage > 0) {
+        this.ChartsAvg(
+          this.collectionDentistsTotalAverage,
+          this.barChartOptionsDP4
+        );
       }
-      if(this.collectionOhtTotalAverage > 0){
-        this.ChartsAvg(this.collectionOhtTotalAverage,this.barChartOptionsDP5);
+      if (this.collectionOhtTotalAverage > 0) {
+        this.ChartsAvg(this.collectionOhtTotalAverage, this.barChartOptionsDP5);
       }
-      if(this.collectionExpTotalAverage > 0){
-        this.ChartsAvg(this.collectionExpTotalAverage,this.barChartOptionsDP6);
+      if (this.collectionExpTotalAverage > 0) {
+        this.ChartsAvg(this.collectionExpTotalAverage, this.barChartOptionsDP6);
       }
-      if(this.collectionTotalExpDentistsAverage > 0){
-        this.ChartsAvg(this.collectionTotalExpDentistsAverage,this.barChartOptionsDP7);
+      if (this.collectionTotalExpDentistsAverage > 0) {
+        this.ChartsAvg(
+          this.collectionTotalExpDentistsAverage,
+          this.barChartOptionsDP7
+        );
       }
-      if(this.collectionTotalExpOhtAverage > 0){
-        this.ChartsAvg(this.collectionTotalExpOhtAverage,this.barChartOptionsDP8);
+      if (this.collectionTotalExpOhtAverage > 0) {
+        this.ChartsAvg(
+          this.collectionTotalExpOhtAverage,
+          this.barChartOptionsDP8
+        );
       }
-      if(this.hourlyRateChartAverage > 0){
-        this.ChartsAvg(this.hourlyRateChartAverage,this.barChartOptionsHR);
+      if (this.hourlyRateChartAverage > 0) {
+        this.ChartsAvg(this.hourlyRateChartAverage, this.barChartOptionsHR);
       }
-      if(this.hourlyRateChartDesntistsAverage > 0){
-        this.ChartsAvg(this.hourlyRateChartDesntistsAverage,this.barChartOptionsHR1);
+      if (this.hourlyRateChartDesntistsAverage > 0) {
+        this.ChartsAvg(
+          this.hourlyRateChartDesntistsAverage,
+          this.barChartOptionsHR1
+        );
       }
-      if(this.hourlyRateChartOhtAverage > 0){
-        this.ChartsAvg(this.hourlyRateChartOhtAverage,this.barChartOptionsHR2);
+      if (this.hourlyRateChartOhtAverage > 0) {
+        this.ChartsAvg(this.hourlyRateChartOhtAverage, this.barChartOptionsHR2);
       }
-      if(this.planTotalAverage > 0){
-        this.ChartsAvg(this.planTotalAverage,this.barChartOptionsTC);
+      if (this.planTotalAverage > 0) {
+        this.ChartsAvg(this.planTotalAverage, this.barChartOptionsTC);
       }
-      if(this.treatmentPreChartAverage > 0){
-        this.ChartsAvg(this.treatmentPreChartAverage,this.barChartOptionsTPB);
+      if (this.treatmentPreChartAverage > 0) {
+        this.ChartsAvg(this.treatmentPreChartAverage, this.barChartOptionsTPB);
       }
-      if(this.recallChartAverage > 0){
-        this.ChartsAvg(this.recallChartAverage,this.barChartOptionsRP);
+      if (this.recallChartAverage > 0) {
+        this.ChartsAvg(this.recallChartAverage, this.barChartOptionsRP);
       }
-      if(this.treatmentChartAverage > 0){
-        this.ChartsAvg(this.treatmentChartAverage,this.barChartOptionsTP);
+      if (this.treatmentChartAverage > 0) {
+        this.ChartsAvg(this.treatmentChartAverage, this.barChartOptionsTP);
       }
-      if(this.collectionhourlyRateChartAverage > 0){
-        this.ChartsAvg(this.collectionhourlyRateChartAverage,this.barChartOptionsHR);
+      if (this.collectionhourlyRateChartAverage > 0) {
+        this.ChartsAvg(
+          this.collectionhourlyRateChartAverage,
+          this.barChartOptionsHR
+        );
       }
-      if(this.collhourlyRateChartDesntistsAverage > 0){
-        this.ChartsAvg(this.collhourlyRateChartDesntistsAverage,this.barChartOptionsHR1);
+      if (this.collhourlyRateChartDesntistsAverage > 0) {
+        this.ChartsAvg(
+          this.collhourlyRateChartDesntistsAverage,
+          this.barChartOptionsHR1
+        );
       }
-      if(this.collhourlyRateChartOhtAverage > 0){
-        this.ChartsAvg(this.collhourlyRateChartOhtAverage,this.barChartOptionsHR2);
+      if (this.collhourlyRateChartOhtAverage > 0) {
+        this.ChartsAvg(
+          this.collhourlyRateChartOhtAverage,
+          this.barChartOptionsHR2
+        );
       }
-      if(this.collExphourlyRateChartAverage > 0){
-        this.ChartsAvg(this.collExphourlyRateChartAverage,this.barChartOptionsHR);
+      if (this.collExphourlyRateChartAverage > 0) {
+        this.ChartsAvg(
+          this.collExphourlyRateChartAverage,
+          this.barChartOptionsHR
+        );
       }
-      if(this.collExphourlyRateChartDesntistsAverage > 0){
-        this.ChartsAvg(this.collExphourlyRateChartDesntistsAverage,this.barChartOptionsHR1);
+      if (this.collExphourlyRateChartDesntistsAverage > 0) {
+        this.ChartsAvg(
+          this.collExphourlyRateChartDesntistsAverage,
+          this.barChartOptionsHR1
+        );
       }
-      if(this.collExphourlyRateChartOhtAverage > 0){
-        this.ChartsAvg(this.collExphourlyRateChartOhtAverage,this.barChartOptionsHR2);
+      if (this.collExphourlyRateChartOhtAverage > 0) {
+        this.ChartsAvg(
+          this.collExphourlyRateChartOhtAverage,
+          this.barChartOptionsHR2
+        );
       }
-      
-      
-    }else{
+    } else {
       this.showAvg = false;
-      this.ChartsAvgOff(this.productionTotalAverage,this.barChartOptionsDP1);
-      this.ChartsAvgOff(this.productionDentistTotalAverage,this.barChartOptionsDP2);
-      this.ChartsAvgOff(this.productionOhtTotalAverage,this.barChartOptionsDP3);
-      this.ChartsAvgOff(this.collectionTotalAverage,this.barChartOptionsDP);
-      this.ChartsAvgOff(this.collectionDentistsTotalAverage,this.barChartOptionsDP4);
-      this.ChartsAvgOff(this.collectionOhtTotalAverage,this.barChartOptionsDP5);
-      this.ChartsAvgOff(this.collectionExpTotalAverage,this.barChartOptionsDP6);
-      this.ChartsAvgOff(this.collectionTotalExpDentistsAverage,this.barChartOptionsDP7);
-      this.ChartsAvgOff(this.collectionTotalExpOhtAverage,this.barChartOptionsDP8);
-      this.ChartsAvgOff(this.hourlyRateChartAverage,this.barChartOptionsHR);
-      this.ChartsAvgOff(this.hourlyRateChartDesntistsAverage,this.barChartOptionsHR1);
-      this.ChartsAvgOff(this.hourlyRateChartOhtAverage,this.barChartOptionsHR2);
-      this.ChartsAvgOff(this.planTotalAverage,this.barChartOptionsTC);
-      this.ChartsAvgOff(this.treatmentPreChartAverage,this.barChartOptionsTPB);
-      this.ChartsAvgOff(this.recallChartAverage,this.barChartOptionsRP);
-      this.ChartsAvgOff(this.treatmentChartAverage,this.barChartOptionsTP);
-      this.ChartsAvgOff(this.collectionhourlyRateChartAverage,this.barChartOptionsHR);
-      this.ChartsAvgOff(this.collhourlyRateChartDesntistsAverage,this.barChartOptionsHR1);
-      this.ChartsAvgOff(this.collhourlyRateChartOhtAverage,this.barChartOptionsHR2);
-      this.ChartsAvgOff(this.collExphourlyRateChartAverage,this.barChartOptionsHR);
-      this.ChartsAvgOff(this.collExphourlyRateChartDesntistsAverage,this.barChartOptionsHR1);
-      this.ChartsAvgOff(this.collExphourlyRateChartOhtAverage,this.barChartOptionsHR2);
-
+      this.ChartsAvgOff(this.productionTotalAverage, this.barChartOptionsDP1);
+      this.ChartsAvgOff(
+        this.productionDentistTotalAverage,
+        this.barChartOptionsDP2
+      );
+      this.ChartsAvgOff(
+        this.productionOhtTotalAverage,
+        this.barChartOptionsDP3
+      );
+      this.ChartsAvgOff(this.collectionTotalAverage, this.barChartOptionsDP);
+      this.ChartsAvgOff(
+        this.collectionDentistsTotalAverage,
+        this.barChartOptionsDP4
+      );
+      this.ChartsAvgOff(
+        this.collectionOhtTotalAverage,
+        this.barChartOptionsDP5
+      );
+      this.ChartsAvgOff(
+        this.collectionExpTotalAverage,
+        this.barChartOptionsDP6
+      );
+      this.ChartsAvgOff(
+        this.collectionTotalExpDentistsAverage,
+        this.barChartOptionsDP7
+      );
+      this.ChartsAvgOff(
+        this.collectionTotalExpOhtAverage,
+        this.barChartOptionsDP8
+      );
+      this.ChartsAvgOff(this.hourlyRateChartAverage, this.barChartOptionsHR);
+      this.ChartsAvgOff(
+        this.hourlyRateChartDesntistsAverage,
+        this.barChartOptionsHR1
+      );
+      this.ChartsAvgOff(
+        this.hourlyRateChartOhtAverage,
+        this.barChartOptionsHR2
+      );
+      this.ChartsAvgOff(this.planTotalAverage, this.barChartOptionsTC);
+      this.ChartsAvgOff(this.treatmentPreChartAverage, this.barChartOptionsTPB);
+      this.ChartsAvgOff(this.recallChartAverage, this.barChartOptionsRP);
+      this.ChartsAvgOff(this.treatmentChartAverage, this.barChartOptionsTP);
+      this.ChartsAvgOff(
+        this.collectionhourlyRateChartAverage,
+        this.barChartOptionsHR
+      );
+      this.ChartsAvgOff(
+        this.collhourlyRateChartDesntistsAverage,
+        this.barChartOptionsHR1
+      );
+      this.ChartsAvgOff(
+        this.collhourlyRateChartOhtAverage,
+        this.barChartOptionsHR2
+      );
+      this.ChartsAvgOff(
+        this.collExphourlyRateChartAverage,
+        this.barChartOptionsHR
+      );
+      this.ChartsAvgOff(
+        this.collExphourlyRateChartDesntistsAverage,
+        this.barChartOptionsHR1
+      );
+      this.ChartsAvgOff(
+        this.collExphourlyRateChartOhtAverage,
+        this.barChartOptionsHR2
+      );
     }
-    
-  // this.buildChart();
-  // this.buildChartDentists();
-  // this.buildChartOht();
-  // this.collectionChart();
-  // this.collectionChartDentists();
-  // this.collectionChartOht();
-  // this.collectionExpChart();
-  // this.collectionExpChartDentists();
-  // this.collectionExpChartOht();
-  // this.buildChartTreatment();
-  // this.recallPrebook();
-  // this.treatmentPrePrebook();
-  // this.hourlyRateChart();
-  // this.hourlyRateChartDesntists();
-  // this.hourlyRateChartOht();
-  // this.treatmentPlanRate();
 
+    // this.buildChart();
+    // this.buildChartDentists();
+    // this.buildChartOht();
+    // this.collectionChart();
+    // this.collectionChartDentists();
+    // this.collectionChartOht();
+    // this.collectionExpChart();
+    // this.collectionExpChartDentists();
+    // this.collectionExpChartOht();
+    // this.buildChartTreatment();
+    // this.recallPrebook();
+    // this.treatmentPrePrebook();
+    // this.hourlyRateChart();
+    // this.hourlyRateChartDesntists();
+    // this.hourlyRateChartOht();
+    // this.treatmentPlanRate();
   }
-  
-  private ChartsAvg(AvgVal,annota) {
+
+  private ChartsAvg(AvgVal, annota) {
     annota.annotation = {
-     drawTime: 'afterDatasetsDraw',
-      annotations: [{
-       drawTime: 'afterDraw',
-        type: 'line',
-        mode: 'horizontal',
-        scaleID: 'y-axis-0',
-        value: AvgVal,
-        borderColor: '#0e3459',
-        borderWidth: 2,
-        borderDash: [2, 2],
-        borderDashOffset: 0,
-      },
+      drawTime: 'afterDatasetsDraw',
+      annotations: [
+        {
+          drawTime: 'afterDraw',
+          type: 'line',
+          mode: 'horizontal',
+          scaleID: 'y-axis-0',
+          value: AvgVal,
+          borderColor: '#0e3459',
+          borderWidth: 2,
+          borderDash: [2, 2],
+          borderDashOffset: 0
+        }
       ]
-    }
+    };
   }
 
-  private ChartsAvgOff(AvgVal,annota) {
+  private ChartsAvgOff(AvgVal, annota) {
     annota.annotation = {
-     drawTime: 'afterDatasetsDraw',
-      annotations: [{
-       drawTime: 'afterDraw',
-        type: '',
-        mode: 'horizontal',
-        scaleID: 'y-axis-0',
-        value: AvgVal,
-        borderColor: '#0e3459',
-        borderWidth: 2,
-        borderDash: [2, 2],
-        borderDashOffset: 0,
-      },
+      drawTime: 'afterDatasetsDraw',
+      annotations: [
+        {
+          drawTime: 'afterDraw',
+          type: '',
+          mode: 'horizontal',
+          scaleID: 'y-axis-0',
+          value: AvgVal,
+          borderColor: '#0e3459',
+          borderWidth: 2,
+          borderDash: [2, 2],
+          borderDashOffset: 0
+        }
       ]
-    }
+    };
   }
-  changePrebookRate(val,dentType) {
+  changePrebookRate(val, dentType) {
     // if (val == 'recall' && this.goalchecked == 'average') {
     //   this.recallPrebook();
     // } else if (val == 'treatment' && this.goalchecked == 'average') {
@@ -9561,37 +11546,49 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     if (val == 'recall' && dentType == 'all' && this.user_type != '4') {
       this.recallPrebook();
       this.showPreBookReapointRate = false;
-    } else if (val == 'treatment'  && dentType == 'all' && this.user_type != '4') {
+    } else if (
+      val == 'treatment' &&
+      dentType == 'all' &&
+      this.user_type != '4'
+    ) {
       this.treatmentPrePrebook();
       this.showPreBookReapointRate = true;
-    }else if (val == 'recall'  && dentType == 'single' && this.user_type != '4') {
-      if(this.showTrendChart){
+    } else if (
+      val == 'recall' &&
+      dentType == 'single' &&
+      this.user_type != '4'
+    ) {
+      if (this.showTrendChart) {
         this.fdRecallPrebookRateTrend();
-      }else{
+      } else {
         this.recallPrebookDentist();
       }
-    }else if (val == 'treatment'  && dentType == 'single' && this.user_type != '4') {
-      if(this.showTrendChart){
+    } else if (
+      val == 'treatment' &&
+      dentType == 'single' &&
+      this.user_type != '4'
+    ) {
+      if (this.showTrendChart) {
         this.fdTreatmentPrebookRateTrend();
-      }else{
+      } else {
         this.treatmentPrePrebookDentist();
       }
     }
     $('.prebook_rate .sa_tab_btn').removeClass('active');
     this.prebook = val;
     $('.prebook_rate .pr_' + val).addClass('active');
-
-
-
   }
 
   getNameInitials(name: string) {
-    const initials = name.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g);
+    const initials = name.replace(/[^a-zA-Z- ]/g, '').match(/\b\w/g);
     return initials.join('');
   }
 
   toggleCompareFilter(val) {
-    if ((this.averageToggle == true && val == 'on') || (this.averageToggle == false && val != 'on')) {
+    if (
+      (this.averageToggle == true && val == 'on') ||
+      (this.averageToggle == false && val != 'on')
+    ) {
       return false;
     }
     $('.compare-button').click();
@@ -9612,7 +11609,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     return months <= 0 ? 0 : months;
   }
 
-  changeProduction(val,dentType) {
+  changeProduction(val, dentType) {
     // if (parseInt(val) == 1 && this.goalchecked == 'average') {
     //   this.buildChart();
     // } else if (parseInt(val) == 2 && this.goalchecked == 'average') {
@@ -9620,131 +11617,264 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     // }else if (parseInt(val) == 3 && this.goalchecked == 'average') {
     //   this.collectionExpChart();
     // }
-    if (parseInt(val) == 1 && this.proSelectShow.includes('all') && dentType == "all"  && this.user_type != '4') {
+    if (
+      parseInt(val) == 1 &&
+      this.proSelectShow.includes('all') &&
+      dentType == 'all' &&
+      this.user_type != '4'
+    ) {
       this.buildChart();
-    }else if (parseInt(val) == 1 && this.proSelectShow.includes('dentists') && dentType == "all"  && this.user_type != '4') {
+    } else if (
+      parseInt(val) == 1 &&
+      this.proSelectShow.includes('dentists') &&
+      dentType == 'all' &&
+      this.user_type != '4'
+    ) {
       this.buildChartDentists();
-    }else if (parseInt(val) == 1 && this.proSelectShow.includes('oht') && dentType == "all"  && this.user_type != '4') {
+    } else if (
+      parseInt(val) == 1 &&
+      this.proSelectShow.includes('oht') &&
+      dentType == 'all' &&
+      this.user_type != '4'
+    ) {
       this.buildChartOht();
-    }else if (parseInt(val) == 2 && this.proSelectShow.includes('all') && dentType == "all"  && this.user_type != '4') {
+    } else if (
+      parseInt(val) == 2 &&
+      this.proSelectShow.includes('all') &&
+      dentType == 'all' &&
+      this.user_type != '4'
+    ) {
       this.collectionChart();
-    }else if (parseInt(val) == 2 && this.proSelectShow.includes('dentists') && dentType == "all"  && this.user_type != '4') {
+    } else if (
+      parseInt(val) == 2 &&
+      this.proSelectShow.includes('dentists') &&
+      dentType == 'all' &&
+      this.user_type != '4'
+    ) {
       this.collectionChartDentists();
-    }else if (parseInt(val) == 2 && this.proSelectShow.includes('oht') && dentType == "all"  && this.user_type != '4') {
+    } else if (
+      parseInt(val) == 2 &&
+      this.proSelectShow.includes('oht') &&
+      dentType == 'all' &&
+      this.user_type != '4'
+    ) {
       this.collectionChartOht();
-    }else if (parseInt(val) == 3 && this.proSelectShow.includes('all') && dentType == "all"  && this.user_type != '4') {
+    } else if (
+      parseInt(val) == 3 &&
+      this.proSelectShow.includes('all') &&
+      dentType == 'all' &&
+      this.user_type != '4'
+    ) {
       this.collectionExpChart();
-    }else if (parseInt(val) == 3 && this.proSelectShow.includes('dentists') && dentType == "all"  && this.user_type != '4') {
+    } else if (
+      parseInt(val) == 3 &&
+      this.proSelectShow.includes('dentists') &&
+      dentType == 'all' &&
+      this.user_type != '4'
+    ) {
       this.collectionExpChartDentists();
-    }else if (parseInt(val) == 3 && this.proSelectShow.includes('oht') && dentType == "all"  && this.user_type != '4') {
+    } else if (
+      parseInt(val) == 3 &&
+      this.proSelectShow.includes('oht') &&
+      dentType == 'all' &&
+      this.user_type != '4'
+    ) {
       this.collectionExpChartOht();
-    }else if (parseInt(val) == 1 && dentType == "single"  && this.user_type != '4') {
-      this.buildChartDentist();      
-      if(this.toggleChecked){
+    } else if (
+      parseInt(val) == 1 &&
+      dentType == 'single' &&
+      this.user_type != '4'
+    ) {
+      this.buildChartDentist();
+      if (this.toggleChecked) {
         this.dentistProductionTrend();
-      } else{
+      } else {
         this.dentistProductionTrend('w');
-      }     
-    }else if (parseInt(val) == 2 && dentType == "single"  && this.user_type != '4') {
-      this.collectionDentist();      
-      if(this.toggleChecked){
+      }
+    } else if (
+      parseInt(val) == 2 &&
+      dentType == 'single' &&
+      this.user_type != '4'
+    ) {
+      this.collectionDentist();
+      if (this.toggleChecked) {
         this.dentistCollectionTrend();
-      } else{
+      } else {
         this.dentistCollectionTrend('w');
-      }     
-    }else if (parseInt(val) == 3 && dentType == "single"  && this.user_type != '4') {
-      this.collectionExpDentist();    
-      if(this.toggleChecked){
+      }
+    } else if (
+      parseInt(val) == 3 &&
+      dentType == 'single' &&
+      this.user_type != '4'
+    ) {
+      this.collectionExpDentist();
+      if (this.toggleChecked) {
         this.dentistCollectionExpTrend();
-      } else{
+      } else {
         this.dentistCollectionExpTrend('w');
-      }     
+      }
     }
     this.proCollShow = parseInt(val);
-    if(parseInt(val) == 1 && this.proSelectShow.includes('all')){
-      this.proSelectShow = "production_all";
-    }else if(parseInt(val) == 1 && this.proSelectShow.includes('dentists')){
-      this.proSelectShow = "production_dentists";
-    }else if(parseInt(val) == 1 && this.proSelectShow.includes('oht')){
-      this.proSelectShow = "production_oht";
-    }else if(parseInt(val) == 2 && this.proSelectShow.includes('all')){
-      this.proSelectShow = "collection_all";
-    }else if(parseInt(val) == 2 && this.proSelectShow.includes('dentists')){
-      this.proSelectShow = "collection_dentists";
-    }else if(parseInt(val) == 2 && this.proSelectShow.includes('oht')){
-      this.proSelectShow = "collection_oht";
-    }else if(parseInt(val) == 3 && this.proSelectShow.includes('all')){ 
-      this.proSelectShow ="collection_exp_all";
-    }else if(parseInt(val) == 3 && this.proSelectShow.includes('dentists')){
-      this.proSelectShow = "collection_exp_dentists";
-    }else if(parseInt(val) == 3 && this.proSelectShow.includes('oht')){
-      this.proSelectShow = "collection_exp_oht";
+    if (parseInt(val) == 1 && this.proSelectShow.includes('all')) {
+      this.proSelectShow = 'production_all';
+    } else if (parseInt(val) == 1 && this.proSelectShow.includes('dentists')) {
+      this.proSelectShow = 'production_dentists';
+    } else if (parseInt(val) == 1 && this.proSelectShow.includes('oht')) {
+      this.proSelectShow = 'production_oht';
+    } else if (parseInt(val) == 2 && this.proSelectShow.includes('all')) {
+      this.proSelectShow = 'collection_all';
+    } else if (parseInt(val) == 2 && this.proSelectShow.includes('dentists')) {
+      this.proSelectShow = 'collection_dentists';
+    } else if (parseInt(val) == 2 && this.proSelectShow.includes('oht')) {
+      this.proSelectShow = 'collection_oht';
+    } else if (parseInt(val) == 3 && this.proSelectShow.includes('all')) {
+      this.proSelectShow = 'collection_exp_all';
+    } else if (parseInt(val) == 3 && this.proSelectShow.includes('dentists')) {
+      this.proSelectShow = 'collection_exp_dentists';
+    } else if (parseInt(val) == 3 && this.proSelectShow.includes('oht')) {
+      this.proSelectShow = 'collection_exp_oht';
     }
-  }  
+  }
 
-  
-  changeHrPro(val,dentType){
-    if (parseInt(val) == 1 && this.hrSelectShow.includes('all') && dentType == "all" && this.user_type != '4') {
+  changeHrPro(val, dentType) {
+    if (
+      parseInt(val) == 1 &&
+      this.hrSelectShow.includes('all') &&
+      dentType == 'all' &&
+      this.user_type != '4'
+    ) {
       this.hourlyRateChart();
-    }else if(parseInt(val) == 1 && this.hrSelectShow.includes('dentists') && dentType == "all" && this.user_type != '4'){
+    } else if (
+      parseInt(val) == 1 &&
+      this.hrSelectShow.includes('dentists') &&
+      dentType == 'all' &&
+      this.user_type != '4'
+    ) {
       this.hourlyRateChartDesntists();
-    }else if(parseInt(val) == 1 && this.hrSelectShow.includes('oht') && dentType == "all" && this.user_type != '4'){
+    } else if (
+      parseInt(val) == 1 &&
+      this.hrSelectShow.includes('oht') &&
+      dentType == 'all' &&
+      this.user_type != '4'
+    ) {
       this.hourlyRateChartOht();
-    }else if(parseInt(val) == 2 && this.hrSelectShow.includes('all') && dentType == "all" && this.user_type != '4'){
+    } else if (
+      parseInt(val) == 2 &&
+      this.hrSelectShow.includes('all') &&
+      dentType == 'all' &&
+      this.user_type != '4'
+    ) {
       this.collectionHourlyRate();
-    }else if(parseInt(val) == 2 && this.hrSelectShow.includes('dentists') && dentType == "all" && this.user_type != '4'){
+    } else if (
+      parseInt(val) == 2 &&
+      this.hrSelectShow.includes('dentists') &&
+      dentType == 'all' &&
+      this.user_type != '4'
+    ) {
       this.collectionHourlyRateDentist();
-    }else if(parseInt(val) == 2 && this.hrSelectShow.includes('oht') && dentType == "all" && this.user_type != '4'){
+    } else if (
+      parseInt(val) == 2 &&
+      this.hrSelectShow.includes('oht') &&
+      dentType == 'all' &&
+      this.user_type != '4'
+    ) {
       this.collectionHourlyRateOht();
-    }else if(parseInt(val) == 3 && this.hrSelectShow.includes('all') && dentType == "all" && this.user_type != '4'){
+    } else if (
+      parseInt(val) == 3 &&
+      this.hrSelectShow.includes('all') &&
+      dentType == 'all' &&
+      this.user_type != '4'
+    ) {
       this.collectionExpHourlyRate();
-    }else if(parseInt(val) == 3 && this.hrSelectShow.includes('dentists') && dentType == "all" && this.user_type != '4'){
+    } else if (
+      parseInt(val) == 3 &&
+      this.hrSelectShow.includes('dentists') &&
+      dentType == 'all' &&
+      this.user_type != '4'
+    ) {
       this.collectionExpHourlyRateDentist();
-    }else if(parseInt(val) == 3 && this.hrSelectShow.includes('oht') && dentType == "all" && this.user_type != '4'){
+    } else if (
+      parseInt(val) == 3 &&
+      this.hrSelectShow.includes('oht') &&
+      dentType == 'all' &&
+      this.user_type != '4'
+    ) {
       this.collectionExpHourlyRateOht();
-    }else if(parseInt(val) == 1 && dentType == "single" && this.user_type != '4' && this.showTrendChart == false){
-      this.hourlyRateDentist();     
-    }else if(parseInt(val) == 1 && dentType == "single" && this.user_type != '4' && this.showTrendChart == true){
+    } else if (
+      parseInt(val) == 1 &&
+      dentType == 'single' &&
+      this.user_type != '4' &&
+      this.showTrendChart == false
+    ) {
+      this.hourlyRateDentist();
+    } else if (
+      parseInt(val) == 1 &&
+      dentType == 'single' &&
+      this.user_type != '4' &&
+      this.showTrendChart == true
+    ) {
       this.fdhourlyRateRateTrend();
-    }else if(parseInt(val) == 2 && dentType == "single" && this.user_type != '4' && this.showTrendChart == false){
+    } else if (
+      parseInt(val) == 2 &&
+      dentType == 'single' &&
+      this.user_type != '4' &&
+      this.showTrendChart == false
+    ) {
       this.collectionHourlyRateSingle();
-    }else if(parseInt(val) == 2 && dentType == "single" && this.user_type != '4' && this.showTrendChart == true){
+    } else if (
+      parseInt(val) == 2 &&
+      dentType == 'single' &&
+      this.user_type != '4' &&
+      this.showTrendChart == true
+    ) {
       this.collectionHourlyRateTrend();
-    }else if(parseInt(val) == 3 && dentType == "single" && this.user_type != '4' && this.showTrendChart == false){
+    } else if (
+      parseInt(val) == 3 &&
+      dentType == 'single' &&
+      this.user_type != '4' &&
+      this.showTrendChart == false
+    ) {
       this.collectionExpHourlyRateSingle();
-    }else if(parseInt(val) == 3 && dentType == "single" && this.user_type != '4' && this.showTrendChart == true){
+    } else if (
+      parseInt(val) == 3 &&
+      dentType == 'single' &&
+      this.user_type != '4' &&
+      this.showTrendChart == true
+    ) {
       this.collectionExpHourlyRateTrend();
     }
     this.hrCollShow = parseInt(val);
-    if(parseInt(val) == 1 && this.hrSelectShow.includes('all')){
-      this.hrSelectShow = "hr_all";      
-    }else if(parseInt(val) == 1 && this.hrSelectShow.includes('dentists')){
-      this.hrSelectShow = "hr_dentists";
-    }else if(parseInt(val) == 1 && this.hrSelectShow.includes('oht')){
-      this.hrSelectShow = "hr_oht";
-    }else if(parseInt(val) == 2 && this.hrSelectShow.includes('all')){
-      this.hrSelectShow = "hr_collection_all";
-    }else if(parseInt(val) == 2 && this.hrSelectShow.includes('dentists')){
-      this.hrSelectShow = "hr_collection_dentists";
-    }else if(parseInt(val) == 2 && this.hrSelectShow.includes('oht')){
-      this.hrSelectShow = "hr_collection_oht";
-    }else if(parseInt(val) == 3 && this.hrSelectShow.includes('all')){ 
-      this.hrSelectShow ="hr_collection_exp_all";
-    }else if(parseInt(val) == 3 && this.hrSelectShow.includes('dentists')){
-      this.hrSelectShow = "hr_collection_exp_dentists";
-    }else if(parseInt(val) == 3 && this.hrSelectShow.includes('oht')){
-      this.hrSelectShow = "hr_collection_exp_oht";
+    if (parseInt(val) == 1 && this.hrSelectShow.includes('all')) {
+      this.hrSelectShow = 'hr_all';
+    } else if (parseInt(val) == 1 && this.hrSelectShow.includes('dentists')) {
+      this.hrSelectShow = 'hr_dentists';
+    } else if (parseInt(val) == 1 && this.hrSelectShow.includes('oht')) {
+      this.hrSelectShow = 'hr_oht';
+    } else if (parseInt(val) == 2 && this.hrSelectShow.includes('all')) {
+      this.hrSelectShow = 'hr_collection_all';
+    } else if (parseInt(val) == 2 && this.hrSelectShow.includes('dentists')) {
+      this.hrSelectShow = 'hr_collection_dentists';
+    } else if (parseInt(val) == 2 && this.hrSelectShow.includes('oht')) {
+      this.hrSelectShow = 'hr_collection_oht';
+    } else if (parseInt(val) == 3 && this.hrSelectShow.includes('all')) {
+      this.hrSelectShow = 'hr_collection_exp_all';
+    } else if (parseInt(val) == 3 && this.hrSelectShow.includes('dentists')) {
+      this.hrSelectShow = 'hr_collection_exp_dentists';
+    } else if (parseInt(val) == 3 && this.hrSelectShow.includes('oht')) {
+      this.hrSelectShow = 'hr_collection_exp_oht';
     }
   }
 
   getChartsTips() {
-    this.chartstipsService.getCharts(1).subscribe((res) => {
-      if (res.status == 200) {
-        this.charTips = res.body.data;
-      }
-    }, error => { });
+    this.chartstipsService.getCharts(1).subscribe(
+      (res) => {
+        if (res.status == 200) {
+          this.charTips = res.body.data;
+        }
+      },
+      (error) => {}
+    );
   }
-
 
   public showTopVlaues = false;
   setTopValues() {
@@ -9758,142 +11888,162 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     }
   }
   enableDiabaleButton(val) {
-    if(val <= 0 ){
-      $('.sa_tabs_data button').prop('disabled',false);
-    }else{
-      $('.sa_tabs_data button').prop('disabled',true);    
+    if (val <= 0) {
+      $('.sa_tabs_data button').prop('disabled', false);
+    } else {
+      $('.sa_tabs_data button').prop('disabled', true);
     }
-    if(this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)){
-      if(val <= 0 ){
-        $('.multi-clinic-dis').removeClass("disablePointer");
-        $('.multi-clinic-pro').removeClass("disablePointerProgress");
-      }else{
-        $('.multi-clinic-dis').addClass("disablePointer");
-        $('.multi-clinic-pro').addClass("disablePointerProgress");
+    if (this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)) {
+      if (val <= 0) {
+        $('.multi-clinic-dis').removeClass('disablePointer');
+        $('.multi-clinic-pro').removeClass('disablePointerProgress');
+      } else {
+        $('.multi-clinic-dis').addClass('disablePointer');
+        $('.multi-clinic-pro').addClass('disablePointerProgress');
       }
-    }else{
-      $('.multi-clinic-dis').removeClass("disablePointer");
-      $('.multi-clinic-pro').removeClass("disablePointerProgress");
+    } else {
+      $('.multi-clinic-dis').removeClass('disablePointer');
+      $('.multi-clinic-pro').removeClass('disablePointerProgress');
     }
   }
 
-  changeProSelect(val){
-    if (val == "production_all") {
+  changeProSelect(val) {
+    if (val == 'production_all') {
       this.buildChart();
-    } else if (val == "production_dentists") {
-     this.buildChartDentists();
-    }else if (val == "production_oht") {
-     this.buildChartOht();
-    }else if (val == "collection_all") {
+    } else if (val == 'production_dentists') {
+      this.buildChartDentists();
+    } else if (val == 'production_oht') {
+      this.buildChartOht();
+    } else if (val == 'collection_all') {
       this.collectionChart();
-     }else if (val == "collection_dentists") {
+    } else if (val == 'collection_dentists') {
       this.collectionChartDentists();
-     }else if (val == "collection_oht") {
+    } else if (val == 'collection_oht') {
       this.collectionChartOht();
-     }else if (val == "collection_exp_all") {
+    } else if (val == 'collection_exp_all') {
       this.collectionExpChart();
-     }else if (val == "collection_exp_dentists") {
+    } else if (val == 'collection_exp_dentists') {
       this.collectionExpChartDentists();
-     }else if (val == "collection_exp_oht") {
+    } else if (val == 'collection_exp_oht') {
       this.collectionExpChartOht();
-     }
+    }
 
-     this.proSelectShow = val;
+    this.proSelectShow = val;
   }
 
-
-  changeHourlyRateSelect(val){
-    if(val == "hr_all"){
+  changeHourlyRateSelect(val) {
+    if (val == 'hr_all') {
       this.hourlyRateChart();
-    }else if(val == "hr_dentists"){
+    } else if (val == 'hr_dentists') {
       this.hourlyRateChartDesntists();
-    }else if(val == "hr_oht"){
+    } else if (val == 'hr_oht') {
       this.hourlyRateChartOht();
-    }else if(val == "hr_collection_all"){
+    } else if (val == 'hr_collection_all') {
       this.collectionHourlyRate();
-    }else if(val == "hr_collection_dentists"){
+    } else if (val == 'hr_collection_dentists') {
       this.collectionHourlyRateDentist();
-    }else if(val == "hr_collection_oht"){
+    } else if (val == 'hr_collection_oht') {
       this.collectionHourlyRateOht();
-    }else if(val == "hr_collection_exp_all"){
+    } else if (val == 'hr_collection_exp_all') {
       this.collectionExpHourlyRate();
-    }else if(val == "hr_collection_exp_dentists"){
+    } else if (val == 'hr_collection_exp_dentists') {
       this.collectionExpHourlyRateDentist();
-    }else if(val == "hr_collection_exp_oht"){
+    } else if (val == 'hr_collection_exp_oht') {
       this.collectionExpHourlyRateOht();
     }
     this.hrSelectShow = val;
   }
 
-  showNPTable(val){
+  showNPTable(val) {
     this.shownewPatientTbl = val;
   }
-  showHrTable(val){
-    if(this.hrSelectShow == "hr_all"){ 
+  showHrTable(val) {
+    if (this.hrSelectShow == 'hr_all') {
       this.showHrTbl = val;
-    }else if(this.hrSelectShow == "hr_dentists"){
+    } else if (this.hrSelectShow == 'hr_dentists') {
       this.showHrDentTbl = val;
-    }else if(this.hrSelectShow == "hr_oht"){
+    } else if (this.hrSelectShow == 'hr_oht') {
       this.showHrOhtTbl = val;
-    }else if(this.hrSelectShow == "hr_collection_all"){
+    } else if (this.hrSelectShow == 'hr_collection_all') {
       this.showCollHrTbl = val;
-    }else if(this.hrSelectShow == "hr_collection_dentists"){
+    } else if (this.hrSelectShow == 'hr_collection_dentists') {
       this.showCollHrDentTbl = val;
-    }else if(this.hrSelectShow == "hr_collection_oht"){
+    } else if (this.hrSelectShow == 'hr_collection_oht') {
       this.showCollHrOhtTbl = val;
-    }else if(this.hrSelectShow == "hr_collection_exp_all"){
+    } else if (this.hrSelectShow == 'hr_collection_exp_all') {
       this.showCollexpHrTbl = val;
-    }else if(this.hrSelectShow == "hr_collection_exp_dentists"){
+    } else if (this.hrSelectShow == 'hr_collection_exp_dentists') {
       this.showCollexpHrDentTbl = val;
-    }else if(this.hrSelectShow == "hr_collection_exp_oht"){
+    } else if (this.hrSelectShow == 'hr_collection_exp_oht') {
       this.showCollexpHrOhtTbl = val;
-    }    
-
+    }
   }
 
-  showProdColTable(val){
-    if(this.proSelectShow == "production_all" && this.proCollShow == 1){ 
+  showProdColTable(val) {
+    if (this.proSelectShow == 'production_all' && this.proCollShow == 1) {
       this.showprodAllTbl = val;
-    }else if(this.proSelectShow == "production_dentists" && this.proCollShow == 1){
+    } else if (
+      this.proSelectShow == 'production_dentists' &&
+      this.proCollShow == 1
+    ) {
       this.showprodDentAllTbl = val;
-    }else if(this.proSelectShow == "production_oht" && this.proCollShow == 1){
+    } else if (
+      this.proSelectShow == 'production_oht' &&
+      this.proCollShow == 1
+    ) {
       this.showprodOhtAllTbl = val;
-    }else if(this.proSelectShow == "collection_all" && this.proCollShow == 2){
+    } else if (
+      this.proSelectShow == 'collection_all' &&
+      this.proCollShow == 2
+    ) {
       this.showCollAllTbl = val;
-    }else if(this.proSelectShow == "collection_dentists" && this.proCollShow == 2){
+    } else if (
+      this.proSelectShow == 'collection_dentists' &&
+      this.proCollShow == 2
+    ) {
       this.showCollDentTbl = val;
-    }else if(this.proSelectShow == "collection_oht" && this.proCollShow == 2){
+    } else if (
+      this.proSelectShow == 'collection_oht' &&
+      this.proCollShow == 2
+    ) {
       this.showCollOhtTbl = val;
-    }else if(this.proSelectShow == "collection_exp_all" && this.proCollShow == 3){
+    } else if (
+      this.proSelectShow == 'collection_exp_all' &&
+      this.proCollShow == 3
+    ) {
       this.showCollExpTbl = val;
-    }else if(this.proSelectShow == "collection_exp_dentists" && this.proCollShow == 3){
+    } else if (
+      this.proSelectShow == 'collection_exp_dentists' &&
+      this.proCollShow == 3
+    ) {
       this.showCollExpDentTbl = val;
-    }else if(this.proSelectShow == "collection_exp_oht" && this.proCollShow == 3){
+    } else if (
+      this.proSelectShow == 'collection_exp_oht' &&
+      this.proCollShow == 3
+    ) {
       this.showCollExpOhtTbl = val;
-    }               
+    }
   }
 
-  showTpacTable(val){
-    if(this.tcmain == 1){
+  showTpacTable(val) {
+    if (this.tcmain == 1) {
       this.showplanChartPTbl = val;
-    }else if(this.tcmain == 2){
+    } else if (this.tcmain == 2) {
       this.showplanChartCTbl = val;
-    }    
+    }
   }
 
-  showPrateTable(val){
-    if(this.prebook == "recall"){
+  showPrateTable(val) {
+    if (this.prebook == 'recall') {
       this.showrecallTbl = val;
-    }else if(this.prebook == "treatment"){
+    } else if (this.prebook == 'treatment') {
       this.showreappointTbl = val;
-    }    
+    }
   }
-  showPcomplaintsTable(val){
+  showPcomplaintsTable(val) {
     this.showpatientCtblTbl = val;
   }
-  showpTprTable(val){
+  showpTprTable(val) {
     this.showpTprTbl = val;
   }
-
 }
-

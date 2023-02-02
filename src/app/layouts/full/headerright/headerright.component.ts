@@ -717,20 +717,17 @@ export class AppHeaderrightComponent implements AfterViewInit {
     $('.page-content').removeClass('unauth-hide');
     this.unAuth = false;
     var newValue: any = '';
+
     if (newValue != 'undefined') {
       if (Array.isArray(newValues)) {
         if (
-          this.route == '/dashboards/finances' ||
-          this.route == '/dashboards/marketing' ||
-          this.route == '/dashboards/frontdesk' ||
-          this.route == '/dashboards/cliniciananalysis' ||
-          this.route == '/dashboards/clinicianproceedures' ||
-          // this.apiUrl.includes('test')
-          this.route == '/dashboards/finances/multi' ||
-          this.route == '/dashboards/marketing/multi' ||
-          this.route == '/dashboards/frontdesk/multi' ||
-          this.route == '/dashboards/cliniciananalysis/multi' ||
-          this.route == '/dashboards/clinicianproceedures/multi'
+          [
+            '/dashboards/finances',
+            '/dashboards/marketing',
+            '/dashboards/frontdesk',
+            '/dashboards/cliniciananalysis',
+            '/dashboards/clinicianproceedures'
+          ].includes(this.route)
         ) {
           if (
             this.clinicsData.length == this.selectedClinic.length &&
@@ -1087,14 +1084,19 @@ export class AppHeaderrightComponent implements AfterViewInit {
 
   changeClinic(newValues, allChecked) {
     var newValue: any = '';
+    console.log(newValues);
+    console.log(this.selectedClinic);
+    console.log(this.clinicsData);
     if (newValue != 'undefined') {
       if (Array.isArray(newValues)) {
         if (
-          this.route == '/dashboards/finances' ||
-          this.route == '/dashboards/marketing' ||
-          this.route == '/dashboards/frontdesk' ||
-          this.route == '/dashboards/cliniciananalysis' ||
-          this.route == '/dashboards/clinicianproceedures'
+          [
+            '/dashboards/finances',
+            '/dashboards/marketing',
+            '/dashboards/frontdesk',
+            '/dashboards/cliniciananalysis',
+            '/dashboards/clinicianproceedures'
+          ].includes(this.route)
           //   this.apiUrl.includes('test')) ||
           // this.route == '/dashboards/finances/multi' ||
           // this.route == '/dashboards/marketing/multi' ||
