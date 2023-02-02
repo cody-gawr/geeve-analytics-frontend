@@ -4,7 +4,7 @@ import {
   AfterViewInit,
   ViewEncapsulation,
   ViewChild,
-  ElementRef,
+  ElementRef
 } from '@angular/core';
 import { FrontDeskService } from './frontdesk.service';
 import { DentistService } from '../../dentist/dentist.service';
@@ -30,7 +30,7 @@ export interface Dentist {
 @Component({
   templateUrl: './frontdesk.component.html',
   styleUrls: ['./frontdesk.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 export class FrontDeskComponent implements AfterViewInit {
   @ViewChild('myCanvas') canvas: ElementRef;
@@ -65,7 +65,7 @@ export class FrontDeskComponent implements AfterViewInit {
     '#A9AABC',
     '#F2ECFF',
     '#5689C9',
-    '#F9F871',
+    '#F9F871'
   ];
   public isAllClinic: boolean;
 
@@ -232,51 +232,54 @@ export class FrontDeskComponent implements AfterViewInit {
       '#87ada9',
       '#386087',
       '#54D2FF',
-      '#E58DD7',
+      '#E58DD7'
     ];
     this.predictedChartColors = [
       {
         backgroundColor: predictedGradient,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: predictedGradient1,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: predictedGradient2,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: predictedGradient3,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: predictedGradient4,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: predictedGradient5,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-      },
+        hoverBorderColor: '#1CA49F'
+      }
     ];
 
     this.filterDate(this.chartService.duration$.value);
   }
 
   getMaxBarLimit() {
-    let ids = this.clinic_id;
+    const ids: number[] =
+      typeof this.clinic_id == 'string'
+        ? this.clinic_id.split(',').map((id) => Number(id))
+        : this.clinic_id;
     ids.sort((a, b) => a - b);
     this.clinicianAnalysisService
       .getClinicSettings(ids[0])
@@ -306,11 +309,11 @@ export class FrontDeskComponent implements AfterViewInit {
         return labels.map((label, index) => ({
           text: label,
           strokeStyle: bgColor[label],
-          fillStyle: bgColor[label],
+          fillStyle: bgColor[label]
         }));
-      },
+      }
     },
-    onClick: () => {},
+    onClick: () => {}
   };
 
   public barBackgroundColor(data) {
@@ -348,7 +351,7 @@ export class FrontDeskComponent implements AfterViewInit {
     // barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     fill: false,
     scales: {
@@ -356,9 +359,9 @@ export class FrontDeskComponent implements AfterViewInit {
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -371,10 +374,10 @@ export class FrontDeskComponent implements AfterViewInit {
               if (Math.floor(label) === label) {
                 return label + '%';
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     tooltips: {
       mode: 'x-axis',
@@ -413,12 +416,12 @@ export class FrontDeskComponent implements AfterViewInit {
         },
         title: function () {
           return '';
-        },
-      },
+        }
+      }
     },
     legend: {
-      display: true,
-    },
+      display: true
+    }
   };
 
   public stackLegendGenerator = {
@@ -443,13 +446,13 @@ export class FrontDeskComponent implements AfterViewInit {
         return labels.map((item) => ({
           text: item,
           strokeStyle: bg_color[item],
-          fillStyle: bg_color[item],
+          fillStyle: bg_color[item]
         }));
-      },
+      }
     },
     onClick: (event, legendItem, legend) => {
       return;
-    },
+    }
   };
 
   public stackedChartOptionsTC: any = {
@@ -458,8 +461,8 @@ export class FrontDeskComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -467,16 +470,16 @@ export class FrontDeskComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -494,10 +497,10 @@ export class FrontDeskComponent implements AfterViewInit {
                 currency = currency.split(/(?=(?:...)*$)/).join(',');
                 return label + '%'; // `${label < 0 ? '- $' : '$'}${currency}`;
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: this.stackLegendGenerator,
     tooltips: {
@@ -624,9 +627,9 @@ export class FrontDeskComponent implements AfterViewInit {
             data.datasets[tooltipItems.datasetIndex].label +
             `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`
           );
-        },
-      },
-    },
+        }
+      }
+    }
   };
   public stackedChartOptionsTic: any = {
     elements: {
@@ -634,8 +637,8 @@ export class FrontDeskComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -643,16 +646,16 @@ export class FrontDeskComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -668,10 +671,10 @@ export class FrontDeskComponent implements AfterViewInit {
                 currency = currency.split(/(?=(?:...)*$)/).join(',');
                 return label; // `${label < 0 ? '- $' : '$'}${currency}`;
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: this.stackLegendGenerator,
     tooltips: {
@@ -816,9 +819,9 @@ export class FrontDeskComponent implements AfterViewInit {
             data.datasets[tooltipItems.datasetIndex].label +
             `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`
           );
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   public stackedChartOptionsT: Chart.ChartOptions = {
@@ -827,7 +830,7 @@ export class FrontDeskComponent implements AfterViewInit {
     // barThickness: 10,
     animation: {
       duration: 1,
-      easing: 'linear',
+      easing: 'linear'
     },
     scales: {
       xAxes: [
@@ -840,10 +843,10 @@ export class FrontDeskComponent implements AfterViewInit {
                 value = lbl[0];
               }
               return value;
-            },
+            }
           },
-          stacked: true,
-        },
+          stacked: true
+        }
       ],
       yAxes: [
         {
@@ -856,10 +859,10 @@ export class FrontDeskComponent implements AfterViewInit {
               if (Math.floor(label) === label) {
                 return label;
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     tooltips: {
       mode: 'x-axis',
@@ -919,12 +922,12 @@ export class FrontDeskComponent implements AfterViewInit {
         },
         title: function () {
           return '';
-        },
-      },
+        }
+      }
     },
     legend: {
-      display: true,
-    },
+      display: true
+    }
   };
   public stackedChartOptionsUti: any = {
     hover: { mode: null },
@@ -934,7 +937,7 @@ export class FrontDeskComponent implements AfterViewInit {
     // barThickness: 10,
     animation: {
       duration: 1,
-      easing: 'linear',
+      easing: 'linear'
     },
     fill: false,
     scales: {
@@ -948,10 +951,10 @@ export class FrontDeskComponent implements AfterViewInit {
                 value = lbl[0];
               }
               return value;
-            },
+            }
           },
-          stacked: true,
-        },
+          stacked: true
+        }
       ],
       yAxes: [
         {
@@ -964,10 +967,10 @@ export class FrontDeskComponent implements AfterViewInit {
               if (Math.floor(label) === label) {
                 return label + '%';
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     tooltips: {
       mode: 'x-axis',
@@ -1024,17 +1027,17 @@ export class FrontDeskComponent implements AfterViewInit {
             return [
               '',
               'Available Hours: ' + Math.round(phour * 100) / 100,
-              'Used Hours: ' + Math.round(hour * 100) / 100,
+              'Used Hours: ' + Math.round(hour * 100) / 100
             ];
           }
           return;
         },
         title: function () {
           return '';
-        },
-      },
+        }
+      }
     },
-    legend: this.legendGenerator,
+    legend: this.legendGenerator
   };
   public stackedChartOptionsUti1: Chart.ChartOptions = {
     hover: { mode: null },
@@ -1079,7 +1082,7 @@ export class FrontDeskComponent implements AfterViewInit {
             }
           });
         });
-      },
+      }
     },
     scales: {
       xAxes: [
@@ -1092,9 +1095,9 @@ export class FrontDeskComponent implements AfterViewInit {
                 value = lbl[0];
               }
               return value;
-            },
-          },
-        },
+            }
+          }
+        }
       ],
       yAxes: [
         {
@@ -1105,15 +1108,15 @@ export class FrontDeskComponent implements AfterViewInit {
             callback: function (label: string | number, index, labels) {
               // when the floored value is the same as the value we have a whole number
               return `${Number(label)}%`;
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     tooltips: {
-      enabled: false,
+      enabled: false
     },
-    legend: this.legendGenerator,
+    legend: this.legendGenerator
   };
 
   public stackedChartOptionsUtiDP = this.stackedChartOptionsUti;
@@ -1123,8 +1126,8 @@ export class FrontDeskComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -1132,7 +1135,7 @@ export class FrontDeskComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     fill: false,
     scales: {
@@ -1140,9 +1143,9 @@ export class FrontDeskComponent implements AfterViewInit {
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -1153,10 +1156,10 @@ export class FrontDeskComponent implements AfterViewInit {
               if (Math.floor(label) === label) {
                 return label;
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     tooltips: {
       custom: function (tooltip) {
@@ -1170,12 +1173,12 @@ export class FrontDeskComponent implements AfterViewInit {
         },
         title: function () {
           return '';
-        },
-      },
+        }
+      }
     },
     legend: {
-      display: true,
-    },
+      display: true
+    }
   };
 
   public numOfTicksChartOptionsticks: any = {
@@ -1184,8 +1187,8 @@ export class FrontDeskComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -1193,7 +1196,7 @@ export class FrontDeskComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     fill: false,
     scales: {
@@ -1201,9 +1204,9 @@ export class FrontDeskComponent implements AfterViewInit {
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -1214,10 +1217,10 @@ export class FrontDeskComponent implements AfterViewInit {
               if (Math.floor(label) === label) {
                 return label;
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     tooltips: {
       custom: function (tooltip) {
@@ -1231,12 +1234,12 @@ export class FrontDeskComponent implements AfterViewInit {
         },
         title: function () {
           return '';
-        },
-      },
+        }
+      }
     },
     legend: {
-      display: true,
-    },
+      display: true
+    }
   };
 
   public stackedChartColors: Array<any> = [
@@ -1245,7 +1248,7 @@ export class FrontDeskComponent implements AfterViewInit {
     { backgroundColor: '#68D8D6' },
     { backgroundColor: '#3DCCC7' },
     { backgroundColor: '#68FFF9' },
-    { backgroundColor: '#07BEB8' },
+    { backgroundColor: '#07BEB8' }
   ];
   public stackedChartType = 'bar';
   public lineChartType = 'line';
@@ -1262,7 +1265,7 @@ export class FrontDeskComponent implements AfterViewInit {
     { data: [], label: 'Splints ' },
     { data: [], label: 'Root Canals' },
     { data: [], label: 'Perio Charts' },
-    { data: [], label: 'Surgical Extractions' },
+    { data: [], label: 'Surgical Extractions' }
   ];
 
   public stackedChartData1: any[] = [];
@@ -1340,7 +1343,7 @@ export class FrontDeskComponent implements AfterViewInit {
         '#119582',
         '#ffb4b5',
         '#119582',
-        '#ffb4b5',
+        '#ffb4b5'
       ],
       hoverBackgroundColor: [
         '#119582',
@@ -1354,9 +1357,9 @@ export class FrontDeskComponent implements AfterViewInit {
         '#119582',
         '#ffb4b5',
         '#119582',
-        '#ffb4b5',
-      ],
-    },
+        '#ffb4b5'
+      ]
+    }
   ];
   public workTimeLabels = [];
 
@@ -1404,7 +1407,7 @@ export class FrontDeskComponent implements AfterViewInit {
                       name: res.app_book_name,
                       scheduled_hours: Math.round(res.planned_hour * 100) / 100,
                       clinican_hours: Math.round(res.worked_hour * 100) / 100,
-                      util_rate: Math.round(res.util_rate * 100),
+                      util_rate: Math.round(res.util_rate * 100)
                     };
                     this.fdUtiData.push(temp);
                   });
@@ -1457,9 +1460,9 @@ export class FrontDeskComponent implements AfterViewInit {
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
-                        borderDashOffset: 0,
-                      },
-                    ],
+                        borderDashOffset: 0
+                      }
+                    ]
                   };
                 } else if (this.goalchecked == 'goal') {
                   this.stackedChartOptionssWT.annotation = {
@@ -1472,9 +1475,9 @@ export class FrontDeskComponent implements AfterViewInit {
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
-                        borderDashOffset: 0,
-                      },
-                    ],
+                        borderDashOffset: 0
+                      }
+                    ]
                   };
                 }
               }
@@ -1502,7 +1505,7 @@ export class FrontDeskComponent implements AfterViewInit {
         '#119582',
         '#ffb4b5',
         '#119582',
-        '#ffb4b5',
+        '#ffb4b5'
       ],
       hoverBackgroundColor: [
         '#119582',
@@ -1516,9 +1519,9 @@ export class FrontDeskComponent implements AfterViewInit {
         '#119582',
         '#ffb4b5',
         '#119582',
-        '#ffb4b5',
-      ],
-    },
+        '#ffb4b5'
+      ]
+    }
   ];
 
   public byDayDataTemp: any = [];
@@ -1549,8 +1552,8 @@ export class FrontDeskComponent implements AfterViewInit {
           if (res.status == 200) {
             moment.updateLocale('en-au', {
               week: {
-                dow: 1,
-              },
+                dow: 1
+              }
             });
             const weekdays: string[] = moment.weekdays(true);
             const fillableData: {
@@ -1567,7 +1570,7 @@ export class FrontDeskComponent implements AfterViewInit {
                     .value(),
                   workedHour: _.chain(items)
                     .sumBy((item) => Number(item.worked_hour))
-                    .value(),
+                    .value()
                 };
               })
               .value();
@@ -1586,7 +1589,7 @@ export class FrontDeskComponent implements AfterViewInit {
                 day,
                 scheduled_hours: plannedHour,
                 clinican_hours: workedHour,
-                util_rate: _.round((workedHour / plannedHour || 0) * 100),
+                util_rate: _.round((workedHour / plannedHour || 0) * 100)
               })
             );
             this.byDayData[0]['data'] = data.map(
@@ -1629,7 +1632,7 @@ export class FrontDeskComponent implements AfterViewInit {
         '#119582',
         '#ffb4b5',
         '#119582',
-        '#ffb4b5',
+        '#ffb4b5'
       ],
       hoverBackgroundColor: [
         '#119582',
@@ -1643,9 +1646,9 @@ export class FrontDeskComponent implements AfterViewInit {
         '#119582',
         '#ffb4b5',
         '#119582',
-        '#ffb4b5',
-      ],
-    },
+        '#ffb4b5'
+      ]
+    }
   ];
   public ftaTotal;
   public ftaPrevTotal;
@@ -1732,7 +1735,7 @@ export class FrontDeskComponent implements AfterViewInit {
         '#119582',
         '#ffb4b5',
         '#119582',
-        '#ffb4b5',
+        '#ffb4b5'
       ],
       hoverBackgroundColor: [
         '#119582',
@@ -1746,9 +1749,9 @@ export class FrontDeskComponent implements AfterViewInit {
         '#119582',
         '#ffb4b5',
         '#119582',
-        '#ffb4b5',
-      ],
-    },
+        '#ffb4b5'
+      ]
+    }
   ];
   public utaTotal;
   public utaPrevTotal;
@@ -1832,7 +1835,7 @@ export class FrontDeskComponent implements AfterViewInit {
         '#119582',
         '#ffb4b5',
         '#119582',
-        '#ffb4b5',
+        '#ffb4b5'
       ],
       hoverBackgroundColor: [
         '#119582',
@@ -1846,9 +1849,9 @@ export class FrontDeskComponent implements AfterViewInit {
         '#119582',
         '#ffb4b5',
         '#119582',
-        '#ffb4b5',
-      ],
-    },
+        '#ffb4b5'
+      ]
+    }
   ];
   public showmulticlinicticks: boolean = false;
   public ticksLabels: any = [];
@@ -1939,7 +1942,7 @@ export class FrontDeskComponent implements AfterViewInit {
         '#119582',
         '#ffb4b5',
         '#119582',
-        '#ffb4b5',
+        '#ffb4b5'
       ],
       hoverBackgroundColor: [
         '#119582',
@@ -1953,9 +1956,9 @@ export class FrontDeskComponent implements AfterViewInit {
         '#119582',
         '#ffb4b5',
         '#119582',
-        '#ffb4b5',
-      ],
-    },
+        '#ffb4b5'
+      ]
+    }
   ];
   public showmulticlinicPrebook: boolean = false;
   public fdPrebookRateLabels: any = [];
@@ -2047,7 +2050,7 @@ export class FrontDeskComponent implements AfterViewInit {
         '#119582',
         '#ffb4b5',
         '#119582',
-        '#ffb4b5',
+        '#ffb4b5'
       ],
       hoverBackgroundColor: [
         '#119582',
@@ -2061,9 +2064,9 @@ export class FrontDeskComponent implements AfterViewInit {
         '#119582',
         '#ffb4b5',
         '#119582',
-        '#ffb4b5',
-      ],
-    },
+        '#ffb4b5'
+      ]
+    }
   ];
   public showmulticlinicReappointRate: boolean = false;
   public fdReappointRateLabels: any = [];
@@ -2468,9 +2471,9 @@ export class FrontDeskComponent implements AfterViewInit {
               borderColor: 'red',
               borderWidth: 2,
               borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-          ],
+              borderDashOffset: 0
+            }
+          ]
         };
       } else if (this.goalchecked == 'goal') {
         this.stackedChartOptionssWT.annotation = {
@@ -2483,9 +2486,9 @@ export class FrontDeskComponent implements AfterViewInit {
               borderColor: 'red',
               borderWidth: 2,
               borderDash: [2, 2],
-              borderDashOffset: 0,
-            },
-          ],
+              borderDashOffset: 0
+            }
+          ]
         };
       }
       this.filterDate('m');
@@ -2544,8 +2547,8 @@ export class FrontDeskComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public ftaChartTrend1 = [];
   public ftaChartTrendLabels = [];
@@ -2596,7 +2599,7 @@ export class FrontDeskComponent implements AfterViewInit {
                         this.trendValue == 'c'
                           ? this.datePipe.transform(duration, 'MMM y')
                           : duration,
-                      fta_ratio: _.round((totalFta / totalAppts || 0) * 100),
+                      fta_ratio: _.round((totalFta / totalAppts || 0) * 100)
                     };
                   })
                   .value();
@@ -2682,7 +2685,7 @@ export class FrontDeskComponent implements AfterViewInit {
         this.chartService.colors.odd,
         this.chartService.colors.even,
         this.chartService.colors.odd,
-        this.chartService.colors.even,
+        this.chartService.colors.even
       ],
       shadowOffsetX: 3,
       shadowOffsetY: 2,
@@ -2695,15 +2698,15 @@ export class FrontDeskComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
+      backgroundOverlayMode: 'multiply'
     },
     {
       data: [],
       label: '',
       shadowOffsetX: 3,
       backgroundColor: 'rgba(255, 0, 128, 1)',
-      order: 1,
-    },
+      order: 1
+    }
   ];
   public wtaChartTrend1 = [];
   public wtaChartTrendLabels = [];
@@ -2765,7 +2768,7 @@ export class FrontDeskComponent implements AfterViewInit {
                         .value();
                       return {
                         duration,
-                        util_rate: _.round((workedHour / plannedHour) * 100, 0),
+                        util_rate: _.round((workedHour / plannedHour) * 100, 0)
                       };
                     })
                     .value();
@@ -2852,8 +2855,8 @@ export class FrontDeskComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public utaChartTrend1 = [];
   public utaChartTrendLabels = [];
@@ -2903,7 +2906,7 @@ export class FrontDeskComponent implements AfterViewInit {
                         this.trendValue == 'c'
                           ? this.datePipe.transform(duration, 'MMM y')
                           : duration,
-                      uta_ratio: _.round((totalUta / totalAppts || 0) * 100),
+                      uta_ratio: _.round((totalUta / totalAppts || 0) * 100)
                     };
                   })
                   .value();
@@ -2959,7 +2962,7 @@ export class FrontDeskComponent implements AfterViewInit {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even,
-        this.chartService.colors.odd,
+        this.chartService.colors.odd
       ],
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -2971,8 +2974,8 @@ export class FrontDeskComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public tickChartTrend1 = [];
   public tickChartTrendLabels = [];
@@ -3021,14 +3024,14 @@ export class FrontDeskComponent implements AfterViewInit {
                     const clinicName = items[0].clinic_name;
                     return {
                       label: clinicName,
-                      data: items.map((item) => Number(item.num_ticks)),
+                      data: items.map((item) => Number(item.num_ticks))
                     };
                   })
                   .value()
                   .map((item, index: number) => ({
                     ...item,
                     backgroundColor: this.doughnutChartColors[index],
-                    hoverBackgroundColor: this.doughnutChartColors[index],
+                    hoverBackgroundColor: this.doughnutChartColors[index]
                   }));
               } else {
                 res.body.data.forEach((res) => {
@@ -3076,7 +3079,7 @@ export class FrontDeskComponent implements AfterViewInit {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even,
-        this.chartService.colors.odd,
+        this.chartService.colors.odd
       ],
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -3088,15 +3091,15 @@ export class FrontDeskComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
+      backgroundOverlayMode: 'multiply'
     },
     {
       data: [],
       label: '',
       shadowOffsetX: 3,
       backgroundColor: 'rgba(255, 0, 128, 1)',
-      order: 1,
-    },
+      order: 1
+    }
   ];
   public recallPrebookChartTrend1 = [];
   public recallPrebookChartTrendLabels = [];
@@ -3155,7 +3158,7 @@ export class FrontDeskComponent implements AfterViewInit {
                       recall_percent: _.round(
                         (recallPatient / totalPatient) * 100,
                         0
-                      ),
+                      )
                     };
                   })
                   .value();
@@ -3196,7 +3199,7 @@ export class FrontDeskComponent implements AfterViewInit {
                   } else {
                     mappedfdRecallPrebookRatetargetData.push([
                       v - 0.5,
-                      v + 0.5,
+                      v + 0.5
                     ]);
                   }
                 });
@@ -3249,7 +3252,7 @@ export class FrontDeskComponent implements AfterViewInit {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even,
-        this.chartService.colors.odd,
+        this.chartService.colors.odd
       ],
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -3261,15 +3264,15 @@ export class FrontDeskComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
+      backgroundOverlayMode: 'multiply'
     },
     {
       data: [],
       label: '',
       shadowOffsetX: 3,
       backgroundColor: 'rgba(255, 0, 128, 1)',
-      order: 1,
-    },
+      order: 1
+    }
   ];
   public treatmentPrebookChartTrend1 = [];
   public treatmentPrebookChartTrendLabels = [];
@@ -3318,7 +3321,7 @@ export class FrontDeskComponent implements AfterViewInit {
                       duration,
                       reappoint_rate: _.round(
                         (reappointments / totalAppts || 0) * 100
-                      ),
+                      )
                     };
                   })
                   .value();
@@ -3386,7 +3389,7 @@ export class FrontDeskComponent implements AfterViewInit {
                   } else {
                     mappedtargetDataPrebookRatetargetData.push([
                       v - 0.5,
-                      v + 0.5,
+                      v + 0.5
                     ]);
                   }
                 });
