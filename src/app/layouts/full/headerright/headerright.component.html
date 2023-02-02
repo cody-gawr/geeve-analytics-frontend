@@ -4,12 +4,6 @@
   class="header_filters dynamicDropdown{{ user_type_dentist }} {{ classUrl }}"
 >
   <div fxLayout="row" fxFlex="50" fxFlex.md="50" fxFlex.sm="50" fxFlex.xs="100">
-    <!-- <div fxFlexAlign="center" *ngIf="user_type_dentist==='4' && showCompare">
-            <button 
-                class="sa_tab_btn compare-button"
-                [ngClass]="{'active': isToggleDentistChart}"
-                (click)="toggler()"> Compare </button>
-        </div> -->
     <div
       class="header_first_select"
       *ngIf="
@@ -21,43 +15,6 @@
       "
     >
       <div class="vertical_center_header_content">
-        <!-- <div
-          class="sa_mat_select_topbar"
-          *ngIf="
-            (route != '/dashboards/finances' &&
-              route != '/dashboards/clinicianproceedures' &&
-              route != '/dashboards/cliniciananalysis' &&
-              route != '/dashboards/marketing' &&
-              route != '/dashboards/frontdesk' &&
-              apiUrl.includes('test') &&
-              route != '/dashboards/finances/multi' &&
-              route != '/dashboards/clinicianproceedures/multi' &&
-              route != '/dashboards/cliniciananalysis/multi' &&
-              route != '/dashboards/marketing/multi' &&
-              route != '/dashboards/frontdesk/multi') ||
-            (apiUrl.includes('staging') &&
-              route != '/dashboards/finances/multi' &&
-              route != '/dashboards/clinicianproceedures/multi' &&
-              route != '/dashboards/cliniciananalysis/multi' &&
-              route != '/dashboards/marketing/multi' &&
-              route != '/dashboards/frontdesk/multi') ||
-            (!apiUrl.includes('test-') &&
-              !apiUrl.includes('staging-') &&
-              route != '/dashboards/finances/multi' &&
-              route != '/dashboards/clinicianproceedures/multi' &&
-              route != '/dashboards/cliniciananalysis/multi' &&
-              route != '/dashboards/marketing/multi' &&
-              route != '/dashboards/frontdesk/multi') ||
-            (route == '/dashboards/cliniciananalysis' && user_type == 4) ||
-            (route == '/dashboards/clinicianproceedures' && user_type == 4) ||
-            (route == '/dashboards/finances' && user_type == 7) ||
-            (route == '/dashboards/clinicianproceedures' && user_type == 7) ||
-            (route == '/dashboards/cliniciananalysis' && user_type == 7) ||
-            (route == '/dashboards/marketing' && user_type == 7) ||
-            (route == '/dashboards/frontdesk' && user_type == 7)
-          "
-        > -->
-
         <div
           class="sa_mat_select_topbar multi-clinic-pro"
           *ngIf="isMultiClinicsVisible; else singleClinicSelection"
@@ -76,37 +33,18 @@
               <mat-select-trigger *ngIf="allChecked == true">
                 {{ 'All Clinics' }}
               </mat-select-trigger>
-              <!-- <mat-option
-                value="all"
-                *ngIf="
-                  route == '/dashboards/finances' ||
-                  route == '/dashboards/marketing' ||
-                  route == '/dashboards/frontdesk' ||
-                  route == '/dashboards/cliniciananalysis' ||
-                  route == '/dashboards/clinicianproceedures' ||
-                  ((route == '/dashboards/finances/multi' ||
-                    route == '/dashboards/marketing/multi' ||
-                    route == '/dashboards/frontdesk/multi' ||
-                    route == '/dashboards/cliniciananalysis/multi' ||
-                    route == '/dashboards/clinicianproceedures/multi') &&
-                    clinicsData.length > 1 &&
-                    user_type != 7)
-                "
-                >All Clinics</mat-option
-              > -->
               <mat-option
                 value="all"
                 *ngIf="
-                  route;
-                  in: [
+                  [
                     '/dashboards/finances',
                     '/dashboards/marketing',
                     '/dashboards/frontdesk',
                     '/dashboards/cliniciananalysis',
                     '/dashboards/clinicianproceedures'
-                  ] &&
-                    clinicsData.length > 1 &&
-                    user_type != 7
+                  ].includes(route) &&
+                  clinicsData.length > 1 &&
+                  user_type != 7
                 "
                 >All Clinics</mat-option
               >
