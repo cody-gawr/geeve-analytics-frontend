@@ -131,11 +131,10 @@ export class AppHeaderrightComponent implements AfterViewInit {
         }
 
         if (
-          this.route == '/dashboards/cliniciananalysis' ||
-          this.route == '/dashboards/clinicianproceedures'
-          // this.route == '/dashboards/cliniciananalysis/multi' ||
-          // this.route == '/dashboards/clinicianproceedures/multi'
-          // this.route == "/kpi-report"
+          [
+            '/dashboards/cliniciananalysis',
+            '/dashboards/clinicianproceedures'
+          ].includes(this.route)
         ) {
           this.showDropDown = true;
         } else {
@@ -195,8 +194,8 @@ export class AppHeaderrightComponent implements AfterViewInit {
     /************** unAuthorised **************/
   }
 
-  async getRoles() {
-    await this.rolesUsersService.getRolesIndividual().subscribe(
+  getRoles() {
+    this.rolesUsersService.getRolesIndividual().subscribe(
       (res) => {
         this.rolesUsersService.setRoleIndividual(res);
         if (res.status == 200) {
@@ -520,11 +519,13 @@ export class AppHeaderrightComponent implements AfterViewInit {
       profilesettings: `/clinic-settings/${clinicId}`,
       kpireport: '/kpi-report'
     };
+    console.log('check-permissions');
 
     this.rolesUsersService.getRolesIndividual(clinicId).subscribe(
       (res) => {
         if (res.status == 200) {
           permission = <string>res.body.data;
+          console.log(res.body);
           if (permission != '' && this.user_type == 7) {
             if (
               Object.keys(permission2Route).includes(permission) &&
@@ -550,7 +551,6 @@ export class AppHeaderrightComponent implements AfterViewInit {
             $('.sa_dashboard_inner_content').addClass('unauth-hide');
             $('.settings-table-card').addClass('unauth-hide');
             $('.page-content').addClass('unauth-hide');
-            // this.router.navigate(['/profile-settings']);
           }
         }
       },
