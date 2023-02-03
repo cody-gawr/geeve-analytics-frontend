@@ -262,7 +262,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
         '/dashboards/marketing',
         '/dashboards/frontdesk'
       ].includes(this.route) &&
-      ![4, 7].includes(this.user_type) &&
+      !['4', '7'].includes(this.user_type) &&
       this.userId == 1
     );
   }
@@ -300,7 +300,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
                   this.resetAccountConnection();
                 }
               }
-              if (this.clinicsData.length > 1 && this.user_type != 7) {
+              if (this.clinicsData.length > 1 && this.user_type != '7') {
                 this.clinic_id = 'all';
                 this.selectedClinic = 'all';
                 this.placeHolder = 'All Clinics';
@@ -525,7 +525,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
       (res) => {
         if (res.status == 200) {
           permission = <string>res.body.data;
-          if (permission != '' && this.user_type == 7) {
+          if (permission != '' && this.user_type == '7') {
             if (
               Object.keys(permission2Route).includes(permission) &&
               permission2Route[permission] == this.route
@@ -612,7 +612,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
           this.getAccountConnection(newValue);
         }
       }
-      if (this.user_type == 7) {
+      if (this.user_type == '7') {
         var clid = newValue;
         if (this.route.includes('clinic-settings')) {
           var val = this.route.split('/');
@@ -711,7 +711,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
       $('.internal_clinic').val(newValue);
       if (this.user_type_dentist != '2' && newValue != 'all') {
         // this.getChildID(newValue);
-        if (Array.isArray(this.clinic_id) || this.user_type_dentist == 7) {
+        if (Array.isArray(this.clinic_id) || this.user_type_dentist == '7') {
           // if(this.clinic_id.length == 1){
           //   this.getChildID(newValue);
           // }else{
