@@ -35,17 +35,7 @@
               </mat-select-trigger>
               <mat-option
                 value="all"
-                *ngIf="
-                  [
-                    '/dashboards/finances',
-                    '/dashboards/marketing',
-                    '/dashboards/frontdesk',
-                    '/dashboards/cliniciananalysis',
-                    '/dashboards/clinicianproceedures'
-                  ].includes(route) &&
-                  clinicsData.length > 1 &&
-                  user_type != 7
-                "
+                *ngIf="isAllOptionVisible"
                 >All Clinics</mat-option
               >
               <mat-option
