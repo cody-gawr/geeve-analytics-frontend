@@ -216,7 +216,7 @@ export class LoginComponent implements OnInit {
           (item: any) => item.role_id == Number(this.userType)
         );
         if (!!permissionByRoleId) {
-          permission = permissionByRoleId.permissions;
+          permission = permissionByRoleId.permisions;
         }
 
         if (res.body.plan == 'lite') {
