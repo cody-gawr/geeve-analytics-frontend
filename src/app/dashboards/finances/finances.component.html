@@ -667,8 +667,8 @@
                   *ngIf="
                     totalDiscountChartData &&
                     totalDiscountChartData.length > 0 &&
-                    showInternal == true &&
-                    showClinicBar === true
+                    showInternal &&
+                    showClinicBar
                   "
                 >
                   <div class="clinician-chart">
@@ -809,9 +809,9 @@
                 <span *ngIf="showClinicByclinic; else productionPerClinician"
                   >Production % Per Clinic</span
                 >
-                <template #productionPerClinician>
+                <ng-template #productionPerClinician>
                   <span>Production % Per Clinician</span>
-                </template>
+                </ng-template>
                 <div class="info-icon-container">
                   <img
                     [tooltip]="charTips['30']"
@@ -1058,8 +1058,8 @@
                   *ngIf="
                     totalDiscountChartData &&
                     totalDiscountChartData.length > 0 &&
-                    showInternal == true &&
-                    showClinicBar === false
+                    showInternal &&
+                    !showClinicBar
                   "
                 >
                   <div class="clinician-chart">
@@ -1085,8 +1085,8 @@
                   *ngIf="
                     totalDiscountChartData &&
                     totalDiscountChartData.length > 0 &&
-                    showInternal == true &&
-                    showClinicBar === true
+                    showInternal &&
+                    showClinicBar
                   "
                 >
                   <div class="clinician-chart">
@@ -1969,9 +1969,9 @@
                 <span *ngIf="showClinic; else productionPerClinician"
                   >Production % Per Clinic</span
                 >
-                <template #productionPerClinician>
+                <ng-template #productionPerClinician>
                   <span>Production % Per Clinician</span>
-                </template>
+                </ng-template>
                 <div class="info-icon-container">
                   <img
                     [tooltip]="charTips['30']"
@@ -2208,9 +2208,9 @@
                 <span *ngIf="showClinic; else productionPerClinician"
                   >Production % Per Clinic</span
                 >
-                <template #productionPerClinician>
+                <ng-template #productionPerClinician>
                   <span>Production % Per Clinician</span>
-                </template>
+                </ng-template>
                 <div class="info-icon-container">
                   <img
                     [tooltip]="charTips['30']"
