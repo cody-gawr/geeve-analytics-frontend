@@ -4,7 +4,7 @@ import {
   AfterViewInit,
   ViewEncapsulation,
   ViewChild,
-  ElementRef,
+  ElementRef
 } from '@angular/core';
 import { FinancesService } from './finances.service';
 import { DentistService } from '../../dentist/dentist.service';
@@ -34,7 +34,7 @@ export interface Dentist {
 @Component({
   templateUrl: './finances.component.html',
   styleUrls: ['./finances.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 export class FinancesComponent implements AfterViewInit {
   @ViewChild('myCanvas') canvas: ElementRef;
@@ -83,9 +83,9 @@ export class FinancesComponent implements AfterViewInit {
         '#A9AABC',
         '#F2ECFF',
         '#5689C9',
-        '#F9F871',
-      ],
-    },
+        '#F9F871'
+      ]
+    }
   ];
 
   preoceedureChartColors;
@@ -113,8 +113,8 @@ export class FinancesComponent implements AfterViewInit {
       '#d7f8ef',
       '#fffdac',
       '#fef0b8',
-      '#4ccfae',
-    ],
+      '#4ccfae'
+    ]
   };
   single = [];
   dateData: any[];
@@ -155,11 +155,11 @@ export class FinancesComponent implements AfterViewInit {
     'Production',
     'Net Profit',
     'Net Profit %',
-    'Collection',
+    'Collection'
   ];
   barChartColors = [
     { backgroundColor: '#39acac' },
-    { backgroundColor: '#48daba' },
+    { backgroundColor: '#48daba' }
   ];
   public isVisibleAccountGraphs: boolean = false;
   public maxLegendLabelLimit = 10;
@@ -208,11 +208,11 @@ export class FinancesComponent implements AfterViewInit {
         return labels.map((item) => ({
           text: item,
           strokeStyle: bg_color[item],
-          fillStyle: bg_color[item],
+          fillStyle: bg_color[item]
         }));
-      },
+      }
     },
-    onClick: (event: MouseEvent, legendItem: Chart.ChartLegendLabelItem) => {},
+    onClick: (event: MouseEvent, legendItem: Chart.ChartLegendLabelItem) => {}
   };
   private warningMessage: string;
   async initiate_clinic() {
@@ -422,7 +422,7 @@ export class FinancesComponent implements AfterViewInit {
       '#87ada9',
       '#386087',
       '#54D2FF',
-      '#E58DD7',
+      '#E58DD7'
     ];
     let stackedGradient = this.canvas.nativeElement
       .getContext('2d')
@@ -460,37 +460,37 @@ export class FinancesComponent implements AfterViewInit {
         backgroundColor: stackedGradient,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(255,255,255,0.6)',
+        borderColor: 'rgba(255,255,255,0.6)'
       },
       {
         backgroundColor: stackedGradient1,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(255,255,255,0.6)',
+        borderColor: 'rgba(255,255,255,0.6)'
       },
       {
         backgroundColor: stackedGradient2,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(255,255,255,0.6)',
+        borderColor: 'rgba(255,255,255,0.6)'
       },
       {
         backgroundColor: stackedGradient3,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(255,255,255,0.6)',
+        borderColor: 'rgba(255,255,255,0.6)'
       },
       {
         backgroundColor: stackedGradient4,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(255,255,255,0.6)',
+        borderColor: 'rgba(255,255,255,0.6)'
       },
       {
         backgroundColor: stackedGradient5,
         hoverBorderWidth: 2,
-        hoverBorderColor: 'rgba(255,255,255,0.6)',
-      },
+        hoverBorderColor: 'rgba(255,255,255,0.6)'
+      }
     ];
     let stackedGradient6 = this.canvas2.nativeElement
       .getContext('2d')
@@ -502,8 +502,8 @@ export class FinancesComponent implements AfterViewInit {
         backgroundColor: stackedGradient6,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: '#1CA49F',
-      },
+        borderColor: '#1CA49F'
+      }
     ];
     let stackedGradient7 = this.canvas2.nativeElement
       .getContext('2d')
@@ -546,37 +546,37 @@ export class FinancesComponent implements AfterViewInit {
         backgroundColor: proceedureGradient,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: proceedureGradient1,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: proceedureGradient2,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: proceedureGradient3,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: proceedureGradient4,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: proceedureGradient5,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-      },
+        hoverBorderColor: '#1CA49F'
+      }
     ];
     //this.filterDate(this.chartService.duration$.value);
   }
@@ -592,7 +592,7 @@ export class FinancesComponent implements AfterViewInit {
     curvature: 1,
     animation: {
       duration: 1500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     responsive: true,
     maintainAspectRatio: false,
@@ -600,20 +600,20 @@ export class FinancesComponent implements AfterViewInit {
     scales: {
       xAxes: [
         {
-          stacked: true,
+          stacked: true
         },
         {
           gridLines: {
             display: true,
-            offsetGridLines: true,
+            offsetGridLines: true
           },
           ticks: {
-            autoSkip: false,
+            autoSkip: false
           },
           display: false,
           offset: true,
-          stacked: true,
-        },
+          stacked: true
+        }
       ],
       yAxes: [
         {
@@ -626,10 +626,10 @@ export class FinancesComponent implements AfterViewInit {
               if (Math.floor(label) === label) {
                 return '$' + this.decimalPipe.transform(label);
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     tooltips: {
       mode: 'x-axis',
@@ -662,8 +662,8 @@ export class FinancesComponent implements AfterViewInit {
         // remove title
         title: function (tooltipItem, data) {
           return;
-        },
-      },
+        }
+      }
     },
     legend: {
       position: 'top',
@@ -678,8 +678,8 @@ export class FinancesComponent implements AfterViewInit {
           ci.getDatasetMeta(index).hidden = false;
         }
         ci.update();
-      },
-    },
+      }
+    }
   };
   public date = new Date();
   public lineChartOptions: any = { responsive: true };
@@ -691,8 +691,8 @@ export class FinancesComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -700,16 +700,16 @@ export class FinancesComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -725,13 +725,13 @@ export class FinancesComponent implements AfterViewInit {
                 currency = currency.split(/(?=(?:...)*$)/).join(',');
                 return `${label < 0 ? '- $' : '$'}${currency}`;
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: {
-      display: true,
+      display: true
     },
     tooltips: {
       mode: 'x-axis',
@@ -866,9 +866,9 @@ export class FinancesComponent implements AfterViewInit {
             data.datasets[tooltipItems.datasetIndex].label +
             `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`
           );
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   public stackedChartOptionsDiscount: any = {
@@ -877,8 +877,8 @@ export class FinancesComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -886,16 +886,16 @@ export class FinancesComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -911,10 +911,10 @@ export class FinancesComponent implements AfterViewInit {
                 currency = currency.split(/(?=(?:...)*$)/).join(',');
                 return `${label < 0 ? '- $' : '$'}${currency}`;
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: this.stackLegendGenerator,
     tooltips: {
@@ -1049,9 +1049,9 @@ export class FinancesComponent implements AfterViewInit {
             data.datasets[tooltipItems.datasetIndex].label +
             `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`
           );
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   public labelBarOptionsMultiTC: Chart.ChartOptions = {
@@ -1060,23 +1060,23 @@ export class FinancesComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     responsive: true,
     maintainAspectRatio: false,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -1088,12 +1088,12 @@ export class FinancesComponent implements AfterViewInit {
                 style: 'currency',
                 currency: 'USD',
                 minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
+                maximumFractionDigits: 0
               }).format(Number(label));
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: this.stackLegendGenerator,
     tooltips: {
@@ -1220,14 +1220,14 @@ export class FinancesComponent implements AfterViewInit {
             style: 'currency',
             currency: 'USD',
             minimumFractionDigits: 0,
-            maximumFractionDigits: 0,
+            maximumFractionDigits: 0
           }).format(Number(tooltipItems.yLabel.toString()));
           return `${
             data.datasets[tooltipItems.datasetIndex].label
           }: ${currency}`;
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   public labelBarOptionsMultiPercentage: Chart.ChartOptions = {
@@ -1236,23 +1236,23 @@ export class FinancesComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     responsive: true,
     maintainAspectRatio: false,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -1260,13 +1260,13 @@ export class FinancesComponent implements AfterViewInit {
           ticks: {
             callback: (label: string | number) => {
               return `${Number(label)}%`;
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: {
-      display: false,
+      display: false
     },
     tooltips: {
       mode: 'x-axis',
@@ -1284,9 +1284,9 @@ export class FinancesComponent implements AfterViewInit {
             tooltipItems.yLabel
           }%`;
         },
-        title: () => '',
-      },
-    },
+        title: () => ''
+      }
+    }
   };
 
   public labelBarOptionsTC: Chart.ChartOptions = {
@@ -1294,22 +1294,22 @@ export class FinancesComponent implements AfterViewInit {
     maintainAspectRatio: false,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: false,
           gridLines: {
-            color: 'transparent',
-          },
-        },
+            color: 'transparent'
+          }
+        }
       ],
       yAxes: [
         {
           stacked: false,
           gridLines: {
-            color: 'transparent',
+            color: 'transparent'
           },
           ticks: {
             suggestedMin: 0,
@@ -1319,16 +1319,16 @@ export class FinancesComponent implements AfterViewInit {
                 style: 'currency',
                 currency: 'USD',
                 minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
+                maximumFractionDigits: 0
               }).format(Number(label))}`;
             },
-            autoSkip: false,
-          },
-        },
-      ],
+            autoSkip: false
+          }
+        }
+      ]
     },
     legend: {
-      display: true,
+      display: true
     },
     tooltips: {
       mode: 'x-axis',
@@ -1340,11 +1340,11 @@ export class FinancesComponent implements AfterViewInit {
             style: 'currency',
             currency: 'USD',
             minimumFractionDigits: 0,
-            maximumFractionDigits: 0,
+            maximumFractionDigits: 0
           }).format(Number(currency));
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   public labelBarOptions: any = {
@@ -1353,8 +1353,8 @@ export class FinancesComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -1362,16 +1362,16 @@ export class FinancesComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: false,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -1392,13 +1392,13 @@ export class FinancesComponent implements AfterViewInit {
 
                 return `${label < 0 ? '- $' : '$'}${currency}`;
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: {
-      display: true,
+      display: true
     },
     tooltips: {
       callbacks: {
@@ -1418,9 +1418,9 @@ export class FinancesComponent implements AfterViewInit {
             tooltipItems.yLabel < 0 ? '- $' : '$'
           }${currency}`;
         },
-        title: () => '',
-      },
-    },
+        title: () => ''
+      }
+    }
   };
 
   public labelBarOptionsSingleValue: Chart.ChartOptions = {
@@ -1429,23 +1429,23 @@ export class FinancesComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     responsive: true,
     maintainAspectRatio: false,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: false,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -1456,15 +1456,15 @@ export class FinancesComponent implements AfterViewInit {
                 style: 'currency',
                 currency: 'USD',
                 minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
+                maximumFractionDigits: 0
               }).format(Number(label))}`;
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: {
-      display: true,
+      display: true
     },
     tooltips: {
       mode: 'x-axis',
@@ -1482,12 +1482,12 @@ export class FinancesComponent implements AfterViewInit {
             style: 'currency',
             currency: 'USD',
             minimumFractionDigits: 0,
-            maximumFractionDigits: 0,
+            maximumFractionDigits: 0
           }).format(Number(currency))}`;
         },
-        title: () => '',
-      },
-    },
+        title: () => ''
+      }
+    }
   };
 
   public netProfitTrendMultiChartOptions: Chart.ChartOptions = {
@@ -1510,12 +1510,12 @@ export class FinancesComponent implements AfterViewInit {
             style: 'currency',
             currency: 'USD',
             minimumFractionDigits: 0,
-            maximumFractionDigits: 0,
+            maximumFractionDigits: 0
           }).format(Number(currency))}`;
         },
-        title: () => '',
-      },
-    },
+        title: () => ''
+      }
+    }
   };
 
   /************ Net Profit Percentage trend *************/
@@ -1525,23 +1525,23 @@ export class FinancesComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     responsive: true,
     maintainAspectRatio: false,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: false,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -1549,13 +1549,13 @@ export class FinancesComponent implements AfterViewInit {
           ticks: {
             callback: (label: string | number) => {
               return `${Number(label)}%`;
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: {
-      display: true,
+      display: true
     },
     tooltips: {
       mode: 'x-axis',
@@ -1568,9 +1568,9 @@ export class FinancesComponent implements AfterViewInit {
         label: function (tooltipItems: Chart.ChartTooltipItem) {
           return `${tooltipItems.xLabel} : ${tooltipItems.yLabel}%`;
         },
-        title: () => '',
-      },
-    },
+        title: () => ''
+      }
+    }
   };
   /************ Net Profit Percentage trend *************/
 
@@ -1580,8 +1580,8 @@ export class FinancesComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -1589,16 +1589,16 @@ export class FinancesComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -1607,13 +1607,13 @@ export class FinancesComponent implements AfterViewInit {
           ticks: {
             userCallback: function (item) {
               return item + '%';
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: {
-      display: true,
+      display: true
     },
     tooltips: {
       mode: 'x-axis',
@@ -1626,9 +1626,9 @@ export class FinancesComponent implements AfterViewInit {
         // use label callback to return the desired label
         label: function (tooltipItem, data) {
           return tooltipItem.xLabel + ': ' + tooltipItem.yLabel + '%';
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   public labelBarPercentOptionsStacked: any = {
@@ -1637,8 +1637,8 @@ export class FinancesComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -1646,16 +1646,16 @@ export class FinancesComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -1664,10 +1664,10 @@ export class FinancesComponent implements AfterViewInit {
           ticks: {
             userCallback: function (item) {
               return item + '%';
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: this.stackLegendGenerator,
     tooltips: {
@@ -1766,9 +1766,9 @@ export class FinancesComponent implements AfterViewInit {
           return `${
             data.datasets[tooltipItems.datasetIndex].label
           }: ${Math.round(tooltipItems.yLabel)}%`;
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   public pieChartOptions: any = {
@@ -1779,17 +1779,17 @@ export class FinancesComponent implements AfterViewInit {
       position: 'bottom',
       labels: {
         usePointStyle: true,
-        padding: 20,
+        padding: 20
       },
       onClick: (event: MouseEvent) => {
         event.stopPropagation();
-      },
+      }
     },
     elements: {
       center: {
-        text: '',
+        text: ''
         // sidePadding: 60
-      },
+      }
     },
     tooltips: {
       callbacks: {
@@ -1800,9 +1800,9 @@ export class FinancesComponent implements AfterViewInit {
             data['datasets'][0]['data'][tooltipItem['index']] +
             '%'
           );
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   public pieChartOptions2: any = {
@@ -1813,11 +1813,11 @@ export class FinancesComponent implements AfterViewInit {
       position: 'bottom',
       labels: {
         usePointStyle: true,
-        padding: 20,
+        padding: 20
       },
       onClick: (event: MouseEvent) => {
         event.stopPropagation();
-      },
+      }
     },
     tooltips: {
       callbacks: {
@@ -1827,17 +1827,17 @@ export class FinancesComponent implements AfterViewInit {
           // Convert the number to a string and split the string every 3 characters from the end and join comma separator
           currency = currency.split(/(?=(?:...)*$)/).join(',');
           return data['labels'][tooltipItem['index']] + ': $' + currency;
-        },
-      },
-    },
+        }
+      }
+    }
   };
   public pieChartOptions1: any = {
     responsive: true,
     maintainAspectRatio: false,
     legend: {
       display: true,
-      position: 'right',
-    },
+      position: 'right'
+    }
   };
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
@@ -1845,24 +1845,24 @@ export class FinancesComponent implements AfterViewInit {
     maintainAspectRatio: false,
     animation: {
       duration: 1500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     barThickness: 10,
     scales: {
       xAxes: [
         {
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
           ticks: {
-            suggestedMin: 0,
-          },
-        },
-      ],
+            suggestedMin: 0
+          }
+        }
+      ]
     },
     legend: {
       position: 'top',
@@ -1901,8 +1901,8 @@ export class FinancesComponent implements AfterViewInit {
           ci.getDatasetMeta(index).hidden = false;
         }
         ci.update();
-      },
-    },
+      }
+    }
   };
 
   public proceedureChartOptions: any = {
@@ -1912,24 +1912,24 @@ export class FinancesComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 1500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
-          ticks: {},
-        },
-      ],
+          ticks: {}
+        }
+      ]
     },
     legend: {
-      position: 'top',
+      position: 'top'
     },
     tooltips: {
       mode: 'x-axis',
@@ -1940,9 +1940,9 @@ export class FinancesComponent implements AfterViewInit {
             ': $' +
             tooltipItems.yLabel
           );
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   public selectedDentist: string;
@@ -1981,7 +1981,7 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply',
+      backgroundOverlayMode: 'multiply'
     },
     {
       data: [],
@@ -1997,7 +1997,7 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply',
+      backgroundOverlayMode: 'multiply'
     },
     {
       data: [],
@@ -2013,7 +2013,7 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply',
+      backgroundOverlayMode: 'multiply'
     },
     {
       data: [],
@@ -2029,7 +2029,7 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply',
+      backgroundOverlayMode: 'multiply'
     },
     {
       data: [],
@@ -2045,8 +2045,8 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
 
   public stackedChartData1: any[] = [];
@@ -2070,7 +2070,7 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply',
+      backgroundOverlayMode: 'multiply'
     },
     {
       data: [],
@@ -2087,7 +2087,7 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply',
+      backgroundOverlayMode: 'multiply'
     },
     {
       data: [],
@@ -2104,8 +2104,8 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
 
   public predictedChartData1: any[] = [];
@@ -2129,8 +2129,8 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public proceedureDentistChartData: any[] = [
     {
@@ -2147,8 +2147,8 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public proceedureChartData1: any[] = [];
 
@@ -2216,8 +2216,8 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
 
   public itemPredictedChartData1: any[] = [];
@@ -2469,7 +2469,7 @@ export class FinancesComponent implements AfterViewInit {
                     .map((item) => _.round((item.expense / production) * 100)),
                   label: accountName,
                   backgroundColor: this.doughnutChartColors[index],
-                  hoverBackgroundColor: this.doughnutChartColors[index],
+                  hoverBackgroundColor: this.doughnutChartColors[index]
                 });
               });
               this.expenseMultiChartLabels = _.chain(res.body.data)
@@ -2480,7 +2480,7 @@ export class FinancesComponent implements AfterViewInit {
               res.body.data.forEach((item: any) => {
                 this.single.push({
                   name: `${item.account_name}--${item.expense}`,
-                  value: _.round((item.expense / res.body.production) * 100),
+                  value: _.round((item.expense / res.body.production) * 100)
                 });
 
                 this.pieChartDatares.push(Math.round(item.expense));
@@ -2547,17 +2547,21 @@ export class FinancesComponent implements AfterViewInit {
               Array.isArray(this.clinic_id)
             ) {
               this.showClinicByclinic = true;
+              res.body.data.sort(
+                (a: any, b: any) =>
+                  b.production_per_clinic - a.production_per_clinic
+              );
+            } else {
+              res.body.data.sort(
+                (a: any, b: any) => b.prod_per_clinician - a.prod_per_clinician
+              );
             }
             this.finProductionByClinicianLoader = false;
             this.productionChartDatares = [];
             var totalPer = 0;
             if (res.body.data) {
-              res.body.data.sort(
-                (a, b) => b.prod_per_clinician - a.prod_per_clinician
-              );
-
               res.body.data.forEach((val) => {
-                if (this.showClinicByclinic == true) {
+                if (this.showClinicByclinic) {
                   if (parseInt(val.production_per_clinic) > 0) {
                     totalPer =
                       (Math.round(val.production_per_clinic) * 100) /
@@ -2720,8 +2724,8 @@ export class FinancesComponent implements AfterViewInit {
       data: [],
       label: '',
       backgroundColor: [],
-      hoverBackgroundColor: [],
-    },
+      hoverBackgroundColor: []
+    }
   ];
   public totalProductionCollectionLabel1 = [];
   public finTotalProductionLoader: any;
@@ -2748,8 +2752,8 @@ export class FinancesComponent implements AfterViewInit {
               data: [],
               label: '',
               backgroundColor: [],
-              hoverBackgroundColor: [],
-            },
+              hoverBackgroundColor: []
+            }
           ];
           if (res.status == 200) {
             this.productionstats = true;
@@ -2775,7 +2779,7 @@ export class FinancesComponent implements AfterViewInit {
                   data: [Math.round(item.production)],
                   label: item.clinic_name,
                   backgroundColor: this.doughnutChartColors[idx],
-                  hoverBackgroundColor: this.doughnutChartColors[idx],
+                  hoverBackgroundColor: this.doughnutChartColors[idx]
                 });
               });
               this.totalProductionCollection1 = collection;
@@ -2868,7 +2872,7 @@ export class FinancesComponent implements AfterViewInit {
 
               this.totalProductionCollectionLabel1 = [
                 'Production',
-                'Collection',
+                'Collection'
               ];
             } else {
               this.isAllClinic = false;
@@ -2877,15 +2881,15 @@ export class FinancesComponent implements AfterViewInit {
               );
               this.totalProductionCollectionLabel1 = [
                 'Production',
-                'Collection',
+                'Collection'
               ];
               this.totalProductionCollection1[0]['hoverBackgroundColor'] = [
                 '#ffb4b5',
-                '#4ccfae',
+                '#4ccfae'
               ];
               this.totalProductionCollection1[0]['backgroundColor'] = [
                 '#ffb4b5',
-                '#4ccfae',
+                '#4ccfae'
               ]; //as label are static we can add background color for that particular column as static
             }
             this.totalProductionCollectionMax = Math.max(
@@ -2917,8 +2921,8 @@ export class FinancesComponent implements AfterViewInit {
       data: [],
       label: '',
       shadowOffsetX: 3,
-      backgroundColor: 'rgba(0, 0, 255, 0.2)',
-    },
+      backgroundColor: 'rgba(0, 0, 255, 0.2)'
+    }
   ];
   public productionTrendIcon;
   public showBar: boolean = false;
@@ -3338,7 +3342,7 @@ export class FinancesComponent implements AfterViewInit {
         text: 'Please select date range within 365 Days',
         icon: 'warning',
         showCancelButton: false,
-        confirmButtonText: 'Ok',
+        confirmButtonText: 'Ok'
       });
     }
   }
@@ -3419,7 +3423,7 @@ export class FinancesComponent implements AfterViewInit {
   }
   public totalProductionCollection: any[] = [
     { data: [], label: 'Production' },
-    { data: [], label: 'Collection' },
+    { data: [], label: 'Collection' }
   ];
   public totalProductionCollectionLabel = [];
   public netProfitDisplayVal;
@@ -3474,7 +3478,7 @@ export class FinancesComponent implements AfterViewInit {
     { data: [], label: '' },
     { data: [], label: '' },
     { data: [], label: '' },
-    { data: [], label: '' },
+    { data: [], label: '' }
   ];
   public productionChartTrendLabels = [];
   public productionChartTrendLabels1 = [];
@@ -3605,8 +3609,8 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public discountsChartTrendMulti: any[] = [{ data: [], label: '' }];
   public discountsChartTrend1 = [];
@@ -3661,7 +3665,7 @@ export class FinancesComponent implements AfterViewInit {
                   data,
                   label,
                   backgroundColor,
-                  hoverBackgroundColor: backgroundColor,
+                  hoverBackgroundColor: backgroundColor
                 });
 
                 if (index == 0) {
@@ -3715,8 +3719,8 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public overdueChartTrend1 = [];
   public overdueChartTrendLabels = [];
@@ -3772,8 +3776,8 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public netProfitPercentChartTrendMulti: any[] = [
     { data: [], label: '' },
@@ -3783,7 +3787,7 @@ export class FinancesComponent implements AfterViewInit {
     { data: [], label: '' },
     { data: [], label: '' },
     { data: [], label: '' },
-    { data: [], label: '' },
+    { data: [], label: '' }
   ];
 
   public totalProductionChartTrendMulti: any[] = [
@@ -3794,17 +3798,17 @@ export class FinancesComponent implements AfterViewInit {
     { data: [], label: '' },
     { data: [], label: '' },
     { data: [], label: '' },
-    { data: [], label: '' },
+    { data: [], label: '' }
   ];
 
   public netProfitPmsChartTrendMulti: any[] = [
     { data: [], label: '' },
-    { data: [], label: '' },
+    { data: [], label: '' }
   ];
 
   public netProfitPmsPercentChartTrendMulti: any[] = [
     { data: [], label: '' },
-    { data: [], label: '' },
+    { data: [], label: '' }
   ];
 
   public totalProductionChartTrend1 = [];
@@ -3944,7 +3948,7 @@ export class FinancesComponent implements AfterViewInit {
                   data,
                   label,
                   backgroundColor,
-                  hoverBackgroundColor: backgroundColor,
+                  hoverBackgroundColor: backgroundColor
                 });
               });
 
@@ -3976,8 +3980,8 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public collectionChartTrend1 = [];
   public collectionChartTrendLabels = [];
@@ -4020,7 +4024,7 @@ export class FinancesComponent implements AfterViewInit {
                   data,
                   label,
                   backgroundColor,
-                  hoverBackgroundColor: backgroundColor,
+                  hoverBackgroundColor: backgroundColor
                 });
               });
               this.isAllClinic = true;
@@ -4130,8 +4134,8 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public productionVisitChartTrend1 = [];
   public productionVisitChartTrendLabels = [];
@@ -4243,8 +4247,8 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public netProfitChartTrend1 = [];
   public netProfitChartTrendLabels = [];
@@ -4266,8 +4270,8 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public netProfitPercentChartTrend1 = [];
   public netProfitPercentChartTrendLabels = [];
@@ -4289,8 +4293,8 @@ export class FinancesComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public netProfitPmsChartTrend1 = [];
   public netProfitPmsChartTrendLabels = [];
@@ -4368,7 +4372,7 @@ export class FinancesComponent implements AfterViewInit {
                 });
                 datasets.push({
                   label: 'Total',
-                  data: totalData,
+                  data: totalData
                 });
 
                 Object.entries(
@@ -4385,7 +4389,7 @@ export class FinancesComponent implements AfterViewInit {
                     borderColor: '#ffffff00',
                     radius: 0,
                     hoverRadius: 0,
-                    pointStyle: false,
+                    pointStyle: false
                   });
                 });
 
@@ -4537,7 +4541,7 @@ export class FinancesComponent implements AfterViewInit {
                       duration,
                       expense: _.chain(eles)
                         .sumBy((ele) => ele.expense)
-                        .value(),
+                        .value()
                     };
                   })
                   .value();
@@ -4548,7 +4552,7 @@ export class FinancesComponent implements AfterViewInit {
                 }),
                 label: accountName,
                 backgroundColor: this.doughnutChartColors[index],
-                hoverBackgroundColor: this.doughnutChartColors[index],
+                hoverBackgroundColor: this.doughnutChartColors[index]
               });
             });
             this.expensesChartTrendLabels =
@@ -4621,9 +4625,7 @@ export class FinancesComponent implements AfterViewInit {
         icon: 'error',
         title: 'Oops....',
         text:
-          'Minimum ' +
-          this.lowerLimit +
-          ' expense account will remain selected',
+          'Minimum ' + this.lowerLimit + ' expense account will remain selected'
       });
     } else {
       this.unSelectedData.push(this.selectedData[index]);
@@ -4638,7 +4640,7 @@ export class FinancesComponent implements AfterViewInit {
         text:
           'You can select a maximum of ' +
           this.upperLimit +
-          ' expense accounts at a time',
+          ' expense accounts at a time'
       });
     } else {
       this.selectedData.push(this.unSelectedData[index]);

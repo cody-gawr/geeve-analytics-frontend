@@ -337,14 +337,7 @@
                   <p>Please ensure your Xero/MYOB account is connected</p>
                 </div>
               </div>
-              <!-- <div *ngIf="multipleClinicsSelected === true" class="w-100">
-                <div class="sa_nodata_div no-found-data">
-                  <p>
-                    Xero/MYOB charts can only be viewed per clinic - please
-                    select one clinic to view
-                  </p>
-                </div>
-              </div> -->
+
               <div
                 *ngIf="
                   !multipleClinicsSelected &&
@@ -813,12 +806,12 @@
           <mat-card class="sa_no_tabs_area">
             <mat-card-content class="sa_matcard_content">
               <mat-card-title class="text-center">
-                <span *ngIf="showClinicByclinic === false"
-                  >Production % Per Clinician</span
-                >
-                <span *ngIf="showClinicByclinic === true"
+                <span *ngIf="showClinicByclinic; else productionPerClinician"
                   >Production % Per Clinic</span
                 >
+                <template #productionPerClinician>
+                  <span>Production % Per Clinician</span>
+                </template>
                 <div class="info-icon-container">
                   <img
                     [tooltip]="charTips['30']"
@@ -833,8 +826,8 @@
                   class="chart w-100"
                   *ngIf="
                     productionChartData.length > 0 &&
-                    showInternal == true &&
-                    finProductionByClinicianError == false
+                    showInternal &&
+                    !finProductionByClinicianError
                   "
                 >
                   <div class="clinician-chart">
@@ -854,8 +847,8 @@
                 </div>
                 <div
                   *ngIf="
-                    productionChartData.length <= 0 &&
-                    finProductionByClinicianLoader == false
+                    productionChartData.length == 0 &&
+                    !finProductionByClinicianLoader
                   "
                   class="no-data-placeholder"
                 >
@@ -869,8 +862,7 @@
           </mat-card>
           <div
             *ngIf="
-              finProductionByClinicianLoader == true &&
-              finProductionByClinicianError == false
+              finProductionByClinicianLoader && !finProductionByClinicianError
             "
             class="loader_container loader_container_middle"
           >
@@ -1974,10 +1966,12 @@
           <mat-card class="">
             <mat-card-content class="sa_matcard_content">
               <mat-card-title class="text-center">
-                <span *ngIf="showClinic === false"
-                  >Production % Per Clinician</span
+                <span *ngIf="showClinic; else productionPerClinician"
+                  >Production % Per Clinic</span
                 >
-                <span *ngIf="showClinic === true">Production % Per Clinic</span>
+                <template #productionPerClinician>
+                  <span>Production % Per Clinician</span>
+                </template>
                 <div class="info-icon-container">
                   <img
                     [tooltip]="charTips['30']"
@@ -1996,8 +1990,8 @@
                     *ngIf="
                       productionChartTrendLabels &&
                       productionChartTrendLabels.length > 0 &&
-                      finProductionByClinicianTrendLoader == false &&
-                      finProductionByClinicianTrendError == false
+                      !finProductionByClinicianTrendLoader &&
+                      !finProductionByClinicianTrendError
                     "
                     [datasets]="productionChartTrend"
                     [labels]="productionChartTrendLabels"
@@ -2011,8 +2005,8 @@
                   <div
                     *ngIf="
                       productionChartTrendLabels &&
-                      productionChartTrendLabels.length <= 0 &&
-                      finProductionByClinicianTrendLoader == false
+                      productionChartTrendLabels.length == 0 &&
+                      !finProductionByClinicianTrendLoader
                     "
                     class="no-data-placeholder"
                   >
@@ -2211,10 +2205,12 @@
           <mat-card class="">
             <mat-card-content class="sa_matcard_content">
               <mat-card-title class="text-center">
-                <span *ngIf="showClinic === false"
-                  >Production % Per Clinician</span
+                <span *ngIf="showClinic; else productionPerClinician"
+                  >Production % Per Clinic</span
                 >
-                <span *ngIf="showClinic === true">Production % Per Clinic</span>
+                <template #productionPerClinician>
+                  <span>Production % Per Clinician</span>
+                </template>
                 <div class="info-icon-container">
                   <img
                     [tooltip]="charTips['30']"
