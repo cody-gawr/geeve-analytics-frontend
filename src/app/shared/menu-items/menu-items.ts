@@ -274,8 +274,8 @@ export class MenuItems {
       (res) => {
         if (res.status == 200) {
           res.body.data.forEach((item: any) => {
-            if(item.permissions){
-              var dashboards = item.permissions.split(',');
+            if(item.permisions){
+              var dashboards = item.permisions.split(',');
               if (dashboards.includes('dashboard1'))
                 this.dashboard1role.push(item.role_id.toString());
               if (dashboards.includes('dashboard2'))
