@@ -119,18 +119,25 @@
                 <img src="../assets/images/net-profit-xero.png" alt />
                 <i class="fas fa-chart-bar"></i>
               </div>
-              <div *ngIf="productionstats == false" class="stats">
+
+              <div class="stats">
                 <h3 class="m-0">Production</h3>
-                <h1 class="m-0">
-                  <div class="loader-text">Calculating...</div>
-                </h1>
-              </div>
-              <div *ngIf="productionstats == true" class="stats">
-                <h3 class="m-0">Production</h3>
-                <h1 class="m-0">
+                <h1
+                  class="m-0"
+                  *ngIf="
+                    productionstats;
+                    else calculatingNetProfitProductionVal
+                  "
+                >
                   $ {{ netProfitProductionVal | number : '1.0-0' }}
                 </h1>
+                <ng-template #calculatingNetProfitProductionVal>
+                  <h1 class="m-0">
+                    <div class="loader-text">Calculating...</div>
+                  </h1>
+                </ng-template>
               </div>
+
               <div class="info-button">
                 <div class="info-icon-container">
                   <img
@@ -164,14 +171,17 @@
                   isCompleteMonth
                 "
               >
-                <div *ngIf="netprofitstats == true" class="stats-icon">
-                  <img src="../assets/images/net-profit.png" alt />
-                  <i class="fas fa-chart-bar"></i>
-                </div>
-                <div *ngIf="netprofitstats == true" class="stats">
-                  <h3 class="m-0">Net Profit</h3>
-                  <h1 class="m-0">${{ netProfitVal | number : '1.0-0' }}</h1>
-                </div>
+                <ng-container *ngIf="netprofitstats">
+                  <div class="stats-icon">
+                    <img src="../assets/images/net-profit.png" alt />
+                    <i class="fas fa-chart-bar"></i>
+                  </div>
+                  <div class="stats">
+                    <h3 class="m-0">Net Profit</h3>
+                    <h1 class="m-0">${{ netProfitVal | number : '1.0-0' }}</h1>
+                  </div>
+                </ng-container>
+
                 <div class="info-button">
                   <div class="info-icon-container">
                     <img
@@ -202,14 +212,7 @@
                   <p>Please ensure your Xero/MYOB account is connected</p>
                 </div>
               </div>
-              <!-- <div *ngIf="multipleClinicsSelected === true" class="w-100">
-                <div class="sa_nodata_div no-found-data">
-                  <p>
-                    Xero/MYOB charts can only be viewed per clinic - please
-                    select one clinic to view
-                  </p>
-                </div>
-              </div> -->
+
               <div
                 *ngIf="
                   !multipleClinicsSelected &&
@@ -293,20 +296,19 @@
                   isCompleteMonth
                 "
               >
-                <div *ngIf="netprofitpercentstats == true" class="stats-icon">
-                  <img src="../assets/images/net-profit-PMS.png" alt />
-                  <i class="fas fa-chart-bar"></i>
-                </div>
-                <!-- <div *ngIf="netprofitpercentstats == false" class="stats">
-                  <h3 class="m-0">Net Profit % </h3>
-                  <h1 class="m-0">
-                    <div class="loader-text">Calculating...</div>
-                  </h1>
-                </div> -->
-                <div *ngIf="netprofitpercentstats == true" class="stats">
-                  <h3 class="m-0">Net Profit %</h3>
-                  <h1 class="m-0">{{ netProfitPmsVal | number : '1.0-0' }}%</h1>
-                </div>
+                <ng-container *ngIf="netprofitpercentstats">
+                  <div class="stats-icon">
+                    <img src="../assets/images/net-profit-PMS.png" alt />
+                    <i class="fas fa-chart-bar"></i>
+                  </div>
+
+                  <div class="stats">
+                    <h3 class="m-0">Net Profit %</h3>
+                    <h1 class="m-0">
+                      {{ netProfitPmsVal | number : '1.0-0' }}%
+                    </h1>
+                  </div>
+                </ng-container>
                 <div class="info-button">
                   <div class="info-icon-container">
                     <img
@@ -442,7 +444,7 @@
                           <div
                             *ngIf="
                               (xeroConnect || myobConnect) &&
-                              categoryExpensesLoader == true &&
+                              categoryExpensesLoader &&
                               !categoryExpensesError
                             "
                             class="loader_container"
@@ -491,7 +493,7 @@
                             *ngIf="
                               (xeroConnect || myobConnect) &&
                               pieChartLabels &&
-                              pieChartLabels.length <= 0 &&
+                              pieChartLabels.length == 0 &&
                               !(
                                 categoryExpensesLoader ||
                                 multipleClinicsSelected
@@ -639,36 +641,10 @@
                   class="chart w-100"
                   *ngIf="
                     totalDiscountChartData &&
-                    totalDiscountChartData.length > 0 &&
-                    showInternal == true &&
-                    showClinicBar === false
-                  "
-                >
-                  <div class="clinician-chart">
-                    <canvas
-                      class="totalDiscount"
-                      #myCanvas
-                      baseChart
-                      [data]="totalDiscountChartData"
-                      [labels]="totalDiscountChartLabels"
-                      [chartType]="totalDiscountChartType"
-                      (chartHover)="chartHovered($event)"
-                      (chartClick)="chartClicked($event)"
-                      [legend]="false"
-                      [options]="pieChartOptions2"
-                      [plugins]="totalDiscountPluginObservable$ | async"
-                      [colors]="pieChartColors"
-                    >
-                    </canvas>
-                  </div>
-                </div>
-                <div
-                  class="chart w-100"
-                  *ngIf="
-                    totalDiscountChartData &&
-                    totalDiscountChartData.length > 0 &&
-                    showInternal &&
-                    showClinicBar
+                      totalDiscountChartData.length > 0 &&
+                      showInternal &&
+                      showClinicBar;
+                    else clinicianChart
                   "
                 >
                   <div class="clinician-chart">
@@ -689,11 +665,32 @@
                     </canvas>
                   </div>
                 </div>
+                <ng-template #clinicianChart>
+                  <div class="chart w-100">
+                    <div class="clinician-chart">
+                      <canvas
+                        class="totalDiscount"
+                        #myCanvas
+                        baseChart
+                        [data]="totalDiscountChartData"
+                        [labels]="totalDiscountChartLabels"
+                        [chartType]="totalDiscountChartType"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)"
+                        [legend]="false"
+                        [options]="pieChartOptions2"
+                        [plugins]="totalDiscountPluginObservable$ | async"
+                        [colors]="pieChartColors"
+                      >
+                      </canvas>
+                    </div>
+                  </div>
+                </ng-template>
                 <div
                   *ngIf="
                     totalDiscountChartData &&
                     totalDiscountChartData.length <= 0 &&
-                    finTotalDiscountsLoader == false
+                    !finTotalDiscountsLoader
                   "
                   class="no-data-placeholder"
                 >
@@ -746,56 +743,6 @@
             </mat-card-content>
           </mat-card>
         </div>
-        <!-- <div fxFlex="calc(36% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
-          class="total_val sa_flexbg predictor_ratio md_mrn last custom_ngx_cw07">
-          <mat-card class="">
-            <mat-card-content class="sa_matcard_content">
-
-              <mat-card-title class="text-center">
-                <div>
-                  <span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button
-                    matTooltip="{{trendText}} : ${{productionTrendVal | number:'1.0-0'}}" *ngIf="trendText"><img
-                      class="trend_ico" src="../assets/images/trend_{{productionTrendIcon}}.png"></span>
-                  Production Per Visit
-                </div>
-                <div class="info-icon-container">
-                  <img [tooltip]="this.constants.tipProdPerVisit" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
-                </div>
-              </mat-card-title>
-              <div class="card-body clinician-center-chart">
-                <div style="height: 200px; width: 100%;"
-                  *ngIf="productionVal > 0 && finProductionPerVisitLoader == false">
-                  <ngx-gauge class="productionVisit" [type]="gaugeType" [value]="productionVal" [thick]="gaugeThick"
-                    [prepend]="gaugePrependText" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor"
-                    [cap]="cap" [size]="size"> </ngx-gauge>
-                </div>
-                <div *ngIf="productionVal <= 0 && finProductionPerVisitLoader == false" class="no-data-placeholder">
-                  <div class="sa_nodata_div">
-                  </div>
-                  <p class="chart-placeholder-text">You have no production in the selected period</p>
-                </div>
-              </div>
-              <div class="card-footer">
-                <div fxLayout="row wrap" class="m-t-40 predicted1 sa_chart_details_sec" *ngIf="productionVal > 0">
-                  <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                    <h3 class="m-0 value-num">${{productionVal | number:'1.0-0'}}</h3>
-                    <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
-                    <span class="value-text" *ngIf="currentText == ''">Current</span>
-                  </div>
-                  <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                    <h3 class="m-0 value-num">${{productionTrendVal | number:'1.0-0'}}</h3>
-                    <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
-                    <span class="value-text" *ngIf="trendText == ''">Previous</span>
-                  </div>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-          <div *ngIf="finProductionPerVisitLoader == true" class="loader_container loader_container_middle"><img
-              class="loader_ico" src="../assets/images/720.gif">
-            <div class="loader-text">Calculating...</div>
-          </div>
-        </div> -->
         <div
           fxFlex="calc(36% - 10px)"
           fxFlex.md="100"
@@ -919,8 +866,8 @@
                   class="chart-per-visit"
                   *ngIf="
                     productionVal > 0 &&
-                    finProductionPerVisitLoader == false &&
-                    showBar === false
+                    !finProductionPerVisitLoader &&
+                    !showBar
                   "
                 >
                   <ngx-gauge
@@ -938,9 +885,7 @@
                 </div>
                 <canvas
                   *ngIf="
-                    productionVal > 0 &&
-                    finProductionPerVisitLoader == false &&
-                    showBar === true
+                    productionVal > 0 && !finProductionPerVisitLoader && showBar
                   "
                   #myCanvas
                   id="ProdPerVisit"
@@ -956,9 +901,7 @@
                 >
                 </canvas>
                 <div
-                  *ngIf="
-                    productionVal <= 0 && finProductionPerVisitLoader == false
-                  "
+                  *ngIf="productionVal <= 0 && !finProductionPerVisitLoader"
                   class="no-data-placeholder"
                 >
                   <div class="sa_nodata_div"></div>
@@ -1010,7 +953,7 @@
             </mat-card-content>
           </mat-card>
           <div
-            *ngIf="finProductionPerVisitLoader == true"
+            *ngIf="finProductionPerVisitLoader"
             class="loader_container loader_container_middle"
           >
             <img class="loader_ico" src="../assets/images/720.gif" />
@@ -1111,7 +1054,7 @@
                   *ngIf="
                     totalDiscountChartData &&
                     totalDiscountChartData.length <= 0 &&
-                    finTotalDiscountsLoader == false
+                    !finTotalDiscountsLoader
                   "
                   class="no-data-placeholder"
                 >
@@ -1164,55 +1107,13 @@
             </mat-card-content>
           </mat-card>
           <div
-            *ngIf="finTotalDiscountsLoader == true"
+            *ngIf="finTotalDiscountsLoader"
             class="loader_container loader_container_middle"
           >
             <img class="loader_ico" src="../assets/images/720.gif" />
             <div class="loader-text">Calculating...</div>
           </div>
         </div>
-        <!-- <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
-          class="sa_flexbg predictor_ratio md_mrn  custom_ngx_cw04">
-          <mat-card class="sa_no_tabs_area">
-            <mat-card-content class="sa_matcard_content">
-              <mat-card-title class="text-center">Current Overdues<div class="info-icon-container">
-                  <img [tooltip]="this.constants.tipDiscounts" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
-                </div>
-              </mat-card-title>
-              <div class="card-body chart-spacing">
-                <div class="chart w-100">
-                  <div style="height: 280px; width: 100%;"
-                    *ngIf="totalOverdueAccountDataMax > 0 && showInternal == true">
-                    <canvas class="totalOverdue" #myCanvas baseChart [data]="totalOverdueAccountData"
-                      [labels]="totalOverdueAccountLabels" [chartType]="productionChartType"
-                      (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"
-                      [options]="pieChartOptions2" [plugins]="currentOverduePluginObservable$ | async"
-                      [colors]="pieChartColors"> </canvas>
-                  </div>
-                  <div *ngIf="totalOverdueAccountDataMax <= 0 && finOverdueAccountsLoader == false"
-                    class="no-data-placeholder">
-                    <div class="sa_nodata_div">
-                    </div>
-                    <p class="chart-placeholder-text">You have no overdue invoices > 30 days</p>
-                  </div>
-                </div>
-              </div>
-              <div class="card-footer">
-                <div fxLayout="row wrap" class="m-t-40 predicted1 sa_chart_details_sec"
-                  *ngIf="totalOverdueAccountDataMax > 0">
-                  <div fxFlex.gt-sm="100%" fxFlex.gt-xs="100%" fxFlex="100" class="text-center">
-                    <h3 class="m-0 value-num">$ {{totalOverdueAccount | number:'1.0-0'}}</h3>
-                    <span class="value-text">Current Overdues</span>
-                  </div>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-          <div *ngIf="finOverdueAccountsLoader == true" class="loader_container loader_container_middle"><img
-              class="loader_ico" src="../assets/images/720.gif">
-            <div class="loader-text">Calculating...</div>
-          </div>
-        </div> -->
       </div>
       <div
         fxLayout="row wrap"
@@ -1256,7 +1157,7 @@
                       class="chart-prod-coll"
                       *ngIf="
                         totalProductionCollectionMax > 0 &&
-                        finTotalProductionLoader == false &&
+                        !finTotalProductionLoader &&
                         !isAllClinic
                       "
                     >
@@ -1295,7 +1196,7 @@
                     <div
                       *ngIf="
                         totalProductionCollectionMax <= 0 &&
-                        finTotalProductionLoader == false
+                        !finTotalProductionLoader
                       "
                       class="no-data-placeholder"
                     >
@@ -1432,7 +1333,7 @@
             </mat-card-content>
           </mat-card>
           <div
-            *ngIf="finTotalProductionLoader == true"
+            *ngIf="finTotalProductionLoader"
             class="loader_container loader_container_middle"
           >
             <img class="loader_ico" src="../assets/images/720.gif" />
@@ -1553,8 +1454,8 @@
                     *ngIf="
                       netProfitDisplayVal == 1 &&
                       totalProductionChartTrendLabels.length > 0 &&
-                      finTotalProductionTrendLoader == false &&
-                      showProdByclinic == false
+                      !finTotalProductionTrendLoader &&
+                      !showProdByclinic
                     "
                     class="profit1 net_profit"
                     baseChart
@@ -1569,10 +1470,7 @@
                   >
                   </canvas>
                   <canvas
-                    *ngIf="
-                      finTotalProductionTrendLoader == false &&
-                      showProdByclinic == true
-                    "
+                    *ngIf="!finTotalProductionTrendLoader && showProdByclinic"
                     class="profit1 net_profit"
                     baseChart
                     [datasets]="totalProductionChartTrendMulti"
@@ -1588,7 +1486,7 @@
                     *ngIf="
                       netProfitDisplayVal == 1 &&
                       totalProductionChartTrendLabels.length == 0 &&
-                      finTotalProductionTrendLoader == false
+                      !finTotalProductionTrendLoader
                     "
                     class="no-data-placeholder"
                   >
@@ -1678,7 +1576,7 @@
                       (xeroConnect || myobConnect) &&
                       netProfitDisplayVal == 3 &&
                       netProfitPercentChartTrendLabels.length == 0 &&
-                      finNetProfitPercentTrendLoader == false
+                      !finNetProfitPercentTrendLoader
                     "
                     class="no-data-placeholder"
                   >
@@ -1760,16 +1658,14 @@
             </mat-card-content>
           </mat-card>
           <div
-            *ngIf="finNetProfitTrendLoader == true && netProfitDisplayVal == 1"
+            *ngIf="finNetProfitTrendLoader && netProfitDisplayVal == 1"
             class="loader_container loader_container_middle"
           >
             <img class="loader_ico" src="../assets/images/720.gif" />
             <div class="loader-text">Calculating...</div>
           </div>
           <div
-            *ngIf="
-              finNetProfitPercentTrendLoader == true && netProfitDisplayVal == 2
-            "
+            *ngIf="finNetProfitPercentTrendLoader && netProfitDisplayVal == 2"
             class="loader_container loader_container_middle"
           >
             <img class="loader_ico" src="../assets/images/720.gif" />
@@ -1777,9 +1673,7 @@
           </div>
 
           <div
-            *ngIf="
-              finNetProfitPMSTrendLoader == true && netProfitDisplayVal == 3
-            "
+            *ngIf="finNetProfitPMSTrendLoader && netProfitDisplayVal == 3"
             class="loader_container loader_container_middle"
           >
             <img class="loader_ico" src="../assets/images/720.gif" />
@@ -1834,7 +1728,7 @@
                   <div
                     *ngIf="
                       productionVisitChartTrendLabels.length == 0 &&
-                      finProductionPerVisitTrendLoader == false
+                      !finProductionPerVisitTrendLoader
                     "
                     class="no-data-placeholder"
                   >
@@ -1848,7 +1742,7 @@
             </mat-card-content>
           </mat-card>
           <div
-            *ngIf="finProductionPerVisitTrendLoader == true"
+            *ngIf="finProductionPerVisitTrendLoader"
             class="loader_container loader_container_middle"
           >
             <img class="loader_ico" src="../assets/images/720.gif" />
@@ -2021,8 +1915,8 @@
           </mat-card>
           <div
             *ngIf="
-              finProductionByClinicianTrendLoader == true &&
-              finProductionByClinicianTrendError == false
+              finProductionByClinicianTrendLoader &&
+              !finProductionByClinicianTrendError
             "
             class="loader_container loader_container_middle"
           >
@@ -2059,8 +1953,8 @@
                     *ngIf="
                       discountsChartTrend1 &&
                       discountsChartTrend1.length > 0 &&
-                      finTotalDiscountsTrendLoader == false &&
-                      showByclinic == false
+                      !finTotalDiscountsTrendLoader &&
+                      !showByclinic
                     "
                     baseChart
                     [datasets]="discountsChartTrend"
@@ -2076,10 +1970,7 @@
                   <canvas
                     #myCanvas2
                     class="trendtotalDiscount"
-                    *ngIf="
-                      finTotalDiscountsTrendLoader == false &&
-                      showByclinic == true
-                    "
+                    *ngIf="!finTotalDiscountsTrendLoader && showByclinic"
                     baseChart
                     [datasets]="discountsChartTrendMulti"
                     [labels]="discountsChartTrendMultiLabels1"
@@ -2093,8 +1984,8 @@
                   <div
                     *ngIf="
                       discountsChartTrend1 &&
-                      discountsChartTrend1.length <= 0 &&
-                      finTotalDiscountsTrendLoader == false
+                      discountsChartTrend1.length == 0 &&
+                      !finTotalDiscountsTrendLoader
                     "
                     class="no-data-placeholder"
                   >
@@ -2108,7 +1999,7 @@
             </mat-card-content>
           </mat-card>
           <div
-            *ngIf="finTotalDiscountsTrendLoader == true"
+            *ngIf="finTotalDiscountsTrendLoader"
             class="loader_container loader_container_middle"
           >
             <img class="loader_ico" src="../assets/images/720.gif" />
@@ -2150,8 +2041,8 @@
                     *ngIf="
                       totalProductionCollectionLabel &&
                       totalProductionCollectionLabel.length > 0 &&
-                      finCollectionTrendLoader == false &&
-                      finTotalProductionTrendLoader == false
+                      !finCollectionTrendLoader &&
+                      !finTotalProductionTrendLoader
                     "
                     baseChart
                     [datasets]="totalProductionCollection"
@@ -2168,8 +2059,8 @@
                     *ngIf="
                       totalProductionCollectionLabel &&
                       totalProductionCollectionLabel.length <= 0 &&
-                      finCollectionTrendLoader == false &&
-                      finTotalProductionTrendLoader == false
+                      !finCollectionTrendLoader &&
+                      !finTotalProductionTrendLoader
                     "
                     class="no-data-placeholder"
                   >
@@ -2183,10 +2074,7 @@
             </mat-card-content>
           </mat-card>
           <div
-            *ngIf="
-              finCollectionTrendLoader == true ||
-              finTotalProductionTrendLoader == true
-            "
+            *ngIf="finCollectionTrendLoader || finTotalProductionTrendLoader"
             class="loader_container loader_container_middle"
           >
             <img class="loader_ico" src="../assets/images/720.gif" />
@@ -2229,8 +2117,8 @@
                     *ngIf="
                       productionChartTrendLabels &&
                       productionChartTrendLabels.length > 0 &&
-                      finProductionByClinicianTrendLoader == false &&
-                      finProductionByClinicianTrendError == false
+                      !finProductionByClinicianTrendLoader &&
+                      !finProductionByClinicianTrendError
                     "
                     [datasets]="productionChartTrend"
                     [labels]="productionChartTrendLabels"
@@ -2244,8 +2132,8 @@
                   <div
                     *ngIf="
                       productionChartTrendLabels &&
-                      productionChartTrendLabels.length <= 0 &&
-                      finProductionByClinicianTrendLoader == false
+                      productionChartTrendLabels.length == 0 &&
+                      !finProductionByClinicianTrendLoader
                     "
                     class="no-data-placeholder"
                   >
@@ -2260,8 +2148,8 @@
           </mat-card>
           <div
             *ngIf="
-              finProductionByClinicianTrendLoader == true &&
-              finProductionByClinicianTrendError == false
+              finProductionByClinicianTrendLoader &&
+              !finProductionByClinicianTrendError
             "
             class="loader_container loader_container_middle"
           >
