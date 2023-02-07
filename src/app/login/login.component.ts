@@ -59,6 +59,7 @@ export class LoginComponent implements OnInit {
 
     this.errorLogin = false;
     this.errorforAttmp = false;
+
     this.loginService
       .login(this.form.value.uname.trim(), this.form.value.password)
       .subscribe(
@@ -78,13 +79,16 @@ export class LoginComponent implements OnInit {
             datares['login_status'] = res.body.data.data.status;
             datares['display_name'] = res.body.data.data.display_name;
             datares['dentistid'] = res.body.data.data.dentist_id;
+
             datares['features_dismissed'] =
               res.body.data.data.features_dismissed;
             datares['health_screen_mtd'] = res.body.data.data.health_screen_mtd;
             let opts = this.constants.cookieOpt as CookieOptions;
+
             var nextStep = (
               parseInt(res.body.data.data.stepper_status) + 1
             ).toString();
+
             this._cookieService.put('stepper', nextStep, opts);
             this._cookieService.put('userid', '', opts);
             this._cookieService.put('childid', '', opts);
@@ -94,26 +98,31 @@ export class LoginComponent implements OnInit {
             this._cookieService.put('username', datares['username'], opts);
             this._cookieService.put('email', datares['email'], opts);
             this._cookieService.put('user_type', datares['user_type'], opts);
+
             this._cookieService.put(
               'login_status',
               datares['login_status'],
               opts
             );
+
             this._cookieService.put(
               'display_name',
               datares['display_name'],
               opts
             );
+
             this._cookieService.put(
               'features_dismissed',
               datares['features_dismissed'],
               opts
             );
+
             this._cookieService.put(
               'health_screen_mtd',
               datares['health_screen_mtd'],
               opts
             );
+
             /*this._cookieService.put("user_image", datares['user_image'], opts);        */
             if (datares['user_type'] != '2' && datares['user_type'] != '7') {
               this._cookieService.put('userid', datares['parentid'], opts);
@@ -122,6 +131,7 @@ export class LoginComponent implements OnInit {
               this._cookieService.put('dentist_toggle', 'false', opts);
             }
             var self = this;
+
             if (
               datares['parent_stepper'] != 'no' &&
               parseInt(datares['parent_stepper']) < 4
@@ -169,31 +179,30 @@ export class LoginComponent implements OnInit {
   }
 
   getRolesIndividual() {
-    var permission = '';
+    var permision = '';
     var user_type = this._cookieService.get('user_type');
+
     this.rolesUsersService
       .getRolesIndividual(this.clinic_id)
       .subscribe((res) => {
-        console.log('getRolesIndividual');
-        console.log(res);
         if (res.status == 200) {
-          permission = res.body.data;
-          if (permission != '' && user_type != '2' && user_type != '7') {
-            if (permission.indexOf('healthscreen') >= 0) {
+          permision = res.body.data;
+          if (permision != '' && user_type != '2' && user_type != '7') {
+            if (permision.indexOf('healthscreen') >= 0) {
               this.router.navigate(['/dashboards/healthscreen']);
-            } else if (permission.indexOf('dashboard1') >= 0) {
+            } else if (permision.indexOf('dashboard1') >= 0) {
               this.router.navigate(['/dashboards/cliniciananalysis']);
-            } else if (permission.indexOf('dashboard2') >= 0) {
+            } else if (permision.indexOf('dashboard2') >= 0) {
               this.router.navigate(['/dashboards/clinicianproceedures']);
-            } else if (permission.indexOf('dashboard3') >= 0) {
+            } else if (permision.indexOf('dashboard3') >= 0) {
               this.router.navigate(['/dashboards/frontdesk']);
-            } else if (permission.indexOf('dashboard4') >= 0) {
+            } else if (permision.indexOf('dashboard4') >= 0) {
               this.router.navigate(['/dashboards/marketing']);
-            } else if (permission.indexOf('dashboard5') >= 0) {
+            } else if (permision.indexOf('dashboard5') >= 0) {
               this.router.navigate(['/dashboards/finances']);
-            } else if (permission.indexOf('morninghuddle') >= 0) {
+            } else if (permision.indexOf('morninghuddle') >= 0) {
               this.router.navigate(['/morning-huddle']);
-            } else if (permission.indexOf('lostopportunity') >= 0) {
+            } else if (permision.indexOf('lostopportunity') >= 0) {
               this.router.navigate(['/lost-opportunity']);
             } else {
               this.router.navigate(['/profile-settings']);
@@ -209,34 +218,33 @@ export class LoginComponent implements OnInit {
 
   getRoles() {
     this.userType = this._cookieService.get('user_type');
-    let permission = '';
+    var permision = '';
     this.rolesUsersService.getRoles().subscribe((res) => {
       if (res.status == 200) {
-        const permissionByRoleId = (<any[]>res.body.data).find(
-          (item: any) => item.role_id == Number(this.userType)
-        );
-        if (!!permissionByRoleId) {
-          permission = permissionByRoleId.permisions;
-        }
+        res.body.data.forEach((dt) => {
+          if (this.userType == dt['role_id']) {
+            permision = dt['permisions'];
+          }
+        });
 
         if (res.body.plan == 'lite') {
           this.router.navigate(['/dashboards/healthscreen']);
-        } else if (permission != '' && this.userType != '7') {
-          if (permission.indexOf('healthscreen') >= 0) {
+        } else if (permision != '' && this.userType != '7') {
+          if (permision.indexOf('healthscreen') >= 0) {
             this.router.navigate(['/dashboards/healthscreen']);
-          } else if (permission.indexOf('dashboard1') >= 0) {
+          } else if (permision.indexOf('dashboard1') >= 0) {
             this.router.navigate(['/dashboards/cliniciananalysis']);
-          } else if (permission.indexOf('dashboard2') >= 0) {
+          } else if (permision.indexOf('dashboard2') >= 0) {
             this.router.navigate(['/dashboards/clinicianproceedures']);
-          } else if (permission.indexOf('dashboard3') >= 0) {
+          } else if (permision.indexOf('dashboard3') >= 0) {
             this.router.navigate(['/dashboards/frontdesk']);
-          } else if (permission.indexOf('dashboard4') >= 0) {
+          } else if (permision.indexOf('dashboard4') >= 0) {
             this.router.navigate(['/dashboards/marketing']);
-          } else if (permission.indexOf('dashboard5') >= 0) {
+          } else if (permision.indexOf('dashboard5') >= 0) {
             this.router.navigate(['/dashboards/finances']);
-          } else if (permission.indexOf('morninghuddle') >= 0) {
+          } else if (permision.indexOf('morninghuddle') >= 0) {
             this.router.navigate(['/morning-huddle']);
-          } else if (permission.indexOf('lostopportunity') >= 0) {
+          } else if (permision.indexOf('lostopportunity') >= 0) {
             this.router.navigate(['/lost-opportunity']);
           } else {
             this.router.navigate(['/profile-settings']);
