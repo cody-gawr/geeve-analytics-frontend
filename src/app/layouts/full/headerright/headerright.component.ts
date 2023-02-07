@@ -254,13 +254,9 @@ export class AppHeaderrightComponent implements AfterViewInit {
 
   public get isMultiClinicsVisible(): boolean {
     return (
-      ([
-        // '/dashboards/cliniciananalysis',
-        '/dashboards/clinicianproceedures',
-        '/dashboards/finances'
-        // '/dashboards/marketing',
-        // '/dashboards/frontdesk'
-      ].includes(this.route) &&
+      (['/dashboards/clinicianproceedures', '/dashboards/finances'].includes(
+        this.route
+      ) &&
         !['4', '7'].includes(this.user_type) &&
         this.userId == 1) ||
       ([
@@ -268,7 +264,12 @@ export class AppHeaderrightComponent implements AfterViewInit {
         '/dashboards/clinicianproceedures',
         '/dashboards/finances',
         '/dashboards/marketing',
-        '/dashboards/frontdesk'
+        '/dashboards/frontdesk',
+        '/dashboards/cliniciananalysis/multi',
+        '/dashboards/clinicianproceedures/multi',
+        '/dashboards/finances/multi',
+        '/dashboards/marketing/multi',
+        '/dashboards/frontdesk/multi'
       ].includes(this.route) &&
         !['4', '7'].includes(this.user_type) &&
         this.userId == 10001)
