@@ -274,29 +274,33 @@ export class MenuItems {
       (res) => {
         if (res.status == 200) {
           res.body.data.forEach((item: any) => {
-            var dashboards = item.permisions.split(',');
-            if (dashboards.includes('dashboard1'))
-              this.dashboard1role.push(item.role_id.toString());
-            if (dashboards.includes('dashboard2'))
-              this.dashboard2role.push(item.role_id.toString());
-            if (dashboards.includes('dashboard3'))
-              this.dashboard3role.push(item.role_id.toString());
-            if (dashboards.includes('dashboard4'))
-              this.dashboard4role.push(item.role_id.toString());
-            if (dashboards.includes('dashboard5'))
-              this.dashboard5role.push(item.role_id.toString());
-            if (dashboards.includes('healthscreen'))
-              this.healthscreenrole.push(item.role_id.toString());
-            if (dashboards.includes('morninghuddle'))
-              this.morninghuddlerole.push(item.role_id.toString());
-            if (dashboards.includes('lostoppurtunity'))
-              this.lostoppurtunityrole.push(item.role_id.toString());
-            if (dashboards.includes('profilesettings'))
-              this.profilesettingsrole.push(item.role_id.toString());
+            if(item.permissions){
+              var dashboards = item.permissions.split(',');
+              if (dashboards.includes('dashboard1'))
+                this.dashboard1role.push(item.role_id.toString());
+              if (dashboards.includes('dashboard2'))
+                this.dashboard2role.push(item.role_id.toString());
+              if (dashboards.includes('dashboard3'))
+                this.dashboard3role.push(item.role_id.toString());
+              if (dashboards.includes('dashboard4'))
+                this.dashboard4role.push(item.role_id.toString());
+              if (dashboards.includes('dashboard5'))
+                this.dashboard5role.push(item.role_id.toString());
+              if (dashboards.includes('healthscreen'))
+                this.healthscreenrole.push(item.role_id.toString());
+              if (dashboards.includes('morninghuddle'))
+                this.morninghuddlerole.push(item.role_id.toString());
+              if (dashboards.includes('lostoppurtunity'))
+                this.lostoppurtunityrole.push(item.role_id.toString());
+              if (dashboards.includes('profilesettings'))
+                this.profilesettingsrole.push(item.role_id.toString());
+            }
           });
         }
       },
-      (error) => {}
+      (error) => {
+        console.error('getRoles', error);
+      }
     );
   }
 }

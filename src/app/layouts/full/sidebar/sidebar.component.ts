@@ -200,20 +200,24 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
+
+  ngOnInit() {
+    if (!this._cookieService.get("user_image")){
+      this.user_image = 'assets/images/gPZwCbdS.jpg';
+    }else{
+      /*this.user_image = this._cookieService.get("user_image");*/
+    }
+    this.user_type = this._cookieService.get('user_type');
+    this.display_name = this._cookieService.get('display_name');
+    this.login_status = this._cookieService.get('login_status');
+  }
+
   ngAfterViewInit() {
     (<any>$('.srh-btn, .cl-srh-btn')).on('click', function () {
       (<any>$('.app-search')).toggle(200);
     });
-    // This is for the topbar search
-    this.user_type = this._cookieService.get('user_type');
-    this.display_name = this._cookieService.get('display_name');
-    /*this.user_image = this._cookieService.get("user_image");*/
-    this.login_status = this._cookieService.get('login_status');
-    if (!this._cookieService.get('user_image'))
-      this.user_image = 'assets/images/gPZwCbdS.jpg';
-
-    // This is for the megamenu
   }
+
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
