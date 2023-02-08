@@ -28,6 +28,8 @@ import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
 import { RolesUsersService } from '../../roles-users/roles-users.service';
 import { environment } from '../../../environments/environment';
+import * as Chart from 'chart.js';
+import * as _ from 'lodash';
 
 export interface Dentist {
   providerId: string;
@@ -1686,7 +1688,7 @@ export class MarketingComponent implements AfterViewInit {
   public mkRevenueByReferralLoader: any;
 
   public reffralAllData: any = [];
-  public mkNewPatientsByReferalRevMulti: any[] = [{ data: [], label: '' }];
+  public mkNewPatientsByReferalRevMulti: Chart.ChartDataSets[] = [];
   public showmulticlinicNewPatientsRev: boolean = false;
   public mkNewPatientsByReferalRevLabels: any = [];
   public totalNewPatientsReferralRev: any = 0;
@@ -1694,8 +1696,6 @@ export class MarketingComponent implements AfterViewInit {
 
   private mkRevenueByReferral() {
     this.mkRevenueByReferralLoader = true;
-    var user_id;
-    var clinic_id;
     this.mkNewPatientsByReferalRevMulti = [];
     this.showmulticlinicNewPatientsRev = false;
     this.mkNewPatientsByReferalRevLabels = [];
@@ -1712,7 +1712,6 @@ export class MarketingComponent implements AfterViewInit {
           this.reffralAllData = [];
           this.revenueReferralData = [];
           this.revenueReferralLabels = [];
-          let mkNewPatientsLabels = [];
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
           if (res.status == 200) {
@@ -1723,62 +1722,33 @@ export class MarketingComponent implements AfterViewInit {
               Array.isArray(this.clinic_id)
             ) {
               this.totalNewPatientsReferralRev = Math.round(res.body.total);
-              this.showmulticlinicNewPatientsRev = true;
-              let label = [];
-              res.body.data.forEach((res) => {
-                res.val.forEach((result, key) => {
-                  if (result.reftype_name) label.push(result.reftype_name);
-                });
-              });
-              mkNewPatientsLabels = [...new Set(label)];
-              res.body.data.forEach((res, ind) => {
-                res.val.forEach((result, key) => {
-                  if (
-                    typeof this.mkNewPatientsByReferalRevMulti[key] ==
-                    'undefined'
-                  ) {
-                    this.mkNewPatientsByReferalRevMulti[key] = {
-                      data: [],
-                      label: ''
+              this.mkNewPatientsByReferalRevLabels = _.chain(res.body.data)
+                .map((item) => item.clinic_name)
+                .value();
+              const flattenInvoiceAmountsByRefType: _.CollectionChain<any> =
+                _.chain(res.body.data)
+                  .map((item) => item.val)
+                  .flatten();
+
+              this.mkNewPatientsByReferalRevMulti =
+                flattenInvoiceAmountsByRefType
+                  .groupBy('reftype_name')
+                  .map((items: any[], refTypeName: string) => {
+                    return {
+                      data: this.mkNewPatientsByReferalRevLabels.map(
+                        (clinicName: string) => {
+                          const item = items.find(
+                            (ele) => ele.clinic_name == clinicName
+                          );
+                          return item ? item.invoice_amount : 0;
+                        }
+                      ),
+                      label: refTypeName
                     };
-                  }
-                  if (
-                    typeof this.mkNewPatientsByReferalRevMulti[key]['data'] ==
-                    'undefined'
-                  ) {
-                    this.mkNewPatientsByReferalRevMulti[key]['data'] = [];
-                  }
-                  // var total = Math.trunc(result.invoice_amount);
-                  var total = Math.round(result.invoice_amount);
-                  if (
-                    result.production > 0 &&
-                    result.production.toString().includes('.')
-                  ) {
-                    var num_parts = result.production.split('.');
-                    num_parts[1] = num_parts[1].charAt(0);
-                    total = num_parts.join('.');
-                  }
-                  mkNewPatientsLabels.forEach((name, index) => {
-                    if (result.reftype_name === name) {
-                      if (total > 0) {
-                        this.mkNewPatientsByReferalRevMulti[index]['data'][
-                          ind
-                        ] = total;
-                        this.mkNewPatientsByReferalRevMulti[index]['label'] =
-                          result.reftype_name;
-                      }
-                    }
-                  });
-                });
-                this.mkNewPatientsByReferalRevLabels.push(res.clinic_name);
-              });
-              this.mkNewPatientsByReferalRevMulti.forEach((item) => {
-                for (let i = 0; i < item.data.length; i++) {
-                  if (!item.data[i]) {
-                    item.data[i] = 0;
-                  }
-                }
-              });
+                  })
+                  .value();
+
+              this.showmulticlinicNewPatientsRev = true;
               this.mkRevenueByReferralLoader = false;
             } else {
               this.reffralAllData = res.body;
