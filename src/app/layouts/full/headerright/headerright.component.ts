@@ -510,7 +510,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
       );
   }
 
-  checkPremissions(clinicId: string) {
+  checkPermissions(clinicId: string) {
     let permissions: string[] = [];
     const permission2Route: Record<string, string> = {
       healthscreen: '/dashboards/healthscreen',
@@ -534,10 +534,10 @@ export class AppHeaderrightComponent implements AfterViewInit {
           permissions = (<string>res.body.data).split(',');
           console.log(res.body);
           if (permissions.length > 0 && this.user_type == 7) {
-            const permission = permissions.find((val) =>
-              Object.keys(permission2Route).includes(val)
+            const permissionByRoute = Object.values(permission2Route).find(
+              (route) => route == this.route
             );
-            if (!!permission && permission2Route[permission] == this.route) {
+            if (permissions.includes(permissionByRoute)) {
               this.unAuth = false;
             } else if (
               ['/rewards', '/clinic', '/profile-settings'].includes(this.route)
@@ -642,7 +642,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
             cliName = element.clinicName;
           }
         });
-        this.checkPremissions(clid);
+        this.checkPermissions(clid);
         setTimeout(() => {
           if (this.unAuth) {
             this.unAuthorisedAlert(cliName);
