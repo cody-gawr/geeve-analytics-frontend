@@ -511,7 +511,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
   }
 
   checkPremissions(clinicId: string) {
-    let permission: string = '';
+    let permissions: string[] = [];
     const permission2Route: Record<string, string> = {
       healthscreen: '/dashboards/healthscreen',
       dashboard1: '/dashboards/cliniciananalysis',
@@ -531,13 +531,13 @@ export class AppHeaderrightComponent implements AfterViewInit {
     this.rolesUsersService.getRolesIndividual(clinicId).subscribe(
       (res) => {
         if (res.status == 200) {
-          permission = <string>res.body.data;
+          permissions = (<string>res.body.data).split(',');
           console.log(res.body);
-          if (permission != '' && this.user_type == 7) {
-            if (
-              Object.keys(permission2Route).includes(permission) &&
-              permission2Route[permission] == this.route
-            ) {
+          if (permissions.length > 0 && this.user_type == 7) {
+            const permission = permissions.find((val) =>
+              Object.keys(permission2Route).includes(val)
+            );
+            if (!!permission && permission2Route[permission] == this.route) {
               this.unAuth = false;
             } else if (
               ['/rewards', '/clinic', '/profile-settings'].includes(this.route)
