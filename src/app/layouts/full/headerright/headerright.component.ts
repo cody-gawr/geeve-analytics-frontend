@@ -264,15 +264,10 @@ export class AppHeaderrightComponent implements AfterViewInit {
         '/dashboards/clinicianproceedures',
         '/dashboards/finances',
         '/dashboards/marketing',
-        '/dashboards/frontdesk',
-        '/dashboards/cliniciananalysis/multi',
-        '/dashboards/clinicianproceedures/multi',
-        '/dashboards/finances/multi',
-        '/dashboards/marketing/multi',
-        '/dashboards/frontdesk/multi'
+        '/dashboards/frontdesk'
       ].includes(this.route) &&
         !['4', '7'].includes(this.user_type) &&
-        this.userId == 10001)
+        this.userId == 1)
     );
   }
 
@@ -674,30 +669,13 @@ export class AppHeaderrightComponent implements AfterViewInit {
         $('#currentClinic').attr('cid', newValue);
       }
       if (
-        this.route != '/dashboards/finances' &&
-        this.route != '/dashboards/marketing' &&
-        this.route != '/dashboards/frontdesk' &&
-        this.route != '/dashboards/cliniciananalysis' &&
-        this.route != '/dashboards/clinicianproceedures'
-        // this.apiUrl.includes('test') &&
-        // this.route != '/dashboards/finances/multi' &&
-        // this.route != '/dashboards/clinicianproceedures/multi' &&
-        // this.route != '/dashboards/cliniciananalysis/multi' &&
-        // this.route != '/dashboards/marketing/multi' &&
-        // this.route != '/dashboards/frontdesk/multi'
-        // (this.apiUrl.includes('staging') &&
-        //   this.route != '/dashboards/finances/multi' &&
-        //   this.route != '/dashboards/clinicianproceedures/multi' &&
-        //   this.route != '/dashboards/cliniciananalysis/multi' &&
-        //   this.route != '/dashboards/marketing/multi' &&
-        //   this.route != '/dashboards/frontdesk/multi') ||
-        // (!this.apiUrl.includes('test-') &&
-        //   !this.apiUrl.includes('staging-') &&
-        //   this.route != '/dashboards/finances/multi' &&
-        //   this.route != '/dashboards/clinicianproceedures/multi' &&
-        //   this.route != '/dashboards/cliniciananalysis/multi' &&
-        //   this.route != '/dashboards/marketing/multi' &&
-        //   this.route != '/dashboards/frontdesk/multi')
+        ![
+          '/dashboards/finances',
+          '/dashboards/marketing',
+          '/dashboards/frontdesk',
+          '/dashboards/cliniciananalysis',
+          '/dashboards/clinicianproceedures'
+        ].includes(this.route)
       ) {
         this.selectedClinic = newValue;
         this.clinic_id = this.selectedClinic;

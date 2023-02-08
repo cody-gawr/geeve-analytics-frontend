@@ -1,849 +1,1856 @@
-<select class="sa_select internal_dentist" [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)"
-    [style.display]="'none'">
-    <option value="all">All Dentist</option>
-    <option *ngFor="let dentist of dentists" [value]="dentist.providerId"> {{dentist.name}}</option>
+<select
+  class="sa_select internal_dentist"
+  [(ngModel)]="selectedDentist"
+  (ngModelChange)="loadDentist($event)"
+  [style.display]="'none'"
+>
+  <option value="all">All Dentist</option>
+  <option *ngFor="let dentist of dentists" [value]="dentist.providerId">
+    {{ dentist.name }}
+  </option>
 </select>
-<input type="button" id="dentist_initiate" (click)="initiate_dentist()" [style.display]="'none'">
-<input type="button" id="clinic_initiate" (click)="initiate_clinic()" [style.display]="'none'">
-<input type="text" id="page_title" value="Clinician Procedures & Referrals" [style.display]="'none'">
+<input
+  type="button"
+  id="dentist_initiate"
+  (click)="initiate_dentist()"
+  [style.display]="'none'"
+/>
+<input
+  type="button"
+  id="clinic_initiate"
+  (click)="initiate_clinic()"
+  [style.display]="'none'"
+/>
+<input
+  type="text"
+  id="page_title"
+  value="Clinician Procedures & Referrals"
+  [style.display]="'none'"
+/>
 <div class="sa_dashboard_inner_content sa_dentist_graphs_area">
-    <div class="sa_card topbar-strip">
-        <div class="dashboard-top-header" fxLayout="row wrap" fxLayoutGap="0px" fxLayoutGap.md="0" fxLayoutGap.sm="0"
-            fxLayoutGap.xs="0">
+  <div class="sa_card topbar-strip">
+    <div
+      class="dashboard-top-header"
+      fxLayout="row wrap"
+      fxLayoutGap="0px"
+      fxLayoutGap.md="0"
+      fxLayoutGap.sm="0"
+      fxLayoutGap.xs="0"
+    >
+      <div fxFlex>
+        <app-date-menu-bar
+          #dateBar
+          [isAllClinic]="multipleClinicsSelected"
+          (filter)="filterDate($event)"
+          (changeDate)="choosedDate($event)"
+        >
+        </app-date-menu-bar>
+      </div>
 
-            <div fxFlex>
-                <app-date-menu-bar #dateBar [isAllClinic]="multipleClinicsSelected" (filter)="filterDate($event)" (changeDate)="choosedDate($event)">
-                </app-date-menu-bar>
-            </div>
-
-            <div class="dh-target">
-                <div class="onofftoogle">
-                    <span class="trend_mode_title">Trend:</span>
-                    <mat-button-toggle-group #group="matButtonToggleGroup" name="fontStyle"
-                        class="trendToggle sa_toogle_group2 toggle_switcher" aria-label="Font Style">
-                        <mat-button-toggle checked value="off" [disabled]="Apirequest <= 0?false:true" class="target_off target_filter"
-                            (click)="Apirequest <= 0?toggleFilter('off'):false">
-                            <span>Off</span>
-                        </mat-button-toggle>
-                        <mat-button-toggle value="current" class="target_current target_filter"
-                            [disabled]="Apirequest <= 0?false:true"
-                            (click)="Apirequest <= 0?toggleFilter('current'):false">
-                            <span>Monthly</span>
-                        </mat-button-toggle>
-                        <mat-button-toggle value="historic" class="target_historic target_filter"
-                            [disabled]="Apirequest <= 0?false:true"
-                            (click)="Apirequest <= 0?toggleFilter('historic'):false">
-                            <span>Annual</span>
-                        </mat-button-toggle>
-                    </mat-button-toggle-group>
-                </div>
-            </div>
-
+      <div class="dh-target">
+        <div class="onofftoogle">
+          <span class="trend_mode_title">Trend:</span>
+          <mat-button-toggle-group
+            #group="matButtonToggleGroup"
+            name="fontStyle"
+            class="trendToggle sa_toogle_group2 toggle_switcher"
+            aria-label="Font Style"
+          >
+            <mat-button-toggle
+              checked
+              value="off"
+              [disabled]="Apirequest <= 0 ? false : true"
+              class="target_off target_filter"
+              (click)="Apirequest <= 0 ? toggleFilter('off') : false"
+            >
+              <span>Off</span>
+            </mat-button-toggle>
+            <mat-button-toggle
+              value="current"
+              class="target_current target_filter"
+              [disabled]="Apirequest <= 0 ? false : true"
+              (click)="Apirequest <= 0 ? toggleFilter('current') : false"
+            >
+              <span>Monthly</span>
+            </mat-button-toggle>
+            <mat-button-toggle
+              value="historic"
+              class="target_historic target_filter"
+              [disabled]="Apirequest <= 0 ? false : true"
+              (click)="Apirequest <= 0 ? toggleFilter('historic') : false"
+            >
+              <span>Annual</span>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
         </div>
+      </div>
     </div>
+  </div>
 
-    <div class=" sa_marketing-area">
-        <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
-            <div fxFlex.sm="100" fxFlex.xs="100" fxFlex="100" class="sa_flex_transparent">
-                {{startDate}}- {{endDate}}
-            </div>
+  <div class="sa_marketing-area">
+    <div
+      fxLayout="row wrap"
+      fxLayoutGap="20px"
+      fxLayoutGap.md="0px"
+      fxLayoutGap.sm="0"
+      fxLayoutGap.xs="0"
+    >
+      <div
+        fxFlex.sm="100"
+        fxFlex.xs="100"
+        fxFlex="100"
+        class="sa_flex_transparent"
+      >
+        {{ startDate }}- {{ endDate }}
+      </div>
 
-            <!-- Column-->
-            <div fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
-                class="sa_flexbg items_predictor md_mrn">
-                <mat-card class="itemsPredictor">
-                    <mat-card-content class="sa_matcard_content">
-                        <mat-card-title class="text-center">
-                            New Patients By Referral
-                            <div class="sa_box_title_right_buttons">
-                            </div>
-                            <div class="info-icon-container">
-                                <img [tooltip]="charTips['23']" src="../assets/images/info-icon.png" alt="info-icon"
-                                    class="info-icon" />
-                            </div>
-                        </mat-card-title>
-                        <div class="card-body">
-                            <div class="chart-new-patients">
-                                <div class="sa_back_btn_holder" *ngIf="newPatientsTimeLabelsl2.length > 0"><span
-                                        (click)="changeLevel('newPatient')">Back</span></div>
-                                <canvas
-                                    *ngIf="showTrend == false && newPatientsTimeLabels.length > 0 && mkNewPatientsByReferralLoader == false && showmulticlinicNewPatients == false"
-                                    #myCanvas2 baseChart [data]="newPatientsTimeData" [labels]="newPatientsTimeLabels"
-                                    [chartType]="pieChartType" (chartHover)="chartHovered($event)"
-                                    [plugins]="pluginObservable$ | async"
-                                    (chartClick)="chartClicked($event,'newPatients')"
-                                    [options]="noNewPatientsByReferralChartOptions" [colors]="pieChartColors">
-                                </canvas>
-                                <canvas
-                                    *ngIf="showTrend == false && newPatientsTimeLabelsl2.length > 0 && mkNewPatientsByReferralLoader == false && showmulticlinicNewPatients == false"
-                                    #myCanvas2 baseChart [data]="newPatientsTimeData" [labels]="newPatientsTimeLabelsl2"
-                                    [chartType]="pieChartType" (chartHover)="chartHovered($event)"
-                                    [plugins]="pluginObservable$ | async"
-                                    [options]="noNewPatientsByReferralChartOptions" [colors]="pieChartColors">
-                                </canvas>
-                                <canvas 
-                                    *ngIf="showTrend == false && showmulticlinicNewPatients == true && mkNewPatientsByReferralLoader == false "
-                                    #myCanvas2 class="trendProductionPercentage" baseChart
-                                    [datasets]="mkNewPatientsByReferalMulti" [labels]="mkNewPatientsByReferalLabels"
-                                    [options]="stackedChartOptionsRef" [legend]="false" [chartType]="stackedChartType"
-                                    (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"> 
-                                </canvas>
-
-                                <div class="no-data-placeholder"
-                                    *ngIf="showTrend == false && newPatientsTimeLabels.length <= 0 && newPatientsTimeLabelsl2.length <= 0 && mkNewPatientsByReferralLoader == false && mkNewPatientsByReferalLabels  <= 0">
-                                    <div class="sa_nodata_div">
-                                    </div>
-                                    <p class="chart-placeholder-text">You have no new patients from referral sources in
-                                        the selected period</p>
-                                </div>
-                                <!-- labelBarmkPatientByReferralOptionsStacked -->
-                                <canvas #myCanvas2 class="trendProductionPercentage" baseChart
-                                    *ngIf="showTrend == true && newPatientsTimeLabelsTrend && newPatientsTimeLabelsTrend.length  > 0 && mkNewPatientsByReferralLoader == false"
-                                    [datasets]="mkNewPatientsReferralChartTrend" [labels]="newPatientsTimeLabelsTrend"
-                                    [options]="stackedChartOptionsRef" [legend]="false"
-                                    [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
-                                    (chartClick)="chartClicked($event)">
-                                </canvas>
-                                <div class="no-data-placeholder"
-                                    *ngIf="showTrend == true && newPatientsTimeLabelsTrend.length <= 0 && mkNewPatientsByReferralLoader == false">
-                                    <div class="sa_nodata_div">
-                                    </div>
-                                    <p class="chart-placeholder-text">You have no new patients from referral sources in
-                                        the selected period</p>
-                                </div>
-
-
-                            </div>
-                        </div>
-                        <div class="card-footer" *ngIf="activePatients == false">
-                            <div *ngIf="showTrend == false && showmulticlinicNewPatients == true" fxLayout="row wrap" fxLayoutAlign="center center"
-                                class="m-t-40 sa_chart_details_sec pieChartDetails">
-                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                                    <h3 class="m-0 value-num">{{totalNewPatientsReferral | number:'1.0-0'}}</h3>
-                                    <span class="value-text">Total</span>
-                                </div>
-                            </div>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-                <div *ngIf="mkNewPatientsByReferralLoader == true" class="loader_container loader_container_middle"><img
-                        class="loader_ico" src="../assets/images/720.gif">
-                    <div class="loader-text">Calculating...</div>
+      <!-- Column-->
+      <div
+        fxFlex="calc(50% - 10px)"
+        fxFlex.md="100"
+        fxFlex.sm="100"
+        fxFlex.xs="100"
+        class="sa_flexbg items_predictor md_mrn"
+      >
+        <mat-card class="itemsPredictor">
+          <mat-card-content class="sa_matcard_content">
+            <mat-card-title class="text-center">
+              New Patients By Referral
+              <div class="sa_box_title_right_buttons"></div>
+              <div class="info-icon-container">
+                <img
+                  [tooltip]="charTips['23']"
+                  src="../assets/images/info-icon.png"
+                  alt="info-icon"
+                  class="info-icon"
+                />
+              </div>
+            </mat-card-title>
+            <div class="card-body">
+              <div class="chart-new-patients">
+                <div
+                  class="sa_back_btn_holder"
+                  *ngIf="newPatientsTimeLabelsl2.length > 0"
+                >
+                  <span (click)="changeLevel('newPatient')">Back</span>
                 </div>
-            </div>
-            <!---Working here 94-->
-            <div fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
-                class="sa_flexbg items_predictor md_mrn last">
-                <mat-card class="itemsPredictor">
-                    <mat-card-content class="sa_matcard_content">
-                        <mat-card-title class="text-center">
-                            <div>
-                                New Patient Revenue by Referral
-                            </div>
-                            <div class="sa_box_title_right_buttons">
-                            </div>
-                            <div class="info-icon-container">
-                                <img [tooltip]="charTips['24']" src="../assets/images/info-icon.png" alt="info-icon"
-                                    class="info-icon" />
-                            </div>
-                        </mat-card-title>
-                        <div class="card-body">
-                            <div class="chart-new-patients">
-                                <div class="sa_back_btn_holder"
-                                    *ngIf="revenueReferralLabelsl2.length > 0  && mkRevenueByReferralLoader == false">
-                                    <span (click)="changeLevel('revenue')">Back</span>
-                                </div>
-                                <canvas #revenueRefChart="base-chart"
-                                    *ngIf="showTrend == false && revenueReferralLabels.length > 0 && mkRevenueByReferralLoader == false && showmulticlinicNewPatientsRev == false"
-                                    baseChart [data]="revenueReferralData" [labels]="revenueReferralLabels"
-                                    [chartType]="pieChartType" (chartHover)="chartHovered($event)"
-                                    (chartClick)="chartClicked($event,'revenue')"
-                                    [plugins]="revenuePluginObservable$ | async" [options]="pieChartOptions"
-                                    [colors]="pieChartColors">
-                                </canvas>
-                                <canvas #revenueRefChart="base-chart"
-                                    *ngIf="showTrend == false && revenueReferralLabelsl2.length > 0  && mkRevenueByReferralLoader == false && showmulticlinicNewPatientsRev == false"
-                                    baseChart [data]="revenueReferralData" [labels]="revenueReferralLabelsl2"
-                                    [chartType]="pieChartType" (chartHover)="chartHovered($event)"
-                                    [plugins]="revenuePluginObservable$ | async" [options]="pieChartOptions"
-                                    [colors]="pieChartColors">
-                                </canvas>
-                                <canvas 
-                                    *ngIf="showTrend == false && mkRevenueByReferralLoader == false  && showmulticlinicNewPatientsRev == true && mkNewPatientsByReferalRevLabels.length > 0"
-                                    #myCanvas2 class="trendProductionPercentage" baseChart
-                                    [datasets]="mkNewPatientsByReferalRevMulti" [labels]="mkNewPatientsByReferalRevLabels"
-                                    [options]="stackedChartOptionsRev" [legend]="false" [chartType]="stackedChartType"
-                                    (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"> 
-                                </canvas>
-                                <div class="no-data-placeholder"
-                                    *ngIf="showTrend == false && revenueReferralLabels.length <= 0 && mkNewPatientsByReferalRevLabels.length <= 0 && revenueReferralLabelsl2.length <= 0 && mkRevenueByReferralLoader == false">
-                                    <div class="sa_nodata_div">
-                                    </div>
-                                    <p class="chart-placeholder-text">You have no revenue from referral sources in the
-                                        selected period</p>
-                                </div>
+                <canvas
+                  *ngIf="
+                    showTrend == false &&
+                    newPatientsTimeLabels.length > 0 &&
+                    mkNewPatientsByReferralLoader == false &&
+                    showmulticlinicNewPatients == false
+                  "
+                  #myCanvas2
+                  baseChart
+                  [data]="newPatientsTimeData"
+                  [labels]="newPatientsTimeLabels"
+                  [chartType]="pieChartType"
+                  (chartHover)="chartHovered($event)"
+                  [plugins]="pluginObservable$ | async"
+                  (chartClick)="chartClicked($event, 'newPatients')"
+                  [options]="noNewPatientsByReferralChartOptions"
+                  [colors]="pieChartColors"
+                >
+                </canvas>
+                <canvas
+                  *ngIf="
+                    newPatientsTimeLabelsl2.length > 0 &&
+                    !(
+                      showTrend ||
+                      mkNewPatientsByReferralLoader ||
+                      showmulticlinicNewPatients
+                    )
+                  "
+                  #myCanvas2
+                  baseChart
+                  [data]="newPatientsTimeData"
+                  [labels]="newPatientsTimeLabelsl2"
+                  [chartType]="pieChartType"
+                  (chartHover)="chartHovered($event)"
+                  [plugins]="pluginObservable$ | async"
+                  [options]="noNewPatientsByReferralChartOptions"
+                  [colors]="pieChartColors"
+                >
+                </canvas>
+                <canvas
+                  *ngIf="
+                    showmulticlinicNewPatients &&
+                    !(showTrend || mkNewPatientsByReferralLoader)
+                  "
+                  #myCanvas2
+                  class="trendProductionPercentage"
+                  baseChart
+                  [datasets]="mkNewPatientsByReferalMulti"
+                  [labels]="mkNewPatientsByReferalLabels"
+                  [options]="stackedChartOptionsRef"
+                  [legend]="false"
+                  [chartType]="stackedChartType"
+                  (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)"
+                >
+                </canvas>
 
-                                <canvas #myCanvas2 class="trendProductionPercentage" baseChart
-                                    *ngIf="showTrend == true && revenueReferralLabelsTrend && revenueReferralLabelsTrend.length  > 0 && mkRevenueByReferralLoader == false"
-                                    [datasets]="mkRevenueByReferralChartTrend" [labels]="revenueReferralLabelsTrend"
-                                    [options]="stackedChartOptionsRev" [legend]="false"
-                                    [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
-                                    (chartClick)="chartClicked($event)">
-                                </canvas>
-                                <!-- labelBarmkRevenueByReferralOptionsStacked -->
-                                <div class="no-data-placeholder"
-                                    *ngIf="showTrend == true && revenueReferralLabelsTrend.length <= 0 && mkRevenueByReferralLoader == false">
-                                    <div class="sa_nodata_div">
-                                    </div>
-                                    <p class="chart-placeholder-text">You have no revenue from referral sources in the
-                                        selected period</p>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="card-footer" *ngIf="activePatients == false">
-                            <div *ngIf="showTrend == false && showmulticlinicNewPatientsRev == true" fxLayout="row wrap" fxLayoutAlign="center center"
-                                class="m-t-40 sa_chart_details_sec pieChartDetails">
-                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                                    <h3 class="m-0 value-num">${{totalNewPatientsReferralRev | number:'1.0-0'}}</h3>
-                                    <span class="value-text">Total</span>
-                                </div>
-                            </div>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-                <div *ngIf="mkRevenueByReferralLoader == true" class="loader_container loader_container_middle"><img
-                        class="loader_ico" src="../assets/images/720.gif">
-                    <div class="loader-text">Calculating...</div>
+                <div
+                  class="no-data-placeholder"
+                  *ngIf="
+                    showTrend == false &&
+                    newPatientsTimeLabels.length <= 0 &&
+                    newPatientsTimeLabelsl2.length <= 0 &&
+                    mkNewPatientsByReferralLoader == false &&
+                    mkNewPatientsByReferalLabels <= 0
+                  "
+                >
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">
+                    You have no new patients from referral sources in the
+                    selected period
+                  </p>
                 </div>
+                <!-- labelBarmkPatientByReferralOptionsStacked -->
+                <canvas
+                  #myCanvas2
+                  class="trendProductionPercentage"
+                  baseChart
+                  *ngIf="
+                    showTrend == true &&
+                    newPatientsTimeLabelsTrend &&
+                    newPatientsTimeLabelsTrend.length > 0 &&
+                    mkNewPatientsByReferralLoader == false
+                  "
+                  [datasets]="mkNewPatientsReferralChartTrend"
+                  [labels]="newPatientsTimeLabelsTrend"
+                  [options]="stackedChartOptionsRef"
+                  [legend]="false"
+                  [chartType]="stackedChartType"
+                  (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)"
+                >
+                </canvas>
+                <div
+                  class="no-data-placeholder"
+                  *ngIf="
+                    showTrend == true &&
+                    newPatientsTimeLabelsTrend.length <= 0 &&
+                    mkNewPatientsByReferralLoader == false
+                  "
+                >
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">
+                    You have no new patients from referral sources in the
+                    selected period
+                  </p>
+                </div>
+              </div>
             </div>
+            <div class="card-footer" *ngIf="activePatients == false">
+              <div
+                *ngIf="showTrend == false && showmulticlinicNewPatients == true"
+                fxLayout="row wrap"
+                fxLayoutAlign="center center"
+                class="m-t-40 sa_chart_details_sec pieChartDetails"
+              >
+                <div
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex.gt-xs="33.33%"
+                  fxFlex="100"
+                  class="text-center"
+                >
+                  <h3 class="m-0 value-num">
+                    {{ totalNewPatientsReferral | number : '1.0-0' }}
+                  </h3>
+                  <span class="value-text">Total</span>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <div
+          *ngIf="mkNewPatientsByReferralLoader == true"
+          class="loader_container loader_container_middle"
+        >
+          <img class="loader_ico" src="../assets/images/720.gif" />
+          <div class="loader-text">Calculating...</div>
         </div>
-        <!-- Column-->
-        <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
-            <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
-                class="sa_flexbg referral_clinicians">
-                <mat-card *ngIf="isVisibleAccountGraphs">
-                    <mat-card-content class="sa_matcard_content">
-                        <mat-card-title class="text-center">
-                            <div>
-                                <span *ngIf="showTrend == false  && trendText && activePatients == false"
-                                    class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
-                                    matTooltip="{{trendText}} : {{newPatientsPrevTotal | number:'1.0-0'}}"><img class="trend_ico"
-                                        src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
-                                <span *ngIf="showTrend == false  && trendText && activePatients == true"
-                                    class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
-                                    matTooltip="{{trendText}} : {{fdActivePatientsTa | number:'1.0-0'}}"><img class="trend_ico"
-                                        src="../assets/images/trend_{{activePatientsTooltip}}.png"></span>
-                                {{patientText}}
-                            </div>
-                            <div class="sa_box_title_right_buttons"></div>
-                            <div class="info-icon-container marketing">
-                                <!-- <i title="Active Patients" class="fas fa-heartbeat"
+      </div>
+      <!---Working here 94-->
+      <div
+        fxFlex="calc(50% - 10px)"
+        fxFlex.md="100"
+        fxFlex.sm="100"
+        fxFlex.xs="100"
+        class="sa_flexbg items_predictor md_mrn last"
+      >
+        <mat-card class="itemsPredictor">
+          <mat-card-content class="sa_matcard_content">
+            <mat-card-title class="text-center">
+              <div>New Patient Revenue by Referral</div>
+              <div class="sa_box_title_right_buttons"></div>
+              <div class="info-icon-container">
+                <img
+                  [tooltip]="charTips['24']"
+                  src="../assets/images/info-icon.png"
+                  alt="info-icon"
+                  class="info-icon"
+                />
+              </div>
+            </mat-card-title>
+            <div class="card-body">
+              <div class="chart-new-patients">
+                <div
+                  class="sa_back_btn_holder"
+                  *ngIf="
+                    revenueReferralLabelsl2.length > 0 &&
+                    mkRevenueByReferralLoader == false
+                  "
+                >
+                  <span (click)="changeLevel('revenue')">Back</span>
+                </div>
+                <canvas
+                  #revenueRefChart="base-chart"
+                  *ngIf="
+                    showTrend == false &&
+                    revenueReferralLabels.length > 0 &&
+                    mkRevenueByReferralLoader == false &&
+                    showmulticlinicNewPatientsRev == false
+                  "
+                  baseChart
+                  [data]="revenueReferralData"
+                  [labels]="revenueReferralLabels"
+                  [chartType]="pieChartType"
+                  (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event, 'revenue')"
+                  [plugins]="revenuePluginObservable$ | async"
+                  [options]="pieChartOptions"
+                  [colors]="pieChartColors"
+                >
+                </canvas>
+                <canvas
+                  #revenueRefChart="base-chart"
+                  *ngIf="
+                    showTrend == false &&
+                    revenueReferralLabelsl2.length > 0 &&
+                    mkRevenueByReferralLoader == false &&
+                    showmulticlinicNewPatientsRev == false
+                  "
+                  baseChart
+                  [data]="revenueReferralData"
+                  [labels]="revenueReferralLabelsl2"
+                  [chartType]="pieChartType"
+                  (chartHover)="chartHovered($event)"
+                  [plugins]="revenuePluginObservable$ | async"
+                  [options]="pieChartOptions"
+                  [colors]="pieChartColors"
+                >
+                </canvas>
+                <canvas
+                  *ngIf="
+                    showTrend == false &&
+                    mkRevenueByReferralLoader == false &&
+                    showmulticlinicNewPatientsRev == true &&
+                    mkNewPatientsByReferalRevLabels.length > 0
+                  "
+                  #myCanvas2
+                  class="trendProductionPercentage"
+                  baseChart
+                  [datasets]="mkNewPatientsByReferalRevMulti"
+                  [labels]="mkNewPatientsByReferalRevLabels"
+                  [options]="stackedChartOptionsRev"
+                  [legend]="false"
+                  [chartType]="stackedChartType"
+                  (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)"
+                >
+                </canvas>
+                <div
+                  class="no-data-placeholder"
+                  *ngIf="
+                    showTrend == false &&
+                    revenueReferralLabels.length <= 0 &&
+                    mkNewPatientsByReferalRevLabels.length <= 0 &&
+                    revenueReferralLabelsl2.length <= 0 &&
+                    mkRevenueByReferralLoader == false
+                  "
+                >
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">
+                    You have no revenue from referral sources in the selected
+                    period
+                  </p>
+                </div>
+
+                <canvas
+                  #myCanvas2
+                  class="trendProductionPercentage"
+                  baseChart
+                  *ngIf="
+                    showTrend == true &&
+                    revenueReferralLabelsTrend &&
+                    revenueReferralLabelsTrend.length > 0 &&
+                    mkRevenueByReferralLoader == false
+                  "
+                  [datasets]="mkRevenueByReferralChartTrend"
+                  [labels]="revenueReferralLabelsTrend"
+                  [options]="stackedChartOptionsRev"
+                  [legend]="false"
+                  [chartType]="stackedChartType"
+                  (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)"
+                >
+                </canvas>
+                <!-- labelBarmkRevenueByReferralOptionsStacked -->
+                <div
+                  class="no-data-placeholder"
+                  *ngIf="
+                    showTrend == true &&
+                    revenueReferralLabelsTrend.length <= 0 &&
+                    mkRevenueByReferralLoader == false
+                  "
+                >
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">
+                    You have no revenue from referral sources in the selected
+                    period
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer" *ngIf="activePatients == false">
+              <div
+                *ngIf="
+                  showTrend == false && showmulticlinicNewPatientsRev == true
+                "
+                fxLayout="row wrap"
+                fxLayoutAlign="center center"
+                class="m-t-40 sa_chart_details_sec pieChartDetails"
+              >
+                <div
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex.gt-xs="33.33%"
+                  fxFlex="100"
+                  class="text-center"
+                >
+                  <h3 class="m-0 value-num">
+                    ${{ totalNewPatientsReferralRev | number : '1.0-0' }}
+                  </h3>
+                  <span class="value-text">Total</span>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <div
+          *ngIf="mkRevenueByReferralLoader == true"
+          class="loader_container loader_container_middle"
+        >
+          <img class="loader_ico" src="../assets/images/720.gif" />
+          <div class="loader-text">Calculating...</div>
+        </div>
+      </div>
+    </div>
+    <!-- Column-->
+    <div
+      fxLayout="row wrap"
+      fxLayoutGap="20px"
+      fxLayoutGap.md="0px"
+      fxLayoutGap.sm="0"
+      fxLayoutGap.xs="0"
+    >
+      <div
+        fxFlex="calc(32% - 10px)"
+        fxFlex.md="100"
+        fxFlex.sm="100"
+        fxFlex.xs="100"
+        class="sa_flexbg referral_clinicians"
+      >
+        <mat-card *ngIf="isVisibleAccountGraphs">
+          <mat-card-content class="sa_matcard_content">
+            <mat-card-title class="text-center">
+              <div>
+                <span
+                  *ngIf="
+                    showTrend == false && trendText && activePatients == false
+                  "
+                  class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
+                  matTooltip="{{ trendText }} : {{
+                    newPatientsPrevTotal | number : '1.0-0'
+                  }}"
+                  ><img
+                    class="trend_ico"
+                    src="../assets/images/trend_{{ newPatientsTooltip }}.png"
+                /></span>
+                <span
+                  *ngIf="
+                    showTrend == false && trendText && activePatients == true
+                  "
+                  class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
+                  matTooltip="{{ trendText }} : {{
+                    fdActivePatientsTa | number : '1.0-0'
+                  }}"
+                  ><img
+                    class="trend_ico"
+                    src="../assets/images/trend_{{
+                      activePatientsTooltip
+                    }}.png"
+                /></span>
+                {{ patientText }}
+              </div>
+              <div class="sa_box_title_right_buttons"></div>
+              <div class="info-icon-container marketing">
+                <!-- <i title="Active Patients" class="fas fa-heartbeat"
                                     [ngClass]="activePatients == true? 'active' : ''"
                                     *ngIf="apiUrl.includes('test-') && showTrend == false" (click)="activePat()"></i> -->
-                                <img *ngIf="!activePatients" [tooltip]="charTips['36']"
-                                    src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
-                                <img *ngIf="activePatients" [tooltip]="charTips['61']"
-                                    src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
-                            </div>
-                        </mat-card-title>
-                        <div class="card-body">
-                            <div fxLayout="row wrap"
-                                class="sa_tabs_main_sec" fxLayoutAlign="center">
-                                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                                    <small class="sa_tab_btn" [ngClass]="!activePatients? 'active' : ''"
-                                        (click)="activePat()">New Patients</small>
-                                </div>
-                                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                                    <small class="sa_tab_btn" [ngClass]="activePatients? 'active' : ''"
-                                        (click)="activePat()">Active Patients</small>
-                                </div>
-                            </div>
-                            <div class="chart py-2 trendchart">
-                                <div class="chart-num-patients"
-                                    *ngIf="showNPBar == false && showTrend == false && newPatientsTotal > 0 && fdnewPatientsRatioLoader == false && activePatients == false">
-                                    <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="newPatientsTotal"
-                                        [thick]="gaugeThick" [foregroundColor]="foregroundColor"
-                                        [backgroundColor]="backgroundColor" [cap]="cap" [max]="maxnewPatientsGoal"
-                                        [size]="size">
-                                    </ngx-gauge>
-                                </div>
-                                <div class="chart-Trend1-patients trendH"
-                                    *ngIf="showNPBar == true && showTrend == false && newPatientsTotal > 0 && fdnewPatientsRatioLoader == false && activePatients == false">
-                                    <canvas #myCanvas baseChart [datasets]="newPativentbr"
-                                        [labels]="newPTrendLabels1" [options]="stackedChartOptions"
-                                        [chartType]="stackedChartType" [colors]="lineChartColors"
-                                        (chartHover)="chartHovered($event)" [legend]="false"
-                                        (chartClick)="chartClicked($event)">
-                                    </canvas>   
-                                </div>
-                                
-                                <div class="chart-num-patients"
-                                    *ngIf="showAPBar == false && showTrend == false  && activePatients == true && fdActivePatients > 0 && fdActivePatientLoader == false">
-                                    <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="fdActivePatients"
-                                        [thick]="gaugeThick" [foregroundColor]="foregroundColor"
-                                        [backgroundColor]="backgroundColor" [cap]="cap" [max]="fdActivePatient"
-                                        [size]="size">
-                                    </ngx-gauge>
-                                </div>
-                                <div class="chart-Trend1-patients trendH"
-                                    *ngIf="showAPBar == true && showTrend == false  && activePatients == true && fdActivePatients > 0 && fdActivePatientLoader == false">
-                                    <canvas #myCanvas baseChart [datasets]="newAPativentbr"
-                                        [labels]="newAPTrendLabels1" [options]="stackedChartOptions"
-                                        [chartType]="stackedChartType" [colors]="lineChartColors"
-                                        (chartHover)="chartHovered($event)" [legend]="false"
-                                        (chartClick)="chartClicked($event)">
-                                    </canvas>   
-                                </div>
-                                <div
-                                    *ngIf="showTrend == false && newPatientsTotal <= 0 && fdnewPatientsRatioLoader == false  && activePatients == false">
-                                    <div class="sa_nodata_div"> </div>
-                                    <p class="chart-placeholder-text">You have no new patients in the selected period
-                                    </p>
-                                </div>
+                <img
+                  *ngIf="!activePatients"
+                  [tooltip]="charTips['36']"
+                  src="../assets/images/info-icon.png"
+                  alt="info-icon"
+                  class="info-icon"
+                />
+                <img
+                  *ngIf="activePatients"
+                  [tooltip]="charTips['61']"
+                  src="../assets/images/info-icon.png"
+                  alt="info-icon"
+                  class="info-icon"
+                />
+              </div>
+            </mat-card-title>
+            <div class="card-body">
+              <div
+                fxLayout="row wrap"
+                class="sa_tabs_main_sec"
+                fxLayoutAlign="center"
+              >
+                <div
+                  fxFlex.gt-sm="49.33%"
+                  fxFlex.gt-xs="50%"
+                  fxFlex="100"
+                  class="btn-group"
+                >
+                  <small
+                    class="sa_tab_btn"
+                    [ngClass]="!activePatients ? 'active' : ''"
+                    (click)="activePat()"
+                    >New Patients</small
+                  >
+                </div>
+                <div
+                  fxFlex.gt-sm="49.33%"
+                  fxFlex.gt-xs="50%"
+                  fxFlex="100"
+                  class="btn-group"
+                >
+                  <small
+                    class="sa_tab_btn"
+                    [ngClass]="activePatients ? 'active' : ''"
+                    (click)="activePat()"
+                    >Active Patients</small
+                  >
+                </div>
+              </div>
+              <div class="chart py-2 trendchart">
+                <div
+                  class="chart-num-patients"
+                  *ngIf="
+                    showNPBar == false &&
+                    showTrend == false &&
+                    newPatientsTotal > 0 &&
+                    fdnewPatientsRatioLoader == false &&
+                    activePatients == false
+                  "
+                >
+                  <ngx-gauge
+                    class="singleRatio"
+                    [type]="gaugeType"
+                    [value]="newPatientsTotal"
+                    [thick]="gaugeThick"
+                    [foregroundColor]="foregroundColor"
+                    [backgroundColor]="backgroundColor"
+                    [cap]="cap"
+                    [max]="maxnewPatientsGoal"
+                    [size]="size"
+                  >
+                  </ngx-gauge>
+                </div>
+                <div
+                  class="chart-Trend1-patients trendH"
+                  *ngIf="
+                    showNPBar == true &&
+                    showTrend == false &&
+                    newPatientsTotal > 0 &&
+                    fdnewPatientsRatioLoader == false &&
+                    activePatients == false
+                  "
+                >
+                  <canvas
+                    #myCanvas
+                    baseChart
+                    [datasets]="newPativentbr"
+                    [labels]="newPTrendLabels1"
+                    [options]="stackedChartOptions"
+                    [chartType]="stackedChartType"
+                    [colors]="lineChartColors"
+                    (chartHover)="chartHovered($event)"
+                    [legend]="false"
+                    (chartClick)="chartClicked($event)"
+                  >
+                  </canvas>
+                </div>
 
-                                <div
-                                    *ngIf="showTrend == false && fdActivePatients <= 0 && fdActivePatientLoader == false  && activePatients == true">
-                                    <div class="sa_nodata_div"> </div>
-                                    <p class="chart-placeholder-text">You have no active patients in the selected period
-                                    </p>
-                                </div>
+                <div
+                  class="chart-num-patients"
+                  *ngIf="
+                    showAPBar == false &&
+                    showTrend == false &&
+                    activePatients == true &&
+                    fdActivePatients > 0 &&
+                    fdActivePatientLoader == false
+                  "
+                >
+                  <ngx-gauge
+                    class="singleRatio"
+                    [type]="gaugeType"
+                    [value]="fdActivePatients"
+                    [thick]="gaugeThick"
+                    [foregroundColor]="foregroundColor"
+                    [backgroundColor]="backgroundColor"
+                    [cap]="cap"
+                    [max]="fdActivePatient"
+                    [size]="size"
+                  >
+                  </ngx-gauge>
+                </div>
+                <div
+                  class="chart-Trend1-patients trendH"
+                  *ngIf="
+                    showAPBar == true &&
+                    showTrend == false &&
+                    activePatients == true &&
+                    fdActivePatients > 0 &&
+                    fdActivePatientLoader == false
+                  "
+                >
+                  <canvas
+                    #myCanvas
+                    baseChart
+                    [datasets]="newAPativentbr"
+                    [labels]="newAPTrendLabels1"
+                    [options]="stackedChartOptions"
+                    [chartType]="stackedChartType"
+                    [colors]="lineChartColors"
+                    (chartHover)="chartHovered($event)"
+                    [legend]="false"
+                    (chartClick)="chartClicked($event)"
+                  >
+                  </canvas>
+                </div>
+                <div
+                  *ngIf="
+                    showTrend == false &&
+                    newPatientsTotal <= 0 &&
+                    fdnewPatientsRatioLoader == false &&
+                    activePatients == false
+                  "
+                >
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">
+                    You have no new patients in the selected period
+                  </p>
+                </div>
 
-                                <div *ngIf="showTrend == true && activePatients == false &&  newPatientsChartTrend1.length > 0 && showNPclinic == false"
-                                    class="chart-Trend1-patients trendH">
-                                    <canvas #myCanvas baseChart [datasets]="newPatientsChartTrend"
-                                        [labels]="newPatientsChartTrendLabels" [options]="stackedChartOptions"
-                                        [chartType]="stackedChartType" [colors]="lineChartColors"
-                                        (chartHover)="chartHovered($event)" [legend]="false"
-                                        (chartClick)="chartClicked($event)">
-                                    </canvas>
-                                </div>
-                                <div *ngIf="showTrend == true && activePatients == false &&  newPatientsMultiLabels1.length > 0 && showNPclinic == true && !fdnewPatientsRatioLoader"
-                                    class="chart-Trend1-patients trendH">
-                                    <canvas #myCanvas baseChart [datasets]="newPatientsTrendMulti"
-                                        [labels]="newPatientsMultiLabels" [options]="stackedChartOptionsMulti"
-                                        [chartType]="stackedChartType" [colors]="lineChartColors"
-                                        (chartHover)="chartHovered($event)" [legend]="true"
-                                        (chartClick)="chartClicked($event)">
-                                    </canvas>
-                                </div>
+                <div
+                  *ngIf="
+                    showTrend == false &&
+                    fdActivePatients <= 0 &&
+                    fdActivePatientLoader == false &&
+                    activePatients == true
+                  "
+                >
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">
+                    You have no active patients in the selected period
+                  </p>
+                </div>
 
-                                <div *ngIf="showTrend == true && activePatients == true && activePatientsChartTrend1.length > 0"
-                                    class="chart-Trend1-patients trendH">
-                                    <canvas #myCanvas baseChart [datasets]="activePatientsChartTrend"
-                                        [labels]="activePatientsChartTrendLabels" [options]="stackedChartOptions"
-                                        [chartType]="stackedChartType" [colors]="lineChartColors"
-                                        (chartHover)="chartHovered($event)" [legend]="false"
-                                        (chartClick)="chartClicked($event)">
-                                    </canvas>
-                                </div>
-                                <div *ngIf="showTrend == true && activePatients == true && newAPatientsMultiLabels1.length > 0 && showAPclinic == true"
-                                    class="chart-Trend1-patients trendH">
-                                    <canvas #myCanvas baseChart [datasets]="newAPatientsTrendMulti"
-                                        [labels]="newAPatientsMultiLabels" [options]="stackedChartOptionsMulti"
-                                        [chartType]="stackedChartType" [colors]="lineChartColors"
-                                        (chartHover)="chartHovered($event)" [legend]="true"
-                                        (chartClick)="chartClicked($event)">
-                                    </canvas>
-                                </div>
+                <div
+                  *ngIf="
+                    showTrend == true &&
+                    activePatients == false &&
+                    newPatientsChartTrend1.length > 0 &&
+                    showNPclinic == false
+                  "
+                  class="chart-Trend1-patients trendH"
+                >
+                  <canvas
+                    #myCanvas
+                    baseChart
+                    [datasets]="newPatientsChartTrend"
+                    [labels]="newPatientsChartTrendLabels"
+                    [options]="stackedChartOptions"
+                    [chartType]="stackedChartType"
+                    [colors]="lineChartColors"
+                    (chartHover)="chartHovered($event)"
+                    [legend]="false"
+                    (chartClick)="chartClicked($event)"
+                  >
+                  </canvas>
+                </div>
+                <div
+                  *ngIf="
+                    showTrend == true &&
+                    activePatients == false &&
+                    newPatientsMultiLabels1.length > 0 &&
+                    showNPclinic == true &&
+                    !fdnewPatientsRatioLoader
+                  "
+                  class="chart-Trend1-patients trendH"
+                >
+                  <canvas
+                    #myCanvas
+                    baseChart
+                    [datasets]="newPatientsTrendMulti"
+                    [labels]="newPatientsMultiLabels"
+                    [options]="stackedChartOptionsMulti"
+                    [chartType]="stackedChartType"
+                    [colors]="lineChartColors"
+                    (chartHover)="chartHovered($event)"
+                    [legend]="true"
+                    (chartClick)="chartClicked($event)"
+                  >
+                  </canvas>
+                </div>
 
-                                <div
-                                    *ngIf="!fdnewPatientsRatioLoader && showTrend == true  && activePatients == false && newPatientsChartTrend1.length <=0 &&  newPatientsMultiLabels1.length <=0">
-                                    <div class="sa_nodata_div"></div>
-                                    <p class="chart-placeholder-text">You have no new patients in the selected period
-                                    </p>
-                                </div>
-                                <div
-                                    *ngIf="!fdActivePatientLoader && showTrend == true && activePatients == true && activePatientsChartTrend1.length <=0  && newAPatientsMultiLabels1.length <=0">
-                                    <div class="sa_nodata_div"></div>
-                                    <p class="chart-placeholder-text">You have no active patients in the selected period
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer" *ngIf="activePatients == false">
-                            <div *ngIf="showTrend == false" fxLayout="row wrap" fxLayoutAlign="center center"
-                                class="m-t-40 sa_chart_details_sec pieChartDetails">
-                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                                    <h3 class="m-0 value-num">{{newPatientsTotal | number:'1.0-0'}}</h3>
-                                    <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
-                                    <span class="value-text" *ngIf="currentText == ''">Current</span>
-                                </div>
-                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                                    *ngIf="duration != 'custom'">
-                                    <h3 class="m-0 value-num">{{newPatientsPrevTotal | number:'1.0-0'}}</h3>
-                                    <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
-                                    <span class="value-text" *ngIf="trendText == ''">Previous</span>
-                                </div>
-                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                                    *ngIf="newPatientsGoal >= 0 && newPatientsGoal != null && showGoals == true">
-                                    <h3 class="m-0 value-num">{{newPatientsGoal * goalCount | number:'1.0-0'}}</h3>
-                                    <span class="value-text">Goal</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer" *ngIf="activePatients == true">
-                            <div *ngIf="showTrend == false" fxLayout="row wrap" fxLayoutAlign="center center"
-                                class="m-t-40 sa_chart_details_sec pieChartDetails">
-                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                                    <h3 class="m-0 value-num">{{fdActivePatients | number:'1.0-0'}}</h3>
-                                    <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
-                                    <span class="value-text" *ngIf="currentText == ''">Current</span>
-                                </div>
-                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                                    *ngIf="duration != 'custom'">
-                                    <h3 class="m-0 value-num">{{fdActivePatientsTa | number:'1.0-0'}}</h3>
-                                    <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
-                                    <span class="value-text" *ngIf="trendText == ''">Previous</span>
-                                </div>
-                            </div>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
+                <div
+                  *ngIf="
+                    showTrend == true &&
+                    activePatients == true &&
+                    activePatientsChartTrend1.length > 0
+                  "
+                  class="chart-Trend1-patients trendH"
+                >
+                  <canvas
+                    #myCanvas
+                    baseChart
+                    [datasets]="activePatientsChartTrend"
+                    [labels]="activePatientsChartTrendLabels"
+                    [options]="stackedChartOptions"
+                    [chartType]="stackedChartType"
+                    [colors]="lineChartColors"
+                    (chartHover)="chartHovered($event)"
+                    [legend]="false"
+                    (chartClick)="chartClicked($event)"
+                  >
+                  </canvas>
+                </div>
+                <div
+                  *ngIf="
+                    showTrend == true &&
+                    activePatients == true &&
+                    newAPatientsMultiLabels1.length > 0 &&
+                    showAPclinic == true
+                  "
+                  class="chart-Trend1-patients trendH"
+                >
+                  <canvas
+                    #myCanvas
+                    baseChart
+                    [datasets]="newAPatientsTrendMulti"
+                    [labels]="newAPatientsMultiLabels"
+                    [options]="stackedChartOptionsMulti"
+                    [chartType]="stackedChartType"
+                    [colors]="lineChartColors"
+                    (chartHover)="chartHovered($event)"
+                    [legend]="true"
+                    (chartClick)="chartClicked($event)"
+                  >
+                  </canvas>
+                </div>
 
-                <mat-card *ngIf="!isVisibleAccountGraphs">
-                    <mat-card-content class="sa_matcard_content">
-                        <mat-card-title class="text-center">
-                            <div>
-                                <span *ngIf="showTrend == false  && trendText"
-                                    class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
-                                    matTooltip="{{trendText}} : {{newPatientsPrevTotal | number:'1.0-0'}}"><img class="trend_ico"
-                                        src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
-                                    No. New Patients
-                            </div>
-                            <div class="sa_box_title_right_buttons"></div>
-                            <div class="info-icon-container marketing">
-                                <!-- <i title="Active Patients" class="fas fa-heartbeat"
+                <div
+                  *ngIf="
+                    !fdnewPatientsRatioLoader &&
+                    showTrend == true &&
+                    activePatients == false &&
+                    newPatientsChartTrend1.length <= 0 &&
+                    newPatientsMultiLabels1.length <= 0
+                  "
+                >
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">
+                    You have no new patients in the selected period
+                  </p>
+                </div>
+                <div
+                  *ngIf="
+                    !fdActivePatientLoader &&
+                    showTrend == true &&
+                    activePatients == true &&
+                    activePatientsChartTrend1.length <= 0 &&
+                    newAPatientsMultiLabels1.length <= 0
+                  "
+                >
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">
+                    You have no active patients in the selected period
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer" *ngIf="activePatients == false">
+              <div
+                *ngIf="showTrend == false"
+                fxLayout="row wrap"
+                fxLayoutAlign="center center"
+                class="m-t-40 sa_chart_details_sec pieChartDetails"
+              >
+                <div
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex.gt-xs="33.33%"
+                  fxFlex="100"
+                  class="text-center"
+                >
+                  <h3 class="m-0 value-num">
+                    {{ newPatientsTotal | number : '1.0-0' }}
+                  </h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{
+                    currentText
+                  }}</span>
+                  <span class="value-text" *ngIf="currentText == ''"
+                    >Current</span
+                  >
+                </div>
+                <div
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex.gt-xs="33.33%"
+                  fxFlex="100"
+                  class="text-center"
+                  *ngIf="duration != 'custom'"
+                >
+                  <h3 class="m-0 value-num">
+                    {{ newPatientsPrevTotal | number : '1.0-0' }}
+                  </h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{
+                    trendText
+                  }}</span>
+                  <span class="value-text" *ngIf="trendText == ''"
+                    >Previous</span
+                  >
+                </div>
+                <div
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex.gt-xs="33.33%"
+                  fxFlex="100"
+                  class="text-center"
+                  *ngIf="
+                    newPatientsGoal >= 0 &&
+                    newPatientsGoal != null &&
+                    showGoals == true
+                  "
+                >
+                  <h3 class="m-0 value-num">
+                    {{ newPatientsGoal * goalCount | number : '1.0-0' }}
+                  </h3>
+                  <span class="value-text">Goal</span>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer" *ngIf="activePatients == true">
+              <div
+                *ngIf="showTrend == false"
+                fxLayout="row wrap"
+                fxLayoutAlign="center center"
+                class="m-t-40 sa_chart_details_sec pieChartDetails"
+              >
+                <div
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex.gt-xs="33.33%"
+                  fxFlex="100"
+                  class="text-center"
+                >
+                  <h3 class="m-0 value-num">
+                    {{ fdActivePatients | number : '1.0-0' }}
+                  </h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{
+                    currentText
+                  }}</span>
+                  <span class="value-text" *ngIf="currentText == ''"
+                    >Current</span
+                  >
+                </div>
+                <div
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex.gt-xs="33.33%"
+                  fxFlex="100"
+                  class="text-center"
+                  *ngIf="duration != 'custom'"
+                >
+                  <h3 class="m-0 value-num">
+                    {{ fdActivePatientsTa | number : '1.0-0' }}
+                  </h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{
+                    trendText
+                  }}</span>
+                  <span class="value-text" *ngIf="trendText == ''"
+                    >Previous</span
+                  >
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card *ngIf="!isVisibleAccountGraphs">
+          <mat-card-content class="sa_matcard_content">
+            <mat-card-title class="text-center">
+              <div>
+                <span
+                  *ngIf="showTrend == false && trendText"
+                  class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
+                  matTooltip="{{ trendText }} : {{
+                    newPatientsPrevTotal | number : '1.0-0'
+                  }}"
+                  ><img
+                    class="trend_ico"
+                    src="../assets/images/trend_{{ newPatientsTooltip }}.png"
+                /></span>
+                No. New Patients
+              </div>
+              <div class="sa_box_title_right_buttons"></div>
+              <div class="info-icon-container marketing">
+                <!-- <i title="Active Patients" class="fas fa-heartbeat"
                                     [ngClass]="activePatients == true? 'active' : ''"
                                     *ngIf="apiUrl.includes('test-') && showTrend == false" (click)="activePat()"></i> -->
-                                <img [tooltip]="charTips['36']"
-                                    src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
-                            </div>
-                        </mat-card-title>
-                        <div class="card-body">
-                            <div class="chart py-2 trendchart">
-                                <div class="chart-num-patients"
-                                    *ngIf="showNPBar == false && showTrend == false && newPatientsTotal > 0 && fdnewPatientsRatioLoader == false">
-                                    <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="newPatientsTotal"
-                                        [thick]="gaugeThick" [foregroundColor]="foregroundColor"
-                                        [backgroundColor]="backgroundColor" [cap]="cap" [max]="maxnewPatientsGoal"
-                                        [size]="size">
-                                    </ngx-gauge>
-                                </div>
-                                <div class="chart-Trend1-patients trendH"
-                                    *ngIf="showNPBar == true && showTrend == false && newPatientsTotal > 0 && fdnewPatientsRatioLoader == false">
-                                    <canvas #myCanvas baseChart [datasets]="newPativentbr"
-                                        [labels]="newPTrendLabels1" [options]="stackedChartOptions"
-                                        [chartType]="stackedChartType" [colors]="lineChartColors"
-                                        (chartHover)="chartHovered($event)" [legend]="false"
-                                        (chartClick)="chartClicked($event)">
-                                    </canvas>   
-                                </div>
-                                <div
-                                    *ngIf="showTrend == false && newPatientsTotal <= 0 && fdnewPatientsRatioLoader == false">
-                                    <div class="sa_nodata_div"> </div>
-                                    <p class="chart-placeholder-text">You have no new patients in the selected period
-                                    </p>
-                                </div>
-
-                                <div *ngIf="showTrend == true &&  newPatientsChartTrend1.length > 0 && showNPclinic == false"
-                                    class="chart-Trend1-patients trendH">
-                                    <canvas #myCanvas baseChart [datasets]="newPatientsChartTrend"
-                                        [labels]="newPatientsChartTrendLabels" [options]="stackedChartOptions"
-                                        [chartType]="stackedChartType" [colors]="lineChartColors"
-                                        (chartHover)="chartHovered($event)" [legend]="false"
-                                        (chartClick)="chartClicked($event)">
-                                    </canvas>
-                                </div>
-                                <div *ngIf="showTrend == true &&  newPatientsMultiLabels1.length > 0 && showNPclinic == true"
-                                    class="chart-Trend1-patients trendH">
-                                    <canvas #myCanvas baseChart [datasets]="newPatientsTrendMulti"
-                                        [labels]="newPatientsMultiLabels" [options]="stackedChartOptionsMulti"
-                                        [chartType]="stackedChartType" [colors]="lineChartColors"
-                                        (chartHover)="chartHovered($event)" [legend]="false"
-                                        (chartClick)="chartClicked($event)">
-                                    </canvas>
-                                </div>
-                                <div
-                                    *ngIf="!fdnewPatientsRatioLoader && showTrend == true  && activePatients == false && newPatientsChartTrend1.length <=0 &&  newPatientsMultiLabels1.length <=0">
-                                    <div class="sa_nodata_div"></div>
-                                    <p class="chart-placeholder-text">You have no new patients in the selected period
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <div *ngIf="showTrend == false" fxLayout="row wrap" fxLayoutAlign="center center"
-                                class="m-t-40 sa_chart_details_sec pieChartDetails">
-                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                                    <h3 class="m-0 value-num">{{newPatientsTotal | number:'1.0-0'}}</h3>
-                                    <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
-                                    <span class="value-text" *ngIf="currentText == ''">Current</span>
-                                </div>
-                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                                    *ngIf="duration != 'custom'">
-                                    <h3 class="m-0 value-num">{{newPatientsPrevTotal | number:'1.0-0'}}</h3>
-                                    <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
-                                    <span class="value-text" *ngIf="trendText == ''">Previous</span>
-                                </div>
-                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                                    *ngIf="newPatientsGoal >= 0 && newPatientsGoal != null && showGoals == true">
-                                    <h3 class="m-0 value-num">{{newPatientsGoal * goalCount | number:'1.0-0'}}</h3>
-                                    <span class="value-text">Goal</span>
-                                </div>
-                            </div>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-                <div *ngIf="fdnewPatientsRatioLoader == true && activePatients == false"
-                    class="loader_container loader_container_middle"><img class="loader_ico"
-                        src="../assets/images/720.gif">
-                    <div class="loader-text">Calculating...</div>
+                <img
+                  [tooltip]="charTips['36']"
+                  src="../assets/images/info-icon.png"
+                  alt="info-icon"
+                  class="info-icon"
+                />
+              </div>
+            </mat-card-title>
+            <div class="card-body">
+              <div class="chart py-2 trendchart">
+                <div
+                  class="chart-num-patients"
+                  *ngIf="
+                    showNPBar == false &&
+                    showTrend == false &&
+                    newPatientsTotal > 0 &&
+                    fdnewPatientsRatioLoader == false
+                  "
+                >
+                  <ngx-gauge
+                    class="singleRatio"
+                    [type]="gaugeType"
+                    [value]="newPatientsTotal"
+                    [thick]="gaugeThick"
+                    [foregroundColor]="foregroundColor"
+                    [backgroundColor]="backgroundColor"
+                    [cap]="cap"
+                    [max]="maxnewPatientsGoal"
+                    [size]="size"
+                  >
+                  </ngx-gauge>
                 </div>
-                <div *ngIf="fdActivePatientLoader == true && activePatients == true"
-                    class="loader_container loader_container_middle"><img class="loader_ico"
-                        src="../assets/images/720.gif">
-                    <div class="loader-text">Calculating...</div>
+                <div
+                  class="chart-Trend1-patients trendH"
+                  *ngIf="
+                    showNPBar == true &&
+                    showTrend == false &&
+                    newPatientsTotal > 0 &&
+                    fdnewPatientsRatioLoader == false
+                  "
+                >
+                  <canvas
+                    #myCanvas
+                    baseChart
+                    [datasets]="newPativentbr"
+                    [labels]="newPTrendLabels1"
+                    [options]="stackedChartOptions"
+                    [chartType]="stackedChartType"
+                    [colors]="lineChartColors"
+                    (chartHover)="chartHovered($event)"
+                    [legend]="false"
+                    (chartClick)="chartClicked($event)"
+                  >
+                  </canvas>
+                </div>
+                <div
+                  *ngIf="
+                    showTrend == false &&
+                    newPatientsTotal <= 0 &&
+                    fdnewPatientsRatioLoader == false
+                  "
+                >
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">
+                    You have no new patients in the selected period
+                  </p>
                 </div>
 
-            </div>
-            <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
-                class="sa_flexbg referral_clinicians">
-                <mat-card *ngIf="isVisibleAccountGraphs">
-                    <mat-card-content class="sa_matcard_content">
-                        <mat-card-title class="text-center">
-                            <div>
-                                <span *ngIf="showTrend == false  && trendText &&  (xeroConnect || myobConnect)"
-                                    class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
-                                    matTooltip="{{trendText}} : ${{newAcqValuePrev}}"><img class="trend_ico"
-                                        src="../assets/images/trend_reverse_{{newPatientsTooltip}}.png"></span>
-                                New Patient Cost
-                            </div>
-                            <div class="CategoriesBtn CategoriesBtnMarketing">
-                                <button
-                                    *ngIf="showTrend == false && connectedwith && showAccountsButton && !newAcqValueError && !multipleClinicsSelected"
-                                    class="mat-button-sm mat-green-button"
-                                    (click)="ngxSmartModalService.getModal('myModal').open()">Accounts</button>
-                                <div class="info-icon-container float-right-space">
-                                    <img [tooltip]="charTips['37']" src="../assets/images/info-icon.png" alt="info-icon"
-                                        class="info-icon" />
-                                </div>
-                            </div>
-
-
-
-
-                        </mat-card-title>
-                        <div class="card-body">
-                            <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
-                                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group"> 
-                                </div>
-                                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                                </div>
-                            </div>
-                            <div class="chart py-2 trendchart">
-                                <div>
-
-                                    <div *ngIf="showTrend == false && fdnewPatientsAcqLoader ==  false &&  (xeroConnect || myobConnect) && !newAcqValueError && !multipleClinicsSelected && isCompleteMonth" 
-                                        class="chart-trend">
-                                        <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="newAcqValue"
-                                            [thick]="gaugeThick" [foregroundColor]="foregroundColor"
-                                            [backgroundColor]="backgroundColor" [cap]="cap" [prepend]="gaugePrependText"
-                                            [size]="size" [max]="newAcqValueMax">
-                                        </ngx-gauge>
-
-                                    </div>
-                                    <div *ngIf="fdnewPatientsAcqLoader == true && (xeroConnect || myobConnect) && !newAcqValueError && multipleClinicsSelected===false"
-                                        class="loader_container loader_container_middle"><img class="loader_ico"
-                                            src="../assets/images/720.gif">
-                                        <div class="loader-text">Calculating...</div>
-                                    </div>
-                                    <div *ngIf="showTrend == true && expenseDataTrend1.length > 0 && (xeroConnect || myobConnect) && !newAcqValueError"
-                                        class="chart-Trend1-patients">
-                                        <canvas #myCanvas baseChart [datasets]="expenseDataTrend"
-                                            [labels]="expenseDataTrendLabels" [options]="barChartOptions"
-                                            [chartType]="stackedChartType" [colors]="lineChartColors"
-                                            (chartHover)="chartHovered($event)" [legend]="false"
-                                            (chartClick)="chartClicked($event)">
-                                        </canvas>
-                                    </div>
-                                    <div
-                                        *ngIf="fdnewPatientsAcqLoader ==false && showTrend == true && expenseDataTrend1.length<=0 && (xeroConnect || myobConnect)  && !newAcqValueError && multipleClinicsSelected===false">
-                                        <div class="sa_nodata_div">
-                                        </div>
-                                        <p class="chart-placeholder-text">Unable to determine your cost of new patients
-                                            for this period</p>
-                                    </div>
-                                    <div *ngIf="((!xeroConnect && !myobConnect) || newAcqValueError) && multipleClinicsSelected===false">
-                                        <div class="sa_nodata_div">   
-                                        </div>
-                                        <p class="chart-placeholder-text">Please ensure your Xero/MYOB account is
-                                            connected</p>
-                                    </div>
-                                    <div *ngIf="multipleClinicsSelected===true">
-                                        <div class="sa_nodata_div">
-                                        </div>
-                                        <p class="chart-placeholder-text">Xero/MYOB charts can only be viewed per clinic - please select one clinic to view</p>
-                                    </div>
-                                    <div *ngIf="!isCompleteMonth && (xeroConnect || myobConnect) && !multipleClinicsSelected && !fdnewPatientsAcqLoader && !showTrend">
-                                        <div class="sa_nodata_div">
-                                        </div>
-                                        <p class="chart-placeholder-text">Please select a date range consisting of full months to view Accounting charts</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <div *ngIf="showTrend == false && isCompleteMonth" fxLayout="row wrap"
-                                class="pieChartDetails sa_chart_details_sec">
-                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                                    <h3 class="m-0 value-num">$ {{newAcqValue | number:'0.0-0'}}</h3>
-                                    <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
-                                    <span class="value-text" *ngIf="currentText == ''">Current</span>
-                                </div>
-                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                                    <h3 class="m-0 value-num">$ {{newAcqValuePrev | number:'0.0-0'}}</h3>
-                                    <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
-                                    <span class="value-text" *ngIf="trendText == ''">Previous</span>
-                                </div>
-                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                                    *ngIf="newAcqValueGoal >= 0 && newAcqValueGoal != '' && showGoals == true">
-                                    <h3 class="m-0 value-num">${{ newAcqValueGoal}}</h3>
-                                    <span class="value-text">Goal</span>
-                                </div>
-                            </div>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-
-                <mat-card *ngIf="!isVisibleAccountGraphs">
-                    <mat-card-content class="sa_matcard_content">
-                        <mat-card-title class="text-center">
-                            <div>
-                                <span *ngIf="showTrend == false  && trendText"
-                                    class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
-                                    matTooltip="{{trendText}} : {{fdActivePatientsTa | number:'1.0-0'}}"><img class="trend_ico"
-                                        src="../assets/images/trend_{{activePatientsTooltip}}.png"></span>
-                                    No. Active Patients
-                            </div>
-                            <div class="sa_box_title_right_buttons"></div>
-                            <div class="info-icon-container marketing">
-                                <img [tooltip]="charTips['61']"
-                                    src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
-                            </div>
-                        </mat-card-title>
-                        <div class="card-body">
-                            <div class="chart py-2 trendchart">
-                                <div class="chart-num-patients"
-                                    *ngIf="showAPBar == false && showTrend == false && fdActivePatients > 0 && fdActivePatientLoader == false">
-                                    <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="fdActivePatients"
-                                        [thick]="gaugeThick" [foregroundColor]="foregroundColor"
-                                        [backgroundColor]="backgroundColor" [cap]="cap" [max]="fdActivePatient"
-                                        [size]="size">
-                                    </ngx-gauge>
-                                </div>
-                                <div class="chart-Trend1-patients trendH"
-                                    *ngIf="showAPBar == true && showTrend == false && fdActivePatients > 0 && fdActivePatientLoader == false">
-                                    <canvas #myCanvas baseChart [datasets]="newAPativentbr"
-                                        [labels]="newAPTrendLabels1" [options]="stackedChartOptions"
-                                        [chartType]="stackedChartType" [colors]="lineChartColors"
-                                        (chartHover)="chartHovered($event)" [legend]="false"
-                                        (chartClick)="chartClicked($event)">
-                                    </canvas>   
-                                </div>
-
-                                <div
-                                    *ngIf="showTrend == false && fdActivePatients <= 0 && fdActivePatientLoader == false">
-                                    <div class="sa_nodata_div"> </div>
-                                    <p class="chart-placeholder-text">You have no active patients in the selected period
-                                    </p>
-                                </div>
-                                <div *ngIf="showTrend == true && activePatientsChartTrend1.length > 0"
-                                    class="chart-Trend1-patients trendH">
-                                    <canvas #myCanvas baseChart [datasets]="activePatientsChartTrend"
-                                        [labels]="activePatientsChartTrendLabels" [options]="stackedChartOptions"
-                                        [chartType]="stackedChartType" [colors]="lineChartColors"
-                                        (chartHover)="chartHovered($event)" [legend]="false"
-                                        (chartClick)="chartClicked($event)">
-                                    </canvas>
-                                </div>
-                                <div *ngIf="showTrend == true && newAPatientsMultiLabels1.length > 0 && showAPclinic == true"
-                                    class="chart-Trend1-patients trendH">
-                                    <canvas #myCanvas baseChart [datasets]="newAPatientsTrendMulti"
-                                        [labels]="newAPatientsMultiLabels" [options]="stackedChartOptionsMulti"
-                                        [chartType]="stackedChartType" [colors]="lineChartColors"
-                                        (chartHover)="chartHovered($event)" [legend]="false"
-                                        (chartClick)="chartClicked($event)">
-                                    </canvas>
-                                </div>
-                                <div
-                                    *ngIf="!fdActivePatientLoader && showTrend == true && activePatientsChartTrend1.length <=0  && newAPatientsMultiLabels1.length <=0">
-                                    <div class="sa_nodata_div"></div>
-                                    <p class="chart-placeholder-text">You have no active patients in the selected period
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <div *ngIf="showTrend == false" fxLayout="row wrap" fxLayoutAlign="center center"
-                                class="m-t-40 sa_chart_details_sec pieChartDetails">
-                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                                    <h3 class="m-0 value-num">{{fdActivePatients | number:'1.0-0'}}</h3>
-                                    <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
-                                    <span class="value-text" *ngIf="currentText == ''">Current</span>
-                                </div>
-                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                                    *ngIf="duration != 'custom'">
-                                    <h3 class="m-0 value-num">{{fdActivePatientsTa | number:'1.0-0'}}</h3>
-                                    <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
-                                    <span class="value-text" *ngIf="trendText == ''">Previous</span>
-                                </div>
-                            </div>
-                        </div>
-                    </mat-card-content>
-                    <div *ngIf="fdActivePatientLoader" class="loader_container loader_container_middle">
-                        <img class="loader_ico" src="../assets/images/720.gif">
-                        <div class="loader-text">Calculating...</div>
-                    </div>
-                </mat-card>
-                
-            </div>
-            <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
-                class="sa_flexbg referral_clinicians last">
-                <mat-card>
-                    <mat-card-content class="sa_matcard_content">
-                        <mat-card-title class="text-center">
-                            <div>
-                                <span *ngIf="showTrend == false  && trendText"
-                                    class="referral_cliniciansrral1Tool referral sa_inc_dec_arrows trend_arrow"
-                                    matTooltip="{{trendText}} : {{visitsPrevTotal}}"><img class="trend_ico"
-                                        src="../assets/images/trend_{{visitsTooltip}}.png"></span>
-                                Total Visits
-                            </div>
-                            <div class="sa_box_title_right_buttons">
-                            </div>
-                            <div class="info-icon-container">
-                                <img [tooltip]="charTips['25']" src="../assets/images/info-icon.png" alt="info-icon"
-                                    class="info-icon" />
-                            </div>
-                        </mat-card-title>
-                        <div class="card-body">
-                            <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
-                                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group"> 
-                                </div>
-                                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                                </div>
-                            </div>
-                            <div class="chart py-2 trendchart">
-
-                                <div class="chart-num-patients" *ngIf="showTrend == false && visitsTotal > 0 && showBar === false">
-                                    <ngx-gauge  class="singleRatio" [type]="gaugeType" [value]="visitsTotal"
-                                        [thick]="gaugeThick" [foregroundColor]="foregroundColor"
-                                        [backgroundColor]="backgroundColor" [cap]="cap" [size]="size">
-                                    </ngx-gauge>                    
-                                </div> 
-                                <div class="chart-Trend1-patients" *ngIf="showTrend == false && visitsTotal > 0 && showBar === true">
-                                    <canvas #myCanvas baseChart [datasets]="totalvisit"
-                                    [labels]="TvisitTrendLabels1" [options]="stackedChartOptions"
-                                    [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
-                                    [legend]="false" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
-                                </canvas>  
-                                </div>                                  
-                                <div *ngIf="showTrend == false && visitsTotal <= 0 && fdvisitsRatioLoader == false">
-                                    <div class="sa_nodata_div">
-                                    </div>
-                                    <p class="chart-placeholder-text">You have no visits in the selected period</p>
-                                </div>
-
-                                <div *ngIf="showTrend == true && visitsChartTrend1.length > 0 && showByclinic == false"
-                                    class="chart-Trend1-patients">
-                                    <canvas #myCanvas baseChart [datasets]="visitsChartTrend"
-                                        [labels]="visitsChartTrendLabels" [options]="stackedChartOptions"
-                                        [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
-                                        [legend]="false" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
-                                    </canvas>
-                                </div>
-                                <div *ngIf="showTrend == true && totalVisitMultiLabels1.length > 0 && showByclinic == true"
-                                    class="chart-Trend1-patients">
-                                    <canvas #myCanvas baseChart [datasets]="totavisitTrendMulti"
-                                        [labels]="totalVisitMultiLabels" [options]="stackedChartOptionsMulti"
-                                        [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
-                                        [legend]="true" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
-                                    </canvas>
-                                </div>
-
-                            </div>
-                            <div *ngIf="showTrend == true && fdvisitsRatioTrendLoader == false && visitsChartTrend1.length <=0 && totalVisitMultiLabels1.length <=0"
-                                class="no-data-placeholder">
-                                <div class="sa_nodata_div">
-                                </div>
-                                <p class="chart-placeholder-text">You have no visits in the selected period</p>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <div *ngIf="showTrend == false" fxLayout="row wrap" fxLayoutAlign="center center"
-                                class="m-t-40 sa_chart_details_sec pieChartDetails">
-                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                                    <h3 class="m-0 value-num">{{visitsTotal | number:'1.0-0'}}</h3>
-                                    <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
-                                    <span class="value-text" *ngIf="currentText == ''">Current</span>
-                                </div>
-                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center"
-                                    *ngIf="duration != 'custom'">
-                                    <h3 class="m-0 value-num">{{visitsPrevTotal | number:'1.0-0'}}</h3>
-                                    <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
-                                    <span class="value-text" *ngIf="trendText == ''">Previous</span>
-                                </div>
-                                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                                    *ngIf="visitsGoal >= 0 && visitsGoal != null && showGoals == true">
-                                    <h3 class="m-0 value-num">{{visitsGoal * goalCount | number:'1.0-0'}}</h3>
-                                    <span class="value-text">Goal</span>
-                                </div>
-
-                            </div>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-                <div *ngIf="fdvisitsRatioLoader == true || fdvisitsRatioTrendLoader == true"
-                    class="loader_container loader_container_middle"><img class="loader_ico"
-                        src="../assets/images/720.gif">
-                    <div class="loader-text">Calculating...</div>
+                <div
+                  *ngIf="
+                    showTrend == true &&
+                    newPatientsChartTrend1.length > 0 &&
+                    showNPclinic == false
+                  "
+                  class="chart-Trend1-patients trendH"
+                >
+                  <canvas
+                    #myCanvas
+                    baseChart
+                    [datasets]="newPatientsChartTrend"
+                    [labels]="newPatientsChartTrendLabels"
+                    [options]="stackedChartOptions"
+                    [chartType]="stackedChartType"
+                    [colors]="lineChartColors"
+                    (chartHover)="chartHovered($event)"
+                    [legend]="false"
+                    (chartClick)="chartClicked($event)"
+                  >
+                  </canvas>
                 </div>
+                <div
+                  *ngIf="
+                    showTrend == true &&
+                    newPatientsMultiLabels1.length > 0 &&
+                    showNPclinic == true
+                  "
+                  class="chart-Trend1-patients trendH"
+                >
+                  <canvas
+                    #myCanvas
+                    baseChart
+                    [datasets]="newPatientsTrendMulti"
+                    [labels]="newPatientsMultiLabels"
+                    [options]="stackedChartOptionsMulti"
+                    [chartType]="stackedChartType"
+                    [colors]="lineChartColors"
+                    (chartHover)="chartHovered($event)"
+                    [legend]="false"
+                    (chartClick)="chartClicked($event)"
+                  >
+                  </canvas>
+                </div>
+                <div
+                  *ngIf="
+                    !fdnewPatientsRatioLoader &&
+                    showTrend == true &&
+                    activePatients == false &&
+                    newPatientsChartTrend1.length <= 0 &&
+                    newPatientsMultiLabels1.length <= 0
+                  "
+                >
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">
+                    You have no new patients in the selected period
+                  </p>
+                </div>
+              </div>
             </div>
+            <div class="card-footer">
+              <div
+                *ngIf="showTrend == false"
+                fxLayout="row wrap"
+                fxLayoutAlign="center center"
+                class="m-t-40 sa_chart_details_sec pieChartDetails"
+              >
+                <div
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex.gt-xs="33.33%"
+                  fxFlex="100"
+                  class="text-center"
+                >
+                  <h3 class="m-0 value-num">
+                    {{ newPatientsTotal | number : '1.0-0' }}
+                  </h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{
+                    currentText
+                  }}</span>
+                  <span class="value-text" *ngIf="currentText == ''"
+                    >Current</span
+                  >
+                </div>
+                <div
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex.gt-xs="33.33%"
+                  fxFlex="100"
+                  class="text-center"
+                  *ngIf="duration != 'custom'"
+                >
+                  <h3 class="m-0 value-num">
+                    {{ newPatientsPrevTotal | number : '1.0-0' }}
+                  </h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{
+                    trendText
+                  }}</span>
+                  <span class="value-text" *ngIf="trendText == ''"
+                    >Previous</span
+                  >
+                </div>
+                <div
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex.gt-xs="33.33%"
+                  fxFlex="100"
+                  class="text-center"
+                  *ngIf="
+                    newPatientsGoal >= 0 &&
+                    newPatientsGoal != null &&
+                    showGoals == true
+                  "
+                >
+                  <h3 class="m-0 value-num">
+                    {{ newPatientsGoal * goalCount | number : '1.0-0' }}
+                  </h3>
+                  <span class="value-text">Goal</span>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <div
+          *ngIf="fdnewPatientsRatioLoader == true && activePatients == false"
+          class="loader_container loader_container_middle"
+        >
+          <img class="loader_ico" src="../assets/images/720.gif" />
+          <div class="loader-text">Calculating...</div>
         </div>
+        <div
+          *ngIf="fdActivePatientLoader == true && activePatients == true"
+          class="loader_container loader_container_middle"
+        >
+          <img class="loader_ico" src="../assets/images/720.gif" />
+          <div class="loader-text">Calculating...</div>
+        </div>
+      </div>
+      <div
+        fxFlex="calc(32% - 10px)"
+        fxFlex.md="100"
+        fxFlex.sm="100"
+        fxFlex.xs="100"
+        class="sa_flexbg referral_clinicians"
+      >
+        <mat-card *ngIf="isVisibleAccountGraphs">
+          <mat-card-content class="sa_matcard_content">
+            <mat-card-title class="text-center">
+              <div>
+                <span
+                  *ngIf="
+                    showTrend == false &&
+                    trendText &&
+                    (xeroConnect || myobConnect)
+                  "
+                  class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
+                  matTooltip="{{ trendText }} : ${{ newAcqValuePrev }}"
+                  ><img
+                    class="trend_ico"
+                    src="../assets/images/trend_reverse_{{
+                      newPatientsTooltip
+                    }}.png"
+                /></span>
+                New Patient Cost
+              </div>
+              <div class="CategoriesBtn CategoriesBtnMarketing">
+                <button
+                  *ngIf="
+                    showTrend == false &&
+                    connectedwith &&
+                    showAccountsButton &&
+                    !newAcqValueError &&
+                    !multipleClinicsSelected
+                  "
+                  class="mat-button-sm mat-green-button"
+                  (click)="ngxSmartModalService.getModal('myModal').open()"
+                >
+                  Accounts
+                </button>
+                <div class="info-icon-container float-right-space">
+                  <img
+                    [tooltip]="charTips['37']"
+                    src="../assets/images/info-icon.png"
+                    alt="info-icon"
+                    class="info-icon"
+                  />
+                </div>
+              </div>
+            </mat-card-title>
+            <div class="card-body">
+              <div
+                fxLayout="row wrap"
+                class="sa_tabs_main_sec"
+                fxLayoutAlign="center"
+              >
+                <div
+                  fxFlex.gt-sm="49.33%"
+                  fxFlex.gt-xs="50%"
+                  fxFlex="100"
+                  class="btn-group"
+                ></div>
+                <div
+                  fxFlex.gt-sm="49.33%"
+                  fxFlex.gt-xs="50%"
+                  fxFlex="100"
+                  class="btn-group"
+                ></div>
+              </div>
+              <div class="chart py-2 trendchart">
+                <div>
+                  <div
+                    *ngIf="
+                      showTrend == false &&
+                      fdnewPatientsAcqLoader == false &&
+                      (xeroConnect || myobConnect) &&
+                      !newAcqValueError &&
+                      !multipleClinicsSelected &&
+                      isCompleteMonth
+                    "
+                    class="chart-trend"
+                  >
+                    <ngx-gauge
+                      class="singleRatio"
+                      [type]="gaugeType"
+                      [value]="newAcqValue"
+                      [thick]="gaugeThick"
+                      [foregroundColor]="foregroundColor"
+                      [backgroundColor]="backgroundColor"
+                      [cap]="cap"
+                      [prepend]="gaugePrependText"
+                      [size]="size"
+                      [max]="newAcqValueMax"
+                    >
+                    </ngx-gauge>
+                  </div>
+                  <div
+                    *ngIf="
+                      fdnewPatientsAcqLoader == true &&
+                      (xeroConnect || myobConnect) &&
+                      !newAcqValueError &&
+                      multipleClinicsSelected === false
+                    "
+                    class="loader_container loader_container_middle"
+                  >
+                    <img class="loader_ico" src="../assets/images/720.gif" />
+                    <div class="loader-text">Calculating...</div>
+                  </div>
+                  <div
+                    *ngIf="
+                      showTrend == true &&
+                      expenseDataTrend1.length > 0 &&
+                      (xeroConnect || myobConnect) &&
+                      !newAcqValueError
+                    "
+                    class="chart-Trend1-patients"
+                  >
+                    <canvas
+                      #myCanvas
+                      baseChart
+                      [datasets]="expenseDataTrend"
+                      [labels]="expenseDataTrendLabels"
+                      [options]="barChartOptions"
+                      [chartType]="stackedChartType"
+                      [colors]="lineChartColors"
+                      (chartHover)="chartHovered($event)"
+                      [legend]="false"
+                      (chartClick)="chartClicked($event)"
+                    >
+                    </canvas>
+                  </div>
+                  <div
+                    *ngIf="
+                      fdnewPatientsAcqLoader == false &&
+                      showTrend == true &&
+                      expenseDataTrend1.length <= 0 &&
+                      (xeroConnect || myobConnect) &&
+                      !newAcqValueError &&
+                      multipleClinicsSelected === false
+                    "
+                  >
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">
+                      Unable to determine your cost of new patients for this
+                      period
+                    </p>
+                  </div>
+                  <div
+                    *ngIf="
+                      ((!xeroConnect && !myobConnect) || newAcqValueError) &&
+                      multipleClinicsSelected === false
+                    "
+                  >
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">
+                      Please ensure your Xero/MYOB account is connected
+                    </p>
+                  </div>
+                  <div *ngIf="multipleClinicsSelected === true">
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">
+                      Xero/MYOB charts can only be viewed per clinic - please
+                      select one clinic to view
+                    </p>
+                  </div>
+                  <div
+                    *ngIf="
+                      !isCompleteMonth &&
+                      (xeroConnect || myobConnect) &&
+                      !multipleClinicsSelected &&
+                      !fdnewPatientsAcqLoader &&
+                      !showTrend
+                    "
+                  >
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">
+                      Please select a date range consisting of full months to
+                      view Accounting charts
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div
+                *ngIf="showTrend == false && isCompleteMonth"
+                fxLayout="row wrap"
+                class="pieChartDetails sa_chart_details_sec"
+              >
+                <div
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex.gt-xs="33.33%"
+                  fxFlex="100"
+                  class="text-center"
+                >
+                  <h3 class="m-0 value-num">
+                    $ {{ newAcqValue | number : '0.0-0' }}
+                  </h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{
+                    currentText
+                  }}</span>
+                  <span class="value-text" *ngIf="currentText == ''"
+                    >Current</span
+                  >
+                </div>
+                <div
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex.gt-xs="33.33%"
+                  fxFlex="100"
+                  class="text-center"
+                >
+                  <h3 class="m-0 value-num">
+                    $ {{ newAcqValuePrev | number : '0.0-0' }}
+                  </h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{
+                    trendText
+                  }}</span>
+                  <span class="value-text" *ngIf="trendText == ''"
+                    >Previous</span
+                  >
+                </div>
+                <div
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex.gt-xs="33.33%"
+                  fxFlex="100"
+                  class="text-center"
+                  *ngIf="
+                    newAcqValueGoal >= 0 &&
+                    newAcqValueGoal != '' &&
+                    showGoals == true
+                  "
+                >
+                  <h3 class="m-0 value-num">${{ newAcqValueGoal }}</h3>
+                  <span class="value-text">Goal</span>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card *ngIf="!isVisibleAccountGraphs">
+          <mat-card-content class="sa_matcard_content">
+            <mat-card-title class="text-center">
+              <div>
+                <span
+                  *ngIf="showTrend == false && trendText"
+                  class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
+                  matTooltip="{{ trendText }} : {{
+                    fdActivePatientsTa | number : '1.0-0'
+                  }}"
+                  ><img
+                    class="trend_ico"
+                    src="../assets/images/trend_{{
+                      activePatientsTooltip
+                    }}.png"
+                /></span>
+                No. Active Patients
+              </div>
+              <div class="sa_box_title_right_buttons"></div>
+              <div class="info-icon-container marketing">
+                <img
+                  [tooltip]="charTips['61']"
+                  src="../assets/images/info-icon.png"
+                  alt="info-icon"
+                  class="info-icon"
+                />
+              </div>
+            </mat-card-title>
+            <div class="card-body">
+              <div class="chart py-2 trendchart">
+                <div
+                  class="chart-num-patients"
+                  *ngIf="
+                    showAPBar == false &&
+                    showTrend == false &&
+                    fdActivePatients > 0 &&
+                    fdActivePatientLoader == false
+                  "
+                >
+                  <ngx-gauge
+                    class="singleRatio"
+                    [type]="gaugeType"
+                    [value]="fdActivePatients"
+                    [thick]="gaugeThick"
+                    [foregroundColor]="foregroundColor"
+                    [backgroundColor]="backgroundColor"
+                    [cap]="cap"
+                    [max]="fdActivePatient"
+                    [size]="size"
+                  >
+                  </ngx-gauge>
+                </div>
+                <div
+                  class="chart-Trend1-patients trendH"
+                  *ngIf="
+                    showAPBar == true &&
+                    showTrend == false &&
+                    fdActivePatients > 0 &&
+                    fdActivePatientLoader == false
+                  "
+                >
+                  <canvas
+                    #myCanvas
+                    baseChart
+                    [datasets]="newAPativentbr"
+                    [labels]="newAPTrendLabels1"
+                    [options]="stackedChartOptions"
+                    [chartType]="stackedChartType"
+                    [colors]="lineChartColors"
+                    (chartHover)="chartHovered($event)"
+                    [legend]="false"
+                    (chartClick)="chartClicked($event)"
+                  >
+                  </canvas>
+                </div>
+
+                <div
+                  *ngIf="
+                    showTrend == false &&
+                    fdActivePatients <= 0 &&
+                    fdActivePatientLoader == false
+                  "
+                >
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">
+                    You have no active patients in the selected period
+                  </p>
+                </div>
+                <div
+                  *ngIf="
+                    showTrend == true && activePatientsChartTrend1.length > 0
+                  "
+                  class="chart-Trend1-patients trendH"
+                >
+                  <canvas
+                    #myCanvas
+                    baseChart
+                    [datasets]="activePatientsChartTrend"
+                    [labels]="activePatientsChartTrendLabels"
+                    [options]="stackedChartOptions"
+                    [chartType]="stackedChartType"
+                    [colors]="lineChartColors"
+                    (chartHover)="chartHovered($event)"
+                    [legend]="false"
+                    (chartClick)="chartClicked($event)"
+                  >
+                  </canvas>
+                </div>
+                <div
+                  *ngIf="
+                    showTrend == true &&
+                    newAPatientsMultiLabels1.length > 0 &&
+                    showAPclinic == true
+                  "
+                  class="chart-Trend1-patients trendH"
+                >
+                  <canvas
+                    #myCanvas
+                    baseChart
+                    [datasets]="newAPatientsTrendMulti"
+                    [labels]="newAPatientsMultiLabels"
+                    [options]="stackedChartOptionsMulti"
+                    [chartType]="stackedChartType"
+                    [colors]="lineChartColors"
+                    (chartHover)="chartHovered($event)"
+                    [legend]="false"
+                    (chartClick)="chartClicked($event)"
+                  >
+                  </canvas>
+                </div>
+                <div
+                  *ngIf="
+                    !fdActivePatientLoader &&
+                    showTrend == true &&
+                    activePatientsChartTrend1.length <= 0 &&
+                    newAPatientsMultiLabels1.length <= 0
+                  "
+                >
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">
+                    You have no active patients in the selected period
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div
+                *ngIf="showTrend == false"
+                fxLayout="row wrap"
+                fxLayoutAlign="center center"
+                class="m-t-40 sa_chart_details_sec pieChartDetails"
+              >
+                <div
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex.gt-xs="33.33%"
+                  fxFlex="100"
+                  class="text-center"
+                >
+                  <h3 class="m-0 value-num">
+                    {{ fdActivePatients | number : '1.0-0' }}
+                  </h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{
+                    currentText
+                  }}</span>
+                  <span class="value-text" *ngIf="currentText == ''"
+                    >Current</span
+                  >
+                </div>
+                <div
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex.gt-xs="33.33%"
+                  fxFlex="100"
+                  class="text-center"
+                  *ngIf="duration != 'custom'"
+                >
+                  <h3 class="m-0 value-num">
+                    {{ fdActivePatientsTa | number : '1.0-0' }}
+                  </h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{
+                    trendText
+                  }}</span>
+                  <span class="value-text" *ngIf="trendText == ''"
+                    >Previous</span
+                  >
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+          <div
+            *ngIf="fdActivePatientLoader"
+            class="loader_container loader_container_middle"
+          >
+            <img class="loader_ico" src="../assets/images/720.gif" />
+            <div class="loader-text">Calculating...</div>
+          </div>
+        </mat-card>
+      </div>
+      <div
+        fxFlex="calc(32% - 10px)"
+        fxFlex.md="100"
+        fxFlex.sm="100"
+        fxFlex.xs="100"
+        class="sa_flexbg referral_clinicians last"
+      >
+        <mat-card>
+          <mat-card-content class="sa_matcard_content">
+            <mat-card-title class="text-center">
+              <div>
+                <span
+                  *ngIf="showTrend == false && trendText"
+                  class="referral_cliniciansrral1Tool referral sa_inc_dec_arrows trend_arrow"
+                  matTooltip="{{ trendText }} : {{ visitsPrevTotal }}"
+                  ><img
+                    class="trend_ico"
+                    src="../assets/images/trend_{{ visitsTooltip }}.png"
+                /></span>
+                Total Visits
+              </div>
+              <div class="sa_box_title_right_buttons"></div>
+              <div class="info-icon-container">
+                <img
+                  [tooltip]="charTips['25']"
+                  src="../assets/images/info-icon.png"
+                  alt="info-icon"
+                  class="info-icon"
+                />
+              </div>
+            </mat-card-title>
+            <div class="card-body">
+              <div
+                fxLayout="row wrap"
+                class="sa_tabs_main_sec"
+                fxLayoutAlign="center"
+              >
+                <div
+                  fxFlex.gt-sm="49.33%"
+                  fxFlex.gt-xs="50%"
+                  fxFlex="100"
+                  class="btn-group"
+                ></div>
+                <div
+                  fxFlex.gt-sm="49.33%"
+                  fxFlex.gt-xs="50%"
+                  fxFlex="100"
+                  class="btn-group"
+                ></div>
+              </div>
+              <div class="chart py-2 trendchart">
+                <div
+                  class="chart-num-patients"
+                  *ngIf="
+                    showTrend == false && visitsTotal > 0 && showBar === false
+                  "
+                >
+                  <ngx-gauge
+                    class="singleRatio"
+                    [type]="gaugeType"
+                    [value]="visitsTotal"
+                    [thick]="gaugeThick"
+                    [foregroundColor]="foregroundColor"
+                    [backgroundColor]="backgroundColor"
+                    [cap]="cap"
+                    [size]="size"
+                  >
+                  </ngx-gauge>
+                </div>
+                <div
+                  class="chart-Trend1-patients"
+                  *ngIf="
+                    showTrend == false && visitsTotal > 0 && showBar === true
+                  "
+                >
+                  <canvas
+                    #myCanvas
+                    baseChart
+                    [datasets]="totalvisit"
+                    [labels]="TvisitTrendLabels1"
+                    [options]="stackedChartOptions"
+                    [chartType]="stackedChartType"
+                    (chartHover)="chartHovered($event)"
+                    [legend]="false"
+                    [colors]="lineChartColors"
+                    (chartClick)="chartClicked($event)"
+                  >
+                  </canvas>
+                </div>
+                <div
+                  *ngIf="
+                    showTrend == false &&
+                    visitsTotal <= 0 &&
+                    fdvisitsRatioLoader == false
+                  "
+                >
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">
+                    You have no visits in the selected period
+                  </p>
+                </div>
+
+                <div
+                  *ngIf="
+                    showTrend == true &&
+                    visitsChartTrend1.length > 0 &&
+                    showByclinic == false
+                  "
+                  class="chart-Trend1-patients"
+                >
+                  <canvas
+                    #myCanvas
+                    baseChart
+                    [datasets]="visitsChartTrend"
+                    [labels]="visitsChartTrendLabels"
+                    [options]="stackedChartOptions"
+                    [chartType]="stackedChartType"
+                    (chartHover)="chartHovered($event)"
+                    [legend]="false"
+                    [colors]="lineChartColors"
+                    (chartClick)="chartClicked($event)"
+                  >
+                  </canvas>
+                </div>
+                <div
+                  *ngIf="
+                    showTrend == true &&
+                    totalVisitMultiLabels1.length > 0 &&
+                    showByclinic == true
+                  "
+                  class="chart-Trend1-patients"
+                >
+                  <canvas
+                    #myCanvas
+                    baseChart
+                    [datasets]="totavisitTrendMulti"
+                    [labels]="totalVisitMultiLabels"
+                    [options]="stackedChartOptionsMulti"
+                    [chartType]="stackedChartType"
+                    (chartHover)="chartHovered($event)"
+                    [legend]="true"
+                    [colors]="lineChartColors"
+                    (chartClick)="chartClicked($event)"
+                  >
+                  </canvas>
+                </div>
+              </div>
+              <div
+                *ngIf="
+                  showTrend == true &&
+                  fdvisitsRatioTrendLoader == false &&
+                  visitsChartTrend1.length <= 0 &&
+                  totalVisitMultiLabels1.length <= 0
+                "
+                class="no-data-placeholder"
+              >
+                <div class="sa_nodata_div"></div>
+                <p class="chart-placeholder-text">
+                  You have no visits in the selected period
+                </p>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div
+                *ngIf="showTrend == false"
+                fxLayout="row wrap"
+                fxLayoutAlign="center center"
+                class="m-t-40 sa_chart_details_sec pieChartDetails"
+              >
+                <div
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex.gt-xs="50%"
+                  fxFlex="100"
+                  class="text-center"
+                >
+                  <h3 class="m-0 value-num">
+                    {{ visitsTotal | number : '1.0-0' }}
+                  </h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{
+                    currentText
+                  }}</span>
+                  <span class="value-text" *ngIf="currentText == ''"
+                    >Current</span
+                  >
+                </div>
+                <div
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex.gt-xs="50%"
+                  fxFlex="100"
+                  class="text-center"
+                  *ngIf="duration != 'custom'"
+                >
+                  <h3 class="m-0 value-num">
+                    {{ visitsPrevTotal | number : '1.0-0' }}
+                  </h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{
+                    trendText
+                  }}</span>
+                  <span class="value-text" *ngIf="trendText == ''"
+                    >Previous</span
+                  >
+                </div>
+                <div
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex.gt-xs="33.33%"
+                  fxFlex="100"
+                  class="text-center"
+                  *ngIf="
+                    visitsGoal >= 0 && visitsGoal != null && showGoals == true
+                  "
+                >
+                  <h3 class="m-0 value-num">
+                    {{ visitsGoal * goalCount | number : '1.0-0' }}
+                  </h3>
+                  <span class="value-text">Goal</span>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <div
+          *ngIf="
+            fdvisitsRatioLoader == true || fdvisitsRatioTrendLoader == true
+          "
+          class="loader_container loader_container_middle"
+        >
+          <img class="loader_ico" src="../assets/images/720.gif" />
+          <div class="loader-text">Calculating...</div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <ngx-smart-modal #myModal identifier="myModal">
-    <h4 class="mt-0">Select Accounts ({{connectedwith | uppercase}})</h4>
-    <div fxLayout="row wrap" class="row_sc" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0"
-        fxLayoutGap.xs="0">
-        <div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="50" fxFlex.xs="50"
-            class="SelectCategories sa_flexbg referral_clinicians">
-            <h5 class="mt-0">Selected Accounts</h5>
-            <ul class="list-categories">
-                <li *ngFor="let category of selectedAccounts; let i = index">
-                    <span (click)="remove_account(i)"><i class="fa fa-times"></i></span>
-                    <span>{{category}}</span>
-                </li>
-            </ul>
-
-        </div>
-        <div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="50" fxFlex.xs="50"
-            class="SelectCategories sa_flexbg referral_clinicians">
-            <h5 class="mt-0 other_cat">Other Accounts</h5>
-            <ul class="list-categories">
-                <li *ngFor="let category of Accounts; let i = index"><span (click)="add_account(i)"><i
-                            class="fa fa-plus"></i></span>
-                    <span>{{category}}</span>
-                </li>
-            </ul>
-
-        </div>
-
+  <h4 class="mt-0">Select Accounts ({{ connectedwith | uppercase }})</h4>
+  <div
+    fxLayout="row wrap"
+    class="row_sc"
+    fxLayoutGap="20px"
+    fxLayoutGap.md="20px"
+    fxLayoutGap.sm="0"
+    fxLayoutGap.xs="0"
+  >
+    <div
+      fxFlex="calc(50% - 10px)"
+      fxFlex.md="calc(50% - 10px)"
+      fxFlex.sm="50"
+      fxFlex.xs="50"
+      class="SelectCategories sa_flexbg referral_clinicians"
+    >
+      <h5 class="mt-0">Selected Accounts</h5>
+      <ul class="list-categories">
+        <li *ngFor="let category of selectedAccounts; let i = index">
+          <span (click)="remove_account(i)"><i class="fa fa-times"></i></span>
+          <span>{{ category }}</span>
+        </li>
+      </ul>
     </div>
-    <button class="mat-raised-button mat-dc float-right" mat-raised-button (click)="save_account()">Save</button>
-    <button (click)="myModal.close()" class="close_modal close-btn">Close</button>
+    <div
+      fxFlex="calc(50% - 10px)"
+      fxFlex.md="calc(50% - 10px)"
+      fxFlex.sm="50"
+      fxFlex.xs="50"
+      class="SelectCategories sa_flexbg referral_clinicians"
+    >
+      <h5 class="mt-0 other_cat">Other Accounts</h5>
+      <ul class="list-categories">
+        <li *ngFor="let category of Accounts; let i = index">
+          <span (click)="add_account(i)"><i class="fa fa-plus"></i></span>
+          <span>{{ category }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <button
+    class="mat-raised-button mat-dc float-right"
+    mat-raised-button
+    (click)="save_account()"
+  >
+    Save
+  </button>
+  <button (click)="myModal.close()" class="close_modal close-btn">Close</button>
 </ngx-smart-modal>
-<canvas #myCanvas baseChart [style.display]="'none'" [datasets]="chartData1" [labels]="chartLabels1"
-    [chartType]="pieChartType"></canvas>
+<canvas
+  #myCanvas
+  baseChart
+  [style.display]="'none'"
+  [datasets]="chartData1"
+  [labels]="chartLabels1"
+  [chartType]="pieChartType"
+></canvas>
