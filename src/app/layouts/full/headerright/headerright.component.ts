@@ -526,17 +526,16 @@ export class AppHeaderrightComponent implements AfterViewInit {
       profilesettings: `/clinic-settings/${clinicId}`,
       kpireport: '/kpi-report'
     };
-    console.log('check-permissions');
 
     this.rolesUsersService.getRolesIndividual(clinicId).subscribe(
       (res) => {
         if (res.status == 200) {
           permissions = (<string>res.body.data).split(',');
-          console.log(res.body);
           if (permissions.length > 0 && this.user_type == 7) {
-            const permissionByRoute = Object.values(permission2Route).find(
-              (route) => route == this.route
+            const permissionByRoute = Object.keys(permission2Route).find(
+              (permission) => permission2Route[permission] == this.route
             );
+            console.log(permissionByRoute);
             if (permissions.includes(permissionByRoute)) {
               this.unAuth = false;
             } else if (
