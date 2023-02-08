@@ -555,11 +555,11 @@
                 <div
                   class="chart-num-patients"
                   *ngIf="
-                    showNPBar == false &&
-                    showTrend == false &&
+                    !showNPBar &&
+                    !showTrend &&
                     newPatientsTotal > 0 &&
-                    fdnewPatientsRatioLoader == false &&
-                    activePatients == false
+                    !fdnewPatientsRatioLoader &&
+                    !activePatients
                   "
                 >
                   <ngx-gauge
@@ -578,11 +578,11 @@
                 <div
                   class="chart-Trend1-patients trendH"
                   *ngIf="
-                    showNPBar == true &&
-                    showTrend == false &&
+                    showNPBar &&
+                    !showTrend &&
                     newPatientsTotal > 0 &&
-                    fdnewPatientsRatioLoader == false &&
-                    activePatients == false
+                    !fdnewPatientsRatioLoader &&
+                    !activePatients
                   "
                 >
                   <canvas
@@ -626,11 +626,11 @@
                 <div
                   class="chart-Trend1-patients trendH"
                   *ngIf="
-                    showAPBar == true &&
-                    showTrend == false &&
-                    activePatients == true &&
+                    showAPBar &&
+                    !showTrend &&
+                    activePatients &&
                     fdActivePatients > 0 &&
-                    fdActivePatientLoader == false
+                    !fdActivePatientLoader
                   "
                 >
                   <canvas
@@ -677,10 +677,10 @@
 
                 <div
                   *ngIf="
-                    showTrend == true &&
-                    activePatients == false &&
+                    showTrend &&
+                    !activePatients &&
                     newPatientsChartTrend1.length > 0 &&
-                    showNPclinic == false
+                    !showNPclinic
                   "
                   class="chart-Trend1-patients trendH"
                 >
@@ -698,12 +698,21 @@
                   >
                   </canvas>
                 </div>
+                <div>
+                  {{
+                    showTrend &&
+                      !activePatients &&
+                      newPatientsMultiLabels.length > 0 &&
+                      showNPclinic &&
+                      !fdnewPatientsRatioLoader
+                  }}
+                </div>
                 <div
                   *ngIf="
-                    showTrend == true &&
-                    activePatients == false &&
-                    newPatientsMultiLabels1.length > 0 &&
-                    showNPclinic == true &&
+                    showTrend &&
+                    !activePatients &&
+                    newPatientsMultiLabels.length > 0 &&
+                    showNPclinic &&
                     !fdnewPatientsRatioLoader
                   "
                   class="chart-Trend1-patients trendH"
@@ -725,9 +734,9 @@
 
                 <div
                   *ngIf="
-                    showTrend == true &&
-                    activePatients == true &&
-                    activePatientsChartTrend1.length > 0
+                    showTrend &&
+                    activePatients &&
+                    activePatientsChartTrend.length > 0
                   "
                   class="chart-Trend1-patients trendH"
                 >
@@ -747,10 +756,10 @@
                 </div>
                 <div
                   *ngIf="
-                    showTrend == true &&
-                    activePatients == true &&
-                    newAPatientsMultiLabels1.length > 0 &&
-                    showAPclinic == true
+                    showTrend &&
+                    activePatients &&
+                    newAPatientsMultiLabels.length > 0 &&
+                    showAPclinic
                   "
                   class="chart-Trend1-patients trendH"
                 >
@@ -772,10 +781,10 @@
                 <div
                   *ngIf="
                     !fdnewPatientsRatioLoader &&
-                    showTrend == true &&
-                    activePatients == false &&
-                    newPatientsChartTrend1.length <= 0 &&
-                    newPatientsMultiLabels1.length <= 0
+                    showTrend &&
+                    !activePatients &&
+                    newPatientsChartTrend.length == 0 &&
+                    newPatientsMultiLabels.length == 0
                   "
                 >
                   <div class="sa_nodata_div"></div>
@@ -786,10 +795,10 @@
                 <div
                   *ngIf="
                     !fdActivePatientLoader &&
-                    showTrend == true &&
-                    activePatients == true &&
-                    activePatientsChartTrend1.length <= 0 &&
-                    newAPatientsMultiLabels1.length <= 0
+                    showTrend &&
+                    activePatients &&
+                    activePatientsChartTrend.length <= 0 &&
+                    newAPatientsMultiLabels.length <= 0
                   "
                 >
                   <div class="sa_nodata_div"></div>
@@ -1013,11 +1022,18 @@
                   >
                   </canvas>
                 </div>
+                <p>
+                  {{
+                    showTrend &&
+                      newPatientsMultiLabels.length > 0 &&
+                      showNPclinic
+                  }}
+                </p>
                 <div
                   *ngIf="
-                    showTrend == true &&
-                    newPatientsMultiLabels1.length > 0 &&
-                    showNPclinic == true
+                    showTrend &&
+                    newPatientsMultiLabels.length > 0 &&
+                    showNPclinic
                   "
                   class="chart-Trend1-patients trendH"
                 >
@@ -1038,10 +1054,10 @@
                 <div
                   *ngIf="
                     !fdnewPatientsRatioLoader &&
-                    showTrend == true &&
-                    activePatients == false &&
-                    newPatientsChartTrend1.length <= 0 &&
-                    newPatientsMultiLabels1.length <= 0
+                    showTrend &&
+                    !activePatients &&
+                    newPatientsChartTrend.length == 0 &&
+                    newPatientsMultiLabels.length == 0
                   "
                 >
                   <div class="sa_nodata_div"></div>
@@ -1112,14 +1128,14 @@
           </mat-card-content>
         </mat-card>
         <div
-          *ngIf="fdnewPatientsRatioLoader == true && activePatients == false"
+          *ngIf="fdnewPatientsRatioLoader && !activePatients"
           class="loader_container loader_container_middle"
         >
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
         <div
-          *ngIf="fdActivePatientLoader == true && activePatients == true"
+          *ngIf="fdActivePatientLoader && activePatients"
           class="loader_container loader_container_middle"
         >
           <img class="loader_ico" src="../assets/images/720.gif" />
@@ -1456,9 +1472,7 @@
                   </p>
                 </div>
                 <div
-                  *ngIf="
-                    showTrend == true && activePatientsChartTrend1.length > 0
-                  "
+                  *ngIf="showTrend && activePatientsChartTrend1.length > 0"
                   class="chart-Trend1-patients trendH"
                 >
                   <canvas
@@ -1477,9 +1491,9 @@
                 </div>
                 <div
                   *ngIf="
-                    showTrend == true &&
-                    newAPatientsMultiLabels1.length > 0 &&
-                    showAPclinic == true
+                    showTrend &&
+                    newAPatientsMultiLabels.length > 0 &&
+                    showAPclinic
                   "
                   class="chart-Trend1-patients trendH"
                 >
@@ -1617,9 +1631,7 @@
               <div class="chart py-2 trendchart">
                 <div
                   class="chart-num-patients"
-                  *ngIf="
-                    showTrend == false && visitsTotal > 0 && showBar === false
-                  "
+                  *ngIf="visitsTotal > 0 && !(showTrend || showBar)"
                 >
                   <ngx-gauge
                     class="singleRatio"
@@ -1635,9 +1647,7 @@
                 </div>
                 <div
                   class="chart-Trend1-patients"
-                  *ngIf="
-                    showTrend == false && visitsTotal > 0 && showBar === true
-                  "
+                  *ngIf="!showTrend && visitsTotal > 0 && showBar"
                 >
                   <canvas
                     #myCanvas
@@ -1655,9 +1665,7 @@
                 </div>
                 <div
                   *ngIf="
-                    showTrend == false &&
-                    visitsTotal <= 0 &&
-                    fdvisitsRatioLoader == false
+                    visitsTotal == 0 && !(showTrend || fdvisitsRatioLoader)
                   "
                 >
                   <div class="sa_nodata_div"></div>
@@ -1668,9 +1676,7 @@
 
                 <div
                   *ngIf="
-                    showTrend == true &&
-                    visitsChartTrend1.length > 0 &&
-                    showByclinic == false
+                    showTrend && visitsChartTrend1.length > 0 && !showByclinic
                   "
                   class="chart-Trend1-patients"
                 >
@@ -1690,9 +1696,9 @@
                 </div>
                 <div
                   *ngIf="
-                    showTrend == true &&
+                    showTrend &&
                     totalVisitMultiLabels1.length > 0 &&
-                    showByclinic == true
+                    showByclinic
                   "
                   class="chart-Trend1-patients"
                 >

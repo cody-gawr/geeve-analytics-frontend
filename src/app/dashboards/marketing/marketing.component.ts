@@ -2178,8 +2178,6 @@ export class MarketingComponent implements AfterViewInit {
       this.fdnewPatientsRatioLoader = true;
       this.newPatientsTooltip = 'down';
       this.newPatientsTotal = 0;
-      var user_id;
-      var clinic_id;
       this.marketingService
         .fdnewPatientsRatio(
           this.clinic_id,
@@ -2835,12 +2833,9 @@ export class MarketingComponent implements AfterViewInit {
     this.visitsChartTrendLabels = [];
     this.fdvisitsRatioTrendLoader = true;
     this.visitsChartTrend1 = [];
-    var user_id;
-    var clinic_id;
     this.showByclinic = false;
     this.totavisitTrendMulti = [];
     this.totalVisitMultiLabels = [];
-    this.totalVisitMultiLabels1 = [];
     this.marketingService
       .mkTotalVisitsTrend(this.clinic_id, this.trendValue)
       .subscribe(
@@ -2852,6 +2847,8 @@ export class MarketingComponent implements AfterViewInit {
           this.visitsChartTrendLabels1 = [];
           this.visitsChartTrend[0]['data'] = [];
           this.fdvisitsRatioTrendLoader = false;
+          this.totavisitTrendMulti = [];
+          this.totalVisitMultiLabels = [];
           if (res.status == 200) {
             if (
               this.clinic_id.indexOf(',') >= 0 ||
@@ -2863,36 +2860,56 @@ export class MarketingComponent implements AfterViewInit {
               this.clinic_id.indexOf(',') >= 0 ||
               Array.isArray(this.clinic_id)
             ) {
-              res.body.data.sort((a, b) =>
-                a.duration === b.duration ? 0 : a.duration > b.duration || -1
-              );
-              res.body.data.forEach((res) => {
-                res.val.forEach((reslt, key) => {
-                  if (typeof this.totavisitTrendMulti[key] == 'undefined') {
-                    this.totavisitTrendMulti[key] = { data: [], label: '' };
-                  }
-                  if (
-                    typeof this.totavisitTrendMulti[key]['data'] == 'undefined'
-                  ) {
-                    this.totavisitTrendMulti[key]['data'] = [];
-                  }
+              this.totalVisitMultiLabels = _.chain(res.body.data)
+                .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                .map((items: any[], duration: string) =>
+                  this.trendValue == 'c'
+                    ? this.datePipe.transform(duration, 'MMM y')
+                    : duration
+                )
+                .value();
+              this.totavisitTrendMulti = _.chain(res.body.data)
+                .groupBy('clinic_id')
+                .map((items: any[]) => ({
+                  data: items.map((item) => _.round(Number(item.num_visits))),
+                  label: items.length > 0 ? items[0].clinic_name : ''
+                }))
+                .value()
+                .map((item, index) => ({
+                  ...item,
+                  backgroundColor: this.doughnutChartColors[index],
+                  hoverBackgroundColor: this.doughnutChartColors[index]
+                }));
+              // res.body.data.sort((a, b) =>
+              //   a.duration === b.duration ? 0 : a.duration > b.duration || -1
+              // );
+              // res.body.data.forEach((res) => {
+              //   res.val.forEach((reslt, key) => {
+              //     if (typeof this.totavisitTrendMulti[key] == 'undefined') {
+              //       this.totavisitTrendMulti[key] = { data: [], label: '' };
+              //     }
+              //     if (
+              //       typeof this.totavisitTrendMulti[key]['data'] == 'undefined'
+              //     ) {
+              //       this.totavisitTrendMulti[key]['data'] = [];
+              //     }
 
-                  this.totavisitTrendMulti[key]['data'].push(
-                    Math.round(reslt.num_visits)
-                  );
-                  this.totavisitTrendMulti[key]['label'] = reslt.clinic_name;
-                  this.totavisitTrendMulti[key]['backgroundColor'] =
-                    this.doughnutChartColors[key];
-                  this.totavisitTrendMulti[key]['hoverBackgroundColor'] =
-                    this.doughnutChartColors[key];
-                });
-                if (this.trendValue == 'c')
-                  this.totalVisitMultiLabels1.push(
-                    this.datePipe.transform(res.duration, 'MMM y')
-                  );
-                else this.totalVisitMultiLabels1.push(res.duration);
-              });
-              this.totalVisitMultiLabels = this.totalVisitMultiLabels1;
+              //     this.totavisitTrendMulti[key]['data'].push(
+              //       Math.round(reslt.num_visits)
+              //     );
+              //     this.totavisitTrendMulti[key]['label'] = reslt.clinic_name;
+              //     this.totavisitTrendMulti[key]['backgroundColor'] =
+              //       this.doughnutChartColors[key];
+              //     this.totavisitTrendMulti[key]['hoverBackgroundColor'] =
+              //       this.doughnutChartColors[key];
+              //   });
+              //   if (this.trendValue == 'c')
+              //     this.totalVisitMultiLabels1.push(
+              //       this.datePipe.transform(res.duration, 'MMM y')
+              //     );
+              //   else this.totalVisitMultiLabels1.push(res.duration);
+              // });
+              // this.totalVisitMultiLabels = this.totalVisitMultiLabels1;
             } else {
               res.body.data.forEach((res) => {
                 this.visitsChartTrend1.push(res.num_visits);
@@ -2990,10 +3007,9 @@ export class MarketingComponent implements AfterViewInit {
       backgroundOverlayMode: 'multiply'
     }
   ];
-  public newPatientsTrendMulti: any[] = [{ data: [], label: '' }];
+  public newPatientsTrendMulti: Chart.ChartDataSets[] = [];
   public showNPclinic: boolean = false;
   public newPatientsMultiLabels = [];
-  public newPatientsMultiLabels1 = [];
   public newPatientsChartTrend1 = [];
   public newPatientsChartTrendLabels = [];
   public newPatientsChartTrendLabels1 = [];
@@ -3015,7 +3031,6 @@ export class MarketingComponent implements AfterViewInit {
           this.showNPclinic = false;
           this.newPatientsTrendMulti = [];
           this.newPatientsMultiLabels = [];
-          this.newPatientsMultiLabels1 = [];
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
           if (res.status == 200) {
@@ -3024,37 +3039,63 @@ export class MarketingComponent implements AfterViewInit {
               Array.isArray(this.clinic_id)
             ) {
               this.showNPclinic = true;
-              res.body.data.sort((a, b) =>
-                a.duration === b.duration ? 0 : a.duration > b.duration || -1
-              );
-              res.body.data.forEach((res) => {
-                res.val.forEach((reslt, key) => {
-                  if (typeof this.newPatientsTrendMulti[key] == 'undefined') {
-                    this.newPatientsTrendMulti[key] = { data: [], label: '' };
-                  }
-                  if (
-                    typeof this.newPatientsTrendMulti[key]['data'] ==
-                    'undefined'
-                  ) {
-                    this.newPatientsTrendMulti[key]['data'] = [];
-                  }
+              this.fdnewPatientsRatioLoader = false;
 
-                  this.newPatientsTrendMulti[key]['data'].push(
-                    Math.round(reslt.new_patients)
-                  );
-                  this.newPatientsTrendMulti[key]['label'] = reslt.clinic_name;
-                  this.newPatientsTrendMulti[key]['backgroundColor'] =
-                    this.doughnutChartColors[key];
-                  this.newPatientsTrendMulti[key]['hoverBackgroundColor'] =
-                    this.doughnutChartColors[key];
-                });
-                if (this.trendValue == 'c')
-                  this.newPatientsMultiLabels1.push(
-                    this.datePipe.transform(res.duration, 'MMM y')
-                  );
-                else this.newPatientsMultiLabels1.push(res.duration);
-              });
-              this.newPatientsMultiLabels = this.newPatientsMultiLabels1;
+              this.newPatientsMultiLabels = _.chain(res.body.data)
+                .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                .map((items: any[], duration: string) =>
+                  this.trendValue == 'c'
+                    ? this.datePipe.transform(duration, 'MMM y')
+                    : duration
+                )
+                .value();
+
+              this.newPatientsTrendMulti = _.chain(res.body.data)
+                .groupBy('clinic_id')
+                .map((items: any[]) => {
+                  return {
+                    data: items.map((item) => _.round(item.new_patients)),
+                    label: items.length > 0 ? items[0].clinic_name : ''
+                  };
+                })
+                .value()
+                .map((item, index) => ({
+                  ...item,
+                  backgroundColor: this.doughnutChartColors[index],
+                  hoverBackgroundColor: this.doughnutChartColors[index]
+                }));
+
+              // res.body.data.sort((a, b) =>
+              //   a.duration === b.duration ? 0 : a.duration > b.duration || -1
+              // );
+              // res.body.data.forEach((res) => {
+              //   res.val.forEach((reslt, key) => {
+              //     if (typeof this.newPatientsTrendMulti[key] == 'undefined') {
+              //       this.newPatientsTrendMulti[key] = { data: [], label: '' };
+              //     }
+              //     if (
+              //       typeof this.newPatientsTrendMulti[key]['data'] ==
+              //       'undefined'
+              //     ) {
+              //       this.newPatientsTrendMulti[key]['data'] = [];
+              //     }
+
+              //     this.newPatientsTrendMulti[key]['data'].push(
+              //       Math.round(reslt.new_patients)
+              //     );
+              //     this.newPatientsTrendMulti[key]['label'] = reslt.clinic_name;
+              //     this.newPatientsTrendMulti[key]['backgroundColor'] =
+              //       this.doughnutChartColors[key];
+              //     this.newPatientsTrendMulti[key]['hoverBackgroundColor'] =
+              //       this.doughnutChartColors[key];
+              //   });
+              //   if (this.trendValue == 'c')
+              //     this.newPatientsMultiLabels1.push(
+              //       this.datePipe.transform(res.duration, 'MMM y')
+              //     );
+              //   else this.newPatientsMultiLabels1.push(res.duration);
+              // });
+              // this.newPatientsMultiLabels = this.newPatientsMultiLabels1;
             } else {
               this.newPatientsChartTemp = res.body.data;
               res.body.data.forEach((res) => {
@@ -3126,37 +3167,59 @@ export class MarketingComponent implements AfterViewInit {
               Array.isArray(this.clinic_id)
             ) {
               this.showAPclinic = true;
-              res.body.data.sort((a, b) =>
-                a.duration === b.duration ? 0 : a.duration > b.duration || -1
-              );
-              res.body.data.forEach((res) => {
-                res.val.forEach((reslt, key) => {
-                  if (typeof this.newAPatientsTrendMulti[key] == 'undefined') {
-                    this.newAPatientsTrendMulti[key] = { data: [], label: '' };
-                  }
-                  if (
-                    typeof this.newAPatientsTrendMulti[key]['data'] ==
-                    'undefined'
-                  ) {
-                    this.newAPatientsTrendMulti[key]['data'] = [];
-                  }
+              this.newAPatientsMultiLabels = _.chain(res.body.data)
+                .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                .map((items: any[], duration: string) =>
+                  this.trendValue == 'c'
+                    ? this.datePipe.transform(duration, 'MMM y')
+                    : duration
+                )
+                .value();
+              this.newAPatientsTrendMulti = _.chain(res.body.data)
+                .groupBy('clinic_id')
+                .map((items: any[]) => ({
+                  data: items.map((item) =>
+                    _.round(Number(item.active_patients))
+                  ),
+                  label: items.length > 0 ? items[0].clinic_name : ''
+                }))
+                .value()
+                .map((item, index) => ({
+                  ...item,
+                  backgroundColor: this.doughnutChartColors[index],
+                  hoverBackgroundColor: this.doughnutChartColors[index]
+                }));
+              // res.body.data.sort((a, b) =>
+              //   a.duration === b.duration ? 0 : a.duration > b.duration || -1
+              // );
+              // res.body.data.forEach((res) => {
+              //   res.val.forEach((reslt, key) => {
+              //     if (typeof this.newAPatientsTrendMulti[key] == 'undefined') {
+              //       this.newAPatientsTrendMulti[key] = { data: [], label: '' };
+              //     }
+              //     if (
+              //       typeof this.newAPatientsTrendMulti[key]['data'] ==
+              //       'undefined'
+              //     ) {
+              //       this.newAPatientsTrendMulti[key]['data'] = [];
+              //     }
 
-                  this.newAPatientsTrendMulti[key]['data'].push(
-                    Math.round(reslt.active_patients)
-                  );
-                  this.newAPatientsTrendMulti[key]['label'] = reslt.clinic_name;
-                  this.newAPatientsTrendMulti[key]['backgroundColor'] =
-                    this.doughnutChartColors[key];
-                  this.newAPatientsTrendMulti[key]['hoverBackgroundColor'] =
-                    this.doughnutChartColors[key];
-                });
-                if (this.trendValue == 'c')
-                  this.newAPatientsMultiLabels1.push(
-                    this.datePipe.transform(res.duration, 'MMM y')
-                  );
-                else this.newAPatientsMultiLabels1.push(res.duration);
-              });
-              this.newAPatientsMultiLabels = this.newAPatientsMultiLabels1;
+              //     this.newAPatientsTrendMulti[key]['data'].push(
+              //       Math.round(reslt.active_patients)
+              //     );
+              //     this.newAPatientsTrendMulti[key]['label'] = reslt.clinic_name;
+              //     this.newAPatientsTrendMulti[key]['backgroundColor'] =
+              //       this.doughnutChartColors[key];
+              //     this.newAPatientsTrendMulti[key]['hoverBackgroundColor'] =
+              //       this.doughnutChartColors[key];
+              //   });
+              //   if (this.trendValue == 'c')
+              //     this.newAPatientsMultiLabels1.push(
+              //       this.datePipe.transform(res.duration, 'MMM y')
+              //     );
+              //   else this.newAPatientsMultiLabels1.push(res.duration);
+              // });
+              // this.newAPatientsMultiLabels = this.newAPatientsMultiLabels1;
             } else {
               this.activePatientsChartTemp = res.body.data;
               res.body.data.forEach((res) => {
