@@ -242,6 +242,7 @@ export class FinancesComponent implements AfterViewInit {
         }
         this.filterDate(this.chartService.duration$.value);
       } else {
+        this.clinic_id = val[0]; // assign to first clinic ID, and get xero/myob status based on this
         await this.clinicGetAccountingPlatform(); // gtt added to resolve issue in prod not firing this request for multi clinic
         this.isVisibleAccountGraphs = true;
         this.multipleClinicsSelected = true;
