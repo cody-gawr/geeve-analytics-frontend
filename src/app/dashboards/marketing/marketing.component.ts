@@ -4,7 +4,7 @@ import {
   AfterViewInit,
   ViewEncapsulation,
   ViewChild,
-  ElementRef,
+  ElementRef
 } from '@angular/core';
 import { MarketingService } from './marketing.service';
 import { FinancesService } from '../finances/finances.service';
@@ -17,7 +17,7 @@ import { NgxSmartModalService } from 'ngx-smart-modal';
 import { ToastrService } from 'ngx-toastr'; /**/
 import {
   BaseChartDirective,
-  PluginServiceGlobalRegistrationAndOptions,
+  PluginServiceGlobalRegistrationAndOptions
 } from 'ng2-charts';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
@@ -37,7 +37,7 @@ export interface Dentist {
 @Component({
   templateUrl: './marketing.component.html',
   styleUrls: ['./marketing.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 export class MarketingComponent implements AfterViewInit {
   @ViewChild('myCanvas') canvas2: ElementRef;
@@ -61,7 +61,7 @@ export class MarketingComponent implements AfterViewInit {
     this.chartService.colors.odd,
     this.chartService.colors.even,
     this.chartService.colors.odd,
-    this.chartService.colors.even,
+    this.chartService.colors.even
   ];
   predictedChartColors;
   preoceedureChartColors;
@@ -147,13 +147,13 @@ export class MarketingComponent implements AfterViewInit {
         return labels.map((item) => ({
           text: item,
           strokeStyle: bg_color[item],
-          fillStyle: bg_color[item],
+          fillStyle: bg_color[item]
         }));
-      },
+      }
     },
     onClick: (event, legendItem, legend) => {
       return;
-    },
+    }
   };
   private warningMessage: string;
   private myTemplate: any = '';
@@ -366,7 +366,7 @@ export class MarketingComponent implements AfterViewInit {
       '#FF6384',
       '#fe7b85',
       '#87ada9',
-      '#386087',
+      '#386087'
     ];
 
     this.preoceedureChartColors = [
@@ -374,37 +374,37 @@ export class MarketingComponent implements AfterViewInit {
         backgroundColor: proceedureGradient,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: proceedureGradient1,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: proceedureGradient2,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: proceedureGradient3,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: proceedureGradient4,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: proceedureGradient5,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-      },
+        hoverBorderColor: '#1CA49F'
+      }
     ];
     //this.filterDate(this.chartService.duration$.value);
   }
@@ -415,8 +415,8 @@ export class MarketingComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -424,16 +424,16 @@ export class MarketingComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -442,13 +442,13 @@ export class MarketingComponent implements AfterViewInit {
           ticks: {
             userCallback: function (item) {
               return item;
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: {
-      display: true,
+      display: true
     },
     tooltips: {
       mode: 'x-axis',
@@ -538,9 +538,9 @@ export class MarketingComponent implements AfterViewInit {
             ': ' +
             tooltipItems.yLabel
           );
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   public labelBarmkPatientByReferralOptionsStacked: any = {
@@ -549,8 +549,8 @@ export class MarketingComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -558,16 +558,16 @@ export class MarketingComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -576,13 +576,13 @@ export class MarketingComponent implements AfterViewInit {
           ticks: {
             userCallback: function (item) {
               return item;
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: {
-      display: true,
+      display: true
     },
     tooltips: {
       mode: 'x-axis',
@@ -672,9 +672,9 @@ export class MarketingComponent implements AfterViewInit {
             ': ' +
             tooltipItems.yLabel
           );
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   public date = new Date();
@@ -684,8 +684,8 @@ export class MarketingComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -693,16 +693,16 @@ export class MarketingComponent implements AfterViewInit {
     barThickness: 1,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -713,13 +713,13 @@ export class MarketingComponent implements AfterViewInit {
               if (Math.floor(label) === label) {
                 return label;
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: {
-      display: true,
+      display: true
     },
     tooltips: {
       mode: 'x-axis',
@@ -738,9 +738,9 @@ export class MarketingComponent implements AfterViewInit {
         },
         title: function () {
           return '';
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   public stackedChartOptionsMulti: any = {
@@ -749,8 +749,8 @@ export class MarketingComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -758,16 +758,16 @@ export class MarketingComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -775,10 +775,10 @@ export class MarketingComponent implements AfterViewInit {
           ticks: {
             userCallback: function (item) {
               return item;
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: this.stackLegendGenerator,
     tooltips: {
@@ -898,9 +898,9 @@ export class MarketingComponent implements AfterViewInit {
             ': ' +
             Math.round(tooltipItems.yLabel)
           );
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   public stackedChartOptionsRev: any = {
@@ -909,8 +909,8 @@ export class MarketingComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -918,16 +918,16 @@ export class MarketingComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -943,13 +943,13 @@ export class MarketingComponent implements AfterViewInit {
                 currency = currency.split(/(?=(?:...)*$)/).join(',');
                 return `${label < 0 ? '- $' : '$'}${currency}`;
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: {
-      display: true,
+      display: true
     },
     tooltips: {
       mode: 'x-axis',
@@ -1083,9 +1083,9 @@ export class MarketingComponent implements AfterViewInit {
             data.datasets[tooltipItems.datasetIndex].label +
             `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`
           );
-        },
-      },
-    },
+        }
+      }
+    }
   };
   public stackedChartOptionsRef: any = {
     elements: {
@@ -1093,8 +1093,8 @@ export class MarketingComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -1102,16 +1102,16 @@ export class MarketingComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -1127,13 +1127,13 @@ export class MarketingComponent implements AfterViewInit {
                 currency = currency.split(/(?=(?:...)*$)/).join(',');
                 return label; // `${label < 0 ? '- $' : '$'}${currency}`;
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: {
-      display: true,
+      display: true
     },
     tooltips: {
       mode: 'x-axis',
@@ -1267,9 +1267,9 @@ export class MarketingComponent implements AfterViewInit {
             data.datasets[tooltipItems.datasetIndex].label +
             `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`
           );
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   public stackedChartColors: Array<any> = [
@@ -1278,7 +1278,7 @@ export class MarketingComponent implements AfterViewInit {
     { backgroundColor: '#68D8D6' },
     { backgroundColor: '#3DCCC7' },
     { backgroundColor: '#68FFF9' },
-    { backgroundColor: '#119682' },
+    { backgroundColor: '#119682' }
   ];
   public stackedChartType = 'bar';
   public stackedChartLegend = true;
@@ -1293,7 +1293,7 @@ export class MarketingComponent implements AfterViewInit {
     { data: [], label: 'Splints ' },
     { data: [], label: 'Root Canals' },
     { data: [], label: 'Perio Charts' },
-    { data: [], label: 'Surgical Extractions' },
+    { data: [], label: 'Surgical Extractions' }
   ];
 
   public stackedChartData1: any[] = [];
@@ -1375,9 +1375,9 @@ export class MarketingComponent implements AfterViewInit {
         '#A9AABC',
         '#F2ECFF',
         '#5689C9',
-        '#F9F871',
-      ],
-    },
+        '#F9F871'
+      ]
+    }
   ];
 
   public totalRevenueByReferral = '$ 0';
@@ -1396,26 +1396,26 @@ export class MarketingComponent implements AfterViewInit {
               data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
             )
           );
-        },
-      },
+        }
+      }
     },
     legend: {
       display: true,
       position: 'bottom',
       labels: {
         usePointStyle: true,
-        padding: 20,
+        padding: 20
       },
       onClick: function (e) {
         e.stopPropagation();
-      },
+      }
     },
 
     elements: {
       center: {
-        text: '',
-      },
-    },
+        text: ''
+      }
+    }
   };
 
   public pieChartOptions: any = {
@@ -1431,25 +1431,25 @@ export class MarketingComponent implements AfterViewInit {
               data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
             )
           );
-        },
-      },
+        }
+      }
     },
     legend: {
       display: true,
       position: 'bottom',
       labels: {
         usePointStyle: true,
-        padding: 20,
+        padding: 20
       },
       onClick: function (e) {
         e.stopPropagation();
-      },
+      }
     },
     elements: {
       center: {
-        text: '',
-      },
-    },
+        text: ''
+      }
+    }
   };
   myDateParser(dateStr: string): string {
     // 2018-01-01T12:12:12.123456; - converting valid date f74ormat like this
@@ -1534,8 +1534,7 @@ export class MarketingComponent implements AfterViewInit {
   private mkNewPatientsByReferral() {
     this.mkNewPatientsByReferralLoader = true;
     this.newPatientsTimeLabels = [];
-    var user_id;
-    var clinic_id;
+
     this.mkNewPatientsByReferalMulti = [];
     this.showmulticlinicNewPatients = false;
     this.mkNewPatientsByReferalLabels = [];
@@ -1574,7 +1573,7 @@ export class MarketingComponent implements AfterViewInit {
                   ) {
                     this.mkNewPatientsByReferalMulti[key] = {
                       data: [],
-                      label: '',
+                      label: ''
                     };
                   }
                   if (
@@ -1740,7 +1739,7 @@ export class MarketingComponent implements AfterViewInit {
                   ) {
                     this.mkNewPatientsByReferalRevMulti[key] = {
                       data: [],
-                      label: '',
+                      label: ''
                     };
                   }
                   if (
@@ -1860,7 +1859,7 @@ export class MarketingComponent implements AfterViewInit {
                 ) {
                   this.mkRevenueByReferralChartTrend[key] = {
                     data: [],
-                    label: '',
+                    label: ''
                   };
                 }
                 if (
@@ -1928,7 +1927,7 @@ export class MarketingComponent implements AfterViewInit {
                 ) {
                   this.mkNewPatientsReferralChartTrend[key] = {
                     data: [],
-                    label: '',
+                    label: ''
                   };
                 }
                 if (
@@ -2022,7 +2021,7 @@ export class MarketingComponent implements AfterViewInit {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even,
-        this.chartService.colors.odd,
+        this.chartService.colors.odd
       ],
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -2035,8 +2034,8 @@ export class MarketingComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public TvisitTrend1 = [];
   public TvisitTrendLabels1 = [];
@@ -2176,7 +2175,7 @@ export class MarketingComponent implements AfterViewInit {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even,
-        this.chartService.colors.odd,
+        this.chartService.colors.odd
       ],
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -2189,8 +2188,8 @@ export class MarketingComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public newPTrend1 = [];
   public newPTrendLabels1 = [];
@@ -2284,7 +2283,7 @@ export class MarketingComponent implements AfterViewInit {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even,
-        this.chartService.colors.odd,
+        this.chartService.colors.odd
       ],
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -2297,8 +2296,8 @@ export class MarketingComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public newAPTrend1 = [];
   public newAPTrendLabels1 = [];
@@ -2837,7 +2836,7 @@ export class MarketingComponent implements AfterViewInit {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even,
-        this.chartService.colors.odd,
+        this.chartService.colors.odd
       ],
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -2850,8 +2849,8 @@ export class MarketingComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public visitsChartTrend1 = [];
   public visitsChartTrendLabels = [];
@@ -2973,7 +2972,7 @@ export class MarketingComponent implements AfterViewInit {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even,
-        this.chartService.colors.odd,
+        this.chartService.colors.odd
       ],
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -2985,8 +2984,8 @@ export class MarketingComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public activePatientsChartTrend: any[] = [
     {
@@ -3006,7 +3005,7 @@ export class MarketingComponent implements AfterViewInit {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even,
-        this.chartService.colors.odd,
+        this.chartService.colors.odd
       ],
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -3018,8 +3017,8 @@ export class MarketingComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public newPatientsTrendMulti: any[] = [{ data: [], label: '' }];
   public showNPclinic: boolean = false;
@@ -3230,7 +3229,7 @@ export class MarketingComponent implements AfterViewInit {
     curvature: 1,
     animation: {
       duration: 1500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     responsive: true,
     maintainAspectRatio: false,
@@ -3239,9 +3238,9 @@ export class MarketingComponent implements AfterViewInit {
         {
           gridLines: { display: true },
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -3252,10 +3251,10 @@ export class MarketingComponent implements AfterViewInit {
               if (Math.floor(label) === label) {
                 return '$' + this.decimalPipe.transform(label);
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     tooltips: {
       mode: 'x-axis',
@@ -3274,8 +3273,8 @@ export class MarketingComponent implements AfterViewInit {
         },
         title: function () {
           return '';
-        },
-      },
+        }
+      }
     },
     legend: {
       position: 'top',
@@ -3290,8 +3289,8 @@ export class MarketingComponent implements AfterViewInit {
           ci.getDatasetMeta(index).hidden = false;
         }
         ci.update();
-      },
-    },
+      }
+    }
   };
   public expenseDataTrend: any[] = [
     {
@@ -3310,7 +3309,7 @@ export class MarketingComponent implements AfterViewInit {
         this.chartService.colors.odd,
         this.chartService.colors.even,
         this.chartService.colors.odd,
-        this.chartService.colors.even,
+        this.chartService.colors.even
       ],
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -3322,8 +3321,8 @@ export class MarketingComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public expenseDataTrend1 = [];
   public expenseDataTrendLabels1 = [];
