@@ -135,3 +135,21 @@
 .npe-padding{
     padding: 0px;
 }
+
+.social-links{
+    display:flex; 
+    align-items:flex-start;
+    gap: 10px;
+}
+table {
+    width: 100%;
+}
+.mat-icon{
+    cursor: pointer;
+    margin-right: 5px;
+    color: #18a689;
+}
+
+.mat-icon:hover {
+    opacity: 0.5;
+}

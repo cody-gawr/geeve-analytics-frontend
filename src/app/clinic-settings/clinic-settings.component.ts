@@ -10,6 +10,16 @@ import { ITooltipData } from "../shared/tooltip/tooltip.directive";
 import { AppConstants } from "../app.constants";
 import { environment } from "../../environments/environment";
 import { validateBasis } from "@angular/flex-layout";
+import { MatDialog } from "@angular/material/dialog";
+import { ReviewMsgTemplateDialog } from "./review-msg-template-dialog/review-msg-template-dialog.component";
+
+export interface ReviewMsgTemplateObject {
+  id?: number;
+  name: string;
+  msg_template: string;
+}
+
+
 @Component({
   selector: "app-formlayout",
   templateUrl: "./clinic-settings.component.html",
@@ -83,6 +93,14 @@ export class ClinicSettingsComponent implements OnInit {
     friday: true,
     saturday: true,
   };
+
+  displayedColumns = [
+    'name',
+    'msg_template',
+    'action'
+  ]
+  reviewMsgTemplates = [];
+
   constructor(
     private toastr: ToastrService,
     private _cookieService: CookieService,
@@ -90,13 +108,15 @@ export class ClinicSettingsComponent implements OnInit {
     private clinicSettingsService: ClinicSettingsService,
     private route: ActivatedRoute,
     private router: Router,
-    public constants: AppConstants
+    public constants: AppConstants,
+    public dialog: MatDialog
   ) {
     this.userType = this._cookieService.get("user_type");
     this.options = fb.group({
       hideRequired: false,
       floatLabel: "auto",
     });
+
   }
   //initilaize component
   ngOnInit() {
@@ -111,6 +131,8 @@ export class ClinicSettingsComponent implements OnInit {
       this.checkXeroStatus();
       this.checkMyobStatus();
       // this.getFollowUpSettings();
+      this.getReviewMsgTemplates();
+      this.getSocialLinks();
     });
     
     if(this.apiUrl.includes('test') || this.apiUrl.includes('staging-')){
@@ -581,5 +603,75 @@ export class ClinicSettingsComponent implements OnInit {
         },
         (error) => { }
       );
+  }
+
+  
+  openMsgTemplateDialog(element: ReviewMsgTemplateObject = null){
+    const reviewMsgTempDialog = this.dialog.open(ReviewMsgTemplateDialog, {data: {element, clinic_id: this.id}});
+
+     reviewMsgTempDialog.afterClosed().subscribe(result => {
+      if(result.status){
+        this.getReviewMsgTemplates();
+      }
+     })
+  }
+
+  removeMsgTemplate(element: ReviewMsgTemplateObject){
+    this.clinicSettingsService.removeReviewMsgTemplate(element.id, this.id).subscribe(result => {
+      this.toastr.success("Removed a template successfuly!");
+      this.getReviewMsgTemplates();
+    }, error => {
+      this.toastr.error(error.message);
+    })
+  }
+
+  private getReviewMsgTemplates() {
+    this.reviewMsgTemplates = [];
+    this.clinicSettingsService.getReviewMsgTemplateList(this.id).subscribe((res) => {
+      if (res.status == 200) {
+        if (res.body.data) {
+          this.reviewMsgTemplates = res.body.data;
+        }
+      }
+      else if (res.status == 401) {
+        this._cookieService.put("username", '');
+        this._cookieService.put("email", '');
+        this._cookieService.put("userid", '');
+        this.router.navigateByUrl('/login');
+      }
+    }, error => {
+      this.toastr.error(error.message);
+    }
+    );
+  }
+
+  facebookId = new FormControl('', Validators.required);
+  googleId = new FormControl('', Validators.required);
+
+  getSocialLinks() {
+    this.clinicSettingsService.getSocialLinks(this.id).subscribe(
+      result => {
+        if(result.body.data){
+          this.facebookId = new FormControl(result.body.data.facebook_id, Validators.required);
+          this.googleId = new FormControl(result.body.data.google_id, Validators.required);
+        }
+      },
+      error => {
+        this.toastr.error(error.message);
+      }
+    );
+  }
+
+  saveSocialLinks(){
+    this.clinicSettingsService.updateSocialLinks(this.id, this.facebookId.value, this.googleId.value).subscribe(
+      result => {
+        this.facebookId = new FormControl(result.body.data.facebook_id, Validators.required);
+        this.googleId = new FormControl(result.body.data.google_id, Validators.required);
+        this.toastr.success("Saved social infomation successfully!")
+      },
+      error => {
+        this.toastr.error(error.message);
+      }
+    );
   }
 }

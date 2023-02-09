@@ -1020,3 +1020,8 @@ tr.mat-row.cdk-row.ng-star-inserted:empty {
 .morning-huddle-date .dentist-select.mat-form-field {
     left: 50px;
 }
+
+#topup-credits {
+    position: absolute;
+    right: 125px;
+}

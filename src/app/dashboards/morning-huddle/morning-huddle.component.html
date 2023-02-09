@@ -692,6 +692,18 @@
             </td>
           </ng-container>
 
+          <ng-container matColumnDef="sendReview">
+            <th mat-header-call *matHeaderCellDef>Send Review</th>
+            <td mat-cell style="text-align:center" *matCellDef="let element">
+              <button
+                mat-stroked-button
+                class="mat-dc"
+              >
+                Send
+            </button>
+            </td>
+          </ng-container>
+
           <ng-container matColumnDef="rebooked">
             <th mat-header-cell *matHeaderCellDef>Rebooked  <div class="info-icon-container mhRebook"><img [tooltip]="{title:'', info:'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a grey tick' }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" /></div></th>
             <td mat-cell *matCellDef="let element"> 
@@ -815,6 +827,7 @@
           </mat-form-field>
           <!-- <button id="p-bttom" [useExistingCss]="true" printSectionId="mh-front-desk-reminders-print" ngxPrint tabindex="2" class="mat-raised-button mat-dc float-right"><i class="fa fa-print"></i> Print</button> -->
           <button id="p-bttom" (click)="printFrontDeskRemindersTab()" tabindex="2" class="mat-raised-button mat-dc float-right"><i class="fa fa-print"></i> Print</button>
+          <button id="topup-credits" (click)="buyCredits()" class="mat-raised-button mat-dc">(0/{{totalCredits}}) TopUp</button>
         </div>
         <strong>Current Day: {{ remindersRecallsOverdueDate | date:'EEE MMM d':'timezone' }}</strong>
       </div>
@@ -1037,6 +1050,19 @@
               </div>
             </td>
           </ng-container>
+
+          <ng-container matColumnDef="sendReview">
+            <th mat-header-call *matHeaderCellDef>Send Review</th>
+            <td mat-cell style="text-align:center" *matCellDef="let element">
+              <button
+                mat-stroked-button
+                class="mat-dc"
+              >
+                Send
+            </button>
+            </td>
+          </ng-container>
+
           <ng-container matColumnDef="rebooked">
             <th mat-header-cell *matHeaderCellDef>Rebooked <div class="info-icon-container mhRebook"><img [tooltip]="{title:'', info:'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a grey tick' }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" /></div></th>
             <td mat-cell *matCellDef="let element">  <i *ngIf="element.is_rebooked == 'No' && element.has_future_appt == 'Yes' " class="fa fa-check mh-fa-check gray"></i> 
@@ -2556,11 +2582,6 @@
       
     </mat-tab>
     <!-- End of Day Tasks end if user type dentist -->
-
-
-
-
-
 
     <!-- responsive tabs dropdown -->
     <mat-tab label="responsive-tab-group" disabled>

@@ -43,6 +43,24 @@ export class MorningHuddleService {
             })
         );
     }
+
+    createPaymentIntent(creditAmount):Observable<HttpResponse<any>>{
+        const header = this.getHeaders();
+        return this.http.post(this.apiUrl + "/MorningHuddle/createPaymentIntent", {
+            amount: creditAmount
+        }, header).pipe(map((res: HttpResponse<any>) => {
+            return res;
+        }))
+    }
+
+    getTotalCredits():Observable<HttpResponse<any>>{
+        const header = this.getHeaders();
+        return this.http.get(this.apiUrl + "/MorningHuddle/getTotalCredits", header).pipe(
+            map((res: HttpResponse<any>) => {
+                return res;
+        }));
+    }
+
     // clinic recallRate
     recallRate(clinic_id, previousDays, user_type, clinician = ""): Observable<any> {
         var header = this.getHeaders();
