@@ -4,7 +4,7 @@ import {
   AfterViewInit,
   ViewEncapsulation,
   ViewChild,
-  ElementRef,
+  ElementRef
 } from '@angular/core';
 import { MarketingService } from './marketing.service';
 import { FinancesService } from '../finances/finances.service';
@@ -17,7 +17,7 @@ import { NgxSmartModalService } from 'ngx-smart-modal';
 import { ToastrService } from 'ngx-toastr'; /**/
 import {
   BaseChartDirective,
-  PluginServiceGlobalRegistrationAndOptions,
+  PluginServiceGlobalRegistrationAndOptions
 } from 'ng2-charts';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
@@ -28,6 +28,8 @@ import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
 import { RolesUsersService } from '../../roles-users/roles-users.service';
 import { environment } from '../../../environments/environment';
+import * as Chart from 'chart.js';
+import * as _ from 'lodash';
 
 export interface Dentist {
   providerId: string;
@@ -37,7 +39,7 @@ export interface Dentist {
 @Component({
   templateUrl: './marketing.component.html',
   styleUrls: ['./marketing.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 export class MarketingComponent implements AfterViewInit {
   @ViewChild('myCanvas') canvas2: ElementRef;
@@ -61,7 +63,7 @@ export class MarketingComponent implements AfterViewInit {
     this.chartService.colors.odd,
     this.chartService.colors.even,
     this.chartService.colors.odd,
-    this.chartService.colors.even,
+    this.chartService.colors.even
   ];
   predictedChartColors;
   preoceedureChartColors;
@@ -147,13 +149,13 @@ export class MarketingComponent implements AfterViewInit {
         return labels.map((item) => ({
           text: item,
           strokeStyle: bg_color[item],
-          fillStyle: bg_color[item],
+          fillStyle: bg_color[item]
         }));
-      },
+      }
     },
     onClick: (event, legendItem, legend) => {
       return;
-    },
+    }
   };
   private warningMessage: string;
   private myTemplate: any = '';
@@ -366,7 +368,7 @@ export class MarketingComponent implements AfterViewInit {
       '#FF6384',
       '#fe7b85',
       '#87ada9',
-      '#386087',
+      '#386087'
     ];
 
     this.preoceedureChartColors = [
@@ -374,37 +376,37 @@ export class MarketingComponent implements AfterViewInit {
         backgroundColor: proceedureGradient,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: proceedureGradient1,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: proceedureGradient2,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: proceedureGradient3,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: proceedureGradient4,
         hoverBorderWidth: 2,
         hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)',
+        borderColor: 'rgba(25,179,148,0.7)'
       },
       {
         backgroundColor: proceedureGradient5,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-      },
+        hoverBorderColor: '#1CA49F'
+      }
     ];
     //this.filterDate(this.chartService.duration$.value);
   }
@@ -415,8 +417,8 @@ export class MarketingComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -424,16 +426,16 @@ export class MarketingComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -442,13 +444,13 @@ export class MarketingComponent implements AfterViewInit {
           ticks: {
             userCallback: function (item) {
               return item;
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: {
-      display: true,
+      display: true
     },
     tooltips: {
       mode: 'x-axis',
@@ -538,9 +540,9 @@ export class MarketingComponent implements AfterViewInit {
             ': ' +
             tooltipItems.yLabel
           );
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   public labelBarmkPatientByReferralOptionsStacked: any = {
@@ -549,8 +551,8 @@ export class MarketingComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -558,16 +560,16 @@ export class MarketingComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -576,13 +578,13 @@ export class MarketingComponent implements AfterViewInit {
           ticks: {
             userCallback: function (item) {
               return item;
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: {
-      display: true,
+      display: true
     },
     tooltips: {
       mode: 'x-axis',
@@ -672,9 +674,9 @@ export class MarketingComponent implements AfterViewInit {
             ': ' +
             tooltipItems.yLabel
           );
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   public date = new Date();
@@ -684,8 +686,8 @@ export class MarketingComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -693,16 +695,16 @@ export class MarketingComponent implements AfterViewInit {
     barThickness: 1,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -713,13 +715,13 @@ export class MarketingComponent implements AfterViewInit {
               if (Math.floor(label) === label) {
                 return label;
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: {
-      display: true,
+      display: true
     },
     tooltips: {
       mode: 'x-axis',
@@ -738,9 +740,9 @@ export class MarketingComponent implements AfterViewInit {
         },
         title: function () {
           return '';
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   public stackedChartOptionsMulti: any = {
@@ -749,8 +751,8 @@ export class MarketingComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -758,16 +760,16 @@ export class MarketingComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -775,10 +777,10 @@ export class MarketingComponent implements AfterViewInit {
           ticks: {
             userCallback: function (item) {
               return item;
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: this.stackLegendGenerator,
     tooltips: {
@@ -898,9 +900,9 @@ export class MarketingComponent implements AfterViewInit {
             ': ' +
             Math.round(tooltipItems.yLabel)
           );
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   public stackedChartOptionsRev: any = {
@@ -909,8 +911,8 @@ export class MarketingComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -918,16 +920,16 @@ export class MarketingComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -943,13 +945,13 @@ export class MarketingComponent implements AfterViewInit {
                 currency = currency.split(/(?=(?:...)*$)/).join(',');
                 return `${label < 0 ? '- $' : '$'}${currency}`;
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: {
-      display: true,
+      display: true
     },
     tooltips: {
       mode: 'x-axis',
@@ -1083,9 +1085,9 @@ export class MarketingComponent implements AfterViewInit {
             data.datasets[tooltipItems.datasetIndex].label +
             `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`
           );
-        },
-      },
-    },
+        }
+      }
+    }
   };
   public stackedChartOptionsRef: any = {
     elements: {
@@ -1093,8 +1095,8 @@ export class MarketingComponent implements AfterViewInit {
         radius: 5,
         hoverRadius: 7,
         pointStyle: 'rectRounded',
-        hoverBorderWidth: 7,
-      },
+        hoverBorderWidth: 7
+      }
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -1102,16 +1104,16 @@ export class MarketingComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     scales: {
       xAxes: [
         {
           stacked: true,
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -1127,13 +1129,13 @@ export class MarketingComponent implements AfterViewInit {
                 currency = currency.split(/(?=(?:...)*$)/).join(',');
                 return label; // `${label < 0 ? '- $' : '$'}${currency}`;
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     legend: {
-      display: true,
+      display: true
     },
     tooltips: {
       mode: 'x-axis',
@@ -1267,9 +1269,9 @@ export class MarketingComponent implements AfterViewInit {
             data.datasets[tooltipItems.datasetIndex].label +
             `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`
           );
-        },
-      },
-    },
+        }
+      }
+    }
   };
 
   public stackedChartColors: Array<any> = [
@@ -1278,7 +1280,7 @@ export class MarketingComponent implements AfterViewInit {
     { backgroundColor: '#68D8D6' },
     { backgroundColor: '#3DCCC7' },
     { backgroundColor: '#68FFF9' },
-    { backgroundColor: '#119682' },
+    { backgroundColor: '#119682' }
   ];
   public stackedChartType = 'bar';
   public stackedChartLegend = true;
@@ -1293,7 +1295,7 @@ export class MarketingComponent implements AfterViewInit {
     { data: [], label: 'Splints ' },
     { data: [], label: 'Root Canals' },
     { data: [], label: 'Perio Charts' },
-    { data: [], label: 'Surgical Extractions' },
+    { data: [], label: 'Surgical Extractions' }
   ];
 
   public stackedChartData1: any[] = [];
@@ -1375,9 +1377,9 @@ export class MarketingComponent implements AfterViewInit {
         '#A9AABC',
         '#F2ECFF',
         '#5689C9',
-        '#F9F871',
-      ],
-    },
+        '#F9F871'
+      ]
+    }
   ];
 
   public totalRevenueByReferral = '$ 0';
@@ -1396,26 +1398,26 @@ export class MarketingComponent implements AfterViewInit {
               data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
             )
           );
-        },
-      },
+        }
+      }
     },
     legend: {
       display: true,
       position: 'bottom',
       labels: {
         usePointStyle: true,
-        padding: 20,
+        padding: 20
       },
       onClick: function (e) {
         e.stopPropagation();
-      },
+      }
     },
 
     elements: {
       center: {
-        text: '',
-      },
-    },
+        text: ''
+      }
+    }
   };
 
   public pieChartOptions: any = {
@@ -1431,25 +1433,25 @@ export class MarketingComponent implements AfterViewInit {
               data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
             )
           );
-        },
-      },
+        }
+      }
     },
     legend: {
       display: true,
       position: 'bottom',
       labels: {
         usePointStyle: true,
-        padding: 20,
+        padding: 20
       },
       onClick: function (e) {
         e.stopPropagation();
-      },
+      }
     },
     elements: {
       center: {
-        text: '',
-      },
-    },
+        text: ''
+      }
+    }
   };
   myDateParser(dateStr: string): string {
     // 2018-01-01T12:12:12.123456; - converting valid date f74ormat like this
@@ -1534,8 +1536,7 @@ export class MarketingComponent implements AfterViewInit {
   private mkNewPatientsByReferral() {
     this.mkNewPatientsByReferralLoader = true;
     this.newPatientsTimeLabels = [];
-    var user_id;
-    var clinic_id;
+
     this.mkNewPatientsByReferalMulti = [];
     this.showmulticlinicNewPatients = false;
     this.mkNewPatientsByReferalLabels = [];
@@ -1574,7 +1575,7 @@ export class MarketingComponent implements AfterViewInit {
                   ) {
                     this.mkNewPatientsByReferalMulti[key] = {
                       data: [],
-                      label: '',
+                      label: ''
                     };
                   }
                   if (
@@ -1687,7 +1688,7 @@ export class MarketingComponent implements AfterViewInit {
   public mkRevenueByReferralLoader: any;
 
   public reffralAllData: any = [];
-  public mkNewPatientsByReferalRevMulti: any[] = [{ data: [], label: '' }];
+  public mkNewPatientsByReferalRevMulti: Chart.ChartDataSets[] = [];
   public showmulticlinicNewPatientsRev: boolean = false;
   public mkNewPatientsByReferalRevLabels: any = [];
   public totalNewPatientsReferralRev: any = 0;
@@ -1695,8 +1696,6 @@ export class MarketingComponent implements AfterViewInit {
 
   private mkRevenueByReferral() {
     this.mkRevenueByReferralLoader = true;
-    var user_id;
-    var clinic_id;
     this.mkNewPatientsByReferalRevMulti = [];
     this.showmulticlinicNewPatientsRev = false;
     this.mkNewPatientsByReferalRevLabels = [];
@@ -1713,7 +1712,6 @@ export class MarketingComponent implements AfterViewInit {
           this.reffralAllData = [];
           this.revenueReferralData = [];
           this.revenueReferralLabels = [];
-          let mkNewPatientsLabels = [];
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
           if (res.status == 200) {
@@ -1724,62 +1722,33 @@ export class MarketingComponent implements AfterViewInit {
               Array.isArray(this.clinic_id)
             ) {
               this.totalNewPatientsReferralRev = Math.round(res.body.total);
-              this.showmulticlinicNewPatientsRev = true;
-              let label = [];
-              res.body.data.forEach((res) => {
-                res.val.forEach((result, key) => {
-                  if (result.reftype_name) label.push(result.reftype_name);
-                });
-              });
-              mkNewPatientsLabels = [...new Set(label)];
-              res.body.data.forEach((res, ind) => {
-                res.val.forEach((result, key) => {
-                  if (
-                    typeof this.mkNewPatientsByReferalRevMulti[key] ==
-                    'undefined'
-                  ) {
-                    this.mkNewPatientsByReferalRevMulti[key] = {
-                      data: [],
-                      label: '',
+              this.mkNewPatientsByReferalRevLabels = _.chain(res.body.data)
+                .map((item) => item.clinic_name)
+                .value();
+              const flattenInvoiceAmountsByRefType: _.CollectionChain<any> =
+                _.chain(res.body.data)
+                  .map((item) => item.val)
+                  .flatten();
+
+              this.mkNewPatientsByReferalRevMulti =
+                flattenInvoiceAmountsByRefType
+                  .groupBy('reftype_name')
+                  .map((items: any[], refTypeName: string) => {
+                    return {
+                      data: this.mkNewPatientsByReferalRevLabels.map(
+                        (clinicName: string) => {
+                          const item = items.find(
+                            (ele) => ele.clinic_name == clinicName
+                          );
+                          return item ? item.invoice_amount : 0;
+                        }
+                      ),
+                      label: refTypeName
                     };
-                  }
-                  if (
-                    typeof this.mkNewPatientsByReferalRevMulti[key]['data'] ==
-                    'undefined'
-                  ) {
-                    this.mkNewPatientsByReferalRevMulti[key]['data'] = [];
-                  }
-                  // var total = Math.trunc(result.invoice_amount);
-                  var total = Math.round(result.invoice_amount);
-                  if (
-                    result.production > 0 &&
-                    result.production.toString().includes('.')
-                  ) {
-                    var num_parts = result.production.split('.');
-                    num_parts[1] = num_parts[1].charAt(0);
-                    total = num_parts.join('.');
-                  }
-                  mkNewPatientsLabels.forEach((name, index) => {
-                    if (result.reftype_name === name) {
-                      if (total > 0) {
-                        this.mkNewPatientsByReferalRevMulti[index]['data'][
-                          ind
-                        ] = total;
-                        this.mkNewPatientsByReferalRevMulti[index]['label'] =
-                          result.reftype_name;
-                      }
-                    }
-                  });
-                });
-                this.mkNewPatientsByReferalRevLabels.push(res.clinic_name);
-              });
-              this.mkNewPatientsByReferalRevMulti.forEach((item) => {
-                for (let i = 0; i < item.data.length; i++) {
-                  if (!item.data[i]) {
-                    item.data[i] = 0;
-                  }
-                }
-              });
+                  })
+                  .value();
+
+              this.showmulticlinicNewPatientsRev = true;
               this.mkRevenueByReferralLoader = false;
             } else {
               this.reffralAllData = res.body;
@@ -1860,7 +1829,7 @@ export class MarketingComponent implements AfterViewInit {
                 ) {
                   this.mkRevenueByReferralChartTrend[key] = {
                     data: [],
-                    label: '',
+                    label: ''
                   };
                 }
                 if (
@@ -1928,7 +1897,7 @@ export class MarketingComponent implements AfterViewInit {
                 ) {
                   this.mkNewPatientsReferralChartTrend[key] = {
                     data: [],
-                    label: '',
+                    label: ''
                   };
                 }
                 if (
@@ -2022,7 +1991,7 @@ export class MarketingComponent implements AfterViewInit {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even,
-        this.chartService.colors.odd,
+        this.chartService.colors.odd
       ],
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -2035,8 +2004,8 @@ export class MarketingComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public TvisitTrend1 = [];
   public TvisitTrendLabels1 = [];
@@ -2176,7 +2145,7 @@ export class MarketingComponent implements AfterViewInit {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even,
-        this.chartService.colors.odd,
+        this.chartService.colors.odd
       ],
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -2189,8 +2158,8 @@ export class MarketingComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public newPTrend1 = [];
   public newPTrendLabels1 = [];
@@ -2209,8 +2178,6 @@ export class MarketingComponent implements AfterViewInit {
       this.fdnewPatientsRatioLoader = true;
       this.newPatientsTooltip = 'down';
       this.newPatientsTotal = 0;
-      var user_id;
-      var clinic_id;
       this.marketingService
         .fdnewPatientsRatio(
           this.clinic_id,
@@ -2284,7 +2251,7 @@ export class MarketingComponent implements AfterViewInit {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even,
-        this.chartService.colors.odd,
+        this.chartService.colors.odd
       ],
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -2297,8 +2264,8 @@ export class MarketingComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public newAPTrend1 = [];
   public newAPTrendLabels1 = [];
@@ -2799,7 +2766,7 @@ export class MarketingComponent implements AfterViewInit {
     if (
       this.connectedwith != '' &&
       this.connectedwith != 'none' &&
-      this.multipleClinicsSelected == false
+      !this.multipleClinicsSelected
     ) {
       this.Apirequest = 5;
     }
@@ -2814,7 +2781,6 @@ export class MarketingComponent implements AfterViewInit {
     } else {
       this.mkNoNewPatientsTrend();
     }
-    this.totalRevenueByReferral;
 
     this.fdvisitsRatioTrend();
   }
@@ -2837,7 +2803,7 @@ export class MarketingComponent implements AfterViewInit {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even,
-        this.chartService.colors.odd,
+        this.chartService.colors.odd
       ],
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -2850,8 +2816,8 @@ export class MarketingComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public visitsChartTrend1 = [];
   public visitsChartTrendLabels = [];
@@ -2866,12 +2832,9 @@ export class MarketingComponent implements AfterViewInit {
     this.visitsChartTrendLabels = [];
     this.fdvisitsRatioTrendLoader = true;
     this.visitsChartTrend1 = [];
-    var user_id;
-    var clinic_id;
     this.showByclinic = false;
     this.totavisitTrendMulti = [];
     this.totalVisitMultiLabels = [];
-    this.totalVisitMultiLabels1 = [];
     this.marketingService
       .mkTotalVisitsTrend(this.clinic_id, this.trendValue)
       .subscribe(
@@ -2883,6 +2846,8 @@ export class MarketingComponent implements AfterViewInit {
           this.visitsChartTrendLabels1 = [];
           this.visitsChartTrend[0]['data'] = [];
           this.fdvisitsRatioTrendLoader = false;
+          this.totavisitTrendMulti = [];
+          this.totalVisitMultiLabels = [];
           if (res.status == 200) {
             if (
               this.clinic_id.indexOf(',') >= 0 ||
@@ -2894,36 +2859,56 @@ export class MarketingComponent implements AfterViewInit {
               this.clinic_id.indexOf(',') >= 0 ||
               Array.isArray(this.clinic_id)
             ) {
-              res.body.data.sort((a, b) =>
-                a.duration === b.duration ? 0 : a.duration > b.duration || -1
-              );
-              res.body.data.forEach((res) => {
-                res.val.forEach((reslt, key) => {
-                  if (typeof this.totavisitTrendMulti[key] == 'undefined') {
-                    this.totavisitTrendMulti[key] = { data: [], label: '' };
-                  }
-                  if (
-                    typeof this.totavisitTrendMulti[key]['data'] == 'undefined'
-                  ) {
-                    this.totavisitTrendMulti[key]['data'] = [];
-                  }
+              this.totalVisitMultiLabels = _.chain(res.body.data)
+                .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                .map((items: any[], duration: string) =>
+                  this.trendValue == 'c'
+                    ? this.datePipe.transform(duration, 'MMM y')
+                    : duration
+                )
+                .value();
+              this.totavisitTrendMulti = _.chain(res.body.data)
+                .groupBy('clinic_id')
+                .map((items: any[]) => ({
+                  data: items.map((item) => _.round(Number(item.num_visits))),
+                  label: items.length > 0 ? items[0].clinic_name : ''
+                }))
+                .value()
+                .map((item, index) => ({
+                  ...item,
+                  backgroundColor: this.doughnutChartColors[index],
+                  hoverBackgroundColor: this.doughnutChartColors[index]
+                }));
+              // res.body.data.sort((a, b) =>
+              //   a.duration === b.duration ? 0 : a.duration > b.duration || -1
+              // );
+              // res.body.data.forEach((res) => {
+              //   res.val.forEach((reslt, key) => {
+              //     if (typeof this.totavisitTrendMulti[key] == 'undefined') {
+              //       this.totavisitTrendMulti[key] = { data: [], label: '' };
+              //     }
+              //     if (
+              //       typeof this.totavisitTrendMulti[key]['data'] == 'undefined'
+              //     ) {
+              //       this.totavisitTrendMulti[key]['data'] = [];
+              //     }
 
-                  this.totavisitTrendMulti[key]['data'].push(
-                    Math.round(reslt.num_visits)
-                  );
-                  this.totavisitTrendMulti[key]['label'] = reslt.clinic_name;
-                  this.totavisitTrendMulti[key]['backgroundColor'] =
-                    this.doughnutChartColors[key];
-                  this.totavisitTrendMulti[key]['hoverBackgroundColor'] =
-                    this.doughnutChartColors[key];
-                });
-                if (this.trendValue == 'c')
-                  this.totalVisitMultiLabels1.push(
-                    this.datePipe.transform(res.duration, 'MMM y')
-                  );
-                else this.totalVisitMultiLabels1.push(res.duration);
-              });
-              this.totalVisitMultiLabels = this.totalVisitMultiLabels1;
+              //     this.totavisitTrendMulti[key]['data'].push(
+              //       Math.round(reslt.num_visits)
+              //     );
+              //     this.totavisitTrendMulti[key]['label'] = reslt.clinic_name;
+              //     this.totavisitTrendMulti[key]['backgroundColor'] =
+              //       this.doughnutChartColors[key];
+              //     this.totavisitTrendMulti[key]['hoverBackgroundColor'] =
+              //       this.doughnutChartColors[key];
+              //   });
+              //   if (this.trendValue == 'c')
+              //     this.totalVisitMultiLabels1.push(
+              //       this.datePipe.transform(res.duration, 'MMM y')
+              //     );
+              //   else this.totalVisitMultiLabels1.push(res.duration);
+              // });
+              // this.totalVisitMultiLabels = this.totalVisitMultiLabels1;
             } else {
               res.body.data.forEach((res) => {
                 this.visitsChartTrend1.push(res.num_visits);
@@ -2973,7 +2958,7 @@ export class MarketingComponent implements AfterViewInit {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even,
-        this.chartService.colors.odd,
+        this.chartService.colors.odd
       ],
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -2985,8 +2970,8 @@ export class MarketingComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public activePatientsChartTrend: any[] = [
     {
@@ -3006,7 +2991,7 @@ export class MarketingComponent implements AfterViewInit {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even,
-        this.chartService.colors.odd,
+        this.chartService.colors.odd
       ],
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -3018,13 +3003,12 @@ export class MarketingComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
-  public newPatientsTrendMulti: any[] = [{ data: [], label: '' }];
+  public newPatientsTrendMulti: Chart.ChartDataSets[] = [];
   public showNPclinic: boolean = false;
   public newPatientsMultiLabels = [];
-  public newPatientsMultiLabels1 = [];
   public newPatientsChartTrend1 = [];
   public newPatientsChartTrendLabels = [];
   public newPatientsChartTrendLabels1 = [];
@@ -3046,7 +3030,6 @@ export class MarketingComponent implements AfterViewInit {
           this.showNPclinic = false;
           this.newPatientsTrendMulti = [];
           this.newPatientsMultiLabels = [];
-          this.newPatientsMultiLabels1 = [];
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
           if (res.status == 200) {
@@ -3055,37 +3038,62 @@ export class MarketingComponent implements AfterViewInit {
               Array.isArray(this.clinic_id)
             ) {
               this.showNPclinic = true;
-              res.body.data.sort((a, b) =>
-                a.duration === b.duration ? 0 : a.duration > b.duration || -1
-              );
-              res.body.data.forEach((res) => {
-                res.val.forEach((reslt, key) => {
-                  if (typeof this.newPatientsTrendMulti[key] == 'undefined') {
-                    this.newPatientsTrendMulti[key] = { data: [], label: '' };
-                  }
-                  if (
-                    typeof this.newPatientsTrendMulti[key]['data'] ==
-                    'undefined'
-                  ) {
-                    this.newPatientsTrendMulti[key]['data'] = [];
-                  }
 
-                  this.newPatientsTrendMulti[key]['data'].push(
-                    Math.round(reslt.new_patients)
-                  );
-                  this.newPatientsTrendMulti[key]['label'] = reslt.clinic_name;
-                  this.newPatientsTrendMulti[key]['backgroundColor'] =
-                    this.doughnutChartColors[key];
-                  this.newPatientsTrendMulti[key]['hoverBackgroundColor'] =
-                    this.doughnutChartColors[key];
-                });
-                if (this.trendValue == 'c')
-                  this.newPatientsMultiLabels1.push(
-                    this.datePipe.transform(res.duration, 'MMM y')
-                  );
-                else this.newPatientsMultiLabels1.push(res.duration);
-              });
-              this.newPatientsMultiLabels = this.newPatientsMultiLabels1;
+              this.newPatientsMultiLabels = _.chain(res.body.data)
+                .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                .map((items: any[], duration: string) =>
+                  this.trendValue == 'c'
+                    ? this.datePipe.transform(duration, 'MMM y')
+                    : duration
+                )
+                .value();
+
+              this.newPatientsTrendMulti = _.chain(res.body.data)
+                .groupBy('clinic_id')
+                .map((items: any[]) => {
+                  return {
+                    data: items.map((item) => _.round(item.new_patients)),
+                    label: items.length > 0 ? items[0].clinic_name : ''
+                  };
+                })
+                .value()
+                .map((item, index) => ({
+                  ...item,
+                  backgroundColor: this.doughnutChartColors[index],
+                  hoverBackgroundColor: this.doughnutChartColors[index]
+                }));
+
+              // res.body.data.sort((a, b) =>
+              //   a.duration === b.duration ? 0 : a.duration > b.duration || -1
+              // );
+              // res.body.data.forEach((res) => {
+              //   res.val.forEach((reslt, key) => {
+              //     if (typeof this.newPatientsTrendMulti[key] == 'undefined') {
+              //       this.newPatientsTrendMulti[key] = { data: [], label: '' };
+              //     }
+              //     if (
+              //       typeof this.newPatientsTrendMulti[key]['data'] ==
+              //       'undefined'
+              //     ) {
+              //       this.newPatientsTrendMulti[key]['data'] = [];
+              //     }
+
+              //     this.newPatientsTrendMulti[key]['data'].push(
+              //       Math.round(reslt.new_patients)
+              //     );
+              //     this.newPatientsTrendMulti[key]['label'] = reslt.clinic_name;
+              //     this.newPatientsTrendMulti[key]['backgroundColor'] =
+              //       this.doughnutChartColors[key];
+              //     this.newPatientsTrendMulti[key]['hoverBackgroundColor'] =
+              //       this.doughnutChartColors[key];
+              //   });
+              //   if (this.trendValue == 'c')
+              //     this.newPatientsMultiLabels1.push(
+              //       this.datePipe.transform(res.duration, 'MMM y')
+              //     );
+              //   else this.newPatientsMultiLabels1.push(res.duration);
+              // });
+              // this.newPatientsMultiLabels = this.newPatientsMultiLabels1;
             } else {
               this.newPatientsChartTemp = res.body.data;
               res.body.data.forEach((res) => {
@@ -3157,37 +3165,28 @@ export class MarketingComponent implements AfterViewInit {
               Array.isArray(this.clinic_id)
             ) {
               this.showAPclinic = true;
-              res.body.data.sort((a, b) =>
-                a.duration === b.duration ? 0 : a.duration > b.duration || -1
-              );
-              res.body.data.forEach((res) => {
-                res.val.forEach((reslt, key) => {
-                  if (typeof this.newAPatientsTrendMulti[key] == 'undefined') {
-                    this.newAPatientsTrendMulti[key] = { data: [], label: '' };
-                  }
-                  if (
-                    typeof this.newAPatientsTrendMulti[key]['data'] ==
-                    'undefined'
-                  ) {
-                    this.newAPatientsTrendMulti[key]['data'] = [];
-                  }
-
-                  this.newAPatientsTrendMulti[key]['data'].push(
-                    Math.round(reslt.active_patients)
-                  );
-                  this.newAPatientsTrendMulti[key]['label'] = reslt.clinic_name;
-                  this.newAPatientsTrendMulti[key]['backgroundColor'] =
-                    this.doughnutChartColors[key];
-                  this.newAPatientsTrendMulti[key]['hoverBackgroundColor'] =
-                    this.doughnutChartColors[key];
-                });
-                if (this.trendValue == 'c')
-                  this.newAPatientsMultiLabels1.push(
-                    this.datePipe.transform(res.duration, 'MMM y')
-                  );
-                else this.newAPatientsMultiLabels1.push(res.duration);
-              });
-              this.newAPatientsMultiLabels = this.newAPatientsMultiLabels1;
+              this.newAPatientsMultiLabels = _.chain(res.body.data)
+                .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                .map((items: any[], duration: string) =>
+                  this.trendValue == 'c'
+                    ? this.datePipe.transform(duration, 'MMM y')
+                    : duration
+                )
+                .value();
+              this.newAPatientsTrendMulti = _.chain(res.body.data)
+                .groupBy('clinic_id')
+                .map((items: any[]) => ({
+                  data: items.map((item) =>
+                    _.round(Number(item.active_patients))
+                  ),
+                  label: items.length > 0 ? items[0].clinic_name : ''
+                }))
+                .value()
+                .map((item, index) => ({
+                  ...item,
+                  backgroundColor: this.doughnutChartColors[index],
+                  hoverBackgroundColor: this.doughnutChartColors[index]
+                }));
             } else {
               this.activePatientsChartTemp = res.body.data;
               res.body.data.forEach((res) => {
@@ -3230,7 +3229,7 @@ export class MarketingComponent implements AfterViewInit {
     curvature: 1,
     animation: {
       duration: 1500,
-      easing: 'easeOutSine',
+      easing: 'easeOutSine'
     },
     responsive: true,
     maintainAspectRatio: false,
@@ -3239,9 +3238,9 @@ export class MarketingComponent implements AfterViewInit {
         {
           gridLines: { display: true },
           ticks: {
-            autoSkip: false,
-          },
-        },
+            autoSkip: false
+          }
+        }
       ],
       yAxes: [
         {
@@ -3252,10 +3251,10 @@ export class MarketingComponent implements AfterViewInit {
               if (Math.floor(label) === label) {
                 return '$' + this.decimalPipe.transform(label);
               }
-            },
-          },
-        },
-      ],
+            }
+          }
+        }
+      ]
     },
     tooltips: {
       mode: 'x-axis',
@@ -3274,8 +3273,8 @@ export class MarketingComponent implements AfterViewInit {
         },
         title: function () {
           return '';
-        },
-      },
+        }
+      }
     },
     legend: {
       position: 'top',
@@ -3290,8 +3289,8 @@ export class MarketingComponent implements AfterViewInit {
           ci.getDatasetMeta(index).hidden = false;
         }
         ci.update();
-      },
-    },
+      }
+    }
   };
   public expenseDataTrend: any[] = [
     {
@@ -3310,7 +3309,7 @@ export class MarketingComponent implements AfterViewInit {
         this.chartService.colors.odd,
         this.chartService.colors.even,
         this.chartService.colors.odd,
-        this.chartService.colors.even,
+        this.chartService.colors.even
       ],
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -3322,8 +3321,8 @@ export class MarketingComponent implements AfterViewInit {
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply',
-    },
+      backgroundOverlayMode: 'multiply'
+    }
   ];
   public expenseDataTrend1 = [];
   public expenseDataTrendLabels1 = [];

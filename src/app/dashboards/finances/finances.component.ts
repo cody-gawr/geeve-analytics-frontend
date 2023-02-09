@@ -242,6 +242,7 @@ export class FinancesComponent implements AfterViewInit {
         }
         this.filterDate(this.chartService.duration$.value);
       } else {
+        await this.clinicGetAccountingPlatform(); // gtt added to resolve issue in prod not firing this request for multi clinic
         this.isVisibleAccountGraphs = true;
         this.multipleClinicsSelected = true;
         // this.filterDate(this.chartService.duration$.value);
