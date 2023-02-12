@@ -159,6 +159,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     'Daily Tasks'
   ];
    public homeUrl = environment.homeUrl;
+   public apiUrl = environment.apiUrl;
 	   public id:any = '';
   	public clinic_id:any = '';
   	public user_type:any = '';
@@ -286,7 +287,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns8: string[] = ['name', 'phone', 'code','dentist','note','book','status',];
   displayedColumns9: string[] = ['name','completed_by', 'status'];
   displayedColumns10: string[] = ['equip_item', 'quantity','am','pm'];
-  displayedColumns11: string[] = ['start','dentist','name','statuscode','card', 'sendReview', 'rebooked'];
+  displayedColumns11: string[] = environment.apiUrl.includes('test')?['start','dentist','name','statuscode','card', 'sendReview', 'rebooked']:['start','dentist','name','statuscode','card', 'rebooked'];
 
   public postOPCallChips:any = [
     {'name': 'Test 1','color': 'red','text': 'Test One'},

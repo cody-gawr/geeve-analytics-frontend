@@ -559,7 +559,7 @@
     </mat-card-content>
   </mat-expansion-panel>
 
-  <mat-expansion-panel>
+  <mat-expansion-panel *ngIf="apiUrl.includes('test')">
      <mat-expansion-panel-header>
       <mat-panel-title>
         Social Links
@@ -580,7 +580,7 @@
     </mat-card-content>
   </mat-expansion-panel>
 
-    <mat-expansion-panel>
+    <mat-expansion-panel *ngIf="apiUrl.includes('test')" >
      <mat-expansion-panel-header>
       <mat-panel-title>
         Review Message Templates
