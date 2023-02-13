@@ -291,7 +291,7 @@ export class ClinicSettingsService {
     
     getSocialLinks(clinic_id: number): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/clinics/getSocialLinks?clinic_id="+clinic_id, header)
+        return this.http.get(this.apiUrl +"/reviews/getSocialLinks?clinic_id="+clinic_id, header)
         .pipe(
             map((response: HttpResponse<Object>) => {
                 return response;
@@ -301,7 +301,7 @@ export class ClinicSettingsService {
 
     updateSocialLinks(clinic_id: number, facebookId: string, googleId: string): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.post(this.apiUrl +"/clinics/updateSocialLinks",{
+        return this.http.post(this.apiUrl +"/reviews/updateSocialLinks",{
             clinic_id, facebook_id: facebookId, google_id: googleId}, header)
         .pipe(
             map((response: HttpResponse<Object>) => {
@@ -312,7 +312,7 @@ export class ClinicSettingsService {
 
     getReviewMsgTemplateList(clinic_id: number): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Clinics/getReviewMsgTemplateList?clinic_id="+clinic_id, header)
+        return this.http.get(this.apiUrl +"/reviews/getReviewMsgTemplateList?clinic_id="+clinic_id, header)
         .pipe(
             map((response: HttpResponse<Object>) => {
                 return response;
@@ -322,7 +322,7 @@ export class ClinicSettingsService {
 
     addReviewMsgTemplate(clinic_id: number, name: string, msgTemplate: string): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.post(this.apiUrl +"/Clinics/addReviewMsgTemplate",{
+        return this.http.post(this.apiUrl +"/reviews/addReviewMsgTemplate",{
             clinic_id, name: name, msg_template: msgTemplate}, header)
         .pipe(
             map((response: HttpResponse<Object>) => {
@@ -333,7 +333,7 @@ export class ClinicSettingsService {
 
     updateReviewMsgTemplate(id: number, clinic_id:number, name: string, msgTemplate: string): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.post(this.apiUrl +"/Clinics/updateReviewMsgTemplate",{id, clinic_id, name: name, msg_template: msgTemplate}, header)
+        return this.http.post(this.apiUrl +"/reviews/updateReviewMsgTemplate",{id, clinic_id, name: name, msg_template: msgTemplate}, header)
         .pipe(
             map((response: HttpResponse<Object>) => {
                 return response;
@@ -343,7 +343,7 @@ export class ClinicSettingsService {
 
     removeReviewMsgTemplate(id: number, clinic_id:number): Observable<any> {
         var header = this.getHeaders();
-        return this.http.post(this.apiUrl +"/Clinics/removeReviewMsgTemplate",{id, clinic_id}, header)
+        return this.http.post(this.apiUrl +"/reviews/removeReviewMsgTemplate",{id, clinic_id}, header)
         .pipe(
             map((response: HttpResponse<Object>) => {
                 return response;

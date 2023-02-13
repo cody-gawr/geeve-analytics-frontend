@@ -520,7 +520,7 @@ export class MorningHuddleService {
     // Users api
     createPaymentIntent(creditAmount):Observable<HttpResponse<any>>{
         const header = this.getHeaders();
-        return this.http.post(this.apiUrl + "/users/createPaymentIntent", {
+        return this.http.post(this.apiUrl + "/reviews/createPaymentIntent", {
             amount: creditAmount
         }, header).pipe(map((res: HttpResponse<any>) => {
             return res;
@@ -529,7 +529,7 @@ export class MorningHuddleService {
 
     getTotalCredits():Observable<HttpResponse<any>>{
         const header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/users/getTotalCredits", header).pipe(
+        return this.http.get(this.apiUrl + "/reviews/getTotalCredits", header).pipe(
             map((res: HttpResponse<any>) => {
                 return res;
         }));

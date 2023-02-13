@@ -6,10 +6,8 @@ import { ActivatedRoute } from "@angular/router";
 import { CookieService } from "ngx-cookie";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { ITooltipData } from "../shared/tooltip/tooltip.directive";
 import { AppConstants } from "../app.constants";
 import { environment } from "../../environments/environment";
-import { validateBasis } from "@angular/flex-layout";
 import { MatDialog } from "@angular/material/dialog";
 import { ReviewMsgTemplateDialog } from "./review-msg-template-dialog/review-msg-template-dialog.component";
 

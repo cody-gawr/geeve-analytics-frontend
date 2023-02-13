@@ -288,7 +288,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns9: string[] = ['name','completed_by', 'status'];
   displayedColumns10: string[] = ['equip_item', 'quantity','am','pm'];
   displayedColumns11: string[] = environment.apiUrl.includes('test')?['start','dentist','name','statuscode','card', 'sendReview', 'rebooked']:['start','dentist','name','statuscode','card', 'rebooked'];
-
+  displayedColumns12: string[] = ['start','dentist','name','statuscode','card', 'rebooked'];
   public postOPCallChips:any = [
     {'name': 'Test 1','color': 'red','text': 'Test One'},
     {'name': 'Test 2','color': 'green','text': 'Test Two'},
