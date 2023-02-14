@@ -43,6 +43,7 @@ export class MorningHuddleService {
             })
         );
     }
+
     // clinic recallRate
     recallRate(clinic_id, previousDays, user_type, clinician = ""): Observable<any> {
         var header = this.getHeaders();
@@ -516,5 +517,21 @@ export class MorningHuddleService {
             })
             );
     }
+    // Users api
+    createPaymentIntent(creditAmount):Observable<HttpResponse<any>>{
+        const header = this.getHeaders();
+        return this.http.post(this.apiUrl + "/reviews/createPaymentIntent", {
+            amount: creditAmount
+        }, header).pipe(map((res: HttpResponse<any>) => {
+            return res;
+        }))
+    }
 
+    getTotalCredits():Observable<HttpResponse<any>>{
+        const header = this.getHeaders();
+        return this.http.get(this.apiUrl + "/reviews/getTotalCredits", header).pipe(
+            map((res: HttpResponse<any>) => {
+                return res;
+        }));
+    }
 }

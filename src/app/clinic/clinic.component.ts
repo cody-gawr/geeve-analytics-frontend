@@ -155,7 +155,14 @@ export class ClinicComponent implements AfterViewInit {
   columns = [{ prop: 'sr' }, { name: 'clinicName' }, { name: 'address' }, { name: 'contactName' }, { name: 'created' }];
 
   @ViewChild(ClinicComponent) table: ClinicComponent;
-  constructor(private toastr: ToastrService, private clinicService: ClinicService, public dialog: MatDialog, private _cookieService: CookieService, private router: Router, private headerService: HeaderService, private setupService : SetupService) {
+  constructor(
+    private toastr: ToastrService, 
+    private clinicService: ClinicService, 
+    public dialog: MatDialog, 
+    private _cookieService: CookieService, 
+    private router: Router, 
+    private headerService: HeaderService, 
+    private setupService : SetupService) {
 
     this.rows = data;
     this.temp = [...data];
@@ -428,7 +435,7 @@ export class ClinicComponent implements AfterViewInit {
     })
   }
 
-openLocationDialog(id): void {
+  openLocationDialog(id): void {
     const dialogRef = this.dialog.open(DialogLocationDialogComponent, {
       width: '600px',
       data: { location: this.availabeLocations, display_name : this.clinicName }

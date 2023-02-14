@@ -45,6 +45,8 @@ import { AutofocusDirective } from "./auto-focus.directive";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "../shared/shared.module";
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ReviewMsgTemplateDialog } from "./review-msg-template-dialog/review-msg-template-dialog.component";
+
 @NgModule({
   imports: [
     CommonModule,
@@ -84,7 +86,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     EquipmentComponent,
     ChartsComponent,
     DialogSetColorsDialogComponent,
-    DentisChartComponent
+    DentisChartComponent,
+    ReviewMsgTemplateDialog
   ],
   entryComponents: [
     DialogOverviewExampleDialogComponent,

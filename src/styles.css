@@ -471,6 +471,10 @@
   border-radius: 5px;
 }
 
+.mat-stroked-button.mat-dc {
+  color: #18a689;
+}
+
 .action_btn {
   width: 27px !important;
   border: none;

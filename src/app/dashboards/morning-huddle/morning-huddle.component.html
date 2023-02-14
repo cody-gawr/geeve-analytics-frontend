@@ -691,7 +691,6 @@
                     src="../assets/images/warning-huddle.png" alt="warning-huddle" /> History of No Shows</span></div>
             </td>
           </ng-container>
-
           <ng-container matColumnDef="rebooked">
             <th mat-header-cell *matHeaderCellDef>Rebooked  <div class="info-icon-container mhRebook"><img [tooltip]="{title:'', info:'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a grey tick' }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" /></div></th>
             <td mat-cell *matCellDef="let element"> 
@@ -701,13 +700,13 @@
           </ng-container>
 
           <ng-container matColumnDef="isDataAvailable">
-            <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns11.length">
+            <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns12.length">
               You have no appointments scheduled today
             </mat-footer-cell>
           </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns11"></tr>
-          <tr id="" mat-row *matRowDef="let row; columns: displayedColumns11;"></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns12"></tr>
+          <tr id="" mat-row *matRowDef="let row; columns: displayedColumns12;"></tr>
 
           <mat-footer-row *matFooterRowDef="['isDataAvailable']"
             [ngClass]="(appointmentCards.data.length == 0)? 'show' : 'hide'"></mat-footer-row>
@@ -815,6 +814,7 @@
           </mat-form-field>
           <!-- <button id="p-bttom" [useExistingCss]="true" printSectionId="mh-front-desk-reminders-print" ngxPrint tabindex="2" class="mat-raised-button mat-dc float-right"><i class="fa fa-print"></i> Print</button> -->
           <button id="p-bttom" (click)="printFrontDeskRemindersTab()" tabindex="2" class="mat-raised-button mat-dc float-right"><i class="fa fa-print"></i> Print</button>
+          <button *ngIf="apiUrl.includes('test')" id="topup-credits" (click)="buyCredits()" class="mat-raised-button mat-dc">(0/{{totalCredits}}) TopUp</button>
         </div>
         <strong>Current Day: {{ remindersRecallsOverdueDate | date:'EEE MMM d':'timezone' }}</strong>
       </div>
@@ -1037,6 +1037,19 @@
               </div>
             </td>
           </ng-container>
+
+          <ng-container *ngIf="apiUrl.includes('test')" matColumnDef="sendReview">
+            <th mat-header-call *matHeaderCellDef>Send Review</th>
+            <td mat-cell style="text-align:center" *matCellDef="let element">
+              <button
+                mat-stroked-button
+                class="mat-dc"
+              >
+                Send
+            </button>
+            </td>
+          </ng-container>
+
           <ng-container matColumnDef="rebooked">
             <th mat-header-cell *matHeaderCellDef>Rebooked <div class="info-icon-container mhRebook"><img [tooltip]="{title:'', info:'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a grey tick' }" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" /></div></th>
             <td mat-cell *matCellDef="let element">  <i *ngIf="element.is_rebooked == 'No' && element.has_future_appt == 'Yes' " class="fa fa-check mh-fa-check gray"></i> 
@@ -2556,11 +2569,6 @@
       
     </mat-tab>
     <!-- End of Day Tasks end if user type dentist -->
-
-
-
-
-
 
     <!-- responsive tabs dropdown -->
     <mat-tab label="responsive-tab-group" disabled>

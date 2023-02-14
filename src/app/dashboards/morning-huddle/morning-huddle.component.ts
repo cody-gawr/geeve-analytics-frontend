@@ -34,6 +34,8 @@ export interface PeriodicElement {
 }
 
 import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
+import { loadStripe } from '@stripe/stripe-js';
+import { StripePaymentDialog } from './stripe-payment-modal/stripe-payment-modal.component';
 
 @Component({
   selector: 'notes-add-dialog',
@@ -157,6 +159,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     'Daily Tasks'
   ];
    public homeUrl = environment.homeUrl;
+   public apiUrl = environment.apiUrl;
 	   public id:any = '';
   	public clinic_id:any = '';
   	public user_type:any = '';
@@ -271,7 +274,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public OverdueRecalls : boolean = false;
     public LabNeeded  : boolean = false;
     public selectDentist = 0;
-
+    totalCredits = 0;
  
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
   displayedColumns1: string[] = ['start', 'name', 'dentist',];
@@ -284,12 +287,12 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns8: string[] = ['name', 'phone', 'code','dentist','note','book','status',];
   displayedColumns9: string[] = ['name','completed_by', 'status'];
   displayedColumns10: string[] = ['equip_item', 'quantity','am','pm'];
-  displayedColumns11: string[] = ['start','dentist','name','statuscode','card','rebooked'];
-
+  displayedColumns11: string[] = environment.apiUrl.includes('test')?['start','dentist','name','statuscode','card', 'sendReview', 'rebooked']:['start','dentist','name','statuscode','card', 'rebooked'];
+  displayedColumns12: string[] = ['start','dentist','name','statuscode','card', 'rebooked'];
   public postOPCallChips:any = [
-  {'name': 'Test 1','color': 'red','text': 'Test One'},
-  {'name': 'Test 2','color': 'green','text': 'Test Two'},
-  {'name': 'Test 3','color': 'blue','text': 'Test Three'},
+    {'name': 'Test 1','color': 'red','text': 'Test One'},
+    {'name': 'Test 2','color': 'green','text': 'Test Two'},
+    {'name': 'Test 3','color': 'blue','text': 'Test Three'},
   ];
   selected: any;
   // minDate: any;
@@ -321,6 +324,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     this.selected = {start:  moment()};
     // this.minDate = moment().subtract(7, 'days');  
     // this.maxDate = moment().add(7, 'days');  
+    
  }
 
   @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
@@ -330,10 +334,11 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
       this.matTabGroup.realignInkBar(); // align material tab green shaded color to first tab (on screen resize)
   }
 
- ngOnInit(){
+  ngOnInit(){
     //console.log(this.homeUrl + "assets/js/jquery.min.js");
     /*this.dataSource1.sort = this.sort1;
     this.dataSource2.sort = this.sort2;*/
+    this.checkStatus();
     $('#currentDentist').attr('did','all');
     this.user_type = this._cookieService.get("user_type");
     this.userPlan = this._cookieService.get("user_plan");
@@ -347,110 +352,119 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     }, 500);    
 
     var self = this;
-   this.autoCall =  setInterval( function()
+    this.autoCall =  setInterval( function()
     {
        self.refreshDataAuto();
-    }, 1000 * 300);    
- }
-ngAfterViewInit(): void {
-  // this.endOfDaysTasksInComp.sort = this.sort1; 
-  // this.lquipmentList.sort = this.sort2;
+    }, 1000 * 300);
+    
+    
+  }
+  ngAfterViewInit(): void {
+    // this.endOfDaysTasksInComp.sort = this.sort1; 
+    // this.lquipmentList.sort = this.sort2;
     this.dentistList.paginator = this.paginator;
     //$('.dentist_dropdown').parent().hide(); // added
     $('.sa_heading_bar').addClass("filter_single"); // added   
+    
   }
-ngOnDestroy() {
-  //$('.dentist_dropdown').parent().show(); // added
-  $('.sa_heading_bar').removeClass("filter_single"); // added
-   clearInterval(this.autoCall);
-}
 
-initiate_clinic() {
-  this.selectDentist = 0;
-  this.user_type = this._cookieService.get("user_type");
-  $('.external_clinic').show();
-  //$('.dentist_dropdown').hide();
-  $('.header_filters').addClass('flex_direct_mar');
-  $('.header_filters').removeClass('hide_header');
-  var val = $('#currentClinic').attr('cid');
-  if(val != undefined && val !='all') {
-    this.clinic_id = val;
-    $('#title').html('Morning Huddle');
-    if(this.previousDays  == '')
-    {
-      this.previousDays = this.datepipe.transform(new Date(), 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
-    }
-    this.dailyTabSettLod = false;
-    // clinicGetSettings
-    // this.clinicianAnalysisService.getClinics( this.clinic_id, 'DailyTaskEnable,EquipListEnable,PostOpEnable,RecallEnable,TickEnable,FtaEnable' ).subscribe((data:any) => {
-    //   this.dailyTabSettLod = true;
-    //   if(res.status == 200){
-    //     this.isEnabletasks = (data.body.data.daily_task_enable == 1)? true : false;
-    //     this.isEnableEquipList = (data.body.data.equip_list_enable == 1)? true : false;        
-    //   }
-    // }); 
+  ngOnDestroy() {
+    //$('.dentist_dropdown').parent().show(); // added
+    $('.sa_heading_bar').removeClass("filter_single"); // added
+    clearInterval(this.autoCall);
+  }
 
-    this.clinicianAnalysisService.getClinicSettings( this.clinic_id).subscribe((res:any) => {
-      if(res.status == 200){
-        this.isEnablePO = (res.body.data.post_op_enable == 1)? true : false;
-        this.isEnableOR = (res.body.data.recall_enable == 1)? true : false;
-        this.isEnableTH = (res.body.data.tick_enable == 1)? true : false;
-        this.isEnableFT = (res.body.data.fta_enable == 1)? true : false;
-        this.isEnableUT = (res.body.data.uta_enable == 1)? true : false;
-        this.isEnabletasks = (res.body.data.daily_task_enable == 1)? true : false;
-        this.isEnableEquipList = (res.body.data.equip_list_enable == 1)? true : false; 
+  initiate_clinic() {
+
+    this.selectDentist = 0;
+    this.user_type = this._cookieService.get("user_type");
+    $('.external_clinic').show();
+    //$('.dentist_dropdown').hide();
+    $('.header_filters').addClass('flex_direct_mar');
+    $('.header_filters').removeClass('hide_header');
+    var val = $('#currentClinic').attr('cid');
+    if(val != undefined && val !='all') {
+      this.clinic_id = val;
+      $('#title').html('Morning Huddle');
+      if(this.previousDays  == '')
+      {
+        this.previousDays = this.datepipe.transform(new Date(), 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
       }
-    }); 
+      this.dailyTabSettLod = false;
+      // clinicGetSettings
+      // this.clinicianAnalysisService.getClinics( this.clinic_id, 'DailyTaskEnable,EquipListEnable,PostOpEnable,RecallEnable,TickEnable,FtaEnable' ).subscribe((data:any) => {
+      //   this.dailyTabSettLod = true;
+      //   if(res.status == 200){
+      //     this.isEnabletasks = (data.body.data.daily_task_enable == 1)? true : false;
+      //     this.isEnableEquipList = (data.body.data.equip_list_enable == 1)? true : false;        
+      //   }
+      // }); 
+
+      this.clinicianAnalysisService.getClinicSettings( this.clinic_id).subscribe((res:any) => {
+        if(res.status == 200){
+          this.isEnablePO = (res.body.data.post_op_enable == 1)? true : false;
+          this.isEnableOR = (res.body.data.recall_enable == 1)? true : false;
+          this.isEnableTH = (res.body.data.tick_enable == 1)? true : false;
+          this.isEnableFT = (res.body.data.fta_enable == 1)? true : false;
+          this.isEnableUT = (res.body.data.uta_enable == 1)? true : false;
+          this.isEnabletasks = (res.body.data.daily_task_enable == 1)? true : false;
+          this.isEnableEquipList = (res.body.data.equip_list_enable == 1)? true : false; 
+        }
+      }); 
 
 
-    this.dentist_id = this._cookieService.get("dentistid");
-    if(this.user_type != '5'){
-      /***** Tab 1 ***/
-      this.getDentistPerformance();
-      this.getRecallRate();
-      this.getTreatmentRate();
-      if(this.user_type != '4'){
-        this.getDentistList();
+      this.dentist_id = this._cookieService.get("dentistid");
+      if(this.user_type != '5'){
+        /***** Tab 1 ***/
+        this.getDentistPerformance();
+        this.getRecallRate();
+        this.getTreatmentRate();
+        if(this.user_type != '4'){
+          this.getDentistList();
+        }
+        /***** Tab 1 ***/    
+        /***** Tab 2 ***/
+        //this.getSchedulePatients(null);
+        this.getAppointmentCards(null);
       }
-      /***** Tab 1 ***/    
+      if(this.user_type != '4'){     
+        this.getScheduleNewPatients(null);
+        this.getScheduleHours(null);
+        this.getUnscheduleHours(null);
       /***** Tab 2 ***/
-      //this.getSchedulePatients(null);
-      this.getAppointmentCards(null);
-    }
-    if(this.user_type != '4'){     
-      this.getScheduleNewPatients(null);
-      this.getScheduleHours(null);
-      this.getUnscheduleHours(null);
-    /***** Tab 2 ***/
-      /***** Tab 3 ***/
-      //this.getUnscheduledValues();
-      this.getTodayUnscheduledHours();
-      //this.getChairUtilisationRate();
-      this.getTodayUnscheduledBal();
-      //this.getNoShow();
-      //this.getUnscheduledPatients();
-      //this.getTodayPatients();
-      //this.getTodayPostopCalls();
-      // this.getReAppointment();
-      /***** Tab 3 ***/ 
-      /***** Tab 4 ***/
-      this.getReminders();
-      //this.getFollowupsUnscheduledPatients();
-      this.getFollowupPostOpCalls();
-      this.getOverdueRecalls();
-      this.getTickFollowups();
-      this.getFtaFollowups();
-      this.getUtaFollowups();
-      this.getFollowupScripts();
-      /***** Tab 4 ***/     
-      }
+        /***** Tab 3 ***/
+        //this.getUnscheduledValues();
+        this.getTodayUnscheduledHours();
+        //this.getChairUtilisationRate();
+        this.getTodayUnscheduledBal();
+        //this.getNoShow();
+        //this.getUnscheduledPatients();
+        //this.getTodayPatients();
+        //this.getTodayPostopCalls();
+        // this.getReAppointment();
+        /***** Tab 3 ***/ 
+        /***** Tab 4 ***/
+        this.getReminders();
+        //this.getFollowupsUnscheduledPatients();
+        this.getFollowupPostOpCalls();
+        this.getOverdueRecalls();
+        this.getTickFollowups();
+        this.getFtaFollowups();
+        this.getUtaFollowups();
+        this.getFollowupScripts();
+        /***** Tab 4 ***/     
+        }
 
-      if(this.user_type != '4'){
-        // this.getEndOfDays();
-        this.getEquipmentList();
-      }
+        if(this.user_type != '4'){
+          // this.getEndOfDays();
+          this.getEquipmentList();
+        }
     }
     this.getEndOfDays();
+    this.morningHuddleService.getTotalCredits().subscribe(
+      res => {
+        this.totalCredits = res.body.data.credits;
+    });
   }
 
   
@@ -546,7 +560,8 @@ initiate_clinic() {
   public remindersTotal:any = 0;
   public clinicDentistsReminders:any = [];
   public remindersRecallsOverdueTemp:any = [];
-   getReminders(refsh = ''){
+
+  getReminders(refsh = ''){
     if(refsh == ''){
       this.remindersRecallsOverdueLoader = true;
     }
@@ -1718,7 +1733,6 @@ async getDentistList(){
     this.getTodayUnscheduledHours('refresh');
     this.getTodayUnscheduledBal('refresh');
     this.getReminders('refresh');
-      
   }
 
   historyPosChips(event, colour, type= '')
@@ -1825,5 +1839,39 @@ async getDentistList(){
         newWin.close();
       }, 2000);
     }
+
+    buyCredits() {
+      const stripePaymentDialog = this.dialog.open(StripePaymentDialog, {
+        data: {totalCredits: this.totalCredits}
+      });
+    }
+
+    async checkStatus() {
+      const stripe = await loadStripe(environment.stripeKey);
+      const clientSecret = new URLSearchParams(window.location.search).get(
+        "payment_intent_client_secret"
+      );
+    
+      if (!clientSecret) {
+        return;
+      }
+    
+      const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
+
+      switch (paymentIntent.status) {
+        case "succeeded":
+          this.toastr.success("Payment succeeded!");
+          break;
+        case "processing":
+          this.toastr.success("Your payment is processing.");
+          break;
+        case "requires_payment_method":
+          this.toastr.error("Your payment was not successful, please try again.");
+          break;
+        default:
+          this.toastr.error("Something went wrong.");
+          break;
+      }
+  }
 } 
 
