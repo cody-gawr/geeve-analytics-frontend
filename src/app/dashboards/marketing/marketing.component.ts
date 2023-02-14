@@ -2324,6 +2324,7 @@ export class MarketingComponent implements AfterViewInit {
       );
   }
 
+  public newPatientCosts: any[] = [];
   public expenseData = [];
   public categories = [];
   public fdnewPatientsAcqLoader: any;
@@ -2332,6 +2333,7 @@ export class MarketingComponent implements AfterViewInit {
   public newAcqValueError: boolean = false;
   //Predictor Ratio :
   private fdnewPatientsAcq() {
+    this.newPatientCosts = [];
     this.expenseData = [];
     this.categories = [];
     this.newAcqValueGoal = '';
@@ -2363,8 +2365,16 @@ export class MarketingComponent implements AfterViewInit {
               // checking if any new account name found in report then we are saving that one in existing accounts
               this.categories = [];
               this.expenseData = [];
+              this.newPatientCosts = res.body.data;
               this.Accounts = this.Accounts.concat(
-                res.body.data_expense_category_report
+                // res.body.data_expense_category_report
+                [
+                  'Advertising',
+                  'Consumables',
+                  'Lab Fees',
+                  'Rent',
+                  'Wages and Salaries'
+                ]
               );
               this.Accounts = this.Accounts.filter((item, index) => {
                 return this.Accounts.indexOf(item) == index;
@@ -2373,14 +2383,18 @@ export class MarketingComponent implements AfterViewInit {
                 (x) => !this.selectedAccounts.includes(x)
               );
 
-              res.body.data.forEach((res, key) => {
-                this.expenseData[res.meta_key] = res.expenses;
-              });
-              if (this.newPatientsPrevTotal > 0)
+              // res.body.data.forEach((res, key) => {
+              //   this.expenseData[res.meta_key] = res.expenses;
+              // });
+              if (this.newPatientsPrevTotal > 0) {
                 this.newAcqValuePrev = Math.round(
-                  res.body.data_ta / this.newPatientsPrevTotal
+                  // res.body.data_ta / this.newPatientsPrevTotal
+                  <number>res.body.data_ta
                 );
-              if (this.selectedAccounts.length > 0) this.load_chart_acq();
+              }
+              if (this.selectedAccounts.length > 0) {
+                this.load_chart_acq();
+              }
             }
           },
           (error) => {
@@ -3452,14 +3466,23 @@ export class MarketingComponent implements AfterViewInit {
   public newAcqValue: any = 0;
   public newAcqValueMax: any = 35;
   load_chart_acq() {
-    var totalY = 0;
-    this.selectedAccounts.forEach((res, key) => {
-      if (this.expenseData[res])
-        totalY = totalY + parseInt(this.expenseData[res]);
-    });
+    // var totalY = 0;
+    // this.selectedAccounts.forEach((res, key) => {
+    //   if (this.expenseData[res])
+    //     totalY = totalY + parseInt(this.expenseData[res]);
+    // });
     this.newAcqValue = 0;
-    if (totalY != undefined && this.newPatientsTotal > 0)
-      this.newAcqValue = (totalY / this.newPatientsTotal).toFixed(0);
+    // if (totalY != undefined && this.newPatientsTotal > 0) {
+    //   this.newAcqValue = (totalY / this.newPatientsTotal).toFixed(0);
+    // }
+    this.newAcqValue = _.round(
+      _.chain(this.newPatientCosts)
+        .sumBy((item) => item.cost)
+        .value() /
+        _.chain(this.newPatientCosts)
+          .sumBy((item) => item.new_patients)
+          .value() || 0
+    );
     if (parseFloat(this.newAcqValueGoal) >= parseFloat(this.newAcqValue)) {
       this.newAcqValueMax = parseFloat(this.newAcqValueGoal);
     } else if (

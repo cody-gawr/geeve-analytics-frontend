@@ -1146,9 +1146,7 @@
               <div>
                 <span
                   *ngIf="
-                    showTrend == false &&
-                    trendText &&
-                    (xeroConnect || myobConnect)
+                    !showTrend && trendText && (xeroConnect || myobConnect)
                   "
                   class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
                   matTooltip="{{ trendText }} : ${{ newAcqValuePrev }}"
@@ -1207,8 +1205,8 @@
                 <div>
                   <div
                     *ngIf="
-                      showTrend == false &&
-                      fdnewPatientsAcqLoader == false &&
+                      !showTrend &&
+                      !fdnewPatientsAcqLoader &&
                       (xeroConnect || myobConnect) &&
                       !newAcqValueError &&
                       !multipleClinicsSelected &&
