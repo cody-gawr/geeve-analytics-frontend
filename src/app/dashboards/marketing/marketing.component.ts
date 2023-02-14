@@ -219,7 +219,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   };
   private warningMessage: string;
   private myTemplate: any = '';
-  async initiate_clinic() {
+  async initiateClinic() {
     this.userPlan = this._cookieService.get('user_plan');
     if (this.userPlan == 'lite') {
       this.router.navigateByUrl('/login');
@@ -741,76 +741,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         }
       }
     }
-  };
-
-  public stackedNewPatientCostChartOptions: Chart.ChartOptions = {
-    elements: {
-      point: {
-        radius: 5,
-        hoverRadius: 7,
-        pointStyle: 'rectRounded',
-        hoverBorderWidth: 7
-      }
-    },
-    plugins: {
-      title: {
-        display: true,
-        text: 'Chart.js Bar Chart - Stacked'
-      }
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-    animation: {
-      duration: 500,
-      easing: 'easeOutSine'
-    },
-    scales: {
-      xAxes: [
-        {
-          stacked: true,
-          ticks: {
-            autoSkip: false
-          }
-        }
-      ],
-      yAxes: [
-        {
-          ticks: {
-            // beginAtZero: true,
-            // callback: function (label) {
-            //   // when the floored value is the same as jhgjghe value we have a whole number
-            //   return label;
-            // }
-          },
-          stacked: false
-        }
-      ]
-    }
-    // legend: {
-    //   display: true
-    // },
-    // tooltips: {
-    //   mode: 'x-axis',
-    //   enabled: true,
-    //   custom: function (tooltip) {
-    //     if (!tooltip) return;
-    //     // disable displaying the colorg box;
-    //     tooltip.displayColors = false;
-    //   },
-    //   callbacks: {
-    //     label: (tooltipItems, data) => {
-    //       console.log(tooltipItems);
-    //       return (
-    //         tooltipItems.xLabel +
-    //         ': ' +
-    //         this.decimalPipe.transform(tooltipItems.yLabel)
-    //       );
-    //     },
-    //     title: function () {
-    //       return 'AAA';
-    //     }
-    //   }
-    // }
   };
 
   public stackedChartOptionsMulti: any = {
