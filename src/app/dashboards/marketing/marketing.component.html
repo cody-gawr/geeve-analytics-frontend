@@ -936,10 +936,8 @@
                 <div
                   class="chart-num-patients"
                   *ngIf="
-                    showNPBar == false &&
-                    showTrend == false &&
-                    newPatientsTotal > 0 &&
-                    fdnewPatientsRatioLoader == false
+                    !(showNPBar || showTrend || fdnewPatientsRatioLoader) &&
+                    newPatientsTotal > 0
                   "
                 >
                   <ngx-gauge
@@ -958,10 +956,9 @@
                 <div
                   class="chart-Trend1-patients trendH"
                   *ngIf="
-                    showNPBar == true &&
-                    showTrend == false &&
-                    newPatientsTotal > 0 &&
-                    fdnewPatientsRatioLoader == false
+                    showNPBar &&
+                    !(showTrend || fdnewPatientsRatioLoader) &&
+                    newPatientsTotal > 0
                   "
                 >
                   <canvas
@@ -1205,11 +1202,13 @@
                 <div>
                   <div
                     *ngIf="
-                      !showTrend &&
-                      !fdnewPatientsAcqLoader &&
+                      !(
+                        showTrend ||
+                        fdnewPatientsAcqLoader ||
+                        newAcqValueError ||
+                        multipleClinicsSelected
+                      ) &&
                       (xeroConnect || myobConnect) &&
-                      !newAcqValueError &&
-                      !multipleClinicsSelected &&
                       isCompleteMonth
                     "
                     class="chart-trend"
@@ -1230,10 +1229,37 @@
                   </div>
                   <div
                     *ngIf="
-                      fdnewPatientsAcqLoader == true &&
+                      !(
+                        showTrend ||
+                        fdnewPatientsAcqLoader ||
+                        newAcqValueError
+                      ) &&
+                      newPatientCostsChartData.length > 0 &&
+                      multipleClinicsSelected &&
                       (xeroConnect || myobConnect) &&
-                      !newAcqValueError &&
-                      multipleClinicsSelected === false
+                      isCompleteMonth
+                    "
+                    class="chart-trend"
+                  >
+                    <canvas
+                      #myCanvas
+                      baseChart
+                      [datasets]="newPatientCostsChartData"
+                      [labels]="newPatientCostsChartLabels"
+                      [options]="stackedChartOptions"
+                      [chartType]="stackedChartType"
+                      (chartHover)="chartHovered($event)"
+                      [legend]="false"
+                      [colors]="lineChartColors"
+                      (chartClick)="chartClicked($event)"
+                    >
+                    </canvas>
+                  </div>
+                  <div
+                    *ngIf="
+                      fdnewPatientsAcqLoader &&
+                      (xeroConnect || myobConnect) &&
+                      !newAcqValueError
                     "
                     class="loader_container loader_container_middle"
                   >
@@ -1242,7 +1268,7 @@
                   </div>
                   <div
                     *ngIf="
-                      showTrend == true &&
+                      showTrend &&
                       expenseDataTrend1.length > 0 &&
                       (xeroConnect || myobConnect) &&
                       !newAcqValueError
@@ -1265,12 +1291,12 @@
                   </div>
                   <div
                     *ngIf="
-                      fdnewPatientsAcqLoader == false &&
-                      showTrend == true &&
+                      !fdnewPatientsAcqLoader &&
+                      showTrend &&
                       expenseDataTrend1.length <= 0 &&
                       (xeroConnect || myobConnect) &&
                       !newAcqValueError &&
-                      multipleClinicsSelected === false
+                      !multipleClinicsSelected
                     "
                   >
                     <div class="sa_nodata_div"></div>
@@ -1280,30 +1306,22 @@
                     </p>
                   </div>
                   <div
-                    *ngIf="
-                      ((!xeroConnect && !myobConnect) || newAcqValueError) &&
-                      multipleClinicsSelected === false
-                    "
+                    *ngIf="!(xeroConnect || myobConnect) || newAcqValueError"
                   >
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">
                       Please ensure your Xero/MYOB account is connected
                     </p>
                   </div>
-                  <div *ngIf="multipleClinicsSelected === true">
-                    <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">
-                      Xero/MYOB charts can only be viewed per clinic - please
-                      select one clinic to view
-                    </p>
-                  </div>
                   <div
                     *ngIf="
-                      !isCompleteMonth &&
                       (xeroConnect || myobConnect) &&
-                      !multipleClinicsSelected &&
-                      !fdnewPatientsAcqLoader &&
-                      !showTrend
+                      !(
+                        isCompleteMonth ||
+                        multipleClinicsSelected ||
+                        fdnewPatientsAcqLoader ||
+                        showTrend
+                      )
                     "
                   >
                     <div class="sa_nodata_div"></div>
@@ -1317,7 +1335,7 @@
             </div>
             <div class="card-footer">
               <div
-                *ngIf="showTrend == false && isCompleteMonth"
+                *ngIf="!showTrend && isCompleteMonth"
                 fxLayout="row wrap"
                 class="pieChartDetails sa_chart_details_sec"
               >
@@ -1377,7 +1395,7 @@
             <mat-card-title class="text-center">
               <div>
                 <span
-                  *ngIf="showTrend == false && trendText"
+                  *ngIf="!showTrend && trendText"
                   class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
                   matTooltip="{{ trendText }} : {{
                     fdActivePatientsTa | number : '1.0-0'
@@ -1708,10 +1726,10 @@
               </div>
               <div
                 *ngIf="
-                  showTrend == true &&
-                  fdvisitsRatioTrendLoader == false &&
-                  visitsChartTrend1.length <= 0 &&
-                  totalVisitMultiLabels1.length <= 0
+                  showTrend &&
+                  !fdvisitsRatioTrendLoader &&
+                  visitsChartTrend1.length == 0 &&
+                  totalVisitMultiLabels1.length == 0
                 "
                 class="no-data-placeholder"
               >
@@ -1723,7 +1741,7 @@
             </div>
             <div class="card-footer">
               <div
-                *ngIf="showTrend == false"
+                *ngIf="!showTrend"
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
                 class="m-t-40 sa_chart_details_sec pieChartDetails"

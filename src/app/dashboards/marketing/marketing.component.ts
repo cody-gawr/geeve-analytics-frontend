@@ -1,6 +1,7 @@
 import * as $ from 'jquery';
 import {
   Component,
+  OnInit,
   AfterViewInit,
   ViewEncapsulation,
   ViewChild,
@@ -41,7 +42,7 @@ export interface Dentist {
   styleUrls: ['./marketing.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class MarketingComponent implements AfterViewInit {
+export class MarketingComponent implements OnInit, AfterViewInit {
   @ViewChild('myCanvas') canvas2: ElementRef;
   @ViewChild('revenueRefChart') revenueRefChart: BaseChartDirective;
 
@@ -66,7 +67,7 @@ export class MarketingComponent implements AfterViewInit {
     this.chartService.colors.even
   ];
   predictedChartColors;
-  preoceedureChartColors;
+  public preoceedureChartColors: any[] = [];
   doughnutChartColors;
   subtitle: string;
   public clinic_id: any = {};
@@ -125,6 +126,97 @@ export class MarketingComponent implements AfterViewInit {
     this.isVisibleAccountGraphs = this.connectedwith == 'none' ? false : true;
     this.getChartsTips();
     this.getAllClinics();
+  }
+
+  ngOnInit(): void {
+    // plugin observable for the center text in doughnut chart to subscribe the no patients count
+    this.pluginObservable$ = this.newPatientsReferral$.pipe(
+      takeUntil(this.destroyed$),
+      map((productionCount) => {
+        return this.chartService.beforeDrawChart(productionCount);
+      })
+    );
+    /*this.revenuePluginObservable$ = this.revenueByReferralCount$.pipe(
+      takeUntil(this.destroyed$),
+      map((revenueCount) => {      
+        return this.chartService.beforeDrawChart(revenueCount);
+      })
+    );*/
+    this.revenuePluginObservable$ = this.revenueByReferralCount$.pipe(
+      takeUntil(this.destroyed$),
+      map((revenueCount) => {
+        //return this.chartService.beforeDrawChart(revenueCount, true)
+        this.pieChartOptions.elements.center.text =
+          '$' + this.decimalPipe.transform(revenueCount);
+        return [];
+      })
+    );
+    // end of plugin observable logic
+
+    $('#currentDentist').attr('did', 'all');
+    //$('.dentist_dropdown').hide();
+    this.route.params.subscribe((params) => {
+      this.clinic_id = this.route.snapshot.paramMap.get('id');
+      //  this.filterDate('cytd');
+      this.getClinics();
+
+      //    this.initiate_clinic();
+
+      //$('#title').html('Marketing');
+      $('.external_clinic').show();
+      //$('.dentist_dropdown').addClass('hide');
+      $('.header_filters').removeClass('hide_header');
+      $('.header_filters').addClass('flex_direct_mar');
+      $('#title').html('<span>Marketing</span>');
+      $('#sa_datepicker').val(
+        this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate)
+      );
+
+      // $('.external_clinic').show();
+      // $('.external_dentist').show();
+      $(document).on('click', function (e) {
+        if ($(document.activeElement).attr('id') == 'sa_datepicker') {
+          $('.customRange').show();
+        } else if ($(document.activeElement).attr('id') == 'customRange') {
+          $('.customRange').show();
+        } else {
+          $('.customRange').hide();
+        }
+      });
+    });
+
+    this.doughnutChartColors = [
+      '#6cd8ba',
+      '#b0fffa',
+      '#abb3ff',
+      '#feefb8',
+      '#91ADEA',
+      '#ffb4b5',
+      '#F2C6C6',
+      '#FDC6C0',
+      '#FEEEE1',
+      '#FFDD99',
+      '#A8DDDD',
+      '#F4F4A0',
+      '#C3DDFF',
+      '#9FDBDB',
+      '#CCFDCC',
+      '#B1F2EC',
+      '#BBEBFA',
+      '#BBEBFA',
+      '#D7ECF3',
+      '#BBE7FF',
+      '#C8CDF0',
+      '#F7C4F5',
+      '#6cd8ba',
+      '#feefb8',
+      '#9BD0F5',
+      '#36A2EB',
+      '#FF6384',
+      '#fe7b85',
+      '#87ada9',
+      '#386087'
+    ];
   }
 
   public stackLegendGenerator = {
@@ -252,62 +344,6 @@ export class MarketingComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // plugin observable for the center text in doughnut chart to subscribe the no patients count
-    this.pluginObservable$ = this.newPatientsReferral$.pipe(
-      takeUntil(this.destroyed$),
-      map((productionCount) => {
-        return this.chartService.beforeDrawChart(productionCount);
-      })
-    );
-    /*this.revenuePluginObservable$ = this.revenueByReferralCount$.pipe(
-      takeUntil(this.destroyed$),
-      map((revenueCount) => {      
-        return this.chartService.beforeDrawChart(revenueCount);
-      })
-    );*/
-    this.revenuePluginObservable$ = this.revenueByReferralCount$.pipe(
-      takeUntil(this.destroyed$),
-      map((revenueCount) => {
-        //return this.chartService.beforeDrawChart(revenueCount, true)
-        this.pieChartOptions.elements.center.text =
-          '$' + this.decimalPipe.transform(revenueCount);
-        return [];
-      })
-    );
-    // end of plugin observable logic
-
-    $('#currentDentist').attr('did', 'all');
-    //$('.dentist_dropdown').hide();
-    this.route.params.subscribe((params) => {
-      this.clinic_id = this.route.snapshot.paramMap.get('id');
-      //  this.filterDate('cytd');
-      this.getClinics();
-
-      //    this.initiate_clinic();
-
-      //$('#title').html('Marketing');
-      $('.external_clinic').show();
-      //$('.dentist_dropdown').addClass('hide');
-      $('.header_filters').removeClass('hide_header');
-      $('.header_filters').addClass('flex_direct_mar');
-      $('#title').html('<span>Marketing</span>');
-      $('#sa_datepicker').val(
-        this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate)
-      );
-
-      // $('.external_clinic').show();
-      // $('.external_dentist').show();
-      $(document).on('click', function (e) {
-        if ($(document.activeElement).attr('id') == 'sa_datepicker') {
-          $('.customRange').show();
-        } else if ($(document.activeElement).attr('id') == 'customRange') {
-          $('.customRange').show();
-        } else {
-          $('.customRange').hide();
-        }
-      });
-    });
-
     let proceedureGradient = this.canvas2.nativeElement
       .getContext('2d')
       .createLinearGradient(0, 0, 0, 400);
@@ -338,38 +374,6 @@ export class MarketingComponent implements AfterViewInit {
       .createLinearGradient(0, 0, 0, 100);
     proceedureGradient5.addColorStop(1, 'rgba(201, 247,238,0.8)');
     proceedureGradient5.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
-    this.doughnutChartColors = [
-      '#6cd8ba',
-      '#b0fffa',
-      '#abb3ff',
-      '#feefb8',
-      '#91ADEA',
-      '#ffb4b5',
-      '#F2C6C6',
-      '#FDC6C0',
-      '#FEEEE1',
-      '#FFDD99',
-      '#A8DDDD',
-      '#F4F4A0',
-      '#C3DDFF',
-      '#9FDBDB',
-      '#CCFDCC',
-      '#B1F2EC',
-      '#BBEBFA',
-      '#BBEBFA',
-      '#D7ECF3',
-      '#BBE7FF',
-      '#C8CDF0',
-      '#F7C4F5',
-      '#6cd8ba',
-      '#feefb8',
-      '#9BD0F5',
-      '#36A2EB',
-      '#FF6384',
-      '#fe7b85',
-      '#87ada9',
-      '#386087'
-    ];
 
     this.preoceedureChartColors = [
       {
@@ -710,7 +714,7 @@ export class MarketingComponent implements AfterViewInit {
         {
           ticks: {
             beginAtZero: true,
-            userCallback: function (label, index, labels) {
+            callback: function (label, index, labels) {
               // when the floored value is the same as jhgjghe value we have a whole number
               if (Math.floor(label) === label) {
                 return label;
@@ -1501,7 +1505,7 @@ export class MarketingComponent implements AfterViewInit {
       // if(!this.isVisibleAccountGraphs){
       //   this.fdActivePatient();
       // }
-      if (!this.multipleClinicsSelected && this.connectedwith != 'none') {
+      if (this.connectedwith != 'none') {
         this.fdnewPatientsAcq();
       }
 
@@ -2019,8 +2023,6 @@ export class MarketingComponent implements AfterViewInit {
       this.visitsTotal = 0;
       this.fdvisitsRatioLoader = true;
       this.visitsTooltip = 'down';
-      var user_id;
-      var clinic_id;
       this.marketingService
         .fdvisitsRatio(
           this.clinic_id,
@@ -2325,6 +2327,10 @@ export class MarketingComponent implements AfterViewInit {
   }
 
   public newPatientCosts: any[] = [];
+  public newPatientCostsChartData: Chart.ChartDataSets[] = [];
+  public get newPatientCostsChartLabels(): string[] {
+    return this.newPatientCosts.map((item: any) => item.clinicName);
+  }
   public expenseData = [];
   public categories = [];
   public fdnewPatientsAcqLoader: any;
@@ -2382,6 +2388,33 @@ export class MarketingComponent implements AfterViewInit {
               this.Accounts = this.Accounts.filter(
                 (x) => !this.selectedAccounts.includes(x)
               );
+              if (this.multipleClinicsSelected) {
+                this.newPatientCostsChartData = this.newPatientCosts.map(
+                  (item: any, index) => ({
+                    data: [_.round(item.cost_per_patient)],
+                    backgroundColor:
+                      index % 2 == 1
+                        ? this.chartService.colors.even
+                        : this.chartService.colors.odd,
+                    hoverBackgroundColor:
+                      index % 2 == 1
+                        ? this.chartService.colors.even
+                        : this.chartService.colors.odd,
+                    shadowOffsetY: 2,
+                    shadowBlur: 3,
+                    // hoverBackgroundColor: 'rgba(0, 0, 0, 0.6)',
+                    shadowColor: 'rgba(0, 0, 0, 0.3)',
+                    pointBevelWidth: 2,
+                    pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+                    pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+                    pointShadowOffsetX: 3,
+                    pointShadowOffsetY: 3,
+                    pointShadowBlur: 10,
+                    pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+                    backgroundOverlayMode: 'multiply'
+                  })
+                );
+              }
 
               // res.body.data.forEach((res, key) => {
               //   this.expenseData[res.meta_key] = res.expenses;
@@ -2392,9 +2425,7 @@ export class MarketingComponent implements AfterViewInit {
                   <number>res.body.data_ta
                 );
               }
-              if (this.selectedAccounts.length > 0) {
-                this.load_chart_acq();
-              }
+              this.load_chart_acq();
             }
           },
           (error) => {
@@ -3237,10 +3268,8 @@ export class MarketingComponent implements AfterViewInit {
       );
   }
 
-  public barChartOptions: any = {
-    scaleShowVerticalLines: false,
-    cornerRadius: 60,
-    curvature: 1,
+  public barChartOptions: Chart.ChartOptions = {
+    showLines: false,
     animation: {
       duration: 1500,
       easing: 'easeOutSine'
@@ -3260,11 +3289,9 @@ export class MarketingComponent implements AfterViewInit {
         {
           ticks: {
             suggestedMin: 0,
-            userCallback: (label, index, labels) => {
+            callback: (label: string) => {
               // when the floored value is the same as the value we have a whole number
-              if (Math.floor(label) === label) {
-                return '$' + this.decimalPipe.transform(label);
-              }
+              return '$' + this.decimalPipe.transform(label);
             }
           }
         }
@@ -3272,11 +3299,9 @@ export class MarketingComponent implements AfterViewInit {
     },
     tooltips: {
       mode: 'x-axis',
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        // disable displaying the color box;
-        tooltip.displayColors = false;
-      },
+      // custom: (tooltip: Chart.ChartTooltipModel) => {
+      //   tooltip.displayColors = false;
+      // },
       callbacks: {
         label: (tooltipItems, data) => {
           return (
@@ -3466,6 +3491,7 @@ export class MarketingComponent implements AfterViewInit {
   public newAcqValue: any = 0;
   public newAcqValueMax: any = 35;
   load_chart_acq() {
+    console.log('load_chart_acq');
     // var totalY = 0;
     // this.selectedAccounts.forEach((res, key) => {
     //   if (this.expenseData[res])
