@@ -153,38 +153,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     );
     // end of plugin observable logic
 
-    $('#currentDentist').attr('did', 'all');
-    //$('.dentist_dropdown').hide();
-    this.route.params.subscribe((params) => {
-      this.clinic_id = this.route.snapshot.paramMap.get('id');
-      //  this.filterDate('cytd');
-      this.getClinics();
-
-      //    this.initiate_clinic();
-
-      //$('#title').html('Marketing');
-      $('.external_clinic').show();
-      //$('.dentist_dropdown').addClass('hide');
-      $('.header_filters').removeClass('hide_header');
-      $('.header_filters').addClass('flex_direct_mar');
-      $('#title').html('<span>Marketing</span>');
-      $('#sa_datepicker').val(
-        this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate)
-      );
-
-      // $('.external_clinic').show();
-      // $('.external_dentist').show();
-      $(document).on('click', function (e) {
-        if ($(document.activeElement).attr('id') == 'sa_datepicker') {
-          $('.customRange').show();
-        } else if ($(document.activeElement).attr('id') == 'customRange') {
-          $('.customRange').show();
-        } else {
-          $('.customRange').hide();
-        }
-      });
-    });
-
     this.doughnutChartColors = [
       '#6cd8ba',
       '#b0fffa',
@@ -344,75 +312,105 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    let proceedureGradient = this.canvas2.nativeElement
-      .getContext('2d')
-      .createLinearGradient(0, 0, 0, 400);
-    proceedureGradient.addColorStop(0, 'rgba(22, 82, 141, 0.8)');
-    proceedureGradient.addColorStop(1, 'rgba(12, 209,169,0.9)');
-    let proceedureGradient1 = this.canvas2.nativeElement
-      .getContext('2d')
-      .createLinearGradient(0, 0, 0, 100);
-    proceedureGradient1.addColorStop(1, 'rgba(12, 209,169,0.8)');
-    proceedureGradient1.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
-    let proceedureGradient2 = this.canvas2.nativeElement
-      .getContext('2d')
-      .createLinearGradient(0, 0, 0, 100);
-    proceedureGradient2.addColorStop(1, 'rgba(59, 227,193,0.8');
-    proceedureGradient2.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
-    let proceedureGradient3 = this.canvas2.nativeElement
-      .getContext('2d')
-      .createLinearGradient(0, 0, 0, 100);
-    proceedureGradient3.addColorStop(1, 'rgba(94, 232,205,0.8)');
-    proceedureGradient3.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
-    let proceedureGradient4 = this.canvas2.nativeElement
-      .getContext('2d')
-      .createLinearGradient(0, 0, 0, 100);
-    proceedureGradient4.addColorStop(1, 'rgba(148, 240,221,0.8)');
-    proceedureGradient4.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
-    let proceedureGradient5 = this.canvas2.nativeElement
-      .getContext('2d')
-      .createLinearGradient(0, 0, 0, 100);
-    proceedureGradient5.addColorStop(1, 'rgba(201, 247,238,0.8)');
-    proceedureGradient5.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
+    $('#currentDentist').attr('did', 'all');
+    //$('.dentist_dropdown').hide();
+    this.route.params.subscribe((params) => {
+      this.clinic_id = this.route.snapshot.paramMap.get('id');
+      //  this.filterDate('cytd');
+      this.getClinics();
 
-    this.preoceedureChartColors = [
-      {
-        backgroundColor: proceedureGradient,
-        hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)'
-      },
-      {
-        backgroundColor: proceedureGradient1,
-        hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)'
-      },
-      {
-        backgroundColor: proceedureGradient2,
-        hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)'
-      },
-      {
-        backgroundColor: proceedureGradient3,
-        hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)'
-      },
-      {
-        backgroundColor: proceedureGradient4,
-        hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)'
-      },
-      {
-        backgroundColor: proceedureGradient5,
-        hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F'
-      }
-    ];
-    //this.filterDate(this.chartService.duration$.value);
+      //    this.initiate_clinic();
+
+      //$('#title').html('Marketing');
+      $('.external_clinic').show();
+      //$('.dentist_dropdown').addClass('hide');
+      $('.header_filters').removeClass('hide_header');
+      $('.header_filters').addClass('flex_direct_mar');
+      $('#title').html('<span>Marketing</span>');
+      $('#sa_datepicker').val(
+        this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate)
+      );
+
+      // $('.external_clinic').show();
+      // $('.external_dentist').show();
+      $(document).on('click', function (e) {
+        if ($(document.activeElement).attr('id') == 'sa_datepicker') {
+          $('.customRange').show();
+        } else if ($(document.activeElement).attr('id') == 'customRange') {
+          $('.customRange').show();
+        } else {
+          $('.customRange').hide();
+        }
+      });
+    });
+    // let proceedureGradient = this.canvas2.nativeElement
+    //   .getContext('2d')
+    //   .createLinearGradient(0, 0, 0, 400);
+    // proceedureGradient.addColorStop(0, 'rgba(22, 82, 141, 0.8)');
+    // proceedureGradient.addColorStop(1, 'rgba(12, 209,169,0.9)');
+    // let proceedureGradient1 = this.canvas2.nativeElement
+    //   .getContext('2d')
+    //   .createLinearGradient(0, 0, 0, 100);
+    // proceedureGradient1.addColorStop(1, 'rgba(12, 209,169,0.8)');
+    // proceedureGradient1.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
+    // let proceedureGradient2 = this.canvas2.nativeElement
+    //   .getContext('2d')
+    //   .createLinearGradient(0, 0, 0, 100);
+    // proceedureGradient2.addColorStop(1, 'rgba(59, 227,193,0.8');
+    // proceedureGradient2.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
+    // let proceedureGradient3 = this.canvas2.nativeElement
+    //   .getContext('2d')
+    //   .createLinearGradient(0, 0, 0, 100);
+    // proceedureGradient3.addColorStop(1, 'rgba(94, 232,205,0.8)');
+    // proceedureGradient3.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
+    // let proceedureGradient4 = this.canvas2.nativeElement
+    //   .getContext('2d')
+    //   .createLinearGradient(0, 0, 0, 100);
+    // proceedureGradient4.addColorStop(1, 'rgba(148, 240,221,0.8)');
+    // proceedureGradient4.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
+    // let proceedureGradient5 = this.canvas2.nativeElement
+    //   .getContext('2d')
+    //   .createLinearGradient(0, 0, 0, 100);
+    // proceedureGradient5.addColorStop(1, 'rgba(201, 247,238,0.8)');
+    // proceedureGradient5.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
+    // this.preoceedureChartColors = [
+    //   {
+    //     backgroundColor: proceedureGradient,
+    //     hoverBorderWidth: 2,
+    //     hoverBorderColor: '#1CA49F',
+    //     borderColor: 'rgba(25,179,148,0.7)'
+    //   },
+    //   {
+    //     backgroundColor: proceedureGradient1,
+    //     hoverBorderWidth: 2,
+    //     hoverBorderColor: '#1CA49F',
+    //     borderColor: 'rgba(25,179,148,0.7)'
+    //   },
+    //   {
+    //     backgroundColor: proceedureGradient2,
+    //     hoverBorderWidth: 2,
+    //     hoverBorderColor: '#1CA49F',
+    //     borderColor: 'rgba(25,179,148,0.7)'
+    //   },
+    //   {
+    //     backgroundColor: proceedureGradient3,
+    //     hoverBorderWidth: 2,
+    //     hoverBorderColor: '#1CA49F',
+    //     borderColor: 'rgba(25,179,148,0.7)'
+    //   },
+    //   {
+    //     backgroundColor: proceedureGradient4,
+    //     hoverBorderWidth: 2,
+    //     hoverBorderColor: '#1CA49F',
+    //     borderColor: 'rgba(25,179,148,0.7)'
+    //   },
+    //   {
+    //     backgroundColor: proceedureGradient5,
+    //     hoverBorderWidth: 2,
+    //     hoverBorderColor: '#1CA49F'
+    //   }
+    // ];
+    // this.filterDate(this.chartService.duration$.value);
   }
 
   public labelBarmkRevenueByReferralOptionsStacked: any = {
@@ -684,7 +682,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   };
 
   public date = new Date();
-  public stackedChartOptions: any = {
+  public stackedChartOptions: Chart.ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -693,10 +691,8 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         hoverBorderWidth: 7
       }
     },
-    scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 1,
     animation: {
       duration: 500,
       easing: 'easeOutSine'
@@ -714,11 +710,9 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         {
           ticks: {
             beginAtZero: true,
-            callback: function (label, index, labels) {
+            callback: function (label) {
               // when the floored value is the same as jhgjghe value we have a whole number
-              if (Math.floor(label) === label) {
-                return label;
-              }
+              return label;
             }
           }
         }
@@ -747,6 +741,76 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         }
       }
     }
+  };
+
+  public stackedNewPatientCostChartOptions: Chart.ChartOptions = {
+    elements: {
+      point: {
+        radius: 5,
+        hoverRadius: 7,
+        pointStyle: 'rectRounded',
+        hoverBorderWidth: 7
+      }
+    },
+    plugins: {
+      title: {
+        display: true,
+        text: 'Chart.js Bar Chart - Stacked'
+      }
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: {
+      duration: 500,
+      easing: 'easeOutSine'
+    },
+    scales: {
+      xAxes: [
+        {
+          stacked: true,
+          ticks: {
+            autoSkip: false
+          }
+        }
+      ],
+      yAxes: [
+        {
+          ticks: {
+            // beginAtZero: true,
+            // callback: function (label) {
+            //   // when the floored value is the same as jhgjghe value we have a whole number
+            //   return label;
+            // }
+          },
+          stacked: false
+        }
+      ]
+    }
+    // legend: {
+    //   display: true
+    // },
+    // tooltips: {
+    //   mode: 'x-axis',
+    //   enabled: true,
+    //   custom: function (tooltip) {
+    //     if (!tooltip) return;
+    //     // disable displaying the colorg box;
+    //     tooltip.displayColors = false;
+    //   },
+    //   callbacks: {
+    //     label: (tooltipItems, data) => {
+    //       console.log(tooltipItems);
+    //       return (
+    //         tooltipItems.xLabel +
+    //         ': ' +
+    //         this.decimalPipe.transform(tooltipItems.yLabel)
+    //       );
+    //     },
+    //     title: function () {
+    //       return 'AAA';
+    //     }
+    //   }
+    // }
   };
 
   public stackedChartOptionsMulti: any = {
@@ -2060,6 +2124,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                 this.showBar = true;
               }
               this.totalvisit[0]['data'] = this.TvisitTrend1;
+              console.log(this.totalvisit);
 
               this.visitsTotal = res.body.total;
               this.visitsPrevTotal = res.body.total_ta;
@@ -2328,9 +2393,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
 
   public newPatientCosts: any[] = [];
   public newPatientCostsChartData: Chart.ChartDataSets[] = [];
-  public get newPatientCostsChartLabels(): string[] {
-    return this.newPatientCosts.map((item: any) => item.clinicName);
-  }
+  public newPatientCostsChartLabels: string[] = [];
   public expenseData = [];
   public categories = [];
   public fdnewPatientsAcqLoader: any;
@@ -2389,31 +2452,31 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                 (x) => !this.selectedAccounts.includes(x)
               );
               if (this.multipleClinicsSelected) {
-                this.newPatientCostsChartData = this.newPatientCosts.map(
-                  (item: any, index) => ({
-                    data: [_.round(item.cost_per_patient)],
-                    backgroundColor:
-                      index % 2 == 1
-                        ? this.chartService.colors.even
-                        : this.chartService.colors.odd,
-                    hoverBackgroundColor:
-                      index % 2 == 1
-                        ? this.chartService.colors.even
-                        : this.chartService.colors.odd,
-                    shadowOffsetY: 2,
-                    shadowBlur: 3,
-                    // hoverBackgroundColor: 'rgba(0, 0, 0, 0.6)',
-                    shadowColor: 'rgba(0, 0, 0, 0.3)',
-                    pointBevelWidth: 2,
-                    pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-                    pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-                    pointShadowOffsetX: 3,
-                    pointShadowOffsetY: 3,
-                    pointShadowBlur: 10,
-                    pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-                    backgroundOverlayMode: 'multiply'
-                  })
+                this.newPatientCostsChartLabels = this.newPatientCosts.map(
+                  (item: any) => item.clinicName
                 );
+                this.newPatientCostsChartData = [
+                  {
+                    data: this.newPatientCosts.map((item: any, index) =>
+                      _.round(item.cost_per_patient)
+                    ),
+                    backgroundColor: [
+                      this.chartService.colors.odd,
+                      this.chartService.colors.even,
+                      this.chartService.colors.odd,
+                      this.chartService.colors.even,
+                      this.chartService.colors.odd,
+                      this.chartService.colors.even,
+                      this.chartService.colors.odd,
+                      this.chartService.colors.even,
+                      this.chartService.colors.odd,
+                      this.chartService.colors.even,
+                      this.chartService.colors.odd,
+                      this.chartService.colors.even,
+                      this.chartService.colors.odd
+                    ]
+                  }
+                ];
               }
 
               // res.body.data.forEach((res, key) => {
@@ -3491,7 +3554,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   public newAcqValue: any = 0;
   public newAcqValueMax: any = 35;
   load_chart_acq() {
-    console.log('load_chart_acq');
     // var totalY = 0;
     // this.selectedAccounts.forEach((res, key) => {
     //   if (this.expenseData[res])

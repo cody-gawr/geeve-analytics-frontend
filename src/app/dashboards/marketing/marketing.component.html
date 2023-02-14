@@ -136,10 +136,11 @@
                 </div>
                 <canvas
                   *ngIf="
-                    showTrend == false &&
-                    newPatientsTimeLabels.length > 0 &&
-                    mkNewPatientsByReferralLoader == false &&
-                    showmulticlinicNewPatients == false
+                    !(
+                      showTrend ||
+                      mkNewPatientsByReferralLoader ||
+                      showmulticlinicNewPatients
+                    ) && newPatientsTimeLabels.length > 0
                   "
                   #myCanvas2
                   baseChart
@@ -1239,10 +1240,9 @@
                       (xeroConnect || myobConnect) &&
                       isCompleteMonth
                     "
-                    class="chart-trend"
+                    class="chart-Trend1-patients"
                   >
                     <canvas
-                      #myCanvas
                       baseChart
                       [datasets]="newPatientCostsChartData"
                       [labels]="newPatientCostsChartLabels"
@@ -1293,7 +1293,7 @@
                     *ngIf="
                       !fdnewPatientsAcqLoader &&
                       showTrend &&
-                      expenseDataTrend1.length <= 0 &&
+                      expenseDataTrend1.length == 0 &&
                       (xeroConnect || myobConnect) &&
                       !newAcqValueError &&
                       !multipleClinicsSelected
@@ -1468,9 +1468,8 @@
 
                 <div
                   *ngIf="
-                    showTrend == false &&
-                    fdActivePatients <= 0 &&
-                    fdActivePatientLoader == false
+                    !(showTrend || fdActivePatientLoader) &&
+                    fdActivePatients <= 0
                   "
                 >
                   <div class="sa_nodata_div"></div>
@@ -1535,7 +1534,7 @@
             </div>
             <div class="card-footer">
               <div
-                *ngIf="showTrend == false"
+                *ngIf="!showTrend"
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
                 class="m-t-40 sa_chart_details_sec pieChartDetails"
