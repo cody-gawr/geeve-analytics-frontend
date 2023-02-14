@@ -187,7 +187,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     ];
   }
 
-  public stackLegendGenerator = {
+  public stackLegendGenerator: Chart.ChartLegendOptions = {
     display: true,
     position: 'bottom',
     labels: {
@@ -213,9 +213,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         }));
       }
     },
-    onClick: (event, legendItem, legend) => {
-      return;
-    }
+    onClick: () => {}
   };
   private warningMessage: string;
   private myTemplate: any = '';
@@ -3308,21 +3306,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         }
       }
     },
-    legend: {
-      position: 'top',
-      onClick: function (e, legendItem) {
-        var index = legendItem.datasetIndex;
-        var ci = this.chart;
-        if (index == 0) {
-          ci.getDatasetMeta(1).hidden = true;
-          ci.getDatasetMeta(index).hidden = false;
-        } else if (index == 1) {
-          ci.getDatasetMeta(0).hidden = true;
-          ci.getDatasetMeta(index).hidden = false;
-        }
-        ci.update();
-      }
-    }
+    legend: this.stackLegendGenerator
   };
   public expenseDataTrend: any[] = [
     {
@@ -3356,6 +3340,8 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       backgroundOverlayMode: 'multiply'
     }
   ];
+  public newPatientCostsTrendData: Chart.ChartDataSets[] = [];
+  public newPatientCostsTrendLabels: string[] = [];
   public expenseDataTrend1 = [];
   public expenseDataTrendLabels1 = [];
   public expenseDataTrendLabels = [];
@@ -3367,12 +3353,12 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     this.newAcqValueGoal = '';
     this.newAcqValuePrev = 0;
     this.expenseDataTrend1 = [];
+    this.newPatientCostsTrendData = [];
+    this.newPatientCostsTrendLabels = [];
     this.expenseDataTrendLabels1 = [];
     this.fdnewPatientsAcqLoader = true;
     this.newAcqValueError = false;
     if (this.duration && this.connectedwith != '') {
-      var user_id;
-      var clinic_id;
       this.marketingService
         .categoryExpensesTrend(
           this.clinic_id,
@@ -3386,63 +3372,85 @@ export class MarketingComponent implements OnInit, AfterViewInit {
             this.enableDiabaleButton(this.Apirequest);
             if (res.status == 200) {
               this.newAcqValueError = false;
-              this.expenseDataTrend1 = [];
-              this.expenseDataTrendLabels1 = [];
-              this.newPatientsChartTemp.forEach((data, key) => {
-                res.body.data.forEach((res1, key1) => {
-                  if (
-                    this.trendValue == 'c' &&
-                    res1.duration == data.year_month
-                  ) {
-                    let dataX: number = 0;
-                    this.dataY = 0;
-                    let percent: any = 0;
-                    if (res1.val != undefined) {
-                      res1.val.forEach((res2, key2) => {
-                        if (res2.meta_key != 'Total Operating Expenses')
-                          this.dataY =
-                            parseInt(this.dataY) + parseInt(res2.expenses);
-                      });
-                    }
+              this.newPatientCostsChartLabels = _.chain(res.body.data)
+                .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                .map((items: any[], duration) =>
+                  this.trendValue == 'c'
+                    ? this.datePipe.transform(duration, 'MMM y')
+                    : duration
+                )
+                .value();
 
-                    if (data.val != '') {
-                      dataX = data.new_patients;
-                    }
+              this.newPatientCostsChartData = _.chain(res.body.data)
+                .groupBy('clinic_id')
+                .map((items: any[]) => ({
+                  data: items.map((item) =>
+                    _.round(<number>item.cost_per_patient)
+                  ),
+                  label: items.length > 0 ? <string>items[0].clinicName : ''
+                }))
+                .value()
+                .map((item, index) => ({
+                  ...item,
+                  backgroundColor: this.doughnutChartColors[index],
+                  hoverBackgroundColor: this.doughnutChartColors[index]
+                }));
 
-                    if (dataX != 0) percent = this.dataY / dataX;
+              // this.newPatientsChartTemp.forEach((data, key) => {
+              //   res.body.data.forEach((res1, key1) => {
+              //     if (
+              //       this.trendValue == 'c' &&
+              //       res1.duration == data.year_month
+              //     ) {
+              //       let dataX: number = 0;
+              //       this.dataY = 0;
+              //       let percent: any = 0;
+              //       if (res1.val != undefined) {
+              //         res1.val.forEach((res2, key2) => {
+              //           if (res2.meta_key != 'Total Operating Expenses')
+              //             this.dataY =
+              //               parseInt(this.dataY) + parseInt(res2.expenses);
+              //         });
+              //       }
 
-                    this.expenseDataTrend1.push(Math.round(percent));
-                    this.expenseDataTrendLabels1.push(
-                      this.datePipe.transform(data.year_month, 'MMM y')
-                    );
-                  } else if (
-                    this.trendValue == 'h' &&
-                    res1.duration == data.year
-                  ) {
-                    let dataX: number = 0;
-                    this.dataY = 0;
-                    let percent: any = 0;
-                    if (res1.val != undefined) {
-                      res1.val.forEach((res2, key2) => {
-                        if (res2.meta_key != 'Total Operating Expenses')
-                          this.dataY =
-                            parseInt(this.dataY) + parseInt(res2.expenses);
-                      });
-                    }
+              //       if (data.val != '') {
+              //         dataX = data.new_patients;
+              //       }
 
-                    if (data.val != '') {
-                      dataX = data.new_patients;
-                    }
+              //       if (dataX != 0) percent = this.dataY / dataX;
 
-                    if (dataX != 0) percent = this.dataY / dataX;
+              //       this.expenseDataTrend1.push(Math.round(percent));
+              //       this.expenseDataTrendLabels1.push(
+              //         this.datePipe.transform(data.year_month, 'MMM y')
+              //       );
+              //     } else if (
+              //       this.trendValue == 'h' &&
+              //       res1.duration == data.year
+              //     ) {
+              //       let dataX: number = 0;
+              //       this.dataY = 0;
+              //       let percent: any = 0;
+              //       if (res1.val != undefined) {
+              //         res1.val.forEach((res2, key2) => {
+              //           if (res2.meta_key != 'Total Operating Expenses')
+              //             this.dataY =
+              //               parseInt(this.dataY) + parseInt(res2.expenses);
+              //         });
+              //       }
 
-                    this.expenseDataTrend1.push(Math.round(percent));
-                    this.expenseDataTrendLabels1.push(data.year);
-                  }
-                });
-              });
-              this.expenseDataTrend[0]['data'] = this.expenseDataTrend1;
-              this.expenseDataTrendLabels = this.expenseDataTrendLabels1;
+              //       if (data.val != '') {
+              //         dataX = data.new_patients;
+              //       }
+
+              //       if (dataX != 0) percent = this.dataY / dataX;
+
+              //       this.expenseDataTrend1.push(Math.round(percent));
+              //       this.expenseDataTrendLabels1.push(data.year);
+              //     }
+              //   });
+              // });
+              // this.expenseDataTrend[0]['data'] = this.expenseDataTrend1;
+              // this.expenseDataTrendLabels = this.expenseDataTrendLabels1;
             }
           },
           (error) => {

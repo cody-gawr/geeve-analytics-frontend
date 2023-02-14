@@ -1269,7 +1269,7 @@
                   <div
                     *ngIf="
                       showTrend &&
-                      expenseDataTrend1.length > 0 &&
+                      newPatientCostsChartData.length > 0 &&
                       (xeroConnect || myobConnect) &&
                       !newAcqValueError
                     "
@@ -1278,13 +1278,13 @@
                     <canvas
                       #myCanvas
                       baseChart
-                      [datasets]="expenseDataTrend"
-                      [labels]="expenseDataTrendLabels"
+                      [datasets]="newPatientCostsChartData"
+                      [labels]="newPatientCostsChartLabels"
                       [options]="barChartOptions"
                       [chartType]="stackedChartType"
                       [colors]="lineChartColors"
                       (chartHover)="chartHovered($event)"
-                      [legend]="false"
+                      [legend]="true"
                       (chartClick)="chartClicked($event)"
                     >
                     </canvas>
@@ -1293,7 +1293,7 @@
                     *ngIf="
                       !fdnewPatientsAcqLoader &&
                       showTrend &&
-                      expenseDataTrend1.length == 0 &&
+                      newPatientCostsChartData.length == 0 &&
                       (xeroConnect || myobConnect) &&
                       !newAcqValueError &&
                       !multipleClinicsSelected
