@@ -130,7 +130,10 @@
               <div class="chart-new-patients">
                 <div
                   class="sa_back_btn_holder"
-                  *ngIf="newPatientsTimeLabelsl2.length > 0"
+                  *ngIf="
+                    newPatientsTimeLabels.length > 0 &&
+                    !(mkNewPatientsByReferralLoader || showTrend)
+                  "
                 >
                   <span (click)="changeLevel('newPatient')">Back</span>
                 </div>
@@ -156,26 +159,6 @@
                 </canvas>
                 <canvas
                   *ngIf="
-                    newPatientsTimeLabelsl2.length > 0 &&
-                    !(
-                      showTrend ||
-                      mkNewPatientsByReferralLoader ||
-                      showmulticlinicNewPatients
-                    )
-                  "
-                  #myCanvas2
-                  baseChart
-                  [data]="newPatientsTimeData"
-                  [labels]="newPatientsTimeLabelsl2"
-                  [chartType]="pieChartType"
-                  (chartHover)="chartHovered($event)"
-                  [plugins]="pluginObservable$ | async"
-                  [options]="noNewPatientsByReferralChartOptions"
-                  [colors]="pieChartColors"
-                >
-                </canvas>
-                <canvas
-                  *ngIf="
                     showmulticlinicNewPatients &&
                     !(showTrend || mkNewPatientsByReferralLoader)
                   "
@@ -195,11 +178,9 @@
                 <div
                   class="no-data-placeholder"
                   *ngIf="
-                    showTrend == false &&
-                    newPatientsTimeLabels.length <= 0 &&
-                    newPatientsTimeLabelsl2.length <= 0 &&
-                    mkNewPatientsByReferralLoader == false &&
-                    mkNewPatientsByReferalLabels <= 0
+                    !(showTrend || mkNewPatientsByReferralLoader) &&
+                    newPatientsTimeLabels.length == 0 &&
+                    mkNewPatientsByReferalLabels == 0
                   "
                 >
                   <div class="sa_nodata_div"></div>
@@ -214,10 +195,10 @@
                   class="trendProductionPercentage"
                   baseChart
                   *ngIf="
-                    showTrend == true &&
+                    showTrend &&
                     newPatientsTimeLabelsTrend &&
                     newPatientsTimeLabelsTrend.length > 0 &&
-                    mkNewPatientsByReferralLoader == false
+                    !mkNewPatientsByReferralLoader
                   "
                   [datasets]="mkNewPatientsReferralChartTrend"
                   [labels]="newPatientsTimeLabelsTrend"
@@ -231,9 +212,9 @@
                 <div
                   class="no-data-placeholder"
                   *ngIf="
-                    showTrend == true &&
-                    newPatientsTimeLabelsTrend.length <= 0 &&
-                    mkNewPatientsByReferralLoader == false
+                    showTrend &&
+                    newPatientsTimeLabelsTrend.length == 0 &&
+                    !mkNewPatientsByReferralLoader
                   "
                 >
                   <div class="sa_nodata_div"></div>
@@ -244,9 +225,9 @@
                 </div>
               </div>
             </div>
-            <div class="card-footer" *ngIf="activePatients == false">
+            <div class="card-footer" *ngIf="!activePatients">
               <div
-                *ngIf="showTrend == false && showmulticlinicNewPatients == true"
+                *ngIf="!showTrend && showmulticlinicNewPatients"
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
                 class="m-t-40 sa_chart_details_sec pieChartDetails"
@@ -301,8 +282,8 @@
                 <div
                   class="sa_back_btn_holder"
                   *ngIf="
-                    revenueReferralLabelsl2.length > 0 &&
-                    mkRevenueByReferralLoader == false
+                    revenueReferralLabels.length > 0 &&
+                    !(mkRevenueByReferralLoader || showTrend)
                   "
                 >
                   <span (click)="changeLevel('revenue')">Back</span>
@@ -312,8 +293,8 @@
                   *ngIf="
                     revenueReferralLabels.length > 0 &&
                     !(
-                      showTrend &&
-                      mkRevenueByReferralLoader &&
+                      showTrend ||
+                      mkRevenueByReferralLoader ||
                       showmulticlinicNewPatientsRev
                     )
                   "
@@ -323,26 +304,6 @@
                   [chartType]="pieChartType"
                   (chartHover)="chartHovered($event)"
                   (chartClick)="chartClicked($event, 'revenue')"
-                  [plugins]="revenuePluginObservable$ | async"
-                  [options]="pieChartOptions"
-                  [colors]="pieChartColors"
-                >
-                </canvas>
-                <canvas
-                  #revenueRefChart="base-chart"
-                  *ngIf="
-                    revenueReferralLabelsl2.length > 0 &&
-                    !(
-                      showTrend &&
-                      mkRevenueByReferralLoader &&
-                      showmulticlinicNewPatientsRev
-                    )
-                  "
-                  baseChart
-                  [data]="revenueReferralData"
-                  [labels]="revenueReferralLabelsl2"
-                  [chartType]="pieChartType"
-                  (chartHover)="chartHovered($event)"
                   [plugins]="revenuePluginObservable$ | async"
                   [options]="pieChartOptions"
                   [colors]="pieChartColors"
@@ -371,7 +332,6 @@
                   *ngIf="
                     revenueReferralLabels.length == 0 &&
                     mkNewPatientsByReferalRevLabels.length == 0 &&
-                    revenueReferralLabelsl2.length == 0 &&
                     !(showTrend || mkRevenueByReferralLoader)
                   "
                 >
@@ -387,10 +347,10 @@
                   class="trendProductionPercentage"
                   baseChart
                   *ngIf="
-                    showTrend == true &&
+                    showTrend &&
                     revenueReferralLabelsTrend &&
                     revenueReferralLabelsTrend.length > 0 &&
-                    mkRevenueByReferralLoader == false
+                    !mkRevenueByReferralLoader
                   "
                   [datasets]="mkRevenueByReferralChartTrend"
                   [labels]="revenueReferralLabelsTrend"
@@ -405,9 +365,9 @@
                 <div
                   class="no-data-placeholder"
                   *ngIf="
-                    showTrend == true &&
-                    revenueReferralLabelsTrend.length <= 0 &&
-                    mkRevenueByReferralLoader == false
+                    showTrend &&
+                    revenueReferralLabelsTrend.length == 0 &&
+                    !mkRevenueByReferralLoader
                   "
                 >
                   <div class="sa_nodata_div"></div>
@@ -1703,7 +1663,7 @@
                 <div
                   *ngIf="
                     showTrend &&
-                    totalVisitMultiLabels1.length > 0 &&
+                    totalVisitMultiLabels.length > 0 &&
                     showByclinic
                   "
                   class="chart-Trend1-patients"
@@ -1728,7 +1688,7 @@
                   showTrend &&
                   !fdvisitsRatioTrendLoader &&
                   visitsChartTrend1.length == 0 &&
-                  totalVisitMultiLabels1.length == 0
+                  totalVisitMultiLabels.length == 0
                 "
                 class="no-data-placeholder"
               >
