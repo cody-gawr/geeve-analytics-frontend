@@ -248,12 +248,11 @@ export class MarketingComponent implements OnInit, AfterViewInit {
           this.xeroConnect = false;
           this.myobConnect = false;
         }
-        this.filterDate(this.chartService.duration$.value);
       } else {
         this.isVisibleAccountGraphs = true;
         this.multipleClinicsSelected = true;
-        this.filterDate('m');
       }
+      this.filterDate(this.chartService.duration$.value);
     } else {
       this.multipleClinicsSelected = true;
     }
