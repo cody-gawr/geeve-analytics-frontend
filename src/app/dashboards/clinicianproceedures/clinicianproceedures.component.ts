@@ -149,12 +149,11 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
       if (this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)) {
         // this.getDentists();
         this.multiclinic = true;
-        this.filterDate('m');
       } else {
         this.multiclinic = false;
         this.getDentists();
-        this.filterDate(this.chartService.duration$.value);
       }
+      this.filterDate(this.chartService.duration$.value);
     }
   }
   myDateParser(dateStr: string): string {
