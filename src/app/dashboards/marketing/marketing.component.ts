@@ -217,7 +217,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   };
   private warningMessage: string;
   private myTemplate: any = '';
-  async initiateClinic() {
+  async initiate_clinic() {
     this.userPlan = this._cookieService.get('user_plan');
     if (this.userPlan == 'lite') {
       this.router.navigateByUrl('/login');
