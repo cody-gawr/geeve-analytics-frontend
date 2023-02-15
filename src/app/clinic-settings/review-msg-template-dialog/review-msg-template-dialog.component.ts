@@ -1,4 +1,4 @@
-import { Component, Inject } from "@angular/core";
+import { Component, Inject, ViewChild, ElementRef } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { ToastrService } from "ngx-toastr";
 import {FormControl, Validators} from '@angular/forms';
@@ -17,6 +17,11 @@ export interface DialogData {
 export class ReviewMsgTemplateDialog {
     name = new FormControl('', [Validators.required]);
     msg_template = new FormControl('', [Validators.required]);
+    @ViewChild('keyClinicName') clinicNameElem: ElementRef<HTMLElement>
+    @ViewChild('keyPatientName') patientNameElem: ElementRef<HTMLElement>
+    @ViewChild('keyFacebookLink') facebookLinklem: ElementRef<HTMLElement>
+    @ViewChild('keyGoogleLink') googleLinkElem: ElementRef<HTMLElement>
+
     constructor(
         public dialogRef: MatDialogRef<ReviewMsgTemplateDialog>,
         @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -27,6 +32,20 @@ export class ReviewMsgTemplateDialog {
             this.name = new FormControl(data.element.name, [Validators.required]);
             this.msg_template = new FormControl(data.element.msg_template, [Validators.required]);
         }
+        
+    }
+
+    onDragChip(event: any) {
+        var dataToCopy = event.target.innerText;
+        event.dataTransfer.setData("Text", `[${dataToCopy}]`);
+        return true;
+    };
+
+    ngAfterViewInit() {
+        this.clinicNameElem.nativeElement.ondragstart = this.onDragChip;
+        this.patientNameElem.nativeElement.ondragstart = this.onDragChip;
+        this.facebookLinklem.nativeElement.ondragstart = this.onDragChip;
+        this.googleLinkElem.nativeElement.ondragstart = this.onDragChip;
     }
     
     onNoClick(): void {
