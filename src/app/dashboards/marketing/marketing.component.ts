@@ -949,9 +949,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     tooltips: {
       mode: 'x-axis',
       enabled: false,
-      itemSort: (itemA, itemB): number => {
-        return itemB.datasetIndex - itemA.datasetIndex;
-      },
       custom: function (tooltip) {
         if (!tooltip) return;
         var tooltipEl = document.getElementById('chartjs-tooltip');
@@ -1248,9 +1245,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
           tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
         tooltipEl.style.pointerEvents = 'none';
         tooltip.displayColors = false;
-      },
-      itemSort(itemA, itemB, data) {
-        return itemB.datasetIndex - itemA.datasetIndex;
       },
       callbacks: {
         label: function (tooltipItems, data) {
@@ -1610,7 +1604,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                   }
                 }
               });
-              console.log(this.mkNewPatientsByReferalMulti);
+
               this.mkNewPatientsByReferralLoader = false;
             } else {
               this.mkNewPatientsByReferralAll = res.body;
@@ -1800,6 +1794,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     this.revenueReferralLabelsTrend = [];
     this.showTrend = true;
     this.mkRevenueByReferralChartTrend = [];
+    console.log('mkRevenueByReferralTrend');
     this.marketingService
       .mkRevenueByReferralTrend(this.clinic_id, this.trendValue)
       .subscribe(
@@ -1807,8 +1802,12 @@ export class MarketingComponent implements OnInit, AfterViewInit {
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
           if (res.status == 200) {
-            res.body.data.forEach((res) => {
-              res.val.forEach((result, key) => {
+            res.body.data.forEach((itemByDuration) => {
+              const sortedItems: any[] = itemByDuration.val.sort(
+                (itemA: any, itemB: any) =>
+                  itemB.invoice_amount - itemA.invoice_amount
+              );
+              sortedItems.forEach((item, key) => {
                 if (
                   typeof this.mkRevenueByReferralChartTrend[key] == 'undefined'
                 ) {
@@ -1823,11 +1822,11 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                 ) {
                   this.mkRevenueByReferralChartTrend[key]['data'] = [];
                 }
-                var total = result.invoice_amount;
+                var total = item.invoice_amount;
 
                 this.mkRevenueByReferralChartTrend[key]['data'].push(total);
                 this.mkRevenueByReferralChartTrend[key]['label'] =
-                  result.item_name;
+                  item.item_name;
                 this.mkRevenueByReferralChartTrend[key]['backgroundColor'] =
                   this.doughnutChartColors[key];
                 this.mkRevenueByReferralChartTrend[key][
@@ -1836,10 +1835,10 @@ export class MarketingComponent implements OnInit, AfterViewInit {
               });
               if (this.trendValue == 'c') {
                 this.revenueReferralLabelsTrend.push(
-                  this.datePipe.transform(res.duration, 'MMM y')
+                  this.datePipe.transform(itemByDuration.duration, 'MMM y')
                 );
               } else {
-                this.revenueReferralLabelsTrend.push(res.duration);
+                this.revenueReferralLabelsTrend.push(itemByDuration.duration);
               }
             });
             this.mkRevenueByReferralLoader = false;
@@ -1869,8 +1868,11 @@ export class MarketingComponent implements OnInit, AfterViewInit {
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
           if (res.status == 200) {
-            res.body.data.forEach((res) => {
-              res.val.forEach((result, key) => {
+            res.body.data.forEach((itemByDuration) => {
+              const sortedItems = itemByDuration.val.sort(
+                (itemA, itemB) => itemB.num_referrals - itemA.num_referrals
+              );
+              sortedItems.forEach((item, key) => {
                 if (
                   typeof this.mkNewPatientsReferralChartTrend[key] ==
                   'undefined'
@@ -1886,11 +1888,11 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                 ) {
                   this.mkNewPatientsReferralChartTrend[key]['data'] = [];
                 }
-                var total = result.num_referrals;
+                var total = item.num_referrals;
 
                 this.mkNewPatientsReferralChartTrend[key]['data'].push(total);
                 this.mkNewPatientsReferralChartTrend[key]['label'] =
-                  result.item_name;
+                  item.item_name;
                 this.mkNewPatientsReferralChartTrend[key]['backgroundColor'] =
                   this.doughnutChartColors[key];
                 this.mkNewPatientsReferralChartTrend[key][
@@ -1899,10 +1901,10 @@ export class MarketingComponent implements OnInit, AfterViewInit {
               });
               if (this.trendValue == 'c') {
                 this.newPatientsTimeLabelsTrend.push(
-                  this.datePipe.transform(res.duration, 'MMM y')
+                  this.datePipe.transform(itemByDuration.duration, 'MMM y')
                 );
               } else {
-                this.newPatientsTimeLabelsTrend.push(res.duration);
+                this.newPatientsTimeLabelsTrend.push(itemByDuration.duration);
               }
             });
             this.mkNewPatientsByReferralLoader = false;
