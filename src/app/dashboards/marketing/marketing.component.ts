@@ -84,8 +84,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   public filteredCountriesMultiple: any[];
   public selectedAccounts: any[] = [];
   public Apirequest = 0;
-  public newPatientsReferral$ = new BehaviorSubject<number>(0);
-  public revenueByReferralCount$ = new BehaviorSubject<number>(0);
+
   public charTips: any = [];
   public userPlan: any = '';
   public apiUrl = environment.apiUrl;
@@ -95,10 +94,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   public maxLegendLabelLimit = 10;
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
-  pluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
-  revenuePluginObservable$: Observable<
-    PluginServiceGlobalRegistrationAndOptions[]
-  >;
   destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   public doughnutChartPlugins: PluginServiceGlobalRegistrationAndOptions[] = [];
   public isVisibleAccountGraphs: boolean = false;
@@ -130,27 +125,12 @@ export class MarketingComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     // plugin observable for the center text in doughnut chart to subscribe the no patients count
-    this.pluginObservable$ = this.newPatientsReferral$.pipe(
-      takeUntil(this.destroyed$),
-      map((productionCount) => {
-        return this.chartService.beforeDrawChart(productionCount);
-      })
-    );
     /*this.revenuePluginObservable$ = this.revenueByReferralCount$.pipe(
       takeUntil(this.destroyed$),
       map((revenueCount) => {      
         return this.chartService.beforeDrawChart(revenueCount);
       })
     );*/
-    this.revenuePluginObservable$ = this.revenueByReferralCount$.pipe(
-      takeUntil(this.destroyed$),
-      map((revenueCount) => {
-        //return this.chartService.beforeDrawChart(revenueCount, true)
-        this.pieChartOptions.elements.center.text =
-          '$' + this.decimalPipe.transform(revenueCount);
-        return [];
-      })
-    );
     // end of plugin observable logic
 
     this.doughnutChartColors = [
@@ -1304,10 +1284,16 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         // get the internal index of slice in pie chart
         const clickedElementIndex = activePoints[0]._index;
         const activeLabel = chart.data.labels[clickedElementIndex];
-        if (label === 'newPatients') {
+        if (
+          label === 'newPatients' &&
+          !this.isNewPatientsByReferralBackVisible
+        ) {
           this.drilldownNewPatients(activeLabel);
         }
-        if (label === 'revenue') {
+        if (
+          label === 'revenue' &&
+          !this.isNewPatientRevenueByReferralBackVisible
+        ) {
           this.drilldownRevenueReferral(activeLabel);
         }
       }
@@ -1521,6 +1507,27 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   public mkNewPatientsByReferalMulti: any[] = [{ data: [], label: '' }];
   public showmulticlinicNewPatients: boolean = false;
   public mkNewPatientsByReferalLabels: any = [];
+  public newPatientsByReferralPieChart: Chart = null;
+  public pieChartWithTotalValuePlugin: PluginServiceGlobalRegistrationAndOptions =
+    {
+      afterDraw: (chartInstance: Chart) => {
+        const ctx = chartInstance.ctx;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const centerX =
+          (chartInstance.chartArea.left + chartInstance.chartArea.right) / 2;
+        const centerY =
+          (chartInstance.chartArea.top + chartInstance.chartArea.bottom) / 2;
+        const total = (<number[]>chartInstance.data.datasets[0].data).reduce(
+          (prev: number, current: number) => prev + current,
+          0
+        );
+        ctx.font = (total.toString().length > 4 ? 24 : 37) + 'px Gilroy-Bold';
+        ctx.fillStyle = '#454649';
+
+        ctx.fillText(`${total}`, centerX, centerY);
+      }
+    };
   //Items Predictor Analysis
 
   private mkNewPatientsByReferral() {
@@ -1609,7 +1616,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
             } else {
               this.mkNewPatientsByReferralAll = res.body;
               this.totalNewPatientsReferral = Math.round(res.body.total);
-              this.newPatientsReferral$.next(this.totalNewPatientsReferral);
               // this.noNewPatientsByReferralChartOptions.elements.center.text = this.decimalPipe.transform(this.totalNewPatientsReferral);
               if (res.body.data.patients_reftype.length > 0) {
                 var i = 0;
@@ -1624,9 +1630,8 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                 });
               }
 
-              var self = this;
-              setTimeout(function () {
-                self.mkNewPatientsByReferralLoader = false;
+              setTimeout(() => {
+                this.mkNewPatientsByReferralLoader = false;
               }, this.timeout);
             }
           }
@@ -1640,29 +1645,41 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   }
 
   private drilldownNewPatients(label) {
-    this.isNewPatientsByReferralBackVisible =
-      !this.isNewPatientsByReferralBackVisible;
     this.newPatientsTimeData = [];
     this.newPatientsTimeLabels = [];
-    let data: number[] = [];
+
     if (
       this.mkNewPatientsByReferralAll.data.patients_refname[label].length > 0
     ) {
-      var i = 0;
-      let totalVisits = 0;
-      this.mkNewPatientsByReferralAll.data.patients_refname[label].forEach(
-        (res) => {
-          if (i < 10) {
-            totalVisits = totalVisits + parseInt(res.num_referrals);
-            data.push(res.num_referrals);
-            this.newPatientsReferral$.next(totalVisits);
-            this.newPatientsTimeLabels.push(res.referral_name);
-            i++;
-          }
-        }
-      );
+      this.isNewPatientsByReferralBackVisible = true;
+      this.newPatientsTimeData =
+        this.mkNewPatientsByReferralAll.data.patients_refname[label].map(
+          (item: any) => parseInt(item.num_referrals)
+        );
+      this.newPatientsTimeLabels =
+        this.mkNewPatientsByReferralAll.data.patients_refname[label].map(
+          (item: any) => item.referral_name
+        );
+      const totalVisits = _.chain(
+        this.mkNewPatientsByReferralAll.data.patients_refname[label]
+      )
+        .sumBy((item) => parseInt(item.num_referrals))
+        .value();
+
+      //   this.mkNewPatientsByReferralAll.data.patients_refname[label].forEach(
+      //     (res) => {
+      //       if (i < 10) {
+      //         totalVisits = totalVisits + parseInt(res.num_referrals);
+      //         data.push(res.num_referrals);
+      //         this.newPatientsReferral$.next(totalVisits);
+      //         this.newPatientsTimeLabels.push(res.referral_name);
+      //         i++;
+      //       }
+      //     }
+      //   );
+      // }
+      // this.newPatientsTimeData = data;
     }
-    this.newPatientsTimeData = data;
   }
 
   public isNewPatientRevenueByReferralBackVisible = false;
@@ -1738,9 +1755,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
               this.totalRevenueByReferral = this.decimalPipe.transform(
                 Math.round(res.body.total || 0)
               );
-              this.revenueByReferralCount$.next(
-                Math.round(res.body.total || 0)
-              );
               //// this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
               if (this.revenueRefChart) {
                 this.revenueRefChart.ngOnDestroy();
@@ -1766,10 +1780,9 @@ export class MarketingComponent implements OnInit, AfterViewInit {
 
               this.revenueReferralData = data;
               this.revenueReferralLabels = labels;
-              var self = this;
 
-              setTimeout(function () {
-                self.mkRevenueByReferralLoader = false;
+              setTimeout(() => {
+                this.mkRevenueByReferralLoader = false;
               }, this.timeout);
             }
           }
@@ -1915,26 +1928,21 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       );
   }
   private drilldownRevenueReferral(label) {
-    this.isNewPatientRevenueByReferralBackVisible =
-      !this.isNewPatientRevenueByReferralBackVisible;
     this.revenueReferralData = [];
     this.revenueReferralLabels = [];
     let data: number[] = [];
     let labels: string[] = [];
 
     if (this.reffralAllData.data.patients_refname[label].length > 0) {
+      this.isNewPatientRevenueByReferralBackVisible = true;
       var i = 0;
-      let totalRevenue = 0;
       this.reffralAllData.data.patients_refname[label].forEach((res) => {
-        totalRevenue = totalRevenue + parseFloat(res.invoice_amount);
         if (i < 10) {
-          data.push(res.invoice_amount);
+          data.push(parseFloat(res.invoice_amount));
           labels.push(res.referral_name);
           i++;
         }
       });
-      totalRevenue = Math.round(totalRevenue);
-      this.revenueByReferralCount$.next(totalRevenue);
     }
     this.revenueReferralData = data;
     this.revenueReferralLabels = labels;
@@ -3501,12 +3509,10 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     let labels: string[] = [];
     let data: number[] = [];
     if (val == 'newPatient') {
-      this.isNewPatientsByReferralBackVisible =
-        !this.isNewPatientsByReferralBackVisible;
+      this.isNewPatientsByReferralBackVisible = false;
       this.totalNewPatientsReferral = Math.round(
         this.mkNewPatientsByReferralAll.total
       );
-      this.newPatientsReferral$.next(this.totalNewPatientsReferral);
 
       if (this.mkNewPatientsByReferralAll.data.patients_reftype.length > 0) {
         var i = 0;
@@ -3524,12 +3530,8 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       this.newPatientsTimeLabels = labels;
       //   this.mkNewPatientsByReferral();
     } else if (val == 'revenue') {
-      this.isNewPatientRevenueByReferralBackVisible =
-        !this.isNewPatientRevenueByReferralBackVisible;
+      this.isNewPatientRevenueByReferralBackVisible = false;
       this.totalRevenueByReferral = this.decimalPipe.transform(
-        Math.round(this.reffralAllData.total || 0)
-      );
-      this.revenueByReferralCount$.next(
         Math.round(this.reffralAllData.total || 0)
       );
       // this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
