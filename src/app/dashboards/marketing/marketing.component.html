@@ -131,6 +131,7 @@
                 <div
                   class="sa_back_btn_holder"
                   *ngIf="
+                    isNewPatientsByReferralBackVisible &&
                     newPatientsTimeLabels.length > 0 &&
                     !(mkNewPatientsByReferralLoader || showTrend)
                   "
@@ -282,6 +283,7 @@
                 <div
                   class="sa_back_btn_holder"
                   *ngIf="
+                    isNewPatientRevenueByReferralBackVisible &&
                     revenueReferralLabels.length > 0 &&
                     !(mkRevenueByReferralLoader || showTrend)
                   "

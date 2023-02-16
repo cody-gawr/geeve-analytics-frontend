@@ -1296,19 +1296,19 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   public stackedChartData5: any[] = [];
   public duration = '';
   // events
-  public chartClicked(e: any, labels): void {
+  public chartClicked(e: any, label: string): void {
     if (e.active.length > 0) {
       const chart = e.active[0]._chart;
       const activePoints = chart.getElementAtEvent(e.event);
       if (activePoints.length > 0) {
         // get the internal index of slice in pie chart
         const clickedElementIndex = activePoints[0]._index;
-        const label = chart.data.labels[clickedElementIndex];
-        if (labels === 'newPatients') {
-          this.drilldownNewPatients(label);
+        const activeLabel = chart.data.labels[clickedElementIndex];
+        if (label === 'newPatients') {
+          this.drilldownNewPatients(activeLabel);
         }
-        if (labels === 'revenue') {
-          this.drilldownRevenueReferral(label);
+        if (label === 'revenue') {
+          this.drilldownRevenueReferral(activeLabel);
         }
       }
     }
@@ -1512,10 +1512,10 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     }
   }
 
+  public isNewPatientsByReferralBackVisible = false;
   public newPatientsTimeData: number[] = [];
   public newPatientsTimeLabels = [];
-  public newPatientsTimeLabels1 = [];
-  public newPatientsTimeData1: number[] = [];
+
   public mkNewPatientsByReferralLoader: any;
   public mkNewPatientsByReferralAll: any = [];
   public mkNewPatientsByReferalMulti: any[] = [{ data: [], label: '' }];
@@ -1611,23 +1611,19 @@ export class MarketingComponent implements OnInit, AfterViewInit {
               this.totalNewPatientsReferral = Math.round(res.body.total);
               this.newPatientsReferral$.next(this.totalNewPatientsReferral);
               // this.noNewPatientsByReferralChartOptions.elements.center.text = this.decimalPipe.transform(this.totalNewPatientsReferral);
-
-              this.newPatientsTimeData1 = [];
-              this.newPatientsTimeLabels1 = [];
               if (res.body.data.patients_reftype.length > 0) {
                 var i = 0;
                 res.body.data.patients_reftype.forEach((res) => {
                   if (res.patients_visits > 0) {
                     if (i < 10) {
-                      this.newPatientsTimeData1.push(res.patients_visits);
-                      this.newPatientsTimeLabels1.push(res.reftype_name);
+                      this.newPatientsTimeData.push(res.patients_visits);
+                      this.newPatientsTimeLabels.push(res.reftype_name);
                       i++;
                     }
                   }
                 });
               }
-              this.newPatientsTimeData = this.newPatientsTimeData1;
-              this.newPatientsTimeLabels = this.newPatientsTimeLabels1;
+
               var self = this;
               setTimeout(function () {
                 self.mkNewPatientsByReferralLoader = false;
@@ -1644,8 +1640,8 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   }
 
   private drilldownNewPatients(label) {
-    this.newPatientsTimeData1 = [];
-    this.newPatientsTimeLabels1 = [];
+    this.isNewPatientsByReferralBackVisible =
+      !this.isNewPatientsByReferralBackVisible;
     this.newPatientsTimeData = [];
     this.newPatientsTimeLabels = [];
     let data: number[] = [];
@@ -1660,7 +1656,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
             totalVisits = totalVisits + parseInt(res.num_referrals);
             data.push(res.num_referrals);
             this.newPatientsReferral$.next(totalVisits);
-            this.newPatientsTimeLabels1.push(res.referral_name);
+            this.newPatientsTimeLabels.push(res.referral_name);
             i++;
           }
         }
@@ -1669,6 +1665,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     this.newPatientsTimeData = data;
   }
 
+  public isNewPatientRevenueByReferralBackVisible = false;
   public revenueReferralData: number[] = [];
   public revenueReferralLabels = [];
   public mkRevenueByReferralLoader: any;
@@ -1918,8 +1915,8 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       );
   }
   private drilldownRevenueReferral(label) {
-    /* this.marketingService.mkRevenueByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((res) => {
-          if(res.status == 200){*/
+    this.isNewPatientRevenueByReferralBackVisible =
+      !this.isNewPatientRevenueByReferralBackVisible;
     this.revenueReferralData = [];
     this.revenueReferralLabels = [];
     let data: number[] = [];
@@ -3500,10 +3497,12 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     $('.close_modal').click();
   }
 
-  public changeLevel(val) {
+  public changeLevel(val: string) {
     let labels: string[] = [];
     let data: number[] = [];
     if (val == 'newPatient') {
+      this.isNewPatientsByReferralBackVisible =
+        !this.isNewPatientsByReferralBackVisible;
       this.totalNewPatientsReferral = Math.round(
         this.mkNewPatientsByReferralAll.total
       );
@@ -3525,6 +3524,8 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       this.newPatientsTimeLabels = labels;
       //   this.mkNewPatientsByReferral();
     } else if (val == 'revenue') {
+      this.isNewPatientRevenueByReferralBackVisible =
+        !this.isNewPatientRevenueByReferralBackVisible;
       this.totalRevenueByReferral = this.decimalPipe.transform(
         Math.round(this.reffralAllData.total || 0)
       );
