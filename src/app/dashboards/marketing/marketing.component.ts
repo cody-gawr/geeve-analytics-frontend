@@ -900,7 +900,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     }
   };
 
-  public stackedChartOptionsRev: any = {
+  public stackedChartOptionsRev: Chart.ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -909,10 +909,8 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         hoverBorderWidth: 7
       }
     },
-    scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine'
@@ -930,7 +928,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         {
           stacked: true,
           ticks: {
-            userCallback: function (label, index, labels) {
+            callback: function (label: number) {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 let currency =
@@ -951,6 +949,9 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     tooltips: {
       mode: 'x-axis',
       enabled: false,
+      itemSort: (itemA, itemB): number => {
+        return itemB.datasetIndex - itemA.datasetIndex;
+      },
       custom: function (tooltip) {
         if (!tooltip) return;
         var tooltipEl = document.getElementById('chartjs-tooltip');
@@ -1068,14 +1069,14 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       },
       callbacks: {
         label: function (tooltipItems, data) {
-          let currency = tooltipItems.yLabel.toString();
-          currency = currency.split('.');
-          currency[0] = currency[0]
+          let currency: string = tooltipItems.yLabel.toString();
+          let currencySegs = currency.split('.');
+          currencySegs[0] = currencySegs[0]
             .split('-')
             .join('')
             .split(/(?=(?:...)*$)/)
             .join(',');
-          currency = currency.join('.');
+          currency = currencySegs.join('.');
           return (
             data.datasets[tooltipItems.datasetIndex].label +
             `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`
@@ -1084,7 +1085,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       }
     }
   };
-  public stackedChartOptionsRef: any = {
+  public stackedChartOptionsRef: Chart.ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -1093,10 +1094,8 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         hoverBorderWidth: 7
       }
     },
-    scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine'
@@ -1114,7 +1113,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         {
           stacked: true,
           ticks: {
-            userCallback: function (label, index, labels) {
+            callback: function (label: number, index, labels) {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 let currency =
@@ -1250,16 +1249,19 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         tooltipEl.style.pointerEvents = 'none';
         tooltip.displayColors = false;
       },
+      itemSort(itemA, itemB, data) {
+        return itemB.datasetIndex - itemA.datasetIndex;
+      },
       callbacks: {
         label: function (tooltipItems, data) {
           let currency = tooltipItems.yLabel.toString();
-          currency = currency.split('.');
-          currency[0] = currency[0]
+          let currencySegs = currency.split('.');
+          currencySegs[0] = currencySegs[0]
             .split('-')
             .join('')
             .split(/(?=(?:...)*$)/)
             .join(',');
-          currency = currency.join('.');
+          currency = currencySegs.join('.');
           return (
             data.datasets[tooltipItems.datasetIndex].label +
             `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`
@@ -1608,6 +1610,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                   }
                 }
               });
+              console.log(this.mkNewPatientsByReferalMulti);
               this.mkNewPatientsByReferralLoader = false;
             } else {
               this.mkNewPatientsByReferralAll = res.body;
