@@ -1551,9 +1551,9 @@ export class FrontDeskComponent implements AfterViewInit {
                 this.ftaLabels = [];
                 this.ftaLabels1 = [];
                 if (res.body.total > 0) {
-                  res.body.data.forEach((res) => {
-                    this.ftaLabels1.push(_.round(res.fta_ratio, 1));
-                    this.ftaLabels.push(res.clinic_name);
+                  res.body.data.forEach((item: any) => {
+                    this.ftaLabels1.push(_.round(item.fta_ratio, 1));
+                    this.ftaLabels.push(item.clinic_name);
                   });
                 }
                 if (
@@ -1566,8 +1566,8 @@ export class FrontDeskComponent implements AfterViewInit {
 
                 if (res.body.total > 100) res.body.total = 100;
                 if (res.body.total_ta > 100) res.body.total_ta = 100;
-                this.ftaTotal = _.round(res.body.total);
-                this.ftaPrevTotal = _.round(res.body.total_ta);
+                this.ftaTotal = _.round(res.body.total, 1);
+                this.ftaPrevTotal = _.round(res.body.total_ta, 1);
                 this.ftaGoal = res.body.goals;
                 if (this.ftaTotal > this.ftaGoal)
                   this.maxftaGoal = this.ftaTotal;
@@ -1651,9 +1651,9 @@ export class FrontDeskComponent implements AfterViewInit {
                 this.utaLabels = [];
                 this.utaLabels1 = [];
                 if (res.body.total > 0) {
-                  res.body.data.forEach((res) => {
-                    this.utaLabels1.push(_.round(res.uta_ratio, 1));
-                    this.utaLabels.push(res.clinic_name);
+                  res.body.data.forEach((item: any) => {
+                    this.utaLabels1.push(_.round(item.uta_ratio, 1));
+                    this.utaLabels.push(item.clinic_name);
                   });
                 }
                 if (
@@ -1666,8 +1666,8 @@ export class FrontDeskComponent implements AfterViewInit {
 
                 if (res.body.total > 100) res.body.total = 100;
                 if (res.body.total_ta > 100) res.body.data_ta = 100;
-                this.utaTotal = _.round(res.body.total);
-                this.utaPrevTotal = _.round(res.body.total_ta);
+                this.utaTotal = _.round(res.body.total, 1);
+                this.utaPrevTotal = _.round(res.body.total_ta, 1);
                 this.utaGoal = res.body.goals;
                 if (this.utaTotal > this.utaGoal)
                   this.maxutaGoal = this.utaTotal;
