@@ -103,11 +103,10 @@ export class FrontDeskComponent implements AfterViewInit {
       if (this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)) {
         this.isAllClinic = true;
         this.getMaxBarLimit();
-        this.filterDate('m');
       } else {
         this.isAllClinic = false;
-        this.filterDate(this.chartService.duration$.value);
       }
+      this.filterDate(this.chartService.duration$.value);
       // this.getDentists();
     }
   }
@@ -424,7 +423,7 @@ export class FrontDeskComponent implements AfterViewInit {
     }
   };
 
-  public stackLegendGenerator = {
+  public stackLegendGenerator: Chart.ChartLegendOptions = {
     display: true,
     position: 'bottom',
     labels: {
@@ -450,12 +449,10 @@ export class FrontDeskComponent implements AfterViewInit {
         }));
       }
     },
-    onClick: (event, legendItem, legend) => {
-      return;
-    }
+    onClick: () => {}
   };
 
-  public stackedChartOptionsTC: any = {
+  public stackedChartOptionsTC: Chart.ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -464,10 +461,8 @@ export class FrontDeskComponent implements AfterViewInit {
         hoverBorderWidth: 7
       }
     },
-    scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine'
@@ -487,16 +482,9 @@ export class FrontDeskComponent implements AfterViewInit {
           ticks: {
             min: 0,
             max: 100,
-            userCallback: function (label, index, labels) {
+            callback: function (value: string) {
               // when the floored value is the same as the value we have a whole number
-              if (Math.floor(label) === label) {
-                let currency =
-                  label < 0
-                    ? label.toString().split('-').join('')
-                    : label.toString();
-                currency = currency.split(/(?=(?:...)*$)/).join(',');
-                return label + '%'; // `${label < 0 ? '- $' : '$'}${currency}`;
-              }
+              return `${value}%`;
             }
           }
         }
@@ -505,128 +493,13 @@ export class FrontDeskComponent implements AfterViewInit {
     legend: this.stackLegendGenerator,
     tooltips: {
       mode: 'x-axis',
-      enabled: false,
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        var tooltipEl = document.getElementById('chartjs-tooltip');
-        if (!tooltipEl) {
-          tooltipEl = document.createElement('div');
-          tooltipEl.id = 'chartjs-tooltip';
-          tooltipEl.style.backgroundColor = '#FFFFFF';
-          tooltipEl.style.borderColor = '#B2BABB';
-          tooltipEl.style.borderWidth = 'thin';
-          tooltipEl.style.borderStyle = 'solid';
-          tooltipEl.style.zIndex = '999999';
-          tooltipEl.style.backgroundColor = '#000000';
-          tooltipEl.style.color = '#FFFFFF';
-          document.body.appendChild(tooltipEl);
-        }
-        if (tooltip.opacity === 0) {
-          tooltipEl.style.opacity = '0';
-          return;
-        } else {
-          tooltipEl.style.opacity = '0.8';
-        }
-
-        tooltipEl.classList.remove('above', 'below', 'no-transform');
-        if (tooltip.yAlign) {
-          tooltipEl.classList.add(tooltip.yAlign);
-        } else {
-          tooltipEl.classList.add('no-transform');
-        }
-
-        // function getBody(bodyItem) {
-        //   return bodyItem.lines;
-        // }
-        function getBody(bodyItem) {
-          let result = [];
-          bodyItem.forEach((items) => {
-            items.lines.forEach((item) => {
-              if (item.split(':')[1].trim() != '$NaN') {
-                result.push(items.lines);
-              }
-            });
-          });
-          return result;
-          // return bodyItem.lines;
-        }
-        if (tooltip.body) {
-          var titleLines = tooltip.title || [];
-          // var bodyLines = tooltip.body.map(getBody);
-          var bodyLines = getBody(tooltip.body);
-          var labelColorscustom = tooltip.labelColors;
-          var innerHtml = '<table><thead>';
-          innerHtml += '</thead><tbody>';
-
-          let total: any = 0;
-          let count: any = 0;
-          bodyLines.forEach(function (body, i) {
-            // if (!body[0].includes("$0")) {
-            var singleval = body[0].split(':');
-            if (singleval[1].includes('-')) {
-              var temp = singleval[1].split('$');
-              var amount = temp[1].replace(/,/g, '');
-              total -= parseFloat(amount);
-            } else {
-              var temp = singleval[1].split('$');
-              var amount = temp[1].replace(/,/g, '');
-              total += parseFloat(amount);
-            }
-
-            // }
-            count++;
-          });
-          // total = Math.round(total);
-          // if (total != 0) {
-          //   var num_parts = total.toString().split(".");
-          //   num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-          //   total = num_parts.join(".");
-          //   total = total / count;
-          //   total = Math.round(total);
-          // }
-          total = Math.round((total + Number.EPSILON) * 100) / 100;
-          titleLines.forEach(function (title) {
-            innerHtml +=
-              '<tr><th colspan="2" style="text-align: left;">' +
-              title +
-              ': ' +
-              total +
-              '% </th></tr>';
-          });
-          innerHtml += '</tbody></table>';
-          tooltipEl.innerHTML = innerHtml;
-          //tableRoot.innerHTML = innerHtml;
-        }
-        // disable displaying the color box;
-        var position = this._chart.canvas.getBoundingClientRect();
-        // Display, position, and set styles for font
-        tooltipEl.style.position = 'fixed';
-        tooltipEl.style.left =
-          position.left + window.pageXOffset + tooltip.caretX - 70 + 'px';
-        tooltipEl.style.top =
-          position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
-        tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
-        tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
-        tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-        tooltipEl.style.padding =
-          tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
-        tooltipEl.style.pointerEvents = 'none';
+      enabled: true,
+      custom: function (tooltip: Chart.ChartTooltipModel) {
         tooltip.displayColors = false;
       },
       callbacks: {
         label: function (tooltipItems, data) {
-          let currency = tooltipItems.yLabel.toString();
-          currency = currency.split('.');
-          currency[0] = currency[0]
-            .split('-')
-            .join('')
-            .split(/(?=(?:...)*$)/)
-            .join(',');
-          currency = currency.join('.');
-          return (
-            data.datasets[tooltipItems.datasetIndex].label +
-            `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`
-          );
+          return `${tooltipItems.yLabel}%`;
         }
       }
     }
@@ -929,9 +802,8 @@ export class FrontDeskComponent implements AfterViewInit {
       display: true
     }
   };
-  public stackedChartOptionsUti: any = {
+  public stackedChartOptionsUti: Chart.ChartOptions = {
     hover: { mode: null },
-    scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
     // barThickness: 10,
@@ -939,13 +811,12 @@ export class FrontDeskComponent implements AfterViewInit {
       duration: 1,
       easing: 'linear'
     },
-    fill: false,
     scales: {
       xAxes: [
         {
           ticks: {
             autoSkip: false,
-            callback: function (value, index, values) {
+            callback: function (value: string) {
               if (value.indexOf('--') >= 0) {
                 let lbl = value.split('--');
                 value = lbl[0];
@@ -962,11 +833,8 @@ export class FrontDeskComponent implements AfterViewInit {
           ticks: {
             min: 0,
             max: 100,
-            userCallback: function (label, index, labels) {
-              // when the floored value is the same as the value we have a whole number
-              if (Math.floor(label) === label) {
-                return label + '%';
-              }
+            callback: function (label, index, labels) {
+              return label + '%';
             }
           }
         }
@@ -981,8 +849,8 @@ export class FrontDeskComponent implements AfterViewInit {
       callbacks: {
         label: function (tooltipItems, data) {
           let total = tooltipItems.yLabel > 100 ? 100 : tooltipItems.yLabel;
-          if (tooltipItems.xLabel.indexOf('--') >= 0) {
-            let lbl = tooltipItems.xLabel.split('--');
+          if ((<string>tooltipItems.xLabel).indexOf('--') >= 0) {
+            let lbl = (<string>tooltipItems.xLabel).split('--');
             if (typeof lbl[3] === 'undefined') {
               tooltipItems.xLabel = lbl[0];
             } else {
@@ -1022,8 +890,8 @@ export class FrontDeskComponent implements AfterViewInit {
             tooltipItems.datasetIndex == 0
           ) {
             let lbl = tooltipItems.label.split('--');
-            hour = lbl[1];
-            phour = lbl[2];
+            hour = Number(lbl[1]);
+            phour = Number(lbl[2]);
             return [
               '',
               'Available Hours: ' + Math.round(phour * 100) / 100,
@@ -1616,7 +1484,7 @@ export class FrontDeskComponent implements AfterViewInit {
   public showmulticlinicFta: boolean = false;
   public ftaLabels: any = [];
   public ftaLabels1: any = [];
-  public ftaMulti: any[] = [
+  public ftaMulti: Chart.ChartDataSets[] = [
     {
       data: [],
       label: '',
@@ -1684,7 +1552,7 @@ export class FrontDeskComponent implements AfterViewInit {
                 this.ftaLabels1 = [];
                 if (res.body.total > 0) {
                   res.body.data.forEach((res) => {
-                    this.ftaLabels1.push(Math.round(res.fta_ratio));
+                    this.ftaLabels1.push(_.round(res.fta_ratio, 1));
                     this.ftaLabels.push(res.clinic_name);
                   });
                 }
@@ -1698,8 +1566,8 @@ export class FrontDeskComponent implements AfterViewInit {
 
                 if (res.body.total > 100) res.body.total = 100;
                 if (res.body.total_ta > 100) res.body.total_ta = 100;
-                this.ftaTotal = Math.round(res.body.total * 10) / 10;
-                this.ftaPrevTotal = Math.round(res.body.total_ta * 10) / 10;
+                this.ftaTotal = _.round(res.body.total);
+                this.ftaPrevTotal = _.round(res.body.total_ta);
                 this.ftaGoal = res.body.goals;
                 if (this.ftaTotal > this.ftaGoal)
                   this.maxftaGoal = this.ftaTotal;
@@ -1764,9 +1632,6 @@ export class FrontDeskComponent implements AfterViewInit {
     if (this.duration) {
       this.fdUtaRatioLoader = true;
       this.utaTotal = 0;
-
-      var user_id;
-      var clinic_id;
       this.showmulticlinicUta = false;
       this.clinic_id &&
         this.frontdeskService
@@ -1787,7 +1652,7 @@ export class FrontDeskComponent implements AfterViewInit {
                 this.utaLabels1 = [];
                 if (res.body.total > 0) {
                   res.body.data.forEach((res) => {
-                    this.utaLabels1.push(Math.round(res.uta_ratio));
+                    this.utaLabels1.push(_.round(res.uta_ratio, 1));
                     this.utaLabels.push(res.clinic_name);
                   });
                 }
@@ -1801,8 +1666,8 @@ export class FrontDeskComponent implements AfterViewInit {
 
                 if (res.body.total > 100) res.body.total = 100;
                 if (res.body.total_ta > 100) res.body.data_ta = 100;
-                this.utaTotal = Math.round(res.body.total * 10) / 10;
-                this.utaPrevTotal = Math.round(res.body.total_ta * 10) / 10;
+                this.utaTotal = _.round(res.body.total);
+                this.utaPrevTotal = _.round(res.body.total_ta);
                 this.utaGoal = res.body.goals;
                 if (this.utaTotal > this.utaGoal)
                   this.maxutaGoal = this.utaTotal;
@@ -2577,9 +2442,6 @@ export class FrontDeskComponent implements AfterViewInit {
             this.Apirequest = this.Apirequest - 1;
             if (res.status == 200) {
               this.ftaChartTrendMulti[0] = { data: [], label: '' };
-              res.body.data.sort((a, b) =>
-                a.duration === b.duration ? 0 : a.duration > b.duration || -1
-              );
               if (
                 this.clinic_id.indexOf(',') >= 0 ||
                 Array.isArray(this.clinic_id)
@@ -2599,7 +2461,7 @@ export class FrontDeskComponent implements AfterViewInit {
                         this.trendValue == 'c'
                           ? this.datePipe.transform(duration, 'MMM y')
                           : duration,
-                      fta_ratio: _.round((totalFta / totalAppts || 0) * 100)
+                      fta_ratio: _.round((totalFta / totalAppts || 0) * 100, 1)
                     };
                   })
                   .value();
@@ -2642,7 +2504,7 @@ export class FrontDeskComponent implements AfterViewInit {
               } else {
                 res.body.data.forEach((res) => {
                   if (res.val > 100) res.val = 100;
-                  this.ftaChartTrend1.push(Math.round(res.fta_ratio * 10) / 10);
+                  this.ftaChartTrend1.push(_.round(res.fta_ratio, 1));
                   if (this.trendValue == 'c')
                     this.ftaChartTrendLabels1.push(
                       this.datePipe.transform(res.year_month, 'MMM y')
@@ -2906,7 +2768,7 @@ export class FrontDeskComponent implements AfterViewInit {
                         this.trendValue == 'c'
                           ? this.datePipe.transform(duration, 'MMM y')
                           : duration,
-                      uta_ratio: _.round((totalUta / totalAppts || 0) * 100)
+                      uta_ratio: _.round((totalUta / totalAppts || 0) * 100, 1)
                     };
                   })
                   .value();
@@ -2919,7 +2781,7 @@ export class FrontDeskComponent implements AfterViewInit {
               } else {
                 res.body.data.forEach((res) => {
                   if (res.val > 100) res.val = 100;
-                  this.utaChartTrend1.push(Math.round(res.uta_ratio * 10) / 10);
+                  this.utaChartTrend1.push(_.round(res.uta_ratio, 1));
                   if (this.trendValue == 'c')
                     this.utaChartTrendLabels1.push(
                       this.datePipe.transform(res.year_month, 'MMM y')

@@ -599,8 +599,9 @@ export class AppHeaderrightComponent implements AfterViewInit {
               });
               this.clinic_id = this.selectedClinic;
             } else {
-              if (newValues.length == 1) this.getAccountConnection(newValues);
-              else {
+              if (newValues.length == 1) {
+                this.getAccountConnection(newValues);
+              } else {
                 this.resetAccountConnection();
               }
               this.selectedClinic = [];
@@ -658,7 +659,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
         }
       });
 
-      if ($('body').find('span#currentClinic').length <= 0) {
+      if ($('body').find('span#currentClinic').length == 0) {
         $('body').append(
           '<span id="currentClinic" style="display:none" cid="' +
             newValue +
@@ -1001,10 +1002,10 @@ export class AppHeaderrightComponent implements AfterViewInit {
   }
 
   loadClinicEvent($event) {
-    if ($event == false && this.selectedClinic != '') {
+    if (!$event && this.selectedClinic != '') {
       this.loadClinic(this.selectedClinic);
     }
-    if ($event == false && this.selectedClinic == '') {
+    if (!$event && this.selectedClinic == '') {
       this.toastr.error('Please select atleast one clinic');
     }
   }

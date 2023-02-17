@@ -302,15 +302,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.isAllClinic = false;
         this.getDentists();
       }
-      if (this.isAllClinic) {
-        if (this.user_type != '4') {
-          this.filterDate('m');
-        }
-      } else {
-        if (this.user_type != '4') {
-          this.filterDate(this.chartService.duration$.value);
-        }
-      }
+      this.filterDate(this.chartService.duration$.value);
+      // if (this.isAllClinic) {
+      //   if (this.user_type != '4') {
+      //     this.filterDate('m');
+      //   }
+      // } else {
+      //   if (this.user_type != '4') {
+      //     this.filterDate(this.chartService.duration$.value);
+      //   }
+      // }
     }
   }
 

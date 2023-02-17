@@ -216,20 +216,23 @@
                   <div
                     class="chart-utilisation-rate utigraph"
                     *ngIf="
-                      !showTrend &&
+                      !(
+                        showTrend ||
+                        utilityratemessage ||
+                        fdWorkTimeAnalysisLoader
+                      ) &&
                       workTimeData1.length > 0 &&
-                      utilityratemessage == false &&
-                      !fdWorkTimeAnalysisLoader &&
                       utilShow == 1
                     "
                   >
                     <canvas
                       *ngIf="
-                        !showTrend &&
-                        workTimeData1.length > 0 &&
-                        utilityratemessage == false &&
-                        !fdWorkTimeAnalysisLoader &&
-                        !showUtiTable
+                        !(
+                          showTrend ||
+                          utilityratemessage ||
+                          fdWorkTimeAnalysisLoader ||
+                          showUtiTable
+                        ) && workTimeData1.length > 0
                       "
                       #myCanvas
                       baseChart
@@ -246,8 +249,7 @@
                       *ngIf="
                         !showTrend &&
                         workTimeData1.length > 0 &&
-                        utilityratemessage == false &&
-                        !fdWorkTimeAnalysisLoader &&
+                        !(utilityratemessage || fdWorkTimeAnalysisLoader) &&
                         showUtiTable
                       "
                       class="utiTablecon"
@@ -278,8 +280,7 @@
                     *ngIf="
                       utilShow == 2 &&
                       byDayLabels.length > 0 &&
-                      !byDayLoader &&
-                      !showTrend
+                      !(byDayLoader || showTrend)
                     "
                   >
                     <canvas
@@ -323,20 +324,24 @@
                   <div
                     class="chart-utilisation-rate"
                     *ngIf="
-                      showByclinicUR == false &&
+                      !(
+                        showByclinicUR ||
+                        utilityratemessage ||
+                        fdwtaRatioTrendLoader
+                      ) &&
                       showTrend &&
-                      wtaChartTrend1.length > 0 &&
-                      utilityratemessage == false &&
-                      !fdwtaRatioTrendLoader
+                      wtaChartTrend1.length > 0
                     "
                   >
                     <canvas
                       *ngIf="
-                        showByclinicUR == false &&
+                        !(
+                          showByclinicUR ||
+                          utilityratemessage ||
+                          fdwtaRatioTrendLoader
+                        ) &&
                         showTrend &&
-                        wtaChartTrend1.length > 0 &&
-                        utilityratemessage == false &&
-                        !fdwtaRatioTrendLoader
+                        wtaChartTrend1.length > 0
                       "
                       #myCanvas
                       baseChart
@@ -386,10 +391,12 @@
                   <div
                     class="no-data-placeholder"
                     *ngIf="
-                      !showTrend &&
+                      !(
+                        showTrend ||
+                        utilityratemessage ||
+                        fdWorkTimeAnalysisLoader
+                      ) &&
                       workTimeData1.length <= 0 &&
-                      !utilityratemessage &&
-                      !fdWorkTimeAnalysisLoader &&
                       utilShow == 1
                     "
                   >
@@ -412,9 +419,8 @@
                   <div
                     class="no-data-placeholder"
                     *ngIf="
-                      !showTrend &&
-                      utilityratemessage == true &&
-                      !fdWorkTimeAnalysisLoader
+                      !(showTrend || fdWorkTimeAnalysisLoader) &&
+                      utilityratemessage
                     "
                   >
                     <div class="sa_nodata_div"></div>
@@ -428,10 +434,9 @@
                     class="no-data-placeholder"
                     *ngIf="
                       showTrend &&
+                      !(fdwtaRatioTrendLoader || utilityratemessage) &&
                       uRChartTrendMultiLabels.length == 0 &&
-                      wtaChartTrend1.length == 0 &&
-                      !fdwtaRatioTrendLoader &&
-                      !utilityratemessage
+                      wtaChartTrend1.length == 0
                     "
                   >
                     <div class="sa_nodata_div"></div>
@@ -442,9 +447,7 @@
                   <div
                     class="no-data-placeholder"
                     *ngIf="
-                      showTrend &&
-                      utilityratemessage == true &&
-                      !fdwtaRatioTrendLoader
+                      showTrend && utilityratemessage && !fdwtaRatioTrendLoader
                     "
                   >
                     <div class="sa_nodata_div"></div>
@@ -1258,9 +1261,8 @@
                 <canvas
                   *ngIf="
                     showmulticlinicFta == true &&
-                    !showTrend &&
                     ftaTotal > 0 &&
-                    !fdFtaRatioLoader
+                    !(showTrend || fdFtaRatioLoader)
                   "
                   #myCanvas
                   baseChart
@@ -1273,7 +1275,7 @@
                   (chartClick)="chartClicked($event)"
                 >
                 </canvas>
-                <div *ngIf="!showTrend && ftaTotal <= 0 && !fdFtaRatioLoader">
+                <div *ngIf="!(showTrend || fdFtaRatioLoader) && ftaTotal <= 0">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no FTA's in the selected period
@@ -1282,10 +1284,9 @@
 
                 <div
                   *ngIf="
-                    showByclinicfta == false &&
+                    !(showByclinicfta || fdFtaRatioTrendLoader) &&
                     showTrend &&
-                    ftaChartTrend1.length > 0 &&
-                    !fdFtaRatioTrendLoader
+                    ftaChartTrend1.length > 0
                   "
                   class="chart-recall-rate-trend"
                 >
@@ -1305,7 +1306,7 @@
                 </div>
                 <div
                   *ngIf="
-                    showByclinicfta == true &&
+                    showByclinicfta &&
                     showTrend &&
                     ftaTrendMultiLabels.length > 0 &&
                     !fdFtaRatioTrendLoader

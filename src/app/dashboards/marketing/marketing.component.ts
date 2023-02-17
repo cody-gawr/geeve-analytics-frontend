@@ -84,8 +84,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   public filteredCountriesMultiple: any[];
   public selectedAccounts: any[] = [];
   public Apirequest = 0;
-  public newPatientsReferral$ = new BehaviorSubject<number>(0);
-  public revenueByReferralCount$ = new BehaviorSubject<number>(0);
+
   public charTips: any = [];
   public userPlan: any = '';
   public apiUrl = environment.apiUrl;
@@ -95,10 +94,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   public maxLegendLabelLimit = 10;
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
-  pluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
-  revenuePluginObservable$: Observable<
-    PluginServiceGlobalRegistrationAndOptions[]
-  >;
   destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   public doughnutChartPlugins: PluginServiceGlobalRegistrationAndOptions[] = [];
   public isVisibleAccountGraphs: boolean = false;
@@ -130,27 +125,12 @@ export class MarketingComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     // plugin observable for the center text in doughnut chart to subscribe the no patients count
-    this.pluginObservable$ = this.newPatientsReferral$.pipe(
-      takeUntil(this.destroyed$),
-      map((productionCount) => {
-        return this.chartService.beforeDrawChart(productionCount);
-      })
-    );
     /*this.revenuePluginObservable$ = this.revenueByReferralCount$.pipe(
       takeUntil(this.destroyed$),
       map((revenueCount) => {      
         return this.chartService.beforeDrawChart(revenueCount);
       })
     );*/
-    this.revenuePluginObservable$ = this.revenueByReferralCount$.pipe(
-      takeUntil(this.destroyed$),
-      map((revenueCount) => {
-        //return this.chartService.beforeDrawChart(revenueCount, true)
-        this.pieChartOptions.elements.center.text =
-          '$' + this.decimalPipe.transform(revenueCount);
-        return [];
-      })
-    );
     // end of plugin observable logic
 
     this.doughnutChartColors = [
@@ -217,7 +197,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   };
   private warningMessage: string;
   private myTemplate: any = '';
-  async initiateClinic() {
+  async initiate_clinic() {
     this.userPlan = this._cookieService.get('user_plan');
     if (this.userPlan == 'lite') {
       this.router.navigateByUrl('/login');
@@ -248,12 +228,11 @@ export class MarketingComponent implements OnInit, AfterViewInit {
           this.xeroConnect = false;
           this.myobConnect = false;
         }
-        this.filterDate(this.chartService.duration$.value);
       } else {
         this.isVisibleAccountGraphs = true;
         this.multipleClinicsSelected = true;
-        this.filterDate('m');
       }
+      this.filterDate(this.chartService.duration$.value);
     } else {
       this.multipleClinicsSelected = true;
     }
@@ -901,7 +880,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     }
   };
 
-  public stackedChartOptionsRev: any = {
+  public stackedChartOptionsRev: Chart.ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -910,10 +889,8 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         hoverBorderWidth: 7
       }
     },
-    scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine'
@@ -931,7 +908,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         {
           stacked: true,
           ticks: {
-            userCallback: function (label, index, labels) {
+            callback: function (label: number) {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 let currency =
@@ -1069,14 +1046,14 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       },
       callbacks: {
         label: function (tooltipItems, data) {
-          let currency = tooltipItems.yLabel.toString();
-          currency = currency.split('.');
-          currency[0] = currency[0]
+          let currency: string = tooltipItems.yLabel.toString();
+          let currencySegs = currency.split('.');
+          currencySegs[0] = currencySegs[0]
             .split('-')
             .join('')
             .split(/(?=(?:...)*$)/)
             .join(',');
-          currency = currency.join('.');
+          currency = currencySegs.join('.');
           return (
             data.datasets[tooltipItems.datasetIndex].label +
             `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`
@@ -1085,7 +1062,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       }
     }
   };
-  public stackedChartOptionsRef: any = {
+  public stackedChartOptionsRef: Chart.ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -1094,10 +1071,8 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         hoverBorderWidth: 7
       }
     },
-    scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine'
@@ -1115,7 +1090,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         {
           stacked: true,
           ticks: {
-            userCallback: function (label, index, labels) {
+            callback: function (label: number, index, labels) {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 let currency =
@@ -1254,13 +1229,13 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       callbacks: {
         label: function (tooltipItems, data) {
           let currency = tooltipItems.yLabel.toString();
-          currency = currency.split('.');
-          currency[0] = currency[0]
+          let currencySegs = currency.split('.');
+          currencySegs[0] = currencySegs[0]
             .split('-')
             .join('')
             .split(/(?=(?:...)*$)/)
             .join(',');
-          currency = currency.join('.');
+          currency = currencySegs.join('.');
           return (
             data.datasets[tooltipItems.datasetIndex].label +
             `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`
@@ -1301,19 +1276,25 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   public stackedChartData5: any[] = [];
   public duration = '';
   // events
-  public chartClicked(e: any, labels): void {
+  public chartClicked(e: any, label: string): void {
     if (e.active.length > 0) {
       const chart = e.active[0]._chart;
       const activePoints = chart.getElementAtEvent(e.event);
       if (activePoints.length > 0) {
         // get the internal index of slice in pie chart
         const clickedElementIndex = activePoints[0]._index;
-        const label = chart.data.labels[clickedElementIndex];
-        if (labels === 'newPatients') {
-          this.drilldownNewPatients(label);
+        const activeLabel = chart.data.labels[clickedElementIndex];
+        if (
+          label === 'newPatients' &&
+          !this.isNewPatientsByReferralBackVisible
+        ) {
+          this.drilldownNewPatients(activeLabel);
         }
-        if (labels === 'revenue') {
-          this.drilldownRevenueReferral(label);
+        if (
+          label === 'revenue' &&
+          !this.isNewPatientRevenueByReferralBackVisible
+        ) {
+          this.drilldownRevenueReferral(activeLabel);
         }
       }
     }
@@ -1517,15 +1498,36 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     }
   }
 
+  public isNewPatientsByReferralBackVisible = false;
   public newPatientsTimeData: number[] = [];
   public newPatientsTimeLabels = [];
-  public newPatientsTimeLabels1 = [];
-  public newPatientsTimeData1: number[] = [];
+
   public mkNewPatientsByReferralLoader: any;
   public mkNewPatientsByReferralAll: any = [];
   public mkNewPatientsByReferalMulti: any[] = [{ data: [], label: '' }];
   public showmulticlinicNewPatients: boolean = false;
   public mkNewPatientsByReferalLabels: any = [];
+  public newPatientsByReferralPieChart: Chart = null;
+  public pieChartWithTotalValuePlugin: PluginServiceGlobalRegistrationAndOptions =
+    {
+      afterDraw: (chartInstance: Chart) => {
+        const ctx = chartInstance.ctx;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const centerX =
+          (chartInstance.chartArea.left + chartInstance.chartArea.right) / 2;
+        const centerY =
+          (chartInstance.chartArea.top + chartInstance.chartArea.bottom) / 2;
+        const total = (<number[]>chartInstance.data.datasets[0].data).reduce(
+          (prev: number, current: number) => prev + current,
+          0
+        );
+        ctx.font = (total.toString().length > 4 ? 24 : 37) + 'px Gilroy-Bold';
+        ctx.fillStyle = '#454649';
+
+        ctx.fillText(`${total}`, centerX, centerY);
+      }
+    };
   //Items Predictor Analysis
 
   private mkNewPatientsByReferral() {
@@ -1609,32 +1611,27 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                   }
                 }
               });
+
               this.mkNewPatientsByReferralLoader = false;
             } else {
               this.mkNewPatientsByReferralAll = res.body;
               this.totalNewPatientsReferral = Math.round(res.body.total);
-              this.newPatientsReferral$.next(this.totalNewPatientsReferral);
               // this.noNewPatientsByReferralChartOptions.elements.center.text = this.decimalPipe.transform(this.totalNewPatientsReferral);
-
-              this.newPatientsTimeData1 = [];
-              this.newPatientsTimeLabels1 = [];
               if (res.body.data.patients_reftype.length > 0) {
                 var i = 0;
                 res.body.data.patients_reftype.forEach((res) => {
                   if (res.patients_visits > 0) {
                     if (i < 10) {
-                      this.newPatientsTimeData1.push(res.patients_visits);
-                      this.newPatientsTimeLabels1.push(res.reftype_name);
+                      this.newPatientsTimeData.push(res.patients_visits);
+                      this.newPatientsTimeLabels.push(res.reftype_name);
                       i++;
                     }
                   }
                 });
               }
-              this.newPatientsTimeData = this.newPatientsTimeData1;
-              this.newPatientsTimeLabels = this.newPatientsTimeLabels1;
-              var self = this;
-              setTimeout(function () {
-                self.mkNewPatientsByReferralLoader = false;
+
+              setTimeout(() => {
+                this.mkNewPatientsByReferralLoader = false;
               }, this.timeout);
             }
           }
@@ -1648,31 +1645,44 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   }
 
   private drilldownNewPatients(label) {
-    this.newPatientsTimeData1 = [];
-    this.newPatientsTimeLabels1 = [];
     this.newPatientsTimeData = [];
     this.newPatientsTimeLabels = [];
-    let data: number[] = [];
+
     if (
       this.mkNewPatientsByReferralAll.data.patients_refname[label].length > 0
     ) {
-      var i = 0;
-      let totalVisits = 0;
-      this.mkNewPatientsByReferralAll.data.patients_refname[label].forEach(
-        (res) => {
-          if (i < 10) {
-            totalVisits = totalVisits + parseInt(res.num_referrals);
-            data.push(res.num_referrals);
-            this.newPatientsReferral$.next(totalVisits);
-            this.newPatientsTimeLabels1.push(res.referral_name);
-            i++;
-          }
-        }
-      );
+      this.isNewPatientsByReferralBackVisible = true;
+      this.newPatientsTimeData =
+        this.mkNewPatientsByReferralAll.data.patients_refname[label].map(
+          (item: any) => parseInt(item.num_referrals)
+        );
+      this.newPatientsTimeLabels =
+        this.mkNewPatientsByReferralAll.data.patients_refname[label].map(
+          (item: any) => item.referral_name
+        );
+      const totalVisits = _.chain(
+        this.mkNewPatientsByReferralAll.data.patients_refname[label]
+      )
+        .sumBy((item) => parseInt(item.num_referrals))
+        .value();
+
+      //   this.mkNewPatientsByReferralAll.data.patients_refname[label].forEach(
+      //     (res) => {
+      //       if (i < 10) {
+      //         totalVisits = totalVisits + parseInt(res.num_referrals);
+      //         data.push(res.num_referrals);
+      //         this.newPatientsReferral$.next(totalVisits);
+      //         this.newPatientsTimeLabels.push(res.referral_name);
+      //         i++;
+      //       }
+      //     }
+      //   );
+      // }
+      // this.newPatientsTimeData = data;
     }
-    this.newPatientsTimeData = data;
   }
 
+  public isNewPatientRevenueByReferralBackVisible = false;
   public revenueReferralData: number[] = [];
   public revenueReferralLabels = [];
   public mkRevenueByReferralLoader: any;
@@ -1745,9 +1755,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
               this.totalRevenueByReferral = this.decimalPipe.transform(
                 Math.round(res.body.total || 0)
               );
-              this.revenueByReferralCount$.next(
-                Math.round(res.body.total || 0)
-              );
               //// this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
               if (this.revenueRefChart) {
                 this.revenueRefChart.ngOnDestroy();
@@ -1773,10 +1780,9 @@ export class MarketingComponent implements OnInit, AfterViewInit {
 
               this.revenueReferralData = data;
               this.revenueReferralLabels = labels;
-              var self = this;
 
-              setTimeout(function () {
-                self.mkRevenueByReferralLoader = false;
+              setTimeout(() => {
+                this.mkRevenueByReferralLoader = false;
               }, this.timeout);
             }
           }
@@ -1798,6 +1804,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     this.revenueReferralLabelsTrend = [];
     this.showTrend = true;
     this.mkRevenueByReferralChartTrend = [];
+    console.log('mkRevenueByReferralTrend');
     this.marketingService
       .mkRevenueByReferralTrend(this.clinic_id, this.trendValue)
       .subscribe(
@@ -1805,8 +1812,12 @@ export class MarketingComponent implements OnInit, AfterViewInit {
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
           if (res.status == 200) {
-            res.body.data.forEach((res) => {
-              res.val.forEach((result, key) => {
+            res.body.data.forEach((itemByDuration) => {
+              const sortedItems: any[] = itemByDuration.val.sort(
+                (itemA: any, itemB: any) =>
+                  itemB.invoice_amount - itemA.invoice_amount
+              );
+              sortedItems.forEach((item, key) => {
                 if (
                   typeof this.mkRevenueByReferralChartTrend[key] == 'undefined'
                 ) {
@@ -1821,11 +1832,11 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                 ) {
                   this.mkRevenueByReferralChartTrend[key]['data'] = [];
                 }
-                var total = result.invoice_amount;
+                var total = item.invoice_amount;
 
                 this.mkRevenueByReferralChartTrend[key]['data'].push(total);
                 this.mkRevenueByReferralChartTrend[key]['label'] =
-                  result.item_name;
+                  item.item_name;
                 this.mkRevenueByReferralChartTrend[key]['backgroundColor'] =
                   this.doughnutChartColors[key];
                 this.mkRevenueByReferralChartTrend[key][
@@ -1834,10 +1845,10 @@ export class MarketingComponent implements OnInit, AfterViewInit {
               });
               if (this.trendValue == 'c') {
                 this.revenueReferralLabelsTrend.push(
-                  this.datePipe.transform(res.duration, 'MMM y')
+                  this.datePipe.transform(itemByDuration.duration, 'MMM y')
                 );
               } else {
-                this.revenueReferralLabelsTrend.push(res.duration);
+                this.revenueReferralLabelsTrend.push(itemByDuration.duration);
               }
             });
             this.mkRevenueByReferralLoader = false;
@@ -1867,8 +1878,11 @@ export class MarketingComponent implements OnInit, AfterViewInit {
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
           if (res.status == 200) {
-            res.body.data.forEach((res) => {
-              res.val.forEach((result, key) => {
+            res.body.data.forEach((itemByDuration) => {
+              const sortedItems = itemByDuration.val.sort(
+                (itemA, itemB) => itemB.num_referrals - itemA.num_referrals
+              );
+              sortedItems.forEach((item, key) => {
                 if (
                   typeof this.mkNewPatientsReferralChartTrend[key] ==
                   'undefined'
@@ -1884,11 +1898,11 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                 ) {
                   this.mkNewPatientsReferralChartTrend[key]['data'] = [];
                 }
-                var total = result.num_referrals;
+                var total = item.num_referrals;
 
                 this.mkNewPatientsReferralChartTrend[key]['data'].push(total);
                 this.mkNewPatientsReferralChartTrend[key]['label'] =
-                  result.item_name;
+                  item.item_name;
                 this.mkNewPatientsReferralChartTrend[key]['backgroundColor'] =
                   this.doughnutChartColors[key];
                 this.mkNewPatientsReferralChartTrend[key][
@@ -1897,10 +1911,10 @@ export class MarketingComponent implements OnInit, AfterViewInit {
               });
               if (this.trendValue == 'c') {
                 this.newPatientsTimeLabelsTrend.push(
-                  this.datePipe.transform(res.duration, 'MMM y')
+                  this.datePipe.transform(itemByDuration.duration, 'MMM y')
                 );
               } else {
-                this.newPatientsTimeLabelsTrend.push(res.duration);
+                this.newPatientsTimeLabelsTrend.push(itemByDuration.duration);
               }
             });
             this.mkNewPatientsByReferralLoader = false;
@@ -1914,26 +1928,21 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       );
   }
   private drilldownRevenueReferral(label) {
-    /* this.marketingService.mkRevenueByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((res) => {
-          if(res.status == 200){*/
     this.revenueReferralData = [];
     this.revenueReferralLabels = [];
     let data: number[] = [];
     let labels: string[] = [];
 
     if (this.reffralAllData.data.patients_refname[label].length > 0) {
+      this.isNewPatientRevenueByReferralBackVisible = true;
       var i = 0;
-      let totalRevenue = 0;
       this.reffralAllData.data.patients_refname[label].forEach((res) => {
-        totalRevenue = totalRevenue + parseFloat(res.invoice_amount);
         if (i < 10) {
-          data.push(res.invoice_amount);
+          data.push(parseFloat(res.invoice_amount));
           labels.push(res.referral_name);
           i++;
         }
       });
-      totalRevenue = Math.round(totalRevenue);
-      this.revenueByReferralCount$.next(totalRevenue);
     }
     this.revenueReferralData = data;
     this.revenueReferralLabels = labels;
@@ -3496,14 +3505,14 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     $('.close_modal').click();
   }
 
-  public changeLevel(val) {
+  public changeLevel(val: string) {
     let labels: string[] = [];
     let data: number[] = [];
     if (val == 'newPatient') {
+      this.isNewPatientsByReferralBackVisible = false;
       this.totalNewPatientsReferral = Math.round(
         this.mkNewPatientsByReferralAll.total
       );
-      this.newPatientsReferral$.next(this.totalNewPatientsReferral);
 
       if (this.mkNewPatientsByReferralAll.data.patients_reftype.length > 0) {
         var i = 0;
@@ -3521,10 +3530,8 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       this.newPatientsTimeLabels = labels;
       //   this.mkNewPatientsByReferral();
     } else if (val == 'revenue') {
+      this.isNewPatientRevenueByReferralBackVisible = false;
       this.totalRevenueByReferral = this.decimalPipe.transform(
-        Math.round(this.reffralAllData.total || 0)
-      );
-      this.revenueByReferralCount$.next(
         Math.round(this.reffralAllData.total || 0)
       );
       // this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;

@@ -18,7 +18,7 @@
 <input
   type="button"
   id="clinic_initiate"
-  (click)="initiateClinic()"
+  (click)="initiate_clinic()"
   [style.display]="'none'"
 />
 <input
@@ -131,6 +131,7 @@
                 <div
                   class="sa_back_btn_holder"
                   *ngIf="
+                    isNewPatientsByReferralBackVisible &&
                     newPatientsTimeLabels.length > 0 &&
                     !(mkNewPatientsByReferralLoader || showTrend)
                   "
@@ -151,7 +152,7 @@
                   [labels]="newPatientsTimeLabels"
                   [chartType]="pieChartType"
                   (chartHover)="chartHovered($event)"
-                  [plugins]="pluginObservable$ | async"
+                  [plugins]="[pieChartWithTotalValuePlugin]"
                   (chartClick)="chartClicked($event, 'newPatients')"
                   [options]="noNewPatientsByReferralChartOptions"
                   [colors]="pieChartColors"
@@ -282,6 +283,7 @@
                 <div
                   class="sa_back_btn_holder"
                   *ngIf="
+                    isNewPatientRevenueByReferralBackVisible &&
                     revenueReferralLabels.length > 0 &&
                     !(mkRevenueByReferralLoader || showTrend)
                   "
@@ -304,7 +306,7 @@
                   [chartType]="pieChartType"
                   (chartHover)="chartHovered($event)"
                   (chartClick)="chartClicked($event, 'revenue')"
-                  [plugins]="revenuePluginObservable$ | async"
+                  [plugins]="pieChartWithTotalValuePlugin"
                   [options]="pieChartOptions"
                   [colors]="pieChartColors"
                 >
