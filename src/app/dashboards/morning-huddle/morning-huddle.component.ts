@@ -158,123 +158,123 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     'Front Desk Followups',
     'Daily Tasks'
   ];
-   public homeUrl = environment.homeUrl;
-   public apiUrl = environment.apiUrl;
-	   public id:any = '';
-  	public clinic_id:any = '';
-  	public user_type:any = '';
-    public dentistid:any = null;
-    public production:any = '';
-    public recallRate:any = '';
-    public treatmentRate:any = '';
-    public previousDays:any = '';
+  public homeUrl = environment.homeUrl;
+  public apiUrl = environment.apiUrl;
+  public id:any = '';
+  public clinic_id:any = '';
+  public user_type:any = '';
+  public dentistid:any = null;
+  public production:any = '';
+  public recallRate:any = '';
+  public treatmentRate:any = '';
+  public previousDays:any = '';
 
-    public unscheduledPatientsDays:any = '';
-    public postOpCallsDays:any = '';
-    public followupsPostopCallsDate:any = '';
-    public schedulePatieltd:any = 0;
-    public schedulePatielDate:any = '';
-    public productionDate:any = '';
-    public scheduleNewPatieltd:any = 0;
-    public schedulehours:any = 0;
-    public unSchedulehours:any = 0;
-    public noShow:any = 0;
-    public appointmentCardsTemp:any = [];
-    public appointmentCards = new MatTableDataSource();
-    public appointmentCardsLoading:boolean = true;
-    public dentistList:any = new MatTableDataSource([]);
-    dentistListTemp:any = [];
+  public unscheduledPatientsDays:any = '';
+  public postOpCallsDays:any = '';
+  public followupsPostopCallsDate:any = '';
+  public schedulePatieltd:any = 0;
+  public schedulePatielDate:any = '';
+  public productionDate:any = '';
+  public scheduleNewPatieltd:any = 0;
+  public schedulehours:any = 0;
+  public unSchedulehours:any = 0;
+  public noShow:any = 0;
+  public appointmentCardsTemp:any = [];
+  public appointmentCards = new MatTableDataSource();
+  public appointmentCardsLoading:boolean = true;
+  public dentistList:any = new MatTableDataSource([]);
+  public dentistListTemp:any = [];
     
-    public futureDateOP :any = '';
-    public futureDateOR :any = '';
-    public futureDateTH :any = '';
-    public futureDateTF :any = '';
-    public futureDateDT :any = '';
-    public futureDateEL :any = '';
+  public futureDateOP :any = '';
+  public futureDateOR :any = '';
+  public futureDateTH :any = '';
+  public futureDateTF :any = '';
+  public futureDateDT :any = '';
+  public futureDateEL :any = '';
 
-    public reAppointment:any = 0;
-    public reAppointmentdate:any = '';
-    public unscheduledPatients:any = 0;
-    //public unscheduledValue:any = 0;
-    public todayPatients:any = 0;
-    public todayPatientsDate:any = '';
-    public todayUnscheduledHours:any = 0;
-    public todayChairUtilisationRate:any = 0;
-    public todayUnscheduledBal:any = 0;
-    public todayPostopCalls:any = 0;
+  public reAppointment:any = 0;
+  public reAppointmentdate:any = '';
+  public unscheduledPatients:any = 0;
+  //public unscheduledValue:any = 0;
+  public todayPatients:any = 0;
+  public todayPatientsDate:any = '';
+  public todayUnscheduledHours:any = 0;
+  public todayChairUtilisationRate:any = 0;
+  public todayUnscheduledBal:any = 0;
+  public todayPostopCalls:any = 0;
    
-    public remindersRecallsOverdue:any = [];
-    public remindersRecallsOverdueDate:any = '';
-    public treatmentOutstanding:any = [];
-    public outstandingBalances:any = [];
-    public followupsUnscheduledPatients:any = [];
-    public followupsUnscheduledRecalls:any = [];
-    public followupsUnscheduledPatientsDate:any = '';
-    public followupPostOpCalls:any = [];
-    public followupPostOpCallsInComp:any = [];
-    public followupOverDueRecall:any = [];
-    public followupOverDueRecallInCMP:any = [];
-    public followupsOverDueRecallDate:any = '';
-    public followupsTickFollowupsDate:any = '';
-    public TickFollowupsDays:any = '';
-    public OverDueRecallDays:any = '';
-    public followupTickFollowups:any = [];
-    public followupTickFollowupsInCMP:any = [];
-    public endOfDaysTasks:any = [];
-    public endOfDaysTasksInComp  =   new MatTableDataSource([]);
-    public endOfDaysTasksComp:any = [];
-    public endOfDaysTasksDate:any = '';
-    public endTaksLoading:boolean = true;
-    public showComplete:boolean = false;
-    public clinicDentists:any = [];
-    public currentDentist:any = 0;
-    public currentDentistSchedule:any = 0;
+  public remindersRecallsOverdue:any = [];
+  public remindersRecallsOverdueDate:any = '';
+  public treatmentOutstanding:any = [];
+  public outstandingBalances:any = [];
+  public followupsUnscheduledPatients:any = [];
+  public followupsUnscheduledRecalls:any = [];
+  public followupsUnscheduledPatientsDate:any = '';
+  public followupPostOpCalls:any = [];
+  public followupPostOpCallsInComp:any = [];
+  public followupOverDueRecall:any = [];
+  public followupOverDueRecallInCMP:any = [];
+  public followupsOverDueRecallDate:any = '';
+  public followupsTickFollowupsDate:any = '';
+  public TickFollowupsDays:any = '';
+  public OverDueRecallDays:any = '';
+  public followupTickFollowups:any = [];
+  public followupTickFollowupsInCMP:any = [];
+  public endOfDaysTasks:any = [];
+  public endOfDaysTasksInComp  =   new MatTableDataSource([]);
+  public endOfDaysTasksComp:any = [];
+  public endOfDaysTasksDate:any = '';
+  public endTaksLoading:boolean = true;
+  public showComplete:boolean = false;
+  public clinicDentists:any = [];
+  public currentDentist:any = 0;
+  public currentDentistSchedule:any = 0;
     
-    public dentistListLoading:boolean = false;
-    public postopCallsPostOp:boolean = false;
-    public showCompleteOverdue:boolean = false;
-    public showCompleteTick:boolean = false;
-    public endTaksLoadingLoading:boolean = true;
-    public poLoadingLoading:boolean = true;
-    public recallLoadingLoading:boolean = true;
+  public dentistListLoading:boolean = false;
+  public postopCallsPostOp:boolean = false;
+  public showCompleteOverdue:boolean = false;
+  public showCompleteTick:boolean = false;
+  public endTaksLoadingLoading:boolean = true;
+  public poLoadingLoading:boolean = true;
+  public recallLoadingLoading:boolean = true;
     
-    public dentistperformanceLoader:boolean = true;
-    public dentistrecallRateLoader:boolean = true;
-    public dentistTreatmentRateLoader:boolean = true;
-    public appointmentCardsLoaders:boolean = true;
-    public scheduleNewPatientsLoader:boolean = true;
-    public schedulehoursLoader:boolean = true;
-    public unschedulehoursLoader:boolean = true;
-    public remindersRecallsOverdueLoader:boolean = true;
-    public todayUnscheduledHoursLoader:boolean = true;
-    public todayUnscheduledBalLoader:boolean = true;
-    public lquipmentList =  new MatTableDataSource([]);
-    public lquipmentListAm:any =  [];
-    public showELPm:boolean =  false;
-    public equipmentListLoading:boolean =  true;
-    public amButton:boolean =  true;
-    public pmButton:boolean =  true;
-    public dailyTabSettLod:boolean =  false;
-    public charTips:any = [];
-    public dentist_id:any = '';
-    public nextBussinessDay:any;
-    public userPlan:any = '';
-    public apiSuccessCount:any = 0;
+  public dentistperformanceLoader:boolean = true;
+  public dentistrecallRateLoader:boolean = true;
+  public dentistTreatmentRateLoader:boolean = true;
+  public appointmentCardsLoaders:boolean = true;
+  public scheduleNewPatientsLoader:boolean = true;
+  public schedulehoursLoader:boolean = true;
+  public unschedulehoursLoader:boolean = true;
+  public remindersRecallsOverdueLoader:boolean = true;
+  public todayUnscheduledHoursLoader:boolean = true;
+  public todayUnscheduledBalLoader:boolean = true;
+  public lquipmentList =  new MatTableDataSource([]);
+  public lquipmentListAm:any =  [];
+  public showELPm:boolean =  false;
+  public equipmentListLoading:boolean =  true;
+  public amButton:boolean =  true;
+  public pmButton:boolean =  true;
+  public dailyTabSettLod:boolean =  false;
+  public charTips:any = [];
+  public dentist_id:any = '';
+  public nextBussinessDay:any;
+  public userPlan:any = '';
+  public apiSuccessCount:any = 0;
 
 
-    public isEnablePO: boolean = false;
-    public isEnableOR: boolean = false;
-    public isEnableTH: boolean = false;
-    public isEnableFT: boolean = false;
-    public isEnableUT: boolean = false;
-    public autoCall: any; 
-    public showStatusCode : boolean = false;
-    public showXrayOverdue : boolean = false;
-    public OPGOverdue : boolean = false;
-    public OverdueRecalls : boolean = false;
-    public LabNeeded  : boolean = false;
-    public selectDentist = 0;
-    totalCredits = 0;
+  public isEnablePO: boolean = false;
+  public isEnableOR: boolean = false;
+  public isEnableTH: boolean = false;
+  public isEnableFT: boolean = false;
+  public isEnableUT: boolean = false;
+  public autoCall: any; 
+  public showStatusCode : boolean = false;
+  public showXrayOverdue : boolean = false;
+  public OPGOverdue : boolean = false;
+  public OverdueRecalls : boolean = false;
+  public LabNeeded  : boolean = false;
+  public selectDentist = 0;
+  public totalCredits = 0;
  
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
   displayedColumns1: string[] = ['start', 'name', 'dentist',];
@@ -312,19 +312,18 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     private datepipe: DatePipe, 
     private morningHuddleService: MorningHuddleService, 
     private _cookieService: CookieService, 
-    private headerService: HeaderService,
+    //private headerService: HeaderService,
     private router: Router,
     private toastr: ToastrService,
     public constants: AppConstants,
     public dialog: MatDialog,
     public chartstipsService: ChartstipsService,
     public clinicianAnalysisService: ClinicianAnalysisService
-    ) { 
+  ) { 
     this.getChartsTips(); 
     this.selected = {start:  moment()};
     // this.minDate = moment().subtract(7, 'days');  
-    // this.maxDate = moment().add(7, 'days');  
-    
+    // this.maxDate = moment().add(7, 'days');
  }
 
   @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
@@ -338,7 +337,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     //console.log(this.homeUrl + "assets/js/jquery.min.js");
     /*this.dataSource1.sort = this.sort1;
     this.dataSource2.sort = this.sort2;*/
-    this.checkStatus();
+    this.checkPaymentStatus();
     $('#currentDentist').attr('did','all');
     this.user_type = this._cookieService.get("user_type");
     this.userPlan = this._cookieService.get("user_plan");
@@ -533,6 +532,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   }
 
   public currentDentistReminder:any = 0;
+
   refreshReminderTab(event){
     this.selectDentist = event;
     
@@ -763,8 +763,9 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     }); 
   } 
 
-   public tipDoneCode = {}; 
-   public tipFutureDate = {}; 
+  public tipDoneCode = {}; 
+  public tipFutureDate = {}; 
+
   getTickFollowups(evn = ''){
      if(evn != 'close'){
      this.endTaksLoadingLoading = true;
@@ -922,6 +923,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
 
   public isEnabletasks:boolean = false;
   public tasklistArray:any=[];
+
   getEndOfDays(){
     this.endTaksLoading = true;
     this.futureDateDT = '';
@@ -1002,6 +1004,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   }
 
   public isEnableEquipList: boolean = false;
+
   getEquipmentList() {
     this.equipmentListLoading = true;
     this.futureDateEL = '';
@@ -1088,7 +1091,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     }); 
   }*/
 
-   getTodayUnscheduledHours(refsh = ''){
+  getTodayUnscheduledHours(refsh = ''){
     if(refsh == ''){
       this.todayUnscheduledHoursLoader =  true;
     }
@@ -1105,7 +1108,8 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
       this.handleUnAuthorization();      
     }); 
   }
-   getChairUtilisationRate(){
+
+  getChairUtilisationRate(){
     this.morningHuddleService.getChairUtilisationRate( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((res:any) => {
       if(res.status == 200) {
         this.todayChairUtilisationRate =  Math.round(res.body.data);
@@ -1846,7 +1850,7 @@ async getDentistList(){
       });
     }
 
-    async checkStatus() {
+    async checkPaymentStatus() {
       const stripe = await loadStripe(environment.stripeKey);
       const clientSecret = new URLSearchParams(window.location.search).get(
         "payment_intent_client_secret"
@@ -1855,12 +1859,12 @@ async getDentistList(){
       if (!clientSecret) {
         return;
       }
-    
+      this.changeTab(2);
       const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
 
       switch (paymentIntent.status) {
         case "succeeded":
-          this.toastr.success("Payment succeeded!");
+          this.toastr.success("Payment succeeded. If the number of Credits were not updated, Please retry refreshing page aftger few mins!");
           break;
         case "processing":
           this.toastr.success("Your payment is processing.");
