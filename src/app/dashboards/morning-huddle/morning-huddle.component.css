@@ -555,6 +555,10 @@ table.history td.notes {padding-right: 2%;text-align: right;}
     .morning-huddle-date.topModel {
         top: 92px;
     }
+    #topup-credits {
+        right: 0 !important;
+        top: 42px !important;
+    }
 }
 @media (max-width: 767px){
     
