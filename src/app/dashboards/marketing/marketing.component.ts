@@ -1532,6 +1532,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
 
   private mkNewPatientsByReferral() {
     this.mkNewPatientsByReferralLoader = true;
+    this.isNewPatientsByReferralBackVisible = false;
     this.newPatientsTimeLabels = [];
 
     this.mkNewPatientsByReferalMulti = [];
@@ -1696,6 +1697,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
 
   private mkRevenueByReferral() {
     this.mkRevenueByReferralLoader = true;
+    this.isNewPatientRevenueByReferralBackVisible = false;
     this.mkNewPatientsByReferalRevMulti = [];
     this.showmulticlinicNewPatientsRev = false;
     this.mkNewPatientsByReferalRevLabels = [];
@@ -1804,7 +1806,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     this.revenueReferralLabelsTrend = [];
     this.showTrend = true;
     this.mkRevenueByReferralChartTrend = [];
-    console.log('mkRevenueByReferralTrend');
     this.marketingService
       .mkRevenueByReferralTrend(this.clinic_id, this.trendValue)
       .subscribe(
