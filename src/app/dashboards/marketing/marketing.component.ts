@@ -1510,7 +1510,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   public newPatientsByReferralPieChart: Chart = null;
   public pieChartWithTotalValuePlugin: PluginServiceGlobalRegistrationAndOptions =
     {
-      afterDraw: (chartInstance: Chart) => {
+      afterDatasetDraw: (chartInstance: Chart) => {
         const ctx = chartInstance.ctx;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
