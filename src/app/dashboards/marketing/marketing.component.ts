@@ -1528,6 +1528,34 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         ctx.fillText(`${total}`, centerX, centerY);
       }
     };
+
+  public pieChartWithTotalValueInUSDFormatPlugin: PluginServiceGlobalRegistrationAndOptions =
+    {
+      afterDatasetDraw: (chartInstance: Chart) => {
+        const ctx = chartInstance.ctx;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const centerX =
+          (chartInstance.chartArea.left + chartInstance.chartArea.right) / 2;
+        const centerY =
+          (chartInstance.chartArea.top + chartInstance.chartArea.bottom) / 2;
+        const total = `${new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0
+        }).format(
+          (<number[]>chartInstance.data.datasets[0].data).reduce(
+            (prev: number, current: number) => prev + current,
+            0
+          )
+        )}`;
+        ctx.font = (total.length > 4 ? 24 : 37) + 'px Gilroy-Bold';
+        ctx.fillStyle = '#454649';
+
+        ctx.fillText(total, centerX, centerY);
+      }
+    };
   //Items Predictor Analysis
 
   private mkNewPatientsByReferral() {
@@ -2797,7 +2825,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     if (this.connectedwith != 'none') this.fdnewPatientsAcqTrend();
 
     this.mkNewPatientsByReferralTrend();
-    //this.mkNewPatientsByReferralTrend();
     //this.mkRevenueByReferral();
     this.mkRevenueByReferralTrend();
     if (this.activePatients) {

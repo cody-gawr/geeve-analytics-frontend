@@ -306,7 +306,7 @@
                   [chartType]="pieChartType"
                   (chartHover)="chartHovered($event)"
                   (chartClick)="chartClicked($event, 'revenue')"
-                  [plugins]="pieChartWithTotalValuePlugin"
+                  [plugins]="pieChartWithTotalValueInUSDFormatPlugin"
                   [options]="pieChartOptions"
                   [colors]="pieChartColors"
                 >
@@ -566,11 +566,9 @@
                 <div
                   class="chart-num-patients"
                   *ngIf="
-                    showAPBar == false &&
-                    showTrend == false &&
                     activePatients == true &&
-                    fdActivePatients > 0 &&
-                    fdActivePatientLoader == false
+                    !(showAPBar || showTrend || fdActivePatientLoader) &&
+                    fdActivePatients > 0
                   "
                 >
                   <ngx-gauge
@@ -612,10 +610,8 @@
                 </div>
                 <div
                   *ngIf="
-                    showTrend == false &&
                     newPatientsTotal <= 0 &&
-                    fdnewPatientsRatioLoader == false &&
-                    activePatients == false
+                    !(showTrend || fdnewPatientsRatioLoader || activePatients)
                   "
                 >
                   <div class="sa_nodata_div"></div>
