@@ -1111,6 +1111,9 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     tooltips: {
       mode: 'x-axis',
       enabled: false,
+      itemSort: (itemA, itemB): number => {
+        return <number>itemB.yLabel - <number>itemA.yLabel;
+      },
       custom: function (tooltip) {
         if (!tooltip) return;
         var tooltipEl = document.getElementById('chartjs-tooltip');
@@ -1907,45 +1910,34 @@ export class MarketingComponent implements OnInit, AfterViewInit {
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
           if (res.status == 200) {
-            res.body.data.forEach((itemByDuration) => {
-              const sortedItems = itemByDuration.val.sort(
-                (itemA, itemB) => itemB.num_referrals - itemA.num_referrals
-              );
-              sortedItems.forEach((item, key) => {
-                if (
-                  typeof this.mkNewPatientsReferralChartTrend[key] ==
-                  'undefined'
-                ) {
-                  this.mkNewPatientsReferralChartTrend[key] = {
-                    data: [],
-                    label: ''
-                  };
-                }
-                if (
-                  typeof this.mkNewPatientsReferralChartTrend[key]['data'] ==
-                  'undefined'
-                ) {
-                  this.mkNewPatientsReferralChartTrend[key]['data'] = [];
-                }
-                var total = item.num_referrals;
-
-                this.mkNewPatientsReferralChartTrend[key]['data'].push(total);
-                this.mkNewPatientsReferralChartTrend[key]['label'] =
-                  item.item_name;
-                this.mkNewPatientsReferralChartTrend[key]['backgroundColor'] =
-                  this.doughnutChartColors[key];
-                this.mkNewPatientsReferralChartTrend[key][
-                  'hoverBackgroundColor'
-                ] = this.doughnutChartColors[key];
-              });
-              if (this.trendValue == 'c') {
-                this.newPatientsTimeLabelsTrend.push(
-                  this.datePipe.transform(itemByDuration.duration, 'MMM y')
-                );
-              } else {
-                this.newPatientsTimeLabelsTrend.push(itemByDuration.duration);
-              }
+            const data = res.body.data.map((itemByDuration: any) => {
+              const { duration } = itemByDuration;
+              return itemByDuration.val.map((item: any) => ({
+                duration,
+                ...item
+              }));
             });
+            this.mkNewPatientsReferralChartTrend = _.chain(data)
+              .flatten()
+              .groupBy('item_name')
+              .map((items: any[], itemName: string) => {
+                return {
+                  data: items.map((item) => item.num_referrals),
+                  label: itemName
+                };
+              })
+              .value()
+              .map((item, index) => ({
+                ...item,
+                backgroundColor: this.doughnutChartColors[index],
+                hoverBackgroundColor: this.doughnutChartColors[index]
+              }));
+            this.newPatientsTimeLabelsTrend = res.body.data.map(
+              (itemByDuration: any) =>
+                this.trendValue == 'c'
+                  ? this.datePipe.transform(itemByDuration.duration, 'MMM y')
+                  : itemByDuration.duration
+            );
             this.mkNewPatientsByReferralLoader = false;
           }
         },
