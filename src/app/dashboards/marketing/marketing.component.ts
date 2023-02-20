@@ -929,6 +929,9 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     tooltips: {
       mode: 'x-axis',
       enabled: false,
+      itemSort: (itemA, itemB): number => {
+        return <number>itemB.yLabel - <number>itemA.yLabel;
+      },
       custom: function (tooltip) {
         if (!tooltip) return;
         var tooltipEl = document.getElementById('chartjs-tooltip');
@@ -1844,45 +1847,33 @@ export class MarketingComponent implements OnInit, AfterViewInit {
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
           if (res.status == 200) {
-            res.body.data.forEach((itemByDuration) => {
-              const sortedItems: any[] = itemByDuration.val.sort(
-                (itemA: any, itemB: any) =>
-                  itemB.invoice_amount - itemA.invoice_amount
-              );
-              sortedItems.forEach((item, key) => {
-                if (
-                  typeof this.mkRevenueByReferralChartTrend[key] == 'undefined'
-                ) {
-                  this.mkRevenueByReferralChartTrend[key] = {
-                    data: [],
-                    label: ''
-                  };
-                }
-                if (
-                  typeof this.mkRevenueByReferralChartTrend[key]['data'] ==
-                  'undefined'
-                ) {
-                  this.mkRevenueByReferralChartTrend[key]['data'] = [];
-                }
-                var total = item.invoice_amount;
-
-                this.mkRevenueByReferralChartTrend[key]['data'].push(total);
-                this.mkRevenueByReferralChartTrend[key]['label'] =
-                  item.item_name;
-                this.mkRevenueByReferralChartTrend[key]['backgroundColor'] =
-                  this.doughnutChartColors[key];
-                this.mkRevenueByReferralChartTrend[key][
-                  'hoverBackgroundColor'
-                ] = this.doughnutChartColors[key];
-              });
-              if (this.trendValue == 'c') {
-                this.revenueReferralLabelsTrend.push(
-                  this.datePipe.transform(itemByDuration.duration, 'MMM y')
-                );
-              } else {
-                this.revenueReferralLabelsTrend.push(itemByDuration.duration);
-              }
+            const data = res.body.data.map((itemByDuration: any) => {
+              const { duration } = itemByDuration;
+              return (<any[]>itemByDuration.val).map((item: any) => ({
+                ...item,
+                duration
+              }));
             });
+            this.mkRevenueByReferralChartTrend = _.chain(data)
+              .flatten()
+              .groupBy('item_name')
+              .map((items: any[], itemName: string) => ({
+                data: items.map((item: any) => item.invoice_amount),
+                label: itemName
+              }))
+              .value()
+              .map((item: any, index: number) => ({
+                ...item,
+                backgroundColor: this.doughnutChartColors[index],
+                hoverBackgroundColor: this.doughnutChartColors[index]
+              }));
+            this.revenueReferralLabelsTrend = res.body.data.map(
+              (itemByDuration: any) =>
+                this.trendValue == 'c'
+                  ? this.datePipe.transform(itemByDuration.duration, 'MMM y')
+                  : itemByDuration.duration
+            );
+
             this.mkRevenueByReferralLoader = false;
           }
         },
