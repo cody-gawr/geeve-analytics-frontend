@@ -7,11 +7,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from "@angular/router";
 import { DatePipe } from '@angular/common';
-import { HeaderService } from '../../layouts/full/header/header.service';
 import { MatTabGroup } from '@angular/material/tabs';
-import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../../app.constants';
-import { NgxDaterangepickerMd, DaterangepickerComponent } from 'ngx-daterangepicker-material';
+import { DaterangepickerComponent } from 'ngx-daterangepicker-material';
 import { ChartstipsService } from '../../shared/chartstips.service';
 import {MatSort} from '@angular/material/sort';
 import { environment } from "../../../environments/environment";
@@ -36,6 +34,7 @@ export interface PeriodicElement {
 import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
 import { loadStripe } from '@stripe/stripe-js';
 import { StripePaymentDialog } from './stripe-payment-modal/stripe-payment-modal.component';
+import { SendReviewDialog } from './send-review-dialog/send-review-dialog.component';
 
 @Component({
   selector: 'notes-add-dialog',
@@ -275,6 +274,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   public LabNeeded  : boolean = false;
   public selectDentist = 0;
   public totalCredits = 0;
+  public totalUsedCredits = 0;
  
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
   displayedColumns1: string[] = ['start', 'name', 'dentist',];
@@ -460,9 +460,14 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
         }
     }
     this.getEndOfDays();
+    this.getTotalCredits();
+  }
+
+  getTotalCredits() {
     this.morningHuddleService.getTotalCredits().subscribe(
       res => {
         this.totalCredits = res.body.data.credits;
+        this.totalUsedCredits = res.body.data.used_credits;
     });
   }
 
@@ -1848,6 +1853,23 @@ async getDentistList(){
       const stripePaymentDialog = this.dialog.open(StripePaymentDialog, {
         data: {totalCredits: this.totalCredits}
       });
+    }
+
+    openSendReviewMsgDialog(element) {
+      const sendReviewDialog = this.dialog.open(SendReviewDialog, {
+        data: {
+          patient_id: element.patient_id, 
+          phone_number: element.mobile, 
+          clinic_id: this.clinic_id,
+          patient_name: element.patient_name,
+          mobile: element.mobile
+        }
+      });
+      sendReviewDialog.afterClosed().subscribe(result => {
+        if(result.status){
+          this.getTotalCredits();
+        }
+      })
     }
 
     async checkPaymentStatus() {

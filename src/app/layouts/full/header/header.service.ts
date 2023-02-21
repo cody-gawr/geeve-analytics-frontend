@@ -11,6 +11,7 @@ export class HeaderService {
    public token: string;
    private apiUrl = environment.apiUrl;
    public token_id;
+   public clinics = [];
 
     constructor(private http: HttpClient,private _cookieService: CookieService,private router: Router) {  }
     getHeaders(){
@@ -32,12 +33,13 @@ export class HeaderService {
                         })
             );
     }
-    getClinics(): Observable<any> {        
+    getClinics(): Observable<any> {       
         var header = this.getHeaders();   
         return this.http.get(this.apiUrl +"/clinics/clinicGet",  header)
         .pipe(map((response: HttpResponse<Object>) => {
-                        return response;
-                    })
+                if(response.status == 200) this.clinics = response.body['data'];
+                return response;
+            })
         );
     }
 

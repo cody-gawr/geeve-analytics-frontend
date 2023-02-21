@@ -310,9 +310,9 @@ export class ClinicSettingsService {
         );
     }
 
-    getReviewMsgTemplateList(clinic_id: number): Observable<any> {
+    getReviewMsgTemplateList(clinic_id: number = null): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/reviews/getReviewMsgTemplateList?clinic_id="+clinic_id, header)
+        return this.http.get(this.apiUrl +"/reviews/getReviewMsgTemplateList"+ (clinic_id?"?clinic_id=" + clinic_id: ""), header)
         .pipe(
             map((response: HttpResponse<Object>) => {
                 return response;

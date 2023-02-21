@@ -1,0 +1,44 @@
+<h1 mat-dialog-title>Send Review Message</h1>
+<div mat-dialog-content>
+    <div class="phone-fields">
+        <div class="phone-country-code">
+            <mat-form-field>
+                <mat-label>Code</mat-label>
+                    <mat-select [(ngModel)]="phoneCountryCode" name="food">
+                    <mat-option *ngFor="let code of ['+614', '04']" [value]="code">
+                        {{code}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="phone-number">
+            <mat-form-field>
+                <mat-label>Phone Number</mat-label>
+                <input type="tel" (keypress)="keyPress($event)" [formControl]="phoneNumber" 
+                    matInput placeholder="5555551234">
+                <mat-icon matSuffix>mode_edit</mat-icon>
+                <mat-error *ngIf="phoneNumber.invalid">{{getPhoneErrors()}}</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+
+    
+    <mat-form-field appearance="fill">
+        <mat-label>Message Template</mat-label>
+        <mat-select [(value)]="selectedReviewMsg" (selectionChange)="onChangeReviewMsg()">
+            <mat-option *ngFor="let msgT of msgTemplates" [value]="msgT.id">
+                {{msgT.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Review Message</mat-label>
+        <textarea matInput maxlength="500" [formControl]="review_msg" rows="7"></textarea>
+        <mat-hint align="end">{{review_msg.value.length}} / 500</mat-hint>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button (click)="onSubmitClick($event)" [disabled]="!isValid" cdkFocusInitial>Send</button>
+</div>

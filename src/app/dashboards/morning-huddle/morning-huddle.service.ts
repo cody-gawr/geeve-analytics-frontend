@@ -534,4 +534,14 @@ export class MorningHuddleService {
                 return res;
         }));
     }
+
+    sendReviewMsg(clinic_id: number, patient_id: number, review_msg: string, phone_number: string):Observable<HttpResponse<any>>{
+        const header = this.getHeaders();
+        return this.http.post(this.apiUrl + "/reviews/sendReviewMsg", {
+            clinic_id, patient_id, review_msg, phone_number
+        }, header).pipe(
+            map((res: HttpResponse<any>) => {
+                return res;
+        }));
+    }
 }

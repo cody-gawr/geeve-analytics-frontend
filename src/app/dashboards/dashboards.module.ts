@@ -34,6 +34,7 @@ import { DateMenuBarComponent } from './date-menu-bar/date-menu-bar.component';
 import { SharedModule } from '../shared/shared.module';
 import { DemoMaterialModule } from '../demo-material-module';
 import { StripePaymentDialog } from './morning-huddle/stripe-payment-modal/stripe-payment-modal.component';
+import { SendReviewDialog } from './morning-huddle/send-review-dialog/send-review-dialog.component';
 
 
 
@@ -75,7 +76,8 @@ import { StripePaymentDialog } from './morning-huddle/stripe-payment-modal/strip
     HealthScreenComponent, 
     DateMenuBarComponent,
     FollowupsComponent,
-    StripePaymentDialog
+    StripePaymentDialog,
+    SendReviewDialog
   ]
 })
 export class DashboardsModule {}
