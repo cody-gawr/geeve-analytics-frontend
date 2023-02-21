@@ -2746,7 +2746,6 @@ export class FinancesComponent implements AfterViewInit {
         (res) => {
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
-          this.finCollection();
           this.totalProductionCollection1 = [
             {
               data: [],
@@ -2772,24 +2771,23 @@ export class FinancesComponent implements AfterViewInit {
               Array.isArray(this.clinic_id)
             ) {
               this.isAllClinic = true;
-              const collection: any[] = [];
+              const productions: any[] = [];
 
               res.body.data.forEach((item: any, idx: number) => {
-                collection.push({
+                productions.push({
                   data: [Math.round(item.production)],
                   label: item.clinic_name,
                   backgroundColor: this.doughnutChartColors[idx],
                   hoverBackgroundColor: this.doughnutChartColors[idx]
                 });
               });
-              this.totalProductionCollection1 = collection;
+              this.totalProductionCollection1 = productions;
             } else {
               this.isAllClinic = false;
               this.totalProductionCollection1[0]['data'] = [];
-
-              if (res.body.data[0])
-                this.totalProductionLabel = res.body.data[0].provider_name;
-              else this.totalProductionLabel = '';
+              this.totalProductionLabel = res.body.data[0]
+                ? res.body.data[0].provider_name
+                : '';
 
               this.totalProductionCollection1[0]['data'].push(
                 this.totalProductionVal
@@ -2801,6 +2799,8 @@ export class FinancesComponent implements AfterViewInit {
               )
                 this.totalProductionTrendIcon = 'up';
             }
+
+            this.finCollection();
           }
         },
         (error) => {
@@ -2858,17 +2858,31 @@ export class FinancesComponent implements AfterViewInit {
               Array.isArray(this.clinic_id)
             ) {
               this.isAllClinic = true;
-              res.body.data.forEach((item, ind) => {
-                this.totalProductionCollection1[ind]['data'].push(
-                  Math.round(item.collection)
-                );
-                this.totalProductionCollection1[ind]['label'] =
-                  item.clinic_name;
-                this.totalProductionCollection1[ind]['backgroundColor'] =
-                  this.doughnutChartColors[ind];
-                this.totalProductionCollection1[ind]['hoverBackgroundColor'] =
-                  this.doughnutChartColors[ind];
-              });
+              this.totalProductionCollection1 =
+                this.totalProductionCollection1.map((item) => {
+                  const collectionItem = (<any[]>res.body.data).find(
+                    (ele) => ele.clinic_name == item.label
+                  );
+                  console.log(collectionItem);
+                  return {
+                    ...item,
+                    data: !!collectionItem
+                      ? [...item.data, Math.round(collectionItem.collection)]
+                      : item.data
+                  };
+                });
+              console.log(this.totalProductionCollection1);
+              // res.body.data.forEach((item, ind) => {
+              //   this.totalProductionCollection1[ind]['data'].push(
+              //     Math.round(item.collection)
+              //   );
+              //   this.totalProductionCollection1[ind]['label'] =
+              //     item.clinic_name;
+              //   this.totalProductionCollection1[ind]['backgroundColor'] =
+              //     this.doughnutChartColors[ind];
+              //   this.totalProductionCollection1[ind]['hoverBackgroundColor'] =
+              //     this.doughnutChartColors[ind];
+              // });
 
               this.totalProductionCollectionLabel1 = [
                 'Production',

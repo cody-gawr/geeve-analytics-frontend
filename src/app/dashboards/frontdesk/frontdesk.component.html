@@ -1237,10 +1237,8 @@
               <div class="chart">
                 <div
                   *ngIf="
-                    showmulticlinicFta == false &&
-                    !showTrend &&
-                    ftaTotal > 0 &&
-                    !fdFtaRatioLoader
+                    !(showmulticlinicFta || showTrend || fdFtaRatioLoader) &&
+                    ftaTotal > 0
                   "
                   class="chart-recall-rate"
                 >
