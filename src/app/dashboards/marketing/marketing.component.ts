@@ -1570,6 +1570,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     this.newPatientsTimeLabels = [];
 
     this.mkNewPatientsByReferalMulti = [];
+    this.newPatientsTimeData = [];
     this.showmulticlinicNewPatients = false;
     this.mkNewPatientsByReferalLabels = [];
     let mkNewPatientsLabels = [];
@@ -1664,6 +1665,8 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                   }
                 });
               }
+
+              console.log(this.newPatientsTimeData);
 
               setTimeout(() => {
                 this.mkNewPatientsByReferralLoader = false;
