@@ -639,8 +639,7 @@ export class ClinicSettingsComponent implements OnInit {
       }
     }, error => {
       this.toastr.error(error.message);
-    }
-    );
+    });
   }
 
   facebookId = new FormControl('', Validators.required);
