@@ -753,10 +753,14 @@
           <mat-card class="sa_no_tabs_area">
             <mat-card-content class="sa_matcard_content">
               <mat-card-title class="text-center">
-                <span *ngIf="showClinicByclinic; else productionPerClinician"
+                <span
+                  *ngIf="
+                    showClinicByclinic;
+                    else productionPerClinicianTemplate
+                  "
                   >Production % Per Clinic</span
                 >
-                <ng-template #productionPerClinician>
+                <ng-template #productionPerClinicianTemplate>
                   <span>Production % Per Clinician</span>
                 </ng-template>
                 <div class="info-icon-container">

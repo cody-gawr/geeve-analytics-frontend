@@ -63,13 +63,13 @@
                     />
                   </div>
                   <div
-                    *ngIf="dentistProductionLoader; else production"
+                    *ngIf="dentistProductionLoader; else productionCard"
                     class="production_description production_description-grow"
                   >
                     <h4>Production</h4>
                     <b class="loader-text">Calculating...</b>
                   </div>
-                  <template #production>
+                  <ng-template #productionCard>
                     <div
                       class="production_description production_description-grow"
                     >
@@ -91,7 +91,7 @@
                         Last Month: ${{ dentistProductionTa | number : '1.' }}
                       </div>
                     </div>
-                  </template>
+                  </ng-template>
                 </div>
               </mat-card-content>
             </mat-card>
@@ -122,13 +122,13 @@
                     />
                   </div>
                   <div
-                    *ngIf="dentistHourlyRateLoader; else dentistHourlyRate"
+                    *ngIf="dentistHourlyRateLoader; else dentistHourlyRateCard"
                     class="production_description production_description-grow"
                   >
                     <h4>Hourly Rate</h4>
                     <b class="loader-text">Calculating...</b>
                   </div>
-                  <template #dentistHourlyRate>
+                  <ng-template #dentistHourlyRateCard>
                     <div
                       class="production_description production_description-grow"
                     >
@@ -145,7 +145,7 @@
                         Last Month: ${{ dentistHourlyRateTa | number : '1.' }}
                       </div>
                     </div>
-                  </template>
+                  </ng-template>
                 </div>
               </mat-card-content>
             </mat-card>
@@ -177,14 +177,14 @@
                   <div
                     *ngIf="
                       dentistReappointRateLoader;
-                      else dentistReappointRate
+                      else dentistReappointRateTemplate
                     "
                     class="production_description production_description-grow"
                   >
                     <h4>Reappointment Rate</h4>
                     <b class="loader-text">Calculating...</b>
                   </div>
-                  <template #dentistReappointRate>
+                  <ng-template #dentistReappointRateTemplate>
                     <div
                       class="production_description production_description-grow"
                     >
@@ -203,7 +203,7 @@
                         {{ dentistReappointRateTa | number : '1.' }}%
                       </div>
                     </div>
-                  </template>
+                  </ng-template>
                 </div>
               </mat-card-content>
             </mat-card>
@@ -256,7 +256,7 @@
                     />
                   </div>
                   <div
-                    *ngIf="productionstats; else loadingProduction"
+                    *ngIf="productionstats; else loadingProductionTemplate"
                     class="production_description production_description-grow"
                   >
                     <h4>Production</h4>
@@ -273,14 +273,14 @@
                       </span>
                     </span>
                   </div>
-                  <template #loadingProduction>
+                  <ng-template #loadingProductionTemplate>
                     <div
                       class="production_description production_description-grow"
                     >
                       <h4>Production</h4>
                       <b class="loader-text">Calculating...</b>
                     </div>
-                  </template>
+                  </ng-template>
                   <div
                     class="prodction_main_box_label"
                     fxFlexAlign="start"
@@ -321,7 +321,10 @@
                   </div>
 
                   <div
-                    *ngIf="prodpervisitstats; else calculatinProdPerVisit"
+                    *ngIf="
+                      prodpervisitstats;
+                      else calculatinProdPerVisitTemplate
+                    "
                     class="production_description production_description-grow"
                   >
                     <h4>Prod. Per Visit</h4>
@@ -332,14 +335,14 @@
                     >
                     <span class="change_value" *ngIf="!productionVal">$0</span>
                   </div>
-                  <template #calculatinProdPerVisit>
+                  <ng-template #calculatinProdPerVisitTemplate>
                     <div
                       class="production_description production_description-grow"
                     >
                       <h4>Prod. Per Visit</h4>
                       <b class="loader-text">Calculating...</b>
                     </div>
-                  </template>
+                  </ng-template>
                   <div
                     class="prodction_main_box_label"
                     fxFlexAlign="start"
@@ -384,7 +387,7 @@
                   </div>
 
                   <div
-                    *ngIf="totalvisitstats; else loadingTotalVisits"
+                    *ngIf="totalvisitstats; else loadingTotalVisitsTemplate"
                     class="production_description production_description-grow"
                   >
                     <h4>Total Visits</h4>
@@ -395,14 +398,14 @@
                       </span>
                     </span>
                   </div>
-                  <template #loadingTotalVisits>
+                  <ng-template #loadingTotalVisitsTemplate>
                     <div
                       class="production_description production_description-grow"
                     >
                       <h4>Total Visits</h4>
                       <b class="loader-text">Calculating...</b>
                     </div>
-                  </template>
+                  </ng-template>
                   <div
                     class="prodction_main_box_label"
                     fxFlexAlign="start"
