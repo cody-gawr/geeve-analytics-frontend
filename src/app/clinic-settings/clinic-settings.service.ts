@@ -291,7 +291,17 @@ export class ClinicSettingsService {
     
     getSocialLinks(clinic_id: number): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/reviews/getSocialLinks?clinic_id="+clinic_id, header)
+        return this.http.get(this.apiUrl+"/reviews/getSocialLinks?clinic_id="+clinic_id, header)
+        .pipe(
+            map((response: HttpResponse<Object>) => {
+                return response;
+            })
+        );
+    }
+
+    getGoogleAuthUrl(clinic_id: number): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/reviews/getGoogleAuthUrl?clinic_id="+clinic_id, header)
         .pipe(
             map((response: HttpResponse<Object>) => {
                 return response;

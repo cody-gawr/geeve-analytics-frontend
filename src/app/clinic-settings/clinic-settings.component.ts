@@ -645,6 +645,7 @@ export class ClinicSettingsComponent implements OnInit {
   facebookId = new FormControl('', Validators.required);
   googleId = new FormControl('', Validators.required);
   googleAuthUrl = "";
+  googleConnected = false;
 
   getSocialLinks() {
     this.clinicSettingsService.getSocialLinks(this.id).subscribe(
@@ -653,8 +654,7 @@ export class ClinicSettingsComponent implements OnInit {
           this.facebookId = new FormControl(result.body.data.facebook_id, Validators.required);
           this.googleId = new FormControl(result.body.data.google_id, Validators.required);
         }
-
-        this.googleAuthUrl = result.body.authorizeUrl;
+        this.googleConnected = result.body.googleConnected;
       },
       error => {
         this.toastr.error(error.message);
@@ -663,11 +663,19 @@ export class ClinicSettingsComponent implements OnInit {
   }
 
   linkGoogle() {
-    if(this.googleAuthUrl)
-      window.open(this.googleAuthUrl);
-    else {
-      this.toastr.warning('Already Connected')
-    }
+    this.clinicSettingsService.getGoogleAuthUrl(this.id).subscribe(
+      result => {
+        if(result.body.data)
+          window.open(result.body.data);
+        else{
+          this.toastr.warning('Already Connected')
+          this.googleConnected = true;
+        }
+      },
+      error => {
+        this.toastr.error(error.message);
+      }
+    );
   }
 
   saveSocialLinks(){
