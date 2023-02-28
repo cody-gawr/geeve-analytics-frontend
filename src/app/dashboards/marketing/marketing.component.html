@@ -380,11 +380,9 @@
                 </div>
               </div>
             </div>
-            <div class="card-footer" *ngIf="activePatients == false">
+            <div class="card-footer" *ngIf="!activePatients">
               <div
-                *ngIf="
-                  showTrend == false && showmulticlinicNewPatientsRev == true
-                "
+                *ngIf="!showTrend && showmulticlinicNewPatientsRev"
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
                 class="m-t-40 sa_chart_details_sec pieChartDetails"
@@ -433,9 +431,7 @@
             <mat-card-title class="text-center">
               <div>
                 <span
-                  *ngIf="
-                    showTrend == false && trendText && activePatients == false
-                  "
+                  *ngIf="!(showTrend || activePatients) && trendText"
                   class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
                   matTooltip="{{ trendText }} : {{
                     newPatientsPrevTotal | number : '1.0-0'
@@ -445,9 +441,7 @@
                     src="../assets/images/trend_{{ newPatientsTooltip }}.png"
                 /></span>
                 <span
-                  *ngIf="
-                    showTrend == false && trendText && activePatients == true
-                  "
+                  *ngIf="!(activePatients || showTrend) && trendText"
                   class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
                   matTooltip="{{ trendText }} : {{
                     fdActivePatientsTa | number : '1.0-0'
@@ -462,9 +456,6 @@
               </div>
               <div class="sa_box_title_right_buttons"></div>
               <div class="info-icon-container marketing">
-                <!-- <i title="Active Patients" class="fas fa-heartbeat"
-                                    [ngClass]="activePatients == true? 'active' : ''"
-                                    *ngIf="apiUrl.includes('test-') && showTrend == false" (click)="activePat()"></i> -->
                 <img
                   *ngIf="!activePatients"
                   [tooltip]="charTips['36']"
@@ -622,10 +613,9 @@
 
                 <div
                   *ngIf="
-                    showTrend == false &&
+                    !(showTrend || fdActivePatientLoader) &&
                     fdActivePatients <= 0 &&
-                    fdActivePatientLoader == false &&
-                    activePatients == true
+                    activePatients
                   "
                 >
                   <div class="sa_nodata_div"></div>
@@ -758,9 +748,9 @@
                 </div>
               </div>
             </div>
-            <div class="card-footer" *ngIf="activePatients == false">
+            <div class="card-footer" *ngIf="!activePatients">
               <div
-                *ngIf="showTrend == false"
+                *ngIf="!showTrend"
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
                 class="m-t-40 sa_chart_details_sec pieChartDetails"
@@ -816,9 +806,9 @@
                 </div>
               </div>
             </div>
-            <div class="card-footer" *ngIf="activePatients == true">
+            <div class="card-footer" *ngIf="activePatients">
               <div
-                *ngIf="showTrend == false"
+                *ngIf="!showTrend"
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
                 class="m-t-40 sa_chart_details_sec pieChartDetails"
@@ -866,7 +856,7 @@
             <mat-card-title class="text-center">
               <div>
                 <span
-                  *ngIf="showTrend == false && trendText"
+                  *ngIf="!showTrend && trendText"
                   class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
                   matTooltip="{{ trendText }} : {{
                     newPatientsPrevTotal | number : '1.0-0'
@@ -879,9 +869,6 @@
               </div>
               <div class="sa_box_title_right_buttons"></div>
               <div class="info-icon-container marketing">
-                <!-- <i title="Active Patients" class="fas fa-heartbeat"
-                                    [ngClass]="activePatients == true? 'active' : ''"
-                                    *ngIf="apiUrl.includes('test-') && showTrend == false" (click)="activePat()"></i> -->
                 <img
                   [tooltip]="charTips['36']"
                   src="../assets/images/info-icon.png"
@@ -936,9 +923,8 @@
                 </div>
                 <div
                   *ngIf="
-                    showTrend == false &&
                     newPatientsTotal <= 0 &&
-                    fdnewPatientsRatioLoader == false
+                    !(showTrend || fdnewPatientsRatioLoader)
                   "
                 >
                   <div class="sa_nodata_div"></div>
@@ -949,9 +935,9 @@
 
                 <div
                   *ngIf="
-                    showTrend == true &&
+                    showTrend &&
                     newPatientsChartTrend1.length > 0 &&
-                    showNPclinic == false
+                    !showNPclinic
                   "
                   class="chart-Trend1-patients trendH"
                 >
@@ -1016,7 +1002,7 @@
             </div>
             <div class="card-footer">
               <div
-                *ngIf="showTrend == false"
+                *ngIf="!showTrend"
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
                 class="m-t-40 sa_chart_details_sec pieChartDetails"
@@ -1117,11 +1103,9 @@
               <div class="CategoriesBtn CategoriesBtnMarketing">
                 <button
                   *ngIf="
-                    showTrend == false &&
                     connectedwith &&
                     showAccountsButton &&
-                    !newAcqValueError &&
-                    !multipleClinicsSelected
+                    !(showTrend || newAcqValueError || multipleClinicsSelected)
                   "
                   class="mat-button-sm mat-green-button"
                   (click)="ngxSmartModalService.getModal('myModal').open()"
@@ -1381,10 +1365,8 @@
                 <div
                   class="chart-num-patients"
                   *ngIf="
-                    showAPBar == false &&
-                    showTrend == false &&
                     fdActivePatients > 0 &&
-                    fdActivePatientLoader == false
+                    !(showAPBar || showTrend || fdActivePatientLoader)
                   "
                 >
                   <ngx-gauge
@@ -1554,7 +1536,7 @@
             <mat-card-title class="text-center">
               <div>
                 <span
-                  *ngIf="showTrend == false && trendText"
+                  *ngIf="!showTrend && trendText"
                   class="referral_cliniciansrral1Tool referral sa_inc_dec_arrows trend_arrow"
                   matTooltip="{{ trendText }} : {{ visitsPrevTotal }}"
                   ><img
