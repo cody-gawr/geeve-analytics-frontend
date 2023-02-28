@@ -568,19 +568,21 @@
     <mat-card-content>
       <div class="social-links">
         <mat-form-field appearance="fill">
-          <mat-label>Enter FaceBook  ID</mat-label>
+          <mat-label>Enter FaceBook Review Link</mat-label>
           <input matInput [formControl]="facebookId">
         </mat-form-field>
         <mat-form-field appearance="fill">
-          <mat-label>Enter Google ID</mat-label>
+          <mat-label>Enter Google Review Link</mat-label>
           <input matInput [formControl]="googleId">
         </mat-form-field>
       </div>
       <button mat-raised-button class="mat-dc" (click)="saveSocialLinks()">Save</button>
+      <br><br>
+      <button mat-raised-button (click)="linkGoogle()" class="mat-dc">Connect To Google <mat-icon>double_arrow</mat-icon></button>
     </mat-card-content>
   </mat-expansion-panel>
 
-    <mat-expansion-panel *ngIf="apiUrl.includes('test')" >
+  <mat-expansion-panel *ngIf="apiUrl.includes('test')" >
      <mat-expansion-panel-header>
       <mat-panel-title>
         Review Message Templates
