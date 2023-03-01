@@ -1,5 +1,7 @@
-
-<h1 mat-dialog-title>Stripe Payment</h1>
+<div class="dialog-header">
+    <h1 mat-dialog-title>Stripe Payment</h1>
+    <mat-icon aria-hidden="false" (click)="onNoClick()">close</mat-icon>
+</div>
 <div mat-dialog-content>
     <div style="min-width:450px; padding-right:24px;">
         <mat-stepper [linear]="true" #stepper>
@@ -14,7 +16,7 @@
                     </mat-select>
                   </mat-form-field>
                 <div>
-                    <button mat-stroked-button class="mat-dc" mat-button [disabled]="selectedCredit <= data.totalCredits" (click)="nextPaymentForm(stepper)">Go to payment</button>
+                    <button mat-stroked-button class="mat-dc" mat-button (click)="nextPaymentForm(stepper)">Go to payment</button>
                 </div>
             </mat-step>
             <mat-step label="Complete the payment">

@@ -1,4 +1,7 @@
-<h1 mat-dialog-title>Send Review Message</h1>
+<div class="dialog-header">
+    <h1 mat-dialog-title>Send Review Message</h1>
+    <mat-icon aria-hidden="false" (click)="onNoClick()">close</mat-icon>
+</div>
 <div mat-dialog-content>
     <div class="phone-fields">
         <div class="phone-country-code">
@@ -34,8 +37,8 @@
 
     <mat-form-field appearance="fill">
         <mat-label>Review Message</mat-label>
-        <textarea matInput maxlength="500" [formControl]="review_msg" rows="7"></textarea>
-        <mat-hint align="end">{{review_msg.value.length}} / 500</mat-hint>
+        <textarea matInput [formControl]="review_msg" rows="7"></textarea>
+        <mat-hint align="end">{{review_msg.value.length}} / 160, {{math.ceil(review_msg.value.length/160)}} messages</mat-hint>
     </mat-form-field>
 </div>
 <div mat-dialog-actions>

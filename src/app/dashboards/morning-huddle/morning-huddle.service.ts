@@ -529,7 +529,7 @@ export class MorningHuddleService {
 
     getTotalCredits():Observable<HttpResponse<any>>{
         const header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/reviews/getTotalCredits", header).pipe(
+        return this.http.get(this.apiUrl + "/reviews/getUsedCredits", header).pipe(
             map((res: HttpResponse<any>) => {
                 return res;
         }));

@@ -460,14 +460,13 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
         }
     }
     this.getEndOfDays();
-    this.getTotalCredits();
+    this.getUsedCreditsMonthly();
   }
 
-  getTotalCredits() {
+  getUsedCreditsMonthly() {
     this.morningHuddleService.getTotalCredits().subscribe(
       res => {
-        this.totalCredits = res.body.data.credits;
-        this.totalUsedCredits = res.body.data.used_credits;
+        this.totalUsedCredits = res.body.data
     });
   }
 
@@ -1850,9 +1849,7 @@ async getDentistList(){
     }
 
     buyCredits() {
-      const stripePaymentDialog = this.dialog.open(StripePaymentDialog, {
-        data: {totalCredits: this.totalCredits}
-      });
+      const stripePaymentDialog = this.dialog.open(StripePaymentDialog);
     }
 
     openSendReviewMsgDialog(element) {
@@ -1867,7 +1864,7 @@ async getDentistList(){
       });
       sendReviewDialog.afterClosed().subscribe(result => {
         if(result.status){
-          this.getTotalCredits();
+          this.getUsedCreditsMonthly();
         }
       })
     }

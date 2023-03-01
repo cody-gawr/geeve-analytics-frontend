@@ -822,7 +822,7 @@
           <button id="p-bttom" (click)="printFrontDeskRemindersTab()" tabindex="2" class="mat-raised-button mat-dc float-right"><i class="fa fa-print"></i> Print</button>
         </div>
         <strong>Current Day: {{ remindersRecallsOverdueDate | date:'EEE MMM d':'timezone' }}</strong>
-        <button *ngIf="apiUrl.includes('test')" id="topup-credits" (click)="buyCredits()" class="mat-raised-button mat-dc">({{totalUsedCredits}}/{{totalCredits}}) TopUp</button>
+        <button *ngIf="apiUrl.includes('test')" id="topup-credits" (click)="buyCredits()" class="mat-raised-button mat-dc">{{totalUsedCredits}} TopUp</button>
       </div>
       <div class="sa_dentist_graphs_area sa_profit_bar patient-schedule">
         <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
