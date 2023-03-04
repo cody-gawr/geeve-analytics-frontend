@@ -7,7 +7,8 @@ import { environment } from "../../../../environments/environment";
 import { MorningHuddleService } from "../morning-huddle.service";
 
 export interface DialogData {
-    totalCredits: number;
+    //totalCredits: number;
+    notify_msg?: string;
 }
 
 @Component({
@@ -27,7 +28,7 @@ export class StripePaymentDialog {
         private morningHuddle: MorningHuddleService,
         private toastr: ToastrService,
     ) {
-        this.creditOptions = this.creditOptions.filter(it => it.amount > data.totalCredits);
+        //this.creditOptions = this.creditOptions.filter(it => it.amount > data.totalCredits);
     }
 
     async initStripeElements() {

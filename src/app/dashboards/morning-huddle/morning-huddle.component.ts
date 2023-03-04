@@ -275,6 +275,8 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   public selectDentist = 0;
   public totalCredits = 0;
   public totalUsedCredits = 0;
+  public totalRemainingCredits = 0;
+  public noCredits = true;
  
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
   displayedColumns1: string[] = ['start', 'name', 'dentist',];
@@ -466,7 +468,10 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   getUsedCreditsMonthly() {
     this.morningHuddleService.getTotalCredits().subscribe(
       res => {
-        this.totalUsedCredits = res.body.data
+        this.totalUsedCredits = res.body.data.used_credits;
+
+        this.noCredits = res.body.data.no_credits;
+        this.totalRemainingCredits = res.body.data.remain_credits;
     });
   }
 
@@ -1853,20 +1858,25 @@ async getDentistList(){
     }
 
     openSendReviewMsgDialog(element) {
-      const sendReviewDialog = this.dialog.open(SendReviewDialog, {
-        data: {
-          patient_id: element.patient_id, 
-          phone_number: element.mobile, 
-          clinic_id: this.clinic_id,
-          patient_name: element.patient_name,
-          mobile: element.mobile
-        }
-      });
-      sendReviewDialog.afterClosed().subscribe(result => {
-        if(result.status){
-          this.getUsedCreditsMonthly();
-        }
-      })
+      if(this.noCredits){
+        this.dialog.open(StripePaymentDialog, {data: {notify_msg: 'You have no credits remaining, please top-up your account to send more review invites.'}});
+      }else{
+        const sendReviewDialog = this.dialog.open(SendReviewDialog, {
+          data: {
+            patient_id: element.patient_id, 
+            phone_number: element.mobile, 
+            clinic_id: this.clinic_id,
+            patient_name: element.patient_name,
+            mobile: element.mobile
+          }
+        });
+        sendReviewDialog.afterClosed().subscribe(result => {
+          if(result.status){
+            this.getUsedCreditsMonthly();
+          }
+        })
+      }
+
     }
 
     async checkPaymentStatus() {

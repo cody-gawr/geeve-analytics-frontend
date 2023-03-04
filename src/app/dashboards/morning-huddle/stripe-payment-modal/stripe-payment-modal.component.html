@@ -7,6 +7,7 @@
         <mat-stepper [linear]="true" #stepper>
             <mat-step>
                 <ng-template matStepLabel>Number of Credits</ng-template>
+                <p *ngIf="data && data.notify_msg">{{data.notify_msg}}</p>
                 <mat-form-field appearance="fill">
                     <mat-label>Select the number of credicts you need to upgrade</mat-label>
                     <mat-select [(value)]="selectedCredit">

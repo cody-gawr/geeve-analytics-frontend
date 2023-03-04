@@ -43,5 +43,5 @@
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()">Cancel</button>
-    <button mat-button (click)="onSubmitClick($event)" [disabled]="!isValid" cdkFocusInitial>Send</button>
+    <button mat-button (click)="onSubmitClick($event)" [disabled]="!isValid || isWaitingResponse" cdkFocusInitial>Send</button>
 </div>
