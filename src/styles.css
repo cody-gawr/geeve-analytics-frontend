@@ -8960,3 +8960,13 @@ ul.ngx-pagination.ng-star-inserted {
   background: -webkit-linear-gradient(top, #fff 20%, rgba(0, 111, 115, 1) 99%);
   background: linear-gradient(to bottom, #fff 20%, rgba(0, 111, 115, 1) 99%);
 }
+
+div.dialog-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+div.dialog-header .mat-icon {
+  cursor: pointer;
+}

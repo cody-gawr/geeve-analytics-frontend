@@ -1247,271 +1247,510 @@
             ({{ totalUsedCredits }}/{{ totalCredits }}) TopUp
           </button>
         </div>
-        <div class="sa_dentist_graphs_area sa_profit_bar patient-schedule">
+        <strong
+          >Current Day:
+          {{ remindersRecallsOverdueDate | date : 'EEE MMM d' : 'timezone' }} |
+          Used Credits: {{ totalUsedCredits }} | Remaining Credits:
+          {{ totalRemainingCredits }}</strong
+        >
+        <button
+          *ngIf="apiUrl.includes('test')"
+          id="topup-credits"
+          (click)="buyCredits()"
+          class="mat-raised-button mat-dc"
+        >
+          TopUp
+        </button>
+      </div>
+      <div class="sa_dentist_graphs_area sa_profit_bar patient-schedule">
+        <div
+          fxLayout="row wrap"
+          fxLayoutGap="20px"
+          fxLayoutGap.md="20px"
+          fxLayoutGap.sm="0px"
+          fxLayoutGap.xs="0px"
+        >
           <div
-            fxLayout="row wrap"
-            fxLayoutGap="20px"
-            fxLayoutGap.md="20px"
-            fxLayoutGap.sm="0px"
-            fxLayoutGap.xs="0px"
+            *ngIf="currentDentistReminder"
+            fxFlex="calc(20% - 10px)"
+            fxFlex.md="calc(50% - 10px)"
+            fxFlex.sm="100"
+            fxFlex.xs="100"
+          ></div>
+          <div
+            fxFlex="calc(20% - 10px)"
+            fxFlex.md="calc(50% - 10px)"
+            fxFlex.sm="100"
+            fxFlex.xs="100"
+            class="sa_huddle sa_flexbg mh-matcard mh-matcard-darkblue"
           >
-            <div
-              *ngIf="currentDentistReminder"
-              fxFlex="calc(20% - 10px)"
-              fxFlex.md="calc(50% - 10px)"
-              fxFlex.sm="100"
-              fxFlex.xs="100"
-            ></div>
-            <div
-              fxFlex="calc(20% - 10px)"
-              fxFlex.md="calc(50% - 10px)"
-              fxFlex.sm="100"
-              fxFlex.xs="100"
-              class="sa_huddle sa_flexbg mh-matcard mh-matcard-darkblue"
-            >
-              <mat-card class="dentistProduction sa_hccard">
-                <mat-card-content class="sa_matcard_content">
-                  <div class="prodction_main_box prodction_main_box_huddle">
-                    <!-- <div class="icon black">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="prodction_main_box prodction_main_box_huddle">
+                  <!-- <div class="icon black">
                     <i class="fas fa-user-alt"></i>
                   </div> -->
 
-                    <div class="production_images">
-                      <img
-                        src="../assets/images/huddle_appointment.png"
-                        alt="reminders-appointments"
-                      />
-                    </div>
-                    <div
-                      class="production_description production_description_huddle"
-                    >
-                      <h4>Appointments</h4>
-                      <div class="patients-num">
-                        <span
-                          class="change_value"
-                          *ngIf="!remindersRecallsOverdueLoader"
-                          >{{ remindersRecallsOverdue.length }}</span
-                        >
-                        <!-- <span class="change_value" *ngIf="!remindersRecallsOverdue && !remindersRecallsOverdueLoader">0</span> -->
-                        <span
-                          class="calculatingSp text"
-                          *ngIf="remindersRecallsOverdueLoader"
-                          >Calculating...</span
-                        >
-                        <!-- <span class="change_value">{{ todayPatients }}</span> -->
-                      </div>
+                  <div class="production_images">
+                    <img
+                      src="../assets/images/huddle_appointment.png"
+                      alt="reminders-appointments"
+                    />
+                  </div>
+                  <div
+                    class="production_description production_description_huddle"
+                  >
+                    <h4>Appointments</h4>
+                    <div class="patients-num">
+                      <span
+                        class="change_value"
+                        *ngIf="!remindersRecallsOverdueLoader"
+                        >{{ remindersRecallsOverdue.length }}</span
+                      >
+                      <!-- <span class="change_value" *ngIf="!remindersRecallsOverdue && !remindersRecallsOverdueLoader">0</span> -->
+                      <span
+                        class="calculatingSp text"
+                        *ngIf="remindersRecallsOverdueLoader"
+                        >Calculating...</span
+                      >
+                      <!-- <span class="change_value">{{ todayPatients }}</span> -->
                     </div>
                   </div>
-                  <!--  <div class="card-loading cards" *ngIf="remindersRecallsOverdueLoader">
+                </div>
+                <!--  <div class="card-loading cards" *ngIf="remindersRecallsOverdueLoader">
                       <img class="tableLoader" src="../../assets/images/logo-icon.gif">
                       <div class="loader-text">Calculating...</div>
                     </div> -->
-                </mat-card-content>
-              </mat-card>
-            </div>
-            <div
-              fxFlex="calc(20% - 10px)"
-              fxFlex.md="calc(50% - 10px)"
-              fxFlex.sm="100"
-              fxFlex.xs="100"
-              class="sa_huddle sa_flexbg mr0-md mh-matcard mh-matcard-red"
-            >
-              <mat-card class="dentistProduction sa_hccard">
-                <mat-card-content class="sa_matcard_content">
-                  <!-- <div class="card-icon"><i class="fas fa-user-plus"></i></div> -->
-                  <!-- <mat-card-title class="">
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div
+            fxFlex="calc(20% - 10px)"
+            fxFlex.md="calc(50% - 10px)"
+            fxFlex.sm="100"
+            fxFlex.xs="100"
+            class="sa_huddle sa_flexbg mr0-md mh-matcard mh-matcard-red"
+          >
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <!-- <div class="card-icon"><i class="fas fa-user-plus"></i></div> -->
+                <!-- <mat-card-title class="">
                   <div class="ttl_value">{{ scheduleNewPatieltd }}</div>
                   New Patients </mat-card-title> -->
-                  <div class="prodction_main_box prodction_main_box_huddle">
-                    <div class="icon red">
-                      <i class="fas fa-user-plus"></i>
-                    </div>
-                    <div
-                      class="production_description production_description_huddle"
-                    >
-                      <h4>New Patients</h4>
-                      <div class="patients-num">
-                        <span
-                          class="change_value"
-                          *ngIf="!scheduleNewPatientsLoader"
-                          >{{ scheduleNewPatieltd }}</span
-                        >
-                        <span
-                          class="calculatingSp text"
-                          *ngIf="scheduleNewPatientsLoader"
-                          >Calculating...</span
-                        >
-                        <img
-                          src="../assets/images/red-swirl.png"
-                          alt="rebook-chart"
-                          *ngIf="!scheduleNewPatientsLoader"
-                        />
-                      </div>
-                    </div>
+                <div class="prodction_main_box prodction_main_box_huddle">
+                  <div class="icon red">
+                    <i class="fas fa-user-plus"></i>
                   </div>
-                </mat-card-content>
-              </mat-card>
-            </div>
-            <div
-              *ngIf="currentDentistReminder"
-              fxFlex="calc(20% - 10px)"
-              fxFlex.md="calc(50% - 10px)"
-              fxFlex.sm="100"
-              fxFlex.xs="100"
-            ></div>
-            <div
-              *ngIf="!currentDentistReminder"
-              fxFlex="calc(20% - 10px)"
-              fxFlex.md="calc(50% - 10px)"
-              fxFlex.sm="100"
-              fxFlex.xs="100"
-              class="sa_huddle sa_flexbg mr0-md mh-matcard mh-matcard-red"
-            >
-              <mat-card class="dentistProduction sa_hccard">
-                <mat-card-content class="sa_matcard_content">
-                  <div class="prodction_main_box prodction_main_box_huddle">
-                    <div class="icon orange">
-                      <i class="fas fa-coins"></i>
-                    </div>
-                    <div
-                      class="production_description production_description_huddle"
-                    >
-                      <h4>Due Balance</h4>
-                      <div class="patients-num">
-                        <span
-                          class="change_value"
-                          *ngIf="!todayUnscheduledBalLoader"
-                          >${{ todayUnscheduledBal | number : '1.0-0' }}</span
-                        >
-                        <span
-                          class="calculatingSp text"
-                          *ngIf="todayUnscheduledBalLoader"
-                          >Calculating...</span
-                        >
-                      </div>
-                    </div>
-                  </div>
-                </mat-card-content>
-              </mat-card>
-            </div>
-            <div
-              *ngIf="!currentDentistReminder"
-              fxFlex="calc(20% - 10px)"
-              fxFlex.md="calc(50% - 10px)"
-              fxFlex.sm="100"
-              fxFlex.xs="100"
-              class="sa_huddle sa_flexbg mh-matcard mh-matcard-green"
-            >
-              <mat-card class="dentistProduction sa_hccard">
-                <mat-card-content class="sa_matcard_content">
-                  <div class="prodction_main_box prodction_main_box_huddle">
-                    <div class="production_images">
+                  <div
+                    class="production_description production_description_huddle"
+                  >
+                    <h4>New Patients</h4>
+                    <div class="patients-num">
+                      <span
+                        class="change_value"
+                        *ngIf="!scheduleNewPatientsLoader"
+                        >{{ scheduleNewPatieltd }}</span
+                      >
+                      <span
+                        class="calculatingSp text"
+                        *ngIf="scheduleNewPatientsLoader"
+                        >Calculating...</span
+                      >
                       <img
-                        src="../assets/images/huddle_hours.png"
-                        alt="reminders-hours"
+                        src="../assets/images/red-swirl.png"
+                        alt="rebook-chart"
+                        *ngIf="!scheduleNewPatientsLoader"
                       />
                     </div>
-                    <div
-                      class="production_description production_description_huddle"
-                    >
-                      <h4>Unsched. Hours</h4>
-                      <div class="patients-num">
-                        <span
-                          class="change_value"
-                          *ngIf="!todayUnscheduledHoursLoader"
-                          >{{ todayUnscheduledHours }}</span
-                        >
-                        <span
-                          class="calculatingSp text"
-                          *ngIf="todayUnscheduledHoursLoader"
-                          >Calculating...</span
-                        >
-                      </div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div
+            *ngIf="currentDentistReminder"
+            fxFlex="calc(20% - 10px)"
+            fxFlex.md="calc(50% - 10px)"
+            fxFlex.sm="100"
+            fxFlex.xs="100"
+          ></div>
+          <div
+            *ngIf="!currentDentistReminder"
+            fxFlex="calc(20% - 10px)"
+            fxFlex.md="calc(50% - 10px)"
+            fxFlex.sm="100"
+            fxFlex.xs="100"
+            class="sa_huddle sa_flexbg mr0-md mh-matcard mh-matcard-red"
+          >
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="prodction_main_box prodction_main_box_huddle">
+                  <div class="icon orange">
+                    <i class="fas fa-coins"></i>
+                  </div>
+                  <div
+                    class="production_description production_description_huddle"
+                  >
+                    <h4>Due Balance</h4>
+                    <div class="patients-num">
+                      <span
+                        class="change_value"
+                        *ngIf="!todayUnscheduledBalLoader"
+                        >${{ todayUnscheduledBal | number : '1.0-0' }}</span
+                      >
+                      <span
+                        class="calculatingSp text"
+                        *ngIf="todayUnscheduledBalLoader"
+                        >Calculating...</span
+                      >
                     </div>
                   </div>
-                </mat-card-content>
-              </mat-card>
-            </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div
+            *ngIf="!currentDentistReminder"
+            fxFlex="calc(20% - 10px)"
+            fxFlex.md="calc(50% - 10px)"
+            fxFlex.sm="100"
+            fxFlex.xs="100"
+            class="sa_huddle sa_flexbg mh-matcard mh-matcard-green"
+          >
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="prodction_main_box prodction_main_box_huddle">
+                  <div class="production_images">
+                    <img
+                      src="../assets/images/huddle_hours.png"
+                      alt="reminders-hours"
+                    />
+                  </div>
+                  <div
+                    class="production_description production_description_huddle"
+                  >
+                    <h4>Unsched. Hours</h4>
+                    <div class="patients-num">
+                      <span
+                        class="change_value"
+                        *ngIf="!todayUnscheduledHoursLoader"
+                        >{{ todayUnscheduledHours }}</span
+                      >
+                      <span
+                        class="calculatingSp text"
+                        *ngIf="todayUnscheduledHoursLoader"
+                        >Calculating...</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
           </div>
         </div>
+      </div>
 
-        <div class="DentistListSecRow mh-table patient_data-table_responsive">
-          <div class="card-loading" *ngIf="remindersRecallsOverdueLoader">
-            <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
-          </div>
-          <table
-            fxHide
-            fxShow.gt-sm
-            mat-table
-            matSort
-            [dataSource]="remindersRecallsOverdue"
-            class="mat-elevation-z8 dentistsve"
-            [ngClass]="remindersRecallsOverdue == 0 ? 'noDataTableClass' : ''"
-          >
-            <!-- Name Column -->
-            <ng-container matColumnDef="start">
-              <th mat-header-cell *matHeaderCellDef>Time</th>
-              <td
-                id="{{ element.provider_id }}"
-                mat-cell
-                *matCellDef="let element"
-              >
-                <span class="newpatient"></span
-                >{{
-                  startDate(element.app_date) + 'T' + element.start
-                    | date : 'h:mm a'
-                }}
-                -
-                {{
-                  endTime(
-                    startDate(element.app_date),
-                    element.start,
-                    element.duration
-                  ) | date : 'h:mm a'
-                }}
+      <div class="DentistListSecRow mh-table patient_data-table_responsive">
+        <div class="card-loading" *ngIf="remindersRecallsOverdueLoader">
+          <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
+        </div>
+        <table
+          fxHide
+          fxShow.gt-sm
+          mat-table
+          matSort
+          [dataSource]="remindersRecallsOverdue"
+          class="mat-elevation-z8 dentistsve"
+          [ngClass]="remindersRecallsOverdue == 0 ? 'noDataTableClass' : ''"
+        >
+          <!-- Name Column -->
+          <ng-container matColumnDef="start">
+            <th mat-header-cell *matHeaderCellDef>Time</th>
+            <td
+              id="{{ element.provider_id }}"
+              mat-cell
+              *matCellDef="let element"
+            >
+              <span class="newpatient"></span
+              >{{
+                startDate(element.app_date) + 'T' + element.start
+                  | date : 'h:mm a'
+              }}
+              -
+              {{
+                endTime(
+                  startDate(element.app_date),
+                  element.start,
+                  element.duration
+                ) | date : 'h:mm a'
+              }}
+              <span
+                class="newpatient"
+                *ngIf="element.is_new_patient != 'No'"
+              ></span>
+              <span class="timeUTA" *ngIf="element.is_uta == '1'">UTA</span>
+              <span class="timeFTA" *ngIf="element.is_fta == '1'">FTA </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="dentist">
+            <th mat-header-cell *matHeaderCellDef>Dentist</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.provider_name }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Patient</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.patient_name }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="statuscode">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              [ngClass]="showStatusCode ? 'show' : 'hide'"
+            >
+              Status
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let element"
+              [ngClass]="showStatusCode ? 'show' : 'hide'"
+            >
+              <div>
                 <span
-                  class="newpatient"
-                  *ngIf="element.is_new_patient != 'No'"
-                ></span>
-                <span class="timeUTA" *ngIf="element.is_uta == '1'">UTA</span>
-                <span class="timeFTA" *ngIf="element.is_fta == '1'">FTA </span>
-              </td>
-            </ng-container>
+                  class="status-code-disp"
+                  [ngClass]="
+                    codes.background_colour == 'white' ? 'haveborder' : ''
+                  "
+                  *ngFor="let codes of element.status_codes; let i = index"
+                  [style]="
+                    'background-color: ' +
+                    codes.background_colour +
+                    ';color: ' +
+                    codes.text_colour
+                  "
+                >
+                  {{ codes.status_code }}
+                </span>
+              </div>
+            </td>
+          </ng-container>
 
-            <ng-container matColumnDef="dentist">
-              <th mat-header-cell *matHeaderCellDef>Dentist</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.provider_name }}
-              </td>
-            </ng-container>
+          <!-- Weight Column -->
+          <ng-container matColumnDef="card">
+            <th mat-header-cell *matHeaderCellDef>Notifications</th>
+            <td mat-cell *matCellDef="let element">
+              <div
+                class="appointment"
+                *ngIf="
+                  element.recall_overdue == 'Yes' && OverdueRecalls == true
+                "
+              >
+                <span class="warning"
+                  ><span>
+                    <img
+                      src="../assets/images/warning-huddle.png"
+                      alt="warning-huddle"
+                  /></span>
+                  No Recall for > 6 Months</span
+                >
+              </div>
+              <div class="appointment" *ngIf="element.noRecall == 'No'">
+                <span class="warning"
+                  ><span class=""
+                    ><img
+                      src="../assets/images/warning-huddle.png"
+                      alt="warning-huddle"
+                  /></span>
+                  No previous recalls</span
+                >
+              </div>
 
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef>Patient</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.patient_name }}
-              </td>
-            </ng-container>
+              <div class="appointment" *ngIf="element.due_balance > 0">
+                <span class="warning"
+                  ><img
+                    src="../assets/images/warning-huddle.png"
+                    alt="warning-huddle"
+                  />
+                  Due Balance ${{
+                    element.due_balance | number : '1.0-0'
+                  }}</span
+                >
+              </div>
+              <div
+                class="appointment"
+                *ngIf="element.overdue_022 == 'Yes' && showXrayOverdue == true"
+              >
+                <span class="warning" title="022 "
+                  ><img
+                    src="../assets/images/warning-huddle.png"
+                    alt="warning-huddle"
+                  />
+                  Xray Overdue</span
+                >
+              </div>
+              <div
+                class="appointment"
+                *ngIf="element.lab_needed == 'Yes' && LabNeeded == true"
+              >
+                <span class="warning"
+                  ><img
+                    src="../assets/images/warning-huddle.png"
+                    alt="warning-huddle"
+                  />
+                  Lab Needed</span
+                >
+              </div>
+              <div
+                class="appointment"
+                *ngIf="element.overdue_037 == 'Yes' && OPGOverdue == true"
+              >
+                <span class="warning" title="037 "
+                  ><img
+                    src="../assets/images/warning-huddle.png"
+                    alt="warning-huddle"
+                  />
+                  OPG Overdue</span
+                >
+              </div>
+              <div class="appointment" *ngIf="element.is_birthday == 'Yes'">
+                <span class="warning"
+                  ><span class=""
+                    ><img
+                      src="../assets/images/warning-huddle.png"
+                      alt="warning-huddle" /></span
+                  >Birthday</span
+                >
+              </div>
+              <div class="appointment" *ngIf="element.is_new_patient == 'Yes'">
+                <span class="warning"
+                  ><span class=""
+                    ><img
+                      src="../assets/images/warning-huddle.png"
+                      alt="warning-huddle"
+                  /></span>
+                  New Patient</span
+                >
+              </div>
+            </td>
+          </ng-container>
 
-            <ng-container matColumnDef="statuscode">
-              <th
-                mat-header-cell
-                *matHeaderCellDef
+          <ng-container
+            *ngIf="apiUrl.includes('test')"
+            matColumnDef="sendReview"
+          >
+            <th mat-header-call *matHeaderCellDef>Send Review</th>
+            <td mat-cell style="text-align: center" *matCellDef="let element">
+              <button
+                mat-stroked-button
+                class="mat-dc"
+                (click)="openSendReviewMsgDialog(element)"
+              >
+                Send
+              </button>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="rebooked">
+            <th mat-header-cell *matHeaderCellDef>
+              Rebooked
+              <div class="info-icon-container mhRebook">
+                <img
+                  [tooltip]="{
+                    title: '',
+                    info: 'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a grey tick'
+                  }"
+                  src="../assets/images/info-icon.png"
+                  alt="info-icon"
+                  class="info-icon"
+                />
+              </div>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <i
+                *ngIf="
+                  element.is_rebooked == 'No' &&
+                  element.has_future_appt == 'Yes'
+                "
+                class="fa fa-check mh-fa-check gray"
+              ></i>
+              <i
+                *ngIf="element.is_rebooked == 'Yes'"
+                class="fa fa-check mh-fa-check"
+              ></i>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="isDataAvailable">
+            <mat-footer-cell
+              *matFooterCellDef
+              [attr.colspan]="displayedColumns11.length"
+            >
+              You have no Reminders today
+            </mat-footer-cell>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns11"></tr>
+          <tr
+            id=""
+            mat-row
+            *matRowDef="let row; columns: displayedColumns11"
+          ></tr>
+
+          <mat-footer-row
+            *matFooterRowDef="['isDataAvailable']"
+            [ngClass]="remindersRecallsOverdue.length == 0 ? 'show' : 'hide'"
+          ></mat-footer-row>
+        </table>
+        <!-- responsive table - FrontDesk reminder -->
+        <div fxHide.gt-sm>
+          <div *ngIf="remindersRecallsOverdue.length; else noData">
+            <mat-card
+              class="huddle-card"
+              *ngFor="let element of remindersRecallsOverdue"
+            >
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="30">Time:</div>
+                <div fxFlex="70">
+                  {{
+                    startDate(element.app_date) + 'T' + element.start
+                      | date : 'h:mm a'
+                  }}
+                  -
+                  {{
+                    endTime(
+                      startDate(element.app_date),
+                      element.start,
+                      element.duration
+                    ) | date : 'h:mm a'
+                  }}
+                </div>
+              </div>
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="30">Dentist:</div>
+                <div fxFlex="70">{{ element.provider_name }}</div>
+              </div>
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="30">Patient:</div>
+                <div fxFlex="70">{{ element.patient_name }}</div>
+              </div>
+              <div
+                fxLayout="row"
+                class="huddle-card-row"
                 [ngClass]="showStatusCode ? 'show' : 'hide'"
               >
-                Status
-              </th>
-              <td
-                mat-cell
-                *matCellDef="let element"
-                [ngClass]="showStatusCode ? 'show' : 'hide'"
-              >
-                <div>
+                <div fxFlex="30">Status:</div>
+                <div fxFlex="70">
                   <span
                     class="status-code-disp"
+                    *ngFor="let codes of element.status_codes; let i = index"
                     [ngClass]="
                       codes.background_colour == 'white' ? 'haveborder' : ''
                     "
-                    *ngFor="let codes of element.status_codes; let i = index"
                     [style]="
                       'background-color: ' +
                       codes.background_colour +
@@ -1522,388 +1761,154 @@
                     {{ codes.status_code }}
                   </span>
                 </div>
-              </td>
-            </ng-container>
-
-            <!-- Weight Column -->
-            <ng-container matColumnDef="card">
-              <th mat-header-cell *matHeaderCellDef>Notifications</th>
-              <td mat-cell *matCellDef="let element">
-                <div
-                  class="appointment"
-                  *ngIf="
-                    element.recall_overdue == 'Yes' && OverdueRecalls == true
-                  "
-                >
-                  <span class="warning"
-                    ><span>
-                      <img
-                        src="../assets/images/warning-huddle.png"
-                        alt="warning-huddle"
-                    /></span>
-                    No Recall for > 6 Months</span
+              </div>
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="30">Notifications:</div>
+                <div fxFlex="70">
+                  <div
+                    class="appointment"
+                    *ngIf="
+                      element.recall_overdue == 'Yes' && OverdueRecalls == true
+                    "
                   >
-                </div>
-                <div class="appointment" *ngIf="element.noRecall == 'No'">
-                  <span class="warning"
-                    ><span class=""
+                    <span class="warning"
+                      ><span>
+                        <img
+                          src="../assets/images/warning-huddle.png"
+                          alt="warning-huddle"
+                      /></span>
+                      No Recall for > 6 Months</span
+                    >
+                  </div>
+                  <div class="appointment" *ngIf="element.noRecall == 'No'">
+                    <span class="warning"
+                      ><span class=""
+                        ><img
+                          src="../assets/images/warning-huddle.png"
+                          alt="warning-huddle"
+                      /></span>
+                      No previous recalls</span
+                    >
+                  </div>
+
+                  <div class="appointment" *ngIf="element.due_balance > 0">
+                    <span class="warning"
                       ><img
                         src="../assets/images/warning-huddle.png"
                         alt="warning-huddle"
-                    /></span>
-                    No previous recalls</span
-                  >
-                </div>
-
-                <div class="appointment" *ngIf="element.due_balance > 0">
-                  <span class="warning"
-                    ><img
-                      src="../assets/images/warning-huddle.png"
-                      alt="warning-huddle"
-                    />
-                    Due Balance ${{
-                      element.due_balance | number : '1.0-0'
-                    }}</span
-                  >
-                </div>
-                <div
-                  class="appointment"
-                  *ngIf="
-                    element.overdue_022 == 'Yes' && showXrayOverdue == true
-                  "
-                >
-                  <span class="warning" title="022 "
-                    ><img
-                      src="../assets/images/warning-huddle.png"
-                      alt="warning-huddle"
-                    />
-                    Xray Overdue</span
-                  >
-                </div>
-                <div
-                  class="appointment"
-                  *ngIf="element.lab_needed == 'Yes' && LabNeeded == true"
-                >
-                  <span class="warning"
-                    ><img
-                      src="../assets/images/warning-huddle.png"
-                      alt="warning-huddle"
-                    />
-                    Lab Needed</span
-                  >
-                </div>
-                <div
-                  class="appointment"
-                  *ngIf="element.overdue_037 == 'Yes' && OPGOverdue == true"
-                >
-                  <span class="warning" title="037 "
-                    ><img
-                      src="../assets/images/warning-huddle.png"
-                      alt="warning-huddle"
-                    />
-                    OPG Overdue</span
-                  >
-                </div>
-                <div class="appointment" *ngIf="element.is_birthday == 'Yes'">
-                  <span class="warning"
-                    ><span class=""
-                      ><img
-                        src="../assets/images/warning-huddle.png"
-                        alt="warning-huddle" /></span
-                    >Birthday</span
-                  >
-                </div>
-                <div
-                  class="appointment"
-                  *ngIf="element.is_new_patient == 'Yes'"
-                >
-                  <span class="warning"
-                    ><span class=""
-                      ><img
-                        src="../assets/images/warning-huddle.png"
-                        alt="warning-huddle"
-                    /></span>
-                    New Patient</span
-                  >
-                </div>
-              </td>
-            </ng-container>
-
-            <ng-container
-              *ngIf="apiUrl.includes('test')"
-              matColumnDef="sendReview"
-            >
-              <th mat-header-call *matHeaderCellDef>Send Review</th>
-              <td mat-cell style="text-align: center" *matCellDef="let element">
-                <button
-                  mat-stroked-button
-                  class="mat-dc"
-                  (click)="openSendReviewMsgDialog(element)"
-                >
-                  Send
-                </button>
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="rebooked">
-              <th mat-header-cell *matHeaderCellDef>
-                Rebooked
-                <div class="info-icon-container mhRebook">
-                  <img
-                    [tooltip]="{
-                      title: '',
-                      info: 'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a grey tick'
-                    }"
-                    src="../assets/images/info-icon.png"
-                    alt="info-icon"
-                    class="info-icon"
-                  />
-                </div>
-              </th>
-              <td mat-cell *matCellDef="let element">
-                <i
-                  *ngIf="
-                    element.is_rebooked == 'No' &&
-                    element.has_future_appt == 'Yes'
-                  "
-                  class="fa fa-check mh-fa-check gray"
-                ></i>
-                <i
-                  *ngIf="element.is_rebooked == 'Yes'"
-                  class="fa fa-check mh-fa-check"
-                ></i>
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="isDataAvailable">
-              <mat-footer-cell
-                *matFooterCellDef
-                [attr.colspan]="displayedColumns11.length"
-              >
-                You have no Reminders today
-              </mat-footer-cell>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns11"></tr>
-            <tr
-              id=""
-              mat-row
-              *matRowDef="let row; columns: displayedColumns11"
-            ></tr>
-
-            <mat-footer-row
-              *matFooterRowDef="['isDataAvailable']"
-              [ngClass]="remindersRecallsOverdue.length == 0 ? 'show' : 'hide'"
-            ></mat-footer-row>
-          </table>
-          <!-- responsive table - FrontDesk reminder -->
-          <div fxHide.gt-sm>
-            <div *ngIf="remindersRecallsOverdue.length; else noData">
-              <mat-card
-                class="huddle-card"
-                *ngFor="let element of remindersRecallsOverdue"
-              >
-                <div fxLayout="row" class="huddle-card-row">
-                  <div fxFlex="30">Time:</div>
-                  <div fxFlex="70">
-                    {{
-                      startDate(element.app_date) + 'T' + element.start
-                        | date : 'h:mm a'
-                    }}
-                    -
-                    {{
-                      endTime(
-                        startDate(element.app_date),
-                        element.start,
-                        element.duration
-                      ) | date : 'h:mm a'
-                    }}
-                  </div>
-                </div>
-                <div fxLayout="row" class="huddle-card-row">
-                  <div fxFlex="30">Dentist:</div>
-                  <div fxFlex="70">{{ element.provider_name }}</div>
-                </div>
-                <div fxLayout="row" class="huddle-card-row">
-                  <div fxFlex="30">Patient:</div>
-                  <div fxFlex="70">{{ element.patient_name }}</div>
-                </div>
-                <div
-                  fxLayout="row"
-                  class="huddle-card-row"
-                  [ngClass]="showStatusCode ? 'show' : 'hide'"
-                >
-                  <div fxFlex="30">Status:</div>
-                  <div fxFlex="70">
-                    <span
-                      class="status-code-disp"
-                      *ngFor="let codes of element.status_codes; let i = index"
-                      [ngClass]="
-                        codes.background_colour == 'white' ? 'haveborder' : ''
-                      "
-                      [style]="
-                        'background-color: ' +
-                        codes.background_colour +
-                        ';color: ' +
-                        codes.text_colour
-                      "
-                    >
-                      {{ codes.status_code }}
-                    </span>
-                  </div>
-                </div>
-                <div fxLayout="row" class="huddle-card-row">
-                  <div fxFlex="30">Notifications:</div>
-                  <div fxFlex="70">
-                    <div
-                      class="appointment"
-                      *ngIf="
-                        element.recall_overdue == 'Yes' &&
-                        OverdueRecalls == true
-                      "
-                    >
-                      <span class="warning"
-                        ><span>
-                          <img
-                            src="../assets/images/warning-huddle.png"
-                            alt="warning-huddle"
-                        /></span>
-                        No Recall for > 6 Months</span
-                      >
-                    </div>
-                    <div class="appointment" *ngIf="element.noRecall == 'No'">
-                      <span class="warning"
-                        ><span class=""
-                          ><img
-                            src="../assets/images/warning-huddle.png"
-                            alt="warning-huddle"
-                        /></span>
-                        No previous recalls</span
-                      >
-                    </div>
-
-                    <div class="appointment" *ngIf="element.due_balance > 0">
-                      <span class="warning"
-                        ><img
-                          src="../assets/images/warning-huddle.png"
-                          alt="warning-huddle"
-                        />
-                        Due Balance ${{
-                          element.due_balance | number : '1.0-0'
-                        }}</span
-                      >
-                    </div>
-                    <div class="appointment" *ngIf="element.code != ''">
-                      <span class="warning" title="022 "
-                        ><img
-                          src="../assets/images/warning-huddle.png"
-                          alt="warning-huddle"
-                        />
-                        {{ element.code }}</span
-                      >
-                    </div>
-                    <div
-                      class="appointment"
-                      *ngIf="element.is_birthday == 'Yes'"
-                    >
-                      <span class="warning"
-                        ><span class=""
-                          ><img
-                            src="../assets/images/warning-huddle.png"
-                            alt="warning-huddle" /></span
-                        >Birthday</span
-                      >
-                    </div>
-                    <div
-                      class="appointment"
-                      *ngIf="element.is_new_patient == 'Yes'"
-                    >
-                      <span class="warning"
-                        ><span class=""
-                          ><img
-                            src="../assets/images/warning-huddle.png"
-                            alt="warning-huddle"
-                        /></span>
-                        New Patient</span
-                      >
-                    </div>
-                    <div
-                      class="appointment"
-                      *ngIf="
-                        element.overdue_022 == 'Yes' && showXrayOverdue == true
-                      "
-                    >
-                      <span class="warning" title="022 "
-                        ><img
-                          src="../assets/images/warning-huddle.png"
-                          alt="warning-huddle"
-                        />
-                        Xray Overdue</span
-                      >
-                    </div>
-                    <div
-                      class="appointment"
-                      *ngIf="element.lab_needed == 'Yes' && LabNeeded == true"
-                    >
-                      <span class="warning"
-                        ><img
-                          src="../assets/images/warning-huddle.png"
-                          alt="warning-huddle"
-                        />
-                        Lab Needed</span
-                      >
-                    </div>
-                    <div
-                      class="appointment"
-                      *ngIf="element.overdue_037 == 'Yes' && OPGOverdue == true"
-                    >
-                      <span class="warning" title="037 "
-                        ><img
-                          src="../assets/images/warning-huddle.png"
-                          alt="warning-huddle"
-                        />
-                        OPG Overdue</span
-                      >
-                    </div>
-                  </div>
-                </div>
-                <div fxLayout="row" class="huddle-card-row">
-                  <div fxFlex="30">
-                    Rebooked
-                    <div class="info-icon-container mhRebook">
-                      <img
-                        [tooltip]="{
-                          title: '',
-                          info: 'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a grey tick'
-                        }"
-                        src="../assets/images/info-icon.png"
-                        alt="info-icon"
-                        class="info-icon"
                       />
-                    </div>
+                      Due Balance ${{
+                        element.due_balance | number : '1.0-0'
+                      }}</span
+                    >
                   </div>
-                  <div fxFlex="70">
-                    <i
-                      *ngIf="
-                        element.is_rebooked == 'No' &&
-                        element.has_future_appt == 'Yes'
-                      "
-                      class="fa fa-check mh-fa-check gray"
-                    ></i>
-                    <i
-                      *ngIf="element.is_rebooked == 'Yes'"
-                      class="fa fa-check mh-fa-check"
-                    ></i>
+                  <div class="appointment" *ngIf="element.code != ''">
+                    <span class="warning" title="022 "
+                      ><img
+                        src="../assets/images/warning-huddle.png"
+                        alt="warning-huddle"
+                      />
+                      {{ element.code }}</span
+                    >
+                  </div>
+                  <div class="appointment" *ngIf="element.is_birthday == 'Yes'">
+                    <span class="warning"
+                      ><span class=""
+                        ><img
+                          src="../assets/images/warning-huddle.png"
+                          alt="warning-huddle" /></span
+                      >Birthday</span
+                    >
+                  </div>
+                  <div
+                    class="appointment"
+                    *ngIf="element.is_new_patient == 'Yes'"
+                  >
+                    <span class="warning"
+                      ><span class=""
+                        ><img
+                          src="../assets/images/warning-huddle.png"
+                          alt="warning-huddle"
+                      /></span>
+                      New Patient</span
+                    >
+                  </div>
+                  <div
+                    class="appointment"
+                    *ngIf="
+                      element.overdue_022 == 'Yes' && showXrayOverdue == true
+                    "
+                  >
+                    <span class="warning" title="022 "
+                      ><img
+                        src="../assets/images/warning-huddle.png"
+                        alt="warning-huddle"
+                      />
+                      Xray Overdue</span
+                    >
+                  </div>
+                  <div
+                    class="appointment"
+                    *ngIf="element.lab_needed == 'Yes' && LabNeeded == true"
+                  >
+                    <span class="warning"
+                      ><img
+                        src="../assets/images/warning-huddle.png"
+                        alt="warning-huddle"
+                      />
+                      Lab Needed</span
+                    >
+                  </div>
+                  <div
+                    class="appointment"
+                    *ngIf="element.overdue_037 == 'Yes' && OPGOverdue == true"
+                  >
+                    <span class="warning" title="037 "
+                      ><img
+                        src="../assets/images/warning-huddle.png"
+                        alt="warning-huddle"
+                      />
+                      OPG Overdue</span
+                    >
                   </div>
                 </div>
-              </mat-card>
-            </div>
-            <ng-template #noData>
-              <mat-card class="huddle-card">
-                <h6>You have no Reminders today</h6>
-              </mat-card>
-            </ng-template>
+              </div>
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="30">
+                  Rebooked
+                  <div class="info-icon-container mhRebook">
+                    <img
+                      [tooltip]="{
+                        title: '',
+                        info: 'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a grey tick'
+                      }"
+                      src="../assets/images/info-icon.png"
+                      alt="info-icon"
+                      class="info-icon"
+                    />
+                  </div>
+                </div>
+                <div fxFlex="70">
+                  <i
+                    *ngIf="
+                      element.is_rebooked == 'No' &&
+                      element.has_future_appt == 'Yes'
+                    "
+                    class="fa fa-check mh-fa-check gray"
+                  ></i>
+                  <i
+                    *ngIf="element.is_rebooked == 'Yes'"
+                    class="fa fa-check mh-fa-check"
+                  ></i>
+                </div>
+              </div>
+            </mat-card>
           </div>
+          <ng-template #noData>
+            <mat-card class="huddle-card">
+              <h6>You have no Reminders today</h6>
+            </mat-card>
+          </ng-template>
         </div>
       </div>
     </mat-tab>

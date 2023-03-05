@@ -340,6 +340,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   public selectDentist = 0;
   public totalCredits = 0;
   public totalUsedCredits = 0;
+  public totalRemainingCredits = 0;
+  public noCredits = true;
 
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
   displayedColumns1: string[] = ['start', 'name', 'dentist'];
@@ -568,13 +570,15 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       }
     }
     this.getEndOfDays();
-    this.getTotalCredits();
+    this.getUsedCreditsMonthly();
   }
 
-  getTotalCredits() {
+  getUsedCreditsMonthly() {
     this.morningHuddleService.getTotalCredits().subscribe((res) => {
-      this.totalCredits = res.body.data.credits;
       this.totalUsedCredits = res.body.data.used_credits;
+
+      this.noCredits = res.body.data.no_credits;
+      this.totalRemainingCredits = res.body.data.remain_credits;
     });
   }
 
@@ -2185,6 +2189,66 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     }
   }
 
+  // buyCredits() {
+  //   const stripePaymentDialog = this.dialog.open(StripePaymentDialog);
+  // }
+
+  openSendReviewMsgDialog(element) {
+    if (this.noCredits) {
+      this.dialog.open(StripePaymentDialog, {
+        data: {
+          notify_msg:
+            'You have no credits remaining, please top-up your account to send more review invites.'
+        }
+      });
+    } else {
+      const sendReviewDialog = this.dialog.open(SendReviewDialog, {
+        data: {
+          patient_id: element.patient_id,
+          phone_number: element.mobile,
+          clinic_id: this.clinic_id,
+          patient_name: element.patient_name,
+          mobile: element.mobile
+        }
+      });
+      sendReviewDialog.afterClosed().subscribe((result) => {
+        if (result.status) {
+          this.getUsedCreditsMonthly();
+        }
+      });
+    }
+  }
+
+  async checkPaymentStatus() {
+    const stripe = await loadStripe(environment.stripeKey);
+    const clientSecret = new URLSearchParams(window.location.search).get(
+      'payment_intent_client_secret'
+    );
+
+    if (!clientSecret) {
+      return;
+    }
+    this.changeTab(2);
+    const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
+
+    switch (paymentIntent.status) {
+      case 'succeeded':
+        this.toastr.success(
+          'Payment succeeded. If the number of Credits were not updated, Please retry refreshing page aftger few mins!'
+        );
+        break;
+      case 'processing':
+        this.toastr.success('Your payment is processing.');
+        break;
+      case 'requires_payment_method':
+        this.toastr.error('Your payment was not successful, please try again.');
+        break;
+      default:
+        this.toastr.error('Something went wrong.');
+        break;
+    }
+  }
+
   printDentistScheduleTab() {
     var divToPrint = document.getElementById('mh-dentist-schedule-print');
     var linkElement = document.createElement('script');
@@ -2237,50 +2301,50 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     });
   }
 
-  openSendReviewMsgDialog(element) {
-    const sendReviewDialog = this.dialog.open(SendReviewDialog, {
-      data: {
-        patient_id: element.patient_id,
-        phone_number: element.mobile,
-        clinic_id: this.clinic_id,
-        patient_name: element.patient_name,
-        mobile: element.mobile
-      }
-    });
-    sendReviewDialog.afterClosed().subscribe((result) => {
-      if (result.status) {
-        this.getTotalCredits();
-      }
-    });
-  }
+  // openSendReviewMsgDialog(element) {
+  //   const sendReviewDialog = this.dialog.open(SendReviewDialog, {
+  //     data: {
+  //       patient_id: element.patient_id,
+  //       phone_number: element.mobile,
+  //       clinic_id: this.clinic_id,
+  //       patient_name: element.patient_name,
+  //       mobile: element.mobile
+  //     }
+  //   });
+  //   sendReviewDialog.afterClosed().subscribe((result) => {
+  //     if (result.status) {
+  //       this.getTotalCredits();
+  //     }
+  //   });
+  // }
 
-  async checkPaymentStatus() {
-    const stripe = await loadStripe(environment.stripeKey);
-    const clientSecret = new URLSearchParams(window.location.search).get(
-      'payment_intent_client_secret'
-    );
+  // async checkPaymentStatus() {
+  //   const stripe = await loadStripe(environment.stripeKey);
+  //   const clientSecret = new URLSearchParams(window.location.search).get(
+  //     'payment_intent_client_secret'
+  //   );
 
-    if (!clientSecret) {
-      return;
-    }
-    this.changeTab(2);
-    const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
+  //   if (!clientSecret) {
+  //     return;
+  //   }
+  //   this.changeTab(2);
+  //   const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
 
-    switch (paymentIntent.status) {
-      case 'succeeded':
-        this.toastr.success(
-          'Payment succeeded. If the number of Credits were not updated, Please retry refreshing page aftger few mins!'
-        );
-        break;
-      case 'processing':
-        this.toastr.success('Your payment is processing.');
-        break;
-      case 'requires_payment_method':
-        this.toastr.error('Your payment was not successful, please try again.');
-        break;
-      default:
-        this.toastr.error('Something went wrong.');
-        break;
-    }
-  }
+  //   switch (paymentIntent.status) {
+  //     case 'succeeded':
+  //       this.toastr.success(
+  //         'Payment succeeded. If the number of Credits were not updated, Please retry refreshing page aftger few mins!'
+  //       );
+  //       break;
+  //     case 'processing':
+  //       this.toastr.success('Your payment is processing.');
+  //       break;
+  //     case 'requires_payment_method':
+  //       this.toastr.error('Your payment was not successful, please try again.');
+  //       break;
+  //     default:
+  //       this.toastr.error('Something went wrong.');
+  //       break;
+  //   }
+  // }
 }

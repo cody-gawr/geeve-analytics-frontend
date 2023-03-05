@@ -144,12 +144,13 @@
 table {
     width: 100%;
 }
-.mat-icon{
+
+table .mat-icon{
     cursor: pointer;
     margin-right: 5px;
     color: #18a689;
 }
 
-.mat-icon:hover {
+table .mat-icon:hover {
     opacity: 0.5;
 }

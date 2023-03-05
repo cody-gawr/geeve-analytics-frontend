@@ -48,6 +48,9 @@ export class SendReviewDialog {
     googleId = '';
     clinicName = '';
     clinic = null;
+    math = Math;
+    isWaitingResponse = false;
+
     constructor(
         public dialogRef: MatDialogRef<SendReviewDialog>,
         @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -121,13 +124,16 @@ export class SendReviewDialog {
 
     onSubmitClick(event: any): void {
         if(this.isValid){
+            this.isWaitingResponse = true;
             this._morningHuddleService.sendReviewMsg(this.data.clinic_id, 
                 this.data.patient_id, this.review_msg.value, this.phoneCountryCode + this.phoneNumber.value).subscribe(res => {
+                    this.isWaitingResponse = false;
                     if(res.status == 200){
                         this._toastrService.success('Sent Message Sucessfully!');
                         this.dialogRef.close({status: true});
                     }
                 }, err => {
+                    this.isWaitingResponse = false;
                     this._toastrService.error(err.message || 'Unknow Issue');
                 })
         }
