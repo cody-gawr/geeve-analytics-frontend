@@ -1238,16 +1238,7 @@
               remindersRecallsOverdueDate | date : 'EEE MMM d' : 'timezone'
             }}</strong
           >
-          <button
-            *ngIf="apiUrl.includes('test')"
-            id="topup-credits"
-            (click)="buyCredits()"
-            class="mat-raised-button mat-dc"
-          >
-            ({{ totalUsedCredits }}/{{ totalCredits }}) TopUp
-          </button>
-        </div>
-        <strong
+          <strong
           >Current Day:
           {{ remindersRecallsOverdueDate | date : 'EEE MMM d' : 'timezone' }} |
           Used Credits: {{ totalUsedCredits }} | Remaining Credits:
@@ -1261,6 +1252,7 @@
         >
           TopUp
         </button>
+        </div>
       </div>
       <div class="sa_dentist_graphs_area sa_profit_bar patient-schedule">
         <div
