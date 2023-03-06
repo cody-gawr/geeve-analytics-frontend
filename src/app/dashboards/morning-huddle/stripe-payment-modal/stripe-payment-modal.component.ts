@@ -9,6 +9,7 @@ import { MorningHuddleService } from "../morning-huddle.service";
 export interface DialogData {
     //totalCredits: number;
     notify_msg?: string;
+    costPerSMS: number;
 }
 
 @Component({
@@ -21,7 +22,8 @@ export class StripePaymentDialog {
     stripe: Stripe
     creditOptions = [{amount: 50, label: '50'}, {amount: 100, label: '100'}, {amount: 500, label: '500'}, {amount: 1000, label: '1000'},]
     selectedCredit = 50;
-    disablePaymentButton = true;
+    isReadyToPay = true;
+    disabledSubmit = true;
     constructor(
         public dialogRef: MatDialogRef<StripePaymentDialog>,
         @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -52,12 +54,14 @@ export class StripePaymentDialog {
             
             const paymentElement = this.elements.create(stripeType, paymentElementOptions);
             paymentElement.mount("#payment-element");    
+            this.disabledSubmit = false;
         });
     }  
 
     async nextPaymentForm(stepper: MatStepper) {
+        this.disabledSubmit = true;
         await this.initStripeElements();
-        this.disablePaymentButton = false;
+        this.isReadyToPay = false;
         stepper.next();
     }
     
@@ -67,12 +71,12 @@ export class StripePaymentDialog {
 
     async onSubmitClick(e:SubmitEvent) {
         e.preventDefault();
-        this.disablePaymentButton = true;
+        this.isReadyToPay = true;
         const { error } = await this.stripe.confirmPayment({
             elements: this.elements,
             confirmParams: {
               // Make sure to change this to your payment completion page
-              return_url: `${window.location.origin}/morning-huddle`,
+              return_url: `${window.location.origin}/morning-huddle?tab=2`,
             },
         });
         
@@ -84,6 +88,6 @@ export class StripePaymentDialog {
             //showMessage("An unexpected error occurred.");
         }
         
-        this.disablePaymentButton = false;
+        this.isReadyToPay = false;
     }
 }

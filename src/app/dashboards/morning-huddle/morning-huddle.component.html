@@ -29,7 +29,7 @@
     </div>
   </div>
 
-  <mat-tab-group [selectedIndex]="selectedTab">
+  <mat-tab-group [selectedIndex]="selectedTab" (selectedTabChange)="onTabChanged($event)">
     <!-- Dentist Performance Tab -->
     <mat-tab label="Dentist Performance" *ngIf="user_type != '5'">
       <div class="morning-huddle-date">

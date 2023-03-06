@@ -24,6 +24,7 @@ import { ChartstipsService } from '../../shared/chartstips.service';
 import { MatSort } from '@angular/material/sort';
 import { environment } from '../../../environments/environment';
 import * as moment from 'moment';
+
 export interface PeriodicElement {
   name: string;
   production: string;
@@ -341,7 +342,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   public totalCredits = 0;
   public totalUsedCredits = 0;
   public totalRemainingCredits = 0;
-  public noCredits = true;
+  public costPerSMS =  0;
 
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
   displayedColumns1: string[] = ['start', 'name', 'dentist'];
@@ -444,7 +445,13 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     //console.log(this.homeUrl + "assets/js/jquery.min.js");
     /*this.dataSource1.sort = this.sort1;
     this.dataSource2.sort = this.sort2;*/
-    this.checkPaymentStatus();
+    const q = new URLSearchParams(window.location.search);
+    const tabIndex = parseInt(q.get('tab')??'0');
+    this.changeTab(tabIndex);
+    const clientSecret = q.get(
+      'payment_intent_client_secret'
+    );
+    if(clientSecret) this.checkPaymentStatus(clientSecret);
     $('#currentDentist').attr('did', 'all');
     this.user_type = this._cookieService.get('user_type');
     this.userPlan = this._cookieService.get('user_plan');
@@ -570,15 +577,14 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       }
     }
     this.getEndOfDays();
-    this.getUsedCreditsMonthly();
+    this.getCreditStatues();
   }
 
-  getUsedCreditsMonthly() {
-    this.morningHuddleService.getTotalCredits().subscribe((res) => {
-      this.totalUsedCredits = res.body.data.used_credits;
-
-      this.noCredits = res.body.data.no_credits;
+  getCreditStatues() {
+    this.morningHuddleService.getCreditStatues().subscribe((res) => {
+      this.totalUsedCredits = res.body.data.used_credits??0;
       this.totalRemainingCredits = res.body.data.remain_credits;
+      this.costPerSMS = res.body.data.cost_per_sms;
     });
   }
 
@@ -586,7 +592,11 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.selectedTab = tabIndex;
   }
 
-  onTabChanged(event) {}
+  onTabChanged(event) {
+    const q = new URL(window.location as any);
+    q.searchParams.set('tab', event.index);
+    window.history.pushState({}, "", q);
+  }
 
   refreshPerformanceTab() {
     /*******Tab 2 *******/
@@ -2194,7 +2204,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   // }
 
   openSendReviewMsgDialog(element) {
-    if (this.noCredits) {
+    if (this.totalRemainingCredits <= 0) {
       this.dialog.open(StripePaymentDialog, {
         data: {
           notify_msg:
@@ -2213,24 +2223,21 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       });
       sendReviewDialog.afterClosed().subscribe((result) => {
         if (result.status) {
-          this.getUsedCreditsMonthly();
+          this.getCreditStatues();
         }
       });
     }
   }
 
-  async checkPaymentStatus() {
+  async checkPaymentStatus(clientSecret: string) {
     const stripe = await loadStripe(environment.stripeKey);
-    const clientSecret = new URLSearchParams(window.location.search).get(
-      'payment_intent_client_secret'
-    );
-
-    if (!clientSecret) {
-      return;
-    }
-    this.changeTab(2);
+    
     const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
-
+    const q = new URL(window.location as any);
+    q.searchParams.delete('payment_intent');
+    q.searchParams.delete('payment_intent_client_secret');
+    q.searchParams.delete('redirect_status');
+    window.history.pushState({}, "", q);
     switch (paymentIntent.status) {
       case 'succeeded':
         this.toastr.success(
@@ -2297,7 +2304,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
 
   buyCredits() {
     const stripePaymentDialog = this.dialog.open(StripePaymentDialog, {
-      data: { totalCredits: this.totalCredits }
+      data: { totalCredits: this.totalCredits, costPerSMS: this.costPerSMS }
     });
   }
 
