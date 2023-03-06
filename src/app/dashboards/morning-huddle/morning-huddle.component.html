@@ -1238,16 +1238,7 @@
               remindersRecallsOverdueDate | date : 'EEE MMM d' : 'timezone'
             }}</strong
           >
-          <button
-            *ngIf="apiUrl.includes('test')"
-            id="topup-credits"
-            (click)="buyCredits()"
-            class="mat-raised-button mat-dc"
-          >
-            ({{ totalUsedCredits }}/{{ totalCredits }}) TopUp
-          </button>
-        </div>
-        <strong
+          <strong
           >Current Day:
           {{ remindersRecallsOverdueDate | date : 'EEE MMM d' : 'timezone' }} |
           Used Credits: {{ totalUsedCredits }} | Remaining Credits:
@@ -1261,6 +1252,7 @@
         >
           TopUp
         </button>
+        </div>
       </div>
       <div class="sa_dentist_graphs_area sa_profit_bar patient-schedule">
         <div
@@ -2052,8 +2044,7 @@
               </ng-container>
               <ng-container matColumnDef="dentist">
                 <th mat-header-cell *matHeaderCellDef>Provider</th>
-                <td mat-cell *matCellDef="let element">
-                  {{ element.dentists.name }}
+                <td mat-cell *matCellDef="let element">{{ element.dentists && element.dentists.name }}
                 </td>
               </ng-container>
 
@@ -2172,8 +2163,8 @@
                     <div fxFlex="70">{{ element.post_op_codes }}</div>
                   </div>
                   <div fxLayout="row" class="huddle-card-row">
-                    <div fxFlex="30">Provider:</div>
-                    <div fxFlex="70">{{ element.dentists.name }}</div>
+                    <div fxFlex="30">Provider: </div>
+                    <div fxFlex="70"> {{ element.dentists && element.dentists.name }} </div>
                   </div>
                   <div fxLayout="row" class="huddle-card-row">
                     <div fxFlex="30">Complete</div>
@@ -2332,8 +2323,7 @@
               </ng-container>
               <ng-container matColumnDef="provider">
                 <th mat-header-cell *matHeaderCellDef>Provider</th>
-                <td mat-cell *matCellDef="let element">
-                  {{ element.dentists.name }}
+                <td mat-cell *matCellDef="let element">{{ element.dentists && element.dentists.name }}
                 </td>
               </ng-container>
               <ng-container matColumnDef="book">
