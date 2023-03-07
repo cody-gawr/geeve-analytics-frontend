@@ -73,7 +73,7 @@ export class StripePaymentDialog {
 
     async onSubmitClick(e:SubmitEvent) {
         e.preventDefault();
-        this.isReadyToPay = true;
+        this.disabledSubmit = true;
         const { error } = await this.stripe.confirmPayment({
             elements: this.elements,
             confirmParams: {
@@ -90,6 +90,6 @@ export class StripePaymentDialog {
             //showMessage("An unexpected error occurred.");
         }
         
-        this.isReadyToPay = false;
+        this.disabledSubmit = false;
     }
 }

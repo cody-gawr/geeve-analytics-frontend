@@ -73,12 +73,12 @@ export class StripePaymentDialog {
 
     async onSubmitClick(e:SubmitEvent) {
         e.preventDefault();
-        this.isReadyToPay = true;
+        this.disabledSubmit = true;
         const { error } = await this.stripe.confirmPayment({
             elements: this.elements,
             confirmParams: {
               // Make sure to change this to your payment completion page
-              return_url: `${window.location.origin}/morning-huddle?tab=2`,
+              return_url: `${window.location.href}`,
             },
         });
         
@@ -90,6 +90,6 @@ export class StripePaymentDialog {
             //showMessage("An unexpected error occurred.");
         }
         
-        this.isReadyToPay = false;
+        this.disabledSubmit = false;
     }
 }

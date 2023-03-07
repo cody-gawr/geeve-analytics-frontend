@@ -167,7 +167,14 @@ export class AppHeaderrightComponent implements AfterViewInit {
       sessionStorage.setItem("remain_credits", this.remainCredits.toString());
       sessionStorage.setItem("cost_per_sms", res.body.data.cost_per_sms);
     });
+    const q = new URL(window.location as any);
+    q.searchParams.delete('payment_intent');
+    q.searchParams.delete('payment_intent_client_secret');
+    q.searchParams.delete('redirect_status');
+    window.history.pushState({}, "", q);
   }
+
+
 
   openTopUpCredits() {
     const costPerSMS = parseFloat(sessionStorage.getItem('cost_per_sms'));

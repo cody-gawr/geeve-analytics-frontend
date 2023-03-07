@@ -2222,11 +2222,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     const stripe = await loadStripe(environment.stripeKey);
     
     const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
-    const q = new URL(window.location as any);
-    q.searchParams.delete('payment_intent');
-    q.searchParams.delete('payment_intent_client_secret');
-    q.searchParams.delete('redirect_status');
-    window.history.pushState({}, "", q);
+
     switch (paymentIntent.status) {
       case 'succeeded':
         this.toastr.success(
