@@ -83,10 +83,10 @@
 }
 
 .header_filters.finances {
-  flex-direction: row-reverse !important;
+  justify-content: flex-end;
 }
 .header_filters.multi {
-  flex-direction: row-reverse !important;
+  justify-content: flex-end;
 }
 
 .custom-tooltip-color {

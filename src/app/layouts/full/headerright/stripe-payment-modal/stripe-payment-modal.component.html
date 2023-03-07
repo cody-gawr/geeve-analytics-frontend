@@ -1,0 +1,47 @@
+<div class="dialog-header">
+    <h1 mat-dialog-title>Stripe Payment</h1>
+    <mat-icon aria-hidden="false" (click)="onNoClick()">close</mat-icon>
+</div>
+<div mat-dialog-content>
+    <div style="min-width:450px; padding-right:24px;">
+        <mat-stepper [linear]="true" #stepper>
+            <mat-step>
+                <ng-template matStepLabel>Number of Credits</ng-template>
+                <div style="margin-top:10px">
+                    <p *ngIf="data && data.notify_msg">{{data.notify_msg}}</p>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Select the number of credicts you need to upgrade</mat-label>
+                        <mat-select [(value)]="selectedCredit">
+                          <mat-option *ngFor="let credit of creditOptions" [value]="credit.amount">
+                            {{credit.label}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    <div class="cost-summary">
+                        <div>Cost Per SMS: {{data.costPerSMS}}$</div>
+                        <div>Total Cost: {{data.costPerSMS * selectedCredit}}$</div>
+                    </div>
+                </div>
+
+            </mat-step>
+            <mat-step label="Complete the payment">
+                <div id="payment-element">
+                    Loading... Please wait for a sec!
+                    <!-- a Stripe Element will be inserted here. -->
+                </div>
+            
+                <!-- Used to display form errors -->
+                <div id="card-errors" role="alert"></div>
+                <div *ngIf="!disabledSubmit" style="margin-top:10px">
+                    <button mat-icon-button matStepperPrevious><mat-icon>arrow_back</mat-icon></button>
+                </div>
+            </mat-step>
+        </mat-stepper>
+    </div>
+
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-button (click)="onNoClick()">No Thanks</button>
+    <button mat-stroked-button class="mat-dc" mat-button *ngIf="isReadyToPay" (click)="nextPaymentForm(stepper)">Go to payment</button>
+    <button mat-stroked-button class="mat-dc" mat-button *ngIf="!isReadyToPay" [disabled]="disabledSubmit" (click)="onSubmitClick($event)" cdkFocusInitial>Submit Payment</button>
+</div>

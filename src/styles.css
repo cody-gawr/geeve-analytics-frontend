@@ -1797,7 +1797,7 @@ html .page-wrapper {
   margin-top: 2px;
 }
 
-/*.flex_direct_mar { flex-direction: row-reverse !important }*/
+/*.flex_direct_mar { justify-content: flex-end }*/
 
 /*.flex_direct_mar .header_first_select{margin-right:0;}
 .flex_direct_mar .dentist_dropdown{display:none;}
@@ -4992,6 +4992,8 @@ body .AddCard-main .AddCard-box .mat-card-title {
 .header_filters {
   margin-right: -5px;
 }
+
+.header_filters.flex_direct_mar { justify-content: flex-end; gap: 5px }
 
 .custom_date input {
   margin-left: 10px;

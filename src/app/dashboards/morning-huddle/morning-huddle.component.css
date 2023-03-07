@@ -275,7 +275,7 @@ table{
 
 
 
-.header_filters.morning-huddle { flex-direction: row-reverse !important }
+.header_filters.morning-huddle { justify-content: flex-end }
 .huddle-card {
     padding: 16px;
     margin-left: 0;
@@ -287,7 +287,7 @@ table{
 .huddle-card-row .appointment {
     margin-top: 0;
 }
-.header_filters.flex_direct_mar { flex-direction: row-reverse !important }
+/* .header_filters.flex_direct_mar { justify-content: flex-end } */
 
 .daysAgo {
     font-size: 12px;
@@ -554,10 +554,6 @@ table.history td.notes {padding-right: 2%;text-align: right;}
     } */
     .morning-huddle-date.topModel {
         top: 92px;
-    }
-    #topup-credits {
-        right: 0 !important;
-        top: 42px !important;
     }
 }
 @media (max-width: 767px){
@@ -1023,9 +1019,4 @@ tr.mat-row.cdk-row.ng-star-inserted:empty {
 
 .morning-huddle-date .dentist-select.mat-form-field {
     left: 50px;
-}
-
-#topup-credits {
-    position: absolute;
-    right: 125px;
 }

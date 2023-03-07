@@ -36,8 +36,6 @@ import { DemoMaterialModule } from '../demo-material-module';
 import { StripePaymentDialog } from './morning-huddle/stripe-payment-modal/stripe-payment-modal.component';
 import { SendReviewDialog } from './morning-huddle/send-review-dialog/send-review-dialog.component';
 
-
-
 @NgModule({
   imports: [
     CommonModule,
@@ -65,7 +63,8 @@ import { SendReviewDialog } from './morning-huddle/send-review-dialog/send-revie
     MarketingService, DatePipe, 
     DecimalPipe, 
     HealthScreenService,
-    FollowupsService],
+    FollowupsService
+  ],
   declarations: [
     ClinicianAnalysisComponent, 
     ClinicianProceeduresComponent, 

@@ -51,7 +51,6 @@ import { loadStripe } from '@stripe/stripe-js';
 import { StripePaymentDialog } from './stripe-payment-modal/stripe-payment-modal.component';
 import { SendReviewDialog } from './send-review-dialog/send-review-dialog.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-
 @Component({
   selector: 'notes-add-dialog',
   templateUrl: './add-notes.html',
@@ -339,10 +338,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   public OverdueRecalls: boolean = false;
   public LabNeeded: boolean = false;
   public selectDentist = 0;
-  public totalCredits = 0;
-  public totalUsedCredits = 0;
-  public totalRemainingCredits = 0;
-  public costPerSMS =  0;
 
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
   displayedColumns1: string[] = ['start', 'name', 'dentist'];
@@ -577,16 +572,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       }
     }
     this.getEndOfDays();
-    this.getCreditStatues();
   }
 
-  getCreditStatues() {
-    this.morningHuddleService.getCreditStatues().subscribe((res) => {
-      this.totalUsedCredits = res.body.data.used_credits??0;
-      this.totalRemainingCredits = res.body.data.remain_credits;
-      this.costPerSMS = res.body.data.cost_per_sms;
-    });
-  }
 
   changeTab(tabIndex: number) {
     this.selectedTab = tabIndex;
@@ -2199,14 +2186,12 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     }
   }
 
-  // buyCredits() {
-  //   const stripePaymentDialog = this.dialog.open(StripePaymentDialog);
-  // }
-
   openSendReviewMsgDialog(element) {
-    if (this.totalRemainingCredits <= 0) {
+    const totalRemainingCredits = parseInt(sessionStorage.getItem("remain_credits"));
+    if (totalRemainingCredits <= 0) {
       this.dialog.open(StripePaymentDialog, {
         data: {
+          costPerSMS: parseFloat(sessionStorage.getItem('cost_per_sms')),
           notify_msg:
             'You have no credits remaining, please top-up your account to send more review invites.'
         }
@@ -2223,7 +2208,11 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       });
       sendReviewDialog.afterClosed().subscribe((result) => {
         if (result.status) {
-          this.getCreditStatues();
+          this.morningHuddleService.getCreditStatues().subscribe((res) => {
+            sessionStorage.setItem("used_credits", res.body.data.used_credits??0);
+            sessionStorage.setItem("remain_credits", res.body.data.remain_credits);
+            sessionStorage.setItem("cost_per_sms", res.body.data.cost_per_sms);
+          });
         }
       });
     }
@@ -2300,12 +2289,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     setTimeout(function () {
       newWin.close();
     }, 2000);
-  }
-
-  buyCredits() {
-    const stripePaymentDialog = this.dialog.open(StripePaymentDialog, {
-      data: { totalCredits: this.totalCredits, costPerSMS: this.costPerSMS }
-    });
   }
 
   // openSendReviewMsgDialog(element) {

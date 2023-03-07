@@ -1,5 +1,5 @@
-.header_filters.marketing { flex-direction: row-reverse !important }
-.header_filters.multi { flex-direction: row-reverse !important }
+.header_filters.marketing { justify-content: flex-end }
+.header_filters.multi { justify-content: flex-end }
 .custom-tooltip-color {
     display:block;
     height:15px;

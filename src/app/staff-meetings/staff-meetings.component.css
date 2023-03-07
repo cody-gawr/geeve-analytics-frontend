@@ -1,4 +1,4 @@
-.staff-meetings.header_filters{ flex-direction: row-reverse !important }
+.staff-meetings.header_filters{ justify-content: flex-end }
 
 .card_header{
     font-size:x-large;
@@ -79,18 +79,18 @@ button{
 
 
 .dynamicDropdown2.flex_direct_mar { 
-    flex-direction: row-reverse !important 
+    justify-content: flex-end 
 }
 
 .header_filters.morning-huddle {
-     flex-direction: row-reverse !important 
+     justify-content: flex-end 
 }
 
 /* .dynamicDropdown2{
     flex-flow: row wrap;
     box-sizing: border-box;
     display: flex;
-    flex-direction: row-reverse !important;
+    justify-content: flex-end;
 } */
 
 .create_meeting_header{

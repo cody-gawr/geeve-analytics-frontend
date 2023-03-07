@@ -1,4 +1,4 @@
-.header_filters.lost-opportunity { flex-direction: row-reverse !important }
+.header_filters.lost-opportunity { justify-content: flex-end }
 
 .background-shadow{
     box-shadow: none !important;
