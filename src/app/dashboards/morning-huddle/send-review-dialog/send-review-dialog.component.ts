@@ -8,17 +8,17 @@ import { HeaderService } from "../../../layouts/full/header/header.service";
 import { MorningHuddleService } from "../morning-huddle.service";
 
 
-export function phoneLengthValidator(obj: any): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-        const digitNum = control.value.replaceAll(/\s/g, '');
-        if(obj.phoneCountryCode == '+614' && digitNum.length !== 9){
-            return {phoneNumber614: control.value}
-        }else if(obj.phoneCountryCode == '04' && digitNum.length !== 8){
-            return {phoneNumber04: control.value}
-        }
-        return null;
-    };
-}
+// export function phoneLengthValidator(obj: any): ValidatorFn {
+//     return (control: AbstractControl): ValidationErrors | null => {
+//         const digitNum = control.value.replaceAll(/\s/g, '');
+//         if(obj.phoneCountryCode == '+614' && digitNum.length !== 9){
+//             return {phoneNumber614: control.value}
+//         }else if(obj.phoneCountryCode == '04' && digitNum.length !== 8){
+//             return {phoneNumber04: control.value}
+//         }
+//         return null;
+//     };
+// }
 
 export interface DialogData {
     clinic_id?: number;
@@ -34,12 +34,12 @@ export interface DialogData {
     styleUrls:['send-review-dialog.component.scss']
 })
 export class SendReviewDialog {
-    public phoneCountryCode: '+614' | '04' = '+614';
+    //public phoneCountryCode: '+614' | '04' = '+614';
     review_msg = new FormControl('', [Validators.required]);
     phoneNumber = new FormControl('', [
         Validators.required, 
-        Validators.pattern(/^[0-9\s]*$/), 
-        phoneLengthValidator(this)]
+        Validators.pattern(/^(\+614?|04)[0-9\s]*$/)]
+        // phoneLengthValidator(this)]
     );
 
     msgTemplates = [];
@@ -59,29 +59,29 @@ export class SendReviewDialog {
         private _morningHuddleService: MorningHuddleService,
         private _toastrService: ToastrService
     ){
-        if(/^\+614/.test(this.data.mobile)){
-            this.phoneCountryCode = '+614';
-            this.phoneNumber.setValue(this.data.mobile.replace(/^\+614/, ''));
+        // if(/^\+614/.test(this.data.mobile)){
+        //     this.phoneCountryCode = '+614';
+        //     this.phoneNumber.setValue(this.data.mobile.replace(/^\+614/, ''));
             
-        }else if(/^614/.test(this.data.mobile)){
-            this.phoneCountryCode = '+614';
-            this.phoneNumber.setValue(this.data.mobile.replace(/^614/, ''));
-        }
-        else if(/^04/.test(this.data.mobile)){
-            this.phoneCountryCode = '04';
-            this.phoneNumber.setValue(this.data.mobile.replace(/^04/, ''));
+        // }else if(/^614/.test(this.data.mobile)){
+        //     this.phoneCountryCode = '+614';
+        //     this.phoneNumber.setValue(this.data.mobile.replace(/^614/, ''));
+        // }
+        // else if(/^04/.test(this.data.mobile)){
+        //     this.phoneCountryCode = '04';
+        //     this.phoneNumber.setValue(this.data.mobile.replace(/^04/, ''));
             
-        }else{
-            const digitNum = this.data.mobile.replaceAll(/\s/g, '');
-            if(digitNum.length > 8 ){
-                this.phoneCountryCode = '+614';
-                this.phoneNumber.setValue(this.data.mobile);
-            }else{
-                this.phoneCountryCode = '04';
-                this.phoneNumber.setValue(this.data.mobile);
-            }
-        }
-        
+        // }else{
+        //     const digitNum = this.data.mobile.replaceAll(/\s/g, '');
+        //     if(digitNum.length > 8 ){
+        //         this.phoneCountryCode = '+614';
+        //         this.phoneNumber.setValue(this.data.mobile);
+        //     }else{
+        //         this.phoneCountryCode = '04';
+        //         this.phoneNumber.setValue(this.data.mobile);
+        //     }
+        // }
+        this.phoneNumber.setValue(this.data.mobile);
         this.clinic = _.find(this._headerService.clinics, c => c.id == this.data.clinic_id);
         this.clinicSettingService.getReviewMsgTemplateList(this.data.clinic_id).subscribe((res) => {
             if (res.status == 200) {
@@ -126,7 +126,7 @@ export class SendReviewDialog {
         if(this.isValid){
             this.isWaitingResponse = true;
             this._morningHuddleService.sendReviewMsg(this.data.clinic_id, 
-                this.data.patient_id, this.review_msg.value, this.phoneCountryCode + this.phoneNumber.value).subscribe(res => {
+                this.data.patient_id, this.review_msg.value, this.phoneNumber.value).subscribe(res => {
                     this.isWaitingResponse = false;
                     if(res.status == 200){
                         this._toastrService.success('Sent Message Sucessfully!');
@@ -139,21 +139,21 @@ export class SendReviewDialog {
         }
     }
 
-    keyPress(event: any) {
-        const pattern = /^[0-9\s]*$/;
-        let inputChar = String.fromCharCode(event.charCode);
-        if ((event.keyCode != 8 && !pattern.test(inputChar))) {
-          event.preventDefault();
-        }
-        const val = event.target.value.replaceAll(/\s/g, '');
-        console.log(val, this.phoneCountryCode)
-        if(this.phoneCountryCode == '+614' && val.length > 8){
-            event.preventDefault();
-        }
-        if(this.phoneCountryCode == '04' && val.length > 7){
-            event.preventDefault();
-        }
-    }
+    // keyPress(event: any) {
+    //     const pattern = /^(\+614)|(04)[0-9\s]*$/;
+    //     let inputChar = String.fromCharCode(event.charCode);
+    //     if ((event.keyCode != 8 && !pattern.test(inputChar))) {
+    //       event.preventDefault();
+    //     }
+    //     const val = event.target.value.replaceAll(/\s/g, '');
+    //     console.log(val)
+    //     if(this.phoneCountryCode == '+614' && val.length > 8){
+    //         event.preventDefault();
+    //     }
+    //     if(this.phoneCountryCode == '04' && val.length > 7){
+    //         event.preventDefault();
+    //     }
+    // }
 
     onChangeReviewMsg(){
         const msg = _.find(this.msgTemplates, it => it.id == this.selectedReviewMsg);
