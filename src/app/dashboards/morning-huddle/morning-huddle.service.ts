@@ -528,8 +528,10 @@ export class MorningHuddleService {
     }
 
     getCreditStatues():Observable<HttpResponse<any>>{
+        const s = sessionStorage.getItem('sids');
+        const sids =s?s.split(','):[];
         const header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/reviews/getUsedCredits", header).pipe(
+        return this.http.post(this.apiUrl + "/reviews/updateCreditStatues", {sids: sids}, header).pipe(
             map((res: HttpResponse<any>) => {
                 return res;
         }));

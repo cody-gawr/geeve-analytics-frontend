@@ -430,7 +430,20 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
 
     const updateCreditStatues = () => {
       this.morningHuddleService.getCreditStatues().subscribe((res) => {
-        this.remainCredits = res.body.data.remain_credits;
+        const sids = res.body.data.sids;
+        for(const sid of sids){
+          if(sid.status == 'queued' || sid.status == 'sent'){
+            //
+          }else{
+            const _sids = (sessionStorage.getItem('sids')??'').split(',');
+            const inx = _sids.findIndex(s => s == sid);
+            _sids.splice(inx, 1);
+            sessionStorage.setItem('sids', _sids.join(','));
+          }
+
+          sessionStorage.setItem(sid.sid, sid.status);
+        }
+        this.remainCredits = res.body.data.remain_credits; 
         sessionStorage.setItem("used_credits", res.body.data.used_credits??0);
         sessionStorage.setItem("remain_credits", this.remainCredits.toString());
         sessionStorage.setItem("cost_per_sms", res.body.data.cost_per_sms);
@@ -2270,9 +2283,26 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   }
 
   checkReviewStatusProcess(element) {
-    const item = sessionStorage.getItem(
-      `${element.clinic_id}:${element.provider_id}:${element.patient_id}:${element.app_date}T${element.start}`);
-    return item;
+    const apptId = `${element.clinic_id}:${element.provider_id}:${element.patient_id}:${element.app_date}T${element.start}`;
+    const sid = sessionStorage.getItem(apptId);
+    if(sid){
+      const status = sessionStorage.getItem(sid);
+      if(status) return status;
+    }
+
+    return 'none';
+    // if(status)
+    //   switch(status){
+    //     case  'queued':
+    //     case 'sent':
+    //       return 'InProcess';
+    //     case 'failed':
+    //     case 'undelivered':
+    //       return 'Retry';
+    //     case 'delivered':
+    //       return 'Success';
+    //   }
+    // return 'Send';
   }
 
   printDentistScheduleTab() {

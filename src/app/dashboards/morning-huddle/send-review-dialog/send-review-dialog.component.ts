@@ -128,12 +128,26 @@ export class SendReviewDialog {
     onSubmitClick(event: any): void {
         if(this.isValid){
             this.isWaitingResponse = true;
+            const apptId = `${this.data.clinic_id}:${this.data.provider_id}:${this.data.patient_id}:${this.data.appt_date}T${this.data.appt_start}`;
             this._morningHuddleService.sendReviewMsg(this.data.clinic_id, 
                 this.data.patient_id, this.review_msg.value, this.phoneNumber.value).subscribe(res => {
                     this.isWaitingResponse = false;
                     if(res.status == 200){
+                        const s = sessionStorage.getItem('sids');
+                        const sids = s?s.split(','):[];
+                        sids.push(res.body.sid);
                         sessionStorage.setItem(
-                            `${this.data.clinic_id}:${this.data.provider_id}:${this.data.patient_id}:${this.data.appt_date}T${this.data.appt_start}`, res.body.status);
+                            'sids',
+                            sids.join(',')
+                        );
+                        sessionStorage.setItem(
+                            res.body.sid,
+                            res.body.status
+                        );
+                        sessionStorage.setItem(
+                            apptId, res.body.sid
+                        )
+                        //sessionStorage.setItem(this.phoneNumber.value, appId);
                         this._toastrService.success('Sent Message Sucessfully!');
                         this.dialogRef.close({status: true});
                     }

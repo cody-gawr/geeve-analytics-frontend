@@ -1634,18 +1634,39 @@
           >
             <th mat-header-call *matHeaderCellDef>Send Review</th>
             <td mat-cell style="text-align: center" *matCellDef="let element">
-              <button *ngIf="checkReviewStatusProcess(element); else elseBlock" mat-icon-button [disabled]="true">
+              <button *ngIf="checkReviewStatusProcess(element) == 'delivered'" mat-icon-button [disabled]="true">
                 <mat-icon style="font-weight: bolder;">check</mat-icon>
               </button>
-              <ng-template #elseBlock>
-                <button
+              <button *ngIf="checkReviewStatusProcess(element) == 'queued'" mat-icon-button [disabled]="true">
+                <mat-icon style="font-weight: bolder;">hourglass_top</mat-icon>
+              </button>
+              <button *ngIf="checkReviewStatusProcess(element) == 'sent'" mat-icon-button [disabled]="true">
+                <mat-icon style="font-weight: bolder;">hourglass_bottom</mat-icon>
+              </button>
+              <button
+                  *ngIf="checkReviewStatusProcess(element) == 'failed'"
+                  mat-stroked-button
+                  class="mat-dc"
+                  (click)="openSendReviewMsgDialog(element)"
+                >
+                  Retry(Failed)
+              </button>
+              <button
+                  *ngIf="checkReviewStatusProcess(element) == 'undelivered'"
+                  mat-stroked-button
+                  class="mat-dc"
+                  (click)="openSendReviewMsgDialog(element)"
+                >
+                  Retry(Undelivered)
+              </button>
+              <button
+                  *ngIf="checkReviewStatusProcess(element) == 'none'"
                   mat-stroked-button
                   class="mat-dc"
                   (click)="openSendReviewMsgDialog(element)"
                 >
                   Send
-                </button>
-              </ng-template>
+              </button>
             </td>
           </ng-container>
 
