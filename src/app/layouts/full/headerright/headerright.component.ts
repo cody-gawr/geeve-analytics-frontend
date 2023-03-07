@@ -161,12 +161,19 @@ export class AppHeaderrightComponent implements AfterViewInit {
       // {
       //}
     });
-    this.headerService.getCreditStatues().subscribe((res) => {
-      this.remainCredits = res.body.data.remain_credits;
-      sessionStorage.setItem("used_credits", res.body.data.used_credits??0);
-      sessionStorage.setItem("remain_credits", this.remainCredits.toString());
-      sessionStorage.setItem("cost_per_sms", res.body.data.cost_per_sms);
-    });
+
+    const updateCreditStatues = () => {
+      this.headerService.getCreditStatues().subscribe((res) => {
+        this.remainCredits = res.body.data.remain_credits;
+        sessionStorage.setItem("used_credits", res.body.data.used_credits??0);
+        sessionStorage.setItem("remain_credits", this.remainCredits.toString());
+        sessionStorage.setItem("cost_per_sms", res.body.data.cost_per_sms);
+      });
+    }
+  
+    updateCreditStatues();
+    setInterval(updateCreditStatues, 30000);
+
     const q = new URL(window.location as any);
     q.searchParams.delete('payment_intent');
     q.searchParams.delete('payment_intent_client_secret');
