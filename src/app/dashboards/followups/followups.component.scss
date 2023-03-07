@@ -1,4 +1,4 @@
-.header_filters.followups { justify-content: flex-end }
+.header_filters.followups { flex-direction: row-reverse !important; }
 
 .chart-conversion{
     height: 350px; 

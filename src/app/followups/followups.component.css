@@ -1,4 +1,4 @@
-.followups.header_filters{ justify-content: flex-end }
+.followups.header_filters{ flex-direction: row-reverse !important }
 .DentistListSecRow mat-card.noPatients.sa_hccard.mat-card {
     background-color: #fff !important;
     padding: 10px !important;
@@ -205,7 +205,7 @@ table{
 } */
 
 
-.header_filters.morning-huddle { justify-content: flex-end }
+.header_filters.morning-huddle { flex-direction: row-reverse !important }
 .huddle-card {
     padding: 16px;
     margin-left: 0;
@@ -217,7 +217,7 @@ table{
 .huddle-card-row .appointment {
     margin-top: 0;
 }
-/* .header_filters.flex_direct_mar { justify-content: flex-end } */
+/* .header_filters.flex_direct_mar { flex-direction: row-reverse !important } */
 
 .daysAgo {
     font-size: 12px;

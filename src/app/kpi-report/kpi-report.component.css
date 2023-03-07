@@ -1,6 +1,6 @@
 
 
-.header_filters.morning-huddle { justify-content: flex-end }
+.header_filters.morning-huddle { flex-direction: row-reverse !important }
 .huddle-card {
     padding: 16px;
     margin-left: 0;
@@ -12,7 +12,7 @@
 .huddle-card-row .appointment {
     margin-top: 0;
 }
-/* .header_filters.flex_direct_mar { justify-content: flex-end } */
+/* .header_filters.flex_direct_mar { flex-direction: row-reverse !important } */
 
 .daysAgo {
     font-size: 12px;
