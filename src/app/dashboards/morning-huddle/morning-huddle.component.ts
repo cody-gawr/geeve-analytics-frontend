@@ -402,7 +402,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   // maxDate: any;
 
   timezone: string = '+1000';
-
+  remainCredits = 0;
   // @ViewChild('sort1') sort1: MatSort;
   sortList: QueryList<MatSort>;
   @ViewChildren('sort1') set matSort(ms: QueryList<MatSort>) {
@@ -427,6 +427,24 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.selected = { start: moment() };
     // this.minDate = moment().subtract(7, 'days');
     // this.maxDate = moment().add(7, 'days');
+
+    const updateCreditStatues = () => {
+      this.morningHuddleService.getCreditStatues().subscribe((res) => {
+        this.remainCredits = res.body.data.remain_credits;
+        sessionStorage.setItem("used_credits", res.body.data.used_credits??0);
+        sessionStorage.setItem("remain_credits", this.remainCredits.toString());
+        sessionStorage.setItem("cost_per_sms", res.body.data.cost_per_sms);
+      });
+    }
+  
+    updateCreditStatues();
+    setInterval(updateCreditStatues, 30000);
+
+    const q = new URL(window.location as any);
+    q.searchParams.delete('payment_intent');
+    q.searchParams.delete('payment_intent_client_secret');
+    q.searchParams.delete('redirect_status');
+    window.history.pushState({}, "", q);
   }
 
   @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
@@ -572,6 +590,13 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       }
     }
     this.getEndOfDays();
+  }
+
+  openTopUpCredits() {
+    const costPerSMS = parseFloat(sessionStorage.getItem('cost_per_sms'));
+    const stripePaymentDialog = this.dialog.open(StripePaymentDialog, {
+      data: { costPerSMS: costPerSMS }
+    });
   }
 
 
@@ -2203,7 +2228,10 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
           phone_number: element.mobile,
           clinic_id: this.clinic_id,
           patient_name: element.patient_name,
-          mobile: element.mobile
+          mobile: element.mobile,
+          provider_id: element.provider_id,
+          appt_date: element.app_date,
+          appt_start: element.start
         }
       });
       sendReviewDialog.afterClosed().subscribe((result) => {
@@ -2239,6 +2267,12 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         this.toastr.error('Something went wrong.');
         break;
     }
+  }
+
+  checkReviewStatusProcess(element) {
+    const item = sessionStorage.getItem(
+      `${element.clinic_id}:${element.provider_id}:${element.patient_id}:${element.app_date}T${element.start}`);
+    return item;
   }
 
   printDentistScheduleTab() {

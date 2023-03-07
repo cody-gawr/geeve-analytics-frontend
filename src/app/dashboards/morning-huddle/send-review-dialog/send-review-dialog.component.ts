@@ -26,6 +26,9 @@ export interface DialogData {
     phone_number: number;
     patient_name: string;
     mobile: any;
+    provider_id: number;
+    appt_date: string;
+    appt_start: string;
 }
 
 @Component({
@@ -109,8 +112,8 @@ export class SendReviewDialog {
 
     getPhoneErrors() {
         if(!this.phoneNumber.invalid) return '';
-        if(this.phoneNumber.hasError('phoneNumber614')) return "The length of digits should be 9 in case including +614";
-        if(this.phoneNumber.hasError('phoneNumber04')) return "The length of digits should be 8 in case including 04";
+        // if(this.phoneNumber.hasError('phoneNumber614')) return "The length of digits should be 9 in case including +614";
+        // if(this.phoneNumber.hasError('phoneNumber04')) return "The length of digits should be 8 in case including 04";
         return 'Invalid Phone Number';
     }
 
@@ -129,6 +132,8 @@ export class SendReviewDialog {
                 this.data.patient_id, this.review_msg.value, this.phoneNumber.value).subscribe(res => {
                     this.isWaitingResponse = false;
                     if(res.status == 200){
+                        sessionStorage.setItem(
+                            `${this.data.clinic_id}:${this.data.provider_id}:${this.data.patient_id}:${this.data.appt_date}T${this.data.appt_start}`, res.body.status);
                         this._toastrService.success('Sent Message Sucessfully!');
                         this.dialogRef.close({status: true});
                     }

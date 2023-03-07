@@ -29,6 +29,17 @@
     </div>
   </div>
 
+  <div class="morning-review-topup">
+    <button
+      *ngIf="apiUrl.includes('test')"
+      (click)="openTopUpCredits()"
+      style="font-size: 14px;line-height:30px"
+      class="mat-raised-button mat-dc"
+    >
+        Top Up ({{remainCredits}} Remains)
+    </button>
+  </div>
+
   <mat-tab-group [selectedIndex]="selectedTab" (selectedTabChange)="onTabChanged($event)">
     <!-- Dentist Performance Tab -->
     <mat-tab label="Dentist Performance" *ngIf="user_type != '5'">
@@ -1623,13 +1634,18 @@
           >
             <th mat-header-call *matHeaderCellDef>Send Review</th>
             <td mat-cell style="text-align: center" *matCellDef="let element">
-              <button
-                mat-stroked-button
-                class="mat-dc"
-                (click)="openSendReviewMsgDialog(element)"
-              >
-                Send
+              <button *ngIf="checkReviewStatusProcess(element); else elseBlock" mat-icon-button [disabled]="true">
+                <mat-icon style="font-weight: bolder;">check</mat-icon>
               </button>
+              <ng-template #elseBlock>
+                <button
+                  mat-stroked-button
+                  class="mat-dc"
+                  (click)="openSendReviewMsgDialog(element)"
+                >
+                  Send
+                </button>
+              </ng-template>
             </td>
           </ng-container>
 
