@@ -527,7 +527,7 @@ export class MorningHuddleService {
         }))
     }
 
-    getTotalCredits():Observable<HttpResponse<any>>{
+    getCreditStatues():Observable<HttpResponse<any>>{
         const header = this.getHeaders();
         return this.http.get(this.apiUrl + "/reviews/getUsedCredits", header).pipe(
             map((res: HttpResponse<any>) => {
