@@ -9,6 +9,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { HeaderService } from './header.service';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatSelectModule } from '@angular/material/select';
+import { StripePaymentDialog } from '../headerright/stripe-payment-modal/stripe-payment-modal.component';
 
 
 @NgModule({
@@ -21,12 +24,15 @@ import { HeaderService } from './header.service';
     MatButtonModule,
     FlexLayoutModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatStepperModule,
+    MatSelectModule
   ],
   providers: [
     HeaderService
   ],
   declarations: [
+    StripePaymentDialog
   ]
 })
 export class HeaderModule {}

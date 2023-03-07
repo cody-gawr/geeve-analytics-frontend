@@ -24,6 +24,7 @@ import { ChartstipsService } from '../../shared/chartstips.service';
 import { MatSort } from '@angular/material/sort';
 import { environment } from '../../../environments/environment';
 import * as moment from 'moment';
+
 export interface PeriodicElement {
   name: string;
   production: string;
@@ -50,7 +51,6 @@ import { loadStripe } from '@stripe/stripe-js';
 import { StripePaymentDialog } from './stripe-payment-modal/stripe-payment-modal.component';
 import { SendReviewDialog } from './send-review-dialog/send-review-dialog.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-
 @Component({
   selector: 'notes-add-dialog',
   templateUrl: './add-notes.html',
@@ -338,10 +338,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   public OverdueRecalls: boolean = false;
   public LabNeeded: boolean = false;
   public selectDentist = 0;
-  public totalCredits = 0;
-  public totalUsedCredits = 0;
-  public totalRemainingCredits = 0;
-  public noCredits = true;
 
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
   displayedColumns1: string[] = ['start', 'name', 'dentist'];
@@ -444,7 +440,13 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     //console.log(this.homeUrl + "assets/js/jquery.min.js");
     /*this.dataSource1.sort = this.sort1;
     this.dataSource2.sort = this.sort2;*/
-    this.checkPaymentStatus();
+    const q = new URLSearchParams(window.location.search);
+    const tabIndex = parseInt(q.get('tab')??'0');
+    this.changeTab(tabIndex);
+    const clientSecret = q.get(
+      'payment_intent_client_secret'
+    );
+    if(clientSecret) this.checkPaymentStatus(clientSecret);
     $('#currentDentist').attr('did', 'all');
     this.user_type = this._cookieService.get('user_type');
     this.userPlan = this._cookieService.get('user_plan');
@@ -570,23 +572,18 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       }
     }
     this.getEndOfDays();
-    this.getUsedCreditsMonthly();
   }
 
-  getUsedCreditsMonthly() {
-    this.morningHuddleService.getTotalCredits().subscribe((res) => {
-      this.totalUsedCredits = res.body.data.used_credits;
-
-      this.noCredits = res.body.data.no_credits;
-      this.totalRemainingCredits = res.body.data.remain_credits;
-    });
-  }
 
   changeTab(tabIndex: number) {
     this.selectedTab = tabIndex;
   }
 
-  onTabChanged(event) {}
+  onTabChanged(event) {
+    const q = new URL(window.location as any);
+    q.searchParams.set('tab', event.index);
+    window.history.pushState({}, "", q);
+  }
 
   refreshPerformanceTab() {
     /*******Tab 2 *******/
@@ -2189,14 +2186,12 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     }
   }
 
-  // buyCredits() {
-  //   const stripePaymentDialog = this.dialog.open(StripePaymentDialog);
-  // }
-
   openSendReviewMsgDialog(element) {
-    if (this.noCredits) {
+    const totalRemainingCredits = parseInt(sessionStorage.getItem("remain_credits"));
+    if (totalRemainingCredits <= 0) {
       this.dialog.open(StripePaymentDialog, {
         data: {
+          costPerSMS: parseFloat(sessionStorage.getItem('cost_per_sms')),
           notify_msg:
             'You have no credits remaining, please top-up your account to send more review invites.'
         }
@@ -2213,22 +2208,19 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       });
       sendReviewDialog.afterClosed().subscribe((result) => {
         if (result.status) {
-          this.getUsedCreditsMonthly();
+          this.morningHuddleService.getCreditStatues().subscribe((res) => {
+            sessionStorage.setItem("used_credits", res.body.data.used_credits??0);
+            sessionStorage.setItem("remain_credits", res.body.data.remain_credits);
+            sessionStorage.setItem("cost_per_sms", res.body.data.cost_per_sms);
+          });
         }
       });
     }
   }
 
-  async checkPaymentStatus() {
+  async checkPaymentStatus(clientSecret: string) {
     const stripe = await loadStripe(environment.stripeKey);
-    const clientSecret = new URLSearchParams(window.location.search).get(
-      'payment_intent_client_secret'
-    );
-
-    if (!clientSecret) {
-      return;
-    }
-    this.changeTab(2);
+    
     const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
 
     switch (paymentIntent.status) {
@@ -2293,12 +2285,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     setTimeout(function () {
       newWin.close();
     }, 2000);
-  }
-
-  buyCredits() {
-    const stripePaymentDialog = this.dialog.open(StripePaymentDialog, {
-      data: { totalCredits: this.totalCredits }
-    });
   }
 
   // openSendReviewMsgDialog(element) {

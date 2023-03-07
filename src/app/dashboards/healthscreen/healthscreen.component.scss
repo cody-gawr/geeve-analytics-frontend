@@ -2,7 +2,7 @@
   width: 100%;
 }
 
-.header_filters.healthscreen { flex-direction: row-reverse !important }
+.header_filters.healthscreen { justify-content: flex-end; }
 .no-found-data{
   margin: 0 !important;
   max-width: 100%;

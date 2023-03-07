@@ -29,7 +29,7 @@
     </div>
   </div>
 
-  <mat-tab-group [selectedIndex]="selectedTab">
+  <mat-tab-group [selectedIndex]="selectedTab" (selectedTabChange)="onTabChanged($event)">
     <!-- Dentist Performance Tab -->
     <mat-tab label="Dentist Performance" *ngIf="user_type != '5'">
       <div class="morning-huddle-date">
@@ -1238,20 +1238,6 @@
               remindersRecallsOverdueDate | date : 'EEE MMM d' : 'timezone'
             }}</strong
           >
-          <strong
-          >Current Day:
-          {{ remindersRecallsOverdueDate | date : 'EEE MMM d' : 'timezone' }} |
-          Used Credits: {{ totalUsedCredits }} | Remaining Credits:
-          {{ totalRemainingCredits }}</strong
-        >
-        <button
-          *ngIf="apiUrl.includes('test')"
-          id="topup-credits"
-          (click)="buyCredits()"
-          class="mat-raised-button mat-dc"
-        >
-          TopUp
-        </button>
         </div>
       </div>
       <div class="sa_dentist_graphs_area sa_profit_bar patient-schedule">

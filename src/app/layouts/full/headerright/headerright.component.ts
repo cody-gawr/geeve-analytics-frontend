@@ -20,6 +20,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatDialog } from '@angular/material/dialog';
 
 import { environment } from '../../../../environments/environment';
+import { StripePaymentDialog } from './stripe-payment-modal/stripe-payment-modal.component';
 
 export interface Dentist {
   providerId: string;
@@ -63,7 +64,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
   user_type: any = 0;
   unAuth: boolean = false;
   userId: number = null;
-
+  remainCredits = 0;
   classUrl: string = '';
   @Inject(MAT_DIALOG_DATA) public data: any;
   @Output() newItemEvent = new EventEmitter<Number>();
@@ -159,6 +160,33 @@ export class AppHeaderrightComponent implements AfterViewInit {
       // if($('#currentClinic').attr('cid') == 'all' && this.route != '/dashboards/healthscreen')
       // {
       //}
+    });
+
+    const updateCreditStatues = () => {
+      this.headerService.getCreditStatues().subscribe((res) => {
+        this.remainCredits = res.body.data.remain_credits;
+        sessionStorage.setItem("used_credits", res.body.data.used_credits??0);
+        sessionStorage.setItem("remain_credits", this.remainCredits.toString());
+        sessionStorage.setItem("cost_per_sms", res.body.data.cost_per_sms);
+      });
+    }
+  
+    updateCreditStatues();
+    setInterval(updateCreditStatues, 30000);
+
+    const q = new URL(window.location as any);
+    q.searchParams.delete('payment_intent');
+    q.searchParams.delete('payment_intent_client_secret');
+    q.searchParams.delete('redirect_status');
+    window.history.pushState({}, "", q);
+  }
+
+
+
+  openTopUpCredits() {
+    const costPerSMS = parseFloat(sessionStorage.getItem('cost_per_sms'));
+    const stripePaymentDialog = this.dialog.open(StripePaymentDialog, {
+      data: { costPerSMS: costPerSMS }
     });
   }
 

@@ -116,6 +116,7 @@ export class ClinicSettingsComponent implements OnInit {
     });
 
   }
+
   //initilaize component
   ngOnInit() {
     this.route.params.subscribe((params) => {

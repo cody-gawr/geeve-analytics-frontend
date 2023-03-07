@@ -79,4 +79,20 @@ export class HeaderService {
         this.clincs.next(clinic);
     }
 
+    getCreditStatues():Observable<HttpResponse<any>>{
+        const header = this.getHeaders();
+        return this.http.get(this.apiUrl + "/reviews/getUsedCredits", header).pipe(
+            map((res: HttpResponse<any>) => {
+                return res;
+        }));
+    }
+
+    createPaymentIntent(creditAmount):Observable<HttpResponse<any>>{
+        const header = this.getHeaders();
+        return this.http.post(this.apiUrl + "/reviews/createPaymentIntent", {
+            amount: creditAmount
+        }, header).pipe(map((res: HttpResponse<any>) => {
+            return res;
+        }))
+    }
 }

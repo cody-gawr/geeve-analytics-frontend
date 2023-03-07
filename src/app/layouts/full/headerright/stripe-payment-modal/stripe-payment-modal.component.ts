@@ -4,8 +4,8 @@ import { MatStepper } from "@angular/material/stepper";
 import {Appearance, loadStripe, Stripe, StripeElements, 
     StripeElementType, StripePaymentElementOptions} from '@stripe/stripe-js';
 import { ToastrService } from "ngx-toastr";
-import { environment } from "../../../../environments/environment";
-import { MorningHuddleService } from "../morning-huddle.service";
+import { environment } from "../../../../../environments/environment";
+import { HeaderService } from "../../header/header.service";
 
 
 export interface DialogData {
@@ -29,7 +29,7 @@ export class StripePaymentDialog {
     constructor(
         public dialogRef: MatDialogRef<StripePaymentDialog>,
         @Inject(MAT_DIALOG_DATA) public data: DialogData,
-        private morningHuddle: MorningHuddleService,
+        private headerService: HeaderService,
         private toastr: ToastrService,
     ) {
         //this.creditOptions = this.creditOptions.filter(it => it.amount > data.totalCredits);
@@ -37,7 +37,7 @@ export class StripePaymentDialog {
 
     async initStripeElements() {
         this.stripe = await loadStripe(environment.stripeKey);
-        this.morningHuddle.createPaymentIntent(this.selectedCredit).subscribe(resData => {
+        this.headerService.createPaymentIntent(this.selectedCredit).subscribe(resData => {
 
             const { clientSecret } = resData.body.data;
     
@@ -78,7 +78,7 @@ export class StripePaymentDialog {
             elements: this.elements,
             confirmParams: {
               // Make sure to change this to your payment completion page
-              return_url: `${window.location.origin}/morning-huddle?tab=2`,
+              return_url: `${window.location.href}`,
             },
         });
         
