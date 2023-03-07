@@ -441,7 +441,7 @@
                     src="../assets/images/trend_{{ newPatientsTooltip }}.png"
                 /></span>
                 <span
-                  *ngIf="!(activePatients || showTrend) && trendText"
+                  *ngIf="activePatients && trendText && !showTrend"
                   class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
                   matTooltip="{{ trendText }} : {{
                     fdActivePatientsTa | number : '1.0-0'
