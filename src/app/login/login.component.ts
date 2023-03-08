@@ -65,6 +65,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         (res) => {
           this._cookieService.removeAll({ path: '/' });
+          console.log(this._cookieService.getAll());
           if (res.status == 200) {
             var datares = [];
             datares['username'] = res.body.data.data.username;
@@ -130,7 +131,6 @@ export class LoginComponent implements OnInit {
               this._cookieService.put('clinicid', datares['clinicid'], opts);
               this._cookieService.put('dentist_toggle', 'false', opts);
             }
-            var self = this;
 
             if (
               datares['parent_stepper'] != 'no' &&
@@ -167,6 +167,7 @@ export class LoginComponent implements OnInit {
           } else if (res.body.message == 'error') {
             this.errorLogin = true;
           }
+          console.log(this._cookieService.getAll());
         },
         (error) => {
           if (error.status == 429) {
