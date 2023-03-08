@@ -215,7 +215,22 @@ export class AppHeaderrightComponent
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.userIdle.startWatching();
+    // Start watching when user idle is starting.
+    this.userIdle.onTimerStart().subscribe((count) => {});
+    this.userIdle
+      .onTimeout()
+      .pipe(
+        mergeMap(() => this.headerService.logout()),
+        takeUntil(this.notifier)
+      )
+      .subscribe(() => {
+        this.userIdle.stopTimer();
+        this._cookieService.removeAll();
+        this.router.navigateByUrl('/login');
+      });
+  }
 
   ngOnDestroy() {
     this._routerSub.unsubscribe();
