@@ -477,8 +477,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       self.refreshDataAuto();
     }, 1000 * 300);
 
-    const updateCreditStatues = () => {
-      this.morningHuddleService.getCreditStatues().subscribe((res) => {
+    const updateCreditStatus = () => {
+      this.morningHuddleService.getCreditStatus().subscribe((res) => {
         const sids = res.body.data.sids;
         for(const sid of sids){
           if(sid.status == 'queued' || sid.status == 'sent'){
@@ -499,8 +499,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       });
     }
 
-    updateCreditStatues();
-    this.creditStatusTimer = setInterval(updateCreditStatues, 30000);
+    updateCreditStatus();
+    this.creditStatusTimer = setInterval(updateCreditStatus, 30000);
 
   }
   ngAfterViewInit(): void {
@@ -2254,7 +2254,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       });
       sendReviewDialog.afterClosed().subscribe((result) => {
         if (result.status) {
-          this.morningHuddleService.getCreditStatues().subscribe((res) => {
+          this.morningHuddleService.getCreditStatus().subscribe((res) => {
             sessionStorage.setItem("used_credits", res.body.data.used_credits??0);
             sessionStorage.setItem("remain_credits", res.body.data.remain_credits);
             sessionStorage.setItem("cost_per_sms", res.body.data.cost_per_sms);

@@ -527,11 +527,11 @@ export class MorningHuddleService {
         }))
     }
 
-    getCreditStatues():Observable<HttpResponse<any>>{
+    getCreditStatus():Observable<HttpResponse<any>>{
         const s = sessionStorage.getItem('sids');
         const sids =s?s.split(','):[];
         const header = this.getHeaders();
-        return this.http.post(this.apiUrl + "/reviews/updateCreditStatues", {sids: sids}, header).pipe(
+        return this.http.post(this.apiUrl + "/reviews/updateCreditStatus", {sids: sids}, header).pipe(
             map((res: HttpResponse<any>) => {
                 return res;
         }));
