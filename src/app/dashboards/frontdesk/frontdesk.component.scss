@@ -1,5 +1,5 @@
-.header_filters.frontdesk  { justify-content: flex-end }
-.header_filters.multi  { justify-content: flex-end }
+.header_filters.frontdesk  { flex-direction: row-reverse !important; }
+.header_filters.multi  { flex-direction: row-reverse !important; }
 
 .utiTablecon {
     height: 315px;

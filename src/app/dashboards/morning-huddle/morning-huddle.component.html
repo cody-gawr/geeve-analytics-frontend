@@ -29,6 +29,17 @@
     </div>
   </div>
 
+  <div class="morning-review-topup">
+    <button
+      *ngIf="apiUrl.includes('test')"
+      (click)="openTopUpCredits()"
+      style="font-size: 14px;line-height:30px"
+      class="mat-raised-button mat-dc"
+    >
+        Top Up ({{remainCredits}} Remains)
+    </button>
+  </div>
+
   <mat-tab-group [selectedIndex]="selectedTab" (selectedTabChange)="onTabChanged($event)">
     <!-- Dentist Performance Tab -->
     <mat-tab label="Dentist Performance" *ngIf="user_type != '5'">
@@ -1623,12 +1634,38 @@
           >
             <th mat-header-call *matHeaderCellDef>Send Review</th>
             <td mat-cell style="text-align: center" *matCellDef="let element">
+              <button *ngIf="checkReviewStatusProcess(element) == 'delivered'" mat-icon-button [disabled]="true">
+                <mat-icon style="font-weight: bolder;">check</mat-icon>
+              </button>
+              <button *ngIf="checkReviewStatusProcess(element) == 'queued'" mat-icon-button [disabled]="true">
+                <mat-icon style="font-weight: bolder;">hourglass_top</mat-icon>
+              </button>
+              <button *ngIf="checkReviewStatusProcess(element) == 'sent'" mat-icon-button [disabled]="true">
+                <mat-icon style="font-weight: bolder;">hourglass_bottom</mat-icon>
+              </button>
               <button
-                mat-stroked-button
-                class="mat-dc"
-                (click)="openSendReviewMsgDialog(element)"
-              >
-                Send
+                  *ngIf="checkReviewStatusProcess(element) == 'failed'"
+                  mat-stroked-button
+                  class="mat-dc"
+                  (click)="openSendReviewMsgDialog(element)"
+                >
+                  Retry(Failed)
+              </button>
+              <button
+                  *ngIf="checkReviewStatusProcess(element) == 'undelivered'"
+                  mat-stroked-button
+                  class="mat-dc"
+                  (click)="openSendReviewMsgDialog(element)"
+                >
+                  Retry(Undelivered)
+              </button>
+              <button
+                  *ngIf="checkReviewStatusProcess(element) == 'none'"
+                  mat-stroked-button
+                  class="mat-dc"
+                  (click)="openSendReviewMsgDialog(element)"
+                >
+                  Send
               </button>
             </td>
           </ng-container>

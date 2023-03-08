@@ -3,16 +3,6 @@
   [ngClass]="showDropDown == false ? 'singleD' : ''"
   class="header_filters dynamicDropdown{{ user_type_dentist }} {{ classUrl }}"
 >
-<div style="display:flex; padding:5px 0;">
-  <button
-    *ngIf="apiUrl.includes('test')"
-    (click)="openTopUpCredits()"
-    style="font-size: 14px;line-height:30px"
-    class="mat-raised-button mat-dc"
-  >
-      Top Up ({{remainCredits}} Remains)
-  </button>
-</div>
   <div fxLayout="row" fxFlex="50" fxFlex.md="50" fxFlex.sm="50" fxFlex.xs="100">
     <div
       class="header_first_select"

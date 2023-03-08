@@ -11,8 +11,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { HeaderService } from './header.service';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
-import { StripePaymentDialog } from '../headerright/stripe-payment-modal/stripe-payment-modal.component';
-
 
 @NgModule({
   imports: [
@@ -32,7 +30,6 @@ import { StripePaymentDialog } from '../headerright/stripe-payment-modal/stripe-
     HeaderService
   ],
   declarations: [
-    StripePaymentDialog
   ]
 })
 export class HeaderModule {}

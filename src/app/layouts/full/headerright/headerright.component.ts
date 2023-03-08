@@ -22,7 +22,6 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatDialog } from '@angular/material/dialog';
 
 import { environment } from '../../../../environments/environment';
-import { StripePaymentDialog } from './stripe-payment-modal/stripe-payment-modal.component';
 
 export interface Dentist {
   providerId: string;
@@ -69,7 +68,6 @@ export class AppHeaderrightComponent
   user_type: any = 0;
   unAuth: boolean = false;
   userId: number = null;
-  remainCredits = 0;
   classUrl: string = '';
   @Inject(MAT_DIALOG_DATA) public data: any;
   @Output() newItemEvent = new EventEmitter<Number>();
@@ -169,49 +167,6 @@ export class AppHeaderrightComponent
       // {
       //}
     });
-
-    const updateCreditStatues = () => {
-      this.headerService.getCreditStatues().subscribe((res) => {
-        this.remainCredits = res.body.data.remain_credits;
-        sessionStorage.setItem('used_credits', res.body.data.used_credits ?? 0);
-        sessionStorage.setItem('remain_credits', this.remainCredits.toString());
-        sessionStorage.setItem('cost_per_sms', res.body.data.cost_per_sms);
-      });
-    };
-
-    updateCreditStatues();
-    setInterval(updateCreditStatues, 30000);
-
-    const q = new URL(window.location as any);
-    q.searchParams.delete('payment_intent');
-    q.searchParams.delete('payment_intent_client_secret');
-    q.searchParams.delete('redirect_status');
-    window.history.pushState({}, '', q);
-  }
-
-  ngOnInit(): void {
-    //Start watching for user inactivity.
-    this.userIdle.startWatching();
-    // Start watching when user idle is starting.
-    this.userIdle.onTimerStart().subscribe((count) => {});
-    this.userIdle
-      .onTimeout()
-      .pipe(
-        mergeMap(() => this.headerService.logout()),
-        takeUntil(this.notifier)
-      )
-      .subscribe(() => {
-        this.userIdle.stopTimer();
-        this._cookieService.removeAll();
-        this.router.navigateByUrl('/login');
-      });
-  }
-
-  openTopUpCredits() {
-    const costPerSMS = parseFloat(sessionStorage.getItem('cost_per_sms'));
-    const stripePaymentDialog = this.dialog.open(StripePaymentDialog, {
-      data: { costPerSMS: costPerSMS }
-    });
   }
 
   alert(trailDays) {
@@ -259,6 +214,9 @@ export class AppHeaderrightComponent
       (error) => {}
     );
   }
+
+  ngOnInit(): void {}
+
   ngOnDestroy() {
     this._routerSub.unsubscribe();
     this.notifier.next();

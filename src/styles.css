@@ -4993,7 +4993,7 @@ body .AddCard-main .AddCard-box .mat-card-title {
   margin-right: -5px;
 }
 
-.header_filters.flex_direct_mar { justify-content: flex-end; gap: 5px }
+.header_filters.flex_direct_mar { justify-content: flex-end; }
 
 .custom_date input {
   margin-left: 10px;
