@@ -3,7 +3,9 @@ import {
   AfterViewInit,
   Output,
   EventEmitter,
-  Inject
+  Inject,
+  OnInit,
+  OnDestroy
 } from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { CookieService, CookieOptions } from 'ngx-cookie';
@@ -11,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router, NavigationEnd, Event } from '@angular/router';
 import { HeaderService } from '../header/header.service';
 import { DentistService } from '../../../dentist/dentist.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject, takeUntil, mergeMap } from 'rxjs';
 import { UserIdleService } from 'angular-user-idle';
 import { AppConstants } from '../../../app.constants';
 import { RolesUsersService } from '../../../roles-users/roles-users.service';
@@ -45,8 +47,11 @@ export class FeatureDialogComponent {
   templateUrl: './headerright.component.html',
   styleUrls: []
 })
-export class AppHeaderrightComponent implements AfterViewInit {
+export class AppHeaderrightComponent
+  implements AfterViewInit, OnInit, OnDestroy
+{
   private _routerSub = Subscription.EMPTY;
+  private notifier = new Subject<void>();
   providerIdDentist;
   isToggleDentistChart: string;
   user_type_dentist;
@@ -85,31 +90,34 @@ export class AppHeaderrightComponent implements AfterViewInit {
       this._cookieService.get('features_dismissed') &&
       this._cookieService.get('features_dismissed') == '0'
     ) {
-      this.headerService.getNewFeature().subscribe(
-        (res) => {
-          for (let linkurl of res.body.data) {
-            if (linkurl.link) {
-              if (!linkurl.link.match(/^[a-zA-Z]+:\/\//)) {
-                linkurl.link = 'http://' + linkurl.link;
+      this.headerService
+        .getNewFeature()
+        .pipe(takeUntil(this.notifier))
+        .subscribe({
+          next: (res) => {
+            for (let linkurl of res.body.data) {
+              if (linkurl.link) {
+                if (!linkurl.link.match(/^[a-zA-Z]+:\/\//)) {
+                  linkurl.link = 'http://' + linkurl.link;
+                }
               }
             }
-          }
-          const dialogRef = this.dialog.open(FeatureDialogComponent, {
-            width: '700px',
-            data: res.body.data
-          });
-          dialogRef.afterClosed().subscribe((result) => {
-            this.headerService.getNewFeatureDisable().subscribe((res) => {
-              if (res.status == 200) {
-                this._cookieService.put('features_dismissed', '1');
-              }
+            const dialogRef = this.dialog.open(FeatureDialogComponent, {
+              width: '700px',
+              data: res.body.data
             });
-          });
-        },
-        (error) => {
-          this.warningMessage = 'Please Provide Valid Inputs!';
-        }
-      );
+            dialogRef.afterClosed().subscribe((result) => {
+              this.headerService.getNewFeatureDisable().subscribe((res) => {
+                if (res.status == 200) {
+                  this._cookieService.put('features_dismissed', '1');
+                }
+              });
+            });
+          },
+          error: (error) => {
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        });
     }
     if (this._cookieService.get('userid')) {
       this.userId = Number(this._cookieService.get('userid'));
@@ -206,23 +214,29 @@ export class AppHeaderrightComponent implements AfterViewInit {
       (error) => {}
     );
   }
-  ngOnDestroy() {
-    this._routerSub.unsubscribe();
-  }
-  ngAfterViewInit() {
-    //  this.clinic_id = '1';
-    //this.getClinics();
-    //Start watching for user inactivity.
+
+  ngOnInit(): void {
     this.userIdle.startWatching();
     // Start watching when user idle is starting.
     this.userIdle.onTimerStart().subscribe((count) => {});
-    // Start watch when time is up.
-    this.userIdle.onTimeout().subscribe(() => {
-      this.userIdle.stopTimer();
-      this._cookieService.removeAll();
-      this.router.navigateByUrl('/login');
-    });
+    this.userIdle
+      .onTimeout()
+      .pipe(
+        mergeMap(() => this.headerService.logout()),
+        takeUntil(this.notifier)
+      )
+      .subscribe(() => {
+        this.userIdle.stopTimer();
+        this._cookieService.removeAll();
+        this.router.navigateByUrl('/login');
+      });
   }
+
+  ngOnDestroy() {
+    this._routerSub.unsubscribe();
+    this.notifier.next();
+  }
+  ngAfterViewInit() {}
 
   toggler() {
     if (this._cookieService.get('dentist_toggle')) {
