@@ -10,27 +10,36 @@
       (selectionChange)="selectionChange($event)"
     >
       <mat-step>
-        <ng-template matStepLabel>Number of Credits</ng-template>
-        <div style="margin-top: 10px">
-          <p *ngIf="data && data.notify_msg">{{ data.notify_msg }}</p>
-          <mat-form-field appearance="fill">
-            <mat-label
-              >Select the number of credicts you need to upgrade</mat-label
-            >
-            <mat-select [(value)]="selectedCredit">
-              <mat-option
-                *ngFor="let credit of creditOptions"
-                [value]="credit.amount"
+        <form [formGroup]="numberOfCreditsFormGroup">
+          <ng-template matStepLabel>Number of Credits</ng-template>
+          <div style="margin-top: 10px">
+            <p *ngIf="data && data.notify_msg">{{ data.notify_msg }}</p>
+            <mat-form-field appearance="fill">
+              <mat-label>Select number of SMS credits to purchase</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="credits"
+                (keyup)="onChangeCredits($event)"
+              />
+              <mat-error
+                *ngIf="
+                  numberOfCreditsFormGroup.controls['credits'].hasError(
+                    'required'
+                  )
+                "
               >
-                {{ credit.label }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <div class="cost-summary">
-            <div>Cost Per SMS: {{ data.costPerSMS }}$</div>
-            <div>Total Cost: {{ data.costPerSMS * selectedCredit }}$</div>
+                Please enter a valid number of SMS credits to purchase
+              </mat-error>
+            </mat-form-field>
+            <div class="cost-summary">
+              <div>Cost Per SMS: {{ data.costPerSMS | currency }}</div>
+              <div>
+                Total Cost: {{ data.costPerSMS * selectedCredit | currency }}
+              </div>
+            </div>
           </div>
-        </div>
+        </form>
       </mat-step>
       <mat-step label="Complete the payment">
         <div id="payment-element">
@@ -56,6 +65,9 @@
     class="mat-dc"
     mat-button
     *ngIf="isReadyToPay; else submitPaymentButton"
+    [disabled]="
+      numberOfCreditsFormGroup.controls['credits'].hasError('required')
+    "
     (click)="nextPaymentForm(stepper)"
   >
     Go to payment
