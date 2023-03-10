@@ -15,7 +15,7 @@
           <div style="margin-top: 10px">
             <p *ngIf="data && data.notify_msg">{{ data.notify_msg }}</p>
             <mat-form-field appearance="fill">
-              <mat-label>Select number of SMS credits to purchase</mat-label>
+              <mat-label>Enter number of SMS credits to purchase</mat-label>
               <input matInput type="number" formControlName="credits" />
               <mat-error
                 *ngIf="
