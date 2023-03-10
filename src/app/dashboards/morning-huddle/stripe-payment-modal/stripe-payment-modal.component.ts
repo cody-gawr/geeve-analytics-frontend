@@ -1,5 +1,6 @@
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, EventEmitter } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import {
@@ -26,24 +27,29 @@ export interface DialogData {
   styleUrls: ['stripe-payment-modal.component.scss']
 })
 export class StripePaymentDialog {
+  numberOfCreditsFormGroup: FormGroup;
   elements: StripeElements;
   stripe: Stripe;
-  creditOptions = [
-    { amount: 50, label: '50' },
-    { amount: 100, label: '100' },
-    { amount: 500, label: '500' },
-    { amount: 1000, label: '1000' }
-  ];
-  selectedCredit = 50;
+  selectedCredit = 100;
   isReadyToPay = true;
   disabledSubmit = true;
   constructor(
+    private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<StripePaymentDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private morningHuddle: MorningHuddleService,
     private toastr: ToastrService
   ) {
-    //this.creditOptions = this.creditOptions.filter(it => it.amount > data.totalCredits);
+    this.numberOfCreditsFormGroup = this.formBuilder.group({
+      credits: [this.selectedCredit, Validators.required]
+    });
+  }
+
+  public get totalCost(): number {
+    return (
+      this.data.costPerSMS *
+      <number>this.numberOfCreditsFormGroup.get('credits').value
+    );
   }
 
   async initStripeElements() {
