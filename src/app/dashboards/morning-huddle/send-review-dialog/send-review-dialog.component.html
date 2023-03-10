@@ -6,7 +6,7 @@
     <mat-form-field>
         <mat-label>Phone Number</mat-label>
         <input type="tel" [formControl]="phoneNumber" 
-            matInput placeholder="5555551234">
+            matInput placeholder="04## ### ### or +614## ### ###">
         <mat-icon matSuffix>mode_edit</mat-icon>
         <mat-error *ngIf="phoneNumber.invalid">{{getPhoneErrors()}}</mat-error>
     </mat-form-field>
@@ -24,7 +24,7 @@
     <mat-form-field appearance="fill">
         <mat-label>Review Message</mat-label>
         <textarea matInput [formControl]="review_msg" rows="7"></textarea>
-        <mat-hint align="end">{{review_msg.value.length}} / 160, {{math.ceil(review_msg.value.length/160)}} messages</mat-hint>
+        <mat-hint align="end">{{review_msg.value.length}} / 160, {{math.ceil(review_msg.value.length/160)}} message</mat-hint>
     </mat-form-field>
 </div>
 <div mat-dialog-actions>
