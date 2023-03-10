@@ -382,7 +382,7 @@ span.calculatingSp.text {
     position: absolute !important;
     z-index: 9999;
     width: 170px !important;
-    left: 50% !important;
+    left: 50%;
     top: 10px !important;   
     transform: translateX(-50%); 
 }
@@ -548,25 +548,62 @@ table.history td.notes {padding-right: 2%;text-align: right;}
         max-width: 50% !important;
     }
 }
-@media (max-width: 840px){
+
+@media (max-width: 1290px){
+    .morning-huddle-date{
+        left: 30% !important;
+    }
+
+    .morning-review-topup {
+        right: 25% !important;
+    }
+}
+
+@media (max-width: 1120px){
+    .morning-huddle-date{
+        left: 34% !important;
+    }
+}
+
+@media (max-width: 1000px){
+    .morning-review-topup {
+        right: 29% !important;
+    }
+}
+
+/* @media (max-width: 840px) */
+@media (max-width: 980px){
     /* .morning-huddle .mat-tab-label-container{
         padding-top: 50px;
     } */
     .morning-huddle-date.topModel {
         top: 92px;
+        
     }
-}
-@media (max-width: 767px){
-    
     .morning-huddle-date.topModel.morning-huddle-datepicker {
         top: 57px !important;
+    }
+    .morning-huddle-date {
+        left: 24% !important;
     }
     .date-area-spac{
         height: 30px;
         display: block;
     }
-    
+
+    .morning-huddle-date .dentist-select.mat-form-field {
+        left: 10px !important;
+    }
+    .morning-review-topup {
+        top: 61px !important;
+        right: 5% !important;
+    }
+    .sa_mobile_header {
+        display: block;
+    }
 }
+
+
 .chipSets.mornHuddle {
     padding: 10px 0 0 0;
     width: 100%;
@@ -1024,7 +1061,7 @@ tr.mat-row.cdk-row.ng-star-inserted:empty {
 .morning-review-topup {
     position: absolute;
     z-index: 9999;
-    top: 13px !important;
+    top: 13px;
     display: flex;
     padding: 5px 0;
     right: 20%;
