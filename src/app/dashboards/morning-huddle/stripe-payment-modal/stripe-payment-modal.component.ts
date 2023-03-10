@@ -45,6 +45,13 @@ export class StripePaymentDialog {
     });
   }
 
+  public get totalCost(): number {
+    return (
+      this.data.costPerSMS *
+      <number>this.numberOfCreditsFormGroup.get('credits').value
+    );
+  }
+
   async initStripeElements() {
     this.stripe = await loadStripe(environment.stripeKey);
     this.morningHuddle
@@ -107,10 +114,5 @@ export class StripePaymentDialog {
     this.isReadyToPay = event.selectedIndex == 0;
     this.disabledSubmit = !this.isReadyToPay;
     await this.initStripeElements();
-  }
-
-  onChangeCredits(event: KeyboardEvent) {
-    console.log(event);
-    this.selectedCredit = parseInt((<HTMLInputElement>event.target).value);
   }
 }
