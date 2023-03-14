@@ -16,6 +16,7 @@ export interface DialogData {
     provider_id: number;
     appt_date: string;
     appt_start: string;
+    total_remains: number;
 }
 
 @Component({
@@ -26,8 +27,9 @@ export interface DialogData {
 export class SendReviewDialog {
     review_msg = new FormControl('', [Validators.required]);
     phoneNumber = new FormControl('', [
-        Validators.required, 
-        Validators.pattern(/^(\+614?|04|614)[\s]?\d{2}[\s]?\d{3}[\s]?\d{3}$/)]
+        Validators.required
+        //Validators.pattern(/^(\+614?|04|614)[\s]?\d{2}[\s]?\d{3}[\s]?\d{3}$/)
+    ]
     );
 
     msgTemplates = [];
@@ -38,6 +40,7 @@ export class SendReviewDialog {
     clinic = null;
     math = Math;
     isWaitingResponse = false;
+    availableMsgLength = 10;
 
     constructor(
         public dialogRef: MatDialogRef<SendReviewDialog>,
@@ -70,6 +73,8 @@ export class SendReviewDialog {
               console.error(error.message);
             }
         );
+
+        this.availableMsgLength = data.total_remains < 5? data.total_remains * 160: 800;
     }
 
     getPhoneErrors() {

@@ -23,10 +23,10 @@
     </mat-select>
   </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field [hintLabel]="'Available Max ' + availableMsgLength +' characters'" appearance="fill">
         <mat-label>Review Message</mat-label>
-        <textarea matInput [formControl]="review_msg" rows="7"></textarea>
-        <mat-hint align="end">{{review_msg.value.length}} / 160, {{math.ceil(review_msg.value.length/160)}} message</mat-hint>
+        <textarea matInput [formControl]="review_msg" rows="7" [maxlength]="availableMsgLength"></textarea>
+        <mat-hint align="end">{{review_msg.value.length}} / 800, {{math.ceil(review_msg.value.length/160)}} message</mat-hint>
     </mat-form-field>
 </div>
 <div mat-dialog-actions>

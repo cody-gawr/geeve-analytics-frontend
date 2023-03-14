@@ -2117,7 +2117,9 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
           mobile: element.mobile,
           provider_id: element.provider_id,
           appt_date: element.app_date,
-          appt_start: element.start
+          appt_start: element.start,
+          total_remains: totalRemainingCredits
+
         }
       });
       sendReviewDialog.afterClosed().subscribe((result) => {
@@ -2229,51 +2231,4 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       newWin.close();
     }, 2000);
   }
-
-  // openSendReviewMsgDialog(element) {
-  //   const sendReviewDialog = this.dialog.open(SendReviewDialog, {
-  //     data: {
-  //       patient_id: element.patient_id,
-  //       phone_number: element.mobile,
-  //       clinic_id: this.clinic_id,
-  //       patient_name: element.patient_name,
-  //       mobile: element.mobile
-  //     }
-  //   });
-  //   sendReviewDialog.afterClosed().subscribe((result) => {
-  //     if (result.status) {
-  //       this.getTotalCredits();
-  //     }
-  //   });
-  // }
-
-  // async checkPaymentStatus() {
-  //   const stripe = await loadStripe(environment.stripeKey);
-  //   const clientSecret = new URLSearchParams(window.location.search).get(
-  //     'payment_intent_client_secret'
-  //   );
-
-  //   if (!clientSecret) {
-  //     return;
-  //   }
-  //   this.changeTab(2);
-  //   const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
-
-  //   switch (paymentIntent.status) {
-  //     case 'succeeded':
-  //       this.toastr.success(
-  //         'Payment succeeded. If the number of Credits were not updated, Please retry refreshing page aftger few mins!'
-  //       );
-  //       break;
-  //     case 'processing':
-  //       this.toastr.success('Your payment is processing.');
-  //       break;
-  //     case 'requires_payment_method':
-  //       this.toastr.error('Your payment was not successful, please try again.');
-  //       break;
-  //     default:
-  //       this.toastr.error('Something went wrong.');
-  //       break;
-  //   }
-  // }
 }
