@@ -1,24 +1,11 @@
 import { Component, Inject } from "@angular/core";
-import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
+import { FormControl, Validators } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import * as _ from "lodash";
 import { ToastrService } from "ngx-toastr";
 import { ClinicSettingsService } from "../../../clinic-settings/clinic-settings.service";
 import { HeaderService } from "../../../layouts/full/header/header.service";
 import { MorningHuddleService } from "../morning-huddle.service";
-
-
-// export function phoneLengthValidator(obj: any): ValidatorFn {
-//     return (control: AbstractControl): ValidationErrors | null => {
-//         const digitNum = control.value.replaceAll(/\s/g, '');
-//         if(obj.phoneCountryCode == '+614' && digitNum.length !== 9){
-//             return {phoneNumber614: control.value}
-//         }else if(obj.phoneCountryCode == '04' && digitNum.length !== 8){
-//             return {phoneNumber04: control.value}
-//         }
-//         return null;
-//     };
-// }
 
 export interface DialogData {
     clinic_id?: number;
@@ -37,12 +24,10 @@ export interface DialogData {
     styleUrls:['send-review-dialog.component.scss']
 })
 export class SendReviewDialog {
-    //public phoneCountryCode: '+614' | '04' = '+614';
     review_msg = new FormControl('', [Validators.required]);
     phoneNumber = new FormControl('', [
         Validators.required, 
-        Validators.pattern(/^(\+614?|04)[0-9\s]*$/)]
-        // phoneLengthValidator(this)]
+        Validators.pattern(/^(\+614?|04|614)[\s]?\d{2}[\s]?\d{3}[\s]?\d{3}$/)]
     );
 
     msgTemplates = [];
@@ -62,34 +47,11 @@ export class SendReviewDialog {
         private _morningHuddleService: MorningHuddleService,
         private _toastrService: ToastrService
     ){
-        // if(/^\+614/.test(this.data.mobile)){
-        //     this.phoneCountryCode = '+614';
-        //     this.phoneNumber.setValue(this.data.mobile.replace(/^\+614/, ''));
-            
-        // }else if(/^614/.test(this.data.mobile)){
-        //     this.phoneCountryCode = '+614';
-        //     this.phoneNumber.setValue(this.data.mobile.replace(/^614/, ''));
-        // }
-        // else if(/^04/.test(this.data.mobile)){
-        //     this.phoneCountryCode = '04';
-        //     this.phoneNumber.setValue(this.data.mobile.replace(/^04/, ''));
-            
-        // }else{
-        //     const digitNum = this.data.mobile.replaceAll(/\s/g, '');
-        //     if(digitNum.length > 8 ){
-        //         this.phoneCountryCode = '+614';
-        //         this.phoneNumber.setValue(this.data.mobile);
-        //     }else{
-        //         this.phoneCountryCode = '04';
-        //         this.phoneNumber.setValue(this.data.mobile);
-        //     }
-        // }
         this.phoneNumber.setValue(this.data.mobile);
         this.clinic = _.find(this._headerService.clinics, c => c.id == this.data.clinic_id);
         this.clinicSettingService.getReviewMsgTemplateList(this.data.clinic_id).subscribe((res) => {
             if (res.status == 200) {
               if (res.body.data) {
-                //this.reviewMsgTemplates = res.body.data;
                 this.msgTemplates = res.body.data;
               }
             }
