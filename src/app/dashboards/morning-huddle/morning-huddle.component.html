@@ -33,14 +33,17 @@
     <button
       *ngIf="apiUrl.includes('test')"
       (click)="openTopUpCredits()"
-      style="font-size: 14px;line-height:30px"
+      style="font-size: 14px; line-height: 30px"
       class="mat-raised-button mat-dc"
     >
-        Top Up ({{remainCredits}} Remains)
+      Top Up ({{ remainCredits }} Remains)
     </button>
   </div>
 
-  <mat-tab-group [selectedIndex]="selectedTab" (selectedTabChange)="onTabChanged($event)">
+  <mat-tab-group
+    [selectedIndex]="selectedTab"
+    (selectedTabChange)="onTabChanged($event)"
+  >
     <!-- Dentist Performance Tab -->
     <mat-tab label="Dentist Performance" *ngIf="user_type != '5'">
       <div class="morning-huddle-date">
@@ -576,31 +579,10 @@
                         <span
                           class="change_value"
                           *ngIf="
-                            appointmentCards.data.length > 0 &&
-                            !appointmentCardsLoaders &&
-                            this.userPlan == 'lite' &&
-                            currentDentistSchedule > 0
-                          "
-                          >{{ appointmentCards.data.length }}</span
-                        >
-
-                        <span
-                          class="change_value"
-                          *ngIf="
-                            appointmentCards.data.length > 0 &&
-                            !appointmentCardsLoaders &&
-                            this.userPlan != 'lite'
-                          "
-                          >{{ appointmentCards.data.length }}</span
-                        >
-
-                        <span
-                          class="change_value"
-                          *ngIf="
-                            appointmentCards.data.length <= 0 &&
+                            appointmentCards.data.length >= 0 &&
                             !appointmentCardsLoaders
                           "
-                          >0</span
+                          >{{ appointmentCards.data.length }}</span
                         >
                         <span
                           class="calculatingSp text"
@@ -612,17 +594,11 @@
                           src="../assets/images/green-swirl.png"
                           alt="production-chart-1"
                         />
-                        <!--  <span class="change_value">{{ schedulePatieltd }}</span> -->
                       </div>
                     </div>
                   </div>
-                  <!--   <div class="card-loading cards" *ngIf="appointmentCardsLoaders">
-                  <img class="tableLoader" src="../../assets/images/logo-icon.gif">
-                  <div class="loader-text">Calculating...</div>
-                </div> -->
                 </mat-card-content>
               </mat-card>
-              <!-- <div class="graph_image" ></div> -->
             </div>
             <div
               fxFlex="calc(20% - 10px)"
@@ -645,7 +621,7 @@
                         <span
                           class="change_value"
                           *ngIf="!scheduleNewPatientsLoader"
-                          >{{ scheduleNewPatieltd }}</span
+                          >{{ scheduleNewPatient }}</span
                         >
                         <span
                           class="calculatingSp text"
@@ -1338,7 +1314,7 @@
                       <span
                         class="change_value"
                         *ngIf="!scheduleNewPatientsLoader"
-                        >{{ scheduleNewPatieltd }}</span
+                        >{{ scheduleNewPatient }}</span
                       >
                       <span
                         class="calculatingSp text"
@@ -1634,38 +1610,52 @@
           >
             <th mat-header-call *matHeaderCellDef>Send Review</th>
             <td mat-cell style="text-align: center" *matCellDef="let element">
-              <button *ngIf="checkReviewStatusProcess(element) == 'delivered'" mat-icon-button [disabled]="true">
-                <mat-icon style="font-weight: bolder;">check</mat-icon>
-              </button>
-              <button *ngIf="checkReviewStatusProcess(element) == 'queued'" mat-icon-button [disabled]="true">
-                <mat-icon style="font-weight: bolder;">hourglass_top</mat-icon>
-              </button>
-              <button *ngIf="checkReviewStatusProcess(element) == 'sent'" mat-icon-button [disabled]="true">
-                <mat-icon style="font-weight: bolder;">hourglass_bottom</mat-icon>
+              <button
+                *ngIf="checkReviewStatusProcess(element) == 'delivered'"
+                mat-icon-button
+                [disabled]="true"
+              >
+                <mat-icon style="font-weight: bolder">check</mat-icon>
               </button>
               <button
-                  *ngIf="checkReviewStatusProcess(element) == 'failed'"
-                  mat-stroked-button
-                  class="mat-dc"
-                  (click)="openSendReviewMsgDialog(element)"
-                >
-                  Retry(Failed)
+                *ngIf="checkReviewStatusProcess(element) == 'queued'"
+                mat-icon-button
+                [disabled]="true"
+              >
+                <mat-icon style="font-weight: bolder">hourglass_top</mat-icon>
               </button>
               <button
-                  *ngIf="checkReviewStatusProcess(element) == 'undelivered'"
-                  mat-stroked-button
-                  class="mat-dc"
-                  (click)="openSendReviewMsgDialog(element)"
+                *ngIf="checkReviewStatusProcess(element) == 'sent'"
+                mat-icon-button
+                [disabled]="true"
+              >
+                <mat-icon style="font-weight: bolder"
+                  >hourglass_bottom</mat-icon
                 >
-                  Retry(Undelivered)
               </button>
               <button
-                  *ngIf="checkReviewStatusProcess(element) == 'none'"
-                  mat-stroked-button
-                  class="mat-dc"
-                  (click)="openSendReviewMsgDialog(element)"
-                >
-                  Send
+                *ngIf="checkReviewStatusProcess(element) == 'failed'"
+                mat-stroked-button
+                class="mat-dc"
+                (click)="openSendReviewMsgDialog(element)"
+              >
+                Retry(Failed)
+              </button>
+              <button
+                *ngIf="checkReviewStatusProcess(element) == 'undelivered'"
+                mat-stroked-button
+                class="mat-dc"
+                (click)="openSendReviewMsgDialog(element)"
+              >
+                Retry(Undelivered)
+              </button>
+              <button
+                *ngIf="checkReviewStatusProcess(element) == 'none'"
+                mat-stroked-button
+                class="mat-dc"
+                (click)="openSendReviewMsgDialog(element)"
+              >
+                Send
               </button>
             </td>
           </ng-container>
@@ -2067,7 +2057,8 @@
               </ng-container>
               <ng-container matColumnDef="dentist">
                 <th mat-header-cell *matHeaderCellDef>Provider</th>
-                <td mat-cell *matCellDef="let element">{{ element.dentists && element.dentists.name }}
+                <td mat-cell *matCellDef="let element">
+                  {{ element.dentists && element.dentists.name }}
                 </td>
               </ng-container>
 
@@ -2186,8 +2177,10 @@
                     <div fxFlex="70">{{ element.post_op_codes }}</div>
                   </div>
                   <div fxLayout="row" class="huddle-card-row">
-                    <div fxFlex="30">Provider: </div>
-                    <div fxFlex="70"> {{ element.dentists && element.dentists.name }} </div>
+                    <div fxFlex="30">Provider:</div>
+                    <div fxFlex="70">
+                      {{ element.dentists && element.dentists.name }}
+                    </div>
                   </div>
                   <div fxLayout="row" class="huddle-card-row">
                     <div fxFlex="30">Complete</div>
@@ -2346,7 +2339,8 @@
               </ng-container>
               <ng-container matColumnDef="provider">
                 <th mat-header-cell *matHeaderCellDef>Provider</th>
-                <td mat-cell *matCellDef="let element">{{ element.dentists && element.dentists.name }}
+                <td mat-cell *matCellDef="let element">
+                  {{ element.dentists && element.dentists.name }}
                 </td>
               </ng-container>
               <ng-container matColumnDef="book">
