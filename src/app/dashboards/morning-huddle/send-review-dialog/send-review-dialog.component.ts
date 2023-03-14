@@ -16,6 +16,7 @@ export interface DialogData {
     provider_id: number;
     appt_date: string;
     appt_start: string;
+    total_remains: number;
 }
 
 @Component({
@@ -38,6 +39,7 @@ export class SendReviewDialog {
     clinic = null;
     math = Math;
     isWaitingResponse = false;
+    availableMsgLength = 10;
 
     constructor(
         public dialogRef: MatDialogRef<SendReviewDialog>,
@@ -70,6 +72,8 @@ export class SendReviewDialog {
               console.error(error.message);
             }
         );
+
+        this.availableMsgLength = data.total_remains < 5? data.total_remains * 160: 800;
     }
 
     getPhoneErrors() {
