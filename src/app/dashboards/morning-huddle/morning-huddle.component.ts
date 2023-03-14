@@ -237,10 +237,9 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   public unscheduledPatientsDays: any = '';
   public postOpCallsDays: any = '';
   public followupsPostopCallsDate: any = '';
-  public schedulePatieltd: any = 0;
-  public schedulePatielDate: any = '';
+  public schedulePatientDate: any = '';
   public productionDate: any = '';
-  public scheduleNewPatieltd: any = 0;
+  public scheduleNewPatient: any = 0;
   public schedulehours: any = 0;
   public unSchedulehours: any = 0;
   public noShow: any = 0;
@@ -429,13 +428,11 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     // this.minDate = moment().subtract(7, 'days');
     // this.maxDate = moment().add(7, 'days');
 
-
-  
     const q = new URL(window.location as any);
     q.searchParams.delete('payment_intent');
     q.searchParams.delete('payment_intent_client_secret');
     q.searchParams.delete('redirect_status');
-    window.history.pushState({}, "", q);
+    window.history.pushState({}, '', q);
   }
 
   @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
@@ -450,12 +447,10 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     /*this.dataSource1.sort = this.sort1;
     this.dataSource2.sort = this.sort2;*/
     const q = new URLSearchParams(window.location.search);
-    const tabIndex = parseInt(q.get('tab')??'0');
+    const tabIndex = parseInt(q.get('tab') ?? '0');
     this.changeTab(tabIndex);
-    const clientSecret = q.get(
-      'payment_intent_client_secret'
-    );
-    if(clientSecret) this.checkPaymentStatus(clientSecret);
+    const clientSecret = q.get('payment_intent_client_secret');
+    if (clientSecret) this.checkPaymentStatus(clientSecret);
     $('#currentDentist').attr('did', 'all');
     this.user_type = this._cookieService.get('user_type');
     this.userPlan = this._cookieService.get('user_plan');
@@ -480,28 +475,27 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     const updateCreditStatus = () => {
       this.morningHuddleService.getCreditStatus().subscribe((res) => {
         const sids = res.body.data.sids;
-        for(const sid of sids){
-          if(sid.status == 'queued' || sid.status == 'sent'){
+        for (const sid of sids) {
+          if (sid.status == 'queued' || sid.status == 'sent') {
             //
-          }else{
-            const _sids = (sessionStorage.getItem('sids')??'').split(',');
-            const inx = _sids.findIndex(s => s == sid);
+          } else {
+            const _sids = (sessionStorage.getItem('sids') ?? '').split(',');
+            const inx = _sids.findIndex((s) => s == sid);
             _sids.splice(inx, 1);
             sessionStorage.setItem('sids', _sids.join(','));
           }
 
           sessionStorage.setItem(sid.sid, sid.status);
         }
-        this.remainCredits = res.body.data.remain_credits; 
-        sessionStorage.setItem("used_credits", res.body.data.used_credits??0);
-        sessionStorage.setItem("remain_credits", this.remainCredits.toString());
-        sessionStorage.setItem("cost_per_sms", res.body.data.cost_per_sms);
+        this.remainCredits = res.body.data.remain_credits;
+        sessionStorage.setItem('used_credits', res.body.data.used_credits ?? 0);
+        sessionStorage.setItem('remain_credits', this.remainCredits.toString());
+        sessionStorage.setItem('cost_per_sms', res.body.data.cost_per_sms);
       });
-    }
+    };
 
     updateCreditStatus();
     this.creditStatusTimer = setInterval(updateCreditStatus, 30000);
-
   }
   ngAfterViewInit(): void {
     // this.endOfDaysTasksInComp.sort = this.sort1;
@@ -575,7 +569,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         this.getAppointmentCards(null);
       }
       if (this.user_type != '4') {
-        this.getScheduleNewPatients(null);
         this.getScheduleHours(null);
         this.getUnscheduleHours(null);
         /***** Tab 2 ***/
@@ -617,7 +610,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     });
   }
 
-
   changeTab(tabIndex: number) {
     this.selectedTab = tabIndex;
   }
@@ -625,7 +617,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   onTabChanged(event) {
     const q = new URL(window.location as any);
     q.searchParams.set('tab', event.index);
-    window.history.pushState({}, "", q);
+    window.history.pushState({}, '', q);
   }
 
   refreshPerformanceTab() {
@@ -643,7 +635,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       this.getAppointmentCards(null);
     }
     if (this.user_type != '4') {
-      this.getScheduleNewPatients(null);
       this.getScheduleHours(null);
       this.getUnscheduleHours(null);
       this.getTodayUnscheduledHours();
@@ -665,9 +656,9 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
 
   refreshScheduleTab(event) {
     this.appointmentCardsLoaders = true;
+    this.scheduleNewPatientsLoader = true;
     this.currentDentistSchedule = event;
     this.currentDentist = event;
-    this.getScheduleNewPatients(this.currentDentist);
     this.getScheduleHours(this.currentDentist);
     this.getUnscheduleHours(this.currentDentist);
     if (this.currentDentist != 0) {
@@ -681,7 +672,11 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     } else {
       this.appointmentCards.data = this.appointmentCardsTemp;
     }
+    this.scheduleNewPatient = this.appointmentCards.data.filter(
+      (item: any) => item.is_new_patient == 'Yes'
+    ).length;
     this.appointmentCardsLoaders = false;
+    this.scheduleNewPatientsLoader = false;
   }
 
   public currentDentistReminder: any = 0;
@@ -692,7 +687,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.remindersRecallsOverdueLoader = true;
     this.todayUnscheduledBalLoader = true;
     this.currentDentistReminder = event;
-    this.getScheduleNewPatients(this.currentDentistReminder);
     this.getTodayUnscheduledBal(this.currentDentistReminder);
 
     if (this.currentDentistReminder != 0) {
@@ -1436,36 +1430,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       }
     }); 
   }*/
-  getScheduleNewPatients(dentist, refsh = '') {
-    if (refsh == '') {
-      this.scheduleNewPatientsLoader = true;
-      this.scheduleNewPatieltd = 0;
-    }
-    this.morningHuddleService
-      .getNewPatients(
-        this.clinic_id,
-        dentist,
-        this.previousDays,
-        this.user_type
-      )
-      .subscribe(
-        (res: any) => {
-          this.scheduleNewPatientsLoader = false;
-          if (res.status == 200) {
-            this.apiSuccessCount += 1;
-            this.scheduleNewPatieltd = res.body.data.patient;
-            this.schedulePatielDate = this.datepipe
-              .transform(res.body.data.date, 'yyyy-MM-dd 00:00:00')
-              .replace(/\s/, 'T');
-          } else if (res.body.status == 401) {
-            this.handleUnAuthorization();
-          }
-        },
-        (error) => {
-          this.handleUnAuthorization();
-        }
-      );
-  }
 
   getScheduleHours(dentist, refsh = '') {
     if (refsh == '') {
@@ -1567,22 +1531,20 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               this.LabNeeded = true;
             }
             this.clinicTotal = res.body.total;
+
             this.appointmentCardsTemp = res.body.data;
+
             if (this.user_type == '4') {
               this.dentistid = this._cookieService.get('dentistid');
               this.refreshScheduleTab(this.dentistid);
             } else {
               if (this.currentDentist != 0 && this.currentDentist) {
-                var temp = [];
-                this.appointmentCardsTemp.forEach((val) => {
-                  if (val.provider_id == this.currentDentist) {
-                    temp.push(val);
-                  }
-                });
-                this.appointmentCards.data = temp;
-              } else {
-                this.appointmentCards.data = res.body.data;
+                this.appointmentCardsTemp = (<any[]>res.body.data).filter(
+                  (item) => item.provider_id == this.currentDentist
+                );
               }
+              this.appointmentCards.data = this.appointmentCardsTemp;
+              this.scheduleNewPatientsLoader = false;
 
               // this.appointmentCards.data = production.data;
             }
@@ -1947,7 +1909,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   }
 
   updateToCompleteUT(event: MatCheckboxChange) {
-    console.log('updateToCompleteUT');
     this.showCompleteUta = event.checked;
     if (event.checked) {
       this.followupUtaFollowupsInCMP = this.followupUtaFollowups;
@@ -1956,7 +1917,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         (p: any) => p.is_complete != 1
       );
     }
-    console.log(this.followupUtaFollowupsInCMP);
   }
 
   openNotes(notes, patient_id, original_appt_date, followup_date, type): void {
@@ -2154,7 +2114,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     if (this.currentDentist == 0) {
       this.currentDentist = null;
     }
-    this.getScheduleNewPatients(this.currentDentist, 'refresh');
     this.getScheduleHours(this.currentDentist, 'refresh');
     this.getUnscheduleHours(this.currentDentist, 'refresh');
     this.getAppointmentCards(this.currentDentist, 'refresh');
@@ -2230,7 +2189,9 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   }
 
   openSendReviewMsgDialog(element) {
-    const totalRemainingCredits = parseInt(sessionStorage.getItem("remain_credits"));
+    const totalRemainingCredits = parseInt(
+      sessionStorage.getItem('remain_credits')
+    );
     if (totalRemainingCredits <= 0) {
       this.dialog.open(StripePaymentDialog, {
         data: {
@@ -2257,9 +2218,15 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       sendReviewDialog.afterClosed().subscribe((result) => {
         if (result.status) {
           this.morningHuddleService.getCreditStatus().subscribe((res) => {
-            sessionStorage.setItem("used_credits", res.body.data.used_credits??0);
-            sessionStorage.setItem("remain_credits", res.body.data.remain_credits);
-            sessionStorage.setItem("cost_per_sms", res.body.data.cost_per_sms);
+            sessionStorage.setItem(
+              'used_credits',
+              res.body.data.used_credits ?? 0
+            );
+            sessionStorage.setItem(
+              'remain_credits',
+              res.body.data.remain_credits
+            );
+            sessionStorage.setItem('cost_per_sms', res.body.data.cost_per_sms);
           });
         }
       });
@@ -2268,7 +2235,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
 
   async checkPaymentStatus(clientSecret: string) {
     const stripe = await loadStripe(environment.stripeKey);
-    
+
     const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
 
     switch (paymentIntent.status) {
@@ -2292,9 +2259,9 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   checkReviewStatusProcess(element) {
     const apptId = `${element.clinic_id}:${element.provider_id}:${element.patient_id}:${element.app_date}T${element.start}`;
     const sid = sessionStorage.getItem(apptId);
-    if(sid){
+    if (sid) {
       const status = sessionStorage.getItem(sid);
-      if(status) return status;
+      if (status) return status;
     }
 
     return 'none';

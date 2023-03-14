@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://test-api.jeeve.com.au/test/analytics',
+  apiUrl: 'https://test-api.jeeve.com.au/test/node/analytics',
   homeUrl: 'https://test-analytics.jeeve.com.au/',
   solutionsUrl: 'https://test-api.jeeve.com.au/test/solutions',
   stripeKey:
