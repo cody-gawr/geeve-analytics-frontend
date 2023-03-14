@@ -1558,7 +1558,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             }
             this.clinicTotal = res.body.total;
 
-            console.log(res.body.data);
             this.scheduleNewPatient = (<any[]>res.body.data).filter(
               (item) => item.is_new_patient == 'Yes'
             ).length;
