@@ -5,40 +5,40 @@
   [style.display]="'none'"
 />
 <div class="sa_dashboard_inner_content morning-huddle">
-  <div
-    class="morning-huddle-date topModel custom_date morning-huddle-datepicker"
-  >
-    <input
-      id="mhdatepicker"
-      class="filter_custom filter sa_datepicker Mhdatepic"
-      readonly
-      placeholder=""
-      type="text"
-      matInput
-      ngxDaterangepickerMd
-      [singleDatePicker]="true"
-      [locale]="{ applyLabel: 'ok', displayFormat: 'DD MMMM, y' }"
-      [(ngModel)]="selected"
-      [autoApply]="true"
-      [showDropdowns]="true"
-      (ngModelChange)="setDateChange($event)"
-    />
+  <div class="morning-huddle-subhead">
+      <div class="morning-huddle-date topModel custom_date morning-huddle-datepicker">
+        <input
+          id="mhdatepicker"
+          class="filter_custom filter sa_datepicker Mhdatepic"
+          readonly
+          placeholder=""
+          type="text"
+          matInput
+          ngxDaterangepickerMd
+          [singleDatePicker]="true"
+          [locale]="{ applyLabel: 'ok', displayFormat: 'DD MMMM, y' }"
+          [(ngModel)]="selected"
+          [autoApply]="true"
+          [showDropdowns]="true"
+          (ngModelChange)="setDateChange($event)"
+        />
 
-    <div class="toploader" *ngIf="showProcessingText && checkSuccessApi()">
-      <img class="tableLoader" src="../../../assets/images/logo-icon.gif" />
+      <div class="toploader" *ngIf="showProcessingText && checkSuccessApi()">
+        <img class="tableLoader" src="../../../assets/images/logo-icon.gif" />
+      </div>
     </div>
+      <div class="morning-review-topup">
+        <span>SMS Credits: <strong style="color: #18a689;">{{ remainCredits }}</strong></span>
+        <a
+          *ngIf="apiUrl.includes('test')"
+          (click)="openTopUpCredits()"
+          class="add-credits-btn"
+        >
+          Add credits
+      </a>
+      </div>
   </div>
 
-  <div class="morning-review-topup">
-    <button
-      *ngIf="apiUrl.includes('test')"
-      (click)="openTopUpCredits()"
-      style="font-size: 14px; line-height: 30px"
-      class="mat-raised-button mat-dc"
-    >
-      Top Up ({{ remainCredits }} Remains)
-    </button>
-  </div>
 
   <mat-tab-group
     [selectedIndex]="selectedTab"
@@ -1610,36 +1610,21 @@
           >
             <th mat-header-call *matHeaderCellDef>Send Review</th>
             <td mat-cell style="text-align: center" *matCellDef="let element">
-              <button
-                *ngIf="checkReviewStatusProcess(element) == 'delivered'"
-                mat-icon-button
-                [disabled]="true"
-              >
-                <mat-icon style="font-weight: bolder">check</mat-icon>
-              </button>
-              <button
-                *ngIf="checkReviewStatusProcess(element) == 'queued'"
-                mat-icon-button
-                [disabled]="true"
-              >
-                <mat-icon style="font-weight: bolder">hourglass_top</mat-icon>
-              </button>
-              <button
-                *ngIf="checkReviewStatusProcess(element) == 'sent'"
-                mat-icon-button
-                [disabled]="true"
-              >
-                <mat-icon style="font-weight: bolder"
-                  >hourglass_bottom</mat-icon
-                >
-              </button>
+              <i
+              *ngIf="checkReviewStatusProcess(element) == 'delivered'"
+                class="fa fa-check mh-fa-check"
+              ></i>
+              <i 
+                *ngIf="['queued', 'sent'].indexOf(checkReviewStatusProcess(element)) >= 0"
+                style="font-size: 18px;margin-right: 10px;color: gray;"
+                class="fa fa-clock" aria-hidden="true"></i>
               <button
                 *ngIf="checkReviewStatusProcess(element) == 'failed'"
                 mat-stroked-button
                 class="mat-dc"
                 (click)="openSendReviewMsgDialog(element)"
               >
-                Retry(Failed)
+                Retry (Failed)
               </button>
               <button
                 *ngIf="checkReviewStatusProcess(element) == 'undelivered'"
@@ -1647,7 +1632,7 @@
                 class="mat-dc"
                 (click)="openSendReviewMsgDialog(element)"
               >
-                Retry(Undelivered)
+                Retry (Undelivered)
               </button>
               <button
                 *ngIf="checkReviewStatusProcess(element) == 'none'"

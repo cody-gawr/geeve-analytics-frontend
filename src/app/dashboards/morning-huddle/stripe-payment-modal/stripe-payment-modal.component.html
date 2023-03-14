@@ -1,5 +1,5 @@
 <div class="dialog-header">
-  <h1 mat-dialog-title>Stripe Payment</h1>
+  <h1 mat-dialog-title>Add SMS Credits</h1>
   <mat-icon aria-hidden="false" (click)="onNoClick()">close</mat-icon>
 </div>
 <div mat-dialog-content>
@@ -13,7 +13,7 @@
         <form [formGroup]="numberOfCreditsFormGroup">
           <ng-template matStepLabel>Number of Credits</ng-template>
           <div style="margin-top: 10px">
-            <p *ngIf="data && data.notify_msg">{{ data.notify_msg }}</p>
+            <p *ngIf="data && data.notify_msg" style="color:red !important;">{{ data.notify_msg }}</p>
             <mat-form-field appearance="fill">
               <mat-label>Enter number of SMS credits to purchase</mat-label>
               <input matInput type="number" formControlName="credits" />
