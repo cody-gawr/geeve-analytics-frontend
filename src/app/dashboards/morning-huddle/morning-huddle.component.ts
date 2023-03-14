@@ -573,7 +573,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         /***** Tab 2 ***/
         /***** Tab 3 ***/
         this.getTodayUnscheduledHours();
-        this.getTodayUnscheduledBal();
         /***** Tab 3 ***/
         /***** Tab 4 ***/
         this.getReminders();
@@ -628,7 +627,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     }
     if (this.user_type != '4') {
       this.getTodayUnscheduledHours();
-      this.getTodayUnscheduledBal();
       this.getReminders();
       this.getFollowupPostOpCalls();
       this.getOverdueRecalls();
@@ -670,11 +668,16 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         .value() / 60,
       2
     );
-    this.unSchedulehours = _.round(_.chain(this.appointmentCards.data).sumBy((item: any) => parseInt(item.outstanding_item_value)).value(), 0)
+    this.unSchedulehours = _.round(
+      _.chain(this.appointmentCards.data)
+        .sumBy((item: any) => parseInt(item.outstanding_item_value))
+        .value(),
+      0
+    );
     this.appointmentCardsLoaders = false;
     this.scheduleNewPatientsLoader = false;
     this.schedulehoursLoader = false;
-    this.unschedulehoursLoader = false
+    this.unschedulehoursLoader = false;
   }
 
   public currentDentistReminder: any = 0;
@@ -685,7 +688,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.remindersRecallsOverdueLoader = true;
     this.todayUnscheduledBalLoader = true;
     this.currentDentistReminder = event;
-    this.getTodayUnscheduledBal(this.currentDentistReminder);
 
     if (this.currentDentistReminder != 0) {
       var temp = [];
@@ -698,7 +700,17 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     } else {
       this.remindersRecallsOverdue = this.remindersRecallsOverdueTemp;
     }
+    this.todayUnscheduledBal = _.round(
+      _.chain(this.remindersRecallsOverdue)
+        .sumBy((item: any) => parseInt(item.due_balance))
+        .value()
+    );
+    this.scheduleNewPatient = this.remindersRecallsOverdue.filter(
+      (item: any) => item.is_new_patient == 'Yes'
+    ).length;
     this.remindersRecallsOverdueLoader = false;
+    this.scheduleNewPatientsLoader = false;
+    this.todayUnscheduledBalLoader = false;
   }
 
   /***** Tab 4 ***/
@@ -709,6 +721,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   getReminders(refsh = '') {
     if (refsh == '') {
       this.remindersRecallsOverdueLoader = true;
+      this.scheduleNewPatientsLoader = true;
+      this.todayUnscheduledBalLoader = true;
     }
     this.clinicDentistsReminders = [];
     this.morningHuddleService
@@ -1398,7 +1412,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       this.appointmentCardsLoaders = true;
       this.schedulehoursLoader = true;
       this.scheduleNewPatientsLoader = true;
-      this.unschedulehoursLoader = true
+      this.unschedulehoursLoader = true;
       this.appointmentCards = new MatTableDataSource();
     }
     this.morningHuddleService
@@ -2026,7 +2040,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.getAppointmentCards(this.currentDentist, 'refresh');
 
     this.getTodayUnscheduledHours('refresh');
-    this.getTodayUnscheduledBal('refresh');
     this.getReminders('refresh');
   }
 
@@ -2119,7 +2132,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
           appt_date: element.app_date,
           appt_start: element.start,
           total_remains: totalRemainingCredits
-
         }
       });
       sendReviewDialog.afterClosed().subscribe((result) => {
