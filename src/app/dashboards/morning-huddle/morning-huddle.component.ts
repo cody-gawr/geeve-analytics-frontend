@@ -656,6 +656,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
 
   refreshScheduleTab(event) {
     this.appointmentCardsLoaders = true;
+    this.scheduleNewPatientsLoader = true;
     this.currentDentistSchedule = event;
     this.currentDentist = event;
     this.getScheduleHours(this.currentDentist);
@@ -671,7 +672,11 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     } else {
       this.appointmentCards.data = this.appointmentCardsTemp;
     }
+    this.scheduleNewPatient = this.appointmentCards.data.filter(
+      (item: any) => item.is_new_patient == 'Yes'
+    ).length;
     this.appointmentCardsLoaders = false;
+    this.scheduleNewPatientsLoader = false;
   }
 
   public currentDentistReminder: any = 0;
@@ -682,7 +687,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.remindersRecallsOverdueLoader = true;
     this.todayUnscheduledBalLoader = true;
     this.currentDentistReminder = event;
-    // this.getScheduleNewPatients(this.currentDentistReminder);
     this.getTodayUnscheduledBal(this.currentDentistReminder);
 
     if (this.currentDentistReminder != 0) {
@@ -1426,36 +1430,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       }
     }); 
   }*/
-  getScheduleNewPatients(dentist, refsh = '') {
-    if (refsh == '') {
-      this.scheduleNewPatientsLoader = true;
-      this.scheduleNewPatient = 0;
-    }
-    this.morningHuddleService
-      .getNewPatients(
-        this.clinic_id,
-        dentist,
-        this.previousDays,
-        this.user_type
-      )
-      .subscribe(
-        (res: any) => {
-          this.scheduleNewPatientsLoader = false;
-          if (res.status == 200) {
-            this.apiSuccessCount += 1;
-            this.scheduleNewPatient = res.body.data.patient;
-            this.schedulePatientDate = this.datepipe
-              .transform(res.body.data.date, 'yyyy-MM-dd 00:00:00')
-              .replace(/\s/, 'T');
-          } else if (res.body.status == 401) {
-            this.handleUnAuthorization();
-          }
-        },
-        (error) => {
-          this.handleUnAuthorization();
-        }
-      );
-  }
 
   getScheduleHours(dentist, refsh = '') {
     if (refsh == '') {
@@ -1558,13 +1532,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             }
             this.clinicTotal = res.body.total;
 
-            this.scheduleNewPatient = (<any[]>res.body.data).filter(
-              (item) => item.is_new_patient == 'Yes'
-            ).length;
-            this.schedulePatientDate = this.datepipe
-              .transform(this.previousDays.slice(0, 10), 'yyyy-MM-dd 00:00:00')
-              .replace(/\s/, 'T');
-            this.scheduleNewPatientsLoader = false;
             this.appointmentCardsTemp = res.body.data;
 
             if (this.user_type == '4') {
@@ -1577,6 +1544,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
                 );
               }
               this.appointmentCards.data = this.appointmentCardsTemp;
+              this.scheduleNewPatientsLoader = false;
 
               // this.appointmentCards.data = production.data;
             }
