@@ -85,7 +85,7 @@ export class SendReviewDialog {
     }
 
     onNoClick(): void {
-        this.dialogRef.close({status: false});
+        if(!this.isWaitingResponse) this.dialogRef.close({status: false});
     }
 
     get isValid() {
@@ -116,7 +116,7 @@ export class SendReviewDialog {
                         )
                         //sessionStorage.setItem(this.phoneNumber.value, appId);
                         this._toastrService.success('Sent Message Sucessfully!');
-                        this.dialogRef.close({status: true});
+                        this.dialogRef.close({status: true, num_sms: Math.ceil(this.review_msg.value.length/160)});
                     }
                 }, err => {
                     this.isWaitingResponse = false;

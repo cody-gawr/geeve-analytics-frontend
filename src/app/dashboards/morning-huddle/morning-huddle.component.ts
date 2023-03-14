@@ -2136,6 +2136,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       });
       sendReviewDialog.afterClosed().subscribe((result) => {
         if (result.status) {
+          this.remainCredits = this.remainCredits - result.num_sms;
           this.morningHuddleService.getCreditStatus().subscribe((res) => {
             sessionStorage.setItem(
               'used_credits',
