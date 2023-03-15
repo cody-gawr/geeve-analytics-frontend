@@ -1110,7 +1110,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
           this.utaTaksLoadingLoading = false;
           this.followupUtaFollowupsInCMP = [];
           this.futureDateTF = '';
-          console.log(res);
           if (res.status == 200) {
             this.apiSuccessCount += 1;
             var diffTime: any = this.getDataDiffrences();
@@ -2135,7 +2134,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         }
       });
       sendReviewDialog.afterClosed().subscribe((result) => {
-        if (result.status) {
+        if (result && result.status) {
           this.remainCredits = this.remainCredits - result.num_sms;
           this.morningHuddleService.getCreditStatus().subscribe((res) => {
             sessionStorage.setItem(
@@ -2185,18 +2184,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     }
 
     return 'none';
-    // if(status)
-    //   switch(status){
-    //     case  'queued':
-    //     case 'sent':
-    //       return 'InProcess';
-    //     case 'failed':
-    //     case 'undelivered':
-    //       return 'Retry';
-    //     case 'delivered':
-    //       return 'Success';
-    //   }
-    // return 'Send';
   }
 
   printDentistScheduleTab() {

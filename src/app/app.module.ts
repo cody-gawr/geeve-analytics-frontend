@@ -18,7 +18,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { SharedModule } from './shared/shared.module';
-import { SpinnerComponent } from './shared/spinner.component';
+//import { SpinnerComponent } from './shared/spinner.component';
 import { CookieModule } from "ngx-cookie";
 import { AuthGuard } from './auth/authguard.service';
 import { UserIdleModule } from 'angular-user-idle';
@@ -67,7 +67,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     FullComponent,
     AppHeaderComponent,
     StepperHeaderComponent,
-    SpinnerComponent,
+    // SpinnerComponent,
     AppBlankComponent,
     AppSidebarComponent,
     AppHeaderrightComponent,

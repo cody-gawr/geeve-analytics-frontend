@@ -497,8 +497,6 @@ export class ProfileSettingsComponent implements OnInit {
 
   onSubmitHealthScreen() {
     this.health_screen_mtd = this.healthSettings.value.health_screen_mtd;
-    console.log('dfhgjk');
-    console.log(this.health_screen_mtd);
     this.profileSettingsService
       .updateprofileSettingsHealthScreen(this.health_screen_mtd)
       .subscribe(

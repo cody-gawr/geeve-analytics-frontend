@@ -71,7 +71,6 @@ export class StepperSidebarComponent implements OnDestroy, AfterViewInit {
   logout() {
     this.headerService.logout(this._cookieService.get('userid')).subscribe(
       (res) => {
-        console.log(res);
         if (res.status == 200) {
           this._cookieService.removeAll();
           this.router.navigate(['/login']);

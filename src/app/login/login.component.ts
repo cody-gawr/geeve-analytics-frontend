@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from './login.service';
 import { RolesUsersService } from '../roles-users/roles-users.service';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -19,13 +20,16 @@ export class LoginComponent implements OnInit {
   public apiUrl = environment.apiUrl;
   public clinic_id;
   public userType;
+  IsCheckingAuth = true;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private loginService: LoginService,
     private _cookieService: CookieService,
     private rolesUsersService: RolesUsersService,
-    public constants: AppConstants
+    public constants: AppConstants,
+    public dialog: MatDialog
   ) {
     if (this._cookieService.get('userid')) {
       var user_type = this._cookieService.get('user_type');
@@ -39,15 +43,24 @@ export class LoginComponent implements OnInit {
       } else {
         this.getRolesIndividual();
       }
+    }else {
+      this.showLoginForm();
     }
+    
+  }
+
+  showLoginForm(){
+    this.dialog.closeAll();
+    this.IsCheckingAuth = false;
   }
 
   ngOnInit() {
     this.form = this.fb.group({
-      uname: [null, Validators.compose([Validators.required])],
-      password: [null, Validators.compose([Validators.required])]
+      uname: ['demo@jeeve.com.au', Validators.compose([Validators.required])],
+      password: ['JulDemoCDC1!', Validators.compose([Validators.required])]
     });
   }
+
   onSubmit() {
     this.errorForm = { email: false, password: false };
     if (this.form.controls['uname'].hasError('required')) {
@@ -214,7 +227,8 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/profile-settings']);
           }
         }
-      });
+        this.showLoginForm();
+      }, (err)=> {this.showLoginForm();});
   }
 
   getRoles() {
@@ -256,6 +270,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/profile-settings']);
         }
       }
-    });
+      this.showLoginForm();
+    }, (err)=> {this.showLoginForm();});
   }
 }

@@ -58,7 +58,6 @@ export class RolesUsersService {
   // Get Roles For individual
   getRolesIndividual(clinic_id = ''): Observable<any> {
     var header = this.getHeaders();
-    console.log(this._cookieService.get('jeeve'));
     if (clinic_id == '') {
       return this.http.get(this.apiUrl + '/Roles/rolesIndividual', header).pipe(
         map((response: HttpResponse<Object>) => {
