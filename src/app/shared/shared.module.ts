@@ -11,6 +11,7 @@ import { TooltipComponent, TooltipContainerDirective } from './tooltip/tooltip.c
 import { TooltipDirective } from './tooltip/tooltip.directive';
 import { CommonModule } from '@angular/common';
 import { TooltipLayoutComponent } from './tooltip/tooltip-layout.component';
+import { SpinnerComponent } from './spinner.component';
 
 @NgModule({
   declarations: [
@@ -20,14 +21,16 @@ import { TooltipLayoutComponent } from './tooltip/tooltip-layout.component';
     TooltipComponent,
     TooltipDirective,
     TooltipContainerDirective, 
-    TooltipLayoutComponent
+    TooltipLayoutComponent,
+    SpinnerComponent
   ],
   exports: [
     AccordionAnchorDirective,
     AccordionLinkDirective,
     AccordionDirective,
     TooltipDirective,
-    TooltipContainerDirective
+    TooltipContainerDirective,
+    SpinnerComponent
   ],
   imports: [
     CommonModule

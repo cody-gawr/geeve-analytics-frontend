@@ -12,7 +12,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { LoginRoutes } from './login.routing';
 import { LoginComponent } from './login.component';
 import { LoginService } from './login.service';
-
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -25,7 +25,8 @@ import { LoginService } from './login.service';
     MatButtonModule,
     FlexLayoutModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
   providers: [
     LoginService

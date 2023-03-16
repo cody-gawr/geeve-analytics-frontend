@@ -96,7 +96,6 @@ export class DentistComponent implements AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
   this.dentistService.addDentists(result.provider_id, result.dentist_name,this.clinic_id).subscribe((res) => {
-    console.log(res);
        if(res.status == 200){
         this.toastr.success('Dentist Added');
           this.getDentists();

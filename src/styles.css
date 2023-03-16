@@ -947,10 +947,6 @@
   padding-right: 23px;
 }
 
-/*.custom_date.active {
-    border-bottom: 1px solid #119582;
-}*/
-
 .custom_date:after {
   content: '\f073';
   font-family: 'Font Awesome 5 Free';
@@ -8140,7 +8136,7 @@ top: 29px;
   width: 25px;
 }
 
-.custom_date {
+.date-menu-bar.custom_date {
   position: fixed !important;
   top: 6px !important;
   left: 45% !important;
@@ -8213,7 +8209,7 @@ input[type='checkbox'] {
 }
 
 @media (max-width: 959px) {
-  .custom_date {
+  .date-menu-bar.custom_date {
     position: fixed !important;
     top: 6px !important;
     left: unset !important;
@@ -8223,7 +8219,7 @@ input[type='checkbox'] {
 }
 
 @media (max-width: 625px) {
-  .custom_date {
+  .date-menu-bar.custom_date {
     position: sticky !important;
     top: 6px !important;
     left: unset !important;
