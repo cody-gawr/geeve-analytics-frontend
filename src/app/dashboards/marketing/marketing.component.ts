@@ -31,6 +31,7 @@ import { RolesUsersService } from '../../roles-users/roles-users.service';
 import { environment } from '../../../environments/environment';
 import * as Chart from 'chart.js';
 import * as _ from 'lodash';
+import { LocalStorageService } from '../../shared/local-storage.service';
 
 export interface Dentist {
   providerId: string;
@@ -99,7 +100,13 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   public isVisibleAccountGraphs: boolean = false;
   public isCompleteMonth: boolean = true;
 
+  public get isExactOrCore(): boolean {
+    const clinics = this.localStorageService.getObject<any[]>('clinics') || [];
+    return clinics.some((c) => ['exact', 'core'].includes(c.pms));
+  }
+
   constructor(
+    private localStorageService: LocalStorageService,
     private toastr: ToastrService,
     private marketingService: MarketingService,
     private financesService: FinancesService,
@@ -1283,7 +1290,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   public duration = '';
   // events
   public chartClicked(e: any, label: string): void {
-    if (e.active.length > 0) {
+    if (e.active.length > 0 && !this.isExactOrCore) {
       const chart = e.active[0]._chart;
       const activePoints = chart.getElementAtEvent(e.event);
       if (activePoints.length > 0) {

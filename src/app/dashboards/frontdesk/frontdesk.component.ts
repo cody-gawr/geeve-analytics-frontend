@@ -22,6 +22,7 @@ import { ChartstipsService } from '../../shared/chartstips.service';
 import { ClinicianAnalysisService } from '../cliniciananalysis/cliniciananalysis.service';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { LocalStorageService } from '../../shared/local-storage.service';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -71,7 +72,13 @@ export class FrontDeskComponent implements AfterViewInit {
 
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
+  public get isExactOrCore(): boolean {
+    const clinics = this.localStorageService.getObject<any[]>('clinics') || [];
+    return clinics.some((c) => ['exact', 'core'].includes(c.pms));
+  }
+
   constructor(
+    private localStorageService: LocalStorageService,
     private toastr: ToastrService,
     private frontdeskService: FrontDeskService,
     private dentistService: DentistService,
@@ -87,6 +94,7 @@ export class FrontDeskComponent implements AfterViewInit {
   ) {
     this.getChartsTips();
     this.getAllClinics();
+    console.log(this.isExactOrCore);
   }
   private warningMessage: string;
   private myTemplate: any = '';
