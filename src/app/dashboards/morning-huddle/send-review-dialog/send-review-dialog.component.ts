@@ -10,13 +10,10 @@ import { MorningHuddleService } from "../morning-huddle.service";
 export interface DialogData {
     clinic_id?: number;
     patient_id: number;
-    phone_number: number;
     patient_name: string;
     mobile: any;
-    provider_id: number;
-    appt_date: string;
-    appt_start: string;
     total_remains: number;
+    appoint_id: string;
 }
 
 @Component({
@@ -95,51 +92,28 @@ export class SendReviewDialog {
     onSubmitClick(event: any): void {
         if(this.isValid){
             this.isWaitingResponse = true;
-            const apptId = `${this.data.clinic_id}:${this.data.provider_id}:${this.data.patient_id}:${this.data.appt_date}T${this.data.appt_start}`;
-            this._morningHuddleService.sendReviewMsg(this.data.clinic_id, 
-                this.data.patient_id, this.review_msg.value, this.phoneNumber.value).subscribe(res => {
+            this._morningHuddleService.sendReviewMsg(
+                this.data.clinic_id, 
+                this.data.patient_id, 
+                this.review_msg.value, 
+                this.phoneNumber.value,
+                this.data.appoint_id,
+            ).subscribe({
+                next: (res) => {
                     this.isWaitingResponse = false;
-                    if(res.status == 200){
-                        const s = sessionStorage.getItem('sids');
-                        const sids = s?s.split(','):[];
-                        sids.push(res.body.sid);
-                        sessionStorage.setItem(
-                            'sids',
-                            sids.join(',')
-                        );
-                        sessionStorage.setItem(
-                            res.body.sid,
-                            res.body.status
-                        );
-                        sessionStorage.setItem(
-                            apptId, res.body.sid
-                        )
-                        //sessionStorage.setItem(this.phoneNumber.value, appId);
-                        this._toastrService.success('Sent Message Sucessfully!');
-                        this.dialogRef.close({status: true, num_sms: Math.ceil(this.review_msg.value.length/160)});
-                    }
-                }, err => {
+                    this.dialogRef.close({
+                        status: res.status,
+                        num_sms: Math.ceil(this.review_msg.value.length/160),
+                    });
+                },
+                error: (err) => {
                     this.isWaitingResponse = false;
                     this._toastrService.error(err.message || 'Unknow Issue');
-                })
+                },
+                complete: ()=> {this._toastrService.success('Sent Message Sucessfully!');}
+            });
         }
     }
-
-    // keyPress(event: any) {
-    //     const pattern = /^(\+614)|(04)[0-9\s]*$/;
-    //     let inputChar = String.fromCharCode(event.charCode);
-    //     if ((event.keyCode != 8 && !pattern.test(inputChar))) {
-    //       event.preventDefault();
-    //     }
-    //     const val = event.target.value.replaceAll(/\s/g, '');
-    //     console.log(val)
-    //     if(this.phoneCountryCode == '+614' && val.length > 8){
-    //         event.preventDefault();
-    //     }
-    //     if(this.phoneCountryCode == '04' && val.length > 7){
-    //         event.preventDefault();
-    //     }
-    // }
 
     onChangeReviewMsg(){
         const msg = _.find(this.msgTemplates, it => it.id == this.selectedReviewMsg);
