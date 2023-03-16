@@ -22,6 +22,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatDialog } from '@angular/material/dialog';
 
 import { environment } from '../../../../environments/environment';
+import { LocalStorageService } from '../../../shared/local-storage.service';
 
 export interface Dentist {
   providerId: string;
@@ -75,6 +76,7 @@ export class AppHeaderrightComponent
   constructor(
     private _cookieService: CookieService,
     private rolesUsersService: RolesUsersService,
+    private localStorageService: LocalStorageService,
     private headerService: HeaderService,
     private dentistService: DentistService,
     private router: Router,
@@ -303,6 +305,8 @@ export class AppHeaderrightComponent
         this.headerService.setClinics(res);
         if (res.status == 200) {
           this.clinicsData = res.body.data;
+          this.localStorageService.saveObject('clinics', res.body.data);
+
           if (res.body.data.length > 0) {
             if (this.route == '/dashboards/healthscreen') {
               if (this._cookieService.get('clinic_dentist')) {

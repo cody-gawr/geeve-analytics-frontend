@@ -28,6 +28,7 @@ import { TooltipLayoutComponent } from '../../shared/tooltip/tooltip-layout.comp
 import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
 import { environment } from '../../../environments/environment';
+import { LocalStorageService } from '../../shared/local-storage.service';
 
 export interface Dentist {
   providerId: string;
@@ -107,7 +108,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   private treatmentPlanProposedProvidersByInx = [];
   private showCompare: boolean = false;
   public Apirequest = 0;
+
+  public get isExactOrCore(): boolean {
+    const clinics = this.localStorageService.getObject<any[]>('clinics') || [];
+    return clinics.some((c) => ['exact', 'core'].includes(c.pms));
+  }
   constructor(
+    private localStorageService: LocalStorageService,
     private cliniciananalysisService: ClinicianAnalysisService,
     private dentistService: DentistService,
     private datePipe: DatePipe,
@@ -133,6 +140,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     });
     this.user_type = this._cookieService.get('user_type');
     this.getAllClinics();
+    console.log(this.isExactOrCore);
   }
 
   ngOnDestroy(): void {

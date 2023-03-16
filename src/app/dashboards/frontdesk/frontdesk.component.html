@@ -205,6 +205,7 @@
                 >
                   <small
                     class="sa_tab_btn"
+                    *ngIf="!isExactOrCore"
                     [ngClass]="utilShow == 2 ? 'active' : ''"
                     (click)="changeUtil('2')"
                     >By Day</small

@@ -525,6 +525,7 @@
                   >
                     <small
                       class="sa_tab_btn"
+                      *ngIf="!isExactOrCore"
                       [ngClass]="proCollShow == 3 ? 'active' : ''"
                       (click)="changeProduction('3', 'all')"
                       >Collection-Exp</small
@@ -532,18 +533,6 @@
                   </div>
                 </div>
               </div>
-              <!-- <div *ngIf="(( !apiUrl.includes('test-') && !apiUrl.includes('staging-')) && (clinic_id <= 8 || clinic_id >= 24) )">
-              <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
-                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="49%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''"
-                    (click)="changeProduction('1' ,'all')">Production</small>
-                </div>
-                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="49%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''"
-                    (click)="changeProduction('2' ,'all')">Collection</small>
-                </div>
-              </div>
-            </div> -->
 
               <!-- Production Chart Start -->
               <div
@@ -1996,25 +1985,6 @@
                 <span *ngIf="proCollShow == 1"> Dentist Production</span>
                 <span *ngIf="proCollShow == 2"> Dentist Collection</span>
                 <span *ngIf="proCollShow == 3"> Dentist Collection - Exp</span>
-
-                <!-- <select class="proSelect" *ngIf="proCollShow == 1 && apiUrl.includes('test-')"
-                (change)="changeProSelect($event.target.value)">
-                    <option value="production_all">Production - All</option>
-                    <option value="production_dentists">Production - Dentists</option>
-                    <option value="production_oht">Production - OHT</option>
-                </select>
-                <select class="proSelect" *ngIf="proCollShow == 2 && apiUrl.includes('test-')"
-                (change)="changeProSelect($event.target.value)">
-                  <option value="collection_all">Collection - All</option>
-                  <option value="collection_dentists">Collection - Dentists</option>
-                  <option value="collection_oht">Collection - OHT</option>
-                </select>
-                <select class="proSelect" *ngIf="proCollShow == 3 && apiUrl.includes('test-')"
-                (change)="changeProSelect($event.target.value)">
-                  <option value="collection_exp_all">Collection-Exp - All</option>
-                  <option value="collection_exp_dentists">Collection-Exp - Dentists</option>
-                  <option value="collection_exp_oht">Collection-Exp - OHT</option>
-               </select> -->
               </div>
 
               <div class="info-icon-container">
@@ -2118,6 +2088,7 @@
                   >
                     <small
                       class="sa_tab_btn"
+                      *ngIf="!isExactOrCore"
                       [ngClass]="proCollShow == 3 ? 'active' : ''"
                       (click)="changeProduction('3', 'single')"
                       >Collection-Exp</small
@@ -2125,18 +2096,6 @@
                   </div>
                 </div>
               </div>
-              <!-- <div *ngIf="( ( !apiUrl.includes('test-') && !apiUrl.includes('staging-')) && (clinic_id <= 8 || clinic_id >= 24) )">
-                <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
-                  <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="49%" fxFlex="100" class="btn-group">
-                    <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''"
-                      (click)="changeProduction('1','single')">Production</small>
-                  </div>
-                  <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="49%" fxFlex="100" class="btn-group">
-                    <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''"
-                      (click)="changeProduction('2','single')">Collection</small>
-                  </div>
-                </div>
-              </div> -->
 
               <!-- Production Chart Start dentist -->
 
