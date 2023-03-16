@@ -2,6 +2,7 @@ import * as $ from 'jquery';
 import * as _ from 'lodash';
 import {
   Component,
+  OnInit,
   AfterViewInit,
   ViewEncapsulation,
   ViewChild,
@@ -15,7 +16,13 @@ import { ActivatedRoute, Router, NavigationEnd, Event } from '@angular/router';
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { CookieService } from 'ngx-cookie';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
+import {
+  Subscription,
+  Subject,
+  debounceTime,
+  distinctUntilChanged,
+  takeUntil
+} from 'rxjs';
 import { Chart } from 'chart.js';
 import { ChartService } from '../chart.service';
 import { AppConstants } from '../../app.constants';
@@ -37,7 +44,9 @@ export interface Dentist {
  *Clinician Proceedure Graph Dashboard
  *AUTHOR - Teq Mavens
  */
-export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
+export class ClinicianProceeduresComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @ViewChild('myCanvas') canvas: ElementRef;
   lineChartColors;
   predictedChartColors;
@@ -119,6 +128,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
     $('.topbar-strip').removeClass('responsive-top');
+    this.destroy.next();
   }
   private warningMessage: string;
   private myTemplate: any = '';
@@ -175,6 +185,12 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
       const formattedDate = this.datePipe.transform(d, 'dd MMM yyyy');
       return formattedDate;
     } else return date;
+  }
+
+  ngOnInit(): void {
+    this.dentistSubject
+      .pipe(debounceTime(400), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((dentist) => this.loadDentistEngine(dentist));
   }
 
   //Initialize compoenent
@@ -1360,8 +1376,15 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
   public selectedValToggle = 'off';
   public gaugeDuration = '2500';
   public dentistid = '';
+  public dentistSubject = new Subject<string>();
+  destroy = new Subject<void>();
+  destroy$ = this.destroy.asObservable();
   //lOad individula dentist Chart
   loadDentist(newValue) {
+    this.dentistSubject.next(newValue);
+  }
+
+  loadDentistEngine(newValue) {
     if (this._cookieService.get('user_type') == '4') {
       $('.predicted_main').hide();
       $('.predicted1').show();
@@ -1458,12 +1481,6 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
         this.buildChartReferralDentist();
         this.changeDentistPredictor('1');
       }
-      /*    this.buildChartTreatmentDentist();
-    (<HTMLElement>document.querySelector('.treatmentPlanSingle')).style.display = 'block';
-    (<HTMLElement>document.querySelector('.treatmentPlan')).style.display = 'none';
-    this.buildChartNopatientsDentist();
-    (<HTMLElement>document.querySelector('.noPatientsSingle')).style.display = 'block';
-    (<HTMLElement>document.querySelector('.noPatients')).style.display = 'none';*/
     }
   }
 
@@ -1503,8 +1520,6 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
   //Items Predictor Analysis - All dentist Chart
   private buildChart() {
     this.buildChartLoader = true;
-    var user_id;
-    var clinic_id;
     this.stackedChartData = [
       { data: [], label: 'Crowns & Onlays' },
       { data: [], label: 'Splints' },
