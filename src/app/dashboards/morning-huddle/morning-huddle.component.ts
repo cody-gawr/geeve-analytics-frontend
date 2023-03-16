@@ -484,8 +484,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         this.remainCredits = res.data.remain_credits;
         this.costPerSMS = res.data.cost_per_sms;
         const statusList = res.data.sms_status_list;
-        this.remindersRecallsOverdue = _.merge(statusList, this.remindersRecallsOverdue);
-        this.remindersRecallsOverdueTemp = _.merge(statusList, this.remindersRecallsOverdueTemp);
+        this.remindersRecallsOverdue = _.merge(this.remindersRecallsOverdue, statusList);
+        this.remindersRecallsOverdueTemp = _.merge(this.remindersRecallsOverdueTemp, statusList);
       }
     });
   };
@@ -759,7 +759,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
                   this.costPerSMS = v2.data.cost_per_sms;
                   const statusList = v2.data.sms_status_list;
 
-                  const reminderList = _.merge(statusList, res.body.data);
+                  const reminderList = _.merge(res.body.data, statusList);
                   this.remindersRecallsOverdueTemp = reminderList;
                   this.remindersRecallsOverdue = reminderList;
                   this.remindersRecallsOverdueDate = this.datepipe
