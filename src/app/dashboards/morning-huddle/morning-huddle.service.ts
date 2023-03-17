@@ -1096,15 +1096,22 @@ export class MorningHuddleService {
       );
   }
 
-  getCreditStatus(): Observable<HttpResponse<any>> {
-    const s = sessionStorage.getItem('sids');
-    const sids = s ? s.split(',') : [];
+  getCreditStatus(clinic_id: number, appt_ids: string[]): Observable<{
+    status: boolean,
+    data: {
+      sms_status_list:Array<{sms_status:string, appoint_id:string}>,
+      remain_credits:number,
+      cost_per_sms: number
+    }
+  }> {
     const header = this.getHeaders();
     return this.http
-      .post(this.apiUrl + '/reviews/updateCreditStatus', { sids: sids }, header)
+      .post(this.apiUrl + '/reviews/updateCreditStatus', { 
+        clinic_id: clinic_id, 
+        appt_ids: appt_ids }, header)
       .pipe(
         map((res: HttpResponse<any>) => {
-          return res;
+          return res.body;
         })
       );
   }
@@ -1113,8 +1120,9 @@ export class MorningHuddleService {
     clinic_id: number,
     patient_id: number,
     review_msg: string,
-    phone_number: string
-  ): Observable<HttpResponse<any>> {
+    phone_number: string,
+    appoint_id: string
+  ): Observable<{status: string, sid: string}> {
     const header = this.getHeaders();
     return this.http
       .post(
@@ -1123,13 +1131,14 @@ export class MorningHuddleService {
           clinic_id,
           patient_id,
           review_msg,
-          phone_number
+          phone_number,
+          appoint_id
         },
         header
       )
       .pipe(
         map((res: HttpResponse<any>) => {
-          return res;
+          return res.body;
         })
       );
   }

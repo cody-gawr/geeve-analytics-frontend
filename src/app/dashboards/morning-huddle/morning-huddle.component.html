@@ -1607,15 +1607,18 @@
             <th mat-header-call *matHeaderCellDef>Send Review</th>
             <td mat-cell style="text-align: center" *matCellDef="let element">
               <i
-              *ngIf="checkReviewStatusProcess(element) == 'delivered'"
+              *ngIf="element.sms_status == 'queued'"
+                class="fa fa-hourglass"
+              ></i>
+              <i
+              *ngIf="element.sms_status == 'delivered'"
                 class="fa fa-check mh-fa-check"
               ></i>
               <i 
-                *ngIf="['queued', 'sent'].indexOf(checkReviewStatusProcess(element)) >= 0"
-                style="font-size: 18px;margin-right: 10px;color: gray;"
+                *ngIf="element.sms_status == 'sent'"
                 class="fa fa-clock" aria-hidden="true"></i>
               <button
-                *ngIf="checkReviewStatusProcess(element) == 'failed'"
+                *ngIf="element.sms_status == 'failed'"
                 mat-stroked-button
                 class="mat-dc"
                 (click)="openSendReviewMsgDialog(element)"
@@ -1623,7 +1626,7 @@
                 Retry (Failed)
               </button>
               <button
-                *ngIf="checkReviewStatusProcess(element) == 'undelivered'"
+                *ngIf="element.sms_status == 'undelivered'"
                 mat-stroked-button
                 class="mat-dc"
                 (click)="openSendReviewMsgDialog(element)"
@@ -1631,7 +1634,7 @@
                 Retry (Undelivered)
               </button>
               <button
-                *ngIf="checkReviewStatusProcess(element) == 'none'"
+                *ngIf="element.sms_status == undefined"
                 mat-stroked-button
                 class="mat-dc"
                 (click)="openSendReviewMsgDialog(element)"

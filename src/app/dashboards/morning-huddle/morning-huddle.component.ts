@@ -24,6 +24,7 @@ import { ChartstipsService } from '../../shared/chartstips.service';
 import { MatSort } from '@angular/material/sort';
 import { environment } from '../../../environments/environment';
 import * as moment from 'moment';
+// import { forkJoin } from 'rxjs';
 
 export interface PeriodicElement {
   name: string;
@@ -403,6 +404,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
 
   timezone: string = '+1000';
   remainCredits = 0;
+  costPerSMS = 0.0;
   // @ViewChild('sort1') sort1: MatSort;
   sortList: QueryList<MatSort>;
   creditStatusTimer = null;
@@ -473,31 +475,21 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       self.refreshDataAuto();
     }, 1000 * 300);
 
-    const updateCreditStatus = () => {
-      this.morningHuddleService.getCreditStatus().subscribe((res) => {
-        const sids = res.body.data.sids;
-        for (const sid of sids) {
-          if (sid.status == 'queued' || sid.status == 'sent') {
-            //
-          } else {
-            const _sids = (sessionStorage.getItem('sids') ?? '').split(',');
-            const inx = _sids.findIndex((s) => s == sid);
-            _sids.splice(inx, 1);
-            sessionStorage.setItem('sids', _sids.join(','));
-          }
-
-          sessionStorage.setItem(sid.sid, sid.status);
-        }
-        this.remainCredits = res.body.data.remain_credits;
-        sessionStorage.setItem('used_credits', res.body.data.used_credits ?? 0);
-        sessionStorage.setItem('remain_credits', this.remainCredits.toString());
-        sessionStorage.setItem('cost_per_sms', res.body.data.cost_per_sms);
-      });
-    };
-
-    updateCreditStatus();
-    this.creditStatusTimer = setInterval(updateCreditStatus, 30000);
+    this.creditStatusTimer = setInterval(()=>{this.updateCreditStatus()}, 30000);
   }
+
+  updateCreditStatus() {
+    this.morningHuddleService.getCreditStatus(this.clinic_id, this.remindersRecallsOverdue.map(r => r.appoint_id)).subscribe((res) => {
+      if(res.status){
+        this.remainCredits = res.data.remain_credits;
+        this.costPerSMS = res.data.cost_per_sms;
+        const statusList = res.data.sms_status_list;
+        this.remindersRecallsOverdue = _.merge(this.remindersRecallsOverdue, statusList);
+        this.remindersRecallsOverdueTemp = _.merge(this.remindersRecallsOverdueTemp, statusList);
+      }
+    });
+  };
+
   ngAfterViewInit(): void {
     // this.endOfDaysTasksInComp.sort = this.sort1;
     // this.lquipmentList.sort = this.sort2;
@@ -595,9 +587,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   }
 
   openTopUpCredits() {
-    const costPerSMS = parseFloat(sessionStorage.getItem('cost_per_sms'));
     const stripePaymentDialog = this.dialog.open(StripePaymentDialog, {
-      data: { costPerSMS: costPerSMS }
+      data: { costPerSMS: this.costPerSMS }
     });
   }
 
@@ -725,10 +716,18 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       this.todayUnscheduledBalLoader = true;
     }
     this.clinicDentistsReminders = [];
+
+    // const sources = forkJoin([
+    //   this.morningHuddleService.getCreditStatus(
+    //     this.clinic_id, this.previousDays),
+    //   this.morningHuddleService
+    //   .getReminders(this.clinic_id, this.previousDays, this.user_type)
+    // ])
+
     this.morningHuddleService
-      .getReminders(this.clinic_id, this.previousDays, this.user_type)
-      .subscribe(
-        (res: any) => {
+      .getReminders(this.clinic_id, this.previousDays, this.user_type).subscribe(
+      {
+        next: (res) => {
           this.remindersRecallsOverdueLoader = false;
           if (res.status == 200) {
             this.apiSuccessCount += 1;
@@ -753,49 +752,59 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               this.LabNeeded = true;
             }
             this.remindersTotal = res.body.total;
-            this.remindersRecallsOverdueTemp = res.body.data;
-            this.remindersRecallsOverdue = res.body.data;
-            this.remindersRecallsOverdueDate = this.datepipe
-              .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
-              .replace(/\s/, 'T');
-            if (this.user_type == '4') {
-              this.dentistid = this._cookieService.get('dentistid');
-              this.refreshReminderTab(this.dentistid);
-            } else {
-              res.body.data.forEach((val) => {
-                var isExsist = this.clinicDentistsReminders.filter(function (
-                  person
-                ) {
-                  return person.provider_id == val.provider_id;
-                });
-                if (isExsist.length <= 0) {
-                  var nm =
-                    val.jeeve_name != '' && val.jeeve_name
-                      ? val.jeeve_name
-                      : val.provider_name;
-                  var temp = {
-                    provider_id: val.provider_id,
-                    provider_name: nm
-                  };
-                  if (temp.provider_name != null)
-                    this.clinicDentistsReminders.push(temp);
+            this.morningHuddleService.getCreditStatus(this.clinic_id, res.body.data.map(d => d.appoint_id)).subscribe(
+              (v2) => {
+                if(v2.status){
+                  this.remainCredits =v2.data.remain_credits;
+                  this.costPerSMS = v2.data.cost_per_sms;
+                  const statusList = v2.data.sms_status_list;
+
+                  const reminderList = _.merge(res.body.data, statusList);
+                  this.remindersRecallsOverdueTemp = reminderList;
+                  this.remindersRecallsOverdue = reminderList;
+                  this.remindersRecallsOverdueDate = this.datepipe
+                    .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
+                    .replace(/\s/, 'T');
+                  if (this.user_type == '4') {
+                    this.dentistid = this._cookieService.get('dentistid');
+                    this.refreshReminderTab(this.dentistid);
+                  } else {
+                    res.body.data.forEach((val) => {
+                      var isExsist = this.clinicDentistsReminders.filter(function (
+                        person
+                      ) {
+                        return person.provider_id == val.provider_id;
+                      });
+                      if (isExsist.length <= 0) {
+                        var nm =
+                          val.jeeve_name != '' && val.jeeve_name
+                            ? val.jeeve_name
+                            : val.provider_name;
+                        var temp = {
+                          provider_id: val.provider_id,
+                          provider_name: nm
+                        };
+                        if (temp.provider_name != null)
+                          this.clinicDentistsReminders.push(temp);
+                      }
+                    });
+                    this.clinicDentistsReminders.sort(function (x, y) {
+                      let a = x.provider_name.toUpperCase(),
+                        b = y.provider_name.toUpperCase();
+                      return a == b ? 0 : a > b ? 1 : -1;
+                    });
+                  }
+                  this.refreshReminderTab(this.selectDentist);
                 }
-              });
-              this.clinicDentistsReminders.sort(function (x, y) {
-                let a = x.provider_name.toUpperCase(),
-                  b = y.provider_name.toUpperCase();
-                return a == b ? 0 : a > b ? 1 : -1;
-              });
-            }
-            this.refreshReminderTab(this.selectDentist);
+              }
+            )
           } else if (res.status == 401) {
             this.handleUnAuthorization();
           }
         },
-        (error) => {
-          this.handleUnAuthorization();
-        }
-      );
+        error: (e) => {this.handleUnAuthorization();}
+      }
+    );
   }
 
   /*  getFollowupsUnscheduledPatients(){
@@ -2108,13 +2117,10 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   }
 
   openSendReviewMsgDialog(element) {
-    const totalRemainingCredits = parseInt(
-      sessionStorage.getItem('remain_credits')
-    );
-    if (totalRemainingCredits <= 0) {
+    if (this.remainCredits <= 0) {
       this.dialog.open(StripePaymentDialog, {
         data: {
-          costPerSMS: parseFloat(sessionStorage.getItem('cost_per_sms')),
+          costPerSMS: this.costPerSMS,
           notify_msg:
             'You have no credits remaining, please top-up your account to send more review invites.'
         }
@@ -2123,30 +2129,18 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       const sendReviewDialog = this.dialog.open(SendReviewDialog, {
         data: {
           patient_id: element.patient_id,
-          phone_number: element.mobile,
           clinic_id: this.clinic_id,
           patient_name: element.patient_name,
           mobile: element.mobile,
-          provider_id: element.provider_id,
-          appt_date: element.app_date,
-          appt_start: element.start,
-          total_remains: totalRemainingCredits
+          appoint_id: element.appoint_id,
+          total_remains: this.remainCredits,
         }
       });
       sendReviewDialog.afterClosed().subscribe((result) => {
         if (result && result.status) {
           this.remainCredits = this.remainCredits - result.num_sms;
-          this.morningHuddleService.getCreditStatus().subscribe((res) => {
-            sessionStorage.setItem(
-              'used_credits',
-              res.body.data.used_credits ?? 0
-            );
-            sessionStorage.setItem(
-              'remain_credits',
-              res.body.data.remain_credits
-            );
-            sessionStorage.setItem('cost_per_sms', res.body.data.cost_per_sms);
-          });
+          element.sms_status = result.status;
+          this.updateCreditStatus();
         }
       });
     }
@@ -2173,17 +2167,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         this.toastr.error('Something went wrong.');
         break;
     }
-  }
-
-  checkReviewStatusProcess(element) {
-    const apptId = `${element.clinic_id}:${element.provider_id}:${element.patient_id}:${element.app_date}T${element.start}`;
-    const sid = sessionStorage.getItem(apptId);
-    if (sid) {
-      const status = sessionStorage.getItem(sid);
-      if (status) return status;
-    }
-
-    return 'none';
   }
 
   printDentistScheduleTab() {
