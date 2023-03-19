@@ -27,10 +27,9 @@
         <img class="tableLoader" src="../../../assets/images/logo-icon.gif" />
       </div>
     </div>
-      <div class="morning-review-topup">
+      <div class="morning-review-topup" *ngIf="isSMSEnabled">
         <span>SMS Credits: <strong style="color: #18a689;">{{ remainCredits }}</strong></span>
         <a
-          *ngIf="apiUrl.includes('test')"
           (click)="openTopUpCredits()"
           class="add-credits-btn"
         >
@@ -1601,7 +1600,7 @@
           </ng-container>
 
           <ng-container
-            *ngIf="apiUrl.includes('test')"
+            *ngIf="isSMSEnabled"
             matColumnDef="sendReview"
           >
             <th mat-header-call *matHeaderCellDef>Send Review</th>
@@ -1613,6 +1612,7 @@
               <i
               *ngIf="element.sms_status == 'delivered'"
                 class="fa fa-check mh-fa-check"
+                [matTooltip]="element.review_msg"
               ></i>
               <i 
                 *ngIf="element.sms_status == 'sent'"

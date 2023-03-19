@@ -2,23 +2,32 @@
 <div mat-dialog-content>
     <mat-form-field appearance="fill">
         <mat-label>Name</mat-label>
-        <input matInput [formControl]="name" >
+        <input matInput [formControl]="name" required>
     </mat-form-field>
     <div style="margin-bottom: 10px;">
         <mat-chip-list >
             <mat-chip><span #keyClinicName draggable="true">Clinic Name</span></mat-chip>
             <mat-chip><span #keyPatientName draggable="true">Patient Name</span></mat-chip>
-            <mat-chip><span #keyFacebookLink draggable="true">Facebook Link</span></mat-chip>
             <mat-chip><span #keyGoogleLink draggable="true">Google Link</span></mat-chip>
         </mat-chip-list>
     </div>
 
     <mat-form-field appearance="fill">
         <mat-label>Review Message Template</mat-label>
-        <textarea matInput [formControl]="msg_template" rows="7"></textarea>
+        <textarea matInput [formControl]="msg_template" rows="7" required></textarea>
     </mat-form-field>
 </div>
-<div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">Cancel</button>
-    <button mat-button (click)="onSubmitClick($event)" cdkFocusInitial>Save</button>
+<div mat-dialog-actions class="justify-between">
+    <button 
+        mat-button
+        class="mat-raised-button mat-gray" 
+        (click)="onNoClick()"
+    >Cancel</button>
+    <button 
+        class="mat-raised-button mat-dc"
+        mat-button 
+        (click)="onSubmitClick($event)" 
+        [disabled]="!isValid || isWaitingResponse" 
+        cdkFocusInitial
+    >Save</button>
 </div>

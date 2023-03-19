@@ -25,11 +25,47 @@ export class ClinicSettingsService {
     }
 
     // Get ClinicSettings
-    getClinicSettings(clinic_id): Observable<any> {
+    getClinicSettings(clinic_id): Observable<{
+        status: string,
+        total: number,
+        message: string,
+        hasPrimeClinics: string,
+        data: {
+            address: string,
+            clinicEmail: string,
+            clinicName: string,
+            compare_mode: number,
+            config_user: any,
+            connectedwith: string,
+            consultant: string,
+            contactName: string,
+            created: string,
+            daily_task_enable: number,
+            datasource: string,
+            days: string,
+            db_name: string,
+            db_server: string,
+            equip_list_enable: number,
+            fta_uta: string,
+            id: number,
+            is_deleted: number,
+            net_profit_exclusions: string,
+            phoneNo: string,
+            pms: string,
+            sr: number,
+            timezone: string,
+            trial_end_date: string,
+            user_id: number,
+            utility_ver: string,
+            wh_name: string,
+            wh_server: string,
+            sms_enabled: number,
+        }
+    }> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/clinics/clinicGet?clinic_id=" + clinic_id, header)
-            .pipe(map((response: HttpResponse<Object>) => {
-                return response;
+            .pipe(map((response: HttpResponse<any>) => {
+                return response.body;
             })
             );
     }
@@ -289,12 +325,18 @@ export class ClinicSettingsService {
     }
 
     
-    getSocialLinks(clinic_id: number): Observable<any> {
+    getSocialLinks(clinic_id: number): Observable<{
+        data: {
+            facebook_id: string,
+            google_id: string
+        },
+        googleConnected: boolean
+    }> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl+"/reviews/getSocialLinks?clinic_id="+clinic_id, header)
         .pipe(
-            map((response: HttpResponse<Object>) => {
-                return response;
+            map((response: HttpResponse<any>) => {
+                return response.body;
             })
         );
     }

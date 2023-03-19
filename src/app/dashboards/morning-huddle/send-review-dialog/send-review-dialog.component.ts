@@ -14,6 +14,8 @@ export interface DialogData {
     mobile: any;
     total_remains: number;
     appoint_id: string;
+    phone_number: string,
+    review_msg: string
 }
 
 @Component({
@@ -35,7 +37,6 @@ export class SendReviewDialog {
     googleId = '';
     clinicName = '';
     clinic = null;
-    math = Math;
     isWaitingResponse = false;
     availableMsgLength = 10;
 
@@ -47,12 +48,19 @@ export class SendReviewDialog {
         private _morningHuddleService: MorningHuddleService,
         private _toastrService: ToastrService
     ){
-        this.phoneNumber.setValue(this.data.mobile);
+        this.phoneNumber.setValue((this.data.mobile || data.phone_number || '').replace(/\s/g, ''));
         this.clinic = _.find(this._headerService.clinics, c => c.id == this.data.clinic_id);
+        if(data.phone_number){
+            this.review_msg.setValue(data.review_msg);
+        }
         this.clinicSettingService.getReviewMsgTemplateList(this.data.clinic_id).subscribe((res) => {
             if (res.status == 200) {
               if (res.body.data) {
                 this.msgTemplates = res.body.data;
+                if(this.msgTemplates.length > 0 && !data.phone_number){
+                    this.selectedReviewMsg = this.msgTemplates[0].id;
+                    this.onChangeReviewMsg();
+                }
               }
             }
           }, error => {
@@ -60,18 +68,24 @@ export class SendReviewDialog {
         });
 
         this.clinicSettingService.getSocialLinks(this.data.clinic_id).subscribe(
-            result => {
-              if(result.body.data){
-                this.facebookId = result.body.data.facebook_id;
-                this.googleId = result.body.data.google_id;
-              }
-            },
-            error => {
-              console.error(error.message);
+            {
+                next: v => {
+                    if(v.data){
+                        this.facebookId = v.data.facebook_id;
+                        this.googleId = v.data.google_id;
+                    }
+                },
+                error: e => {
+                    console.error(e.message);
+                }
             }
         );
 
         this.availableMsgLength = data.total_remains < 5? data.total_remains * 160: 800;
+    }
+
+    get numOfMessages(){
+        return Math.ceil(this.review_msg.value.length/160);
     }
 
     getPhoneErrors() {

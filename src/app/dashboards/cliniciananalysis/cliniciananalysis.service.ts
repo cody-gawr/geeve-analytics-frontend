@@ -923,9 +923,55 @@ export class ClinicianAnalysisService {
         return this.http.get(this.apiUrl + "/clinics/clinicGetInfo?clinic_id="+clinicId+"&clinic_info="+clinicInfo, header).pipe(map((response: HttpResponse<Object>) => { return response; }));
     }
     /******** get clinic **********/
-    getClinicSettings(clinicId): Observable<any> {
+    getClinicSettings(clinicId): Observable<{
+        data: {
+            clinic_id: number,
+            compare_mode: number,
+            connectedwith: string,
+            consultant: string,
+            custom_tx_codes: string,
+            daily_task_enable: number, // 0-1
+            days: string, // json string
+            equip_list_enable: number, // 0-1
+            fta_days_later: number,
+            fta_enable: number,
+            fta_followup_days: number,
+            health_screen_mtd: number,
+            hourly_rate_appt_hours: number,
+            lab_code1: string,
+            lab_code2: string,
+            max_chart_bars: number,
+            net_profit_exclusions: string,
+            new_patients_main: number,
+            opg_months: number,
+            post_op_calls: string,
+            post_op_days: number,
+            post_op_enable: number,
+            recall_code1: string,
+            recall_code2: string,
+            recall_code3: string,
+            recall_enable: number,
+            recall_rate_default: number,
+            recall_weeks: number,
+            referral_enable: number,
+            referral_weeks: number,
+            tick_days: number,
+            tick_enable: number,
+            trial_end_date: string,
+            uta_days_later: number,
+            uta_enable: number,
+            uta_followup_days: number,
+            utility_ver: string,
+            xray_months: number,
+            sms_enabled: number
+        },
+        message: string
+    }> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/clinics/clinicGetSettings?clinic_id="+clinicId, header).pipe(map((response: HttpResponse<Object>) => { return response; }));
+        return this.http.get(
+            this.apiUrl + "/clinics/clinicGetSettings?clinic_id="+clinicId, 
+            header
+            ).pipe(map((response: HttpResponse<any>) => { return response.body; }));
     }
 
 }

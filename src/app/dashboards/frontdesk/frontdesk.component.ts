@@ -290,11 +290,11 @@ export class FrontDeskComponent implements AfterViewInit {
     ids.sort((a, b) => a - b);
     this.clinicianAnalysisService
       .getClinicSettings(ids[0])
-      .subscribe((res: any) => {
-        if (res.status == 200) {
-          if (res.body.data.max_chart_bars)
-            this.numberOfRecords = res.body.data.max_chart_bars;
-        }
+      .subscribe((res) => {
+        //if (res.status == 200) {
+          if (res.data.max_chart_bars)
+            this.numberOfRecords = res.data.max_chart_bars;
+        //}
       });
   }
 

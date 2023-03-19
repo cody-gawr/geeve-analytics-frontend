@@ -17,9 +17,10 @@ export interface DialogData {
 export class ReviewMsgTemplateDialog {
     name = new FormControl('', [Validators.required]);
     msg_template = new FormControl('', [Validators.required]);
+    isWaitingResponse = false;
     @ViewChild('keyClinicName') clinicNameElem: ElementRef<HTMLElement>
     @ViewChild('keyPatientName') patientNameElem: ElementRef<HTMLElement>
-    @ViewChild('keyFacebookLink') facebookLinklem: ElementRef<HTMLElement>
+    // @ViewChild('keyFacebookLink') facebookLinklem: ElementRef<HTMLElement>
     @ViewChild('keyGoogleLink') googleLinkElem: ElementRef<HTMLElement>
 
     constructor(
@@ -44,7 +45,7 @@ export class ReviewMsgTemplateDialog {
     ngAfterViewInit() {
         this.clinicNameElem.nativeElement.ondragstart = this.onDragChip;
         this.patientNameElem.nativeElement.ondragstart = this.onDragChip;
-        this.facebookLinklem.nativeElement.ondragstart = this.onDragChip;
+        // this.facebookLinklem.nativeElement.ondragstart = this.onDragChip;
         this.googleLinkElem.nativeElement.ondragstart = this.onDragChip;
     }
     
@@ -52,22 +53,44 @@ export class ReviewMsgTemplateDialog {
         this.dialogRef.close({status: false});
     }
 
+    get isValid() {
+        return this.name.valid && this.msg_template.valid
+    }
+
     async onSubmitClick(e:SubmitEvent) {
         e.preventDefault();
-        if(this.data.element){
-            this.clinicService.updateReviewMsgTemplate(this.data.element.id, this.data.clinic_id, this.name.value, this.msg_template.value).subscribe(res => {
-                this.toastr.success('Updated a template successfully!')
-                this.dialogRef.close({status: true});
-            }, error => {
-                this.toastr.error(error.message);
-            });
-        }else
-        this.clinicService.addReviewMsgTemplate(
-            this.data.clinic_id, this.name.value, this.msg_template.value).subscribe(res => {
-            this.toastr.success('Added new template successfully!')
-            this.dialogRef.close({status: true});
-        }, error => {
-            this.toastr.error(error.message);
-        });
+        if(this.isValid){
+            this.isWaitingResponse = true;
+            if(this.data.element){
+                this.clinicService.updateReviewMsgTemplate(
+                    this.data.element.id, this.data.clinic_id, 
+                    this.name.value, this.msg_template.value
+                ).subscribe({
+                    next: (v) => {
+                        this.toastr.success('Updated a template successfully!')
+                        this.dialogRef.close({status: true});
+                    },
+                    error: (e) => {
+                        this.isWaitingResponse = false;
+                        this.toastr.error(e.message);
+                    },
+                    complete:() => {this.isWaitingResponse = false;} 
+                });
+            }else
+                this.clinicService.addReviewMsgTemplate(
+                    this.data.clinic_id, this.name.value, this.msg_template.value
+                ).subscribe({
+                    next: (v) => {
+                        this.toastr.success('Added new template successfully!')
+                        this.dialogRef.close({status: true});
+                    },
+                    error: (e) => {
+                        this.isWaitingResponse = false;
+                        this.toastr.error(e.message);
+                    },
+                    complete: () => {this.isWaitingResponse = false;}
+                });
+        }
+
     }
 }

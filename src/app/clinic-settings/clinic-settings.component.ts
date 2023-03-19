@@ -98,6 +98,7 @@ export class ClinicSettingsComponent implements OnInit {
     'action'
   ]
   reviewMsgTemplates = [];
+  isSMSEnabled = false;
 
   constructor(
     private toastr: ToastrService,
@@ -130,8 +131,10 @@ export class ClinicSettingsComponent implements OnInit {
       this.checkXeroStatus();
       this.checkMyobStatus();
       // this.getFollowUpSettings();
-      this.getReviewMsgTemplates();
-      this.getSocialLinks();
+      if(this.isSMSEnabled){
+        this.getReviewMsgTemplates();
+        this.getSocialLinks();
+      }
     });
     
     if(this.apiUrl.includes('test') || this.apiUrl.includes('staging-')){
@@ -204,50 +207,52 @@ export class ClinicSettingsComponent implements OnInit {
   //get setting for teh selcted clinic
   getClinicSettings() {
     this.clinicSettingsService.getClinicSettings(this.id).subscribe(
-      (res) => {
-        if (res.status == 200) {
-          this.clinicSettingsService.setClinicData(res);
-          this.clinicName = res.body.data[0].clinicName;
-          this.contactName = res.body.data[0].contactName;
-          this.address = res.body.data[0].address;
-          this.practice_size = res.body.data[0].practice_size;
-          this.subtracted_accounts = res.body.data[0].net_profit_exclusions === 'null' ? "" : res.body.data[0].net_profit_exclusions;
-          this.ftaUta = res.body.data[0].fta_uta;
-          this.timezone = res.body.data[0].timezone;
-          this.equipmentList =
-            res.body.data[0].equip_list_enable == 1 ? true : false;
-          this.dailyTasks = res.body.data[0].daily_task_enable == 1 ? true : false;
-          this.compareMode = res.body.data[0].compare_mode == 1 ? true : false;
-
-          // this.postOpCallsMh = res.body.data[0].post_op_days;
-          // this.post_op_calls = res.body.data[0].post_op_calls;
-          // this.tickDays = res.body.data[0].tick_days;
-          // this.recallWeeks = res.body.data[0].recall_weeks;
-          // this.ftaFollowupDays = res.body.data[0].fta_followup_days;
-          // this.postOpEnable = res.body.data[0].post_op_enable == 1 ? true : false;
-          // this.tickEnable = res.body.data[0].tick_enable == 1 ? true : false;
-          // this.recallEnable = res.body.data[0].recall_enable == 1 ? true : false;
-          // this.ftaEnable = res.body.data[0].fta_enable == 1 ? true : false;
-          // this.utaEnable = res.body.data[0].uta_enable == 1 ? true : false;
-
-          if (this.ftaUta == "") this.ftaUta = "status";
-
-          if (res.body.data[0].days != null && res.body.data[0].days != 0) {
-            this.workingDays = JSON.parse(res.body.data[0].days);
+      {
+        next: (res) => {
+          //if (res.status == 200) {
+            this.clinicSettingsService.setClinicData(res);
+            this.clinicName = res.data[0].clinicName;
+            this.contactName = res.data[0].contactName;
+            this.address = res.data[0].address;
+            this.practice_size = res.data[0].practice_size;
+            this.subtracted_accounts = res.data[0].net_profit_exclusions === 'null' ? "" : res.data[0].net_profit_exclusions;
+            this.ftaUta = res.data[0].fta_uta;
+            this.timezone = res.data[0].timezone;
+            this.equipmentList =
+              res.data[0].equip_list_enable == 1 ? true : false;
+            this.dailyTasks = res.data[0].daily_task_enable == 1 ? true : false;
+            this.compareMode = res.data[0].compare_mode == 1 ? true : false;
+            this.isSMSEnabled = !!res.data[0].sms_enabled;
+            // this.postOpCallsMh = res.body.data[0].post_op_days;
+            // this.post_op_calls = res.body.data[0].post_op_calls;
+            // this.tickDays = res.body.data[0].tick_days;
+            // this.recallWeeks = res.body.data[0].recall_weeks;
+            // this.ftaFollowupDays = res.body.data[0].fta_followup_days;
+            // this.postOpEnable = res.body.data[0].post_op_enable == 1 ? true : false;
+            // this.tickEnable = res.body.data[0].tick_enable == 1 ? true : false;
+            // this.recallEnable = res.body.data[0].recall_enable == 1 ? true : false;
+            // this.ftaEnable = res.body.data[0].fta_enable == 1 ? true : false;
+            // this.utaEnable = res.body.data[0].uta_enable == 1 ? true : false;
+  
+            if (this.ftaUta == "") this.ftaUta = "status";
+  
+            if (res.data[0].days != null && res.data[0].days != 0) {
+              this.workingDays = JSON.parse(res.data[0].days);
+            }
+          // } else if (res.status == "401") {
+          //   this._cookieService.put("username", "");
+          //   this._cookieService.put("email", "");
+          //   this._cookieService.put("userid", "");
+          //   this.router.navigateByUrl("/login");
+          // }
+        },
+        error: (error) => {
+          if (error.status == 401) {
+            this._cookieService.removeAll();
+            this.router.navigateByUrl("/login");
           }
-        } else if (res.status == "401") {
-          this._cookieService.put("username", "");
-          this._cookieService.put("email", "");
-          this._cookieService.put("userid", "");
-          this.router.navigateByUrl("/login");
+         // this.warningMessage = "Please Provide Valid Inputs!";
         }
-      },
-      (error) => {
-        if (error.status == 401) {
-          this._cookieService.removeAll();
-          this.router.navigateByUrl("/login");
-        }
-       // this.warningMessage = "Please Provide Valid Inputs!";
       }
     );
   }
@@ -650,15 +655,17 @@ export class ClinicSettingsComponent implements OnInit {
 
   getSocialLinks() {
     this.clinicSettingsService.getSocialLinks(this.id).subscribe(
-      result => {
-        if(result.body.data){
-          this.facebookId = new FormControl(result.body.data.facebook_id, Validators.required);
-          this.googleId = new FormControl(result.body.data.google_id, Validators.required);
+      {
+        next: (v) => {
+          if(v.data){
+            this.facebookId = new FormControl(v.data.facebook_id, Validators.required);
+            this.googleId = new FormControl(v.data.google_id, Validators.required);
+          }
+          this.googleConnected = v.googleConnected;
+        },
+        error: (e) => {
+          this.toastr.error(e.message);
         }
-        this.googleConnected = result.body.googleConnected;
-      },
-      error => {
-        this.toastr.error(error.message);
       }
     );
   }
