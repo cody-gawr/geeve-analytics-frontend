@@ -1,65 +1,117 @@
 <mat-accordion class="settings-table-card clinic-expansion-panel" multi="false">
-  <mat-expansion-panel *ngIf ="userType != '7'" >
+  <mat-expansion-panel *ngIf="userType != '7'">
     <mat-expansion-panel-header>
       <mat-panel-title> Clinic </mat-panel-title>
     </mat-expansion-panel-header>
     <mat-card-content>
-      <!-- <div fxLayout="row wrap">
-        <div fxFlex="450px" fxFlex.sm="100" fxFlex.xs="100" class="xero-main">
-          <button 
-            class="sa-pull-right mat-raised-button mat-gray connect-xero" 
-            *ngIf ="xeroConnect == false" 
-            mat-raised-button 
-            (click) = "openXero()">
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          </button>
-          <span class="org_xero xero-company-name" *ngIf="xeroOrganization != ''" >
-            <span class="material-icons">done</span> 
-            {{xeroOrganization}}
-          </span>
-          <button 
-            class="sa-pull-right mat-raised-button mat-red disconnect-xero" 
-            *ngIf ="xeroConnect == true" 
-            mat-raised-button (click) = "disconnectXero()">
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          </button>
-        </div> 
-      </div> -->
-
-      <form [formGroup]="form" class="basic-form sa_forms_design" (ngSubmit)="onSubmit()">
+      <form
+        [formGroup]="form"
+        class="basic-form sa_forms_design"
+        (ngSubmit)="onSubmit()"
+      >
         <h4 class="clinic-settings-form-title">Clinic Settings</h4>
-        <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
-          <div class="clinic-setting-form" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" style="width: 100%">
-            <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0">
-              <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+        <div
+          fxLayout="row wrap"
+          fxLayoutGap="20px"
+          fxLayoutGap.md="0px"
+          fxLayoutGap.sm="0px"
+          fxLayoutGap.xs="0"
+        >
+          <div
+            class="clinic-setting-form"
+            fxFlex.md="100"
+            fxFlex.sm="100"
+            fxFlex.xs="100"
+            style="width: 100%"
+          >
+            <div
+              fxLayout="row wrap"
+              fxLayoutGap="20px"
+              fxLayoutGap.md="20px"
+              fxLayoutGap.sm="20px"
+              fxLayoutGap.xs="0"
+            >
+              <div
+                fxFlex="calc(49% - 10px)"
+                fxFlex.md="calc(49% - 10px)"
+                fxFlex.sm="calc(49% - 10px)"
+                fxFlex.xs="100"
+              >
                 <div class="sa-form-group">
                   <label>Clinic Name</label>
-                  <input placeholder="" [formControl]="form.controls['clinicName']" [(ngModel)]="clinicName" />
+                  <input
+                    placeholder=""
+                    [formControl]="form.controls['clinicName']"
+                    [(ngModel)]="clinicName"
+                  />
                   <small
-                    *ngIf=" form.controls['clinicName'].hasError('required') && form.controls['clinicName'].touched "
-                    class="text-danger support-text">Clinic Name is Required.</small>
-                    <small *ngIf=" form.controls['clinicName'].hasError('pattern') && form.controls['clinicName'].touched "
-                    class="text-danger support-text">Clinic Name should not be blank.</small>
+                    *ngIf="
+                      form.controls['clinicName'].hasError('required') &&
+                      form.controls['clinicName'].touched
+                    "
+                    class="text-danger support-text"
+                    >Clinic Name is Required.</small
+                  >
+                  <small
+                    *ngIf="
+                      form.controls['clinicName'].hasError('pattern') &&
+                      form.controls['clinicName'].touched
+                    "
+                    class="text-danger support-text"
+                    >Clinic Name should not be blank.</small
+                  >
                 </div>
               </div>
-              <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+              <div
+                fxFlex="calc(49% - 10px)"
+                fxFlex.md="calc(49% - 10px)"
+                fxFlex.sm="calc(49% - 10px)"
+                fxFlex.xs="100"
+              >
                 <div class="sa-form-group">
                   <label>Contact Name</label>
-                  <input placeholder="" [formControl]="form.controls['contactName']" [(ngModel)]="contactName" />
+                  <input
+                    placeholder=""
+                    [formControl]="form.controls['contactName']"
+                    [(ngModel)]="contactName"
+                  />
                 </div>
               </div>
             </div>
-            <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0">
-              <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+            <div
+              fxLayout="row wrap"
+              fxLayoutGap="20px"
+              fxLayoutGap.md="20px"
+              fxLayoutGap.sm="20px"
+              fxLayoutGap.xs="0"
+            >
+              <div
+                fxFlex="calc(49% - 10px)"
+                fxFlex.md="calc(49% - 10px)"
+                fxFlex.sm="calc(49% - 10px)"
+                fxFlex.xs="100"
+              >
                 <div class="sa-form-group">
                   <label>Address</label>
-                  <input placeholder="" [formControl]="form.controls['address']" [(ngModel)]="address" />
+                  <input
+                    placeholder=""
+                    [formControl]="form.controls['address']"
+                    [(ngModel)]="address"
+                  />
                 </div>
               </div>
-              <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+              <div
+                fxFlex="calc(49% - 10px)"
+                fxFlex.md="calc(49% - 10px)"
+                fxFlex.sm="calc(49% - 10px)"
+                fxFlex.xs="100"
+              >
                 <div class="sa-form-group">
                   <label>Timezone</label>
-                  <select [formControl]="form.controls['timezone']" [(ngModel)]="timezone">
+                  <select
+                    [formControl]="form.controls['timezone']"
+                    [(ngModel)]="timezone"
+                  >
                     <option value="Australia/Lord_Howe">
                       Australia/Lord_Howe
                     </option>
@@ -92,22 +144,70 @@
         </div>
         <div class="working-days">
           <h4 class="clinic-settings-form-title">Clinic Working Days</h4>
-          <div class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px"
-            fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
-            <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ workingDays.sunday }}" name="sunday"
-              (change)="toggle($event)">Sunday</mat-slide-toggle>
-            <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ workingDays.monday }}" name="monday"
-              (change)="toggle($event)">Monday</mat-slide-toggle>
-            <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ workingDays.tuesday }}" name="tuesday"
-              (change)="toggle($event)">Tuesday</mat-slide-toggle>
-            <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ workingDays.wednesday }}" name="wednesday"
-              (change)="toggle($event)">Wednesday</mat-slide-toggle>
-            <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ workingDays.thursday }}" name="thursday"
-              (change)="toggle($event)">Thursday</mat-slide-toggle>
-            <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ workingDays.friday }}" name="friday"
-              (change)="toggle($event)">Friday</mat-slide-toggle>
-            <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ workingDays.saturday }}" name="saturday"
-              (change)="toggle($event)">Saturday</mat-slide-toggle>
+          <div
+            class="clinic-setting-form"
+            fxLayout="row wrap"
+            fxLayoutGap="20px"
+            fxLayoutGap.md="0px"
+            fxLayoutGap.sm="0px"
+            fxLayoutGap.xs="0"
+          >
+            <mat-slide-toggle
+              fxFlex.md="30"
+              fxFlex.xs="100"
+              checked="{{ workingDays.sunday }}"
+              name="sunday"
+              (change)="toggle($event)"
+              >Sunday</mat-slide-toggle
+            >
+            <mat-slide-toggle
+              fxFlex.md="30"
+              fxFlex.xs="100"
+              checked="{{ workingDays.monday }}"
+              name="monday"
+              (change)="toggle($event)"
+              >Monday</mat-slide-toggle
+            >
+            <mat-slide-toggle
+              fxFlex.md="30"
+              fxFlex.xs="100"
+              checked="{{ workingDays.tuesday }}"
+              name="tuesday"
+              (change)="toggle($event)"
+              >Tuesday</mat-slide-toggle
+            >
+            <mat-slide-toggle
+              fxFlex.md="30"
+              fxFlex.xs="100"
+              checked="{{ workingDays.wednesday }}"
+              name="wednesday"
+              (change)="toggle($event)"
+              >Wednesday</mat-slide-toggle
+            >
+            <mat-slide-toggle
+              fxFlex.md="30"
+              fxFlex.xs="100"
+              checked="{{ workingDays.thursday }}"
+              name="thursday"
+              (change)="toggle($event)"
+              >Thursday</mat-slide-toggle
+            >
+            <mat-slide-toggle
+              fxFlex.md="30"
+              fxFlex.xs="100"
+              checked="{{ workingDays.friday }}"
+              name="friday"
+              (change)="toggle($event)"
+              >Friday</mat-slide-toggle
+            >
+            <mat-slide-toggle
+              fxFlex.md="30"
+              fxFlex.xs="100"
+              checked="{{ workingDays.saturday }}"
+              name="saturday"
+              (change)="toggle($event)"
+              >Saturday</mat-slide-toggle
+            >
           </div>
         </div>
 
@@ -120,10 +220,21 @@
           </div> -->
         <div class="working-days" *ngIf="userPlan != 'lite'">
           <h4 class="clinic-settings-form-title">Dentist Compare Mode</h4>
-          <div class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px"
-            fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
-            <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ compareMode }}" name="compare_mode"
-              (change)="toggleMH($event, 'CompareMode')">
+          <div
+            class="clinic-setting-form"
+            fxLayout="row wrap"
+            fxLayoutGap="20px"
+            fxLayoutGap.md="0px"
+            fxLayoutGap.sm="0px"
+            fxLayoutGap.xs="0"
+          >
+            <mat-slide-toggle
+              fxFlex.md="30"
+              fxFlex.xs="100"
+              checked="{{ compareMode }}"
+              name="compare_mode"
+              (change)="toggleMH($event, 'CompareMode')"
+            >
               <span *ngIf="compareMode"><strong>Enabled</strong></span>
               <span *ngIf="!compareMode"><strong>Disabled</strong></span>
             </mat-slide-toggle>
@@ -148,16 +259,41 @@
 
         <div class="post-op-codes op-codes">
           <h4 class="clinic-settings-form-title">FTA/UTA</h4>
-          <div fxLayout="row wrap fta_uta_setting" style="width: 500px; text-align: center">
-            <div class="sa-form-group clinic-setting-form" style="text-align: left; width: 240px">
-              <span style="padding: 11px 6px; display: inline-block">Appointment Status</span>
-              <input style="float: left; width: 25px" type="radio" name="fta_uta"
-                [formControl]="form.controls['fta_uta']" [(ngModel)]="ftaUta" value="status" />
+          <div
+            fxLayout="row wrap fta_uta_setting"
+            style="width: 500px; text-align: center"
+          >
+            <div
+              class="sa-form-group clinic-setting-form"
+              style="text-align: left; width: 240px"
+            >
+              <span style="padding: 11px 6px; display: inline-block"
+                >Appointment Status</span
+              >
+              <input
+                style="float: left; width: 25px"
+                type="radio"
+                name="fta_uta"
+                [formControl]="form.controls['fta_uta']"
+                [(ngModel)]="ftaUta"
+                value="status"
+              />
             </div>
-            <div class="sa-form-group clinic-setting-form" style="text-align: left; width: 240px">
-              <span style="padding: 11px 6px; display: inline-block">Item Codes</span>
-              <input style="float: left; width: 25px" type="radio" name="fta_uta"
-                [formControl]="form.controls['fta_uta']" [(ngModel)]="ftaUta" value="item" />
+            <div
+              class="sa-form-group clinic-setting-form"
+              style="text-align: left; width: 240px"
+            >
+              <span style="padding: 11px 6px; display: inline-block"
+                >Item Codes</span
+              >
+              <input
+                style="float: left; width: 25px"
+                type="radio"
+                name="fta_uta"
+                [formControl]="form.controls['fta_uta']"
+                [(ngModel)]="ftaUta"
+                value="item"
+              />
             </div>
           </div>
         </div>
@@ -169,16 +305,29 @@
       </form>
     </mat-card-content>
   </mat-expansion-panel>
-  <app-customisations-settings [clinicId]="id" *ngIf ="userType != '7'" >
+  <app-customisations-settings
+    [clinicId]="id"
+    *ngIf="!(userType == '7' && isExactOrCore)"
+  >
   </app-customisations-settings>
-  <app-charts-settings [clinicId]="id" *ngIf="(apiUrl.includes('test') || apiUrl.includes('staging-')) && userType != '7'" >
+  <app-charts-settings
+    [clinicId]="id"
+    *ngIf="
+      (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
+      userType != '7'
+    "
+  >
   </app-charts-settings>
-  <mat-expansion-panel *ngIf ="userType != '7'">
+  <mat-expansion-panel *ngIf="userType != '7'">
     <mat-expansion-panel-header>
       <mat-panel-title> Followups</mat-panel-title>
     </mat-expansion-panel-header>
     <mat-card-content>
-      <form [formGroup]="form" class="basic-form sa_forms_design" (ngSubmit)="onSubmit()">
+      <form
+        [formGroup]="form"
+        class="basic-form sa_forms_design"
+        (ngSubmit)="onSubmit()"
+      >
         <h4 class="clinic-settings-form-title"></h4>
 
         <div class="gray_area">
@@ -186,17 +335,26 @@
             Post Op Calls
             <div class="info-button">
               <div class="info-icon-container">
-                <img [tooltip]="this.constants.tipPostOPCallsFollowUps" src="../assets/images/info-icon.png"
-                  alt="info-icon" class="info-icon" />
+                <img
+                  [tooltip]="this.constants.tipPostOPCallsFollowUps"
+                  src="../assets/images/info-icon.png"
+                  alt="info-icon"
+                  class="info-icon"
+                />
               </div>
             </div>
           </h4>
-          <div class="gray_area_partision gray ">
+          <div class="gray_area_partision gray">
             <div class="post-op-codes PostOpCalls">
               <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>   -->
               <div class="sa-form-group clinic-setting-form">
-                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ postOpEnable }}" name="postOpEnable"
-                  (change)="toggleFlw($event, 'postOp')">
+                <mat-slide-toggle
+                  fxFlex.md="30"
+                  fxFlex.xs="100"
+                  checked="{{ postOpEnable }}"
+                  name="postOpEnable"
+                  (change)="toggleFlw($event, 'postOp')"
+                >
                   <span *ngIf="postOpEnable">Enabled</span>
                   <span *ngIf="!postOpEnable">Disabled</span>
                 </mat-slide-toggle>
@@ -207,13 +365,22 @@
             <div class="post-op-codes PostOpCalls">
               <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>           -->
               <div class="sa-form-group clinic-setting-form">
-                <input type="number" min="0" placeholder="" [formControl]="form.controls['post_op_calls_days']"
-                  [(ngModel)]="postOpCallsMh" />
+                <input
+                  type="number"
+                  min="0"
+                  placeholder=""
+                  [formControl]="form.controls['post_op_calls_days']"
+                  [(ngModel)]="postOpCallsMh"
+                />
                 <span>Days Later</span>
-                <small *ngIf="
+                <small
+                  *ngIf="
                     form.controls['post_op_calls_days'].hasError('required') &&
                     form.controls['post_op_calls_days'].touched
-                  " class="text-danger support-text">Field is Required.</small>
+                  "
+                  class="text-danger support-text"
+                  >Field is Required.</small
+                >
               </div>
             </div>
           </div>
@@ -221,8 +388,11 @@
             <div class="post-op-codes">
               <h4 class="clinic-settings-form-title">Codes</h4>
               <div class="sa-form-group clinic-setting-form">
-                <input placeholder="Post Op Calls Codes" [formControl]="form.controls['post_op_calls']"
-                  [(ngModel)]="post_op_calls" />
+                <input
+                  placeholder="Post Op Calls Codes"
+                  [formControl]="form.controls['post_op_calls']"
+                  [(ngModel)]="post_op_calls"
+                />
               </div>
             </div>
           </div>
@@ -233,8 +403,12 @@
             Tick Followups
             <div class="info-button">
               <div class="info-icon-container">
-                <img [tooltip]="this.constants.tipTickFollowUps" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" />
+                <img
+                  [tooltip]="this.constants.tipTickFollowUps"
+                  src="../assets/images/info-icon.png"
+                  alt="info-icon"
+                  class="info-icon"
+                />
               </div>
             </div>
           </h4>
@@ -242,8 +416,13 @@
             <div class="post-op-codes PostOpCalls">
               <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>   -->
               <div class="sa-form-group clinic-setting-form">
-                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ tickEnable }}" name="tickEnable"
-                  (change)="toggleFlw($event, 'tick')">
+                <mat-slide-toggle
+                  fxFlex.md="30"
+                  fxFlex.xs="100"
+                  checked="{{ tickEnable }}"
+                  name="tickEnable"
+                  (change)="toggleFlw($event, 'tick')"
+                >
                   <span *ngIf="tickEnable">Enabled</span>
                   <span *ngIf="!tickEnable">Disabled</span>
                 </mat-slide-toggle>
@@ -254,13 +433,22 @@
             <div class="post-op-codes PostOpCalls">
               <!--    <h4 class="clinic-settings-form-title">&nbsp;</h4>   -->
               <div class="sa-form-group clinic-setting-form">
-                <input type="number" min="0" placeholder="" [formControl]="form.controls['tick_days']"
-                  [(ngModel)]="tickDays" />
+                <input
+                  type="number"
+                  min="0"
+                  placeholder=""
+                  [formControl]="form.controls['tick_days']"
+                  [(ngModel)]="tickDays"
+                />
                 <span>Days Later</span>
-                <small *ngIf="
+                <small
+                  *ngIf="
                     form.controls['tick_days'].hasError('required') &&
                     form.controls['tick_days'].touched
-                  " class="text-danger support-text">Field is Required.</small>
+                  "
+                  class="text-danger support-text"
+                  >Field is Required.</small
+                >
               </div>
             </div>
           </div>
@@ -271,8 +459,12 @@
             Recall Followups
             <div class="info-button">
               <div class="info-icon-container">
-                <img [tooltip]="this.constants.tipRecallFollowUps" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" />
+                <img
+                  [tooltip]="this.constants.tipRecallFollowUps"
+                  src="../assets/images/info-icon.png"
+                  alt="info-icon"
+                  class="info-icon"
+                />
               </div>
             </div>
           </h4>
@@ -280,8 +472,13 @@
             <div class="post-op-codes PostOpCalls">
               <!--  <h4 class="clinic-settings-form-title">&nbsp;</h4>   -->
               <div class="sa-form-group clinic-setting-form">
-                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ recallEnable }}" name="recallEnable"
-                  (change)="toggleFlw($event, 'recall')">
+                <mat-slide-toggle
+                  fxFlex.md="30"
+                  fxFlex.xs="100"
+                  checked="{{ recallEnable }}"
+                  name="recallEnable"
+                  (change)="toggleFlw($event, 'recall')"
+                >
                   <span *ngIf="recallEnable">Enabled</span>
                   <span *ngIf="!recallEnable">Disabled</span>
                 </mat-slide-toggle>
@@ -292,13 +489,22 @@
             <div class="post-op-codes PostOpCalls">
               <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>      -->
               <div class="sa-form-group clinic-setting-form">
-                <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_weeks']"
-                  [(ngModel)]="recallWeeks" />
+                <input
+                  type="number"
+                  min="0"
+                  placeholder=""
+                  [formControl]="form.controls['recall_weeks']"
+                  [(ngModel)]="recallWeeks"
+                />
                 <span>Weeks Later</span>
-                <small *ngIf="
+                <small
+                  *ngIf="
                     form.controls['recall_weeks'].hasError('required') &&
                     form.controls['recall_weeks'].touched
-                  " class="text-danger support-text">Field is Required.</small>
+                  "
+                  class="text-danger support-text"
+                  >Field is Required.</small
+                >
               </div>
             </div>
           </div>
@@ -309,8 +515,12 @@
             FTA Followups
             <div class="info-button">
               <div class="info-icon-container">
-                <img [tooltip]="this.constants.tipFtaFollowUps" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" />
+                <img
+                  [tooltip]="this.constants.tipFtaFollowUps"
+                  src="../assets/images/info-icon.png"
+                  alt="info-icon"
+                  class="info-icon"
+                />
               </div>
             </div>
           </h4>
@@ -318,8 +528,13 @@
             <div class="post-op-codes PostOpCalls">
               <!--   <h4 class="clinic-settings-form-title">&nbsp;</h4>   -->
               <div class="sa-form-group clinic-setting-form">
-                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ ftaEnable }}" name="ftaEnable"
-                  (change)="toggleFlw($event, 'fta')">
+                <mat-slide-toggle
+                  fxFlex.md="30"
+                  fxFlex.xs="100"
+                  checked="{{ ftaEnable }}"
+                  name="ftaEnable"
+                  (change)="toggleFlw($event, 'fta')"
+                >
                   <span *ngIf="ftaEnable">Enabled</span>
                   <span *ngIf="!ftaEnable">Disabled</span>
                 </mat-slide-toggle>
@@ -330,13 +545,23 @@
             <div class="post-op-codes PostOpCalls ftaFollowps">
               <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>           -->
               <div class="sa-form-group clinic-setting-form">
-                <input type="number" min="0" placeholder="" [formControl]="form.controls['fta_followup_days_later']"
-                  [(ngModel)]="ftaFollowupDaysLater" />
+                <input
+                  type="number"
+                  min="0"
+                  placeholder=""
+                  [formControl]="form.controls['fta_followup_days_later']"
+                  [(ngModel)]="ftaFollowupDaysLater"
+                />
                 <span>Days Later</span>
-                <small *ngIf="
-                    form.controls['fta_followup_days_later'].hasError('required') &&
-                    form.controls['fta_followup_days_later'].touched
-                  " class="text-danger support-text">Field is Required.</small>
+                <small
+                  *ngIf="
+                    form.controls['fta_followup_days_later'].hasError(
+                      'required'
+                    ) && form.controls['fta_followup_days_later'].touched
+                  "
+                  class="text-danger support-text"
+                  >Field is Required.</small
+                >
               </div>
             </div>
           </div>
@@ -344,13 +569,22 @@
             <div class="post-op-codes PostOpCalls ftaFollowps">
               <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>           -->
               <div class="sa-form-group clinic-setting-form">
-                <input type="number" min="0" placeholder="" [formControl]="form.controls['fta_followup_days']"
-                  [(ngModel)]="ftaFollowupDays" />
+                <input
+                  type="number"
+                  min="0"
+                  placeholder=""
+                  [formControl]="form.controls['fta_followup_days']"
+                  [(ngModel)]="ftaFollowupDays"
+                />
                 <span>Days</span>
-                <small *ngIf="
+                <small
+                  *ngIf="
                     form.controls['fta_followup_days'].hasError('required') &&
                     form.controls['fta_followup_days'].touched
-                  " class="text-danger support-text">Field is Required.</small>
+                  "
+                  class="text-danger support-text"
+                  >Field is Required.</small
+                >
               </div>
             </div>
           </div>
@@ -361,8 +595,12 @@
             UTA Followups
             <div class="info-button">
               <div class="info-icon-container">
-                <img [tooltip]="this.constants.tipUtaFollowUps" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" />
+                <img
+                  [tooltip]="this.constants.tipUtaFollowUps"
+                  src="../assets/images/info-icon.png"
+                  alt="info-icon"
+                  class="info-icon"
+                />
               </div>
             </div>
           </h4>
@@ -370,8 +608,13 @@
             <div class="post-op-codes PostOpCalls">
               <!--   <h4 class="clinic-settings-form-title">&nbsp;</h4>   -->
               <div class="sa-form-group clinic-setting-form">
-                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ utaEnable }}" name="utaEnable"
-                  (change)="toggleFlw($event, 'uta')">
+                <mat-slide-toggle
+                  fxFlex.md="30"
+                  fxFlex.xs="100"
+                  checked="{{ utaEnable }}"
+                  name="utaEnable"
+                  (change)="toggleFlw($event, 'uta')"
+                >
                   <span *ngIf="utaEnable">Enabled</span>
                   <span *ngIf="!utaEnable">Disabled</span>
                 </mat-slide-toggle>
@@ -382,13 +625,23 @@
             <div class="post-op-codes PostOpCalls ftaFollowps">
               <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>           -->
               <div class="sa-form-group clinic-setting-form">
-                <input type="number" min="0" placeholder="" [formControl]="form.controls['uta_followup_days_later']"
-                  [(ngModel)]="utaFollowupDaysLater" />
+                <input
+                  type="number"
+                  min="0"
+                  placeholder=""
+                  [formControl]="form.controls['uta_followup_days_later']"
+                  [(ngModel)]="utaFollowupDaysLater"
+                />
                 <span>Days Later</span>
-                <small *ngIf="
-                    form.controls['uta_followup_days_later'].hasError('required') &&
-                    form.controls['uta_followup_days_later'].touched
-                  " class="text-danger support-text">Field is Required.</small>
+                <small
+                  *ngIf="
+                    form.controls['uta_followup_days_later'].hasError(
+                      'required'
+                    ) && form.controls['uta_followup_days_later'].touched
+                  "
+                  class="text-danger support-text"
+                  >Field is Required.</small
+                >
               </div>
             </div>
           </div>
@@ -396,24 +649,40 @@
             <div class="post-op-codes PostOpCalls ftaFollowps">
               <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>           -->
               <div class="sa-form-group clinic-setting-form">
-                <input type="number" min="0" placeholder="" [formControl]="form.controls['uta_followup_days']"
-                  [(ngModel)]="utaFollowupDays" />
+                <input
+                  type="number"
+                  min="0"
+                  placeholder=""
+                  [formControl]="form.controls['uta_followup_days']"
+                  [(ngModel)]="utaFollowupDays"
+                />
                 <span>Days</span>
-                <small *ngIf="
+                <small
+                  *ngIf="
                     form.controls['uta_followup_days'].hasError('required') &&
                     form.controls['uta_followup_days'].touched
-                  " class="text-danger support-text">Field is Required.</small>
+                  "
+                  class="text-danger support-text"
+                  >Field is Required.</small
+                >
               </div>
             </div>
           </div>
         </div>
-        <div class="gray_area" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+        <div
+          class="gray_area"
+          *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')"
+        >
           <h4 class="clinic-settings-form-title">
             Internal Referral Followups
             <div class="info-button">
               <div class="info-icon-container">
-                <img [tooltip]="this.constants.tipInternalReferralFollowups" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" />
+                <img
+                  [tooltip]="this.constants.tipInternalReferralFollowups"
+                  src="../assets/images/info-icon.png"
+                  alt="info-icon"
+                  class="info-icon"
+                />
               </div>
             </div>
           </h4>
@@ -421,8 +690,13 @@
             <div class="post-op-codes PostOpCalls">
               <!--  <h4 class="clinic-settings-form-title">&nbsp;</h4>   -->
               <div class="sa-form-group clinic-setting-form">
-                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ internalReferralEnable }}" name="internalReferralEnable"
-                  (change)="toggleFlw($event, 'internalReferral')">
+                <mat-slide-toggle
+                  fxFlex.md="30"
+                  fxFlex.xs="100"
+                  checked="{{ internalReferralEnable }}"
+                  name="internalReferralEnable"
+                  (change)="toggleFlw($event, 'internalReferral')"
+                >
                   <span *ngIf="internalReferralEnable">Enabled</span>
                   <span *ngIf="!internalReferralEnable">Disabled</span>
                 </mat-slide-toggle>
@@ -433,13 +707,22 @@
             <div class="post-op-codes PostOpCalls">
               <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>      -->
               <div class="sa-form-group clinic-setting-form">
-                <input type="number" min="0" placeholder="" [formControl]="form.controls['referral_weeks']"
-                  [(ngModel)]="referralWeeks" />
+                <input
+                  type="number"
+                  min="0"
+                  placeholder=""
+                  [formControl]="form.controls['referral_weeks']"
+                  [(ngModel)]="referralWeeks"
+                />
                 <span>Weeks Later</span>
-                <small *ngIf="
+                <small
+                  *ngIf="
                     form.controls['referral_weeks'].hasError('required') &&
                     form.controls['referral_weeks'].touched
-                  " class="text-danger support-text">Field is Required.</small>
+                  "
+                  class="text-danger support-text"
+                  >Field is Required.</small
+                >
               </div>
             </div>
           </div>
@@ -470,16 +753,25 @@
     </mat-card-content>
   </mat-expansion-panel>
 
-  <app-scripts-settings [clinicId]="id" *ngIf ="userType != '7'"></app-scripts-settings>
+  <app-scripts-settings
+    [clinicId]="id"
+    *ngIf="userType != '7'"
+  ></app-scripts-settings>
   <app-goals-settings [clinicId]="id"></app-goals-settings>
   <app-dentist-settings [clinicId]="id"></app-dentist-settings>
   <!-- <app-tasks-settings [clinicId]="id"></app-tasks-settings> -->
-  <app-tasklist-settings [clinicId]="id" *ngIf ="userType != '7'"></app-tasklist-settings>
-  <app-equipment-settings [clinicId]="id" *ngIf ="userType != '7'"></app-equipment-settings>
+  <app-tasklist-settings
+    [clinicId]="id"
+    *ngIf="userType != '7'"
+  ></app-tasklist-settings>
+  <app-equipment-settings
+    [clinicId]="id"
+    *ngIf="userType != '7'"
+  ></app-equipment-settings>
   <app-alerts-settings *ngIf="false" [clinicId]="id"></app-alerts-settings>
 
   <!-- XERO section start -->
-  <mat-expansion-panel  *ngIf ="userType != '7'">
+  <mat-expansion-panel *ngIf="userType != '7'">
     <mat-expansion-panel-header>
       <mat-panel-title>
         Xero
@@ -493,10 +785,17 @@
             <img src="assets/images/xero_settings.png" alt="" />
           </div>
           <div class="button-container">
-            <button class="save-button" *ngIf="myobConnect == false"
-              (click)="xeroConnect ? disconnectXero() : openXero()">
-              {{ !xeroConnect ? "Connect to Xero" : "Disconnect from XERO" }}
-              <img class="fast-forward-icon" src="assets/images/fast_forward_arrows.png" alt="" />
+            <button
+              class="save-button"
+              *ngIf="myobConnect == false"
+              (click)="xeroConnect ? disconnectXero() : openXero()"
+            >
+              {{ !xeroConnect ? 'Connect to Xero' : 'Disconnect from XERO' }}
+              <img
+                class="fast-forward-icon"
+                src="assets/images/fast_forward_arrows.png"
+                alt=""
+              />
             </button>
           </div>
           <div class="company-container" *ngIf="xeroOrganization?.length">
@@ -509,12 +808,19 @@
         </div>
       </div>
       <div class="xero-from">
-        <form [formGroup]="form" class="basic-form sa_forms_design" (ngSubmit)="onSubmit()">
+        <form
+          [formGroup]="form"
+          class="basic-form sa_forms_design"
+          (ngSubmit)="onSubmit()"
+        >
           <div class="post-op-codes">
             <h4 class="clinic-settings-form-title">Net Profit Exclusions</h4>
             <div class="sa-form-group clinic-setting-form npe-padding">
-              <input placeholder="" [formControl]="form.controls['subtracted_accounts']"
-                [(ngModel)]="subtracted_accounts" />
+              <input
+                placeholder=""
+                [formControl]="form.controls['subtracted_accounts']"
+                [(ngModel)]="subtracted_accounts"
+              />
             </div>
           </div>
           <div class="sa-form-group-btn">
@@ -529,7 +835,7 @@
   <!-- XERO end -->
 
   <!-- MYOB section start -->
-  <mat-expansion-panel  *ngIf ="userType != '7'">
+  <mat-expansion-panel *ngIf="userType != '7'">
     <mat-expansion-panel-header>
       <mat-panel-title>
         MYOB
@@ -542,10 +848,17 @@
           <img src="assets/images/myob.png" alt="" />
         </div>
         <div class="button-container">
-          <button class="save-button" *ngIf="xeroConnect == false"
-            (click)="myobConnect ? disconnectMyob() : openMyob()">
-            {{ !myobConnect ? "Connect to Myob" : "Disconnect from Myob" }}
-            <img class="fast-forward-icon" src="assets/images/fast_forward_arrows.png" alt="" />
+          <button
+            class="save-button"
+            *ngIf="xeroConnect == false"
+            (click)="myobConnect ? disconnectMyob() : openMyob()"
+          >
+            {{ !myobConnect ? 'Connect to Myob' : 'Disconnect from Myob' }}
+            <img
+              class="fast-forward-icon"
+              src="assets/images/fast_forward_arrows.png"
+              alt=""
+            />
           </button>
         </div>
         <div class="company-container" *ngIf="myobOrganization?.length">
@@ -569,7 +882,7 @@
       <div class="social-links">
         <mat-form-field appearance="fill">
           <mat-label>Enter Google Review Link</mat-label>
-          <input matInput [formControl]="googleId">
+          <input matInput [formControl]="googleId" />
         </mat-form-field>
         <mat-form-field appearance="fill" style="opacity:0" [disabled]="true">
           <mat-label>Enter FaceBook Review Link</mat-label>

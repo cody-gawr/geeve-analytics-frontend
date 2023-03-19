@@ -185,6 +185,7 @@
                 fxLayoutAlign="center"
               >
                 <div
+                  *ngIf="!isExactOrCore"
                   fxFlex.gt-sm="49.33%"
                   fxFlex.gt-xs="50%"
                   fxFlex="100"
@@ -198,6 +199,7 @@
                   >
                 </div>
                 <div
+                  *ngIf="!isExactOrCore"
                   fxFlex.gt-sm="49.33%"
                   fxFlex.gt-xs="50%"
                   fxFlex="100"
@@ -205,7 +207,6 @@
                 >
                   <small
                     class="sa_tab_btn"
-                    *ngIf="!isExactOrCore"
                     [ngClass]="utilShow == 2 ? 'active' : ''"
                     (click)="changeUtil('2')"
                     >By Day</small

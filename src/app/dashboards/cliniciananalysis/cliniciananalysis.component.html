@@ -492,8 +492,8 @@
                   fxLayoutAlign="center"
                 >
                   <div
-                    fxFlex.gt-sm="33.33%"
-                    fxFlex.gt-xs="33%"
+                    [fxFlex.gt-sm]="isExactOrCore ? '50%' : '33.33%'"
+                    [fxFlex.gt-xs]="isExactOrCore ? '50%' : '33%'"
                     fxFlex="100"
                     class="btn-group"
                   >
@@ -505,8 +505,8 @@
                     >
                   </div>
                   <div
-                    fxFlex.gt-sm="33.33%"
-                    fxFlex.gt-xs="33%"
+                    [fxFlex.gt-sm]="isExactOrCore ? '50%' : '33.33%'"
+                    [fxFlex.gt-xs]="isExactOrCore ? '50%' : '33%'"
                     fxFlex="100"
                     class="btn-group"
                   >
@@ -518,14 +518,14 @@
                     >
                   </div>
                   <div
-                    fxFlex.gt-sm="33.33%"
-                    fxFlex.gt-xs="33%"
+                    *ngIf="!isExactOrCore"
+                    [fxFlex.gt-sm]="isExactOrCore ? '50%' : '33.33%'"
+                    [fxFlex.gt-xs]="isExactOrCore ? '50%' : '33%'"
                     fxFlex="100"
                     class="btn-group"
                   >
                     <small
                       class="sa_tab_btn"
-                      *ngIf="!isExactOrCore"
                       [ngClass]="proCollShow == 3 ? 'active' : ''"
                       (click)="changeProduction('3', 'all')"
                       >Collection-Exp</small
@@ -2055,8 +2055,8 @@
                   fxLayoutAlign="center"
                 >
                   <div
-                    fxFlex.gt-sm="33.33%"
-                    fxFlex.gt-xs="33%"
+                    [fxFlex.gt-sm]="isExactOrCore ? '50%' : '33.33%'"
+                    [fxFlex.gt-xs]="isExactOrCore ? '50%' : '33%'"
                     fxFlex="100"
                     class="btn-group"
                   >
@@ -2068,8 +2068,8 @@
                     >
                   </div>
                   <div
-                    fxFlex.gt-sm="33.33%"
-                    fxFlex.gt-xs="33%"
+                    [fxFlex.gt-sm]="isExactOrCore ? '50%' : '33.33%'"
+                    [fxFlex.gt-xs]="isExactOrCore ? '50%' : '33%'"
                     fxFlex="100"
                     class="btn-group"
                   >
@@ -2081,17 +2081,17 @@
                     >
                   </div>
                   <div
-                    fxFlex.gt-sm="33.33%"
-                    fxFlex.gt-xs="33%"
+                    *ngIf="!isExactOrCore"
+                    [fxFlex.gt-sm]="isExactOrCore ? '50%' : '33.33%'"
+                    [fxFlex.gt-xs]="isExactOrCore ? '50%' : '33%'"
                     fxFlex="100"
                     class="btn-group"
                   >
                     <small
                       class="sa_tab_btn"
-                      *ngIf="!isExactOrCore"
                       [ngClass]="proCollShow == 3 ? 'active' : ''"
                       (click)="changeProduction('3', 'single')"
-                      >Collection-Exp</small
+                      >Collection-Exp a</small
                     >
                   </div>
                 </div>
@@ -2993,12 +2993,6 @@
                 <span *ngIf="hrCollShow == 3 && user_type == '4'">
                   Hourly Rate Collection - Exp</span
                 >
-                <!-- <select class="proSelect" *ngIf="apiUrl.includes('test-') && user_type != '4'"
-                    (change)="changeHourlyRateSelect($event.target.value)">
-                        <option value="hr_all">Hourly Rate - All</option>
-                        <option value="hr_dentists">Hourly Rate - Dentists</option>
-                        <option value="hr_oht">Hourly Rate - OHT</option>
-                    </select> -->
                 <select
                   id="proSelect1"
                   class="proSelect"
@@ -3069,15 +3063,7 @@
                   </option>
                 </select>
               </div>
-              <!--   <div class="sa_box_title_right_buttons">
-                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
-                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
-                  <mat-menu #menu="matMenu">
-                      <button mat-menu-item>Item 1</button>
-                      <button mat-menu-item>Item 2</button>
-                  </mat-menu>
-              </div> -->
-              <!--   <div class="settingsBtn"><button class="mat-raised-button mat-button-sm mat-green-button sa_smtable_btn" mat-raised-button (click)="ngxSmartModalService.getModal('myModal').open()">Settings</button></div> -->
+
               <div class="info-icon-container">
                 <!-- hr production table view -->
                 <i
@@ -3255,8 +3241,8 @@
                   fxLayoutAlign="center"
                 >
                   <div
-                    fxFlex.gt-sm="33.33%"
-                    fxFlex.gt-xs="33%"
+                    [fxFlex.gt-sm]="isExactOrCore ? '50%' : '33.33%'"
+                    [fxFlex.gt-xs]="isExactOrCore ? '50%' : '33%'"
                     fxFlex="100"
                     class="btn-group"
                   >
@@ -3268,8 +3254,8 @@
                     >
                   </div>
                   <div
-                    fxFlex.gt-sm="33.33%"
-                    fxFlex.gt-xs="33%"
+                    [fxFlex.gt-sm]="isExactOrCore ? '50%' : '33.33%'"
+                    [fxFlex.gt-xs]="isExactOrCore ? '50%' : '33%'"
                     fxFlex="100"
                     class="btn-group"
                   >
@@ -3281,8 +3267,9 @@
                     >
                   </div>
                   <div
-                    fxFlex.gt-sm="33.33%"
-                    fxFlex.gt-xs="33%"
+                    *ngIf="!isExactOrCore"
+                    [fxFlex.gt-sm]="isExactOrCore ? '50%' : '33.33%'"
+                    [fxFlex.gt-xs]="isExactOrCore ? '50%' : '33%'"
                     fxFlex="100"
                     class="btn-group"
                   >
@@ -3290,7 +3277,7 @@
                       class="sa_tab_btn"
                       [ngClass]="hrCollShow == 3 ? 'active' : ''"
                       (click)="changeHrPro('3', 'all')"
-                      >Collection-Exp</small
+                      >Collection-Exp b</small
                     >
                   </div>
                 </div>
@@ -4691,15 +4678,6 @@
                     }}.png"
                 /></span>
                 <span> Hourly Rate</span>
-                <!-- <span *ngIf="hrCollShow == 1"> Hourly Rate Production</span> -->
-                <!-- <span *ngIf="hrCollShow == 2"> Hourly Rate Collection</span>
-                <span *ngIf="hrCollShow == 3"> Hourly Rate Collection - Exp</span>                 -->
-                <!-- <select class="proSelect" *ngIf="apiUrl.includes('test-')"
-                (change)="changeHourlyRateSelect($event.target.value)">
-                    <option value="hr_all">Hourly Rate - All</option>
-                    <option value="hr_dentists">Hourly Rate - Dentists</option>
-                    <option value="hr_oht">Hourly Rate - OHT</option>
-                </select> -->
               </div>
               <div class="info-icon-container">
                 <img
@@ -4718,8 +4696,8 @@
                   fxLayoutAlign="center"
                 >
                   <div
-                    fxFlex.gt-sm="33.33%"
-                    fxFlex.gt-xs="33%"
+                    [fxFlex.gt-sm]="isExactOrCore ? '50%' : '33.33%'"
+                    [fxFlex.gt-xs]="isExactOrCore ? '50%' : '33%'"
                     fxFlex="100"
                     class="btn-group"
                   >
@@ -4731,8 +4709,8 @@
                     >
                   </div>
                   <div
-                    fxFlex.gt-sm="33.33%"
-                    fxFlex.gt-xs="33%"
+                    [fxFlex.gt-sm]="isExactOrCore ? '50%' : '33.33%'"
+                    [fxFlex.gt-xs]="isExactOrCore ? '50%' : '33%'"
                     fxFlex="100"
                     class="btn-group"
                   >
@@ -4744,8 +4722,9 @@
                     >
                   </div>
                   <div
-                    fxFlex.gt-sm="33.33%"
-                    fxFlex.gt-xs="33%"
+                    *ngIf="!isExactOrCore"
+                    [fxFlex.gt-sm]="isExactOrCore ? '50%' : '33.33%'"
+                    [fxFlex.gt-xs]="isExactOrCore ? '50%' : '33%'"
                     fxFlex="100"
                     class="btn-group"
                   >

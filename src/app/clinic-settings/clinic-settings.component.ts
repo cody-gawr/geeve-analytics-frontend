@@ -1,15 +1,16 @@
-import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
-import { FormControl, Validators } from "@angular/forms";
-import { ClinicSettingsService } from "./clinic-settings.service";
-import { ActivatedRoute } from "@angular/router";
-import { CookieService } from "ngx-cookie";
-import { Router } from "@angular/router";
-import { ToastrService } from "ngx-toastr";
-import { AppConstants } from "../app.constants";
-import { environment } from "../../environments/environment";
-import { MatDialog } from "@angular/material/dialog";
-import { ReviewMsgTemplateDialog } from "./review-msg-template-dialog/review-msg-template-dialog.component";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
+import { ClinicSettingsService } from './clinic-settings.service';
+import { ActivatedRoute } from '@angular/router';
+import { CookieService } from 'ngx-cookie';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { AppConstants } from '../app.constants';
+import { environment } from '../../environments/environment';
+import { MatDialog } from '@angular/material/dialog';
+import { ReviewMsgTemplateDialog } from './review-msg-template-dialog/review-msg-template-dialog.component';
+import { LocalStorageService } from '../shared/local-storage.service';
 
 export interface ReviewMsgTemplateObject {
   id?: number;
@@ -17,11 +18,10 @@ export interface ReviewMsgTemplateObject {
   msg_template: string;
 }
 
-
 @Component({
-  selector: "app-formlayout",
-  templateUrl: "./clinic-settings.component.html",
-  styleUrls: ["./clinic-settings.component.scss"],
+  selector: 'app-formlayout',
+  templateUrl: './clinic-settings.component.html',
+  styleUrls: ['./clinic-settings.component.scss']
 })
 /**
  *Clinic Setting main Component
@@ -37,7 +37,7 @@ export class ClinicSettingsComponent implements OnInit {
   public id: any = {};
   public clinicName: any = 0;
   public contactName = 0;
-  public ftaUta: any = "";
+  public ftaUta: any = '';
   public postOpCallsMh: any = 1;
   public unscheduledPatientsMh: any = 0;
   public recallWeeks: any = 0;
@@ -51,25 +51,25 @@ export class ClinicSettingsComponent implements OnInit {
   public ftaUtaStatus: boolean = true;
   public ftaUtaItem: boolean = false;
 
-  public facebook: string = "";
-  public twitter: string = "";
-  public linkedin: string = "";
-  public instagram: string = "";
-  public logo: any = "";
+  public facebook: string = '';
+  public twitter: string = '';
+  public linkedin: string = '';
+  public instagram: string = '';
+  public logo: any = '';
 
   // public chartData: any[] = [];
   public address: any = {};
-  public timezone: any = "";
-  public post_op_calls: any = "";
-  public subtracted_accounts: any = "";
+  public timezone: any = '';
+  public post_op_calls: any = '';
+  public subtracted_accounts: any = '';
   public practice_size: any = {};
   options: FormGroup;
   public xero_link;
   public myob_link;
   public xeroConnect = false;
-  public xeroOrganization = "";
+  public xeroOrganization = '';
   public myobConnect = false;
-  public myobOrganization = "";
+  public myobOrganization = '';
   public equipmentList: boolean = true;
   public dailyTasks: boolean = true;
   public compareMode: boolean = true;
@@ -78,7 +78,7 @@ export class ClinicSettingsComponent implements OnInit {
   public tickEnable: boolean = true;
   public recallEnable: boolean = true;
   public ftaEnable: boolean = true;
-  public userPlan: any = "lite";
+  public userPlan: any = 'lite';
   public utaEnable: boolean = true;
   public internalReferralEnable: boolean = true;
   public userType;
@@ -89,18 +89,20 @@ export class ClinicSettingsComponent implements OnInit {
     wednesday: true,
     thursday: true,
     friday: true,
-    saturday: true,
+    saturday: true
   };
 
-  displayedColumns = [
-    'name',
-    'msg_template',
-    'action'
-  ]
+  displayedColumns = ['name', 'msg_template', 'action'];
   reviewMsgTemplates = [];
   isSMSEnabled = false;
 
+  public get isExactOrCore(): boolean {
+    const clinics = this.localStorageService.getObject<any[]>('clinics') || [];
+    return clinics.some((c) => ['exact', 'core'].includes(c.pms));
+  }
+
   constructor(
+    private localStorageService: LocalStorageService,
     private toastr: ToastrService,
     private _cookieService: CookieService,
     private fb: FormBuilder,
@@ -110,24 +112,23 @@ export class ClinicSettingsComponent implements OnInit {
     public constants: AppConstants,
     public dialog: MatDialog
   ) {
-    this.userType = this._cookieService.get("user_type");
+    this.userType = this._cookieService.get('user_type');
     this.options = fb.group({
       hideRequired: false,
-      floatLabel: "auto",
+      floatLabel: 'auto'
     });
-
   }
 
   //initilaize component
   ngOnInit() {
     this.route.params.subscribe((params) => {
-      this.id = this.route.snapshot.paramMap.get("id");
+      this.id = this.route.snapshot.paramMap.get('id');
       this.getClinicSettings();
       this.getClinicFollowUPSettings();
-      $("#title").html("Clinic Settings");
-      $(".external_clinic").show();
+      $('#title').html('Clinic Settings');
+      $('.external_clinic').show();
       //$('.dentist_dropdown').hide();
-      $(".header_filters").addClass("flex_direct_mar");
+      $('.header_filters').addClass('flex_direct_mar');
       this.checkXeroStatus();
       this.checkMyobStatus();
       // this.getFollowUpSettings();
@@ -136,10 +137,16 @@ export class ClinicSettingsComponent implements OnInit {
         this.getSocialLinks();
       }
     });
-    
-    if(this.apiUrl.includes('test') || this.apiUrl.includes('staging-')){
+
+    if (this.apiUrl.includes('test') || this.apiUrl.includes('staging-')) {
       this.form = this.fb.group({
-        clinicName: [null, Validators.compose([Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)])],
+        clinicName: [
+          null,
+          Validators.compose([
+            Validators.required,
+            Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)
+          ])
+        ],
         contactName: [null],
         address: [null],
         timezone: [null],
@@ -152,16 +159,22 @@ export class ClinicSettingsComponent implements OnInit {
         tick_days: [null, Validators.compose([Validators.required])],
         fta_followup_days: [null, Validators.compose([Validators.required])],
         uta_followup_days: [null, Validators.compose([Validators.required])],
-        fta_followup_days_later: [null, Validators.compose([Validators.required])],
-        uta_followup_days_later: [null, Validators.compose([Validators.required])],
-        referral_weeks: [null, Validators.compose([Validators.required])],
+        fta_followup_days_later: [
+          null,
+          Validators.compose([Validators.required])
+        ],
+        uta_followup_days_later: [
+          null,
+          Validators.compose([Validators.required])
+        ],
+        referral_weeks: [null, Validators.compose([Validators.required])]
         // unscheduled_patients_days: [null, Validators.compose([Validators.required])],
         // facebook: [null],
         // twitter: [null],
         // linkedin: [null],
         // instagram: [null],
       });
-    }else{
+    } else {
       this.form = this.fb.group({
         clinicName: [null, Validators.compose([Validators.required])],
         contactName: [null],
@@ -176,9 +189,15 @@ export class ClinicSettingsComponent implements OnInit {
         tick_days: [null, Validators.compose([Validators.required])],
         fta_followup_days: [null, Validators.compose([Validators.required])],
         uta_followup_days: [null, Validators.compose([Validators.required])],
-        fta_followup_days_later: [null, Validators.compose([Validators.required])],
-        uta_followup_days_later: [null, Validators.compose([Validators.required])],
-      //  referral_weeks: [null, Validators.compose([Validators.required])],
+        fta_followup_days_later: [
+          null,
+          Validators.compose([Validators.required])
+        ],
+        uta_followup_days_later: [
+          null,
+          Validators.compose([Validators.required])
+        ]
+        //  referral_weeks: [null, Validators.compose([Validators.required])],
         // unscheduled_patients_days: [null, Validators.compose([Validators.required])],
         // facebook: [null],
         // twitter: [null],
@@ -186,23 +205,22 @@ export class ClinicSettingsComponent implements OnInit {
         // instagram: [null],
       });
     }
-    
 
-    this.userPlan = this._cookieService.get("user_plan");
+    this.userPlan = this._cookieService.get('user_plan');
   }
 
   // For form validator
-  email = new FormControl("", [Validators.required, Validators.email]);
+  email = new FormControl('', [Validators.required, Validators.email]);
 
   // Sufix and prefix
   hide = true;
 
   getErrorMessage() {
-    return this.email.hasError("required")
-      ? "You must enter a value"
-      : this.email.hasError("email")
-        ? "Not a valid email"
-        : "";
+    return this.email.hasError('required')
+      ? 'You must enter a value'
+      : this.email.hasError('email')
+      ? 'Not a valid email'
+      : '';
   }
   //get setting for teh selcted clinic
   getClinicSettings() {
@@ -267,7 +285,8 @@ export class ClinicSettingsComponent implements OnInit {
           this.recallEnable = res.body.data.recall_enable == 1 ? true : false;
           this.ftaEnable = res.body.data.fta_enable == 1 ? true : false;
           this.utaEnable = res.body.data.uta_enable == 1 ? true : false;
-          this.internalReferralEnable = res.body.data.referral_enable == 1 ? true : false;
+          this.internalReferralEnable =
+            res.body.data.referral_enable == 1 ? true : false;
           this.ftaFollowupDays = res.body.data.fta_followup_days;
           this.utaFollowupDays = res.body.data.uta_followup_days;
           this.ftaFollowupDaysLater = res.body.data.fta_days_later;
@@ -280,38 +299,36 @@ export class ClinicSettingsComponent implements OnInit {
         }
       },
       (error) => {
-        this.warningMessage = "Please Provide Valid Inputs!";
+        this.warningMessage = 'Please Provide Valid Inputs!';
       }
     );
   }
 
   getFollowUpSettings() {
-    this.clinicSettingsService
-      .getFollowUpSettings(this.id)
-      .subscribe(
-        (res) => {
-          if (res.status == 200) {
-            if (res.body.data) {
-              this.ftaFollowupDays = res.body.data.fta_followup_days;
-              this.utaFollowupDays = res.body.data.uta_followup_days;
-              this.ftaFollowupDaysLater = res.body.data.fta_days_later;
-              this.utaFollowupDaysLater = res.body.data.uta_days_later;
-              this.postOpCallsMh = res.body.data.post_op_days;
-              this.post_op_calls = res.body.data.post_op_calls;
-              this.tickDays = res.body.data.tick_days;
-              this.recallWeeks = res.body.data.recall_weeks;
-              this.referralWeeks = res.body.data.referral_weeks;
-            }
+    this.clinicSettingsService.getFollowUpSettings(this.id).subscribe(
+      (res) => {
+        if (res.status == 200) {
+          if (res.body.data) {
+            this.ftaFollowupDays = res.body.data.fta_followup_days;
+            this.utaFollowupDays = res.body.data.uta_followup_days;
+            this.ftaFollowupDaysLater = res.body.data.fta_days_later;
+            this.utaFollowupDaysLater = res.body.data.uta_days_later;
+            this.postOpCallsMh = res.body.data.post_op_days;
+            this.post_op_calls = res.body.data.post_op_calls;
+            this.tickDays = res.body.data.tick_days;
+            this.recallWeeks = res.body.data.recall_weeks;
+            this.referralWeeks = res.body.data.referral_weeks;
           }
-        },
-        (error) => {
-          this.warningMessage = "Please Provide Valid Inputs!";
         }
-      );
+      },
+      (error) => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
+      }
+    );
   }
   //save clinic settings
   onSubmit() {
-    $(".ajax-loader").show();
+    $('.ajax-loader').show();
     this.clinicName = this.form.value.clinicName;
     this.address = this.form.value.address;
     this.contactName = this.form.value.contactName;
@@ -321,9 +338,9 @@ export class ClinicSettingsComponent implements OnInit {
     this.ftaUta = this.form.value.fta_uta;
     this.postOpCallsMh = this.form.value.post_op_calls_days;
     this.recallWeeks = this.form.value.recall_weeks;
-    if(this.apiUrl.includes('test') || this.apiUrl.includes('staging-')){
+    if (this.apiUrl.includes('test') || this.apiUrl.includes('staging-')) {
       this.referralWeeks = this.form.value.referral_weeks;
-    }else{
+    } else {
       this.referralWeeks = 0;
     }
     this.tickDays = this.form.value.tick_days;
@@ -339,26 +356,26 @@ export class ClinicSettingsComponent implements OnInit {
         this.clinicName,
         this.address,
         this.contactName,
-        days,        
-        this.ftaUta,        
+        days,
+        this.ftaUta,
         this.timezone,
         this.subtracted_accounts,
         this.compareMode
       )
       .subscribe(
         (res) => {
-          $(".ajax-loader").hide();
+          $('.ajax-loader').hide();
           if (res.status == 200) {
-            this.toastr.success("Clinic Settings Updated");
-          } else if (res.status == "401") {
-            this._cookieService.put("username", "");
-            this._cookieService.put("email", "");
-            this._cookieService.put("userid", "");
-            this.router.navigateByUrl("/login");
+            this.toastr.success('Clinic Settings Updated');
+          } else if (res.status == '401') {
+            this._cookieService.put('username', '');
+            this._cookieService.put('email', '');
+            this._cookieService.put('userid', '');
+            this.router.navigateByUrl('/login');
           }
         },
         (error) => {
-          this.warningMessage = "Please Provide Valid Inputs!";
+          this.warningMessage = 'Please Provide Valid Inputs!';
         }
       );
 
@@ -373,22 +390,22 @@ export class ClinicSettingsComponent implements OnInit {
         this.utaFollowupDays,
         this.utaFollowupDaysLater,
         this.ftaFollowupDaysLater,
-        this.referralWeeks,
+        this.referralWeeks
       )
       .subscribe(
         (res) => {
-          $(".ajax-loader").hide();
+          $('.ajax-loader').hide();
           if (res.status == 200) {
-            this.toastr.success("Clinic Settings Updated");
-          } else if (res.status == "401") {
-            this._cookieService.put("username", "");
-            this._cookieService.put("email", "");
-            this._cookieService.put("userid", "");
-            this.router.navigateByUrl("/login");
+            this.toastr.success('Clinic Settings Updated');
+          } else if (res.status == '401') {
+            this._cookieService.put('username', '');
+            this._cookieService.put('email', '');
+            this._cookieService.put('userid', '');
+            this.router.navigateByUrl('/login');
           }
         },
         (error) => {
-          this.warningMessage = "Please Provide Valid Inputs!";
+          this.warningMessage = 'Please Provide Valid Inputs!';
         }
       );
   }
@@ -398,15 +415,15 @@ export class ClinicSettingsComponent implements OnInit {
       (res) => {
         if (res.status == 200) {
           this.xero_link = res.body.data;
-        } else if (res.status == "401") {
-          this._cookieService.put("username", "");
-          this._cookieService.put("email", "");
-          this._cookieService.put("userid", "");
-          this.router.navigateByUrl("/login");
+        } else if (res.status == '401') {
+          this._cookieService.put('username', '');
+          this._cookieService.put('email', '');
+          this._cookieService.put('userid', '');
+          this.router.navigateByUrl('/login');
         }
       },
       (error) => {
-        this.warningMessage = "Please Provide Valid Inputs!";
+        this.warningMessage = 'Please Provide Valid Inputs!';
       }
     );
   }
@@ -415,17 +432,19 @@ export class ClinicSettingsComponent implements OnInit {
     this.clinicSettingsService.getMyobLink(this.id).subscribe(
       (res) => {
         if (res.status == 200) {
-          console.log(`gtt: in getmyoblink, res.body: ${JSON.stringify(res.body)}`)
+          console.log(
+            `gtt: in getmyoblink, res.body: ${JSON.stringify(res.body)}`
+          );
           this.myob_link = res.body.data;
-        } else if (res.status == "401") {
-          this._cookieService.put("username", "");
-          this._cookieService.put("email", "");
-          this._cookieService.put("userid", "");
-          this.router.navigateByUrl("/login");
+        } else if (res.status == '401') {
+          this._cookieService.put('username', '');
+          this._cookieService.put('email', '');
+          this._cookieService.put('userid', '');
+          this.router.navigateByUrl('/login');
         }
       },
       (error) => {
-        this.warningMessage = "Please Provide Valid Inputs!";
+        this.warningMessage = 'Please Provide Valid Inputs!';
       }
     );
   }
@@ -433,7 +452,7 @@ export class ClinicSettingsComponent implements OnInit {
   public openXero() {
     var success;
 
-    var win = window.open(this.xero_link, "MsgWindow", "width=400,height=400");
+    var win = window.open(this.xero_link, 'MsgWindow', 'width=400,height=400');
     var self = this;
     var timer = setInterval(function () {
       if (win.closed) {
@@ -446,7 +465,7 @@ export class ClinicSettingsComponent implements OnInit {
   public openMyob() {
     var success;
     console.log(`in openmyob, myob link: ${this.myob_link}`);
-    var win = window.open(this.myob_link, "MsgWindow", "width=400,height=400");
+    var win = window.open(this.myob_link, 'MsgWindow', 'width=400,height=400');
     var self = this;
     var timer = setInterval(function () {
       if (win.closed) {
@@ -465,20 +484,20 @@ export class ClinicSettingsComponent implements OnInit {
             this.xeroOrganization = res.body.data.Name;
           } else {
             this.xeroConnect = false;
-            this.xeroOrganization = "";
+            this.xeroOrganization = '';
             this.getXeroLink();
             //this.disconnectXero();
           }
         } else {
           this.xeroConnect = false;
-          this.xeroOrganization = "";
+          this.xeroOrganization = '';
           this.getXeroLink();
           //this.disconnectXero();
         }
       },
       (error) => {
         this.getXeroLink();
-        this.warningMessage = "Please Provide Valid Inputs!";
+        this.warningMessage = 'Please Provide Valid Inputs!';
       }
     );
   }
@@ -493,19 +512,19 @@ export class ClinicSettingsComponent implements OnInit {
             //alert(this.myobOrganization);
           } else {
             this.myobConnect = false;
-            this.myobOrganization = "";
+            this.myobOrganization = '';
             this.getMyobLink();
             //this.disconnectMyob();
           }
         } else {
           this.getMyobLink();
           this.myobConnect = false;
-          this.myobOrganization = "";
+          this.myobOrganization = '';
           //this.disconnectMyob();
         }
       },
       (error) => {
-        this.warningMessage = "Please Provide Valid Inputs!";
+        this.warningMessage = 'Please Provide Valid Inputs!';
       }
     );
   }
@@ -515,14 +534,14 @@ export class ClinicSettingsComponent implements OnInit {
       (res) => {
         if (res.status == 200) {
           this.xeroConnect = false;
-          this.xeroOrganization = "";
+          this.xeroOrganization = '';
           this.getXeroLink();
         } else {
           this.xeroConnect = true;
         }
       },
       (error) => {
-        this.warningMessage = "Please Provide Valid Inputs!";
+        this.warningMessage = 'Please Provide Valid Inputs!';
       }
     );
   }
@@ -534,67 +553,67 @@ export class ClinicSettingsComponent implements OnInit {
       (res) => {
         if (res.status == 200) {
           this.myobConnect = false;
-          this.myobOrganization = "";
+          this.myobOrganization = '';
           this.getMyobLink();
         } else {
           this.myobConnect = true;
         }
       },
       (error) => {
-        this.warningMessage = "Please Provide Valid Inputs!";
+        this.warningMessage = 'Please Provide Valid Inputs!';
       }
     );
   }
   public toggle(event) {
-    if (event.source.name == "sunday") {
+    if (event.source.name == 'sunday') {
       this.workingDays.sunday = event.checked;
-    } else if (event.source.name == "monday") {
+    } else if (event.source.name == 'monday') {
       this.workingDays.monday = event.checked;
-    } else if (event.source.name == "tuesday") {
+    } else if (event.source.name == 'tuesday') {
       this.workingDays.tuesday = event.checked;
-    } else if (event.source.name == "wednesday") {
+    } else if (event.source.name == 'wednesday') {
       this.workingDays.wednesday = event.checked;
-    } else if (event.source.name == "thursday") {
+    } else if (event.source.name == 'thursday') {
       this.workingDays.thursday = event.checked;
-    } else if (event.source.name == "friday") {
+    } else if (event.source.name == 'friday') {
       this.workingDays.friday = event.checked;
-    } else if (event.source.name == "saturday") {
+    } else if (event.source.name == 'saturday') {
       this.workingDays.saturday = event.checked;
     }
     this.onSubmit();
   }
 
   public toggleMH(event, type) {
-    if (type == "Equipment") {
+    if (type == 'Equipment') {
       this.equipmentList = event.checked;
-    } else if (type == "Daily") {
+    } else if (type == 'Daily') {
       this.dailyTasks = event.checked;
-    } else if (type == "CompareMode") {
+    } else if (type == 'CompareMode') {
       this.compareMode = event.checked;
     }
     this.onSubmit();
   }
 
   toggleFlw(event, type) {
-    let column = "";
-    if (type == "postOp") {
+    let column = '';
+    if (type == 'postOp') {
       this.postOpEnable = event.checked;
-      column = "post_op_enable";
-    } else if (type == "tick") {
+      column = 'post_op_enable';
+    } else if (type == 'tick') {
       this.tickEnable = event.checked;
-      column = "tick_enable";
-    } else if (type == "recall") {
+      column = 'tick_enable';
+    } else if (type == 'recall') {
       this.recallEnable = event.checked;
-      column = "recall_enable";
-    } else if (type == "fta") {
+      column = 'recall_enable';
+    } else if (type == 'fta') {
       this.ftaEnable = event.checked;
-      column = "fta_enable";
-    } else if (type == "uta") {
+      column = 'fta_enable';
+    } else if (type == 'uta') {
       this.utaEnable = event.checked;
-      column = "uta_enable";
-    }else if (type == "internalReferral") {
+      column = 'uta_enable';
+    } else if (type == 'internalReferral') {
       this.internalReferralEnable = event.checked;
-      column = "referral_enable";
+      column = 'referral_enable';
     }
     var active = event.checked == true ? 1 : 0;
     this.clinicSettingsService
@@ -602,55 +621,63 @@ export class ClinicSettingsComponent implements OnInit {
       .subscribe(
         (res) => {
           if (res.status == 200) {
-            this.toastr.success("Followups Settings Updated");
+            this.toastr.success('Followups Settings Updated');
           }
         },
-        (error) => { }
+        (error) => {}
       );
   }
 
-  
-  openMsgTemplateDialog(element: ReviewMsgTemplateObject = null){
-    const reviewMsgTempDialog = this.dialog.open(ReviewMsgTemplateDialog, {data: {element, clinic_id: this.id}});
+  openMsgTemplateDialog(element: ReviewMsgTemplateObject = null) {
+    const reviewMsgTempDialog = this.dialog.open(ReviewMsgTemplateDialog, {
+      data: { element, clinic_id: this.id }
+    });
 
-     reviewMsgTempDialog.afterClosed().subscribe(result => {
-      if(result.status){
+    reviewMsgTempDialog.afterClosed().subscribe((result) => {
+      if (result.status) {
         this.getReviewMsgTemplates();
       }
-     })
+    });
   }
 
-  removeMsgTemplate(element: ReviewMsgTemplateObject){
-    this.clinicSettingsService.removeReviewMsgTemplate(element.id, this.id).subscribe(result => {
-      this.toastr.success("Removed a template successfuly!");
-      this.getReviewMsgTemplates();
-    }, error => {
-      this.toastr.error(error.message);
-    })
+  removeMsgTemplate(element: ReviewMsgTemplateObject) {
+    this.clinicSettingsService
+      .removeReviewMsgTemplate(element.id, this.id)
+      .subscribe(
+        (result) => {
+          this.toastr.success('Removed a template successfuly!');
+          this.getReviewMsgTemplates();
+        },
+        (error) => {
+          this.toastr.error(error.message);
+        }
+      );
   }
 
   private getReviewMsgTemplates() {
     this.reviewMsgTemplates = [];
-    this.clinicSettingsService.getReviewMsgTemplateList(this.id).subscribe((res) => {
-      if (res.status == 200) {
-        if (res.body.data) {
-          this.reviewMsgTemplates = res.body.data;
+    this.clinicSettingsService.getReviewMsgTemplateList(this.id).subscribe(
+      (res) => {
+        if (res.status == 200) {
+          if (res.body.data) {
+            this.reviewMsgTemplates = res.body.data;
+          }
+        } else if (res.status == 401) {
+          this._cookieService.put('username', '');
+          this._cookieService.put('email', '');
+          this._cookieService.put('userid', '');
+          this.router.navigateByUrl('/login');
         }
+      },
+      (error) => {
+        this.toastr.error(error.message);
       }
-      else if (res.status == 401) {
-        this._cookieService.put("username", '');
-        this._cookieService.put("email", '');
-        this._cookieService.put("userid", '');
-        this.router.navigateByUrl('/login');
-      }
-    }, error => {
-      this.toastr.error(error.message);
-    });
+    );
   }
 
   facebookId = new FormControl('', Validators.required);
   googleId = new FormControl('', Validators.required);
-  googleAuthUrl = "";
+  googleAuthUrl = '';
   googleConnected = false;
 
   getSocialLinks() {
@@ -672,30 +699,37 @@ export class ClinicSettingsComponent implements OnInit {
 
   linkGoogle() {
     this.clinicSettingsService.getGoogleAuthUrl(this.id).subscribe(
-      result => {
-        if(result.body.data)
-          window.open(result.body.data);
-        else{
-          this.toastr.warning('Already Connected')
+      (result) => {
+        if (result.body.data) window.open(result.body.data);
+        else {
+          this.toastr.warning('Already Connected');
           this.googleConnected = true;
         }
       },
-      error => {
+      (error) => {
         this.toastr.error(error.message);
       }
     );
   }
 
-  saveSocialLinks(){
-    this.clinicSettingsService.updateSocialLinks(this.id, this.facebookId.value, this.googleId.value).subscribe(
-      result => {
-        this.facebookId = new FormControl(result.body.data.facebook_id, Validators.required);
-        this.googleId = new FormControl(result.body.data.google_id, Validators.required);
-        this.toastr.success("Saved social infomation successfully!")
-      },
-      error => {
-        this.toastr.error(error.message);
-      }
-    );
+  saveSocialLinks() {
+    this.clinicSettingsService
+      .updateSocialLinks(this.id, this.facebookId.value, this.googleId.value)
+      .subscribe(
+        (result) => {
+          this.facebookId = new FormControl(
+            result.body.data.facebook_id,
+            Validators.required
+          );
+          this.googleId = new FormControl(
+            result.body.data.google_id,
+            Validators.required
+          );
+          this.toastr.success('Saved social infomation successfully!');
+        },
+        (error) => {
+          this.toastr.error(error.message);
+        }
+      );
   }
 }
