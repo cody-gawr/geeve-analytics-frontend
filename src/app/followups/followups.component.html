@@ -1153,7 +1153,7 @@
     <!-- Dentist Performance Tab -->
 
     <!-- Dentist Performance Tab -->
-    <mat-tab label="FTA / UTA">
+    <mat-tab [label]="isExactOrCore ? 'FTA' : 'FTA / UTA'">
       <div class="follow-up">
         <mat-card-title>
           <div class="title-follow-up d-inline-block">
@@ -1605,7 +1605,7 @@
 
         <!-- follow-ups-card view-end--->
       </div>
-      <div class="follow-up">
+      <div *ngIf="!isExactOrCore" class="follow-up">
         <mat-card-title>
           <div class="title-follow-up d-inline-block">
             UTA

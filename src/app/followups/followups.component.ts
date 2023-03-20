@@ -1,36 +1,56 @@
-import { Component, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation, Inject } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation,
+  Inject
+} from '@angular/core';
 import { FollowupsService } from './followups.service';
 import { ClinicianAnalysisService } from '../dashboards/cliniciananalysis/cliniciananalysis.service';
-import { CookieService } from "ngx-cookie";
+import { CookieService } from 'ngx-cookie';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 import { DatePipe, JsonPipe } from '@angular/common';
 import { HeaderService } from '../layouts/full/header/header.service';
 import { MatTabGroup } from '@angular/material/tabs';
 import { ITooltipData } from '../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../app.constants';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
-import { NgxDaterangepickerMd, DaterangepickerComponent } from 'ngx-daterangepicker-material';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialog
+} from '@angular/material/dialog';
+import {
+  NgxDaterangepickerMd,
+  DaterangepickerComponent
+} from 'ngx-daterangepicker-material';
 import { ChartstipsService } from '../shared/chartstips.service';
-import { environment } from "../../environments/environment";
+import { environment } from '../../environments/environment';
 import * as moment from 'moment';
 import { EventListenerFocusTrapInertStrategy } from '@angular/cdk/a11y';
-
-
+import { LocalStorageService } from '../shared/local-storage.service';
 
 @Component({
   selector: 'export-data-dialog',
   templateUrl: './export-data.html',
   encapsulation: ViewEncapsulation.None
 })
-
 export class ExportDataDialogComponent {
+  constructor(
+    public dialogRef: MatDialogRef<ExportDataDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private _cookieService: CookieService,
+    private router: Router,
+    private toastr: ToastrService,
+    private followupsService: FollowupsService,
+    private datePipe: DatePipe
+  ) {}
 
-  constructor(public dialogRef: MatDialogRef<ExportDataDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private _cookieService: CookieService, private router: Router, private toastr: ToastrService,private followupsService: FollowupsService, private datePipe: DatePipe) { }
-
-  public loader = false
+  public loader = false;
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -40,77 +60,106 @@ export class ExportDataDialogComponent {
     let endRaw = moment(data.end_date.end);
     let startRaw = moment(data.start_date.start);
 
-    let endDate = this.datePipe.transform(endRaw.toDate(), 'yyyy-MM-dd')
-    let startDate = this.datePipe.transform(startRaw.toDate(), 'yyyy-MM-dd')
-    let clinic_id = data.clinic_id
-    let followuptype = data.followtype
-    let showcompleted = (data.show_completed) ? 1 : 0
-    let filetype = data.type
+    let endDate = this.datePipe.transform(endRaw.toDate(), 'yyyy-MM-dd');
+    let startDate = this.datePipe.transform(startRaw.toDate(), 'yyyy-MM-dd');
+    let clinic_id = data.clinic_id;
+    let followuptype = data.followtype;
+    let showcompleted = data.show_completed ? 1 : 0;
+    let filetype = data.type;
     let filename = '';
-    if (filetype == "csv") {
+    if (filetype == 'csv') {
       filename = followuptype + '_' + startDate + '_' + endDate + '.csv';
-    } else if (filetype == "pdf") {
+    } else if (filetype == 'pdf') {
       filename = followuptype + '_' + startDate + '_' + endDate + '.pdf';
     }
-    this.loader = true 
-    this.followupsService.checkExportFollowUpData(clinic_id, startDate, endDate, showcompleted, followuptype).subscribe((res) => {
-      if (res.status == 200) {
-        this.followupsService.exportFollowUp(clinic_id, startDate, endDate, showcompleted, filetype, followuptype, filename).subscribe((data: File) => {
-          const csvName = filename;
-          let ftype = '';
-          if (filetype == "csv") {
-            ftype = 'text/csv';
-          } else if (filetype == "pdf") {
-            ftype = 'application/pdf';
+    this.loader = true;
+    this.followupsService
+      .checkExportFollowUpData(
+        clinic_id,
+        startDate,
+        endDate,
+        showcompleted,
+        followuptype
+      )
+      .subscribe(
+        (res) => {
+          if (res.status == 200) {
+            this.followupsService
+              .exportFollowUp(
+                clinic_id,
+                startDate,
+                endDate,
+                showcompleted,
+                filetype,
+                followuptype,
+                filename
+              )
+              .subscribe(
+                (data: File) => {
+                  const csvName = filename;
+                  let ftype = '';
+                  if (filetype == 'csv') {
+                    ftype = 'text/csv';
+                  } else if (filetype == 'pdf') {
+                    ftype = 'application/pdf';
+                  }
+                  const blob = new Blob([data], { type: ftype }); //data is response from BE.
+                  //Chrome & Firefox
+                  const a = document.createElement('a');
+                  const url = window.URL.createObjectURL(blob);
+                  a.href = url;
+                  a.download = csvName;
+                  a.click();
+                  window.URL.revokeObjectURL(url);
+                  a.remove();
+                  this.dialogRef.close();
+                  this.toastr.success('File exported successfully!');
+                  this.followupsService
+                    .deletefiles(filename, filetype)
+                    .subscribe(
+                      (res) => {},
+                      (error) => {
+                        console.log('error', error);
+                      }
+                    );
+                },
+                (error) => {
+                  console.log('error', error);
+                }
+              );
+          } else if (res.status == '204') {
+            this.toastr.info(res.body.message);
+            this.loader = false;
+            return;
           }
-          const blob = new Blob([data], { type: ftype }); //data is response from BE.
-          //Chrome & Firefox
-          const a = document.createElement('a');
-          const url = window.URL.createObjectURL(blob);
-          a.href = url;
-          a.download = csvName;
-          a.click();
-          window.URL.revokeObjectURL(url);
-          a.remove();
-          this.dialogRef.close();
-          this.toastr.success("File exported successfully!");
-          this.followupsService.deletefiles(filename, filetype).subscribe((res) => {},(error) => {console.log('error', error)});
         },
-          (error) => {
-            console.log('error', error)
-          });
-    
-       
-      } else if (res.status == '204') {
-        this.toastr.info(res.body.message);
-          this.loader = false
-          return
-      }
-    },
-      (error) => {
-        console.log('error', error)
-      });
+        (error) => {
+          console.log('error', error);
+        }
+      );
   }
 
   handleUnAuthorization() {
-    this._cookieService.put("username", '');
-    this._cookieService.put("email", '');
-    this._cookieService.put("userid", '');
+    this._cookieService.put('username', '');
+    this._cookieService.put('email', '');
+    this._cookieService.put('userid', '');
     this.router.navigateByUrl('/login');
   }
-
 }
-
 
 @Component({
   selector: 'notes-add-dialog',
   templateUrl: './add-notes.html',
   encapsulation: ViewEncapsulation.None
 })
-
 export class FollowupsDialogComponent {
-
-  constructor(public dialogRef: MatDialogRef<FollowupsDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private _cookieService: CookieService, private router: Router, private followupsService: FollowupsService) { }
+  constructor(
+    public dialogRef: MatDialogRef<FollowupsDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private _cookieService: CookieService,
+    private router: Router,
+    private followupsService: FollowupsService
+  ) {}
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -121,40 +170,56 @@ export class FollowupsDialogComponent {
       return false;
     }
 
-    this.followupsService.notes(data.notes, data.patientId, data.date, data.clinic_id, data.followup_date, data.type, data.treatItem).subscribe((res) => {
-      if (res.status == 200) {
-        this.dialogRef.close();
-      } else if (res.status == 401) {
-        this.handleUnAuthorization();
-      }
-    }, error => {
-      console.log('error', error)
-    });
+    this.followupsService
+      .notes(
+        data.notes,
+        data.patientId,
+        data.date,
+        data.clinic_id,
+        data.followup_date,
+        data.type,
+        data.treatItem
+      )
+      .subscribe(
+        (res) => {
+          if (res.status == 200) {
+            this.dialogRef.close();
+          } else if (res.status == 401) {
+            this.handleUnAuthorization();
+          }
+        },
+        (error) => {
+          console.log('error', error);
+        }
+      );
   }
-
 
   handleUnAuthorization() {
-    this._cookieService.put("username", '');
-    this._cookieService.put("email", '');
-    this._cookieService.put("userid", '');
+    this._cookieService.put('username', '');
+    this._cookieService.put('email', '');
+    this._cookieService.put('userid', '');
     this.router.navigateByUrl('/login');
   }
-
 }
-
 
 @Component({
   selector: 'status-dialog',
   templateUrl: './status.html',
   encapsulation: ViewEncapsulation.None
 })
-
 export class StatusDialogComponent {
   public nextDate: any = '';
   public nextCustomFollowup: boolean = false;
   public nextFollowupHave: boolean = false;
-  @ViewChild(DaterangepickerComponent, { static: false }) datePicker: DaterangepickerComponent;
-  constructor(public dialogRef: MatDialogRef<StatusDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private _cookieService: CookieService, private router: Router, private followupsService: FollowupsService) { }
+  @ViewChild(DaterangepickerComponent, { static: false })
+  datePicker: DaterangepickerComponent;
+  constructor(
+    public dialogRef: MatDialogRef<StatusDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private _cookieService: CookieService,
+    private router: Router,
+    private followupsService: FollowupsService
+  ) {}
   onNoClick(): void {
     this.nextCustomFollowup = false;
     this.dialogRef.close();
@@ -163,15 +228,27 @@ export class StatusDialogComponent {
     if (data.notes == '' || data.old == data.notes) {
       return false;
     }
-    this.followupsService.notes(data.notes, data.patientId, data.date, data.clinic_id, data.followup_date, data.type).subscribe((res) => {
-      if (res.status == 200) {
-        this.dialogRef.close();
-      } else if (res.status == 401) {
-        this.handleUnAuthorization();
-      }
-    }, error => {
-      console.log('error', error)
-    });
+    this.followupsService
+      .notes(
+        data.notes,
+        data.patientId,
+        data.date,
+        data.clinic_id,
+        data.followup_date,
+        data.type
+      )
+      .subscribe(
+        (res) => {
+          if (res.status == 200) {
+            this.dialogRef.close();
+          } else if (res.status == 401) {
+            this.handleUnAuthorization();
+          }
+        },
+        (error) => {
+          console.log('error', error);
+        }
+      );
   }
   updateNext(event) {
     this.nextDate = event.chosenLabel;
@@ -182,42 +259,78 @@ export class StatusDialogComponent {
     this.nextFollowupHave = false;
   }
   updateNextfollowUp(data) {
-    this.followupsService.updateStatus('Wants another follow-up', data.pid, data.cid, data.type, data.original_appt_date, data.followup_date, data.treatItem).subscribe((update: any) => {
-      this.onNoClick();
-      if (update.status) {
-        this.followupsService.cloneRecord(data.pid, data.cid, data.type, data.followup_date, this.nextDate, data.original_appt_date, data.treatItem).subscribe((update: any) => {
-        });
-      }
-    });
+    this.followupsService
+      .updateStatus(
+        'Wants another follow-up',
+        data.pid,
+        data.cid,
+        data.type,
+        data.original_appt_date,
+        data.followup_date,
+        data.treatItem
+      )
+      .subscribe((update: any) => {
+        this.onNoClick();
+        if (update.status) {
+          this.followupsService
+            .cloneRecord(
+              data.pid,
+              data.cid,
+              data.type,
+              data.followup_date,
+              this.nextDate,
+              data.original_appt_date,
+              data.treatItem
+            )
+            .subscribe((update: any) => {});
+        }
+      });
   }
   updateNextReached(data, event) {
     this.nextCustomFollowup = false;
     this.nextFollowupHave = false;
-    this.followupsService.updateStatus(data.event, data.pid, data.cid, data.type, data.original_appt_date, data.followup_date).subscribe((update: any) => {
-      if (update.status && event != 'no') {
-        this.followupsService.cloneRecord(data.pid, data.cid, data.type, data.followup_date, this.nextDate, data.original_appt_date, data.treatItem, event).subscribe((clone: any) => {
-          if (clone.message == 'already') {
-            this.nextDate = clone.$getRecord.followup_date;
-            this.nextFollowupHave = true;
-          } else {
-            this.onNoClick();
-          }
-        });
-      } else {
-        this.onNoClick();
-      }
-    });
+    this.followupsService
+      .updateStatus(
+        data.event,
+        data.pid,
+        data.cid,
+        data.type,
+        data.original_appt_date,
+        data.followup_date
+      )
+      .subscribe((update: any) => {
+        if (update.status && event != 'no') {
+          this.followupsService
+            .cloneRecord(
+              data.pid,
+              data.cid,
+              data.type,
+              data.followup_date,
+              this.nextDate,
+              data.original_appt_date,
+              data.treatItem,
+              event
+            )
+            .subscribe((clone: any) => {
+              if (clone.message == 'already') {
+                this.nextDate = clone.$getRecord.followup_date;
+                this.nextFollowupHave = true;
+              } else {
+                this.onNoClick();
+              }
+            });
+        } else {
+          this.onNoClick();
+        }
+      });
   }
   handleUnAuthorization() {
-    this._cookieService.put("username", '');
-    this._cookieService.put("email", '');
-    this._cookieService.put("userid", '');
+    this._cookieService.put('username', '');
+    this._cookieService.put('email', '');
+    this._cookieService.put('userid', '');
     this.router.navigateByUrl('/login');
   }
-
 }
-
-
 
 @Component({
   selector: 'app-morning-huddle',
@@ -284,7 +397,6 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   public selectedMonth: string = new Date().getMonth().toString();
   public selectedYear: string = new Date().getFullYear().toString();
 
-
   public pageSize: number = 20;
   public IRLoadingLoading: boolean = false;
 
@@ -301,17 +413,70 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   public isEnableTH: boolean = false;
   public isEnableFT: boolean = false;
   public isEnableUT: boolean = false;
-  public autoCall: any; 
+  public autoCall: any;
 
-  displayedColumns1: string[] = ['name', 'phone', 'code', 'dentist', 'date', 'followup_date', 'status'];
-  displayedColumns2: string[] = ['name', 'phone', 'code', 'note', 'followup_date', 'book', 'status'];
-  displayedColumns3: string[] = ['name', 'phone', 'code', 'dentist', 'note', 'followup_date', 'book', 'status'];
-  displayedColumns4: string[] = ['name', 'phone', 'referral', 'treatment', 'provider', 'status', 'followup_date', 'notes', 'complete'];
+  displayedColumns1: string[] = [
+    'name',
+    'phone',
+    'code',
+    'dentist',
+    'date',
+    'followup_date',
+    'status'
+  ];
+  displayedColumns2: string[] = [
+    'name',
+    'phone',
+    'code',
+    'note',
+    'followup_date',
+    'book',
+    'status'
+  ];
+  displayedColumns3: string[] = [
+    'name',
+    'phone',
+    'code',
+    'dentist',
+    'note',
+    'followup_date',
+    'book',
+    'status'
+  ];
+  displayedColumns4: string[] = [
+    'name',
+    'phone',
+    'referral',
+    'treatment',
+    'provider',
+    'status',
+    'followup_date',
+    'notes',
+    'complete'
+  ];
   timezone: string = '+1000';
-  months: any = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  months: any = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
+  public get isExactOrCore(): boolean {
+    const clinics = this.localStorageService.getObject<any[]>('clinics') || [];
+    return clinics.some((c) => ['exact', 'core'].includes(c.pms));
+  }
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     private datepipe: DatePipe,
+    private localStorageService: LocalStorageService,
     private followupsService: FollowupsService,
     private _cookieService: CookieService,
     private headerService: HeaderService,
@@ -332,41 +497,44 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     this.matTabGroup.realignInkBar(); // align material tab green shaded color to first tab (on screen resize)
   }
 
-
   ngOnInit() {
     $('.header_filters').removeClass('hide_header');
     $('#currentDentist').attr('did', 'all');
-    this.user_type = this._cookieService.get("user_type");
-    if (this._cookieService.get("dentistid") && this._cookieService.get("dentistid") != '' && this.user_type == '4') {
-      this.dentistid = this._cookieService.get("dentistid");
+    this.user_type = this._cookieService.get('user_type');
+    if (
+      this._cookieService.get('dentistid') &&
+      this._cookieService.get('dentistid') != '' &&
+      this.user_type == '4'
+    ) {
+      this.dentistid = this._cookieService.get('dentistid');
     }
-
 
     // align material tab green shaded color to first tab (on initial load - needs delay to ensure mat tab is available)
     setTimeout(() => {
       this.matTabGroup.realignInkBar();
     }, 500);
-    this.selectedMonthYear = this.datepipe.transform(new Date(), 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
+    this.selectedMonthYear = this.datepipe
+      .transform(new Date(), 'yyyy-MM-dd 00:00:00')
+      .replace(/\s/, 'T');
 
     var self = this;
-   this.autoCall =  setInterval( function()
-    {
-       self.refreshDataAuto();
-    }, 1000 * 60); 
+    this.autoCall = setInterval(function () {
+      self.refreshDataAuto();
+    }, 1000 * 60);
   }
   ngAfterViewInit(): void {
     this.dentistList.paginator = this.paginator;
     //$('.dentist_dropdown').parent().hide(); // added
-    $('.sa_heading_bar').addClass("filter_single"); // added   
+    $('.sa_heading_bar').addClass('filter_single'); // added
   }
   ngOnDestroy() {
     //$('.dentist_dropdown').parent().show(); // added
-    $('.sa_heading_bar').removeClass("filter_single"); // added
+    $('.sa_heading_bar').removeClass('filter_single'); // added
     clearInterval(this.autoCall);
   }
 
   initiate_clinic() {
-    this.user_type = this._cookieService.get("user_type");
+    this.user_type = this._cookieService.get('user_type');
     var val = $('#currentClinic').attr('cid');
     if (val != undefined && val != 'all') {
       this.clinic_id = val;
@@ -383,7 +551,10 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       $('#title').html('Follow Ups');
 
       this.selectedMonth = this.datepipe.transform(this.selectedMonthYear, 'M');
-      this.selectedYear = this.datepipe.transform(this.selectedMonthYear, 'yyyy');
+      this.selectedYear = this.datepipe.transform(
+        this.selectedMonthYear,
+        'yyyy'
+      );
 
       this.getFollowupScripts();
       this.getFollowupPostOpCalls();
@@ -392,15 +563,12 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.getTickFollowups();
       this.getFtaFollowups();
       this.getUtaFollowups();
-
     }
   }
   changeTab(tabIndex: number) {
     this.selectedTab = tabIndex;
   }
-  onTabChanged(event) {
-
-  }
+  onTabChanged(event) {}
 
   refreshPerformanceTab() {
     this.selectedMonth = this.datepipe.transform(this.selectedMonthYear, 'M');
@@ -413,7 +581,6 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     this.getFtaFollowups();
     this.getUtaFollowups();
   }
-
 
   public postOpCallsScrps: any = [];
   public overdueRecallsScrps: any = [];
@@ -450,65 +617,90 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     });
   }
 
-
-
   getFollowupPostOpCalls() {
     this.poLoadingLoading = true;
-    this.followupsService.followupPostOpCalls(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((res: any) => {
-      this.followupPostOpCallsInComp = [];
-      this.poLoadingLoading = false;
-      if (res.status== 200 ) {
-        this.nextBussinessDay = res.body.next_day;
-        if (res.body.data == '204') {
-
-        } else {
-          this.followupPostOpCalls = res.body.data;
-          if (this.postopCallsPostOp == true) {
-            this.followupPostOpCallsInComp = this.followupPostOpCalls;
+    this.followupsService
+      .followupPostOpCalls(
+        this.clinic_id,
+        this.selectedMonth,
+        this.selectedYear
+      )
+      .subscribe((res: any) => {
+        this.followupPostOpCallsInComp = [];
+        this.poLoadingLoading = false;
+        if (res.status == 200) {
+          this.nextBussinessDay = res.body.next_day;
+          if (res.body.data == '204') {
           } else {
-            this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(p => p.is_complete != true);
-          }
-          if (this.followupPostOpCallsInComp.length <= ((this.pageSize * this.currentOpPage) - this.pageSize) && this.currentOpPage != 1) {
-            this.currentOpPage = this.currentOpPage - 1;
-          }
-          this.setPaginationButtons(this.followupPostOpCallsInComp, 'OP');
-          this.followupPostOpCallsInComp = this.setPaginationData(this.followupPostOpCallsInComp, 'OP');
+            this.followupPostOpCalls = res.body.data;
+            if (this.postopCallsPostOp == true) {
+              this.followupPostOpCallsInComp = this.followupPostOpCalls;
+            } else {
+              this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(
+                (p) => p.is_complete != true
+              );
+            }
+            if (
+              this.followupPostOpCallsInComp.length <=
+                this.pageSize * this.currentOpPage - this.pageSize &&
+              this.currentOpPage != 1
+            ) {
+              this.currentOpPage = this.currentOpPage - 1;
+            }
+            this.setPaginationButtons(this.followupPostOpCallsInComp, 'OP');
+            this.followupPostOpCallsInComp = this.setPaginationData(
+              this.followupPostOpCallsInComp,
+              'OP'
+            );
 
-          this.followupsPostopCallsDate = res.body.data.date;
-          this.postOpCallsDays = res.body.previous;
+            this.followupsPostopCallsDate = res.body.data.date;
+            this.postOpCallsDays = res.body.previous;
+          }
         }
-      }
-    });
+      });
   }
 
   getOverdueRecalls(evn = '') {
     if (evn != 'close') {
       this.recallLoadingLoading = true;
     }
-    this.followupsService.followupOverdueRecalls(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((res: any) => {
-      this.followupOverDueRecallInCMP = [];
-      this.recallLoadingLoading = false;
-      if (res.status== 200 ) {
-        this.nextBussinessDay = res.body.next_day;
-        this.followupsOverDueRecallDate = res.body.data.date;
-        if (res.body.data == '204') {
-
-        } else {
-          this.followupOverDueRecall = res.body.data;
-          if (this.showCompleteOverdue == true) {
-            this.followupOverDueRecallInCMP = this.followupOverDueRecall;
+    this.followupsService
+      .followupOverdueRecalls(
+        this.clinic_id,
+        this.selectedMonth,
+        this.selectedYear
+      )
+      .subscribe((res: any) => {
+        this.followupOverDueRecallInCMP = [];
+        this.recallLoadingLoading = false;
+        if (res.status == 200) {
+          this.nextBussinessDay = res.body.next_day;
+          this.followupsOverDueRecallDate = res.body.data.date;
+          if (res.body.data == '204') {
           } else {
-            this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(p => p.is_complete != true);
+            this.followupOverDueRecall = res.body.data;
+            if (this.showCompleteOverdue == true) {
+              this.followupOverDueRecallInCMP = this.followupOverDueRecall;
+            } else {
+              this.followupOverDueRecallInCMP =
+                this.followupOverDueRecall.filter((p) => p.is_complete != true);
+            }
+            if (
+              this.followupOverDueRecallInCMP.length <=
+                this.pageSize * this.currentORPage - this.pageSize &&
+              this.currentORPage != 1
+            ) {
+              this.currentORPage = this.currentORPage - 1;
+            }
+            this.setPaginationButtons(this.followupOverDueRecallInCMP, 'OR');
+            this.followupOverDueRecallInCMP = this.setPaginationData(
+              this.followupOverDueRecallInCMP,
+              'OR'
+            );
+            this.OverDueRecallDays = res.body.previous;
           }
-          if (this.followupOverDueRecallInCMP.length <= ((this.pageSize * this.currentORPage) - this.pageSize) && this.currentORPage != 1) {
-            this.currentORPage = this.currentORPage - 1;
-          }
-          this.setPaginationButtons(this.followupOverDueRecallInCMP, 'OR');
-          this.followupOverDueRecallInCMP = this.setPaginationData(this.followupOverDueRecallInCMP, 'OR');
-          this.OverDueRecallDays = res.body.previous;
         }
-      }
-    });
+      });
   }
 
   public currentIRPage: number = 1;
@@ -516,29 +708,38 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (evn != 'close') {
       this.IRLoadingLoading = true;
     }
-    this.followupsService.internalReferrals(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((res: any) => {
-      this.internalReferralRecallInCMP = [];
-      // this.recallLoadingLoading = false;
+    this.followupsService
+      .internalReferrals(this.clinic_id, this.selectedMonth, this.selectedYear)
+      .subscribe((res: any) => {
+        this.internalReferralRecallInCMP = [];
+        // this.recallLoadingLoading = false;
 
-      if (res.status== 200 ) {
-        this.IRLoadingLoading = false;
-        this.nextBussinessDay = res.body.next_day;
-        this.internalReferrals = res.body.data;
-        if (this.showCompleteReferrals == true) {
-          this.internalReferralRecallInCMP = this.internalReferrals;
-        } else {
-          this.internalReferralRecallInCMP = this.internalReferrals.filter(p => p.is_complete != true);
+        if (res.status == 200) {
+          this.IRLoadingLoading = false;
+          this.nextBussinessDay = res.body.next_day;
+          this.internalReferrals = res.body.data;
+          if (this.showCompleteReferrals == true) {
+            this.internalReferralRecallInCMP = this.internalReferrals;
+          } else {
+            this.internalReferralRecallInCMP = this.internalReferrals.filter(
+              (p) => p.is_complete != true
+            );
+          }
+
+          if (
+            this.internalReferralRecallInCMP.length <=
+              this.pageSize * this.currentIRPage - this.pageSize &&
+            this.currentIRPage != 1
+          ) {
+            this.currentIRPage = this.currentIRPage - 1;
+          }
+          this.setPaginationButtons(this.internalReferralRecallInCMP, 'IR');
+          this.internalReferralRecallInCMP = this.setPaginationData(
+            this.internalReferralRecallInCMP,
+            'IR'
+          );
         }
-
-        if (this.internalReferralRecallInCMP.length <= ((this.pageSize * this.currentIRPage) - this.pageSize) && this.currentIRPage != 1) {
-          this.currentIRPage = this.currentIRPage - 1;
-        }
-        this.setPaginationButtons(this.internalReferralRecallInCMP, 'IR');
-        this.internalReferralRecallInCMP = this.setPaginationData(this.internalReferralRecallInCMP, 'IR');
-
-
-      }
-    });
+      });
   }
 
   public tipDoneCode = {};
@@ -548,44 +749,59 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (evn != 'close') {
       this.endTaksLoadingLoading = true;
     }
-    this.followupsService.followupTickFollowups(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((res: any) => {
-      this.followupTickFollowupsInCMP = [];
-      this.endTaksLoadingLoading = false;
-      if (res.status== 200 ) {
-        this.nextBussinessDay = res.body.next_day;
-        if (res.body.data == '204') {
-
-        } else {
-          this.followupTickFollowups = res.body.data;
-          if (this.showCompleteTick == true) {
-            this.followupTickFollowupsInCMP = this.followupTickFollowups;
+    this.followupsService
+      .followupTickFollowups(
+        this.clinic_id,
+        this.selectedMonth,
+        this.selectedYear
+      )
+      .subscribe((res: any) => {
+        this.followupTickFollowupsInCMP = [];
+        this.endTaksLoadingLoading = false;
+        if (res.status == 200) {
+          this.nextBussinessDay = res.body.next_day;
+          if (res.body.data == '204') {
           } else {
-            this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(p => p.is_complete != true);
-          }
-          if (this.followupTickFollowupsInCMP.length <= ((this.pageSize * this.currentThickPage) - this.pageSize) && this.currentThickPage != 1) {
-            this.currentThickPage = this.currentThickPage - 1;
-          }
-          this.setPaginationButtons(this.followupTickFollowupsInCMP, 'TH');
-          this.followupTickFollowupsInCMP = this.setPaginationData(this.followupTickFollowupsInCMP, 'TH');
-          this.followupTickFollowupsInCMP.forEach((tool) => {
-            this.tipDoneCode[tool.patient_id] = {
-              title: 'Outstanding Treatments',
-              info: tool.code
-            };
-            var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
-            this.tipFutureDate[tool.patient_id] = {
-              title: 'Future Appointment',
-              info: date
-            };
-          });
+            this.followupTickFollowups = res.body.data;
+            if (this.showCompleteTick == true) {
+              this.followupTickFollowupsInCMP = this.followupTickFollowups;
+            } else {
+              this.followupTickFollowupsInCMP =
+                this.followupTickFollowups.filter((p) => p.is_complete != true);
+            }
+            if (
+              this.followupTickFollowupsInCMP.length <=
+                this.pageSize * this.currentThickPage - this.pageSize &&
+              this.currentThickPage != 1
+            ) {
+              this.currentThickPage = this.currentThickPage - 1;
+            }
+            this.setPaginationButtons(this.followupTickFollowupsInCMP, 'TH');
+            this.followupTickFollowupsInCMP = this.setPaginationData(
+              this.followupTickFollowupsInCMP,
+              'TH'
+            );
+            this.followupTickFollowupsInCMP.forEach((tool) => {
+              this.tipDoneCode[tool.patient_id] = {
+                title: 'Outstanding Treatments',
+                info: tool.code
+              };
+              var date = this.datepipe.transform(
+                tool.future_appt_date,
+                'MMM d, y'
+              );
+              this.tipFutureDate[tool.patient_id] = {
+                title: 'Future Appointment',
+                info: date
+              };
+            });
 
-          this.followupsTickFollowupsDate = res.body.data.date;
-          this.TickFollowupsDays = res.body.previous;
+            this.followupsTickFollowupsDate = res.body.data.date;
+            this.TickFollowupsDays = res.body.previous;
+          }
         }
-      }
-    });
+      });
   }
-
 
   public followupFtaFollowups: any = [];
   public followupFtaFollowupsInCMP: any = [];
@@ -600,43 +816,57 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (evn != 'close') {
       this.ftaTaksLoadingLoading = true;
     }
-    this.followupsService.followupFtaFollowups(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((res: any) => {
-      this.followupFtaFollowupsInCMP = [];
-      this.ftaTaksLoadingLoading = false;
-      if (res.status== 200 ) {
-        this.nextBussinessDay = res.body.next_day;
-        if (res.body.data == '204') {
-
-        } else {
-          this.followupFtaFollowups = res.body.data;
-          if (this.showCompleteFta == true) {
-            this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
+    this.followupsService
+      .followupFtaFollowups(
+        this.clinic_id,
+        this.selectedMonth,
+        this.selectedYear
+      )
+      .subscribe((res: any) => {
+        this.followupFtaFollowupsInCMP = [];
+        this.ftaTaksLoadingLoading = false;
+        if (res.status == 200) {
+          this.nextBussinessDay = res.body.next_day;
+          if (res.body.data == '204') {
           } else {
-            this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(p => p.is_complete != true);
+            this.followupFtaFollowups = res.body.data;
+            if (this.showCompleteFta == true) {
+              this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
+            } else {
+              this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(
+                (p) => p.is_complete != true
+              );
+            }
+            if (
+              this.followupFtaFollowupsInCMP.length <=
+                this.pageSize * this.currentFTPage - this.pageSize &&
+              this.currentFTPage != 1
+            ) {
+              this.currentFTPage = this.currentFTPage - 1;
+            }
+            this.setPaginationButtons(this.followupFtaFollowupsInCMP, 'FT');
+            this.followupFtaFollowupsInCMP = this.setPaginationData(
+              this.followupFtaFollowupsInCMP,
+              'FT'
+            );
+            this.followupFtaFollowups.forEach((tool) => {
+              this.tipFtaDoneCode[tool.patient_id] = {
+                title: 'Outstanding Treatments',
+                info: tool.code
+              };
+              var date = this.datepipe.transform(
+                tool.future_appt_date,
+                'MMM d, y'
+              );
+              this.tipFtaFutureDate[tool.patient_id] = {
+                title: 'Future Appointment',
+                info: date
+              };
+            });
           }
-          if (this.followupFtaFollowupsInCMP.length <= ((this.pageSize * this.currentFTPage) - this.pageSize) && this.currentFTPage != 1) {
-            this.currentFTPage = this.currentFTPage - 1;
-          }
-          this.setPaginationButtons(this.followupFtaFollowupsInCMP, 'FT');
-          this.followupFtaFollowupsInCMP = this.setPaginationData(this.followupFtaFollowupsInCMP, 'FT');
-          this.followupFtaFollowups.forEach((tool) => {
-            this.tipFtaDoneCode[tool.patient_id] = {
-              title: 'Outstanding Treatments',
-              info: tool.code
-            };
-            var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
-            this.tipFtaFutureDate[tool.patient_id] = {
-              title: 'Future Appointment',
-              info: date
-            };
-          });
         }
-
-      }
-    });
+      });
   }
-
-
 
   public followupUtaFollowups: any = [];
   public followupUtaFollowupsInCMP: any = [];
@@ -651,47 +881,69 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (evn != 'close') {
       this.utaTaksLoadingLoading = true;
     }
-    this.followupsService.followupUtaFollowups(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((res: any) => {
-      this.followupUtaFollowupsInCMP = [];
-      this.utaTaksLoadingLoading = false;
-      if (res.status== 200 ) {
-        this.nextBussinessDay = res.body.next_day;
-        if (res.body.data == '204') {
-
-        } else {
-          this.followupUtaFollowups = res.body.data;
-          if (this.showCompleteUta == true) {
-            this.followupUtaFollowupsInCMP = this.followupUtaFollowups;
+    this.followupsService
+      .followupUtaFollowups(
+        this.clinic_id,
+        this.selectedMonth,
+        this.selectedYear
+      )
+      .subscribe((res: any) => {
+        this.followupUtaFollowupsInCMP = [];
+        this.utaTaksLoadingLoading = false;
+        if (res.status == 200) {
+          this.nextBussinessDay = res.body.next_day;
+          if (res.body.data == '204') {
           } else {
-            this.followupUtaFollowupsInCMP = this.followupUtaFollowups.filter(p => p.is_complete != true);
+            this.followupUtaFollowups = res.body.data;
+            if (this.showCompleteUta == true) {
+              this.followupUtaFollowupsInCMP = this.followupUtaFollowups;
+            } else {
+              this.followupUtaFollowupsInCMP = this.followupUtaFollowups.filter(
+                (p) => p.is_complete != true
+              );
+            }
+            if (
+              this.followupUtaFollowupsInCMP.length <=
+                this.pageSize * this.currentUTPage - this.pageSize &&
+              this.currentUTPage != 1
+            ) {
+              this.currentUTPage = this.currentUTPage - 1;
+            }
+            this.setPaginationButtons(this.followupUtaFollowupsInCMP, 'UT');
+            this.followupUtaFollowupsInCMP = this.setPaginationData(
+              this.followupUtaFollowupsInCMP,
+              'UT'
+            );
+            this.followupUtaFollowups.forEach((tool) => {
+              this.tipUtaDoneCode[tool.patient_id] = {
+                title: 'Outstanding Treatments',
+                info: tool.code
+              };
+              var date = this.datepipe.transform(
+                tool.future_appt_date,
+                'MMM d, y'
+              );
+              this.tipUtaFutureDate[tool.patient_id] = {
+                title: 'Future Appointment',
+                info: date
+              };
+            });
           }
-          if (this.followupUtaFollowupsInCMP.length <= ((this.pageSize * this.currentUTPage) - this.pageSize) && this.currentUTPage != 1) {
-            this.currentUTPage = this.currentUTPage - 1;
-          }
-          this.setPaginationButtons(this.followupUtaFollowupsInCMP, 'UT');
-          this.followupUtaFollowupsInCMP = this.setPaginationData(this.followupUtaFollowupsInCMP, 'UT');
-          this.followupUtaFollowups.forEach((tool) => {
-            this.tipUtaDoneCode[tool.patient_id] = {
-              title: 'Outstanding Treatments',
-              info: tool.code
-            };
-            var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
-            this.tipUtaFutureDate[tool.patient_id] = {
-              title: 'Future Appointment',
-              info: date
-            };
-          });
         }
-
-      }
-    });
+      });
   }
 
-
-
   //toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Post op Calls')
-  toggleUpdate(event, pid, date, fdate, cid, type, status = 'default', treatItem = '') {
-
+  toggleUpdate(
+    event,
+    pid,
+    date,
+    fdate,
+    cid,
+    type,
+    status = 'default',
+    treatItem = ''
+  ) {
     if (!status || status == '' || status == 'null') {
       event.source.checked = false;
       this.toastr.error('Please update status first to mark complete.');
@@ -706,33 +958,73 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     } else if (type == 'internal-referrals') {
       this.IRLoadingLoading = true;
     }
-    this.followupsService.updateFollowUpStatus(event.checked, pid, cid, type, date, fdate, treatItem).subscribe((update: any) => {
-      if (type == 'post-op-calls') {
-        this.getFollowupPostOpCalls();
-      } else if (type == 'recall-overdue') {
-        this.getOverdueRecalls();
-      } else if (type == 'tick-follower') {
-        this.getTickFollowups();
-      } else if (type == 'fta-follower') {
-        this.getFtaFollowups();
-      } else if (type == 'uta-follower') {
-        this.getUtaFollowups();
-      } else if (type == 'internal-referrals') {
-        this.getinternalReferrals();
-      }
-    });
+    this.followupsService
+      .updateFollowUpStatus(
+        event.checked,
+        pid,
+        cid,
+        type,
+        date,
+        fdate,
+        treatItem
+      )
+      .subscribe((update: any) => {
+        if (type == 'post-op-calls') {
+          this.getFollowupPostOpCalls();
+        } else if (type == 'recall-overdue') {
+          this.getOverdueRecalls();
+        } else if (type == 'tick-follower') {
+          this.getTickFollowups();
+        } else if (type == 'fta-follower') {
+          this.getFtaFollowups();
+        } else if (type == 'uta-follower') {
+          this.getUtaFollowups();
+        } else if (type == 'internal-referrals') {
+          this.getinternalReferrals();
+        }
+      });
   }
 
-  updateStatus(event, pid, date, cid, firstname, surname, original_appt_date, followup_date, type, nextBussinessDay, treatItem = '') {
-    if (event == 'Wants another follow-up' || event == "Can't be reached" || event == "Can't be reached - left voicemail") {
+  updateStatus(
+    event,
+    pid,
+    date,
+    cid,
+    firstname,
+    surname,
+    original_appt_date,
+    followup_date,
+    type,
+    nextBussinessDay,
+    treatItem = ''
+  ) {
+    if (
+      event == 'Wants another follow-up' ||
+      event == "Can't be reached" ||
+      event == "Can't be reached - left voicemail"
+    ) {
       let width = '450px';
-      if (event == "Can't be reached" || event == "Can't be reached - left voicemail")
+      if (
+        event == "Can't be reached" ||
+        event == "Can't be reached - left voicemail"
+      )
         width = '650px';
       const dialogRef = this.dialog.open(StatusDialogComponent, {
         width: width,
-        data: { event, firstname, surname, pid, cid, type, original_appt_date, followup_date, nextBussinessDay, treatItem }
+        data: {
+          event,
+          firstname,
+          surname,
+          pid,
+          cid,
+          type,
+          original_appt_date,
+          followup_date,
+          nextBussinessDay,
+          treatItem
+        }
       });
-      dialogRef.afterClosed().subscribe(result => {
+      dialogRef.afterClosed().subscribe((result) => {
         if (type == 'tick-follower') {
           this.getTickFollowups('close');
         } else if (type == 'fta-follower') {
@@ -744,22 +1036,23 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         } else {
           this.getOverdueRecalls('close');
         }
-
       });
     } else {
-      this.followupsService.updateStatus(event, pid, cid, type, date, followup_date, treatItem).subscribe((update: any) => {
-        if (type == 'tick-follower') {
-          this.getTickFollowups('close');
-        } else if (type == 'fta-follower') {
-          this.getFtaFollowups('close');
-        } else if (type == 'uta-follower') {
-          this.getUtaFollowups('close');
-        } else if (type == 'internal-referrals') {
-          this.getinternalReferrals('close');
-        } else {
-          this.getOverdueRecalls('close');
-        }
-      });
+      this.followupsService
+        .updateStatus(event, pid, cid, type, date, followup_date, treatItem)
+        .subscribe((update: any) => {
+          if (type == 'tick-follower') {
+            this.getTickFollowups('close');
+          } else if (type == 'fta-follower') {
+            this.getFtaFollowups('close');
+          } else if (type == 'uta-follower') {
+            this.getUtaFollowups('close');
+          } else if (type == 'internal-referrals') {
+            this.getinternalReferrals('close');
+          } else {
+            this.getOverdueRecalls('close');
+          }
+        });
     }
   }
 
@@ -777,7 +1070,6 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     } else {
       return 'N/A';
     }
-
   }
 
   updateToComplete(event) {
@@ -785,7 +1077,9 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (event.checked == true) {
       this.endOfDaysTasksInComp = this.endOfDaysTasks;
     } else {
-      this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(p => p.is_complete != 1);
+      this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(
+        (p) => p.is_complete != 1
+      );
     }
   }
 
@@ -794,11 +1088,16 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (event.checked == true) {
       this.followupPostOpCallsInComp = this.followupPostOpCalls;
     } else {
-      this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(p => p.is_complete != true);
+      this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(
+        (p) => p.is_complete != true
+      );
     }
     this.currentOpPage = 1;
     this.setPaginationButtons(this.followupPostOpCallsInComp, 'OP');
-    this.followupPostOpCallsInComp = this.setPaginationData(this.followupPostOpCallsInComp, 'OP');
+    this.followupPostOpCallsInComp = this.setPaginationData(
+      this.followupPostOpCallsInComp,
+      'OP'
+    );
   }
 
   updateToCompleteOR(event) {
@@ -806,11 +1105,16 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (event.checked == true) {
       this.followupOverDueRecallInCMP = this.followupOverDueRecall;
     } else {
-      this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(p => p.is_complete != true);
+      this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(
+        (p) => p.is_complete != true
+      );
     }
     this.currentORPage = 1;
     this.setPaginationButtons(this.followupOverDueRecallInCMP, 'OR');
-    this.followupOverDueRecallInCMP = this.setPaginationData(this.followupOverDueRecallInCMP, 'OR');
+    this.followupOverDueRecallInCMP = this.setPaginationData(
+      this.followupOverDueRecallInCMP,
+      'OR'
+    );
   }
 
   updateToCompleteTF(event) {
@@ -818,11 +1122,16 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (event.checked == true) {
       this.followupTickFollowupsInCMP = this.followupTickFollowups;
     } else {
-      this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(p => p.is_complete != true);
+      this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(
+        (p) => p.is_complete != true
+      );
     }
     this.currentThickPage = 1;
     this.setPaginationButtons(this.followupTickFollowupsInCMP, 'TH');
-    this.followupTickFollowupsInCMP = this.setPaginationData(this.followupTickFollowupsInCMP, 'TH');
+    this.followupTickFollowupsInCMP = this.setPaginationData(
+      this.followupTickFollowupsInCMP,
+      'TH'
+    );
   }
 
   updateToCompleteFT(event) {
@@ -830,11 +1139,16 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (event.checked == true) {
       this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
     } else {
-      this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(p => p.is_complete != true);
+      this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(
+        (p) => p.is_complete != true
+      );
     }
     this.currentFTPage = 1;
     this.setPaginationButtons(this.followupFtaFollowupsInCMP, 'FT');
-    this.followupFtaFollowupsInCMP = this.setPaginationData(this.followupFtaFollowupsInCMP, 'FT');
+    this.followupFtaFollowupsInCMP = this.setPaginationData(
+      this.followupFtaFollowupsInCMP,
+      'FT'
+    );
   }
 
   updateToCompleteUT(event) {
@@ -842,11 +1156,16 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (event.checked == true) {
       this.followupUtaFollowupsInCMP = this.followupUtaFollowups;
     } else {
-      this.followupUtaFollowupsInCMP = this.followupUtaFollowups.filter(p => p.is_complete != true);
+      this.followupUtaFollowupsInCMP = this.followupUtaFollowups.filter(
+        (p) => p.is_complete != true
+      );
     }
     this.currentUTPage = 1;
     this.setPaginationButtons(this.followupUtaFollowupsInCMP, 'UT');
-    this.followupUtaFollowupsInCMP = this.setPaginationData(this.followupUtaFollowupsInCMP, 'UT');
+    this.followupUtaFollowupsInCMP = this.setPaginationData(
+      this.followupUtaFollowupsInCMP,
+      'UT'
+    );
   }
 
   updateToCompleteIR(event) {
@@ -854,40 +1173,76 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (event.checked == true) {
       this.internalReferralRecallInCMP = this.internalReferrals;
     } else {
-      this.internalReferralRecallInCMP = this.internalReferrals.filter(p => p.is_complete != true);
+      this.internalReferralRecallInCMP = this.internalReferrals.filter(
+        (p) => p.is_complete != true
+      );
     }
     this.currentIRPage = 1;
     this.setPaginationButtons(this.internalReferralRecallInCMP, 'IR');
-    this.internalReferralRecallInCMP = this.setPaginationData(this.internalReferralRecallInCMP, 'IR');
+    this.internalReferralRecallInCMP = this.setPaginationData(
+      this.internalReferralRecallInCMP,
+      'IR'
+    );
   }
-
 
   exportreport(type = 'overdue_recalls'): void {
     let selected = {
       startDate: null,
       endRaw: null
     };
-    var selmonth: number  = parseInt(this.datepipe.transform(this.selectedMonthYear, 'M'));
-    var selyear : number = parseInt(this.datepipe.transform(this.selectedMonthYear, 'yyyy'));
-    var selctedEndDate = this.datepipe.transform(new Date(selyear, selmonth, 0), 'yyyy-MM-dd')
-    var selctedStartDate = this.datepipe.transform(this.selectedMonthYear, 'yyyy-MM-dd');
-    let start_date = {start:  moment(selctedStartDate)};
-    let end_date = {end:  moment(selctedEndDate)};
+    var selmonth: number = parseInt(
+      this.datepipe.transform(this.selectedMonthYear, 'M')
+    );
+    var selyear: number = parseInt(
+      this.datepipe.transform(this.selectedMonthYear, 'yyyy')
+    );
+    var selctedEndDate = this.datepipe.transform(
+      new Date(selyear, selmonth, 0),
+      'yyyy-MM-dd'
+    );
+    var selctedStartDate = this.datepipe.transform(
+      this.selectedMonthYear,
+      'yyyy-MM-dd'
+    );
+    let start_date = { start: moment(selctedStartDate) };
+    let end_date = { end: moment(selctedEndDate) };
     const dialogRef = this.dialog.open(ExportDataDialogComponent, {
       width: '500px',
-      data: { clinic_id: this.clinic_id, range: selected, show_completed: false, type: 'csv', followtype: type ,start_date: start_date,end_date:end_date}
+      data: {
+        clinic_id: this.clinic_id,
+        range: selected,
+        show_completed: false,
+        type: 'csv',
+        followtype: type,
+        start_date: start_date,
+        end_date: end_date
+      }
     });
-    dialogRef.afterClosed().subscribe(result => {
-
-    });
+    dialogRef.afterClosed().subscribe((result) => {});
   }
 
-  openNotes(notes, patient_id, original_appt_date, followup_date, type, treatItem = ''): void {
+  openNotes(
+    notes,
+    patient_id,
+    original_appt_date,
+    followup_date,
+    type,
+    treatItem = ''
+  ): void {
     const dialogRef = this.dialog.open(FollowupsDialogComponent, {
       width: '500px',
-      data: { notes: notes, patientId: patient_id, date: original_appt_date, clinic_id: this.clinic_id, old: notes, followup_date: followup_date, type: type, treatItem: treatItem }
+      data: {
+        notes: notes,
+        patientId: patient_id,
+        date: original_appt_date,
+        clinic_id: this.clinic_id,
+        old: notes,
+        followup_date: followup_date,
+        type: type,
+        treatItem: treatItem
+      }
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (type == 'tick-follower') {
         this.getTickFollowups('close');
       } else if (type == 'recall-overdue') {
@@ -905,7 +1260,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   subtractYears(yearsToSubtract) {
     let todaysDate = new Date();
     let selectedDate = new Date();
-    selectedDate.setFullYear(todaysDate.getFullYear() - yearsToSubtract)
+    selectedDate.setFullYear(todaysDate.getFullYear() - yearsToSubtract);
     return selectedDate;
   }
 
@@ -928,7 +1283,6 @@ export class FollowupsComponent implements OnInit, OnDestroy {
           this.orTablePages.push(i + 1);
         }
       }
-
     }
     if (type == 'TH') {
       this.thikTablePages = [];
@@ -979,22 +1333,28 @@ export class FollowupsComponent implements OnInit, OnDestroy {
 
   setPaginationData(totalData, type) {
     if (type == 'OR') {
-      var startIndex: number = (this.currentORPage * this.pageSize) - this.pageSize;
+      var startIndex: number =
+        this.currentORPage * this.pageSize - this.pageSize;
     }
     if (type == 'TH') {
-      var startIndex: number = (this.currentThickPage * this.pageSize) - this.pageSize;
+      var startIndex: number =
+        this.currentThickPage * this.pageSize - this.pageSize;
     }
     if (type == 'OP') {
-      var startIndex: number = (this.currentOpPage * this.pageSize) - this.pageSize;
+      var startIndex: number =
+        this.currentOpPage * this.pageSize - this.pageSize;
     }
     if (type == 'FT') {
-      var startIndex: number = (this.currentFTPage * this.pageSize) - this.pageSize;
+      var startIndex: number =
+        this.currentFTPage * this.pageSize - this.pageSize;
     }
     if (type == 'UT') {
-      var startIndex: number = (this.currentUTPage * this.pageSize) - this.pageSize;
+      var startIndex: number =
+        this.currentUTPage * this.pageSize - this.pageSize;
     }
     if (type == 'IR') {
-      var startIndex: number = (this.currentIRPage * this.pageSize) - this.pageSize;
+      var startIndex: number =
+        this.currentIRPage * this.pageSize - this.pageSize;
     }
     var endIndex: any = startIndex + this.pageSize;
     var temp: any = [];
@@ -1006,63 +1366,91 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     return temp;
   }
 
-
   handlePageChange(goPage: number, type) {
     if (type == 'OR') {
       this.currentORPage = goPage;
       if (this.showCompleteOverdue == true) {
         this.followupOverDueRecallInCMP = this.followupOverDueRecall;
       } else {
-        this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(p => p.is_complete != true);
+        this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(
+          (p) => p.is_complete != true
+        );
       }
-      this.followupOverDueRecallInCMP = this.setPaginationData(this.followupOverDueRecallInCMP, type);
+      this.followupOverDueRecallInCMP = this.setPaginationData(
+        this.followupOverDueRecallInCMP,
+        type
+      );
     }
     if (type == 'TH') {
       this.currentThickPage = goPage;
       if (this.showCompleteTick == true) {
         this.followupTickFollowupsInCMP = this.followupTickFollowups;
       } else {
-        this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(p => p.is_complete != true);
+        this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(
+          (p) => p.is_complete != true
+        );
       }
-      this.followupTickFollowupsInCMP = this.setPaginationData(this.followupTickFollowupsInCMP, 'TH');
+      this.followupTickFollowupsInCMP = this.setPaginationData(
+        this.followupTickFollowupsInCMP,
+        'TH'
+      );
     }
     if (type == 'OP') {
       this.currentOpPage = goPage;
       if (this.postopCallsPostOp == true) {
         this.followupPostOpCallsInComp = this.followupPostOpCalls;
       } else {
-        this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(p => p.is_complete != true);
+        this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(
+          (p) => p.is_complete != true
+        );
       }
-      this.followupPostOpCallsInComp = this.setPaginationData(this.followupPostOpCallsInComp, 'OP');
+      this.followupPostOpCallsInComp = this.setPaginationData(
+        this.followupPostOpCallsInComp,
+        'OP'
+      );
     }
     if (type == 'FT') {
       this.currentFTPage = goPage;
       if (this.showCompleteFta == true) {
         this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
       } else {
-        this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(p => p.is_complete != true);
+        this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(
+          (p) => p.is_complete != true
+        );
       }
-      this.followupFtaFollowupsInCMP = this.setPaginationData(this.followupFtaFollowupsInCMP, 'FT');
+      this.followupFtaFollowupsInCMP = this.setPaginationData(
+        this.followupFtaFollowupsInCMP,
+        'FT'
+      );
     }
     if (type == 'UT') {
       this.currentUTPage = goPage;
       if (this.showCompleteUta == true) {
         this.followupUtaFollowupsInCMP = this.followupUtaFollowups;
       } else {
-        this.followupUtaFollowupsInCMP = this.followupUtaFollowups.filter(p => p.is_complete != true);
+        this.followupUtaFollowupsInCMP = this.followupUtaFollowups.filter(
+          (p) => p.is_complete != true
+        );
       }
-      this.followupUtaFollowupsInCMP = this.setPaginationData(this.followupUtaFollowupsInCMP, 'UT');
+      this.followupUtaFollowupsInCMP = this.setPaginationData(
+        this.followupUtaFollowupsInCMP,
+        'UT'
+      );
     }
     if (type == 'IR') {
       this.currentIRPage = goPage;
       if (this.showCompleteReferrals == true) {
         this.internalReferralRecallInCMP = this.internalReferrals;
       } else {
-        this.internalReferralRecallInCMP = this.internalReferrals.filter(p => p.is_complete != true);
+        this.internalReferralRecallInCMP = this.internalReferrals.filter(
+          (p) => p.is_complete != true
+        );
       }
-      this.internalReferralRecallInCMP = this.setPaginationData(this.internalReferralRecallInCMP, 'IR');
+      this.internalReferralRecallInCMP = this.setPaginationData(
+        this.internalReferralRecallInCMP,
+        'IR'
+      );
     }
-
   }
 
   setDate(type) {
@@ -1075,30 +1463,55 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     } else {
       selectedDate.setMonth(todaysDate.getMonth() - 1);
     }
-    this.selectedMonthYear = this.datepipe.transform(selectedDate, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
+    this.selectedMonthYear = this.datepipe
+      .transform(selectedDate, 'yyyy-MM-dd 00:00:00')
+      .replace(/\s/, 'T');
     this.refreshPerformanceTab();
   }
 
   getChartsTips() {
-    this.chartstipsService.getCharts(7).subscribe((data) => {
-      if (data.status == 200) {
-        this.charTips = data.body.data;
-      }
-    }, error => { });
+    this.chartstipsService.getCharts(7).subscribe(
+      (data) => {
+        if (data.status == 200) {
+          this.charTips = data.body.data;
+        }
+      },
+      (error) => {}
+    );
   }
 
   formatHistory(history) {
     let html = '<table class="history">';
-    let statusSpe = { 'Did not want to book': 'Didn’t want to book', 'Cant be reached': 'Can\'t be reached', 'Cant be reached - left': 'Can\'t be reached - left voicemail' };
+    let statusSpe = {
+      'Did not want to book': 'Didn’t want to book',
+      'Cant be reached': "Can't be reached",
+      'Cant be reached - left': "Can't be reached - left voicemail"
+    };
     history.forEach((tip) => {
-      let date = this.datepipe.transform(new Date(tip.followup_date), 'MMM dd, yyyy');
-      if (typeof (statusSpe[tip.status]) != 'undefined') {
-        html += '<tr><td width="28%">' + date + ':</td><td> ' + statusSpe[tip.status] + '</td></tr>';
+      let date = this.datepipe.transform(
+        new Date(tip.followup_date),
+        'MMM dd, yyyy'
+      );
+      if (typeof statusSpe[tip.status] != 'undefined') {
+        html +=
+          '<tr><td width="28%">' +
+          date +
+          ':</td><td> ' +
+          statusSpe[tip.status] +
+          '</td></tr>';
       } else {
-        html += '<tr><td width="28%">' + date + ':</td><td> ' + tip.status + '</td></tr>';
+        html +=
+          '<tr><td width="28%">' +
+          date +
+          ':</td><td> ' +
+          tip.status +
+          '</td></tr>';
       }
       if (tip.notes && tip.notes != '' && tip.notes != 'null') {
-        html += '<tr><td  class="notes" width="28%">Notes:</td><td> ' + tip.notes + '</td></tr>';
+        html +=
+          '<tr><td  class="notes" width="28%">Notes:</td><td> ' +
+          tip.notes +
+          '</td></tr>';
       }
     });
     html += '</table>';
@@ -1111,34 +1524,37 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     setTimeout(function () {
       let divLnt = $('.custom-tooltip').height() + 40;
       let divwd = $('.custom-tooltip').width() - 5;
-      $('.custom-tooltip').css({ 'top': (y - divLnt), 'left': (x - divwd) });
+      $('.custom-tooltip').css({ top: y - divLnt, left: x - divwd });
     }, 100);
   }
 
   historyPosChips(event, colour) {
-    $('.custom-tooltip').css({ 'visibility': 'hidden', 'opacity': '1' });
+    $('.custom-tooltip').css({ visibility: 'hidden', opacity: '1' });
     let x = event.clientX;
     let y = parseInt(event.clientY);
     setTimeout(function () {
       let textLength = $('.tooltip-info-text').text().length;
       if (textLength >= 100) {
-        $('.custom-tooltip').css({ 'width': 650 });
+        $('.custom-tooltip').css({ width: 650 });
       } else if (textLength >= 75) {
-        $('.custom-tooltip').css({ 'width': 550 });
+        $('.custom-tooltip').css({ width: 550 });
       }
       $('.tooltip-container').addClass('mat-' + colour);
-      $('.custom-tooltip').css({ 'top': (y + 20), 'left': (x - 200), 'visibility': 'visible', 'opacity': '1' });
+      $('.custom-tooltip').css({
+        top: y + 20,
+        left: x - 200,
+        visibility: 'visible',
+        opacity: '1'
+      });
     }, 100);
   }
 
-  refreshDataAuto()
-  {
+  refreshDataAuto() {
     this.getFollowupPostOpCalls();
     this.getOverdueRecalls();
     this.getinternalReferrals();
     this.getTickFollowups();
     this.getFtaFollowups();
     this.getUtaFollowups();
-      
   }
-} 
+}

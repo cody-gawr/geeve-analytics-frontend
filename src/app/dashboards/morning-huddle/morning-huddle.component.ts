@@ -342,6 +342,11 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   public LabNeeded: boolean = false;
   public selectDentist = 0;
 
+  public get isExactOrCore(): boolean {
+    const clinics = this.localStorageService.getObject<any[]>('clinics') || [];
+    return clinics.some((c) => ['exact', 'core'].includes(c.pms));
+  }
+
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
   displayedColumns1: string[] = ['start', 'name', 'dentist'];
   displayedColumns2: string[] = ['start', 'name', 'code'];
@@ -378,7 +383,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   displayedColumns10: string[] = ['equip_item', 'quantity', 'am', 'pm'];
   //displayedColumns11: string[] = ['start', 'dentist', 'name', 'statuscode', 'card', 'rebooked'];
   get displayedColumns11() {
-    if(this.isSMSEnabled){
+    if (this.isSMSEnabled) {
       return [
         'start',
         'dentist',
@@ -388,7 +393,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         'sendReview',
         'rebooked'
       ];
-    }else{
+    } else {
       return ['start', 'dentist', 'name', 'statuscode', 'card', 'rebooked'];
     }
   }
@@ -425,6 +430,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     private datepipe: DatePipe,
+    private localStorageService: LocalStorageService,
     private morningHuddleService: MorningHuddleService,
     private _cookieService: CookieService,
     //private headerService: HeaderService,
@@ -433,8 +439,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     public constants: AppConstants,
     public dialog: MatDialog,
     public chartstipsService: ChartstipsService,
-    public clinicianAnalysisService: ClinicianAnalysisService,
-    private localStorageService: LocalStorageService
+    public clinicianAnalysisService: ClinicianAnalysisService
   ) {
     this.getChartsTips();
     this.selected = { start: moment() };
@@ -485,7 +490,9 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       self.refreshDataAuto();
     }, 1000 * 300);
 
-    this.creditStatusTimer = setInterval(()=>{this.updateCreditStatus()}, 30000);
+    this.creditStatusTimer = setInterval(() => {
+      this.updateCreditStatus();
+    }, 30000);
   }
 
   updateCreditStatus() {
@@ -577,7 +584,9 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               this.isAcceptedSMSTerms = !!v.data.accepted_sms_terms;
             //}
           },
-          error: (e) => {console.error(e)}
+          error: (e) => {
+            console.error(e);
+          }
         });
 
       this.dentist_id = this._cookieService.get('dentistid');
@@ -751,8 +760,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.clinicDentistsReminders = [];
 
     this.morningHuddleService
-      .getReminders(this.clinic_id, this.previousDays, this.user_type).subscribe(
-      {
+      .getReminders(this.clinic_id, this.previousDays, this.user_type)
+      .subscribe({
         next: (res) => {
           this.remindersRecallsOverdueLoader = false;
           if (res.status == 200) {
@@ -804,11 +813,11 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
                     this.refreshReminderTab(this.dentistid);
                   } else {
                     res.body.data.forEach((val) => {
-                      var isExsist = this.clinicDentistsReminders.filter(function (
-                        person
-                      ) {
-                        return person.provider_id == val.provider_id;
-                      });
+                      var isExsist = this.clinicDentistsReminders.filter(
+                        function (person) {
+                          return person.provider_id == val.provider_id;
+                        }
+                      );
                       if (isExsist.length <= 0) {
                         var nm =
                           val.jeeve_name != '' && val.jeeve_name
@@ -830,15 +839,15 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
                   }
                   this.refreshReminderTab(this.selectDentist);
                 }
-              }
-            )
+              });
           } else if (res.status == 401) {
             this.handleUnAuthorization();
           }
         },
-        error: (e) => {this.handleUnAuthorization();}
-      }
-    );
+        error: (e) => {
+          this.handleUnAuthorization();
+        }
+      });
   }
 
   /*  getFollowupsUnscheduledPatients(){

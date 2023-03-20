@@ -6,38 +6,37 @@
 />
 <div class="sa_dashboard_inner_content morning-huddle">
   <div class="morning-huddle-subhead">
-      <div class="morning-huddle-date topModel custom_date morning-huddle-datepicker">
-        <input
-          id="mhdatepicker"
-          class="filter_custom filter sa_datepicker Mhdatepic"
-          readonly
-          placeholder=""
-          type="text"
-          matInput
-          ngxDaterangepickerMd
-          [singleDatePicker]="true"
-          [locale]="{ applyLabel: 'ok', displayFormat: 'DD MMMM, y' }"
-          [(ngModel)]="selected"
-          [autoApply]="true"
-          [showDropdowns]="true"
-          (ngModelChange)="setDateChange($event)"
-        />
+    <div
+      class="morning-huddle-date topModel custom_date morning-huddle-datepicker"
+    >
+      <input
+        id="mhdatepicker"
+        class="filter_custom filter sa_datepicker Mhdatepic"
+        readonly
+        placeholder=""
+        type="text"
+        matInput
+        ngxDaterangepickerMd
+        [singleDatePicker]="true"
+        [locale]="{ applyLabel: 'ok', displayFormat: 'DD MMMM, y' }"
+        [(ngModel)]="selected"
+        [autoApply]="true"
+        [showDropdowns]="true"
+        (ngModelChange)="setDateChange($event)"
+      />
 
       <div class="toploader" *ngIf="showProcessingText && checkSuccessApi()">
         <img class="tableLoader" src="../../../assets/images/logo-icon.gif" />
       </div>
     </div>
-      <div class="morning-review-topup" *ngIf="isSMSEnabled">
-        <span>SMS Credits: <strong style="color: #18a689;">{{ remainCredits }}</strong></span>
-        <a
-          (click)="openTopUpCredits()"
-          class="add-credits-btn"
-        >
-          Add credits
-      </a>
-      </div>
+    <div class="morning-review-topup" *ngIf="isSMSEnabled">
+      <span
+        >SMS Credits:
+        <strong style="color: #18a689">{{ remainCredits }}</strong></span
+      >
+      <a (click)="openTopUpCredits()" class="add-credits-btn"> Add credits </a>
+    </div>
   </div>
-
 
   <mat-tab-group
     [selectedIndex]="selectedTab"
@@ -1599,24 +1598,23 @@
             </td>
           </ng-container>
 
-          <ng-container
-            *ngIf="isSMSEnabled"
-            matColumnDef="sendReview"
-          >
+          <ng-container *ngIf="isSMSEnabled" matColumnDef="sendReview">
             <th mat-header-call *matHeaderCellDef>Send Review</th>
             <td mat-cell style="text-align: center" *matCellDef="let element">
               <i
-              *ngIf="element.sms_status == 'queued'"
+                *ngIf="element.sms_status == 'queued'"
                 class="fa fa-hourglass"
               ></i>
               <i
-              *ngIf="element.sms_status == 'delivered'"
+                *ngIf="element.sms_status == 'delivered'"
                 class="fa fa-check mh-fa-check"
                 [matTooltip]="element.review_msg"
               ></i>
-              <i 
+              <i
                 *ngIf="element.sms_status == 'sent'"
-                class="fa fa-clock" aria-hidden="true"></i>
+                class="fa fa-clock"
+                aria-hidden="true"
+              ></i>
               <button
                 *ngIf="element.sms_status == 'failed'"
                 mat-stroked-button
@@ -3476,6 +3474,7 @@
 
       <!-- UTA Follow ups -->
       <mat-card
+        *ngIf="!isExactOrCore"
         class="table-card post_call_responsive_border followUpsTab4 morngHuddle utafollowup"
       >
         <mat-card-title>
