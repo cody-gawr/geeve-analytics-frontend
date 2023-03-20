@@ -140,7 +140,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     });
     this.user_type = this._cookieService.get('user_type');
     this.getAllClinics();
-    console.log(this.isExactOrCore);
   }
 
   ngOnDestroy(): void {

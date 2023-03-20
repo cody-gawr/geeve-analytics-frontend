@@ -53,6 +53,7 @@ import { StripePaymentDialog } from './stripe-payment-modal/stripe-payment-modal
 import { SendReviewDialog } from './send-review-dialog/send-review-dialog.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import * as _ from 'lodash';
+import { LocalStorageService } from '../../shared/local-storage.service';
 @Component({
   selector: 'notes-add-dialog',
   templateUrl: './add-notes.html',
@@ -340,6 +341,11 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   public LabNeeded: boolean = false;
   public selectDentist = 0;
 
+  public get isExactOrCore(): boolean {
+    const clinics = this.localStorageService.getObject<any[]>('clinics') || [];
+    return clinics.some((c) => ['exact', 'core'].includes(c.pms));
+  }
+
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
   displayedColumns1: string[] = ['start', 'name', 'dentist'];
   displayedColumns2: string[] = ['start', 'name', 'code'];
@@ -416,6 +422,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     private datepipe: DatePipe,
+    private localStorageService: LocalStorageService,
     private morningHuddleService: MorningHuddleService,
     private _cookieService: CookieService,
     //private headerService: HeaderService,
@@ -475,20 +482,33 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       self.refreshDataAuto();
     }, 1000 * 300);
 
-    this.creditStatusTimer = setInterval(()=>{this.updateCreditStatus()}, 30000);
+    this.creditStatusTimer = setInterval(() => {
+      this.updateCreditStatus();
+    }, 30000);
   }
 
   updateCreditStatus() {
-    this.morningHuddleService.getCreditStatus(this.clinic_id, this.remindersRecallsOverdue.map(r => r.appoint_id)).subscribe((res) => {
-      if(res.status){
-        this.remainCredits = res.data.remain_credits;
-        this.costPerSMS = res.data.cost_per_sms;
-        const statusList = res.data.sms_status_list;
-        this.remindersRecallsOverdue = _.merge(this.remindersRecallsOverdue, statusList);
-        this.remindersRecallsOverdueTemp = _.merge(this.remindersRecallsOverdueTemp, statusList);
-      }
-    });
-  };
+    this.morningHuddleService
+      .getCreditStatus(
+        this.clinic_id,
+        this.remindersRecallsOverdue.map((r) => r.appoint_id)
+      )
+      .subscribe((res) => {
+        if (res.status) {
+          this.remainCredits = res.data.remain_credits;
+          this.costPerSMS = res.data.cost_per_sms;
+          const statusList = res.data.sms_status_list;
+          this.remindersRecallsOverdue = _.merge(
+            this.remindersRecallsOverdue,
+            statusList
+          );
+          this.remindersRecallsOverdueTemp = _.merge(
+            this.remindersRecallsOverdueTemp,
+            statusList
+          );
+        }
+      });
+  }
 
   ngAfterViewInit(): void {
     // this.endOfDaysTasksInComp.sort = this.sort1;
@@ -725,8 +745,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     // ])
 
     this.morningHuddleService
-      .getReminders(this.clinic_id, this.previousDays, this.user_type).subscribe(
-      {
+      .getReminders(this.clinic_id, this.previousDays, this.user_type)
+      .subscribe({
         next: (res) => {
           this.remindersRecallsOverdueLoader = false;
           if (res.status == 200) {
@@ -752,10 +772,14 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               this.LabNeeded = true;
             }
             this.remindersTotal = res.body.total;
-            this.morningHuddleService.getCreditStatus(this.clinic_id, res.body.data.map(d => d.appoint_id)).subscribe(
-              (v2) => {
-                if(v2.status){
-                  this.remainCredits =v2.data.remain_credits;
+            this.morningHuddleService
+              .getCreditStatus(
+                this.clinic_id,
+                res.body.data.map((d) => d.appoint_id)
+              )
+              .subscribe((v2) => {
+                if (v2.status) {
+                  this.remainCredits = v2.data.remain_credits;
                   this.costPerSMS = v2.data.cost_per_sms;
                   const statusList = v2.data.sms_status_list;
 
@@ -770,11 +794,11 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
                     this.refreshReminderTab(this.dentistid);
                   } else {
                     res.body.data.forEach((val) => {
-                      var isExsist = this.clinicDentistsReminders.filter(function (
-                        person
-                      ) {
-                        return person.provider_id == val.provider_id;
-                      });
+                      var isExsist = this.clinicDentistsReminders.filter(
+                        function (person) {
+                          return person.provider_id == val.provider_id;
+                        }
+                      );
                       if (isExsist.length <= 0) {
                         var nm =
                           val.jeeve_name != '' && val.jeeve_name
@@ -796,15 +820,15 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
                   }
                   this.refreshReminderTab(this.selectDentist);
                 }
-              }
-            )
+              });
           } else if (res.status == 401) {
             this.handleUnAuthorization();
           }
         },
-        error: (e) => {this.handleUnAuthorization();}
-      }
-    );
+        error: (e) => {
+          this.handleUnAuthorization();
+        }
+      });
   }
 
   /*  getFollowupsUnscheduledPatients(){
@@ -2133,7 +2157,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
           patient_name: element.patient_name,
           mobile: element.mobile,
           appoint_id: element.appoint_id,
-          total_remains: this.remainCredits,
+          total_remains: this.remainCredits
         }
       });
       sendReviewDialog.afterClosed().subscribe((result) => {
