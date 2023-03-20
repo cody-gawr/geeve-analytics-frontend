@@ -3,11 +3,8 @@ import {
   Inject,
   Component,
   Input,
-  ViewChild,
   ViewEncapsulation,
 } from "@angular/core";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatPaginator } from "@angular/material/paginator";
 import { Router } from "@angular/router";
 import { CookieService } from "ngx-cookie";
 import { ToastrService } from "ngx-toastr";
@@ -131,7 +128,7 @@ export class CustomisationsComponent
   public status_codes_enable: boolean = true;
   public opg_overdue_enable: boolean = true;
   public numberOfRecords = 20;
-  public visibleMaxBarSetting: boolean;
+  public visibleMaxBarSetting: boolean = true;
   constructor(
     private _cookieService: CookieService,
     private customisationsService: CustomisationsService,
@@ -146,9 +143,6 @@ export class CustomisationsComponent
     super();
     // console.log('test ',this.clinic_id$.value)
     // console.log('test ',this.clinic_id$)
-  }
-
-  ngOnInit() {
     this.form = this.fb.group({
       //recall_codes1: [null, Validators.compose([Validators.required])],
       recall_codes1: [null],
@@ -166,6 +160,10 @@ export class CustomisationsComponent
       hourly_rate_appt_hours: [null],
       max_chart_bars: [null, Validators.compose([Validators.required])],
     });
+
+  }
+
+  ngOnInit() {
     this.getCustomiseSettings();
     this.getclinicHuddleNotifications();
     this.setVisibilityOfMaxBar();
