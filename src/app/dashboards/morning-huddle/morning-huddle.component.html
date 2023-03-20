@@ -1620,24 +1620,27 @@
               <button
                 *ngIf="element.sms_status == 'failed'"
                 mat-stroked-button
+                [disabled]="element.unsubscribed"
                 class="mat-dc"
-                (click)="openSendReviewMsgDialog(element)"
+                (click)="openSendReviewBtnDialog(element)"
               >
                 Retry (Failed)
               </button>
               <button
                 *ngIf="element.sms_status == 'undelivered'"
                 mat-stroked-button
+                [disabled]="element.unsubscribed"
                 class="mat-dc"
-                (click)="openSendReviewMsgDialog(element)"
+                (click)="openSendReviewBtnDialog(element)"
               >
                 Retry (Undelivered)
               </button>
               <button
                 *ngIf="element.sms_status == undefined"
                 mat-stroked-button
+                [disabled]="element.unsubscribed"
                 class="mat-dc"
-                (click)="openSendReviewMsgDialog(element)"
+                (click)="openSendReviewBtnDialog(element)"
               >
                 Send
               </button>

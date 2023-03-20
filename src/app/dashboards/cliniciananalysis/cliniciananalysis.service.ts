@@ -923,7 +923,7 @@ export class ClinicianAnalysisService {
         return this.http.get(this.apiUrl + "/clinics/clinicGetInfo?clinic_id="+clinicId+"&clinic_info="+clinicInfo, header).pipe(map((response: HttpResponse<Object>) => { return response; }));
     }
     /******** get clinic **********/
-    getClinicSettings(clinicId): Observable<{
+    getClinicFollowUpSettings(clinicId): Observable<{
         data: {
             clinic_id: number,
             compare_mode: number,
@@ -963,7 +963,8 @@ export class ClinicianAnalysisService {
             uta_followup_days: number,
             utility_ver: string,
             xray_months: number,
-            sms_enabled: number
+            sms_enabled: number,
+            accepted_sms_terms: number,
         },
         message: string
     }> {
@@ -973,5 +974,4 @@ export class ClinicianAnalysisService {
             header
             ).pipe(map((response: HttpResponse<any>) => { return response.body; }));
     }
-
 }

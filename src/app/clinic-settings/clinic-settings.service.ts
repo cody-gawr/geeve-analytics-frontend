@@ -341,6 +341,28 @@ export class ClinicSettingsService {
         );
     }
 
+    updateReviewSettings(
+        clinic_id: number,
+        {sms_enabled = undefined, accepted_sms_terms = undefined}
+      ): Observable<{status: boolean}> {
+        const header = this.getHeaders();
+        return this.http
+          .post(
+            this.apiUrl + '/reviews/settings',
+            {
+              clinic_id,
+              sms_enabled,
+              accepted_sms_terms
+            },
+            header
+          )
+          .pipe(
+            map((res: HttpResponse<any>) => {
+              return res.body;
+            })
+          );
+      }
+
     getGoogleAuthUrl(clinic_id: number): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/reviews/getGoogleAuthUrl?clinic_id="+clinic_id, header)

@@ -35,6 +35,7 @@ import { SharedModule } from '../shared/shared.module';
 import { DemoMaterialModule } from '../demo-material-module';
 import { StripePaymentDialog } from './morning-huddle/stripe-payment-modal/stripe-payment-modal.component';
 import { SendReviewDialog } from './morning-huddle/send-review-dialog/send-review-dialog.component';
+import { TermsConditionsDialog } from './morning-huddle/terms-conditions-dialog/terms-conditions-dialog.component';
 
 @NgModule({
   imports: [
@@ -76,7 +77,8 @@ import { SendReviewDialog } from './morning-huddle/send-review-dialog/send-revie
     DateMenuBarComponent,
     FollowupsComponent,
     StripePaymentDialog,
-    SendReviewDialog
+    SendReviewDialog,
+    TermsConditionsDialog
   ]
 })
 export class DashboardsModule {}

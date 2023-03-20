@@ -53,6 +53,8 @@ import { StripePaymentDialog } from './stripe-payment-modal/stripe-payment-modal
 import { SendReviewDialog } from './send-review-dialog/send-review-dialog.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import * as _ from 'lodash';
+import { LocalStorageService } from '../../shared/local-storage.service';
+import { TermsConditionsDialog } from './terms-conditions-dialog/terms-conditions-dialog.component';
 @Component({
   selector: 'notes-add-dialog',
   templateUrl: './add-notes.html',
@@ -411,6 +413,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   remainCredits = 0;
   costPerSMS = 0.0;
   isSMSEnabled = false;
+  isAcceptedSMSTerms = false;
   // @ViewChild('sort1') sort1: MatSort;
   sortList: QueryList<MatSort>;
   creditStatusTimer = null;
@@ -430,7 +433,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     public constants: AppConstants,
     public dialog: MatDialog,
     public chartstipsService: ChartstipsService,
-    public clinicianAnalysisService: ClinicianAnalysisService
+    public clinicianAnalysisService: ClinicianAnalysisService,
+    private localStorageService: LocalStorageService
   ) {
     this.getChartsTips();
     this.selected = { start: moment() };
@@ -486,7 +490,13 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
 
   updateCreditStatus() {
     this.morningHuddleService.getCreditStatus(
-      this.clinic_id, this.remindersRecallsOverdue.map(r => r.appoint_id)
+      this.clinic_id, 
+      this.remindersRecallsOverdue.map(r => {
+        return {
+           appoint_id: r.appoint_id,
+           phone_number: r.mobile
+        }
+      })
     ).subscribe((res) => {
       if(res.status){
         this.remainCredits = res.data.remain_credits;
@@ -539,8 +549,16 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       //   }
       // });
 
+      const clinics = this.localStorageService.getObject<any[]>('clinics');
+      
+      if(clinics && clinics.length > 0){
+        const clinic = clinics.find(c => c.id == parseInt(this.clinic_id));
+        this.isSMSEnabled = !! clinic.sms_enabled;
+        this.isAcceptedSMSTerms = !! clinic.accepted_sms_terms;
+      }
+
       this.clinicianAnalysisService
-        .getClinicSettings(this.clinic_id)
+        .getClinicFollowUpSettings(this.clinic_id)
         .subscribe({
           next: (v) => {
             // if (res.status == 200) {
@@ -553,8 +571,10 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
                 v.data.daily_task_enable == 1 ? true : false;
               this.isEnableEquipList =
                 v.data.equip_list_enable == 1 ? true : false;
-
+            if(v.data.sms_enabled != undefined )
               this.isSMSEnabled = !!v.data.sms_enabled;
+            if(v.data.accepted_sms_terms != undefined)
+              this.isAcceptedSMSTerms = !!v.data.accepted_sms_terms;
             //}
           },
           error: (e) => {console.error(e)}
@@ -760,7 +780,12 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             this.remindersTotal = res.body.total;
             this.morningHuddleService.getCreditStatus(
               this.clinic_id, 
-              res.body.data.map(d => d.appoint_id)
+              res.body.data.map(d => {
+                return {
+                  appoint_id: d.appoint_id,
+                  phone_number: d.mobile
+                }
+              })
             ).subscribe(
               (v2) => {
                 if(v2.status){
@@ -2125,7 +2150,23 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     }
   }
 
-  openSendReviewMsgDialog(element) {
+  openSendReviewBtnDialog(element) {
+    if(!this.isAcceptedSMSTerms){
+      const dialog = this.dialog.open(TermsConditionsDialog, {data: {clinic_id: this.clinic_id}});
+      dialog.afterClosed().subscribe(v => {
+        if(v){
+          this.isAcceptedSMSTerms = true;
+          this.openSMSDialog(element);
+        }
+          
+      })
+    }else {
+      this.openSMSDialog(element);
+    }
+
+  }
+
+  openSMSDialog(element){
     if (this.remainCredits <= 0) {
       this.dialog.open(StripePaymentDialog, {
         data: {
