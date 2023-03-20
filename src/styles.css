@@ -5078,6 +5078,7 @@ body button.mat-gray {
   box-shadow: 0px 4px 16px -7px #7a7a7a !important;
 }
 
+
 .mat-raised-button.mat-green,
 .mat-raised-button.mat-dc {
   box-shadow: 0px 10px 13px -5px rgba(24, 166, 137, 0.3);
@@ -7013,6 +7014,7 @@ top: 29px;
 .mat-raised-button[disabled] {
   cursor: none !important;
   background-color: #cecece !important;
+  opacity: 0.7;
 }
 
 .mat-raised-button[disabled] .mat-button-wrapper {
@@ -8967,4 +8969,9 @@ div.dialog-header {
 
 div.dialog-header .mat-icon {
   cursor: pointer;
+}
+
+.mat-stroked-button:not(.mat-button-disabled) {
+  /* border-color: rgba(0, 0, 0, 0.12); */
+  border-color: #18a689 !important;
 }

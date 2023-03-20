@@ -1101,7 +1101,9 @@ export class MorningHuddleService {
     data: {
       sms_status_list:Array<{sms_status:string, appoint_id:string}>,
       remain_credits:number,
-      cost_per_sms: number
+      cost_per_sms: number,
+      phone_number: string | null,
+      review_msg: string | null
     }
   }> {
     const header = this.getHeaders();

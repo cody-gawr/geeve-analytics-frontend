@@ -227,7 +227,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     'Daily Tasks'
   ];
   public homeUrl = environment.homeUrl;
-  public apiUrl = environment.apiUrl;
+  //public apiUrl = environment.apiUrl;
   public id: any = '';
   public clinic_id: any = '';
   public user_type: any = '';
@@ -380,8 +380,10 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   ];
   displayedColumns9: string[] = ['name', 'completed_by', 'status'];
   displayedColumns10: string[] = ['equip_item', 'quantity', 'am', 'pm'];
-  displayedColumns11: string[] = environment.apiUrl.includes('test')
-    ? [
+  //displayedColumns11: string[] = ['start', 'dentist', 'name', 'statuscode', 'card', 'rebooked'];
+  get displayedColumns11() {
+    if (this.isSMSEnabled) {
+      return [
         'start',
         'dentist',
         'name',
@@ -389,8 +391,11 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         'card',
         'sendReview',
         'rebooked'
-      ]
-    : ['start', 'dentist', 'name', 'statuscode', 'card', 'rebooked'];
+      ];
+    } else {
+      return ['start', 'dentist', 'name', 'statuscode', 'card', 'rebooked'];
+    }
+  }
   displayedColumns12: string[] = [
     'start',
     'dentist',
@@ -411,6 +416,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   timezone: string = '+1000';
   remainCredits = 0;
   costPerSMS = 0.0;
+  isSMSEnabled = false;
   // @ViewChild('sort1') sort1: MatSort;
   sortList: QueryList<MatSort>;
   creditStatusTimer = null;
@@ -553,17 +559,23 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
 
       this.clinicianAnalysisService
         .getClinicSettings(this.clinic_id)
-        .subscribe((res: any) => {
-          if (res.status == 200) {
-            this.isEnablePO = res.body.data.post_op_enable == 1 ? true : false;
-            this.isEnableOR = res.body.data.recall_enable == 1 ? true : false;
-            this.isEnableTH = res.body.data.tick_enable == 1 ? true : false;
-            this.isEnableFT = res.body.data.fta_enable == 1 ? true : false;
-            this.isEnableUT = res.body.data.uta_enable == 1 ? true : false;
-            this.isEnabletasks =
-              res.body.data.daily_task_enable == 1 ? true : false;
+        .subscribe({
+          next: (v) => {
+            // if (res.status == 200) {
+            this.isEnablePO = v.data.post_op_enable == 1 ? true : false;
+            this.isEnableOR = v.data.recall_enable == 1 ? true : false;
+            this.isEnableTH = v.data.tick_enable == 1 ? true : false;
+            this.isEnableFT = v.data.fta_enable == 1 ? true : false;
+            this.isEnableUT = v.data.uta_enable == 1 ? true : false;
+            this.isEnabletasks = v.data.daily_task_enable == 1 ? true : false;
             this.isEnableEquipList =
-              res.body.data.equip_list_enable == 1 ? true : false;
+              v.data.equip_list_enable == 1 ? true : false;
+
+            this.isSMSEnabled = !!v.data.sms_enabled;
+            //}
+          },
+          error: (e) => {
+            console.error(e);
           }
         });
 
@@ -736,13 +748,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       this.todayUnscheduledBalLoader = true;
     }
     this.clinicDentistsReminders = [];
-
-    // const sources = forkJoin([
-    //   this.morningHuddleService.getCreditStatus(
-    //     this.clinic_id, this.previousDays),
-    //   this.morningHuddleService
-    //   .getReminders(this.clinic_id, this.previousDays, this.user_type)
-    // ])
 
     this.morningHuddleService
       .getReminders(this.clinic_id, this.previousDays, this.user_type)
@@ -2157,7 +2162,9 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
           patient_name: element.patient_name,
           mobile: element.mobile,
           appoint_id: element.appoint_id,
-          total_remains: this.remainCredits
+          total_remains: this.remainCredits,
+          review_msg: element.review_msg,
+          phone_number: element.phone_number
         }
       });
       sendReviewDialog.afterClosed().subscribe((result) => {
