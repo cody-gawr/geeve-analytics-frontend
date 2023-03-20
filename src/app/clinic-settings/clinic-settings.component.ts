@@ -240,7 +240,7 @@ export class ClinicSettingsComponent implements OnInit {
               res.data[0].equip_list_enable == 1 ? true : false;
             this.dailyTasks = res.data[0].daily_task_enable == 1 ? true : false;
             this.compareMode = res.data[0].compare_mode == 1 ? true : false;
-            this.isSMSEnabled = !!res.data[0].sms_enabled;
+            
             // this.postOpCallsMh = res.body.data[0].post_op_days;
             // this.post_op_calls = res.body.data[0].post_op_calls;
             // this.tickDays = res.body.data[0].tick_days;
@@ -277,30 +277,31 @@ export class ClinicSettingsComponent implements OnInit {
 
   getClinicFollowUPSettings() {
     this.clinicSettingsService.getClinicFollowUPSettings(this.id).subscribe(
-      (res) => {
-        this.clinicSettingsService.setClincsSetting(res);
-        if (res.status == 200) {
-          this.postOpEnable = res.body.data.post_op_enable == 1 ? true : false;
-          this.tickEnable = res.body.data.tick_enable == 1 ? true : false;
-          this.recallEnable = res.body.data.recall_enable == 1 ? true : false;
-          this.ftaEnable = res.body.data.fta_enable == 1 ? true : false;
-          this.utaEnable = res.body.data.uta_enable == 1 ? true : false;
-          this.internalReferralEnable =
-            res.body.data.referral_enable == 1 ? true : false;
-          this.ftaFollowupDays = res.body.data.fta_followup_days;
-          this.utaFollowupDays = res.body.data.uta_followup_days;
-          this.ftaFollowupDaysLater = res.body.data.fta_days_later;
-          this.utaFollowupDaysLater = res.body.data.uta_days_later;
-          this.postOpCallsMh = res.body.data.post_op_days;
-          this.post_op_calls = res.body.data.post_op_calls;
-          this.tickDays = res.body.data.tick_days;
-          this.recallWeeks = res.body.data.recall_weeks;
-          this.referralWeeks = res.body.data.referral_weeks;
-        }
+      {
+        next: (res) => {
+          this.clinicSettingsService.setClincsSetting(res);
+        //if (res.status == 200) {
+          this.postOpEnable = res.data.post_op_enable == 1 ? true : false;
+          this.tickEnable = res.data.tick_enable == 1 ? true : false;
+          this.recallEnable = res.data.recall_enable == 1 ? true : false;
+          this.ftaEnable = res.data.fta_enable == 1 ? true : false;
+          this.utaEnable = res.data.uta_enable == 1 ? true : false;
+          this.internalReferralEnable = res.data.referral_enable == 1 ? true : false;
+          this.ftaFollowupDays = res.data.fta_followup_days;
+          this.utaFollowupDays = res.data.uta_followup_days;
+          this.ftaFollowupDaysLater = res.data.fta_days_later;
+          this.utaFollowupDaysLater = res.data.uta_days_later;
+          this.postOpCallsMh = res.data.post_op_days;
+          this.post_op_calls = res.data.post_op_calls;
+          this.tickDays = res.data.tick_days;
+          this.recallWeeks = res.data.recall_weeks;
+          this.referralWeeks = res.data.referral_weeks;
+          this.isSMSEnabled = !!res.data.sms_enabled;
+        //}
       },
-      (error) => {
+      error: (error) => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      }}
     );
   }
 
