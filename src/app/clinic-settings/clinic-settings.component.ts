@@ -117,26 +117,6 @@ export class ClinicSettingsComponent implements OnInit {
       hideRequired: false,
       floatLabel: 'auto'
     });
-  }
-
-  //initilaize component
-  ngOnInit() {
-    this.route.params.subscribe((params) => {
-      this.id = this.route.snapshot.paramMap.get('id');
-      this.getClinicSettings();
-      this.getClinicFollowUPSettings();
-      $('#title').html('Clinic Settings');
-      $('.external_clinic').show();
-      //$('.dentist_dropdown').hide();
-      $('.header_filters').addClass('flex_direct_mar');
-      this.checkXeroStatus();
-      this.checkMyobStatus();
-      // this.getFollowUpSettings();
-      if(this.isSMSEnabled){
-        this.getReviewMsgTemplates();
-        this.getSocialLinks();
-      }
-    });
 
     if (this.apiUrl.includes('test') || this.apiUrl.includes('staging-')) {
       this.form = this.fb.group({
@@ -209,11 +189,30 @@ export class ClinicSettingsComponent implements OnInit {
     this.userPlan = this._cookieService.get('user_plan');
   }
 
+  ngAfterViewInit() {
+    $('#title').html('Clinic Settings');
+    $('.external_clinic').show();
+    //$('.dentist_dropdown').hide();
+    $('.header_filters').addClass('flex_direct_mar');
+  }
+
+  //initilaize component
+  ngOnInit() {
+    this.route.params.subscribe((params) => {
+      this.id = this.route.snapshot.paramMap.get('id');
+      this.getClinicSettings();
+      this.getClinicFollowUPSettings();
+
+      this.checkXeroStatus();
+      this.checkMyobStatus();
+    });
+  }
+
   // For form validator
   email = new FormControl('', [Validators.required, Validators.email]);
 
   // Sufix and prefix
-  hide = true;
+  //hide = true;
 
   getErrorMessage() {
     return this.email.hasError('required')
@@ -226,20 +225,20 @@ export class ClinicSettingsComponent implements OnInit {
   getClinicSettings() {
     this.clinicSettingsService.getClinicSettings(this.id).subscribe(
       {
-        next: (res) => {
+        next: (v) => {
           //if (res.status == 200) {
-            this.clinicSettingsService.setClinicData(res);
-            this.clinicName = res.data[0].clinicName;
-            this.contactName = res.data[0].contactName;
-            this.address = res.data[0].address;
-            this.practice_size = res.data[0].practice_size;
-            this.subtracted_accounts = res.data[0].net_profit_exclusions === 'null' ? "" : res.data[0].net_profit_exclusions;
-            this.ftaUta = res.data[0].fta_uta;
-            this.timezone = res.data[0].timezone;
+            this.clinicSettingsService.setClinicData(v.httpRes);
+            this.clinicName = v.data[0].clinicName;
+            this.contactName = v.data[0].contactName;
+            this.address = v.data[0].address;
+            this.practice_size = v.data[0].practice_size;
+            this.subtracted_accounts = v.data[0].net_profit_exclusions === 'null' ? "" : v.data[0].net_profit_exclusions;
+            this.ftaUta = v.data[0].fta_uta;
+            this.timezone = v.data[0].timezone;
             this.equipmentList =
-              res.data[0].equip_list_enable == 1 ? true : false;
-            this.dailyTasks = res.data[0].daily_task_enable == 1 ? true : false;
-            this.compareMode = res.data[0].compare_mode == 1 ? true : false;
+              v.data[0].equip_list_enable == 1 ? true : false;
+            this.dailyTasks = v.data[0].daily_task_enable == 1 ? true : false;
+            this.compareMode = v.data[0].compare_mode == 1 ? true : false;
             
             // this.postOpCallsMh = res.body.data[0].post_op_days;
             // this.post_op_calls = res.body.data[0].post_op_calls;
@@ -254,8 +253,8 @@ export class ClinicSettingsComponent implements OnInit {
   
             if (this.ftaUta == "") this.ftaUta = "status";
   
-            if (res.data[0].days != null && res.data[0].days != 0) {
-              this.workingDays = JSON.parse(res.data[0].days);
+            if (v.data[0].days != null && v.data[0].days != 0) {
+              this.workingDays = JSON.parse(v.data[0].days);
             }
           // } else if (res.status == "401") {
           //   this._cookieService.put("username", "");
@@ -278,25 +277,29 @@ export class ClinicSettingsComponent implements OnInit {
   getClinicFollowUPSettings() {
     this.clinicSettingsService.getClinicFollowUPSettings(this.id).subscribe(
       {
-        next: (res) => {
-          this.clinicSettingsService.setClincsSetting(res);
+        next: (v) => {
+          this.clinicSettingsService.setClincsSetting(v.httpRes);
         //if (res.status == 200) {
-          this.postOpEnable = res.data.post_op_enable == 1 ? true : false;
-          this.tickEnable = res.data.tick_enable == 1 ? true : false;
-          this.recallEnable = res.data.recall_enable == 1 ? true : false;
-          this.ftaEnable = res.data.fta_enable == 1 ? true : false;
-          this.utaEnable = res.data.uta_enable == 1 ? true : false;
-          this.internalReferralEnable = res.data.referral_enable == 1 ? true : false;
-          this.ftaFollowupDays = res.data.fta_followup_days;
-          this.utaFollowupDays = res.data.uta_followup_days;
-          this.ftaFollowupDaysLater = res.data.fta_days_later;
-          this.utaFollowupDaysLater = res.data.uta_days_later;
-          this.postOpCallsMh = res.data.post_op_days;
-          this.post_op_calls = res.data.post_op_calls;
-          this.tickDays = res.data.tick_days;
-          this.recallWeeks = res.data.recall_weeks;
-          this.referralWeeks = res.data.referral_weeks;
-          this.isSMSEnabled = !!res.data.sms_enabled;
+          this.postOpEnable = v.data.post_op_enable == 1 ? true : false;
+          this.tickEnable = v.data.tick_enable == 1 ? true : false;
+          this.recallEnable = v.data.recall_enable == 1 ? true : false;
+          this.ftaEnable = v.data.fta_enable == 1 ? true : false;
+          this.utaEnable = v.data.uta_enable == 1 ? true : false;
+          this.internalReferralEnable = v.data.referral_enable == 1 ? true : false;
+          this.ftaFollowupDays = v.data.fta_followup_days;
+          this.utaFollowupDays = v.data.uta_followup_days;
+          this.ftaFollowupDaysLater = v.data.fta_days_later;
+          this.utaFollowupDaysLater = v.data.uta_days_later;
+          this.postOpCallsMh = v.data.post_op_days;
+          this.post_op_calls = v.data.post_op_calls;
+          this.tickDays = v.data.tick_days;
+          this.recallWeeks = v.data.recall_weeks;
+          this.referralWeeks = v.data.referral_weeks;
+          this.isSMSEnabled = !!v.data.sms_enabled;
+          if(this.isSMSEnabled){
+            this.getReviewMsgTemplates();
+            this.getSocialLinks();
+          }
         //}
       },
       error: (error) => {

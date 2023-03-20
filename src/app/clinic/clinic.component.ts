@@ -131,14 +131,8 @@ export class ClinicComponent implements AfterViewInit {
 
   //initialize component
   ngAfterViewInit() {
-    this.getUserDetails();
-    this.getClinics();
-    this.userPlan = this._cookieService.get("user_plan");
-    this.user_type = this._cookieService.get("user_type");
     $('.header_filters').removeClass('hide_header');
     $('.header_filters').removeClass('flex_direct_mar');
-
-
     $('#title').html('Clinics');
     //$('.header_filters').hide();
     $('.external_clinic').show();
@@ -169,6 +163,10 @@ export class ClinicComponent implements AfterViewInit {
     setTimeout(() => {
       this.loadingIndicator = false;
     }, 1500);
+    this.getUserDetails();
+    this.getClinics();
+    this.userPlan = this._cookieService.get("user_plan");
+    this.user_type = this._cookieService.get("user_type");
   }
   private warningMessage: string;
   //open add clinic modal
