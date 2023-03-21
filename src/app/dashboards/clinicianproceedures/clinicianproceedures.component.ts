@@ -189,7 +189,7 @@ export class ClinicianProceeduresComponent
 
   ngOnInit(): void {
     this.dentistSubject
-      .pipe(debounceTime(400), distinctUntilChanged(), takeUntil(this.destroy$))
+      .pipe(debounceTime(400), takeUntil(this.destroy$))
       .subscribe((dentist) => this.loadDentistEngine(dentist));
   }
 
@@ -200,8 +200,6 @@ export class ClinicianProceeduresComponent
     this.route.params.subscribe((params) => {
       this.clinic_id = this.route.snapshot.paramMap.get('id');
       this.user_type = this._cookieService.get('user_type');
-      //   this.getDentists();
-      // this.initiate_clinic();
 
       if (this._cookieService.get('dentistid')) {
         this.childid = this._cookieService.get('childid');
@@ -1381,6 +1379,7 @@ export class ClinicianProceeduresComponent
   destroy$ = this.destroy.asObservable();
   //lOad individula dentist Chart
   loadDentist(newValue) {
+    console.log(newValue);
     this.dentistSubject.next(newValue);
   }
 
