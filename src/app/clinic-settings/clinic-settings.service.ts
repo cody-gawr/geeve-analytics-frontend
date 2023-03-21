@@ -343,7 +343,6 @@ export class ClinicSettingsService {
             },
         },
         status: 0
-   
     };
 
     private clincsSetting = new BehaviorSubject(this.data);
@@ -431,12 +430,14 @@ export class ClinicSettingsService {
         );
     }
 
-    getReviewMsgTemplateList(clinic_id: number = null): Observable<any> {
+    getReviewMsgTemplateList(clinic_id: number = null): Observable<{
+        data: any
+    }> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/reviews/getReviewMsgTemplateList"+ (clinic_id?"?clinic_id=" + clinic_id: ""), header)
         .pipe(
-            map((response: HttpResponse<Object>) => {
-                return response;
+            map((response: HttpResponse<any>) => {
+                return response.body;
             })
         );
     }

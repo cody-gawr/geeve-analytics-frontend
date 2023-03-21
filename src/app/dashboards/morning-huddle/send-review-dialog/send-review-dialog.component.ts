@@ -6,6 +6,7 @@ import { ToastrService } from "ngx-toastr";
 import { ClinicSettingsService } from "../../../clinic-settings/clinic-settings.service";
 import { HeaderService } from "../../../layouts/full/header/header.service";
 import { MorningHuddleService } from "../morning-huddle.service";
+import { forkJoin } from 'rxjs';
 
 export interface DialogData {
     clinic_id?: number;
@@ -53,33 +54,26 @@ export class SendReviewDialog {
         if(data.phone_number){
             this.review_msg.setValue(data.review_msg);
         }
-        this.clinicSettingService.getReviewMsgTemplateList(this.data.clinic_id).subscribe((res) => {
-            if (res.status == 200) {
-              if (res.body.data) {
-                this.msgTemplates = res.body.data;
-                if(this.msgTemplates.length > 0 && !data.phone_number){
-                    this.selectedReviewMsg = this.msgTemplates[0].id;
-                    this.onChangeReviewMsg();
-                }
-              }
-            }
-          }, error => {
-            console.error(error.message);
-        });
 
-        this.clinicSettingService.getSocialLinks(this.data.clinic_id).subscribe(
-            {
-                next: v => {
-                    if(v.data){
-                        this.facebookId = v.data.facebook_id;
-                        this.googleId = v.data.google_id;
-                    }
-                },
-                error: e => {
-                    console.error(e.message);
+        const sources = forkJoin([
+            this.clinicSettingService.getSocialLinks(this.data.clinic_id),
+            this.clinicSettingService.getReviewMsgTemplateList(this.data.clinic_id), 
+        ]);
+
+        sources.subscribe(([v1, v2])=>{
+                if(v1.data){
+                    this.facebookId = v1.data.facebook_id;
+                    this.googleId = v1.data.google_id;
                 }
-            }
-        );
+
+                if (v2.data) {
+                    this.msgTemplates = v2.data;
+                    if(this.msgTemplates.length > 0 && !data.phone_number){
+                        this.selectedReviewMsg = this.msgTemplates[0].id;
+                        this.onChangeReviewMsg();
+                    }
+                }
+        });
 
         this.availableMsgLength = data.total_remains < 5? data.total_remains * 160: 800;
     }
@@ -131,10 +125,16 @@ export class SendReviewDialog {
 
     onChangeReviewMsg(){
         const msg = _.find(this.msgTemplates, it => it.id == this.selectedReviewMsg);
-        let renderedMsg = msg.msg_template.replace('[Patient Name]', this.data.patient_name);
-        renderedMsg = renderedMsg.replace('[Clinic Name]', this.clinic.clinicName);
-        renderedMsg = renderedMsg.replace('[Facebook Link]', this.facebookId);
-        renderedMsg = renderedMsg.replace('[Google Link]', this.googleId);
+        let renderedMsg = msg.msg_template.replaceAll('[Patient Name]', this.data.patient_name);
+        renderedMsg = renderedMsg.replaceAll('[Clinic Name]', this.clinic.clinicName);
+        if(this.facebookId){
+            renderedMsg = renderedMsg.replaceAll('[Facebook Link]', this.facebookId);
+        }
+        
+        if(this.googleId){
+            renderedMsg = renderedMsg.replaceAll('[Google Link]', this.googleId);
+        }
+        
         this.review_msg.setValue(renderedMsg);
     }
 }
