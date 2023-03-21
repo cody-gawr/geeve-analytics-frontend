@@ -1096,7 +1096,13 @@ export class MorningHuddleService {
       );
   }
 
-  getCreditStatus(clinic_id: number, appt_ids: string[]): Observable<{
+  getCreditStatus(
+    clinic_id: number, 
+    appt_ids: {
+      appiont_id: string,
+      phone_number: string
+    }[],
+  ): Observable<{
     status: boolean,
     data: {
       sms_status_list:Array<{sms_status:string, appoint_id:string}>,
@@ -1110,7 +1116,7 @@ export class MorningHuddleService {
     return this.http
       .post(this.apiUrl + '/reviews/updateCreditStatus', { 
         clinic_id: clinic_id, 
-        appt_ids: appt_ids }, header)
+        appts: appt_ids }, header)
       .pipe(
         map((res: HttpResponse<any>) => {
           return res.body;

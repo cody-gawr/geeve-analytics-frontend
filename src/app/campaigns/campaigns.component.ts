@@ -278,7 +278,7 @@ export class CampaignsComponent implements OnInit, OnDestroy {
     if (val != undefined && val != 'all') {
       this.clinic_id = val;
 
-      this.clinicianAnalysisService.getClinicSettings(this.clinic_id).subscribe({
+      this.clinicianAnalysisService.getClinicFollowUpSettings(this.clinic_id).subscribe({
         next: (data) => {
           //if (data.status == 200) {
             this.isEnablePO = (data.data.post_op_enable == 1) ? true : false;

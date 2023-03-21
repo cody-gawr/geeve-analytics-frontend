@@ -54,6 +54,7 @@ import { SendReviewDialog } from './send-review-dialog/send-review-dialog.compon
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import * as _ from 'lodash';
 import { LocalStorageService } from '../../shared/local-storage.service';
+import { TermsConditionsDialog } from './terms-conditions-dialog/terms-conditions-dialog.component';
 @Component({
   selector: 'notes-add-dialog',
   templateUrl: './add-notes.html',
@@ -417,6 +418,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   remainCredits = 0;
   costPerSMS = 0.0;
   isSMSEnabled = false;
+  isAcceptedSMSTerms = false;
   // @ViewChild('sort1') sort1: MatSort;
   sortList: QueryList<MatSort>;
   creditStatusTimer = null;
@@ -494,27 +496,24 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   }
 
   updateCreditStatus() {
-    this.morningHuddleService
-      .getCreditStatus(
-        this.clinic_id,
-        this.remindersRecallsOverdue.map((r) => r.appoint_id)
-      )
-      .subscribe((res) => {
-        if (res.status) {
-          this.remainCredits = res.data.remain_credits;
-          this.costPerSMS = res.data.cost_per_sms;
-          const statusList = res.data.sms_status_list;
-          this.remindersRecallsOverdue = _.merge(
-            this.remindersRecallsOverdue,
-            statusList
-          );
-          this.remindersRecallsOverdueTemp = _.merge(
-            this.remindersRecallsOverdueTemp,
-            statusList
-          );
+    this.morningHuddleService.getCreditStatus(
+      this.clinic_id, 
+      this.remindersRecallsOverdue.map(r => {
+        return {
+           appoint_id: r.appoint_id,
+           phone_number: r.mobile
         }
-      });
-  }
+      })
+    ).subscribe((res) => {
+      if(res.status){
+        this.remainCredits = res.data.remain_credits;
+        this.costPerSMS = res.data.cost_per_sms;
+        const statusList = res.data.sms_status_list;
+        this.remindersRecallsOverdue = _.merge(this.remindersRecallsOverdue, statusList);
+        this.remindersRecallsOverdueTemp = _.merge(this.remindersRecallsOverdueTemp, statusList);
+      }
+    });
+  };
 
   ngAfterViewInit(): void {
     // this.endOfDaysTasksInComp.sort = this.sort1;
@@ -557,21 +556,32 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       //   }
       // });
 
+      const clinics = this.localStorageService.getObject<any[]>('clinics');
+      
+      if(clinics && clinics.length > 0){
+        const clinic = clinics.find(c => c.id == parseInt(this.clinic_id));
+        this.isSMSEnabled = !! clinic.sms_enabled;
+        this.isAcceptedSMSTerms = !! clinic.accepted_sms_terms;
+      }
+
       this.clinicianAnalysisService
-        .getClinicSettings(this.clinic_id)
+        .getClinicFollowUpSettings(this.clinic_id)
         .subscribe({
           next: (v) => {
             // if (res.status == 200) {
-            this.isEnablePO = v.data.post_op_enable == 1 ? true : false;
-            this.isEnableOR = v.data.recall_enable == 1 ? true : false;
-            this.isEnableTH = v.data.tick_enable == 1 ? true : false;
-            this.isEnableFT = v.data.fta_enable == 1 ? true : false;
-            this.isEnableUT = v.data.uta_enable == 1 ? true : false;
-            this.isEnabletasks = v.data.daily_task_enable == 1 ? true : false;
-            this.isEnableEquipList =
-              v.data.equip_list_enable == 1 ? true : false;
-
-            this.isSMSEnabled = !!v.data.sms_enabled;
+              this.isEnablePO = v.data.post_op_enable == 1 ? true : false;
+              this.isEnableOR = v.data.recall_enable == 1 ? true : false;
+              this.isEnableTH = v.data.tick_enable == 1 ? true : false;
+              this.isEnableFT = v.data.fta_enable == 1 ? true : false;
+              this.isEnableUT = v.data.uta_enable == 1 ? true : false;
+              this.isEnabletasks =
+                v.data.daily_task_enable == 1 ? true : false;
+              this.isEnableEquipList =
+                v.data.equip_list_enable == 1 ? true : false;
+            if(v.data.sms_enabled != undefined )
+              this.isSMSEnabled = !!v.data.sms_enabled;
+            if(v.data.accepted_sms_terms != undefined)
+              this.isAcceptedSMSTerms = !!v.data.accepted_sms_terms;
             //}
           },
           error: (e) => {
@@ -777,14 +787,18 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               this.LabNeeded = true;
             }
             this.remindersTotal = res.body.total;
-            this.morningHuddleService
-              .getCreditStatus(
-                this.clinic_id,
-                res.body.data.map((d) => d.appoint_id)
-              )
-              .subscribe((v2) => {
-                if (v2.status) {
-                  this.remainCredits = v2.data.remain_credits;
+            this.morningHuddleService.getCreditStatus(
+              this.clinic_id, 
+              res.body.data.map(d => {
+                return {
+                  appoint_id: d.appoint_id,
+                  phone_number: d.mobile
+                }
+              })
+            ).subscribe(
+              (v2) => {
+                if(v2.status){
+                  this.remainCredits =v2.data.remain_credits;
                   this.costPerSMS = v2.data.cost_per_sms;
                   const statusList = v2.data.sms_status_list;
 
@@ -2145,7 +2159,23 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     }
   }
 
-  openSendReviewMsgDialog(element) {
+  openSendReviewBtnDialog(element) {
+    if(!this.isAcceptedSMSTerms){
+      const dialog = this.dialog.open(TermsConditionsDialog, {data: {clinic_id: this.clinic_id}});
+      dialog.afterClosed().subscribe(v => {
+        if(v){
+          this.isAcceptedSMSTerms = true;
+          this.openSMSDialog(element);
+        }
+          
+      })
+    }else {
+      this.openSMSDialog(element);
+    }
+
+  }
+
+  openSMSDialog(element){
     if (this.remainCredits <= 0) {
       this.dialog.open(StripePaymentDialog, {
         data: {

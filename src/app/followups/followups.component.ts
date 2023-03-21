@@ -539,17 +539,15 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (val != undefined && val != 'all') {
       this.clinic_id = val;
 
-      this.clinicianAnalysisService
-        .getClinicSettings(this.clinic_id)
-        .subscribe((data) => {
-          //if (data.status == 200) {
-          this.isEnablePO = data.data.post_op_enable == 1 ? true : false;
-          this.isEnableOR = data.data.recall_enable == 1 ? true : false;
-          this.isEnableTH = data.data.tick_enable == 1 ? true : false;
-          this.isEnableFT = data.data.fta_enable == 1 ? true : false;
-          this.isEnableUT = data.data.uta_enable == 1 ? true : false;
-          //}
-        });
+      this.clinicianAnalysisService.getClinicFollowUpSettings(this.clinic_id).subscribe((data) => {
+        //if (data.status == 200) {
+          this.isEnablePO = (data.data.post_op_enable == 1) ? true : false;
+          this.isEnableOR = (data.data.recall_enable == 1) ? true : false;
+          this.isEnableTH = (data.data.tick_enable == 1) ? true : false;
+          this.isEnableFT = (data.data.fta_enable == 1) ? true : false;
+          this.isEnableUT = (data.data.uta_enable == 1) ? true : false;
+        //}
+      });
       $('#title').html('Follow Ups');
 
       this.selectedMonth = this.datepipe.transform(this.selectedMonthYear, 'M');

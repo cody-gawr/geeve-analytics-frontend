@@ -374,7 +374,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         : this.clinic_id;
     ids.sort((a, b) => a - b);
     this.cliniciananalysisService
-      .getClinicSettings(ids[0])
+      .getClinicFollowUpSettings(ids[0])
       .subscribe((res) => {
         //if (res.status == 200) {
           if (res.data.max_chart_bars)
