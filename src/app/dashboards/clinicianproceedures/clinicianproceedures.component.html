@@ -1059,7 +1059,7 @@
             </div>
             <div
               *ngIf="
-                showmulticlinicPredictor == true &&
+                showmulticlinicPredictor &&
                 predictorLabels1.length == 0 &&
                 predictorRatioTab == '1'
               "
@@ -1076,7 +1076,7 @@
               *ngIf="
                 predictorLabels2.length > 0 &&
                 predictorRatioTab == 2 &&
-                showmulticlinicPredictor == true
+                showmulticlinicPredictor
               "
             >
               <canvas
@@ -1110,7 +1110,7 @@
               *ngIf="
                 predictorLabels3.length > 0 &&
                 predictorRatioTab == 3 &&
-                showmulticlinicPredictor == true
+                showmulticlinicPredictor
               "
             >
               <canvas
@@ -1128,8 +1128,8 @@
             </div>
             <div
               *ngIf="
-                showmulticlinicPredictor == true &&
-                predictorLabels3.length <= 0 &&
+                showmulticlinicPredictor &&
+                predictorLabels3.length == 0 &&
                 predictorRatioTab == '3'
               "
               class="no-data-placeholder"
@@ -1143,7 +1143,7 @@
             <div
               class="chart-predicted-stacked"
               *ngIf="
-                ((showmulticlinicPredictor == false &&
+                ((!showmulticlinicPredictor &&
                   predictedstackedChartData[0]['data'].length > 0) ||
                   predictedstackedChartData[1]['data'].length > 0) &&
                 !predictedstackedChartLoader
@@ -1163,7 +1163,7 @@
             </div>
             <div
               *ngIf="
-                showmulticlinicPredictor == false &&
+                !showmulticlinicPredictor &&
                 predictedstackedChartData1[0]['data'].length == 0 &&
                 predictedstackedChartData1[1]['data'].length == 0 &&
                 predictorRatioTab == '1'
@@ -1179,7 +1179,7 @@
 
             <div
               *ngIf="
-                showmulticlinicPredictor == false &&
+                !showmulticlinicPredictor &&
                 predictedstackedChartData2[0]['data'].length <= 0 &&
                 predictedstackedChartData2[1]['data'].length <= 0 &&
                 predictorRatioTab == '2'
@@ -1194,7 +1194,7 @@
 
             <div
               *ngIf="
-                showmulticlinicPredictor == false &&
+                !showmulticlinicPredictor &&
                 predictedstackedChartData3[0]['data'].length <= 0 &&
                 predictedstackedChartData3[1]['data'].length <= 0 &&
                 predictorRatioTab == '3'
@@ -1217,9 +1217,7 @@
               fxLayout="row wrap"
               class="m-t-40 predicted_main predicted1 sa_chart_details_sec"
               fxLayoutAlign="center center"
-              *ngIf="
-                buildChartPredictorLoader == false && predictorRatioTab == '1'
-              "
+              *ngIf="!buildChartPredictorLoader && predictorRatioTab == '1'"
             >
               <div
                 fxFlex.gt-sm="50%"
@@ -1228,16 +1226,10 @@
                 class="text-center"
               >
                 <!--    <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
-                <h3
-                  *ngIf="showmulticlinicPredictor == false"
-                  class="m-0 value-num"
-                >
+                <h3 *ngIf="!showmulticlinicPredictor" class="m-0 value-num">
                   {{ predictedstackedChartAvr }}
                 </h3>
-                <h3
-                  *ngIf="showmulticlinicPredictor == true"
-                  class="m-0 value-num"
-                >
+                <h3 *ngIf="showmulticlinicPredictor" class="m-0 value-num">
                   {{ multifulratio1 }}
                 </h3>
                 <span class="value-text" *ngIf="currentText != ''"
@@ -1269,9 +1261,7 @@
             <div
               fxLayout="row wrap"
               fxLayoutAlign="center center"
-              *ngIf="
-                buildChartPredictorLoader == false && predictorRatioTab == '2'
-              "
+              *ngIf="!buildChartPredictorLoader && predictorRatioTab == '2'"
               class="m-t-40 predicted_main predicted2 sa_chart_details_sec"
               [style.display]="'none'"
             >
@@ -1281,16 +1271,10 @@
                 fxFlex="100"
                 class="text-center"
               >
-                <h3
-                  *ngIf="showmulticlinicPredictor == false"
-                  class="m-0 value-num"
-                >
+                <h3 *ngIf="!showmulticlinicPredictor" class="m-0 value-num">
                   {{ predictedstackedChartAvr }}
                 </h3>
-                <h3
-                  *ngIf="showmulticlinicPredictor == true"
-                  class="m-0 value-num"
-                >
+                <h3 *ngIf="showmulticlinicPredictor" class="m-0 value-num">
                   {{ multifulratio2 }}
                 </h3>
                 <span class="value-text" *ngIf="currentText != ''"
@@ -1321,9 +1305,7 @@
             <div
               fxLayout="row wrap"
               fxLayoutAlign="center center"
-              *ngIf="
-                buildChartPredictorLoader == false && predictorRatioTab == '3'
-              "
+              *ngIf="!buildChartPredictorLoader && predictorRatioTab == '3'"
               class="m-t-40 predicted_main predicted3 sa_chart_details_sec"
               [style.display]="'none'"
             >
@@ -1333,16 +1315,10 @@
                 fxFlex="100"
                 class="text-center"
               >
-                <h3
-                  *ngIf="showmulticlinicPredictor == false"
-                  class="m-0 value-num"
-                >
+                <h3 *ngIf="!showmulticlinicPredictor" class="m-0 value-num">
                   {{ predictedstackedChartAvr }}
                 </h3>
-                <h3
-                  *ngIf="showmulticlinicPredictor == true"
-                  class="m-0 value-num"
-                >
+                <h3 *ngIf="showmulticlinicPredictor" class="m-0 value-num">
                   {{ multifulratio3 }}
                 </h3>
                 <span class="value-text" *ngIf="currentText != ''"
