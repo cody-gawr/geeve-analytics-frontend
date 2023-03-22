@@ -11,6 +11,7 @@ import { environment } from '../../environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { ReviewMsgTemplateDialog } from './review-msg-template-dialog/review-msg-template-dialog.component';
 import { LocalStorageService } from '../shared/local-storage.service';
+import Swal from 'sweetalert2';
 
 export interface ReviewMsgTemplateObject {
   id?: number;
@@ -645,36 +646,51 @@ export class ClinicSettingsComponent implements OnInit {
   }
 
   removeMsgTemplate(element: ReviewMsgTemplateObject) {
-    this.clinicSettingsService
-      .removeReviewMsgTemplate(element.id, this.id)
-      .subscribe(
-        (result) => {
-          this.toastr.success('Removed a template successfuly!');
-          this.getReviewMsgTemplates();
-        },
-        (error) => {
-          this.toastr.error(error.message);
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You want to delete Task?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+      }).then((result) => {
+        if (result.value) {
+          this.clinicSettingsService
+          .removeReviewMsgTemplate(element.id, this.id)
+          .subscribe(
+            {
+              next: (result) => {
+                this.toastr.success('Removed a template successfuly!');
+                this.getReviewMsgTemplates();
+              },
+              error:(error) => {
+                this.toastr.error(error.message);
+              }
+            }
+          );
         }
-      );
+      });
   }
 
   private getReviewMsgTemplates() {
     this.reviewMsgTemplates = [];
     this.clinicSettingsService.getReviewMsgTemplateList(this.id).subscribe(
-      (res) => {
-        if (res.status == 200) {
-          if (res.body.data) {
-            this.reviewMsgTemplates = res.body.data;
-          }
-        } else if (res.status == 401) {
-          this._cookieService.put('username', '');
-          this._cookieService.put('email', '');
-          this._cookieService.put('userid', '');
-          this.router.navigateByUrl('/login');
+      {
+        next: (v) => {
+          // if (res.status == 200) {
+            if (v.data) {
+              this.reviewMsgTemplates = v.data;
+            }
+          // } else if (res.status == 401) {
+          //   this._cookieService.put('username', '');
+          //   this._cookieService.put('email', '');
+          //   this._cookieService.put('userid', '');
+          //   this.router.navigateByUrl('/login');
+          // }
+        },
+        error: (error) => {
+          this.toastr.error(error.message);
         }
-      },
-      (error) => {
-        this.toastr.error(error.message);
       }
     );
   }
