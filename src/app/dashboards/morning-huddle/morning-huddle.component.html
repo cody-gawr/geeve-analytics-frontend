@@ -1613,12 +1613,14 @@
               <i
                 *ngIf="element.sms_status == 'sent'"
                 class="fa fa-clock"
+                matTooltip="SMS sent, awaiting confirmation of successful delivery"
                 aria-hidden="true"
               ></i>
               <button
                 *ngIf="element.sms_status == 'failed'"
                 mat-stroked-button
                 [disabled]="element.unsubscribed"
+                [matTooltip]="element.unsubscribed?'This patient has unsubscribed':''"
                 class="mat-dc"
                 (click)="openSendReviewBtnDialog(element)"
               >
@@ -1628,6 +1630,7 @@
                 *ngIf="element.sms_status == 'undelivered'"
                 mat-stroked-button
                 [disabled]="element.unsubscribed"
+                [matTooltip]="element.unsubscribed?'This patient has unsubscribed':''"
                 class="mat-dc"
                 (click)="openSendReviewBtnDialog(element)"
               >
@@ -1637,6 +1640,7 @@
                 *ngIf="element.sms_status == undefined"
                 mat-stroked-button
                 [disabled]="element.unsubscribed"
+                [matTooltip]="element.unsubscribed?'This patient has unsubscribed':''"
                 class="mat-dc"
                 (click)="openSendReviewBtnDialog(element)"
               >

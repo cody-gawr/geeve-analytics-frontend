@@ -116,7 +116,7 @@ export class SendReviewDialog {
                 },
                 error: (err) => {
                     this.isWaitingResponse = false;
-                    this._toastrService.error(err.message || 'Unknow Issue');
+                    this._toastrService.error(err.error && err.error.message || err.message);
                 },
                 complete: ()=> {this._toastrService.success('Sent Message Sucessfully!');}
             });

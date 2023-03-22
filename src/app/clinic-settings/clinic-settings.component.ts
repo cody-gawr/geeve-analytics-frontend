@@ -296,7 +296,7 @@ export class ClinicSettingsComponent implements OnInit {
           this.tickDays = v.data.tick_days;
           this.recallWeeks = v.data.recall_weeks;
           this.referralWeeks = v.data.referral_weeks;
-          this.isSMSEnabled = !!v.data.sms_enabled;
+          this.isSMSEnabled = !!v.data.sms_enabled && parseInt(this.userType) != 4;
           if(this.isSMSEnabled){
             this.getReviewMsgTemplates();
             this.getSocialLinks();
@@ -648,7 +648,7 @@ export class ClinicSettingsComponent implements OnInit {
   removeMsgTemplate(element: ReviewMsgTemplateObject) {
       Swal.fire({
         title: 'Are you sure?',
-        text: 'You want to delete Task?',
+        text: 'You want to delete this template?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes',
