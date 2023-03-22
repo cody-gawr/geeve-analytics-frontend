@@ -496,24 +496,32 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   }
 
   updateCreditStatus() {
-    this.morningHuddleService.getCreditStatus(
-      this.clinic_id, 
-      this.remindersRecallsOverdue.map(r => {
-        return {
-           appoint_id: r.appoint_id,
-           phone_number: r.mobile
+    this.morningHuddleService
+      .getCreditStatus(
+        this.clinic_id,
+        this.remindersRecallsOverdue.map((r) => {
+          return {
+            appoint_id: r.appoint_id,
+            phone_number: r.mobile
+          };
+        })
+      )
+      .subscribe((res) => {
+        if (res.status) {
+          this.remainCredits = res.data.remain_credits;
+          this.costPerSMS = res.data.cost_per_sms;
+          const statusList = res.data.sms_status_list;
+          this.remindersRecallsOverdue = _.merge(
+            this.remindersRecallsOverdue,
+            statusList
+          );
+          this.remindersRecallsOverdueTemp = _.merge(
+            this.remindersRecallsOverdueTemp,
+            statusList
+          );
         }
-      })
-    ).subscribe((res) => {
-      if(res.status){
-        this.remainCredits = res.data.remain_credits;
-        this.costPerSMS = res.data.cost_per_sms;
-        const statusList = res.data.sms_status_list;
-        this.remindersRecallsOverdue = _.merge(this.remindersRecallsOverdue, statusList);
-        this.remindersRecallsOverdueTemp = _.merge(this.remindersRecallsOverdueTemp, statusList);
-      }
-    });
-  };
+      });
+  }
 
   ngAfterViewInit(): void {
     // this.endOfDaysTasksInComp.sort = this.sort1;
@@ -557,11 +565,11 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       // });
 
       const clinics = this.localStorageService.getObject<any[]>('clinics');
-      
-      if(clinics && clinics.length > 0){
-        const clinic = clinics.find(c => c.id == parseInt(this.clinic_id));
-        this.isSMSEnabled = !! clinic.sms_enabled;
-        this.isAcceptedSMSTerms = !! clinic.accepted_sms_terms;
+
+      if (clinics && clinics.length > 0) {
+        const clinic = clinics.find((c) => c.id == parseInt(this.clinic_id));
+        this.isSMSEnabled = !!clinic.sms_enabled;
+        this.isAcceptedSMSTerms = !!clinic.accepted_sms_terms;
       }
 
       this.clinicianAnalysisService
@@ -569,18 +577,17 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (v) => {
             // if (res.status == 200) {
-              this.isEnablePO = v.data.post_op_enable == 1 ? true : false;
-              this.isEnableOR = v.data.recall_enable == 1 ? true : false;
-              this.isEnableTH = v.data.tick_enable == 1 ? true : false;
-              this.isEnableFT = v.data.fta_enable == 1 ? true : false;
-              this.isEnableUT = v.data.uta_enable == 1 ? true : false;
-              this.isEnabletasks =
-                v.data.daily_task_enable == 1 ? true : false;
-              this.isEnableEquipList =
-                v.data.equip_list_enable == 1 ? true : false;
-            if(v.data.sms_enabled != undefined )
+            this.isEnablePO = v.data.post_op_enable == 1 ? true : false;
+            this.isEnableOR = v.data.recall_enable == 1 ? true : false;
+            this.isEnableTH = v.data.tick_enable == 1 ? true : false;
+            this.isEnableFT = v.data.fta_enable == 1 ? true : false;
+            this.isEnableUT = v.data.uta_enable == 1 ? true : false;
+            this.isEnabletasks = v.data.daily_task_enable == 1 ? true : false;
+            this.isEnableEquipList =
+              v.data.equip_list_enable == 1 ? true : false;
+            if (v.data.sms_enabled != undefined)
               this.isSMSEnabled = !!v.data.sms_enabled;
-            if(v.data.accepted_sms_terms != undefined)
+            if (v.data.accepted_sms_terms != undefined)
               this.isAcceptedSMSTerms = !!v.data.accepted_sms_terms;
             //}
           },
@@ -680,6 +687,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.scheduleNewPatientsLoader = true;
     this.currentDentistSchedule = event;
     this.currentDentist = event;
+    console.log(this.currentDentist);
 
     if (this.currentDentist != 0) {
       var temp = [];
@@ -787,18 +795,19 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               this.LabNeeded = true;
             }
             this.remindersTotal = res.body.total;
-            this.morningHuddleService.getCreditStatus(
-              this.clinic_id, 
-              res.body.data.map(d => {
-                return {
-                  appoint_id: d.appoint_id,
-                  phone_number: d.mobile
-                }
-              })
-            ).subscribe(
-              (v2) => {
-                if(v2.status){
-                  this.remainCredits =v2.data.remain_credits;
+            this.morningHuddleService
+              .getCreditStatus(
+                this.clinic_id,
+                res.body.data.map((d) => {
+                  return {
+                    appoint_id: d.appoint_id,
+                    phone_number: d.mobile
+                  };
+                })
+              )
+              .subscribe((v2) => {
+                if (v2.status) {
+                  this.remainCredits = v2.data.remain_credits;
                   this.costPerSMS = v2.data.cost_per_sms;
                   const statusList = v2.data.sms_status_list;
 
@@ -1519,10 +1528,9 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
                 );
               }
               this.appointmentCards.data = this.appointmentCardsTemp;
-
+              this.refreshScheduleTab(this.selectDentist);
               // this.appointmentCards.data = production.data;
             }
-            this.refreshScheduleTab(this.selectDentist);
             res.body.data.forEach((val) => {
               // check for duplicate values
               var isExsist = this.clinicDentists.filter(function (person) {
@@ -2160,22 +2168,22 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   }
 
   openSendReviewBtnDialog(element) {
-    if(!this.isAcceptedSMSTerms){
-      const dialog = this.dialog.open(TermsConditionsDialog, {data: {clinic_id: this.clinic_id}});
-      dialog.afterClosed().subscribe(v => {
-        if(v){
+    if (!this.isAcceptedSMSTerms) {
+      const dialog = this.dialog.open(TermsConditionsDialog, {
+        data: { clinic_id: this.clinic_id }
+      });
+      dialog.afterClosed().subscribe((v) => {
+        if (v) {
           this.isAcceptedSMSTerms = true;
           this.openSMSDialog(element);
         }
-          
-      })
-    }else {
+      });
+    } else {
       this.openSMSDialog(element);
     }
-
   }
 
-  openSMSDialog(element){
+  openSMSDialog(element) {
     if (this.remainCredits <= 0) {
       this.dialog.open(StripePaymentDialog, {
         data: {
