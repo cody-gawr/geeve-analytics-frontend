@@ -421,24 +421,6 @@ export class MorningHuddleService {
       );
   }
 
-  //  getReAppointment( clinic_id, previousDays,  user_type, clinician ="" ): Observable<any> {
-  //     var header = this.getHeaders();
-  //     return this.http.get(this.apiUrl +"/MorningHuddle/mhReappointPrev?clinic_id="+clinic_id+"&date="+previousDays+"&user_type="+user_type+"&clinician="+clinician, header)
-  //     .pipe(map((response: HttpResponse<Object>) => {
-  //                     return response;
-  //                 })
-  //     );
-  // }
-
-  /*getUnscheduledPatients( clinic_id, previousDays,  user_type, clinician ="" ): Observable<any> {
-       var header = this.getHeaders(); 
-       return this.http.get(this.apiUrl +"/MorningHuddle/mhUnschedPatPrev?clinic_id="+clinic_id+"&date="+previousDays+"&user_type="+user_type+"&clinician="+clinician, header)
-       .pipe(map((response: HttpResponse<Object>) => {
-                       return response;
-                   })
-       );
-   }*/
-
   getUnscheduledValues(
     clinic_id,
     previousDays,
@@ -1097,26 +1079,31 @@ export class MorningHuddleService {
   }
 
   getCreditStatus(
-    clinic_id: number, 
+    clinic_id: number,
     appt_ids: {
-      appiont_id: string,
-      phone_number: string
-    }[],
+      appiont_id: string;
+      phone_number: string;
+    }[]
   ): Observable<{
-    status: boolean,
+    status: boolean;
     data: {
-      sms_status_list:Array<{sms_status:string, appoint_id:string}>,
-      remain_credits:number,
-      cost_per_sms: number,
-      phone_number: string | null,
-      review_msg: string | null
-    }
+      sms_status_list: Array<{ sms_status: string; appoint_id: string }>;
+      remain_credits: number;
+      cost_per_sms: number;
+      phone_number: string | null;
+      review_msg: string | null;
+    };
   }> {
     const header = this.getHeaders();
     return this.http
-      .post(this.apiUrl + '/reviews/updateCreditStatus', { 
-        clinic_id: clinic_id, 
-        appts: appt_ids }, header)
+      .post(
+        this.apiUrl + '/reviews/updateCreditStatus',
+        {
+          clinic_id: clinic_id,
+          appts: appt_ids
+        },
+        header
+      )
       .pipe(
         map((res: HttpResponse<any>) => {
           return res.body;
@@ -1130,7 +1117,7 @@ export class MorningHuddleService {
     review_msg: string,
     phone_number: string,
     appoint_id: string
-  ): Observable<{status: string, sid: string}> {
+  ): Observable<{ status: string; sid: string }> {
     const header = this.getHeaders();
     return this.http
       .post(

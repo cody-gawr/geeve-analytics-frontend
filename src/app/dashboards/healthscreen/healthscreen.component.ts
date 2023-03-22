@@ -547,7 +547,9 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
           this.dentistProductionLoader = false;
           if (res.status == 200 && res.body.data) {
             this.dentistProduction = Math.round(res.body.data[0].production);
-            this.dentistProductionTa = Math.round(res.data_ta[0].production);
+            this.dentistProductionTa = Math.round(
+              res.body.data_ta[0].production
+            );
             this.dentistProductionDiff = Math.round(
               this.dentistProduction - this.dentistProductionTa
             );
@@ -581,7 +583,9 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
           this.dentistHourlyRateLoader = false;
           if (res.status == 200 && res.body.data) {
             this.dentistHourlyRate = Math.round(res.body.data[0].hourly_rate);
-            this.dentistHourlyRateTa = Math.round(res.data_ta[0].hourly_rate);
+            this.dentistHourlyRateTa = Math.round(
+              res.body.data_ta[0].hourly_rate
+            );
             this.dentistHourlyRateDiff = Math.round(
               this.dentistHourlyRate - this.dentistHourlyRateTa
             );
@@ -690,7 +694,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
               res.body.data[0].reappoint_rate
             );
             this.dentistReappointRateTa = Math.round(
-              res.data_ta[0].reappoint_rate
+              res.body.data_ta[0].reappoint_rate
             );
             this.dentistReappointRateDiff = Math.round(
               this.dentistReappointRate - this.dentistReappointRateTa

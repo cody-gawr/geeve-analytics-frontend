@@ -40,6 +40,8 @@ export class AuthGuard implements CanActivate {
       } else {
         return true;
       }
+
+      // return true;
     } else {
       this.router.navigateByUrl('/login');
       //this.snackBar.open('Please Login to Continue');
