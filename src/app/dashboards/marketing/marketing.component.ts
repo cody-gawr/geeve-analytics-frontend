@@ -1661,14 +1661,10 @@ export class MarketingComponent implements OnInit, AfterViewInit {
               this.totalNewPatientsReferral = Math.round(res.body.total);
               // this.noNewPatientsByReferralChartOptions.elements.center.text = this.decimalPipe.transform(this.totalNewPatientsReferral);
               if (res.body.data.patients_reftype.length > 0) {
-                var i = 0;
                 res.body.data.patients_reftype.forEach((res) => {
                   if (res.patients_visits > 0) {
-                    if (i < 10) {
-                      this.newPatientsTimeData.push(res.patients_visits);
-                      this.newPatientsTimeLabels.push(res.reftype_name);
-                      i++;
-                    }
+                    this.newPatientsTimeData.push(res.patients_visits);
+                    this.newPatientsTimeLabels.push(res.reftype_name);
                   }
                 });
               }
@@ -1710,20 +1706,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       )
         .sumBy((item) => parseInt(item.num_referrals))
         .value();
-
-      //   this.mkNewPatientsByReferralAll.data.patients_refname[label].forEach(
-      //     (res) => {
-      //       if (i < 10) {
-      //         totalVisits = totalVisits + parseInt(res.num_referrals);
-      //         data.push(res.num_referrals);
-      //         this.newPatientsReferral$.next(totalVisits);
-      //         this.newPatientsTimeLabels.push(res.referral_name);
-      //         i++;
-      //       }
-      //     }
-      //   );
-      // }
-      // this.newPatientsTimeData = data;
     }
   }
 
@@ -1812,14 +1794,10 @@ export class MarketingComponent implements OnInit, AfterViewInit {
               const data: number[] = [];
               const labels: string[] = [];
               if (this.reffralAllData.data.patients_reftype.length > 0) {
-                var i = 0;
                 this.reffralAllData.data.patients_reftype.forEach((res) => {
                   if (res.invoice_amount > 0) {
-                    if (i < 10) {
-                      data.push(Math.round(res.invoice_amount));
-                      labels.push(res.reftype_name);
-                      i++;
-                    }
+                    data.push(Math.round(res.invoice_amount));
+                    labels.push(res.reftype_name);
                   }
                 });
               }
@@ -1957,13 +1935,9 @@ export class MarketingComponent implements OnInit, AfterViewInit {
 
     if (this.reffralAllData.data.patients_refname[label].length > 0) {
       this.isNewPatientRevenueByReferralBackVisible = true;
-      var i = 0;
       this.reffralAllData.data.patients_refname[label].forEach((res) => {
-        if (i < 10) {
-          data.push(parseFloat(res.invoice_amount));
-          labels.push(res.referral_name);
-          i++;
-        }
+        data.push(parseFloat(res.invoice_amount));
+        labels.push(res.referral_name);
       });
     }
     this.revenueReferralData = data;
@@ -3536,14 +3510,10 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       );
 
       if (this.mkNewPatientsByReferralAll.data.patients_reftype.length > 0) {
-        var i = 0;
         this.mkNewPatientsByReferralAll.data.patients_reftype.forEach((res) => {
           if (res.patients_visits > 0) {
-            if (i < 10) {
-              data.push(res.patients_visits);
-              labels.push(res.reftype_name);
-              i++;
-            }
+            data.push(res.patients_visits);
+            labels.push(res.reftype_name);
           }
         });
       }
@@ -3564,14 +3534,10 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       }
 
       if (this.reffralAllData.data.patients_reftype.length > 0) {
-        var i = 0;
         this.reffralAllData.data.patients_reftype.forEach((res) => {
           if (res.invoice_amount > 0) {
-            if (i < 10) {
-              data.push(Math.round(res.invoice_amount));
-              labels.push(res.reftype_name);
-              i++;
-            }
+            data.push(Math.round(res.invoice_amount));
+            labels.push(res.reftype_name);
           }
         });
       }
