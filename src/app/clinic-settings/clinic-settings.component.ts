@@ -648,7 +648,7 @@ export class ClinicSettingsComponent implements OnInit {
   removeMsgTemplate(element: ReviewMsgTemplateObject) {
       Swal.fire({
         title: 'Are you sure?',
-        text: 'You want to delete Task?',
+        text: 'You want to delete this template?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes',
