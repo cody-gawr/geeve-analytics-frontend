@@ -555,22 +555,14 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
           .replace(/\s/, 'T');
       }
       this.dailyTabSettLod = false;
-      // clinicGetSettings
-      // this.clinicianAnalysisService.getClinics( this.clinic_id, 'DailyTaskEnable,EquipListEnable,PostOpEnable,RecallEnable,TickEnable,FtaEnable' ).subscribe((data:any) => {
-      //   this.dailyTabSettLod = true;
-      //   if(res.status == 200){
-      //     this.isEnabletasks = (data.body.data.daily_task_enable == 1)? true : false;
-      //     this.isEnableEquipList = (data.body.data.equip_list_enable == 1)? true : false;
-      //   }
-      // });
 
-      const clinics = this.localStorageService.getObject<any[]>('clinics');
+      // const clinics = this.localStorageService.getObject<any[]>('clinics');
 
-      if (clinics && clinics.length > 0) {
-        const clinic = clinics.find((c) => c.id == parseInt(this.clinic_id));
-        this.isSMSEnabled = !!clinic.sms_enabled;
-        this.isAcceptedSMSTerms = !!clinic.accepted_sms_terms;
-      }
+      // if (clinics && clinics.length > 0) {
+      //   const clinic = clinics.find((c) => c.id == parseInt(this.clinic_id));
+      //   this.isSMSEnabled = !!clinic.sms_enabled;
+      //   this.isAcceptedSMSTerms = !!clinic.accepted_sms_terms;
+      // }
 
       this.clinicianAnalysisService
         .getClinicFollowUpSettings(this.clinic_id)
@@ -586,7 +578,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             this.isEnableEquipList =
               v.data.equip_list_enable == 1 ? true : false;
             if (v.data.sms_enabled != undefined)
-              this.isSMSEnabled = !!v.data.sms_enabled;
+              this.isSMSEnabled = !!v.data.sms_enabled && parseInt(this.user_type) != 4;
             if (v.data.accepted_sms_terms != undefined)
               this.isAcceptedSMSTerms = !!v.data.accepted_sms_terms;
             //}
