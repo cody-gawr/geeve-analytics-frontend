@@ -152,7 +152,6 @@
                   [labels]="newPatientsTimeLabels"
                   [chartType]="pieChartType"
                   (chartHover)="chartHovered($event)"
-                  [plugins]="[pieChartWithTotalValuePlugin]"
                   (chartClick)="chartClicked($event, 'newPatients')"
                   [options]="noNewPatientsByReferralChartOptions"
                   [colors]="pieChartColors"
@@ -306,7 +305,6 @@
                   [chartType]="pieChartType"
                   (chartHover)="chartHovered($event)"
                   (chartClick)="chartClicked($event, 'revenue')"
-                  [plugins]="pieChartWithTotalValueInUSDFormatPlugin"
                   [options]="pieChartOptions"
                   [colors]="pieChartColors"
                 >

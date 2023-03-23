@@ -1372,10 +1372,10 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     }
   ];
 
-  public totalRevenueByReferral = '$ 0';
+  public totalRevenueByReferral: number = 0;
   public totalNewPatientsReferral = 0;
 
-  public noNewPatientsByReferralChartOptions: any = {
+  public noNewPatientsByReferralChartOptions: Chart.ChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     tooltips: {
@@ -1385,7 +1385,9 @@ export class MarketingComponent implements OnInit, AfterViewInit {
             data.labels[tooltipItem.index] +
             ': ' +
             this.decimalPipe.transform(
-              data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
+              <number>(
+                data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
+              )
             )
           );
         }
@@ -1403,11 +1405,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       }
     },
 
-    elements: {
-      center: {
-        text: ''
-      }
-    }
+    elements: {}
   };
 
   public pieChartOptions: any = {
@@ -1531,14 +1529,13 @@ export class MarketingComponent implements OnInit, AfterViewInit {
           (chartInstance.chartArea.left + chartInstance.chartArea.right) / 2;
         const centerY =
           (chartInstance.chartArea.top + chartInstance.chartArea.bottom) / 2;
-        const total = (<number[]>chartInstance.data.datasets[0].data).reduce(
-          (prev: number, current: number) => prev + current,
-          0
-        );
-        ctx.font = (total.toString().length > 4 ? 24 : 37) + 'px Gilroy-Bold';
+
+        ctx.font =
+          (this.totalNewPatientsReferral.toString().length > 4 ? 24 : 37) +
+          'px Gilroy-Bold';
         ctx.fillStyle = '#454649';
 
-        ctx.fillText(`${total}`, centerX, centerY);
+        ctx.fillText(`${this.totalNewPatientsReferral}`, centerX, centerY);
       }
     };
 
@@ -1595,6 +1592,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
           if (res.status == 200) {
             this.mkNewPatientsByReferalMulti = [];
             this.mkNewPatientsByReferalLabels = [];
+            console.log(res.body);
             if (
               this.clinic_id.indexOf(',') >= 0 ||
               Array.isArray(this.clinic_id)
@@ -1659,17 +1657,16 @@ export class MarketingComponent implements OnInit, AfterViewInit {
             } else {
               this.mkNewPatientsByReferralAll = res.body;
               this.totalNewPatientsReferral = Math.round(res.body.total);
-              // this.noNewPatientsByReferralChartOptions.elements.center.text = this.decimalPipe.transform(this.totalNewPatientsReferral);
               if (res.body.data.patients_reftype.length > 0) {
-                res.body.data.patients_reftype.forEach((res) => {
-                  if (res.patients_visits > 0) {
-                    this.newPatientsTimeData.push(res.patients_visits);
-                    this.newPatientsTimeLabels.push(res.reftype_name);
-                  }
-                });
+                (<any[]>res.body.data.patients_reftype)
+                  .slice(0, 15)
+                  .forEach((item) => {
+                    if (item.patients_visits > 0) {
+                      this.newPatientsTimeData.push(item.patients_visits);
+                      this.newPatientsTimeLabels.push(item.reftype_name);
+                    }
+                  });
               }
-
-              console.log(this.newPatientsTimeData);
 
               setTimeout(() => {
                 this.mkNewPatientsByReferralLoader = false;
@@ -1694,18 +1691,13 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     ) {
       this.isNewPatientsByReferralBackVisible = true;
       this.newPatientsTimeData =
-        this.mkNewPatientsByReferralAll.data.patients_refname[label].map(
-          (item: any) => parseInt(item.num_referrals)
-        );
-      this.newPatientsTimeLabels =
-        this.mkNewPatientsByReferralAll.data.patients_refname[label].map(
-          (item: any) => item.referral_name
-        );
-      const totalVisits = _.chain(
         this.mkNewPatientsByReferralAll.data.patients_refname[label]
-      )
-        .sumBy((item) => parseInt(item.num_referrals))
-        .value();
+          .slice(0, 15)
+          .map((item: any) => parseInt(item.num_referrals));
+      this.newPatientsTimeLabels =
+        this.mkNewPatientsByReferralAll.data.patients_refname[label]
+          .slice(0, 15)
+          .map((item: any) => item.referral_name);
     }
   }
 
@@ -1780,10 +1772,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
               this.mkRevenueByReferralLoader = false;
             } else {
               this.reffralAllData = res.body;
-              this.totalRevenueByReferral = this.decimalPipe.transform(
-                Math.round(res.body.total || 0)
-              );
-              //// this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
+              this.totalRevenueByReferral = Math.round(res.body.total || 0);
               if (this.revenueRefChart) {
                 this.revenueRefChart.ngOnDestroy();
                 this.revenueRefChart.chart =
@@ -1802,8 +1791,8 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                 });
               }
 
-              this.revenueReferralData = data;
-              this.revenueReferralLabels = labels;
+              this.revenueReferralData = data.slice(0, 15);
+              this.revenueReferralLabels = labels.slice(0, 15);
 
               setTimeout(() => {
                 this.mkRevenueByReferralLoader = false;
@@ -1935,19 +1924,15 @@ export class MarketingComponent implements OnInit, AfterViewInit {
 
     if (this.reffralAllData.data.patients_refname[label].length > 0) {
       this.isNewPatientRevenueByReferralBackVisible = true;
-      this.reffralAllData.data.patients_refname[label].forEach((res) => {
-        data.push(parseFloat(res.invoice_amount));
-        labels.push(res.referral_name);
-      });
+      this.reffralAllData.data.patients_refname[label]
+        .slice(0, 15)
+        .forEach((item: any) => {
+          data.push(parseFloat(item.invoice_amount));
+          labels.push(item.referral_name);
+        });
     }
     this.revenueReferralData = data;
     this.revenueReferralLabels = labels;
-
-    /*    }
-     }, error => {
-       this.warningMessage = "Please Provide Valid Inputs!";
-     }
-     );*/
   }
 
   public visitsTotal;
@@ -3510,10 +3495,12 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       );
 
       if (this.mkNewPatientsByReferralAll.data.patients_reftype.length > 0) {
-        this.mkNewPatientsByReferralAll.data.patients_reftype.forEach((res) => {
-          if (res.patients_visits > 0) {
-            data.push(res.patients_visits);
-            labels.push(res.reftype_name);
+        (<any[]>(
+          this.mkNewPatientsByReferralAll.data.patients_reftype.slice(0, 15)
+        )).forEach((item) => {
+          if (item.patients_visits > 0) {
+            data.push(item.patients_visits);
+            labels.push(item.reftype_name);
           }
         });
       }
@@ -3522,10 +3509,8 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       //   this.mkNewPatientsByReferral();
     } else if (val == 'revenue') {
       this.isNewPatientRevenueByReferralBackVisible = false;
-      this.totalRevenueByReferral = this.decimalPipe.transform(
-        Math.round(this.reffralAllData.total || 0)
-      );
-      // this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
+      this.totalRevenueByReferral = Math.round(this.reffralAllData.total || 0);
+
       if (this.revenueRefChart) {
         this.revenueRefChart.ngOnDestroy();
         this.revenueRefChart.chart = this.revenueRefChart.getChartBuilder(
@@ -3534,12 +3519,14 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       }
 
       if (this.reffralAllData.data.patients_reftype.length > 0) {
-        this.reffralAllData.data.patients_reftype.forEach((res) => {
-          if (res.invoice_amount > 0) {
-            data.push(Math.round(res.invoice_amount));
-            labels.push(res.reftype_name);
+        (<any[]>this.reffralAllData.data.patients_reftype.slice(0, 15)).forEach(
+          (item) => {
+            if (item.invoice_amount > 0) {
+              data.push(Math.round(item.invoice_amount));
+              labels.push(item.reftype_name);
+            }
           }
-        });
+        );
       }
       this.revenueReferralData = data;
       this.revenueReferralLabels = labels;

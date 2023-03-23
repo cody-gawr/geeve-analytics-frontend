@@ -5,8 +5,9 @@ import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
+import { CancellationRatioResponse } from './frontdesk.interfaces';
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class FrontDeskService {
   public token: string;
@@ -31,7 +32,7 @@ export class FrontDeskService {
     let headers = {
       headers: new HttpHeaders(),
       withCredentials: true,
-      observe: 'response' as const,
+      observe: 'response' as const
     };
     return headers;
   }
@@ -363,6 +364,48 @@ export class FrontDeskService {
         map((response: HttpResponse<Object>) => {
           return response;
         })
+      );
+  }
+
+  getCancellationRatio(
+    clinicId: number,
+    startDate: string,
+    endDate: string
+  ): Observable<CancellationRatioResponse> {
+    const header = this.getHeaders();
+    return this.http
+      .get(`${this.apiUrl}/FrontDesk/fdCancellationRatio`, {
+        ...header,
+        params: {
+          clinic_id: clinicId,
+          start_date: startDate,
+          endDate: endDate
+        }
+      })
+      .pipe(
+        map(
+          (response: HttpResponse<CancellationRatioResponse>) => response.body
+        )
+      );
+  }
+
+  getCancellationRatioTrend(
+    clinicId: number,
+    mode: string
+  ): Observable<CancellationRatioResponse> {
+    const header = this.getHeaders();
+    return this.http
+      .get(`${this.apiUrl}/FrontDesk/fdCancellationRatioTrend`, {
+        ...header,
+        params: {
+          clinic_id: clinicId,
+          mode
+        }
+      })
+      .pipe(
+        map(
+          (response: HttpResponse<CancellationRatioResponse>) => response.body
+        )
       );
   }
 }
