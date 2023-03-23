@@ -5,7 +5,7 @@ export interface CancellationRatio {
   month: string;
   year_month: string;
   provider_id: number;
-  total_cancellation: string;
+  total_cancel: string;
   total_appts: string;
   cancel_ratio: string;
 }

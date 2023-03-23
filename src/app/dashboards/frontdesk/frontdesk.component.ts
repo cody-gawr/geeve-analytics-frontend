@@ -98,7 +98,6 @@ export class FrontDeskComponent implements AfterViewInit {
   ) {
     this.getChartsTips();
     this.getAllClinics();
-    console.log(this.isExactOrCore);
   }
   private warningMessage: string;
   private myTemplate: any = '';
@@ -2892,7 +2891,7 @@ export class FrontDeskComponent implements AfterViewInit {
               .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
               .map((items: CancellationRatio[], duration: string) => {
                 const totalCancellation = _.chain(items)
-                  .sumBy((item) => Number(item.total_cancellation))
+                  .sumBy((item) => Number(item.total_cancel))
                   .value();
                 const totalAppts = _.chain(items)
                   .sumBy((item) => Number(item.total_appts))
