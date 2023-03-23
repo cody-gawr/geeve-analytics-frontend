@@ -1412,13 +1412,16 @@
           <div class="loader-text">Calculating...</div>
         </div>
       </div>
+
       <div
+        *ngIf="isExactOrCore; else utaRatioTemplate"
         fxFlex="calc(32% - 10px)"
         fxFlex.md="100"
         fxFlex.sm="100"
         fxFlex.xs="100"
         class="sa_flexbg referral_clinicians last"
       >
+        cancellation-graph
         <mat-card>
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
@@ -1429,9 +1432,11 @@
                   matTooltip="{{ trendText }} : {{ utaPrevTotal }}%"
                   ><img
                     class="trend_ico"
-                    src="../assets/images/trend_reverse_{{ utaTooltip }}.png"
+                    src="../assets/images/trend_reverse_{{
+                      cancellationRatioTooltip
+                    }}.png"
                 /></span>
-                UTA ratio (%)
+                Cancellation ratio (%)
               </div>
               <div class="sa_box_title_right_buttons"></div>
               <div class="info-icon-container">
@@ -1447,22 +1452,23 @@
               <div class="chart">
                 <div
                   *ngIf="
-                    showmulticlinicUta == false &&
-                    !showTrend &&
-                    utaTotal > 0 &&
-                    !fdUtaRatioLoader
+                    !(
+                      isCancellationRatioMultiChartVisible ||
+                      showTrend ||
+                      isLoadingCancellationRatioChartData
+                    ) && cancellationRatioTotal > 0
                   "
                   class="chart-recall-rate"
                 >
                   <ngx-gauge
                     class="singleRatio"
                     [type]="gaugeType"
-                    [value]="utaTotal"
+                    [value]="cancellationRatioTotal"
                     [thick]="gaugeThick"
                     [foregroundColor]="foregroundColor"
                     [backgroundColor]="backgroundColor"
                     [append]="gaugeAppendText"
-                    [max]="maxutaGoal"
+                    [max]="maxCancellationRatioGoal"
                     [cap]="cap"
                     [size]="size"
                   >
@@ -1470,15 +1476,14 @@
                 </div>
                 <canvas
                   *ngIf="
-                    showmulticlinicUta == true &&
-                    !showTrend &&
-                    utaTotal > 0 &&
-                    !fdUtaRatioLoader
+                    isCancellationRatioMultiChartVisible &&
+                    cancellationRatioTotal > 0 &&
+                    !(showTrend && isLoadingCancellationRatioChartData)
                   "
                   #myCanvas
                   baseChart
-                  [datasets]="utaMulti"
-                  [labels]="utaLabels"
+                  [datasets]="cancellationRatioMultiChartData"
+                  [labels]="cancellationRatioMultiChartLabels"
                   [options]="stackedChartOptionsUti"
                   [chartType]="'bar'"
                   (chartHover)="chartHovered($event)"
@@ -1486,29 +1491,41 @@
                   (chartClick)="chartClicked($event)"
                 >
                 </canvas>
-                <div *ngIf="!showTrend && utaTotal <= 0 && !fdUtaRatioLoader">
+                <div
+                  *ngIf="
+                    cancellationRatioTotal <= 0 &&
+                    !(showTrend || isLoadingCancellationRatioChartData)
+                  "
+                >
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
-                    You have no UTA's in the selected period
+                    You have no Cancellation's in the selected period
                   </p>
                 </div>
 
                 <div
                   *ngIf="
-                    showByclinicUta == false &&
                     showTrend &&
-                    utaChartTrend1.length > 0 &&
-                    !fdUtaRatioTrendLoader
+                    cancellationRatioTrendChartData.length > 0 &&
+                    !isLoadingCancellationRatioTrendChartData
                   "
                   class="chart-recall-rate-trend"
                 >
                   <canvas
                     #myCanvas
                     baseChart
-                    [datasets]="utaChartTrend"
-                    [labels]="utaChartTrendLabels"
-                    [options]="stackedChartOptions"
-                    [chartType]="lineChartType"
+                    [datasets]="cancellationRatioTrendChartData"
+                    [labels]="cancellationRatioTrendChartLabels"
+                    [options]="
+                      isCancellationRatioTrendMultiChartVisible
+                        ? stackedChartOptionsTC
+                        : stackedChartOptions
+                    "
+                    [chartType]="
+                      isCancellationRatioTrendMultiChartVisible
+                        ? stackedChartType
+                        : lineChartType
+                    "
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
                     [colors]="predictedChartColors"
@@ -1518,32 +1535,9 @@
                 </div>
                 <div
                   *ngIf="
-                    showByclinicUta == true &&
                     showTrend &&
-                    utaTrendMultiLabels.length > 0 &&
-                    !fdUtaRatioTrendLoader
-                  "
-                  class="chart-utilisation-rate"
-                >
-                  <canvas
-                    #myCanvas
-                    baseChart
-                    [datasets]="utaChartTrendMulti"
-                    [labels]="utaTrendMultiLabels"
-                    [options]="stackedChartOptionsTC"
-                    [chartType]="stackedChartType"
-                    (chartHover)="chartHovered($event)"
-                    [legend]="false"
-                    (chartClick)="chartClicked($event)"
-                  >
-                  </canvas>
-                </div>
-                <div
-                  *ngIf="
-                    showTrend &&
-                    utaChartTrend1.length <= 0 &&
-                    utaTrendMultiLabels.length <= 0 &&
-                    !fdUtaRatioTrendLoader
+                    cancellationRatioTrendChartData.length == 0 &&
+                    !isLoadingCancellationRatioTrendChartData
                   "
                 >
                   <div class="sa_nodata_div"></div>
@@ -1567,10 +1561,19 @@
                   class="text-center"
                 >
                   <h3 class="m-0 value-num">
-                    {{ (utaTotal > 100 ? 100 : utaTotal) | number : '1.0-1' }}%
+                    {{
+                      (cancellationRatioTotal > 100
+                        ? 100
+                        : cancellationRatioTotal
+                      ) | number : '1.0-1'
+                    }}%
                   </h3>
-                  <small *ngIf="currentText != ''">{{ currentText }}</small>
-                  <small *ngIf="currentText == ''">Current</small>
+                  <small *ngIf="currentText == ''; else unEqualToEmptyTemplate"
+                    >Current</small
+                  >
+                  <ng-template #unEqualToEmptyTemplate>
+                    <small>{{ currentText }}</small>
+                  </ng-template>
                 </div>
                 <div
                   fxFlex.gt-sm="33.33%"
@@ -1594,14 +1597,18 @@
                   fxFlex="100"
                   class="text-center"
                   *ngIf="
-                    utaGoal >= 0 &&
-                    utaGoal != null &&
-                    showGoals == true &&
-                    showmulticlinicUta == false
+                    cancellationRatioGoal >= 0 &&
+                    showGoals &&
+                    !isCancellationRatioMultiChartVisible
                   "
                 >
                   <h3 class="m-0 value-num" *ngIf="utaGoal">
-                    {{ (utaGoal > 100 ? 100 : utaGoal) | number : '1.0-1' }}%
+                    {{
+                      (cancellationRatioGoal > 100
+                        ? 100
+                        : cancellationRatioGoal
+                      ) | number : '1.0-1'
+                    }}%
                   </h3>
                   <small>Goal</small>
                 </div>
@@ -1610,20 +1617,231 @@
           </mat-card-content>
         </mat-card>
         <div
-          *ngIf="fdUtaRatioLoader"
-          class="loader_container loader_container_middle"
-        >
-          <img class="loader_ico" src="../assets/images/720.gif" />
-          <div class="loader-text">Calculating...</div>
-        </div>
-        <div
-          *ngIf="fdUtaRatioTrendLoader"
+          *ngIf="
+            isLoadingCancellationRatioChartData ||
+            isLoadingCancellationRatioTrendChartData
+          "
           class="loader_container loader_container_middle"
         >
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
       </div>
+
+      <ng-template #utaRatioTemplate>
+        <div
+          fxFlex="calc(32% - 10px)"
+          fxFlex.md="100"
+          fxFlex.sm="100"
+          fxFlex.xs="100"
+          class="sa_flexbg referral_clinicians last"
+        >
+          uta-graph
+          <mat-card>
+            <mat-card-content class="sa_matcard_content">
+              <mat-card-title class="text-center">
+                <div>
+                  <span
+                    *ngIf="!showTrend && trendText"
+                    class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
+                    matTooltip="{{ trendText }} : {{ utaPrevTotal }}%"
+                    ><img
+                      class="trend_ico"
+                      src="../assets/images/trend_reverse_{{ utaTooltip }}.png"
+                  /></span>
+                  UTA ratio (%)
+                </div>
+                <div class="sa_box_title_right_buttons"></div>
+                <div class="info-icon-container">
+                  <img
+                    [tooltip]="charTips['19']"
+                    src="../assets/images/info-icon.png"
+                    alt="info-icon"
+                    class="info-icon"
+                  />
+                </div>
+              </mat-card-title>
+              <div class="card-body">
+                <div class="chart">
+                  <div
+                    *ngIf="
+                      !(showmulticlinicUta || showTrend || fdUtaRatioLoader) &&
+                      utaTotal > 0
+                    "
+                    class="chart-recall-rate"
+                  >
+                    <ngx-gauge
+                      class="singleRatio"
+                      [type]="gaugeType"
+                      [value]="utaTotal"
+                      [thick]="gaugeThick"
+                      [foregroundColor]="foregroundColor"
+                      [backgroundColor]="backgroundColor"
+                      [append]="gaugeAppendText"
+                      [max]="maxutaGoal"
+                      [cap]="cap"
+                      [size]="size"
+                    >
+                    </ngx-gauge>
+                  </div>
+                  <canvas
+                    *ngIf="
+                      showmulticlinicUta &&
+                      !showTrend &&
+                      utaTotal > 0 &&
+                      !fdUtaRatioLoader
+                    "
+                    #myCanvas
+                    baseChart
+                    [datasets]="utaMulti"
+                    [labels]="utaLabels"
+                    [options]="stackedChartOptionsUti"
+                    [chartType]="'bar'"
+                    (chartHover)="chartHovered($event)"
+                    [legend]="false"
+                    (chartClick)="chartClicked($event)"
+                  >
+                  </canvas>
+                  <div *ngIf="!showTrend && utaTotal <= 0 && !fdUtaRatioLoader">
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">
+                      You have no UTA's in the selected period
+                    </p>
+                  </div>
+
+                  <div
+                    *ngIf="
+                      showTrend &&
+                      utaChartTrend1.length > 0 &&
+                      !(showByclinicUta || fdUtaRatioTrendLoader)
+                    "
+                    class="chart-recall-rate-trend"
+                  >
+                    <canvas
+                      #myCanvas
+                      baseChart
+                      [datasets]="utaChartTrend"
+                      [labels]="utaChartTrendLabels"
+                      [options]="stackedChartOptions"
+                      [chartType]="lineChartType"
+                      (chartHover)="chartHovered($event)"
+                      [legend]="false"
+                      [colors]="predictedChartColors"
+                      (chartClick)="chartClicked($event)"
+                    >
+                    </canvas>
+                  </div>
+                  <div
+                    *ngIf="
+                      showByclinicUta &&
+                      showTrend &&
+                      utaTrendMultiLabels.length > 0 &&
+                      !fdUtaRatioTrendLoader
+                    "
+                    class="chart-utilisation-rate"
+                  >
+                    <canvas
+                      #myCanvas
+                      baseChart
+                      [datasets]="utaChartTrendMulti"
+                      [labels]="utaTrendMultiLabels"
+                      [options]="stackedChartOptionsTC"
+                      [chartType]="stackedChartType"
+                      (chartHover)="chartHovered($event)"
+                      [legend]="false"
+                      (chartClick)="chartClicked($event)"
+                    >
+                    </canvas>
+                  </div>
+                  <div
+                    *ngIf="
+                      showTrend &&
+                      utaChartTrend1.length <= 0 &&
+                      utaTrendMultiLabels.length <= 0 &&
+                      !fdUtaRatioTrendLoader
+                    "
+                  >
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">
+                      You have no UTA's in the selected period
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer">
+                <div
+                  *ngIf="!showTrend"
+                  fxLayout="row wrap"
+                  fxLayoutAlign="center center"
+                  class="m-t-40 sa_chart_details_sec pieChartDetails"
+                >
+                  <div
+                    fxFlex.gt-sm="33.33%"
+                    fxFlex.gt-xs="33.33%"
+                    fxFlex="100"
+                    class="text-center"
+                  >
+                    <h3 class="m-0 value-num">
+                      {{
+                        (utaTotal > 100 ? 100 : utaTotal) | number : '1.0-1'
+                      }}%
+                    </h3>
+                    <small *ngIf="currentText != ''">{{ currentText }}</small>
+                    <small *ngIf="currentText == ''">Current</small>
+                  </div>
+                  <div
+                    fxFlex.gt-sm="33.33%"
+                    fxFlex.gt-xs="33.33%"
+                    fxFlex="100"
+                    class="text-center"
+                    *ngIf="duration != 'custom'"
+                  >
+                    <h3 class="m-0 value-num">
+                      {{
+                        (utaPrevTotal > 100 ? 100 : utaPrevTotal)
+                          | number : '1.0-1'
+                      }}%
+                    </h3>
+                    <small *ngIf="trendText != ''">{{ trendText }}</small>
+                    <small *ngIf="trendText == ''">Previous</small>
+                  </div>
+                  <div
+                    fxFlex.gt-sm="33.33%"
+                    fxFlex.gt-xs="33.33%"
+                    fxFlex="100"
+                    class="text-center"
+                    *ngIf="
+                      utaGoal >= 0 &&
+                      utaGoal != null &&
+                      showGoals == true &&
+                      showmulticlinicUta == false
+                    "
+                  >
+                    <h3 class="m-0 value-num" *ngIf="utaGoal">
+                      {{ (utaGoal > 100 ? 100 : utaGoal) | number : '1.0-1' }}%
+                    </h3>
+                    <small>Goal</small>
+                  </div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <div
+            *ngIf="fdUtaRatioLoader"
+            class="loader_container loader_container_middle"
+          >
+            <img class="loader_ico" src="../assets/images/720.gif" />
+            <div class="loader-text">Calculating...</div>
+          </div>
+          <div
+            *ngIf="fdUtaRatioTrendLoader"
+            class="loader_container loader_container_middle"
+          >
+            <img class="loader_ico" src="../assets/images/720.gif" />
+            <div class="loader-text">Calculating...</div>
+          </div>
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>

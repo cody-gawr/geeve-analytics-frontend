@@ -15,7 +15,6 @@ import { CookieService } from 'ngx-cookie';
 import { ToastrService } from 'ngx-toastr';
 import { Chart } from 'chart.js';
 import { ChartService } from '../chart.service';
-import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../../app.constants';
 import { environment } from '../../../environments/environment';
 import { ChartstipsService } from '../../shared/chartstips.service';
@@ -23,6 +22,9 @@ import { ClinicianAnalysisService } from '../cliniciananalysis/cliniciananalysis
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { LocalStorageService } from '../../shared/local-storage.service';
+import { takeUntil, first, Subject } from 'rxjs';
+import { CancellationRatio } from './frontdesk.interfaces';
+
 export interface Dentist {
   providerId: string;
   name: string;
@@ -37,7 +39,7 @@ export class FrontDeskComponent implements AfterViewInit {
   @ViewChild('myCanvas') canvas: ElementRef;
 
   lineChartColors;
-  doughnutChartColors;
+  public doughnutChartColors: string[];
   predictedChartColors;
   preoceedureChartColors;
   subtitle: string;
@@ -69,6 +71,8 @@ export class FrontDeskComponent implements AfterViewInit {
     '#F9F871'
   ];
   public isAllClinic: boolean;
+  private destroy = new Subject<void>();
+  private destroy$ = this.destroy.asObservable();
 
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
@@ -292,8 +296,8 @@ export class FrontDeskComponent implements AfterViewInit {
       .getClinicFollowUpSettings(ids[0])
       .subscribe((res) => {
         //if (res.status == 200) {
-          if (res.data.max_chart_bars)
-            this.numberOfRecords = res.data.max_chart_bars;
+        if (res.data.max_chart_bars)
+          this.numberOfRecords = res.data.max_chart_bars;
         //}
       });
   }
@@ -1199,7 +1203,11 @@ export class FrontDeskComponent implements AfterViewInit {
       this.fdtreatmentPrebookRate();
       this.fdNumberOfTicks();
       this.fdFtaRatio();
-      this.fdUtaRatio();
+      if (this.isExactOrCore) {
+        this.getCancellationRatio();
+      } else {
+        this.fdUtaRatio();
+      }
     }
   }
 
@@ -1595,7 +1603,7 @@ export class FrontDeskComponent implements AfterViewInit {
   public showmulticlinicUta: boolean = false;
   public utaLabels: any = [];
   public utaLabels1: any = [];
-  public utaMulti: any[] = [
+  public utaMulti: Chart.ChartDataSets[] = [
     {
       data: [],
       label: '',
@@ -1641,54 +1649,127 @@ export class FrontDeskComponent implements AfterViewInit {
       this.fdUtaRatioLoader = true;
       this.utaTotal = 0;
       this.showmulticlinicUta = false;
-      this.clinic_id &&
-        this.frontdeskService
-          .fdUtaRatio(
-            this.clinic_id,
-            this.startDate,
-            this.endDate,
-            this.duration
-          )
-          .subscribe(
-            (res) => {
-              this.utaTotal = 0;
-              this.utaPrevTotal = 0;
-              if (res.status == 200) {
-                this.fdUtaRatioLoader = false;
-                this.utaMulti[0]['data'] = [];
-                this.utaLabels = [];
-                this.utaLabels1 = [];
-                if (res.body.total > 0) {
-                  res.body.data.forEach((item: any) => {
-                    this.utaLabels1.push(_.round(item.uta_ratio, 1));
-                    this.utaLabels.push(item.clinic_name);
-                  });
-                }
-                if (
-                  this.clinic_id.indexOf(',') >= 0 ||
-                  Array.isArray(this.clinic_id)
-                ) {
-                  this.showmulticlinicUta = true;
-                }
-                this.utaMulti[0]['data'] = this.utaLabels1;
+      console.log(
+        typeof this.clinic_id == 'object'
+          ? this.clinic_id.join(',')
+          : this.clinic_id
+      );
 
-                if (res.body.total > 100) res.body.total = 100;
-                if (res.body.total_ta > 100) res.body.data_ta = 100;
-                this.utaTotal = _.round(res.body.total, 1);
-                this.utaPrevTotal = _.round(res.body.total_ta, 1);
-                this.utaGoal = res.body.goals;
-                if (this.utaTotal > this.utaGoal)
-                  this.maxutaGoal = this.utaTotal;
-                else this.maxutaGoal = this.utaGoal;
-                if (this.maxutaGoal == 0) this.maxutaGoal = '';
-                if (this.utaTotal >= this.utaPrevTotal)
-                  this.utaTooltip = 'down';
+      this.frontdeskService
+        .fdUtaRatio(this.clinic_id, this.startDate, this.endDate, this.duration)
+        .subscribe(
+          (res) => {
+            this.utaTotal = 0;
+            this.utaPrevTotal = 0;
+            if (res.status == 200) {
+              this.fdUtaRatioLoader = false;
+              this.utaMulti[0]['data'] = [];
+              this.utaLabels = [];
+              this.utaLabels1 = [];
+              if (res.body.total > 0) {
+                res.body.data.forEach((item: any) => {
+                  this.utaLabels1.push(_.round(item.uta_ratio, 1));
+                  this.utaLabels.push(item.clinic_name);
+                });
               }
-            },
-            (error) => {
-              this.warningMessage = 'Please Provide Valid Inputs!';
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.showmulticlinicUta = true;
+              }
+              this.utaMulti[0]['data'] = this.utaLabels1;
+
+              if (res.body.total > 100) res.body.total = 100;
+              if (res.body.total_ta > 100) res.body.data_ta = 100;
+              this.utaTotal = _.round(res.body.total, 1);
+              this.utaPrevTotal = _.round(res.body.total_ta, 1);
+              this.utaGoal = res.body.goals;
+              if (this.utaTotal > this.utaGoal) this.maxutaGoal = this.utaTotal;
+              else this.maxutaGoal = this.utaGoal;
+              if (this.maxutaGoal == 0) this.maxutaGoal = '';
+              if (this.utaTotal >= this.utaPrevTotal) this.utaTooltip = 'down';
             }
-          );
+          },
+          (error) => {
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        );
+    }
+  }
+
+  public cancellationRatioMultiChartData: Chart.ChartDataSets[] = [];
+  public cancellationRatioMultiChartLabels: string[] = [];
+  public cancellationRatioTotal: number = 0;
+  public cancellationRatioPrevTotal: number = 0;
+  public isLoadingCancellationRatioChartData: boolean = false;
+  public isCancellationRatioMultiChartVisible: boolean = false;
+  public cancellationRatioGoal: number = -1;
+  public maxCancellationRatioGoal: number = 0;
+  public cancellationRatioTooltip: string = 'up';
+
+  private getCancellationRatio() {
+    const clinicIds: string =
+      typeof this.clinic_id == 'object'
+        ? this.clinic_id.join(',')
+        : this.clinic_id;
+    if (this.duration) {
+      this.isCancellationRatioMultiChartVisible = false;
+      this.isLoadingCancellationRatioChartData = true;
+      this.cancellationRatioTotal = 0;
+      this.cancellationRatioPrevTotal = 0;
+      this.frontdeskService
+        .getCancellationRatio(
+          clinicIds,
+          this.startDate,
+          this.endDate,
+          this.duration
+        )
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (res) => {
+            this.isLoadingCancellationRatioChartData = false;
+            if (clinicIds.split(',').length > 1) {
+              this.isCancellationRatioMultiChartVisible = true;
+              this.cancellationRatioMultiChartLabels = res.data.map(
+                (item) => item.clinic_name
+              );
+              this.cancellationRatioMultiChartData = Object.entries(
+                _.chain(res.data)
+                  .groupBy((item) => item.clinic_id)
+                  .value()
+              ).map(([, items]) => {
+                const data: number[] = [];
+                const colors: string[] = [];
+                items.forEach((item, index) => {
+                  data.push(_.round(parseFloat(item.cancel_ratio), 1));
+                  colors.push(index % 2 == 1 ? '#119582' : '#ffb4b5');
+                });
+                return {
+                  data,
+                  backgroundColor: colors,
+                  hoverBackgroundColor: colors
+                };
+              });
+
+              this.cancellationRatioGoal = res.goals;
+            }
+
+            this.cancellationRatioTotal = _.round(res.total, 1);
+            this.cancellationRatioPrevTotal = _.round(res.total_ta, 1);
+            this.maxCancellationRatioGoal =
+              this.cancellationRatioTotal > this.cancellationRatioGoal
+                ? this.cancellationRatioTotal
+                : this.cancellationRatioGoal;
+            this.cancellationRatioTooltip =
+              this.cancellationRatioTotal >= this.cancellationRatioPrevTotal
+                ? 'down'
+                : 'up';
+          },
+          error: () => {
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+        });
     }
   }
 
@@ -2402,7 +2483,11 @@ export class FrontDeskComponent implements AfterViewInit {
     this.fdTreatmentPrebookRateTrend();
     this.fdNumberOfTicksTrend();
     this.fdFtaRatioTrend();
-    this.fdUtaRatioTrend();
+    if (this.isExactOrCore) {
+      this.getCancellationRatioTrend();
+    } else {
+      this.fdUtaRatioTrend();
+    }
   }
 
   public ftaChartTrend: any[] = [
@@ -2480,35 +2565,6 @@ export class FrontDeskComponent implements AfterViewInit {
                   this.doughnutChartColors[0];
 
                 this.ftaTrendMultiLabels = data.map((item) => item.duration);
-                // res.body.data.forEach((res) => {
-                //   let ftaSum = 0;
-                //   res.val.forEach((reslt, key) => {
-                //     ftaSum += Math.round(reslt.fta_ratio);
-                //     // if (typeof (this.ftaChartTrendMulti[key]) == 'undefined') {
-                //     //   this.ftaChartTrendMulti[key] = { data: [], label: '' };
-                //     // }
-                //     // if (typeof (this.ftaChartTrendMulti[key]['data']) == 'undefined') {
-                //     //   this.ftaChartTrendMulti[key]['data'] = [];
-                //     // }
-
-                //     //   this.ftaChartTrendMulti[key]['data'].push(Math.round(reslt.fta_ratio));
-                //     //   this.ftaChartTrendMulti[key]['label'] = reslt.clinic_name;
-                //     //   this.ftaChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
-                //     //   this.ftaChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
-                //   });
-                //   // this.ftaChartTrendMulti[0]['data'].push(Math.round(((ftaSum / res.val.length) + Number.EPSILON) * 100) / 100);
-                //   this.ftaChartTrendMulti[0]['data'].push(
-                //     ftaSum / res.val.length
-                //   );
-                //   this.ftaChartTrendMulti[0]['backgroundColor'] =
-                //     this.doughnutChartColors[0];
-                //   if (this.trendValue == 'c')
-                //     this.ftaChartTrendMultiLabels1.push(
-                //       this.datePipe.transform(res.duration, 'MMM y')
-                //     );
-                //   else this.ftaChartTrendMultiLabels1.push(res.duration);
-                // });
-                // this.ftaTrendMultiLabels = this.ftaChartTrendMultiLabels1;
               } else {
                 res.body.data.forEach((res) => {
                   if (res.val > 100) res.val = 100;
@@ -2743,69 +2799,207 @@ export class FrontDeskComponent implements AfterViewInit {
     this.showByclinicUta = false;
     this.utaChartTrendMulti = [];
     this.utaTrendMultiLabels = [];
-    this.clinic_id &&
-      this.frontdeskService
-        .fdUtaRatioTrend(this.clinic_id, this.trendValue)
-        .subscribe(
-          (res) => {
-            this.utaChartTrendLabels1 = [];
-            this.utaChartTrend1 = [];
-            this.Apirequest = this.Apirequest - 1;
-            if (res.status == 200) {
-              this.utaChartTrendMulti[0] = { data: [], label: '' };
-              res.body.data.sort((a, b) =>
-                a.duration === b.duration ? 0 : a.duration > b.duration || -1
-              );
-              this.fdUtaRatioTrendLoader = false;
-              if (
-                this.clinic_id.indexOf(',') >= 0 ||
-                Array.isArray(this.clinic_id)
-              ) {
-                this.showByclinicUta = true;
-                const data = _.chain(res.body.data)
-                  .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
-                  .map((items: any[], duration: string) => {
-                    const totalUta = _.chain(items)
-                      .sumBy((item) => Number(item.total_uta))
-                      .value();
-                    const totalAppts = _.chain(items)
-                      .sumBy((item) => Number(item.total_appts))
-                      .value();
-                    return {
-                      duration:
-                        this.trendValue == 'c'
-                          ? this.datePipe.transform(duration, 'MMM y')
-                          : duration,
-                      uta_ratio: _.round((totalUta / totalAppts || 0) * 100, 1)
-                    };
-                  })
-                  .value();
-                this.utaChartTrendMulti[0]['data'] = data.map(
-                  (item) => item.uta_ratio
-                );
-                this.utaChartTrendMulti[0]['backgroundColor'] =
-                  this.doughnutChartColors[0];
-                this.utaTrendMultiLabels = data.map((item) => item.duration);
-              } else {
-                res.body.data.forEach((res) => {
-                  if (res.val > 100) res.val = 100;
-                  this.utaChartTrend1.push(_.round(res.uta_ratio, 1));
-                  if (this.trendValue == 'c')
-                    this.utaChartTrendLabels1.push(
-                      this.datePipe.transform(res.year_month, 'MMM y')
-                    );
-                  else this.utaChartTrendLabels1.push(res.year);
-                });
-                this.utaChartTrend[0]['data'] = this.utaChartTrend1;
 
-                this.utaChartTrendLabels = this.utaChartTrendLabels1;
-              }
+    this.frontdeskService
+      .fdUtaRatioTrend(this.clinic_id, this.trendValue)
+      .subscribe(
+        (res) => {
+          this.utaChartTrendLabels1 = [];
+          this.utaChartTrend1 = [];
+          this.Apirequest = this.Apirequest - 1;
+          if (res.status == 200) {
+            this.utaChartTrendMulti[0] = { data: [], label: '' };
+            res.body.data.sort((a, b) =>
+              a.duration === b.duration ? 0 : a.duration > b.duration || -1
+            );
+            this.fdUtaRatioTrendLoader = false;
+            if (
+              this.clinic_id.indexOf(',') >= 0 ||
+              Array.isArray(this.clinic_id)
+            ) {
+              this.showByclinicUta = true;
+              const data = _.chain(res.body.data)
+                .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                .map((items: any[], duration: string) => {
+                  const totalUta = _.chain(items)
+                    .sumBy((item) => Number(item.total_uta))
+                    .value();
+                  const totalAppts = _.chain(items)
+                    .sumBy((item) => Number(item.total_appts))
+                    .value();
+                  return {
+                    duration:
+                      this.trendValue == 'c'
+                        ? this.datePipe.transform(duration, 'MMM y')
+                        : duration,
+                    uta_ratio: _.round((totalUta / totalAppts || 0) * 100, 1)
+                  };
+                })
+                .value();
+              this.utaChartTrendMulti[0]['data'] = data.map(
+                (item) => item.uta_ratio
+              );
+              this.utaChartTrendMulti[0]['backgroundColor'] =
+                this.doughnutChartColors[0];
+              this.utaTrendMultiLabels = data.map((item) => item.duration);
+            } else {
+              res.body.data.forEach((res) => {
+                if (res.val > 100) res.val = 100;
+                this.utaChartTrend1.push(_.round(res.uta_ratio, 1));
+                if (this.trendValue == 'c')
+                  this.utaChartTrendLabels1.push(
+                    this.datePipe.transform(res.year_month, 'MMM y')
+                  );
+                else this.utaChartTrendLabels1.push(res.year);
+              });
+              this.utaChartTrend[0]['data'] = this.utaChartTrend1;
+
+              this.utaChartTrendLabels = this.utaChartTrendLabels1;
             }
-          },
-          (error) => {
-            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        );
+        },
+        (error) => {
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
+  }
+
+  public isLoadingCancellationRatioTrendChartData: boolean = false;
+  public isCancellationRatioTrendMultiChartVisible: boolean = false;
+  public cancellationRatioTrendChartLabels: string[] = [];
+  public cancellationRatioTrendChartData: Chart.ChartDataSets[] = [];
+
+  private getCancellationRatioTrend() {
+    this.isLoadingCancellationRatioTrendChartData = true;
+    this.cancellationRatioTrendChartLabels = [];
+    this.isCancellationRatioTrendMultiChartVisible = false;
+    this.cancellationRatioTrendChartData = [];
+
+    const clinicIds: string =
+      typeof this.clinic_id == 'object'
+        ? this.clinic_id.join(',')
+        : this.clinic_id;
+
+    this.frontdeskService
+      .getCancellationRatioTrend(clinicIds, this.trendValue)
+      .pipe(first())
+      .subscribe({
+        next: (res) => {
+          this.isLoadingCancellationRatioTrendChartData = false;
+          if (clinicIds.split(',').length > 1) {
+            this.isCancellationRatioTrendMultiChartVisible = true;
+            const data = _.chain(res.data)
+              .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+              .map((items: CancellationRatio[], duration: string) => {
+                const totalCancellation = _.chain(items)
+                  .sumBy((item) => Number(item.total_cancellation))
+                  .value();
+                const totalAppts = _.chain(items)
+                  .sumBy((item) => Number(item.total_appts))
+                  .value();
+                return {
+                  duration:
+                    this.trendValue == 'c'
+                      ? this.datePipe.transform(duration, 'MMM y')
+                      : duration,
+                  cancel_ratio: _.round(
+                    (totalCancellation / totalAppts || 0) * 100,
+                    1
+                  )
+                };
+              })
+              .value();
+            this.cancellationRatioTrendChartData = [
+              {
+                data: data.map((item) => item.cancel_ratio),
+                backgroundColor: this.doughnutChartColors[0]
+              }
+            ];
+            this.cancellationRatioTrendChartLabels = data.map(
+              (item) => item.duration
+            );
+          } else {
+            this.cancellationRatioTrendChartData = [
+              {
+                data: res.data.map((item) =>
+                  _.round(parseFloat(item.cancel_ratio), 1)
+                )
+              }
+            ];
+            this.cancellationRatioTrendChartLabels = res.data.map((item) =>
+              this.trendValue == 'c'
+                ? this.datePipe.transform(item.year_month, 'MMM y')
+                : item.year
+            );
+          }
+        },
+        error: () => {
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      });
+
+    this.frontdeskService
+      .fdUtaRatioTrend(this.clinic_id, this.trendValue)
+      .subscribe(
+        (res) => {
+          this.utaChartTrendLabels1 = [];
+          this.utaChartTrend1 = [];
+          this.Apirequest = this.Apirequest - 1;
+          if (res.status == 200) {
+            this.utaChartTrendMulti[0] = { data: [], label: '' };
+            res.body.data.sort((a, b) =>
+              a.duration === b.duration ? 0 : a.duration > b.duration || -1
+            );
+            this.fdUtaRatioTrendLoader = false;
+            if (
+              this.clinic_id.indexOf(',') >= 0 ||
+              Array.isArray(this.clinic_id)
+            ) {
+              this.showByclinicUta = true;
+              const data = _.chain(res.body.data)
+                .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                .map((items: any[], duration: string) => {
+                  const totalUta = _.chain(items)
+                    .sumBy((item) => Number(item.total_uta))
+                    .value();
+                  const totalAppts = _.chain(items)
+                    .sumBy((item) => Number(item.total_appts))
+                    .value();
+                  return {
+                    duration:
+                      this.trendValue == 'c'
+                        ? this.datePipe.transform(duration, 'MMM y')
+                        : duration,
+                    uta_ratio: _.round((totalUta / totalAppts || 0) * 100, 1)
+                  };
+                })
+                .value();
+              this.utaChartTrendMulti[0]['data'] = data.map(
+                (item) => item.uta_ratio
+              );
+              this.utaChartTrendMulti[0]['backgroundColor'] =
+                this.doughnutChartColors[0];
+              this.utaTrendMultiLabels = data.map((item) => item.duration);
+            } else {
+              res.body.data.forEach((res) => {
+                if (res.val > 100) res.val = 100;
+                this.utaChartTrend1.push(_.round(res.uta_ratio, 1));
+                if (this.trendValue == 'c')
+                  this.utaChartTrendLabels1.push(
+                    this.datePipe.transform(res.year_month, 'MMM y')
+                  );
+                else this.utaChartTrendLabels1.push(res.year);
+              });
+              this.utaChartTrend[0]['data'] = this.utaChartTrend1;
+
+              this.utaChartTrendLabels = this.utaChartTrendLabels1;
+            }
+          }
+        },
+        (error) => {
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
   }
 
   public tickChartTrend: any[] = [

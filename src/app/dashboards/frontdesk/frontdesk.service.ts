@@ -368,18 +368,20 @@ export class FrontDeskService {
   }
 
   getCancellationRatio(
-    clinicId: number,
+    clinicIds: string,
     startDate: string,
-    endDate: string
+    endDate: string,
+    duration: string
   ): Observable<CancellationRatioResponse> {
     const header = this.getHeaders();
     return this.http
       .get(`${this.apiUrl}/FrontDesk/fdCancellationRatio`, {
         ...header,
         params: {
-          clinic_id: clinicId,
+          clinic_id: clinicIds,
           start_date: startDate,
-          endDate: endDate
+          end_date: endDate,
+          duration
         }
       })
       .pipe(
@@ -390,7 +392,7 @@ export class FrontDeskService {
   }
 
   getCancellationRatioTrend(
-    clinicId: number,
+    clinicIds: string,
     mode: string
   ): Observable<CancellationRatioResponse> {
     const header = this.getHeaders();
@@ -398,7 +400,7 @@ export class FrontDeskService {
       .get(`${this.apiUrl}/FrontDesk/fdCancellationRatioTrend`, {
         ...header,
         params: {
-          clinic_id: clinicId,
+          clinic_id: clinicIds,
           mode
         }
       })

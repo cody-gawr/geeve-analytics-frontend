@@ -1592,7 +1592,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
           if (res.status == 200) {
             this.mkNewPatientsByReferalMulti = [];
             this.mkNewPatientsByReferalLabels = [];
-            console.log(res.body);
             if (
               this.clinic_id.indexOf(',') >= 0 ||
               Array.isArray(this.clinic_id)

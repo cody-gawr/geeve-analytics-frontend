@@ -2863,7 +2863,6 @@ export class FinancesComponent implements AfterViewInit {
                   const collectionItem = (<any[]>res.body.data).find(
                     (ele) => ele.clinic_name == item.label
                   );
-                  console.log(collectionItem);
                   return {
                     ...item,
                     data: !!collectionItem
@@ -2871,18 +2870,6 @@ export class FinancesComponent implements AfterViewInit {
                       : item.data
                   };
                 });
-              console.log(this.totalProductionCollection1);
-              // res.body.data.forEach((item, ind) => {
-              //   this.totalProductionCollection1[ind]['data'].push(
-              //     Math.round(item.collection)
-              //   );
-              //   this.totalProductionCollection1[ind]['label'] =
-              //     item.clinic_name;
-              //   this.totalProductionCollection1[ind]['backgroundColor'] =
-              //     this.doughnutChartColors[ind];
-              //   this.totalProductionCollection1[ind]['hoverBackgroundColor'] =
-              //     this.doughnutChartColors[ind];
-              // });
 
               this.totalProductionCollectionLabel1 = [
                 'Production',
