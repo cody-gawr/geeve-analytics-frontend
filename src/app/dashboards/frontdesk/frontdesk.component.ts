@@ -22,7 +22,7 @@ import { ClinicianAnalysisService } from '../cliniciananalysis/cliniciananalysis
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { LocalStorageService } from '../../shared/local-storage.service';
-import { takeUntil, first, Subject } from 'rxjs';
+import { take, Subject, interval } from 'rxjs';
 import { CancellationRatio } from './frontdesk.interfaces';
 
 export interface Dentist {
@@ -76,9 +76,12 @@ export class FrontDeskComponent implements AfterViewInit {
 
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
-  public get isExactOrCore(): boolean {
-    const clinics = this.localStorageService.getObject<any[]>('clinics') || [];
-    return clinics.some((c) => ['exact', 'core'].includes(c.pms));
+  public get isCancellationRatioContainerVisible(): boolean {
+    return this.localStorageService.isEachClinicPmsExactOrCore();
+  }
+
+  public get isUtaRatioContainerVisible(): boolean {
+    return this.localStorageService.isEachClinicPmsD4w();
   }
 
   constructor(
@@ -1202,11 +1205,15 @@ export class FrontDeskComponent implements AfterViewInit {
       this.fdtreatmentPrebookRate();
       this.fdNumberOfTicks();
       this.fdFtaRatio();
-      if (this.isExactOrCore) {
-        this.getCancellationRatio();
-      } else {
-        this.fdUtaRatio();
-      }
+      interval(100)
+        .pipe(take(1))
+        .subscribe(() => {
+          if (this.isCancellationRatioContainerVisible) {
+            this.getCancellationRatio();
+          } else if (this.isUtaRatioContainerVisible) {
+            this.fdUtaRatio();
+          }
+        });
     }
   }
 
@@ -1724,7 +1731,7 @@ export class FrontDeskComponent implements AfterViewInit {
           this.endDate,
           this.duration
         )
-        .pipe(takeUntil(this.destroy$))
+        .pipe(take(1))
         .subscribe({
           next: (res) => {
             this.isLoadingCancellationRatioChartData = false;
@@ -2482,11 +2489,15 @@ export class FrontDeskComponent implements AfterViewInit {
     this.fdTreatmentPrebookRateTrend();
     this.fdNumberOfTicksTrend();
     this.fdFtaRatioTrend();
-    if (this.isExactOrCore) {
-      this.getCancellationRatioTrend();
-    } else {
-      this.fdUtaRatioTrend();
-    }
+    interval(100)
+      .pipe(take(1))
+      .subscribe(() => {
+        if (this.isCancellationRatioContainerVisible) {
+          this.getCancellationRatioTrend();
+        } else if (this.isUtaRatioContainerVisible) {
+          this.fdUtaRatioTrend();
+        }
+      });
   }
 
   public ftaChartTrend: any[] = [
@@ -2881,7 +2892,7 @@ export class FrontDeskComponent implements AfterViewInit {
 
     this.frontdeskService
       .getCancellationRatioTrend(clinicIds, this.trendValue)
-      .pipe(first())
+      .pipe(take(1))
       .subscribe({
         next: (res) => {
           this.isLoadingCancellationRatioTrendChartData = false;

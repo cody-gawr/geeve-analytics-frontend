@@ -101,8 +101,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   public isCompleteMonth: boolean = true;
 
   public get isExactOrCore(): boolean {
-    const clinics = this.localStorageService.getObject<any[]>('clinics') || [];
-    return clinics.some((c) => ['exact', 'core'].includes(c.pms));
+    return this.localStorageService.isEachClinicPmsExactOrCore();
   }
 
   constructor(

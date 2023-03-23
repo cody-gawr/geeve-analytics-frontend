@@ -343,8 +343,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   public selectDentist = 0;
 
   public get isExactOrCore(): boolean {
-    const clinics = this.localStorageService.getObject<any[]>('clinics') || [];
-    return clinics.some((c) => ['exact', 'core'].includes(c.pms));
+    return this.localStorageService.isEachClinicPmsExactOrCore();
   }
 
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
@@ -578,7 +577,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             this.isEnableEquipList =
               v.data.equip_list_enable == 1 ? true : false;
             if (v.data.sms_enabled != undefined)
-              this.isSMSEnabled = !!v.data.sms_enabled && parseInt(this.user_type) != 4;
+              this.isSMSEnabled =
+                !!v.data.sms_enabled && parseInt(this.user_type) != 4;
             if (v.data.accepted_sms_terms != undefined)
               this.isAcceptedSMSTerms = !!v.data.accepted_sms_terms;
             //}

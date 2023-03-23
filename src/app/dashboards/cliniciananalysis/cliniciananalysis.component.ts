@@ -110,8 +110,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public Apirequest = 0;
 
   public get isExactOrCore(): boolean {
-    const clinics = this.localStorageService.getObject<any[]>('clinics') || [];
-    return clinics.some((c) => ['exact', 'core'].includes(c.pms));
+    return this.localStorageService.isEachClinicPmsExactOrCore();
   }
   constructor(
     private localStorageService: LocalStorageService,
@@ -377,8 +376,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       .getClinicFollowUpSettings(ids[0])
       .subscribe((res) => {
         //if (res.status == 200) {
-          if (res.data.max_chart_bars)
-            this.numberOfRecords = res.data.max_chart_bars;
+        if (res.data.max_chart_bars)
+          this.numberOfRecords = res.data.max_chart_bars;
         //}
       });
   }

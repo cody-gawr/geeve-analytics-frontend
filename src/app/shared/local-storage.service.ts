@@ -42,4 +42,14 @@ export class LocalStorageService {
   public getObject<T>(key: string): T {
     return <T>JSON.parse(this.getData(key));
   }
+
+  public isEachClinicPmsExactOrCore(): boolean {
+    const clinics = this.getObject<any[]>('clinics') || [];
+    return clinics.every((c) => ['exact', 'core'].includes(c.pms));
+  }
+
+  public isEachClinicPmsD4w(): boolean {
+    const clinics = this.getObject<any[]>('clinics') || [];
+    return clinics.every((c) => c.pms == 'd4w');
+  }
 }

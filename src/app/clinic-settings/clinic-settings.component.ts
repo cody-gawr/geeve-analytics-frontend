@@ -98,8 +98,7 @@ export class ClinicSettingsComponent implements OnInit {
   isSMSEnabled = false;
 
   public get isExactOrCore(): boolean {
-    const clinics = this.localStorageService.getObject<any[]>('clinics') || [];
-    return clinics.some((c) => ['exact', 'core'].includes(c.pms));
+    return this.localStorageService.isEachClinicPmsExactOrCore();
   }
 
   constructor(
@@ -224,89 +223,90 @@ export class ClinicSettingsComponent implements OnInit {
   }
   //get setting for teh selcted clinic
   getClinicSettings() {
-    this.clinicSettingsService.getClinicSettings(this.id).subscribe(
-      {
-        next: (v) => {
-          //if (res.status == 200) {
-            this.clinicSettingsService.setClinicData(v.httpRes);
-            this.clinicName = v.data[0].clinicName;
-            this.contactName = v.data[0].contactName;
-            this.address = v.data[0].address;
-            this.practice_size = v.data[0].practice_size;
-            this.subtracted_accounts = v.data[0].net_profit_exclusions === 'null' ? "" : v.data[0].net_profit_exclusions;
-            this.ftaUta = v.data[0].fta_uta;
-            this.timezone = v.data[0].timezone;
-            this.equipmentList =
-              v.data[0].equip_list_enable == 1 ? true : false;
-            this.dailyTasks = v.data[0].daily_task_enable == 1 ? true : false;
-            this.compareMode = v.data[0].compare_mode == 1 ? true : false;
-            
-            // this.postOpCallsMh = res.body.data[0].post_op_days;
-            // this.post_op_calls = res.body.data[0].post_op_calls;
-            // this.tickDays = res.body.data[0].tick_days;
-            // this.recallWeeks = res.body.data[0].recall_weeks;
-            // this.ftaFollowupDays = res.body.data[0].fta_followup_days;
-            // this.postOpEnable = res.body.data[0].post_op_enable == 1 ? true : false;
-            // this.tickEnable = res.body.data[0].tick_enable == 1 ? true : false;
-            // this.recallEnable = res.body.data[0].recall_enable == 1 ? true : false;
-            // this.ftaEnable = res.body.data[0].fta_enable == 1 ? true : false;
-            // this.utaEnable = res.body.data[0].uta_enable == 1 ? true : false;
-  
-            if (this.ftaUta == "") this.ftaUta = "status";
-  
-            if (v.data[0].days != null && v.data[0].days != 0) {
-              this.workingDays = JSON.parse(v.data[0].days);
-            }
-          // } else if (res.status == "401") {
-          //   this._cookieService.put("username", "");
-          //   this._cookieService.put("email", "");
-          //   this._cookieService.put("userid", "");
-          //   this.router.navigateByUrl("/login");
-          // }
-        },
-        error: (error) => {
-          if (error.status == 401) {
-            this._cookieService.removeAll();
-            this.router.navigateByUrl("/login");
-          }
-         // this.warningMessage = "Please Provide Valid Inputs!";
+    this.clinicSettingsService.getClinicSettings(this.id).subscribe({
+      next: (v) => {
+        //if (res.status == 200) {
+        this.clinicSettingsService.setClinicData(v.httpRes);
+        this.clinicName = v.data[0].clinicName;
+        this.contactName = v.data[0].contactName;
+        this.address = v.data[0].address;
+        this.practice_size = v.data[0].practice_size;
+        this.subtracted_accounts =
+          v.data[0].net_profit_exclusions === 'null'
+            ? ''
+            : v.data[0].net_profit_exclusions;
+        this.ftaUta = v.data[0].fta_uta;
+        this.timezone = v.data[0].timezone;
+        this.equipmentList = v.data[0].equip_list_enable == 1 ? true : false;
+        this.dailyTasks = v.data[0].daily_task_enable == 1 ? true : false;
+        this.compareMode = v.data[0].compare_mode == 1 ? true : false;
+
+        // this.postOpCallsMh = res.body.data[0].post_op_days;
+        // this.post_op_calls = res.body.data[0].post_op_calls;
+        // this.tickDays = res.body.data[0].tick_days;
+        // this.recallWeeks = res.body.data[0].recall_weeks;
+        // this.ftaFollowupDays = res.body.data[0].fta_followup_days;
+        // this.postOpEnable = res.body.data[0].post_op_enable == 1 ? true : false;
+        // this.tickEnable = res.body.data[0].tick_enable == 1 ? true : false;
+        // this.recallEnable = res.body.data[0].recall_enable == 1 ? true : false;
+        // this.ftaEnable = res.body.data[0].fta_enable == 1 ? true : false;
+        // this.utaEnable = res.body.data[0].uta_enable == 1 ? true : false;
+
+        if (this.ftaUta == '') this.ftaUta = 'status';
+
+        if (v.data[0].days != null && v.data[0].days != 0) {
+          this.workingDays = JSON.parse(v.data[0].days);
         }
+        // } else if (res.status == "401") {
+        //   this._cookieService.put("username", "");
+        //   this._cookieService.put("email", "");
+        //   this._cookieService.put("userid", "");
+        //   this.router.navigateByUrl("/login");
+        // }
+      },
+      error: (error) => {
+        if (error.status == 401) {
+          this._cookieService.removeAll();
+          this.router.navigateByUrl('/login');
+        }
+        // this.warningMessage = "Please Provide Valid Inputs!";
       }
-    );
+    });
   }
 
   getClinicFollowUPSettings() {
-    this.clinicSettingsService.getClinicFollowUPSettings(this.id).subscribe(
-      {
-        next: (v) => {
-          this.clinicSettingsService.setClincsSetting(v.httpRes);
+    this.clinicSettingsService.getClinicFollowUPSettings(this.id).subscribe({
+      next: (v) => {
+        this.clinicSettingsService.setClincsSetting(v.httpRes);
         //if (res.status == 200) {
-          this.postOpEnable = v.data.post_op_enable == 1 ? true : false;
-          this.tickEnable = v.data.tick_enable == 1 ? true : false;
-          this.recallEnable = v.data.recall_enable == 1 ? true : false;
-          this.ftaEnable = v.data.fta_enable == 1 ? true : false;
-          this.utaEnable = v.data.uta_enable == 1 ? true : false;
-          this.internalReferralEnable = v.data.referral_enable == 1 ? true : false;
-          this.ftaFollowupDays = v.data.fta_followup_days;
-          this.utaFollowupDays = v.data.uta_followup_days;
-          this.ftaFollowupDaysLater = v.data.fta_days_later;
-          this.utaFollowupDaysLater = v.data.uta_days_later;
-          this.postOpCallsMh = v.data.post_op_days;
-          this.post_op_calls = v.data.post_op_calls;
-          this.tickDays = v.data.tick_days;
-          this.recallWeeks = v.data.recall_weeks;
-          this.referralWeeks = v.data.referral_weeks;
-          this.isSMSEnabled = !!v.data.sms_enabled && parseInt(this.userType) != 4;
-          if(this.isSMSEnabled){
-            this.getReviewMsgTemplates();
-            this.getSocialLinks();
-          }
+        this.postOpEnable = v.data.post_op_enable == 1 ? true : false;
+        this.tickEnable = v.data.tick_enable == 1 ? true : false;
+        this.recallEnable = v.data.recall_enable == 1 ? true : false;
+        this.ftaEnable = v.data.fta_enable == 1 ? true : false;
+        this.utaEnable = v.data.uta_enable == 1 ? true : false;
+        this.internalReferralEnable =
+          v.data.referral_enable == 1 ? true : false;
+        this.ftaFollowupDays = v.data.fta_followup_days;
+        this.utaFollowupDays = v.data.uta_followup_days;
+        this.ftaFollowupDaysLater = v.data.fta_days_later;
+        this.utaFollowupDaysLater = v.data.uta_days_later;
+        this.postOpCallsMh = v.data.post_op_days;
+        this.post_op_calls = v.data.post_op_calls;
+        this.tickDays = v.data.tick_days;
+        this.recallWeeks = v.data.recall_weeks;
+        this.referralWeeks = v.data.referral_weeks;
+        this.isSMSEnabled =
+          !!v.data.sms_enabled && parseInt(this.userType) != 4;
+        if (this.isSMSEnabled) {
+          this.getReviewMsgTemplates();
+          this.getSocialLinks();
+        }
         //}
       },
       error: (error) => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }}
-    );
+      }
+    });
   }
 
   getFollowUpSettings() {
@@ -646,53 +646,49 @@ export class ClinicSettingsComponent implements OnInit {
   }
 
   removeMsgTemplate(element: ReviewMsgTemplateObject) {
-      Swal.fire({
-        title: 'Are you sure?',
-        text: 'You want to delete this template?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'No'
-      }).then((result) => {
-        if (result.value) {
-          this.clinicSettingsService
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to delete this template?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.clinicSettingsService
           .removeReviewMsgTemplate(element.id, this.id)
-          .subscribe(
-            {
-              next: (result) => {
-                this.toastr.success('Removed a template successfuly!');
-                this.getReviewMsgTemplates();
-              },
-              error:(error) => {
-                this.toastr.error(error.message);
-              }
+          .subscribe({
+            next: (result) => {
+              this.toastr.success('Removed a template successfuly!');
+              this.getReviewMsgTemplates();
+            },
+            error: (error) => {
+              this.toastr.error(error.message);
             }
-          );
-        }
-      });
+          });
+      }
+    });
   }
 
   private getReviewMsgTemplates() {
     this.reviewMsgTemplates = [];
-    this.clinicSettingsService.getReviewMsgTemplateList(this.id).subscribe(
-      {
-        next: (v) => {
-          // if (res.status == 200) {
-            if (v.data) {
-              this.reviewMsgTemplates = v.data;
-            }
-          // } else if (res.status == 401) {
-          //   this._cookieService.put('username', '');
-          //   this._cookieService.put('email', '');
-          //   this._cookieService.put('userid', '');
-          //   this.router.navigateByUrl('/login');
-          // }
-        },
-        error: (error) => {
-          this.toastr.error(error.message);
+    this.clinicSettingsService.getReviewMsgTemplateList(this.id).subscribe({
+      next: (v) => {
+        // if (res.status == 200) {
+        if (v.data) {
+          this.reviewMsgTemplates = v.data;
         }
+        // } else if (res.status == 401) {
+        //   this._cookieService.put('username', '');
+        //   this._cookieService.put('email', '');
+        //   this._cookieService.put('userid', '');
+        //   this.router.navigateByUrl('/login');
+        // }
+      },
+      error: (error) => {
+        this.toastr.error(error.message);
       }
-    );
+    });
   }
 
   facebookId = new FormControl('', Validators.required);
@@ -701,20 +697,24 @@ export class ClinicSettingsComponent implements OnInit {
   googleConnected = false;
 
   getSocialLinks() {
-    this.clinicSettingsService.getSocialLinks(this.id).subscribe(
-      {
-        next: (v) => {
-          if(v.data){
-            this.facebookId = new FormControl(v.data.facebook_id, Validators.required);
-            this.googleId = new FormControl(v.data.google_id, Validators.required);
-          }
-          this.googleConnected = v.googleConnected;
-        },
-        error: (e) => {
-          this.toastr.error(e.message);
+    this.clinicSettingsService.getSocialLinks(this.id).subscribe({
+      next: (v) => {
+        if (v.data) {
+          this.facebookId = new FormControl(
+            v.data.facebook_id,
+            Validators.required
+          );
+          this.googleId = new FormControl(
+            v.data.google_id,
+            Validators.required
+          );
         }
+        this.googleConnected = v.googleConnected;
+      },
+      error: (e) => {
+        this.toastr.error(e.message);
       }
-    );
+    });
   }
 
   linkGoogle() {
