@@ -110,7 +110,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public Apirequest = 0;
 
   public get isExactOrCore(): boolean {
-    return this.localStorageService.isEachClinicPmsExactOrCore();
+    return this.localStorageService.isEachClinicPmsExactOrCore(this.clinic_id);
   }
   constructor(
     private localStorageService: LocalStorageService,

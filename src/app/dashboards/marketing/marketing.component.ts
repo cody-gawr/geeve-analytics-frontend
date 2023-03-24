@@ -101,7 +101,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   public isCompleteMonth: boolean = true;
 
   public get isExactOrCore(): boolean {
-    return this.localStorageService.isEachClinicPmsExactOrCore();
+    return this.localStorageService.isEachClinicPmsExactOrCore(this.clinic_id);
   }
 
   constructor(

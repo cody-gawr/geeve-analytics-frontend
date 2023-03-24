@@ -343,7 +343,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   public selectDentist = 0;
 
   public get isExactOrCore(): boolean {
-    return this.localStorageService.isEachClinicPmsExactOrCore();
+    return this.localStorageService.isEachClinicPmsExactOrCore(this.clinic_id);
   }
 
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];

@@ -77,11 +77,11 @@ export class FrontDeskComponent implements AfterViewInit {
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
   public get isCancellationRatioContainerVisible(): boolean {
-    return this.localStorageService.isEachClinicPmsExactOrCore();
+    return this.localStorageService.isEachClinicPmsExactOrCore(this.clinic_id);
   }
 
   public get isUtaRatioContainerVisible(): boolean {
-    return this.localStorageService.isEachClinicPmsD4w();
+    return this.localStorageService.isEachClinicPmsD4w(this.clinic_id);
   }
 
   constructor(

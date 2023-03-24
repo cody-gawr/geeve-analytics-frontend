@@ -470,7 +470,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     'December'
   ];
   public get isExactOrCore(): boolean {
-    return this.localStorageService.isEachClinicPmsExactOrCore();
+    return this.localStorageService.isEachClinicPmsExactOrCore(this.clinic_id);
   }
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(

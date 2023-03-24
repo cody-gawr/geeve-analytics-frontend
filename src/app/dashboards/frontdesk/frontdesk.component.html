@@ -183,9 +183,9 @@
                 fxLayout="row wrap"
                 class="sa_tabs_main_sec"
                 fxLayoutAlign="center"
+                [ngClass]="{ hidden: isCancellationRatioContainerVisible }"
               >
                 <div
-                  *ngIf="isUtaRatioContainerVisible"
                   fxFlex.gt-sm="49.33%"
                   fxFlex.gt-xs="50%"
                   fxFlex="100"
@@ -199,7 +199,6 @@
                   >
                 </div>
                 <div
-                  *ngIf="isUtaRatioContainerVisible"
                   fxFlex.gt-sm="49.33%"
                   fxFlex.gt-xs="50%"
                   fxFlex="100"
@@ -1047,10 +1046,12 @@
               <div class="chart">
                 <div
                   *ngIf="
-                    showmulticlinicticks == false &&
-                    !showTrend &&
                     ticksTotal > 0 &&
-                    !fdNumberOfTicksLoader
+                    !(
+                      showTrend ||
+                      showmulticlinicticks ||
+                      fdNumberOfTicksLoader
+                    )
                   "
                   class="chart-recall-rate"
                 >
@@ -1068,10 +1069,9 @@
                 </div>
                 <canvas
                   *ngIf="
-                    showmulticlinicticks == true &&
-                    !showTrend &&
+                    showmulticlinicticks &&
                     ticksTotal > 0 &&
-                    !fdNumberOfTicksLoader
+                    !(showTrend || fdNumberOfTicksLoader)
                   "
                   #myCanvas
                   baseChart
@@ -1097,10 +1097,9 @@
 
                 <div
                   *ngIf="
-                    !showByclinictic &&
                     showTrend &&
-                    tickChartTrend.length > 0 &&
-                    !fdNumberOfTicksTrendLoader
+                    tickChartTrend1.length > 0 &&
+                    !(showByclinictic || fdNumberOfTicksTrendLoader)
                   "
                   class="chart-recall-rate-trend"
                 >
@@ -1144,8 +1143,8 @@
                 <div
                   *ngIf="
                     showTrend &&
-                    tickChartTrend.length <= 0 &&
-                    ticChartTrendMultiLabels.length <= 0 &&
+                    tickChartTrend1.length == 0 &&
+                    ticChartTrendMultiLabels.length == 0 &&
                     !fdNumberOfTicksTrendLoader
                   "
                 >
@@ -1507,7 +1506,7 @@
                 <div
                   *ngIf="
                     showTrend &&
-                    cancellationRatioTrendChartData.length > 0 &&
+                    cancellationRatioTrendChartLabels.length > 0 &&
                     !isLoadingCancellationRatioTrendChartData
                   "
                   class="chart-recall-rate-trend"
@@ -1537,7 +1536,7 @@
                 <div
                   *ngIf="
                     showTrend &&
-                    cancellationRatioTrendChartData.length == 0 &&
+                    cancellationRatioTrendChartLabels.length == 0 &&
                     !isLoadingCancellationRatioTrendChartData
                   "
                 >
@@ -1585,12 +1584,18 @@
                 >
                   <h3 class="m-0 value-num">
                     {{
-                      (utaPrevTotal > 100 ? 100 : utaPrevTotal)
-                        | number : '1.0-1'
+                      (cancellationRatioPrevTotal > 100
+                        ? 100
+                        : cancellationRatioPrevTotal
+                      ) | number : '1.0-1'
                     }}%
                   </h3>
-                  <small *ngIf="trendText != ''">{{ trendText }}</small>
-                  <small *ngIf="trendText == ''">Previous</small>
+                  <small *ngIf="trendText == ''; else unEqualToEmptyTemplate"
+                    >Previous</small
+                  >
+                  <ng-template #unEqualToEmptyTemplate>
+                    <small>{{ trendText }}</small>
+                  </ng-template>
                 </div>
                 <div
                   fxFlex.gt-sm="33.33%"

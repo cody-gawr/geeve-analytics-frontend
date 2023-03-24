@@ -98,7 +98,7 @@ export class ClinicSettingsComponent implements OnInit {
   isSMSEnabled = false;
 
   public get isExactOrCore(): boolean {
-    return this.localStorageService.isEachClinicPmsExactOrCore();
+    return this.localStorageService.isEachClinicPmsExactOrCore(this.clinic_id);
   }
 
   constructor(
