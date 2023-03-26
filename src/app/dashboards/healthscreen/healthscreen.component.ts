@@ -395,7 +395,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
               this.production_c_avg = Math.round(
                 res.body.data.production_daily_avg
               );
-              // this.production_c_avg = Math.round(this.production_c / today);
+
               this.production_dif = Math.round(
                 this.production_c - this.production_p
               );

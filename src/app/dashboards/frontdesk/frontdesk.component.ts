@@ -1205,7 +1205,7 @@ export class FrontDeskComponent implements AfterViewInit {
       this.fdtreatmentPrebookRate();
       this.fdNumberOfTicks();
       this.fdFtaRatio();
-      interval(100)
+      interval(400)
         .pipe(take(1))
         .subscribe(() => {
           if (this.isCancellationRatioContainerVisible) {
@@ -2489,12 +2489,14 @@ export class FrontDeskComponent implements AfterViewInit {
     this.fdTreatmentPrebookRateTrend();
     this.fdNumberOfTicksTrend();
     this.fdFtaRatioTrend();
-    interval(100)
+    interval(400)
       .pipe(take(1))
       .subscribe(() => {
         if (this.isCancellationRatioContainerVisible) {
+          console.log('getCancellationRatioTrend');
           this.getCancellationRatioTrend();
         } else if (this.isUtaRatioContainerVisible) {
+          console.log('fdUtaRatioTrend');
           this.fdUtaRatioTrend();
         }
       });
@@ -2947,69 +2949,6 @@ export class FrontDeskComponent implements AfterViewInit {
           this.warningMessage = 'Please Provide Valid Inputs!';
         }
       });
-
-    this.frontdeskService
-      .fdUtaRatioTrend(this.clinic_id, this.trendValue)
-      .subscribe(
-        (res) => {
-          this.utaChartTrendLabels1 = [];
-          this.utaChartTrend1 = [];
-          this.Apirequest = this.Apirequest - 1;
-          if (res.status == 200) {
-            this.utaChartTrendMulti[0] = { data: [], label: '' };
-            res.body.data.sort((a, b) =>
-              a.duration === b.duration ? 0 : a.duration > b.duration || -1
-            );
-            this.fdUtaRatioTrendLoader = false;
-            if (
-              this.clinic_id.indexOf(',') >= 0 ||
-              Array.isArray(this.clinic_id)
-            ) {
-              this.showByclinicUta = true;
-              const data = _.chain(res.body.data)
-                .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
-                .map((items: any[], duration: string) => {
-                  const totalUta = _.chain(items)
-                    .sumBy((item) => Number(item.total_uta))
-                    .value();
-                  const totalAppts = _.chain(items)
-                    .sumBy((item) => Number(item.total_appts))
-                    .value();
-                  return {
-                    duration:
-                      this.trendValue == 'c'
-                        ? this.datePipe.transform(duration, 'MMM y')
-                        : duration,
-                    uta_ratio: _.round((totalUta / totalAppts || 0) * 100, 1)
-                  };
-                })
-                .value();
-              this.utaChartTrendMulti[0]['data'] = data.map(
-                (item) => item.uta_ratio
-              );
-              this.utaChartTrendMulti[0]['backgroundColor'] =
-                this.doughnutChartColors[0];
-              this.utaTrendMultiLabels = data.map((item) => item.duration);
-            } else {
-              res.body.data.forEach((res) => {
-                if (res.val > 100) res.val = 100;
-                this.utaChartTrend1.push(_.round(res.uta_ratio, 1));
-                if (this.trendValue == 'c')
-                  this.utaChartTrendLabels1.push(
-                    this.datePipe.transform(res.year_month, 'MMM y')
-                  );
-                else this.utaChartTrendLabels1.push(res.year);
-              });
-              this.utaChartTrend[0]['data'] = this.utaChartTrend1;
-
-              this.utaChartTrendLabels = this.utaChartTrendLabels1;
-            }
-          }
-        },
-        (error) => {
-          this.warningMessage = 'Please Provide Valid Inputs!';
-        }
-      );
   }
 
   public tickChartTrend: any[] = [
