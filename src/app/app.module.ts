@@ -9,7 +9,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FullComponent } from './layouts/full/full.component';
 import { AppBlankComponent } from './layouts/blank/blank.component';
 import { AppHeaderComponent } from './layouts/full/header/header.component';
-import { StepperHeaderComponent } from './layouts/stepper/header/header.component';
+// import { StepperHeaderComponent } from './layouts/stepper/header/header.component';
 import { AppSidebarComponent , ReferFriendComponent} from './layouts/full/sidebar/sidebar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StepperComponent } from './layouts/stepper/stepper.component';
@@ -18,7 +18,6 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { SharedModule } from './shared/shared.module';
-//import { SpinnerComponent } from './shared/spinner.component';
 import { CookieModule } from "ngx-cookie";
 import { AuthGuard } from './auth/authguard.service';
 import { UserIdleModule } from 'angular-user-idle';
@@ -45,7 +44,7 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { DashboardDurationTabsComponent } from './dashboards/dashboard-duration-tabs/dashboard-duration-tabs.component';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { DndDirective } from './directive/dnd.directive';
-import { KanbanAllModule,KanbanModule, KanbanComponent,KanbanModel  } from '@syncfusion/ej2-angular-kanban';
+import { KanbanModule} from '@syncfusion/ej2-angular-kanban';
 import { DropDownListAllModule } from '@syncfusion/ej2-angular-dropdowns';
 import { SortDirective } from './directive/sort.directive';
 import { StaffMeetingsComponent } from './staff-meetings/staff-meetings.component';
@@ -54,6 +53,9 @@ import { GraphsComponent } from './graphs/graphs.component';
 import { NgxGaugeModule } from 'ngx-gauge';
 import { ChartsModule } from 'ng2-charts';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { DashboardsModule } from './dashboards/dashboards.module';
+import { HeaderModule } from './layouts/full/header/header.module';
+import { LoginModule } from './login/login.module';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -66,8 +68,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AppComponent,
     FullComponent,
     AppHeaderComponent,
-    StepperHeaderComponent,
-    // SpinnerComponent,
+    // StepperHeaderComponent,
     AppBlankComponent,
     AppSidebarComponent,
     AppHeaderrightComponent,
@@ -112,7 +113,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     KanbanModule,
     NgxDaterangepickerMd.forRoot(),
     SharedMatModule.forRoot(),
-    CookieModule.forRoot(),
+    CookieModule.withOptions(),
+    LoginModule,
+    HeaderModule,
+    DashboardsModule,
     RouterModule.forRoot(AppRoutes),
     ToastrModule.forRoot({ 
       timeOut: 2000,
@@ -121,14 +125,14 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       closeButton :true,
       progressBar :true
       //tapToDismiss:false
-  }),
+    }),
     DragDropModule,
     NgxGaugeModule,
     ChartsModule,
     NgxChartsModule
   ],
   providers: [
-    AuthGuard, 
+    AuthGuard,
     HeaderService,
     StepperHeaderService,
     ClinicSettingsService,

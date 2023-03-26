@@ -75,10 +75,9 @@ export class LoginComponent implements OnInit {
 
     this.loginService
       .login(this.form.value.uname.trim(), this.form.value.password)
-      .subscribe(
-        (res) => {
-          this._cookieService.removeAll({ path: '/' });
-          console.log(this._cookieService.getAll());
+      .subscribe({
+        next: (res) => {
+          this._cookieService.removeAll();
           if (res.status == 200) {
             var datares = [];
             datares['username'] = res.body.data.data.username;
@@ -180,16 +179,15 @@ export class LoginComponent implements OnInit {
           } else if (res.body.message == 'error') {
             this.errorLogin = true;
           }
-          console.log(this._cookieService.getAll());
         },
-        (error) => {
+        error: (error) => {
           if (error.status == 429) {
             this.errorforAttmp = true;
           } else {
             this.errorLogin = true;
           }
         }
-      );
+    });
   }
 
   getRolesIndividual() {
@@ -234,43 +232,47 @@ export class LoginComponent implements OnInit {
   getRoles() {
     this.userType = this._cookieService.get('user_type');
     var permision = '';
-    this.rolesUsersService.getRoles().subscribe((res) => {
-      if (res.status == 200) {
-        res.body.data.forEach((dt) => {
-          if (this.userType == dt['role_id']) {
-            permision = dt['permisions'];
-          }
-        });
+    this.rolesUsersService.getRoles().subscribe({
+      next: (res) => {
+        if (res.status == 200) {
+          res.body.data.forEach((dt) => {
+            if (this.userType == dt['role_id']) {
+              permision = dt['permisions'];
+            }
+          });
 
-        if (res.body.plan == 'lite') {
-          this.router.navigate(['/dashboards/healthscreen']);
-        } else if (permision != '' && this.userType != '7') {
-          if (permision.indexOf('healthscreen') >= 0) {
+          if (res.body.plan == 'lite') {
             this.router.navigate(['/dashboards/healthscreen']);
-          } else if (permision.indexOf('dashboard1') >= 0) {
-            this.router.navigate(['/dashboards/cliniciananalysis']);
-          } else if (permision.indexOf('dashboard2') >= 0) {
-            this.router.navigate(['/dashboards/clinicianproceedures']);
-          } else if (permision.indexOf('dashboard3') >= 0) {
-            this.router.navigate(['/dashboards/frontdesk']);
-          } else if (permision.indexOf('dashboard4') >= 0) {
-            this.router.navigate(['/dashboards/marketing']);
-          } else if (permision.indexOf('dashboard5') >= 0) {
-            this.router.navigate(['/dashboards/finances']);
-          } else if (permision.indexOf('morninghuddle') >= 0) {
-            this.router.navigate(['/morning-huddle']);
-          } else if (permision.indexOf('lostopportunity') >= 0) {
-            this.router.navigate(['/lost-opportunity']);
+          } else if (permision != '' && this.userType != '7') {
+            if (permision.indexOf('healthscreen') >= 0) {
+              this.router.navigate(['/dashboards/healthscreen']);
+            } else if (permision.indexOf('dashboard1') >= 0) {
+              this.router.navigate(['/dashboards/cliniciananalysis']);
+            } else if (permision.indexOf('dashboard2') >= 0) {
+              this.router.navigate(['/dashboards/clinicianproceedures']);
+            } else if (permision.indexOf('dashboard3') >= 0) {
+              this.router.navigate(['/dashboards/frontdesk']);
+            } else if (permision.indexOf('dashboard4') >= 0) {
+              this.router.navigate(['/dashboards/marketing']);
+            } else if (permision.indexOf('dashboard5') >= 0) {
+              this.router.navigate(['/dashboards/finances']);
+            } else if (permision.indexOf('morninghuddle') >= 0) {
+              this.router.navigate(['/morning-huddle']);
+            } else if (permision.indexOf('lostopportunity') >= 0) {
+              this.router.navigate(['/lost-opportunity']);
+            } else {
+              this.router.navigate(['/profile-settings']);
+            }
+          } else if (this.userType == '7') {
+            this.router.navigate(['/dashboards/healthscreen']);
           } else {
             this.router.navigate(['/profile-settings']);
           }
-        } else if (this.userType == '7') {
-          this.router.navigate(['/dashboards/healthscreen']);
-        } else {
-          this.router.navigate(['/profile-settings']);
         }
-      }
-      this.showLoginForm();
-    }, (err)=> {this.showLoginForm();});
+        this.showLoginForm();
+      }, 
+      error: (err)=> {this.showLoginForm();}
+    
+    });
   }
 }

@@ -9,10 +9,10 @@ export class TooltipContainerDirective {
   template: `
   <div class="tooltip-container">
     <div [ngClass]="{'custom-tooltip': true,
-                     'custom-tooltip-right': tooltipData.direction === 'right',
-                     'custom-tooltip-top' : tooltipData.direction === 'top',
-                     'custom-tooltip-top-right' : tooltipData.direction === 'top-right',
-                     'custom-tooltip-top-right-discount' : tooltipData.direction === 'top-right-discount'}">
+                     'custom-tooltip-right': tooltipData && (tooltipData.direction === 'right'),
+                     'custom-tooltip-top' : tooltipData && (tooltipData.direction === 'top'),
+                     'custom-tooltip-top-right' : tooltipData && (tooltipData.direction === 'top-right'),
+                     'custom-tooltip-top-right-discount' : tooltipData && (tooltipData.direction === 'top-right-discount')}">
       <div class="tooltip-title-container">
         <div class="tooltip-title">{{ tooltipData.title }}</div>
         <img 

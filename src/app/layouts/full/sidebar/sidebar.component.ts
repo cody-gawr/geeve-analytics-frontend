@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { MediaMatcher } from '@angular/cdk/layout';
-//import { MenuItems } from '../../../shared/menu-items/menu-items';
 import { RolesUsersService } from '../../../roles-users/roles-users.service';
 import { CookieService, CookieOptions } from 'ngx-cookie';
 import { HeaderService } from '../header/header.service';
@@ -134,7 +133,6 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
   public permisions: any = '';
   public permisions_var: any = '';
   public clinic_id;
-  public userType;
   public hasPrimeClinics;
 
   clickEvent(val) {
@@ -161,11 +159,21 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     private router: Router,
     public constants: AppConstants
   ) {
-    this.router.events.subscribe((event: Event) => {
-      if (event instanceof NavigationEnd && event.url != '/login') {
-        this.userType = this._cookieService.get('user_type');
+    // this.router.events.subscribe((event: Event) => {
+    //   if (event instanceof NavigationEnd && event.url != '/login') {
+        this.user_type = this._cookieService.get('user_type');
+        if (!this._cookieService.get("user_image")){
+          this.user_image = 'assets/images/gPZwCbdS.jpg';
+        }
+        // else{
+        //   this.user_image = this._cookieService.get("user_image");
+        // }
+        this.display_name = this._cookieService.get('display_name');
+        this.login_status = this._cookieService.get('login_status');
+
+
         this.clinic_id = this._cookieService.get('clinic_id');
-        if (this.userType == 7) {
+        if (this.user_type == 7) {
           if (this.clinic_id != null && typeof this.clinic_id != 'undefined') {
             this.clinic_id = this._cookieService.get('clinic_id');
             this.getRoles();
@@ -194,22 +202,11 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
         } else {
           this.nav_open = '';
         }
-      }
-    });
+      //}
+    //});
     this.mobileQuery = media.matchMedia('(min-width: 768px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
-  }
-
-  ngOnInit() {
-    if (!this._cookieService.get("user_image")){
-      this.user_image = 'assets/images/gPZwCbdS.jpg';
-    }else{
-      /*this.user_image = this._cookieService.get("user_image");*/
-    }
-    this.user_type = this._cookieService.get('user_type');
-    this.display_name = this._cookieService.get('display_name');
-    this.login_status = this._cookieService.get('login_status');
   }
 
   ngAfterViewInit() {
@@ -225,25 +222,21 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
   logout() {
     this.headerService.logout().subscribe(
       () => {
-        this._cookieService.removeAll({ path: '/' });
+        this._cookieService.removeAll();
         this.router.navigate(['/login']);
       },
-      () => {
-        this._cookieService.removeAll({ path: '/' });
-        this.router.navigate(['/login']);
-      }
     );
   }
 
   public userPlan: any = '';
   getRoles() {
-    this.rolesUsersService.getRoleIndividual.subscribe(
-      (res) => {
+    this.rolesUsersService.getRoleIndividual.subscribe({
+      next: (res) => {
         if (res.status == 200) {
           this.permisions = res.body.data;
-          let opts = this.constants.cookieOpt as CookieOptions;
-          this._cookieService.put('user_type', res.body.type + '', opts);
-          this._cookieService.put('user_plan', res.body.plan, opts);
+          //let opts = this.constants.cookieOpt as CookieOptions;
+          // this._cookieService.put('user_type', res.body.type + '', opts);
+          // this._cookieService.put('user_plan', res.body.plan, opts);
           this.userPlan = res.body.plan;
           //Remove apis calls when user have not permission of any page form FE
           if (res.body.type != 2 && res.body.type != 7) {
@@ -273,8 +266,8 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
           // End
         }
       },
-      (error) => {}
-    );
+      error: (error) => {}
+    });
   }
 
   getClinic() {

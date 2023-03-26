@@ -7,15 +7,14 @@ import {
   OnDestroy
 } from '@angular/core';
 import { HealthScreenService } from './healthscreen.service';
-import { DentistService } from '../../dentist/dentist.service';
+// import { DentistService } from '../../dentist/dentist.service';
 
 import { DatePipe } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+// import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderService } from '../../layouts/full/header/header.service';
-import { CookieService, CookieOptions } from 'ngx-cookie';
+import { CookieService } from 'ngx-cookie';
 import { ToastrService } from 'ngx-toastr';
-import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
-import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
+// import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 import { ChartstipsService } from '../../shared/chartstips.service';
 import { AppConstants } from '../../app.constants';
 import { environment } from '../../../environments/environment';
@@ -94,25 +93,24 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public refreralleaders: boolean = true;
   public charTips: any = [];
   public isAllClinic: boolean;
+  private warningMessage: string;
 
   constructor(
     private healthscreenService: HealthScreenService,
-    private dentistService: DentistService,
+    // private dentistService: DentistService,
     private datePipe: DatePipe,
-    private route: ActivatedRoute,
+    // private route: ActivatedRoute,
     private headerService: HeaderService,
     private _cookieService: CookieService,
-    private router: Router,
+    // private router: Router,
     private toastr: ToastrService,
-    private clinicSettingsService: ClinicSettingsService,
+    // private clinicSettingsService: ClinicSettingsService,
     public constants: AppConstants,
     public chartstipsService: ChartstipsService
   ) {
     this.getChartsTips();
     this.getAllClinics();
   }
-
-  private warningMessage: string;
 
   ngAfterViewInit() {
     // this.getCustomiseSettings();
@@ -180,7 +178,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     }
     var val = $('#currentClinic').attr('cid');
     if (val != undefined) {
-      let opts = this.constants.cookieOpt as CookieOptions;
+      let opts = this.constants.cookieOpt;
       this._cookieService.put('clinic_id', val, opts);
       if (val == 'all') {
         this.clinic_id = this.clinics;

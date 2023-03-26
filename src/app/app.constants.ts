@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CookieOptions } from 'ngx-cookie';
 import { ITooltipData } from './shared/tooltip/tooltip.directive';
 
 @Injectable({
@@ -269,10 +270,10 @@ export class AppConstants {
         info: 'The total outstanding value of items on treatment plans for patients attending in the next 7 days (excludes today)'
     };
     //Set default cookie options
-    public cookieOpt: any = {
+    public cookieOpt: CookieOptions = {
         expires: this.getDate(),
         secure: true,
-        sameSite: "Strict"
+        sameSite: "strict"
     };
     //Function to get current date time and add 14 hours to this
     public getDate() {

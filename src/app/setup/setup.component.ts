@@ -594,10 +594,13 @@ usersArray = new Array(this.userRows);
     if(dentist_id =='' || dentist_id == undefined)
       dentist_id ='';
     $('.ajax-loader').show();   
-    this.rolesUsersService.addRoleUser(display_name, email, user_type,clinic_id, password,dentist_id).subscribe((res) => {
-      $('.ajax-loader').hide();
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
+    this.rolesUsersService.addRoleUser(display_name, email, user_type,clinic_id, password,dentist_id).subscribe({
+      next: (res) => {
+        $('.ajax-loader').hide();
+      }, 
+      error:error => {
+        this.warningMessage = "Please Provide Valid Inputs!";
+      }
     });
   }
 
@@ -616,7 +619,6 @@ usersArray = new Array(this.userRows);
              this._cookieService.put("stepper", "4");
              this.router.navigateByUrl('/dashboards/cliniciananalysis');
           }
-           // console.log(this._cookieService.get("stepper"));
            // this.ClickNext('step'+this._cookieService.get("stepper"),stepper);
        }else if(res.status == 401){
          this._cookieService.put("username",'');
