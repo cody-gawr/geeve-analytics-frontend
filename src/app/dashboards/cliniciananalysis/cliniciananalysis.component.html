@@ -200,9 +200,6 @@
                     class="trend_ico"
                     src="../assets/images/trend_{{ collectionExpTooltip }}.png"
                 /></span>
-                <!-- <span *ngIf="proCollShow == 1 "> Dentist Production</span>
-                <span *ngIf="proCollShow == 2 "> Dentist Collection</span>
-                <span *ngIf="proCollShow == 3 "> Dentist Collection - Exp</span> -->
 
                 <span *ngIf="proCollShow == 1 && user_type == '4'">
                   Dentist Production</span
@@ -541,8 +538,7 @@
                 <div
                   class="div-pro-coll-show"
                   *ngIf="
-                    showAvg === false &&
-                    showprodAllTbl === false &&
+                    !(showAvg || showprodAllTbl) &&
                     barChartLabels.length > 0 &&
                     !buildChartLoader
                   "
@@ -563,10 +559,9 @@
                 <div
                   class="div-pro-coll-show"
                   *ngIf="
-                    showAvg === true &&
-                    showprodAllTbl === false &&
+                    showAvg &&
                     barChartData[0].data.length &&
-                    !buildChartLoader
+                    !(showprodAllTbl || buildChartLoader)
                   "
                 >
                   <canvas
@@ -627,10 +622,11 @@
                 <div
                   class="div-pro-coll-show"
                   *ngIf="
-                    showAvg === false &&
-                    showprodDentAllTbl === false &&
-                    barChartDataDentists[0].data.length &&
-                    !buildChartDentistsLoader
+                    !(
+                      showAvg ||
+                      showprodDentAllTbl ||
+                      buildChartDentistsLoader
+                    ) && barChartDataDentists[0].data.length
                   "
                 >
                   <canvas
@@ -649,10 +645,9 @@
                 <div
                   class="div-pro-coll-show"
                   *ngIf="
-                    showAvg === true &&
-                    showprodDentAllTbl === false &&
+                    showAvg &&
                     barChartDataDentists[0].data.length &&
-                    !buildChartDentistsLoader
+                    !(showprodDentAllTbl || buildChartDentistsLoader)
                   "
                 >
                   <canvas
@@ -672,7 +667,7 @@
                   class="Prod-tbl-height"
                   *ngIf="
                     barChartDataDentists[0].data.length &&
-                    showprodDentAllTbl === true &&
+                    showprodDentAllTbl &&
                     !buildChartDentistsLoader
                   "
                 >
@@ -716,10 +711,8 @@
                 <div
                   class="div-pro-coll-show"
                   *ngIf="
-                    showAvg === false &&
-                    showprodOhtAllTbl === false &&
                     barChartDataOht[0].data.length &&
-                    !buildChartOhtLoader
+                    !(showAvg || showprodOhtAllTbl || buildChartOhtLoader)
                   "
                 >
                   <canvas
@@ -738,10 +731,9 @@
                 <div
                   class="div-pro-coll-show"
                   *ngIf="
-                    showAvg === true &&
-                    showprodOhtAllTbl === false &&
+                    showAvg &&
                     barChartDataOht[0].data.length &&
-                    !buildChartOhtLoader
+                    !(showprodOhtAllTbl || buildChartOhtLoader)
                   "
                 >
                   <canvas
@@ -761,7 +753,7 @@
                   class="Prod-tbl-height"
                   *ngIf="
                     barChartDataOht[0].data.length &&
-                    showprodOhtAllTbl === true &&
+                    showprodOhtAllTbl &&
                     !buildChartOhtLoader
                   "
                 >
@@ -806,10 +798,8 @@
                 <div
                   class="div-pro-coll-show"
                   *ngIf="
-                    showAvg === false &&
-                    showCollAllTbl === false &&
                     collectionData[0].data.length &&
-                    !collectionLoader
+                    !(showAvg || showCollAllTbl || collectionLoader)
                   "
                 >
                   <canvas
@@ -828,10 +818,9 @@
                 <div
                   class="div-pro-coll-show"
                   *ngIf="
-                    showAvg === true &&
-                    showCollAllTbl === false &&
+                    showAvg &&
                     collectionData[0].data.length &&
-                    !collectionLoader
+                    !(showCollAllTbl || collectionLoader)
                   "
                 >
                   <canvas
@@ -892,10 +881,8 @@
                 <div
                   class="div-pro-coll-show"
                   *ngIf="
-                    showAvg === false &&
-                    showCollDentTbl === false &&
                     collectionDentistsData[0].data.length &&
-                    !collectionDentistsLoader
+                    !(showAvg || showCollDentTbl || collectionDentistsLoader)
                   "
                 >
                   <canvas
@@ -914,10 +901,9 @@
                 <div
                   class="div-pro-coll-show"
                   *ngIf="
-                    showAvg === true &&
-                    showCollDentTbl === false &&
+                    showAvg &&
                     collectionDentistsData[0].data.length &&
-                    !collectionDentistsLoader
+                    !(showCollDentTbl || collectionDentistsLoader)
                   "
                 >
                   <canvas
@@ -981,10 +967,8 @@
                 <div
                   class="div-pro-coll-show"
                   *ngIf="
-                    showAvg === false &&
-                    showCollOhtTbl === false &&
                     collectionOhtData[0].data.length &&
-                    !collectionOhtLoader
+                    !(showAvg || showCollOhtTbl || collectionOhtLoader)
                   "
                 >
                   <canvas
@@ -1003,10 +987,9 @@
                 <div
                   class="div-pro-coll-show"
                   *ngIf="
-                    showAvg === true &&
-                    showCollOhtTbl === false &&
+                    showAvg &&
                     collectionOhtData[0].data.length &&
-                    !collectionOhtLoader
+                    !(showCollOhtTbl || collectionOhtLoader)
                   "
                 >
                   <canvas
@@ -1026,7 +1009,7 @@
                   class="Prod-tbl-height"
                   *ngIf="
                     collectionOhtData[0].data.length &&
-                    showCollOhtTbl === true &&
+                    showCollOhtTbl &&
                     !collectionOhtLoader
                   "
                 >
@@ -1073,10 +1056,8 @@
                 <div
                   class="div-pro-coll-show"
                   *ngIf="
-                    showAvg === false &&
-                    showCollExpTbl === false &&
                     collectionExpData[0].data.length &&
-                    !collectionExpLoader
+                    !(showAvg || showCollExpTbl || collectionExpLoader)
                   "
                 >
                   <canvas
@@ -1095,10 +1076,9 @@
                 <div
                   class="div-pro-coll-show"
                   *ngIf="
-                    showAvg === true &&
-                    showCollExpTbl === false &&
+                    showAvg &&
                     collectionExpData[0].data.length &&
-                    !collectionExpLoader
+                    !(showCollExpTbl || collectionExpLoader)
                   "
                 >
                   <canvas
@@ -1118,7 +1098,7 @@
                   class="Prod-tbl-height"
                   *ngIf="
                     collectionExpData[0].data.length &&
-                    showCollExpTbl === true &&
+                    showCollExpTbl &&
                     !collectionExpLoader
                   "
                 >
@@ -1161,10 +1141,12 @@
                 <div
                   class="div-pro-coll-show"
                   *ngIf="
-                    showAvg === false &&
-                    showCollExpDentTbl === false &&
                     collectionExpDentistsData[0].data.length &&
-                    !collectionExpDentistsLoader
+                    !(
+                      showAvg ||
+                      showCollExpDentTbl ||
+                      collectionExpDentistsLoader
+                    )
                   "
                 >
                   <canvas
@@ -1183,10 +1165,9 @@
                 <div
                   class="div-pro-coll-show"
                   *ngIf="
-                    showAvg === true &&
-                    showCollExpDentTbl === false &&
+                    showAvg &&
                     collectionExpDentistsData[0].data.length &&
-                    !collectionExpDentistsLoader
+                    !(showCollExpDentTbl || collectionExpDentistsLoader)
                   "
                 >
                   <canvas
@@ -1206,7 +1187,7 @@
                   class="Prod-tbl-height"
                   *ngIf="
                     collectionExpDentistsData[0].data.length &&
-                    showCollExpDentTbl === true &&
+                    showCollExpDentTbl &&
                     !collectionExpDentistsLoader
                   "
                 >
@@ -1252,10 +1233,8 @@
                 <div
                   class="div-pro-coll-show"
                   *ngIf="
-                    showAvg === false &&
-                    showCollExpOhtTbl === false &&
                     collectionExpOhtData[0].data.length &&
-                    !collectionExpOhtLoader
+                    !(showAvg || showCollExpOhtTbl || collectionExpOhtLoader)
                   "
                 >
                   <canvas
@@ -1274,10 +1253,9 @@
                 <div
                   class="div-pro-coll-show"
                   *ngIf="
-                    showAvg === true &&
-                    showCollExpOhtTbl === false &&
+                    showAvg &&
                     collectionExpOhtData[0].data.length &&
-                    !collectionExpOhtLoader
+                    !(showCollExpOhtTbl || collectionExpOhtLoader)
                   "
                 >
                   <canvas
@@ -1953,9 +1931,8 @@
                 <span
                   *ngIf="
                     trendText &&
-                    showTrendChart == false &&
                     proCollShow == 2 &&
-                    showWeekTrend != true
+                    !(showTrendChart || showWeekTrend)
                   "
                   class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
                   mat-icon-button
@@ -1969,9 +1946,8 @@
                 <span
                   *ngIf="
                     trendText &&
-                    showTrendChart == false &&
                     proCollShow == 3 &&
-                    showWeekTrend != true
+                    !(showTrendChart || showWeekTrend)
                   "
                   class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
                   mat-icon-button
@@ -1992,8 +1968,7 @@
                 <i
                   class="fas fa-calendar-week fa-fa-icon-margin"
                   *ngIf="
-                    showTrendChart == false &&
-                    showWeekTrend == false &&
+                    !(showTrendChart || showWeekTrend) &&
                     selectedDentist &&
                     (apiUrl.includes('test-') ||
                       apiUrl.includes('staging-') ||
@@ -2007,8 +1982,8 @@
                 <i
                   class="fas fa-calendar-week fa-fa-icon-color"
                   *ngIf="
-                    showWeekTrend == true &&
-                    showTrendChart == false &&
+                    showWeekTrend &&
+                    !showTrendChart &&
                     (apiUrl.includes('test-') ||
                       apiUrl.includes('staging-') ||
                       (!apiUrl.includes('test-') &&
@@ -2091,7 +2066,7 @@
                       class="sa_tab_btn"
                       [ngClass]="proCollShow == 3 ? 'active' : ''"
                       (click)="changeProduction('3', 'single')"
-                      >Collection-Exp a</small
+                      >Collection-Exp</small
                     >
                   </div>
                 </div>
@@ -2105,10 +2080,12 @@
                   fxLayout="row"
                   fxLayoutAlign="start center"
                   *ngIf="
-                    showTrendChart == false &&
-                    showWeekTrend == false &&
                     gaugeValue > 0 &&
-                    !buildChartDentistLoader
+                    !(
+                      showTrendChart ||
+                      showWeekTrend ||
+                      buildChartDentistLoader
+                    )
                   "
                 >
                   <ngx-gauge
@@ -2139,9 +2116,8 @@
                   class="week-trend-height"
                   *ngIf="
                     proCollShow == 1 &&
-                    showTrendChart == false &&
-                    showWeekTrend == true &&
-                    !dentistProductionTrendLoader &&
+                    showWeekTrend &&
+                    !(showTrendChart || dentistProductionTrendLoader) &&
                     dentistProductionWeeklyTrend.length > 0
                   "
                 >
@@ -2165,8 +2141,8 @@
                     *ngIf="
                       dentistProductionTrendLoader &&
                       proCollShow == 1 &&
-                      showTrendChart == false &&
-                      showWeekTrend == true
+                      !showTrendChart &&
+                      showWeekTrend
                     "
                     class="loader_container loader_container_middle"
                   >
@@ -2185,10 +2161,12 @@
                   fxLayout="row"
                   fxLayoutAlign="start center"
                   *ngIf="
-                    showTrendChart == false &&
-                    showWeekTrend == false &&
                     gaugeCollectionValue > 0 &&
-                    !collectionDentistLoader
+                    !(
+                      showTrendChart ||
+                      showWeekTrend ||
+                      collectionDentistLoader
+                    )
                   "
                 >
                   <ngx-gauge
@@ -2219,8 +2197,8 @@
                   class="week-trend-height"
                   *ngIf="
                     proCollShow == 2 &&
-                    showTrendChart == false &&
-                    showWeekTrend == true &&
+                    !showTrendChart &&
+                    showWeekTrend &&
                     dentistCollectionWeeklyTrendLabels.length > 0 &&
                     !dentistCollectionTrendLoader
                   "
@@ -2252,8 +2230,8 @@
                     *ngIf="
                       dentistCollectionTrendLoader &&
                       proCollShow == 2 &&
-                      showTrendChart == false &&
-                      showWeekTrend == true
+                      !showTrendChart &&
+                      showWeekTrend
                     "
                     class="loader_container loader_container_middle"
                   >
@@ -2272,10 +2250,12 @@
                   fxLayout="row"
                   fxLayoutAlign="start center"
                   *ngIf="
-                    showTrendChart == false &&
-                    showWeekTrend == false &&
                     gaugeCollectionExpValue > 0 &&
-                    !collectionExpDentistLoader
+                    !(
+                      showTrendChart ||
+                      showWeekTrend ||
+                      collectionExpDentistLoader
+                    )
                   "
                 >
                   <ngx-gauge
@@ -2306,10 +2286,9 @@
                   class="week-trend-height"
                   *ngIf="
                     proCollShow == 3 &&
-                    showTrendChart == false &&
-                    showWeekTrend == true &&
+                    showWeekTrend &&
                     dentistCollectionExpWeeklyTrendLabels.length > 0 &&
-                    !dentistCollectionExpTrendLoader
+                    !(showTrendChart || dentistCollectionExpTrendLoader)
                   "
                 >
                   <div class="DentistProductionTable">
@@ -2332,17 +2311,13 @@
                       </tbody>
                     </table>
                   </div>
-                  <!--  <canvas #myCanvas id="dentistCollectionWeeklyTrend" baseChart
-                    [datasets]="dentistCollectionWeeklyTrend1" [labels]="dentistCollectionWeeklyTrendLabels"
-                    [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
-                    [options]="barChartOptionsTrend" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
-                  </canvas> -->
+
                   <div
                     *ngIf="
                       dentistCollectionExpTrendLoader &&
                       proCollShow == 3 &&
-                      showTrendChart == false &&
-                      showWeekTrend == true
+                      !showTrendChart &&
+                      showWeekTrend
                     "
                     class="loader_container loader_container_middle"
                   >
@@ -2361,7 +2336,7 @@
                 class="div-pro-coll-show"
                 *ngIf="
                   proCollShow == 1 &&
-                  showTrendChart == true &&
+                  showTrendChart &&
                   dentistProductionTrendLabels.length > 0 &&
                   !dentistProductionTrendLoader
                 "
@@ -2385,44 +2360,18 @@
                 *ngIf="
                   dentistProductionTrendLoader &&
                   proCollShow == 1 &&
-                  showTrendChart == true
+                  showTrendChart
                 "
                 class="loader_container loader_container_middle"
               >
                 <img class="loader_ico" src="../assets/images/720.gif" />
                 <div class="loader-text">Calculating...</div>
               </div>
-              <!-- <div class="div-pro-coll-show"
-                *ngIf="proCollShow == 1 && proSelectShow =='production_dentists' && showTrendChart == true && dentistProductionTrendDentistsLabels.length > 0 && !dentistProductionTrendDentistsLoader">
-                <canvas #myCanvas id="dentistProdDentistsTrend" baseChart [datasets]="dentistProdDentistsTrend"
-                  [labels]="dentistProductionTrendDentistsLabels" [legend]="barChartLegend" [chartType]="barChartType"
-                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
-                  (chartClick)="chartClicked($event)">
-                </canvas>
-              </div>
-              <div *ngIf="dentistProductionTrendDentistsLoader && proCollShow == 1  && proSelectShow =='production_dentists' && showTrendChart == true"
-                class="loader_container loader_container_middle">
-                <img class="loader_ico" src="../assets/images/720.gif">
-                <div class="loader-text">Calculating...</div>
-              </div> -->
-              <!-- <div class="div-pro-coll-show"
-                *ngIf="proCollShow == 1 && proSelectShow =='production_oht'  && showTrendChart == true && dentistProductionTrendOhtLabels.length > 0 && !dentistProductionTrendOhtLoader">
-                <canvas #myCanvas id="dentistProdOhtTrend" baseChart [datasets]="dentistProdOhtTrend"
-                  [labels]="dentistProductionTrendOhtLabels" [legend]="barChartLegend" [chartType]="barChartType"
-                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
-                  (chartClick)="chartClicked($event)">
-                </canvas>
-              </div>
-              <div *ngIf="dentistProductionTrendOhtLoader && proCollShow == 1  && proSelectShow =='production_oht' && showTrendChart == true"
-                class="loader_container loader_container_middle">
-                <img class="loader_ico" src="../assets/images/720.gif">
-                <div class="loader-text">Calculating...</div>
-              </div> -->
 
               <div
                 *ngIf="
                   proCollShow == 2 &&
-                  showTrendChart == true &&
+                  showTrendChart &&
                   dentistCollectionTrendLabels.length > 0 &&
                   !dentistCollectionTrendLoader
                 "
@@ -2447,44 +2396,18 @@
                 *ngIf="
                   dentistCollectionTrendLoader &&
                   proCollShow == 2 &&
-                  showTrendChart == true
+                  showTrendChart
                 "
                 class="loader_container loader_container_middle"
               >
                 <img class="loader_ico" src="../assets/images/720.gif" />
                 <div class="loader-text">Calculating...</div>
               </div>
-              <!-- <div *ngIf="proCollShow == 2 && proSelectShow =='collection_dentists' &&  showTrendChart == true && dentistCollectionDentistsTrendLabels.length > 0 && !dentistCollectionDentistsTrendLoader"
-                class="div-pro-coll-show">
-                <canvas #myCanvas id="dentistColDentistsTrend" baseChart [datasets]="dentistColDentistsTrend"
-                  [labels]="dentistCollectionDentistsTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
-                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
-                  (chartClick)="chartClicked($event)">
-                </canvas>
-              </div>
-              <div *ngIf="dentistCollectionDentistsTrendLoader && proCollShow == 2 && proSelectShow =='collection_dentists' && showTrendChart == true"
-                class="loader_container loader_container_middle">
-                <img class="loader_ico" src="../assets/images/720.gif">
-                <div class="loader-text">Calculating...</div>
-              </div> -->
-              <!-- <div *ngIf="proCollShow == 2 && proSelectShow =='collection_oht' &&  showTrendChart == true && dentistCollectionOhtTrendLabels.length > 0 && !dentistCollectionOhtTrendLoader"
-                class="div-pro-coll-show">
-                <canvas #myCanvas id="dentistColOhtTrend" baseChart [datasets]="dentistColOhtTrend"
-                  [labels]="dentistCollectionOhtTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
-                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
-                  (chartClick)="chartClicked($event)">
-                </canvas>
-              </div>
-              <div *ngIf="dentistCollectionOhtTrendLoader && proCollShow == 2 && proSelectShow =='collection_oht' && showTrendChart == true"
-                class="loader_container loader_container_middle">
-                <img class="loader_ico" src="../assets/images/720.gif">
-                <div class="loader-text">Calculating...</div>
-              </div> -->
 
               <div
                 *ngIf="
                   proCollShow == 3 &&
-                  showTrendChart == true &&
+                  showTrendChart &&
                   dentistCollectionExpTrendLabels.length > 0 &&
                   !dentistCollectionExpTrendLoader
                 "
@@ -2509,52 +2432,28 @@
                 *ngIf="
                   dentistCollectionExpTrendLoader &&
                   proCollShow == 3 &&
-                  showTrendChart == true
+                  showTrendChart
                 "
                 class="loader_container loader_container_middle"
               >
                 <img class="loader_ico" src="../assets/images/720.gif" />
                 <div class="loader-text">Calculating...</div>
               </div>
-              <!-- <div *ngIf="proCollShow == 3 && proSelectShow =='collection_exp_dentists'  &&  showTrendChart == true && dentistCollectionExpDentistsTrendLabels.length > 0 && !dentistCollectionExpDentistsTrendLoader"
-                class="div-pro-coll-show">
-                <canvas #myCanvas id="dentistColExpDentistsTrend" baseChart [datasets]="dentistColExpDentistsTrend"
-                  [labels]="dentistCollectionExpDentistsTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
-                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
-                  (chartClick)="chartClicked($event)">
-                </canvas>
-              </div>
-              <div *ngIf="dentistCollectionExpDentistsTrendLoader && proCollShow == 3 && proSelectShow =='collection_exp_dentists' && showTrendChart == true"
-                class="loader_container loader_container_middle">
-                <img class="loader_ico" src="../assets/images/720.gif">
-                <div class="loader-text">Calculating...</div>
-              </div> -->
-              <!-- <div *ngIf="proCollShow == 3 && proSelectShow =='collection_exp_oht'  &&  showTrendChart == true && dentistCollectionExpOhtTrendLabels.length > 0 && !dentistCollectionExpOhtTrendLoader"
-                class="div-pro-coll-show">
-                <canvas #myCanvas id="dentistColExpOhtTrend" baseChart [datasets]="dentistColExpOhtTrend"
-                  [labels]="dentistCollectionExpOhtTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
-                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
-                  (chartClick)="chartClicked($event)">
-                </canvas>
-              </div>
-              <div *ngIf="dentistCollectionExpOhtTrendLoader && proCollShow == 3 && proSelectShow =='collection_exp_oht' && showTrendChart == true"
-                class="loader_container loader_container_middle">
-                <img class="loader_ico" src="../assets/images/720.gif">
-                <div class="loader-text">Calculating...</div>
-              </div> -->
-              <!-- Production Chart start trend -->
             </div>
 
             <div
               class="no-data-placeholder prod-placeholder"
               *ngIf="
-                ((showTrendChart == false && gaugeValue <= 0) ||
-                  (showTrendChart == true &&
-                    dentistProductionTrendLabels.length <= 0)) &&
-                !buildChartDentistLoader &&
-                !dentistProductionTrendLoader &&
-                showWeekTrend == false &&
-                showTrendChart == true
+                proCollShow == 1 &&
+                ((!showTrendChart && gaugeValue <= 0) ||
+                  (showTrendChart &&
+                    dentistProductionTrendLabels.length == 0)) &&
+                !(
+                  buildChartDentistLoader ||
+                  dentistProductionTrendLoader ||
+                  showWeekTrend
+                ) &&
+                showTrendChart
               "
             >
               <div class="sa_nodata_div"></div>
@@ -2565,13 +2464,16 @@
             <div
               class="no-data-placeholder prod-placeholder"
               *ngIf="
-                ((showTrendChart == false && gaugeValue <= 0) ||
-                  (showTrendChart == true &&
-                    dentistProductionWeeklyTrend.length <= 0)) &&
-                !buildChartDentistLoader &&
-                !dentistProductionTrendLoader &&
-                showWeekTrend == false &&
-                showTrendChart == false
+                proCollShow == 1 &&
+                ((!showTrendChart && gaugeValue <= 0) ||
+                  (showTrendChart &&
+                    dentistProductionWeeklyTrend.length == 0)) &&
+                !(
+                  buildChartDentistLoader ||
+                  dentistProductionTrendLoader ||
+                  showWeekTrend ||
+                  showTrendChart
+                )
               "
             >
               <div class="sa_nodata_div"></div>
@@ -2579,19 +2481,12 @@
                 You have no production in the selected period
               </p>
             </div>
-            <!-- <div class="no-data-placeholder prod-placeholder"
-              *ngIf="((showTrendChart == false && gaugeValue <= 0 ) || (showTrendChart == true  && dentistCollectionExpTrendLabels.length <= 0)) && !buildChartDentistLoader && !dentistProductionTrendLoader && showWeekTrend == false && showTrendChart == true"
-              >
-              <div class="sa_nodata_div">
-              </div>
-              <p class="chart-placeholder-text">You have no production in the selected period</p>
-            </div> -->
 
             <div
               class="no-data-placeholder coll-placeholder"
               *ngIf="
-                showWeekTrend == true &&
-                dentistProductionWeeklyTrendLabels.length <= 0 &&
+                showWeekTrend &&
+                dentistProductionWeeklyTrendLabels.length == 0 &&
                 proCollShow == 1
               "
             >
@@ -2603,8 +2498,8 @@
             <div
               class="no-data-placeholder coll-placeholder"
               *ngIf="
-                showWeekTrend == true &&
-                dentistCollectionWeeklyTrendLabels.length <= 0 &&
+                showWeekTrend &&
+                dentistCollectionWeeklyTrendLabels.length == 0 &&
                 proCollShow == 2
               "
             >
@@ -2616,8 +2511,8 @@
             <div
               class="no-data-placeholder coll-placeholder"
               *ngIf="
-                showWeekTrend == true &&
-                dentistCollectionExpWeeklyTrendLabels.length <= 0 &&
+                showWeekTrend &&
+                dentistCollectionExpWeeklyTrendLabels.length == 0 &&
                 proCollShow == 3
               "
             >
@@ -2634,7 +2529,7 @@
               <div
                 fxLayout="row wrap"
                 class="sa_chart_details_sec"
-                *ngIf="showTrendChart == false"
+                *ngIf="!showTrendChart"
                 fxLayoutAlign="center center"
               >
                 <div
@@ -2743,7 +2638,7 @@
                   *ngIf="
                     collectionTotalGoal >= 0 &&
                     collectionTotalGoal != null &&
-                    showGoals == true
+                    showGoals
                   "
                 >
                   <h3
@@ -2802,12 +2697,6 @@
                     >Previous</span
                   >
                 </div>
-                <!--   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num" *ngIf="collectionTotalExpGoal && goalCount">
-                    ${{ (collectionTotalExpGoal * goalCount) | number:'1.0-0'}}</h3>
-                  <span class="value-text">Goal</span>
-                </div> -->
               </div>
             </div>
             <!-- CollectionExp Chart end trend -->
@@ -5910,25 +5799,18 @@
                   >
                 </div>
               </div>
-              <!-- <div fxLayout="row wrap" fxLayoutAlign="center center" class="prebook_rate sa_tabs_main_sec btn-right">
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCostSingle('1')">Proposed
-                    Fees</small>
-                </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCostSingle('2')">Completed Fees</small>
-                </div>
-              </div> -->
 
               <div
                 class="chart div-height"
                 fxLayout="row"
                 fxLayoutAlign="start center"
                 *ngIf="
-                  showTrendChart == false &&
                   gaugeValueTreatment > 0 &&
-                  !buildChartTreatmentLoader &&
-                  !buildChartTreatmentDentistLoader &&
+                  !(
+                    showTrendChart ||
+                    buildChartTreatmentLoader ||
+                    buildChartTreatmentDentistLoader
+                  ) &&
                   tcmain == 1
                 "
               >
@@ -5976,11 +5858,13 @@
               </div>
               <div
                 *ngIf="
-                  showTrendChart == true &&
+                  showTrendChart &&
                   treatPlanTrend[0]['data'].length > 0 &&
-                  !buildChartTreatmentLoader &&
-                  !buildChartTreatmentDentistLoader &&
-                  !treatmentPlanTrendLoader &&
+                  !(
+                    buildChartTreatmentLoader ||
+                    buildChartTreatmentDentistLoader ||
+                    treatmentPlanTrendLoader
+                  ) &&
                   tcmain == 1
                 "
                 class="div-height"
@@ -6002,11 +5886,13 @@
               </div>
               <div
                 *ngIf="
-                  showTrendChart == true &&
+                  showTrendChart &&
                   treatPlanTrendCmp[0]['data'].length > 0 &&
-                  !buildChartTreatmentLoader &&
-                  !buildChartTreatmentDentistLoader &&
-                  !treatmentPlanTrendLoader &&
+                  !(
+                    buildChartTreatmentLoader ||
+                    buildChartTreatmentDentistLoader ||
+                    treatmentPlanTrendLoader
+                  ) &&
                   tcmain == 2
                 "
                 class="div-height"
@@ -6028,8 +5914,8 @@
               </div>
               <div
                 *ngIf="
-                  ((showTrendChart == false && gaugeValueTreatment <= 0) ||
-                    (showTrendChart == true &&
+                  ((!showTrendChart && gaugeValueTreatment <= 0) ||
+                    (showTrendChart &&
                       treatPlanTrend[0]['data'].length <= 0)) &&
                   !buildChartTreatmentLoader &&
                   !buildChartTreatmentDentistLoader &&
@@ -6044,8 +5930,8 @@
               </div>
               <div
                 *ngIf="
-                  ((showTrendChart == false && gaugeValueTreatmentCmp <= 0) ||
-                    (showTrendChart == true &&
+                  ((!showTrendChart && gaugeValueTreatmentCmp <= 0) ||
+                    (showTrendChart &&
                       treatPlanTrendCmp[0]['data'].length <= 0)) &&
                   !buildChartTreatmentLoader &&
                   !buildChartTreatmentDentistLoader &&
@@ -6063,7 +5949,7 @@
               <div
                 fxLayout="row wrap"
                 class="sa_chart_details_sec"
-                *ngIf="showTrendChart == false"
+                *ngIf="!showTrendChart"
                 fxLayoutAlign="center center"
               >
                 <div
@@ -6223,10 +6109,9 @@
                   #myCanvas
                   baseChart
                   *ngIf="
-                    showAvg === true &&
-                    showpTprTbl === false &&
+                    showAvg &&
                     treatmentChartData1.length > 0 &&
-                    !treatmentPlanRateLoader
+                    !(showpTprTbl || treatmentPlanRateLoader)
                   "
                   [datasets]="treatmentChartData"
                   [labels]="treatmentChartLabels"
@@ -7606,7 +7491,7 @@
                 class="chart div-height"
                 fxLayout="row"
                 fxLayoutAlign="start center"
-                *ngIf="showTrendChart == false && gaugeValuePatients > 0"
+                *ngIf="!showTrendChart && gaugeValuePatients > 0"
               >
                 <ngx-gauge
                   [type]="gaugeType"
@@ -7646,9 +7531,8 @@
               <div
                 class="no-data-placeholder"
                 *ngIf="
-                  ((showTrendChart == false && gaugeValuePatients <= 0) ||
-                    (showTrendChart == true &&
-                      patientComplaintsTrend1.length <= 0)) &&
+                  ((!showTrendChart && gaugeValuePatients <= 0) ||
+                    (showTrendChart && patientComplaintsTrend1.length <= 0)) &&
                   !buildChartNopatientsDentistLoader &&
                   !patientComplaintsTrendLoader
                 "
