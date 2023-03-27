@@ -535,7 +535,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   public chartHovered(e: any): void {}
   public gaugeType = 'arch';
-  public gaugeValue: any = 0;
+  public gaugeValue: number = 0;
   public gaugeLabel = '';
   public gaugeThick = '20';
   public foregroundColor = '#4ccfae';
@@ -2322,12 +2322,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 this.isAllClinic = false;
               }
               this.dentistProductiontbl = res.body.data;
-              // if(res.body.data.length >= this.numberOfRecords){
-              //   this.dentistProductiontbl = res.body.data;
-              //   this.showprodAllTbl = true;
-              // }else{
-              //   this.showprodAllTbl = false;
-              // }
+
               if (res.body.data.length > this.numberOfRecords)
                 res.body.data = res.body.data.slice(0, this.numberOfRecords);
               res.body.data.forEach((res) => {
@@ -2950,12 +2945,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 this.isAllClinic = false;
               }
               this.dentistCollectiontbl = res.body.data;
-              // if(res.body.data.length >= this.numberOfRecords){
-              //   this.dentistCollectiontbl = res.body.data;
-              //   this.showCollAllTbl = true;
-              // }else{
-              //   this.showCollAllTbl = false;
-              // }
               if (res.body.data.length > this.numberOfRecords)
                 res.body.data = res.body.data.slice(0, this.numberOfRecords);
               res.body.data.forEach((res) => {
@@ -4278,7 +4267,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   // Dentist collection data
   public collectionDentistLoader: boolean = true;
   public gaugeCollectionLabel: any = '';
-  public gaugeCollectionValue: any = 0;
+  public gaugeCollectionValue: number = 0;
   public collectionDentistTotal: any = 0;
   public collectionDentistTotalPrev: any = 0;
   // public dentistCollectionGoal: any = 0;
@@ -8779,8 +8768,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   //Trend mode for dentist Production
   private dentistProductionTrend(mode = null) {
     this.dentistProductionTrendLoader = true;
-    var user_id;
-    var clinic_id;
     if (!mode) {
       mode = this.trendValue;
     }
@@ -8877,7 +8864,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 this.dentistProductionTrendLabels =
                   this.dentistProductionTrendLabels1;
                 if (this.dentistProductionTrendLabels.length <= 0) {
-                  this.gaugeValue = '0';
+                  this.gaugeValue = 0;
                 }
                 if (mode == 'w') {
                   this.dentistProductionWeeklyTrend = res.body.data;
@@ -8915,101 +8902,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public dentistProductionTrendDentistsLabels1 = [];
   public dentistProductionTrendDentistsLoader: boolean;
   //Trend mode for dentist Production
-  private dentistProductionDentistsTrend(mode = null) {
-    this.dentistProductionTrendDentistsLoader = true;
-    var user_id;
-    var clinic_id;
-    if (!mode) {
-      mode = this.trendValue;
-    }
-
-    this.clinic_id &&
-      this.cliniciananalysisService
-        .caDentistProtectionDentistsTrend(
-          this.selectedDentist,
-          this.clinic_id,
-          mode
-        )
-        .subscribe(
-          (res: any) => {
-            this.dentistProductionTrendDentistsLabels1 = [];
-            this.dentistProductionDentistsTrend1 = [];
-            this.dentistProductionTrendDentistsLabels = [];
-            this.dentistProductionTrendDentistsLabels = [];
-            this.dentistProductionWeeklyDentistsTrend = [];
-            this.dentistProductionWeeklyTrendDentistsLabels = [];
-            let dynamicColors = [];
-            if (res.body.data && res.status == 200) {
-              this.Apirequest = this.Apirequest - 1;
-              this.enableDiabaleButton(this.Apirequest);
-
-              if (res.body.data.total > 0) {
-                res.body.data.data.forEach((res) => {
-                  // if (res.production > 0) {
-                  this.dentistProductionDentistsTrend1.push(
-                    Math.round(res.production)
-                  );
-                  if (mode == 'c') {
-                    this.dentistProductionTrendDentistsLabels1.push(
-                      this.datePipe.transform(res.year_month, 'MMM y')
-                    );
-                  } else if (mode == 'w') {
-                    this.dentistProductionTrendDentistsLabels1.push(
-                      'WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd')
-                    );
-                  } else {
-                    this.dentistProductionTrendDentistsLabels1.push(res.year);
-                  }
-                  // }
-                });
-                if (
-                  this.dentistProductionDentistsTrend1.every(
-                    (value) => value == 0
-                  )
-                )
-                  this.dentistProductionDentistsTrend1 = [];
-                this.dentistProdDentistsTrend[0]['data'] =
-                  this.dentistProductionDentistsTrend1;
-
-                this.dentistProductionTrendDentistsLabels1.forEach(
-                  (label, labelIndex) => {
-                    dynamicColors.push(
-                      labelIndex % 2 === 0
-                        ? this.chartService.colors.odd
-                        : this.chartService.colors.even
-                    );
-                  }
-                ); // This is dynamic array for colors of bars
-                this.dentistProdDentistsTrend[0].backgroundColor =
-                  dynamicColors;
-
-                this.dentistProductionTrendDentistsLabels =
-                  this.dentistProductionTrendDentistsLabels1;
-                if (this.dentistProductionTrendDentistsLabels.length <= 0) {
-                  this.gaugeValue = '0';
-                }
-                if (mode == 'w') {
-                  this.dentistProductionWeeklyDentistsTrend =
-                    res.body.data.data;
-                  this.dentistProductionWeeklyTrendDentistsLabels =
-                    this.dentistProductionTrendDentistsLabels;
-                }
-              } else {
-                this.dentistProductionTrendDentistsLabels = [];
-              }
-              this.dentistProductionTrendDentistsLoader = false;
-            }
-          },
-          (error) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            this.toastr.error(
-              'There was an error retrieving your report data, please contact our support team.'
-            );
-            this.warningMessage = 'Please Provide Valid Inputs!';
-          }
-        );
-  }
 
   public dentistProdOhtTrend: any[] = [
     {
@@ -9024,94 +8916,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public dentistProductionTrendOhtLabels = [];
   public dentistProductionTrendOhtLabels1 = [];
   public dentistProductionTrendOhtLoader: boolean;
-  //Trend mode for dentist Production
-  private dentistProductionOhtTrend(mode = null) {
-    this.dentistProductionTrendOhtLoader = true;
-    var user_id;
-    var clinic_id;
-    if (!mode) {
-      mode = this.trendValue;
-    }
-
-    this.clinic_id &&
-      this.cliniciananalysisService
-        .caDentistProtectionOhtTrend(this.selectedDentist, this.clinic_id, mode)
-        .subscribe(
-          (res: any) => {
-            this.dentistProductionTrendOhtLabels1 = [];
-            this.dentistProductionOhtTrend1 = [];
-            this.dentistProductionTrendOhtLabels = [];
-            this.dentistProductionTrendOhtLabels = [];
-            this.dentistProductionWeeklyOhtTrend = [];
-            this.dentistProductionWeeklyTrendOhtLabels = [];
-            let dynamicColors = [];
-            if (res.body.data && res.status == 200) {
-              this.Apirequest = this.Apirequest - 1;
-              this.enableDiabaleButton(this.Apirequest);
-
-              if (res.body.data.total > 0) {
-                res.body.data.data.forEach((res) => {
-                  // if (res.production > 0) {
-                  this.dentistProductionOhtTrend1.push(
-                    Math.round(res.production)
-                  );
-                  if (mode == 'c') {
-                    this.dentistProductionTrendOhtLabels1.push(
-                      this.datePipe.transform(res.year_month, 'MMM y')
-                    );
-                  } else if (mode == 'w') {
-                    this.dentistProductionTrendOhtLabels1.push(
-                      'WE ' + this.datePipe.transform(res.week_end, 'y-MM-dd')
-                    );
-                  } else {
-                    this.dentistProductionTrendOhtLabels1.push(res.year);
-                  }
-                  // }
-                });
-                if (
-                  this.dentistProductionOhtTrend1.every((value) => value == 0)
-                )
-                  this.dentistProductionOhtTrend1 = [];
-                this.dentistProdOhtTrend[0]['data'] =
-                  this.dentistProductionOhtTrend1;
-
-                this.dentistProductionTrendOhtLabels1.forEach(
-                  (label, labelIndex) => {
-                    dynamicColors.push(
-                      labelIndex % 2 === 0
-                        ? this.chartService.colors.odd
-                        : this.chartService.colors.even
-                    );
-                  }
-                ); // This is dynamic array for colors of bars
-                this.dentistProdOhtTrend[0].backgroundColor = dynamicColors;
-
-                this.dentistProductionTrendOhtLabels =
-                  this.dentistProductionTrendOhtLabels1;
-                if (this.dentistProductionTrendOhtLabels.length <= 0) {
-                  this.gaugeValue = '0';
-                }
-                if (mode == 'w') {
-                  this.dentistProductionWeeklyOhtTrend = res.body.data.data;
-                  this.dentistProductionWeeklyTrendOhtLabels =
-                    this.dentistProductionTrendOhtLabels;
-                }
-              } else {
-                this.dentistProductionTrendOhtLabels = [];
-              }
-              this.dentistProductionTrendOhtLoader = false;
-            }
-          },
-          (error) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            this.toastr.error(
-              'There was an error retrieving your report data, please contact our support team.'
-            );
-            this.warningMessage = 'Please Provide Valid Inputs!';
-          }
-        );
-  }
 
   // Collection Trend mode
   public dentistCollectionTrend1: any = [];
@@ -11249,15 +11053,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     if (this.toggleChecked) {
       this.Apirequest = 7;
       $('.filter').removeClass('active');
-      // this.dentistProductionTrend();
-      // this.dentistProductionDentistsTrend();
-      // this.dentistProductionOhtTrend();
-      // this.dentistCollectionTrend();
-      // this.dentistCollectionDentistsTrend();
-      // this.dentistCollectionOhtTrend();
-      // this.dentistCollectionExpTrend();
-      // this.dentistCollectionExpDentistsTrend();
-      // this.dentistCollectionExpOhtTrend();
+
       if (this.user_type != '4') {
         if (this.proCollShow == 1) {
           this.dentistProductionTrend();
@@ -11617,13 +11413,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   }
 
   changeProduction(val, dentType) {
-    // if (parseInt(val) == 1 && this.goalchecked == 'average') {
-    //   this.buildChart();
-    // } else if (parseInt(val) == 2 && this.goalchecked == 'average') {
-    //   this.collectionChart();
-    // }else if (parseInt(val) == 3 && this.goalchecked == 'average') {
-    //   this.collectionExpChart();
-    // }
     if (
       parseInt(val) == 1 &&
       this.proSelectShow.includes('all') &&
