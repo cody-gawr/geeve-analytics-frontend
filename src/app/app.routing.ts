@@ -12,9 +12,6 @@ import { CampaignsComponent } from './campaigns/campaigns.component';
 import { StepperComponent } from './layouts/stepper/stepper.component';
 import { AuthGuard } from './auth/authguard.service';
 import { StaffMeetingsComponent } from './staff-meetings/staff-meetings.component';
-import { DashboardsRoutes } from './dashboards/dashboards.routing';
-import { HeaderRoutes } from './layouts/full/header/header.routing';
-import { LoginRoutes } from './login/login.routing';
 
 export const AppRoutes: Routes = [
   {
@@ -29,14 +26,12 @@ export const AppRoutes: Routes = [
       },
       {
         path: 'dashboards',
-        // loadChildren: () => import('./dashboards/dashboards.module').then(m => m.DashboardsModule),
-        children: [...DashboardsRoutes],
+        loadChildren: () => import('./dashboards/dashboards.module').then(m => m.DashboardsModule),
         canActivate: [AuthGuard]
       },
       {
         path: 'header',
-        //loadChildren: () => import('./layouts/full/header/header.module').then(m => m.HeaderModule)
-        children: [...HeaderRoutes]
+        loadChildren: () => import('./layouts/full/header/header.module').then(m => m.HeaderModule)
       },
       {
         path: 'roles',
@@ -157,9 +152,8 @@ export const AppRoutes: Routes = [
     children: [
       {
         path: 'login',
-        // loadChildren:
-        //   () => import('./login/login.module').then(m => m.LoginModule)
-        children: [...LoginRoutes]
+        loadChildren:
+          () => import('./login/login.module').then(m => m.LoginModule)
       },
       {
         path: 'xero',

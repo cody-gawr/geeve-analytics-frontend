@@ -53,9 +53,6 @@ import { GraphsComponent } from './graphs/graphs.component';
 import { NgxGaugeModule } from 'ngx-gauge';
 import { ChartsModule } from 'ng2-charts';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { DashboardsModule } from './dashboards/dashboards.module';
-import { HeaderModule } from './layouts/full/header/header.module';
-import { LoginModule } from './login/login.module';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -114,9 +111,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NgxDaterangepickerMd.forRoot(),
     SharedMatModule.forRoot(),
     CookieModule.withOptions(),
-    LoginModule,
-    HeaderModule,
-    DashboardsModule,
     RouterModule.forRoot(AppRoutes),
     ToastrModule.forRoot({ 
       timeOut: 2000,
