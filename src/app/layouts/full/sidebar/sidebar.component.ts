@@ -223,6 +223,10 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     this.headerService.logout().subscribe(
       () => {
         this._cookieService.removeAll();
+        this.rolesUsersService.setRoleIndividual({
+          body: { message: '', data: [], plan: '', type: 0 },
+          status: 0
+        })
         this.router.navigate(['/login']);
       },
     );
