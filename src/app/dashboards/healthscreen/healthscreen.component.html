@@ -710,33 +710,39 @@
                   />
                 </div>
               </mat-card-title>
-              <div class="chart card-body no-data-placeholder">
-                <ngx-gauge
-                  class="yellow_guagechart"
-                  *ngIf="utilisation_rate_f > 0 && chairutilrate"
-                  [type]="gaugeType"
-                  [value]="utilisation_rate_f"
-                  [thick]="canvasWidth"
-                  [foregroundColor]="foregroundColor1"
-                  [backgroundColor]="backgroundColor"
-                  [append]="'%'"
-                  [size]="size"
-                >
-                </ngx-gauge>
-                <div
-                  *ngIf="!chairutilrate"
-                  class="loader_container loader_container_middle"
-                >
-                  <img class="loader_ico" src="../assets/images/720.gif" />
-                  <div class="loader-text">Calculating...</div>
-                </div>
-                <div *ngIf="chairutilrate && utilisation_rate_f <= 0">
-                  <div class="sa_nodata_div"></div>
-                  <p class="chart-placeholder-text">
-                    You have no appointments booked in the next 7 days
-                  </p>
-                </div>
+              <div *ngIf="isExact; else nonExactTemplate">
+                <div class="sa_nodata_div"></div>
+                <p class="chart-placeholder-text">Coming Soon...</p>
               </div>
+              <ng-template #nonExactTemplate>
+                <div class="chart card-body no-data-placeholder">
+                  <ngx-gauge
+                    class="yellow_guagechart"
+                    *ngIf="utilisation_rate_f > 0 && chairutilrate"
+                    [type]="gaugeType"
+                    [value]="utilisation_rate_f"
+                    [thick]="canvasWidth"
+                    [foregroundColor]="foregroundColor1"
+                    [backgroundColor]="backgroundColor"
+                    [append]="'%'"
+                    [size]="size"
+                  >
+                  </ngx-gauge>
+                  <div
+                    *ngIf="!chairutilrate"
+                    class="loader_container loader_container_middle"
+                  >
+                    <img class="loader_ico" src="../assets/images/720.gif" />
+                    <div class="loader-text">Calculating...</div>
+                  </div>
+                  <div *ngIf="chairutilrate && utilisation_rate_f <= 0">
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">
+                      You have no appointments booked in the next 7 days
+                    </p>
+                  </div>
+                </div>
+              </ng-template>
             </mat-card-content>
           </mat-card>
         </div>
