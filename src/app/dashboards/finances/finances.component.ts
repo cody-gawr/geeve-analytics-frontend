@@ -4569,6 +4569,7 @@ export class FinancesComponent implements AfterViewInit {
                   )
                 : durations;
           }
+          console.log(this.expensesChartTrendLabels);
         },
         (error) => {
           this.Apirequest = this.Apirequest - 1;

@@ -492,12 +492,27 @@
                           <div
                             *ngIf="
                               (xeroConnect || myobConnect) &&
-                              pieChartLabels &&
-                              pieChartLabels.length == 0 &&
-                              !(
-                                categoryExpensesLoader ||
-                                multipleClinicsSelected
-                              ) &&
+                                pieChartLabels.length == 0 &&
+                                !(
+                                  categoryExpensesLoader ||
+                                  multipleClinicsSelected
+                                );
+                              isCompleteMonth
+                            "
+                            class="no-data-placeholder"
+                          >
+                            <div class="sa_nodata_div"></div>
+                            <p class="chart-placeholder-text">
+                              No expenses found for the selected period
+                            </p>
+                          </div>
+
+                          <div
+                            *ngIf="
+                              (xeroConnect || myobConnect) &&
+                                expenseMultiChartLabels.length == 0 &&
+                                !categoryExpensesLoader &&
+                                multipleClinicsSelected;
                               isCompleteMonth
                             "
                             class="no-data-placeholder"
