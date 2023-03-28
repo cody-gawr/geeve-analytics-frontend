@@ -1,46 +1,49 @@
-.header_filters.marketing { flex-direction: row-reverse !important; }
-.header_filters.multi { flex-direction: row-reverse !important; }
+.header_filters.marketing {
+  flex-direction: row-reverse !important;
+}
+.header_filters.multi {
+  flex-direction: row-reverse !important;
+}
 .custom-tooltip-color {
-    display:block;
-    height:15px;
-    width:15px;
-    margin:2px;border:1px solid #ffffff;
-  }
-  .td-custom-tooltip-color {
-     width:10%;
-  }
+  display: block;
+  height: 15px;
+  width: 15px;
+  margin: 2px;
+  border: 1px solid #ffffff;
+}
+.td-custom-tooltip-color {
+  width: 10%;
+}
 
+.float-right-space {
+  margin-left: 8px;
+}
 
-  .float-right-space {
-   float: right;
-   margin-left: 35px;
-  }
-
-  .info-icon-container.marketing i{
-   margin-right: 10px
-  }
-  .info-icon-container.marketing i.active{
-   color: #1aa591;
-  }
-  .chart-new-patients{
-   height: 326px; 
-   position: relative;
-  }
-  .chart-num-patients{
-   height: 190px;
-  }
-  .chart-Trend1-patients{
-   height: 300px;
-  }
-  .chart-trend{
-   height: 100% !important;
-  }
-  .close-btn{
-   display:none;
-  }
-  .chart.py-2.trendchart{
-     padding-top: 0px; ;
-  }
-  .chart-Trend1-patients.trendH{
-   height: 285px;
-  }
+.info-icon-container.marketing i {
+  margin-right: 10px;
+}
+.info-icon-container.marketing i.active {
+  color: #1aa591;
+}
+.chart-new-patients {
+  height: 326px;
+  position: relative;
+}
+.chart-num-patients {
+  height: 190px;
+}
+.chart-Trend1-patients {
+  height: 300px;
+}
+.chart-trend {
+  height: 100% !important;
+}
+.close-btn {
+  display: none;
+}
+.chart.py-2.trendchart {
+  padding-top: 0px;
+}
+.chart-Trend1-patients.trendH {
+  height: 285px;
+}

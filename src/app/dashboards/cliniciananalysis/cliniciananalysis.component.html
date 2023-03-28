@@ -525,7 +525,9 @@
                       class="sa_tab_btn"
                       [ngClass]="proCollShow == 3 ? 'active' : ''"
                       (click)="changeProduction('3', 'all')"
-                      >Collection-Exp</small
+                      >{{
+                        (isLarge$ | async) ? 'Col-Exp' : 'Collection-Exp'
+                      }}</small
                     >
                   </div>
                 </div>
@@ -2066,7 +2068,9 @@
                       class="sa_tab_btn"
                       [ngClass]="proCollShow == 3 ? 'active' : ''"
                       (click)="changeProduction('3', 'single')"
-                      >Collection-Exp</small
+                      >{{
+                        (isLarge$ | async) ? 'Col-Exp' : 'Collection-Exp'
+                      }}</small
                     >
                   </div>
                 </div>
@@ -3166,7 +3170,9 @@
                       class="sa_tab_btn"
                       [ngClass]="hrCollShow == 3 ? 'active' : ''"
                       (click)="changeHrPro('3', 'all')"
-                      >Collection-Exp</small
+                      >{{
+                        (isLarge$ | async) ? 'Col-Exp' : 'Collection-Exp'
+                      }}</small
                     >
                   </div>
                 </div>
@@ -4621,8 +4627,8 @@
                       class="sa_tab_btn"
                       [ngClass]="hrCollShow == 3 ? 'active' : ''"
                       (click)="changeHrPro('3', 'single')"
-                      >Collection-Exp</small
-                    >
+                      >{{ (isLarge$ | async) ? 'Col-Exp' : 'Collection-Exp' }}
+                    </small>
                   </div>
                 </div>
               </div>

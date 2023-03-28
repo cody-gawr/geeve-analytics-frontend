@@ -20,8 +20,13 @@ import {
   BaseChartDirective,
   PluginServiceGlobalRegistrationAndOptions
 } from 'ng2-charts';
-import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import {
+  BehaviorSubject,
+  Observable,
+  ReplaySubject,
+  map,
+  takeUntil
+} from 'rxjs';
 import { ChartService } from '../chart.service';
 import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
@@ -32,6 +37,7 @@ import { environment } from '../../../environments/environment';
 import * as Chart from 'chart.js';
 import * as _ from 'lodash';
 import { LocalStorageService } from '../../shared/local-storage.service';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 export interface Dentist {
   providerId: string;
@@ -104,7 +110,14 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     return this.localStorageService.isEachClinicPmsExactOrCore(this.clinic_id);
   }
 
+  public get isAccountButtonToggle$(): Observable<boolean> {
+    return this.breakpointObserver
+      .observe(['(min-width: 1280px) and (max-width: 1396px)'])
+      .pipe(map((result) => result.matches));
+  }
+
   constructor(
+    private breakpointObserver: BreakpointObserver,
     private localStorageService: LocalStorageService,
     private toastr: ToastrService,
     private marketingService: MarketingService,
