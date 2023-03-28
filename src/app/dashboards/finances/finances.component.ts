@@ -4401,27 +4401,6 @@ export class FinancesComponent implements AfterViewInit {
                 });
 
                 this.netProfitPmsChartTrendMulti = datasets;
-
-                // Object.entries(
-                //   _.chain(res.body.data).groupBy('clinic_id').value()
-                // ).forEach(([, items], index) => {
-                //   const data: number[] = items.map((item) =>
-                //     Math.round(parseInt(item.net_profit))
-                //   );
-                //   const label = items[0].clinic_name;
-                //   const backgroundColor = this.doughnutChartColors[index];
-                //   this.netProfitPmsChartTrendMulti.push({
-                //     data,
-                //     label,
-                //     backgroundColor,
-                //     hoverBackgroundColor: backgroundColor,
-                //   });
-                //   labels = items.map((item) => {
-                //     return this.trendValue == 'c'
-                //       ? this.datePipe.transform(item.year_month, 'MMM y')
-                //       : item.year;
-                //   });
-                // });
               } else {
                 res.body.data.forEach((item) => {
                   this.netProfitChartTrend1.push(
@@ -4569,7 +4548,6 @@ export class FinancesComponent implements AfterViewInit {
                   )
                 : durations;
           }
-          console.log(this.expensesChartTrendLabels);
         },
         (error) => {
           this.Apirequest = this.Apirequest - 1;

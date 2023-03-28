@@ -121,7 +121,7 @@
               </div>
 
               <div class="stats">
-                <h3 class="m-0">Production</h3>
+                <h3 class="m-0">Production (1)</h3>
                 <h1
                   class="m-0"
                   *ngIf="
@@ -1645,8 +1645,9 @@
                   <canvas
                     *ngIf="
                       !finCollectionTrendLoader &&
-                      netProfitDisplayVal == 4 &&
-                      !isAllClinic
+                        netProfitDisplayVal == 4 &&
+                        collectionChartTrendLabels.length > 0!;
+                      isAllClinic
                     "
                     class="profit1 net_profit"
                     baseChart
@@ -1664,6 +1665,7 @@
                     *ngIf="
                       !finCollectionTrendLoader &&
                       isAllClinic &&
+                      collectionChartTrendMultiLabels.length > 0 &&
                       netProfitDisplayVal == 4
                     "
                     class="profit4 net_profit"
@@ -1680,7 +1682,8 @@
                   <div
                     *ngIf="
                       netProfitDisplayVal == 4 &&
-                      collectionChartTrendMultiLabels.length < 0 &&
+                      (collectionChartTrendMultiLabels.length == 0 ||
+                        collectionChartTrendLabels.length == 0) &&
                       !finCollectionTrendLoader
                     "
                     class="no-data-placeholder"
