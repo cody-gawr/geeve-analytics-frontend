@@ -26,6 +26,7 @@ import { NgxSmartModalService } from 'ngx-smart-modal';
 import * as _ from 'lodash';
 import * as Chart from 'chart.js';
 import * as moment from 'moment';
+import { LocalStorageService } from '../../shared/local-storage.service';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -163,7 +164,11 @@ export class FinancesComponent implements AfterViewInit {
   ];
   public isVisibleAccountGraphs: boolean = false;
   public maxLegendLabelLimit = 10;
+  public get isExact(): boolean {
+    return this.localStorageService.isEachClinicExact(this.clinic_id);
+  }
   constructor(
+    private localStorageService: LocalStorageService,
     private toastr: ToastrService,
     private financesService: FinancesService,
     private dentistService: DentistService,
@@ -3621,6 +3626,7 @@ export class FinancesComponent implements AfterViewInit {
   public discountsChartTrendMultiLabels1 = [];
   public finTotalDiscountsTrendLoader: any;
   public showByclinic: boolean = false;
+
   private finTotalDiscountsTrend() {
     this.discountsChartTrendLabels = [];
     this.discountsChartTrendLabels1 = [];
