@@ -800,7 +800,7 @@
                   <div
                     class="no-data-placeholder"
                     *ngIf="
-                      conversionPerUserLabelsTicks.length <= 0 &&
+                      conversionPerUserLabelsTicks.length == 0 &&
                       conversionPerType == '1' &&
                       !conversionPerUserLoader
                     "
@@ -813,7 +813,7 @@
                   <div
                     class="no-data-placeholder"
                     *ngIf="
-                      conversionPerUserLabelsRecalls.length <= 0 &&
+                      conversionPerUserLabelsRecalls.length == 0 &&
                       conversionPerType == '2' &&
                       !conversionPerUserLoader
                     "
@@ -826,7 +826,7 @@
                   <div
                     class="no-data-placeholder"
                     *ngIf="
-                      conversionPerUserLabelsFta.length <= 0 &&
+                      conversionPerUserLabelsFta.length == 0 &&
                       conversionPerType == '3' &&
                       !conversionPerUserLoader
                     "
@@ -839,7 +839,7 @@
                   <div
                     class="no-data-placeholder"
                     *ngIf="
-                      conversionPerUserLabelsUta.length <= 0 &&
+                      conversionPerUserLabelsUta.length == 0 &&
                       conversionPerType == '4' &&
                       !conversionPerUserLoader
                     "

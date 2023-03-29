@@ -834,6 +834,7 @@
 .card-body {
   padding: 20px;
   z-index: 9;
+  flex: 1;
 }
 
 .sa_matcard_content .mat-card-title img {
