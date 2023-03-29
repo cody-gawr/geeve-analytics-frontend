@@ -53,7 +53,7 @@ export class LocalStorageService {
       );
     }
 
-    return clinics.every((c) => c.pms == 'exact');
+    return clinics.every((c) => ['exact', 'core'].includes(c.pms));
   }
 
   public isEachClinicPmsExactOrCore(clinicId: string | string[]): boolean {

@@ -1,12 +1,12 @@
 <div
-  *ngIf="isExact; else nonExactTemplate"
   fxLayout="row"
   fxLayoutAlign="center center"
   fxFlexFill
+  [hidden]="!isExact"
 >
   <h3>Coming Soon</h3>
 </div>
-<ng-template #nonExactTemplate>
+<div [hidden]="isExact">
   <mat-card class="lost-header-background-remove background-shadow">
     <mat-card-content>
       <div class="header-section">
@@ -207,4 +207,4 @@
       </div>
     </div>
   </mat-card>
-</ng-template>
+</div>

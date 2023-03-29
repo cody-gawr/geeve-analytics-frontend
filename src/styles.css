@@ -8976,3 +8976,6 @@ div.dialog-header .mat-icon {
   /* border-color: rgba(0, 0, 0, 0.12); */
   border-color: #18a689 !important;
 }
+[hidden] {
+  visibility: hidden !important;
+}

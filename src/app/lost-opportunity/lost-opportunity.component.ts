@@ -36,9 +36,7 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
   public productionImp: number = 0;
   public charTips: any = [];
 
-  public get isExact(): boolean {
-    return this.localStorageService.isEachClinicExact(this.clinic_id);
-  }
+  public isExact: boolean = false;
 
   constructor(
     private localStorageService: LocalStorageService,
@@ -74,6 +72,7 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
     var val = $('#currentClinic').attr('cid');
     if (val != undefined && val != 'all') {
       this.clinic_id = val;
+      this.isExact = this.localStorageService.isEachClinicExact(this.clinic_id);
     }
     this.lostOpportunityData();
     $('#title').html('Lost Opportunity');
