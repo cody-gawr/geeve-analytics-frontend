@@ -544,8 +544,8 @@ export class AppHeaderrightComponent
       kpireport: '/kpi-report'
     };
 
-    this.rolesUsersService.getRolesIndividual(clinicId).subscribe(
-      (res) => {
+    this.rolesUsersService.getRolesIndividual(clinicId).subscribe({
+      next: (res) => {
         if (res.status == 200) {
           permissions = (<string>res.body.data).split(',');
           if (permissions.length > 0 && this.user_type == 7) {
@@ -577,8 +577,8 @@ export class AppHeaderrightComponent
           }
         }
       },
-      (error) => {}
-    );
+      error: (error) => {}
+    });
   }
 
   loadClinic(newValues) {
