@@ -488,11 +488,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.autoCall = setInterval(function () {
       self.refreshDataAuto();
     }, 1000 * 300);
-    if(this.isSMSEnabled){
-      this.creditStatusTimer = setInterval(() => {
-        this.updateCreditStatus();
-      }, 30000);
-    }
+
   }
 
   updateCreditStatus() {
@@ -582,6 +578,11 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
                 !!v.data.sms_enabled && parseInt(this.user_type) != 4 && parseInt(this.user_type) != 7;
             if (v.data.accepted_sms_terms != undefined)
               this.isAcceptedSMSTerms = !!v.data.accepted_sms_terms;
+            if(this.isSMSEnabled){
+              this.creditStatusTimer = setInterval(() => {
+                this.updateCreditStatus();
+              }, 30000);
+            }
             //}
           },
           error: (e) => {
