@@ -775,7 +775,7 @@
     <mat-expansion-panel-header>
       <mat-panel-title>
         Xero
-        <span class="xero-text" *ngIf="xeroConnect == true">Connected</span>
+        <span class="xero-text" *ngIf="xeroConnect == 1">Connected</span>
       </mat-panel-title>
     </mat-expansion-panel-header>
     <mat-card-content>
@@ -787,10 +787,11 @@
           <div class="button-container">
             <button
               class="save-button"
-              *ngIf="myobConnect == false"
-              (click)="xeroConnect ? disconnectXero() : openXero()"
+              *ngIf="myobConnect == 0"
+              (click)="xeroConnect == 1 ? disconnectXero() : openXero()"
+              [disabled]="xeroConnect == 2"
             >
-              {{ !xeroConnect ? 'Connect to Xero' : 'Disconnect from XERO' }}
+              {{ xeroConnect == 1 ? 'Disconnect from XERO' : 'Connect to Xero' }}
               <img
                 class="fast-forward-icon"
                 src="assets/images/fast_forward_arrows.png"
@@ -839,7 +840,7 @@
     <mat-expansion-panel-header>
       <mat-panel-title>
         MYOB
-        <span class="myob-text" *ngIf="myobConnect == true">Connected</span>
+        <span class="myob-text" *ngIf="myobConnect == 1">Connected</span>
       </mat-panel-title>
     </mat-expansion-panel-header>
     <mat-card-content>
@@ -850,10 +851,11 @@
         <div class="button-container">
           <button
             class="save-button"
-            *ngIf="xeroConnect == false"
-            (click)="myobConnect ? disconnectMyob() : openMyob()"
+            *ngIf="xeroConnect == 0"
+            (click)="myobConnect == 1? disconnectMyob() : openMyob()"
+            [disabled]="myobConnect == 2"
           >
-            {{ !myobConnect ? 'Connect to Myob' : 'Disconnect from Myob' }}
+            {{ myobConnect == 1 ? 'Disconnect from Myob' : 'Connect to Myob' }}
             <img
               class="fast-forward-icon"
               src="assets/images/fast_forward_arrows.png"

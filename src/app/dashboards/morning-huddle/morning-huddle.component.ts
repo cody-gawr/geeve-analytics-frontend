@@ -488,10 +488,11 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.autoCall = setInterval(function () {
       self.refreshDataAuto();
     }, 1000 * 300);
-
-    this.creditStatusTimer = setInterval(() => {
-      this.updateCreditStatus();
-    }, 30000);
+    if(this.isSMSEnabled){
+      this.creditStatusTimer = setInterval(() => {
+        this.updateCreditStatus();
+      }, 30000);
+    }
   }
 
   updateCreditStatus() {
@@ -534,7 +535,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     //$('.dentist_dropdown').parent().show(); // added
     $('.sa_heading_bar').removeClass('filter_single'); // added
     clearInterval(this.autoCall);
-    clearInterval(this.creditStatusTimer);
+    if(this.creditStatusTimer) clearInterval(this.creditStatusTimer);
   }
 
   initiate_clinic() {
