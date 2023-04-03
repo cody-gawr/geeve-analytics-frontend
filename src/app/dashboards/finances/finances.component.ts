@@ -4309,68 +4309,41 @@ export class FinancesComponent implements AfterViewInit {
   public finNetProfitPMSTrendLoader: any;
 
   public checkXeroStatus() {
-    // this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe(
-    //   (res) => {
-    //     if (res.body.message != 'error') {
-    //       if (res.body.data.xero_connect == 1) {
-    //         this.xeroConnect = true;
-    //       } else {
-    //         this.xeroConnect = false;
-    //       }
-    //     } else {
-    //       this.xeroConnect = false;
-    //     }
-    //   },
-    //   (error) => {
-    //     this.warningMessage = 'Please Provide Valid Inputs!';
-    //   }
-    // );
-    this.clinicSettingsService.checkXeroTokenExpiry(this.clinic_id).subscribe({
-      next: (v) => {
-        if(v.tenantName){
-          this.xeroConnect = true;
-        }else{
+    this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe(
+      (res) => {
+        if (res.body.message != 'error') {
+          if (res.body.data.xero_connect == 1) {
+            this.xeroConnect = true;
+          } else {
+            this.xeroConnect = false;
+          }
+        } else {
           this.xeroConnect = false;
         }
-        
       },
-      error: (e) => {
-        console.error(e);
-        this.warningMessage = e.message;
+      (error) => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
       }
-    })
+    );
   }
 
   checkMyobStatus() {
-    // this.clinicSettingsService.checkMyobStatus(this.clinic_id).subscribe(
-    //   (res) => {
-    //     if (res.body.message != 'error') {
-    //       if (res.body.data.myob_connect == 1) {
-    //         this.myobConnect = true;
-    //       } else {
-    //         this.myobConnect = false;
-    //       }
-    //     } else {
-    //       this.myobConnect = false;
-    //     }
-    //   },
-    //   (error) => {
-    //     this.warningMessage = 'Please Provide Valid Inputs!';
-    //   }
-    // );
-    this.clinicSettingsService.checkMyobTokenExpiry(this.clinic_id).subscribe({
-      next: (v) => {
-        if(v.tenantName){
-          this.myobConnect = true;
-        }else{
+    this.clinicSettingsService.checkMyobStatus(this.clinic_id).subscribe(
+      (res) => {
+        if (res.body.message != 'error') {
+          if (res.body.data.myob_connect == 1) {
+            this.myobConnect = true;
+          } else {
+            this.myobConnect = false;
+          }
+        } else {
           this.myobConnect = false;
         }
       },
-      error: (e) => {
-        console.error(e);
-        this.myobConnect = false;
+      (error) => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
       }
-    })
+    );
   }
 
   public trendxero = false;

@@ -149,62 +149,37 @@ export class ClinicSettingsService {
             );
     }
     // Get ClinicSettings
-
-    getXeroConsentURL(clinic_id: number): Observable<{
-        auth_url: string
-    }> {
+    getXeroLink(clinic_id): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/Xero/consentUrl?clinic_id=" + clinic_id, header)
-            .pipe(map((response: HttpResponse<any>) => {
-                return response.body;
+        return this.http.get(this.apiUrl + "/Xeros2/getAuthorizeUrl?getxero=1&clinic_id=" + clinic_id, header)
+            .pipe(map((response: HttpResponse<Object>) => {
+                return response;
             })
             );
     }
 
-    checkXeroTokenExpiry(clinic_id: number): Observable<{tenantName: string}> {
-        const headers = this.getHeaders();
-        return this.http.get(this.apiUrl + "/Xero/checkTokenExpiry?clinic_id=" + clinic_id, headers)
-        .pipe(map((response: HttpResponse<any>) => {
-            return response.body;
-        }));
-    }
-
-    getMyobConsentURL(clinic_id: number): Observable<{
-        auth_url: string
-    }> {
+    checkXeroStatus(clinic_id): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/Myob/consentUrl?clinic_id=" + clinic_id, header)
-            .pipe(map((response: HttpResponse<any>) => {
-                return response.body;
+        return this.http.get(this.apiUrl + "/Xeros2/xeroGetStatus?getxero=1&clinic_id=" + clinic_id, header)
+            .pipe(map((response: HttpResponse<Object>) => {
+                return response;
             })
             );
     }
 
-    checkMyobTokenExpiry(clinic_id: number): Observable<{
-        tenantName: string
-    }> {
+    getMyobLink(clinic_id): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl + "/Myob/checkTokenExpiry?clinic_id=" + clinic_id, header)
-            .pipe(map((response: HttpResponse<any>) => {
-                return response.body;
+        return this.http.get(this.apiUrl + "/Myob/getAuthorizeUrl?clinic_id=" + clinic_id, header)
+            .pipe(map((response: HttpResponse<Object>) => {
+                return response;
             })
             );
     }
-
-    disconnectXeroOAuth(clinic_id: number): Observable<{status: boolean}> {
+    checkMyobStatus(clinic_id): Observable<any> {
         var header = this.getHeaders();
-        return this.http.post(this.apiUrl + "/Xero/disconnectOAuth?clinic_id=" + clinic_id, {}, header)
-            .pipe(map((response: HttpResponse<any>) => {
-                return response.body;
-            })
-            );
-    }
-
-    disconnectMyobOAuth(clinic_id: number): Observable<{status: boolean}> {
-        var header = this.getHeaders();
-        return this.http.post(this.apiUrl + "/Myob/disconnectOAuth?clinic_id=" + clinic_id, {}, header)
-            .pipe(map((response: HttpResponse<any>) => {
-                return response.body;
+        return this.http.get(this.apiUrl + "/Myob/myobGetStatus?clinic_id=" + clinic_id, header)
+            .pipe(map((response: HttpResponse<Object>) => {
+                return response;
             })
             );
     }
@@ -212,6 +187,28 @@ export class ClinicSettingsService {
     clinicGetAccountingPlatform(clinic_id): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl + "/Clinics/clinicGetAccountingPlatform?clinic_id=" + clinic_id, header)
+            .pipe(map((response: HttpResponse<Object>) => {
+                return response;
+            })
+            );
+    }
+
+    clearSession(clinic_id): Observable<any> {
+        var header = this.getHeaders();
+        const formData = new FormData();
+        formData.append('clinic_id', clinic_id);
+        return this.http.post(this.apiUrl + "/Xeros2/disconnectXero/", formData, header)
+            .pipe(map((response: HttpResponse<Object>) => {
+                return response;
+            })
+            );
+    }
+
+    clearSessionMyob(clinic_id): Observable<any> {
+        var header = this.getHeaders();
+        const formData = new FormData();
+        formData.append('clinic_id', clinic_id);
+        return this.http.post(this.apiUrl + "/Myob/disconnectMyob/", formData, header)
             .pipe(map((response: HttpResponse<Object>) => {
                 return response;
             })
