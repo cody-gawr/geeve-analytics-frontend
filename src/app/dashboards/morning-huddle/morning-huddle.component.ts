@@ -788,7 +788,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               this.LabNeeded = true;
             }
             this.remindersTotal = res.body.total;
-            this.morningHuddleService
+            if(this.isSMSEnabled){
+              this.morningHuddleService
               .getCreditStatus(
                 this.clinic_id,
                 res.body.data.map((d) => {
@@ -842,6 +843,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
                   this.refreshReminderTab(this.selectDentist);
                 }
               });
+            }
+
           } else if (res.status == 401) {
             this.handleUnAuthorization();
           }
