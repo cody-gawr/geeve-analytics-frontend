@@ -579,7 +579,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               v.data.equip_list_enable == 1 ? true : false;
             if (v.data.sms_enabled != undefined)
               this.isSMSEnabled =
-                !!v.data.sms_enabled && parseInt(this.user_type) != 4;
+                !!v.data.sms_enabled && parseInt(this.user_type) != 4 && parseInt(this.user_type) != 7;
             if (v.data.accepted_sms_terms != undefined)
               this.isAcceptedSMSTerms = !!v.data.accepted_sms_terms;
             //}
