@@ -843,8 +843,31 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
                   this.refreshReminderTab(this.selectDentist);
                 }
               });
+            }else{
+              this.remindersRecallsOverdueTemp = res.body.data;
+              this.remindersRecallsOverdue = res.body.data;     
+              this.remindersRecallsOverdueDate = this.datepipe.transform( res.body.date, 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
+              if(this.user_type == '4'){         
+                this.dentistid = this._cookieService.get("dentistid");
+                this.refreshReminderTab(this.dentistid);
+              } else {
+                res.body.data.forEach(val => {
+                  var isExsist = this.clinicDentistsReminders.filter(function (person) { return person.provider_id == val.provider_id });
+                  if(isExsist.length <= 0){
+                    var nm = (val.jeeve_name != '' && val.jeeve_name)? val.jeeve_name : val.provider_name;
+                    var temp = {'provider_id' : val.provider_id, 'provider_name' : nm};
+                    if(temp.provider_name != null)
+                      this.clinicDentistsReminders.push(temp);  
+                  }          
+                });               
+                this.clinicDentistsReminders.sort(function (x, y) {
+                    let a = x.provider_name.toUpperCase(),
+                    b = y.provider_name.toUpperCase();
+                    return a == b ? 0 : a > b ? 1 : -1;
+                });  
+              }
+              this.refreshReminderTab(this.selectDentist);
             }
-
           } else if (res.status == 401) {
             this.handleUnAuthorization();
           }
