@@ -67,9 +67,9 @@ export class ClinicSettingsComponent implements OnInit {
   options: FormGroup;
   public xero_link;
   public myob_link;
-  public xeroConnect = 0;
+  public xeroConnect = false;
   public xeroOrganization = '';
-  public myobConnect = 0;
+  public myobConnect = false;
   public myobOrganization = '';
   public equipmentList: boolean = true;
   public dailyTasks: boolean = true;
@@ -203,10 +203,8 @@ export class ClinicSettingsComponent implements OnInit {
       this.getClinicSettings();
       this.getClinicFollowUPSettings();
 
-      // this.checkXeroStatus();
-      // this.checkMyobStatus();
-      this.checkMyobTokenExpiry();
-      this.checkXeroTokenExpiry();
+      this.checkXeroStatus();
+      this.checkMyobStatus();
     });
   }
 
@@ -416,111 +414,160 @@ export class ClinicSettingsComponent implements OnInit {
         }
       );
   }
+  //get xero authorization link
+  getXeroLink() {
+    this.clinicSettingsService.getXeroLink(this.id).subscribe(
+      (res) => {
+        if (res.status == 200) {
+          this.xero_link = res.body.data;
+        } else if (res.status == '401') {
+          this._cookieService.put('username', '');
+          this._cookieService.put('email', '');
+          this._cookieService.put('userid', '');
+          this.router.navigateByUrl('/login');
+        }
+      },
+      (error) => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
+      }
+    );
+  }
+  //get myob authorization link
+  getMyobLink() {
+    this.clinicSettingsService.getMyobLink(this.id).subscribe(
+      (res) => {
+        if (res.status == 200) {
+          console.log(
+            `gtt: in getmyoblink, res.body: ${JSON.stringify(res.body)}`
+          );
+          this.myob_link = res.body.data;
+        } else if (res.status == '401') {
+          this._cookieService.put('username', '');
+          this._cookieService.put('email', '');
+          this._cookieService.put('userid', '');
+          this.router.navigateByUrl('/login');
+        }
+      },
+      (error) => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
+      }
+    );
+  }
   //create xero connection model
   public openXero() {
-    this.xeroConnect = 2;
-    this.clinicSettingsService.getXeroConsentURL(this.id).subscribe({
-      next: (v)=>{
-        const win = window.open(v.auth_url, 'MsgWindow', 'width=400,height=400');
-        const timer = setInterval(() => {
-          if (win.closed) {
-            this.checkXeroTokenExpiry();
-            clearTimeout(timer);
-          }
-        }, 1000);
-      },
-      error: (e) => {
-        this.xeroConnect = 0;
-        this.warningMessage = e.message;
+    var success;
+
+    var win = window.open(this.xero_link, 'MsgWindow', 'width=400,height=400');
+    var self = this;
+    var timer = setInterval(function () {
+      if (win.closed) {
+        self.checkXeroStatus();
+        clearTimeout(timer);
       }
-    });
+    }, 1000);
   }
   //create myob connection model
   public openMyob() {
-    this.myobConnect = 2;
-    this.clinicSettingsService.getMyobConsentURL(this.id).subscribe({
-      next: (v) => {
-        const win = window.open(v.auth_url, 'MsgWindow', 'width=400,height=400');
-        const timer = setInterval(() => {
-          if (win.closed) {
-            this.checkMyobTokenExpiry();
-            clearTimeout(timer);
-          }
-        }, 1000);
-      },
-      error: (e) => {
-        this.myobConnect = 0;
-        this.warningMessage = e.message; 
+    var success;
+    console.log(`in openmyob, myob link: ${this.myob_link}`);
+    var win = window.open(this.myob_link, 'MsgWindow', 'width=400,height=400');
+    var self = this;
+    var timer = setInterval(function () {
+      if (win.closed) {
+        self.checkMyobStatus();
+        clearTimeout(timer);
       }
-    })
+    }, 1000);
   }
-  public checkXeroTokenExpiry() {
-    this.clinicSettingsService.checkXeroTokenExpiry(this.id).subscribe({
-      next: (v) => {
-        if(v.tenantName){
-          this.xeroConnect = 1;
-          this.xeroOrganization = v.tenantName;
-        }else{
-          this.xeroConnect = 0;
+  //check status of xero connection
+  public checkXeroStatus() {
+    this.clinicSettingsService.checkXeroStatus(this.id).subscribe(
+      (res) => {
+        if (res.body.message != 'error') {
+          if (res.body.data.xero_connect == 1) {
+            this.xeroConnect = true;
+            this.xeroOrganization = res.body.data.Name;
+          } else {
+            this.xeroConnect = false;
+            this.xeroOrganization = '';
+            this.getXeroLink();
+            //this.disconnectXero();
+          }
+        } else {
+          this.xeroConnect = false;
           this.xeroOrganization = '';
+          this.getXeroLink();
+          //this.disconnectXero();
         }
       },
-      error: (e) => {
-        this.xeroConnect = 0;
-        this.warningMessage = e.message;
+      (error) => {
+        this.getXeroLink();
+        this.warningMessage = 'Please Provide Valid Inputs!';
       }
-    })
+    );
   }
-  public checkMyobTokenExpiry() {
-    this.clinicSettingsService.checkMyobTokenExpiry(this.id).subscribe(
-      {
-        next: (v) => {
-          if(v.tenantName){
-            this.myobConnect = 1;
-            this.myobOrganization = v.tenantName;
-          }else{
-            this.myobConnect = 0;
+  //check status of myob connection
+  public checkMyobStatus() {
+    this.clinicSettingsService.checkMyobStatus(this.id).subscribe(
+      (res) => {
+        if (res.body.message != 'error') {
+          if (res.body.data.myob_connect == 1) {
+            this.myobConnect = true;
+            this.myobOrganization = res.body.data.Name;
+            //alert(this.myobOrganization);
+          } else {
+            this.myobConnect = false;
             this.myobOrganization = '';
+            this.getMyobLink();
+            //this.disconnectMyob();
           }
-        },
-        error: (e) => {
-          console.error(e);
-          this.myobConnect = 0;
-          this.warningMessage = e.message;
+        } else {
+          this.getMyobLink();
+          this.myobConnect = false;
+          this.myobOrganization = '';
+          //this.disconnectMyob();
         }
+      },
+      (error) => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
       }
-    )
+    );
   }
   //disconnect xero connection
   public disconnectXero() {
-    this.clinicSettingsService.disconnectXeroOAuth(this.id).subscribe(
-      {
-        next: v => {
-          if(v.status){
-            this.xeroConnect = 0;
-            this.xeroOrganization = '';
-          }
-        },
-        error: e => {
-          console.error(e);
-          this.warningMessage = e.message;
+    this.clinicSettingsService.clearSession(this.id).subscribe(
+      (res) => {
+        if (res.status == 200) {
+          this.xeroConnect = false;
+          this.xeroOrganization = '';
+          this.getXeroLink();
+        } else {
+          this.xeroConnect = true;
         }
+      },
+      (error) => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
       }
-    )
+    );
   }
   //disconnect myob connection
   public disconnectMyob() {
-    this.clinicSettingsService.disconnectMyobOAuth(this.id).subscribe({
-      next: v => {
-        if(v.status){
-          this.myobConnect = 0;
+    console.log(`in disconnect myob`);
+
+    this.clinicSettingsService.clearSessionMyob(this.id).subscribe(
+      (res) => {
+        if (res.status == 200) {
+          this.myobConnect = false;
           this.myobOrganization = '';
+          this.getMyobLink();
+        } else {
+          this.myobConnect = true;
         }
       },
-      error: e => {
-        this.warningMessage = e.message;
+      (error) => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
       }
-    })
+    );
   }
   public toggle(event) {
     if (event.source.name == 'sunday') {
