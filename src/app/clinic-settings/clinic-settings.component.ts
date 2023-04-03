@@ -298,7 +298,7 @@ export class ClinicSettingsComponent implements OnInit {
         this.recallWeeks = v.data.recall_weeks;
         this.referralWeeks = v.data.referral_weeks;
         this.isSMSEnabled =
-          !!v.data.sms_enabled && parseInt(this.userType) != 4;
+          !!v.data.sms_enabled && parseInt(this.userType) != 4 && parseInt(this.userType) != 7;
         if (this.isSMSEnabled) {
           this.getReviewMsgTemplates();
           this.getSocialLinks();
