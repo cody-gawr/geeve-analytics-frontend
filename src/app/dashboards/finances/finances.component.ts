@@ -26,6 +26,7 @@ import { NgxSmartModalService } from 'ngx-smart-modal';
 import * as _ from 'lodash';
 import * as Chart from 'chart.js';
 import * as moment from 'moment';
+import { LocalStorageService } from '../../shared/local-storage.service';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -163,7 +164,11 @@ export class FinancesComponent implements AfterViewInit {
   ];
   public isVisibleAccountGraphs: boolean = false;
   public maxLegendLabelLimit = 10;
+  public get isExact(): boolean {
+    return this.localStorageService.isEachClinicExact(this.clinic_id);
+  }
   constructor(
+    private localStorageService: LocalStorageService,
     private toastr: ToastrService,
     private financesService: FinancesService,
     private dentistService: DentistService,
@@ -3621,6 +3626,7 @@ export class FinancesComponent implements AfterViewInit {
   public discountsChartTrendMultiLabels1 = [];
   public finTotalDiscountsTrendLoader: any;
   public showByclinic: boolean = false;
+
   private finTotalDiscountsTrend() {
     this.discountsChartTrendLabels = [];
     this.discountsChartTrendLabels1 = [];
@@ -4422,27 +4428,6 @@ export class FinancesComponent implements AfterViewInit {
                 });
 
                 this.netProfitPmsChartTrendMulti = datasets;
-
-                // Object.entries(
-                //   _.chain(res.body.data).groupBy('clinic_id').value()
-                // ).forEach(([, items], index) => {
-                //   const data: number[] = items.map((item) =>
-                //     Math.round(parseInt(item.net_profit))
-                //   );
-                //   const label = items[0].clinic_name;
-                //   const backgroundColor = this.doughnutChartColors[index];
-                //   this.netProfitPmsChartTrendMulti.push({
-                //     data,
-                //     label,
-                //     backgroundColor,
-                //     hoverBackgroundColor: backgroundColor,
-                //   });
-                //   labels = items.map((item) => {
-                //     return this.trendValue == 'c'
-                //       ? this.datePipe.transform(item.year_month, 'MMM y')
-                //       : item.year;
-                //   });
-                // });
               } else {
                 res.body.data.forEach((item) => {
                   this.netProfitChartTrend1.push(

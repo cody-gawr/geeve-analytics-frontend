@@ -84,6 +84,10 @@ export class FrontDeskComponent implements AfterViewInit {
     return this.localStorageService.isEachClinicPmsD4w(this.clinic_id);
   }
 
+  public get isExact(): boolean {
+    return this.localStorageService.isEachClinicExact(this.clinic_id);
+  }
+
   constructor(
     private localStorageService: LocalStorageService,
     private toastr: ToastrService,
@@ -1196,10 +1200,12 @@ export class FrontDeskComponent implements AfterViewInit {
       this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate)
     );
     if (newValue == 'all' && this.clinic_id) {
-      if (this.utilShow == 1) {
-        this.fdWorkTimeAnalysis();
-      } else if (this.utilShow == 2) {
-        this.fdWorkTimeByDay();
+      if (!this.isExact) {
+        if (this.utilShow == 1) {
+          this.fdWorkTimeAnalysis();
+        } else if (this.utilShow == 2) {
+          this.fdWorkTimeByDay();
+        }
       }
       this.fdRecallPrebookRate();
       this.fdtreatmentPrebookRate();

@@ -492,12 +492,27 @@
                           <div
                             *ngIf="
                               (xeroConnect || myobConnect) &&
-                              pieChartLabels &&
-                              pieChartLabels.length == 0 &&
-                              !(
-                                categoryExpensesLoader ||
-                                multipleClinicsSelected
-                              ) &&
+                                pieChartLabels.length == 0 &&
+                                !(
+                                  categoryExpensesLoader ||
+                                  multipleClinicsSelected
+                                );
+                              isCompleteMonth
+                            "
+                            class="no-data-placeholder"
+                          >
+                            <div class="sa_nodata_div"></div>
+                            <p class="chart-placeholder-text">
+                              No expenses found for the selected period
+                            </p>
+                          </div>
+
+                          <div
+                            *ngIf="
+                              (xeroConnect || myobConnect) &&
+                                expenseMultiChartLabels.length == 0 &&
+                                !categoryExpensesLoader &&
+                                multipleClinicsSelected;
                               isCompleteMonth
                             "
                             class="no-data-placeholder"
@@ -638,46 +653,34 @@
               </mat-card-title>
               <div class="card-body chart-spacing">
                 <div
-                  class="chart w-100"
-                  *ngIf="
-                    totalDiscountChartData &&
-                      totalDiscountChartData.length > 0 &&
-                      showInternal &&
-                      showClinicBar;
-                    else clinicianChart
-                  "
+                  *ngIf="isExact; else nonExactTemplate"
+                  class="no-data-placeholder"
                 >
-                  <div class="clinician-chart">
-                    <canvas
-                      class="totalDiscount"
-                      #myCanvas
-                      baseChart
-                      [data]="totalDiscountChartClinicsData"
-                      [labels]="totalDiscountChartLabelsClinics"
-                      [chartType]="totalDiscountChartType"
-                      (chartHover)="chartHovered($event)"
-                      (chartClick)="chartClicked($event)"
-                      [legend]="true"
-                      [options]="pieChartOptions2"
-                      [plugins]="totalDiscountPluginObservable$ | async"
-                      [colors]="pieChartColors"
-                    >
-                    </canvas>
-                  </div>
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">Coming Soon...</p>
                 </div>
-                <ng-template #clinicianChart>
-                  <div class="chart w-100">
+                <ng-template #nonExactTemplate>
+                  <div
+                    class="chart w-100"
+                    *ngIf="
+                      totalDiscountChartData &&
+                        totalDiscountChartData.length > 0 &&
+                        showInternal &&
+                        showClinicBar;
+                      else clinicianChart
+                    "
+                  >
                     <div class="clinician-chart">
                       <canvas
                         class="totalDiscount"
                         #myCanvas
                         baseChart
-                        [data]="totalDiscountChartData"
-                        [labels]="totalDiscountChartLabels"
+                        [data]="totalDiscountChartClinicsData"
+                        [labels]="totalDiscountChartLabelsClinics"
                         [chartType]="totalDiscountChartType"
                         (chartHover)="chartHovered($event)"
                         (chartClick)="chartClicked($event)"
-                        [legend]="false"
+                        [legend]="true"
                         [options]="pieChartOptions2"
                         [plugins]="totalDiscountPluginObservable$ | async"
                         [colors]="pieChartColors"
@@ -685,20 +688,41 @@
                       </canvas>
                     </div>
                   </div>
+                  <ng-template #clinicianChart>
+                    <div class="chart w-100">
+                      <div class="clinician-chart">
+                        <canvas
+                          class="totalDiscount"
+                          #myCanvas
+                          baseChart
+                          [data]="totalDiscountChartData"
+                          [labels]="totalDiscountChartLabels"
+                          [chartType]="totalDiscountChartType"
+                          (chartHover)="chartHovered($event)"
+                          (chartClick)="chartClicked($event)"
+                          [legend]="false"
+                          [options]="pieChartOptions2"
+                          [plugins]="totalDiscountPluginObservable$ | async"
+                          [colors]="pieChartColors"
+                        >
+                        </canvas>
+                      </div>
+                    </div>
+                  </ng-template>
+                  <div
+                    *ngIf="
+                      totalDiscountChartData &&
+                      totalDiscountChartData.length <= 0 &&
+                      !finTotalDiscountsLoader
+                    "
+                    class="no-data-placeholder"
+                  >
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">
+                      You have offered no discounts in the selected period
+                    </p>
+                  </div>
                 </ng-template>
-                <div
-                  *ngIf="
-                    totalDiscountChartData &&
-                    totalDiscountChartData.length <= 0 &&
-                    !finTotalDiscountsLoader
-                  "
-                  class="no-data-placeholder"
-                >
-                  <div class="sa_nodata_div"></div>
-                  <p class="chart-placeholder-text">
-                    You have offered no discounts in the selected period
-                  </p>
-                </div>
               </div>
               <div class="card-footer">
                 <div
@@ -1001,74 +1025,83 @@
               </mat-card-title>
               <div class="card-body chart-spacing">
                 <div
-                  class="chart w-100"
-                  *ngIf="
-                    totalDiscountChartData &&
-                    totalDiscountChartData.length > 0 &&
-                    showInternal &&
-                    !showClinicBar
-                  "
-                >
-                  <div class="clinician-chart">
-                    <canvas
-                      class="totalDiscount"
-                      #myCanvas
-                      baseChart
-                      [data]="totalDiscountChartData"
-                      [labels]="totalDiscountChartLabels"
-                      [chartType]="totalDiscountChartType"
-                      (chartHover)="chartHovered($event)"
-                      (chartClick)="chartClicked($event)"
-                      [legend]="false"
-                      [options]="pieChartOptions2"
-                      [plugins]="totalDiscountPluginObservable$ | async"
-                      [colors]="pieChartColors"
-                    >
-                    </canvas>
-                  </div>
-                </div>
-                <div
-                  class="chart w-100"
-                  *ngIf="
-                    totalDiscountChartData &&
-                    totalDiscountChartData.length > 0 &&
-                    showInternal &&
-                    showClinicBar
-                  "
-                >
-                  <div class="clinician-chart">
-                    <canvas
-                      class="totalDiscount"
-                      #myCanvas
-                      baseChart
-                      [data]="totalDiscountChartClinicsData"
-                      [labels]="totalDiscountChartLabelsClinics"
-                      [chartType]="totalDiscountChartType"
-                      (chartHover)="chartHovered($event)"
-                      (chartClick)="chartClicked($event)"
-                      [legend]="true"
-                      [options]="pieChartOptions2"
-                      [plugins]="totalDiscountPluginObservable$ | async"
-                      [colors]="pieChartColors"
-                    >
-                    </canvas>
-                  </div>
-                </div>
-                <div
-                  *ngIf="
-                    totalDiscountChartData &&
-                    totalDiscountChartData.length <= 0 &&
-                    !finTotalDiscountsLoader
-                  "
+                  *ngIf="isExact; else nonExactTemplate"
                   class="no-data-placeholder"
                 >
                   <div class="sa_nodata_div"></div>
-                  <p class="chart-placeholder-text">
-                    You have offered no discounts in the selected period
-                  </p>
+                  <p class="chart-placeholder-text">Coming Soon...</p>
                 </div>
+                <ng-template #nonExactTemplate>
+                  <div
+                    class="chart w-100"
+                    *ngIf="
+                      totalDiscountChartData &&
+                      totalDiscountChartData.length > 0 &&
+                      showInternal &&
+                      !showClinicBar
+                    "
+                  >
+                    <div class="clinician-chart">
+                      <canvas
+                        class="totalDiscount"
+                        #myCanvas
+                        baseChart
+                        [data]="totalDiscountChartData"
+                        [labels]="totalDiscountChartLabels"
+                        [chartType]="totalDiscountChartType"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)"
+                        [legend]="false"
+                        [options]="pieChartOptions2"
+                        [plugins]="totalDiscountPluginObservable$ | async"
+                        [colors]="pieChartColors"
+                      >
+                      </canvas>
+                    </div>
+                  </div>
+                  <div
+                    class="chart w-100"
+                    *ngIf="
+                      totalDiscountChartData &&
+                      totalDiscountChartData.length > 0 &&
+                      showInternal &&
+                      showClinicBar
+                    "
+                  >
+                    <div class="clinician-chart">
+                      <canvas
+                        class="totalDiscount"
+                        #myCanvas
+                        baseChart
+                        [data]="totalDiscountChartClinicsData"
+                        [labels]="totalDiscountChartLabelsClinics"
+                        [chartType]="totalDiscountChartType"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)"
+                        [legend]="true"
+                        [options]="pieChartOptions2"
+                        [plugins]="totalDiscountPluginObservable$ | async"
+                        [colors]="pieChartColors"
+                      >
+                      </canvas>
+                    </div>
+                  </div>
+                  <div
+                    *ngIf="
+                      totalDiscountChartData &&
+                      totalDiscountChartData.length <= 0 &&
+                      !finTotalDiscountsLoader
+                    "
+                    class="no-data-placeholder"
+                  >
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">
+                      You have offered no discounts in the selected period
+                    </p>
+                  </div>
+                </ng-template>
               </div>
-              <div class="card-footer">
+              <div class="card-footer" *ngIf="!isExact">
                 <div
                   fxLayout="row wrap"
                   class="m-t-40 predicted1 sa_chart_details_sec"
@@ -1612,8 +1645,9 @@
                   <canvas
                     *ngIf="
                       !finCollectionTrendLoader &&
-                      netProfitDisplayVal == 4 &&
-                      !isAllClinic
+                        netProfitDisplayVal == 4 &&
+                        collectionChartTrendLabels.length > 0!;
+                      isAllClinic
                     "
                     class="profit1 net_profit"
                     baseChart
@@ -1631,6 +1665,7 @@
                     *ngIf="
                       !finCollectionTrendLoader &&
                       isAllClinic &&
+                      collectionChartTrendMultiLabels.length > 0 &&
                       netProfitDisplayVal == 4
                     "
                     class="profit4 net_profit"
@@ -1647,7 +1682,8 @@
                   <div
                     *ngIf="
                       netProfitDisplayVal == 4 &&
-                      collectionChartTrendMultiLabels.length < 0 &&
+                      (collectionChartTrendMultiLabels.length == 0 ||
+                        collectionChartTrendLabels.length == 0) &&
                       !finCollectionTrendLoader
                     "
                     class="no-data-placeholder"
@@ -1950,55 +1986,64 @@
                 </div>
               </mat-card-title>
               <div class="card-body">
-                <div class="chart-clinician">
-                  <canvas
-                    #myCanvas2
-                    class="trendtotalDiscount"
-                    *ngIf="
-                      discountsChartTrend1 &&
-                      discountsChartTrend1.length > 0 &&
-                      !finTotalDiscountsTrendLoader &&
-                      !showByclinic
-                    "
-                    baseChart
-                    [datasets]="discountsChartTrend"
-                    [labels]="discountsChartTrendLabels"
-                    [options]="labelBarOptionsSingleValue"
-                    [legend]="false"
-                    [chartType]="lineChartType"
-                    (chartHover)="chartHovered($event)"
-                    [colors]="stackedChartColorsBar"
-                    (chartClick)="chartClicked($event)"
-                  >
-                  </canvas>
-                  <canvas
-                    #myCanvas2
-                    class="trendtotalDiscount"
-                    *ngIf="!finTotalDiscountsTrendLoader && showByclinic"
-                    baseChart
-                    [datasets]="discountsChartTrendMulti"
-                    [labels]="discountsChartTrendMultiLabels1"
-                    [options]="stackedChartOptionsDiscount"
-                    [legend]="true"
-                    [chartType]="stackedChartType"
-                    (chartHover)="chartHovered($event)"
-                    (chartClick)="chartClicked($event)"
-                  >
-                  </canvas>
-                  <div
-                    *ngIf="
-                      discountsChartTrend1 &&
-                      discountsChartTrend1.length == 0 &&
-                      !finTotalDiscountsTrendLoader
-                    "
-                    class="no-data-placeholder"
-                  >
-                    <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">
-                      You have offered no discounts in the selected period
-                    </p>
-                  </div>
+                <div
+                  *ngIf="isExact; else nonExactTemplate"
+                  class="no-data-placeholder"
+                >
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">Coming Soon...</p>
                 </div>
+                <ng-template #nonExactTemplate>
+                  <div class="chart-clinician">
+                    <canvas
+                      #myCanvas2
+                      class="trendtotalDiscount"
+                      *ngIf="
+                        discountsChartTrend1 &&
+                        discountsChartTrend1.length > 0 &&
+                        !finTotalDiscountsTrendLoader &&
+                        !showByclinic
+                      "
+                      baseChart
+                      [datasets]="discountsChartTrend"
+                      [labels]="discountsChartTrendLabels"
+                      [options]="labelBarOptionsSingleValue"
+                      [legend]="false"
+                      [chartType]="lineChartType"
+                      (chartHover)="chartHovered($event)"
+                      [colors]="stackedChartColorsBar"
+                      (chartClick)="chartClicked($event)"
+                    >
+                    </canvas>
+                    <canvas
+                      #myCanvas2
+                      class="trendtotalDiscount"
+                      *ngIf="!finTotalDiscountsTrendLoader && showByclinic"
+                      baseChart
+                      [datasets]="discountsChartTrendMulti"
+                      [labels]="discountsChartTrendMultiLabels1"
+                      [options]="stackedChartOptionsDiscount"
+                      [legend]="true"
+                      [chartType]="stackedChartType"
+                      (chartHover)="chartHovered($event)"
+                      (chartClick)="chartClicked($event)"
+                    >
+                    </canvas>
+                    <div
+                      *ngIf="
+                        discountsChartTrend1 &&
+                        discountsChartTrend1.length == 0 &&
+                        !finTotalDiscountsTrendLoader
+                      "
+                      class="no-data-placeholder"
+                    >
+                      <div class="sa_nodata_div"></div>
+                      <p class="chart-placeholder-text">
+                        You have offered no discounts in the selected period
+                      </p>
+                    </div>
+                  </div>
+                </ng-template>
               </div>
             </mat-card-content>
           </mat-card>

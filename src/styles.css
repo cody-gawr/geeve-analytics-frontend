@@ -270,7 +270,7 @@
   border-radius: 4px;
   text-align: center !important;
   border: 1px solid #97979e;
-  padding: 2px 12px 2px;
+  padding: 2px 0px 2px;
   font-size: 12px;
   font-weight: 400;
   cursor: pointer;
@@ -834,6 +834,7 @@
 .card-body {
   padding: 20px;
   z-index: 9;
+  flex: 1;
 }
 
 .sa_matcard_content .mat-card-title img {
@@ -1887,7 +1888,7 @@ html .page-wrapper {
 
 .settingsBtn,
 .CategoriesBtn {
-  float: right;
+  display: flex;
 }
 
 .mat-green-button {
@@ -4989,7 +4990,9 @@ body .AddCard-main .AddCard-box .mat-card-title {
   margin-right: -5px;
 }
 
-.header_filters.flex_direct_mar { justify-content: flex-end; }
+.header_filters.flex_direct_mar {
+  justify-content: flex-end;
+}
 
 .custom_date input {
   margin-left: 10px;
@@ -5077,7 +5080,6 @@ body button.mat-gray {
 .mat-raised-button:focus {
   box-shadow: 0px 4px 16px -7px #7a7a7a !important;
 }
-
 
 .mat-raised-button.mat-green,
 .mat-raised-button.mat-dc {
@@ -8974,4 +8976,7 @@ div.dialog-header .mat-icon {
 .mat-stroked-button:not(.mat-button-disabled) {
   /* border-color: rgba(0, 0, 0, 0.12); */
   border-color: #18a689 !important;
+}
+[hidden] {
+  visibility: hidden !important;
 }

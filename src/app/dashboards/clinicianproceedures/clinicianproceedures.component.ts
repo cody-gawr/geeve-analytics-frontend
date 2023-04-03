@@ -20,8 +20,10 @@ import {
   Subscription,
   Subject,
   debounceTime,
-  distinctUntilChanged,
-  takeUntil
+  Observable,
+  map,
+  takeUntil,
+  tap
 } from 'rxjs';
 import { Chart } from 'chart.js';
 import { ChartService } from '../chart.service';
@@ -29,6 +31,7 @@ import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
 import { environment } from '../../../environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 export interface Dentist {
   providerId: string;
@@ -82,7 +85,16 @@ export class ClinicianProceeduresComponent
       e.stopPropagation();
     }
   };
+  public get isLargeOrSmall$(): Observable<boolean> {
+    return this.breakpointObserver
+      .observe([Breakpoints.Large, Breakpoints.Small])
+      .pipe(
+        takeUntil(this.destroy$),
+        map((result) => result.matches)
+      );
+  }
   constructor(
+    private breakpointObserver: BreakpointObserver,
     private toastr: ToastrService,
     private clinicianproceeduresService: ClinicianProceeduresService,
     private dentistService: DentistService,

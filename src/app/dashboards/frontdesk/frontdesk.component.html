@@ -130,211 +130,210 @@
                 /></span>
                 Utilisation Rate
               </div>
-              <div class="sa_box_title_right_buttons"></div>
-              <div class="info-icon-container">
-                <!-- top values Ions -->
+              <ng-template *ngIf="!isExact">
+                <div class="sa_box_title_right_buttons"></div>
+                <div class="info-icon-container">
+                  <!-- top values Ions -->
 
-                <i
-                  *ngIf="
-                    (!showTopVlaues && !showUtiTable && !showTrend) ||
-                    (!showTopVlaues && !showUtiTable && utilShow == 2)
-                  "
-                  class="far fa-chart-bar fa-margin"
-                  (click)="setTopValues()"
-                ></i>
-                <i
-                  *ngIf="
-                    (showTopVlaues && !showUtiTable && !showTrend) ||
-                    (showTopVlaues && !showUtiTable && utilShow == 2)
-                  "
-                  class="far fa-chart-bar greenIcon fa-margin-color"
-                  (click)="setTopValues()"
-                ></i>
-                <!-- top values Ions -->
-                <!-- Show Table -->
-                <i
-                  *ngIf="
-                    (!showUtiTable && !showTrend) ||
-                    (!showUtiTable && utilShow == 2)
-                  "
-                  class="fa fa-table fa-margin"
-                  (click)="showTable(true)"
-                ></i>
-                <i
-                  *ngIf="
-                    (showUtiTable && !showTrend) ||
-                    (showUtiTable && utilShow == 2)
-                  "
-                  class="fa fa-table greenIcon fa-margin-color"
-                  (click)="showTable(false)"
-                ></i>
-                <!-- Show Table -->
-                <img
-                  [tooltip]="charTips['15']"
-                  src="../assets/images/info-icon.png"
-                  alt="info-icon"
-                  class="info-icon"
-                />
-              </div>
+                  <i
+                    *ngIf="
+                      (!showTopVlaues && !showUtiTable && !showTrend) ||
+                      (!showTopVlaues && !showUtiTable && utilShow == 2)
+                    "
+                    class="far fa-chart-bar fa-margin"
+                    (click)="setTopValues()"
+                  ></i>
+                  <i
+                    *ngIf="
+                      (showTopVlaues && !showUtiTable && !showTrend) ||
+                      (showTopVlaues && !showUtiTable && utilShow == 2)
+                    "
+                    class="far fa-chart-bar greenIcon fa-margin-color"
+                    (click)="setTopValues()"
+                  ></i>
+                  <!-- top values Ions -->
+                  <!-- Show Table -->
+                  <i
+                    *ngIf="
+                      (!showUtiTable && !showTrend) ||
+                      (!showUtiTable && utilShow == 2)
+                    "
+                    class="fa fa-table fa-margin"
+                    (click)="showTable(true)"
+                  ></i>
+                  <i
+                    *ngIf="
+                      (showUtiTable && !showTrend) ||
+                      (showUtiTable && utilShow == 2)
+                    "
+                    class="fa fa-table greenIcon fa-margin-color"
+                    (click)="showTable(false)"
+                  ></i>
+                  <!-- Show Table -->
+                  <img
+                    [tooltip]="charTips['15']"
+                    src="../assets/images/info-icon.png"
+                    alt="info-icon"
+                    class="info-icon"
+                  />
+                </div>
+              </ng-template>
             </mat-card-title>
             <div class="card-body">
               <div
-                *ngIf="!showTrend"
-                fxLayout="row wrap"
-                class="sa_tabs_main_sec"
-                fxLayoutAlign="center"
-                [ngClass]="{ hidden: isCancellationRatioContainerVisible }"
+                class="no-data-placeholder"
+                *ngIf="isExact; else nonExactTemplate"
               >
-                <div
-                  fxFlex.gt-sm="49.33%"
-                  fxFlex.gt-xs="50%"
-                  fxFlex="100"
-                  class="btn-group"
-                >
-                  <small
-                    class="sa_tab_btn"
-                    [ngClass]="utilShow == 1 ? 'active' : ''"
-                    (click)="changeUtil('1')"
-                    >By Appt Book</small
-                  >
-                </div>
-                <div
-                  fxFlex.gt-sm="49.33%"
-                  fxFlex.gt-xs="50%"
-                  fxFlex="100"
-                  class="btn-group"
-                >
-                  <small
-                    class="sa_tab_btn"
-                    [ngClass]="utilShow == 2 ? 'active' : ''"
-                    (click)="changeUtil('2')"
-                    >By Day</small
-                  >
-                </div>
+                <div class="sa_nodata_div"></div>
+                <p class="chart-placeholder-text">Coming Soon...</p>
               </div>
-              <div>
-                <div class="chart-utilisation-rate utigraph">
+              <ng-template #nonExactTemplate>
+                <div
+                  *ngIf="!showTrend"
+                  fxLayout="row wrap"
+                  class="sa_tabs_main_sec"
+                  fxLayoutAlign="center"
+                  [ngClass]="{ hidden: isCancellationRatioContainerVisible }"
+                >
                   <div
-                    class="chart-utilisation-rate utigraph"
-                    *ngIf="
-                      !(
-                        showTrend ||
-                        utilityratemessage ||
-                        fdWorkTimeAnalysisLoader
-                      ) &&
-                      workTimeData1.length > 0 &&
-                      utilShow == 1
-                    "
+                    fxFlex.gt-sm="49.33%"
+                    fxFlex.gt-xs="50%"
+                    fxFlex="100"
+                    class="btn-group"
                   >
-                    <canvas
+                    <small
+                      class="sa_tab_btn"
+                      [ngClass]="utilShow == 1 ? 'active' : ''"
+                      (click)="changeUtil('1')"
+                      >By Appt Book</small
+                    >
+                  </div>
+                  <div
+                    fxFlex.gt-sm="49.33%"
+                    fxFlex.gt-xs="50%"
+                    fxFlex="100"
+                    class="btn-group"
+                  >
+                    <small
+                      class="sa_tab_btn"
+                      [ngClass]="utilShow == 2 ? 'active' : ''"
+                      (click)="changeUtil('2')"
+                      >By Day</small
+                    >
+                  </div>
+                </div>
+                <div>
+                  <div class="chart-utilisation-rate utigraph">
+                    <div
+                      class="chart-utilisation-rate utigraph"
                       *ngIf="
                         !(
                           showTrend ||
                           utilityratemessage ||
-                          fdWorkTimeAnalysisLoader ||
-                          showUtiTable
-                        ) && workTimeData1.length > 0
-                      "
-                      #myCanvas
-                      baseChart
-                      [datasets]="workTimeData"
-                      [labels]="workTimeLabels"
-                      [options]="stackedChartOptionsUtiDP"
-                      [chartType]="'bar'"
-                      (chartHover)="chartHovered($event)"
-                      [legend]="isAllClinic"
-                      (chartClick)="chartClicked($event)"
-                    >
-                    </canvas>
-                    <div
-                      *ngIf="
-                        !showTrend &&
+                          fdWorkTimeAnalysisLoader
+                        ) &&
                         workTimeData1.length > 0 &&
-                        !(utilityratemessage || fdWorkTimeAnalysisLoader) &&
-                        showUtiTable
+                        utilShow == 1
                       "
-                      class="utiTablecon"
                     >
-                      <table class="utiTable">
-                        <thead>
-                          <tr>
-                            <th>Name</th>
-                            <th>Available Hours</th>
-                            <th>Used Hours</th>
-                            <th>Util Rate</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let utiInfo of fdUtiData">
-                            <td>{{ utiInfo.name }}</td>
-                            <td>{{ utiInfo.scheduled_hours }}</td>
-                            <td>{{ utiInfo.clinican_hours }}</td>
-                            <td>{{ utiInfo.util_rate }}%</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <canvas
+                        *ngIf="
+                          !(
+                            showTrend ||
+                            utilityratemessage ||
+                            fdWorkTimeAnalysisLoader ||
+                            showUtiTable
+                          ) && workTimeData1.length > 0
+                        "
+                        #myCanvas
+                        baseChart
+                        [datasets]="workTimeData"
+                        [labels]="workTimeLabels"
+                        [options]="stackedChartOptionsUtiDP"
+                        [chartType]="'bar'"
+                        (chartHover)="chartHovered($event)"
+                        [legend]="isAllClinic"
+                        (chartClick)="chartClicked($event)"
+                      >
+                      </canvas>
+                      <div
+                        *ngIf="
+                          !showTrend &&
+                          workTimeData1.length > 0 &&
+                          !(utilityratemessage || fdWorkTimeAnalysisLoader) &&
+                          showUtiTable
+                        "
+                        class="utiTablecon"
+                      >
+                        <table class="utiTable">
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Available Hours</th>
+                              <th>Used Hours</th>
+                              <th>Util Rate</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let utiInfo of fdUtiData">
+                              <td>{{ utiInfo.name }}</td>
+                              <td>{{ utiInfo.scheduled_hours }}</td>
+                              <td>{{ utiInfo.clinican_hours }}</td>
+                              <td>{{ utiInfo.util_rate }}%</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
-                  </div>
 
-                  <div
-                    class="chart-utilisation-rate utigraph"
-                    *ngIf="
-                      utilShow == 2 &&
-                      byDayLabels.length > 0 &&
-                      !(byDayLoader || showTrend)
-                    "
-                  >
-                    <canvas
-                      *ngIf="!showUtiTable"
-                      #myCanvas
-                      baseChart
-                      [datasets]="byDayData"
-                      [labels]="byDayLabels"
-                      [options]="stackedChartOptionsUtiDP"
-                      [chartType]="'bar'"
-                      (chartHover)="chartHovered($event)"
-                      [legend]="false"
-                      (chartClick)="chartClicked($event)"
-                    >
-                    </canvas>
                     <div
-                      *ngIf="byDayData.length > 0 && showUtiTable"
-                      class="utiTablecon"
+                      class="chart-utilisation-rate utigraph"
+                      *ngIf="
+                        utilShow == 2 &&
+                        byDayLabels.length > 0 &&
+                        !(byDayLoader || showTrend)
+                      "
                     >
-                      <table class="utiTable">
-                        <thead>
-                          <tr>
-                            <th>Name</th>
-                            <th>Available Hours</th>
-                            <th>Used Hours</th>
-                            <th>Util Rate</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let utiInfo of byDayDataTable">
-                            <td>{{ utiInfo.day }}</td>
-                            <td>{{ utiInfo.scheduled_hours }}</td>
-                            <td>{{ utiInfo.clinican_hours }}</td>
-                            <td>{{ utiInfo.util_rate }}%</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <canvas
+                        *ngIf="!showUtiTable"
+                        #myCanvas
+                        baseChart
+                        [datasets]="byDayData"
+                        [labels]="byDayLabels"
+                        [options]="stackedChartOptionsUtiDP"
+                        [chartType]="'bar'"
+                        (chartHover)="chartHovered($event)"
+                        [legend]="false"
+                        (chartClick)="chartClicked($event)"
+                      >
+                      </canvas>
+                      <div
+                        *ngIf="byDayData.length > 0 && showUtiTable"
+                        class="utiTablecon"
+                      >
+                        <table class="utiTable">
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Available Hours</th>
+                              <th>Used Hours</th>
+                              <th>Util Rate</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let utiInfo of byDayDataTable">
+                              <td>{{ utiInfo.day }}</td>
+                              <td>{{ utiInfo.scheduled_hours }}</td>
+                              <td>{{ utiInfo.clinican_hours }}</td>
+                              <td>{{ utiInfo.util_rate }}%</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
-                  </div>
 
-                  <div
-                    class="chart-utilisation-rate"
-                    *ngIf="
-                      !(
-                        showByclinicUR ||
-                        utilityratemessage ||
-                        fdwtaRatioTrendLoader
-                      ) &&
-                      showTrend &&
-                      wtaChartTrend1.length > 0
-                    "
-                  >
-                    <canvas
+                    <div
+                      class="chart-utilisation-rate"
                       *ngIf="
                         !(
                           showByclinicUR ||
@@ -344,30 +343,32 @@
                         showTrend &&
                         wtaChartTrend1.length > 0
                       "
-                      #myCanvas
-                      baseChart
-                      [datasets]="wtaChartTrend"
-                      [labels]="wtaChartTrendLabels"
-                      [options]="stackedChartOptionsUti"
-                      [chartType]="stackedChartType"
-                      (chartHover)="chartHovered($event)"
-                      [legend]="false"
-                      (chartClick)="chartClicked($event)"
                     >
-                      <!-- [colors]="predictedChartColors"  -->
-                    </canvas>
-                  </div>
-                  <div
-                    class="chart-utilisation-rate"
-                    *ngIf="
-                      showByclinicUR &&
-                      showTrend &&
-                      uRChartTrendMultiLabels.length > 0 &&
-                      !utilityratemessage &&
-                      !fdwtaRatioTrendLoader
-                    "
-                  >
-                    <canvas
+                      <canvas
+                        *ngIf="
+                          !(
+                            showByclinicUR ||
+                            utilityratemessage ||
+                            fdwtaRatioTrendLoader
+                          ) &&
+                          showTrend &&
+                          wtaChartTrend1.length > 0
+                        "
+                        #myCanvas
+                        baseChart
+                        [datasets]="wtaChartTrend"
+                        [labels]="wtaChartTrendLabels"
+                        [options]="stackedChartOptionsUti"
+                        [chartType]="stackedChartType"
+                        (chartHover)="chartHovered($event)"
+                        [legend]="false"
+                        (chartClick)="chartClicked($event)"
+                      >
+                        <!-- [colors]="predictedChartColors"  -->
+                      </canvas>
+                    </div>
+                    <div
+                      class="chart-utilisation-rate"
                       *ngIf="
                         showByclinicUR &&
                         showTrend &&
@@ -375,92 +376,106 @@
                         !utilityratemessage &&
                         !fdwtaRatioTrendLoader
                       "
-                      #myCanvas
-                      baseChart
-                      [datasets]="uRChartTrendMulti"
-                      [labels]="uRChartTrendMultiLabels"
-                      [options]="stackedChartOptionsTC"
-                      [chartType]="stackedChartType"
-                      (chartHover)="chartHovered($event)"
-                      [legend]="false"
-                      (chartClick)="chartClicked($event)"
                     >
-                      <!-- [colors]="predictedChartColors"  -->
-                    </canvas>
-                  </div>
+                      <canvas
+                        *ngIf="
+                          showByclinicUR &&
+                          showTrend &&
+                          uRChartTrendMultiLabels.length > 0 &&
+                          !utilityratemessage &&
+                          !fdwtaRatioTrendLoader
+                        "
+                        #myCanvas
+                        baseChart
+                        [datasets]="uRChartTrendMulti"
+                        [labels]="uRChartTrendMultiLabels"
+                        [options]="stackedChartOptionsTC"
+                        [chartType]="stackedChartType"
+                        (chartHover)="chartHovered($event)"
+                        [legend]="false"
+                        (chartClick)="chartClicked($event)"
+                      >
+                        <!-- [colors]="predictedChartColors"  -->
+                      </canvas>
+                    </div>
 
-                  <div
-                    class="no-data-placeholder"
-                    *ngIf="
-                      !(
-                        showTrend ||
-                        utilityratemessage ||
-                        fdWorkTimeAnalysisLoader
-                      ) &&
-                      workTimeData1.length <= 0 &&
-                      utilShow == 1
-                    "
-                  >
-                    <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">
-                      You have no appointments in the selected period
-                    </p>
-                  </div>
-                  <div
-                    class="no-data-placeholder"
-                    *ngIf="
-                      utilShow == 2 && byDayLabels.length <= 0 && !byDayLoader
-                    "
-                  >
-                    <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">
-                      You have no appointments in the selected period
-                    </p>
-                  </div>
-                  <div
-                    class="no-data-placeholder"
-                    *ngIf="
-                      !(showTrend || fdWorkTimeAnalysisLoader) &&
-                      utilityratemessage
-                    "
-                  >
-                    <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">
-                      Utilisation Rate shows currently Active appointment books
-                      only. Historic data beyond 12 months is not available
-                    </p>
-                  </div>
+                    <div
+                      class="no-data-placeholder"
+                      *ngIf="
+                        !(
+                          showTrend ||
+                          utilityratemessage ||
+                          fdWorkTimeAnalysisLoader
+                        ) &&
+                        workTimeData1.length <= 0 &&
+                        utilShow == 1
+                      "
+                    >
+                      <div class="sa_nodata_div"></div>
+                      <p class="chart-placeholder-text">
+                        You have no appointments in the selected period
+                      </p>
+                    </div>
+                    <div
+                      class="no-data-placeholder"
+                      *ngIf="
+                        utilShow == 2 && byDayLabels.length <= 0 && !byDayLoader
+                      "
+                    >
+                      <div class="sa_nodata_div"></div>
+                      <p class="chart-placeholder-text">
+                        You have no appointments in the selected period
+                      </p>
+                    </div>
+                    <div
+                      class="no-data-placeholder"
+                      *ngIf="
+                        !(showTrend || fdWorkTimeAnalysisLoader) &&
+                        utilityratemessage
+                      "
+                    >
+                      <div class="sa_nodata_div"></div>
+                      <p class="chart-placeholder-text">
+                        Utilisation Rate shows currently Active appointment
+                        books only. Historic data beyond 12 months is not
+                        available
+                      </p>
+                    </div>
 
-                  <div
-                    class="no-data-placeholder"
-                    *ngIf="
-                      showTrend &&
-                      !(fdwtaRatioTrendLoader || utilityratemessage) &&
-                      uRChartTrendMultiLabels.length == 0 &&
-                      wtaChartTrend1.length == 0
-                    "
-                  >
-                    <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">
-                      You have no appointments in the selected period
-                    </p>
-                  </div>
-                  <div
-                    class="no-data-placeholder"
-                    *ngIf="
-                      showTrend && utilityratemessage && !fdwtaRatioTrendLoader
-                    "
-                  >
-                    <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">
-                      Utilisation Rate shows currently Active appointment books
-                      only. Historic data beyond 12 months is not available
-                    </p>
+                    <div
+                      class="no-data-placeholder"
+                      *ngIf="
+                        showTrend &&
+                        !(fdwtaRatioTrendLoader || utilityratemessage) &&
+                        uRChartTrendMultiLabels.length == 0 &&
+                        wtaChartTrend1.length == 0
+                      "
+                    >
+                      <div class="sa_nodata_div"></div>
+                      <p class="chart-placeholder-text">
+                        You have no appointments in the selected period
+                      </p>
+                    </div>
+                    <div
+                      class="no-data-placeholder"
+                      *ngIf="
+                        showTrend &&
+                        utilityratemessage &&
+                        !fdwtaRatioTrendLoader
+                      "
+                    >
+                      <div class="sa_nodata_div"></div>
+                      <p class="chart-placeholder-text">
+                        Utilisation Rate shows currently Active appointment
+                        books only. Historic data beyond 12 months is not
+                        available
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </ng-template>
             </div>
-            <div class="card-footer">
+            <div *ngIf="!isExact" class="card-footer">
               <div
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
@@ -1542,7 +1557,7 @@
                 >
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
-                    You have no UTA's in the selected period
+                    You have no Cancellation's in the selected period
                   </p>
                 </div>
               </div>

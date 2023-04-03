@@ -22,13 +22,21 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { ChartService } from '../chart.service';
-import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import {
+  BehaviorSubject,
+  Observable,
+  ReplaySubject,
+  Subject,
+  distinctUntilChanged,
+  map,
+  takeUntil
+} from 'rxjs';
 import { TooltipLayoutComponent } from '../../shared/tooltip/tooltip-layout.component';
 import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
 import { environment } from '../../../environments/environment';
 import { LocalStorageService } from '../../shared/local-storage.service';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 export interface Dentist {
   providerId: string;
@@ -102,12 +110,21 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   newPatientTotal$ = new BehaviorSubject<number>(0);
 
+  destroy = new Subject<void>();
+  destroy$ = this.destroy.asObservable();
+
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
   private dentistProductionLabelsByIndex = [];
   private treatmentPlanProposedProvidersByInx = [];
   private showCompare: boolean = false;
   public Apirequest = 0;
+  public get isLarge$(): Observable<boolean> {
+    return this.breakpointObserver.observe([Breakpoints.Large]).pipe(
+      takeUntil(this.destroy$),
+      map((result) => result.matches)
+    );
+  }
 
   public get isExactOrCore(): boolean {
     return this.localStorageService.isEachClinicPmsExactOrCore(this.clinic_id);
@@ -126,7 +143,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     private decimalPipe: DecimalPipe,
     private chartService: ChartService,
     public constants: AppConstants,
-    public chartstipsService: ChartstipsService
+    public chartstipsService: ChartstipsService,
+    private breakpointObserver: BreakpointObserver
   ) {
     this.getChartsTips();
     this._routerSub = this.router.events.subscribe((event: Event) => {
@@ -147,6 +165,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
     $('.topbar-strip').removeClass('responsive-top');
+    this.destroy.next();
   }
   /**
    *Check If logged in user is eligible to access this page.

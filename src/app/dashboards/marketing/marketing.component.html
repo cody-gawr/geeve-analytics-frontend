@@ -1108,7 +1108,7 @@
                   class="mat-button-sm mat-green-button"
                   (click)="ngxSmartModalService.getModal('myModal').open()"
                 >
-                  Accounts
+                  {{ (isAccountButtonToggle$ | async) ? 'Acct' : 'Account' }}
                 </button>
                 <div class="info-icon-container float-right-space">
                   <img

@@ -653,7 +653,11 @@
                 <small
                   class="sa_tab_btn prmain1 active"
                   (click)="changeDentistPredictorMain('1')"
-                  >Indirect to Large Direct Fillings</small
+                  >{{
+                    (isLargeOrSmall$ | async)
+                      ? 'Indirect to Large Direct'
+                      : 'Indirect to Large Direct Fillings'
+                  }}</small
                 >
               </div>
               <div
@@ -881,7 +885,11 @@
                 <small
                   class="sa_tab_btn prmain1 active"
                   (click)="changeDentistPredictorMain('1')"
-                  >Indirect to Large Direct Fillings</small
+                  >{{
+                    (isLargeOrSmall$ | async)
+                      ? 'Indirect to Large Direct'
+                      : 'Indirect to Large Direct Fillings'
+                  }}</small
                 >
               </div>
               <div
@@ -933,7 +941,7 @@
             <div
               *ngIf="
                 proceedureDentistChartLabels.length <= 0 &&
-                buildChartProceedureDentistLoader == false
+                !buildChartProceedureDentistLoader
               "
               class="no-data-placeholder"
             >
@@ -1006,7 +1014,11 @@
                 <small
                   class="sa_tab_btn prmain1 active"
                   (click)="changeDentistPredictorMain('1')"
-                  >Indirect to Large Direct Fillings</small
+                  >{{
+                    (isLargeOrSmall$ | async)
+                      ? 'Indirect to Large Direct'
+                      : 'Indirect to Large Direct Fillings'
+                  }}</small
                 >
               </div>
               <div
@@ -1402,7 +1414,11 @@
                 <small
                   class="sa_tab_btn pr1 active"
                   (click)="changeDentistPredictor('1')"
-                  >Indirect to Large Direct Fillings</small
+                  >{{
+                    (isLargeOrSmall$ | async)
+                      ? 'Indirect to Large Direct'
+                      : 'Indirect to Large Direct Fillings'
+                  }}</small
                 >
               </div>
               <div

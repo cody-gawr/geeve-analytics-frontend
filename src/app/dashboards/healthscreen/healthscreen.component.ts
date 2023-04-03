@@ -18,6 +18,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ChartstipsService } from '../../shared/chartstips.service';
 import { AppConstants } from '../../app.constants';
 import { environment } from '../../../environments/environment';
+import { LocalStorageService } from '../../shared/local-storage.service';
 
 export interface Dentist {
   providerId: string;
@@ -95,7 +96,12 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public isAllClinic: boolean;
   private warningMessage: string;
 
+  public get isExact(): boolean {
+    return this.localStorageService.isEachClinicExact(this.clinic_id);
+  }
+
   constructor(
+    private localStorageService: LocalStorageService,
     private healthscreenService: HealthScreenService,
     // private dentistService: DentistService,
     private datePipe: DatePipe,
