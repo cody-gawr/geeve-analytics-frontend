@@ -9,19 +9,15 @@ import { Router } from "@angular/router";
 import { CookieService } from "ngx-cookie";
 import { ToastrService } from "ngx-toastr";
 import { BehaviorSubject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
 import { CustomisationsService } from "./customisations.service";
 import { BaseComponent } from "../base/base.component";
 import { environment } from "../../../environments/environment";
 import {
   FormBuilder,
   FormGroup,
-  FormControl,
   Validators,
 } from "@angular/forms";
 import { ClinicSettingsService } from "../clinic-settings.service";
-import { ClinicianAnalysisService } from "../../dashboards/cliniciananalysis/cliniciananalysis.service";
-import Swal from "sweetalert2";
 import { AppConstants } from "../../app.constants";
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { HeaderService } from "../../layouts/full/header/header.service";
@@ -33,7 +29,12 @@ import { HeaderService } from "../../layouts/full/header/header.service";
 })
 
 export class DialogSetColorsDialogComponent {
-  constructor(public dialogRef: MatDialogRef<DialogSetColorsDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private _cookieService: CookieService, private CustomisationsService: CustomisationsService, private router: Router) { }
+  constructor(
+    public dialogRef: MatDialogRef<DialogSetColorsDialogComponent>, 
+    @Inject(MAT_DIALOG_DATA) public data: any, private _cookieService: CookieService, 
+    private CustomisationsService: CustomisationsService, 
+    private router: Router
+  ) { }
   
   onNoClick(): void {
     this.dialogRef.close();
@@ -43,6 +44,7 @@ export class DialogSetColorsDialogComponent {
     if (data.status_code == '') {
       return false;
     }
+  
     this.CustomisationsService.addStatusColors(data.clinic_id,data.status_code, data.bgcolour, data.colour ).subscribe((res) => {
       if (res.status == 200) {
         this.CustomisationsService.getStatusCodeList(data.clinic_id).subscribe((res) => {
@@ -61,6 +63,7 @@ export class DialogSetColorsDialogComponent {
       console.log('error', error)
     });
   }
+
   removeItem(i) {
     
     let data = this.dialogRef.componentInstance.data.statusCodeList[i];
@@ -76,9 +79,6 @@ export class DialogSetColorsDialogComponent {
       });
     }
   }
-  
-
-  
 
   handleUnAuthorization() {
     this._cookieService.put("username", '');
@@ -86,11 +86,7 @@ export class DialogSetColorsDialogComponent {
     this._cookieService.put("userid", '');
     this.router.navigateByUrl('/login');
   }
-
 }
-
-
-
 
 @Component({
   selector: "app-customisations-settings",
@@ -102,9 +98,13 @@ export class CustomisationsComponent
   extends BaseComponent
   implements AfterViewInit {
   clinic_id$ = new BehaviorSubject<any>(null);
+  clinic_pms$ = new BehaviorSubject<string>(null);
 
   @Input() set clinicId(value: any) {
     this.clinic_id$.next(value);
+  }
+  @Input() set clinicPMS(value: string) {
+    this.clinic_pms$.next(value);
   }
   public form: FormGroup;
   public apiUrl = environment.apiUrl;
@@ -141,15 +141,10 @@ export class CustomisationsComponent
     private headerService: HeaderService
   ) {
     super();
-    // console.log('test ',this.clinic_id$.value)
-    // console.log('test ',this.clinic_id$)
     this.form = this.fb.group({
-      //recall_codes1: [null, Validators.compose([Validators.required])],
       recall_codes1: [null],
       recall_codes2: [null],
       recall_codes3: [null],
-      // lab_code1: [null, Validators.compose([Validators.required])],
-      // lab_code2: [null, Validators.compose([Validators.required])],
       lab_code1: [null],
       lab_code2: [null],
       xray_months: [null, Validators.compose([Validators.required])],
@@ -158,6 +153,9 @@ export class CustomisationsComponent
       //health_screen_mtd: [null],
       recall_rate_default: [null],
       hourly_rate_appt_hours: [null],
+      disc_code_1: null,
+      disc_code_2: null,
+      disc_code_3: null,
       max_chart_bars: [null, Validators.compose([Validators.required])],
     });
 
@@ -167,6 +165,10 @@ export class CustomisationsComponent
     this.getCustomiseSettings();
     this.getclinicHuddleNotifications();
     this.setVisibilityOfMaxBar();
+  }
+
+  get isPMSExact() {
+    return this.clinic_pms$.value == 'exact';
   }
 
   ngAfterViewInit() { }
@@ -290,13 +292,19 @@ export class CustomisationsComponent
   }
 
   getCustomiseSettings() {
-    this.clinicSettingsService.getClincsSetting.subscribe(res=>{
+    this.clinicSettingsService.getClincsSetting.subscribe({
+     next: res=>{
       $(".ajax-loader").hide();
         if (res.status) {
           if (res.body.data) {
             this.recallCode1 = res.body.data.recall_code1;
             this.recallCode2 = res.body.data.recall_code2;
             this.recallCode3 = res.body.data.recall_code3;
+
+            this.form.controls['disc_code_1'].setValue(res.body.data.disc_code_1);
+            this.form.controls['disc_code_2'].setValue(res.body.data.disc_code_2);
+            this.form.controls['disc_code_3'].setValue(res.body.data.disc_code_3);
+
             this.labCode1 = res.body.data.lab_code1;
             this.labCode2 = res.body.data.lab_code2;
             this.xrayMonths = res.body.data.xray_months;
@@ -310,9 +318,11 @@ export class CustomisationsComponent
             this.numberOfRecords = res.body.data.max_chart_bars;
           }
         }
-      },(error) => {
+      },
+      error:(error) => {
         console.log("error", error);
         $(".ajax-loader").hide();
+      }
     });
     // this.customisationsService.getCustomiseSettings(this.clinic_id$.value).subscribe(
     //     (res) => {
@@ -345,7 +355,7 @@ export class CustomisationsComponent
   onSubmit() {
     $(".ajax-loader").show();
     if(this.apiUrl.includes('test')){
-      this.recall_rate_default =this.form.value.recall_rate_default;
+      this.recall_rate_default = this.form.value.recall_rate_default;
     }else{
       this.recall_rate_default = 1;
     }
@@ -356,6 +366,9 @@ export class CustomisationsComponent
       recall_code1: this.form.value.recall_codes1,
       recall_code2: this.form.value.recall_codes2,
       recall_code3: this.form.value.recall_codes3,
+      disc_code_1: this.form.value.disc_code_1,
+      disc_code_2: this.form.value.disc_code_2,
+      disc_code_3: this.form.value.disc_code_3,
       new_patients: this.form.value.new_patients,
      // health_screen_mtd: this.form.value.health_screen_mtd,
       recall_rate_default: this.recall_rate_default,
@@ -364,6 +377,8 @@ export class CustomisationsComponent
       lab_code2: this.form.value.lab_code2,
       max_chart_bars: this.form.value.max_chart_bars
     };
+
+    
 
     this.customisationsService.updateCustomiseSettings(data).subscribe(
       (res) => {
@@ -390,7 +405,6 @@ export class CustomisationsComponent
     // console.log("dashboard", dashboard);
   }
 
-
   //
   handleUnAuthorization() {
     this._cookieService.put("username", "");
@@ -416,6 +430,5 @@ export class CustomisationsComponent
       }, error => {
         console.log('error', error)
       });
-    } 
-
+  }
 }

@@ -1,0 +1,32 @@
+export interface IClinic {
+    accepted_sms_terms: number;
+    address: string;
+    clinicEmail: string;
+    clinicName: string;
+    compare_mode: number;
+    config_user: {id: number, clinics_count: number};
+    connectedwith: string;
+    consultant: string;
+    contactName: string;
+    created: string;
+    daily_task_enable: number;
+    datasource: string;
+    days: string;
+    db_name: string;
+    db_server: string;
+    equip_list_enable: number;
+    fta_uta: string;
+    id: number;
+    is_deleted: number;
+    net_profit_exclusions: string,
+    phoneNo: string;
+    pms: string;
+    sms_enabled: number;
+    sr: number;
+    timezone: string;
+    trial_end_date: string;
+    user_id: number;
+    utility_ver: string;
+    wh_name: string;
+    wh_server: string;
+}

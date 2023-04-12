@@ -226,62 +226,82 @@
       <div class="gray_area">
         <div class="working-days">
           <h4 class="clinic-settings-form-title">Dashboards</h4>
-          <div class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px"
+          <div *ngIf="isPMSExact; else elseBlock" class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px"
             fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
-
             <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
               <div class="sa-form-group sa-group">
-                <label>New Patients
-                  <div class="info-button">
-                    <div class="info-icon-container">
-                      <img [tooltip]="this.constants.tipNewPatients" src="../assets/images/info-icon.png"
-                        alt="info-icon" class="info-icon" />
-                    </div>
-                  </div>
-                </label>
-
-                <select [formControl]="form.controls['new_patients']" [(ngModel)]="newPatients">
-                  <option value="0">Treatment Provider</option>
-                  <option value="1">Main Provider</option>
-                </select>
+                <label>Discount Code 1</label>
+                <input type="text" [formControl]="form.controls['disc_code_1']"/>
               </div>
             </div>
             <div *ngIf="apiUrl.includes('test')" fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
               <div class="sa-form-group sa-group">
-                <label>Recall Rate
-                  <div class="info-button">
-                    <div class="info-icon-container">
-                      <img [tooltip]="this.constants.tipCustomisationsRecallRate" src="../assets/images/info-icon.png"
-                        alt="info-icon" class="info-icon" />
-                    </div>
-                  </div>
-                </label>
-
-                <select [formControl]="form.controls['recall_rate_default']" [(ngModel)]="recall_rate_default">
-                  <option value="0">Status Code</option>
-                  <option value="1">Default</option>
-                </select>
+                <label>Discount Code 2</label>
+                <input type="text" [formControl]="form.controls['disc_code_2']"/>
               </div>
             </div>
-
             <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
               <div class="sa-form-group sa-group">
-                <label>Hourly Rate
-                  <div class="info-button">
-                    <div class="info-icon-container">
-                      <img [tooltip]="this.constants.tipCustomisationsHourlyRate" src="../assets/images/info-icon.png"
-                        alt="info-icon" class="info-icon" />
-                    </div>
-                  </div>
-                </label>
-
-                <select [formControl]="form.controls['hourly_rate_appt_hours']" [(ngModel)]="hourly_rate_appt_hours">
-                  <option value="0">Available Hours</option>
-                  <option value="1">Appointment Hours</option>
-                </select>
+                <label>Discount Code 3</label>
+                <input type="text" [formControl]="form.controls['disc_code_3']"/>
               </div>
             </div>
           </div>
+          <ng-template #elseBlock>
+            <div class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
+              <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
+                <div class="sa-form-group sa-group">
+                  <label>New Patients
+                    <div class="info-button">
+                      <div class="info-icon-container">
+                        <img [tooltip]="this.constants.tipNewPatients" src="../assets/images/info-icon.png"
+                          alt="info-icon" class="info-icon" />
+                      </div>
+                    </div>
+                  </label>
+
+                  <select [formControl]="form.controls['new_patients']" [(ngModel)]="newPatients">
+                    <option value="0">Treatment Provider</option>
+                    <option value="1">Main Provider</option>
+                  </select>
+                </div>
+              </div>
+              <div *ngIf="apiUrl.includes('test')" fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
+                <div class="sa-form-group sa-group">
+                  <label>Recall Rate
+                    <div class="info-button">
+                      <div class="info-icon-container">
+                        <img [tooltip]="this.constants.tipCustomisationsRecallRate" src="../assets/images/info-icon.png"
+                          alt="info-icon" class="info-icon" />
+                      </div>
+                    </div>
+                  </label>
+
+                  <select [formControl]="form.controls['recall_rate_default']" [(ngModel)]="recall_rate_default">
+                    <option value="0">Status Code</option>
+                    <option value="1">Default</option>
+                  </select>
+                </div>
+              </div>
+              <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
+                <div class="sa-form-group sa-group">
+                  <label>Hourly Rate
+                    <div class="info-button">
+                      <div class="info-icon-container">
+                        <img [tooltip]="this.constants.tipCustomisationsHourlyRate" src="../assets/images/info-icon.png"
+                          alt="info-icon" class="info-icon" />
+                      </div>
+                    </div>
+                  </label>
+
+                  <select [formControl]="form.controls['hourly_rate_appt_hours']" [(ngModel)]="hourly_rate_appt_hours">
+                    <option value="0">Available Hours</option>
+                    <option value="1">Appointment Hours</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </ng-template>
           <div *ngIf="visibleMaxBarSetting" class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px"
           fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
             <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">

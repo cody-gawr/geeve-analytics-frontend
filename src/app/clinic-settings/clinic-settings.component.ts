@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ReviewMsgTemplateDialog } from './review-msg-template-dialog/review-msg-template-dialog.component';
 import { LocalStorageService } from '../shared/local-storage.service';
 import Swal from 'sweetalert2';
+import { IClinic } from '../clinic';
 
 export interface ReviewMsgTemplateObject {
   id?: number;
@@ -36,6 +37,7 @@ export class ClinicSettingsComponent implements OnInit {
   public clinic_id: any = {};
   private warningMessage: string;
   public id: any = {};
+  public selectedClinicData: IClinic;
   public clinicName: any = 0;
   public contactName = 0;
   public ftaUta: any = '';
@@ -187,6 +189,16 @@ export class ClinicSettingsComponent implements OnInit {
     }
 
     this.userPlan = this._cookieService.get('user_plan');
+
+    this.route.params.subscribe((params) => {
+      this.id = this.route.snapshot.paramMap.get('id');
+      this.selectedClinicData = this.localStorageService.getClinicData(this.id);
+      this.getClinicSettings();
+      this.getClinicFollowUPSettings();
+
+      this.checkXeroStatus();
+      this.checkMyobStatus();
+    });
   }
 
   ngAfterViewInit() {
@@ -198,14 +210,7 @@ export class ClinicSettingsComponent implements OnInit {
 
   //initilaize component
   ngOnInit() {
-    this.route.params.subscribe((params) => {
-      this.id = this.route.snapshot.paramMap.get('id');
-      this.getClinicSettings();
-      this.getClinicFollowUPSettings();
 
-      this.checkXeroStatus();
-      this.checkMyobStatus();
-    });
   }
 
   // For form validator
