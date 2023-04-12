@@ -43,6 +43,11 @@ export class LocalStorageService {
     return <T>JSON.parse(this.getData(key));
   }
 
+  public getClinicData(clinicId: string){
+    const clinics = this.getObject<any[]>('clinics') || [];
+    return clinics.find((c) => c.id == parseInt(clinicId));
+  }
+
   public isEachClinicExact(clinicId: string | string[]): boolean {
     let clinics = this.getObject<any[]>('clinics') || [];
     if (typeof clinicId == 'string') {

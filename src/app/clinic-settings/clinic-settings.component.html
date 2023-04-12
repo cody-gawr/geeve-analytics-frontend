@@ -307,6 +307,7 @@
   </mat-expansion-panel>
   <app-customisations-settings
     [clinicId]="id"
+    [clinicPMS]="selectedClinicData.pms"
     *ngIf="!(userType == '7' && isExactOrCore)"
   >
   </app-customisations-settings>
