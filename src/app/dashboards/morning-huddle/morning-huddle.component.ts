@@ -2318,7 +2318,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   get isToday(){
     const today = new Date();
   
-    if (today.toDateString() === this.selected.toDateString()) {
+    if (today.toDateString() === this.selected.start.toDateString()) {
       return true;
     }
   
