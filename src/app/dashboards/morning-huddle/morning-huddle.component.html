@@ -1606,7 +1606,7 @@
                 class="fa fa-hourglass"
               ></i>
               <i
-                *ngIf="element.sms_status == 'delivered'"
+                *ngIf="element.sms_status == 'delivered' && isToday"
                 class="fa fa-check mh-fa-check"
                 [matTooltip]="element.review_msg"
               ></i>
@@ -1617,34 +1617,13 @@
                 aria-hidden="true"
               ></i>
               <button
-                *ngIf="element.sms_status == 'failed'"
                 mat-stroked-button
                 [disabled]="element.unsubscribed"
                 [matTooltip]="element.unsubscribed?'This patient has unsubscribed':''"
                 class="mat-dc"
                 (click)="openSendReviewBtnDialog(element)"
               >
-                Retry (Failed)
-              </button>
-              <button
-                *ngIf="element.sms_status == 'undelivered'"
-                mat-stroked-button
-                [disabled]="element.unsubscribed"
-                [matTooltip]="element.unsubscribed?'This patient has unsubscribed':''"
-                class="mat-dc"
-                (click)="openSendReviewBtnDialog(element)"
-              >
-                Retry (Undelivered)
-              </button>
-              <button
-                *ngIf="element.sms_status == undefined"
-                mat-stroked-button
-                [disabled]="element.unsubscribed"
-                [matTooltip]="element.unsubscribed?'This patient has unsubscribed':''"
-                class="mat-dc"
-                (click)="openSendReviewBtnDialog(element)"
-              >
-                Send
+                {{getReviewSendBtnDisplayLabel(element)}}
               </button>
             </td>
           </ng-container>
