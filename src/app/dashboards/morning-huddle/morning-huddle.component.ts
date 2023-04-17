@@ -579,6 +579,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             if (v.data.accepted_sms_terms != undefined)
               this.isAcceptedSMSTerms = !!v.data.accepted_sms_terms;
             if(this.isSMSEnabled){
+              this.updateCreditStatus();
               this.creditStatusTimer = setInterval(() => {
                 this.updateCreditStatus();
               }, 30000);
@@ -1005,8 +1006,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   public intrFollowupsScrps: any = [];
   /* Get Followups scripts **/
   getFollowupScripts() {
-    this.morningHuddleService.getScripts(this.clinic_id).subscribe(
-      (res: any) => {
+    this.morningHuddleService.getScripts(this.clinic_id).subscribe({
+      next: (res: any) => {
         this.postOpCallsScrps = [];
         this.overdueRecallsScrps = [];
         this.tickFollowupsScrps = [];
@@ -1031,14 +1032,12 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               this.intrFollowupsScrps.push(script);
             }
           });
-        } else if (res.status == 401) {
-          this.handleUnAuthorization();
         }
       },
-      (error) => {
+      error: (error) => {
         this.handleUnAuthorization();
       }
-    );
+    });
   }
 
   public tipDoneCode = {};
@@ -2302,5 +2301,27 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     setTimeout(function () {
       newWin.close();
     }, 2000);
+  }
+
+  getReviewSendBtnDisplayLabel(element){
+    switch(element.sms_status){
+      case 'failed':
+        return 'Retry (Failed)';
+      case 'undelivered':
+        return 'Retry (Undelivered)';
+      case 'delivered':
+        if(!this.isToday) return 'INVITE AGAIN'
+    }
+    return 'Send';
+  }
+
+  get isToday(){
+    const today = new Date();
+  
+    if (today.toDateString() === this.selected.toDateString()) {
+      return true;
+    }
+  
+    return false;
   }
 }
