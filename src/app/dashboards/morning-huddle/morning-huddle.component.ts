@@ -2309,19 +2309,9 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         return 'Retry (Failed)';
       case 'undelivered':
         return 'Retry (Undelivered)';
-      case 'delivered':
-        if(!this.isToday) return 'INVITE AGAIN'
+      case 'delivered_prev':
+        return 'INVITE AGAIN'
     }
     return 'Send';
-  }
-
-  get isToday(){
-    const today = new Date();
-    const prev_date = this.previousDays?new Date(this.previousDays):new Date();
-    if (today.toDateString() === prev_date.toDateString()) {
-      return true;
-    }
-  
-    return false;
   }
 }
