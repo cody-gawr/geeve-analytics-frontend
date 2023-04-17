@@ -2302,16 +2302,4 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       newWin.close();
     }, 2000);
   }
-
-  getReviewSendBtnDisplayLabel(element){
-    switch(element.sms_status){
-      case 'failed':
-        return 'Retry (Failed)';
-      case 'undelivered':
-        return 'Retry (Undelivered)';
-      case 'delivered_prev':
-        return 'INVITE AGAIN'
-    }
-    return 'Send';
-  }
 }
