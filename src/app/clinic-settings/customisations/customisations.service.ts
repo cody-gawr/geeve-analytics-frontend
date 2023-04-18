@@ -52,6 +52,9 @@ export class CustomisationsService {
     formData.append("recall_code1", data.recall_code1);
     formData.append("recall_code2", data.recall_code2);
     formData.append("recall_code3", data.recall_code3);
+    formData.append("disc_code_1", data.disc_code_1);
+    formData.append("disc_code_2", data.disc_code_2);
+    formData.append("disc_code_3", data.disc_code_3);
     formData.append("new_patients_main", data.new_patients??1);
     // formData.append("health_screen_mtd", data.health_screen_mtd);
     formData.append("recall_rate_default", data.recall_rate_default??1);
