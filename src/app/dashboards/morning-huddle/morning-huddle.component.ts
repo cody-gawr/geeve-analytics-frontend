@@ -87,18 +87,18 @@ export class DialogOverviewExampleDialogComponent {
         data.followup_date,
         data.type
       )
-      .subscribe(
-        (res) => {
-          if (res.status == 200) {
-            this.dialogRef.close();
-          } else if (res.status == 401) {
+      .subscribe({
+          next: (res) => {
+            if (res.status == 200) {
+              this.dialogRef.close();
+            } else if (res.status == 401) {
+              this.handleUnAuthorization();
+            }
+          },
+          error: (error) => {
             this.handleUnAuthorization();
           }
-        },
-        (error) => {
-          this.handleUnAuthorization();
-        }
-      );
+      });
   }
 
   handleUnAuthorization() {
