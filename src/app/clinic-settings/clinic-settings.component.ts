@@ -336,6 +336,47 @@ export class ClinicSettingsComponent implements OnInit {
       }
     );
   }
+  onSaveBaseSettings() {
+    $('.ajax-loader').show();
+    this.clinicName = this.form.value.clinicName;
+    this.address = this.form.value.address;
+    this.contactName = this.form.value.contactName;
+    let days = JSON.stringify(this.workingDays);
+    this.subtracted_accounts = this.form.value.subtracted_accounts;
+    this.ftaUta = this.form.value.fta_uta;
+    this.timezone = this.form.value.timezone;
+
+    this.clinicSettingsService
+      .updateClinicSettings(
+        this.id,
+        this.clinicName,
+        this.address,
+        this.contactName,
+        days,
+        this.ftaUta,
+        this.timezone,
+        this.subtracted_accounts,
+        this.compareMode
+      )
+      .subscribe({
+        next: (res) => {
+            $('.ajax-loader').hide();
+            if (res.status == 200) {
+              this.toastr.success('Clinic Settings Updated');
+            }
+          },
+          error: (error) => {
+            // if (res.status == '401') {
+            //   this._cookieService.put('username', '');
+            //   this._cookieService.put('email', '');
+            //   this._cookieService.put('userid', '');
+            //   this.router.navigateByUrl('/login');
+            // }
+            console.error(error)
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          }
+      });
+  }
   //save clinic settings
   onSubmit() {
     $('.ajax-loader').show();
