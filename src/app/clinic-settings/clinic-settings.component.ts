@@ -629,7 +629,7 @@ export class ClinicSettingsComponent implements OnInit {
     } else if (type == 'CompareMode') {
       this.compareMode = event.checked;
     }
-    this.onSubmit();
+    this.onSaveExtraSettings();
   }
 
   toggleFlw(event, type) {
