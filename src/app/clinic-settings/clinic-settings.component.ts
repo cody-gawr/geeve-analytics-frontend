@@ -13,6 +13,8 @@ import { ReviewMsgTemplateDialog } from './review-msg-template-dialog/review-msg
 import { LocalStorageService } from '../shared/local-storage.service';
 import Swal from 'sweetalert2';
 import { IClinic } from '../clinic';
+import { forkJoin } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export interface ReviewMsgTemplateObject {
   id?: number;
@@ -336,8 +338,7 @@ export class ClinicSettingsComponent implements OnInit {
       }
     );
   }
-  onSaveBaseSettings() {
-    $('.ajax-loader').show();
+  saveBaseSettings() {
     this.clinicName = this.form.value.clinicName;
     this.address = this.form.value.address;
     this.contactName = this.form.value.contactName;
@@ -346,7 +347,7 @@ export class ClinicSettingsComponent implements OnInit {
     this.ftaUta = this.form.value.fta_uta;
     this.timezone = this.form.value.timezone;
 
-    this.clinicSettingsService
+    return this.clinicSettingsService
       .updateClinicSettings(
         this.id,
         this.clinicName,
@@ -358,35 +359,26 @@ export class ClinicSettingsComponent implements OnInit {
         this.subtracted_accounts,
         this.compareMode
       )
-      .subscribe({
+  }
+
+  onSaveBaseSettings() {
+    $('.ajax-loader').show();
+    this.saveBaseSettings().subscribe({
         next: (res) => {
-            $('.ajax-loader').hide();
             if (res.status == 200) {
               this.toastr.success('Clinic Settings Updated');
             }
-          },
-          error: (error) => {
-            // if (res.status == '401') {
-            //   this._cookieService.put('username', '');
-            //   this._cookieService.put('email', '');
-            //   this._cookieService.put('userid', '');
-            //   this.router.navigateByUrl('/login');
-            // }
-            console.error(error)
-            this.warningMessage = 'Please Provide Valid Inputs!';
-          }
-      });
+        },
+        error: (error: HttpErrorResponse) => {
+          $('.ajax-loader').hide();
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        },
+        complete: () => { $('.ajax-loader').hide(); }
+  });
   }
-  //save clinic settings
-  onSubmit() {
-    $('.ajax-loader').show();
-    this.clinicName = this.form.value.clinicName;
-    this.address = this.form.value.address;
-    this.contactName = this.form.value.contactName;
-    let days = JSON.stringify(this.workingDays);
+
+  saveExtraSettings() {
     this.post_op_calls = this.form.value.post_op_calls;
-    this.subtracted_accounts = this.form.value.subtracted_accounts;
-    this.ftaUta = this.form.value.fta_uta;
     this.postOpCallsMh = this.form.value.post_op_calls_days;
     this.recallWeeks = this.form.value.recall_weeks;
     if (this.apiUrl.includes('test') || this.apiUrl.includes('staging-')) {
@@ -399,38 +391,8 @@ export class ClinicSettingsComponent implements OnInit {
     this.utaFollowupDays = this.form.value.uta_followup_days;
     this.ftaFollowupDaysLater = this.form.value.fta_followup_days_later;
     this.utaFollowupDaysLater = this.form.value.uta_followup_days_later;
-    this.timezone = this.form.value.timezone;
 
-    this.clinicSettingsService
-      .updateClinicSettings(
-        this.id,
-        this.clinicName,
-        this.address,
-        this.contactName,
-        days,
-        this.ftaUta,
-        this.timezone,
-        this.subtracted_accounts,
-        this.compareMode
-      )
-      .subscribe(
-        (res) => {
-          $('.ajax-loader').hide();
-          if (res.status == 200) {
-            this.toastr.success('Clinic Settings Updated');
-          } else if (res.status == '401') {
-            this._cookieService.put('username', '');
-            this._cookieService.put('email', '');
-            this._cookieService.put('userid', '');
-            this.router.navigateByUrl('/login');
-          }
-        },
-        (error) => {
-          this.warningMessage = 'Please Provide Valid Inputs!';
-        }
-      );
-
-    this.clinicSettingsService
+    return this.clinicSettingsService
       .updateFollowUpSettings(
         this.id,
         this.post_op_calls,
@@ -442,23 +404,48 @@ export class ClinicSettingsComponent implements OnInit {
         this.utaFollowupDaysLater,
         this.ftaFollowupDaysLater,
         this.referralWeeks
-      )
-      .subscribe(
-        (res) => {
-          $('.ajax-loader').hide();
-          if (res.status == 200) {
-            this.toastr.success('Clinic Settings Updated');
-          } else if (res.status == '401') {
-            this._cookieService.put('username', '');
-            this._cookieService.put('email', '');
-            this._cookieService.put('userid', '');
-            this.router.navigateByUrl('/login');
-          }
-        },
-        (error) => {
-          this.warningMessage = 'Please Provide Valid Inputs!';
-        }
       );
+  }
+
+  onSaveExtraSettings() {
+    $('.ajax-loader').show();
+    this.saveExtraSettings().subscribe({
+      next: (res) => {
+        if (res.status == 200) {
+          this.toastr.success('Clinic Settings Updated');
+        }
+      },
+      error: (error: HttpErrorResponse) => {
+        $('.ajax-loader').hide();
+        this.warningMessage = 'Please Provide Valid Inputs!';
+      },
+      complete: () => { $('.ajax-loader').hide(); }
+    });
+  }
+  //save clinic settings
+  onSubmit() {
+    $('.ajax-loader').show();
+    const sources = forkJoin([
+      this.saveBaseSettings(),
+      this.saveExtraSettings()
+    ]);
+    sources.subscribe( {
+      next:([r1, r2]) => {
+        if (r1.status == 200) {
+          this.toastr.success('Clinic Base Settings Updated');
+        }
+
+        if (r2.status == 200) {
+          this.toastr.success('Clinic Extra Settings Updated');
+        }
+      },
+      error: ([e1, e2]: HttpErrorResponse[]) => {
+        $('.ajax-loader').hide();
+        this.warningMessage = 'Please Provide Valid Inputs!';
+      },
+      complete: () => { $('.ajax-loader').hide(); }
+    })
+
   }
   //get xero authorization link
   getXeroLink() {
