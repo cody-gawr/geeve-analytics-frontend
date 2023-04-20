@@ -618,7 +618,7 @@ export class ClinicSettingsComponent implements OnInit {
     } else if (event.source.name == 'saturday') {
       this.workingDays.saturday = event.checked;
     }
-    this.onSubmit();
+    this.onSaveBaseSettings();
   }
 
   public toggleMH(event, type) {
