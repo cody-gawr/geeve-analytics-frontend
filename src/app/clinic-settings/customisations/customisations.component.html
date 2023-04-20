@@ -103,7 +103,7 @@
             <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Recall Code 1 </label>
-                <input type="text" maxlength="1" placeholder="" [formControl]="form.controls['recall_codes1']"
+                <input type="text" maxlength="20" placeholder="" [formControl]="form.controls['recall_codes1']"
                   [(ngModel)]="recallCode1" />
 
                 <small *ngIf="
@@ -115,7 +115,7 @@
             <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Recall Code 2 </label>
-                <input type="text" maxlength="1" placeholder="" [formControl]="form.controls['recall_codes2']"
+                <input type="text" maxlength="20" placeholder="" [formControl]="form.controls['recall_codes2']"
                   [(ngModel)]="recallCode2" />
                 <small *ngIf="
                     form.controls['recall_codes2'].hasError('required') &&
@@ -126,7 +126,7 @@
             <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Recall Code 3</label>
-                <input type="text" maxlength="1" placeholder="" [formControl]="form.controls['recall_codes3']"
+                <input type="text" maxlength="20" placeholder="" [formControl]="form.controls['recall_codes3']"
                   [(ngModel)]="recallCode3" />
                 <small *ngIf="
                     form.controls['recall_codes3'].hasError('required') &&
