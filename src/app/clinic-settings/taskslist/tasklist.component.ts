@@ -395,11 +395,16 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
   public toggleMH(event) {
     var active = (event.checked == true) ? 1 : 0;
     this.dailyTaskEnable = event.checked;
-    this.clinicSettingsService.updatePartialSetting(this.clinic_id$.value, active, 'daily_task_enable').subscribe((res) => {
-      if (res.status == 200) {
-        this.toastr.success('Task Updated');
-       }
-    }, error => { });
+    this.clinicSettingsService.updatePartialSetting(this.clinic_id$.value, active, 'daily_task_enable').subscribe(
+      {
+        next: (res) => {
+          if (res.status == 200) {
+            this.toastr.success('Task Updated');
+          }
+        }, 
+        error: error => { }
+      }
+    );
   }
 
   deleteTask(taskId,listname) {

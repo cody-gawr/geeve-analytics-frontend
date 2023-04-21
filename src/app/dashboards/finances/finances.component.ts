@@ -164,9 +164,9 @@ export class FinancesComponent implements AfterViewInit {
   ];
   public isVisibleAccountGraphs: boolean = false;
   public maxLegendLabelLimit = 10;
-  public get isExact(): boolean {
-    return this.localStorageService.isEachClinicExact(this.clinic_id);
-  }
+  // public get isExact(): boolean {
+  //   return this.localStorageService.isEachClinicExact(this.clinic_id);
+  // }
   constructor(
     private localStorageService: LocalStorageService,
     private toastr: ToastrService,
@@ -1420,7 +1420,7 @@ export class FinancesComponent implements AfterViewInit {
             .split(/(?=(?:...)*$)/)
             .join(',');
           return `${label} : ${
-            tooltipItems.yLabel < 0 ? '- $' : '$'
+            parseInt(tooltipItems.yLabel.toString()) < 0 ? '- $' : '$'
           }${currency}`;
         },
         title: () => ''
