@@ -45,7 +45,7 @@
         <ng-container matColumnDef="providerId">
           <th mat-header-cell *matHeaderCellDef>ProviderID</th>
           <td mat-cell *matCellDef="let element; let i=index">
-            {{ element.providerId }}
+            {{ isExact?element.pms_provider_id:element.providerId }}
             <!-- <input readonly (dblclick)="enableEditing(i, 'providerId')" *ngIf="!editing[i+ '-providerId']"
               [value]="element.providerId"
             />
