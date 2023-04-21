@@ -10,9 +10,10 @@ import { DentistService } from '../../dentist/dentist.service';
 import { BaseComponent } from '../base/base.component';
 import { MatSort } from '@angular/material/sort';
 import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
-import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
+//import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 import { environment } from "../../../environments/environment";
 import { AppConstants } from "../../app.constants";
+import { LocalStorageService } from '../../shared/local-storage.service';
 
 /************* Add Jeeve Names ***********/
   
@@ -84,13 +85,17 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   public activeDentist:any = 0;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  public get isExact(): boolean {
+    return this.localStorageService.isEachClinicExact(this.clinic_id$.value);
+  }
   constructor(
     private _cookieService: CookieService,
     private dentistService: DentistService,
     private router: Router,
     private toastr: ToastrService,
      public dialog: MatDialog,
-     public constants: AppConstants
+     public constants: AppConstants,
+     private localStorageService: LocalStorageService
   ) {
     super();
   }
