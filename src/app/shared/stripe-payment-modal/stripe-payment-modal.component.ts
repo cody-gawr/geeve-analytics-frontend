@@ -1,5 +1,5 @@
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
-import { Component, Inject, EventEmitter } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
@@ -12,8 +12,8 @@ import {
   StripePaymentElementOptions
 } from '@stripe/stripe-js';
 import { ToastrService } from 'ngx-toastr';
-import { environment } from '../../../../environments/environment';
-import { MorningHuddleService } from '../morning-huddle.service';
+import { environment } from '../../../environments/environment';
+import { MorningHuddleService } from '../../dashboards/morning-huddle/morning-huddle.service';
 
 export interface DialogData {
   //totalCredits: number;
@@ -76,7 +76,11 @@ export class StripePaymentDialog {
           paymentElementOptions
         );
         paymentElement.mount('#payment-element');
-        this.disabledSubmit = false;
+        paymentElement.on('change', (event) => {
+          if(event.complete){
+            this.disabledSubmit = false;
+          };
+        });
       });
   }
 

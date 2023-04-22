@@ -1083,7 +1083,7 @@ export class MorningHuddleService {
     appt_ids: {
       appiont_id: string;
       phone_number: string;
-    }[]
+    }[] = []
   ): Observable<{
     status: boolean;
     data: {
