@@ -12,6 +12,9 @@ import { TooltipDirective } from './tooltip/tooltip.directive';
 import { CommonModule } from '@angular/common';
 import { TooltipLayoutComponent } from './tooltip/tooltip-layout.component';
 import { SpinnerComponent } from './spinner.component';
+import { StripePaymentDialog } from './stripe-payment-modal/stripe-payment-modal.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { DemoMaterialModule } from '../demo-material-module';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,8 @@ import { SpinnerComponent } from './spinner.component';
     TooltipDirective,
     TooltipContainerDirective, 
     TooltipLayoutComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    StripePaymentDialog
   ],
   exports: [
     AccordionAnchorDirective,
@@ -30,10 +34,14 @@ import { SpinnerComponent } from './spinner.component';
     AccordionDirective,
     TooltipDirective,
     TooltipContainerDirective,
-    SpinnerComponent
+    SpinnerComponent,
+
+    StripePaymentDialog
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule,
+    DemoMaterialModule
   ],
   providers: [MenuItems,RolesUsersService],
   entryComponents: [TooltipLayoutComponent, TooltipComponent]

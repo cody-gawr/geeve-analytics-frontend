@@ -49,7 +49,7 @@ import {
   MatDialog
 } from '@angular/material/dialog';
 import { loadStripe } from '@stripe/stripe-js';
-import { StripePaymentDialog } from './stripe-payment-modal/stripe-payment-modal.component';
+import { StripePaymentDialog } from '../../shared/stripe-payment-modal/stripe-payment-modal.component';
 import { SendReviewDialog } from './send-review-dialog/send-review-dialog.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import * as _ from 'lodash';
@@ -552,14 +552,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       }
       this.dailyTabSettLod = false;
 
-      // const clinics = this.localStorageService.getObject<any[]>('clinics');
-
-      // if (clinics && clinics.length > 0) {
-      //   const clinic = clinics.find((c) => c.id == parseInt(this.clinic_id));
-      //   this.isSMSEnabled = !!clinic.sms_enabled;
-      //   this.isAcceptedSMSTerms = !!clinic.accepted_sms_terms;
-      // }
-
       this.clinicianAnalysisService
         .getClinicFollowUpSettings(this.clinic_id)
         .subscribe({
@@ -630,11 +622,11 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.getEndOfDays();
   }
 
-  openTopUpCredits() {
-    const stripePaymentDialog = this.dialog.open(StripePaymentDialog, {
-      data: { costPerSMS: this.costPerSMS }
-    });
-  }
+  // openTopUpCredits() {
+  //   const stripePaymentDialog = this.dialog.open(StripePaymentDialog, {
+  //     data: { costPerSMS: this.costPerSMS }
+  //   });
+  // }
 
   changeTab(tabIndex: number) {
     this.selectedTab = tabIndex;

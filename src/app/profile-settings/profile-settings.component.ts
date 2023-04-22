@@ -13,6 +13,8 @@ import { StripeElementsOptions } from '@stripe/stripe-js';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import { RolesUsersService } from '../roles-users/roles-users.service';
+import { MatDialog } from '@angular/material/dialog';
+import { StripePaymentDialog } from '../shared/stripe-payment-modal/stripe-payment-modal.component';
 
 const passwordValidation = new FormControl('', [
   Validators.required,
@@ -33,6 +35,7 @@ export class ProfileSettingsComponent implements OnInit {
   elementsOptions: StripeElementsOptions = {};
   elements;
   card;
+  // isSMSEnabled = false;
   public apiUrl = environment.apiUrl;
   public cardStyle = {
     base: {
@@ -151,48 +154,28 @@ export class ProfileSettingsComponent implements OnInit {
   public xeroConnect = false;
   public xeroOrganization = '';
   public email;
+  remainCredits = 0;
+  costPerSMS = 0.0;
   constructor(
     private _cookieService: CookieService,
     private fb: FormBuilder,
     private profileSettingsService: ProfileSettingsService,
+    // private clinicianAnalysisService: ClinicianAnalysisService,
+    // private monringHuddleService: MorningHuddleService,
     private route: ActivatedRoute,
     private stripeService: StripeService,
     private router: Router,
     private toastr: ToastrService,
     private rolesUsersService: RolesUsersService,
-    public constants: AppConstants
+    public constants: AppConstants,
+    private dialog: MatDialog
   ) {
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto'
     });
-  }
-
-  ngOnInit() {
+    this.userType = this._cookieService.get('user_type');
     this.health_screen_mtd = this._cookieService.get('health_screen_mtd');
-    this.route.params.subscribe((params) => {
-      this.id = this.route.snapshot.paramMap.get('id');
-      this.displayName = this._cookieService.get('display_name');
-      this.email = this._cookieService.get('email');
-      /*this.imageURL = this._cookieService.get("user_image");   */
-      if (this._cookieService.get('user_type') != '2') this.getRoles();
-      else {
-        this.showCard = true;
-        this.getPaymentDetails();
-      }
-
-      this.getChartsTips();
-      this.getStripeKey();
-
-      this.stripeTest = this.fb.group({
-        name: ['', [Validators.required]]
-      });
-
-      //  this.getprofileSettings();
-      $('#title').html('Profile Settings');
-      $('.header_filters').addClass('hide_header');
-      // this.checkXeroStatus();
-    });
     this.form = this.fb.group({
       currentPassword: [null, Validators.compose([Validators.required])],
       newPassword: passwordValidation,
@@ -211,8 +194,39 @@ export class ProfileSettingsComponent implements OnInit {
     this.healthSettings = new FormGroup({
       health_screen_mtd: new FormControl()
     });
+  }
 
-    this.userType = this._cookieService.get('user_type');
+  ngOnInit() {
+    // this.route.params.subscribe((params) => {
+      this.id = this.route.snapshot.paramMap.get('id');
+      this.profileSettingsService.getCreditData().subscribe(
+        v => {
+          this.remainCredits = v.data.remain_credits;
+          this.costPerSMS = v.data.cost_per_sms;
+        }
+      );
+      this.displayName = this._cookieService.get('display_name');
+      this.email = this._cookieService.get('email');
+      /*this.imageURL = this._cookieService.get("user_image");   */
+      if (this.userType != '2') this.getRoles();
+      else {
+        this.showCard = true;
+        this.getPaymentDetails();
+      }
+
+      this.getChartsTips();
+      this.getStripeKey();
+
+      this.stripeTest = this.fb.group({
+        name: ['', [Validators.required]]
+      });
+    // });
+  }
+
+  openTopUpCredits() {
+    const stripePaymentDialog = this.dialog.open(StripePaymentDialog, {
+      data: { costPerSMS: this.costPerSMS }
+    });
   }
 
   public stripePublicKey: any = '';
@@ -247,31 +261,36 @@ export class ProfileSettingsComponent implements OnInit {
     });
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+    $('#title').html('Profile Settings');
+    $('.header_filters').addClass('hide_header');
+  }
 
   /* CHECK PERMISSIONS */
   public permisions = '';
   public showCard = false;
   getRoles() {
     this.rolesUsersService.getRoles().subscribe(
-      (res) => {
-        if (res.status == 200) {
-          res.body.data.forEach((result) => {
-            if (result.role_id == this._cookieService.get('user_type'))
-              this.permisions = result.permisions;
-          });
-
-          if (
-            (this.permisions,
-            this.permisions.split(',').indexOf('profilesettings') >= 0 &&
-              this.userType != '7')
-          ) {
-            this.showCard = true;
-            this.getPaymentDetails();
+      {
+        next: (res) => {
+          if (res.status == 200) {
+            res.body.data.forEach((result) => {
+              if (result.role_id == this._cookieService.get('user_type'))
+                this.permisions = result.permisions;
+            });
+  
+            if (
+              (this.permisions,
+              this.permisions.split(',').indexOf('profilesettings') >= 0 &&
+                this.userType != '7')
+            ) {
+              this.showCard = true;
+              this.getPaymentDetails();
+            }
           }
-        }
-      },
-      (error) => {}
+        },
+        error: (error) => {}
+      }
     );
   }
   /* CHECK PERMISSIONS */
@@ -368,15 +387,17 @@ export class ProfileSettingsComponent implements OnInit {
   public last4;
   getprofileSettings() {
     this.profileSettingsService.getprofileSettings(this.id).subscribe(
-      (res) => {
-        if (res.status == 200) {
-          this.displayName = res.body.data[0].displayName;
-          this.email = res.body.data[0].email;
+      {
+        next: (res) => {
+          if (res.status == 200) {
+            this.displayName = res.body.data[0].displayName;
+            this.email = res.body.data[0].email;
+          }
+        },
+        error: (error) => {
+          this.warningMessage = 'Please Provide Valid Inputs!';
         }
-      },
-      (error) => {
-        this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      }                                                                           
     );
   }
   getCardDetails() {
@@ -500,17 +521,19 @@ export class ProfileSettingsComponent implements OnInit {
     this.profileSettingsService
       .updateprofileSettingsHealthScreen(this.health_screen_mtd)
       .subscribe(
-        (res) => {
-          if (res.status == 200) {
-            this._cookieService.put(
-              'health_screen_mtd',
-              this.health_screen_mtd
-            );
-            this.toastr.success('Profile Settings Updated .');
+        {
+          next: (res) => {
+            if (res.status == 200) {
+              this._cookieService.put(
+                'health_screen_mtd',
+                this.health_screen_mtd
+              );
+              this.toastr.success('Profile Settings Updated .');
+            }
+          },
+          error: (error) => {
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        },
-        (error) => {
-          this.warningMessage = 'Please Provide Valid Inputs!';
         }
       );
   }

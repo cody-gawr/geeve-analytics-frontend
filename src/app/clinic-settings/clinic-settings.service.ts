@@ -274,7 +274,30 @@ export class ClinicSettingsService {
             );
     }
 
-    updateFollowUpSettings(clinic_id, post_op_calls, tickDays, postOpCallsMh, recallWeeks, ftaFollowupDays, utaFollowupDays, utaFollowupDaysLater, ftaFollowupDaysLater,referralWeeks): Observable<any> {
+    updateFollowUpSettings(
+        clinic_id, 
+        post_op_calls, 
+        tickDays, 
+        postOpCallsMh, 
+        recallWeeks, 
+        ftaFollowupDays, 
+        utaFollowupDays, 
+        utaFollowupDaysLater, 
+        ftaFollowupDaysLater,
+        referralWeeks,
+        data: {
+            max_chart_bars: any,
+            fta_enable: any,
+            uta_enable: any,
+            post_op_enable: any,
+            tick_enable: any,
+            recall_enable: any,
+            referral_enable: any,
+            post_op_days: any,
+            equip_list_enable: any,
+            daily_task_enable: any,
+        } = null
+    ): Observable<any> {
         var header = this.getHeaders();
         const formData = new FormData();
         formData.append('clinic_id', clinic_id);
@@ -287,7 +310,18 @@ export class ClinicSettingsService {
         formData.append('uta_days_later', utaFollowupDaysLater);
         formData.append('fta_days_later', ftaFollowupDaysLater);
         formData.append('referral_weeks', referralWeeks);
-
+        if(data){
+            formData.append('max_chart_bars', data.max_chart_bars);
+            formData.append('fta_enable', data.fta_enable);
+            formData.append('uta_enable', data.uta_enable);
+            formData.append('post_op_enable', data.post_op_enable);
+            formData.append('tick_enable', data.tick_enable);
+            formData.append('recall_enable', data.recall_enable);
+            formData.append('referral_enable', data.referral_enable);
+            formData.append('post_op_days', data.post_op_days);
+            formData.append('equip_list_enable', data.equip_list_enable);
+            formData.append('daily_task_enable', data.daily_task_enable);
+        }
 
         return this.http
             .post(this.apiUrl + "/clinics/clinicSettingsSave", formData, header)
