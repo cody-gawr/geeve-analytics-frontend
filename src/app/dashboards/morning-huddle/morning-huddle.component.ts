@@ -905,37 +905,39 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         this.postOpCallsDays
       )
       .subscribe(
-        (res: any) => {
-          this.followupPostOpCallsInComp = [];
-          var diffTime: any = this.getDataDiffrences();
-          if (diffTime < 0) {
-            this.futureDateOP = this.datepipe
-              .transform(this.previousDays, 'yyyy-MM-dd 00:00:00')
-              .replace(/\s/, 'T');
-          }
-          this.poLoadingLoading = false;
-          if (res.status == 200) {
-            this.apiSuccessCount += 1;
-            this.nextBussinessDay = res.body.next_day;
-            this.followupsPostopCallsDate = res.body.data.date;
-            if (res.body.data == '204') {
-            } else {
-              this.followupPostOpCalls = res.body.data;
-              if (this.postopCallsPostOp == true) {
-                this.followupPostOpCallsInComp = this.followupPostOpCalls;
-              } else {
-                this.followupPostOpCallsInComp =
-                  this.followupPostOpCalls.filter((p) => p.is_complete != true);
-              }
+        {
+          next: (res: any) => {
+            this.followupPostOpCallsInComp = [];
+            var diffTime: any = this.getDataDiffrences();
+            if (diffTime < 0) {
+              this.futureDateOP = this.datepipe
+                .transform(this.previousDays, 'yyyy-MM-dd 00:00:00')
+                .replace(/\s/, 'T');
             }
-
-            //this.postOpCallsDays = production.previous;
-          } else if (res.status == 401) {
+            this.poLoadingLoading = false;
+            if (res.status == 200) {
+              this.apiSuccessCount += 1;
+              this.nextBussinessDay = res.body.next_day;
+              this.followupsPostopCallsDate = res.body.data.date;
+              if (res.body.data == '204') {
+              } else {
+                this.followupPostOpCalls = res.body.data;
+                if (this.postopCallsPostOp == true) {
+                  this.followupPostOpCallsInComp = this.followupPostOpCalls;
+                } else {
+                  this.followupPostOpCallsInComp =
+                    this.followupPostOpCalls.filter((p) => p.is_complete != true);
+                }
+              }
+  
+              //this.postOpCallsDays = production.previous;
+            } else if (res.status == 401) {
+              this.handleUnAuthorization();
+            }
+          },
+          error: (error) => {
             this.handleUnAuthorization();
           }
-        },
-        (error) => {
-          this.handleUnAuthorization();
         }
       );
   }
@@ -952,41 +954,44 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         this.postOpCallsDays
       )
       .subscribe(
-        (res: any) => {
-          this.followupOverDueRecallInCMP = [];
-          var diffTime: any = this.getDataDiffrences();
-          if (diffTime < 0) {
-            this.futureDateOR = this.datepipe
-              .transform(this.previousDays, 'yyyy-MM-dd 00:00:00')
-              .replace(/\s/, 'T');
-          }
-          this.recallLoadingLoading = false;
-
-          if (res.status == 200) {
-            this.apiSuccessCount += 1;
-            this.nextBussinessDay = res.body.next_day;
-            if (res.body.data == '204') {
-            } else {
-              this.followupOverDueRecall = res.body.data;
-              if (this.showCompleteOverdue == true) {
-                this.followupOverDueRecallInCMP = this.followupOverDueRecall;
-              } else {
-                this.followupOverDueRecallInCMP =
-                  this.followupOverDueRecall.filter(
-                    (p) => p.is_complete != true
-                  );
-              }
+        {
+          next: (res: any) => {
+            this.followupOverDueRecallInCMP = [];
+            var diffTime: any = this.getDataDiffrences();
+            if (diffTime < 0) {
+              this.futureDateOR = this.datepipe
+                .transform(this.previousDays, 'yyyy-MM-dd 00:00:00')
+                .replace(/\s/, 'T');
             }
-
-            this.followupsOverDueRecallDate = res.body.data.date;
-            //this.OverDueRecallDays = production.previous;
-          } else if (res.status == 401) {
+            this.recallLoadingLoading = false;
+  
+            if (res.status == 200) {
+              this.apiSuccessCount += 1;
+              this.nextBussinessDay = res.body.next_day;
+              if (res.body.data == '204') {
+              } else {
+                this.followupOverDueRecall = res.body.data;
+                if (this.showCompleteOverdue == true) {
+                  this.followupOverDueRecallInCMP = this.followupOverDueRecall;
+                } else {
+                  this.followupOverDueRecallInCMP =
+                    this.followupOverDueRecall.filter(
+                      (p) => p.is_complete != true
+                    );
+                }
+              }
+  
+              this.followupsOverDueRecallDate = res.body.data.date;
+              //this.OverDueRecallDays = production.previous;
+            } else if (res.status == 401) {
+              this.handleUnAuthorization();
+            }
+          },
+          error: (error) => {
             this.handleUnAuthorization();
           }
-        },
-        (error) => {
-          this.handleUnAuthorization();
         }
+
       );
   }
 
@@ -2219,6 +2224,12 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       sendReviewDialog.afterClosed().subscribe((result) => {
         if (result && result.status) {
           this.remainCredits = this.remainCredits - result.num_sms;
+          if(this.remainCredits <= 10){
+            this.toastr.warning(
+              `${this.remainCredits} review credits remaining `+
+              '- to add more ask your account owner to top up under '+
+              'Settings -> My Account -> Review Credits');
+          }
           element.sms_status = result.status;
           this.updateCreditStatus();
         }
