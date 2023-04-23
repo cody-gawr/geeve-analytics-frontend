@@ -1,5 +1,5 @@
 <div class="dialog-header">
-  <h1 mat-dialog-title>Add SMS Credits</h1>
+  <h1 mat-dialog-title>Add Review Credits</h1>
   <mat-icon aria-hidden="false" (click)="onNoClick()">close</mat-icon>
 </div>
 <div mat-dialog-content>
@@ -15,7 +15,7 @@
           <div style="margin-top: 10px">
             <p *ngIf="data && data.notify_msg" style="color:red !important;">{{ data.notify_msg }}</p>
             <mat-form-field appearance="fill">
-              <mat-label>Enter number of SMS credits to purchase</mat-label>
+              <mat-label>Enter number of Review credits to purchase</mat-label>
               <input matInput type="number" formControlName="credits" />
               <mat-error
                 *ngIf="
@@ -24,11 +24,11 @@
                   )
                 "
               >
-                Please enter a valid number of SMS credits to purchase
+                Please enter a valid number of Review credits to purchase
               </mat-error>
             </mat-form-field>
             <div class="cost-summary">
-              <div>Cost Per SMS: {{ data.costPerSMS | currency }}</div>
+              <div>Cost Per Message: {{ data.costPerSMS | currency }}</div>
               <div>Total Cost: {{ totalCost | currency }}</div>
             </div>
           </div>
