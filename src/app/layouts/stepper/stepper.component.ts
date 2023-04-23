@@ -8,7 +8,7 @@ import {
   OnDestroy,
   AfterViewInit, Inject
 } from '@angular/core';
-import { MenuItems } from '../../shared/menu-items/menu-items';
+// import { MenuItems } from '../../shared/menu-items/menu-items';
 
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { StepperHeaderService } from './header/header.service';
@@ -47,7 +47,8 @@ export class StepperComponent implements OnDestroy, AfterViewInit {
   constructor(
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
-    public menuItems: MenuItems, private headerService: StepperHeaderService, private router: Router,private _cookieService: CookieService, private location: Location,
+    //public menuItems: MenuItems, 
+    private headerService: StepperHeaderService, private router: Router,private _cookieService: CookieService, private location: Location,
     private route: ActivatedRoute,@Inject(DOCUMENT) private document: any
   ) {
     this.id = this.route.snapshot.paramMap.get("id");

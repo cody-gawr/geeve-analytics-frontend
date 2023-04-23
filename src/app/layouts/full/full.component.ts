@@ -9,7 +9,7 @@ import {
   AfterViewInit,
   Inject
 } from '@angular/core';
-import { MenuItems } from '../../shared/menu-items/menu-items';
+// import { MenuItems } from '../../shared/menu-items/menu-items';
 
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { HeaderService } from './header/header.service';
@@ -49,7 +49,7 @@ export class FullComponent implements OnDestroy, AfterViewInit {
   constructor(
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
-    public menuItems: MenuItems,
+    // public menuItems: MenuItems,
     private headerService: HeaderService,
     private router: Router,
     private _cookieService: CookieService,

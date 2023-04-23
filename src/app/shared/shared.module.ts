@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { MenuItems } from './menu-items/menu-items';
+// import { MenuItems } from './menu-items/menu-items';
 import { RolesUsersService } from '../roles-users/roles-users.service';
 import {
   AccordionAnchorDirective,
@@ -43,7 +43,9 @@ import { DemoMaterialModule } from '../demo-material-module';
     ReactiveFormsModule,
     DemoMaterialModule
   ],
-  providers: [MenuItems,RolesUsersService],
+  providers: [
+    //MenuItems,
+    RolesUsersService],
   entryComponents: [TooltipLayoutComponent, TooltipComponent]
 })
 export class SharedModule {}

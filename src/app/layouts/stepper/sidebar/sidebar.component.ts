@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { MenuItems } from '../../../shared/menu-items/menu-items';
+// import { MenuItems } from '../../../shared/menu-items/menu-items';
 import { CookieService } from 'ngx-cookie';
 import { StepperHeaderService } from '../header/header.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -36,7 +36,7 @@ export class StepperSidebarComponent implements OnDestroy, AfterViewInit {
   constructor(
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
-    public menuItems: MenuItems,
+    // public menuItems: MenuItems,
     private headerService: StepperHeaderService,
     private _cookieService: CookieService,
     private route: ActivatedRoute,
@@ -45,6 +45,7 @@ export class StepperSidebarComponent implements OnDestroy, AfterViewInit {
     this.mobileQuery = media.matchMedia('(min-width: 768px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+    this.getClinics();
   }
 
   ngAfterViewInit() {
@@ -52,7 +53,6 @@ export class StepperSidebarComponent implements OnDestroy, AfterViewInit {
       (<any>$('.app-search')).toggle(200);
     });
     // This is for the topbar search
-    this.getClinics();
     this.user_type = this._cookieService.get('user_type');
     this.login_status = this._cookieService.get('login_status');
 
@@ -81,13 +81,15 @@ export class StepperSidebarComponent implements OnDestroy, AfterViewInit {
   }
   private getClinics() {
     this.headerService.getClinics().subscribe(
-      (res) => {
-        if (res.status == 200) {
-          this.clinicsData = res.body.data;
+      {
+        next: (res) => {
+          if (res.status == 200) {
+            this.clinicsData = res.body.data;
+          }
+        },
+        error: (error) => {
+          // this.warningMessage = "Please Provide Valid Inputs!";
         }
-      },
-      (error) => {
-        // this.warningMessage = "Please Provide Valid Inputs!";
       }
     );
   }
