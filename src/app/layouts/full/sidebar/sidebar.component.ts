@@ -234,7 +234,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
 
   public userPlan: any = '';
   getRoles() {
-    this.rolesUsersService.getRoleIndividual.subscribe({
+    this.rolesUsersService.getRolesIndividual().subscribe({
       next: (res) => {
         if (res.status == 200) {
           this.permisions = res.body.data;
@@ -261,8 +261,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
               this.permisions_var = 'lostopportunity';
             }
 
-            if (this.permisions.indexOf(this.permisions_var) >= 0) {
-            } else {
+            if (!(this.permisions.indexOf(this.permisions_var) >= 0)) {
               this.router.navigate(['/profile-settings']);
             }
           }
@@ -274,16 +273,16 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
   }
 
   getClinic() {
-    this.headerService.getClinic.subscribe(
-      (res) => {
+    this.headerService.getClinics().subscribe({
+      next: (res) => {
         if (res.status == 200) {
           this.clinic_id = res.body.data[0]['id'];
           this.hasPrimeClinics = res.body.hasPrimeClinics;
           this.getRoles();
         }
       },
-      (error) => {}
-    );
+      error: (error) => {}
+    });
   }
 
   open() {
