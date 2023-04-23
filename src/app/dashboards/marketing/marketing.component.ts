@@ -3621,10 +3621,8 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       this.showAccountsButton = true;
     } else {
       this.rolesUsersService.getRolesIndividual().subscribe((res) => {
-        if (res.status == 200) {
-          if (res.body.data.indexOf('profilesettings') >= 0) {
-            this.showAccountsButton = true;
-          }
+        if (res.data.indexOf('profilesettings') >= 0) {
+          this.showAccountsButton = true;
         }
       });
     }

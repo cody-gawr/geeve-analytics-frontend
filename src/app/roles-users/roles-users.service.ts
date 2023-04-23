@@ -56,12 +56,17 @@ export class RolesUsersService {
   }
 
   // Get Roles For individual
-  getRolesIndividual(clinic_id = ''): Observable<any> {
+  getRolesIndividual(clinic_id = ''): Observable<{
+    data: string,
+    plan: string,
+    type: number
+  }> {
     var header = this.getHeaders();
     if (clinic_id == '') {
       return this.http.get(this.apiUrl + '/Roles/rolesIndividual', header).pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
+        map((response: HttpResponse<any>) => {
+          this.setRoleIndividual(response);
+          return response.body;
         })
       );
     }
@@ -71,8 +76,8 @@ export class RolesUsersService {
         header
       )
       .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
+        map((response: HttpResponse<any>) => {
+          return response.body;
         })
       );
   }

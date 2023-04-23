@@ -37,7 +37,10 @@ export class HeaderService {
         var header = this.getHeaders();   
         return this.http.get(this.apiUrl +"/clinics/clinicGet",  header)
         .pipe(map((response: HttpResponse<Object>) => {
-                if(response.status == 200) this.clinics = response.body['data'];
+                if(response.status == 200) {
+                    this.setClinics(response);
+                    this.clinics = response.body['data'];
+                }
                 return response;
             })
         );

@@ -55,7 +55,7 @@ export class AppHeaderrightComponent
   private notifier = new Subject<void>();
   providerIdDentist;
   isToggleDentistChart: string;
-  user_type_dentist;
+  user_type_dentist: string;
   public apiUrl = environment.apiUrl;
 
   showCompare: boolean = false;
@@ -124,7 +124,7 @@ export class AppHeaderrightComponent
     if (this._cookieService.get('userid')) {
       this.userId = Number(this._cookieService.get('userid'));
     }
-    this.getRoles();
+    this.getRolesIndividual();
     this.user_type_dentist = this._cookieService.get('user_type');
     this._routerSub = this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
@@ -203,17 +203,15 @@ export class AppHeaderrightComponent
     /************** unAuthorised **************/
   }
 
-  getRoles() {
-    this.rolesUsersService.getRolesIndividual().subscribe(
+  getRolesIndividual() {
+    this.rolesUsersService.getRoleIndividual.subscribe(
       (res) => {
-        this.rolesUsersService.setRoleIndividual(res);
         if (res.status == 200) {
-          this.user_type_dentist = res.body.type;
+          this.user_type_dentist = res.body.type.toString();
           let opts = this.constants.cookieOpt as CookieOptions;
-          this._cookieService.put('user_type', res.body.type, opts);
+          this._cookieService.put('user_type', this.user_type_dentist, opts);
         }
-      },
-      (error) => {}
+      }
     );
   }
 
@@ -546,8 +544,7 @@ export class AppHeaderrightComponent
 
     this.rolesUsersService.getRolesIndividual(clinicId).subscribe({
       next: (res) => {
-        if (res.status == 200) {
-          permissions = (<string>res.body.data).split(',');
+          permissions = (<string>res.data).split(',');
           if (permissions.length > 0 && this.user_type == 7) {
             const permissionByRoute = Object.keys(permission2Route).find(
               (permission) => permission2Route[permission] == this.route
@@ -575,7 +572,7 @@ export class AppHeaderrightComponent
             $('.settings-table-card').addClass('unauth-hide');
             $('.page-content').addClass('unauth-hide');
           }
-        }
+        
       },
       error: (error) => {}
     });

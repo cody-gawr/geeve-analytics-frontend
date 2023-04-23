@@ -130,7 +130,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
   public nav_open = '';
   public activeRoute = '';
   public showMenu: boolean = false;
-  public permisions: any = '';
+  public permisions: string = '';
   public permisions_var: any = '';
   public clinic_id;
   public hasPrimeClinics;
@@ -162,6 +162,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     // this.router.events.subscribe((event: Event) => {
     //   if (event instanceof NavigationEnd && event.url != '/login') {
         this.user_type = this._cookieService.get('user_type');
+        this.userPlan = this._cookieService.get('user_plan');
         if (!this._cookieService.get("user_image")){
           this.user_image = 'assets/images/gPZwCbdS.jpg';
         }
@@ -176,7 +177,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
         if (this.user_type == 7) {
           if (this.clinic_id != null && typeof this.clinic_id != 'undefined') {
             this.clinic_id = this._cookieService.get('clinic_id');
-            this.getRoles();
+            this.getRolesIndividual();
           } else {
             this.getClinic();
           }
@@ -233,40 +234,39 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
   }
 
   public userPlan: any = '';
-  getRoles() {
+  getRolesIndividual() {
     this.rolesUsersService.getRolesIndividual().subscribe({
       next: (res) => {
-        if (res.status == 200) {
-          this.permisions = res.body.data;
-          this._cookieService.put('user_type', res.body.type + '', this.constants.cookieOpt );
-          this._cookieService.put('user_plan', res.body.plan, this.constants.cookieOpt );
-          this.userPlan = res.body.plan;
-          //Remove apis calls when user have not permission of any page form FE
-          if (res.body.type != 2 && res.body.type != 7) {
-            if (this.activeRoute == '/dashboards/healthscreen') {
-              this.permisions_var = 'healthscreen';
-            } else if (this.activeRoute == '/dashboards/cliniciananalysis') {
-              this.permisions_var = 'dashboard1';
-            } else if (this.activeRoute == '/dashboards/clinicianproceedures') {
-              this.permisions_var = 'dashboard2';
-            } else if (this.activeRoute == '/dashboards/frontdesk') {
-              this.permisions_var = 'dashboard3';
-            } else if (this.activeRoute == '/dashboards/marketing') {
-              this.permisions_var = 'dashboard4';
-            } else if (this.activeRoute == '/dashboards/finances') {
-              this.permisions_var = 'dashboard5';
-            } else if (this.activeRoute == '/morning-huddle') {
-              this.permisions_var = 'morninghuddle';
-            } else if (this.activeRoute == '/lost-opportunity') {
-              this.permisions_var = 'lostopportunity';
-            }
-
-            if (!(this.permisions.indexOf(this.permisions_var) >= 0)) {
-              this.router.navigate(['/profile-settings']);
-            }
+        this.permisions = res.data;
+        this._cookieService.put('user_type', res.type + '', this.constants.cookieOpt );
+        this._cookieService.put('user_plan', res.plan, this.constants.cookieOpt );
+        this.userPlan = res.plan;
+        //Remove apis calls when user have not permission of any page form FE
+        if (res.type != 2 && res.type != 7) {
+          if (this.activeRoute == '/dashboards/healthscreen') {
+            this.permisions_var = 'healthscreen';
+          } else if (this.activeRoute == '/dashboards/cliniciananalysis') {
+            this.permisions_var = 'dashboard1';
+          } else if (this.activeRoute == '/dashboards/clinicianproceedures') {
+            this.permisions_var = 'dashboard2';
+          } else if (this.activeRoute == '/dashboards/frontdesk') {
+            this.permisions_var = 'dashboard3';
+          } else if (this.activeRoute == '/dashboards/marketing') {
+            this.permisions_var = 'dashboard4';
+          } else if (this.activeRoute == '/dashboards/finances') {
+            this.permisions_var = 'dashboard5';
+          } else if (this.activeRoute == '/morning-huddle') {
+            this.permisions_var = 'morninghuddle';
+          } else if (this.activeRoute == '/lost-opportunity') {
+            this.permisions_var = 'lostopportunity';
           }
-          // End
+
+          if (!(this.permisions.indexOf(this.permisions_var) >= 0)) {
+            this.router.navigate(['/profile-settings']);
+          }
         }
+        // End
+        
       },
       error: (error) => {}
     });
@@ -278,7 +278,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
         if (res.status == 200) {
           this.clinic_id = res.body.data[0]['id'];
           this.hasPrimeClinics = res.body.hasPrimeClinics;
-          this.getRoles();
+          this.getRolesIndividual();
         }
       },
       error: (error) => {}
