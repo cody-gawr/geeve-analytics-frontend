@@ -1,5 +1,9 @@
 <div class="dialog-header">
-  <h1 mat-dialog-title>Send Review Invite</h1>
+  <div class="header-title">
+    <h1 mat-dialog-title>Send Review Invite</h1>
+    <span>({{data.total_remains}} remaining)</span>
+  </div>
+  
   <mat-icon aria-hidden="false" (click)="onNoClick()">close</mat-icon>
 </div>
 <div mat-dialog-content>
