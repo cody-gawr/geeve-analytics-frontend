@@ -977,12 +977,12 @@ export class FinancesComponent implements AfterViewInit {
               var singleval = body[0].split(':');
               if (singleval[1].includes('-')) {
                 var temp = singleval[1].split('$');
-                var amount = temp[1].replace(/,/g, '');
-                total -= parseFloat(amount);
+                var amount = temp[1]?.replace(/,/g, '');
+                total -= parseFloat(amount??'0');
               } else {
                 var temp = singleval[1].split('$');
-                var amount = temp[1].replace(/,/g, '');
-                total += parseFloat(amount);
+                var amount = temp[1]?.replace(/,/g, '');
+                total += parseFloat(amount??'0');
               }
             }
           });
@@ -1156,12 +1156,12 @@ export class FinancesComponent implements AfterViewInit {
               var singleval = body[0].split(':');
               if (singleval[1].includes('-')) {
                 var temp = singleval[1].split('$');
-                var amount = temp[1].replace(/,/g, '');
-                total -= parseFloat(amount);
+                var amount = temp[1]?.replace(/,/g, '');
+                total -= parseFloat(amount??'0');
               } else {
                 var temp = singleval[1].split('$');
-                var amount = temp[1].replace(/,/g, '');
-                total += parseFloat(amount);
+                var amount = temp[1]?.replace(/,/g, '');
+                total += parseFloat(amount??'0');
               }
             }
           });
