@@ -1631,6 +1631,16 @@
                 Retry (Undelivered)
               </button>
               <button
+                *ngIf="element.sms_status == 'delivered_prev'"
+                mat-stroked-button
+                [disabled]="element.unsubscribed"
+                [matTooltip]="element.unsubscribed?'This patient has unsubscribed':''"
+                class="mat-dc"
+                (click)="openSendReviewBtnDialog(element)"
+              >
+                Send Again
+              </button>
+              <button
                 *ngIf="element.sms_status == undefined"
                 mat-stroked-button
                 [disabled]="element.unsubscribed"
