@@ -146,7 +146,7 @@
     <!-- Update Card Details End -->
     <!-- Update Card Details Start -->
     <!-- <mat-expansion-panel *ngIf="false"> -->
-    <mat-expansion-panel [ngClass] ="showCard? 'show': 'hide'" >
+    <mat-expansion-panel *ngIf="showCard" >
         <mat-expansion-panel-header>
             <mat-panel-title>Chart Tips</mat-panel-title>
         </mat-expansion-panel-header>
@@ -188,10 +188,6 @@
                                            </div> 
 
                                      </div>
-
-
-
-                                  
                                 </div>
                                 <mat-card-actions class="sa-pull-right">
                                     <button mat-raised-button color="dc" (click) = "saveTips()">SAVE</button>
@@ -205,7 +201,7 @@
     <!-- Update Card Details End -->   
     
      <!-- Health Screen Start -->
-     <mat-expansion-panel [ngClass] ="showCard? 'show': 'hide'" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+     <mat-expansion-panel *ngIf="(apiUrl.includes('test') || apiUrl.includes('staging-')) && showCard">
         <mat-expansion-panel-header>
             <mat-panel-title>Customisations </mat-panel-title>
         </mat-expansion-panel-header>
