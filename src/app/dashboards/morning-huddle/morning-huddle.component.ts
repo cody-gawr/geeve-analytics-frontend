@@ -674,7 +674,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.scheduleNewPatientsLoader = true;
     this.currentDentistSchedule = event;
     this.currentDentist = event;
-    console.log(this.currentDentist);
 
     if (this.currentDentist != 0) {
       var temp = [];
