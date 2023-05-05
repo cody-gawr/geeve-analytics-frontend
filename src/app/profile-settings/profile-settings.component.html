@@ -250,7 +250,7 @@
         </mat-card-content>
     </mat-expansion-panel>
 
-    <mat-expansion-panel>
+    <mat-expansion-panel *ngIf="isSMSEnabled">
         <mat-expansion-panel-header>
             <mat-panel-title>Review Credits</mat-panel-title>
         </mat-expansion-panel-header>

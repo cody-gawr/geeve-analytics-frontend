@@ -15,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 import { RolesUsersService } from '../roles-users/roles-users.service';
 import { MatDialog } from '@angular/material/dialog';
 import { StripePaymentDialog } from '../shared/stripe-payment-modal/stripe-payment-modal.component';
+import { ClinicianAnalysisService } from '../dashboards/cliniciananalysis/cliniciananalysis.service';
 
 const passwordValidation = new FormControl('', [
   Validators.required,
@@ -35,7 +36,7 @@ export class ProfileSettingsComponent implements OnInit {
   elementsOptions: StripeElementsOptions = {};
   elements;
   card;
-  // isSMSEnabled = false;
+  isSMSEnabled = false;
   public apiUrl = environment.apiUrl;
   public cardStyle = {
     base: {
@@ -160,7 +161,7 @@ export class ProfileSettingsComponent implements OnInit {
     private _cookieService: CookieService,
     private fb: FormBuilder,
     private profileSettingsService: ProfileSettingsService,
-    // private clinicianAnalysisService: ClinicianAnalysisService,
+    private clinicianAnalysisService: ClinicianAnalysisService,
     // private monringHuddleService: MorningHuddleService,
     private route: ActivatedRoute,
     private stripeService: StripeService,
@@ -175,6 +176,20 @@ export class ProfileSettingsComponent implements OnInit {
       floatLabel: 'auto'
     });
     this.userType = this._cookieService.get('user_type');
+
+    this.clinicianAnalysisService
+    .getClinicFollowUpSettings(this.clinic_id)
+    .subscribe({
+      next: (v) => {
+        if (v.data.sms_enabled != undefined)
+          this.isSMSEnabled =
+            !!v.data.sms_enabled && parseInt(this.userType) != 4 && parseInt(this.userType) != 7;
+      },
+      error: (e) => {
+        console.error(e);
+      }
+    });
+  
     this.health_screen_mtd = this._cookieService.get('health_screen_mtd');
     this.form = this.fb.group({
       currentPassword: [null, Validators.compose([Validators.required])],
