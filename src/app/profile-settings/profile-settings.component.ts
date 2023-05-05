@@ -161,7 +161,7 @@ export class ProfileSettingsComponent implements OnInit {
     private _cookieService: CookieService,
     private fb: FormBuilder,
     private profileSettingsService: ProfileSettingsService,
-    private clinicianAnalysisService: ClinicianAnalysisService,
+    // private clinicianAnalysisService: ClinicianAnalysisService,
     // private monringHuddleService: MorningHuddleService,
     private route: ActivatedRoute,
     private stripeService: StripeService,
@@ -176,19 +176,20 @@ export class ProfileSettingsComponent implements OnInit {
       floatLabel: 'auto'
     });
     this.userType = this._cookieService.get('user_type');
+    this.isSMSEnabled = parseInt(this.userType) != 4 && parseInt(this.userType) != 7;
 
-    this.clinicianAnalysisService
-    .getClinicFollowUpSettings(this.clinic_id)
-    .subscribe({
-      next: (v) => {
-        if (v.data.sms_enabled != undefined)
-          this.isSMSEnabled =
-            !!v.data.sms_enabled && parseInt(this.userType) != 4 && parseInt(this.userType) != 7;
-      },
-      error: (e) => {
-        console.error(e);
-      }
-    });
+    // this.clinicianAnalysisService
+    // .getClinicFollowUpSettings(this.clinic_id)
+    // .subscribe({
+    //   next: (v) => {
+    //     if (v.data.sms_enabled != undefined)
+    //       this.isSMSEnabled =
+    //         !!v.data.sms_enabled && parseInt(this.userType) != 4 && parseInt(this.userType) != 7;
+    //   },
+    //   error: (e) => {
+    //     console.error(e);
+    //   }
+    // });
   
     this.health_screen_mtd = this._cookieService.get('health_screen_mtd');
     this.form = this.fb.group({
