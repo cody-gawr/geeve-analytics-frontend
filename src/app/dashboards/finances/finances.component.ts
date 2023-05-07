@@ -822,13 +822,13 @@ export class FinancesComponent implements AfterViewInit {
               body_custom = body_custom.split(':');
               if (body_custom[1].includes('-')) {
                 var temp_ = body_custom[1].split('$');
-                temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
+                temp_[1] = Math.round(temp_.length > 1? temp_[1].replace(/,/g, ''): 0);
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
                 body_custom[1] = temp_.join('$');
               } else {
                 var temp_ = body_custom[1].split('$');
-                temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
+                temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
                 body_custom[1] = temp_.join('$');
@@ -1006,13 +1006,13 @@ export class FinancesComponent implements AfterViewInit {
               body_custom = body_custom.split(':');
               if (body_custom[1].includes('-')) {
                 var temp_ = body_custom[1].split('$');
-                temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
+                temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
                 body_custom[1] = temp_.join('$');
               } else {
                 var temp_ = body_custom[1].split('$');
-                temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
+                temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
                 body_custom[1] = temp_.join('$');
@@ -1185,13 +1185,13 @@ export class FinancesComponent implements AfterViewInit {
               body_custom = body_custom.split(':');
               if (body_custom[1].includes('-')) {
                 var temp_ = body_custom[1].split('$');
-                temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
+                temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
                 body_custom[1] = temp_.join('$');
               } else {
                 var temp_ = body_custom[1].split('$');
-                temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
+                temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
                 body_custom[1] = temp_.join('$');

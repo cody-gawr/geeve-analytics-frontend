@@ -1025,13 +1025,13 @@ export class MarketingComponent implements OnInit, AfterViewInit {
               body_custom = body_custom.split(':');
               if (body_custom[1].includes('-')) {
                 var temp_ = body_custom[1].split('$');
-                temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
+                temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
                 body_custom[1] = temp_.join('$');
               } else {
                 var temp_ = body_custom[1].split('$');
-                temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
+                temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
                 body_custom[1] = temp_.join('$');
@@ -1078,7 +1078,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
           currency = currencySegs.join('.');
           return (
             data.datasets[tooltipItems.datasetIndex].label +
-            `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`
+            `: ${parseInt(tooltipItems.yLabel.toString()) < 0 ? '- $' : '$'}${currency}`
           );
         }
       }
@@ -1210,13 +1210,13 @@ export class MarketingComponent implements OnInit, AfterViewInit {
               body_custom = body_custom.split(':');
               if (body_custom[1].includes('-')) {
                 var temp_ = body_custom[1].split('$');
-                temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
+                temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
                 body_custom[1] = temp_.join('');
               } else {
                 var temp_ = body_custom[1].split('$');
-                temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
+                temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
                 body_custom[1] = temp_.join('');

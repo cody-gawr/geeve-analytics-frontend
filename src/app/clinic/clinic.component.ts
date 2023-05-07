@@ -9,14 +9,11 @@ import { ToastrService } from 'ngx-toastr';
 import { HeaderService } from './../layouts/full/header/header.service';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   Validators
 } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { SetupService } from '../setup/setup.service';
-import { identifierName } from '@angular/compiler';
-import { newArray } from '@angular/compiler/src/util';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -208,8 +205,7 @@ export class ClinicComponent implements AfterViewInit {
           }
         }, error => {
           this.warningMessage = "Please Provide Valid Inputs!";
-        }
-        );
+        });
       }
     });
   }
@@ -245,26 +241,6 @@ export class ClinicComponent implements AfterViewInit {
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     });
-    // this.clinicService.getClinics().subscribe((res) => {
-    //   if (res.status == 200) {
-    //     this.rows = res.body.data;
-    //     if (res.body.data.length > 0) {
-    //       this.temp = [...res.body.data];
-    //       this.clinicscount = res.body.data[0]['config_user'].clinics_count;
-    //       this.createdClinicsCount = res.body.total;
-    //       this.table = data;
-    //     }
-    //   } else if (res.status == 401) {
-    //     this._cookieService.put("username", '');
-    //     this._cookieService.put("email", '');
-    //     this._cookieService.put("userid", '');
-    //     this.router.navigateByUrl('/login');
-    //   }
-    // }, error => {
-    //   this.warningMessage = "Please Provide Valid Inputs!";
-    // }
-    // );
-
   }
   //get count of clinics allowed
   private getUserDetails() {
@@ -322,7 +298,6 @@ export class ClinicComponent implements AfterViewInit {
         else {
           this.rows.splice(row, 1);
           this.rows = [...this.rows];
-
         }
       } else {
         $('.ajax-loader').hide();
