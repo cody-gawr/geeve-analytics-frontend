@@ -572,7 +572,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             if (v.data.accepted_sms_terms != undefined)
               this.isAcceptedSMSTerms = !!v.data.accepted_sms_terms;
             if(this.isSMSEnabled){
-              //this.updateCreditStatus();
+              this.updateCreditStatus();
               this.creditStatusTimer = setInterval(() => {
                 this.updateCreditStatus();
               }, 30000);
