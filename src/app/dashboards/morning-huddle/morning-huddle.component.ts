@@ -498,7 +498,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         phone_number: r.mobile
       };
     });
-    console.log('test', remindersData)
     this.morningHuddleService
       .getCreditStatus(
         this.clinic_id,
@@ -779,15 +778,16 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             }
             this.remindersTotal = res.body.total;
             if(this.isSMSEnabled){
+              const remindersData = res.body.data.map((d) => {
+                return {
+                  appoint_id: d.appoint_id,
+                  phone_number: d.mobile
+                };
+              });
               this.morningHuddleService
               .getCreditStatus(
                 this.clinic_id,
-                res.body.data.map((d) => {
-                  return {
-                    appoint_id: d.appoint_id,
-                    phone_number: d.mobile
-                  };
-                }),
+                remindersData,
                 this.previousDays.split('T')[0]
               )
               .subscribe((v2) => {
@@ -799,7 +799,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
                   const reminderList = _.merge(res.body.data, statusList);
                   this.remindersRecallsOverdueTemp = reminderList;
                   this.remindersRecallsOverdue = reminderList;
-                  console.log('test1',reminderList, this.remindersRecallsOverdue)
                   this.remindersRecallsOverdueDate = this.datepipe
                     .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
                     .replace(/\s/, 'T');
