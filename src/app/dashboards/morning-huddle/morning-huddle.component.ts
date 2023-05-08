@@ -492,15 +492,17 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   }
 
   updateCreditStatus() {
+    const remindersData = this.remindersRecallsOverdue.map((r) => {
+      return {
+        appoint_id: r.appoint_id,
+        phone_number: r.mobile
+      };
+    });
+    console.log('test', remindersData)
     this.morningHuddleService
       .getCreditStatus(
         this.clinic_id,
-        this.remindersRecallsOverdue.map((r) => {
-          return {
-            appoint_id: r.appoint_id,
-            phone_number: r.mobile
-          };
-        }),
+        remindersData,
         this.previousDays.split('T')[0]
       )
       .subscribe((res) => {
@@ -552,7 +554,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
           .replace(/\s/, 'T');
       }
       this.dailyTabSettLod = false;
-
+      if(this.creditStatusTimer) clearInterval(this.creditStatusTimer);
       this.clinicianAnalysisService
         .getClinicFollowUpSettings(this.clinic_id)
         .subscribe({
@@ -572,7 +574,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             if (v.data.accepted_sms_terms != undefined)
               this.isAcceptedSMSTerms = !!v.data.accepted_sms_terms;
             if(this.isSMSEnabled){
-              this.updateCreditStatus();
+              // this.updateCreditStatus();
               this.creditStatusTimer = setInterval(() => {
                 this.updateCreditStatus();
               }, 30000);
@@ -797,6 +799,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
                   const reminderList = _.merge(res.body.data, statusList);
                   this.remindersRecallsOverdueTemp = reminderList;
                   this.remindersRecallsOverdue = reminderList;
+                  console.log('test1',reminderList, this.remindersRecallsOverdue)
                   this.remindersRecallsOverdueDate = this.datepipe
                     .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
                     .replace(/\s/, 'T');
