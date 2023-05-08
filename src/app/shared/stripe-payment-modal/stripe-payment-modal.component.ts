@@ -100,7 +100,7 @@ export class StripePaymentDialog {
       elements: this.elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: `${window.location.origin}/morning-huddle?tab=2`
+        return_url: `${window.location.href}`
       }
     });
 

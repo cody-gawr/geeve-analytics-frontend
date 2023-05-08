@@ -495,7 +495,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     const remindersData = this.remindersRecallsOverdue.map((r) => {
       return {
         appoint_id: r.appoint_id,
-        phone_number: r.mobile
+        phone_number: r.mobile,
+        patient_id: r.patient_id
       };
     });
     this.morningHuddleService
@@ -781,7 +782,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               const remindersData = res.body.data.map((d) => {
                 return {
                   appoint_id: d.appoint_id,
-                  phone_number: d.mobile
+                  phone_number: d.mobile,
+                  patient_id: d.patient_id
                 };
               });
               this.morningHuddleService
