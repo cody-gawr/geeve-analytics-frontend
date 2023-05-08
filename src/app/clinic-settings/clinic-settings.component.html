@@ -942,5 +942,25 @@
     </mat-card-content>
   </mat-expansion-panel>
 
+  <mat-expansion-panel *ngIf="isSMSEnabled">
+      <mat-expansion-panel-header>
+          <mat-panel-title>Review Credits</mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-card-content>
+          <div fxLayout="row" fxLayoutGap="20">
+              <div fxLayout="column" fxLayoutAlign="center">
+                  <span>Review Credits:
+                  <strong style="color: #18a689">{{ remainCredits }}</strong></span>
+              </div>
+
+              <button 
+                  mat-raised-button 
+                  color="dc" 
+                  type="button"
+                  (click)="openTopUpCredits()" 
+                  class="add-credits-btn"> Add credits </button>
+          </div>
+      </mat-card-content>
+    </mat-expansion-panel>
   <!-- MYOB end -->
 </mat-accordion>

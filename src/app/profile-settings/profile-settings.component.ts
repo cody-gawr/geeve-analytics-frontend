@@ -36,7 +36,6 @@ export class ProfileSettingsComponent implements OnInit {
   elementsOptions: StripeElementsOptions = {};
   elements;
   card;
-  isSMSEnabled = false;
   public apiUrl = environment.apiUrl;
   public cardStyle = {
     base: {
@@ -155,8 +154,6 @@ export class ProfileSettingsComponent implements OnInit {
   public xeroConnect = false;
   public xeroOrganization = '';
   public email;
-  remainCredits = 0;
-  costPerSMS = 0.0;
   constructor(
     private _cookieService: CookieService,
     private fb: FormBuilder,
@@ -176,21 +173,6 @@ export class ProfileSettingsComponent implements OnInit {
       floatLabel: 'auto'
     });
     this.userType = this._cookieService.get('user_type');
-    this.isSMSEnabled = parseInt(this.userType) != 4 && parseInt(this.userType) != 7;
-
-    // this.clinicianAnalysisService
-    // .getClinicFollowUpSettings(this.clinic_id)
-    // .subscribe({
-    //   next: (v) => {
-    //     if (v.data.sms_enabled != undefined)
-    //       this.isSMSEnabled =
-    //         !!v.data.sms_enabled && parseInt(this.userType) != 4 && parseInt(this.userType) != 7;
-    //   },
-    //   error: (e) => {
-    //     console.error(e);
-    //   }
-    // });
-  
     this.health_screen_mtd = this._cookieService.get('health_screen_mtd');
     this.form = this.fb.group({
       currentPassword: [null, Validators.compose([Validators.required])],
@@ -215,12 +197,7 @@ export class ProfileSettingsComponent implements OnInit {
   ngOnInit() {
     // this.route.params.subscribe((params) => {
       this.id = this.route.snapshot.paramMap.get('id');
-      this.profileSettingsService.getCreditData().subscribe(
-        v => {
-          this.remainCredits = v.data.remain_credits;
-          this.costPerSMS = v.data.cost_per_sms;
-        }
-      );
+
       this.displayName = this._cookieService.get('display_name');
       this.email = this._cookieService.get('email');
       /*this.imageURL = this._cookieService.get("user_image");   */
@@ -239,11 +216,7 @@ export class ProfileSettingsComponent implements OnInit {
     // });
   }
 
-  openTopUpCredits() {
-    const stripePaymentDialog = this.dialog.open(StripePaymentDialog, {
-      data: { costPerSMS: this.costPerSMS }
-    });
-  }
+
 
   public stripePublicKey: any = '';
   getStripeKey() {

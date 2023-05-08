@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
 import { IClinic } from '../clinic';
 import { forkJoin } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { StripePaymentDialog } from '../shared/stripe-payment-modal/stripe-payment-modal.component';
 
 export interface ReviewMsgTemplateObject {
   id?: number;
@@ -104,7 +105,8 @@ export class ClinicSettingsComponent implements OnInit {
   public get isExactOrCore(): boolean {
     return this.localStorageService.isEachClinicPmsExactOrCore(this.clinic_id);
   }
-
+  remainCredits = 0;
+  costPerSMS = 0.0;
   constructor(
     private localStorageService: LocalStorageService,
     private toastr: ToastrService,
@@ -201,6 +203,13 @@ export class ClinicSettingsComponent implements OnInit {
       this.checkXeroStatus();
       this.checkMyobStatus();
     });
+
+    this.clinicSettingsService.getCreditData().subscribe(
+      v => {
+        this.remainCredits = v.data.remain_credits;
+        this.costPerSMS = v.data.cost_per_sms;
+      }
+    );
   }
 
   ngAfterViewInit() {
@@ -220,6 +229,11 @@ export class ClinicSettingsComponent implements OnInit {
 
   // Sufix and prefix
   //hide = true;
+  openTopUpCredits() {
+    const stripePaymentDialog = this.dialog.open(StripePaymentDialog, {
+      data: { costPerSMS: this.costPerSMS }
+    });
+  }
 
   getErrorMessage() {
     return this.email.hasError('required')
@@ -285,7 +299,6 @@ export class ClinicSettingsComponent implements OnInit {
     this.clinicSettingsService.getClinicFollowUPSettings(this.id).subscribe({
       next: (v) => {
         this.clinicSettingsService.setClincsSetting(v.httpRes);
-        //if (res.status == 200) {
         this.postOpEnable = v.data.post_op_enable == 1 ? true : false;
         this.tickEnable = v.data.tick_enable == 1 ? true : false;
         this.recallEnable = v.data.recall_enable == 1 ? true : false;
@@ -308,7 +321,6 @@ export class ClinicSettingsComponent implements OnInit {
           this.getReviewMsgTemplates();
           this.getSocialLinks();
         }
-        //}
       },
       error: (error) => {
         this.warningMessage = 'Please Provide Valid Inputs!';

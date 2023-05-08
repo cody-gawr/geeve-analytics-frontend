@@ -509,4 +509,25 @@ export class ClinicSettingsService {
             })
         );
     }
+
+    getCreditData(): Observable<{
+        status: boolean;
+        data: {
+          remain_credits: number;
+          cost_per_sms: number;
+          review_msg: string | null;
+        };
+      }> {
+        const header = this.getHeaders();
+        return this.http
+          .get(
+            this.apiUrl + '/reviews/getCreditData',
+            header
+          )
+          .pipe(
+            map((res: HttpResponse<any>) => {
+              return res.body;
+            })
+          );
+      }
 }
