@@ -1061,13 +1061,14 @@ export class MorningHuddleService {
       );
   }
   // Users api
-  createPaymentIntent(creditAmount): Observable<HttpResponse<any>> {
+  createPaymentIntent(creditAmount: number, clinic_id: number): Observable<HttpResponse<any>> {
     const header = this.getHeaders();
     return this.http
       .post(
         this.apiUrl + '/reviews/createPaymentIntent',
         {
-          amount: creditAmount
+          amount: creditAmount,
+          clinic_id
         },
         header
       )

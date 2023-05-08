@@ -202,14 +202,14 @@ export class ClinicSettingsComponent implements OnInit {
 
       this.checkXeroStatus();
       this.checkMyobStatus();
-    });
 
-    this.clinicSettingsService.getCreditData().subscribe(
-      v => {
-        this.remainCredits = v.data.remain_credits;
-        this.costPerSMS = v.data.cost_per_sms;
-      }
-    );
+      this.clinicSettingsService.getCreditData(this.id).subscribe(
+        v => {
+          this.remainCredits = v.data.remain_credits;
+          this.costPerSMS = v.data.cost_per_sms;
+        }
+      );
+    });
   }
 
   ngAfterViewInit() {
@@ -231,7 +231,7 @@ export class ClinicSettingsComponent implements OnInit {
   //hide = true;
   openTopUpCredits() {
     const stripePaymentDialog = this.dialog.open(StripePaymentDialog, {
-      data: { costPerSMS: this.costPerSMS }
+      data: { costPerSMS: this.costPerSMS, clinic_id:  this.id}
     });
   }
 

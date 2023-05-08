@@ -623,12 +623,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.getEndOfDays();
   }
 
-  // openTopUpCredits() {
-  //   const stripePaymentDialog = this.dialog.open(StripePaymentDialog, {
-  //     data: { costPerSMS: this.costPerSMS }
-  //   });
-  // }
-
   changeTab(tabIndex: number) {
     this.selectedTab = tabIndex;
   }

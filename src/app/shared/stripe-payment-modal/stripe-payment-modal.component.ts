@@ -19,6 +19,7 @@ export interface DialogData {
   //totalCredits: number;
   notify_msg?: string;
   costPerSMS: number;
+  clinic_id: number;
 }
 
 @Component({
@@ -55,7 +56,7 @@ export class StripePaymentDialog {
   async initStripeElements() {
     this.stripe = await loadStripe(environment.stripeKey);
     this.morningHuddle
-      .createPaymentIntent(this.selectedCredit)
+      .createPaymentIntent(this.selectedCredit, this.data.clinic_id)
       .subscribe((resData) => {
         const { clientSecret } = resData.body.data;
 

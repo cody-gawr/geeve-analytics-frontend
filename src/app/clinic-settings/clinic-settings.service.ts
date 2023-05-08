@@ -510,7 +510,7 @@ export class ClinicSettingsService {
         );
     }
 
-    getCreditData(): Observable<{
+    getCreditData(clinic_id: number): Observable<{
         status: boolean;
         data: {
           remain_credits: number;
@@ -521,7 +521,7 @@ export class ClinicSettingsService {
         const header = this.getHeaders();
         return this.http
           .get(
-            this.apiUrl + '/reviews/getCreditData',
+            this.apiUrl + '/reviews/getCreditData?clinic_id='+clinic_id,
             header
           )
           .pipe(

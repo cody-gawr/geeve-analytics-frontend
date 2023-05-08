@@ -13,9 +13,6 @@ import { StripeElementsOptions } from '@stripe/stripe-js';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import { RolesUsersService } from '../roles-users/roles-users.service';
-import { MatDialog } from '@angular/material/dialog';
-import { StripePaymentDialog } from '../shared/stripe-payment-modal/stripe-payment-modal.component';
-import { ClinicianAnalysisService } from '../dashboards/cliniciananalysis/cliniciananalysis.service';
 
 const passwordValidation = new FormControl('', [
   Validators.required,
@@ -158,15 +155,12 @@ export class ProfileSettingsComponent implements OnInit {
     private _cookieService: CookieService,
     private fb: FormBuilder,
     private profileSettingsService: ProfileSettingsService,
-    // private clinicianAnalysisService: ClinicianAnalysisService,
-    // private monringHuddleService: MorningHuddleService,
     private route: ActivatedRoute,
     private stripeService: StripeService,
     private router: Router,
     private toastr: ToastrService,
     private rolesUsersService: RolesUsersService,
     public constants: AppConstants,
-    private dialog: MatDialog
   ) {
     this.options = fb.group({
       hideRequired: false,
