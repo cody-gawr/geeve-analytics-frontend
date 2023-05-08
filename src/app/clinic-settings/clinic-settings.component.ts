@@ -318,23 +318,25 @@ export class ClinicSettingsComponent implements OnInit {
 
   getFollowUpSettings() {
     this.clinicSettingsService.getFollowUpSettings(this.id).subscribe(
-      (res) => {
-        if (res.status == 200) {
-          if (res.body.data) {
-            this.ftaFollowupDays = res.body.data.fta_followup_days;
-            this.utaFollowupDays = res.body.data.uta_followup_days;
-            this.ftaFollowupDaysLater = res.body.data.fta_days_later;
-            this.utaFollowupDaysLater = res.body.data.uta_days_later;
-            this.postOpCallsMh = res.body.data.post_op_days;
-            this.post_op_calls = res.body.data.post_op_calls;
-            this.tickDays = res.body.data.tick_days;
-            this.recallWeeks = res.body.data.recall_weeks;
-            this.referralWeeks = res.body.data.referral_weeks;
+      {
+        next: (res) => {
+          if (res.status == 200) {
+            if (res.body.data) {
+              this.ftaFollowupDays = res.body.data.fta_followup_days;
+              this.utaFollowupDays = res.body.data.uta_followup_days;
+              this.ftaFollowupDaysLater = res.body.data.fta_days_later;
+              this.utaFollowupDaysLater = res.body.data.uta_days_later;
+              this.postOpCallsMh = res.body.data.post_op_days;
+              this.post_op_calls = res.body.data.post_op_calls;
+              this.tickDays = res.body.data.tick_days;
+              this.recallWeeks = res.body.data.recall_weeks;
+              this.referralWeeks = res.body.data.referral_weeks;
+            }
           }
+        },
+        error: (error) => {
+          this.warningMessage = 'Please Provide Valid Inputs!';
         }
-      },
-      (error) => {
-        this.warningMessage = 'Please Provide Valid Inputs!';
       }
     );
   }
@@ -657,12 +659,14 @@ export class ClinicSettingsComponent implements OnInit {
     this.clinicSettingsService
       .updatePartialClinicSetting(this.id, active, column)
       .subscribe(
-        (res) => {
-          if (res.status == 200) {
-            this.toastr.success('Followups Settings Updated');
-          }
-        },
-        (error) => {}
+        {
+          next: (res) => {
+            if (res.status == 200) {
+              this.toastr.success('Followups Settings Updated');
+            }
+          },
+          error: (error) => {}
+        }
       );
   }
 

@@ -763,7 +763,7 @@ export class FrontDeskComponent implements AfterViewInit {
       },
       callbacks: {
         label: function (tooltipItems: Chart.ChartTooltipItem, data) {
-          let total = tooltipItems.yLabel > 100 ? 100 : tooltipItems.yLabel;
+          let total = parseInt(tooltipItems.yLabel.toString()) > 100 ? 100 : tooltipItems.yLabel;
           if ((<string>tooltipItems.xLabel).indexOf('--') >= 0) {
             let lbl = (<string>tooltipItems.xLabel).split('--');
             if (typeof lbl[3] === 'undefined') {
@@ -866,7 +866,7 @@ export class FrontDeskComponent implements AfterViewInit {
       },
       callbacks: {
         label: function (tooltipItems, data) {
-          let total = tooltipItems.yLabel > 100 ? 100 : tooltipItems.yLabel;
+          let total = parseInt(tooltipItems.yLabel.toString()) > 100 ? 100 : tooltipItems.yLabel;
           if ((<string>tooltipItems.xLabel).indexOf('--') >= 0) {
             let lbl = (<string>tooltipItems.xLabel).split('--');
             if (typeof lbl[3] === 'undefined') {

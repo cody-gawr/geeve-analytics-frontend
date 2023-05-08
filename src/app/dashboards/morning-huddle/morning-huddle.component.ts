@@ -500,7 +500,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             appoint_id: r.appoint_id,
             phone_number: r.mobile
           };
-        })
+        }),
+        this.previousDays.split('T')[0]
       )
       .subscribe((res) => {
         if (res.status) {
@@ -571,7 +572,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             if (v.data.accepted_sms_terms != undefined)
               this.isAcceptedSMSTerms = !!v.data.accepted_sms_terms;
             if(this.isSMSEnabled){
-              this.updateCreditStatus();
+              //this.updateCreditStatus();
               this.creditStatusTimer = setInterval(() => {
                 this.updateCreditStatus();
               }, 30000);
@@ -790,7 +791,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
                     appoint_id: d.appoint_id,
                     phone_number: d.mobile
                   };
-                })
+                }),
+                this.previousDays.split('T')[0]
               )
               .subscribe((v2) => {
                 if (v2.status) {

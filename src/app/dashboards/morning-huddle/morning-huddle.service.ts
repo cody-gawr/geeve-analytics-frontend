@@ -1083,7 +1083,8 @@ export class MorningHuddleService {
     appt_ids: {
       appiont_id: string;
       phone_number: string;
-    }[] = []
+    }[] = [],
+    date = ''
   ): Observable<{
     status: boolean;
     data: {
@@ -1100,7 +1101,8 @@ export class MorningHuddleService {
         this.apiUrl + '/reviews/updateCreditStatus',
         {
           clinic_id: clinic_id,
-          appts: appt_ids
+          appts: appt_ids,
+          date: date
         },
         header
       )
