@@ -258,7 +258,7 @@ export class AppHeaderrightComponent
   dentists: Dentist[] = [];
   private warningMessage: string;
   public finalUrl: string;
-  public selectedClinic: any = [];
+  public selectedClinic: any = 'all';
   public trailDays: Number = 0;
   public selectedDentist;
   public placeHolder = '';
@@ -297,10 +297,9 @@ export class AppHeaderrightComponent
   }
 
   private getClinics() {
-    this.selectedClinic = [];
+    // this.selectedClinic = 'all';
     this.headerService.getClinics().subscribe(
       (res) => {
-        this.headerService.setClinics(res);
         if (res.status == 200) {
           this.clinicsData = res.body.data;
           this.localStorageService.saveObject('clinics', res.body.data);
@@ -427,9 +426,17 @@ export class AppHeaderrightComponent
                   this.selectedClinic = [];
                   this.selectedClinic.push(res.body.data[0].id);
                 } else {
-                  this.clinic_id = res.body.data[0].id;
-                  this.selectedClinic = res.body.data[0].id;
-                  this.placeHolder = res.body.data[0].clinicName;
+
+                  if (this.route == '/dashboards/healthscreen'){
+                    this.clinic_id = 'all';
+                    this.selectedClinic = 'all';
+                    this.placeHolder = 'All Clinics';
+                  }else{
+                    this.clinic_id = res.body.data[0].id;
+                    this.selectedClinic = res.body.data[0].id;
+                    this.placeHolder = res.body.data[0].clinicName;
+                  }
+
                 }
               }
             //}
@@ -503,7 +510,7 @@ export class AppHeaderrightComponent
                 '/followups',
                 '/dashboards/followups',
                 '/tasks',
-                '/campaigns'
+                '/campaigns',
               ].includes(this.route)
             ) {
               let opts = this.constants.cookieOpt as CookieOptions;
