@@ -72,6 +72,7 @@ export class AppHeaderrightComponent
   classUrl: string = '';
   @Inject(MAT_DIALOG_DATA) public data: any;
   @Output() newItemEvent = new EventEmitter<Number>();
+  isSwitchingClinic = true;
 
   constructor(
     private _cookieService: CookieService,
@@ -128,6 +129,7 @@ export class AppHeaderrightComponent
     this.getRolesIndividual();
     this.user_type_dentist = this._cookieService.get('user_type');
     this._routerSub = this.router.events.subscribe((event: Event) => {
+      this.isSwitchingClinic = true;
       if (event instanceof NavigationEnd) {
         this.referFriend = false;
         this.route = router.url;
@@ -297,7 +299,7 @@ export class AppHeaderrightComponent
   private getClinics() {
     this.headerService.getClinics().subscribe(
       {
-        next:       (res) => {
+        next: (res) => {
           if (res.status == 200) {
             this.clinicsData = res.body.data;
             this.localStorageService.saveObject('clinics', res.body.data);
@@ -318,34 +320,17 @@ export class AppHeaderrightComponent
                     this.resetAccountConnection();
                   }
                 }
-              }
-              // if (this.route == '/dashboards/healthscreen') {
-              //   if (this._cookieService.get('clinic_dentist')) {
-              //     if (
-              //       this._cookieService
-              //         .get('clinic_dentist')
-              //         .split('_')[0]
-              //         .indexOf(',') < 0 ||
-              //       this._cookieService.get('clinic_dentist').split('_')[0] !=
-              //         'all'
-              //     ) {
-              //       this.getAccountConnection(res.body.data[0].id);
-              //     } else {
-              //       this.resetAccountConnection();
-              //     }
-              //   }
-              //   if (this.clinicsData.length > 1 && this.user_type != '7') {
-              //     this.clinic_id = 'all';
-              //     this.selectedClinic = 'all';
-              //     this.placeHolder = 'All Clinics';
-              //   } else {
-              //     this.clinic_id = res.body.data[0].id;
-              //     this.selectedClinic = res.body.data[0].id;
-              //     this.placeHolder = res.body.data[0].clinicName;
-              //   }
-              // } else {
-                if (this._cookieService.get('clinic_dentist') 
-                    && !(this.selectedClinic == null &&  this.route == '/dashboards/healthscreen')) {
+                if (this.clinicsData.length > 1 && this.user_type != '7') {
+                  this.clinic_id = 'all';
+                  this.selectedClinic = 'all';
+                  this.placeHolder = 'All Clinics';
+                } else {
+                  this.clinic_id = res.body.data[0].id;
+                  this.selectedClinic = res.body.data[0].id;
+                  this.placeHolder = res.body.data[0].clinicName;
+                }
+              } else {
+                if (this._cookieService.get('clinic_dentist')) {
                   let dentistclinic = this._cookieService
                     .get('clinic_dentist')
                     .split('_');
@@ -441,22 +426,15 @@ export class AppHeaderrightComponent
                     this.selectedClinic = [];
                     this.selectedClinic.push(res.body.data[0].id);
                   } else {
-  
-                    if (this.route == '/dashboards/healthscreen' && this.user_type != '7'){
-                      this.clinic_id = 'all';
-                      this.selectedClinic = 'all';
-                      this.placeHolder = 'All Clinics';
-                    }else{
-                      this.clinic_id = res.body.data[0].id;
-                      this.selectedClinic = res.body.data[0].id;
-                      this.placeHolder = res.body.data[0].clinicName;
-                    }
-  
+                    this.clinic_id = res.body.data[0].id;
+                    this.selectedClinic = res.body.data[0].id;
+                    this.placeHolder = res.body.data[0].clinicName;
                   }
                 }
-              //}
+              }
               this.title = $('#page_title').val();
               this.loadClinic(this.selectedClinic);
+              this.isSwitchingClinic = false;
             }
           } else if (res.status == '401') {
             this._cookieService.removeAll();
