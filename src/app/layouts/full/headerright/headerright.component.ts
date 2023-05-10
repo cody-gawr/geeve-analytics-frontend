@@ -498,6 +498,7 @@ export class AppHeaderrightComponent
                 '/dashboards/frontdesk',
                 '/dashboards/marketing',
                 '/dashboards/finances',
+                '/dashboards/healthscreen',
                 '/morning-huddle',
                 '/followups',
                 '/dashboards/followups',
