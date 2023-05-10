@@ -85,6 +85,7 @@ export class AppHeaderrightComponent
     private toastr: ToastrService,
     public dialog: MatDialog
   ) {
+
     if (this._cookieService.get('user_type')) {
       this.user_type = this._cookieService.get('user_type');
     }
@@ -162,12 +163,9 @@ export class AppHeaderrightComponent
             this.classUrl = urlParams[0];
           }
         }
+
         this.getClinics();
       }
-      // this.getDentists();
-      // if($('#currentClinic').attr('cid') == 'all' && this.route != '/dashboards/healthscreen')
-      // {
-      //}
     });
   }
 
@@ -258,7 +256,7 @@ export class AppHeaderrightComponent
   dentists: Dentist[] = [];
   private warningMessage: string;
   public finalUrl: string;
-  public selectedClinic: any = 'all';
+  public selectedClinic: any = null;
   public trailDays: Number = 0;
   public selectedDentist;
   public placeHolder = '';
@@ -297,161 +295,179 @@ export class AppHeaderrightComponent
   }
 
   private getClinics() {
-    // this.selectedClinic = 'all';
     this.headerService.getClinics().subscribe(
-      (res) => {
-        if (res.status == 200) {
-          this.clinicsData = res.body.data;
-          this.localStorageService.saveObject('clinics', res.body.data);
-
-          if (res.body.data.length > 0) {
-            // if (this.route == '/dashboards/healthscreen') {
-            //   if (this._cookieService.get('clinic_dentist')) {
-            //     if (
-            //       this._cookieService
-            //         .get('clinic_dentist')
-            //         .split('_')[0]
-            //         .indexOf(',') < 0 ||
-            //       this._cookieService.get('clinic_dentist').split('_')[0] !=
-            //         'all'
-            //     ) {
-            //       this.getAccountConnection(res.body.data[0].id);
-            //     } else {
-            //       this.resetAccountConnection();
-            //     }
-            //   }
-            //   if (this.clinicsData.length > 1 && this.user_type != '7') {
-            //     this.clinic_id = 'all';
-            //     this.selectedClinic = 'all';
-            //     this.placeHolder = 'All Clinics';
-            //   } else {
-            //     this.clinic_id = res.body.data[0].id;
-            //     this.selectedClinic = res.body.data[0].id;
-            //     this.placeHolder = res.body.data[0].clinicName;
-            //   }
-            // } else {
-              if (this._cookieService.get('clinic_dentist')) {
-                let dentistclinic = this._cookieService
-                  .get('clinic_dentist')
-                  .split('_');
-                if (dentistclinic[1] == 'all') {
-                  // check dentist data from cookie
-                  this.selectedDentist = dentistclinic[1];
-                } else {
-                  this.selectedDentist = parseInt(dentistclinic[1]);
-                }
-                if (this.isMultiClinicsVisible) {
-                  this.allChecked = false;
-                  this.clinic_id = [];
-                  this.selectedClinic = [];
-                  if (dentistclinic[0].indexOf(',') >= 0) {
-                    let tmpcl = [];
-                    let allcookieCl = dentistclinic[0].split(',');
-                    if (allcookieCl[0] == 'all') {
-                      this.allChecked = true;
-                    }
-                    allcookieCl.forEach((cln) => {
-                      if (cln == 'all') {
-                        tmpcl.push(cln);
-                      } else {
-                        tmpcl.push(parseInt(cln));
-                      }
-                    });
-                    this.clinic_id = tmpcl;
-                    this.selectedClinic = tmpcl;
-                  } else {
-                    if (dentistclinic[0] == 'all') {
-                      this.allChecked = true;
-                      this.clinic_id = 'all';
-                      this.selectedClinic = ['all'];
-                      res.body.data.forEach((datatemp) => {
-                        // getting  clinic name as per cookie data
-                        this.selectedClinic.push(datatemp.id);
-                      });
-                    } else {
-                      this.clinic_id.push(parseInt(dentistclinic[0]));
-                      this.selectedClinic.push(parseInt(dentistclinic[0]));
-                    }
-                  }
-
+      {
+        next:       (res) => {
+          if (res.status == 200) {
+            this.clinicsData = res.body.data;
+            this.localStorageService.saveObject('clinics', res.body.data);
+  
+            if (res.body.data.length > 0) {
+              if (this.route == '/dashboards/healthscreen') {
+                if (this._cookieService.get('clinic_dentist')) {
                   if (
-                    this.selectedClinic[0].toString() != 'NaN' &&
-                    this.selectedClinic[0] != 'all' &&
-                    this.selectedClinic.length == 1 &&
-                    [
-                      '/dashboards/cliniciananalysis',
-                      '/dashboards/clinicianproceedures'
-                    ].includes(this.route)
+                    this._cookieService
+                      .get('clinic_dentist')
+                      .split('_')[0]
+                      .indexOf(',') < 0 ||
+                    this._cookieService.get('clinic_dentist').split('_')[0] !=
+                      'all'
                   ) {
-                    this.showDropDown = true;
+                    this.getAccountConnection(res.body.data[0].id);
                   } else {
-                    this.showDropDown = false;
+                    this.resetAccountConnection();
                   }
-                } else {
-                  if (dentistclinic[0].indexOf(',') >= 0) {
-                    if (dentistclinic[0].split(',')[0] == 'all') {
-                      this.clinic_id = dentistclinic[0].split(',')[1];
-                      this.selectedClinic = dentistclinic[0].split(',')[1];
-                    } else {
-                      this.clinic_id = dentistclinic[0].split(',')[0];
-                      this.selectedClinic = dentistclinic[0].split(',')[0];
-                    }
-                    let opts = this.constants.cookieOpt as CookieOptions;
-                    this._cookieService.put('clinic_id', this.clinic_id, opts);
-                    this._cookieService.put(
-                      'clinic_dentist',
-                      this.clinic_id + '_' + dentistclinic[1],
-                      opts
-                    );
-                  } else if (
-                    dentistclinic[0] == 'all' ||
-                    dentistclinic[0] == ''
-                  ) {
-                    // check clinic data from cookie
-                    this.clinic_id = res.body.data[0].id;
-                    this.selectedClinic = res.body.data[0].id;
-                  } else if (dentistclinic[0] != 'all') {
-                    this.clinic_id = dentistclinic[0];
-                    this.selectedClinic = dentistclinic[0];
-                  }
-                  res.body.data.forEach((datatemp) => {
-                    // getting  clinic name as per cookie data
-                    if (datatemp.id == this.clinic_id) {
-                      this.placeHolder = datatemp.clinicName;
-                    }
-                  });
-                }
-              } else {
-                if (this.isMultiClinicsVisible) {
-                  this.selectedClinic = [];
-                  this.selectedClinic.push(res.body.data[0].id);
-                } else {
-
-                  if (this.route == '/dashboards/healthscreen'){
-                    this.clinic_id = 'all';
-                    this.selectedClinic = 'all';
-                    this.placeHolder = 'All Clinics';
-                  }else{
-                    this.clinic_id = res.body.data[0].id;
-                    this.selectedClinic = res.body.data[0].id;
-                    this.placeHolder = res.body.data[0].clinicName;
-                  }
-
                 }
               }
-            //}
-            this.title = $('#page_title').val();
-            this.loadClinic(this.selectedClinic);
+              // if (this.route == '/dashboards/healthscreen') {
+              //   if (this._cookieService.get('clinic_dentist')) {
+              //     if (
+              //       this._cookieService
+              //         .get('clinic_dentist')
+              //         .split('_')[0]
+              //         .indexOf(',') < 0 ||
+              //       this._cookieService.get('clinic_dentist').split('_')[0] !=
+              //         'all'
+              //     ) {
+              //       this.getAccountConnection(res.body.data[0].id);
+              //     } else {
+              //       this.resetAccountConnection();
+              //     }
+              //   }
+              //   if (this.clinicsData.length > 1 && this.user_type != '7') {
+              //     this.clinic_id = 'all';
+              //     this.selectedClinic = 'all';
+              //     this.placeHolder = 'All Clinics';
+              //   } else {
+              //     this.clinic_id = res.body.data[0].id;
+              //     this.selectedClinic = res.body.data[0].id;
+              //     this.placeHolder = res.body.data[0].clinicName;
+              //   }
+              // } else {
+                if (this._cookieService.get('clinic_dentist') 
+                    && !(this.selectedClinic == null &&  this.route == '/dashboards/healthscreen')) {
+                  let dentistclinic = this._cookieService
+                    .get('clinic_dentist')
+                    .split('_');
+                  if (dentistclinic[1] == 'all') {
+                    // check dentist data from cookie
+                    this.selectedDentist = dentistclinic[1];
+                  } else {
+                    this.selectedDentist = parseInt(dentistclinic[1]);
+                  }
+                  if (this.isMultiClinicsVisible) {
+                    this.allChecked = false;
+                    this.clinic_id = [];
+                    this.selectedClinic = [];
+                    if (dentistclinic[0].indexOf(',') >= 0) {
+                      let tmpcl = [];
+                      let allcookieCl = dentistclinic[0].split(',');
+                      if (allcookieCl[0] == 'all') {
+                        this.allChecked = true;
+                      }
+                      allcookieCl.forEach((cln) => {
+                        if (cln == 'all') {
+                          tmpcl.push(cln);
+                        } else {
+                          tmpcl.push(parseInt(cln));
+                        }
+                      });
+                      this.clinic_id = tmpcl;
+                      this.selectedClinic = tmpcl;
+                    } else {
+                      if (dentistclinic[0] == 'all') {
+                        this.allChecked = true;
+                        this.clinic_id = 'all';
+                        this.selectedClinic = ['all'];
+                        res.body.data.forEach((datatemp) => {
+                          // getting  clinic name as per cookie data
+                          this.selectedClinic.push(datatemp.id);
+                        });
+                      } else {
+                        this.clinic_id.push(parseInt(dentistclinic[0]));
+                        this.selectedClinic.push(parseInt(dentistclinic[0]));
+                      }
+                    }
+  
+                    if (
+                      this.selectedClinic[0].toString() != 'NaN' &&
+                      this.selectedClinic[0] != 'all' &&
+                      this.selectedClinic.length == 1 &&
+                      [
+                        '/dashboards/cliniciananalysis',
+                        '/dashboards/clinicianproceedures'
+                      ].includes(this.route)
+                    ) {
+                      this.showDropDown = true;
+                    } else {
+                      this.showDropDown = false;
+                    }
+                  } else {
+                    if (dentistclinic[0].indexOf(',') >= 0) {
+                      if (dentistclinic[0].split(',')[0] == 'all') {
+                        this.clinic_id = dentistclinic[0].split(',')[1];
+                        this.selectedClinic = dentistclinic[0].split(',')[1];
+                      } else {
+                        this.clinic_id = dentistclinic[0].split(',')[0];
+                        this.selectedClinic = dentistclinic[0].split(',')[0];
+                      }
+                      let opts = this.constants.cookieOpt as CookieOptions;
+                      this._cookieService.put('clinic_id', this.clinic_id, opts);
+                      this._cookieService.put(
+                        'clinic_dentist',
+                        this.clinic_id + '_' + dentistclinic[1],
+                        opts
+                      );
+                    } else if (
+                      dentistclinic[0] == 'all' ||
+                      dentistclinic[0] == ''
+                    ) {
+                      // check clinic data from cookie
+                      this.clinic_id = res.body.data[0].id;
+                      this.selectedClinic = res.body.data[0].id;
+                    } else if (dentistclinic[0] != 'all') {
+                      this.clinic_id = dentistclinic[0];
+                      this.selectedClinic = dentistclinic[0];
+                    }
+                    res.body.data.forEach((datatemp) => {
+                      // getting  clinic name as per cookie data
+                      if (datatemp.id == this.clinic_id) {
+                        this.placeHolder = datatemp.clinicName;
+                      }
+                    });
+                  }
+                } else {
+                  if (this.isMultiClinicsVisible) {
+                    this.selectedClinic = [];
+                    this.selectedClinic.push(res.body.data[0].id);
+                  } else {
+  
+                    if (this.route == '/dashboards/healthscreen' && this.user_type != '7'){
+                      this.clinic_id = 'all';
+                      this.selectedClinic = 'all';
+                      this.placeHolder = 'All Clinics';
+                    }else{
+                      this.clinic_id = res.body.data[0].id;
+                      this.selectedClinic = res.body.data[0].id;
+                      this.placeHolder = res.body.data[0].clinicName;
+                    }
+  
+                  }
+                }
+              //}
+              this.title = $('#page_title').val();
+              this.loadClinic(this.selectedClinic);
+            }
+          } else if (res.status == '401') {
+            this._cookieService.removeAll();
+            this.router.navigateByUrl('/login');
           }
-        } else if (res.status == '401') {
-          this._cookieService.removeAll();
-          this.router.navigateByUrl('/login');
-        }
-      },
-      (error) => {
-        if (error.status == 401) {
-          this._cookieService.removeAll();
-          this.router.navigateByUrl('/login');
+        },
+        error: (error) => {
+          if (error.status == 401) {
+            this._cookieService.removeAll();
+            this.router.navigateByUrl('/login');
+          }
         }
       }
     );
