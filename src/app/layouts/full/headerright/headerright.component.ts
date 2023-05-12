@@ -305,7 +305,7 @@ export class AppHeaderrightComponent
             this.localStorageService.saveObject('clinics', res.body.data);
   
             if (res.body.data.length > 0) {
-              if (this.route == '/dashboards/healthscreen') {
+              if (this.route == '/dashboards/healthscreen' && this.user_type != '7') {
                 if (this._cookieService.get('clinic_dentist')) {
                   if (
                     this._cookieService
@@ -320,7 +320,7 @@ export class AppHeaderrightComponent
                     this.resetAccountConnection();
                   }
                 }
-                if (this.clinicsData.length > 1 && this.user_type != '7') {
+                if (this.clinicsData.length > 1) {
                   this.clinic_id = 'all';
                   this.selectedClinic = 'all';
                   this.placeHolder = 'All Clinics';

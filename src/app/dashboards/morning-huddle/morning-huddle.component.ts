@@ -2227,7 +2227,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             this.toastr.warning(
               `${this.remainCredits} review credits remaining `+
               '- to add more ask your account owner to top up under '+
-              'Settings -> My Account -> Review Credits');
+              'Settings -> Clinics -> Google Reviews');
           }
           element.sms_status = result.status;
           this.updateCreditStatus();
