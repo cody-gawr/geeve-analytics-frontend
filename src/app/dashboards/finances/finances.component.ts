@@ -820,18 +820,19 @@ export class FinancesComponent implements AfterViewInit {
             if (!body[0].includes('$0')) {
               var body_custom = body[0];
               body_custom = body_custom.split(':');
-              if (body_custom[1].includes('-')) {
-                var temp_ = body_custom[1].split('$');
+              const lastIndex = body_custom.length - 1;
+              if (body_custom[lastIndex].includes('-')) {
+                var temp_ = body_custom[lastIndex].split('$');
                 temp_[1] = Math.round(temp_.length > 1? temp_[1].replace(/,/g, ''): 0);
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[1] = temp_.join('$');
+                body_custom[lastIndex] = temp_.join('$');
               } else {
-                var temp_ = body_custom[1].split('$');
+                var temp_ = body_custom[lastIndex].split('$');
                 temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[1] = temp_.join('$');
+                body_custom[lastIndex] = temp_.join('$');
               }
 
               body[0] = body_custom.join(':');
@@ -1004,18 +1005,19 @@ export class FinancesComponent implements AfterViewInit {
             if (!body[0].includes('$0')) {
               var body_custom = body[0];
               body_custom = body_custom.split(':');
-              if (body_custom[1].includes('-')) {
-                var temp_ = body_custom[1].split('$');
+              const lastIndex = body_custom.length - 1;
+              if (body_custom[lastIndex].includes('-')) {
+                var temp_ = body_custom[lastIndex].split('$');
                 temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[1] = temp_.join('$');
+                body_custom[lastIndex] = temp_.join('$');
               } else {
-                var temp_ = body_custom[1].split('$');
+                var temp_ = body_custom[lastIndex].split('$');
                 temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[1] = temp_.join('$');
+                body_custom[lastIndex] = temp_.join('$');
               }
 
               body[0] = body_custom.join(':');
@@ -1183,18 +1185,19 @@ export class FinancesComponent implements AfterViewInit {
             if (!body[0].includes('$0')) {
               var body_custom = body[0];
               body_custom = body_custom.split(':');
-              if (body_custom[1].includes('-')) {
-                var temp_ = body_custom[1].split('$');
+              const lastIndex = body_custom.length - 1;
+              if (body_custom[lastIndex].includes('-')) {
+                var temp_ = body_custom[lastIndex].split('$');
                 temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[1] = temp_.join('$');
+                body_custom[lastIndex] = temp_.join('$');
               } else {
-                var temp_ = body_custom[1].split('$');
+                var temp_ = body_custom[lastIndex].split('$');
                 temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
                 temp_[1] = temp_[1].toString();
                 temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[1] = temp_.join('$');
+                body_custom[lastIndex] = temp_.join('$');
               }
 
               body[0] = body_custom.join(':');
