@@ -101,7 +101,7 @@ export class CampaignsStatusDialogComponent {
     this.followupsService.updateStatus('Wants another follow-up', data.pid, data.cid, data.type, data.original_appt_date, data.followup_date, data.treatItem).subscribe((update: any) => {
       this.onNoClick();
       if (update.status) {
-        this.followupsService.cloneRecord(data.pid, data.cid, data.type, data.followup_date, this.nextDate, data.original_appt_date, data.treatItem).subscribe((update: any) => {
+        this.followupsService.cloneRecord(data.pid, data.cid, data.type, data.followup_date, this.nextDate, data.original_appt_date, data.treatItem).subscribe((update) => {
         });
       }
     });
@@ -111,7 +111,7 @@ export class CampaignsStatusDialogComponent {
     this.nextFollowupHave = false;
     this.followupsService.updateStatus(data.event, data.pid, data.cid, data.type, data.original_appt_date, data.followup_date).subscribe((update: any) => {
       if (update.status && event != 'no') {
-        this.followupsService.cloneRecord(data.pid, data.cid, data.type, data.followup_date, this.nextDate, data.original_appt_date, data.treatItem, event).subscribe((clone: any) => {
+        this.followupsService.cloneRecord(data.pid, data.cid, data.type, data.followup_date, this.nextDate, data.original_appt_date, data.treatItem, event).subscribe((clone) => {
           if (clone.message == 'already') {
             this.nextDate = clone.$getRecord.followup_date;
             this.nextFollowupHave = true;

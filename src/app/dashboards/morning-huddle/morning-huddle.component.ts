@@ -153,7 +153,11 @@ export class StatusDialogMHComponent {
               this.nextDate,
               data.original_appt_date
             )
-            .subscribe((update: any) => {});
+            .subscribe((update) => {
+              if(update.message === 'already'){
+                
+              }
+            });
         }
       });
   }
@@ -190,8 +194,8 @@ export class StatusDialogMHComponent {
               data.original_appt_date,
               event
             )
-            .subscribe((clone: any) => {
-              if (clone.message == 'already') {
+            .subscribe((clone) => {
+              if (clone.message === 'already') {
                 this.nextDate = clone.$getRecord.followup_date;
                 this.nextFollowupHave = true;
               } else {

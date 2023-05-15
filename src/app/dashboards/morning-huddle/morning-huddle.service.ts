@@ -1042,7 +1042,11 @@ export class MorningHuddleService {
     newFollowupDate,
     original_appt_date,
     nextReach = ''
-  ): Observable<any> {
+  ): Observable<{
+    status: boolean,
+    message: 'success' | 'already'
+    $getRecord: any
+  }> {
     var header = this.getHeaders();
     const formData = new FormData();
     formData.append('new_followup', newFollowupDate);
@@ -1055,8 +1059,8 @@ export class MorningHuddleService {
     return this.http
       .post(this.apiUrl + '/MorningHuddle/mhCloneStatus', formData, header)
       .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
+        map((response: HttpResponse<any>) => {
+          return response.body;
         })
       );
   }

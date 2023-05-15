@@ -282,7 +282,11 @@ export class StatusDialogComponent {
               data.original_appt_date,
               data.treatItem
             )
-            .subscribe((update: any) => {});
+            .subscribe((update) => {
+              if(update.message === 'already'){
+                
+              }
+            });
         }
       });
   }
@@ -311,7 +315,7 @@ export class StatusDialogComponent {
               data.treatItem,
               event
             )
-            .subscribe((clone: any) => {
+            .subscribe((clone) => {
               if (clone.message == 'already') {
                 this.nextDate = clone.$getRecord.followup_date;
                 this.nextFollowupHave = true;

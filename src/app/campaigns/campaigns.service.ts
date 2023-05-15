@@ -126,7 +126,11 @@ export class CampaignsService {
             })
             );
     }
-    cloneRecord(pid, cid, type, followup_date, newFollowupDate, original_appt_date, treatItem, nextReach = ''): Observable<any> {
+    cloneRecord(pid, cid, type, followup_date, newFollowupDate, original_appt_date, treatItem, nextReach = ''): Observable<{
+        status: boolean,
+        message: 'success' | 'already'
+        $getRecord: any
+    }> {
         var header = this.getHeaders();
         const formData = new FormData();
         formData.append('new_followup', newFollowupDate);
@@ -140,8 +144,8 @@ export class CampaignsService {
             formData.append('treat_item', treatItem);
         }
         return this.http.post(this.apiUrl + "/Followups/fuCloneStatus", formData, header)
-            .pipe(map((response: HttpResponse<Object>) => {
-                return response;
+            .pipe(map((response: HttpResponse<any>) => {
+                return response.body;
             })
             );
     }
