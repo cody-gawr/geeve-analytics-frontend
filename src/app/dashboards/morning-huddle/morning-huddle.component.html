@@ -1228,7 +1228,7 @@
           fxLayoutGap.xs="0px"
         >
           <div
-            *ngIf="currentDentistReminder"
+            *ngIf="currentDentistReminder || isExact"
             fxFlex="calc(20% - 10px)"
             fxFlex.md="calc(50% - 10px)"
             fxFlex.sm="100"
@@ -1321,14 +1321,14 @@
             </mat-card>
           </div>
           <div
-            *ngIf="currentDentistReminder"
+            *ngIf="currentDentistReminder || isExact"
             fxFlex="calc(20% - 10px)"
             fxFlex.md="calc(50% - 10px)"
             fxFlex.sm="100"
             fxFlex.xs="100"
           ></div>
           <div
-            *ngIf="!currentDentistReminder && isExact"
+            *ngIf="!currentDentistReminder && !isExact"
             fxFlex="calc(20% - 10px)"
             fxFlex.md="calc(50% - 10px)"
             fxFlex.sm="100"
@@ -1363,7 +1363,7 @@
             </mat-card>
           </div>
           <div
-            *ngIf="!currentDentistReminder && isExact"
+            *ngIf="!currentDentistReminder && !isExact"
             fxFlex="calc(20% - 10px)"
             fxFlex.md="calc(50% - 10px)"
             fxFlex.sm="100"
