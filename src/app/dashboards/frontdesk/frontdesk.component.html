@@ -570,21 +570,21 @@
           </mat-card-content>
         </mat-card>
         <div
-          *ngIf="fdWorkTimeAnalysisLoader && utilShow == 1"
+          *ngIf="fdWorkTimeAnalysisLoader && utilShow == 1 && !isExact"
           class="loader_container loader_container_middle"
         >
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
         <div
-          *ngIf="byDayLoader && utilShow == 2"
+          *ngIf="byDayLoader && utilShow == 2 && !isExact"
           class="loader_container loader_container_middle"
         >
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
         <div
-          *ngIf="fdwtaRatioTrendLoader"
+          *ngIf="fdwtaRatioTrendLoader && !isExact"
           class="loader_container loader_container_middle"
         >
           <img class="loader_ico" src="../assets/images/720.gif" />
