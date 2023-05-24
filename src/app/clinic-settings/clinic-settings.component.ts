@@ -105,6 +105,9 @@ export class ClinicSettingsComponent implements OnInit {
   public get isExactOrCore(): boolean {
     return this.localStorageService.isEachClinicPmsExactOrCore(this.clinic_id);
   }
+  public get isExact(): boolean {
+    return this.localStorageService.isEachClinicExact(this.clinic_id);
+  }
   remainCredits = 0;
   costPerSMS = 0.0;
   constructor(
