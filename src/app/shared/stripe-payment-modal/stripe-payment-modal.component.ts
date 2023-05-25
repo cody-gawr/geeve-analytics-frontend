@@ -56,7 +56,7 @@ export class StripePaymentDialog {
   async initStripeElements() {
     this.stripe = await loadStripe(environment.stripeKey);
     this.morningHuddle
-      .createPaymentIntent(this.selectedCredit, this.data.clinic_id)
+      .createPaymentIntent(this.numberOfCreditsFormGroup.controls['credits'].value, this.data.clinic_id)
       .subscribe((resData) => {
         const { clientSecret } = resData.body.data;
 
