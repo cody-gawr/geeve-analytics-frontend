@@ -141,6 +141,7 @@ export class CustomisationsComponent
     private headerService: HeaderService
   ) {
     super();
+
     this.form = this.fb.group({
       recall_codes1: [null],
       recall_codes2: [null],
@@ -156,7 +157,7 @@ export class CustomisationsComponent
       disc_code_1: null,
       disc_code_2: null,
       disc_code_3: null,
-      max_chart_bars: [null, Validators.compose([Validators.required])],
+      max_chart_bars: this.isPMSExact?null: [null, Validators.compose([Validators.required])],
     });
 
   }

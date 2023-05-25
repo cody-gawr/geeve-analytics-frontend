@@ -147,12 +147,12 @@ export class ClinicSettingsComponent implements OnInit {
         recall_weeks: [null, Validators.compose([Validators.required])],
         tick_days: [null, Validators.compose([Validators.required])],
         fta_followup_days: [null, Validators.compose([Validators.required])],
-        uta_followup_days: [null, Validators.compose([Validators.required])],
+        uta_followup_days: this.isExact?null:[null, Validators.compose([Validators.required])],
         fta_followup_days_later: [
           null,
           Validators.compose([Validators.required])
         ],
-        uta_followup_days_later: [
+        uta_followup_days_later: this.isExact?null:[
           null,
           Validators.compose([Validators.required])
         ],
@@ -177,12 +177,12 @@ export class ClinicSettingsComponent implements OnInit {
         recall_weeks: [null, Validators.compose([Validators.required])],
         tick_days: [null, Validators.compose([Validators.required])],
         fta_followup_days: [null, Validators.compose([Validators.required])],
-        uta_followup_days: [null, Validators.compose([Validators.required])],
+        uta_followup_days: this.isExact?null:[null, Validators.compose([Validators.required])],
         fta_followup_days_later: [
           null,
           Validators.compose([Validators.required])
         ],
-        uta_followup_days_later: [
+        uta_followup_days_later: this.isExact?null:[
           null,
           Validators.compose([Validators.required])
         ]
