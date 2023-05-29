@@ -157,7 +157,7 @@ export class CustomisationsComponent
       disc_code_1: null,
       disc_code_2: null,
       disc_code_3: null,
-      max_chart_bars: this.isPMSExact?null: [null, Validators.compose([Validators.required])],
+      max_chart_bars: this.visibleMaxBarSetting?null: [null, Validators.compose([Validators.required])],
     });
 
   }
