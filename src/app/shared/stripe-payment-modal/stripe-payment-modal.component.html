@@ -29,7 +29,8 @@
             </mat-form-field>
             <div class="cost-summary">
               <div>Cost Per Message: {{ data.costPerSMS | currency }}</div>
-              <div>Total Cost: {{ totalCost | currency }}</div>
+              <div>GST: {{ totalCost * 0.1 | currency }}</div>
+              <div>Total Cost: {{ totalCost * 1.1 | currency }}</div>
             </div>
           </div>
         </form>
