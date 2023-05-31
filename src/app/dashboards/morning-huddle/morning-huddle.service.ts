@@ -1065,7 +1065,13 @@ export class MorningHuddleService {
       );
   }
   // Users api
-  createPaymentIntent(creditAmount: number, clinic_id: number): Observable<HttpResponse<any>> {
+  createPaymentIntent(creditAmount: number, clinic_id: number): Observable<{
+    data: {
+      totalAmount: number,
+      taxAmount: number,
+      clientSecret: string
+    }
+  }> {
     const header = this.getHeaders();
     return this.http
       .post(
@@ -1078,7 +1084,7 @@ export class MorningHuddleService {
       )
       .pipe(
         map((res: HttpResponse<any>) => {
-          return res;
+          return res.body;
         })
       );
   }

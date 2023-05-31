@@ -34,6 +34,8 @@ export class StripePaymentDialog {
   selectedCredit = 100;
   isReadyToPay = true;
   disabledSubmit = true;
+  totalAmount = 0;
+  taxAmount = 0;
   constructor(
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<StripePaymentDialog>,
@@ -46,7 +48,7 @@ export class StripePaymentDialog {
     });
   }
 
-  public get totalCost(): number {
+  public get subTotalAmount(): number {
     return (
       this.data.costPerSMS *
       <number>this.numberOfCreditsFormGroup.get('credits').value
@@ -58,8 +60,9 @@ export class StripePaymentDialog {
     this.morningHuddle
       .createPaymentIntent(this.numberOfCreditsFormGroup.controls['credits'].value, this.data.clinic_id)
       .subscribe((resData) => {
-        const { clientSecret } = resData.body.data;
-
+        const { clientSecret, totalAmount, taxAmount } = resData.data;
+        this.totalAmount = totalAmount;
+        this.taxAmount = taxAmount;
         const appearance: Appearance = {
           theme: 'stripe'
         };
