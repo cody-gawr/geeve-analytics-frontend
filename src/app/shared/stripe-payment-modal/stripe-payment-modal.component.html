@@ -43,7 +43,7 @@
           Loading... Please wait for a sec!
           <!-- a Stripe Element will be inserted here. -->
         </div>
-        <div class="payment-summary" *ngIf="!disabledSubmit">
+        <div class="payment-summary">
           <strong>Subtotal: {{ subTotalAmount | currency }}</strong> <br>
           GST: {{ taxAmount | currency }} <br>
           Total: {{ totalAmount | currency }} <br>
