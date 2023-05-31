@@ -29,8 +29,10 @@
             </mat-form-field>
             <div class="cost-summary">
               <div>Cost Per Message: {{ data.costPerSMS | currency }}</div>
-              <div>
-                <strong>Subtotal: {{ subTotalAmount | currency }}</strong>
+              <div style="line-height: 1.6">
+                <strong>Subtotal: {{ subTotalAmount | currency }}</strong> <br>
+                GST: {{ subTotalAmount * 0.1 | currency }} <br>
+                Total: {{ subTotalAmount * 1.1 | currency }} <br>
               </div>
             </div>
           </div>
@@ -42,8 +44,8 @@
           <!-- a Stripe Element will be inserted here. -->
         </div>
         <div class="payment-summary" *ngIf="!disabledSubmit">
-          <strong>Subtotal: {{ subTotalAmount | currency }}</strong>
-          GST: {{ taxAmount | currency }}
+          <strong>Subtotal: {{ subTotalAmount | currency }}</strong> <br>
+          GST: {{ taxAmount | currency }} <br>
           Total: {{ totalAmount | currency }} <br>
         </div>
         <!-- Used to display form errors -->
