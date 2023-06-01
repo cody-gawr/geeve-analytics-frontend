@@ -79,7 +79,7 @@ export class StripePaymentDialog {
           'payment',
           <StripePaymentElementOptions>{
             layout: 'tabs',
-            paymentMethods: ['card']
+            paymentMethodOrder: ['card']
           }
         );
         paymentElement.mount('#payment-element');
