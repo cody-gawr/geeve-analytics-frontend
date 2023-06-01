@@ -73,12 +73,14 @@ export class StripePaymentDialog {
         //   layout: 'tabs'
         // };
 
-        //const stripeType: StripeElementType = 'payment';
+        // const stripeType: StripeElementType = 'payment';
 
         const paymentElement = this.elements.create(
-          // stripeType,
-          // paymentElementOptions
-          'card'
+          'payment',
+          <StripePaymentElementOptions>{
+            layout: 'tabs',
+            paymentMethods: ['card']
+          }
         );
         paymentElement.mount('#payment-element');
         paymentElement.on('change', (event) => {
