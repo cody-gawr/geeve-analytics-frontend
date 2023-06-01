@@ -30,9 +30,9 @@
             <div class="cost-summary">
               <div>Cost Per Message: {{ data.costPerSMS | currency }}</div>
               <div style="line-height: 1.6">
-                <strong>Subtotal: {{ subTotalAmount | currency }}</strong> <br>
+                Subtotal: {{ subTotalAmount | currency }} <br>
                 GST: {{ subTotalAmount * 0.1 | currency }} <br>
-                Total: {{ subTotalAmount * 1.1 | currency }} <br>
+                <strong>Total: {{ subTotalAmount * 1.1 | currency }}</strong> <br>
               </div>
             </div>
           </div>
@@ -44,9 +44,9 @@
           <!-- a Stripe Element will be inserted here. -->
         </div>
         <div class="payment-summary">
-          <strong>Subtotal: {{ subTotalAmount | currency }}</strong> <br>
+          Subtotal: {{ subTotalAmount | currency }}<br>
           GST: {{ taxAmount | currency }} <br>
-          Total: {{ totalAmount | currency }} <br>
+          <strong>Total: {{ totalAmount | currency }}</strong><br>
         </div>
         <!-- Used to display form errors -->
         <div id="card-errors" role="alert"></div>
