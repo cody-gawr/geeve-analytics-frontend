@@ -29,7 +29,7 @@
             </mat-form-field>
             <div class="cost-summary">
               <div>Cost Per Message: {{ data.costPerSMS | currency }}</div>
-              <div style="line-height: 1.6">
+              <div style="line-height: 1.6;text-align: right;">
                 Subtotal: {{ subTotalAmount | currency }} <br>
                 GST: {{ subTotalAmount * 0.1 | currency }} <br>
                 <strong>Total: {{ subTotalAmount * 1.1 | currency }}</strong> <br>
