@@ -3603,13 +3603,13 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   }
 
   getChartsTips() {
-    this.chartstipsService.getCharts(4).subscribe(
-      (res) => {
-        if (res.status == 200) {
-          this.charTips = res.body.data;
-        }
-      },
-      (error) => {}
+    this.chartstipsService.getCharts(4, this.clinic_id).subscribe(
+      {
+        next: (res) => {
+            this.charTips = res.data;
+        },
+        error: (error) => {}
+      }
     );
   }
 

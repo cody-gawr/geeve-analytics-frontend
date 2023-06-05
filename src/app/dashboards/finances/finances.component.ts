@@ -4583,11 +4583,10 @@ export class FinancesComponent implements AfterViewInit {
   }
 
   getChartsTips() {
-    this.chartstipsService.getCharts(5).subscribe(
+    this.chartstipsService.getCharts(5, this.clinic_id).subscribe(
       (res) => {
-        if (res.status == 200) {
-          this.charTips = res.body.data;
-        }
+          this.charTips = res.data;
+        
       },
       (error) => {}
     );

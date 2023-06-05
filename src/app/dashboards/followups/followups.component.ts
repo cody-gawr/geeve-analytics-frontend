@@ -1079,13 +1079,13 @@ export class FollowupsComponent implements AfterViewInit {
 
   public charTips: any = [];
   getChartsTips() {
-    this.chartstipsService.getCharts(9).subscribe(
-      (res) => {
-        if (res.status == 200) {
-          this.charTips = res.body.data;
-        }
-      },
-      (error) => {}
+    this.chartstipsService.getCharts(9, this.clinic_id).subscribe(
+      {
+        next: (res) => {
+          this.charTips = res.data;
+        },
+        error: (error) => {}
+      }
     );
   }
 

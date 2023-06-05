@@ -2057,11 +2057,9 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   }
 
   getChartsTips() {
-    this.chartstipsService.getCharts(7).subscribe(
+    this.chartstipsService.getCharts(7, this.clinic_id).subscribe(
       (res) => {
-        if (res.status == 200) {
-          this.charTips = res.body.data;
-        }
+          this.charTips = res.data;
       },
       (error) => {}
     );

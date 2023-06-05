@@ -24,11 +24,14 @@ export class ChartstipsService {
         return headers;
     }
     // Dentist Production Service
-    getCharts( dashboard_id  ): Observable<any> {
+    getCharts( dashboard_id, clinic_id: number  ): Observable<{
+        app: string,
+        data: {title: string, info: string}[]
+    }> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/chartsTips/ctGetPageTips?dashboard_id="+dashboard_id, header)
-        .pipe(map((response: HttpResponse<Object>) => {
-                        return response;
+        return this.http.get(this.apiUrl +"/chartsTips/ctGetPageTips?dashboard_id="+dashboard_id+`&clinic_id=${clinic_id}`, header)
+        .pipe(map((response: HttpResponse<any>) => {
+                        return response.body;
                     })
         );
     }    

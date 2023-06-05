@@ -4079,13 +4079,13 @@ export class ClinicianProceeduresComponent
   }
 
   getChartsTips() {
-    this.chartstipsService.getCharts(2).subscribe(
-      (res) => {
-        if (res.status == 200) {
-          this.charTips = res.body.data;
-        }
-      },
-      (error) => {}
+    this.chartstipsService.getCharts(2, this.clinic_id).subscribe(
+      {
+        next: (res) => {
+            this.charTips = res.data;
+        },
+        error: (error) => {}
+      }
     );
   }
 

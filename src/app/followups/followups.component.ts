@@ -1475,11 +1475,9 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   }
 
   getChartsTips() {
-    this.chartstipsService.getCharts(7).subscribe(
+    this.chartstipsService.getCharts(7, this.clinic_id).subscribe(
       (data) => {
-        if (data.status == 200) {
-          this.charTips = data.body.data;
-        }
+          this.charTips = data.data;
       },
       (error) => {}
     );
