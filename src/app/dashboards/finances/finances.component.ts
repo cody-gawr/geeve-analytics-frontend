@@ -187,7 +187,7 @@ export class FinancesComponent implements AfterViewInit {
     this.user_type = this._cookieService.get('user_type');
     this.connectedwith = this._cookieService.get('a_connect');
     this.isVisibleAccountGraphs = this.connectedwith == 'none' ? false : true;
-    this.getChartsTips();
+    // this.getChartsTips();
     this.getAllClinics();
   }
 
@@ -252,6 +252,7 @@ export class FinancesComponent implements AfterViewInit {
         // this.filterDate(this.chartService.duration$.value);
       }
       this.filterDate(this.chartService.duration$.value);
+      this.getChartsTips();
     } else {
       this.multipleClinicsSelected = true;
     }

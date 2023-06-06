@@ -309,7 +309,7 @@ export class FollowupsComponent implements AfterViewInit {
     private _cookieService: CookieService
   ) {
     this.user_type = this._cookieService.get('user_type');
-    this.getChartsTips();
+    // this.getChartsTips();
   }
 
   ngAfterViewInit() {
@@ -339,6 +339,7 @@ export class FollowupsComponent implements AfterViewInit {
       $('#sa_datepicker').val(
         this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate)
       );
+      this.getChartsTips();
     }
   }
 

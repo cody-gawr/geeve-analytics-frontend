@@ -103,7 +103,7 @@ export class FrontDeskComponent implements AfterViewInit {
     public chartstipsService: ChartstipsService,
     private clinicianAnalysisService: ClinicianAnalysisService
   ) {
-    this.getChartsTips();
+    // this.getChartsTips();
     this.getAllClinics();
   }
   private warningMessage: string;
@@ -126,6 +126,7 @@ export class FrontDeskComponent implements AfterViewInit {
       }
       this.filterDate(this.chartService.duration$.value);
       // this.getDentists();
+      this.getChartsTips();
     }
   }
 

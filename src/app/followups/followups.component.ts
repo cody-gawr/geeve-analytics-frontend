@@ -490,7 +490,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     public chartstipsService: ChartstipsService,
     public clinicianAnalysisService: ClinicianAnalysisService
   ) {
-    this.getChartsTips();
+    // this.getChartsTips();
   }
 
   @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
@@ -560,6 +560,8 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         this.selectedMonthYear,
         'yyyy'
       );
+
+      this.getChartsTips();
 
       this.getFollowupScripts();
       this.getFollowupPostOpCalls();

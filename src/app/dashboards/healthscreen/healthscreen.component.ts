@@ -114,7 +114,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     public constants: AppConstants,
     public chartstipsService: ChartstipsService
   ) {
-    this.getChartsTips();
+    // this.getChartsTips();
     this.getAllClinics();
   }
 
@@ -258,6 +258,8 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   }
 
   public loadHealthScreen() {
+    this.getChartsTips();
+
     var date = new Date();
     if (this.health_screen_mtd == 0) {
       this.startDate = this.datePipe.transform(

@@ -146,7 +146,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     public chartstipsService: ChartstipsService,
     private breakpointObserver: BreakpointObserver
   ) {
-    this.getChartsTips();
+    // this.getChartsTips();
     this._routerSub = this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         this.user_type = this._cookieService.get('user_type');
@@ -318,6 +318,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       if (this.user_type == '4') {
         this.getClinic();
       }
+
+      this.getChartsTips();
 
       if (this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id)) {
         // this.getDentists();

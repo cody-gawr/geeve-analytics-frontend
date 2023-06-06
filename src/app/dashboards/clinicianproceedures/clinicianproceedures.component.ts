@@ -109,7 +109,7 @@ export class ClinicianProceeduresComponent
     public chartstipsService: ChartstipsService,
     private sanitized: DomSanitizer
   ) {
-    this.getChartsTips();
+    // this.getChartsTips();
     this._routerSub = this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         this.user_type = this._cookieService.get('user_type');
@@ -176,6 +176,7 @@ export class ClinicianProceeduresComponent
         this.getDentists();
       }
       this.filterDate(this.chartService.duration$.value);
+      this.getChartsTips();
     }
   }
   myDateParser(dateStr: string): string {

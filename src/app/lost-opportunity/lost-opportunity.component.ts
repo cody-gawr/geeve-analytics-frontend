@@ -48,7 +48,7 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
     public constants: AppConstants,
     public chartstipsService: ChartstipsService
   ) {
-    this.getChartsTips();
+    // this.getChartsTips();
   }
 
   ngOnInit() {
@@ -73,6 +73,7 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
     if (val != undefined && val != 'all') {
       this.clinic_id = val;
       this.isExact = this.localStorageService.isEachClinicExact(this.clinic_id);
+      this.getChartsTips();
     }
     this.lostOpportunityData();
     $('#title').html('Lost Opportunity');

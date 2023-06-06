@@ -448,7 +448,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     public chartstipsService: ChartstipsService,
     public clinicianAnalysisService: ClinicianAnalysisService
   ) {
-    this.getChartsTips();
+    // this.getChartsTips();
     this.selected = { start: moment() };
     // this.minDate = moment().subtract(7, 'days');
     // this.maxDate = moment().add(7, 'days');
@@ -629,6 +629,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         // this.getEndOfDays();
         this.getEquipmentList();
       }
+      this.getChartsTips();
     }
     this.getEndOfDays();
   }

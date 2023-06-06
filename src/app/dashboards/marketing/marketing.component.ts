@@ -135,7 +135,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   ) {
     this.connectedwith = this._cookieService.get('a_connect');
     this.isVisibleAccountGraphs = this.connectedwith == 'none' ? false : true;
-    this.getChartsTips();
+    // this.getChartsTips();
     this.getAllClinics();
   }
 
@@ -249,6 +249,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         this.multipleClinicsSelected = true;
       }
       this.filterDate(this.chartService.duration$.value);
+      this.getChartsTips();
     } else {
       this.multipleClinicsSelected = true;
     }
