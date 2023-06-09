@@ -11467,8 +11467,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     } else if (
       parseInt(val) == 2 &&
       this.proSelectShow.includes('all') &&
-      dentType == 'all' &&
-      this.user_type != '4'
+      dentType == 'all' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.collectionChart();
     } else if (
