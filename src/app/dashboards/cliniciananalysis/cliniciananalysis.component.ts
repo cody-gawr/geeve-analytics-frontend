@@ -2205,19 +2205,27 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public planCompletedTotalTrend;
   changeTreatmentCost(val, dentType) {
     this.treatmentPlanAverageCostTab = val;
-    if (val == 1 && dentType == 'all' && this.user_type != '4') {
+    if (val == 1 && dentType == 'all' 
+      //&& this.user_type != '4'
+      ) {
       this.buildChartTreatment();
       // this.showPreBookReapointRate = false;
-    } else if (val == 2 && dentType == 'all' && this.user_type != '4') {
+    } else if (val == 2 && dentType == 'all' 
+    //&& this.user_type != '4'
+    ) {
       this.buildChartTreatmentCompletedFees();
       //  this.showPreBookReapointRate = true;
-    } else if (val == 1 && dentType == 'single' && this.user_type != '4') {
+    } else if (val == 1 && dentType == 'single' 
+    //&& this.user_type != '4'
+    ) {
       if (this.showTrendChart) {
         this.treatmentPlanTrend();
       } else {
         this.buildChartTreatmentDentist();
       }
-    } else if (val == 2 && dentType == 'single' && this.user_type != '4') {
+    } else if (val == 2 && dentType == 'single' 
+    //&& this.user_type != '4'
+    ) {
       if (this.showTrendChart) {
         this.treatmentPlanCompletedFeesTrend();
       } else {
@@ -2225,7 +2233,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       }
     }
 
-    if (this.user_type == '4') {
+    //if (this.user_type == '4') {
       if (val == 1) {
         if (this.toggleChecked) {
           if (this.treatmentPlanTrend1.every((value) => value == 0))
@@ -2255,7 +2263,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         else this.maxplanTotalGoal = this.planTotalGoal;
       }
       if (this.maxplanTotalGoal == 0) this.maxplanTotalGoal = '';
-    }
+    //}
 
     $('.treatmentPlan .treatment_cost .sa_tab_btn').removeClass('active');
     $('.treatmentPlan .tcmain' + val).addClass('active');
@@ -11376,20 +11384,24 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     // } else if (val == 'treatment' && this.goalchecked == 'average') {
     //   this.treatmentPrePrebook();
     // }
-    if (val == 'recall' && dentType == 'all' && this.user_type != '4') {
+    if (val == 'recall' && dentType == 'all' 
+    //&& this.user_type != '4'
+    ) {
       this.recallPrebook();
       this.showPreBookReapointRate = false;
     } else if (
       val == 'treatment' &&
-      dentType == 'all' &&
-      this.user_type != '4'
+      dentType == 'all' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.treatmentPrePrebook();
       this.showPreBookReapointRate = true;
     } else if (
       val == 'recall' &&
-      dentType == 'single' &&
-      this.user_type != '4'
+      dentType == 'single' 
+      // &&
+      // this.user_type != '4'
     ) {
       if (this.showTrendChart) {
         this.fdRecallPrebookRateTrend();
@@ -11398,8 +11410,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       }
     } else if (
       val == 'treatment' &&
-      dentType == 'single' &&
-      this.user_type != '4'
+      dentType == 'single' 
+      // &&
+      // this.user_type != '4'
     ) {
       if (this.showTrendChart) {
         this.fdTreatmentPrebookRateTrend();
@@ -11578,105 +11591,116 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     if (
       parseInt(val) == 1 &&
       this.hrSelectShow.includes('all') &&
-      dentType == 'all' &&
-      this.user_type != '4'
+      dentType == 'all' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.hourlyRateChart();
     } else if (
       parseInt(val) == 1 &&
       this.hrSelectShow.includes('dentists') &&
-      dentType == 'all' &&
-      this.user_type != '4'
+      dentType == 'all' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.hourlyRateChartDesntists();
     } else if (
       parseInt(val) == 1 &&
       this.hrSelectShow.includes('oht') &&
-      dentType == 'all' &&
-      this.user_type != '4'
+      dentType == 'all' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.hourlyRateChartOht();
     } else if (
       parseInt(val) == 2 &&
       this.hrSelectShow.includes('all') &&
-      dentType == 'all' &&
-      this.user_type != '4'
+      dentType == 'all' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.collectionHourlyRate();
     } else if (
       parseInt(val) == 2 &&
       this.hrSelectShow.includes('dentists') &&
-      dentType == 'all' &&
-      this.user_type != '4'
+      dentType == 'all' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.collectionHourlyRateDentist();
     } else if (
       parseInt(val) == 2 &&
       this.hrSelectShow.includes('oht') &&
-      dentType == 'all' &&
-      this.user_type != '4'
+      dentType == 'all' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.collectionHourlyRateOht();
     } else if (
       parseInt(val) == 3 &&
       this.hrSelectShow.includes('all') &&
-      dentType == 'all' &&
-      this.user_type != '4'
+      dentType == 'all' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.collectionExpHourlyRate();
     } else if (
       parseInt(val) == 3 &&
       this.hrSelectShow.includes('dentists') &&
-      dentType == 'all' &&
-      this.user_type != '4'
+      dentType == 'all' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.collectionExpHourlyRateDentist();
     } else if (
       parseInt(val) == 3 &&
       this.hrSelectShow.includes('oht') &&
-      dentType == 'all' &&
-      this.user_type != '4'
+      dentType == 'all' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.collectionExpHourlyRateOht();
     } else if (
       parseInt(val) == 1 &&
-      dentType == 'single' &&
-      this.user_type != '4' &&
+      dentType == 'single' 
+      // &&
+      // this.user_type != '4' 
+      &&
       this.showTrendChart == false
     ) {
       this.hourlyRateDentist();
     } else if (
       parseInt(val) == 1 &&
       dentType == 'single' &&
-      this.user_type != '4' &&
+      // this.user_type != '4' &&
       this.showTrendChart == true
     ) {
       this.fdhourlyRateRateTrend();
     } else if (
       parseInt(val) == 2 &&
       dentType == 'single' &&
-      this.user_type != '4' &&
+      // this.user_type != '4' &&
       this.showTrendChart == false
     ) {
       this.collectionHourlyRateSingle();
     } else if (
       parseInt(val) == 2 &&
       dentType == 'single' &&
-      this.user_type != '4' &&
+      // this.user_type != '4' &&
       this.showTrendChart == true
     ) {
       this.collectionHourlyRateTrend();
     } else if (
       parseInt(val) == 3 &&
       dentType == 'single' &&
-      this.user_type != '4' &&
+      // this.user_type != '4' &&
       this.showTrendChart == false
     ) {
       this.collectionExpHourlyRateSingle();
     } else if (
       parseInt(val) == 3 &&
       dentType == 'single' &&
-      this.user_type != '4' &&
+      // this.user_type != '4' &&
       this.showTrendChart == true
     ) {
       this.collectionExpHourlyRateTrend();
