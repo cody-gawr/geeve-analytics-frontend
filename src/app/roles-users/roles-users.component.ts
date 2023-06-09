@@ -381,15 +381,15 @@ initiate_clinic() {
 
         this.rolesUsersService.checkUserEmail(result.email,result.user_type).subscribe((res) => {
           if(res.status == 200){
-           if(res.body.data <=0 && res.consultant == null)
+           if(res.body.data <=0 && res.body.consultant == null)
            {
                this.add_user(result.display_name, result.email, result.user_type,result.selectedClinics, password,result.selected_dentist);
            }
-           else if(res.body.data > 0 && res.consultant != null && res.consultant != 'another_role')
+           else if(res.body.data > 0 && res.body.consultant != null && res.body.consultant != 'another_role')
            {
-            this.add_clinic_consultant(res.consultant,result.selectedClinics,result.display_name, result.email);
+            this.add_clinic_consultant(res.body.consultant,result.selectedClinics,result.display_name, result.email);
            }
-           else if(res.body.data > 0  && res.consultant == 'another_role'){
+           else if(res.body.data > 0  && res.body.consultant == 'another_role'){
              this.toastr.error("Cannot add consultant user with email address " +result.email+ " - please contact the Jeeve support team for further information");
            }else{
              this.toastr.error("Email Already Exists!");
