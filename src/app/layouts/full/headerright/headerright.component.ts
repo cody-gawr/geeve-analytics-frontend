@@ -266,12 +266,13 @@ export class AppHeaderrightComponent
   public allChecked: boolean = false;
 
   public get isMultiClinicsVisible(): boolean {
+    const multiClinicEnabled = parseInt(this._cookieService.get('multiClinicEnabled')??'0');
     return (
       (['/dashboards/clinicianproceedures', '/dashboards/finances'].includes(
         this.route
       ) &&
         !['4', '7'].includes(this.user_type) &&
-        this.userId == 1) ||
+        multiClinicEnabled == 1) ||
       ([
         '/dashboards/cliniciananalysis',
         '/dashboards/clinicianproceedures',
@@ -280,7 +281,7 @@ export class AppHeaderrightComponent
         '/dashboards/frontdesk'
       ].includes(this.route) &&
         !['4', '7'].includes(this.user_type) &&
-        this.userId == 1)
+        multiClinicEnabled == 1)
     );
   }
 
