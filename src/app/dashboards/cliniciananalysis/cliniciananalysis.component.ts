@@ -11075,13 +11075,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.Apirequest = 7;
       $('.filter').removeClass('active');
 
-      if (this.proCollShow == 1) {
-        this.dentistProductionTrend();
-      } else if (this.proCollShow == 2) {
-        this.dentistCollectionTrend();
-      } else if (this.proCollShow == 3) {
-        this.dentistCollectionExpTrend();
-      }
+      // if (this.proCollShow == 1) {
+      //   this.dentistProductionTrend();
+      // } else if (this.proCollShow == 2) {
+      //   this.dentistCollectionTrend();
+      // } else if (this.proCollShow == 3) {
+      //   this.dentistCollectionExpTrend();
+      // }
 
       // if (this.user_type != '4') {
         if (this.proCollShow == 1) {
