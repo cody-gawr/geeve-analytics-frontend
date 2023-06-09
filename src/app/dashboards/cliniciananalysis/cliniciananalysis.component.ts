@@ -11446,22 +11446,25 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     if (
       parseInt(val) == 1 &&
       this.proSelectShow.includes('all') &&
-      dentType == 'all' &&
-      this.user_type != '4'
+      dentType == 'all' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.buildChart();
     } else if (
       parseInt(val) == 1 &&
       this.proSelectShow.includes('dentists') &&
-      dentType == 'all' &&
-      this.user_type != '4'
+      dentType == 'all' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.buildChartDentists();
     } else if (
       parseInt(val) == 1 &&
       this.proSelectShow.includes('oht') &&
-      dentType == 'all' &&
-      this.user_type != '4'
+      dentType == 'all' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.buildChartOht();
     } else if (
@@ -11475,42 +11478,48 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     } else if (
       parseInt(val) == 2 &&
       this.proSelectShow.includes('dentists') &&
-      dentType == 'all' &&
-      this.user_type != '4'
+      dentType == 'all' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.collectionChartDentists();
     } else if (
       parseInt(val) == 2 &&
       this.proSelectShow.includes('oht') &&
-      dentType == 'all' &&
-      this.user_type != '4'
+      dentType == 'all' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.collectionChartOht();
     } else if (
       parseInt(val) == 3 &&
       this.proSelectShow.includes('all') &&
-      dentType == 'all' &&
-      this.user_type != '4'
+      dentType == 'all' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.collectionExpChart();
     } else if (
       parseInt(val) == 3 &&
       this.proSelectShow.includes('dentists') &&
-      dentType == 'all' &&
-      this.user_type != '4'
+      dentType == 'all' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.collectionExpChartDentists();
     } else if (
       parseInt(val) == 3 &&
       this.proSelectShow.includes('oht') &&
-      dentType == 'all' &&
-      this.user_type != '4'
+      dentType == 'all' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.collectionExpChartOht();
     } else if (
       parseInt(val) == 1 &&
-      dentType == 'single' &&
-      this.user_type != '4'
+      dentType == 'single' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.buildChartDentist();
       if (this.toggleChecked) {
@@ -11520,8 +11529,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       }
     } else if (
       parseInt(val) == 2 &&
-      dentType == 'single' &&
-      this.user_type != '4'
+      dentType == 'single' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.collectionDentist();
       if (this.toggleChecked) {
@@ -11531,8 +11541,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       }
     } else if (
       parseInt(val) == 3 &&
-      dentType == 'single' &&
-      this.user_type != '4'
+      dentType == 'single' 
+      // &&
+      // this.user_type != '4'
     ) {
       this.collectionExpDentist();
       if (this.toggleChecked) {
