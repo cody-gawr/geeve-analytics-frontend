@@ -147,16 +147,13 @@ export class LoginComponent implements OnInit {
               this._cookieService.put('dentist_toggle', 'false', opts);
             }
 
-            if (
-              datares['parent_stepper'] != 'no' &&
-              parseInt(datares['parent_stepper']) < 4
-            ) {
+            if (parseInt(datares['stepper_status']) < 4) {
               this.router.navigate(['/setup']);
-            } else if (
-              parseInt(datares['stepper_status']) < 4 &&
-              datares['user_type'] == '2'
-            ) {
-              this.router.navigate(['/setup']);
+            // } else if (
+            //   parseInt(datares['stepper_status']) < 4 &&
+            //   datares['user_type'] == '2'
+            // ) {
+              // this.router.navigate(['/setup']);
             } else if (datares['user_type'] == '2') {
               this.router.navigate(['/dashboards/healthscreen']);
             } else {
