@@ -1885,62 +1885,62 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.showTrend = false;
       this.toggleChecked = false;
       this.showTrendChart = false;
-      if (this.user_type != '4') {
+      //if (this.user_type != '4') {
         if (this.proSelectShow == 'production_all') {
           this.buildChart();
         } else if (this.proSelectShow == 'production_dentists') {
-          this.buildChartDentists();
+          if (this.user_type != '4') this.buildChartDentists();
         } else if (this.proSelectShow == 'production_oht') {
-          this.buildChartOht();
+          if (this.user_type != '4') this.buildChartOht();
         } else if (this.proSelectShow == 'collection_all') {
           this.collectionChart();
         } else if (this.proSelectShow == 'collection_dentists') {
-          this.collectionChartDentists();
+          if (this.user_type != '4') this.collectionChartDentists();
         } else if (this.proSelectShow == 'collection_oht') {
-          this.collectionChartOht();
+          if (this.user_type != '4') this.collectionChartOht();
         } else if (this.proSelectShow == 'collection_exp_all') {
           this.collectionExpChart();
         } else if (this.proSelectShow == 'collection_exp_dentists') {
-          this.collectionExpChartDentists();
+          if (this.user_type != '4') this.collectionExpChartDentists();
         } else if (this.proSelectShow == 'collection_exp_oht') {
-          this.collectionExpChartOht();
+          if (this.user_type != '4') this.collectionExpChartOht();
         }
 
         if (this.hrSelectShow == 'hr_all') {
           this.hourlyRateChart();
         } else if (this.hrSelectShow == 'hr_dentists') {
-          this.hourlyRateChartDesntists();
+          if (this.user_type != '4') this.hourlyRateChartDesntists();
         } else if (this.hrSelectShow == 'hr_oht') {
-          this.hourlyRateChartOht();
+          if (this.user_type != '4') this.hourlyRateChartOht();
         } else if (this.hrSelectShow == 'hr_collection_all') {
           this.collectionHourlyRate();
         } else if (this.hrSelectShow == 'hr_collection_dentists') {
-          this.collectionHourlyRateDentist();
+          if (this.user_type != '4') this.collectionHourlyRateDentist();
         } else if (this.hrSelectShow == 'hr_collection_oht') {
-          this.collectionHourlyRateOht();
+          if (this.user_type != '4') this.collectionHourlyRateOht();
         } else if (this.hrSelectShow == 'hr_collection_exp_all') {
           this.collectionExpHourlyRate();
         } else if (this.hrSelectShow == 'hr_collection_exp_dentists') {
-          this.collectionExpHourlyRateDentist();
+          if (this.user_type != '4') this.collectionExpHourlyRateDentist();
         } else if (this.hrSelectShow == 'hr_collection_exp_oht') {
-          this.collectionExpHourlyRateOht();
+          if (this.user_type != '4') this.collectionExpHourlyRateOht();
         }
-      }
-      if (this.user_type == '4') {
-        this.buildChart();
-        this.collectionChart();
-        this.collectionExpChart();
-        this.hourlyRateChart();
-        this.collectionHourlyRate();
-        this.collectionExpHourlyRate();
-        this.buildChartTreatment();
-        this.buildChartTreatmentCompletedFees();
-        this.recallPrebook();
-        this.treatmentPrePrebook();
-      }
+      //}
+      // if (this.user_type == '4') {
+      //   this.buildChart();
+      //   this.collectionChart();
+      //   this.collectionExpChart();
+      //   this.hourlyRateChart();
+      //   this.collectionHourlyRate();
+      //   this.collectionExpHourlyRate();
+      //   this.buildChartTreatment();
+      //   this.buildChartTreatmentCompletedFees();
+      //   this.recallPrebook();
+      //   this.treatmentPrePrebook();
+      // }
       this.buildChartNewpatients();
       this.treatmentPlanRate();
-      if (this.user_type != '4') {
+      //if (this.user_type != '4') {
         if (this.tcmain == 1) {
           this.buildChartTreatment();
         } else if (this.tcmain == 2) {
@@ -1951,7 +1951,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         } else if (this.prebook == 'treatment') {
           this.treatmentPrePrebook();
         }
-      }
+      //}
       this.buildChartNopatients();
       (<HTMLElement>(
         document.querySelector('.dentistProductionSingle')
@@ -1993,7 +1993,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.dentistVal = newValue;
       this.showTrend = true;
       this.selectedDentist = newValue;
-      if (this.user_type != '4' && this.toggleChecked == false) {
+      if ((this.user_type != '4' && this.toggleChecked == false) || this.user_type == '4') {
         if (this.proCollShow == 1) {
           this.dentistProductionTrend('w');
         } else if (this.proCollShow == 2) {
@@ -2002,17 +2002,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.dentistCollectionExpTrend('w');
         }
       }
-      if (this.user_type == '4') {
-        this.dentistProductionTrend('w');
-        this.dentistCollectionTrend('w');
-        this.dentistCollectionExpTrend('w');
-      }
+      // if (this.user_type == '4') {
+      //   this.dentistProductionTrend('w');
+      //   this.dentistCollectionTrend('w');
+      //   this.dentistCollectionExpTrend('w');
+      // }
       if (this.toggleChecked) {
         this.toggleChangeProcess();
         this.showTrendChart = true;
       } else {
         this.showTrendChart = false;
-        if (this.user_type != '4') {
+        //if (this.user_type != '4') {
           if (this.proCollShow == 1) {
             this.buildChartDentist();
           } else if (this.proCollShow == 2) {
@@ -2028,15 +2028,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           } else if (this.hrCollShow == 3) {
             this.collectionExpHourlyRateSingle();
           }
-        }
-        if (this.user_type == '4') {
-          this.buildChartDentist();
-          this.collectionDentist();
-          this.collectionExpDentist();
-          this.hourlyRateDentist();
-          this.collectionHourlyRateSingle();
-          this.collectionExpHourlyRateSingle();
-        }
+        //}
+        // if (this.user_type == '4') {
+        //   this.buildChartDentist();
+        //   this.collectionDentist();
+        //   this.collectionExpDentist();
+        //   this.hourlyRateDentist();
+        //   this.collectionHourlyRateSingle();
+        //   this.collectionExpHourlyRateSingle();
+        // }
         (<HTMLElement>(
           document.querySelector('.dentistProductionSingle')
         )).style.display = 'block';
@@ -2058,7 +2058,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         )).style.display = 'block';
         (<HTMLElement>document.querySelector('.noPatients')).style.display =
           'none';
-        if (this.user_type != '4') {
+        //if (this.user_type != '4') {
           if (this.tcmain == 1) {
             this.buildChartTreatmentDentist();
           } else if (this.tcmain == 2) {
@@ -2069,13 +2069,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           } else if (this.prebook == 'treatment') {
             this.treatmentPrePrebookDentist();
           }
-        }
-        if (this.user_type == '4') {
-          this.buildChartTreatmentDentist();
-          this.buildChartTreatmentCompletedFeeDentist();
-          this.recallPrebookDentist();
-          this.treatmentPrePrebookDentist();
-        }
+        //}
+        // if (this.user_type == '4') {
+        //   this.buildChartTreatmentDentist();
+        //   this.buildChartTreatmentCompletedFeeDentist();
+        //   this.recallPrebookDentist();
+        //   this.treatmentPrePrebookDentist();
+        // }
 
         (<HTMLElement>(
           document.querySelector('.recallPrebookSingle')
@@ -11075,7 +11075,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.Apirequest = 7;
       $('.filter').removeClass('active');
 
-      if (this.user_type != '4') {
+      if (this.proCollShow == 1) {
+        this.dentistProductionTrend();
+      } else if (this.proCollShow == 2) {
+        this.dentistCollectionTrend();
+      } else if (this.proCollShow == 3) {
+        this.dentistCollectionExpTrend();
+      }
+
+      // if (this.user_type != '4') {
         if (this.proCollShow == 1) {
           this.dentistProductionTrend();
         } else if (this.proCollShow == 2) {
@@ -11091,19 +11099,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         } else if (this.hrCollShow == 3) {
           this.collectionExpHourlyRateTrend();
         }
-      }
+      //}
 
-      if (this.user_type == '4') {
-        this.dentistProductionTrend();
-        this.dentistCollectionTrend();
-        this.dentistCollectionExpTrend();
-        this.fdhourlyRateRateTrend();
-        this.collectionHourlyRateTrend();
-        this.collectionExpHourlyRateTrend();
-      }
+      // if (this.user_type == '4') {
+      //   this.dentistProductionTrend();
+      //   this.dentistCollectionTrend();
+      //   this.dentistCollectionExpTrend();
+      //   this.fdhourlyRateRateTrend();
+      //   this.collectionHourlyRateTrend();
+      //   this.collectionExpHourlyRateTrend();
+      // }
+
       this.fdnewPatientsRateTrend();
       this.fdtreatmentPlanRateTrend();
-      if (this.user_type != '4') {
+      //if (this.user_type != '4') {
         if (this.tcmain == 1) {
           this.treatmentPlanTrend();
         } else if (this.tcmain == 2) {
@@ -11114,13 +11123,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         } else if (this.prebook == 'treatment') {
           this.fdTreatmentPrebookRateTrend();
         }
-      }
-      if (this.user_type == '4') {
-        this.treatmentPlanTrend();
-        this.treatmentPlanCompletedFeesTrend();
-        this.fdRecallPrebookRateTrend();
-        this.fdTreatmentPrebookRateTrend();
-      }
+      //}
+      // if (this.user_type == '4') {
+      //   this.treatmentPlanTrend();
+      //   this.treatmentPlanCompletedFeesTrend();
+      //   this.fdRecallPrebookRateTrend();
+      //   this.fdTreatmentPrebookRateTrend();
+      // }
       this.patientComplaintsTrend();
 
       // this.fdhourlyRateRateDentistsTrend();
