@@ -61,6 +61,7 @@ export class FinancesComponent implements AfterViewInit {
   public lowerLimit = 1;
   public user_type: string = '';
   public isCompleteMonth: boolean = true;
+  public queryWhEnabled = 0;
 
   public pieChartColors = [
     {
@@ -184,6 +185,11 @@ export class FinancesComponent implements AfterViewInit {
     public chartstipsService: ChartstipsService,
     private decimalPipe: DecimalPipe
   ) {
+    router.routerState.root.queryParams.subscribe(val => {
+      if(val && val.wh){
+        this.queryWhEnabled = val.wh;
+      }
+    })
     this.user_type = this._cookieService.get('user_type');
     this.connectedwith = this._cookieService.get('a_connect');
     this.isVisibleAccountGraphs = this.connectedwith == 'none' ? false : true;
@@ -2367,23 +2373,26 @@ export class FinancesComponent implements AfterViewInit {
         this.startDate,
         this.endDate,
         this.duration,
-        this.connectedwith
+        this.connectedwith,
+        this.queryWhEnabled
       )
       .subscribe(
-        (res) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          if (res.status == 200) {
+        {
+          next: (res) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            if (res.status == 200) {
+              this.netprofitstats = true;
+              this.netProfitVal = Math.round(res.body.data);
+            }
+          },
+          error: (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.netprofitstatsError = true;
             this.netprofitstats = true;
-            this.netProfitVal = Math.round(res.body.data);
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        },
-        (error) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.netprofitstatsError = true;
-          this.netprofitstats = true;
-          this.warningMessage = 'Please Provide Valid Inputs!';
         }
       );
   }
@@ -2399,23 +2408,26 @@ export class FinancesComponent implements AfterViewInit {
         this.startDate,
         this.endDate,
         this.duration,
-        this.connectedwith
+        this.connectedwith,
+        this.queryWhEnabled
       )
       .subscribe(
-        (res) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          if (res.status == 200) {
+        {
+          next: (res) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            if (res.status == 200) {
+              this.netprofitpercentstats = true;
+              this.netProfitPmsVal = Math.round(res.body.data);
+            }
+          },
+          error: (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
             this.netprofitpercentstats = true;
-            this.netProfitPmsVal = Math.round(res.body.data);
+            this.netprofitPerError = true;
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        },
-        (error) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.netprofitpercentstats = true;
-          this.netprofitPerError = true;
-          this.warningMessage = 'Please Provide Valid Inputs!';
         }
       );
   }
@@ -2464,68 +2476,72 @@ export class FinancesComponent implements AfterViewInit {
         this.startDate,
         this.endDate,
         this.duration,
-        this.connectedwith
+        this.connectedwith,
+        this.queryWhEnabled
       )
       .subscribe(
-        (res) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          if (res.status == 200) {
-            this.categoryExpensesLoader = false;
-            if (this.multipleClinicsSelected) {
-              const production: number = res.body.production;
-
-              Object.entries(
-                _.chain(res.body.data).groupBy('account_name').value()
-              ).forEach(([accountName, items], index) => {
-                this.expenseMultiChartData.push({
-                  data: _.chain(items)
-                    .orderBy('clinic_id', 'asc')
-                    .value()
-                    .map((item) => _.round((item.expense / production) * 100)),
-                  label: accountName,
-                  backgroundColor: this.doughnutChartColors[index],
-                  hoverBackgroundColor: this.doughnutChartColors[index]
+        {
+          next: (res) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            if (res.status == 200) {
+              this.categoryExpensesLoader = false;
+              if (this.multipleClinicsSelected) {
+                const production: number = res.body.production;
+  
+                Object.entries(
+                  _.chain(res.body.data).groupBy('account_name').value()
+                ).forEach(([accountName, items], index) => {
+                  this.expenseMultiChartData.push({
+                    data: _.chain(items)
+                      .orderBy('clinic_id', 'asc')
+                      .value()
+                      .map((item) => _.round((item.expense / production) * 100)),
+                    label: accountName,
+                    backgroundColor: this.doughnutChartColors[index],
+                    hoverBackgroundColor: this.doughnutChartColors[index]
+                  });
                 });
-              });
-              this.expenseMultiChartLabels = _.chain(res.body.data)
-                .uniqBy((item) => item.clinic_name)
-                .value()
-                .map((item) => item.clinic_name);
-            } else {
-              res.body.data.forEach((item: any) => {
-                this.single.push({
-                  name: `${item.account_name}--${item.expense}`,
-                  value: _.round((item.expense / res.body.production) * 100)
+                this.expenseMultiChartLabels = _.chain(res.body.data)
+                  .uniqBy((item) => item.clinic_name)
+                  .value()
+                  .map((item) => item.clinic_name);
+              } else {
+                res.body.data.forEach((item: any) => {
+                  this.single.push({
+                    name: `${item.account_name}--${item.expense}`,
+                    value: _.round((item.expense / res.body.production) * 100)
+                  });
+  
+                  this.pieChartDatares.push(Math.round(item.expense));
+                  this.pieChartDataPercentres.push(
+                    _.round((item.expense / res.body.production) * 100)
+                  );
+                  this.pieChartLabelsres.push(item.account_name);
+                  this.pieChartTotal += item.expense;
                 });
-
-                this.pieChartDatares.push(Math.round(item.expense));
-                this.pieChartDataPercentres.push(
-                  _.round((item.expense / res.body.production) * 100)
-                );
-                this.pieChartLabelsres.push(item.account_name);
-                this.pieChartTotal += item.expense;
-              });
+              }
+              this.selectedDataFilter();
+              this.unSelectedDataFilter();
+              this.expensescChartTrendTotal = res.data_ta;
+              if (
+                Math.round(this.pieChartTotal) >=
+                Math.round(this.expensescChartTrendTotal)
+              ) {
+                this.expensescChartTrendIcon = 'up';
+              }
+              this.pieChartData = this.pieChartDatares;
+              this.pieChartLabels = this.pieChartLabelsres;
             }
-            this.selectedDataFilter();
-            this.unSelectedDataFilter();
-            this.expensescChartTrendTotal = res.data_ta;
-            if (
-              Math.round(this.pieChartTotal) >=
-              Math.round(this.expensescChartTrendTotal)
-            ) {
-              this.expensescChartTrendIcon = 'up';
-            }
-            this.pieChartData = this.pieChartDatares;
-            this.pieChartLabels = this.pieChartLabelsres;
+          },
+          error: (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.categoryExpensesError = true;
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        },
-        (error) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.categoryExpensesError = true;
-          this.warningMessage = 'Please Provide Valid Inputs!';
         }
+
       );
   }
 
@@ -2547,80 +2563,83 @@ export class FinancesComponent implements AfterViewInit {
         this.clinic_id,
         this.startDate,
         this.endDate,
-        this.duration
+        this.duration,
+        this.queryWhEnabled
       )
       .subscribe(
-        (res) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.productionChartLabelsres = [];
-          this.productionChartTotal = 0;
-          this.productionChartTrendIcon = 'down';
-          this.productionChartTrendTotal = 0;
-          if (res.status == 200) {
-            if (
-              this.clinic_id.indexOf(',') >= 0 ||
-              Array.isArray(this.clinic_id)
-            ) {
-              this.showClinicByclinic = true;
-              res.body.data.sort(
-                (a: any, b: any) =>
-                  b.production_per_clinic - a.production_per_clinic
-              );
-            } else {
-              res.body.data.sort(
-                (a: any, b: any) => b.prod_per_clinician - a.prod_per_clinician
-              );
-            }
-            this.finProductionByClinicianLoader = false;
-            this.productionChartDatares = [];
-            var totalPer = 0;
-            if (res.body.data) {
-              res.body.data.forEach((val) => {
-                if (this.showClinicByclinic) {
-                  if (parseInt(val.production_per_clinic) > 0) {
-                    totalPer =
-                      (Math.round(val.production_per_clinic) * 100) /
-                      res.body.total;
-                    this.productionChartDatares.push(Math.round(totalPer));
-                    this.productionChartLabelsres.push(val.clinic_name);
-                    this.productionChartTotal =
-                      this.productionChartTotal + Math.round(totalPer);
-                  }
-                } else {
-                  if (parseInt(val.prod_per_clinician) > 0) {
-                    this.productionChartDatares.push(
-                      Math.round(val.prod_per_clinician)
-                    );
-                    this.productionChartLabelsres.push(val.provider_name);
-                    this.productionChartTotal =
-                      this.productionChartTotal +
-                      parseInt(val.prod_per_clinician);
-                  }
-                }
-              });
-            }
-            this.productionChartTrendTotal = res.body.total_ta;
-            if (
-              Math.round(this.productionChartTotal) >=
-              Math.round(this.productionChartTrendTotal)
-            )
-              this.productionChartTrendIcon = 'up';
-            if (this.productionChartDatares.every((item) => item == 0))
+        {
+          next: (res) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.productionChartLabelsres = [];
+            this.productionChartTotal = 0;
+            this.productionChartTrendIcon = 'down';
+            this.productionChartTrendTotal = 0;
+            if (res.status == 200) {
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.showClinicByclinic = true;
+                res.body.data.sort(
+                  (a: any, b: any) =>
+                    b.production_per_clinic - a.production_per_clinic
+                );
+              } else {
+                res.body.data.sort(
+                  (a: any, b: any) => b.prod_per_clinician - a.prod_per_clinician
+                );
+              }
+              this.finProductionByClinicianLoader = false;
               this.productionChartDatares = [];
-            this.productionChartData = this.productionChartDatares;
-            this.productionChartLabels = this.productionChartLabelsres;
-          }
-        },
-        (error) => {
-          this.finProductionByClinicianError = true;
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          if (this.user_type != '7') {
-            this.toastr.error(
-              'There was an error retrieving your report data, please contact our support team.'
-            );
-            this.warningMessage = 'Please Provide Valid Inputs!';
+              var totalPer = 0;
+              if (res.body.data) {
+                res.body.data.forEach((val) => {
+                  if (this.showClinicByclinic) {
+                    if (parseInt(val.production_per_clinic) > 0) {
+                      totalPer =
+                        (Math.round(val.production_per_clinic) * 100) /
+                        res.body.total;
+                      this.productionChartDatares.push(Math.round(totalPer));
+                      this.productionChartLabelsres.push(val.clinic_name);
+                      this.productionChartTotal =
+                        this.productionChartTotal + Math.round(totalPer);
+                    }
+                  } else {
+                    if (parseInt(val.prod_per_clinician) > 0) {
+                      this.productionChartDatares.push(
+                        Math.round(val.prod_per_clinician)
+                      );
+                      this.productionChartLabelsres.push(val.provider_name);
+                      this.productionChartTotal =
+                        this.productionChartTotal +
+                        parseInt(val.prod_per_clinician);
+                    }
+                  }
+                });
+              }
+              this.productionChartTrendTotal = res.body.total_ta;
+              if (
+                Math.round(this.productionChartTotal) >=
+                Math.round(this.productionChartTrendTotal)
+              )
+                this.productionChartTrendIcon = 'up';
+              if (this.productionChartDatares.every((item) => item == 0))
+                this.productionChartDatares = [];
+              this.productionChartData = this.productionChartDatares;
+              this.productionChartLabels = this.productionChartLabelsres;
+            }
+          },
+          error: (error) => {
+            this.finProductionByClinicianError = true;
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            if (this.user_type != '7') {
+              this.toastr.error(
+                'There was an error retrieving your report data, please contact our support team.'
+              );
+              this.warningMessage = 'Please Provide Valid Inputs!';
+            }
           }
         }
       );
@@ -2648,88 +2667,92 @@ export class FinancesComponent implements AfterViewInit {
         this.clinic_id,
         this.startDate,
         this.endDate,
-        this.duration
+        this.duration,
+        this.queryWhEnabled
       )
       .subscribe(
-        (res) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.totalDiscountChartDatares = [];
-          this.totalDiscountChartLabelsres = [];
-          this.totalDiscountChartLabelsClinics = [];
-          this.clinicsName = [];
-          this.clinicsids = [];
-          this.totalDiscountChartTotal = 0;
-          this.totalDiscountChartTrendIcon = 'down';
-          this.totalDiscountChartTrendTotal = 0;
-          if (res.status == 200) {
-            if (
-              this.clinic_id.indexOf(',') >= 0 ||
-              Array.isArray(this.clinic_id)
-            ) {
-              this.showClinicBar = true;
-            } else {
-              this.showClinicBar = false;
-            }
-            this.totalDiscountChartClinicsData = [];
-            this.totalDiscountChartClinicsData1 = [];
+        {
+          next: (res) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.totalDiscountChartDatares = [];
+            this.totalDiscountChartLabelsres = [];
+            this.totalDiscountChartLabelsClinics = [];
             this.clinicsName = [];
             this.clinicsids = [];
-            this.finTotalDiscountsLoader = false;
-            this.totalDiscountChartDatares = [];
             this.totalDiscountChartTotal = 0;
-            if (res.body.data == null || res.body.data.length <= 0) {
-              this.finTotalDiscountsLoader = false;
-              return;
-            }
-            res.body.data.sort((a, b) => b.discounts - a.discounts);
-            res.body.data.forEach((res) => {
-              if (res.total != 0) {
-                this.clinicsName.push(res.clinic_name);
-                this.clinicsids.push(res.clinic_id);
-                this.totalDiscountChartDatares.push(Math.round(res.discounts));
-                var name = '';
-                if (res.provider_name != '' && res.provider_name != null) {
-                  name = res.provider_name;
-                }
-                this.totalDiscountChartLabelsres.push(name);
+            this.totalDiscountChartTrendIcon = 'down';
+            this.totalDiscountChartTrendTotal = 0;
+            if (res.status == 200) {
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.showClinicBar = true;
+              } else {
+                this.showClinicBar = false;
               }
-            });
-            this.clinicsName = [...new Set(this.clinicsName)];
-            this.clinicsids = [...new Set(this.clinicsids)];
-            this.totalDiscountChartLabelsClinics = this.clinicsName;
-            const sumOfId = (id: any) =>
-              res.body.data
-                .filter((i) => i.clinic_id === id)
-                .reduce((a, b) => a + Math.round(b.discounts), 0);
-            this.clinicsids.forEach((element) => {
-              this.totalDiscountChartClinicsData1.push(sumOfId(element));
-            });
-            this.totalDiscountChartClinicsData =
-              this.totalDiscountChartClinicsData1;
-
-            this.totalDiscountChartTotal = Math.round(res.body.total);
-            this.percentOfTotalDiscount$.next(this.totalDiscountChartTotal);
-            if (res.body.total_ta)
-              this.totalDiscountChartTrendTotal = Math.round(res.body.total_ta);
-            else this.totalDiscountChartTrendTotal = 0;
-
-            if (
-              Math.round(this.totalDiscountChartTotal) >=
-              Math.round(this.totalDiscountChartTrendTotal)
-            )
-              this.totalDiscountChartTrendIcon = 'up';
-            if (this.totalDiscountChartDatares.every((item) => item == 0))
+              this.totalDiscountChartClinicsData = [];
+              this.totalDiscountChartClinicsData1 = [];
+              this.clinicsName = [];
+              this.clinicsids = [];
+              this.finTotalDiscountsLoader = false;
               this.totalDiscountChartDatares = [];
-            this.totalDiscountChartData = this.totalDiscountChartDatares;
-            this.totalDiscountChartLabels = this.totalDiscountChartLabelsres;
+              this.totalDiscountChartTotal = 0;
+              if (res.body.data == null || res.body.data.length <= 0) {
+                this.finTotalDiscountsLoader = false;
+                return;
+              }
+              res.body.data.sort((a, b) => b.discounts - a.discounts);
+              res.body.data.forEach((res) => {
+                if (res.total != 0) {
+                  this.clinicsName.push(res.clinic_name);
+                  this.clinicsids.push(res.clinic_id);
+                  this.totalDiscountChartDatares.push(Math.round(res.discounts));
+                  var name = '';
+                  if (res.provider_name != '' && res.provider_name != null) {
+                    name = res.provider_name;
+                  }
+                  this.totalDiscountChartLabelsres.push(name);
+                }
+              });
+              this.clinicsName = [...new Set(this.clinicsName)];
+              this.clinicsids = [...new Set(this.clinicsids)];
+              this.totalDiscountChartLabelsClinics = this.clinicsName;
+              const sumOfId = (id: any) =>
+                res.body.data
+                  .filter((i) => i.clinic_id === id)
+                  .reduce((a, b) => a + Math.round(b.discounts), 0);
+              this.clinicsids.forEach((element) => {
+                this.totalDiscountChartClinicsData1.push(sumOfId(element));
+              });
+              this.totalDiscountChartClinicsData =
+                this.totalDiscountChartClinicsData1;
+  
+              this.totalDiscountChartTotal = Math.round(res.body.total);
+              this.percentOfTotalDiscount$.next(this.totalDiscountChartTotal);
+              if (res.body.total_ta)
+                this.totalDiscountChartTrendTotal = Math.round(res.body.total_ta);
+              else this.totalDiscountChartTrendTotal = 0;
+  
+              if (
+                Math.round(this.totalDiscountChartTotal) >=
+                Math.round(this.totalDiscountChartTrendTotal)
+              )
+                this.totalDiscountChartTrendIcon = 'up';
+              if (this.totalDiscountChartDatares.every((item) => item == 0))
+                this.totalDiscountChartDatares = [];
+              this.totalDiscountChartData = this.totalDiscountChartDatares;
+              this.totalDiscountChartLabels = this.totalDiscountChartLabelsres;
+            }
+          },
+          error: (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        },
-        (error) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.warningMessage = 'Please Provide Valid Inputs!';
         }
+        
       );
   }
   public totalProductionTrendIcon;
@@ -2756,7 +2779,8 @@ export class FinancesComponent implements AfterViewInit {
         this.clinic_id,
         this.startDate,
         this.endDate,
-        this.duration
+        this.duration,
+        this.queryWhEnabled
       )
       .subscribe(
         (res) => {
@@ -2850,86 +2874,90 @@ export class FinancesComponent implements AfterViewInit {
         this.clinic_id,
         this.startDate,
         this.endDate,
-        this.duration
+        this.duration,
+        this.queryWhEnabled
       )
       .subscribe(
-        (res) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          if (res.status == 200) {
-            this.finCollectionLoader = false;
-            this.collectionVal = 0;
-            this.collectionVal = res.body.total
-              ? Math.round(res.body.total)
-              : 0;
-            this.collectionPercentage = res.body.total_average
-              ? Math.round(res.body.total_average)
-              : 0;
-            this.collectionTrendVal = res.body.total_ta
-              ? Math.round(res.body.total_ta)
-              : 0;
-
-            if (
-              this.clinic_id.indexOf(',') >= 0 ||
-              Array.isArray(this.clinic_id)
-            ) {
-              this.isAllClinic = true;
-              this.totalProductionCollection1 =
-                this.totalProductionCollection1.map((item) => {
-                  const collectionItem = (<any[]>res.body.data).find(
-                    (ele) => ele.clinic_name == item.label
-                  );
-                  return {
-                    ...item,
-                    data: !!collectionItem
-                      ? [...item.data, Math.round(collectionItem.collection)]
-                      : item.data
-                  };
-                });
-
-              this.totalProductionCollectionLabel1 = [
-                'Production',
-                'Collection'
-              ];
-            } else {
-              this.isAllClinic = false;
-              this.totalProductionCollection1[0]['data'].push(
-                this.collectionVal
+        {
+          next: (res) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            if (res.status == 200) {
+              this.finCollectionLoader = false;
+              this.collectionVal = 0;
+              this.collectionVal = res.body.total
+                ? Math.round(res.body.total)
+                : 0;
+              this.collectionPercentage = res.body.total_average
+                ? Math.round(res.body.total_average)
+                : 0;
+              this.collectionTrendVal = res.body.total_ta
+                ? Math.round(res.body.total_ta)
+                : 0;
+  
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.isAllClinic = true;
+                this.totalProductionCollection1 =
+                  this.totalProductionCollection1.map((item) => {
+                    const collectionItem = (<any[]>res.body.data).find(
+                      (ele) => ele.clinic_name == item.label
+                    );
+                    return {
+                      ...item,
+                      data: !!collectionItem
+                        ? [...item.data, Math.round(collectionItem.collection)]
+                        : item.data
+                    };
+                  });
+  
+                this.totalProductionCollectionLabel1 = [
+                  'Production',
+                  'Collection'
+                ];
+              } else {
+                this.isAllClinic = false;
+                this.totalProductionCollection1[0]['data'].push(
+                  this.collectionVal
+                );
+                this.totalProductionCollectionLabel1 = [
+                  'Production',
+                  'Collection'
+                ];
+                this.totalProductionCollection1[0]['hoverBackgroundColor'] = [
+                  '#ffb4b5',
+                  '#4ccfae'
+                ];
+                this.totalProductionCollection1[0]['backgroundColor'] = [
+                  '#ffb4b5',
+                  '#4ccfae'
+                ]; //as label are static we can add background color for that particular column as static
+              }
+              this.totalProductionCollectionMax = Math.max(
+                ...this.totalProductionCollection1[0]['data']
               );
-              this.totalProductionCollectionLabel1 = [
-                'Production',
-                'Collection'
-              ];
-              this.totalProductionCollection1[0]['hoverBackgroundColor'] = [
-                '#ffb4b5',
-                '#4ccfae'
-              ];
-              this.totalProductionCollection1[0]['backgroundColor'] = [
-                '#ffb4b5',
-                '#4ccfae'
-              ]; //as label are static we can add background color for that particular column as static
+              if (this.totalProductionVal)
+                this.collectionPercentageC = Math.round(
+                  (this.collectionVal / this.totalProductionVal) * 100
+                );
+              else this.collectionPercentageC = 0;
+  
+              if (
+                Math.round(this.collectionVal) >=
+                Math.round(this.collectionTrendVal)
+              )
+                this.collectionTrendIcon = 'up';
             }
-            this.totalProductionCollectionMax = Math.max(
-              ...this.totalProductionCollection1[0]['data']
-            );
-            if (this.totalProductionVal)
-              this.collectionPercentageC = Math.round(
-                (this.collectionVal / this.totalProductionVal) * 100
-              );
-            else this.collectionPercentageC = 0;
-
-            if (
-              Math.round(this.collectionVal) >=
-              Math.round(this.collectionTrendVal)
-            )
-              this.collectionTrendIcon = 'up';
+          },
+          error: (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        },
-        (error) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.warningMessage = 'Please Provide Valid Inputs!';
         }
+       
       );
   }
 
@@ -2960,44 +2988,48 @@ export class FinancesComponent implements AfterViewInit {
         this.clinic_id,
         this.startDate,
         this.endDate,
-        this.duration
+        this.duration,
+        this.queryWhEnabled
       )
       .subscribe(
-        (res) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          if (res.status == 200) {
-            this.ProdPerVisit[0]['data'] = [];
-            this.ProductionTrend1 = [];
-            this.ProductionTrendLabels1 = [];
-            if (res.body.total > 0) {
-              res.body.data.forEach((res) => {
-                this.ProductionTrend1.push(Math.round(res.prod_per_visit));
-                this.ProductionTrendLabels1.push(res.clinic_name);
-              });
+        {
+          next: (res) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            if (res.status == 200) {
+              this.ProdPerVisit[0]['data'] = [];
+              this.ProductionTrend1 = [];
+              this.ProductionTrendLabels1 = [];
+              if (res.body.total > 0) {
+                res.body.data.forEach((res) => {
+                  this.ProductionTrend1.push(Math.round(res.prod_per_visit));
+                  this.ProductionTrendLabels1.push(res.clinic_name);
+                });
+              }
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.showBar = true;
+              }
+              this.ProdPerVisit[0]['data'] = this.ProductionTrend1;
+              this.finProductionPerVisitLoader = false;
+              this.productionVal = Math.round(res.body.total);
+              this.productionTrendVal = Math.round(res.body.total_ta);
+              if (
+                Math.round(this.productionVal) >=
+                Math.round(this.productionTrendVal)
+              )
+                this.productionTrendIcon = 'up';
             }
-            if (
-              this.clinic_id.indexOf(',') >= 0 ||
-              Array.isArray(this.clinic_id)
-            ) {
-              this.showBar = true;
-            }
-            this.ProdPerVisit[0]['data'] = this.ProductionTrend1;
-            this.finProductionPerVisitLoader = false;
-            this.productionVal = Math.round(res.body.total);
-            this.productionTrendVal = Math.round(res.body.total_ta);
-            if (
-              Math.round(this.productionVal) >=
-              Math.round(this.productionTrendVal)
-            )
-              this.productionTrendIcon = 'up';
+          },
+          error: (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        },
-        (error) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.warningMessage = 'Please Provide Valid Inputs!';
         }
+        
       );
   }
 
@@ -3014,33 +3046,36 @@ export class FinancesComponent implements AfterViewInit {
         this.clinic_id,
         this.startDate,
         this.endDate,
-        this.duration
+        this.duration,
+        this.queryWhEnabled
       )
       .subscribe(
-        (res) => {
-          if (res.status == 200) {
-            this.finOverdueAccountsLoader = false;
-
-            this.totalOverdueAccountLabels = [];
-            this.totalOverdueAccountres = [];
-            this.totalOverdueAccountLabelsres = [];
-            res.body.data.forEach((res) => {
-              if (res.overdue > 0) {
-                this.totalOverdueAccountres.push(Math.round(res.overdue));
-                this.totalOverdueAccountLabelsres.push(res.label);
-              }
-            });
-            this.totalOverdueAccount = res.body.total;
-            this.percentOfCurrentOverdue$.next(res.body.total);
-            this.totalOverdueAccountData = this.totalOverdueAccountres;
-            this.totalOverdueAccountLabels = this.totalOverdueAccountLabelsres;
-            this.totalOverdueAccountDataMax = Math.max(
-              ...this.totalOverdueAccountData
-            );
+        {
+          next: (res) => {
+            if (res.status == 200) {
+              this.finOverdueAccountsLoader = false;
+  
+              this.totalOverdueAccountLabels = [];
+              this.totalOverdueAccountres = [];
+              this.totalOverdueAccountLabelsres = [];
+              res.body.data.forEach((res) => {
+                if (res.overdue > 0) {
+                  this.totalOverdueAccountres.push(Math.round(res.overdue));
+                  this.totalOverdueAccountLabelsres.push(res.label);
+                }
+              });
+              this.totalOverdueAccount = res.body.total;
+              this.percentOfCurrentOverdue$.next(res.body.total);
+              this.totalOverdueAccountData = this.totalOverdueAccountres;
+              this.totalOverdueAccountLabels = this.totalOverdueAccountLabelsres;
+              this.totalOverdueAccountDataMax = Math.max(
+                ...this.totalOverdueAccountData
+              );
+            }
+          },
+          error: (error) => {
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        },
-        (error) => {
-          this.warningMessage = 'Please Provide Valid Inputs!';
         }
       );
   }
@@ -3509,105 +3544,108 @@ export class FinancesComponent implements AfterViewInit {
     this.productionChartTrendLabels1 = [];
     this.productionChartTrend = [];
     this.financesService
-      .finProductionByClinicianTrend(this.clinic_id, this.trendValue)
+      .finProductionByClinicianTrend(this.clinic_id, this.trendValue, this.queryWhEnabled)
       .subscribe(
-        (res) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.showClinic = false;
-          this.finProductionByClinicianTrendLoader = false;
-          if (res.status == 200) {
-            res.body.data.sort((a, b) =>
-              a.duration === b.duration ? 0 : a.duration > b.duration || -1
-            );
-            res.body.data.forEach((res) => {
-              const sumProd = res.val.reduce(
-                (accumulator, current) =>
-                  accumulator + Number(current['production']),
-                0
+        {
+          next: (res) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.showClinic = false;
+            this.finProductionByClinicianTrendLoader = false;
+            if (res.status == 200) {
+              res.body.data.sort((a, b) =>
+                a.duration === b.duration ? 0 : a.duration > b.duration || -1
               );
-              res.val.forEach((result, key) => {
-                if (typeof this.productionChartTrend[key] == 'undefined') {
-                  this.productionChartTrend[key] = { data: [], label: '' };
-                }
-                if (
-                  typeof this.productionChartTrend[key]['data'] == 'undefined'
-                ) {
-                  this.productionChartTrend[key]['data'] = [];
-                }
-                if (this.clinic_id.indexOf(',') >= 0) {
-                  this.showClinic = true;
-                  var total = Math.trunc(result.production);
-                  if (
-                    result.production > 0 &&
-                    result.production.toString().includes('.')
-                  ) {
-                    var num_parts = result.production.split('.');
-                    num_parts[1] = num_parts[1].charAt(0);
-                    total = num_parts.join('.');
+              res.body.data.forEach((res) => {
+                const sumProd = res.val.reduce(
+                  (accumulator, current) =>
+                    accumulator + Number(current['production']),
+                  0
+                );
+                res.val.forEach((result, key) => {
+                  if (typeof this.productionChartTrend[key] == 'undefined') {
+                    this.productionChartTrend[key] = { data: [], label: '' };
                   }
-                  this.productionChartTrend[key]['data'].push(
-                    (total / sumProd) * 100
-                  );
-                  this.productionChartTrend[key]['label'] = result.clinic_name;
-                } else {
-                  if (Array.isArray(this.clinic_id)) {
+                  if (
+                    typeof this.productionChartTrend[key]['data'] == 'undefined'
+                  ) {
+                    this.productionChartTrend[key]['data'] = [];
+                  }
+                  if (this.clinic_id.indexOf(',') >= 0) {
                     this.showClinic = true;
-                    var total1 = Math.trunc(result.production);
+                    var total = Math.trunc(result.production);
                     if (
                       result.production > 0 &&
                       result.production.toString().includes('.')
                     ) {
                       var num_parts = result.production.split('.');
                       num_parts[1] = num_parts[1].charAt(0);
-                      total1 = num_parts.join('.');
+                      total = num_parts.join('.');
                     }
                     this.productionChartTrend[key]['data'].push(
-                      (total1 / sumProd) * 100
+                      (total / sumProd) * 100
                     );
-                    this.productionChartTrend[key]['label'] =
-                      result.clinic_name;
+                    this.productionChartTrend[key]['label'] = result.clinic_name;
                   } else {
-                    this.showClinic = false;
-                    var total2 = result.prod_per_clinician;
-                    if (
-                      result.prod_per_clinician > 0 &&
-                      result.prod_per_clinician.toString().includes('.')
-                    ) {
-                      var num_parts = result.prod_per_clinician.split('.');
-                      num_parts[1] = num_parts[1].charAt(0);
-                      total2 = num_parts.join('.');
+                    if (Array.isArray(this.clinic_id)) {
+                      this.showClinic = true;
+                      var total1 = Math.trunc(result.production);
+                      if (
+                        result.production > 0 &&
+                        result.production.toString().includes('.')
+                      ) {
+                        var num_parts = result.production.split('.');
+                        num_parts[1] = num_parts[1].charAt(0);
+                        total1 = num_parts.join('.');
+                      }
+                      this.productionChartTrend[key]['data'].push(
+                        (total1 / sumProd) * 100
+                      );
+                      this.productionChartTrend[key]['label'] =
+                        result.clinic_name;
+                    } else {
+                      this.showClinic = false;
+                      var total2 = result.prod_per_clinician;
+                      if (
+                        result.prod_per_clinician > 0 &&
+                        result.prod_per_clinician.toString().includes('.')
+                      ) {
+                        var num_parts = result.prod_per_clinician.split('.');
+                        num_parts[1] = num_parts[1].charAt(0);
+                        total2 = num_parts.join('.');
+                      }
+                      this.productionChartTrend[key]['data'].push(
+                        parseFloat(total2)
+                      );
+                      this.productionChartTrend[key]['label'] =
+                        result.provider_name;
                     }
-                    this.productionChartTrend[key]['data'].push(
-                      parseFloat(total2)
-                    );
-                    this.productionChartTrend[key]['label'] =
-                      result.provider_name;
                   }
-                }
-                this.productionChartTrend[key]['backgroundColor'] =
-                  this.doughnutChartColors[key];
-                this.productionChartTrend[key]['hoverBackgroundColor'] =
-                  this.doughnutChartColors[key];
+                  this.productionChartTrend[key]['backgroundColor'] =
+                    this.doughnutChartColors[key];
+                  this.productionChartTrend[key]['hoverBackgroundColor'] =
+                    this.doughnutChartColors[key];
+                });
+                if (this.trendValue == 'c')
+                  this.productionChartTrendLabels1.push(
+                    this.datePipe.transform(res.duration, 'MMM y')
+                  );
+                else this.productionChartTrendLabels1.push(res.duration);
               });
-              if (this.trendValue == 'c')
-                this.productionChartTrendLabels1.push(
-                  this.datePipe.transform(res.duration, 'MMM y')
-                );
-              else this.productionChartTrendLabels1.push(res.duration);
-            });
-            this.productionChartTrendLabels = this.productionChartTrendLabels1;
+              this.productionChartTrendLabels = this.productionChartTrendLabels1;
+            }
+          },
+          error: (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.finProductionByClinicianTrendError = true;
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.'
+            );
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        },
-        (error) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.finProductionByClinicianTrendError = true;
-          this.toastr.error(
-            'There was an error retrieving your report data, please contact our support team.'
-          );
-          this.warningMessage = 'Please Provide Valid Inputs!';
         }
+        
       );
   }
 
@@ -3648,76 +3686,78 @@ export class FinancesComponent implements AfterViewInit {
     this.showByclinic = false;
     this.discountsChartTrendMulti = [];
     this.financesService
-      .finTotalDiscountsTrend(this.clinic_id, this.trendValue)
+      .finTotalDiscountsTrend(this.clinic_id, this.trendValue, this.queryWhEnabled)
       .subscribe(
-        (res) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          if (res.status == 200) {
-            if (res.body.data == null || res.body.data.length <= 0) {
+        {
+          next: (res) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            if (res.status == 200) {
+              if (res.body.data == null || res.body.data.length <= 0) {
+                this.finTotalDiscountsTrendLoader = false;
+                return;
+              }
+  
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.showByclinic = true;
+              }
               this.finTotalDiscountsTrendLoader = false;
-              return;
-            }
-
-            if (
-              this.clinic_id.indexOf(',') >= 0 ||
-              Array.isArray(this.clinic_id)
-            ) {
-              this.showByclinic = true;
-            }
-            this.finTotalDiscountsTrendLoader = false;
-            if (
-              this.clinic_id.indexOf(',') >= 0 ||
-              Array.isArray(this.clinic_id)
-            ) {
-              this.discountsChartTrendMulti = [];
-              Object.entries(
-                _.chain(res.body.data).groupBy('clinic_id').value()
-              ).forEach(([, items], index) => {
-                const data: number[] = items.map((item) =>
-                  Math.round(parseInt(item.discounts))
-                );
-                const label = items[0].clinic_name;
-                const backgroundColor = this.doughnutChartColors[index];
-                this.discountsChartTrendMulti.push({
-                  data,
-                  label,
-                  backgroundColor,
-                  hoverBackgroundColor: backgroundColor
-                });
-
-                if (index == 0) {
-                  this.discountsChartTrendMultiLabels1 =
-                    this.trendValue == 'c'
-                      ? items.map((item) =>
-                          this.datePipe.transform(item.year_month, 'MMM y')
-                        )
-                      : items.map((item) => item.year);
-                }
-              });
-
-              this.discountsChartTrendMultiLabels =
-                this.discountsChartTrendMultiLabels1;
-            } else {
-              res.body.data.forEach((res) => {
-                this.discountsChartTrend1.push(Math.round(res.discounts));
-                if (this.trendValue == 'c')
-                  this.discountsChartTrendLabels1.push(
-                    this.datePipe.transform(res.year_month, 'MMM y')
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.discountsChartTrendMulti = [];
+                Object.entries(
+                  _.chain(res.body.data).groupBy('clinic_id').value()
+                ).forEach(([, items], index) => {
+                  const data: number[] = items.map((item) =>
+                    Math.round(parseInt(item.discounts))
                   );
-                else this.discountsChartTrendLabels1.push(res.year);
-              });
-              if (this.discountsChartTrend1.every((item) => item == 0))
-                this.discountsChartTrend1 = [];
-              this.discountsChartTrend[0]['data'] = this.discountsChartTrend1;
-              this.discountsChartTrendLabels = this.discountsChartTrendLabels1;
+                  const label = items[0].clinic_name;
+                  const backgroundColor = this.doughnutChartColors[index];
+                  this.discountsChartTrendMulti.push({
+                    data,
+                    label,
+                    backgroundColor,
+                    hoverBackgroundColor: backgroundColor
+                  });
+  
+                  if (index == 0) {
+                    this.discountsChartTrendMultiLabels1 =
+                      this.trendValue == 'c'
+                        ? items.map((item) =>
+                            this.datePipe.transform(item.year_month, 'MMM y')
+                          )
+                        : items.map((item) => item.year);
+                  }
+                });
+  
+                this.discountsChartTrendMultiLabels =
+                  this.discountsChartTrendMultiLabels1;
+              } else {
+                res.body.data.forEach((res) => {
+                  this.discountsChartTrend1.push(Math.round(res.discounts));
+                  if (this.trendValue == 'c')
+                    this.discountsChartTrendLabels1.push(
+                      this.datePipe.transform(res.year_month, 'MMM y')
+                    );
+                  else this.discountsChartTrendLabels1.push(res.year);
+                });
+                if (this.discountsChartTrend1.every((item) => item == 0))
+                  this.discountsChartTrend1 = [];
+                this.discountsChartTrend[0]['data'] = this.discountsChartTrend1;
+                this.discountsChartTrendLabels = this.discountsChartTrendLabels1;
+              }
             }
+          },
+          error: (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        },
-        (error) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.warningMessage = 'Please Provide Valid Inputs!';
         }
       );
   }
@@ -3751,30 +3791,32 @@ export class FinancesComponent implements AfterViewInit {
     this.overdueChartTrendLabels = [];
     this.overdueChartTrend1 = [];
     this.financesService
-      .finOverdueAccountsTrend(this.clinic_id, this.trendValue)
+      .finOverdueAccountsTrend(this.clinic_id, this.trendValue, this.queryWhEnabled)
       .subscribe(
-        (res) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          if (res.status == 200) {
-            this.finOverdueAccountsTrendLoader = false;
-            res.body.data.forEach((res) => {
-              this.overdueChartTrend1.push(Math.round(res.val.total));
-              if (this.trendValue == 'c')
-                this.overdueChartTrendLabels1.push(
-                  this.datePipe.transform(res.duration, 'MMM y')
-                );
-              else this.overdueChartTrendLabels1.push(res.duration);
-            });
-            this.overdueChartTrend[0]['data'] = this.overdueChartTrend1;
-
-            this.overdueChartTrendLabels = this.overdueChartTrendLabels1;
+        {
+          next: (res) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            if (res.status == 200) {
+              this.finOverdueAccountsTrendLoader = false;
+              res.body.data.forEach((res) => {
+                this.overdueChartTrend1.push(Math.round(res.val.total));
+                if (this.trendValue == 'c')
+                  this.overdueChartTrendLabels1.push(
+                    this.datePipe.transform(res.duration, 'MMM y')
+                  );
+                else this.overdueChartTrendLabels1.push(res.duration);
+              });
+              this.overdueChartTrend[0]['data'] = this.overdueChartTrend1;
+  
+              this.overdueChartTrendLabels = this.overdueChartTrendLabels1;
+            }
+          },
+          error: (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        },
-        (error) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.warningMessage = 'Please Provide Valid Inputs!';
         }
       );
   }
@@ -3891,94 +3933,96 @@ export class FinancesComponent implements AfterViewInit {
     this.totalProductionChartTrend1 = [];
     this.showProdByclinic = false;
     this.financesService
-      .finTotalProductionTrend(this.clinic_id, this.trendValue)
+      .finTotalProductionTrend(this.clinic_id, this.trendValue, this.queryWhEnabled)
       .subscribe(
-        (res) => {
-          this.totalProductionChartTrendLabels1 = [];
-          this.PMonthRange = [];
-          this.PYearRange = [];
-          this.cName = [];
-          this.cids = [];
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          if (res.status == 200) {
-            if (
-              this.clinic_id.indexOf(',') >= 0 ||
-              Array.isArray(this.clinic_id)
-            ) {
-              this.showProdByclinic = true;
-            }
-            this.finTotalProductionTrendLoader = false;
-            this.finNetProfitTrendLoader = false;
-            res.body.data.sort((a, b) => a.year - b.year);
-            res.body.data.forEach((item) => {
-              this.PMonthRange.push(item.year_month);
-              this.PYearRange.push(item.year);
-              this.cName.push(item.clinic_name);
-              this.cids.push(item.clinic_id);
-            });
-            const sumClinics = (range: any) =>
-              res.body.data
-                .filter((i) => i.year_month === range)
-                .reduce((a, b) => a + Math.round(b.production), 0);
-            const sumClinics1 = (range: any) =>
-              res.body.data
-                .filter((i) => i.year === range)
-                .reduce((a, b) => a + Math.round(b.production), 0);
-            this.cName = [...new Set(this.cName)];
-            this.cids = [...new Set(this.cids)];
-            this.PMonthRange = [...new Set(this.PMonthRange)];
-            this.PYearRange = [...new Set(this.PYearRange)];
-            if (this.trendValue == 'c') {
-              this.PMonthRange.forEach((ele) => {
-                this.totalProductionChartTrend1.push(sumClinics(ele));
-                this.totalProductionChartTrendLabels1.push(
-                  this.datePipe.transform(ele, 'MMM y')
-                );
+        {
+          next: (res) => {
+            this.totalProductionChartTrendLabels1 = [];
+            this.PMonthRange = [];
+            this.PYearRange = [];
+            this.cName = [];
+            this.cids = [];
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            if (res.status == 200) {
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.showProdByclinic = true;
+              }
+              this.finTotalProductionTrendLoader = false;
+              this.finNetProfitTrendLoader = false;
+              res.body.data.sort((a, b) => a.year - b.year);
+              res.body.data.forEach((item) => {
+                this.PMonthRange.push(item.year_month);
+                this.PYearRange.push(item.year);
+                this.cName.push(item.clinic_name);
+                this.cids.push(item.clinic_id);
               });
-            } else {
-              this.PYearRange.forEach((ele) => {
-                this.totalProductionChartTrend1.push(sumClinics1(ele));
-                this.totalProductionChartTrendLabels1.push(ele);
-              });
-            }
-
-            this.totalProductionChartTrend[0]['data'] =
-              this.totalProductionChartTrend1;
-            this.totalProductionChartTrendLabels =
-              this.totalProductionChartTrendLabels1;
-            this.finCollectionTrend();
-
-            if (
-              this.clinic_id.indexOf(',') >= 0 ||
-              Array.isArray(this.clinic_id)
-            ) {
-              this.totalProductionChartTrendMulti = [];
-              Object.entries(
-                _.chain(res.body.data).groupBy('clinic_id').value()
-              ).forEach(([, items], index) => {
-                const data: number[] = items.map((item) =>
-                  Math.round(parseInt(item.production))
-                );
-                const label = items[0].clinic_name;
-                const backgroundColor = this.doughnutChartColors[index];
-                this.totalProductionChartTrendMulti.push({
-                  data,
-                  label,
-                  backgroundColor,
-                  hoverBackgroundColor: backgroundColor
+              const sumClinics = (range: any) =>
+                res.body.data
+                  .filter((i) => i.year_month === range)
+                  .reduce((a, b) => a + Math.round(b.production), 0);
+              const sumClinics1 = (range: any) =>
+                res.body.data
+                  .filter((i) => i.year === range)
+                  .reduce((a, b) => a + Math.round(b.production), 0);
+              this.cName = [...new Set(this.cName)];
+              this.cids = [...new Set(this.cids)];
+              this.PMonthRange = [...new Set(this.PMonthRange)];
+              this.PYearRange = [...new Set(this.PYearRange)];
+              if (this.trendValue == 'c') {
+                this.PMonthRange.forEach((ele) => {
+                  this.totalProductionChartTrend1.push(sumClinics(ele));
+                  this.totalProductionChartTrendLabels1.push(
+                    this.datePipe.transform(ele, 'MMM y')
+                  );
                 });
-              });
-
-              this.totalProductionChartTrendLabelsMulti =
+              } else {
+                this.PYearRange.forEach((ele) => {
+                  this.totalProductionChartTrend1.push(sumClinics1(ele));
+                  this.totalProductionChartTrendLabels1.push(ele);
+                });
+              }
+  
+              this.totalProductionChartTrend[0]['data'] =
+                this.totalProductionChartTrend1;
+              this.totalProductionChartTrendLabels =
                 this.totalProductionChartTrendLabels1;
+              this.finCollectionTrend();
+  
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.totalProductionChartTrendMulti = [];
+                Object.entries(
+                  _.chain(res.body.data).groupBy('clinic_id').value()
+                ).forEach(([, items], index) => {
+                  const data: number[] = items.map((item) =>
+                    Math.round(parseInt(item.production))
+                  );
+                  const label = items[0].clinic_name;
+                  const backgroundColor = this.doughnutChartColors[index];
+                  this.totalProductionChartTrendMulti.push({
+                    data,
+                    label,
+                    backgroundColor,
+                    hoverBackgroundColor: backgroundColor
+                  });
+                });
+  
+                this.totalProductionChartTrendLabelsMulti =
+                  this.totalProductionChartTrendLabels1;
+              }
             }
+          },
+          error: (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        },
-        (error) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.warningMessage = 'Please Provide Valid Inputs!';
         }
       );
   }
@@ -4015,124 +4059,126 @@ export class FinancesComponent implements AfterViewInit {
     this.collectionChartTrend1 = [];
 
     this.financesService
-      .finCollectionTrend(this.clinic_id, this.trendValue)
+      .finCollectionTrend(this.clinic_id, this.trendValue, this.queryWhEnabled)
       .subscribe(
-        (res) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.CMonthRange = [];
-          this.CYearRange = [];
-          this.collectionChartTrendMultiData = [];
-          if (res.status == 200) {
-            this.finCollectionTrendLoader = false;
-            if (
-              this.clinic_id.indexOf(',') >= 0 ||
-              Array.isArray(this.clinic_id)
-            ) {
-              this.collectionChartTrendMultiData = [];
-              Object.entries(
-                _.chain(res.body.data).groupBy('clinic_id').value()
-              ).forEach(([, items], index) => {
-                const data: number[] = items.map((item) =>
-                  Math.round(parseInt(item.collection))
-                );
-                const label = items[0].clinic_name;
-                const backgroundColor = this.doughnutChartColors[index];
-                this.collectionChartTrendMultiData.push({
-                  data,
-                  label,
-                  backgroundColor,
-                  hoverBackgroundColor: backgroundColor
+        {
+          next: (res) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.CMonthRange = [];
+            this.CYearRange = [];
+            this.collectionChartTrendMultiData = [];
+            if (res.status == 200) {
+              this.finCollectionTrendLoader = false;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.collectionChartTrendMultiData = [];
+                Object.entries(
+                  _.chain(res.body.data).groupBy('clinic_id').value()
+                ).forEach(([, items], index) => {
+                  const data: number[] = items.map((item) =>
+                    Math.round(parseInt(item.collection))
+                  );
+                  const label = items[0].clinic_name;
+                  const backgroundColor = this.doughnutChartColors[index];
+                  this.collectionChartTrendMultiData.push({
+                    data,
+                    label,
+                    backgroundColor,
+                    hoverBackgroundColor: backgroundColor
+                  });
                 });
+                this.isAllClinic = true;
+                // res.body.data_combined.sort((a, b) =>
+                //   a.duration === b.duration ? 0 : a.duration > b.duration || -1
+                // );
+                // res.body.data_combined.forEach((res) => {
+                //   res.val.forEach((result, key) => {
+                //     if (
+                //       typeof this.collectionChartTrendMultiData[key] ==
+                //       'undefined'
+                //     ) {
+                //       this.collectionChartTrendMultiData[key] = {
+                //         data: [],
+                //         label: '',
+                //       };
+                //     }
+                //     if (
+                //       typeof this.collectionChartTrendMultiData[key]['data'] ==
+                //       'undefined'
+                //     ) {
+                //       this.collectionChartTrendMultiData[key]['data'] = [];
+                //     }
+                //     this.collectionChartTrendMultiData[key]['data'].push(
+                //       Math.round(result.collection)
+                //     );
+                //     this.collectionChartTrendMultiData[key]['label'] =
+                //       result.clinic_name;
+                //     this.collectionChartTrendMultiData[key]['backgroundColor'] =
+                //       this.doughnutChartColors[key];
+                //     this.collectionChartTrendMultiData[key][
+                //       'hoverBackgroundColor'
+                //     ] = this.doughnutChartColors[key];
+                //   });
+                // });
+              } else {
+                this.isAllClinic = false;
+              }
+              res.body.data.sort((a, b) => a.year - b.year);
+              res.body.data.forEach((res) => {
+                this.CMonthRange.push(res.year_month);
+                this.CYearRange.push(res.year);
+                // this.collectionChartTrend1.push(Math.round(res.collection));
+                // if (this.trendValue == 'c')
+                //   this.collectionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+                // else
+                //   this.collectionChartTrendLabels1.push(res.year);
               });
-              this.isAllClinic = true;
-              // res.body.data_combined.sort((a, b) =>
-              //   a.duration === b.duration ? 0 : a.duration > b.duration || -1
-              // );
-              // res.body.data_combined.forEach((res) => {
-              //   res.val.forEach((result, key) => {
-              //     if (
-              //       typeof this.collectionChartTrendMultiData[key] ==
-              //       'undefined'
-              //     ) {
-              //       this.collectionChartTrendMultiData[key] = {
-              //         data: [],
-              //         label: '',
-              //       };
-              //     }
-              //     if (
-              //       typeof this.collectionChartTrendMultiData[key]['data'] ==
-              //       'undefined'
-              //     ) {
-              //       this.collectionChartTrendMultiData[key]['data'] = [];
-              //     }
-              //     this.collectionChartTrendMultiData[key]['data'].push(
-              //       Math.round(result.collection)
-              //     );
-              //     this.collectionChartTrendMultiData[key]['label'] =
-              //       result.clinic_name;
-              //     this.collectionChartTrendMultiData[key]['backgroundColor'] =
-              //       this.doughnutChartColors[key];
-              //     this.collectionChartTrendMultiData[key][
-              //       'hoverBackgroundColor'
-              //     ] = this.doughnutChartColors[key];
-              //   });
-              // });
-            } else {
-              this.isAllClinic = false;
+              const CsumClinics = (range: any) =>
+                res.body.data
+                  .filter((i) => i.year_month === range)
+                  .reduce((a, b) => a + Math.round(b.collection), 0);
+              const CsumClinics1 = (range: any) =>
+                res.body.data
+                  .filter((i) => i.year === range)
+                  .reduce((a, b) => a + Math.round(b.collection), 0);
+  
+              this.CMonthRange = [...new Set(this.CMonthRange)];
+              this.CYearRange = [...new Set(this.CYearRange)];
+              if (this.trendValue == 'c') {
+                this.CMonthRange.forEach((ele) => {
+                  this.collectionChartTrend1.push(CsumClinics(ele));
+                  this.collectionChartTrendLabels1.push(
+                    this.datePipe.transform(ele, 'MMM y')
+                  );
+                });
+              } else {
+                this.CYearRange.forEach((ele) => {
+                  this.collectionChartTrend1.push(CsumClinics1(ele));
+                  this.collectionChartTrendLabels1.push(ele);
+                });
+              }
+  
+              this.totalProductionCollection[0]['data'] =
+                this.totalProductionChartTrend1;
+              this.totalProductionCollection[1]['data'] =
+                this.collectionChartTrend1;
+              this.totalProductionCollectionLabel =
+                this.totalProductionChartTrendLabels1;
+              this.collectionChartTrendMultiLabels =
+                this.collectionChartTrendLabels1;
+  
+              this.collectionChartTrend[0]['data'] = this.collectionChartTrend1;
+              this.collectionChartTrendLabels = this.collectionChartTrendLabels1;
             }
-            res.body.data.sort((a, b) => a.year - b.year);
-            res.body.data.forEach((res) => {
-              this.CMonthRange.push(res.year_month);
-              this.CYearRange.push(res.year);
-              // this.collectionChartTrend1.push(Math.round(res.collection));
-              // if (this.trendValue == 'c')
-              //   this.collectionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-              // else
-              //   this.collectionChartTrendLabels1.push(res.year);
-            });
-            const CsumClinics = (range: any) =>
-              res.body.data
-                .filter((i) => i.year_month === range)
-                .reduce((a, b) => a + Math.round(b.collection), 0);
-            const CsumClinics1 = (range: any) =>
-              res.body.data
-                .filter((i) => i.year === range)
-                .reduce((a, b) => a + Math.round(b.collection), 0);
-
-            this.CMonthRange = [...new Set(this.CMonthRange)];
-            this.CYearRange = [...new Set(this.CYearRange)];
-            if (this.trendValue == 'c') {
-              this.CMonthRange.forEach((ele) => {
-                this.collectionChartTrend1.push(CsumClinics(ele));
-                this.collectionChartTrendLabels1.push(
-                  this.datePipe.transform(ele, 'MMM y')
-                );
-              });
-            } else {
-              this.CYearRange.forEach((ele) => {
-                this.collectionChartTrend1.push(CsumClinics1(ele));
-                this.collectionChartTrendLabels1.push(ele);
-              });
-            }
-
-            this.totalProductionCollection[0]['data'] =
-              this.totalProductionChartTrend1;
-            this.totalProductionCollection[1]['data'] =
-              this.collectionChartTrend1;
-            this.totalProductionCollectionLabel =
-              this.totalProductionChartTrendLabels1;
-            this.collectionChartTrendMultiLabels =
-              this.collectionChartTrendLabels1;
-
-            this.collectionChartTrend[0]['data'] = this.collectionChartTrend1;
-            this.collectionChartTrendLabels = this.collectionChartTrendLabels1;
+          },
+          error: (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        },
-        (error) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.warningMessage = 'Please Provide Valid Inputs!';
         }
       );
   }
@@ -4173,79 +4219,81 @@ export class FinancesComponent implements AfterViewInit {
     this.VYearRange = [];
     this.clinicIds = [];
     this.financesService
-      .finProductionPerVisitTrend(this.clinic_id, this.trendValue)
+      .finProductionPerVisitTrend(this.clinic_id, this.trendValue, this.queryWhEnabled)
       .subscribe(
-        (res) => {
-          this.productionVisitChartTrendLabels = [];
-          this.productionVisitChartTrendLabels1 = [];
-          this.finProductionPerVisitTrendLoader = false;
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          if (res.body.data && res.status == 200) {
-            res.body.data.sort((a, b) =>
-              a.year_month === b.year_month
-                ? 0
-                : a.year_month > b.year_month || -1
-            );
-            res.body.data.forEach((res) => {
-              this.VMonthRange.push(res.year_month);
-              this.VYearRange.push(res.year);
-              this.clinicIds.push(res.clinic_id);
-              // this.productionVisitChartTrend1.push(Math.round(res.production));
-              // if (this.trendValue == 'c')
-              //   this.productionVisitChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-              // else
-              //   this.productionVisitChartTrendLabels1.push(res.year);
-            });
-
-            const vsumClinics = (range: any) =>
-              res.body.data
-                .filter((i) => i.year_month === range)
-                .reduce((a, b) => a + Math.round(b.production), 0);
-            const vsumClinicsVisits = (range: any) =>
-              res.body.data
-                .filter((i) => i.year_month === range)
-                .reduce((a, b) => a + Math.round(b.num_visits), 0);
-            const vsumClinics1 = (range: any) =>
-              res.body.data
-                .filter((i) => i.year === range)
-                .reduce((a, b) => a + Math.round(b.production), 0);
-            const vsumClinics1Visits = (range: any) =>
-              res.body.data
-                .filter((i) => i.year === range)
-                .reduce((a, b) => a + Math.round(b.num_visits), 0);
-
-            this.VMonthRange = [...new Set(this.VMonthRange)];
-            this.VYearRange = [...new Set(this.VYearRange)];
-            this.clinicIds = [...new Set(this.clinicIds)];
-            if (this.trendValue == 'c') {
-              this.VMonthRange.forEach((ele) => {
-                this.productionVisitChartTrend1.push(
-                  Math.round(vsumClinics(ele) / vsumClinicsVisits(ele))
-                );
-                this.productionVisitChartTrendLabels1.push(
-                  this.datePipe.transform(ele, 'MMM y')
-                );
+        {
+          next: (res) => {
+            this.productionVisitChartTrendLabels = [];
+            this.productionVisitChartTrendLabels1 = [];
+            this.finProductionPerVisitTrendLoader = false;
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            if (res.body.data && res.status == 200) {
+              res.body.data.sort((a, b) =>
+                a.year_month === b.year_month
+                  ? 0
+                  : a.year_month > b.year_month || -1
+              );
+              res.body.data.forEach((res) => {
+                this.VMonthRange.push(res.year_month);
+                this.VYearRange.push(res.year);
+                this.clinicIds.push(res.clinic_id);
+                // this.productionVisitChartTrend1.push(Math.round(res.production));
+                // if (this.trendValue == 'c')
+                //   this.productionVisitChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+                // else
+                //   this.productionVisitChartTrendLabels1.push(res.year);
               });
-            } else {
-              this.VYearRange.forEach((ele) => {
-                this.productionVisitChartTrend1.push(
-                  Math.round(vsumClinics1(ele) / vsumClinics1Visits(ele))
-                );
-                this.productionVisitChartTrendLabels1.push(ele);
-              });
+  
+              const vsumClinics = (range: any) =>
+                res.body.data
+                  .filter((i) => i.year_month === range)
+                  .reduce((a, b) => a + Math.round(b.production), 0);
+              const vsumClinicsVisits = (range: any) =>
+                res.body.data
+                  .filter((i) => i.year_month === range)
+                  .reduce((a, b) => a + Math.round(b.num_visits), 0);
+              const vsumClinics1 = (range: any) =>
+                res.body.data
+                  .filter((i) => i.year === range)
+                  .reduce((a, b) => a + Math.round(b.production), 0);
+              const vsumClinics1Visits = (range: any) =>
+                res.body.data
+                  .filter((i) => i.year === range)
+                  .reduce((a, b) => a + Math.round(b.num_visits), 0);
+  
+              this.VMonthRange = [...new Set(this.VMonthRange)];
+              this.VYearRange = [...new Set(this.VYearRange)];
+              this.clinicIds = [...new Set(this.clinicIds)];
+              if (this.trendValue == 'c') {
+                this.VMonthRange.forEach((ele) => {
+                  this.productionVisitChartTrend1.push(
+                    Math.round(vsumClinics(ele) / vsumClinicsVisits(ele))
+                  );
+                  this.productionVisitChartTrendLabels1.push(
+                    this.datePipe.transform(ele, 'MMM y')
+                  );
+                });
+              } else {
+                this.VYearRange.forEach((ele) => {
+                  this.productionVisitChartTrend1.push(
+                    Math.round(vsumClinics1(ele) / vsumClinics1Visits(ele))
+                  );
+                  this.productionVisitChartTrendLabels1.push(ele);
+                });
+              }
+              this.productionVisitChartTrend[0]['data'] =
+                this.productionVisitChartTrend1;
+  
+              this.productionVisitChartTrendLabels =
+                this.productionVisitChartTrendLabels1;
             }
-            this.productionVisitChartTrend[0]['data'] =
-              this.productionVisitChartTrend1;
-
-            this.productionVisitChartTrendLabels =
-              this.productionVisitChartTrendLabels1;
+          },
+          error: (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        },
-        (error) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.warningMessage = 'Please Provide Valid Inputs!';
         }
       );
   }
@@ -4364,76 +4412,78 @@ export class FinancesComponent implements AfterViewInit {
     this.netProfitPmsChartTrendLabels = [];
     this.trendxero = true;
     this.financesService
-      .finNetProfitPMSTrend(this.clinic_id, this.trendValue, this.connectedwith)
+      .finNetProfitPMSTrend(this.clinic_id, this.trendValue, this.connectedwith, this.queryWhEnabled)
       .subscribe(
-        (res) => {
-          this.trendxero = false;
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-
-          if (res.status == 200) {
-            if (res.body.data) {
-              if (this.multipleClinicsSelected) {
-                this.netProfitPmsChartTrendMulti = [];
-                const datasets: any[] = [];
-                const totalData: number[] = [];
-
-                Object.entries(
-                  _.chain(res.body.data)
-                    .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
-                    .value()
-                ).forEach(([duration, items], index) => {
-                  totalData.push(
-                    _.sumBy(items, (item) => Number(item.net_profit) || 0)
-                  );
-                  labels.push(duration);
-                });
-                datasets.push({
-                  label: 'Total',
-                  data: totalData
-                });
-
-                Object.entries(
-                  _.chain(res.body.data).groupBy('clinic_id').value()
-                ).forEach(([, items], index) => {
-                  const data: number[] = items.map((item) =>
-                    Math.round(parseInt(item.net_profit) || 0)
-                  );
-                  const label = items[0].clinic_name;
-                  datasets.push({
-                    data,
-                    label,
-                    backgroundColor: '#ffffff00',
-                    borderColor: '#ffffff00',
-                    radius: 0,
-                    hoverRadius: 0,
-                    pointStyle: false
+        {
+          next: (res) => {
+            this.trendxero = false;
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+  
+            if (res.status == 200) {
+              if (res.body.data) {
+                if (this.multipleClinicsSelected) {
+                  this.netProfitPmsChartTrendMulti = [];
+                  const datasets: any[] = [];
+                  const totalData: number[] = [];
+  
+                  Object.entries(
+                    _.chain(res.body.data)
+                      .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                      .value()
+                  ).forEach(([duration, items], index) => {
+                    totalData.push(
+                      _.sumBy(items, (item) => Number(item.net_profit) || 0)
+                    );
+                    labels.push(duration);
                   });
-                });
-
-                this.netProfitPmsChartTrendMulti = datasets;
-              } else {
-                res.body.data.forEach((item) => {
-                  this.netProfitChartTrend1.push(
-                    Math.round(item.net_profit || 0)
-                  );
-
-                  labels.push(
-                    this.trendValue == 'c'
-                      ? this.datePipe.transform(item.year_month, 'MMM y')
-                      : item.year
-                  );
-                });
-                this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
+                  datasets.push({
+                    label: 'Total',
+                    data: totalData
+                  });
+  
+                  Object.entries(
+                    _.chain(res.body.data).groupBy('clinic_id').value()
+                  ).forEach(([, items], index) => {
+                    const data: number[] = items.map((item) =>
+                      Math.round(parseInt(item.net_profit) || 0)
+                    );
+                    const label = items[0].clinic_name;
+                    datasets.push({
+                      data,
+                      label,
+                      backgroundColor: '#ffffff00',
+                      borderColor: '#ffffff00',
+                      radius: 0,
+                      hoverRadius: 0,
+                      pointStyle: false
+                    });
+                  });
+  
+                  this.netProfitPmsChartTrendMulti = datasets;
+                } else {
+                  res.body.data.forEach((item) => {
+                    this.netProfitChartTrend1.push(
+                      Math.round(item.net_profit || 0)
+                    );
+  
+                    labels.push(
+                      this.trendValue == 'c'
+                        ? this.datePipe.transform(item.year_month, 'MMM y')
+                        : item.year
+                    );
+                  });
+                  this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
+                }
               }
+              this.netProfitPmsChartTrendLabels = labels;
             }
-            this.netProfitPmsChartTrendLabels = labels;
+          },
+          error: (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        },
-        (error) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.warningMessage = 'Please Provide Valid Inputs!';
         }
       );
   }
@@ -4447,61 +4497,64 @@ export class FinancesComponent implements AfterViewInit {
       .finNetProfitPMSPercentTrend(
         this.clinic_id,
         this.trendValue,
-        this.connectedwith
+        this.connectedwith,
+        this.queryWhEnabled
       )
       .subscribe(
-        (res) => {
-          this.trendxero = false;
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.netProfitPmsPercentChartTrendMulti = [];
-          let labels: string[] = [];
-
-          if (res.status == 200) {
-            if (res.body.data) {
-              const data: number[] = [];
-              if (this.multipleClinicsSelected) {
-                Object.entries(
-                  _.chain(res.body.data)
-                    .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
-                    .value()
-                ).forEach(([duration, items]) => {
-                  data.push(
-                    _.round(
-                      (_.chain(items)
-                        .sumBy((item) => Number(item.net_profit) || 0)
-                        .value() /
-                        _.chain(items)
-                          .sumBy((item) => Number(item.collection) || 0)
-                          .value() || 0) * 100,
-                      0
-                    )
-                  );
-                  labels.push(
-                    this.trendValue == 'c'
-                      ? this.datePipe.transform(duration, 'MMM y')
-                      : duration
-                  );
-                });
-              } else {
-                res.body.data.forEach((item: any) => {
-                  data.push(_.round(item.net_profit_percent??0));
-                  labels.push(
-                    this.trendValue == 'c'
-                      ? this.datePipe.transform(item.year_month, 'MMM y')
-                      : item.year
-                  );
-                });
+        {
+          next: (res) => {
+            this.trendxero = false;
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.netProfitPmsPercentChartTrendMulti = [];
+            let labels: string[] = [];
+  
+            if (res.status == 200) {
+              if (res.body.data) {
+                const data: number[] = [];
+                if (this.multipleClinicsSelected) {
+                  Object.entries(
+                    _.chain(res.body.data)
+                      .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                      .value()
+                  ).forEach(([duration, items]) => {
+                    data.push(
+                      _.round(
+                        (_.chain(items)
+                          .sumBy((item) => Number(item.net_profit) || 0)
+                          .value() /
+                          _.chain(items)
+                            .sumBy((item) => Number(item.collection) || 0)
+                            .value() || 0) * 100,
+                        0
+                      )
+                    );
+                    labels.push(
+                      this.trendValue == 'c'
+                        ? this.datePipe.transform(duration, 'MMM y')
+                        : duration
+                    );
+                  });
+                } else {
+                  res.body.data.forEach((item: any) => {
+                    data.push(_.round(item.net_profit_percent??0));
+                    labels.push(
+                      this.trendValue == 'c'
+                        ? this.datePipe.transform(item.year_month, 'MMM y')
+                        : item.year
+                    );
+                  });
+                }
+                this.netProfitPercentChartTrend[0]['data'] = data;
+                this.netProfitPercentChartTrendLabels = labels;
               }
-              this.netProfitPercentChartTrend[0]['data'] = data;
-              this.netProfitPercentChartTrendLabels = labels;
             }
+          },
+          error: (_) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        },
-        (_) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.warningMessage = 'Please Provide Valid Inputs!';
         }
       );
   }
@@ -4518,53 +4571,56 @@ export class FinancesComponent implements AfterViewInit {
       .finExpensesByCategoryTrend(
         this.clinic_id,
         this.trendValue,
-        this.connectedwith
+        this.connectedwith,
+        this.queryWhEnabled
       )
       .subscribe(
-        (res) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          if (res.status == 200) {
-            this.expensestrendstats = true;
-            const durations: string[] = res.body.durations;
-            Object.entries(
-              _.chain(res.body.data).groupBy('account_name').value()
-            ).forEach(([accountName, items], index) => {
-              const dataByDuration: { duration: string; expense: number }[] =
-                _.chain(items)
-                  .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
-                  .map((eles: any[], duration) => {
-                    return {
-                      duration,
-                      expense: _.chain(eles)
-                        .sumBy((ele) => ele.expense)
-                        .value()
-                    };
-                  })
-                  .value();
-              this.expensesChartTrend.push({
-                data: durations.map((d) => {
-                  const data = dataByDuration.find((e) => e.duration === d);
-                  return !!data ? data.expense : 0;
-                }),
-                label: accountName,
-                backgroundColor: this.doughnutChartColors[index],
-                hoverBackgroundColor: this.doughnutChartColors[index]
+        {
+          next: (res) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            if (res.status == 200) {
+              this.expensestrendstats = true;
+              const durations: string[] = res.body.durations;
+              Object.entries(
+                _.chain(res.body.data).groupBy('account_name').value()
+              ).forEach(([accountName, items], index) => {
+                const dataByDuration: { duration: string; expense: number }[] =
+                  _.chain(items)
+                    .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                    .map((eles: any[], duration) => {
+                      return {
+                        duration,
+                        expense: _.chain(eles)
+                          .sumBy((ele) => ele.expense)
+                          .value()
+                      };
+                    })
+                    .value();
+                this.expensesChartTrend.push({
+                  data: durations.map((d) => {
+                    const data = dataByDuration.find((e) => e.duration === d);
+                    return !!data ? data.expense : 0;
+                  }),
+                  label: accountName,
+                  backgroundColor: this.doughnutChartColors[index],
+                  hoverBackgroundColor: this.doughnutChartColors[index]
+                });
               });
-            });
-            this.expensesChartTrendLabels =
-              this.trendValue == 'c'
-                ? durations.map((d: string) =>
-                    moment(d, 'YYYY-MM').format('MMM YYYY')
-                  )
-                : durations;
+              this.expensesChartTrendLabels =
+                this.trendValue == 'c'
+                  ? durations.map((d: string) =>
+                      moment(d, 'YYYY-MM').format('MMM YYYY')
+                    )
+                  : durations;
+            }
+          },
+          error: (error) => {
+            this.Apirequest = this.Apirequest - 1;
+            this.enableDiabaleButton(this.Apirequest);
+            this.expensesChartTrendError = true;
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        },
-        (error) => {
-          this.Apirequest = this.Apirequest - 1;
-          this.enableDiabaleButton(this.Apirequest);
-          this.expensesChartTrendError = true;
-          this.warningMessage = 'Please Provide Valid Inputs!';
         }
       );
   }
