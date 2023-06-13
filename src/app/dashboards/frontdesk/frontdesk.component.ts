@@ -73,6 +73,7 @@ export class FrontDeskComponent implements AfterViewInit {
   public isAllClinic: boolean;
   private destroy = new Subject<void>();
   private destroy$ = this.destroy.asObservable();
+  public queryWhEnabled = 0;
 
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
@@ -103,6 +104,11 @@ export class FrontDeskComponent implements AfterViewInit {
     public chartstipsService: ChartstipsService,
     private clinicianAnalysisService: ClinicianAnalysisService
   ) {
+    router.routerState.root.queryParams.subscribe(val => {
+      if(val && val.wh){
+        this.queryWhEnabled = val.wh;
+      }
+    })
     // this.getChartsTips();
     this.getAllClinics();
   }
@@ -1288,99 +1294,102 @@ export class FrontDeskComponent implements AfterViewInit {
             this.clinic_id,
             this.startDate,
             this.endDate,
-            this.duration
+            this.duration,
+            this.queryWhEnabled
           )
           .subscribe(
-            (res) => {
-              this.fdUtiData = [];
-              if (res.status == 200) {
-                this.fdWorkTimeAnalysisLoader = false;
-                this.workTimeData1 = [];
-                this.workTimeLabels1 = [];
-                this.prevWorkTimeTooltip = 'down';
-                if (res.body.data.length > 0) {
-                  res.body.data.forEach((res) => {
-                    var temp = {
-                      name: res.app_book_name,
-                      scheduled_hours: Math.round(res.planned_hour * 100) / 100,
-                      clinican_hours: Math.round(res.worked_hour * 100) / 100,
-                      util_rate: Math.round(res.util_rate * 100)
+            {
+              next: (res) => {
+                this.fdUtiData = [];
+                if (res.status == 200) {
+                  this.fdWorkTimeAnalysisLoader = false;
+                  this.workTimeData1 = [];
+                  this.workTimeLabels1 = [];
+                  this.prevWorkTimeTooltip = 'down';
+                  if (res.body.data.length > 0) {
+                    res.body.data.forEach((res) => {
+                      var temp = {
+                        name: res.app_book_name,
+                        scheduled_hours: Math.round(res.planned_hour * 100) / 100,
+                        clinican_hours: Math.round(res.worked_hour * 100) / 100,
+                        util_rate: Math.round(res.util_rate * 100)
+                      };
+                      this.fdUtiData.push(temp);
+                    });
+                    if (res.body.data.length > this.numberOfRecords)
+                      res.body.data = res.body.data.slice(
+                        0,
+                        this.numberOfRecords
+                      );
+                    res.body.data.forEach((res) => {
+                      this.workTimeData1.push(Math.round(res.util_rate * 100));
+                      if (
+                        this.clinic_id.indexOf(',') >= 0 ||
+                        Array.isArray(this.clinic_id)
+                      ) {
+                        this.isAllClinic = true;
+                        this.showMultiClinicUR = true;
+                      } else {
+                        this.isAllClinic = false;
+                      }
+                      this.workTimeLabels1.push(
+                        res.app_book_name +
+                          '--' +
+                          res.worked_hour +
+                          '--' +
+                          res.planned_hour +
+                          '--' +
+                          res.clinic_name
+                      );
+                    });
+                  }
+                  this.workTimeData[0]['data'] = this.workTimeData1;
+                  if (this.isAllClinic)
+                    this.workTimeData[0].backgroundColor =
+                      this.barBackgroundColor(res.body.data);
+                  this.workTimeLabels = this.workTimeLabels1;
+                  this.workTimeTotal = Math.round(res.body.total);
+                  this.prevWorkTimeTotal = Math.round(res.body.total_ta);
+                  this.workTimeGoal = res.body.goals;
+                  if (this.workTimeTotal >= this.prevWorkTimeTotal)
+                    this.prevWorkTimeTooltip = 'up';
+                  this.stackedChartOptionssWT.annotation = [];
+                  if (this.goalchecked == 'average') {
+                    this.stackedChartOptionssWT.annotation = {
+                      annotations: [
+                        {
+                          type: 'line',
+                          mode: 'horizontal',
+                          scaleID: 'y-axis-0',
+                          value: this.workTimeTotal,
+                          borderColor: '#0e3459',
+                          borderWidth: 2,
+                          borderDash: [2, 2],
+                          borderDashOffset: 0
+                        }
+                      ]
                     };
-                    this.fdUtiData.push(temp);
-                  });
-                  if (res.body.data.length > this.numberOfRecords)
-                    res.body.data = res.body.data.slice(
-                      0,
-                      this.numberOfRecords
-                    );
-                  res.body.data.forEach((res) => {
-                    this.workTimeData1.push(Math.round(res.util_rate * 100));
-                    if (
-                      this.clinic_id.indexOf(',') >= 0 ||
-                      Array.isArray(this.clinic_id)
-                    ) {
-                      this.isAllClinic = true;
-                      this.showMultiClinicUR = true;
-                    } else {
-                      this.isAllClinic = false;
-                    }
-                    this.workTimeLabels1.push(
-                      res.app_book_name +
-                        '--' +
-                        res.worked_hour +
-                        '--' +
-                        res.planned_hour +
-                        '--' +
-                        res.clinic_name
-                    );
-                  });
+                  } else if (this.goalchecked == 'goal') {
+                    this.stackedChartOptionssWT.annotation = {
+                      annotations: [
+                        {
+                          type: 'line',
+                          mode: 'horizontal',
+                          scaleID: 'y-axis-0',
+                          value: this.workTimeGoal,
+                          borderColor: 'red',
+                          borderWidth: 2,
+                          borderDash: [2, 2],
+                          borderDashOffset: 0
+                        }
+                      ]
+                    };
+                  }
                 }
-                this.workTimeData[0]['data'] = this.workTimeData1;
-                if (this.isAllClinic)
-                  this.workTimeData[0].backgroundColor =
-                    this.barBackgroundColor(res.body.data);
-                this.workTimeLabels = this.workTimeLabels1;
-                this.workTimeTotal = Math.round(res.body.total);
-                this.prevWorkTimeTotal = Math.round(res.body.total_ta);
-                this.workTimeGoal = res.body.goals;
-                if (this.workTimeTotal >= this.prevWorkTimeTotal)
-                  this.prevWorkTimeTooltip = 'up';
-                this.stackedChartOptionssWT.annotation = [];
-                if (this.goalchecked == 'average') {
-                  this.stackedChartOptionssWT.annotation = {
-                    annotations: [
-                      {
-                        type: 'line',
-                        mode: 'horizontal',
-                        scaleID: 'y-axis-0',
-                        value: this.workTimeTotal,
-                        borderColor: '#0e3459',
-                        borderWidth: 2,
-                        borderDash: [2, 2],
-                        borderDashOffset: 0
-                      }
-                    ]
-                  };
-                } else if (this.goalchecked == 'goal') {
-                  this.stackedChartOptionssWT.annotation = {
-                    annotations: [
-                      {
-                        type: 'line',
-                        mode: 'horizontal',
-                        scaleID: 'y-axis-0',
-                        value: this.workTimeGoal,
-                        borderColor: 'red',
-                        borderWidth: 2,
-                        borderDash: [2, 2],
-                        borderDashOffset: 0
-                      }
-                    ]
-                  };
-                }
+              },
+              error: (error) => {
+                this.warningMessage = 'Please Provide Valid Inputs!';
               }
-            },
-            (error) => {
-              this.warningMessage = 'Please Provide Valid Inputs!';
             }
           );
     }
@@ -1436,76 +1445,79 @@ export class FrontDeskComponent implements AfterViewInit {
         this.clinic_id,
         this.startDate,
         this.endDate,
-        this.duration
+        this.duration,
+        this.queryWhEnabled
       )
       .subscribe(
-        (res) => {
-          this.byDayLoader = false;
-          this.byDayDataTemp = [];
-          this.byDayLabelsTemp = [];
-          this.byDayDataTable = [];
-          this.byTotal = 0;
-          this.prevByDayTotal = 0;
-          if (res.status == 200) {
-            moment.updateLocale('en-au', {
-              week: {
-                dow: 1
-              }
-            });
-            const weekdays: string[] = moment.weekdays(true);
-            const fillableData: {
-              day: string;
-              plannedHour: number;
-              workedHour: number;
-            }[] = _.chain(res.body.data)
-              .groupBy('day')
-              .map((items: any, day: string) => {
-                return {
+        {
+          next: (res) => {
+            this.byDayLoader = false;
+            this.byDayDataTemp = [];
+            this.byDayLabelsTemp = [];
+            this.byDayDataTable = [];
+            this.byTotal = 0;
+            this.prevByDayTotal = 0;
+            if (res.status == 200) {
+              moment.updateLocale('en-au', {
+                week: {
+                  dow: 1
+                }
+              });
+              const weekdays: string[] = moment.weekdays(true);
+              const fillableData: {
+                day: string;
+                plannedHour: number;
+                workedHour: number;
+              }[] = _.chain(res.body.data)
+                .groupBy('day')
+                .map((items: any, day: string) => {
+                  return {
+                    day,
+                    plannedHour: _.chain(items)
+                      .sumBy((item) => Number(item.planned_hour))
+                      .value(),
+                    workedHour: _.chain(items)
+                      .sumBy((item) => Number(item.worked_hour))
+                      .value()
+                  };
+                })
+                .value();
+              const data: {
+                day: string;
+                plannedHour: number;
+                workedHour: number;
+              }[] = weekdays.map((weekday) => {
+                const item = fillableData.find((ele) => ele.day == weekday);
+                return item
+                  ? item
+                  : { day: weekday, plannedHour: 0, workedHour: 0 };
+              });
+              this.byDayDataTable = data.map(
+                ({ day, plannedHour, workedHour }) => ({
                   day,
-                  plannedHour: _.chain(items)
-                    .sumBy((item) => Number(item.planned_hour))
-                    .value(),
-                  workedHour: _.chain(items)
-                    .sumBy((item) => Number(item.worked_hour))
-                    .value()
-                };
-              })
-              .value();
-            const data: {
-              day: string;
-              plannedHour: number;
-              workedHour: number;
-            }[] = weekdays.map((weekday) => {
-              const item = fillableData.find((ele) => ele.day == weekday);
-              return item
-                ? item
-                : { day: weekday, plannedHour: 0, workedHour: 0 };
-            });
-            this.byDayDataTable = data.map(
-              ({ day, plannedHour, workedHour }) => ({
-                day,
-                scheduled_hours: plannedHour,
-                clinican_hours: workedHour,
-                util_rate: _.round((workedHour / plannedHour || 0) * 100)
-              })
-            );
-            this.byDayData[0]['data'] = data.map(
-              ({ workedHour, plannedHour }) =>
-                _.round((workedHour / plannedHour || 0) * 100)
-            );
-            this.byDayLabels = data.map(
-              ({ day, workedHour, plannedHour }) =>
-                `${day}--${workedHour}--${plannedHour}`
-            );
-
-            this.isAllClinic =
-              this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id);
-            this.byTotal = Math.round(res.body.total);
-            this.prevByDayTotal = Math.round(res.body.total_ta);
+                  scheduled_hours: plannedHour,
+                  clinican_hours: workedHour,
+                  util_rate: _.round((workedHour / plannedHour || 0) * 100)
+                })
+              );
+              this.byDayData[0]['data'] = data.map(
+                ({ workedHour, plannedHour }) =>
+                  _.round((workedHour / plannedHour || 0) * 100)
+              );
+              this.byDayLabels = data.map(
+                ({ day, workedHour, plannedHour }) =>
+                  `${day}--${workedHour}--${plannedHour}`
+              );
+  
+              this.isAllClinic =
+                this.clinic_id.indexOf(',') >= 0 || Array.isArray(this.clinic_id);
+              this.byTotal = Math.round(res.body.total);
+              this.prevByDayTotal = Math.round(res.body.total_ta);
+            }
+          },
+          error: (error) => {
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        },
-        (error) => {
-          this.warningMessage = 'Please Provide Valid Inputs!';
         }
       );
   }
@@ -1568,47 +1580,51 @@ export class FrontDeskComponent implements AfterViewInit {
             this.clinic_id,
             this.startDate,
             this.endDate,
-            this.duration
+            this.duration,
+            this.queryWhEnabled
           )
           .subscribe(
-            (res) => {
-              this.ftaTotal = 0;
-              this.ftaPrevTotal = 0;
-              if (res.status == 200) {
-                this.fdFtaRatioLoader = false;
-                this.ftaMulti[0]['data'] = [];
-                this.ftaLabels = [];
-                this.ftaLabels1 = [];
-                if (res.body.total > 0) {
-                  res.body.data.forEach((item: any) => {
-                    this.ftaLabels1.push(_.round(item.fta_ratio, 1));
-                    this.ftaLabels.push(item.clinic_name);
-                  });
+            {
+              next: (res) => {
+                this.ftaTotal = 0;
+                this.ftaPrevTotal = 0;
+                if (res.status == 200) {
+                  this.fdFtaRatioLoader = false;
+                  this.ftaMulti[0]['data'] = [];
+                  this.ftaLabels = [];
+                  this.ftaLabels1 = [];
+                  if (res.body.total > 0) {
+                    res.body.data.forEach((item: any) => {
+                      this.ftaLabels1.push(_.round(item.fta_ratio, 1));
+                      this.ftaLabels.push(item.clinic_name);
+                    });
+                  }
+                  if (
+                    this.clinic_id.indexOf(',') >= 0 ||
+                    Array.isArray(this.clinic_id)
+                  ) {
+                    this.showmulticlinicFta = true;
+                  }
+                  this.ftaMulti[0]['data'] = this.ftaLabels1;
+  
+                  if (res.body.total > 100) res.body.total = 100;
+                  if (res.body.total_ta > 100) res.body.total_ta = 100;
+                  this.ftaTotal = _.round(res.body.total, 1);
+                  this.ftaPrevTotal = _.round(res.body.total_ta, 1);
+                  this.ftaGoal = res.body.goals;
+                  if (this.ftaTotal > this.ftaGoal)
+                    this.maxftaGoal = this.ftaTotal;
+                  else this.maxftaGoal = this.ftaGoal;
+                  if (this.maxftaGoal == 0) this.maxftaGoal = '';
+                  if (this.ftaTotal >= this.ftaPrevTotal)
+                    this.ftaTooltip = 'down';
                 }
-                if (
-                  this.clinic_id.indexOf(',') >= 0 ||
-                  Array.isArray(this.clinic_id)
-                ) {
-                  this.showmulticlinicFta = true;
-                }
-                this.ftaMulti[0]['data'] = this.ftaLabels1;
-
-                if (res.body.total > 100) res.body.total = 100;
-                if (res.body.total_ta > 100) res.body.total_ta = 100;
-                this.ftaTotal = _.round(res.body.total, 1);
-                this.ftaPrevTotal = _.round(res.body.total_ta, 1);
-                this.ftaGoal = res.body.goals;
-                if (this.ftaTotal > this.ftaGoal)
-                  this.maxftaGoal = this.ftaTotal;
-                else this.maxftaGoal = this.ftaGoal;
-                if (this.maxftaGoal == 0) this.maxftaGoal = '';
-                if (this.ftaTotal >= this.ftaPrevTotal)
-                  this.ftaTooltip = 'down';
+              },
+              error: (error) => {
+                this.warningMessage = 'Please Provide Valid Inputs!';
               }
-            },
-            (error) => {
-              this.warningMessage = 'Please Provide Valid Inputs!';
             }
+
           );
     }
   }
@@ -1669,43 +1685,45 @@ export class FrontDeskComponent implements AfterViewInit {
       );
 
       this.frontdeskService
-        .fdUtaRatio(this.clinic_id, this.startDate, this.endDate, this.duration)
+        .fdUtaRatio(this.clinic_id, this.startDate, this.endDate, this.duration, this.queryWhEnabled)
         .subscribe(
-          (res) => {
-            this.utaTotal = 0;
-            this.utaPrevTotal = 0;
-            if (res.status == 200) {
-              this.fdUtaRatioLoader = false;
-              this.utaMulti[0]['data'] = [];
-              this.utaLabels = [];
-              this.utaLabels1 = [];
-              if (res.body.total > 0) {
-                res.body.data.forEach((item: any) => {
-                  this.utaLabels1.push(_.round(item.uta_ratio, 1));
-                  this.utaLabels.push(item.clinic_name);
-                });
+          {
+            next: (res) => {
+              this.utaTotal = 0;
+              this.utaPrevTotal = 0;
+              if (res.status == 200) {
+                this.fdUtaRatioLoader = false;
+                this.utaMulti[0]['data'] = [];
+                this.utaLabels = [];
+                this.utaLabels1 = [];
+                if (res.body.total > 0) {
+                  res.body.data.forEach((item: any) => {
+                    this.utaLabels1.push(_.round(item.uta_ratio, 1));
+                    this.utaLabels.push(item.clinic_name);
+                  });
+                }
+                if (
+                  this.clinic_id.indexOf(',') >= 0 ||
+                  Array.isArray(this.clinic_id)
+                ) {
+                  this.showmulticlinicUta = true;
+                }
+                this.utaMulti[0]['data'] = this.utaLabels1;
+  
+                if (res.body.total > 100) res.body.total = 100;
+                if (res.body.total_ta > 100) res.body.data_ta = 100;
+                this.utaTotal = _.round(res.body.total, 1);
+                this.utaPrevTotal = _.round(res.body.total_ta, 1);
+                this.utaGoal = res.body.goals;
+                if (this.utaTotal > this.utaGoal) this.maxutaGoal = this.utaTotal;
+                else this.maxutaGoal = this.utaGoal;
+                if (this.maxutaGoal == 0) this.maxutaGoal = '';
+                if (this.utaTotal >= this.utaPrevTotal) this.utaTooltip = 'down';
               }
-              if (
-                this.clinic_id.indexOf(',') >= 0 ||
-                Array.isArray(this.clinic_id)
-              ) {
-                this.showmulticlinicUta = true;
-              }
-              this.utaMulti[0]['data'] = this.utaLabels1;
-
-              if (res.body.total > 100) res.body.total = 100;
-              if (res.body.total_ta > 100) res.body.data_ta = 100;
-              this.utaTotal = _.round(res.body.total, 1);
-              this.utaPrevTotal = _.round(res.body.total_ta, 1);
-              this.utaGoal = res.body.goals;
-              if (this.utaTotal > this.utaGoal) this.maxutaGoal = this.utaTotal;
-              else this.maxutaGoal = this.utaGoal;
-              if (this.maxutaGoal == 0) this.maxutaGoal = '';
-              if (this.utaTotal >= this.utaPrevTotal) this.utaTooltip = 'down';
+            },
+            error: (error) => {
+              this.warningMessage = 'Please Provide Valid Inputs!';
             }
-          },
-          (error) => {
-            this.warningMessage = 'Please Provide Valid Inputs!';
           }
         );
     }
@@ -1736,7 +1754,8 @@ export class FrontDeskComponent implements AfterViewInit {
           clinicIds,
           this.startDate,
           this.endDate,
-          this.duration
+          this.duration,
+          this.queryWhEnabled
         )
         .pipe(take(1))
         .subscribe({
@@ -1842,46 +1861,49 @@ export class FrontDeskComponent implements AfterViewInit {
             this.clinic_id,
             this.startDate,
             this.endDate,
-            this.duration
+            this.duration,
+            this.queryWhEnabled
           )
           .subscribe(
-            (res) => {
-              this.ticksMulti[0]['data'] = [];
-              this.ticksLabels = [];
-              this.ticksLabels1 = [];
-              if (res.status == 200) {
-                this.fdNumberOfTicksLoader = false;
-                if (
-                  this.clinic_id.indexOf(',') >= 0 ||
-                  Array.isArray(this.clinic_id)
-                ) {
-                  this.showmulticlinicticks = true;
-                  if (res.body.total > 0 && res.body.data) {
-                    res.body.data.sort((a, b) =>
-                      a.num_ticks === b.num_ticks
-                        ? 0
-                        : a.num_ticks < b.num_ticks || -1
-                    );
-                    res.body.data.forEach((res) => {
-                      if (res.clinic_id) {
-                        this.ticksLabels1.push(Math.round(res.num_ticks));
-                        this.ticksLabels.push(res.clinic_name);
-                      }
-                    });
+            {
+              next: (res) => {
+                this.ticksMulti[0]['data'] = [];
+                this.ticksLabels = [];
+                this.ticksLabels1 = [];
+                if (res.status == 200) {
+                  this.fdNumberOfTicksLoader = false;
+                  if (
+                    this.clinic_id.indexOf(',') >= 0 ||
+                    Array.isArray(this.clinic_id)
+                  ) {
+                    this.showmulticlinicticks = true;
+                    if (res.body.total > 0 && res.body.data) {
+                      res.body.data.sort((a, b) =>
+                        a.num_ticks === b.num_ticks
+                          ? 0
+                          : a.num_ticks < b.num_ticks || -1
+                      );
+                      res.body.data.forEach((res) => {
+                        if (res.clinic_id) {
+                          this.ticksLabels1.push(Math.round(res.num_ticks));
+                          this.ticksLabels.push(res.clinic_name);
+                        }
+                      });
+                    }
+                    this.ticksMulti[0]['data'] = this.ticksLabels1;
                   }
-                  this.ticksMulti[0]['data'] = this.ticksLabels1;
+                  this.ticksPrevTotal = 0;
+                  this.ticksTotal = 0;
+                  if (res.body.data.length > 0)
+                    this.ticksTotal = Math.round(res.body.total);
+                  this.ticksPrevTotal = Math.round(res.body.total_ta);
+                  if (this.ticksTotal >= this.ticksPrevTotal)
+                    this.ticksTooltip = 'up';
                 }
-                this.ticksPrevTotal = 0;
-                this.ticksTotal = 0;
-                if (res.body.data.length > 0)
-                  this.ticksTotal = Math.round(res.body.total);
-                this.ticksPrevTotal = Math.round(res.body.total_ta);
-                if (this.ticksTotal >= this.ticksPrevTotal)
-                  this.ticksTooltip = 'up';
+              },
+              error: (error) => {
+                this.warningMessage = 'Please Provide Valid Inputs!';
               }
-            },
-            (error) => {
-              this.warningMessage = 'Please Provide Valid Inputs!';
             }
           );
     }
@@ -1942,53 +1964,56 @@ export class FrontDeskComponent implements AfterViewInit {
             this.clinic_id,
             this.startDate,
             this.endDate,
-            this.duration
+            this.duration,
+            this.queryWhEnabled
           )
           .subscribe(
-            (res) => {
-              if (res.status == 200) {
-                this.fdPrebookRateMulti[0]['data'] = [];
-                this.fdPrebookRateLabels = [];
-                this.fdPrebookRateTrnd = [];
-                this.fdRecallPrebookRateLoader = false;
-                if (
-                  this.clinic_id.indexOf(',') >= 0 ||
-                  Array.isArray(this.clinic_id)
-                ) {
-                  this.showmulticlinicPrebook = true;
-                  if (res.body.total > 0 && res.body.data) {
-                    res.body.data.sort((a, b) =>
-                      a.recall_patient === b.recall_patient
-                        ? 0
-                        : a.recall_patient < b.recall_patient || -1
-                    );
-                    res.body.data.forEach((res) => {
-                      if (res.clinic_id) {
-                        this.fdPrebookRateTrnd.push(
-                          Math.round(
-                            (res.recall_patient / res.total_patient) * 100
-                          )
-                        );
-                        this.fdPrebookRateLabels.push(res.clinic_name);
-                      }
-                    });
+            {
+              next: (res) => {
+                if (res.status == 200) {
+                  this.fdPrebookRateMulti[0]['data'] = [];
+                  this.fdPrebookRateLabels = [];
+                  this.fdPrebookRateTrnd = [];
+                  this.fdRecallPrebookRateLoader = false;
+                  if (
+                    this.clinic_id.indexOf(',') >= 0 ||
+                    Array.isArray(this.clinic_id)
+                  ) {
+                    this.showmulticlinicPrebook = true;
+                    if (res.body.total > 0 && res.body.data) {
+                      res.body.data.sort((a, b) =>
+                        a.recall_patient === b.recall_patient
+                          ? 0
+                          : a.recall_patient < b.recall_patient || -1
+                      );
+                      res.body.data.forEach((res) => {
+                        if (res.clinic_id) {
+                          this.fdPrebookRateTrnd.push(
+                            Math.round(
+                              (res.recall_patient / res.total_patient) * 100
+                            )
+                          );
+                          this.fdPrebookRateLabels.push(res.clinic_name);
+                        }
+                      });
+                    }
+                    this.fdPrebookRateMulti[0]['data'] = this.fdPrebookRateTrnd;
                   }
-                  this.fdPrebookRateMulti[0]['data'] = this.fdPrebookRateTrnd;
+                  this.recallPrebookPrevTotal = 0;
+                  this.recallPrebookGoal = res.body.goals;
+                  this.recallPrebookTotal = 0;
+                  this.recallPrebookTotal = Math.round(res.body.total);
+                  this.recallPrebookPrevTotal = Math.round(res.body.total_ta);
+                  if (this.recallPrebookTotal >= this.recallPrebookPrevTotal)
+                    this.recallPrebookTooltip = 'up';
+                  this.maxrecallPrebookGoal = this.recallPrebookGoal;
+                  if (this.maxrecallPrebookGoal <= 0)
+                    this.maxrecallPrebookGoal = this.recallPrebookTotal;
                 }
-                this.recallPrebookPrevTotal = 0;
-                this.recallPrebookGoal = res.body.goals;
-                this.recallPrebookTotal = 0;
-                this.recallPrebookTotal = Math.round(res.body.total);
-                this.recallPrebookPrevTotal = Math.round(res.body.total_ta);
-                if (this.recallPrebookTotal >= this.recallPrebookPrevTotal)
-                  this.recallPrebookTooltip = 'up';
-                this.maxrecallPrebookGoal = this.recallPrebookGoal;
-                if (this.maxrecallPrebookGoal <= 0)
-                  this.maxrecallPrebookGoal = this.recallPrebookTotal;
+              },
+              error: (error) => {
+                this.warningMessage = 'Please Provide Valid Inputs!';
               }
-            },
-            (error) => {
-              this.warningMessage = 'Please Provide Valid Inputs!';
             }
           );
     }
@@ -2051,54 +2076,57 @@ export class FrontDeskComponent implements AfterViewInit {
             this.clinic_id,
             this.startDate,
             this.endDate,
-            this.duration
+            this.duration,
+            this.queryWhEnabled
           )
           .subscribe(
-            (res) => {
-              if (res.status == 200) {
-                this.fdtreatmentPrebookRateLoader = false;
-                this.fdReappointRateMulti[0]['data'] = [];
-                this.fdReappointRateLabels = [];
-                this.fdReappointRateTrnd = [];
-                if (res.body.total > 0) {
-                  res.body.data.sort((a, b) =>
-                    a.reappoint_rate === b.reappoint_rate
-                      ? 0
-                      : a.reappoint_rate < b.reappoint_rate || -1
-                  );
-                  res.body.data.forEach((res) => {
-                    this.fdReappointRateTrnd.push(
-                      Math.round(res.reappoint_rate)
+            {
+              next: (res) => {
+                if (res.status == 200) {
+                  this.fdtreatmentPrebookRateLoader = false;
+                  this.fdReappointRateMulti[0]['data'] = [];
+                  this.fdReappointRateLabels = [];
+                  this.fdReappointRateTrnd = [];
+                  if (res.body.total > 0) {
+                    res.body.data.sort((a, b) =>
+                      a.reappoint_rate === b.reappoint_rate
+                        ? 0
+                        : a.reappoint_rate < b.reappoint_rate || -1
                     );
-                    this.fdReappointRateLabels.push(res.clinic_name);
-                  });
+                    res.body.data.forEach((res) => {
+                      this.fdReappointRateTrnd.push(
+                        Math.round(res.reappoint_rate)
+                      );
+                      this.fdReappointRateLabels.push(res.clinic_name);
+                    });
+                  }
+                  if (
+                    this.clinic_id.indexOf(',') >= 0 ||
+                    Array.isArray(this.clinic_id)
+                  ) {
+                    this.showmulticlinicReappointRate = true;
+                  }
+                  this.fdReappointRateMulti[0]['data'] = this.fdReappointRateTrnd;
+  
+                  this.treatmentPrebookPrevTotal = 0;
+                  this.treatmentPrebookTotal = 0;
+                  this.treatmentPrebookGoal = res.body.goals;
+                  this.treatmentPrebookTotal = Math.round(res.body.total);
+                  this.treatmentPrebookPrevTotal = Math.round(res.body.total_ta);
+                  if (
+                    this.treatmentPrebookTotal >= this.treatmentPrebookPrevTotal
+                  )
+                    this.treatmentPrebookTooltip = 'up';
+                  if (this.treatmentPrebookTotal > this.treatmentPrebookGoal)
+                    this.maxtreatmentPrebookGoal = this.treatmentPrebookTotal;
+                  else this.maxtreatmentPrebookGoal = this.treatmentPrebookGoal;
+                  if (this.maxtreatmentPrebookGoal == 0)
+                    this.maxtreatmentPrebookGoal = '';
                 }
-                if (
-                  this.clinic_id.indexOf(',') >= 0 ||
-                  Array.isArray(this.clinic_id)
-                ) {
-                  this.showmulticlinicReappointRate = true;
-                }
-                this.fdReappointRateMulti[0]['data'] = this.fdReappointRateTrnd;
-
-                this.treatmentPrebookPrevTotal = 0;
-                this.treatmentPrebookTotal = 0;
-                this.treatmentPrebookGoal = res.body.goals;
-                this.treatmentPrebookTotal = Math.round(res.body.total);
-                this.treatmentPrebookPrevTotal = Math.round(res.body.total_ta);
-                if (
-                  this.treatmentPrebookTotal >= this.treatmentPrebookPrevTotal
-                )
-                  this.treatmentPrebookTooltip = 'up';
-                if (this.treatmentPrebookTotal > this.treatmentPrebookGoal)
-                  this.maxtreatmentPrebookGoal = this.treatmentPrebookTotal;
-                else this.maxtreatmentPrebookGoal = this.treatmentPrebookGoal;
-                if (this.maxtreatmentPrebookGoal == 0)
-                  this.maxtreatmentPrebookGoal = '';
+              },
+              error: (error) => {
+                this.warningMessage = 'Please Provide Valid Inputs!';
               }
-            },
-            (error) => {
-              this.warningMessage = 'Please Provide Valid Inputs!';
             }
           );
     }
@@ -2545,62 +2573,64 @@ export class FrontDeskComponent implements AfterViewInit {
 
     this.clinic_id &&
       this.frontdeskService
-        .fdFtaRatioTrend(this.clinic_id, this.trendValue)
+        .fdFtaRatioTrend(this.clinic_id, this.trendValue, this.queryWhEnabled)
         .subscribe(
-          (res) => {
-            this.fdFtaRatioTrendLoader = false;
-            this.ftaChartTrendLabels1 = [];
-            this.ftaChartTrend1 = [];
-            this.Apirequest = this.Apirequest - 1;
-            if (res.status == 200) {
-              this.ftaChartTrendMulti[0] = { data: [], label: '' };
-              if (
-                this.clinic_id.indexOf(',') >= 0 ||
-                Array.isArray(this.clinic_id)
-              ) {
-                this.showByclinicfta = true;
-                const data = _.chain(res.body.data)
-                  .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
-                  .map((items: any[], duration) => {
-                    const totalFta = _.chain(items)
-                      .sumBy((item) => Number(item.total_fta))
-                      .value();
-                    const totalAppts = _.chain(items)
-                      .sumBy((item) => Number(item.total_appts))
-                      .value();
-                    return {
-                      duration:
-                        this.trendValue == 'c'
-                          ? this.datePipe.transform(duration, 'MMM y')
-                          : duration,
-                      fta_ratio: _.round((totalFta / totalAppts || 0) * 100, 1)
-                    };
-                  })
-                  .value();
-                this.ftaChartTrendMulti[0]['data'] = data.map(
-                  (item) => item.fta_ratio
-                );
-                this.ftaChartTrendMulti[0]['backgroundColor'] =
-                  this.doughnutChartColors[0];
-
-                this.ftaTrendMultiLabels = data.map((item) => item.duration);
-              } else {
-                res.body.data.forEach((res) => {
-                  if (res.val > 100) res.val = 100;
-                  this.ftaChartTrend1.push(_.round(res.fta_ratio, 1));
-                  if (this.trendValue == 'c')
-                    this.ftaChartTrendLabels1.push(
-                      this.datePipe.transform(res.year_month, 'MMM y')
-                    );
-                  else this.ftaChartTrendLabels1.push(res.year);
-                });
-                this.ftaChartTrend[0]['data'] = this.ftaChartTrend1;
-                this.ftaChartTrendLabels = this.ftaChartTrendLabels1;
+          {
+            next: (res) => {
+              this.fdFtaRatioTrendLoader = false;
+              this.ftaChartTrendLabels1 = [];
+              this.ftaChartTrend1 = [];
+              this.Apirequest = this.Apirequest - 1;
+              if (res.status == 200) {
+                this.ftaChartTrendMulti[0] = { data: [], label: '' };
+                if (
+                  this.clinic_id.indexOf(',') >= 0 ||
+                  Array.isArray(this.clinic_id)
+                ) {
+                  this.showByclinicfta = true;
+                  const data = _.chain(res.body.data)
+                    .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                    .map((items: any[], duration) => {
+                      const totalFta = _.chain(items)
+                        .sumBy((item) => Number(item.total_fta))
+                        .value();
+                      const totalAppts = _.chain(items)
+                        .sumBy((item) => Number(item.total_appts))
+                        .value();
+                      return {
+                        duration:
+                          this.trendValue == 'c'
+                            ? this.datePipe.transform(duration, 'MMM y')
+                            : duration,
+                        fta_ratio: _.round((totalFta / totalAppts || 0) * 100, 1)
+                      };
+                    })
+                    .value();
+                  this.ftaChartTrendMulti[0]['data'] = data.map(
+                    (item) => item.fta_ratio
+                  );
+                  this.ftaChartTrendMulti[0]['backgroundColor'] =
+                    this.doughnutChartColors[0];
+  
+                  this.ftaTrendMultiLabels = data.map((item) => item.duration);
+                } else {
+                  res.body.data.forEach((res) => {
+                    if (res.val > 100) res.val = 100;
+                    this.ftaChartTrend1.push(_.round(res.fta_ratio, 1));
+                    if (this.trendValue == 'c')
+                      this.ftaChartTrendLabels1.push(
+                        this.datePipe.transform(res.year_month, 'MMM y')
+                      );
+                    else this.ftaChartTrendLabels1.push(res.year);
+                  });
+                  this.ftaChartTrend[0]['data'] = this.ftaChartTrend1;
+                  this.ftaChartTrendLabels = this.ftaChartTrendLabels1;
+                }
               }
+            },
+            error: (error) => {
+              this.warningMessage = 'Please Provide Valid Inputs!';
             }
-          },
-          (error) => {
-            this.warningMessage = 'Please Provide Valid Inputs!';
           }
         );
   }
@@ -2680,106 +2710,108 @@ export class FrontDeskComponent implements AfterViewInit {
       this.utilityratemessage = false;
       this.clinic_id &&
         this.frontdeskService
-          .fdWorkTimeAnalysisTrend(this.clinic_id, this.trendValue)
+          .fdWorkTimeAnalysisTrend(this.clinic_id, this.trendValue, this.queryWhEnabled)
           .subscribe(
-            (res) => {
-              this.wtaChartTrendLabels1 = [];
-              this.wtaChartTrend1 = [];
-              this.Apirequest = this.Apirequest - 1;
-              if (res.status == 200) {
-                this.uRChartTrendMulti[0] = { data: [], label: '' };
-                res.body.data.sort((a, b) =>
-                  a.duration === b.duration ? 0 : a.duration > b.duration || -1
-                );
-                if (
-                  this.clinic_id.indexOf(',') >= 0 ||
-                  Array.isArray(this.clinic_id)
-                ) {
-                  this.showByclinicUR = true;
-                }
-                this.fdwtaRatioTrendLoader = false;
-                if (
-                  this.clinic_id.indexOf(',') >= 0 ||
-                  Array.isArray(this.clinic_id)
-                ) {
-                  const data = _.chain(res.body.data)
-                    .groupBy('year_month')
-                    .map((items: any[], duration: string) => {
-                      const plannedHour = _.chain(items)
-                        .sumBy((item) => Number(item.planned_hour))
-                        .value();
-                      const workedHour = _.chain(items)
-                        .sumBy((item) => Number(item.worked_hour))
-                        .value();
-                      return {
-                        duration,
-                        util_rate: _.round((workedHour / plannedHour) * 100, 0)
-                      };
-                    })
-                    .value();
-                  this.uRChartTrendMultiLabels = data.map((item) =>
-                    this.datePipe.transform(item.duration, 'MMM y')
+            {
+              next: (res) => {
+                this.wtaChartTrendLabels1 = [];
+                this.wtaChartTrend1 = [];
+                this.Apirequest = this.Apirequest - 1;
+                if (res.status == 200) {
+                  this.uRChartTrendMulti[0] = { data: [], label: '' };
+                  res.body.data.sort((a, b) =>
+                    a.duration === b.duration ? 0 : a.duration > b.duration || -1
                   );
-                  this.uRChartTrendMulti[0]['data'] = data.map(
-                    (item) => item.util_rate
-                  );
-                  this.uRChartTrendMulti[0]['backgroundColor'] =
-                    this.doughnutChartColors[0];
-                } else {
-                  res.body.data.forEach((res) => {
-                    this.wtaChartTrend1.push(Math.round(res.util_rate * 100));
-                    if (
-                      res.goals == -1 ||
-                      res.goals == null ||
-                      res.goals == ''
-                    ) {
-                      this.targetData.push(null);
-                    } else {
-                      this.targetData.push(res.goals);
-                    }
-                    if (this.trendValue == 'c')
-                      this.wtaChartTrendLabels1.push(
-                        this.datePipe.transform(res.year_month, 'MMM y') +
-                          '--' +
-                          res.worked_hour +
-                          '--' +
-                          res.planned_hour
-                      );
-                    else
-                      this.wtaChartTrendLabels1.push(
-                        res.year +
-                          '--' +
-                          res.worked_hour +
-                          '--' +
-                          res.planned_hour
-                      );
-                  });
-
-                  var mappedtargetData = [];
-                  this.targetData.map(function (v) {
-                    if (v == null) {
-                      mappedtargetData.push([v - 0, v + 0]);
-                    } else {
-                      mappedtargetData.push([v - 0.5, v + 0.5]);
-                    }
-                  });
-                  if (this.trendValue == 'c') {
-                    this.wtaChartTrend[0]['label'] = 'Actual';
-                    this.wtaChartTrend[1]['label'] = 'Target';
-                    this.wtaChartTrend[1]['data'] = mappedtargetData;
-                  } else {
-                    this.wtaChartTrend[0]['label'] = '';
-                    this.wtaChartTrend[1]['label'] = '';
-                    this.wtaChartTrend[1]['data'] = [];
+                  if (
+                    this.clinic_id.indexOf(',') >= 0 ||
+                    Array.isArray(this.clinic_id)
+                  ) {
+                    this.showByclinicUR = true;
                   }
-                  this.wtaChartTrend[0]['data'] = this.wtaChartTrend1;
-
-                  this.wtaChartTrendLabels = this.wtaChartTrendLabels1;
+                  this.fdwtaRatioTrendLoader = false;
+                  if (
+                    this.clinic_id.indexOf(',') >= 0 ||
+                    Array.isArray(this.clinic_id)
+                  ) {
+                    const data = _.chain(res.body.data)
+                      .groupBy('year_month')
+                      .map((items: any[], duration: string) => {
+                        const plannedHour = _.chain(items)
+                          .sumBy((item) => Number(item.planned_hour))
+                          .value();
+                        const workedHour = _.chain(items)
+                          .sumBy((item) => Number(item.worked_hour))
+                          .value();
+                        return {
+                          duration,
+                          util_rate: _.round((workedHour / plannedHour) * 100, 0)
+                        };
+                      })
+                      .value();
+                    this.uRChartTrendMultiLabels = data.map((item) =>
+                      this.datePipe.transform(item.duration, 'MMM y')
+                    );
+                    this.uRChartTrendMulti[0]['data'] = data.map(
+                      (item) => item.util_rate
+                    );
+                    this.uRChartTrendMulti[0]['backgroundColor'] =
+                      this.doughnutChartColors[0];
+                  } else {
+                    res.body.data.forEach((res) => {
+                      this.wtaChartTrend1.push(Math.round(res.util_rate * 100));
+                      if (
+                        res.goals == -1 ||
+                        res.goals == null ||
+                        res.goals == ''
+                      ) {
+                        this.targetData.push(null);
+                      } else {
+                        this.targetData.push(res.goals);
+                      }
+                      if (this.trendValue == 'c')
+                        this.wtaChartTrendLabels1.push(
+                          this.datePipe.transform(res.year_month, 'MMM y') +
+                            '--' +
+                            res.worked_hour +
+                            '--' +
+                            res.planned_hour
+                        );
+                      else
+                        this.wtaChartTrendLabels1.push(
+                          res.year +
+                            '--' +
+                            res.worked_hour +
+                            '--' +
+                            res.planned_hour
+                        );
+                    });
+  
+                    var mappedtargetData = [];
+                    this.targetData.map(function (v) {
+                      if (v == null) {
+                        mappedtargetData.push([v - 0, v + 0]);
+                      } else {
+                        mappedtargetData.push([v - 0.5, v + 0.5]);
+                      }
+                    });
+                    if (this.trendValue == 'c') {
+                      this.wtaChartTrend[0]['label'] = 'Actual';
+                      this.wtaChartTrend[1]['label'] = 'Target';
+                      this.wtaChartTrend[1]['data'] = mappedtargetData;
+                    } else {
+                      this.wtaChartTrend[0]['label'] = '';
+                      this.wtaChartTrend[1]['label'] = '';
+                      this.wtaChartTrend[1]['data'] = [];
+                    }
+                    this.wtaChartTrend[0]['data'] = this.wtaChartTrend1;
+  
+                    this.wtaChartTrendLabels = this.wtaChartTrendLabels1;
+                  }
                 }
+              },
+              error: (error) => {
+                this.warningMessage = 'Please Provide Valid Inputs!';
               }
-            },
-            (error) => {
-              this.warningMessage = 'Please Provide Valid Inputs!';
             }
           );
     }
@@ -2820,65 +2852,67 @@ export class FrontDeskComponent implements AfterViewInit {
     this.utaTrendMultiLabels = [];
 
     this.frontdeskService
-      .fdUtaRatioTrend(this.clinic_id, this.trendValue)
+      .fdUtaRatioTrend(this.clinic_id, this.trendValue, this.queryWhEnabled)
       .subscribe(
-        (res) => {
-          this.utaChartTrendLabels1 = [];
-          this.utaChartTrend1 = [];
-          this.Apirequest = this.Apirequest - 1;
-          if (res.status == 200) {
-            this.utaChartTrendMulti[0] = { data: [], label: '' };
-            res.body.data.sort((a, b) =>
-              a.duration === b.duration ? 0 : a.duration > b.duration || -1
-            );
-            this.fdUtaRatioTrendLoader = false;
-            if (
-              this.clinic_id.indexOf(',') >= 0 ||
-              Array.isArray(this.clinic_id)
-            ) {
-              this.showByclinicUta = true;
-              const data = _.chain(res.body.data)
-                .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
-                .map((items: any[], duration: string) => {
-                  const totalUta = _.chain(items)
-                    .sumBy((item) => Number(item.total_uta))
-                    .value();
-                  const totalAppts = _.chain(items)
-                    .sumBy((item) => Number(item.total_appts))
-                    .value();
-                  return {
-                    duration:
-                      this.trendValue == 'c'
-                        ? this.datePipe.transform(duration, 'MMM y')
-                        : duration,
-                    uta_ratio: _.round((totalUta / totalAppts || 0) * 100, 1)
-                  };
-                })
-                .value();
-              this.utaChartTrendMulti[0]['data'] = data.map(
-                (item) => item.uta_ratio
+        {
+          next: (res) => {
+            this.utaChartTrendLabels1 = [];
+            this.utaChartTrend1 = [];
+            this.Apirequest = this.Apirequest - 1;
+            if (res.status == 200) {
+              this.utaChartTrendMulti[0] = { data: [], label: '' };
+              res.body.data.sort((a, b) =>
+                a.duration === b.duration ? 0 : a.duration > b.duration || -1
               );
-              this.utaChartTrendMulti[0]['backgroundColor'] =
-                this.doughnutChartColors[0];
-              this.utaTrendMultiLabels = data.map((item) => item.duration);
-            } else {
-              res.body.data.forEach((res) => {
-                if (res.val > 100) res.val = 100;
-                this.utaChartTrend1.push(_.round(res.uta_ratio, 1));
-                if (this.trendValue == 'c')
-                  this.utaChartTrendLabels1.push(
-                    this.datePipe.transform(res.year_month, 'MMM y')
-                  );
-                else this.utaChartTrendLabels1.push(res.year);
-              });
-              this.utaChartTrend[0]['data'] = this.utaChartTrend1;
-
-              this.utaChartTrendLabels = this.utaChartTrendLabels1;
+              this.fdUtaRatioTrendLoader = false;
+              if (
+                this.clinic_id.indexOf(',') >= 0 ||
+                Array.isArray(this.clinic_id)
+              ) {
+                this.showByclinicUta = true;
+                const data = _.chain(res.body.data)
+                  .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                  .map((items: any[], duration: string) => {
+                    const totalUta = _.chain(items)
+                      .sumBy((item) => Number(item.total_uta))
+                      .value();
+                    const totalAppts = _.chain(items)
+                      .sumBy((item) => Number(item.total_appts))
+                      .value();
+                    return {
+                      duration:
+                        this.trendValue == 'c'
+                          ? this.datePipe.transform(duration, 'MMM y')
+                          : duration,
+                      uta_ratio: _.round((totalUta / totalAppts || 0) * 100, 1)
+                    };
+                  })
+                  .value();
+                this.utaChartTrendMulti[0]['data'] = data.map(
+                  (item) => item.uta_ratio
+                );
+                this.utaChartTrendMulti[0]['backgroundColor'] =
+                  this.doughnutChartColors[0];
+                this.utaTrendMultiLabels = data.map((item) => item.duration);
+              } else {
+                res.body.data.forEach((res) => {
+                  if (res.val > 100) res.val = 100;
+                  this.utaChartTrend1.push(_.round(res.uta_ratio, 1));
+                  if (this.trendValue == 'c')
+                    this.utaChartTrendLabels1.push(
+                      this.datePipe.transform(res.year_month, 'MMM y')
+                    );
+                  else this.utaChartTrendLabels1.push(res.year);
+                });
+                this.utaChartTrend[0]['data'] = this.utaChartTrend1;
+  
+                this.utaChartTrendLabels = this.utaChartTrendLabels1;
+              }
             }
+          },
+          error: (error) => {
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        },
-        (error) => {
-          this.warningMessage = 'Please Provide Valid Inputs!';
         }
       );
   }
@@ -2900,7 +2934,7 @@ export class FrontDeskComponent implements AfterViewInit {
         : this.clinic_id;
 
     this.frontdeskService
-      .getCancellationRatioTrend(clinicIds, this.trendValue)
+      .getCancellationRatioTrend(clinicIds, this.trendValue, this.queryWhEnabled)
       .pipe(take(1))
       .subscribe({
         next: (res) => {
@@ -3016,60 +3050,62 @@ export class FrontDeskComponent implements AfterViewInit {
     this.ticPChartTrendMultiLabels1 = [];
     this.clinic_id &&
       this.frontdeskService
-        .fdNumberOfTicksTrend(this.clinic_id, this.trendValue)
+        .fdNumberOfTicksTrend(this.clinic_id, this.trendValue, this.queryWhEnabled)
         .subscribe(
-          (res) => {
-            this.tickChartTrendLabels1 = [];
-            this.tickChartTrend1 = [];
-            this.Apirequest = this.Apirequest - 1;
-            if (res.status == 200) {
-              this.fdNumberOfTicksTrendLoader = false;
-              if (
-                this.clinic_id.indexOf(',') >= 0 ||
-                Array.isArray(this.clinic_id)
-              ) {
-                this.showByclinictic = true;
-                this.ticChartTrendMultiLabels = _.chain(res.body.data)
-                  .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
-                  .map((items, duration) => duration)
-                  .value()
-                  .map((item) =>
-                    this.trendValue == 'c'
-                      ? this.datePipe.transform(item, 'MMM y')
-                      : item
-                  );
-                this.ticChartTrendMulti = _.chain(res.body.data)
-                  .groupBy('clinic_id')
-                  .map((items: any[]) => {
-                    const clinicName = items[0].clinic_name;
-                    return {
-                      label: clinicName,
-                      data: items.map((item) => Number(item.num_ticks))
-                    };
-                  })
-                  .value()
-                  .map((item, index: number) => ({
-                    ...item,
-                    backgroundColor: this.doughnutChartColors[index],
-                    hoverBackgroundColor: this.doughnutChartColors[index]
-                  }));
-              } else {
-                res.body.data.forEach((res) => {
-                  this.tickChartTrend1.push(res.num_ticks);
-                  if (this.trendValue == 'c')
-                    this.tickChartTrendLabels1.push(
-                      this.datePipe.transform(res.year_month, 'MMM y')
+          {
+            next: (res) => {
+              this.tickChartTrendLabels1 = [];
+              this.tickChartTrend1 = [];
+              this.Apirequest = this.Apirequest - 1;
+              if (res.status == 200) {
+                this.fdNumberOfTicksTrendLoader = false;
+                if (
+                  this.clinic_id.indexOf(',') >= 0 ||
+                  Array.isArray(this.clinic_id)
+                ) {
+                  this.showByclinictic = true;
+                  this.ticChartTrendMultiLabels = _.chain(res.body.data)
+                    .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                    .map((items, duration) => duration)
+                    .value()
+                    .map((item) =>
+                      this.trendValue == 'c'
+                        ? this.datePipe.transform(item, 'MMM y')
+                        : item
                     );
-                  else this.tickChartTrendLabels1.push(res.year);
-                });
-                this.tickChartTrend[0]['data'] = this.tickChartTrend1;
-
-                this.tickChartTrendLabels = this.tickChartTrendLabels1;
+                  this.ticChartTrendMulti = _.chain(res.body.data)
+                    .groupBy('clinic_id')
+                    .map((items: any[]) => {
+                      const clinicName = items[0].clinic_name;
+                      return {
+                        label: clinicName,
+                        data: items.map((item) => Number(item.num_ticks))
+                      };
+                    })
+                    .value()
+                    .map((item, index: number) => ({
+                      ...item,
+                      backgroundColor: this.doughnutChartColors[index],
+                      hoverBackgroundColor: this.doughnutChartColors[index]
+                    }));
+                } else {
+                  res.body.data.forEach((res) => {
+                    this.tickChartTrend1.push(res.num_ticks);
+                    if (this.trendValue == 'c')
+                      this.tickChartTrendLabels1.push(
+                        this.datePipe.transform(res.year_month, 'MMM y')
+                      );
+                    else this.tickChartTrendLabels1.push(res.year);
+                  });
+                  this.tickChartTrend[0]['data'] = this.tickChartTrend1;
+  
+                  this.tickChartTrendLabels = this.tickChartTrendLabels1;
+                }
               }
+            },
+            error: (error) => {
+              this.warningMessage = 'Please Provide Valid Inputs!';
             }
-          },
-          (error) => {
-            this.warningMessage = 'Please Provide Valid Inputs!';
           }
         );
   }
@@ -3144,105 +3180,107 @@ export class FrontDeskComponent implements AfterViewInit {
     this.rPChartTrendMultiLabels1 = [];
     this.clinic_id &&
       this.frontdeskService
-        .frontdeskdRecallPrebookRateTrend(this.clinic_id, this.trendValue)
+        .frontdeskdRecallPrebookRateTrend(this.clinic_id, this.trendValue, this.queryWhEnabled)
         .subscribe(
-          (res) => {
-            this.Apirequest = this.Apirequest - 1;
-            if (res.status == 200) {
-              this.rPChartTrendMulti[0] = { data: [], label: '' };
-              res.body.data.sort((a, b) =>
-                a.duration === b.duration ? 0 : a.duration > b.duration || -1
-              );
-              if (
-                this.clinic_id.indexOf(',') >= 0 ||
-                Array.isArray(this.clinic_id)
-              ) {
-                this.showByclinicRP = true;
-              }
-              this.fdRecallPrebookRateTrendLoader = false;
-              if (
-                this.clinic_id.indexOf(',') >= 0 ||
-                Array.isArray(this.clinic_id)
-              ) {
-                const data = _.chain(res.body.data)
-                  .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
-                  .map((items: any[], duration) => {
-                    const totalPatient = _.chain(items)
-                      .sumBy((item) => Number(item.total_patient))
-                      .value();
-                    const recallPatient = _.chain(items)
-                      .sumBy((item) => Number(item.recall_patient))
-                      .value();
-                    return {
-                      duration,
-                      recall_percent: _.round(
-                        (recallPatient / totalPatient) * 100,
-                        0
-                      )
-                    };
-                  })
-                  .value();
-                this.rPChartTrendMulti[0]['data'] = data.map(
-                  (item) => item.recall_percent
+          {
+            next: (res) => {
+              this.Apirequest = this.Apirequest - 1;
+              if (res.status == 200) {
+                this.rPChartTrendMulti[0] = { data: [], label: '' };
+                res.body.data.sort((a, b) =>
+                  a.duration === b.duration ? 0 : a.duration > b.duration || -1
                 );
-                this.rPChartTrendMulti[0]['backgroundColor'] =
-                  this.doughnutChartColors[0];
-                this.rPChartTrendMultiLabels = data.map((item) =>
-                  this.trendValue == 'c'
-                    ? this.datePipe.transform(item.duration, 'MMM y')
-                    : item.duration
-                );
-              } else {
-                this.recallPrebookChartTrendLabels1 = [];
-                this.recallPrebookChartTrend1 = [];
-                res.body.data.forEach((res) => {
-                  if (res.recall_percent > 0)
-                    this.recallPrebookChartTrend1.push(
-                      Math.round(res.recall_percent)
-                    );
-                  if (res.goals == -1 || res.goals == null || res.goals == '') {
-                    this.fdRecallPrebookRatetargetData.push(null);
-                  } else {
-                    this.fdRecallPrebookRatetargetData.push(res.goals);
-                  }
-                  if (this.trendValue == 'c')
-                    this.recallPrebookChartTrendLabels1.push(
-                      this.datePipe.transform(res.year_month, 'MMM y')
-                    );
-                  else this.recallPrebookChartTrendLabels1.push(res.year);
-                });
-
-                var mappedfdRecallPrebookRatetargetData = [];
-                this.fdRecallPrebookRatetargetData.map(function (v) {
-                  if (v == null) {
-                    mappedfdRecallPrebookRatetargetData.push([v - 0, v + 0]);
-                  } else {
-                    mappedfdRecallPrebookRatetargetData.push([
-                      v - 0.5,
-                      v + 0.5
-                    ]);
-                  }
-                });
-                if (this.trendValue == 'c') {
-                  this.recallPrebookChartTrend[0]['label'] = 'Actual';
-                  this.recallPrebookChartTrend[1]['label'] = 'Target';
-                  this.recallPrebookChartTrend[1]['data'] =
-                    mappedfdRecallPrebookRatetargetData;
-                } else {
-                  this.recallPrebookChartTrend[0]['label'] = '';
-                  this.recallPrebookChartTrend[1]['label'] = '';
-                  this.recallPrebookChartTrend[1]['data'] = [];
+                if (
+                  this.clinic_id.indexOf(',') >= 0 ||
+                  Array.isArray(this.clinic_id)
+                ) {
+                  this.showByclinicRP = true;
                 }
-                this.recallPrebookChartTrend[0]['data'] =
-                  this.recallPrebookChartTrend1;
-
-                this.recallPrebookChartTrendLabels =
-                  this.recallPrebookChartTrendLabels1;
+                this.fdRecallPrebookRateTrendLoader = false;
+                if (
+                  this.clinic_id.indexOf(',') >= 0 ||
+                  Array.isArray(this.clinic_id)
+                ) {
+                  const data = _.chain(res.body.data)
+                    .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                    .map((items: any[], duration) => {
+                      const totalPatient = _.chain(items)
+                        .sumBy((item) => Number(item.total_patient))
+                        .value();
+                      const recallPatient = _.chain(items)
+                        .sumBy((item) => Number(item.recall_patient))
+                        .value();
+                      return {
+                        duration,
+                        recall_percent: _.round(
+                          (recallPatient / totalPatient) * 100,
+                          0
+                        )
+                      };
+                    })
+                    .value();
+                  this.rPChartTrendMulti[0]['data'] = data.map(
+                    (item) => item.recall_percent
+                  );
+                  this.rPChartTrendMulti[0]['backgroundColor'] =
+                    this.doughnutChartColors[0];
+                  this.rPChartTrendMultiLabels = data.map((item) =>
+                    this.trendValue == 'c'
+                      ? this.datePipe.transform(item.duration, 'MMM y')
+                      : item.duration
+                  );
+                } else {
+                  this.recallPrebookChartTrendLabels1 = [];
+                  this.recallPrebookChartTrend1 = [];
+                  res.body.data.forEach((res) => {
+                    if (res.recall_percent > 0)
+                      this.recallPrebookChartTrend1.push(
+                        Math.round(res.recall_percent)
+                      );
+                    if (res.goals == -1 || res.goals == null || res.goals == '') {
+                      this.fdRecallPrebookRatetargetData.push(null);
+                    } else {
+                      this.fdRecallPrebookRatetargetData.push(res.goals);
+                    }
+                    if (this.trendValue == 'c')
+                      this.recallPrebookChartTrendLabels1.push(
+                        this.datePipe.transform(res.year_month, 'MMM y')
+                      );
+                    else this.recallPrebookChartTrendLabels1.push(res.year);
+                  });
+  
+                  var mappedfdRecallPrebookRatetargetData = [];
+                  this.fdRecallPrebookRatetargetData.map(function (v) {
+                    if (v == null) {
+                      mappedfdRecallPrebookRatetargetData.push([v - 0, v + 0]);
+                    } else {
+                      mappedfdRecallPrebookRatetargetData.push([
+                        v - 0.5,
+                        v + 0.5
+                      ]);
+                    }
+                  });
+                  if (this.trendValue == 'c') {
+                    this.recallPrebookChartTrend[0]['label'] = 'Actual';
+                    this.recallPrebookChartTrend[1]['label'] = 'Target';
+                    this.recallPrebookChartTrend[1]['data'] =
+                      mappedfdRecallPrebookRatetargetData;
+                  } else {
+                    this.recallPrebookChartTrend[0]['label'] = '';
+                    this.recallPrebookChartTrend[1]['label'] = '';
+                    this.recallPrebookChartTrend[1]['data'] = [];
+                  }
+                  this.recallPrebookChartTrend[0]['data'] =
+                    this.recallPrebookChartTrend1;
+  
+                  this.recallPrebookChartTrendLabels =
+                    this.recallPrebookChartTrendLabels1;
+                }
               }
+            },
+            error: (error) => {
+              this.warningMessage = 'Please Provide Valid Inputs!';
             }
-          },
-          (error) => {
-            this.warningMessage = 'Please Provide Valid Inputs!';
           }
         );
   }
@@ -3316,123 +3354,125 @@ export class FrontDeskComponent implements AfterViewInit {
 
     this.clinic_id &&
       this.frontdeskService
-        .fdReappointRateTrend(this.clinic_id, this.trendValue)
+        .fdReappointRateTrend(this.clinic_id, this.trendValue, this.queryWhEnabled)
         .subscribe(
-          (res) => {
-            this.Apirequest = this.Apirequest - 1;
-            if (res.status == 200) {
-              this.tPChartTrendMulti[0] = { data: [], label: '' };
-              this.fdTreatmentPrebookRateTrendLoader = false;
-              if (
-                this.clinic_id.indexOf(',') >= 0 ||
-                Array.isArray(this.clinic_id)
-              ) {
-                this.showByclinic = true;
-                const data = _.chain(res.body.data)
-                  .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
-                  .map((items: any[], duration: string) => {
-                    const totalAppts = _.chain(items)
-                      .sumBy((item) => Number(item.total_appts))
-                      .value();
-                    const reappointments = _.chain(items)
-                      .sumBy((item) => Number(item.reappointments))
-                      .value();
-                    return {
-                      duration,
-                      reappoint_rate: _.round(
-                        (reappointments / totalAppts || 0) * 100
-                      )
-                    };
-                  })
-                  .value();
-                this.tPChartTrendMulti[0]['data'] = data.map(
-                  (item) => item.reappoint_rate
-                );
-                this.tPChartTrendMulti[0]['backgroundColor'] =
-                  this.doughnutChartColors[0];
-                this.tPChartTrendMultiLabels = data.map((item) =>
-                  this.trendValue == 'c'
-                    ? this.datePipe.transform(item.duration, 'MMM y')
-                    : item.duration
-                );
-                // res.body.data.forEach((res) => {
-                //   let reappointSum = 0;
-                //   res.val.forEach((reslt, key) => {
-                //     reappointSum += Math.round(reslt.reappoint_rate);
-                //     // if (typeof (this.tPChartTrendMulti[key]) == 'undefined') {
-                //     //   this.tPChartTrendMulti[key] = { data: [], label: '' };
-                //     // }
-                //     // if (typeof (this.tPChartTrendMulti[key]['data']) == 'undefined') {
-                //     //   this.tPChartTrendMulti[key]['data'] = [];
-                //     // }
-
-                //     //   this.tPChartTrendMulti[key]['data'].push(Math.round(reslt.reappoint_rate));
-                //     //   this.tPChartTrendMulti[key]['label'] = reslt.clinic_name;
-                //     //   this.tPChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
-                //     //   this.tPChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
-                //   });
-                //   // this.tPChartTrendMulti[0]['data'].push(Math.round(((reappointSum / res.val.length) + Number.EPSILON) * 100) / 100);
-                //   this.tPChartTrendMulti[0]['data'].push(
-                //     reappointSum / res.val.length
-                //   );
-                //   this.tPChartTrendMulti[0]['backgroundColor'] =
-                //     this.doughnutChartColors[0];
-                //   if (this.trendValue == 'c')
-                //     this.tPChartTrendMultiLabels1.push(
-                //       this.datePipe.transform(res.duration, 'MMM y')
-                //     );
-                //   else this.tPChartTrendMultiLabels1.push(res.duration);
-                // });
-                // this.tPChartTrendMultiLabels = this.tPChartTrendMultiLabels1;
-              } else {
-                this.treatmentPrebookChartTrendLabels1 = [];
-                this.treatmentPrebookChartTrend1 = [];
-                res.body.data.forEach((res) => {
-                  this.treatmentPrebookChartTrend1.push(
-                    Math.round(res.reappoint_rate)
+          {
+            next: (res) => {
+              this.Apirequest = this.Apirequest - 1;
+              if (res.status == 200) {
+                this.tPChartTrendMulti[0] = { data: [], label: '' };
+                this.fdTreatmentPrebookRateTrendLoader = false;
+                if (
+                  this.clinic_id.indexOf(',') >= 0 ||
+                  Array.isArray(this.clinic_id)
+                ) {
+                  this.showByclinic = true;
+                  const data = _.chain(res.body.data)
+                    .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
+                    .map((items: any[], duration: string) => {
+                      const totalAppts = _.chain(items)
+                        .sumBy((item) => Number(item.total_appts))
+                        .value();
+                      const reappointments = _.chain(items)
+                        .sumBy((item) => Number(item.reappointments))
+                        .value();
+                      return {
+                        duration,
+                        reappoint_rate: _.round(
+                          (reappointments / totalAppts || 0) * 100
+                        )
+                      };
+                    })
+                    .value();
+                  this.tPChartTrendMulti[0]['data'] = data.map(
+                    (item) => item.reappoint_rate
                   );
-                  if (res.goals == -1 || res.goals == null || res.goals == '') {
-                    this.fdTreatmentPrebookRatetargetData.push(null);
-                  } else {
-                    this.fdTreatmentPrebookRatetargetData.push(res.goals);
-                  }
-                  if (this.trendValue == 'c')
-                    this.treatmentPrebookChartTrendLabels1.push(
-                      this.datePipe.transform(res.year_month, 'MMM y')
-                    );
-                  else this.treatmentPrebookChartTrendLabels1.push(res.year);
-                });
-                var mappedtargetDataPrebookRatetargetData = [];
-                this.fdTreatmentPrebookRatetargetData.map(function (v) {
-                  if (v == null) {
-                    mappedtargetDataPrebookRatetargetData.push([v - 0, v + 0]);
-                  } else {
-                    mappedtargetDataPrebookRatetargetData.push([
-                      v - 0.5,
-                      v + 0.5
-                    ]);
-                  }
-                });
-                if (this.trendValue == 'c') {
-                  this.treatmentPrebookChartTrend[0]['label'] = 'Actual';
-                  this.treatmentPrebookChartTrend[1]['label'] = 'Target';
-                  this.treatmentPrebookChartTrend[1]['data'] =
-                    mappedtargetDataPrebookRatetargetData;
+                  this.tPChartTrendMulti[0]['backgroundColor'] =
+                    this.doughnutChartColors[0];
+                  this.tPChartTrendMultiLabels = data.map((item) =>
+                    this.trendValue == 'c'
+                      ? this.datePipe.transform(item.duration, 'MMM y')
+                      : item.duration
+                  );
+                  // res.body.data.forEach((res) => {
+                  //   let reappointSum = 0;
+                  //   res.val.forEach((reslt, key) => {
+                  //     reappointSum += Math.round(reslt.reappoint_rate);
+                  //     // if (typeof (this.tPChartTrendMulti[key]) == 'undefined') {
+                  //     //   this.tPChartTrendMulti[key] = { data: [], label: '' };
+                  //     // }
+                  //     // if (typeof (this.tPChartTrendMulti[key]['data']) == 'undefined') {
+                  //     //   this.tPChartTrendMulti[key]['data'] = [];
+                  //     // }
+  
+                  //     //   this.tPChartTrendMulti[key]['data'].push(Math.round(reslt.reappoint_rate));
+                  //     //   this.tPChartTrendMulti[key]['label'] = reslt.clinic_name;
+                  //     //   this.tPChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
+                  //     //   this.tPChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+                  //   });
+                  //   // this.tPChartTrendMulti[0]['data'].push(Math.round(((reappointSum / res.val.length) + Number.EPSILON) * 100) / 100);
+                  //   this.tPChartTrendMulti[0]['data'].push(
+                  //     reappointSum / res.val.length
+                  //   );
+                  //   this.tPChartTrendMulti[0]['backgroundColor'] =
+                  //     this.doughnutChartColors[0];
+                  //   if (this.trendValue == 'c')
+                  //     this.tPChartTrendMultiLabels1.push(
+                  //       this.datePipe.transform(res.duration, 'MMM y')
+                  //     );
+                  //   else this.tPChartTrendMultiLabels1.push(res.duration);
+                  // });
+                  // this.tPChartTrendMultiLabels = this.tPChartTrendMultiLabels1;
                 } else {
-                  this.treatmentPrebookChartTrend[0]['label'] = '';
-                  this.treatmentPrebookChartTrend[1]['label'] = '';
-                  this.treatmentPrebookChartTrend[1]['data'] = [];
+                  this.treatmentPrebookChartTrendLabels1 = [];
+                  this.treatmentPrebookChartTrend1 = [];
+                  res.body.data.forEach((res) => {
+                    this.treatmentPrebookChartTrend1.push(
+                      Math.round(res.reappoint_rate)
+                    );
+                    if (res.goals == -1 || res.goals == null || res.goals == '') {
+                      this.fdTreatmentPrebookRatetargetData.push(null);
+                    } else {
+                      this.fdTreatmentPrebookRatetargetData.push(res.goals);
+                    }
+                    if (this.trendValue == 'c')
+                      this.treatmentPrebookChartTrendLabels1.push(
+                        this.datePipe.transform(res.year_month, 'MMM y')
+                      );
+                    else this.treatmentPrebookChartTrendLabels1.push(res.year);
+                  });
+                  var mappedtargetDataPrebookRatetargetData = [];
+                  this.fdTreatmentPrebookRatetargetData.map(function (v) {
+                    if (v == null) {
+                      mappedtargetDataPrebookRatetargetData.push([v - 0, v + 0]);
+                    } else {
+                      mappedtargetDataPrebookRatetargetData.push([
+                        v - 0.5,
+                        v + 0.5
+                      ]);
+                    }
+                  });
+                  if (this.trendValue == 'c') {
+                    this.treatmentPrebookChartTrend[0]['label'] = 'Actual';
+                    this.treatmentPrebookChartTrend[1]['label'] = 'Target';
+                    this.treatmentPrebookChartTrend[1]['data'] =
+                      mappedtargetDataPrebookRatetargetData;
+                  } else {
+                    this.treatmentPrebookChartTrend[0]['label'] = '';
+                    this.treatmentPrebookChartTrend[1]['label'] = '';
+                    this.treatmentPrebookChartTrend[1]['data'] = [];
+                  }
+                  this.treatmentPrebookChartTrend[0]['data'] =
+                    this.treatmentPrebookChartTrend1;
+  
+                  this.treatmentPrebookChartTrendLabels =
+                    this.treatmentPrebookChartTrendLabels1;
                 }
-                this.treatmentPrebookChartTrend[0]['data'] =
-                  this.treatmentPrebookChartTrend1;
-
-                this.treatmentPrebookChartTrendLabels =
-                  this.treatmentPrebookChartTrendLabels1;
               }
+            },
+            error: (error) => {
+              this.warningMessage = 'Please Provide Valid Inputs!';
             }
-          },
-          (error) => {
-            this.warningMessage = 'Please Provide Valid Inputs!';
           }
         );
   }

@@ -26,18 +26,18 @@ export class ClinicianProceeduresService {
         return headers;
     }
     // Items Predictor Analysis 
-    ItemsPredictorAnalysis(clinic_id, startDate = '', endDate = '', user_type='',clinician=''  ): Observable<any> {
+    ItemsPredictorAnalysis(clinic_id, startDate = '', endDate = '', user_type='',clinician='', queryWhEnabled = 0): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorAnalysis?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate, header)
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorAnalysis?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate + (queryWhEnabled > 0?'&wh=1': ''), header)
         .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
     }
     // Items Predictor Analysis 
-    ItemsPredictorAnalysisSpecial(clinic_id, startDate = '', endDate = '', user_type='',clinician=''  ): Observable<any> {
+    ItemsPredictorAnalysisSpecial(clinic_id, startDate = '', endDate = '', user_type='',clinician='',queryWhEnabled=0): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorSpecialistAnalysis?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate, header)
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorSpecialistAnalysis?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate + (queryWhEnabled > 0?'&wh=1': ''), header)
         .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
@@ -45,18 +45,18 @@ export class ClinicianProceeduresService {
     }
 
     // Items Predictor Analysis  
-    ItemsPredictorAnalysisTrendDentist(dentist_id, clinic_id, mode =''  ): Observable<any> {
+    ItemsPredictorAnalysisTrendDentist(dentist_id, clinic_id, mode ='',queryWhEnabled=0): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorAnalysisTrend?clinic_id="+clinic_id+"&provider_id="+dentist_id+"&mode="+mode, header)
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorAnalysisTrend?clinic_id="+clinic_id+"&provider_id="+dentist_id+"&mode="+mode + (queryWhEnabled > 0?'&wh=1': ''), header)
         .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
     }  
     // Items Predictor Analysis  
-    ItemsPredictorAnalysisSpecialTrendDentist(dentist_id, clinic_id, mode =''  ): Observable<any> {
+    ItemsPredictorAnalysisSpecialTrendDentist(dentist_id, clinic_id, mode ='', queryWhEnabled = 0): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorSpecialistAnalysisTrend?clinic_id="+clinic_id+"&provider_id="+dentist_id+"&mode="+mode, header)
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorSpecialistAnalysisTrend?clinic_id="+clinic_id+"&provider_id="+dentist_id+"&mode="+mode + (queryWhEnabled > 0?'&wh=1': ''), header)
         .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
@@ -64,18 +64,18 @@ export class ClinicianProceeduresService {
     }
 
     // Items Predictor Analysis  
-    ItemsPredictorAnalysisDentist(dentist_id, clinic_id, startDate = '', endDate = ''  ): Observable<any> {
+    ItemsPredictorAnalysisDentist(dentist_id, clinic_id, startDate = '', endDate = '', queryWhEnabled = 0): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorAnalysis?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id, header)
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorAnalysis?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id + (queryWhEnabled > 0?'&wh=1': ''), header)
         .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
     }
     // Items Predictor Analysis  
-    ItemsPredictorAnalysisSpecialistDentist(dentist_id, clinic_id, startDate = '', endDate = ''  ): Observable<any> {
+    ItemsPredictorAnalysisSpecialistDentist(dentist_id, clinic_id, startDate = '', endDate = '', queryWhEnabled = 0): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorSpecialistAnalysis?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id, header)
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorSpecialistAnalysis?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id + (queryWhEnabled > 0?'&wh=1': ''), header)
         .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
@@ -83,18 +83,18 @@ export class ClinicianProceeduresService {
     }
 
     //Predictor Ratio 1:
-    PredictorRatio( clinic_id, startDate = '', endDate = '',duration='', user_type='',clinician='' ): Observable<any> {
+    PredictorRatio( clinic_id, startDate = '', endDate = '',duration='', user_type='',clinician='', queryWhEnabled = 0): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorRatio?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorRatio?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration + (queryWhEnabled > 0?'&wh=1': ''), header)
         .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
     }  
         //Predictor Ratio 1:
-    PredictorRatioDentist(dentist_id, clinic_id, startDate = '', endDate = '',duration='' ): Observable<any> {
+    PredictorRatioDentist(dentist_id, clinic_id, startDate = '', endDate = '',duration='', queryWhEnabled = 0): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorRatio?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id+"&duration="+duration, header)
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorRatio?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id+"&duration="+duration + (queryWhEnabled > 0?'&wh=1': ''), header)
         .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
@@ -102,9 +102,9 @@ export class ClinicianProceeduresService {
     }  
     
    //Total Revenue of Clinician Per Procedure
-    ClinicianProceedure(clinic_id, startDate = '', endDate = '' ): Observable<any> {
+    ClinicianProceedure(clinic_id, startDate = '', endDate = '', queryWhEnabled = 0): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpRevPerProcedure?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate, header)
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpRevPerProcedure?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate + (queryWhEnabled > 0?'&wh=1': ''), header)
         .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
@@ -112,9 +112,9 @@ export class ClinicianProceeduresService {
     } 
 
    //Total Revenue of Clinician Per Procedure
-    ClinicianProceedureDentist(dentist_id, clinic_id, startDate = '', endDate = ''  ): Observable<any> {
+    ClinicianProceedureDentist(dentist_id, clinic_id, startDate = '', endDate = '', queryWhEnabled = 0): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpRevPerProcedure?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id, header)
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpRevPerProcedure?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id + (queryWhEnabled > 0?'&wh=1': ''), header)
         .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
@@ -122,9 +122,9 @@ export class ClinicianProceeduresService {
     } 
 
     //Referral to Other Clinicians Internal / External
-    ClinicianReferral( clinic_id, startDate = '', endDate = '',duration=''  ): Observable<any> {
+    ClinicianReferral( clinic_id, startDate = '', endDate = '',duration='', queryWhEnabled = 0): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpReferrals?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpReferrals?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration + (queryWhEnabled > 0?'&wh=1': ''), header)
         .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
@@ -133,9 +133,9 @@ export class ClinicianProceeduresService {
 
 
     //Referral to Other Clinicians Internal / External
-    ClinicianReferralDentist(dentist_id, clinic_id, startDate = '', endDate = '',duration='' ): Observable<any> {
+    ClinicianReferralDentist(dentist_id, clinic_id, startDate = '', endDate = '',duration='', queryWhEnabled = 0): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpReferrals?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id+"&duration="+duration, header)
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpReferrals?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id+"&duration="+duration + (queryWhEnabled > 0?'&wh=1': ''), header)
         .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
@@ -143,18 +143,18 @@ export class ClinicianProceeduresService {
     }
 
         //Referral to Other Clinicians Internal / External
-    ClinicianReferralTrendDentist(dentist_id, clinic_id, mode ='' ): Observable<any> {
+    ClinicianReferralTrendDentist(dentist_id, clinic_id, mode ='', queryWhEnabled = 0): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpReferralsTrend?clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, header)
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpReferralsTrend?clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id + (queryWhEnabled > 0?'&wh=1': ''), header)
         .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
         );
     }
             //Referral to Other Clinicians Internal / External
-    CpPredictorRatioTrend(dentist_id, clinic_id, mode ='' ): Observable<any> {
+    CpPredictorRatioTrend(dentist_id, clinic_id, mode ='', queryWhEnabled = 0): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorRatioTrend?clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, header)
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorRatioTrend?clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id + (queryWhEnabled > 0?'&wh=1': ''), header)
         .pipe(map((response: HttpResponse<Object>) => {
                         return response;
                     })
