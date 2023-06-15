@@ -17,9 +17,9 @@ import { Subscription, Subject, takeUntil, mergeMap } from 'rxjs';
 import { UserIdleService } from 'angular-user-idle';
 import { AppConstants } from '../../../app.constants';
 import { RolesUsersService } from '../../../roles-users/roles-users.service';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatDialogRef } from '@angular/material/dialog';
-import { MatDialog } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 import { environment } from '../../../../environments/environment';
 import { LocalStorageService } from '../../../shared/local-storage.service';

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Input, ViewChild, ViewEncapsulation, Inject, } from "@angular/core";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatPaginator } from "@angular/material/paginator";
+import { MatLegacyTableDataSource as MatTableDataSource } from "@angular/material/legacy-table";
+import { MatLegacyPaginator as MatPaginator } from "@angular/material/legacy-paginator";
 import { Router } from "@angular/router";
 import { CookieService } from "ngx-cookie";
 import { ToastrService } from "ngx-toastr";
@@ -11,10 +11,10 @@ import { DentistService } from "../../dentist/dentist.service";
 import { BaseComponent } from "../base/base.component";
 import { MatSort } from "@angular/material/sort";
 import {
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialog,
-} from "@angular/material/dialog";
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogRef as MatDialogRef,
+  MatLegacyDialog as MatDialog,
+} from "@angular/material/legacy-dialog";
 import { ITooltipData } from "../../shared/tooltip/tooltip.directive";
 import { AppConstants } from "../../app.constants";
 /************* Add Jeeve Names ***********/

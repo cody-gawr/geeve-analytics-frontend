@@ -36,7 +36,7 @@ import { SignupComponent } from './signup/signup.component';
 import { FollowupsComponent,FollowupsDialogComponent,StatusDialogComponent,ExportDataDialogComponent } from './followups/followups.component';
 import { CampaignsComponent, CampaignsStatusDialogComponent,CampaignsDialogComponent} from './campaigns/campaigns.component';
 import { StepperHeaderrightComponent } from './layouts/stepper/headerright/headerright.component';
-import { MatMenuModule} from '@angular/material/menu';
+import { MatLegacyMenuModule as MatMenuModule} from '@angular/material/legacy-menu';
 import { ClinicSettingsService } from './clinic-settings/clinic-settings.service';
 import { SharedMatModule } from './shared-mat.module';
 import { DemoMaterialModule } from './demo-material-module';

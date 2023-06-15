@@ -4,9 +4,9 @@ import { KpiReportService } from './kpi-report.service';
 import { CookieOptions, CookieService } from "ngx-cookie";
 import { Router } from "@angular/router";
 import { DatePipe, JsonPipe } from '@angular/common';
-import { MatTabGroup } from '@angular/material/tabs';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator'
+import { MatLegacyTabGroup as MatTabGroup } from '@angular/material/legacy-tabs';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator'
 import { ToastrService } from 'ngx-toastr';
 import { DentistService } from '../dentist/dentist.service';
 import { AppConstants } from '../app.constants';

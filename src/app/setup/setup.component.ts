@@ -8,8 +8,8 @@ import { PlansService } from '../plans/plans.service';
 import { ToastrService } from 'ngx-toastr';
 import { Location } from "@angular/common";
 import { environment } from "../../environments/environment";
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import {UntypedFormControl} from '@angular/forms';
 import {
   UntypedFormBuilder,

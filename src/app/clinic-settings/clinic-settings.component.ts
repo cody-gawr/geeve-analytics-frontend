@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AppConstants } from '../app.constants';
 import { environment } from '../../environments/environment';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ReviewMsgTemplateDialog } from './review-msg-template-dialog/review-msg-template-dialog.component';
 import { LocalStorageService } from '../shared/local-storage.service';
 import Swal from 'sweetalert2';

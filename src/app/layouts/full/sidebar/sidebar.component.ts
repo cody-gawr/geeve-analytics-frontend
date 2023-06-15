@@ -18,10 +18,10 @@ import { ToastrService } from 'ngx-toastr';
 
 import { DentistService } from '../../../dentist/dentist.service';
 import {
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialog
-} from '@angular/material/dialog';
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogRef as MatDialogRef,
+  MatLegacyDialog as MatDialog
+} from '@angular/material/legacy-dialog';
 
 @Component({
   selector: 'refer-friend',

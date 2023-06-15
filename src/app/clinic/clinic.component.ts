@@ -1,8 +1,8 @@
 import { Component, Inject, ViewChild, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { ClinicService } from './clinic.service';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatDialogRef } from '@angular/material/dialog';
-import { MatDialog } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { CookieService } from "ngx-cookie";
 import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';

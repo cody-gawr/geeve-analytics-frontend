@@ -1,6 +1,6 @@
 import { AfterViewInit, Inject,Component, Input, ViewChild,ViewEncapsulation } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
 import { Router } from '@angular/router';
 import { CookieService } from "ngx-cookie";
 import { ToastrService } from 'ngx-toastr';
@@ -8,7 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { EquipmentsService } from './equipments.service';
 import { BaseComponent } from '../base/base.component';
-import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,MatLegacyDialogRef as MatDialogRef,MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ClinicianAnalysisService } from '../../dashboards/cliniciananalysis/cliniciananalysis.service';
 import { ClinicSettingsService } from '../clinic-settings.service';
 import {MatSort} from '@angular/material/sort';

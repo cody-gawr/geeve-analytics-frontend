@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import {MatInputModule} from '@angular/material/input';
+import {MatLegacyInputModule as MatInputModule} from '@angular/material/legacy-input';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { UsersService } from './users.service';
 import { UsersComponent  } from './users.component';

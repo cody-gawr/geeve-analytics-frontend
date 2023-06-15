@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { LoginService } from './login.service';
 import { RolesUsersService } from '../roles-users/roles-users.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',

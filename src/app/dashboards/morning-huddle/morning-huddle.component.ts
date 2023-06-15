@@ -12,12 +12,12 @@ import {
 import { MorningHuddleService } from './morning-huddle.service';
 import { ClinicianAnalysisService } from '../cliniciananalysis/cliniciananalysis.service';
 import { CookieService } from 'ngx-cookie';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { MatTabGroup } from '@angular/material/tabs';
+import { MatLegacyTabGroup as MatTabGroup } from '@angular/material/legacy-tabs';
 import { AppConstants } from '../../app.constants';
 import { DaterangepickerComponent } from 'ngx-daterangepicker-material';
 import { ChartstipsService } from '../../shared/chartstips.service';
@@ -44,14 +44,14 @@ export interface PeriodicElement {
 }
 
 import {
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialog
-} from '@angular/material/dialog';
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogRef as MatDialogRef,
+  MatLegacyDialog as MatDialog
+} from '@angular/material/legacy-dialog';
 import { loadStripe } from '@stripe/stripe-js';
 import { StripePaymentDialog } from '../../shared/stripe-payment-modal/stripe-payment-modal.component';
 import { SendReviewDialog } from './send-review-dialog/send-review-dialog.component';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/legacy-checkbox';
 import * as _ from 'lodash';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { TermsConditionsDialog } from './terms-conditions-dialog/terms-conditions-dialog.component';

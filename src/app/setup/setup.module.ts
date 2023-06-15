@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { DialogLocationDialogComponent, SetupComponent } from './setup.component';
 import { SetupRoutes } from './setup.routing';
-import {MatInputModule} from '@angular/material/input';
+import {MatLegacyInputModule as MatInputModule} from '@angular/material/legacy-input';
 import { DemoMaterialModule } from '../demo-material-module';
 import { SetupService } from './setup.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';

@@ -19,7 +19,7 @@ import {
 } from "@angular/forms";
 import { ClinicSettingsService } from "../clinic-settings.service";
 import { AppConstants } from "../../app.constants";
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef, MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { HeaderService } from "../../layouts/full/header/header.service";
 
 @Component({

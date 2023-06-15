@@ -1,6 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { UsersService } from './users.service';
-import { MatDialog } from '@angular/material/dialog';import { CookieService } from "ngx-cookie";
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';import { CookieService } from "ngx-cookie";
 import { Router } from "@angular/router";
 
 declare var require: any;
