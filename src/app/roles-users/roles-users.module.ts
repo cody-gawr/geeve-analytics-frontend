@@ -14,21 +14,20 @@ import { RolesUsersRoutes } from './roles-users.routing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(RolesUsersRoutes),
-    MatInputModule,
-    NgxDatatableModule,
-    FormsModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    DemoMaterialModule
-  ],
-  providers: [
-    RolesUsersService
-  ],
-  entryComponents: [DialogOverviewExampleDialogComponent,RolesOverviewExampleDialogComponent, EditDialogComponent],
-  declarations: [ RolesUsersComponent,
-    DialogOverviewExampleDialogComponent,RolesOverviewExampleDialogComponent ,EditDialogComponent]
+    imports: [
+        CommonModule,
+        RouterModule.forChild(RolesUsersRoutes),
+        MatInputModule,
+        NgxDatatableModule,
+        FormsModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        DemoMaterialModule
+    ],
+    providers: [
+        RolesUsersService
+    ],
+    declarations: [RolesUsersComponent,
+        DialogOverviewExampleDialogComponent, RolesOverviewExampleDialogComponent, EditDialogComponent]
 })
 export class RolesUsersModule { }

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
-  FormControl
+  UntypedFormControl
 } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { LoginService } from '../../login/login.service';
@@ -12,15 +12,15 @@ import { ActivatedRoute } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
 
 
-const passwordValidation = new FormControl('', [Validators.required, Validators.minLength(10)]);
-const confirmPasswordValidation = new FormControl('', CustomValidators.equalTo(passwordValidation));
+const passwordValidation = new UntypedFormControl('', [Validators.required, Validators.minLength(10)]);
+const confirmPasswordValidation = new UntypedFormControl('', CustomValidators.equalTo(passwordValidation));
 @Component({
   selector: 'app-reset',
   templateUrl: './reset.component.html',
   styleUrls: ['./reset.component.scss']
 })
 export class ResetComponent implements OnInit {
-  public form: FormGroup;
+  public form: UntypedFormGroup;
   public errorLogin = false;
   public errorLoginText = '';
   public successLogin = false;
@@ -28,7 +28,7 @@ export class ResetComponent implements OnInit {
   public isPasswordSet = false;
   public id:any ={};
   public erros:any = {minLength: false, pattern: false, confirm: false};
-  constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService, private route: ActivatedRoute,private toastr: ToastrService) {}
+  constructor(private fb: UntypedFormBuilder, private router: Router, private loginService: LoginService, private route: ActivatedRoute,private toastr: ToastrService) {}
   ngOnInit() {
     this.form = this.fb.group({ 
       password: passwordValidation,

@@ -13,8 +13,8 @@ import { CustomisationsService } from "./customisations.service";
 import { BaseComponent } from "../base/base.component";
 import { environment } from "../../../environments/environment";
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { ClinicSettingsService } from "../clinic-settings.service";
@@ -106,7 +106,7 @@ export class CustomisationsComponent
   @Input() set clinicPMS(value: string) {
     this.clinic_pms$.next(value);
   }
-  public form: FormGroup;
+  public form: UntypedFormGroup;
   public apiUrl = environment.apiUrl;
 
   public xrayMonths: number = 24; //default value
@@ -133,7 +133,7 @@ export class CustomisationsComponent
     private _cookieService: CookieService,
     private customisationsService: CustomisationsService,
     private router: Router,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private toastr: ToastrService,
     public dialog: MatDialog,
     public constants: AppConstants,

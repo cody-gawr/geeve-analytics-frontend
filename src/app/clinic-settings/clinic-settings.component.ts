@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { ClinicSettingsService } from './clinic-settings.service';
 import { ActivatedRoute } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
@@ -35,7 +35,7 @@ export interface ReviewMsgTemplateObject {
 export class ClinicSettingsComponent implements OnInit {
   public apiUrl = environment.apiUrl;
   public fileToUpload;
-  public form: FormGroup;
+  public form: UntypedFormGroup;
   public errorLogin = false;
   public clinic_id: any = {};
   private warningMessage: string;
@@ -69,7 +69,7 @@ export class ClinicSettingsComponent implements OnInit {
   public post_op_calls: any = '';
   public subtracted_accounts: any = '';
   public practice_size: any = {};
-  options: FormGroup;
+  options: UntypedFormGroup;
   public xero_link;
   public myob_link;
   public xeroConnect = false;
@@ -114,7 +114,7 @@ export class ClinicSettingsComponent implements OnInit {
     private localStorageService: LocalStorageService,
     private toastr: ToastrService,
     private _cookieService: CookieService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private clinicSettingsService: ClinicSettingsService,
     private route: ActivatedRoute,
     private router: Router,
@@ -228,7 +228,7 @@ export class ClinicSettingsComponent implements OnInit {
   }
 
   // For form validator
-  email = new FormControl('', [Validators.required, Validators.email]);
+  email = new UntypedFormControl('', [Validators.required, Validators.email]);
 
   // Sufix and prefix
   //hide = true;
@@ -743,8 +743,8 @@ export class ClinicSettingsComponent implements OnInit {
     });
   }
 
-  facebookId = new FormControl('', Validators.required);
-  googleId = new FormControl('', Validators.required);
+  facebookId = new UntypedFormControl('', Validators.required);
+  googleId = new UntypedFormControl('', Validators.required);
   googleAuthUrl = '';
   googleConnected = false;
 
@@ -752,11 +752,11 @@ export class ClinicSettingsComponent implements OnInit {
     this.clinicSettingsService.getSocialLinks(this.id).subscribe({
       next: (v) => {
         if (v.data) {
-          this.facebookId = new FormControl(
+          this.facebookId = new UntypedFormControl(
             v.data.facebook_id,
             Validators.required
           );
-          this.googleId = new FormControl(
+          this.googleId = new UntypedFormControl(
             v.data.google_id,
             Validators.required
           );
@@ -789,11 +789,11 @@ export class ClinicSettingsComponent implements OnInit {
       .updateSocialLinks(this.id, this.facebookId.value, this.googleId.value)
       .subscribe(
         (result) => {
-          this.facebookId = new FormControl(
+          this.facebookId = new UntypedFormControl(
             result.body.data.facebook_id,
             Validators.required
           );
-          this.googleId = new FormControl(
+          this.googleId = new UntypedFormControl(
             result.body.data.google_id,
             Validators.required
           );

@@ -1,5 +1,5 @@
 import { Component, Inject } from "@angular/core";
-import { FormControl, Validators } from "@angular/forms";
+import { UntypedFormControl, Validators } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import * as _ from "lodash";
 import { ToastrService } from "ngx-toastr";
@@ -25,8 +25,8 @@ export interface DialogData {
     styleUrls:['send-review-dialog.component.scss']
 })
 export class SendReviewDialog {
-    review_msg = new FormControl('', [Validators.required]);
-    phoneNumber = new FormControl('', [
+    review_msg = new UntypedFormControl('', [Validators.required]);
+    phoneNumber = new UntypedFormControl('', [
         Validators.required,
         Validators.pattern(/^(\+614?|04|614)[\s]?\d{1}[\s]?\d{1}[\s]?\d{1}[\s]?\d{1}[\s]?\d{1}[\s]?\d{1}[\s]?\d{1}[\s]?\d{1}$/)
     ]

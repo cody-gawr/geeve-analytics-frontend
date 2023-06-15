@@ -8,7 +8,7 @@ import { EventEmitter , Output} from '@angular/core';
 import { DentistService } from '../dentist/dentist.service';
 import { ClinicService } from '../clinic/clinic.service';
 import { ToastrService } from 'ngx-toastr';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormControl, FormGroup, Validators} from '@angular/forms';
 import { CookieService } from "ngx-cookie";
 import { ITooltipData } from '../shared/tooltip/tooltip.directive';
 import { HeaderService } from '../layouts/full/header/header.service';
@@ -35,7 +35,7 @@ export class DialogOverviewExampleDialogComponent {
   public validMailError: boolean;
   public reg = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
   constructor(
-    private formBuilder : FormBuilder,
+    private formBuilder : UntypedFormBuilder,
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,private clinicService: ClinicService,private _cookieService: CookieService, private router: Router
   ) {}
@@ -88,7 +88,7 @@ export class DialogOverviewExampleDialogComponent {
     }
     return size;
   }
-  public selectedClinics=new FormControl();
+  public selectedClinics=new UntypedFormControl();
    clinicSelect(event) {
      if(event == false)
      this.unselectDentist();
@@ -218,7 +218,7 @@ export class EditDialogComponent {
         this.dialogEdit.close(userData);
     }
   }
-  public selectedClinics=new FormControl();
+  public selectedClinics=new UntypedFormControl();
    clinicSelect(event) {
     if(event == false)
       this.unselectDentist();

@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { CustomValidators } from "ng2-validation";
 import { LoginService } from "../../login/login.service";
 
@@ -10,7 +10,7 @@ import { LoginService } from "../../login/login.service";
   styleUrls: ["./forgot.component.scss"],
 })
 export class ForgotComponent implements OnInit {
-  public form: FormGroup;
+  public form: UntypedFormGroup;
   public errorLogin = false;
   public errorLoginText = "";
   public successLogin: boolean = false;
@@ -20,7 +20,7 @@ export class ForgotComponent implements OnInit {
   public showCaptcha: boolean = true;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private router: Router,
     private loginService: LoginService
   ) {}

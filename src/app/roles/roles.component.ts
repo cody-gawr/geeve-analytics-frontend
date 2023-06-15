@@ -1,5 +1,5 @@
 import { Component,OnInit  } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { RolesService } from './roles.service';
 import { ActivatedRoute } from "@angular/router";
@@ -11,7 +11,7 @@ import { AppConstants } from '../app.constants';
   styleUrls: ['./roles.component.scss']
 })
 export class RolesComponent implements OnInit {
-   public form: FormGroup;
+   public form: UntypedFormGroup;
 
    public clinic_id:any ={};
 
@@ -22,12 +22,12 @@ export class RolesComponent implements OnInit {
           // public chartData: any[] = [];
           public address:any = {};
           public practice_size:any ={};
-          options: FormGroup;
+          options: UntypedFormGroup;
           public xero_link;
           public xeroConnect = false;
           public xeroOrganization='';
           public email;
-  constructor(private _cookieService: CookieService, private fb: FormBuilder,  private rolesService: RolesService, private route: ActivatedRoute,public constants: AppConstants) {
+  constructor(private _cookieService: CookieService, private fb: UntypedFormBuilder,  private rolesService: RolesService, private route: ActivatedRoute,public constants: AppConstants) {
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto'

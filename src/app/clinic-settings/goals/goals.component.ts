@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CookieService } from "ngx-cookie";
 import { ToastrService } from 'ngx-toastr';
@@ -18,11 +18,11 @@ import { ClinicSettingsService } from '../clinic-settings.service';
 })
 export class GoalsComponent extends BaseComponent implements OnInit, AfterViewInit {
   clinic_id$ = new BehaviorSubject<any>(null);
-  clinicAnalysisForm: FormGroup;
-  clinicProcedureForm: FormGroup;
-  frontDeskForm: FormGroup;
-  marketingForm: FormGroup;
-  financesForm: FormGroup;
+  clinicAnalysisForm: UntypedFormGroup;
+  clinicProcedureForm: UntypedFormGroup;
+  frontDeskForm: UntypedFormGroup;
+  marketingForm: UntypedFormGroup;
+  financesForm: UntypedFormGroup;
   dentists: any = [];
   goalsData: any = {};
   clinicAnalysisGoals: any = [];
@@ -44,7 +44,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
     private dentistGoalsService: DentistGoalsService,
     private _cookieService: CookieService,
     private router: Router,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private toastr: ToastrService,
     private dentistService: DentistService,
     private clinicSettingsService: ClinicSettingsService

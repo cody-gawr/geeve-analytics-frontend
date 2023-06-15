@@ -4,8 +4,8 @@ import { CookieService, CookieOptions } from "ngx-cookie";
 import { environment } from "../../environments/environment";
 import { AppConstants } from '../app.constants';
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators
 } from '@angular/forms';
 import { XeroService } from './xero.service';
@@ -17,13 +17,13 @@ import { XeroService } from './xero.service';
    encapsulation: ViewEncapsulation.None
 })
 export class XeroComponent implements OnInit {
-  public form: FormGroup;
+  public form: UntypedFormGroup;
   public errorLogin = false;
   public saleSite = 'https://test-signup.jeeve.com.au/subscription';
   private apiUrl = environment.apiUrl;
   public  xeroVar:any = '';
   public  currentYear:any = '';
-  constructor(private fb: FormBuilder, private router: Router, private xeroService: XeroService,private _cookieService: CookieService,public constants: AppConstants) {
+  constructor(private fb: UntypedFormBuilder, private router: Router, private xeroService: XeroService,private _cookieService: CookieService,public constants: AppConstants) {
       if(this.apiUrl.includes('staging-')){
         this.xeroVar = 'x30jeevestaging';
       } else if(this.apiUrl.includes('test-')){

@@ -11,20 +11,18 @@ import { ClinicService } from '../clinic/clinic.service';
 import { PlansService } from '../plans/plans.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
 @NgModule({
-  declarations: [SetupComponent,DialogLocationDialogComponent],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(SetupRoutes),
-    MatInputModule,
-    DemoMaterialModule,
-    FormsModule,
-    ReactiveFormsModule,
-    FlexLayoutModule
-  ],
-  entryComponents: [DialogLocationDialogComponent],
-  providers: [
-       SetupService,ClinicService,PlansService
-  ]
- 
+    declarations: [SetupComponent, DialogLocationDialogComponent],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(SetupRoutes),
+        MatInputModule,
+        DemoMaterialModule,
+        FormsModule,
+        ReactiveFormsModule,
+        FlexLayoutModule
+    ],
+    providers: [
+        SetupService, ClinicService, PlansService
+    ]
 })
 export class SetupModule { }

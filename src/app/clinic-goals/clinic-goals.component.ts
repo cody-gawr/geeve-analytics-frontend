@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { ClinicGoalsService } from './clinic-goals.service';
 import { CookieService } from 'ngx-cookie';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,7 +17,7 @@ import { ToastrService } from 'ngx-toastr';
 export class ClinicGoalsComponent implements OnInit {
   public clinic_id: any = {};
 
-  public form: FormGroup;
+  public form: UntypedFormGroup;
   public errorLogin = false;
   private warningMessage: string;
   public dentistprod: any = 0;
@@ -64,11 +64,11 @@ export class ClinicGoalsComponent implements OnInit {
   // public chartData: any[] = [];
   public chartData: any = {};
 
-  options: FormGroup;
+  options: UntypedFormGroup;
   //initialize component
   constructor(
     private toastr: ToastrService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private clinicGoalsService: ClinicGoalsService,
     private route: ActivatedRoute,
     private _cookieService: CookieService,
@@ -146,7 +146,7 @@ export class ClinicGoalsComponent implements OnInit {
     });
   }
   // For form validator
-  email = new FormControl('', [Validators.required, Validators.email]);
+  email = new UntypedFormControl('', [Validators.required, Validators.email]);
 
   // Sufix and prefix
   hide = true;

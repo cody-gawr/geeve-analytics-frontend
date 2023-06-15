@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { CookieService } from "ngx-cookie";
 import { Router } from "@angular/router";
-import {FormBuilder, Validators, FormGroup} from "@angular/forms";
+import {UntypedFormBuilder, Validators, UntypedFormGroup} from "@angular/forms";
 declare var require: any;
 const data: any = require('assets/company.json');
 @Component({
@@ -16,10 +16,10 @@ const data: any = require('assets/company.json');
 
 export class DialogOverviewExampleDialogComponent {
    public clinic_id:any ={};
-  form: FormGroup;
+  form: UntypedFormGroup;
   plan:string;
   constructor(
-     fb: FormBuilder,
+     fb: UntypedFormBuilder,
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {

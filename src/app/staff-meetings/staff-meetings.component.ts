@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
+import { AbstractControl, UntypedFormBuilder, FormControl, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
 import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
 import { TasksService } from "../tasks/tasks.service";
 import { StaffMeetingService } from "./staff-meetings.service";
@@ -47,9 +47,9 @@ export class StaffMeetingsComponent implements OnInit{
     public showCompletedMeetingTab : boolean;
     public boardMeetingPage : boolean;
     public agenda : boolean = true;
-    public create_meeting_form : FormGroup;
-    public create_agenda_form : FormGroup;
-    public invites_form : FormGroup;
+    public create_meeting_form : UntypedFormGroup;
+    public create_agenda_form : UntypedFormGroup;
+    public invites_form : UntypedFormGroup;
     public agendaTab : boolean;
     public view_agenda = [];
     public currentTab = 0;
@@ -171,7 +171,7 @@ export class StaffMeetingsComponent implements OnInit{
     @ViewChild(MatSort) sort: MatSort;
     // @ViewChild('chipList') chipList : MatChipList;
 
-    constructor(private formBuilder : FormBuilder, private tasksService : TasksService, private staffMeetingService : StaffMeetingService, private datepipe: DatePipe, private _cookieService: CookieService, private toastr: ToastrService, private rolesUsersService : RolesUsersService, private dateAdapter: DateAdapter<Date>, private headerService : HeaderService) {
+    constructor(private formBuilder : UntypedFormBuilder, private tasksService : TasksService, private staffMeetingService : StaffMeetingService, private datepipe: DatePipe, private _cookieService: CookieService, private toastr: ToastrService, private rolesUsersService : RolesUsersService, private dateAdapter: DateAdapter<Date>, private headerService : HeaderService) {
       this.minDate = new Date();
       this.dateAdapter.setLocale('en-GB');
       this.getClinic();

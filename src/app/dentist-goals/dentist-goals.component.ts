@@ -1,6 +1,6 @@
  import { Component,OnInit  } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { DentistGoalsService } from './dentist-goals.service';
 import { ActivatedRoute, Router } from "@angular/router";
 import { DentistService } from '../dentist/dentist.service';
@@ -21,7 +21,7 @@ export class DentistGoalsComponent implements OnInit {
     dentists: Dentist[] = [
        { providerId: 'all', name: 'All Dentists' },
     ];
-   public form: FormGroup;
+   public form: UntypedFormGroup;
    public errorLogin = false;
           private warningMessage: string;
           public dentistprod:any =0;
@@ -71,9 +71,9 @@ export class DentistGoalsComponent implements OnInit {
           // public chartData: any[] = [];
           public chartData:any = {};
           public user_id;
-  options: FormGroup;
+  options: UntypedFormGroup;
 
-  constructor(private toastr: ToastrService,private fb: FormBuilder,  private dentistGoalsService: DentistGoalsService, private route: ActivatedRoute, private dentistService: DentistService,private _cookieService: CookieService, private router: Router) {
+  constructor(private toastr: ToastrService,private fb: UntypedFormBuilder,  private dentistGoalsService: DentistGoalsService, private route: ActivatedRoute, private dentistService: DentistService,private _cookieService: CookieService, private router: Router) {
 
     this.clinic_id = this.route.snapshot.paramMap.get("id");
     this.options = fb.group({
@@ -174,7 +174,7 @@ export class DentistGoalsComponent implements OnInit {
     this.loadDentist(val);
   }
   // For form validator
-  email = new FormControl('', [Validators.required, Validators.email]);
+  email = new UntypedFormControl('', [Validators.required, Validators.email]);
 
   // Sufix and prefix
   hide = true;

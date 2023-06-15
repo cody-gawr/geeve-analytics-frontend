@@ -1,7 +1,7 @@
 import { Component, Inject, ViewChild, ElementRef } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { ToastrService } from "ngx-toastr";
-import {FormControl, Validators} from '@angular/forms';
+import {UntypedFormControl, Validators} from '@angular/forms';
 import { ReviewMsgTemplateObject } from "../clinic-settings.component";
 import { ClinicSettingsService } from "../clinic-settings.service";
 
@@ -15,8 +15,8 @@ export interface DialogData {
     templateUrl: 'review-msg-template-dialog.component.html'
 })
 export class ReviewMsgTemplateDialog {
-    name = new FormControl('', [Validators.required]);
-    msg_template = new FormControl('', [Validators.required]);
+    name = new UntypedFormControl('', [Validators.required]);
+    msg_template = new UntypedFormControl('', [Validators.required]);
     isWaitingResponse = false;
     @ViewChild('keyClinicName') clinicNameElem: ElementRef<HTMLElement>
     @ViewChild('keyPatientName') patientNameElem: ElementRef<HTMLElement>
@@ -30,8 +30,8 @@ export class ReviewMsgTemplateDialog {
         private clinicService: ClinicSettingsService 
     ) {
         if(data.element){
-            this.name = new FormControl(data.element.name, [Validators.required]);
-            this.msg_template = new FormControl(data.element.msg_template, [Validators.required]);
+            this.name = new UntypedFormControl(data.element.name, [Validators.required]);
+            this.msg_template = new UntypedFormControl(data.element.msg_template, [Validators.required]);
         }
         
     }

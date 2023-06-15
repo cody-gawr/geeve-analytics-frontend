@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { ProfileSettingsService } from './profile-settings.service';
 import { ActivatedRoute } from '@angular/router';
 import { CookieService, CookieOptions } from 'ngx-cookie';
@@ -14,11 +14,11 @@ import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import { RolesUsersService } from '../roles-users/roles-users.service';
 
-const passwordValidation = new FormControl('', [
+const passwordValidation = new UntypedFormControl('', [
   Validators.required,
   Validators.minLength(10)
 ]);
-const confirmPasswordValidation = new FormControl(
+const confirmPasswordValidation = new UntypedFormControl(
   '',
   CustomValidators.equalTo(passwordValidation)
 );
@@ -128,8 +128,8 @@ export class ProfileSettingsComponent implements OnInit {
     }
   };
   public token;
-  stripeTest: FormGroup;
-  public form: FormGroup;
+  stripeTest: UntypedFormGroup;
+  public form: UntypedFormGroup;
   public cardNumber;
   public cardExpiry;
   public cardCvc;
@@ -146,14 +146,14 @@ export class ProfileSettingsComponent implements OnInit {
   // public chartData: any[] = [];
   public address: any = {};
   public practice_size: any = {};
-  options: FormGroup;
+  options: UntypedFormGroup;
   public xero_link;
   public xeroConnect = false;
   public xeroOrganization = '';
   public email;
   constructor(
     private _cookieService: CookieService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private profileSettingsService: ProfileSettingsService,
     private route: ActivatedRoute,
     private stripeService: StripeService,
@@ -183,8 +183,8 @@ export class ProfileSettingsComponent implements OnInit {
         ])
       ]
     });
-    this.healthSettings = new FormGroup({
-      health_screen_mtd: new FormControl()
+    this.healthSettings = new UntypedFormGroup({
+      health_screen_mtd: new UntypedFormControl()
     });
   }
 
@@ -525,8 +525,8 @@ export class ProfileSettingsComponent implements OnInit {
   public errortext = '';
   public successLogin = false;
   public successtext = '';
-  public formSettings: FormGroup;
-  public healthSettings: FormGroup;
+  public formSettings: UntypedFormGroup;
+  public healthSettings: UntypedFormGroup;
   public currentPassword;
   public newPassword;
   public repeatPassword;

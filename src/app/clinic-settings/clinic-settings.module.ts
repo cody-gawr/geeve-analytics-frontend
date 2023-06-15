@@ -48,66 +48,57 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { ReviewMsgTemplateDialog } from "./review-msg-template-dialog/review-msg-template-dialog.component";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(ClinicSettingsRoutes),
-    SharedMatModule,
-    DemoMaterialModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SharedModule,
-    NgxPaginationModule,
-  ],
-  providers: [
-    ClinicSettingsService,
-    TaskService,
-    TasklistService,
-    CustomisationsService,
-    EquipmentsService,
-    ScriptsService,
-    ChartsService
-  ],
-  declarations: [
-    ClinicSettingsComponent,
-    BaseComponent,
-    DentistComponent,
-    AlertsComponent,
-    TasksComponent,
-    TasklistComponent,
-    ScriptsComponent,
-    GoalsComponent,
-    CustomisationsComponent,
-    AutofocusDirective,
-    DialogOverviewExampleDialogComponent,
-    DialogOverviewTasklistDialogComponent,
-    AddJeeveNameComponent,
-    DialogOverviewExampleComponent,
-    AddScriptsComponent,
-    EquipmentComponent,
-    ChartsComponent,
-    DialogSetColorsDialogComponent,
-    DentisChartComponent,
-    ReviewMsgTemplateDialog
-  ],
-  entryComponents: [
-    DialogOverviewExampleDialogComponent,
-    DialogOverviewTasklistDialogComponent,
-    DialogOverviewExampleComponent,
-    AddJeeveNameComponent,
-    AddScriptsComponent,
-    DialogSetColorsDialogComponent,
-    DentisChartComponent
-  ],
-  exports: [
-    BaseComponent,
-    DentistComponent,
-    GoalsComponent,
-    CustomisationsComponent,
-    AlertsComponent,
-    TasksComponent,
-    TasklistComponent,
-    ScriptsComponent,
-    ChartsComponent
-  ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(ClinicSettingsRoutes),
+        SharedMatModule,
+        DemoMaterialModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SharedModule,
+        NgxPaginationModule,
+    ],
+    providers: [
+        ClinicSettingsService,
+        TaskService,
+        TasklistService,
+        CustomisationsService,
+        EquipmentsService,
+        ScriptsService,
+        ChartsService
+    ],
+    declarations: [
+        ClinicSettingsComponent,
+        BaseComponent,
+        DentistComponent,
+        AlertsComponent,
+        TasksComponent,
+        TasklistComponent,
+        ScriptsComponent,
+        GoalsComponent,
+        CustomisationsComponent,
+        AutofocusDirective,
+        DialogOverviewExampleDialogComponent,
+        DialogOverviewTasklistDialogComponent,
+        AddJeeveNameComponent,
+        DialogOverviewExampleComponent,
+        AddScriptsComponent,
+        EquipmentComponent,
+        ChartsComponent,
+        DialogSetColorsDialogComponent,
+        DentisChartComponent,
+        ReviewMsgTemplateDialog
+    ],
+    exports: [
+        BaseComponent,
+        DentistComponent,
+        GoalsComponent,
+        CustomisationsComponent,
+        AlertsComponent,
+        TasksComponent,
+        TasklistComponent,
+        ScriptsComponent,
+        ChartsComponent
+    ]
 })
 export class ClinicSettingsModule {}

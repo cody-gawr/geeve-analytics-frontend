@@ -12,23 +12,22 @@ import { SetupService } from '../setup/setup.service';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [
-    SharedMatModule.forRoot(),
-    RouterModule.forChild(ClinicRoutes),
-    NgxDatatableModule,
-    DemoMaterialModule,
-    FormsModule
-  ],
-  providers: [
-    ClinicService,
-    SetupService
-  ],
-  entryComponents: [DialogOverviewExampleDialogComponent,DialogOverviewExampleLimitDialogComponent,DialogLocationDialogComponent],
-  declarations: [ 
-    ClinicComponent,
-    DialogOverviewExampleDialogComponent,
-    DialogOverviewExampleLimitDialogComponent,
-    DialogLocationDialogComponent
-  ]
+    imports: [
+        SharedMatModule.forRoot(),
+        RouterModule.forChild(ClinicRoutes),
+        NgxDatatableModule,
+        DemoMaterialModule,
+        FormsModule
+    ],
+    providers: [
+        ClinicService,
+        SetupService
+    ],
+    declarations: [
+        ClinicComponent,
+        DialogOverviewExampleDialogComponent,
+        DialogOverviewExampleLimitDialogComponent,
+        DialogLocationDialogComponent
+    ]
 })
 export class ClinicModule { }

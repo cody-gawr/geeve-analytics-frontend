@@ -10,12 +10,12 @@ import { Location } from "@angular/common";
 import { environment } from "../../environments/environment";
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
-  FormArray
+  UntypedFormArray
 } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { core } from '@angular/compiler';
@@ -31,11 +31,11 @@ export class SetupComponent implements AfterViewInit {
 
   @ViewChild('stepper') stepper;
   private apiUrl = environment.apiUrl;
-  public form: FormGroup;
+  public form: UntypedFormGroup;
   isLinear = true;
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
-  inviteFormGroup: FormGroup;
+  firstFormGroup: UntypedFormGroup;
+  secondFormGroup: UntypedFormGroup;
+  inviteFormGroup: UntypedFormGroup;
   private warningMessage: string;
   public disabled = false;
   public imageURL:any = '';  
@@ -185,7 +185,7 @@ usersArray = new Array(this.userRows);
   }*/
   minDate = new Date('1990-01-01');
    maxDate = new Date();
-  constructor(private _formBuilder: FormBuilder,private clinicService: ClinicService, private setupService: SetupService, private _cookieService: CookieService, private router: Router, private route: ActivatedRoute,private rolesUsersService: RolesUsersService,private toastr: ToastrService,private plansService: PlansService, private _location: Location,  public dialog: MatDialog){
+  constructor(private _formBuilder: UntypedFormBuilder,private clinicService: ClinicService, private setupService: SetupService, private _cookieService: CookieService, private router: Router, private route: ActivatedRoute,private rolesUsersService: RolesUsersService,private toastr: ToastrService,private plansService: PlansService, private _location: Location,  public dialog: MatDialog){
     
   }
 
@@ -549,7 +549,7 @@ usersArray = new Array(this.userRows);
      //return false;
     }
    get formArr() {
-    return this.inviteFormGroup.get('itemRows') as FormArray;
+    return this.inviteFormGroup.get('itemRows') as UntypedFormArray;
   }
    initItemRows() {
     return this._formBuilder.group({
@@ -870,7 +870,7 @@ export class DialogLocationDialogComponent{
   {
     dialogRef.disableClose = true;
   }
-  public selectLocation=new FormControl();
+  public selectLocation=new UntypedFormControl();
 
   onNoClick(){
     this.dialogRef.close();

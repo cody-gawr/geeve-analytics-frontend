@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { CookieService, CookieOptions } from 'ngx-cookie';
 import { AppConstants } from '../app.constants';
 import { environment } from '../../environments/environment';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { LoginService } from './login.service';
 import { RolesUsersService } from '../roles-users/roles-users.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,7 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  public form: FormGroup;
+  public form: UntypedFormGroup;
   public errorLogin = false;
   public errorforAttmp = false;
   public errorForm = { email: false, password: false };
@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
   IsCheckingAuth = true;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private router: Router,
     private loginService: LoginService,
     private _cookieService: CookieService,

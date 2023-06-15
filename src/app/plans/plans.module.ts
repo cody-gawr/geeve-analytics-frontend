@@ -10,19 +10,18 @@ import { PlansRoutes } from './plans.routing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(PlansRoutes),
-    MatInputModule,
-    NgxDatatableModule,
-    FlexLayoutModule,
-    FormsModule,ReactiveFormsModule,
-    DemoMaterialModule
-  ],
-  providers: [
-    PlansService
-  ],
-  entryComponents: [DialogOverviewExampleDialogComponent],
-  declarations: [ PlansComponent,DialogOverviewExampleDialogComponent ]
+    imports: [
+        CommonModule,
+        RouterModule.forChild(PlansRoutes),
+        MatInputModule,
+        NgxDatatableModule,
+        FlexLayoutModule,
+        FormsModule, ReactiveFormsModule,
+        DemoMaterialModule
+    ],
+    providers: [
+        PlansService
+    ],
+    declarations: [PlansComponent, DialogOverviewExampleDialogComponent]
 })
 export class PlansModule { }

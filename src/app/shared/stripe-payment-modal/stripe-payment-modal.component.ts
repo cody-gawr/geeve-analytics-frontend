@@ -1,6 +1,6 @@
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import {
@@ -28,7 +28,7 @@ export interface DialogData {
   styleUrls: ['stripe-payment-modal.component.scss']
 })
 export class StripePaymentDialog {
-  numberOfCreditsFormGroup: FormGroup;
+  numberOfCreditsFormGroup: UntypedFormGroup;
   elements: StripeElements;
   stripe: Stripe;
   selectedCredit = 100;
@@ -37,7 +37,7 @@ export class StripePaymentDialog {
   totalAmount = 0;
   taxAmount = 0;
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     public dialogRef: MatDialogRef<StripePaymentDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private morningHuddle: MorningHuddleService,

@@ -17,35 +17,34 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DemoMaterialModule } from '../demo-material-module';
 
 @NgModule({
-  declarations: [
-    AccordionAnchorDirective,
-    AccordionLinkDirective,
-    AccordionDirective,
-    TooltipComponent,
-    TooltipDirective,
-    TooltipContainerDirective, 
-    TooltipLayoutComponent,
-    SpinnerComponent,
-    StripePaymentDialog
-  ],
-  exports: [
-    AccordionAnchorDirective,
-    AccordionLinkDirective,
-    AccordionDirective,
-    TooltipDirective,
-    TooltipContainerDirective,
-    SpinnerComponent,
-
-    StripePaymentDialog
-  ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    DemoMaterialModule
-  ],
-  providers: [
-    //MenuItems,
-    RolesUsersService],
-  entryComponents: [TooltipLayoutComponent, TooltipComponent]
+    declarations: [
+        AccordionAnchorDirective,
+        AccordionLinkDirective,
+        AccordionDirective,
+        TooltipComponent,
+        TooltipDirective,
+        TooltipContainerDirective,
+        TooltipLayoutComponent,
+        SpinnerComponent,
+        StripePaymentDialog
+    ],
+    exports: [
+        AccordionAnchorDirective,
+        AccordionLinkDirective,
+        AccordionDirective,
+        TooltipDirective,
+        TooltipContainerDirective,
+        SpinnerComponent,
+        StripePaymentDialog
+    ],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        DemoMaterialModule
+    ],
+    providers: [
+        //MenuItems,
+        RolesUsersService
+    ]
 })
 export class SharedModule {}

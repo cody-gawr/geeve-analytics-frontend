@@ -8,8 +8,8 @@ import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
 import { HeaderService } from './../layouts/full/header/header.service';
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators
 } from '@angular/forms';
 import Swal from 'sweetalert2';
@@ -24,12 +24,12 @@ import { SetupService } from '../setup/setup.service';
   */
 
 export class DialogOverviewExampleDialogComponent {
-  public form: FormGroup;
+  public form: UntypedFormGroup;
   public isConnectedCore :boolean = false;
   public showConnectButton : boolean = false;
   public urlPattern=/^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
   public pmsValue = "";
-  constructor(private fb: FormBuilder,
+  constructor(private fb: UntypedFormBuilder,
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
