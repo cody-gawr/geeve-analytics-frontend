@@ -51,7 +51,7 @@ import { StaffMeetingsComponent } from './staff-meetings/staff-meetings.componen
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { GraphsComponent } from './graphs/graphs.component';
 import { NgxGaugeModule } from 'ngx-gauge';
-import { ChartsModule } from 'ng2-charts';
+import { NgChartsModule as ChartsModule } from 'ng2-charts';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
