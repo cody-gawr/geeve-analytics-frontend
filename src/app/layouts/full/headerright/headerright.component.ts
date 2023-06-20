@@ -132,7 +132,7 @@ export class AppHeaderrightComponent
       this.isSwitchingClinic = true;
       if (event instanceof NavigationEnd) {
         this.referFriend = false;
-        this.route = router.url;
+        this.route = router.url.split('?')[0];
         if (
           this.route == '/dashboards/cliniciananalysis'
           // this.route == '/dashboards/cliniciananalysis/multi'
