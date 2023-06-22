@@ -440,23 +440,31 @@ export class ClinicSettingsComponent implements OnInit {
     });
   }
   //save clinic settings
-  onSubmit() {
+  onSubmit(onlyClinicUpdate = false) {
     $('.ajax-loader').show();
-    const sources = forkJoin([
-      this.saveBaseSettings(),
-      this.saveExtraSettings()
-    ]);
+    let sources;
+    if(onlyClinicUpdate){
+      sources = forkJoin([
+        this.saveBaseSettings()
+      ]);
+    }else{
+      sources = forkJoin([
+        this.saveBaseSettings(),
+        this.saveExtraSettings()
+      ]);
+    }
+    
     sources.subscribe( {
-      next:([r1, r2]) => {
-        if (r1.status == 200) {
+      next:([r1, r2 = null]) => {
+        if (r1 && r1.status == 200) {
           this.toastr.success('Clinic Base Settings Updated');
         }
 
-        if (r2.status == 200) {
+        if (r2 && r2.status == 200) {
           this.toastr.success('Clinic Extra Settings Updated');
         }
       },
-      error: ([e1, e2]: HttpErrorResponse[]) => {
+      error: ([e1, e2 = null]: HttpErrorResponse[]) => {
         $('.ajax-loader').hide();
         this.warningMessage = 'Please Provide Valid Inputs!';
       },
