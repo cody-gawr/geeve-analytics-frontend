@@ -420,7 +420,8 @@ export class ClinicSettingsComponent implements OnInit {
         this.utaFollowupDays,
         this.utaFollowupDaysLater,
         this.ftaFollowupDaysLater,
-        this.referralWeeks
+        this.referralWeeks,
+        this.compareMode
       );
   }
 
