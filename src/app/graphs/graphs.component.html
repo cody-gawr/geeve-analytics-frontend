@@ -18,13 +18,13 @@
                
                 <section *ngIf="productionTotal > 0 && hasBarChart" class="div-pro-coll-show-graphs">
                     <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
-                      [legend]="barChartLegend" [chartType]="'bar'" [options]="barOptions"
+                      [legend]="barChartLegend" [type]="'bar'" [options]="barOptions"
                       [colors]="barChartColors">
                     </canvas> 
                 </section>
                 <section *ngIf="productionTotal > 0 && hasStackChart" class="div-pro-coll-show-graphs">
                   <canvas #myCanvas baseChart [datasets]="perUserData" [labels]="perUserLabels"
-                        [options]="stackedChartOptions" [chartType]="'bar'" 
+                        [options]="stackedChartOptions" [type]="'bar'" 
                         [legend]="true" [colors]="IPcolors">
                   </canvas>
                 </section>

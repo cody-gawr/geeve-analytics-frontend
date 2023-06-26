@@ -12,6 +12,7 @@ import { FollowupsService } from './followups.service';
 import { ChartstipsService } from '../../shared/chartstips.service';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
+import { ChartOptions } from 'chart.js';
 @Component({
   templateUrl: './followups.component.html',
   styleUrls: ['./followups.component.scss'],
@@ -68,7 +69,7 @@ export class FollowupsComponent implements AfterViewInit {
     { data: [], label: 'Ftas' }
   ];
   public clinic_id: any;
-  public stackedChartOptions: any = {
+  public stackedChartOptions: ChartOptions = {
     hover: {
       mode: null
     },
@@ -80,8 +81,8 @@ export class FollowupsComponent implements AfterViewInit {
         hoverBorderWidth: 7
       }
     },
-    curvature: 1,
-    scaleShowVerticalLines: false,
+    // curvature: 1,
+    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
     animation: {
@@ -89,19 +90,19 @@ export class FollowupsComponent implements AfterViewInit {
       easing: 'easeOutSine'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: true,
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           stacked: true,
           ticks: {
-            userCallback: function (label, index, labels) {
+            callback: function (label: number, index, labels) {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return label;
@@ -109,55 +110,56 @@ export class FollowupsComponent implements AfterViewInit {
             }
           }
         }
-      ]
+      
     },
-    legend: {
-      display: true,
-      position: 'top',
-      ...this.legendLabelOptions
-    },
-    tooltips: {
-      mode: 'x-axis',
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        // disable displaying the color box;
-        tooltip.displayColors = true;
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+        ...this.legendLabelOptions
       },
-      callbacks: {
-        label: function (tooltipItems, data) {
-          if (
-            tooltipItems.yLabel > 0 &&
-            data.datasets[tooltipItems.datasetIndex].label != ''
-          ) {
-            if (
-              data.datasets[tooltipItems.datasetIndex].label.indexOf(
-                'DentistMode-'
-              ) >= 0
-            ) {
-              return tooltipItems.label + ': ' + tooltipItems.yLabel;
-            } else {
-              return (
-                data.datasets[tooltipItems.datasetIndex].label +
-                ': ' +
-                tooltipItems.yLabel
-              );
-            }
-          }
+      tooltip: {
+        mode: 'x',
+        displayColors(ctx, options) {
+          return !ctx.tooltip;
         },
-        title: function (tooltip, data) {
-          let total = 0;
-          tooltip.forEach((val) => {
-            total = total + val.yLabel;
-          });
-          if (data.datasets[0].label.indexOf('DentistMode-') >= 0) {
-            var dentist = data.datasets[0].label.split('Mode-');
-            return dentist[1] + ':' + total;
-          } else {
-            return tooltip[0].label + ': ' + total;
+        callbacks: {
+          label: function (tooltipItems) {
+            if (
+              parseInt(tooltipItems.formattedValue) > 0 &&
+              tooltipItems.dataset[tooltipItems.datasetIndex].label != ''
+            ) {
+              if (
+                tooltipItems.dataset[tooltipItems.datasetIndex].label.indexOf(
+                  'DentistMode-'
+                ) >= 0
+              ) {
+                return tooltipItems.label + ': ' + tooltipItems.formattedValue;
+              } else {
+                return (
+                  tooltipItems.dataset[tooltipItems.datasetIndex].label +
+                  ': ' +
+                  tooltipItems.formattedValue
+                );
+              }
+            }
+          },
+          title: function (tooltip) {
+            let total = 0;
+            tooltip.forEach((val) => {
+              total = total + parseInt(val.formattedValue);
+            });
+            if (tooltip[0].dataset[0].label.indexOf('DentistMode-') >= 0) {
+              var dentist = tooltip[0].dataset[0].label.split('Mode-');
+              return dentist[1] + ':' + total;
+            } else {
+              return tooltip[0].label + ': ' + total;
+            }
           }
         }
       }
     }
+
   };
 
   public IPcolors = [
@@ -169,12 +171,12 @@ export class FollowupsComponent implements AfterViewInit {
     { backgroundColor: '#fffcac' }
   ];
 
-  public barChartOptions: any = {
-    borderRadius: 50,
+  public barChartOptions: ChartOptions<'bar'> = {
+    // borderRadius: 50,
     hover: { mode: null },
-    scaleShowVerticalLines: false,
-    cornerRadius: 60,
-    curvature: 1,
+    // scaleShowVerticalLines: false,
+    // cornerRadius: 60,
+    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine'
@@ -182,14 +184,14 @@ export class FollowupsComponent implements AfterViewInit {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [
+      x: 
         {
-          gridLines: {
+          grid: {
             display: true
           },
           ticks: {
             autoSkip: false,
-            userCallback: (label: string) => {
+            callback: (label: string) => {
               return label;
               /*const names = this.splitName(label);
             if (names.length > 1) {
@@ -198,47 +200,52 @@ export class FollowupsComponent implements AfterViewInit {
             }
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
+          suggestedMin: 0,
           ticks: {
-            suggestedMin: 0,
-            userCallback: (label, index, labels) => {
+            
+            callback: (label: number, index, labels) => {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return this.decimalPipe.transform(label);
               }
             }
           },
-          gridLines: {}
         }
-      ]
+      
     },
-    tooltips: {
-      mode: 'x-axis',
-      bodyFontFamily: 'Gilroy-Regular',
-      cornerRadius: 0,
-      callbacks: {
-        label: (tooltipItem) => {
-          return (
-            this.splitName(tooltipItem.xLabel).join(' ') +
-            ': ' +
-            this.decimalPipe.transform(tooltipItem.yLabel)
-          );
+    plugins: {
+      tooltip: {
+        mode: 'x',
+        bodyFont: {
+          family: 'Gilroy-Regular'
         },
-        title: function () {
-          return;
+        cornerRadius: 0,
+        callbacks: {
+          label: (tooltipItem) => {
+            return (
+              this.splitName(tooltipItem.label).join(' ') +
+              ': ' +
+              this.decimalPipe.transform(tooltipItem.formattedValue)
+            );
+          },
+          title: function () {
+            return;
+          }
         }
       }
-    }
+    },
+
   };
 
-  public barChartOptions1: any = {
-    borderRadius: 50,
+  public barChartOptions1: ChartOptions<'bar'> = {
+    // borderRadius: 50,
     hover: { mode: null },
-    scaleShowVerticalLines: false,
-    cornerRadius: 60,
-    curvature: 1,
+    // scaleShowVerticalLines: false,
+    // cornerRadius: 60,
+    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine'
@@ -246,57 +253,57 @@ export class FollowupsComponent implements AfterViewInit {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [
+      x: 
         {
-          gridLines: {
+          grid: {
             display: true
           },
           ticks: {
             autoSkip: false,
-            userCallback: (label: string) => {
+            callback: (label: string) => {
               return label;
-              /*const names = this.splitName(label);
-            if (names.length > 1) {
-              return `${names[0][0]} ${names[1]}`
-            } else return `${names[0]}`;*/
             }
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
+          suggestedMin: 0,
+          suggestedMax: 100,
           ticks: {
-            suggestedMin: 0,
-            suggestedMax: 100,
-            userCallback: (label, index, labels) => {
+            
+            callback: (label: number, index, labels) => {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return this.decimalPipe.transform(label) + '%';
               }
             }
           },
-          gridLines: {}
         }
-      ]
+      
     },
-    tooltips: {
-      mode: 'x-axis',
-      bodyFontFamily: 'Gilroy-Regular',
-      cornerRadius: 0,
-      callbacks: {
-        label: (tooltipItem) => {
-          return (
-            this.splitName(tooltipItem.xLabel).join(' ') +
-            ': ' +
-            this.decimalPipe.transform(tooltipItem.yLabel) +
-            '%'
-          );
+    plugins: {
+      tooltip: {
+        mode: 'x',
+        bodyFont: {
+          family: 'Gilroy-Regular'
         },
-        title: function () {
-          return;
+        cornerRadius: 0,
+        callbacks: {
+          label: (tooltipItem) => {
+            return (
+              this.splitName(tooltipItem.label).join(' ') +
+              ': ' +
+              this.decimalPipe.transform(tooltipItem.formattedValue) +
+              '%'
+            );
+          },
+          title: function () {
+            return;
+          }
         }
       }
-    }
+    },
   };
 
   constructor(

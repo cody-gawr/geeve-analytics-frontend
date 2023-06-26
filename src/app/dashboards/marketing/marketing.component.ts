@@ -18,7 +18,7 @@ import { NgxSmartModalService } from 'ngx-smart-modal';
 import { ToastrService } from 'ngx-toastr'; /**/
 import {
   BaseChartDirective,
-  PluginServiceGlobalRegistrationAndOptions
+  // PluginServiceGlobalRegistrationAndOptions
 } from 'ng2-charts';
 import {
   Observable,
@@ -31,10 +31,12 @@ import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
 import { RolesUsersService } from '../../roles-users/roles-users.service';
 import { environment } from '../../../environments/environment';
-import * as Chart from 'chart.js';
+import {Chart, ChartDataset, ChartOptions, LegendOptions} from 'chart.js';
 import * as _ from 'lodash';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { Plugin } from 'chart.js/dist/types/index';
+import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 
 export interface Dentist {
   providerId: string;
@@ -99,7 +101,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
   destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
-  public doughnutChartPlugins: PluginServiceGlobalRegistrationAndOptions[] = [];
+  public doughnutChartPlugins: Plugin[] = [];
   public isVisibleAccountGraphs: boolean = false;
   public isCompleteMonth: boolean = true;
   public queryWhEnabled = 0;
@@ -189,7 +191,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     ];
   }
 
-  public stackLegendGenerator: Chart.ChartLegendOptions = {
+  public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
     display: true,
     position: 'bottom',
     labels: {
@@ -199,7 +201,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         let labels = [];
         let bg_color = {};
         chart.data.datasets.forEach((item) => {
-          item.data.forEach((val) => {
+          item.data.forEach((val: number) => {
             if (val > 0) {
               labels.push(item.label);
               bg_color[item.label] = item.backgroundColor;
@@ -213,9 +215,8 @@ export class MarketingComponent implements OnInit, AfterViewInit {
           strokeStyle: bg_color[item],
           fillStyle: bg_color[item]
         }));
-      }
+      },
     },
-    onClick: () => {}
   };
   private warningMessage: string;
   private myTemplate: any = '';
@@ -413,7 +414,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     // this.filterDate(this.chartService.duration$.value);
   }
 
-  public labelBarmkRevenueByReferralOptionsStacked: any = {
+  public labelBarmkRevenueByReferralOptionsStacked: ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -422,132 +423,137 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         hoverBorderWidth: 7
       }
     },
-    scaleShowVerticalLines: false,
+    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
+    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: true,
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           stacked: true,
 
           ticks: {
-            userCallback: function (item) {
+            callback: function (item) {
               return item;
             }
           }
         }
-      ]
     },
-    legend: {
-      display: true
-    },
-    tooltips: {
-      mode: 'x-axis',
-      enabled: false,
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        var tooltipEl = document.getElementById('chartjs-tooltip');
-        if (!tooltipEl) {
-          tooltipEl = document.createElement('div');
-          tooltipEl.id = 'chartjs-tooltip';
-          tooltipEl.style.backgroundColor = '#FFFFFF';
-          tooltipEl.style.borderColor = '#B2BABB';
-          tooltipEl.style.borderWidth = 'thin';
-          tooltipEl.style.borderStyle = 'solid';
-          tooltipEl.style.zIndex = '999999';
-          tooltipEl.style.backgroundColor = '#000000';
-          tooltipEl.style.color = '#FFFFFF';
-          document.body.appendChild(tooltipEl);
-        }
-        if (tooltip.opacity === 0) {
-          tooltipEl.style.opacity = '0';
-          return;
-        } else {
-          tooltipEl.style.opacity = '0.8';
-        }
-
-        tooltipEl.classList.remove('above', 'below', 'no-transform');
-        if (tooltip.yAlign) {
-          tooltipEl.classList.add(tooltip.yAlign);
-        } else {
-          tooltipEl.classList.add('no-transform');
-        }
-
-        function getBody(bodyItem) {
-          return bodyItem.lines;
-        }
-        if (tooltip.body) {
-          var titleLines = tooltip.title || [];
-          var bodyLines = tooltip.body.map(getBody);
-          var labelColorscustom = tooltip.labelColors;
-          var innerHtml = '<table><thead>';
-          innerHtml += '</thead><tbody>';
-          titleLines.forEach(function (title) {
-            innerHtml +=
-              '<tr><th colspan="2" style="text-align: left;">' +
-              title +
-              '</th></tr>';
-          });
-          bodyLines.forEach(function (body, i) {
-            var singledata = body[0].split(':');
-            singledata[1] = singledata[1].trim();
-            if (singledata[1] > 0) {
-              singledata[1] = singledata[1].split(/(?=(?:...)*$)/).join(',');
-              body[0] = singledata.join(': $');
-              innerHtml +=
-                '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
-                labelColorscustom[i].backgroundColor +
-                '"></span></td><td style="padding: 0px">' +
-                body[0] +
-                '</td></tr>';
-            }
-          });
-          innerHtml += '</tbody></table>';
-          tooltipEl.innerHTML = innerHtml;
-          //tableRoot.innerHTML = innerHtml;
-        }
-        // disable displaying the color box;
-        var position = this._chart.canvas.getBoundingClientRect();
-        // Display, position, and set styles for font
-        tooltipEl.style.position = 'fixed';
-        tooltipEl.style.left =
-          position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
-        tooltipEl.style.top =
-          position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
-        tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
-        tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
-        tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-        tooltipEl.style.padding =
-          tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
-        tooltipEl.style.pointerEvents = 'none';
-        tooltip.displayColors = false;
+    plugins: {
+      legend: {
+        display: true
       },
-      callbacks: {
-        label: function (tooltipItems, data) {
-          return (
-            data.datasets[tooltipItems.datasetIndex].label +
-            ': ' +
-            tooltipItems.yLabel
-          );
+      tooltip: {
+        mode: 'x',
+        enabled: false,
+        external: function (t) {
+          const tooltip = t.tooltip;
+          const chart = t.chart;
+
+          if (!tooltip) return;
+          var tooltipEl = document.getElementById('chartjs-tooltip');
+          if (!tooltipEl) {
+            tooltipEl = document.createElement('div');
+            tooltipEl.id = 'chartjs-tooltip';
+            tooltipEl.style.backgroundColor = '#FFFFFF';
+            tooltipEl.style.borderColor = '#B2BABB';
+            tooltipEl.style.borderWidth = 'thin';
+            tooltipEl.style.borderStyle = 'solid';
+            tooltipEl.style.zIndex = '999999';
+            tooltipEl.style.backgroundColor = '#000000';
+            tooltipEl.style.color = '#FFFFFF';
+            document.body.appendChild(tooltipEl);
+          }
+          if (tooltip.opacity === 0) {
+            tooltipEl.style.opacity = '0';
+            return;
+          } else {
+            tooltipEl.style.opacity = '0.8';
+          }
+          tooltipEl.classList.remove('above', 'below', 'no-transform');
+          if (tooltip.yAlign) {
+            tooltipEl.classList.add(tooltip.yAlign);
+          } else {
+            tooltipEl.classList.add('no-transform');
+          }
+  
+          function getBody(bodyItem) {
+            return bodyItem.lines;
+          }
+          if (tooltip.body) {
+            var titleLines = tooltip.title || [];
+            var bodyLines = tooltip.body.map(getBody);
+            var labelColorscustom = tooltip.labelColors;
+            var innerHtml = '<table><thead>';
+            innerHtml += '</thead><tbody>';
+            titleLines.forEach(function (title) {
+              innerHtml +=
+                '<tr><th colspan="2" style="text-align: left;">' +
+                title +
+                '</th></tr>';
+            });
+            bodyLines.forEach(function (body, i) {
+              var singledata = body[0].split(':');
+              singledata[1] = singledata[1].trim();
+              if (singledata[1] > 0) {
+                singledata[1] = singledata[1].split(/(?=(?:...)*$)/).join(',');
+                body[0] = singledata.join(': $');
+                innerHtml +=
+                  '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
+                  labelColorscustom[i].backgroundColor +
+                  '"></span></td><td style="padding: 0px">' +
+                  body[0] +
+                  '</td></tr>';
+              }
+            });
+            innerHtml += '</tbody></table>';
+            tooltipEl.innerHTML = innerHtml;
+            //tableRoot.innerHTML = innerHtml;
+          }
+          // disable displaying the color box;
+          var position = chart.canvas.getBoundingClientRect();
+          // Display, position, and set styles for font
+          tooltipEl.style.position = 'fixed';
+          tooltipEl.style.left =
+            position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
+          tooltipEl.style.top =
+            position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
+          // tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
+          // tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
+          // tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
+          // tooltipEl.style.padding =
+          //   tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+          tooltipEl.style.pointerEvents = 'none';
+          // tooltip.displayColors = false;
+        },
+        displayColors: false,
+        callbacks: {
+          label: function (tooltipItems) {
+            return (
+              tooltipItems.dataset[tooltipItems.datasetIndex].label +
+              ': ' +
+              tooltipItems.formattedValue
+            );
+          }
         }
       }
-    }
+    },
+
   };
 
-  public labelBarmkPatientByReferralOptionsStacked: any = {
+  public labelBarmkPatientByReferralOptionsStacked: ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -556,133 +562,137 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         hoverBorderWidth: 7
       }
     },
-    scaleShowVerticalLines: false,
+    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
+    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: true,
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           stacked: true,
 
           ticks: {
-            userCallback: function (item) {
+            callback: function (item) {
               return item;
             }
           }
         }
-      ]
     },
-    legend: {
-      display: true
-    },
-    tooltips: {
-      mode: 'x-axis',
-      enabled: false,
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        var tooltipEl = document.getElementById('chartjs-tooltip');
-        if (!tooltipEl) {
-          tooltipEl = document.createElement('div');
-          tooltipEl.id = 'chartjs-tooltip';
-          tooltipEl.style.backgroundColor = '#FFFFFF';
-          tooltipEl.style.borderColor = '#B2BABB';
-          tooltipEl.style.borderWidth = 'thin';
-          tooltipEl.style.borderStyle = 'solid';
-          tooltipEl.style.zIndex = '999999';
-          tooltipEl.style.backgroundColor = '#000000';
-          tooltipEl.style.color = '#FFFFFF';
-          document.body.appendChild(tooltipEl);
-        }
-        if (tooltip.opacity === 0) {
-          tooltipEl.style.opacity = '0';
-          return;
-        } else {
-          tooltipEl.style.opacity = '0.8';
-        }
-
-        tooltipEl.classList.remove('above', 'below', 'no-transform');
-        if (tooltip.yAlign) {
-          tooltipEl.classList.add(tooltip.yAlign);
-        } else {
-          tooltipEl.classList.add('no-transform');
-        }
-
-        function getBody(bodyItem) {
-          return bodyItem.lines;
-        }
-        if (tooltip.body) {
-          var titleLines = tooltip.title || [];
-          var bodyLines = tooltip.body.map(getBody);
-          var labelColorscustom = tooltip.labelColors;
-          var innerHtml = '<table><thead>';
-          innerHtml += '</thead><tbody>';
-          titleLines.forEach(function (title) {
-            innerHtml +=
-              '<tr><th colspan="2" style="text-align: left;">' +
-              title +
-              '</th></tr>';
-          });
-          bodyLines.forEach(function (body, i) {
-            var singledata = body[0].split(':');
-            singledata[1] = singledata[1].trim();
-            if (singledata[1] > 0) {
-              singledata[1] = singledata[1].split(/(?=(?:...)*$)/).join(',');
-              body[0] = singledata.join(': ');
-              innerHtml +=
-                '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
-                labelColorscustom[i].backgroundColor +
-                '"></span></td><td style="padding: 0px">' +
-                body[0] +
-                '</td></tr>';
-            }
-          });
-          innerHtml += '</tbody></table>';
-          tooltipEl.innerHTML = innerHtml;
-          //tableRoot.innerHTML = innerHtml;
-        }
-        // disable displaying the color box;
-        var position = this._chart.canvas.getBoundingClientRect();
-        // Display, position, and set styles for font
-        tooltipEl.style.position = 'fixed';
-        tooltipEl.style.left =
-          position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
-        tooltipEl.style.top =
-          position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
-        tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
-        tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
-        tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-        tooltipEl.style.padding =
-          tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
-        tooltipEl.style.pointerEvents = 'none';
-        tooltip.displayColors = false;
+    plugins: {
+      legend: {
+        display: true
       },
-      callbacks: {
-        label: function (tooltipItems, data) {
-          return (
-            data.datasets[tooltipItems.datasetIndex].label +
-            ': ' +
-            tooltipItems.yLabel
-          );
+      tooltip: {
+        mode: 'x',
+        enabled: false,
+        external: function (t) {
+          const tooltip = t.tooltip;
+          const chart = t.chart;
+          if (!tooltip) return;
+          var tooltipEl = document.getElementById('chartjs-tooltip');
+          if (!tooltipEl) {
+            tooltipEl = document.createElement('div');
+            tooltipEl.id = 'chartjs-tooltip';
+            tooltipEl.style.backgroundColor = '#FFFFFF';
+            tooltipEl.style.borderColor = '#B2BABB';
+            tooltipEl.style.borderWidth = 'thin';
+            tooltipEl.style.borderStyle = 'solid';
+            tooltipEl.style.zIndex = '999999';
+            tooltipEl.style.backgroundColor = '#000000';
+            tooltipEl.style.color = '#FFFFFF';
+            document.body.appendChild(tooltipEl);
+          }
+          if (tooltip.opacity === 0) {
+            tooltipEl.style.opacity = '0';
+            return;
+          } else {
+            tooltipEl.style.opacity = '0.8';
+          }
+  
+          tooltipEl.classList.remove('above', 'below', 'no-transform');
+          if (tooltip.yAlign) {
+            tooltipEl.classList.add(tooltip.yAlign);
+          } else {
+            tooltipEl.classList.add('no-transform');
+          }
+  
+          function getBody(bodyItem) {
+            return bodyItem.lines;
+          }
+          if (tooltip.body) {
+            var titleLines = tooltip.title || [];
+            var bodyLines = tooltip.body.map(getBody);
+            var labelColorscustom = tooltip.labelColors;
+            var innerHtml = '<table><thead>';
+            innerHtml += '</thead><tbody>';
+            titleLines.forEach(function (title) {
+              innerHtml +=
+                '<tr><th colspan="2" style="text-align: left;">' +
+                title +
+                '</th></tr>';
+            });
+            bodyLines.forEach(function (body, i) {
+              var singledata = body[0].split(':');
+              singledata[1] = singledata[1].trim();
+              if (singledata[1] > 0) {
+                singledata[1] = singledata[1].split(/(?=(?:...)*$)/).join(',');
+                body[0] = singledata.join(': ');
+                innerHtml +=
+                  '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
+                  labelColorscustom[i].backgroundColor +
+                  '"></span></td><td style="padding: 0px">' +
+                  body[0] +
+                  '</td></tr>';
+              }
+            });
+            innerHtml += '</tbody></table>';
+            tooltipEl.innerHTML = innerHtml;
+            //tableRoot.innerHTML = innerHtml;
+          }
+          // disable displaying the color box;
+          var position = chart.canvas.getBoundingClientRect();
+          // Display, position, and set styles for font
+          tooltipEl.style.position = 'fixed';
+          tooltipEl.style.left =
+            position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
+          tooltipEl.style.top =
+            position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
+          // tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
+          // tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
+          // tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
+          // tooltipEl.style.padding =
+          //   tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+          // tooltipEl.style.pointerEvents = 'none';
+        },
+        displayColors: false,
+        callbacks: {
+          label: function (tooltipItems) {
+            return (
+              tooltipItems.dataset[tooltipItems.datasetIndex].label +
+              ': ' +
+              tooltipItems.formattedValue
+            );
+          }
         }
       }
-    }
+    },
+
   };
 
   public date = new Date();
-  public stackedChartOptions: Chart.ChartOptions = {
+  public stackedChartOptions: ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -698,52 +708,51 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       easing: 'easeOutSine'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: true,
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
+          beginAtZero: true,
           ticks: {
-            beginAtZero: true,
             callback: function (label) {
               // when the floored value is the same as jhgjghe value we have a whole number
               return label;
             }
           }
         }
-      ]
     },
-    legend: {
-      display: true
-    },
-    tooltips: {
-      mode: 'x-axis',
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        // disable displaying the colorg box;
-        tooltip.displayColors = false;
+    plugins: {
+      legend: {
+        display: true
       },
-      callbacks: {
-        label: (tooltipItems, data) => {
-          return (
-            tooltipItems.xLabel +
-            ': ' +
-            this.decimalPipe.transform(tooltipItems.yLabel)
-          );
+      tooltip: {
+        mode: 'x',
+        displayColors(ctx, options) {
+          return !ctx.tooltip
         },
-        title: function () {
-          return '';
+        callbacks: {
+          label: (tooltipItems) => {
+            return (
+              tooltipItems.label +
+              ': ' +
+              this.decimalPipe.transform(tooltipItems.formattedValue)
+            );
+          },
+          title: function () {
+            return '';
+          }
         }
       }
-    }
+    },
   };
 
-  public stackedChartOptionsMulti: any = {
+  public stackedChartOptionsMulti: ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -752,158 +761,162 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         hoverBorderWidth: 7
       }
     },
-    scaleShowVerticalLines: false,
+    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
+    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: true,
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           stacked: true,
           ticks: {
-            userCallback: function (item) {
+            callback: function (item) {
               return item;
             }
           }
         }
-      ]
     },
-    legend: this.stackLegendGenerator,
-    tooltips: {
-      mode: 'x-axis',
-      enabled: false,
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        var tooltipEl = document.getElementById('chartjs-tooltip');
-        if (!tooltipEl) {
-          tooltipEl = document.createElement('div');
-          tooltipEl.id = 'chartjs-tooltip';
-          tooltipEl.style.backgroundColor = '#FFFFFF';
-          tooltipEl.style.borderColor = '#B2BABB';
-          tooltipEl.style.borderWidth = 'thin';
-          tooltipEl.style.borderStyle = 'solid';
-          tooltipEl.style.zIndex = '999999';
-          tooltipEl.style.backgroundColor = '#000000';
-          tooltipEl.style.color = '#FFFFFF';
-          document.body.appendChild(tooltipEl);
-        }
-        if (tooltip.opacity === 0) {
-          tooltipEl.style.opacity = '0';
-          return;
-        } else {
-          tooltipEl.style.opacity = '0.8';
-        }
-
-        tooltipEl.classList.remove('above', 'below', 'no-transform');
-        if (tooltip.yAlign) {
-          tooltipEl.classList.add(tooltip.yAlign);
-        } else {
-          tooltipEl.classList.add('no-transform');
-        }
-
-        function getBody(bodyItem) {
-          return bodyItem.lines;
-        }
-        var bodyLineCont = 0;
-        if (tooltip.body) {
-          var titleLines = tooltip.title || [];
-          var bodyLines = tooltip.body.map(getBody);
-          var labelColorscustom = tooltip.labelColors;
-          var innerHtml = '<table><thead>';
-          innerHtml += '</thead><tbody>';
-          let total: any = 0;
-          bodyLines.forEach(function (body, i) {
-            // if (!body[0].includes("0")) {
-            var singleval = body[0].split(':');
-            if (singleval[1].includes('-')) {
-              var temp = singleval[1];
-              var amount = temp;
-              total -= parseFloat(amount);
-            } else {
-              var temp = singleval[1];
-              var amount = temp;
-              total += parseFloat(amount);
-            }
-
-            //  }
-          });
-          total = Math.round(total);
-          if (total != 0) {
-            var num_parts = total.toString().split('.');
-            num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            total = num_parts.join('.');
+    plugins: {
+      legend: this.stackLegendGenerator,
+      tooltip: {
+        mode: 'x',
+        enabled: false,
+        external: function (t) {
+          const tooltip = t.tooltip;
+          const chart = t.chart;
+          if (!tooltip) return;
+          var tooltipEl = document.getElementById('chartjs-tooltip');
+          if (!tooltipEl) {
+            tooltipEl = document.createElement('div');
+            tooltipEl.id = 'chartjs-tooltip';
+            tooltipEl.style.backgroundColor = '#FFFFFF';
+            tooltipEl.style.borderColor = '#B2BABB';
+            tooltipEl.style.borderWidth = 'thin';
+            tooltipEl.style.borderStyle = 'solid';
+            tooltipEl.style.zIndex = '999999';
+            tooltipEl.style.backgroundColor = '#000000';
+            tooltipEl.style.color = '#FFFFFF';
+            document.body.appendChild(tooltipEl);
           }
-          titleLines.forEach(function (title) {
-            innerHtml +=
-              '<tr><th colspan="2" style="text-align: left;">' +
-              title +
-              ': ' +
-              total +
-              '</th></tr>';
-          });
-          bodyLines.forEach(function (body, i) {
-            var singledata = body[0].split(':');
-            singledata[1] = singledata[1].trim();
-            if (singledata[1] > 0) {
-              singledata[1] = singledata[1].split(/(?=(?:...)*$)/).join(',');
-              body[0] = singledata.join(': ');
-              innerHtml +=
-                '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
-                labelColorscustom[i].backgroundColor +
-                '"></span></td><td style="padding: 0px">' +
-                body[0] +
-                '</td></tr>';
+          if (tooltip.opacity === 0) {
+            tooltipEl.style.opacity = '0';
+            return;
+          } else {
+            tooltipEl.style.opacity = '0.8';
+          }
+  
+          tooltipEl.classList.remove('above', 'below', 'no-transform');
+          if (tooltip.yAlign) {
+            tooltipEl.classList.add(tooltip.yAlign);
+          } else {
+            tooltipEl.classList.add('no-transform');
+          }
+  
+          function getBody(bodyItem) {
+            return bodyItem.lines;
+          }
+          var bodyLineCont = 0;
+          if (tooltip.body) {
+            var titleLines = tooltip.title || [];
+            var bodyLines = tooltip.body.map(getBody);
+            var labelColorscustom = tooltip.labelColors;
+            var innerHtml = '<table><thead>';
+            innerHtml += '</thead><tbody>';
+            let total: any = 0;
+            bodyLines.forEach(function (body, i) {
+              // if (!body[0].includes("0")) {
+              var singleval = body[0].split(':');
+              if (singleval[1].includes('-')) {
+                var temp = singleval[1];
+                var amount = temp;
+                total -= parseFloat(amount);
+              } else {
+                var temp = singleval[1];
+                var amount = temp;
+                total += parseFloat(amount);
+              }
+  
+              //  }
+            });
+            total = Math.round(total);
+            if (total != 0) {
+              var num_parts = total.toString().split('.');
+              num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+              total = num_parts.join('.');
             }
-          });
-          innerHtml += '</tbody></table>';
-          tooltipEl.innerHTML = innerHtml;
-          //tableRoot.innerHTML = innerHtml;
-        }
-        // disable displaying the color box;
-        var position = this._chart.canvas.getBoundingClientRect();
-        // Display, position, and set styles for font
-        tooltipEl.style.position = 'fixed';
-        tooltipEl.style.left =
-          position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
-        tooltipEl.style.top =
-          position.top +
-          window.pageYOffset +
-          tooltip.caretY -
-          (70 + bodyLineCont * 15) +
-          'px';
-        tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
-        tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
-        tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-        tooltipEl.style.padding =
-          tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
-        tooltipEl.style.pointerEvents = 'none';
-        tooltip.displayColors = false;
-      },
-      callbacks: {
-        label: function (tooltipItems, data) {
-          return (
-            data.datasets[tooltipItems.datasetIndex].label +
-            ': ' +
-            Math.round(tooltipItems.yLabel)
-          );
+            titleLines.forEach(function (title) {
+              innerHtml +=
+                '<tr><th colspan="2" style="text-align: left;">' +
+                title +
+                ': ' +
+                total +
+                '</th></tr>';
+            });
+            bodyLines.forEach(function (body, i) {
+              var singledata = body[0].split(':');
+              singledata[1] = singledata[1].trim();
+              if (singledata[1] > 0) {
+                singledata[1] = singledata[1].split(/(?=(?:...)*$)/).join(',');
+                body[0] = singledata.join(': ');
+                innerHtml +=
+                  '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
+                  labelColorscustom[i].backgroundColor +
+                  '"></span></td><td style="padding: 0px">' +
+                  body[0] +
+                  '</td></tr>';
+              }
+            });
+            innerHtml += '</tbody></table>';
+            tooltipEl.innerHTML = innerHtml;
+            //tableRoot.innerHTML = innerHtml;
+          }
+          // disable displaying the color box;
+          var position = chart.canvas.getBoundingClientRect();
+          // Display, position, and set styles for font
+          tooltipEl.style.position = 'fixed';
+          tooltipEl.style.left =
+            position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
+          tooltipEl.style.top =
+            position.top +
+            window.pageYOffset +
+            tooltip.caretY -
+            (70 + bodyLineCont * 15) +
+            'px';
+          // tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
+          // tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
+          // tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
+          // tooltipEl.style.padding =
+          //   tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+          tooltipEl.style.pointerEvents = 'none';
+        },
+        displayColors: false,
+        callbacks: {
+          label: function (tooltipItems) {
+            return (
+              tooltipItems.dataset[tooltipItems.datasetIndex].label +
+              ': ' +
+              Math.round(parseInt(tooltipItems.formattedValue))
+            );
+          }
         }
       }
-    }
+    },
+
   };
 
-  public stackedChartOptionsRev: Chart.ChartOptions = {
+  public stackedChartOptionsRev: ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -919,15 +932,15 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       easing: 'easeOutSine'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: true,
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           stacked: true,
           ticks: {
@@ -944,151 +957,155 @@ export class MarketingComponent implements OnInit, AfterViewInit {
             }
           }
         }
-      ]
     },
-    legend: {
-      display: true
-    },
-    tooltips: {
-      mode: 'x-axis',
-      enabled: false,
-      itemSort: (itemA, itemB): number => {
-        return <number>itemB.yLabel - <number>itemA.yLabel;
+    plugins: {
+      legend: {
+        display: true
       },
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        var tooltipEl = document.getElementById('chartjs-tooltip');
-        if (!tooltipEl) {
-          tooltipEl = document.createElement('div');
-          tooltipEl.id = 'chartjs-tooltip';
-          tooltipEl.style.backgroundColor = '#FFFFFF';
-          tooltipEl.style.borderColor = '#B2BABB';
-          tooltipEl.style.borderWidth = 'thin';
-          tooltipEl.style.borderStyle = 'solid';
-          tooltipEl.style.zIndex = '999999';
-          tooltipEl.style.backgroundColor = '#000000';
-          tooltipEl.style.color = '#FFFFFF';
-          document.body.appendChild(tooltipEl);
-        }
-        if (tooltip.opacity === 0) {
-          tooltipEl.style.opacity = '0';
-          return;
-        } else {
-          tooltipEl.style.opacity = '0.8';
-        }
-
-        tooltipEl.classList.remove('above', 'below', 'no-transform');
-        if (tooltip.yAlign) {
-          tooltipEl.classList.add(tooltip.yAlign);
-        } else {
-          tooltipEl.classList.add('no-transform');
-        }
-
-        function getBody(bodyItem) {
-          return bodyItem.lines;
-        }
-        if (tooltip.body) {
-          var titleLines = tooltip.title || [];
-          var bodyLines = tooltip.body.map(getBody);
-          var labelColorscustom = tooltip.labelColors;
-          var innerHtml = '<table><thead>';
-          innerHtml += '</thead><tbody>';
-
-          let total: any = 0;
-          bodyLines.forEach(function (body, i) {
-            if (!body[0].includes('$0')) {
-              var singleval = body[0].split(':');
-              if (singleval[1].includes('-')) {
-                var temp = singleval[1].split('$');
-                var amount = temp[1].replace(/,/g, '');
-                total -= parseFloat(amount);
-              } else {
-                var temp = singleval[1].split('$');
-                var amount = temp[1].replace(/,/g, '');
-                total += parseFloat(amount);
-              }
-            }
-          });
-          total = Math.round(total);
-          if (total != 0) {
-            var num_parts = total.toString().split('.');
-            num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            total = num_parts.join('.');
+      tooltip: {
+        mode: 'x',
+        enabled: false,
+        itemSort: (itemA, itemB): number => {
+          return parseInt(itemB.formattedValue) - parseInt(itemA.formattedValue);
+        },
+        external: function (t) {
+          const tooltip = t.tooltip;
+          const chart = t.chart;
+          if (!tooltip) return;
+          var tooltipEl = document.getElementById('chartjs-tooltip');
+          if (!tooltipEl) {
+            tooltipEl = document.createElement('div');
+            tooltipEl.id = 'chartjs-tooltip';
+            tooltipEl.style.backgroundColor = '#FFFFFF';
+            tooltipEl.style.borderColor = '#B2BABB';
+            tooltipEl.style.borderWidth = 'thin';
+            tooltipEl.style.borderStyle = 'solid';
+            tooltipEl.style.zIndex = '999999';
+            tooltipEl.style.backgroundColor = '#000000';
+            tooltipEl.style.color = '#FFFFFF';
+            document.body.appendChild(tooltipEl);
           }
-          titleLines.forEach(function (title) {
-            innerHtml +=
-              '<tr><th colspan="2" style="text-align: left;">' +
-              title +
-              ': $' +
-              total +
-              '</th></tr>';
-          });
-          bodyLines.forEach(function (body, i) {
-            if (!body[0].includes('$0')) {
-              var body_custom = body[0];
-              body_custom = body_custom.split(':');
-              if (body_custom[1].includes('-')) {
-                var temp_ = body_custom[1].split('$');
-                temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
-                temp_[1] = temp_[1].toString();
-                temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[1] = temp_.join('$');
-              } else {
-                var temp_ = body_custom[1].split('$');
-                temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
-                temp_[1] = temp_[1].toString();
-                temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[1] = temp_.join('$');
+          if (tooltip.opacity === 0) {
+            tooltipEl.style.opacity = '0';
+            return;
+          } else {
+            tooltipEl.style.opacity = '0.8';
+          }
+  
+          tooltipEl.classList.remove('above', 'below', 'no-transform');
+          if (tooltip.yAlign) {
+            tooltipEl.classList.add(tooltip.yAlign);
+          } else {
+            tooltipEl.classList.add('no-transform');
+          }
+  
+          function getBody(bodyItem) {
+            return bodyItem.lines;
+          }
+          if (tooltip.body) {
+            var titleLines = tooltip.title || [];
+            var bodyLines = tooltip.body.map(getBody);
+            var labelColorscustom = tooltip.labelColors;
+            var innerHtml = '<table><thead>';
+            innerHtml += '</thead><tbody>';
+  
+            let total: any = 0;
+            bodyLines.forEach(function (body, i) {
+              if (!body[0].includes('$0')) {
+                var singleval = body[0].split(':');
+                if (singleval[1].includes('-')) {
+                  var temp = singleval[1].split('$');
+                  var amount = temp[1].replace(/,/g, '');
+                  total -= parseFloat(amount);
+                } else {
+                  var temp = singleval[1].split('$');
+                  var amount = temp[1].replace(/,/g, '');
+                  total += parseFloat(amount);
+                }
               }
-
-              body[0] = body_custom.join(':');
-              innerHtml +=
-                '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
-                labelColorscustom[i].backgroundColor +
-                '"></span></td><td style="padding: 0px">' +
-                body[0] +
-                '</td></tr>';
+            });
+            total = Math.round(total);
+            if (total != 0) {
+              var num_parts = total.toString().split('.');
+              num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+              total = num_parts.join('.');
             }
-          });
-          innerHtml += '</tbody></table>';
-          tooltipEl.innerHTML = innerHtml;
-          //tableRoot.innerHTML = innerHtml;
-        }
-        // disable displaying the color box;
-        var position = this._chart.canvas.getBoundingClientRect();
-        // Display, position, and set styles for font
-        tooltipEl.style.position = 'fixed';
-        tooltipEl.style.left =
-          position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
-        tooltipEl.style.top =
-          position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
-        tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
-        tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
-        tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-        tooltipEl.style.padding =
-          tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
-        tooltipEl.style.pointerEvents = 'none';
-        tooltip.displayColors = false;
-      },
-      callbacks: {
-        label: function (tooltipItems, data) {
-          let currency: string = tooltipItems.yLabel.toString();
-          let currencySegs = currency.split('.');
-          currencySegs[0] = currencySegs[0]
-            .split('-')
-            .join('')
-            .split(/(?=(?:...)*$)/)
-            .join(',');
-          currency = currencySegs.join('.');
-          return (
-            data.datasets[tooltipItems.datasetIndex].label +
-            `: ${parseInt(tooltipItems.yLabel.toString()) < 0 ? '- $' : '$'}${currency}`
-          );
+            titleLines.forEach(function (title) {
+              innerHtml +=
+                '<tr><th colspan="2" style="text-align: left;">' +
+                title +
+                ': $' +
+                total +
+                '</th></tr>';
+            });
+            bodyLines.forEach(function (body, i) {
+              if (!body[0].includes('$0')) {
+                var body_custom = body[0];
+                body_custom = body_custom.split(':');
+                if (body_custom[1].includes('-')) {
+                  var temp_ = body_custom[1].split('$');
+                  temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
+                  temp_[1] = temp_[1].toString();
+                  temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
+                  body_custom[1] = temp_.join('$');
+                } else {
+                  var temp_ = body_custom[1].split('$');
+                  temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
+                  temp_[1] = temp_[1].toString();
+                  temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
+                  body_custom[1] = temp_.join('$');
+                }
+  
+                body[0] = body_custom.join(':');
+                innerHtml +=
+                  '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
+                  labelColorscustom[i].backgroundColor +
+                  '"></span></td><td style="padding: 0px">' +
+                  body[0] +
+                  '</td></tr>';
+              }
+            });
+            innerHtml += '</tbody></table>';
+            tooltipEl.innerHTML = innerHtml;
+            //tableRoot.innerHTML = innerHtml;
+          }
+          // disable displaying the color box;
+          var position = chart.canvas.getBoundingClientRect();
+          // Display, position, and set styles for font
+          tooltipEl.style.position = 'fixed';
+          tooltipEl.style.left =
+            position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
+          tooltipEl.style.top =
+            position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
+          // tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
+          // tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
+          // tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
+          // tooltipEl.style.padding =
+          //   tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+          tooltipEl.style.pointerEvents = 'none';
+        },
+        displayColors: false,
+        callbacks: {
+          label: function (tooltipItems) {
+            let currency: string = tooltipItems.formattedValue.toString();
+            let currencySegs = currency.split('.');
+            currencySegs[0] = currencySegs[0]
+              .split('-')
+              .join('')
+              .split(/(?=(?:...)*$)/)
+              .join(',');
+            currency = currencySegs.join('.');
+            return (
+              tooltipItems.dataset[tooltipItems.datasetIndex].label +
+              `: ${parseInt(tooltipItems.formattedValue.toString()) < 0 ? '- $' : '$'}${currency}`
+            );
+          }
         }
       }
     }
+
   };
-  public stackedChartOptionsRef: Chart.ChartOptions = {
+  public stackedChartOptionsRef: ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -1104,15 +1121,15 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       easing: 'easeOutSine'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: true,
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           stacked: true,
           ticks: {
@@ -1129,149 +1146,152 @@ export class MarketingComponent implements OnInit, AfterViewInit {
             }
           }
         }
-      ]
     },
-    legend: {
-      display: true
-    },
-    tooltips: {
-      mode: 'x-axis',
-      enabled: false,
-      itemSort: (itemA, itemB): number => {
-        return <number>itemB.yLabel - <number>itemA.yLabel;
+    plugins: {
+      legend: {
+        display: true
       },
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        var tooltipEl = document.getElementById('chartjs-tooltip');
-        if (!tooltipEl) {
-          tooltipEl = document.createElement('div');
-          tooltipEl.id = 'chartjs-tooltip';
-          tooltipEl.style.backgroundColor = '#FFFFFF';
-          tooltipEl.style.borderColor = '#B2BABB';
-          tooltipEl.style.borderWidth = 'thin';
-          tooltipEl.style.borderStyle = 'solid';
-          tooltipEl.style.zIndex = '999999';
-          tooltipEl.style.backgroundColor = '#000000';
-          tooltipEl.style.color = '#FFFFFF';
-          document.body.appendChild(tooltipEl);
-        }
-        if (tooltip.opacity === 0) {
-          tooltipEl.style.opacity = '0';
-          return;
-        } else {
-          tooltipEl.style.opacity = '0.8';
-        }
-
-        tooltipEl.classList.remove('above', 'below', 'no-transform');
-        if (tooltip.yAlign) {
-          tooltipEl.classList.add(tooltip.yAlign);
-        } else {
-          tooltipEl.classList.add('no-transform');
-        }
-
-        function getBody(bodyItem) {
-          return bodyItem.lines;
-        }
-        if (tooltip.body) {
-          var titleLines = tooltip.title || [];
-          var bodyLines = tooltip.body.map(getBody);
-          var labelColorscustom = tooltip.labelColors;
-          var innerHtml = '<table><thead>';
-          innerHtml += '</thead><tbody>';
-
-          let total: any = 0;
-          bodyLines.forEach(function (body, i) {
-            if (!body[0].includes('$0')) {
-              var singleval = body[0].split(':');
-              if (singleval[1].includes('-')) {
-                var temp = singleval[1].split('$');
-                var amount = temp[1].replace(/,/g, '');
-                total -= parseFloat(amount);
-              } else {
-                var temp = singleval[1].split('$');
-                var amount = temp[1].replace(/,/g, '');
-                total += parseFloat(amount);
-              }
-            }
-          });
-          total = Math.round(total);
-          if (total != 0) {
-            var num_parts = total.toString().split('.');
-            num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            total = num_parts.join('.');
+      tooltip: {
+        mode: 'x',
+        enabled: false,
+        itemSort: (itemA, itemB): number => {
+          return parseInt(itemB.formattedValue) - parseInt(itemA.formattedValue);
+        },
+        external: function (t) {
+          const tooltip = t.tooltip;
+          if (!tooltip) return;
+          var tooltipEl = document.getElementById('chartjs-tooltip');
+          if (!tooltipEl) {
+            tooltipEl = document.createElement('div');
+            tooltipEl.id = 'chartjs-tooltip';
+            tooltipEl.style.backgroundColor = '#FFFFFF';
+            tooltipEl.style.borderColor = '#B2BABB';
+            tooltipEl.style.borderWidth = 'thin';
+            tooltipEl.style.borderStyle = 'solid';
+            tooltipEl.style.zIndex = '999999';
+            tooltipEl.style.backgroundColor = '#000000';
+            tooltipEl.style.color = '#FFFFFF';
+            document.body.appendChild(tooltipEl);
           }
-          titleLines.forEach(function (title) {
-            innerHtml +=
-              '<tr><th colspan="2" style="text-align: left;">' +
-              title +
-              ': ' +
-              total +
-              '</th></tr>';
-          });
-          bodyLines.forEach(function (body, i) {
-            if (!body[0].includes('$0')) {
-              var body_custom = body[0];
-              body_custom = body_custom.split(':');
-              if (body_custom[1].includes('-')) {
-                var temp_ = body_custom[1].split('$');
-                temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
-                temp_[1] = temp_[1].toString();
-                temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[1] = temp_.join('');
-              } else {
-                var temp_ = body_custom[1].split('$');
-                temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
-                temp_[1] = temp_[1].toString();
-                temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[1] = temp_.join('');
+          if (tooltip.opacity === 0) {
+            tooltipEl.style.opacity = '0';
+            return;
+          } else {
+            tooltipEl.style.opacity = '0.8';
+          }
+  
+          tooltipEl.classList.remove('above', 'below', 'no-transform');
+          if (tooltip.yAlign) {
+            tooltipEl.classList.add(tooltip.yAlign);
+          } else {
+            tooltipEl.classList.add('no-transform');
+          }
+  
+          function getBody(bodyItem) {
+            return bodyItem.lines;
+          }
+          if (tooltip.body) {
+            var titleLines = tooltip.title || [];
+            var bodyLines = tooltip.body.map(getBody);
+            var labelColorscustom = tooltip.labelColors;
+            var innerHtml = '<table><thead>';
+            innerHtml += '</thead><tbody>';
+  
+            let total: any = 0;
+            bodyLines.forEach(function (body, i) {
+              if (!body[0].includes('$0')) {
+                var singleval = body[0].split(':');
+                if (singleval[1].includes('-')) {
+                  var temp = singleval[1].split('$');
+                  var amount = temp[1].replace(/,/g, '');
+                  total -= parseFloat(amount);
+                } else {
+                  var temp = singleval[1].split('$');
+                  var amount = temp[1].replace(/,/g, '');
+                  total += parseFloat(amount);
+                }
               }
-
-              body[0] = body_custom.join(':');
-              innerHtml +=
-                '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
-                labelColorscustom[i].backgroundColor +
-                '"></span></td><td style="padding: 0px">' +
-                body[0] +
-                '</td></tr>';
+            });
+            total = Math.round(total);
+            if (total != 0) {
+              var num_parts = total.toString().split('.');
+              num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+              total = num_parts.join('.');
             }
-          });
-          innerHtml += '</tbody></table>';
-          tooltipEl.innerHTML = innerHtml;
-          //tableRoot.innerHTML = innerHtml;
-        }
-        // disable displaying the color box;
-        var position = this._chart.canvas.getBoundingClientRect();
-        // Display, position, and set styles for font
-        tooltipEl.style.position = 'fixed';
-        tooltipEl.style.left =
-          position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
-        tooltipEl.style.top =
-          position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
-        tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
-        tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
-        tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-        tooltipEl.style.padding =
-          tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
-        tooltipEl.style.pointerEvents = 'none';
-        tooltip.displayColors = false;
-      },
-      callbacks: {
-        label: function (tooltipItems, data) {
-          let currency = tooltipItems.yLabel.toString();
-          let currencySegs = currency.split('.');
-          currencySegs[0] = currencySegs[0]
-            .split('-')
-            .join('')
-            .split(/(?=(?:...)*$)/)
-            .join(',');
-          currency = currencySegs.join('.');
-          return (
-            data.datasets[tooltipItems.datasetIndex].label +
-            `: ${parseInt(tooltipItems.yLabel.toString()) < 0 ? '- $' : '$'}${currency}`
-          );
+            titleLines.forEach(function (title) {
+              innerHtml +=
+                '<tr><th colspan="2" style="text-align: left;">' +
+                title +
+                ': ' +
+                total +
+                '</th></tr>';
+            });
+            bodyLines.forEach(function (body, i) {
+              if (!body[0].includes('$0')) {
+                var body_custom = body[0];
+                body_custom = body_custom.split(':');
+                if (body_custom[1].includes('-')) {
+                  var temp_ = body_custom[1].split('$');
+                  temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
+                  temp_[1] = temp_[1].toString();
+                  temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
+                  body_custom[1] = temp_.join('');
+                } else {
+                  var temp_ = body_custom[1].split('$');
+                  temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
+                  temp_[1] = temp_[1].toString();
+                  temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
+                  body_custom[1] = temp_.join('');
+                }
+  
+                body[0] = body_custom.join(':');
+                innerHtml +=
+                  '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
+                  labelColorscustom[i].backgroundColor +
+                  '"></span></td><td style="padding: 0px">' +
+                  body[0] +
+                  '</td></tr>';
+              }
+            });
+            innerHtml += '</tbody></table>';
+            tooltipEl.innerHTML = innerHtml;
+            //tableRoot.innerHTML = innerHtml;
+          }
+          // disable displaying the color box;
+          var position = t.chart.canvas.getBoundingClientRect();
+          // Display, position, and set styles for font
+          tooltipEl.style.position = 'fixed';
+          tooltipEl.style.left =
+            position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
+          tooltipEl.style.top =
+            position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
+          // tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
+          // tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
+          // tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
+          // tooltipEl.style.padding =
+          //   tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+          tooltipEl.style.pointerEvents = 'none';
+        },
+        displayColors: false,
+        callbacks: {
+          label: function (tooltipItems) {
+            let currency = tooltipItems.formattedValue.toString();
+            let currencySegs = currency.split('.');
+            currencySegs[0] = currencySegs[0]
+              .split('-')
+              .join('')
+              .split(/(?=(?:...)*$)/)
+              .join(',');
+            currency = currencySegs.join('.');
+            return (
+              tooltipItems.dataset[tooltipItems.datasetIndex].label +
+              `: ${parseInt(tooltipItems.formattedValue.toString()) < 0 ? '- $' : '$'}${currency}`
+            );
+          }
         }
       }
     }
+
   };
 
   public stackedChartColors: Array<any> = [
@@ -1391,36 +1411,37 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   public totalRevenueByReferral: number = 0;
   public totalNewPatientsReferral = 0;
 
-  public noNewPatientsByReferralChartOptions: Chart.ChartOptions = {
+  public noNewPatientsByReferralChartOptions: ChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
-    tooltips: {
-      callbacks: {
-        label: (tooltipItem, data) => {
-          return (
-            data.labels[tooltipItem.index] +
-            ': ' +
-            this.decimalPipe.transform(
-              <number>(
-                data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (tooltipItem) => {
+            return (
+              tooltipItem.label[tooltipItem.dataIndex] +
+              ': ' +
+              this.decimalPipe.transform(
+                <number>(
+                  tooltipItem.dataset[tooltipItem.datasetIndex].data[tooltipItem.dataIndex]
+                )
               )
-            )
-          );
+            );
+          }
         }
-      }
-    },
-    legend: {
-      display: true,
-      position: 'bottom',
-      labels: {
-        usePointStyle: true,
-        padding: 20
       },
-      onClick: function (e) {
-        e.stopPropagation();
-      }
+      legend: {
+        display: true,
+        position: 'bottom',
+        labels: {
+          usePointStyle: true,
+          padding: 20
+        },
+        onClick: function (e) {
+          e.native.stopPropagation();
+        }
+      },  
     },
-
     elements: {}
   };
 
@@ -1535,8 +1556,9 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   public showmulticlinicNewPatients: boolean = false;
   public mkNewPatientsByReferalLabels: any = [];
   public newPatientsByReferralPieChart: Chart = null;
-  public pieChartWithTotalValuePlugin: PluginServiceGlobalRegistrationAndOptions =
+  public pieChartWithTotalValuePlugin: Plugin =
     {
+      id: 'pieChartWithTotalValuePlugin',
       afterDatasetDraw: (chartInstance: Chart) => {
         const ctx = chartInstance.ctx;
         ctx.textAlign = 'center';
@@ -1555,8 +1577,9 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       }
     };
 
-  public pieChartWithTotalValueInUSDFormatPlugin: PluginServiceGlobalRegistrationAndOptions =
+  public pieChartWithTotalValueInUSDFormatPlugin: Plugin =
     {
+      id: 'pieChartWithTotalValueInUSDFormatPlugin',
       afterDatasetDraw: (chartInstance: Chart) => {
         const ctx = chartInstance.ctx;
         ctx.textAlign = 'center';
@@ -1725,7 +1748,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   public mkRevenueByReferralLoader: any;
 
   public reffralAllData: any = [];
-  public mkNewPatientsByReferalRevMulti: Chart.ChartDataSets[] = [];
+  public mkNewPatientsByReferalRevMulti: ChartDataset[] = [];
   public showmulticlinicNewPatientsRev: boolean = false;
   public mkNewPatientsByReferalRevLabels: any = [];
   public totalNewPatientsReferralRev: any = 0;
@@ -1795,10 +1818,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                 this.totalRevenueByReferral = Math.round(res.body.total || 0);
                 if (this.revenueRefChart) {
                   this.revenueRefChart.ngOnDestroy();
-                  this.revenueRefChart.chart =
-                    this.revenueRefChart.getChartBuilder(
-                      this.revenueRefChart.ctx
-                    );
+                  this.revenueRefChart.chart = Chart.getChart(this.revenueRefChart.ctx);
                 }
                 const data: number[] = [];
                 const labels: string[] = [];
@@ -2322,7 +2342,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   }
 
   public newPatientCosts: any[] = [];
-  public newPatientCostsChartData: Chart.ChartDataSets[] = [];
+  public newPatientCostsChartData: ChartDataset[] = [];
   public newPatientCostsChartLabels: string[] = [];
   public expenseData = [];
   public categories = [];
@@ -3048,7 +3068,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       backgroundOverlayMode: 'multiply'
     }
   ];
-  public newPatientsTrendMulti: Chart.ChartDataSets[] = [];
+  public newPatientsTrendMulti: ChartDataset[] = [];
   public showNPclinic: boolean = false;
   public newPatientsMultiLabels = [];
   public newPatientsChartTrend1 = [];
@@ -3269,8 +3289,8 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       );
   }
 
-  public barChartOptions: Chart.ChartOptions = {
-    showLines: false,
+  public barChartOptions: ChartOptions = {
+    // showLines: false,
     animation: {
       duration: 1500,
       easing: 'easeOutSine'
@@ -3278,45 +3298,47 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [
+      x: 
         {
-          gridLines: { display: true },
+          grid: { display: true },
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y:
         {
+          suggestedMin: 0,
           ticks: {
-            suggestedMin: 0,
             callback: (label: string) => {
               // when the floored value is the same as the value we have a whole number
               return '$' + this.decimalPipe.transform(label);
             }
           }
         }
-      ]
     },
-    tooltips: {
-      mode: 'x-axis',
-      // custom: (tooltip: Chart.ChartTooltipModel) => {
-      //   tooltip.displayColors = false;
-      // },
-      callbacks: {
-        label: (tooltipItems, data) => {
-          return (
-            tooltipItems.xLabel +
-            ': $' +
-            this.decimalPipe.transform(tooltipItems.yLabel)
-          );
-        },
-        title: function () {
-          return '';
+    plugins: {
+      tooltip: {
+        mode: 'x',
+        // custom: (tooltip: Chart.ChartTooltipModel) => {
+        //   tooltip.displayColors = false;
+        // },
+        callbacks: {
+          label: (tooltipItems) => {
+            return (
+              tooltipItems.label +
+              ': $' +
+              this.decimalPipe.transform(tooltipItems.formattedValue)
+            );
+          },
+          title: function () {
+            return '';
+          }
         }
-      }
-    },
-    legend: this.stackLegendGenerator
+      },
+      legend: this.stackLegendGenerator
+    }
+
   };
   public expenseDataTrend: any[] = [
     {
@@ -3350,7 +3372,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       backgroundOverlayMode: 'multiply'
     }
   ];
-  public newPatientCostsTrendData: Chart.ChartDataSets[] = [];
+  public newPatientCostsTrendData: ChartDataset[] = [];
   public newPatientCostsTrendLabels: string[] = [];
   public expenseDataTrend1 = [];
   public expenseDataTrendLabels1 = [];
@@ -3560,9 +3582,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
 
       if (this.revenueRefChart) {
         this.revenueRefChart.ngOnDestroy();
-        this.revenueRefChart.chart = this.revenueRefChart.getChartBuilder(
-          this.revenueRefChart.ctx
-        );
+        this.revenueRefChart.chart = Chart.getChart(this.revenueRefChart.ctx);
       }
 
       if (this.reffralAllData.data.patients_reftype.length > 0) {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import * as Chart from 'chart.js';
+import {Chart} from 'chart.js';
 
 @Component({
   selector: 'app-root',
@@ -9,8 +9,9 @@ import * as Chart from 'chart.js';
 export class AppComponent {
 
   constructor() {
-    Chart.defaults.global.defaultFontFamily = 'Gilroy-Regular';
-    Chart.pluginService.register({
+    Chart.defaults.font.family = 'Gilroy-Regular';
+    Chart.register({
+      id: 'global-chart-plugin-001',
       beforeDraw: function (chart: any) {
         if (chart.config.options.elements.center) {
           //Get ctx from string

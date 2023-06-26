@@ -25,7 +25,7 @@ import {
   takeUntil,
   tap
 } from 'rxjs';
-import { Chart } from 'chart.js';
+import { ChartDataset, ChartOptions, Color } from 'chart.js';
 import { ChartService } from '../chart.service';
 import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
@@ -56,7 +56,7 @@ export class ClinicianProceeduresComponent
   preoceedureChartColors;
 
   private doughnutChartColors: {
-    backgroundColor: Chart.ChartColor[];
+    backgroundColor: Color[];
   }[];
   public procedureAnalysisVisibility: string = 'General';
   public dentistMode: boolean = false;
@@ -615,7 +615,7 @@ export class ClinicianProceeduresComponent
   public date = new Date();
 
   dentists: Dentist[] = [{ providerId: 'all', name: 'All Dentists' }];
-  public stackedChartOptions: any = {
+  public stackedChartOptions: ChartOptions = {
     hover: {
       mode: null
     },
@@ -627,28 +627,27 @@ export class ClinicianProceeduresComponent
         hoverBorderWidth: 7
       }
     },
-    scaleShowVerticalLines: false,
+    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
+    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: true,
           ticks: {
             autoSkip: false
           }
-        }
-      ],
-      yAxes: [
+        },
+      y: 
         {
           stacked: true,
           ticks: {
-            userCallback: function (label, index, labels) {
+            callback: function (label: number, index, labels) {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return label;
@@ -656,53 +655,54 @@ export class ClinicianProceeduresComponent
             }
           }
         }
-      ]
+      
     },
-    legend: {
-      display: true,
-      position: 'top',
-      ...this.legendLabelOptions
-    },
-    tooltips: {
-      mode: 'x-axis',
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        // disable displaying the color box;
-        tooltip.displayColors = true;
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+        ...this.legendLabelOptions
       },
-      callbacks: {
-        label: function (tooltipItems, data) {
-          if (
-            tooltipItems.yLabel > 0 &&
-            data.datasets[tooltipItems.datasetIndex].label != ''
-          ) {
-            if (
-              data.datasets[tooltipItems.datasetIndex].label.indexOf(
-                'DentistMode-'
-              ) >= 0
-            ) {
-              return tooltipItems.label + ': ' + tooltipItems.yLabel;
-            } else {
-              return (
-                data.datasets[tooltipItems.datasetIndex].label +
-                ': ' +
-                tooltipItems.yLabel
-              );
-            }
-          }
+      tooltip: {
+        mode: 'x',
+        displayColors(ctx, options) {
+          return !!ctx.tooltip;
         },
-        title: function (tooltip, data) {
-          if (data.datasets[0].label.indexOf('DentistMode-') >= 0) {
-            var dentist = data.datasets[0].label.split('Mode-');
-            return dentist[1];
-          } else {
-            return tooltip[0].label;
+        callbacks: {
+          label: function (tooltipItems) {
+            if (
+              parseInt(tooltipItems.formattedValue) > 0 &&
+              tooltipItems.dataset[tooltipItems.datasetIndex].label != ''
+            ) {
+              if (
+                tooltipItems.dataset[tooltipItems.datasetIndex].label.indexOf(
+                  'DentistMode-'
+                ) >= 0
+              ) {
+                return tooltipItems.label + ': ' + tooltipItems.formattedValue;
+              } else {
+                return (
+                  tooltipItems.dataset[tooltipItems.datasetIndex].label +
+                  ': ' +
+                  tooltipItems.formattedValue
+                );
+              }
+            }
+          },
+          title: function (tooltip) {
+            if (tooltip[0].dataset[0].label.indexOf('DentistMode-') >= 0) {
+              var dentist = tooltip[0].dataset[0].label.split('Mode-');
+              return dentist[1];
+            } else {
+              return tooltip[0].label;
+            }
           }
         }
       }
-    }
+    },
+
   };
-  public stackedChartOptionsmulti: any = {
+  public stackedChartOptionsmulti: ChartOptions = {
     hover: {
       mode: null
     },
@@ -712,30 +712,33 @@ export class ClinicianProceeduresComponent
         hoverRadius: 7,
         pointStyle: 'rectRounded',
         hoverBorderWidth: 7
+      },
+      bar: {
+        borderWidth: 10
       }
     },
-    scaleShowVerticalLines: false,
+    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
+    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: true,
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           stacked: true,
           ticks: {
-            userCallback: function (label, index, labels) {
+            callback: function (label: number, index, labels) {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return label;
@@ -743,51 +746,52 @@ export class ClinicianProceeduresComponent
             }
           }
         }
-      ]
+      
     },
-    legend: {
-      display: true,
-      position: 'top',
-      ...this.legendLabelOptions
-    },
-    tooltips: {
-      mode: 'x-axis',
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        // disable displaying the color box;
-        tooltip.displayColors = true;
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+        ...this.legendLabelOptions
       },
-      callbacks: {
-        label: function (tooltipItems, data) {
-          if (
-            tooltipItems.yLabel > 0 &&
-            data.datasets[tooltipItems.datasetIndex].label != ''
-          ) {
-            if (
-              data.datasets[tooltipItems.datasetIndex].label.indexOf(
-                'DentistMode-'
-              ) >= 0
-            ) {
-              return tooltipItems.label + ': ' + tooltipItems.yLabel;
-            } else {
-              return (
-                data.datasets[tooltipItems.datasetIndex].label +
-                ': ' +
-                tooltipItems.yLabel
-              );
-            }
-          }
+      tooltip: {
+        mode: 'x',
+        displayColors(ctx, options) {
+          return !ctx.tooltip;
         },
-        title: function (tooltip, data) {
-          if (data.datasets[0].label.indexOf('DentistMode-') >= 0) {
-            var dentist = data.datasets[0].label.split('Mode-');
-            return dentist[1];
-          } else {
-            return tooltip[0].label;
+        callbacks: {
+          label: function (tooltipItems) {
+            if (
+              parseInt(tooltipItems.formattedValue) > 0 &&
+              tooltipItems.dataset[tooltipItems.datasetIndex].label != ''
+            ) {
+              if (
+                tooltipItems.dataset[tooltipItems.datasetIndex].label.indexOf(
+                  'DentistMode-'
+                ) >= 0
+              ) {
+                return tooltipItems.label + ': ' + tooltipItems.formattedValue;
+              } else {
+                return (
+                  tooltipItems.dataset[tooltipItems.datasetIndex].label +
+                  ': ' +
+                  tooltipItems.formattedValue
+                );
+              }
+            }
+          },
+          title: function (tooltip) {
+            if (tooltip[0].dataset[0].label.indexOf('DentistMode-') >= 0) {
+              var dentist = tooltip[0].dataset[0].label.split('Mode-');
+              return dentist[1];
+            } else {
+              return tooltip[0].label;
+            }
           }
         }
       }
-    }
+    },
+
   };
 
   public lineChartColors1: Array<any> = [
@@ -819,28 +823,28 @@ export class ClinicianProceeduresComponent
       ...this.legendLabelOptions
     }
   };
-  public barChartOptions: any = {
-    scaleShowVerticalLines: false,
+  public barChartOptions: ChartOptions = {
+    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
     animation: {
       duration: 500,
       easing: 'easeOutSine'
     },
-    barThickness: 10,
+    // barThickness: 10,
     scales: {
-      xAxes: [
+      x: 
         {
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
+          suggestedMin: 0,
           ticks: {
-            suggestedMin: 0,
-            userCallback: function (label, index, labels) {
+            callback: function (label: number, index, labels) {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return label;
@@ -848,181 +852,192 @@ export class ClinicianProceeduresComponent
             }
           }
         }
-      ]
+      
     },
-    legend: {
-      position: 'top',
-      onClick: function (e, legendItem) {
-        var index = legendItem.datasetIndex;
-        var ci = this.chart;
-        if (index == 0) {
-          (<HTMLElement>document.querySelector('.predicted1')).style.display =
-            'flex';
-          (<HTMLElement>document.querySelector('.predicted2')).style.display =
-            'none';
-          (<HTMLElement>document.querySelector('.predicted3')).style.display =
-            'none';
-          (<HTMLElement>(
-            document.querySelector('.predicted1Tool')
-          )).style.display = 'inline-block';
-          (<HTMLElement>(
-            document.querySelector('.predicted2Tool')
-          )).style.display = 'none';
-          (<HTMLElement>(
-            document.querySelector('.predicted3Tool')
-          )).style.display = 'none';
-
-          ci.getDatasetMeta(1).hidden = true;
-          ci.getDatasetMeta(2).hidden = true;
-          ci.getDatasetMeta(index).hidden = false;
-          this.predictedPreviousAverage = this.predictedPreviousAverage1;
-          this.predictedTotalAverageTooltip =
-            this.predictedTotalAverageTooltip1;
-        } else if (index == 1) {
-          (<HTMLElement>document.querySelector('.predicted1')).style.display =
-            'none';
-          (<HTMLElement>document.querySelector('.predicted2')).style.display =
-            'flex';
-
-          (<HTMLElement>document.querySelector('.predicted3')).style.display =
-            'none';
-          (<HTMLElement>(
-            document.querySelector('.predicted1Tool')
-          )).style.display = 'none';
-          (<HTMLElement>(
-            document.querySelector('.predicted2Tool')
-          )).style.display = 'inline-block';
-          (<HTMLElement>(
-            document.querySelector('.predicted3Tool')
-          )).style.display = 'none';
-          ci.getDatasetMeta(0).hidden = true;
-          ci.getDatasetMeta(2).hidden = true;
-          ci.getDatasetMeta(index).hidden = false;
-          this.predictedPreviousAverage = this.predictedPreviousAverage2;
-          this.predictedTotalAverageTooltip =
-            this.predictedTotalAverageTooltip2;
-        } else if (index == 2) {
-          (<HTMLElement>document.querySelector('.predicted1')).style.display =
-            'none';
-          (<HTMLElement>document.querySelector('.predicted2')).style.display =
-            'none';
-          (<HTMLElement>document.querySelector('.predicted3')).style.display =
-            'flex';
-          (<HTMLElement>(
-            document.querySelector('.predicted1Tool')
-          )).style.display = 'none';
-          (<HTMLElement>(
-            document.querySelector('.predicted2Tool')
-          )).style.display = 'none';
-          (<HTMLElement>(
-            document.querySelector('.predicted3Tool')
-          )).style.display = 'inline-block';
-
-          ci.getDatasetMeta(0).hidden = true;
-          ci.getDatasetMeta(1).hidden = true;
-          ci.getDatasetMeta(index).hidden = false;
-          this.predictedPreviousAverage = this.predictedPreviousAverage3;
-          this.predictedTotalAverageTooltip =
-            this.predictedTotalAverageTooltip3;
+    plugins: {
+      legend: {
+        position: 'top',
+        onClick: (e, legendItem, legend) => {
+          var index = legendItem.datasetIndex;
+          var ci = legend.chart;
+          if (index == 0) {
+            (<HTMLElement>document.querySelector('.predicted1')).style.display =
+              'flex';
+            (<HTMLElement>document.querySelector('.predicted2')).style.display =
+              'none';
+            (<HTMLElement>document.querySelector('.predicted3')).style.display =
+              'none';
+            (<HTMLElement>(
+              document.querySelector('.predicted1Tool')
+            )).style.display = 'inline-block';
+            (<HTMLElement>(
+              document.querySelector('.predicted2Tool')
+            )).style.display = 'none';
+            (<HTMLElement>(
+              document.querySelector('.predicted3Tool')
+            )).style.display = 'none';
+  
+            ci.getDatasetMeta(1).hidden = true;
+            ci.getDatasetMeta(2).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
+            this.predictedPreviousAverage = this.predictedPreviousAverage1;
+            this.predictedTotalAverageTooltip = this.predictedTotalAverageTooltip1;
+          } else if (index == 1) {
+            (<HTMLElement>document.querySelector('.predicted1')).style.display =
+              'none';
+            (<HTMLElement>document.querySelector('.predicted2')).style.display =
+              'flex';
+  
+            (<HTMLElement>document.querySelector('.predicted3')).style.display =
+              'none';
+            (<HTMLElement>(
+              document.querySelector('.predicted1Tool')
+            )).style.display = 'none';
+            (<HTMLElement>(
+              document.querySelector('.predicted2Tool')
+            )).style.display = 'inline-block';
+            (<HTMLElement>(
+              document.querySelector('.predicted3Tool')
+            )).style.display = 'none';
+            ci.getDatasetMeta(0).hidden = true;
+            ci.getDatasetMeta(2).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
+            this.predictedPreviousAverage = this.predictedPreviousAverage2;
+            this.predictedTotalAverageTooltip = this.predictedTotalAverageTooltip2;
+          } else if (index == 2) {
+            (<HTMLElement>document.querySelector('.predicted1')).style.display =
+              'none';
+            (<HTMLElement>document.querySelector('.predicted2')).style.display =
+              'none';
+            (<HTMLElement>document.querySelector('.predicted3')).style.display =
+              'flex';
+            (<HTMLElement>(
+              document.querySelector('.predicted1Tool')
+            )).style.display = 'none';
+            (<HTMLElement>(
+              document.querySelector('.predicted2Tool')
+            )).style.display = 'none';
+            (<HTMLElement>(
+              document.querySelector('.predicted3Tool')
+            )).style.display = 'inline-block';
+  
+            ci.getDatasetMeta(0).hidden = true;
+            ci.getDatasetMeta(1).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
+            this.predictedPreviousAverage = this.predictedPreviousAverage3;
+            this.predictedTotalAverageTooltip =
+              this.predictedTotalAverageTooltip3;
+          }
+          ci.update();
         }
-        ci.update();
       }
-    }
+    },
+
   };
   public lineChartType = 'bar';
 
-  public proceedureChartOptions: any = {
+  public proceedureChartOptions: ChartOptions = {
+    
+    indexAxis: 'y', // horizontal bar chart,
     hover: { mode: null },
-    scaleShowVerticalLines: false,
+    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
+    // barThickness: 10,
     animation: {
       duration: 1,
       easing: 'linear'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           ticks: {
-            userCallback: (label, index, labels) => {
+            callback: (label: number, index, labels) => {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return '$' + this.numPipe.transform(label);
               }
             },
-            callback: function (value) {
-              return value; //truncate
-            },
+            // callback: function (value) {
+            //   return value; //truncate
+            // },
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
+          beginAtZero: true,
           ticks: {
-            beginAtZero: true,
-            callback: function (value) {
+            callback: function (value: string) {
               if (value.length > 20)
                 return value.substr(0, 20) + '....'; //truncate
               else return value; //truncate
             }
           }
         }
-      ]
+      
     },
-    legend: {
-      position: 'top',
-      onClick: function (e) {
-        e.stopPropagation();
-      }
-    },
-    tooltips: {
-      enabled: true,
-      callbacks: {
-        title: function (tooltipItems, data) {
-          var idx = tooltipItems[0].index;
-          // return data.labels[idx];//do something with title
-          return '';
-        },
-        label: (tooltipItems, data) => {
-          //var idx = tooltipItems.index;
-          //return data.labels[idx] + ' €';
-          return (
-            tooltipItems.yLabel +
-            ': $' +
-            this.numPipe.transform(tooltipItems.xLabel)
-          );
+    plugins: {
+      legend: {
+        position: 'top',
+        onClick: function (e) {
+          e.native.stopPropagation();
         }
-      }
-    }
+      },
+      tooltip: {
+        enabled: true,
+        callbacks: {
+          title: function () {
+            //var idx = tooltipItems[0].index;
+            // return data.labels[idx];//do something with title
+            return '';
+          },
+          label: (tooltipItem) => {
+            //var idx = tooltipItems.index;
+            //return data.labels[idx] + ' €';
+            return (
+              tooltipItem.formattedValue +
+              ': $' +
+              this.numPipe.transform(tooltipItem.label)
+            );
+          }
+        }
+      },
+    
+    },
   };
 
   /************ for top values on graph *******/
-  public proceedureChartOptions1: any = {
-    scaleShowVerticalLines: false,
+  public proceedureChartOptions1: ChartOptions = {
+    // scaleShowVerticalLines: false,
     responsive: true,
-    showTooltips: false,
+    // showTooltips: false,
     maintainAspectRatio: false,
-    barThickness: 10,
+    // barThickness: 10,
+    
+
+    elements: {
+      bar: {borderWidth: 10},
+    },
     animation: {
       duration: 1,
       easing: 'linear',
       onComplete: function () {
-        var chartInstance = this.chart,
+        var chartInstance = this,
           ctx = chartInstance.ctx;
         ctx.textAlign = 'center';
         ctx.fillStyle = 'rgba(0, 0, 0, 1)';
         ctx.textBaseline = 'bottom';
         // Loop through each data in the datasets
         this.data.datasets.forEach(function (dataset, i) {
-          var meta = chartInstance.controller.getDatasetMeta(i);
+          var meta = chartInstance.getDatasetMeta(i);
           meta.data.forEach(function (bar, index) {
             let num = dataset.data[index];
             let dataK = shortenLargeNumber(num, 1);
             let dataDisplay = `$${dataK}`;
-            ctx.font = Chart.helpers.fontString(11, 'normal', 'Gilroy-Bold');
-            ctx.fillText(dataDisplay, bar._model.x + 20, bar._model.y + 5);
+            ctx.font = this.helpers.fontString(11, 'normal', 'Gilroy-Bold');
+            ctx.fillText(dataDisplay, bar.x + 20, bar.y + 5);
 
             function shortenLargeNumber(num, digits) {
               var units = ['k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'],
@@ -1043,51 +1058,50 @@ export class ClinicianProceeduresComponent
       }
     },
     scales: {
-      xAxes: [
+      x: 
         {
           beginAtZero: true,
           min: 0,
           max: 10000,
           ticks: {
-            userCallback: (label, index, labels) => {
+            callback: (label: number, index, labels) => {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return '$' + this.numPipe.transform(label);
               }
             },
-            callback: function (value) {
-              return value; //truncate
-            },
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           ticks: {
-            callback: function (value) {
+            callback: function (value: string) {
               if (value.length > 20)
                 return value.substr(0, 20) + '....'; //truncate
               else return value; //truncate
             }
           }
         }
-      ]
     },
-    legend: {
-      position: 'top',
-      onClick: function (e) {
-        e.stopPropagation();
+    plugins: {
+      legend: {
+        position: 'top',
+        onClick: function (e) {
+          e.native.stopPropagation();
+        }
+      },
+      tooltip: {
+        enabled: false
       }
     },
-    tooltips: {
-      enabled: false
-    }
+
   };
 
   /************ for top values on graph *******/
 
-  public proceedureChartOptionsDP: any = this.proceedureChartOptions;
+  public proceedureChartOptionsDP: ChartOptions = this.proceedureChartOptions;
   public selectedDentist: string;
   public predicted1: boolean = true;
   public predicted2: boolean = false;
@@ -1200,7 +1214,7 @@ export class ClinicianProceeduresComponent
   public predictedChartData2: any[] = [];
   public predictedChartData3: any[] = [];
 
-  public proceedureChartType = 'horizontalBar';
+  public proceedureChartType = 'bar';
 
   public proceedureChartData: any[] = [
     {
@@ -1885,7 +1899,7 @@ export class ClinicianProceeduresComponent
   public predictorAnalysisDataMax = 0;
   public predictorAnalysisChartColors;
   public paSpecialistlData: any = [];
-  public ItemsPredictorAnalysisMulti: Chart.ChartDataSets[] = [];
+  public ItemsPredictorAnalysisMulti: ChartDataset[] = [];
   public showmulticlinicItemsPredictor: boolean = false;
   public ItemsPredictorAnalysisLabels: string[] = [];
   public predictorAnalysisSpecialLoader: boolean = true;

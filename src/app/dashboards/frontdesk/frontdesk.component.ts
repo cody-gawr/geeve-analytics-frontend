@@ -13,7 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { CookieService } from 'ngx-cookie';
 import { ToastrService } from 'ngx-toastr';
-import { Chart } from 'chart.js';
+import { Chart, ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
 import { ChartService } from '../chart.service';
 import { AppConstants } from '../../app.constants';
 import { environment } from '../../../environments/environment';
@@ -24,6 +24,7 @@ import * as moment from 'moment';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { take, Subject, interval } from 'rxjs';
 import { CancellationRatio } from './frontdesk.interfaces';
+import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 
 export interface Dentist {
   providerId: string;
@@ -315,7 +316,7 @@ export class FrontDeskComponent implements AfterViewInit {
       });
   }
 
-  public legendGenerator: Chart.ChartLegendOptions = {
+  public legendGenerator: _DeepPartialObject<LegendOptions<any>> = {
     display: true,
     position: 'bottom',
     labels: {
@@ -360,7 +361,7 @@ export class FrontDeskComponent implements AfterViewInit {
     return dynamicColors;
   }
   public date = new Date();
-  public stackedChartOptions: any = {
+  public stackedChartOptions: ChartOptions<'bar'>= {
     //   elements: {
     //   point: {
     //     radius: 5,
@@ -369,7 +370,7 @@ export class FrontDeskComponent implements AfterViewInit {
     //     hoverBorderWidth:7
     //   },
     // },
-    scaleShowVerticalLines: false,
+    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
     // barThickness: 10,
@@ -377,23 +378,23 @@ export class FrontDeskComponent implements AfterViewInit {
       duration: 500,
       easing: 'easeOutSine'
     },
-    fill: false,
+    // fill: false,
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: true,
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           // stacked:true,
+          min: 0,
+          max: 100,
           ticks: {
-            min: 0,
-            max: 100,
-            userCallback: function (label, index, labels) {
+            callback: function (label: number, index, labels) {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return label + '%';
@@ -401,54 +402,59 @@ export class FrontDeskComponent implements AfterViewInit {
             }
           }
         }
-      ]
     },
-    tooltips: {
-      mode: 'x-axis',
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        // disable displaying the color box;
-        tooltip.displayColors = false;
-      },
-      callbacks: {
-        label: function (tooltipItems, data) {
-          let total = tooltipItems.yLabel > 100 ? 100 : tooltipItems.yLabel;
-          var Targetlable = '';
-          const v =
-            data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index];
-          let Tlable = data.datasets[tooltipItems.datasetIndex].label;
-          if (Tlable != '') {
-            Tlable = Tlable + ': ';
-            Targetlable = Tlable;
-          }
-          let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-          var tlab = 0;
-          if (typeof data.datasets[1] === 'undefined') {
-          } else {
-            const tval = data.datasets[1].data[tooltipItems.index];
-            if (Array.isArray(tval)) {
-              tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
-              if (tlab == 0) {
-                Tlable = '';
+    plugins: {
+      tooltip: {
+        mode: 'x',
+        // custom: function (tooltip) {
+        //   if (!tooltip) return;
+        //   // disable displaying the color box;
+        //   tooltip.displayColors = false;
+        // },
+        displayColors(ctx, options) {
+          return !ctx.tooltip;
+        },
+        callbacks: {
+          label: function (tooltipItems) {
+            let total = parseInt(tooltipItems.label) > 100 ? 100 : tooltipItems.formattedValue;
+            var Targetlable = '';
+            const v =
+              tooltipItems.dataset[tooltipItems.datasetIndex].data[tooltipItems.dataIndex];
+            let Tlable = tooltipItems.dataset[tooltipItems.datasetIndex].label;
+            if (Tlable != '') {
+              Tlable = Tlable + ': ';
+              Targetlable = Tlable;
+            }
+            let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            var tlab = 0;
+            if (typeof tooltipItems.dataset[1] === 'undefined') {
+            } else {
+              const tval = tooltipItems.dataset[1].data[tooltipItems.dataIndex];
+              if (Array.isArray(tval)) {
+                tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
+                if (tlab == 0) {
+                  Tlable = '';
+                }
               }
             }
+            if (tlab == 0 && Targetlable == 'Target: ') {
+            } else {
+              return Tlable + tooltipItems.label + ': ' + ylable + '%';
+            }
+          },
+          title: function () {
+            return '';
           }
-          if (tlab == 0 && Targetlable == 'Target: ') {
-          } else {
-            return Tlable + tooltipItems.xLabel + ': ' + ylable + '%';
-          }
-        },
-        title: function () {
-          return '';
         }
+      },
+      legend: {
+        display: true
       }
     },
-    legend: {
-      display: true
-    }
+
   };
 
-  public stackLegendGenerator: Chart.ChartLegendOptions = {
+  public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
     display: true,
     position: 'bottom',
     labels: {
@@ -458,7 +464,7 @@ export class FrontDeskComponent implements AfterViewInit {
         let labels = [];
         let bg_color = {};
         chart.data.datasets.forEach((item) => {
-          item.data.forEach((val) => {
+          item.data.forEach((val: number) => {
             if (val > 0) {
               labels.push(item.label);
               bg_color[item.label] = item.backgroundColor;
@@ -477,7 +483,7 @@ export class FrontDeskComponent implements AfterViewInit {
     onClick: () => {}
   };
 
-  public stackedChartOptionsTC: Chart.ChartOptions = {
+  public stackedChartOptionsTC: ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -493,43 +499,48 @@ export class FrontDeskComponent implements AfterViewInit {
       easing: 'easeOutSine'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: true,
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           stacked: true,
-          ticks: {
-            min: 0,
-            max: 100,
+          min: 0,
+          max: 100,
+          ticks: {  
             callback: function (value: string) {
               // when the floored value is the same as the value we have a whole number
               return `${value}%`;
             }
           }
         }
-      ]
+      
     },
-    legend: this.stackLegendGenerator,
-    tooltips: {
-      mode: 'x-axis',
-      enabled: true,
-      custom: function (tooltip: Chart.ChartTooltipModel) {
-        tooltip.displayColors = false;
-      },
-      callbacks: {
-        label: function (tooltipItems, data) {
-          return `${tooltipItems.yLabel}%`;
+    plugins: {
+      legend: this.stackLegendGenerator,
+      tooltip: {
+        mode: 'x',
+        enabled: true,
+        // custom: function (tooltip: ChartTooltipModel) {
+        //   tooltip.displayColors = false;
+        // },
+        displayColors(ctx, options) {
+          return false;
+        },
+        callbacks: {
+          label: function (tooltipItems) {
+            return `${tooltipItems.formattedValue}%`;
+          }
         }
       }
-    }
+    },
   };
-  public stackedChartOptionsTic: any = {
+  public stackedChartOptionsTic: ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -538,28 +549,28 @@ export class FrontDeskComponent implements AfterViewInit {
         hoverBorderWidth: 7
       }
     },
-    scaleShowVerticalLines: false,
+    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
+    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: true,
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           stacked: true,
           ticks: {
-            userCallback: function (label, index, labels) {
+            callback: function (label: number, index, labels) {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 let currency =
@@ -572,157 +583,161 @@ export class FrontDeskComponent implements AfterViewInit {
             }
           }
         }
-      ]
+      
     },
-    legend: this.stackLegendGenerator,
-    tooltips: {
-      mode: 'x-axis',
-      enabled: false,
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        var tooltipEl = document.getElementById('chartjs-tooltip');
-        if (!tooltipEl) {
-          tooltipEl = document.createElement('div');
-          tooltipEl.id = 'chartjs-tooltip';
-          tooltipEl.style.backgroundColor = '#FFFFFF';
-          tooltipEl.style.borderColor = '#B2BABB';
-          tooltipEl.style.borderWidth = 'thin';
-          tooltipEl.style.borderStyle = 'solid';
-          tooltipEl.style.zIndex = '999999';
-          tooltipEl.style.backgroundColor = '#000000';
-          tooltipEl.style.color = '#FFFFFF';
-          document.body.appendChild(tooltipEl);
-        }
-        if (tooltip.opacity === 0) {
-          tooltipEl.style.opacity = '0';
-          return;
-        } else {
-          tooltipEl.style.opacity = '0.8';
-        }
-
-        tooltipEl.classList.remove('above', 'below', 'no-transform');
-        if (tooltip.yAlign) {
-          tooltipEl.classList.add(tooltip.yAlign);
-        } else {
-          tooltipEl.classList.add('no-transform');
-        }
-
-        function getBody(bodyItem) {
-          let result = [];
-          bodyItem.forEach((items) => {
-            items.lines.forEach((item) => {
-              if (item.split(':')[1].trim() != '$NaN') {
-                result.push(items.lines);
+    plugins: {
+      legend: this.stackLegendGenerator,
+      tooltip: {
+        mode: 'x',
+        enabled: false,
+        external: function (t) {
+          const tooltip = t.tooltip;
+          const chart = t.chart;
+          if (!tooltip) return;
+          var tooltipEl = document.getElementById('chartjs-tooltip');
+          if (!tooltipEl) {
+            tooltipEl = document.createElement('div');
+            tooltipEl.id = 'chartjs-tooltip';
+            tooltipEl.style.backgroundColor = '#FFFFFF';
+            tooltipEl.style.borderColor = '#B2BABB';
+            tooltipEl.style.borderWidth = 'thin';
+            tooltipEl.style.borderStyle = 'solid';
+            tooltipEl.style.zIndex = '999999';
+            tooltipEl.style.backgroundColor = '#000000';
+            tooltipEl.style.color = '#FFFFFF';
+            document.body.appendChild(tooltipEl);
+          }
+          if (tooltip.opacity === 0) {
+            tooltipEl.style.opacity = '0';
+            return;
+          } else {
+            tooltipEl.style.opacity = '0.8';
+          }
+  
+          tooltipEl.classList.remove('above', 'below', 'no-transform');
+          if (tooltip.yAlign) {
+            tooltipEl.classList.add(tooltip.yAlign);
+          } else {
+            tooltipEl.classList.add('no-transform');
+          }
+  
+          function getBody(bodyItem) {
+            let result = [];
+            bodyItem.forEach((items) => {
+              items.lines.forEach((item) => {
+                if (item.split(':')[1].trim() != '$NaN') {
+                  result.push(items.lines);
+                }
+              });
+            });
+            return result;
+            // return bodyItem.lines;
+          }
+          if (tooltip.body) {
+            var titleLines = tooltip.title || [];
+            var bodyLines = getBody(tooltip.body);
+            // var bodyLines = tooltip.body.map(getBody);
+            var labelColorscustom = tooltip.labelColors;
+            var innerHtml = '<table><thead>';
+            innerHtml += '</thead><tbody>';
+  
+            let total: any = 0;
+            bodyLines.forEach(function (body, i) {
+              if (!body[0].includes('$0')) {
+                var singleval = body[0].split(':');
+                if (singleval[1].includes('-')) {
+                  var temp = singleval[1].split('$');
+                  var amount = temp[1].replace(/,/g, '');
+                  total -= parseFloat(amount);
+                } else {
+                  var temp = singleval[1].split('$');
+                  var amount = temp[1].replace(/,/g, '');
+                  total += parseFloat(amount);
+                }
               }
             });
-          });
-          return result;
-          // return bodyItem.lines;
-        }
-        if (tooltip.body) {
-          var titleLines = tooltip.title || [];
-          var bodyLines = getBody(tooltip.body);
-          // var bodyLines = tooltip.body.map(getBody);
-          var labelColorscustom = tooltip.labelColors;
-          var innerHtml = '<table><thead>';
-          innerHtml += '</thead><tbody>';
-
-          let total: any = 0;
-          bodyLines.forEach(function (body, i) {
-            if (!body[0].includes('$0')) {
-              var singleval = body[0].split(':');
-              if (singleval[1].includes('-')) {
-                var temp = singleval[1].split('$');
-                var amount = temp[1].replace(/,/g, '');
-                total -= parseFloat(amount);
-              } else {
-                var temp = singleval[1].split('$');
-                var amount = temp[1].replace(/,/g, '');
-                total += parseFloat(amount);
-              }
+            total = Math.round(total);
+            if (total != 0) {
+              var num_parts = total.toString().split('.');
+              num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+              total = num_parts.join('.');
             }
-          });
-          total = Math.round(total);
-          if (total != 0) {
-            var num_parts = total.toString().split('.');
-            num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            total = num_parts.join('.');
-          }
-          titleLines.forEach(function (title) {
-            innerHtml +=
-              '<tr><th colspan="2" style="text-align: left;">' +
-              title +
-              ': ' +
-              total +
-              '</th></tr>';
-          });
-          bodyLines.forEach(function (body, i) {
-            if (!body[0].includes('$0')) {
-              var body_custom = body[0];
-              body_custom = body_custom.split(':');
-              if (body_custom[1].includes('-')) {
-                var temp_ = body_custom[1].split('$');
-                temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
-                temp_[1] = temp_[1].toString();
-                temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[1] = temp_.join('');
-              } else {
-                var temp_ = body_custom[1].split('$');
-                temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
-                temp_[1] = temp_[1].toString();
-                temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[1] = temp_.join('');
-              }
-
-              body[0] = body_custom.join(':');
+            titleLines.forEach(function (title) {
               innerHtml +=
-                '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
-                labelColorscustom[i].backgroundColor +
-                '"></span></td><td style="padding: 0px">' +
-                body[0] +
-                '</td></tr>';
-            }
-          });
-          innerHtml += '</tbody></table>';
-          tooltipEl.innerHTML = innerHtml;
-          //tableRoot.innerHTML = innerHtml;
-        }
-        // disable displaying the color box;
-        var position = this._chart.canvas.getBoundingClientRect();
-        // Display, position, and set styles for font
-        tooltipEl.style.position = 'fixed';
-        tooltipEl.style.left =
-          position.left + window.pageXOffset + tooltip.caretX - 70 + 'px';
-        tooltipEl.style.top =
-          position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
-        tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
-        tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
-        tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-        tooltipEl.style.padding =
-          tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
-        tooltipEl.style.pointerEvents = 'none';
-        tooltip.displayColors = false;
-      },
-      callbacks: {
-        label: function (tooltipItems, data) {
-          let currency = tooltipItems.yLabel.toString();
-          currency = currency.split('.');
-          currency[0] = currency[0]
-            .split('-')
-            .join('')
-            .split(/(?=(?:...)*$)/)
-            .join(',');
-          currency = currency.join('.');
-          return (
-            data.datasets[tooltipItems.datasetIndex].label +
-            `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`
-          );
+                '<tr><th colspan="2" style="text-align: left;">' +
+                title +
+                ': ' +
+                total +
+                '</th></tr>';
+            });
+            bodyLines.forEach(function (body, i) {
+              if (!body[0].includes('$0')) {
+                var body_custom = body[0];
+                body_custom = body_custom.split(':');
+                if (body_custom[1].includes('-')) {
+                  var temp_ = body_custom[1].split('$');
+                  temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
+                  temp_[1] = temp_[1].toString();
+                  temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
+                  body_custom[1] = temp_.join('');
+                } else {
+                  var temp_ = body_custom[1].split('$');
+                  temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
+                  temp_[1] = temp_[1].toString();
+                  temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
+                  body_custom[1] = temp_.join('');
+                }
+  
+                body[0] = body_custom.join(':');
+                innerHtml +=
+                  '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
+                  labelColorscustom[i].backgroundColor +
+                  '"></span></td><td style="padding: 0px">' +
+                  body[0] +
+                  '</td></tr>';
+              }
+            });
+            innerHtml += '</tbody></table>';
+            tooltipEl.innerHTML = innerHtml;
+            //tableRoot.innerHTML = innerHtml;
+          }
+          // disable displaying the color box;
+          var position = chart.canvas.getBoundingClientRect();
+          // Display, position, and set styles for font
+          tooltipEl.style.position = 'fixed';
+          tooltipEl.style.left =
+            position.left + window.pageXOffset + tooltip.caretX - 70 + 'px';
+          tooltipEl.style.top =
+            position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
+          // tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
+          // tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
+          // tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
+          // tooltipEl.style.padding =
+          //   tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+          tooltipEl.style.pointerEvents = 'none';
+        },
+        displayColors: false,
+        callbacks: {
+          label: function (tooltipItems) {
+            let currency: any = tooltipItems.formattedValue.toString();
+            currency = currency.split('.');
+            currency[0] = currency[0]
+              .split('-')
+              .join('')
+              .split(/(?=(?:...)*$)/)
+              .join(',');
+            currency = currency.join('.');
+            return (
+              tooltipItems.dataset[tooltipItems.datasetIndex].label +
+              `: ${parseInt(tooltipItems.formattedValue) < 0 ? '- $' : '$'}${currency}`
+            );
+          }
         }
       }
-    }
+    },
   };
 
-  public stackedChartOptionsT: Chart.ChartOptions = {
+  public stackedChartOptionsT: ChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     // barThickness: 10,
@@ -731,7 +746,7 @@ export class FrontDeskComponent implements AfterViewInit {
       easing: 'linear'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           ticks: {
             autoSkip: false,
@@ -745,12 +760,12 @@ export class FrontDeskComponent implements AfterViewInit {
           },
           stacked: true
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
+          min: 0,
           // stacked:true,
           ticks: {
-            min: 0,
             // max:100,
             callback: function (label: number) {
               // when the floored value is the same as the value we have a whole number
@@ -760,74 +775,79 @@ export class FrontDeskComponent implements AfterViewInit {
             }
           }
         }
-      ]
     },
-    tooltips: {
-      mode: 'x-axis',
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        tooltip.displayColors = false;
-      },
-      callbacks: {
-        label: function (tooltipItems: Chart.ChartTooltipItem, data) {
-          let total = parseInt(tooltipItems.yLabel.toString()) > 100 ? 100 : tooltipItems.yLabel;
-          if ((<string>tooltipItems.xLabel).indexOf('--') >= 0) {
-            let lbl = (<string>tooltipItems.xLabel).split('--');
-            if (typeof lbl[3] === 'undefined') {
-              tooltipItems.xLabel = lbl[0];
-            } else {
-              tooltipItems.xLabel = lbl[0] + ' - ' + lbl[3];
-            }
-          }
-          var Targetlable = '';
-          const v =
-            data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index];
-          let Tlable = data.datasets[tooltipItems.datasetIndex].label;
-          if (Tlable != '') {
-            Tlable = Tlable + ': ';
-            Targetlable = Tlable;
-          }
-          let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-          var tlab = 0;
-          if (typeof data.datasets[1] === 'undefined') {
-          } else {
-            const tval = data.datasets[1].data[tooltipItems.index];
-            if (Array.isArray(tval)) {
-              tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
-              if (tlab == 0) {
-                Tlable = '';
+    plugins: {
+      tooltip: {
+        mode: 'x',
+        // custom: function (tooltip) {
+        //   if (!tooltip) return;
+        //   tooltip.displayColors = false;
+        // },
+        displayColors(ctx, options) {
+          return !ctx.tooltip;
+        },
+        callbacks: {
+          label: function (tooltipItems) {
+            let total = parseInt(tooltipItems.formattedValue.toString()) > 100 ? 100 : tooltipItems.formattedValue;
+            if ((<string>tooltipItems.label).indexOf('--') >= 0) {
+              let lbl = (<string>tooltipItems.label).split('--');
+              if (typeof lbl[3] === 'undefined') {
+                tooltipItems.label = lbl[0];
+              } else {
+                tooltipItems.label = lbl[0] + ' - ' + lbl[3];
               }
             }
+            var Targetlable = '';
+            const v =
+            tooltipItems.dataset[tooltipItems.datasetIndex].data[tooltipItems.dataIndex];
+            let Tlable = tooltipItems.dataset[tooltipItems.datasetIndex].label;
+            if (Tlable != '') {
+              Tlable = Tlable + ': ';
+              Targetlable = Tlable;
+            }
+            let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            var tlab = 0;
+            if (typeof tooltipItems.dataset[1] === 'undefined') {
+            } else {
+              const tval = tooltipItems.dataset[1].data[tooltipItems.dataIndex];
+              if (Array.isArray(tval)) {
+                tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
+                if (tlab == 0) {
+                  Tlable = '';
+                }
+              }
+            }
+            if (tlab == 0 && Targetlable == 'Target: ') {
+            } else {
+              return Tlable + tooltipItems.label + ': ' + ylable;
+            }
+          },
+          afterLabel: function (tooltipItems) {
+            let hour = '0';
+            let phour = '0';
+            if (
+              tooltipItems.label.indexOf('--') >= 0 &&
+              tooltipItems.datasetIndex == 0
+            ) {
+              let lbl = tooltipItems.label.split('--');
+              hour = lbl[1];
+              phour = lbl[2];
+              return ['', 'Available Hours: ' + phour, 'Used Hours: ' + hour];
+            }
+            return;
+          },
+          title: function () {
+            return '';
           }
-          if (tlab == 0 && Targetlable == 'Target: ') {
-          } else {
-            return Tlable + tooltipItems.xLabel + ': ' + ylable;
-          }
-        },
-        afterLabel: function (tooltipItems, data) {
-          let hour = '0';
-          let phour = '0';
-          if (
-            tooltipItems.label.indexOf('--') >= 0 &&
-            tooltipItems.datasetIndex == 0
-          ) {
-            let lbl = tooltipItems.label.split('--');
-            hour = lbl[1];
-            phour = lbl[2];
-            return ['', 'Available Hours: ' + phour, 'Used Hours: ' + hour];
-          }
-          return;
-        },
-        title: function () {
-          return '';
         }
+      },
+      legend: {
+        display: true
       }
     },
-    legend: {
-      display: true
-    }
+
   };
-  public stackedChartOptionsUti: Chart.ChartOptions = {
+  public stackedChartOptionsUti: ChartOptions = {
     hover: { mode: null },
     responsive: true,
     maintainAspectRatio: false,
@@ -837,7 +857,7 @@ export class FrontDeskComponent implements AfterViewInit {
       easing: 'linear'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           ticks: {
             autoSkip: false,
@@ -851,88 +871,94 @@ export class FrontDeskComponent implements AfterViewInit {
           },
           stacked: true
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
+          min: 0,
+            max: 100,
           // stacked:true,
           ticks: {
-            min: 0,
-            max: 100,
             callback: function (label, index, labels) {
               return label + '%';
             }
           }
         }
-      ]
+      
     },
-    tooltips: {
-      mode: 'x-axis',
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        tooltip.displayColors = false;
-      },
-      callbacks: {
-        label: function (tooltipItems, data) {
-          let total = parseInt(tooltipItems.yLabel.toString()) > 100 ? 100 : tooltipItems.yLabel;
-          if ((<string>tooltipItems.xLabel).indexOf('--') >= 0) {
-            let lbl = (<string>tooltipItems.xLabel).split('--');
-            if (typeof lbl[3] === 'undefined') {
-              tooltipItems.xLabel = lbl[0];
-            } else {
-              tooltipItems.xLabel = lbl[0] + ' - ' + lbl[3];
-            }
-          }
-          var Targetlable = '';
-          const v =
-            data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index];
-          let Tlable = data.datasets[tooltipItems.datasetIndex].label;
-          if (Tlable != '') {
-            Tlable = Tlable + ': ';
-            Targetlable = Tlable;
-          }
-          let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-          var tlab = 0;
-          if (typeof data.datasets[1] === 'undefined') {
-          } else {
-            const tval = data.datasets[1].data[tooltipItems.index];
-            if (Array.isArray(tval)) {
-              tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
-              if (tlab == 0) {
-                Tlable = '';
+    plugins: {
+      tooltip: {
+        mode: 'x',
+        // custom: function (tooltip) {
+        //   if (!tooltip) return;
+        //   tooltip.displayColors = false;
+        // },
+        displayColors(ctx, options) {
+          return !ctx.tooltip;
+        },
+        callbacks: {
+          label: function (tooltipItems) {
+            //let total = parseInt(tooltipItems.formattedValue.toString()) > 100 ? 100 : tooltipItems.formattedValue;
+            if ((<string>tooltipItems.label).indexOf('--') >= 0) {
+              let lbl = (<string>tooltipItems.label).split('--');
+              if (typeof lbl[3] === 'undefined') {
+                tooltipItems.label = lbl[0];
+              } else {
+                tooltipItems.label = lbl[0] + ' - ' + lbl[3];
               }
             }
+            var Targetlable = '';
+            const v =
+              tooltipItems.dataset[tooltipItems.datasetIndex].data[tooltipItems.dataIndex];
+            let Tlable = tooltipItems.dataset[tooltipItems.datasetIndex].label;
+            if (Tlable != '') {
+              Tlable = Tlable + ': ';
+              Targetlable = Tlable;
+            }
+            let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            var tlab = 0;
+            if (typeof tooltipItems.dataset[1] === 'undefined') {
+            } else {
+              const tval = tooltipItems.dataset[1].data[tooltipItems.dataIndex];
+              if (Array.isArray(tval)) {
+                tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
+                if (tlab == 0) {
+                  Tlable = '';
+                }
+              }
+            }
+            if (tlab == 0 && Targetlable == 'Target: ') {
+            } else {
+              return Tlable + tooltipItems.label + ': ' + ylable + '%';
+            }
+          },
+          afterLabel: function (tooltipItems) {
+            let hour = 0;
+            let phour = 0;
+            if (
+              tooltipItems.label.indexOf('--') >= 0 &&
+              tooltipItems.datasetIndex == 0
+            ) {
+              let lbl = tooltipItems.label.split('--');
+              hour = Number(lbl[1]);
+              phour = Number(lbl[2]);
+              return [
+                '',
+                'Available Hours: ' + Math.round(phour * 100) / 100,
+                'Used Hours: ' + Math.round(hour * 100) / 100
+              ];
+            }
+            return;
+          },
+          title: function () {
+            return '';
           }
-          if (tlab == 0 && Targetlable == 'Target: ') {
-          } else {
-            return Tlable + tooltipItems.xLabel + ': ' + ylable + '%';
-          }
-        },
-        afterLabel: function (tooltipItems, data) {
-          let hour = 0;
-          let phour = 0;
-          if (
-            tooltipItems.label.indexOf('--') >= 0 &&
-            tooltipItems.datasetIndex == 0
-          ) {
-            let lbl = tooltipItems.label.split('--');
-            hour = Number(lbl[1]);
-            phour = Number(lbl[2]);
-            return [
-              '',
-              'Available Hours: ' + Math.round(phour * 100) / 100,
-              'Used Hours: ' + Math.round(hour * 100) / 100
-            ];
-          }
-          return;
-        },
-        title: function () {
-          return '';
         }
-      }
-    },
-    legend: this.legendGenerator
+      },
+      legend: this.legendGenerator
+    }
   };
-  public stackedChartOptionsUti1: Chart.ChartOptions = {
+
+  public stackedChartOptionsUti1: ChartOptions = {
     hover: { mode: null },
     responsive: true,
     maintainAspectRatio: false,
@@ -941,23 +967,22 @@ export class FrontDeskComponent implements AfterViewInit {
       duration: 1,
       easing: 'linear',
       onComplete: function () {
-        var chartInstance = this.chart,
+        var chartInstance = this,
           ctx = chartInstance.ctx;
-        console.log(this.chart);
         ctx.textAlign = 'center';
         ctx.fillStyle = 'rgba(0, 0, 0, 1)';
         ctx.textBaseline = 'bottom';
         // Loop through each data in the datasets
         this.data.datasets.forEach(function (dataset, i) {
-          var meta = chartInstance.controller.getDatasetMeta(i);
+          var meta = chartInstance.getDatasetMeta(i);
           meta.data.forEach(function (bar, index) {
             // var data = "$"+dataset.data[index].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             let num = dataset.data[index];
             // let dataK = Math.abs(num) > 999 ? Math.sign(num)*(Math.round(Math.abs(num)/100)/10) + 'k' : Math.sign(num)*Math.abs(num);
             let dataK = shortenLargeNumber(num, 1);
             let dataDisplay = `${dataK}%`;
-            ctx.font = Chart.helpers.fontString(11, 'normal', 'Gilroy-Bold');
-            ctx.fillText(dataDisplay, bar._model.x, bar._model.y + 2);
+            ctx.font = this.helpers.fontString(11, 'normal', 'Gilroy-Bold');
+            ctx.fillText(dataDisplay, bar.x, bar.y + 2);
 
             function shortenLargeNumber(num, digits) {
               let units = ['k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
@@ -978,7 +1003,7 @@ export class FrontDeskComponent implements AfterViewInit {
       }
     },
     scales: {
-      xAxes: [
+      x: 
         {
           ticks: {
             autoSkip: false,
@@ -991,29 +1016,32 @@ export class FrontDeskComponent implements AfterViewInit {
             }
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
+          min: 0,
+          max: 100,
           // stacked:true,
           ticks: {
-            min: 0,
-            max: 100,
+
             callback: function (label: string | number, index, labels) {
               // when the floored value is the same as the value we have a whole number
               return `${Number(label)}%`;
             }
           }
         }
-      ]
+      
     },
-    tooltips: {
-      enabled: false
-    },
-    legend: this.legendGenerator
+    plugins: {
+      tooltip: {
+        enabled: false
+      },
+      legend: this.legendGenerator
+    }
   };
 
   public stackedChartOptionsUtiDP = this.stackedChartOptionsUti;
-  public stackedChartOptionsticks: any = {
+  public stackedChartOptionsticks: ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -1022,29 +1050,29 @@ export class FrontDeskComponent implements AfterViewInit {
         hoverBorderWidth: 7
       }
     },
-    scaleShowVerticalLines: false,
+    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
+    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine'
     },
-    fill: false,
+    // fill: false,
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: true,
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           stacked: true,
           ticks: {
-            userCallback: function (label, index, labels) {
+            callback: function (label: number, index, labels) {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return label;
@@ -1052,29 +1080,35 @@ export class FrontDeskComponent implements AfterViewInit {
             }
           }
         }
-      ]
+      
     },
-    tooltips: {
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        // disable displaying the color box;
-        tooltip.displayColors = false;
-      },
-      callbacks: {
-        label: function (tooltipItems, data) {
-          return tooltipItems.xLabel + ': ' + tooltipItems.yLabel + '%';
+    plugins: {
+      tooltip: {
+        // custom: function (tooltip) {
+        //   if (!tooltip) return;
+        //   // disable displaying the color box;
+        //   tooltip.displayColors = false;
+        // },
+        displayColors(ctx, options) {
+          return !ctx.tooltip;
         },
-        title: function () {
-          return '';
+        callbacks: {
+          label: function (tooltipItems) {
+            return tooltipItems.label + ': ' + tooltipItems.formattedValue + '%';
+          },
+          title: function () {
+            return '';
+          }
         }
+      },
+      legend: {
+        display: true
       }
     },
-    legend: {
-      display: true
-    }
+
   };
 
-  public numOfTicksChartOptionsticks: any = {
+  public numOfTicksChartOptionsticks: ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -1083,29 +1117,29 @@ export class FrontDeskComponent implements AfterViewInit {
         hoverBorderWidth: 7
       }
     },
-    scaleShowVerticalLines: false,
+    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
+    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine'
     },
-    fill: false,
+    // fill: false,
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: true,
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           stacked: true,
           ticks: {
-            userCallback: function (label, index, labels) {
+            callback: function (label: number, index, labels) {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return label;
@@ -1113,26 +1147,31 @@ export class FrontDeskComponent implements AfterViewInit {
             }
           }
         }
-      ]
     },
-    tooltips: {
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        // disable displaying the color box;
-        tooltip.displayColors = false;
-      },
-      callbacks: {
-        label: function (tooltipItems, data) {
-          return tooltipItems.xLabel + ': ' + tooltipItems.yLabel;
+    plugins: {
+      tooltip: {
+        // custom: function (tooltip) {
+        //   if (!tooltip) return;
+        //   // disable displaying the color box;
+        //   tooltip.displayColors = false;
+        // },
+        displayColors(ctx, options) {
+          return !ctx.tooltip;
         },
-        title: function () {
-          return '';
+        callbacks: {
+          label: function (tooltipItems) {
+            return tooltipItems.label + ': ' + tooltipItems.formattedValue;
+          },
+          title: function () {
+            return '';
+          }
         }
+      },
+      legend: {
+        display: true
       }
     },
-    legend: {
-      display: true
-    }
+
   };
 
   public stackedChartColors: Array<any> = [
@@ -1395,7 +1434,7 @@ export class FrontDeskComponent implements AfterViewInit {
     }
   }
 
-  public byDayData: Chart.ChartDataSets[] = [
+  public byDayData: ChartDataset[] = [
     {
       data: [],
       label: '',
@@ -1525,7 +1564,7 @@ export class FrontDeskComponent implements AfterViewInit {
   public showmulticlinicFta: boolean = false;
   public ftaLabels: any = [];
   public ftaLabels1: any = [];
-  public ftaMulti: Chart.ChartDataSets[] = [
+  public ftaMulti: ChartDataset[] = [
     {
       data: [],
       label: '',
@@ -1632,7 +1671,7 @@ export class FrontDeskComponent implements AfterViewInit {
   public showmulticlinicUta: boolean = false;
   public utaLabels: any = [];
   public utaLabels1: any = [];
-  public utaMulti: Chart.ChartDataSets[] = [
+  public utaMulti: ChartDataset[] = [
     {
       data: [],
       label: '',
@@ -1729,7 +1768,7 @@ export class FrontDeskComponent implements AfterViewInit {
     }
   }
 
-  public cancellationRatioMultiChartData: Chart.ChartDataSets[] = [];
+  public cancellationRatioMultiChartData: ChartDataset[] = [];
   public cancellationRatioMultiChartLabels: string[] = [];
   public cancellationRatioTotal: number = 0;
   public cancellationRatioPrevTotal: number = 0;
@@ -1773,7 +1812,7 @@ export class FrontDeskComponent implements AfterViewInit {
               ).map(([, items]) => {
                 const data: number[] = [];
                 const colors: string[] = [];
-                items.forEach((item, index) => {
+                (<any>items).forEach((item, index) => {
                   data.push(_.round(parseFloat(item.cancel_ratio), 1));
                   colors.push(index % 2 == 1 ? '#119582' : '#ffb4b5');
                 });
@@ -2920,7 +2959,7 @@ export class FrontDeskComponent implements AfterViewInit {
   public isLoadingCancellationRatioTrendChartData: boolean = false;
   public isCancellationRatioTrendMultiChartVisible: boolean = false;
   public cancellationRatioTrendChartLabels: string[] = [];
-  public cancellationRatioTrendChartData: Chart.ChartDataSets[] = [];
+  public cancellationRatioTrendChartData: ChartDataset[] = [];
 
   private getCancellationRatioTrend() {
     this.isLoadingCancellationRatioTrendChartData = true;

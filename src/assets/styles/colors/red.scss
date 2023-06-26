@@ -5,15 +5,26 @@ Email: niravjoshi87@gmail.com
 File: scss
 */
 
-@import '~@angular/material/theming';
-
+@use '@angular/material' as mat;
 /*Material Theme Colors*/
+@import '../palettes.scss';
 
-$red-app-primary: mat-palette($mat-red);
-$red-app-accent: mat-palette($mat-indigo, A200, A100, A400);
-$red-app-warn: mat-palette($mat-pink);
+$red-app-primary: mat.define-palette($red-palette);
+$red-app-accent: mat.define-palette(mat.$indigo-palette, A200, A100, A400);
+$red-app-warn: mat.define-palette(mat.$pink-palette);
 // Create the theme object (a Sass map containing all of the palettes).
-$red-app-theme: mat-light-theme($red-app-primary, $red-app-accent, $red-app-warn);
+$danger-theme: mat.define-light-theme( (
+    color: (
+        primary: $red-app-primary,
+        accent: $red-app-accent,
+        warn: $red-app-warn
+    ),
+    typography: mat.define-typography-config( 
+        $font-family: 'Gilroy-Regular'
+    ),
+    density: 0,
+));
+
 $themecolor:#F44336;
 $themecolor-alt: #E53935;
 $white:#fff;

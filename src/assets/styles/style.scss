@@ -1,4 +1,5 @@
 /*
+
 Template Name: Material Pro Admin
 Author: Themedesigner
 Email: niravjoshi87@gmail.com
@@ -16,6 +17,9 @@ File: scss
  *	7. Widgets
  *	8. Custom Templates
  */
+@use '@angular/material' as mat;
+@include mat.core();
+
 
 @import 'variable';
 
@@ -32,44 +36,43 @@ File: scss
 @import 'responsive';
 @import 'rtl';
 
+@include mat.all-component-themes($theme);
 
-// Red Theme
+// // Red Theme
+// .danger-theme {  
+// 	@import 'colors/red';
+// 	@include mat.all-component-themes($danger-theme);
+// }
 
-.danger {  
-	@import 'colors/red';
-	@include angular-material-theme($red-app-theme);
-}
+// // Blue Theme
 
-// Blue Theme
+// .blue-theme { 
+// 	@import 'colors/blue'; 
+//   	@include mat.all-component-themes($blue-theme);
+// }
 
-.blue { 
-	@import 'colors/blue'; 
-  	@include angular-material-theme($blue-app-theme);
-}
+// // Green Theme
 
-// Green Theme
+// .green-theme {  
+// 	@import 'colors/green';
+//   	@include mat.all-component-themes($green-theme);
+// }
 
-.green {  
-	@import 'colors/green';
-  	@include angular-material-theme($green-app-theme);
-}
+// // Dark Theme
 
-// Dark Theme
-
-.dark { 
-	@import 'colors/dark'; 
-  	@include angular-material-theme($dark-theme); 
-}
+// .dark-theme { 
+// 	@import 'colors/dark'; 
+//   	@include mat.all-component-themes($dark-theme); 
+// }
   
 .ngx-datepicker-calendar-container {
     z-index: 999;
 }
 .customRange {
-
     position: absolute;
-
 }
-$custom-typography: mat-typography-config( 
-  $font-family: 'Gilroy-Regular'
-); 
-@include mat-core($custom-typography);
+// $custom-typography: mat-typography-config( 
+//   $font-family: 'Gilroy-Regular'
+// ); 
+// @include mat-core($custom-typography);
+

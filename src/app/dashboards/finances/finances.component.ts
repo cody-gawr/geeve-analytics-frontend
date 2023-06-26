@@ -15,7 +15,7 @@ import { CookieService } from 'ngx-cookie';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
-import { PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
+// import { PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 import { map, takeUntil } from 'rxjs/operators';
 import { ChartService } from '../chart.service';
 import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
@@ -24,9 +24,10 @@ import { ChartstipsService } from '../../shared/chartstips.service';
 import { environment } from '../../../environments/environment';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import * as _ from 'lodash';
-import * as Chart from 'chart.js';
+import {Chart, ChartDataset, ChartOptions, LegendOptions, LegendItem, TooltipItem, ChartType, BarControllerChartOptions, ChartTypeRegistry, Plugin} from 'chart.js';
 import * as moment from 'moment';
 import { LocalStorageService } from '../../shared/local-storage.service';
+import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -140,12 +141,12 @@ export class FinancesComponent implements AfterViewInit {
   doughnut = false;
   arcWidth = 0.75;
   rangeFillOpacity = 0.75;
-  pluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
+  pluginObservable$: Observable<Plugin[]>;
   totalDiscountPluginObservable$: Observable<
-    PluginServiceGlobalRegistrationAndOptions[]
+    Plugin[]
   >;
   currentOverduePluginObservable$: Observable<
-    PluginServiceGlobalRegistrationAndOptions[]
+    Plugin[]
   >;
   destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   public percentOfProductionCount$ = new BehaviorSubject<number>(99);
@@ -197,7 +198,7 @@ export class FinancesComponent implements AfterViewInit {
     this.getAllClinics();
   }
 
-  public stackLegendGenerator: Chart.ChartLegendOptions = {
+  public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
     display: true,
     position: 'bottom',
     labels: {
@@ -207,7 +208,7 @@ export class FinancesComponent implements AfterViewInit {
         let labels = [];
         let bg_color = {};
         chart.data.datasets.forEach((item) => {
-          item.data.forEach((val) => {
+          item.data.forEach((val: number) => {
             if (val > 0) {
               labels.push(item.label);
               bg_color[item.label] = item.backgroundColor;
@@ -223,7 +224,7 @@ export class FinancesComponent implements AfterViewInit {
         }));
       }
     },
-    onClick: (event: MouseEvent, legendItem: Chart.ChartLegendLabelItem) => {}
+    // onClick: (event: MouseEvent, legendItem: LegendItem) => {}
   };
   private warningMessage: string;
   async initiate_clinic() {
@@ -597,27 +598,24 @@ export class FinancesComponent implements AfterViewInit {
     const regex = /\w+\s\w+(?=\s)|\w+/g;
     return name.toString().trim().match(regex);
   }
-  public barChartOptionsTrend: any = {
-    scaleShowVerticalLines: false,
-    cornerRadius: 60,
+  public barChartOptionsTrend: ChartOptions = {
+    // scaleShowVerticalLines: false,
+    // cornerRadius: 60,
     hover: { mode: null },
-    curvature: 1,
+    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine'
     },
     responsive: true,
     maintainAspectRatio: false,
-    scaleStartValue: 0,
+    // scaleStartValue: 0,
     scales: {
-      xAxes: [
+      x: 
         {
-          stacked: true
-        },
-        {
-          gridLines: {
+          grid: {
             display: true,
-            offsetGridLines: true
+            offset: true
           },
           ticks: {
             autoSkip: false
@@ -625,15 +623,14 @@ export class FinancesComponent implements AfterViewInit {
           display: false,
           offset: true,
           stacked: true
-        }
-      ],
-      yAxes: [
+        },
+      y: 
         {
           suggestedMin: 0,
+          min: 0,
+          beginAtZero: true,
           ticks: {
-            min: 0,
-            beginAtZero: true,
-            userCallback: (label, index, labels) => {
+            callback: (label: number, index, labels) => {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return '$' + this.decimalPipe.transform(label);
@@ -641,63 +638,63 @@ export class FinancesComponent implements AfterViewInit {
             }
           }
         }
-      ]
     },
-    tooltips: {
-      mode: 'x-axis',
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        // disable displaying the color box;
-        tooltip.displayColors = false;
-      },
-      callbacks: {
-        // use label callback to return the desired label
-        label: (tooltipItem, data) => {
-          const v =
-            data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-          let Tlable = data.datasets[tooltipItem.datasetIndex].label;
-          if (Tlable != '') {
-            Tlable = Tlable + ': ';
-          }
-          let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-          if (ylable == 0 && Tlable == 'Target: ') {
-            //return  Tlable + this.splitName(tooltipItem.xLabel).join(' ');
-          } else {
-            return (
-              Tlable +
-              this.splitName(tooltipItem.xLabel).join(' ') +
-              ': $' +
-              ylable
-            );
-          }
+    plugins: {
+      tooltip: {
+        mode: 'x',
+        displayColors(ctx, options) {
+          return !ctx.tooltip;
         },
-        // remove title
-        title: function (tooltipItem, data) {
-          return;
+        callbacks: {
+          // use label callback to return the desired label
+          label: (tooltipItem) => {
+            const v =
+            tooltipItem.dataset[tooltipItem.datasetIndex].data[tooltipItem.dataIndex];
+            let Tlable = tooltipItem.dataset[tooltipItem.datasetIndex].label;
+            if (Tlable != '') {
+              Tlable = Tlable + ': ';
+            }
+            let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            if (ylable == 0 && Tlable == 'Target: ') {
+              //return  Tlable + this.splitName(tooltipItem.xLabel).join(' ');
+            } else {
+              return (
+                Tlable +
+                this.splitName(tooltipItem.label).join(' ') +
+                ': $' +
+                ylable
+              );
+            }
+          },
+          // remove title
+          title: function (tooltipItem) {
+            return;
+          }
+        }
+      },
+      legend: {
+        position: 'top',
+        onClick: function (e, legendItem) {
+          var index = legendItem.datasetIndex;
+          var ci = this.chart;
+          if (index == 0) {
+            ci.getDatasetMeta(1).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
+          } else if (index == 1) {
+            ci.getDatasetMeta(0).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
+          }
+          ci.update();
         }
       }
     },
-    legend: {
-      position: 'top',
-      onClick: function (e, legendItem) {
-        var index = legendItem.datasetIndex;
-        var ci = this.chart;
-        if (index == 0) {
-          ci.getDatasetMeta(1).hidden = true;
-          ci.getDatasetMeta(index).hidden = false;
-        } else if (index == 1) {
-          ci.getDatasetMeta(0).hidden = true;
-          ci.getDatasetMeta(index).hidden = false;
-        }
-        ci.update();
-      }
-    }
+
   };
   public date = new Date();
   public lineChartOptions: any = { responsive: true };
 
   dentists: Dentist[] = [{ providerId: 'all', name: 'All Dentists' }];
-  public stackedChartOptions: any = {
+  public stackedChartOptions: ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -706,28 +703,28 @@ export class FinancesComponent implements AfterViewInit {
         hoverBorderWidth: 7
       }
     },
-    scaleShowVerticalLines: false,
+    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
+    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: true,
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           stacked: true,
           ticks: {
-            userCallback: function (label, index, labels) {
+            callback: function (label: number, index, labels) {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 let currency =
@@ -740,158 +737,162 @@ export class FinancesComponent implements AfterViewInit {
             }
           }
         }
-      ]
+      
     },
-    legend: {
-      display: true
-    },
-    tooltips: {
-      mode: 'x-axis',
-      enabled: false,
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        var tooltipEl = document.getElementById('chartjs-tooltip');
-        if (!tooltipEl) {
-          tooltipEl = document.createElement('div');
-          tooltipEl.id = 'chartjs-tooltip';
-          tooltipEl.style.backgroundColor = '#FFFFFF';
-          tooltipEl.style.borderColor = '#B2BABB';
-          tooltipEl.style.borderWidth = 'thin';
-          tooltipEl.style.borderStyle = 'solid';
-          tooltipEl.style.zIndex = '999999';
-          tooltipEl.style.backgroundColor = '#000000';
-          tooltipEl.style.color = '#FFFFFF';
-          document.body.appendChild(tooltipEl);
-        }
-        if (tooltip.opacity === 0) {
-          tooltipEl.style.opacity = '0';
-          return;
-        } else {
-          tooltipEl.style.opacity = '0.8';
-        }
-
-        tooltipEl.classList.remove('above', 'below', 'no-transform');
-        if (tooltip.yAlign) {
-          tooltipEl.classList.add(tooltip.yAlign);
-        } else {
-          tooltipEl.classList.add('no-transform');
-        }
-
-        function getBody(bodyItem) {
-          return bodyItem.lines;
-        }
-        if (tooltip.body) {
-          var titleLines = tooltip.title || [];
-          var bodyLines = tooltip.body.map(getBody);
-          var labelColorscustom = tooltip.labelColors;
-          var innerHtml = '<table><thead>';
-          innerHtml += '</thead><tbody>';
-
-          let total: any = 0;
-          bodyLines.forEach(function (body, i) {
-            if (!body[0].includes('$0')) {
-              var singleval = body[0].split(':');
-              if (singleval[1].includes('-')) {
-                var temp = singleval[1].split('$');
-                var amount = '0';
-                if(temp.length > 1 ){
-                  amount = temp[1].replace(/,/g, '');
-                }
-                
-                total -= parseFloat(amount);
-              } else {
-                var temp = singleval[1].split('$');
-                var amount = '0';
-                if(temp.length > 1){
-                  amount = temp[1].replace(/,/g, '');
-                }
-                total += parseFloat(amount);
-              }
-            }
-          });
-          total = Math.round(total);
-          if (total != 0) {
-            var num_parts = total.toString().split('.');
-            num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            total = num_parts.join('.');
-          }
-          titleLines.forEach(function (title) {
-            innerHtml +=
-              '<tr><th colspan="2" style="text-align: left;">' +
-              title +
-              ': $' +
-              total +
-              '</th></tr>';
-          });
-          bodyLines.forEach(function (body, i) {
-            if (!body[0].includes('$0')) {
-              var body_custom = body[0];
-              body_custom = body_custom.split(':');
-              const lastIndex = body_custom.length - 1;
-              if (body_custom[lastIndex].includes('-')) {
-                var temp_ = body_custom[lastIndex].split('$');
-                temp_[1] = Math.round(temp_.length > 1? temp_[1].replace(/,/g, ''): 0);
-                temp_[1] = temp_[1].toString();
-                temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[lastIndex] = temp_.join('$');
-              } else {
-                var temp_ = body_custom[lastIndex].split('$');
-                temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
-                temp_[1] = temp_[1].toString();
-                temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[lastIndex] = temp_.join('$');
-              }
-
-              body[0] = body_custom.join(':');
-              innerHtml +=
-                '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
-                labelColorscustom[i].backgroundColor +
-                '"></span></td><td style="padding: 0px">' +
-                body[0] +
-                '</td></tr>';
-            }
-          });
-          innerHtml += '</tbody></table>';
-          tooltipEl.innerHTML = innerHtml;
-          //tableRoot.innerHTML = innerHtml;
-        }
-        // disable displaying the color box;
-        var position = this._chart.canvas.getBoundingClientRect();
-        // Display, position, and set styles for font
-        tooltipEl.style.position = 'fixed';
-        tooltipEl.style.left =
-          position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
-        tooltipEl.style.top =
-          position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
-        tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
-        tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
-        tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-        tooltipEl.style.padding =
-          tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
-        tooltipEl.style.pointerEvents = 'none';
-        tooltip.displayColors = false;
+    plugins: {
+      legend: {
+        display: true
       },
-      callbacks: {
-        label: function (tooltipItems, data) {
-          let currency = tooltipItems.yLabel.toString();
-          currency = currency.split('.');
-          currency[0] = currency[0]
-            .split('-')
-            .join('')
-            .split(/(?=(?:...)*$)/)
-            .join(',');
-          currency = currency.join('.');
-
-          return (
-            data.datasets[tooltipItems.datasetIndex].label +
-            `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`
-          );
+      tooltip: {
+        mode: 'x',
+        enabled: false,
+        external: function (t) {
+          const tooltip = t.tooltip;
+          if (!tooltip) return;
+          var tooltipEl = document.getElementById('chartjs-tooltip');
+          if (!tooltipEl) {
+            tooltipEl = document.createElement('div');
+            tooltipEl.id = 'chartjs-tooltip';
+            tooltipEl.style.backgroundColor = '#FFFFFF';
+            tooltipEl.style.borderColor = '#B2BABB';
+            tooltipEl.style.borderWidth = 'thin';
+            tooltipEl.style.borderStyle = 'solid';
+            tooltipEl.style.zIndex = '999999';
+            tooltipEl.style.backgroundColor = '#000000';
+            tooltipEl.style.color = '#FFFFFF';
+            document.body.appendChild(tooltipEl);
+          }
+          if (tooltip.opacity === 0) {
+            tooltipEl.style.opacity = '0';
+            return;
+          } else {
+            tooltipEl.style.opacity = '0.8';
+          }
+  
+          tooltipEl.classList.remove('above', 'below', 'no-transform');
+          if (tooltip.yAlign) {
+            tooltipEl.classList.add(tooltip.yAlign);
+          } else {
+            tooltipEl.classList.add('no-transform');
+          }
+  
+          function getBody(bodyItem) {
+            return bodyItem.lines;
+          }
+          if (tooltip.body) {
+            var titleLines = tooltip.title || [];
+            var bodyLines = tooltip.body.map(getBody);
+            var labelColorscustom = tooltip.labelColors;
+            var innerHtml = '<table><thead>';
+            innerHtml += '</thead><tbody>';
+  
+            let total: any = 0;
+            bodyLines.forEach(function (body, i) {
+              if (!body[0].includes('$0')) {
+                var singleval = body[0].split(':');
+                if (singleval[1].includes('-')) {
+                  var temp = singleval[1].split('$');
+                  var amount = '0';
+                  if(temp.length > 1 ){
+                    amount = temp[1].replace(/,/g, '');
+                  }
+                  
+                  total -= parseFloat(amount);
+                } else {
+                  var temp = singleval[1].split('$');
+                  var amount = '0';
+                  if(temp.length > 1){
+                    amount = temp[1].replace(/,/g, '');
+                  }
+                  total += parseFloat(amount);
+                }
+              }
+            });
+            total = Math.round(total);
+            if (total != 0) {
+              var num_parts = total.toString().split('.');
+              num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+              total = num_parts.join('.');
+            }
+            titleLines.forEach(function (title) {
+              innerHtml +=
+                '<tr><th colspan="2" style="text-align: left;">' +
+                title +
+                ': $' +
+                total +
+                '</th></tr>';
+            });
+            bodyLines.forEach(function (body, i) {
+              if (!body[0].includes('$0')) {
+                var body_custom = body[0];
+                body_custom = body_custom.split(':');
+                const lastIndex = body_custom.length - 1;
+                if (body_custom[lastIndex].includes('-')) {
+                  var temp_ = body_custom[lastIndex].split('$');
+                  temp_[1] = Math.round(temp_.length > 1? temp_[1].replace(/,/g, ''): 0);
+                  temp_[1] = temp_[1].toString();
+                  temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
+                  body_custom[lastIndex] = temp_.join('$');
+                } else {
+                  var temp_ = body_custom[lastIndex].split('$');
+                  temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
+                  temp_[1] = temp_[1].toString();
+                  temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
+                  body_custom[lastIndex] = temp_.join('$');
+                }
+  
+                body[0] = body_custom.join(':');
+                innerHtml +=
+                  '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
+                  labelColorscustom[i].backgroundColor +
+                  '"></span></td><td style="padding: 0px">' +
+                  body[0] +
+                  '</td></tr>';
+              }
+            });
+            innerHtml += '</tbody></table>';
+            tooltipEl.innerHTML = innerHtml;
+            //tableRoot.innerHTML = innerHtml;
+          }
+          // disable displaying the color box;
+          var position = t.chart.canvas.getBoundingClientRect();
+          // Display, position, and set styles for font
+          tooltipEl.style.position = 'fixed';
+          tooltipEl.style.left =
+            position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
+          tooltipEl.style.top =
+            position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
+          // tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
+          // tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
+          // tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
+          // tooltipEl.style.padding =
+          //   tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+          tooltipEl.style.pointerEvents = 'none';
+        },
+        displayColors: false,
+        callbacks: {
+          label: function (tooltipItems) {
+            let currency:any = tooltipItems.formattedValue.toString();
+            currency = currency.split('.');
+            currency[0] = currency[0]
+              .split('-')
+              .join('')
+              .split(/(?=(?:...)*$)/)
+              .join(',');
+            currency = currency.join('.');
+  
+            return (
+              tooltipItems.dataset[tooltipItems.datasetIndex].label +
+              `: ${parseInt(tooltipItems.formattedValue) < 0 ? '- $' : '$'}${currency}`
+            );
+          }
         }
       }
-    }
+    },
+
   };
 
-  public stackedChartOptionsDiscount: any = {
+  public stackedChartOptionsDiscount: ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -900,28 +901,28 @@ export class FinancesComponent implements AfterViewInit {
         hoverBorderWidth: 7
       }
     },
-    scaleShowVerticalLines: false,
+    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
+    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: true,
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           stacked: true,
           ticks: {
-            userCallback: function (label, index, labels) {
+            callback: function (label: number, index, labels) {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 let currency =
@@ -934,148 +935,152 @@ export class FinancesComponent implements AfterViewInit {
             }
           }
         }
-      ]
+      
     },
-    legend: this.stackLegendGenerator,
-    tooltips: {
-      mode: 'x-axis',
-      enabled: false,
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        var tooltipEl = document.getElementById('chartjs-tooltip');
-        if (!tooltipEl) {
-          tooltipEl = document.createElement('div');
-          tooltipEl.id = 'chartjs-tooltip';
-          tooltipEl.style.backgroundColor = '#FFFFFF';
-          tooltipEl.style.borderColor = '#B2BABB';
-          tooltipEl.style.borderWidth = 'thin';
-          tooltipEl.style.borderStyle = 'solid';
-          tooltipEl.style.zIndex = '999999';
-          tooltipEl.style.backgroundColor = '#000000';
-          tooltipEl.style.color = '#FFFFFF';
-          document.body.appendChild(tooltipEl);
-        }
-        if (tooltip.opacity === 0) {
-          tooltipEl.style.opacity = '0';
-          return;
-        } else {
-          tooltipEl.style.opacity = '0.8';
-        }
-
-        tooltipEl.classList.remove('above', 'below', 'no-transform');
-        if (tooltip.yAlign) {
-          tooltipEl.classList.add(tooltip.yAlign);
-        } else {
-          tooltipEl.classList.add('no-transform');
-        }
-
-        function getBody(bodyItem) {
-          return bodyItem.lines;
-        }
-        if (tooltip.body) {
-          var titleLines = tooltip.title || [];
-          var bodyLines = tooltip.body.map(getBody);
-          var labelColorscustom = tooltip.labelColors;
-          var innerHtml = '<table><thead>';
-          innerHtml += '</thead><tbody>';
-
-          let total: any = 0;
-          bodyLines.forEach(function (body, i) {
-            if (!body[0].includes('$0')) {
-              var singleval = body[0].split(':');
-              if (singleval[1].includes('-')) {
-                var temp = singleval[1].split('$');
-                var amount = temp[1]?.replace(/,/g, '');
-                total -= parseFloat(amount??'0');
-              } else {
-                var temp = singleval[1].split('$');
-                var amount = temp[1]?.replace(/,/g, '');
-                total += parseFloat(amount??'0');
-              }
-            }
-          });
-          total = Math.round(total);
-          if (total != 0) {
-            var num_parts = total.toString().split('.');
-            num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            total = num_parts.join('.');
+    plugins: {
+      legend: this.stackLegendGenerator,
+      tooltip: {
+        mode: 'x',
+        enabled: false,
+        external: function (t) {
+          const tooltip = t.tooltip;
+          if (!tooltip) return;
+          var tooltipEl = document.getElementById('chartjs-tooltip');
+          if (!tooltipEl) {
+            tooltipEl = document.createElement('div');
+            tooltipEl.id = 'chartjs-tooltip';
+            tooltipEl.style.backgroundColor = '#FFFFFF';
+            tooltipEl.style.borderColor = '#B2BABB';
+            tooltipEl.style.borderWidth = 'thin';
+            tooltipEl.style.borderStyle = 'solid';
+            tooltipEl.style.zIndex = '999999';
+            tooltipEl.style.backgroundColor = '#000000';
+            tooltipEl.style.color = '#FFFFFF';
+            document.body.appendChild(tooltipEl);
           }
-          titleLines.forEach(function (title) {
-            innerHtml +=
-              '<tr><th colspan="2" style="text-align: left;">' +
-              title +
-              ': $' +
-              total +
-              '</th></tr>';
-          });
-          bodyLines.forEach(function (body, i) {
-            if (!body[0].includes('$0')) {
-              var body_custom = body[0];
-              body_custom = body_custom.split(':');
-              const lastIndex = body_custom.length - 1;
-              if (body_custom[lastIndex].includes('-')) {
-                var temp_ = body_custom[lastIndex].split('$');
-                temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
-                temp_[1] = temp_[1].toString();
-                temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[lastIndex] = temp_.join('$');
-              } else {
-                var temp_ = body_custom[lastIndex].split('$');
-                temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
-                temp_[1] = temp_[1].toString();
-                temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[lastIndex] = temp_.join('$');
+          if (tooltip.opacity === 0) {
+            tooltipEl.style.opacity = '0';
+            return;
+          } else {
+            tooltipEl.style.opacity = '0.8';
+          }
+  
+          tooltipEl.classList.remove('above', 'below', 'no-transform');
+          if (tooltip.yAlign) {
+            tooltipEl.classList.add(tooltip.yAlign);
+          } else {
+            tooltipEl.classList.add('no-transform');
+          }
+  
+          function getBody(bodyItem) {
+            return bodyItem.lines;
+          }
+          if (tooltip.body) {
+            var titleLines = tooltip.title || [];
+            var bodyLines = tooltip.body.map(getBody);
+            var labelColorscustom = tooltip.labelColors;
+            var innerHtml = '<table><thead>';
+            innerHtml += '</thead><tbody>';
+  
+            let total: any = 0;
+            bodyLines.forEach(function (body, i) {
+              if (!body[0].includes('$0')) {
+                var singleval = body[0].split(':');
+                if (singleval[1].includes('-')) {
+                  var temp = singleval[1].split('$');
+                  var amount = temp[1]?.replace(/,/g, '');
+                  total -= parseFloat(amount??'0');
+                } else {
+                  var temp = singleval[1].split('$');
+                  var amount = temp[1]?.replace(/,/g, '');
+                  total += parseFloat(amount??'0');
+                }
               }
-
-              body[0] = body_custom.join(':');
-              innerHtml +=
-                '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
-                labelColorscustom[i].backgroundColor +
-                '"></span></td><td style="padding: 0px">' +
-                body[0] +
-                '</td></tr>';
+            });
+            total = Math.round(total);
+            if (total != 0) {
+              var num_parts = total.toString().split('.');
+              num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+              total = num_parts.join('.');
             }
-          });
-          innerHtml += '</tbody></table>';
-          tooltipEl.innerHTML = innerHtml;
-          //tableRoot.innerHTML = innerHtml;
-        }
-        // disable displaying the color box;
-        var position = this._chart.canvas.getBoundingClientRect();
-        // Display, position, and set styles for font
-        tooltipEl.style.position = 'fixed';
-        tooltipEl.style.left =
-          position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
-        tooltipEl.style.top =
-          position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
-        tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
-        tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
-        tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-        tooltipEl.style.padding =
-          tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
-        tooltipEl.style.pointerEvents = 'none';
-        tooltip.displayColors = false;
-      },
-      callbacks: {
-        label: function (tooltipItems, data) {
-          let currency = tooltipItems.yLabel.toString();
-          currency = currency.split('.');
-          currency[0] = currency[0]
-            .split('-')
-            .join('')
-            .split(/(?=(?:...)*$)/)
-            .join(',');
-          currency = currency.join('.');
-          return (
-            data.datasets[tooltipItems.datasetIndex].label +
-            `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`
-          );
+            titleLines.forEach(function (title) {
+              innerHtml +=
+                '<tr><th colspan="2" style="text-align: left;">' +
+                title +
+                ': $' +
+                total +
+                '</th></tr>';
+            });
+            bodyLines.forEach(function (body, i) {
+              if (!body[0].includes('$0')) {
+                var body_custom = body[0];
+                body_custom = body_custom.split(':');
+                const lastIndex = body_custom.length - 1;
+                if (body_custom[lastIndex].includes('-')) {
+                  var temp_ = body_custom[lastIndex].split('$');
+                  temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
+                  temp_[1] = temp_[1].toString();
+                  temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
+                  body_custom[lastIndex] = temp_.join('$');
+                } else {
+                  var temp_ = body_custom[lastIndex].split('$');
+                  temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
+                  temp_[1] = temp_[1].toString();
+                  temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
+                  body_custom[lastIndex] = temp_.join('$');
+                }
+  
+                body[0] = body_custom.join(':');
+                innerHtml +=
+                  '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
+                  labelColorscustom[i].backgroundColor +
+                  '"></span></td><td style="padding: 0px">' +
+                  body[0] +
+                  '</td></tr>';
+              }
+            });
+            innerHtml += '</tbody></table>';
+            tooltipEl.innerHTML = innerHtml;
+            //tableRoot.innerHTML = innerHtml;
+          }
+          // disable displaying the color box;
+          var position = t.chart.canvas.getBoundingClientRect();
+          // Display, position, and set styles for font
+          tooltipEl.style.position = 'fixed';
+          tooltipEl.style.left =
+            position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
+          tooltipEl.style.top =
+            position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
+          // tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
+          // tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
+          // tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
+          // tooltipEl.style.padding =
+          //   tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+          tooltipEl.style.pointerEvents = 'none';
+        },
+        displayColors: false,
+        callbacks: {
+          label: function (tooltipItems) {
+            let currency: any = tooltipItems.formattedValue.toString();
+            currency = currency.split('.');
+            currency[0] = currency[0]
+              .split('-')
+              .join('')
+              .split(/(?=(?:...)*$)/)
+              .join(',');
+            currency = currency.join('.');
+            return (
+              tooltipItems.dataset[tooltipItems.datasetIndex].label +
+              `: ${parseInt(tooltipItems.formattedValue) < 0 ? '- $' : '$'}${currency}`
+            );
+          }
         }
       }
-    }
+    },
+
   };
 
-  public labelBarOptionsMultiTC: Chart.ChartOptions = {
+  public labelBarOptionsMultiTC: ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -1091,15 +1096,14 @@ export class FinancesComponent implements AfterViewInit {
       easing: 'easeOutSine'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: true,
           ticks: {
             autoSkip: false
           }
-        }
-      ],
-      yAxes: [
+        },
+      y: 
         {
           stacked: true,
           ticks: {
@@ -1114,145 +1118,282 @@ export class FinancesComponent implements AfterViewInit {
             }
           }
         }
-      ]
     },
-    legend: this.stackLegendGenerator,
-    tooltips: {
-      mode: 'x-axis',
-      enabled: false,
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        var tooltipEl = document.getElementById('chartjs-tooltip');
-        if (!tooltipEl) {
-          tooltipEl = document.createElement('div');
-          tooltipEl.id = 'chartjs-tooltip';
-          tooltipEl.style.backgroundColor = '#FFFFFF';
-          tooltipEl.style.borderColor = '#B2BABB';
-          tooltipEl.style.borderWidth = 'thin';
-          tooltipEl.style.borderStyle = 'solid';
-          tooltipEl.style.zIndex = '999999';
-          tooltipEl.style.backgroundColor = '#000000';
-          tooltipEl.style.color = '#FFFFFF';
-          document.body.appendChild(tooltipEl);
-        }
-        if (tooltip.opacity === 0) {
-          tooltipEl.style.opacity = '0';
-          return;
-        } else {
-          tooltipEl.style.opacity = '0.8';
-        }
-
-        tooltipEl.classList.remove('above', 'below', 'no-transform');
-        if (tooltip.yAlign) {
-          tooltipEl.classList.add(tooltip.yAlign);
-        } else {
-          tooltipEl.classList.add('no-transform');
-        }
-
-        function getBody(bodyItem) {
-          return bodyItem.lines;
-        }
-        if (tooltip.body) {
-          var titleLines = tooltip.title || [];
-          var bodyLines = tooltip.body.map(getBody);
-          var labelColorscustom = tooltip.labelColors;
-          var innerHtml = '<table><thead>';
-          innerHtml += '</thead><tbody>';
-
-          let total: any = 0;
-          bodyLines.forEach(function (body, i) {
-            if (!body[0].includes('$0')) {
-              var singleval = body[0].split(':');
-              if (singleval[1].includes('-')) {
-                var temp = singleval[1].split('$');
-                var amount = temp[1]?.replace(/,/g, '');
-                total -= parseFloat(amount??'0');
-              } else {
-                var temp = singleval[1].split('$');
-                var amount = temp[1]?.replace(/,/g, '');
-                total += parseFloat(amount??'0');
-              }
-            }
-          });
-          total = Math.round(total);
-          if (total != 0) {
-            var num_parts = total.toString().split('.');
-            num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            total = num_parts.join('.');
+    plugins: {
+      
+      legend: this.stackLegendGenerator,
+      tooltip: {
+        mode: 'x',
+        enabled: false,
+        external: function (tooltipChart) {
+          const tooltip = tooltipChart.tooltip;
+          if (!tooltip) return;
+          var tooltipEl = document.getElementById('chartjs-tooltip');
+          if (!tooltipEl) {
+            tooltipEl = document.createElement('div');
+            tooltipEl.id = 'chartjs-tooltip';
+            tooltipEl.style.backgroundColor = '#FFFFFF';
+            tooltipEl.style.borderColor = '#B2BABB';
+            tooltipEl.style.borderWidth = 'thin';
+            tooltipEl.style.borderStyle = 'solid';
+            tooltipEl.style.zIndex = '999999';
+            tooltipEl.style.backgroundColor = '#000000';
+            tooltipEl.style.color = '#FFFFFF';
+            document.body.appendChild(tooltipEl);
           }
-          titleLines.forEach(function (title) {
-            innerHtml +=
-              '<tr><th colspan="2" style="text-align: left;">' +
-              title +
-              ': $' +
-              total +
-              '</th></tr>';
-          });
-          bodyLines.forEach(function (body, i) {
-            if (!body[0].includes('$0')) {
-              var body_custom = body[0];
-              body_custom = body_custom.split(':');
-              const lastIndex = body_custom.length - 1;
-              if (body_custom[lastIndex].includes('-')) {
-                var temp_ = body_custom[lastIndex].split('$');
-                temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
-                temp_[1] = temp_[1].toString();
-                temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[lastIndex] = temp_.join('$');
-              } else {
-                var temp_ = body_custom[lastIndex].split('$');
-                temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
-                temp_[1] = temp_[1].toString();
-                temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-                body_custom[lastIndex] = temp_.join('$');
+          if (tooltip.opacity === 0) {
+            tooltipEl.style.opacity = '0';
+            return;
+          } else {
+            tooltipEl.style.opacity = '0.8';
+          }
+  
+          tooltipEl.classList.remove('above', 'below', 'no-transform');
+          if (tooltip.yAlign) {
+            tooltipEl.classList.add(tooltip.yAlign);
+          } else {
+            tooltipEl.classList.add('no-transform');
+          }
+  
+          function getBody(bodyItem) {
+            return bodyItem.lines;
+          }
+          if (tooltip.body) {
+            var titleLines = tooltip.title || [];
+            var bodyLines = tooltip.body.map(getBody);
+            var labelColorscustom = tooltip.labelColors;
+            var innerHtml = '<table><thead>';
+            innerHtml += '</thead><tbody>';
+  
+            let total: any = 0;
+            bodyLines.forEach(function (body, i) {
+              if (!body[0].includes('$0')) {
+                var singleval = body[0].split(':');
+                if (singleval[1].includes('-')) {
+                  var temp = singleval[1].split('$');
+                  var amount = temp[1]?.replace(/,/g, '');
+                  total -= parseFloat(amount??'0');
+                } else {
+                  var temp = singleval[1].split('$');
+                  var amount = temp[1]?.replace(/,/g, '');
+                  total += parseFloat(amount??'0');
+                }
               }
-
-              body[0] = body_custom.join(':');
-              innerHtml +=
-                '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
-                labelColorscustom[i].backgroundColor +
-                '"></span></td><td style="padding: 0px">' +
-                body[0] +
-                '</td></tr>';
+            });
+            total = Math.round(total);
+            if (total != 0) {
+              var num_parts = total.toString().split('.');
+              num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+              total = num_parts.join('.');
             }
-          });
-          innerHtml += '</tbody></table>';
-          tooltipEl.innerHTML = innerHtml;
-          //tableRoot.innerHTML = innerHtml;
-        }
-        // disable displaying the color box;
-        var position = this._chart.canvas.getBoundingClientRect();
-        // Display, position, and set styles for font
-        tooltipEl.style.position = 'fixed';
-        tooltipEl.style.left =
-          position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
-        tooltipEl.style.top =
-          position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
-        tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
-        tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
-        tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-        tooltipEl.style.padding =
-          tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
-        tooltipEl.style.pointerEvents = 'none';
-        tooltip.displayColors = false;
-      },
-      callbacks: {
-        label: function (tooltipItems, data) {
-          const currency = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0
-          }).format(Number(tooltipItems.yLabel.toString()));
-          return `${
-            data.datasets[tooltipItems.datasetIndex].label
-          }: ${currency}`;
+            titleLines.forEach(function (title) {
+              innerHtml +=
+                '<tr><th colspan="2" style="text-align: left;">' +
+                title +
+                ': $' +
+                total +
+                '</th></tr>';
+            });
+            bodyLines.forEach(function (body, i) {
+              if (!body[0].includes('$0')) {
+                var body_custom = body[0];
+                body_custom = body_custom.split(':');
+                const lastIndex = body_custom.length - 1;
+                if (body_custom[lastIndex].includes('-')) {
+                  var temp_ = body_custom[lastIndex].split('$');
+                  temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
+                  temp_[1] = temp_[1].toString();
+                  temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
+                  body_custom[lastIndex] = temp_.join('$');
+                } else {
+                  var temp_ = body_custom[lastIndex].split('$');
+                  temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
+                  temp_[1] = temp_[1].toString();
+                  temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
+                  body_custom[lastIndex] = temp_.join('$');
+                }
+  
+                body[0] = body_custom.join(':');
+                innerHtml +=
+                  '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
+                  labelColorscustom[i].backgroundColor +
+                  '"></span></td><td style="padding: 0px">' +
+                  body[0] +
+                  '</td></tr>';
+              }
+            });
+            innerHtml += '</tbody></table>';
+            tooltipEl.innerHTML = innerHtml;
+            //tableRoot.innerHTML = innerHtml;
+          }
+          // disable displaying the color box;
+          var position = tooltipChart.chart.canvas.getBoundingClientRect();
+          // Display, position, and set styles for font
+          tooltipEl.style.position = 'fixed';
+          tooltipEl.style.left =
+            position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
+          tooltipEl.style.top =
+            position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
+          // tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
+          // tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
+          // tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
+          // tooltipEl.style.padding =
+          //   tooltip.yPadding + 'px ' + tooltip. + 'px';
+          tooltipEl.style.pointerEvents = 'none';
+        },
+        displayColors: false,
+        callbacks: {
+          label: function (tooltipItem) {
+            const currency = new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'USD',
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0
+            }).format(Number(tooltipItem.formattedValue));
+            return `${
+              tooltipItem.dataset[tooltipItem.datasetIndex].label
+            }: ${currency}`;
+          }
         }
       }
     }
+    // legend: this.stackLegendGenerator,
+    // tooltips: {
+    //   mode: 'x-axis',
+    //   enabled: false,
+    //   custom: function (tooltip) {
+    //     if (!tooltip) return;
+    //     var tooltipEl = document.getElementById('chartjs-tooltip');
+    //     if (!tooltipEl) {
+    //       tooltipEl = document.createElement('div');
+    //       tooltipEl.id = 'chartjs-tooltip';
+    //       tooltipEl.style.backgroundColor = '#FFFFFF';
+    //       tooltipEl.style.borderColor = '#B2BABB';
+    //       tooltipEl.style.borderWidth = 'thin';
+    //       tooltipEl.style.borderStyle = 'solid';
+    //       tooltipEl.style.zIndex = '999999';
+    //       tooltipEl.style.backgroundColor = '#000000';
+    //       tooltipEl.style.color = '#FFFFFF';
+    //       document.body.appendChild(tooltipEl);
+    //     }
+    //     if (tooltip.opacity === 0) {
+    //       tooltipEl.style.opacity = '0';
+    //       return;
+    //     } else {
+    //       tooltipEl.style.opacity = '0.8';
+    //     }
+
+    //     tooltipEl.classList.remove('above', 'below', 'no-transform');
+    //     if (tooltip.yAlign) {
+    //       tooltipEl.classList.add(tooltip.yAlign);
+    //     } else {
+    //       tooltipEl.classList.add('no-transform');
+    //     }
+
+    //     function getBody(bodyItem) {
+    //       return bodyItem.lines;
+    //     }
+    //     if (tooltip.body) {
+    //       var titleLines = tooltip.title || [];
+    //       var bodyLines = tooltip.body.map(getBody);
+    //       var labelColorscustom = tooltip.labelColors;
+    //       var innerHtml = '<table><thead>';
+    //       innerHtml += '</thead><tbody>';
+
+    //       let total: any = 0;
+    //       bodyLines.forEach(function (body, i) {
+    //         if (!body[0].includes('$0')) {
+    //           var singleval = body[0].split(':');
+    //           if (singleval[1].includes('-')) {
+    //             var temp = singleval[1].split('$');
+    //             var amount = temp[1]?.replace(/,/g, '');
+    //             total -= parseFloat(amount??'0');
+    //           } else {
+    //             var temp = singleval[1].split('$');
+    //             var amount = temp[1]?.replace(/,/g, '');
+    //             total += parseFloat(amount??'0');
+    //           }
+    //         }
+    //       });
+    //       total = Math.round(total);
+    //       if (total != 0) {
+    //         var num_parts = total.toString().split('.');
+    //         num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    //         total = num_parts.join('.');
+    //       }
+    //       titleLines.forEach(function (title) {
+    //         innerHtml +=
+    //           '<tr><th colspan="2" style="text-align: left;">' +
+    //           title +
+    //           ': $' +
+    //           total +
+    //           '</th></tr>';
+    //       });
+    //       bodyLines.forEach(function (body, i) {
+    //         if (!body[0].includes('$0')) {
+    //           var body_custom = body[0];
+    //           body_custom = body_custom.split(':');
+    //           const lastIndex = body_custom.length - 1;
+    //           if (body_custom[lastIndex].includes('-')) {
+    //             var temp_ = body_custom[lastIndex].split('$');
+    //             temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
+    //             temp_[1] = temp_[1].toString();
+    //             temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
+    //             body_custom[lastIndex] = temp_.join('$');
+    //           } else {
+    //             var temp_ = body_custom[lastIndex].split('$');
+    //             temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
+    //             temp_[1] = temp_[1].toString();
+    //             temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
+    //             body_custom[lastIndex] = temp_.join('$');
+    //           }
+
+    //           body[0] = body_custom.join(':');
+    //           innerHtml +=
+    //             '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
+    //             labelColorscustom[i].backgroundColor +
+    //             '"></span></td><td style="padding: 0px">' +
+    //             body[0] +
+    //             '</td></tr>';
+    //         }
+    //       });
+    //       innerHtml += '</tbody></table>';
+    //       tooltipEl.innerHTML = innerHtml;
+    //       //tableRoot.innerHTML = innerHtml;
+    //     }
+    //     // disable displaying the color box;
+    //     var position = this._chart.canvas.getBoundingClientRect();
+    //     // Display, position, and set styles for font
+    //     tooltipEl.style.position = 'fixed';
+    //     tooltipEl.style.left =
+    //       position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
+    //     tooltipEl.style.top =
+    //       position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
+    //     tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
+    //     tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
+    //     tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
+    //     tooltipEl.style.padding =
+    //       tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+    //     tooltipEl.style.pointerEvents = 'none';
+    //     tooltip.displayColors = false;
+    //   },
+    //   callbacks: {
+    //     label: function (tooltipItems, data) {
+    //       const currency = new Intl.NumberFormat('en-US', {
+    //         style: 'currency',
+    //         currency: 'USD',
+    //         minimumFractionDigits: 0,
+    //         maximumFractionDigits: 0
+    //       }).format(Number(tooltipItems.yLabel.toString()));
+    //       return `${
+    //         data.datasets[tooltipItems.datasetIndex].label
+    //       }: ${currency}`;
+    //     }
+    //   }
+    // }
   };
 
-  public labelBarOptionsMultiPercentage: Chart.ChartOptions = {
+  public labelBarOptionsMultiPercentage: ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -1268,15 +1409,14 @@ export class FinancesComponent implements AfterViewInit {
       easing: 'easeOutSine'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: true,
           ticks: {
             autoSkip: false
           }
-        }
-      ],
-      yAxes: [
+        },
+      y: 
         {
           stacked: true,
           ticks: {
@@ -1285,33 +1425,35 @@ export class FinancesComponent implements AfterViewInit {
             }
           }
         }
-      ]
     },
-    legend: {
-      display: false
-    },
-    tooltips: {
-      mode: 'x-axis',
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        // disable displaying the color box;
-        tooltip.displayColors = false;
+    plugins: {
+      legend: {
+        display: false
       },
-      callbacks: {
-        label: function (
-          tooltipItems: Chart.ChartTooltipItem,
-          data: Chart.ChartData
-        ) {
-          return `${data.datasets[tooltipItems.datasetIndex].label}: ${
-            tooltipItems.yLabel
-          }%`;
+      tooltip: {
+        displayColors: (ctx, options) => {
+          const tooltip = ctx.tooltip;
+          if (!tooltip) return true;
+          // disable displaying the color box;
+          return false
         },
-        title: () => ''
+        mode: 'x',
+        callbacks: {
+          label: (
+            tooltipItem
+          ) => {
+            return `${tooltipItem.dataset[tooltipItem.datasetIndex].label}: ${
+              tooltipItem.formattedValue
+            }%`;
+          },
+          title: () => ''
+        }
       }
     }
+
   };
 
-  public labelBarOptionsTC: Chart.ChartOptions = {
+  public labelBarOptionsTC: ChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     animation: {
@@ -1319,22 +1461,22 @@ export class FinancesComponent implements AfterViewInit {
       easing: 'easeOutSine'
     },
     scales: {
-      xAxes: [
+      x: 
         {
-          stacked: false,
-          gridLines: {
-            color: 'transparent'
-          }
-        }
-      ],
-      yAxes: [
-        {
-          stacked: false,
-          gridLines: {
+          grid: {
             color: 'transparent'
           },
+          stacked: false,
+        }
+      ,
+      y: 
+        {
+          stacked: false,
+          grid: {
+            color: 'transparent'
+          },
+          suggestedMin: 0,
           ticks: {
-            suggestedMin: 0,
             callback: function (label: string | number, index, labels) {
               // when the floored value is the same as the value we have a whole number
               return `${new Intl.NumberFormat('en-US', {
@@ -1346,30 +1488,35 @@ export class FinancesComponent implements AfterViewInit {
             },
             autoSkip: false
           }
-        }
-      ]
+        },
+        
+        
     },
-    legend: {
-      display: true
-    },
-    tooltips: {
-      mode: 'x-axis',
-      callbacks: {
-        label: function (tooltipItems, data) {
-          const currency =
-            data['datasets'][0]['data'][tooltipItems['index']].toString();
-          return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0
-          }).format(Number(currency));
+    plugins: {
+      legend: {
+        display: true
+      },
+      tooltip: {
+        mode: 'x',
+        callbacks: {
+          label: function (tooltipItems) {
+            const currency =
+            tooltipItems.dataset[0]['data'][tooltipItems.dataIndex].toString();
+            return new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'USD',
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0
+            }).format(Number(currency));
+          }
         }
       }
     }
+    
+
   };
 
-  public labelBarOptions: any = {
+  public labelBarOptions: ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -1378,28 +1525,28 @@ export class FinancesComponent implements AfterViewInit {
         hoverBorderWidth: 7
       }
     },
-    scaleShowVerticalLines: false,
+    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
+    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: false,
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           stacked: false,
           ticks: {
-            callback: function (label, index, labels) {
+            callback: function (label: number, index, labels) {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 let currency =
@@ -1417,35 +1564,36 @@ export class FinancesComponent implements AfterViewInit {
             }
           }
         }
-      ]
     },
-    legend: {
-      display: true
-    },
-    tooltips: {
-      callbacks: {
-        label: (
-          tooltipItems: Chart.ChartTooltipItem,
-          data: Chart.ChartData
-        ) => {
-          let label = data['datasets'][tooltipItems.datasetIndex]['label'];
-          let currency = tooltipItems.yLabel;
-          currency = currency
-            .toString()
-            .split('-')
-            .join('')
-            .split(/(?=(?:...)*$)/)
-            .join(',');
-          return `${label} : ${
-            parseInt(tooltipItems.yLabel.toString()) < 0 ? '- $' : '$'
-          }${currency}`;
-        },
-        title: () => ''
+    plugins: {
+      legend: {
+        display: true
+      },
+      tooltip: {
+        callbacks: {
+          label: (
+            tooltipItems,
+          ) => {
+            let label = tooltipItems.dataset[tooltipItems.datasetIndex]['label'];
+            let currency = tooltipItems.label;
+            currency = currency
+              .toString()
+              .split('-')
+              .join('')
+              .split(/(?=(?:...)*$)/)
+              .join(',');
+            return `${label} : ${
+              parseInt(tooltipItems.formattedValue.toString()) < 0 ? '- $' : '$'
+            }${currency}`;
+          },
+          title: () => ''
+        }
       }
     }
+
   };
 
-  public labelBarOptionsSingleValue: Chart.ChartOptions = {
+  public labelBarOptionsSingleValue: ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -1461,15 +1609,15 @@ export class FinancesComponent implements AfterViewInit {
       easing: 'easeOutSine'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: false,
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           stacked: false,
           ticks: {
@@ -1483,65 +1631,62 @@ export class FinancesComponent implements AfterViewInit {
             }
           }
         }
-      ]
     },
-    legend: {
-      display: true
-    },
-    tooltips: {
-      mode: 'x-axis',
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        // disable displaying the color box;
-        tooltip.displayColors = false;
+    plugins: {
+      legend: {
+        display: true
       },
-      callbacks: {
-        label: (tooltipItems: Chart.ChartTooltipItem) => {
-          let label = tooltipItems.xLabel;
-          let currency = tooltipItems.yLabel;
-
-          return `${label} : ${new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0
-          }).format(Number(currency))}`;
+      tooltip: {
+        mode: 'x',
+        displayColors(ctx, options) {
+          return !ctx.tooltip
         },
-        title: () => ''
+        callbacks: {
+          label: (tooltipItems: TooltipItem<any>) => {
+            let label = tooltipItems.label;
+            let currency = tooltipItems.formattedValue;
+  
+            return `${label} : ${new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'USD',
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0
+            }).format(Number(currency))}`;
+          },
+          title: () => ''
+        }
       }
     }
   };
 
-  public netProfitTrendMultiChartOptions: Chart.ChartOptions = {
+  public netProfitTrendMultiChartOptions: ChartOptions = {
     ...this.labelBarOptionsSingleValue,
-    tooltips: {
-      mode: 'x-axis',
-      custom: (tooltip: Chart.ChartTooltipModel) => {
-        // disable displaying the color box;
-        tooltip.displayColors = false;
-      },
-      callbacks: {
-        label: (
-          tooltipItems: Chart.ChartTooltipItem,
-          data: Chart.ChartData
-        ) => {
-          const currency = tooltipItems.yLabel;
-          const datasetIndex = tooltipItems.datasetIndex;
-          const label = data.datasets[datasetIndex].label;
-          return `${label} : ${new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0
-          }).format(Number(currency))}`;
-        },
-        title: () => ''
+    plugins: {
+      tooltip: {
+        mode: 'x',
+        callbacks: {
+          label: (
+            tooltipItems
+          ) => {
+            const currency = tooltipItems.formattedValue;
+            const datasetIndex = tooltipItems.datasetIndex;
+            const label = tooltipItems.dataset[datasetIndex].label;
+            return `${label} : ${new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'USD',
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0
+            }).format(Number(currency))}`;
+          },
+          title: () => ''
+        }
       }
     }
+
   };
 
   /************ Net Profit Percentage trend *************/
-  public labelBarOptionsSingleValue1: Chart.ChartOptions = {
+  public labelBarOptionsSingleValue1: ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -1557,15 +1702,15 @@ export class FinancesComponent implements AfterViewInit {
       easing: 'easeOutSine'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: false,
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           stacked: true,
           ticks: {
@@ -1574,25 +1719,26 @@ export class FinancesComponent implements AfterViewInit {
             }
           }
         }
-      ]
+      
     },
-    legend: {
-      display: true
-    },
-    tooltips: {
-      mode: 'x-axis',
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        // disable displaying the color box;
-        tooltip.displayColors = false;
+    plugins: {
+      legend: {
+        display: true
       },
-      callbacks: {
-        label: function (tooltipItems: Chart.ChartTooltipItem) {
-          return `${tooltipItems.xLabel} : ${tooltipItems.yLabel}%`;
+      tooltip: {
+        mode: 'x',
+        displayColors(ctx, options) {
+          return !ctx.tooltip
         },
-        title: () => ''
+        callbacks: {
+          label: function (tooltipItems) {
+            return `${tooltipItems.label} : ${tooltipItems.formattedValue}%`;
+          },
+          title: () => ''
+        }
       }
     }
+
   };
   /************ Net Profit Percentage trend *************/
 
@@ -1614,15 +1760,15 @@ export class FinancesComponent implements AfterViewInit {
       easing: 'easeOutSine'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: true,
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           stacked: true,
 
@@ -1632,7 +1778,7 @@ export class FinancesComponent implements AfterViewInit {
             }
           }
         }
-      ]
+      
     },
     legend: {
       display: true
@@ -1653,7 +1799,7 @@ export class FinancesComponent implements AfterViewInit {
     }
   };
 
-  public labelBarPercentOptionsStacked: any = {
+  public labelBarPercentOptionsStacked: ChartOptions = {
     elements: {
       point: {
         radius: 5,
@@ -1662,169 +1808,178 @@ export class FinancesComponent implements AfterViewInit {
         hoverBorderWidth: 7
       }
     },
-    scaleShowVerticalLines: false,
+    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
+    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine'
     },
     scales: {
-      xAxes: [
+      x: 
         {
           stacked: true,
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           stacked: true,
 
           ticks: {
-            userCallback: function (item) {
+            callback: function (item) {
               return item + '%';
             }
           }
         }
-      ]
+      
     },
-    legend: this.stackLegendGenerator,
-    tooltips: {
-      mode: 'x-axis',
-      enabled: false,
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        var tooltipEl = document.getElementById('chartjs-tooltip');
-        if (!tooltipEl) {
-          tooltipEl = document.createElement('div');
-          tooltipEl.id = 'chartjs-tooltip';
-          tooltipEl.style.backgroundColor = '#FFFFFF';
-          tooltipEl.style.borderColor = '#B2BABB';
-          tooltipEl.style.borderWidth = 'thin';
-          tooltipEl.style.borderStyle = 'solid';
-          tooltipEl.style.zIndex = '999999';
-          tooltipEl.style.backgroundColor = '#000000';
-          tooltipEl.style.color = '#FFFFFF';
-          document.body.appendChild(tooltipEl);
-        }
-        if (tooltip.opacity === 0) {
-          tooltipEl.style.opacity = '0';
-          return;
-        } else {
-          tooltipEl.style.opacity = '0.8';
-        }
-
-        tooltipEl.classList.remove('above', 'below', 'no-transform');
-        if (tooltip.yAlign) {
-          tooltipEl.classList.add(tooltip.yAlign);
-        } else {
-          tooltipEl.classList.add('no-transform');
-        }
-
-        function getBody(bodyItem) {
-          return bodyItem.lines;
-        }
-        var bodyLineCont = 0;
-        if (tooltip.body) {
-          var titleLines = tooltip.title || [];
-          var bodyLines = tooltip.body.map(getBody);
-          var labelColorscustom = tooltip.labelColors;
-          var innerHtml = '<table><thead>';
-          innerHtml += '</thead><tbody>';
-          titleLines.forEach(function (title) {
-            innerHtml +=
-              '<tr><th colspan="2" style="text-align: left;">' +
-              title +
-              '</th></tr>';
-          });
-          bodyLines.forEach(function (body, i) {
-            if (body[0].includes('100%')) {
+    plugins: {
+      legend: this.stackLegendGenerator,
+      tooltip: {
+        mode: 'x',
+        enabled: false,
+        external: function (t) {
+          const tooltip = t.tooltip;
+          const chart = t.chart;
+          if (!tooltip) return;
+          var tooltipEl = document.getElementById('chartjs-tooltip');
+          if (!tooltipEl) {
+            tooltipEl = document.createElement('div');
+            tooltipEl.id = 'chartjs-tooltip';
+            tooltipEl.style.backgroundColor = '#FFFFFF';
+            tooltipEl.style.borderColor = '#B2BABB';
+            tooltipEl.style.borderWidth = 'thin';
+            tooltipEl.style.borderStyle = 'solid';
+            tooltipEl.style.zIndex = '999999';
+            tooltipEl.style.backgroundColor = '#000000';
+            tooltipEl.style.color = '#FFFFFF';
+            document.body.appendChild(tooltipEl);
+          }
+          if (tooltip.opacity === 0) {
+            tooltipEl.style.opacity = '0';
+            return;
+          } else {
+            tooltipEl.style.opacity = '0.8';
+          }
+  
+          tooltipEl.classList.remove('above', 'below', 'no-transform');
+          if (tooltip.yAlign) {
+            tooltipEl.classList.add(tooltip.yAlign);
+          } else {
+            tooltipEl.classList.add('no-transform');
+          }
+  
+          function getBody(bodyItem) {
+            return bodyItem.lines;
+          }
+          var bodyLineCont = 0;
+          if (tooltip.body) {
+            var titleLines = tooltip.title || [];
+            var bodyLines = tooltip.body.map(getBody);
+            var labelColorscustom = tooltip.labelColors;
+            var innerHtml = '<table><thead>';
+            innerHtml += '</thead><tbody>';
+            titleLines.forEach(function (title) {
               innerHtml +=
-                '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
-                labelColorscustom[i].backgroundColor +
-                '"></span></td><td style="padding: 0px">' +
-                body[0] +
-                '</td></tr>';
-              bodyLineCont = bodyLineCont + 1;
-            } else if (!body[0].split(':')[1].trim().startsWith('0')) {
-              innerHtml +=
-                '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
-                labelColorscustom[i].backgroundColor +
-                '"></span></td><td style="padding: 0px">' +
-                body[0] +
-                '</td></tr>';
-              bodyLineCont = bodyLineCont + 1;
-            }
-          });
-          innerHtml += '</tbody></table>';
-          tooltipEl.innerHTML = innerHtml;
-          //tableRoot.innerHTML = innerHtml;
-        }
-        // disable displaying the color box;
-        var position = this._chart.canvas.getBoundingClientRect();
-        // Display, position, and set styles for font
-        tooltipEl.style.position = 'fixed';
-        tooltipEl.style.left =
-          position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
-        tooltipEl.style.top =
-          position.top +
-          window.pageYOffset +
-          tooltip.caretY -
-          (70 + bodyLineCont * 15) +
-          'px';
-        tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
-        tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
-        tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-        tooltipEl.style.padding =
-          tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
-        tooltipEl.style.pointerEvents = 'none';
-        tooltip.displayColors = false;
-      },
-      callbacks: {
-        label: function (tooltipItems, data) {
-          return `${
-            data.datasets[tooltipItems.datasetIndex].label
-          }: ${Math.round(tooltipItems.yLabel)}%`;
+                '<tr><th colspan="2" style="text-align: left;">' +
+                title +
+                '</th></tr>';
+            });
+            bodyLines.forEach(function (body, i) {
+              if (body[0].includes('100%')) {
+                innerHtml +=
+                  '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
+                  labelColorscustom[i].backgroundColor +
+                  '"></span></td><td style="padding: 0px">' +
+                  body[0] +
+                  '</td></tr>';
+                bodyLineCont = bodyLineCont + 1;
+              } else if (!body[0].split(':')[1].trim().startsWith('0')) {
+                innerHtml +=
+                  '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
+                  labelColorscustom[i].backgroundColor +
+                  '"></span></td><td style="padding: 0px">' +
+                  body[0] +
+                  '</td></tr>';
+                bodyLineCont = bodyLineCont + 1;
+              }
+            });
+            innerHtml += '</tbody></table>';
+            tooltipEl.innerHTML = innerHtml;
+            //tableRoot.innerHTML = innerHtml;
+          }
+          // disable displaying the color box;
+          var position = chart.canvas.getBoundingClientRect();
+          // Display, position, and set styles for font
+          tooltipEl.style.position = 'fixed';
+          tooltipEl.style.left =
+            position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
+          tooltipEl.style.top =
+            position.top +
+            window.pageYOffset +
+            tooltip.caretY -
+            (70 + bodyLineCont * 15) +
+            'px';
+          // tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
+          // tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
+          // tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
+          // tooltipEl.style.padding =
+          //   tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+          tooltipEl.style.pointerEvents = 'none';
+        },
+        displayColors: false,
+        callbacks: {
+          label: function (tooltipItems) {
+            return `${
+              tooltipItems.dataset[tooltipItems.datasetIndex].label
+            }: ${Math.round(parseInt(tooltipItems.formattedValue))}%`;
+          }
         }
       }
-    }
+    },
+
   };
 
-  public pieChartOptions: any = {
+  public pieChartOptions: ChartOptions<'pie'> = {
     responsive: true,
     maintainAspectRatio: false,
-    legend: {
-      display: true,
-      position: 'bottom',
-      labels: {
-        usePointStyle: true,
-        padding: 20
+    plugins: {
+      legend: {
+        display: true,
+        position: 'bottom',
+        labels: {
+          usePointStyle: true,
+          padding: 20
+        },
+        onClick(e){
+          e.native.stopPropagation();
+        }
       },
-      onClick: (event: MouseEvent) => {
-        event.stopPropagation();
-      }
-    },
-    elements: {
-      center: {
-        text: ''
-        // sidePadding: 60
-      }
-    },
-    tooltips: {
-      callbacks: {
-        label: function (tooltipItem, data) {
-          return (
-            data['labels'][tooltipItem['index']] +
-            ': ' +
-            data['datasets'][0]['data'][tooltipItem['index']] +
-            '%'
-          );
+      tooltip: {
+        callbacks: {
+          label: function (tooltipItem) {
+            return (
+              tooltipItem.label[tooltipItem.dataIndex] +
+              ': ' +
+              tooltipItem.dataset[0].data[tooltipItem.dataIndex] +
+              '%'
+            );
+          }
         }
       }
-    }
+    },
+
+    elements: {
+      // center: {
+      //   text: ''
+      //   // sidePadding: 60
+      // }
+    },
+
   };
 
   public pieChartOptions2: any = {
@@ -1853,118 +2008,124 @@ export class FinancesComponent implements AfterViewInit {
       }
     }
   };
-  public pieChartOptions1: any = {
+  public pieChartOptions1: ChartOptions<'pie'> = {
     responsive: true,
     maintainAspectRatio: false,
-    legend: {
-      display: true,
-      position: 'right'
-    }
-  };
-  public barChartOptions: any = {
-    scaleShowVerticalLines: false,
-    responsive: true,
-    maintainAspectRatio: false,
-    animation: {
-      duration: 1500,
-      easing: 'easeOutSine'
-    },
-    barThickness: 10,
-    scales: {
-      xAxes: [
-        {
-          ticks: {
-            autoSkip: false
-          }
-        }
-      ],
-      yAxes: [
-        {
-          ticks: {
-            suggestedMin: 0
-          }
-        }
-      ]
-    },
-    legend: {
-      position: 'top',
-      onClick: function (e, legendItem) {
-        var index = legendItem.datasetIndex;
-        var ci = this.chart;
-        if (index == 0) {
-          (<HTMLElement>document.querySelector('.predicted1')).style.display =
-            'flex';
-          (<HTMLElement>document.querySelector('.predicted2')).style.display =
-            'none';
-          (<HTMLElement>document.querySelector('.predicted3')).style.display =
-            'none';
-          ci.getDatasetMeta(1).hidden = true;
-          ci.getDatasetMeta(2).hidden = true;
-          ci.getDatasetMeta(index).hidden = false;
-        } else if (index == 1) {
-          (<HTMLElement>document.querySelector('.predicted1')).style.display =
-            'none';
-          (<HTMLElement>document.querySelector('.predicted2')).style.display =
-            'flex';
-          (<HTMLElement>document.querySelector('.predicted3')).style.display =
-            'none';
-          ci.getDatasetMeta(0).hidden = true;
-          ci.getDatasetMeta(2).hidden = true;
-          ci.getDatasetMeta(index).hidden = false;
-        } else if (index == 2) {
-          (<HTMLElement>document.querySelector('.predicted1')).style.display =
-            'none';
-          (<HTMLElement>document.querySelector('.predicted2')).style.display =
-            'none';
-          (<HTMLElement>document.querySelector('.predicted3')).style.display =
-            'flex';
-          ci.getDatasetMeta(0).hidden = true;
-          ci.getDatasetMeta(1).hidden = true;
-          ci.getDatasetMeta(index).hidden = false;
-        }
-        ci.update();
+    plugins: {
+      legend: {
+        display: true,
+        position: 'right'
       }
     }
   };
-
-  public proceedureChartOptions: any = {
-    scaleShowVerticalLines: false,
+  public barChartOptions: ChartOptions<'bar'> = {
+    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
     animation: {
       duration: 1500,
       easing: 'easeOutSine'
     },
+    // barThickness: 10,
     scales: {
-      xAxes: [
+      x: 
         {
           ticks: {
             autoSkip: false
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
+        {
+          suggestedMin: 0
+        }
+      
+    },
+    plugins: {
+      legend: {
+        position: 'top',
+        onClick: function (e, legendItem) {
+          var index = legendItem.datasetIndex;
+          var ci = this.chart;
+          if (index == 0) {
+            (<HTMLElement>document.querySelector('.predicted1')).style.display =
+              'flex';
+            (<HTMLElement>document.querySelector('.predicted2')).style.display =
+              'none';
+            (<HTMLElement>document.querySelector('.predicted3')).style.display =
+              'none';
+            ci.getDatasetMeta(1).hidden = true;
+            ci.getDatasetMeta(2).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
+          } else if (index == 1) {
+            (<HTMLElement>document.querySelector('.predicted1')).style.display =
+              'none';
+            (<HTMLElement>document.querySelector('.predicted2')).style.display =
+              'flex';
+            (<HTMLElement>document.querySelector('.predicted3')).style.display =
+              'none';
+            ci.getDatasetMeta(0).hidden = true;
+            ci.getDatasetMeta(2).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
+          } else if (index == 2) {
+            (<HTMLElement>document.querySelector('.predicted1')).style.display =
+              'none';
+            (<HTMLElement>document.querySelector('.predicted2')).style.display =
+              'none';
+            (<HTMLElement>document.querySelector('.predicted3')).style.display =
+              'flex';
+            ci.getDatasetMeta(0).hidden = true;
+            ci.getDatasetMeta(1).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
+          }
+          ci.update();
+        }
+      }
+    },
+
+  };
+
+  public proceedureChartOptions: ChartOptions<'bar'> = {
+    // scaleShowVerticalLines: false,
+    responsive: true,
+    maintainAspectRatio: false,
+    // barThickness: 10,
+    animation: {
+      duration: 1500,
+      easing: 'easeOutSine'
+    },
+    scales: {
+      x: 
+        {
+          ticks: {
+            autoSkip: false
+          }
+        }
+      ,
+      y: 
         {
           ticks: {}
         }
-      ]
+      
     },
-    legend: {
-      position: 'top'
-    },
-    tooltips: {
-      mode: 'x-axis',
-      callbacks: {
-        label: function (tooltipItems, data) {
-          return (
-            data.datasets[tooltipItems.datasetIndex].label +
-            ': $' +
-            tooltipItems.yLabel
-          );
+    plugins: {
+      legend: {
+        position: 'top'
+      },
+      tooltip: {
+        mode: 'x',
+        callbacks: {
+          label: function (tooltipItems) {
+            return (
+              tooltipItems.dataset[tooltipItems.datasetIndex].label +
+              ': $' +
+              tooltipItems.formattedValue
+            );
+          }
         }
       }
-    }
+    },
+
   };
 
   public selectedDentist: string;
@@ -1975,7 +2136,7 @@ export class FinancesComponent implements AfterViewInit {
   public showExternal: boolean = false;
   public showCombined: boolean = false;
   public stackedChartType = 'bar';
-  public stackedChartTypeHorizontal = 'horizontalBar';
+  // public stackedChartTypeHorizontal = 'bar';
   public stackedChartLegend = true;
 
   //labels
@@ -2134,7 +2295,7 @@ export class FinancesComponent implements AfterViewInit {
   public predictedChartData2: any[] = [];
   public predictedChartData3: any[] = [];
 
-  public proceedureChartType = 'horizontalBar';
+  // public proceedureChartType = 'bar';
 
   public proceedureChartData: any[] = [
     {
@@ -2220,7 +2381,7 @@ export class FinancesComponent implements AfterViewInit {
 
   public totalOverdueAccountLabelsres: string[] = [];
 
-  public expenseMultiChartData: Chart.ChartDataSets[] = [];
+  public expenseMultiChartData: ChartDataset[] = [];
   public expenseMultiChartLabels: string[] = [];
 
   public itemPredictedChartData: any[] = [
@@ -3713,7 +3874,7 @@ export class FinancesComponent implements AfterViewInit {
                 Object.entries(
                   _.chain(res.body.data).groupBy('clinic_id').value()
                 ).forEach(([, items], index) => {
-                  const data: number[] = items.map((item) =>
+                  const data: number[] = (<any>items).map((item) =>
                     Math.round(parseInt(item.discounts))
                   );
                   const label = items[0].clinic_name;
@@ -3728,10 +3889,10 @@ export class FinancesComponent implements AfterViewInit {
                   if (index == 0) {
                     this.discountsChartTrendMultiLabels1 =
                       this.trendValue == 'c'
-                        ? items.map((item) =>
+                        ? (<any>items).map((item) =>
                             this.datePipe.transform(item.year_month, 'MMM y')
                           )
-                        : items.map((item) => item.year);
+                        : (<any>items).map((item) => item.year);
                   }
                 });
   
@@ -4000,7 +4161,7 @@ export class FinancesComponent implements AfterViewInit {
                 Object.entries(
                   _.chain(res.body.data).groupBy('clinic_id').value()
                 ).forEach(([, items], index) => {
-                  const data: number[] = items.map((item) =>
+                  const data: number[] = (<any>items).map((item) =>
                     Math.round(parseInt(item.production))
                   );
                   const label = items[0].clinic_name;
@@ -4078,7 +4239,7 @@ export class FinancesComponent implements AfterViewInit {
                 Object.entries(
                   _.chain(res.body.data).groupBy('clinic_id').value()
                 ).forEach(([, items], index) => {
-                  const data: number[] = items.map((item) =>
+                  const data: number[] = (<any>items).map((item) =>
                     Math.round(parseInt(item.collection))
                   );
                   const label = items[0].clinic_name;
@@ -4445,7 +4606,7 @@ export class FinancesComponent implements AfterViewInit {
                   Object.entries(
                     _.chain(res.body.data).groupBy('clinic_id').value()
                   ).forEach(([, items], index) => {
-                    const data: number[] = items.map((item) =>
+                    const data: number[] = (<any>items).map((item) =>
                       Math.round(parseInt(item.net_profit) || 0)
                     );
                     const label = items[0].clinic_name;
@@ -4559,7 +4720,7 @@ export class FinancesComponent implements AfterViewInit {
       );
   }
 
-  public expensesChartTrend: Chart.ChartDataSets[] = [];
+  public expensesChartTrend: ChartDataset[] = [];
   public expensesChartTrendLabels = [];
   public expensesChartTrendError: boolean = false;
 

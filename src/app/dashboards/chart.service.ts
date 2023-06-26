@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as Chart from 'chart.js';
-import { PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
+import {Chart, Plugin} from 'chart.js';
+// import { PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -30,8 +30,9 @@ export class ChartService {
   };
 
   beforeDrawChart(count: number, isCurrency?: boolean) {
-    const array: PluginServiceGlobalRegistrationAndOptions[] = [
+    const array: Plugin[] = [
       {
+        id: 'plugin-123',
         beforeDraw: (chart: Chart) => {
           const ctx = chart.ctx;
           ctx.textAlign = 'center';

@@ -93,7 +93,7 @@
                     [datasets]="conversionData"
                     [labels]="conversionLabels"
                     [legend]="false"
-                    [chartType]="'bar'"
+                    [type]="'bar'"
                     [options]="barChartOptions1"
                     [colors]="colors"
                   ></canvas>
@@ -227,7 +227,7 @@
                     [datasets]="completionRateData"
                     [labels]="completionRateLabels"
                     [legend]="false"
-                    [chartType]="'bar'"
+                    [type]="'bar'"
                     [options]="barChartOptions1"
                     [colors]="colors"
                   ></canvas>
@@ -747,7 +747,7 @@
                     [datasets]="conversionPerUserDataTicks"
                     [labels]="conversionPerUserLabelsTicks"
                     [legend]="false"
-                    [chartType]="'bar'"
+                    [type]="'bar'"
                     [options]="barChartOptions1"
                     [colors]="colors"
                   ></canvas>
@@ -762,7 +762,7 @@
                     [datasets]="conversionPerUserDataRecalls"
                     [labels]="conversionPerUserLabelsRecalls"
                     [legend]="false"
-                    [chartType]="'bar'"
+                    [type]="'bar'"
                     [options]="barChartOptions1"
                     [colors]="colors"
                   ></canvas>
@@ -777,7 +777,7 @@
                     [datasets]="conversionPerUserDataFta"
                     [labels]="conversionPerUserLabelsFta"
                     [legend]="false"
-                    [chartType]="'bar'"
+                    [type]="'bar'"
                     [options]="barChartOptions1"
                     [colors]="colors"
                   ></canvas>
@@ -792,7 +792,7 @@
                     [datasets]="conversionPerUserDataUta"
                     [labels]="conversionPerUserLabelsUta"
                     [legend]="false"
-                    [chartType]="'bar'"
+                    [type]="'bar'"
                     [options]="barChartOptions1"
                     [colors]="colors"
                   ></canvas>
@@ -1061,12 +1061,12 @@
                     [datasets]="perUserData"
                     [labels]="perUserLabels"
                     [options]="stackedChartOptions"
-                    [chartType]="'bar'"
+                    [type]="'bar'"
                     [legend]="true"
                     [colors]="IPcolors"
                   >
                   </canvas>
-                  <!--  <canvas  #myCanvas baseChart [datasets]="perUserData" [labels]="perUserLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions" [colors]="colors"></canvas> -->
+                  <!--  <canvas  #myCanvas baseChart [datasets]="perUserData" [labels]="perUserLabels" [legend]="false" [type]="'bar'" [options]="barChartOptions" [colors]="colors"></canvas> -->
 
                   <div
                     class="no-data-placeholder folloup-per-user"

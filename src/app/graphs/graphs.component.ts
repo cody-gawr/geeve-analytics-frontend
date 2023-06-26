@@ -3,8 +3,8 @@ import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } fr
 import { Router, NavigationEnd} from "@angular/router";
 import { ChartService } from "../dashboards/chart.service";
 import { CookieService } from "ngx-cookie";
-import { Chart } from 'chart.js';
 import { GraphsService } from './graphs.service';
+import { ChartOptions } from "chart.js";
 
 @Component({
     selector: 'graphs',
@@ -196,11 +196,11 @@ export class GraphsComponent{
         return name.toString().trim().match(regex);
     }
 
-    public barChartOptionsPercent: any = {
-      scaleShowVerticalLines: false,
-      cornerRadius: 60,
+    public barChartOptionsPercent: ChartOptions = {
+      // scaleShowVerticalLines: false,
+      // cornerRadius: 60,
       hover: { mode: null },
-      curvature: 1,
+      // curvature: 1,
       animation: {
         duration: 1500,
         easing: 'easeOutSine'
@@ -208,11 +208,11 @@ export class GraphsComponent{
       responsive: true,
       maintainAspectRatio: false,
       scales: {
-        xAxes: [{
-          gridLines: { display: true },
+        x: {
+          grid: { display: true },
           ticks: {
             autoSkip: false,
-            userCallback: (label: any) => {
+            callback: (label: any) => {
               if(label != '' && label != undefined){
                 const names = this.splitName(label);
                  if (names.length == 3) {
@@ -225,14 +225,15 @@ export class GraphsComponent{
               }
             }
           }
-        }],
-        yAxes: [{
+        },
+        y: {
           suggestedMin: 0,
+          beginAtZero: true,
+          max: 100,
           // suggestedMax:100,
           ticks: {
-            beginAtZero: true,
-            max: 100,
-            userCallback: function (label, index, labels) {
+            
+            callback: function (label: number, index, labels) {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return label + ' %';
@@ -240,53 +241,53 @@ export class GraphsComponent{
   
             },
           },
-        }],
+        },
       },
       elements: {
         line: {
           fill: false
         }
       },
-      tooltips: {
-        mode: 'x-axis',
-        custom: function (tooltip) {
-          if (!tooltip) return;
+      plugins: {
+        tooltip: {
+          mode: 'x',
+          callbacks: {
+            // use label callback to return the desired label
+            label: function (tooltipItem,) {
+              return tooltipItem.label + ": " + tooltipItem.formattedValue + "%";
+            },
+            // remove title
+            title: function (tooltipItem) {
+              return;
+            }
+          }
         },
-        callbacks: {
-          // use label callback to return the desired label
-          label: function (tooltipItem, data) {
-            return tooltipItem.xLabel + ": " + tooltipItem.yLabel + "%";
+        legend: {
+          position: 'top',
+          onClick: function (e, legendItem) {
+            var index = legendItem.datasetIndex;
+            var ci = this.chart;
+            if (index == 0) {
+              ci.getDatasetMeta(1).hidden = true;
+              ci.getDatasetMeta(index).hidden = false;
+            }
+            else if (index == 1) {
+              ci.getDatasetMeta(0).hidden = true;
+              ci.getDatasetMeta(index).hidden = false;
+            }
+            ci.update();
           },
-          // remove title
-          title: function (tooltipItem, data) {
-            return;
-          }
-        }
-      },
-      legend: {
-        position: 'top',
-        onClick: function (e, legendItem) {
-          var index = legendItem.datasetIndex;
-          var ci = this.chart;
-          if (index == 0) {
-            ci.getDatasetMeta(1).hidden = true;
-            ci.getDatasetMeta(index).hidden = false;
-          }
-          else if (index == 1) {
-            ci.getDatasetMeta(0).hidden = true;
-            ci.getDatasetMeta(index).hidden = false;
-          }
-          ci.update();
         },
       },
+
     };
 
-    public barChartOptions: any = {
-        borderRadius: 50,
+    public barChartOptions: ChartOptions = {
+        // borderRadius: 50,
         hover: { mode: null },
-        scaleShowVerticalLines: false,
-        cornerRadius: 60,
-        curvature: 1,
+        // scaleShowVerticalLines: false,
+        // cornerRadius: 60,
+        // curvature: 1,
         animation: {
           duration: 1500,
           easing: 'easeOutSine'
@@ -294,13 +295,13 @@ export class GraphsComponent{
         responsive: true,
         maintainAspectRatio: false,
         scales: {
-          xAxes: [{
-            gridLines: {
+          x: {
+            grid: {
               display: true
             },
             ticks: {
               autoSkip: false,
-              userCallback: (label: string) => {
+              callback: (label: string) => {
                 if(label != ''){
                   const names = this.splitName(label);
                   if (names.length == 3) {
@@ -313,11 +314,11 @@ export class GraphsComponent{
                 }            
               }
             },
-          }],
-          yAxes: [{
+          },
+          y: {
+            suggestedMin: 0,
             ticks: {
-              suggestedMin: 0,
-              userCallback: (label, index, labels) => {
+              callback: (label: number, index, labels) => {
                 // when the floored value is the same as the value we have a whole number
                 if (Math.floor(label) === label) {
                   return '$' + this.decimalPipe.transform(label);
@@ -325,32 +326,33 @@ export class GraphsComponent{
     
               },
             },
-            gridLines: {
-              // color: '#fbfbfc'
-            }
-          }],
+          },
         },
-        tooltips: {
-          mode: 'x-axis',
-          bodyFontFamily: 'Gilroy-Regular',
-          cornerRadius: 0,
-          callbacks: {
-            label: (tooltipItem) => {
-              if(tooltipItem.xLabel != ''){
-                return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
-              }
+        plugins: {
+          tooltip: {
+            mode: 'x',
+            bodyFont: {
+              family: 'Gilroy-Regular'
             },
-            // remove title
-            title: function () {
-              return;
+            cornerRadius: 0,
+            callbacks: {
+              label: (tooltipItem) => {
+                if(tooltipItem.label != ''){
+                  return tooltipItem.label + ": $" + this.decimalPipe.transform(tooltipItem.formattedValue);
+                }
+              },
+              // remove title
+              title: function () {
+                return;
+              }
             }
-          }
+          },
         },
+
     };
 
-    public stackedChartOptionsUti: any = {
-
-      scaleShowVerticalLines: false,
+    public stackedChartOptionsUti: ChartOptions = {
+      // scaleShowVerticalLines: false,
       responsive: true,
       maintainAspectRatio: false,
       // barThickness: 10,
@@ -358,12 +360,12 @@ export class GraphsComponent{
         duration: 1,
         easing: 'linear'
       },
-      fill:false,
+      // fill:false,
       scales: {
-        xAxes: [{ 
+        x: { 
           ticks: {
             autoSkip: false,
-            callback: function (value, index, values) {
+            callback: function (value:string, index, values) {
               if(value.indexOf('--') >= 0){
                 let lbl = value.split('--');
                 value = lbl[0];
@@ -373,85 +375,86 @@ export class GraphsComponent{
             }
           },
           stacked:true,
-        }],
-        yAxes: [{ 
+        },
+        y: { 
           // stacked:true,
+          min:0,
+          max:100,
           ticks: {
-            min:0,
-            max:100,
-            userCallback: function(label, index, labels) {
-                    // when the floored value is the same as the value we have a whole number
-                    if (Math.floor(label) === label) {
-                        return label+"%";
-                    }
-                },
-          },
-          }],
-        },
-        tooltips: {
-          mode: 'x-axis',
-          custom: function(tooltip) {
-            if (!tooltip) return;
-              tooltip.displayColors = false;
+            callback: function(label: number, index, labels) {
+                // when the floored value is the same as the value we have a whole number
+                if (Math.floor(label) === label) {
+                    return label+"%";
+                }
             },
-            callbacks: {
-              label: function(tooltipItems, data) { 
-                let total = tooltipItems.yLabel > 100 ? 100 : tooltipItems.yLabel;    
-                if(tooltipItems.xLabel.indexOf('--') >= 0){
-                  let lbl = tooltipItems.xLabel.split('--');
-                  if(typeof lbl[3] === 'undefined'){
-                    tooltipItems.xLabel = lbl[0];                    
-                  }else{
-                    tooltipItems.xLabel = lbl[0]+' - '+lbl[3];
-                  }                  
-                }  
-                var Targetlable = '';  
-                const v = data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index];
-                  let Tlable = data.datasets[tooltipItems.datasetIndex].label;
-                  if(Tlable !='' && Tlable != undefined){
-                    Tlable = Tlable + ": "
-                    Targetlable = Tlable
-                  }else{
-                    Tlable = '';
-                  }
-                  
-                let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v; 
-                var tlab = 0; 
-                if(typeof data.datasets[1] === 'undefined') {
-                  }
-                  else {
-                    const tval  = data.datasets[1].data[tooltipItems.index];
-                    if(Array.isArray(tval)){
-                      tlab =  Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
-                      if(tlab == 0){
-                        Tlable = '';
-                      }
-                    }
-                  }  
-                if(tlab == 0 && Targetlable =='Target: '){
-                }else{
-                return Tlable + tooltipItems.xLabel+": "+ ylable + '%';
-                }   
-                
-              },
-              afterLabel: function(tooltipItems, data) {
-                let hour = 0;
-                let phour = 0;
-                if(tooltipItems.label.indexOf('--') >= 0 && tooltipItems.datasetIndex == 0){
-                  let lbl = tooltipItems.label.split('--');                
-                  hour = lbl[1];
-                  phour = lbl[2];
-                  return ['',"Available Hours: "+phour,"Used Hours: "+hour];
-                } 
-                return;
-              },
-              title: function() {
-                return "";
-            }
-          }
+          },
+          },
         },
-        legend: {
+        plugins: {
+          tooltip: {
+            mode: 'x',
+            displayColors(ctx, options) {
+              return !ctx.tooltip;
+            },
+              callbacks: {
+                label: function(tooltipItems) { 
+                  let total = parseInt(tooltipItems.label) > 100 ? 100 : tooltipItems.formattedValue;    
+                  if(tooltipItems.label.indexOf('--') >= 0){
+                    let lbl = tooltipItems.label.split('--');
+                    if(typeof lbl[3] === 'undefined'){
+                      tooltipItems.label = lbl[0];                    
+                    }else{
+                      tooltipItems.label = lbl[0]+' - '+lbl[3];
+                    }                  
+                  }  
+                  var Targetlable = '';  
+                  const v = tooltipItems.dataset[tooltipItems.datasetIndex].data[tooltipItems.dataIndex];
+                    let Tlable = tooltipItems.dataset[tooltipItems.datasetIndex].label;
+                    if(Tlable !='' && Tlable != undefined){
+                      Tlable = Tlable + ": "
+                      Targetlable = Tlable
+                    }else{
+                      Tlable = '';
+                    }
+                    
+                  let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v; 
+                  var tlab = 0; 
+                  if(typeof tooltipItems.dataset[1] === 'undefined') {
+                    }
+                    else {
+                      const tval  = tooltipItems.dataset[1].data[tooltipItems.dataIndex];
+                      if(Array.isArray(tval)){
+                        tlab =  Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
+                        if(tlab == 0){
+                          Tlable = '';
+                        }
+                      }
+                    }  
+                  if(tlab == 0 && Targetlable =='Target: '){
+                  }else{
+                  return Tlable + tooltipItems.label+": "+ ylable + '%';
+                  }   
+                  
+                },
+                afterLabel: function(tooltipItems) {
+                  let hour = 0;
+                  let phour = 0;
+                  if(tooltipItems.label.indexOf('--') >= 0 && tooltipItems.datasetIndex == 0){
+                    let lbl = tooltipItems.label.split('--');                
+                    hour = parseInt(lbl[1]);
+                    phour = parseInt(lbl[2]);
+                    return ['',"Available Hours: "+phour,"Used Hours: "+hour];
+                  } 
+                  return;
+                },
+                title: function() {
+                  return "";
+              }
+            }
+          },
+          legend: {
             display: true
+          }
         }
     };  
     public IPcolors = [
@@ -472,7 +475,7 @@ export class GraphsComponent{
         e.stopPropagation();
       }
     };
-    public stackedChartOptions: any = {
+    public stackedChartOptions: ChartOptions = {
       hover: { 
         mode: null
       },
@@ -484,69 +487,70 @@ export class GraphsComponent{
           hoverBorderWidth:7
         },
       },
-      curvature: 1,
-      scaleShowVerticalLines: false,
+      // curvature: 1,
+      // scaleShowVerticalLines: false,
       responsive: true,
       maintainAspectRatio: false,
-        animation: {
-          duration: 500,
-          easing: 'easeOutSine'
-        },
+      animation: {
+        duration: 500,
+        easing: 'easeOutSine'
+      },
       scales: {
-        xAxes: [{ 
+        x: { 
             stacked:true,
             ticks: {
                 autoSkip: false
             }
-        }],
-        yAxes: [{ 
+        },
+        y: { 
           stacked:true, 
             ticks: {
-              userCallback: function(label, index, labels) {
+              callback: function(label: number, index, labels) {
                   // when the floored value is the same as the value we have a whole number
                   if (Math.floor(label) === label) {
                       return label;
                   }
               },
             }, 
-          }],
-        },
-        legend: {
-            display: true,
-            position: 'top',
-            ...this.legendLabelOptions,
-         },
-        tooltips: {
-            mode: 'x-axis',
-            custom: function(tooltip) {
-              if (!tooltip) return;
-              // disable displaying the color box;
-              tooltip.displayColors = true;
-            },
-        callbacks: {
-          label: function(tooltipItems, data) { 
-            if(tooltipItems.yLabel > 0 && data.datasets[tooltipItems.datasetIndex].label != ''){
-              if(data.datasets[tooltipItems.datasetIndex].label.indexOf('DentistMode-') >= 0){
-                return tooltipItems.label+": "+tooltipItems.yLabel;
-              } else {
-                return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel;          
-              } 
-            }
           },
-          title : function(tooltip, data){
-            let total = 0;
-            tooltip.forEach( (val) => {
-              total = total + val.yLabel;
-            });
-            if( data.datasets[0].label.indexOf('DentistMode-') >= 0){
-                var dentist = data.datasets[0].label.split('Mode-');
-                return dentist[1]+':'+total;
-            } else {
-              return tooltip[0].label+': '+total;
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+          ...this.legendLabelOptions,
+        },
+        tooltip: {
+            mode: 'x',
+            displayColors(ctx, options) {
+              return !!ctx.tooltip;
+            },
+            callbacks: {
+              label: function(tooltipItems) { 
+                if(parseInt(tooltipItems.formattedValue) > 0 && tooltipItems.dataset[tooltipItems.datasetIndex].label != ''){
+                  if(tooltipItems.dataset[tooltipItems.datasetIndex].label.indexOf('DentistMode-') >= 0){
+                    return tooltipItems.label+": "+tooltipItems.formattedValue;
+                  } else {
+                    return tooltipItems.dataset[tooltipItems.datasetIndex].label+": "+tooltipItems.formattedValue;          
+                  } 
+                }
+              },
+              title : function(tooltip){
+                let total = 0;
+                tooltip.forEach( (val) => {
+                  total = total + parseInt(val.formattedValue);
+                });
+                if( tooltip[0].dataset[0].label.indexOf('DentistMode-') >= 0){
+                    var dentist = tooltip[0].dataset[0].label.split('Mode-');
+                    return dentist[1]+':'+total;
+                } else {
+                  return tooltip[0].label+': '+total;
+                }
+              }
             }
-          }
-        }
-      }
+        },
+        
+      },
     };
 
 

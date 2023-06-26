@@ -1177,6 +1177,9 @@ html .page-wrapper {
   background: #f7f7f7;
   height: 33px;
   padding: 0 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* .sa_mat_select_topbar{border:1px solid #b3ceca;}*/
@@ -5203,6 +5206,7 @@ table .label {
 
 .cdk-overlay-pane {
   max-width: 100% !important;
+  background-color: white;
 }
 
 #mat-tab-content-0-1 .appointment {

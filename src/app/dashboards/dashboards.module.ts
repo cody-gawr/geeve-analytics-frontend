@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { CdkTableModule } from '@angular/cdk/table';
-import { ChartsModule } from 'ng2-charts';
+import { NgChartsModule as ChartsModule } from 'ng2-charts';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DashboardsRoutes } from './dashboards.routing';

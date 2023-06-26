@@ -13,11 +13,11 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { ActivatedRoute, Router, NavigationEnd, Event } from '@angular/router';
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { CookieService } from 'ngx-cookie';
-import { Chart } from 'chart.js';
+import { Chart, ChartOptions, LegendOptions, Plugin } from 'chart.js';
 import * as ChartAnnotation from 'chartjs-plugin-annotation';
 import {
   BaseChartDirective,
-  PluginServiceGlobalRegistrationAndOptions
+  // PluginServiceGlobalRegistrationAndOptions
 } from 'ng2-charts';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
@@ -37,6 +37,7 @@ import { ChartstipsService } from '../../shared/chartstips.service';
 import { environment } from '../../../environments/environment';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 
 export interface Dentist {
   providerId: string;
@@ -105,7 +106,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public flag = false;
   private _routerSub = Subscription.EMPTY;
   newPatientPluginObservable$: Observable<
-    PluginServiceGlobalRegistrationAndOptions[]
+    Plugin[]
   >;
   destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   newPatientTotal$ = new BehaviorSubject<number>(0);
@@ -297,7 +298,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   ngOnInit() {
     let namedChartAnnotation = ChartAnnotation;
     namedChartAnnotation['id'] = 'annotation';
-    Chart.pluginService.register(namedChartAnnotation);
+    Chart.register(namedChartAnnotation);
     if (this._cookieService.get('dentist_toggle') === 'true') {
       this.averageToggle = true;
       this.showTrend = false;
@@ -586,7 +587,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public treatmentPreValue: any = '';
   public treatmentPreLabel = '';
   public treatmentPreGoal = 0;
-  public legendGenerator = {
+  public legendGenerator: _DeepPartialObject<LegendOptions<any>> = {
     display: true,
     position: 'bottom',
     labels: {
@@ -594,7 +595,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       usePointStyle: true,
       generateLabels: (chart) => {
         let bgColor = {};
-        let labels = chart.data.labels.map((value, i) => {
+        let labels = chart.data.labels.map((value: string, i) => {
           bgColor[value.split(' - ')[1]] =
             chart.data.datasets[0].backgroundColor[i];
           return value.split(' - ')[1];
@@ -613,12 +614,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     }
     // align : 'start',
   };
-  public barChartOptions: any = {
-    borderRadius: 50,
+  public barChartOptions: ChartOptions = {
+    // borderRadius: 50,
     hover: { mode: null },
-    scaleShowVerticalLines: false,
-    cornerRadius: 60,
-    curvature: 1,
+    // scaleShowVerticalLines: false,
+    // cornerRadius: 60,
+    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine'
@@ -626,19 +627,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [
+      x: 
         {
-          gridLines: {
+          grid: {
             display: true
           },
           ticks: {
             autoSkip: false,
-            userCallback: (label: string) => {
+            callback: (label: string) => {
               if (label != '') {
                 const names = this.splitName(label);
-                // if (names.length > 1) {
-                //   return `${names[0][0]} ${names[1]}`
-                // } else return `${names[0]}`;
                 const name = names[0].split(' ');
                 if (names.length == 3) {
                   return `${names[0]}`;
@@ -655,73 +653,53 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             }
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
+          suggestedMin: 0,
           ticks: {
-            suggestedMin: 0,
-            userCallback: (label, index, labels) => {
+            callback: (label: number, index, ticks) => {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return '$' + this.decimalPipe.transform(label);
               }
             }
           },
-          gridLines: {
-            // color: '#fbfbfc'
-          }
         }
-      ]
     },
-    legend: this.legendGenerator,
-    tooltips: {
-      mode: 'x-axis',
-      bodyFontFamily: 'Gilroy-Regular',
-      cornerRadius: 0,
-      // backgroundColor: '#fff',
-      // titleFontColor: '#000',
-      // bodyFontColor: '#000',
-      // borderColor: '#000',
-      callbacks: {
-        label: (tooltipItem) => {
-          if (tooltipItem.xLabel != '') {
-            //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
-            return (
-              tooltipItem.xLabel +
-              ': $' +
-              this.decimalPipe.transform(tooltipItem.yLabel)
-            );
-          }
+    plugins: {
+      legend: this.legendGenerator,
+      tooltip: {
+        mode: 'x',
+        bodyFont: {
+          family: 'Gilroy-Regular'
         },
-        // remove title
-        title: function () {
-          return;
+        cornerRadius: 0,
+        callbacks: {
+          label: (tooltipItem) => {
+            if (tooltipItem.label != '') {
+              return (
+                tooltipItem.label +
+                ': $' +
+                this.decimalPipe.transform(tooltipItem.formattedValue)
+              );
+            }
+          },
+          // remove title
+          title: function () {
+            return;
+          }
         }
       }
     }
-    // legend: {
-    //   position: 'top',
-    //   onClick: function (e, legendItem) {
-    //     var index = legendItem.datasetIndex;
-    //     var ci = this.chart;
-    //     if (index == 0) {
-    //       ci.getDatasetMeta(1).hidden = true;
-    //       ci.getDatasetMeta(index).hidden = false;
-    //     }
-    //     else if (index == 1) {
-    //       ci.getDatasetMeta(0).hidden = true;
-    //       ci.getDatasetMeta(index).hidden = false;
-    //     }
-    //     ci.update();
-    //   },
-    // },
+
   };
-  public barChartOptions2: any = {
-    borderRadius: 50,
+  public barChartOptions2: ChartOptions = {
+    // borderRadius: 50,
     hover: { mode: null },
-    scaleShowVerticalLines: false,
-    cornerRadius: 60,
-    curvature: 1,
+    // scaleShowVerticalLines: false,
+    // cornerRadius: 60,
+    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine'
@@ -729,19 +707,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [
+      x: 
         {
-          gridLines: {
+          grid: {
             display: true
           },
           ticks: {
             autoSkip: false,
-            userCallback: (label: string) => {
+            callback: (label: string) => {
               if (label != '') {
                 const names = this.splitName(label);
-                // if (names.length > 1) {
-                //   return `${names[0][0]} ${names[1]}`
-                // } else return `${names[0]}`;
                 const name = names[0].split(' ');
                 if (names.length == 3) {
                   return `${names[0]}`;
@@ -758,73 +733,53 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             }
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
+          suggestedMin: 0,
           ticks: {
-            suggestedMin: 0,
-            userCallback: (label, index, labels) => {
+            
+            callback: (label: number, index, labels) => {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return '$' + this.decimalPipe.transform(label);
               }
             }
           },
-          gridLines: {
-            // color: '#fbfbfc'
-          }
         }
-      ]
     },
-    legend: this.legendGenerator,
-    tooltips: {
-      mode: 'x-axis',
-      bodyFontFamily: 'Gilroy-Regular',
-      cornerRadius: 0,
-      // backgroundColor: '#fff',
-      // titleFontColor: '#000',
-      // bodyFontColor: '#000',
-      // borderColor: '#000',
-      callbacks: {
-        label: (tooltipItem) => {
-          if (tooltipItem.xLabel != '') {
-            //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
-            return (
-              tooltipItem.xLabel +
-              ': $' +
-              this.decimalPipe.transform(tooltipItem.yLabel)
-            );
-          }
+    plugins: {
+      legend: this.legendGenerator,
+      tooltip: {
+        mode: 'x',
+        bodyFont: {
+          family: 'Gilroy-Regular'
         },
-        // remove title
-        title: function () {
-          return;
+        cornerRadius: 0,
+        callbacks: {
+          label: (tooltipItem) => {
+            if (tooltipItem.label != '') {
+              return (
+                tooltipItem.label +
+                ': $' +
+                this.decimalPipe.transform(tooltipItem.formattedValue)
+              );
+            }
+          },
+          // remove title
+          title: function () {
+            return;
+          }
         }
       }
     }
-    // legend: {
-    //   position: 'top',
-    //   onClick: function (e, legendItem) {
-    //     var index = legendItem.datasetIndex;
-    //     var ci = this.chart;
-    //     if (index == 0) {
-    //       ci.getDatasetMeta(1).hidden = true;
-    //       ci.getDatasetMeta(index).hidden = false;
-    //     }
-    //     else if (index == 1) {
-    //       ci.getDatasetMeta(0).hidden = true;
-    //       ci.getDatasetMeta(index).hidden = false;
-    //     }
-    //     ci.update();
-    //   },
-    // },
   };
-  public barChartOptions3: any = {
-    borderRadius: 50,
+  public barChartOptions3: ChartOptions = {
+    // borderRadius: 50,
     hover: { mode: null },
-    scaleShowVerticalLines: false,
-    cornerRadius: 60,
-    curvature: 1,
+    // scaleShowVerticalLines: false,
+    // cornerRadius: 60,
+    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine'
@@ -832,19 +787,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [
+      gridLines: {
+        display: true
+      },
+      x: 
         {
-          gridLines: {
-            display: true
-          },
           ticks: {
             autoSkip: false,
-            userCallback: (label: string) => {
+            callback: (label: string) => {
               if (label != '') {
                 const names = this.splitName(label);
-                // if (names.length > 1) {
-                //   return `${names[0][0]} ${names[1]}`
-                // } else return `${names[0]}`;
                 const name = names[0].split(' ');
                 if (names.length == 3) {
                   return `${names[0]}`;
@@ -861,73 +813,54 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             }
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
+          suggestedMin: 0,
           ticks: {
-            suggestedMin: 0,
-            userCallback: (label, index, labels) => {
+            callback: (label: number, index, labels) => {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return '$' + this.decimalPipe.transform(label);
               }
             }
           },
-          gridLines: {
-            // color: '#fbfbfc'
-          }
         }
-      ]
     },
-    legend: this.legendGenerator,
-    tooltips: {
-      mode: 'x-axis',
-      bodyFontFamily: 'Gilroy-Regular',
-      cornerRadius: 0,
-      // backgroundColor: '#fff',
-      // titleFontColor: '#000',
-      // bodyFontColor: '#000',
-      // borderColor: '#000',
-      callbacks: {
-        label: (tooltipItem) => {
-          if (tooltipItem.xLabel != '') {
-            //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
-            return (
-              tooltipItem.xLabel +
-              ': $' +
-              this.decimalPipe.transform(tooltipItem.yLabel)
-            );
-          }
+    plugins: {
+      legend: this.legendGenerator,
+      tooltip: {
+        mode: 'x',
+        bodyFont: {
+          family: 'Gilroy-Regular'
         },
-        // remove title
-        title: function () {
-          return;
+        cornerRadius: 0,
+        callbacks: {
+          label: (tooltipItem) => {
+            if (tooltipItem.label != '') {
+              return (
+                tooltipItem.label +
+                ': $' +
+                this.decimalPipe.transform(tooltipItem.formattedValue)
+              );
+            }
+          },
+          // remove title
+          title: function () {
+            return;
+          }
         }
       }
-    }
-    // legend: {
-    //   position: 'top',
-    //   onClick: function (e, legendItem) {
-    //     var index = legendItem.datasetIndex;
-    //     var ci = this.chart;
-    //     if (index == 0) {
-    //       ci.getDatasetMeta(1).hidden = true;
-    //       ci.getDatasetMeta(index).hidden = false;
-    //     }
-    //     else if (index == 1) {
-    //       ci.getDatasetMeta(0).hidden = true;
-    //       ci.getDatasetMeta(index).hidden = false;
-    //     }
-    //     ci.update();
-    //   },
-    // },
+    },
+
+
   };
-  public barChartOptions4: any = {
-    borderRadius: 50,
+  public barChartOptions4: ChartOptions = {
+    // borderRadius: 50,
     hover: { mode: null },
-    scaleShowVerticalLines: false,
-    cornerRadius: 60,
-    curvature: 1,
+    // scaleShowVerticalLines: false,
+    // cornerRadius: 60,
+    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine'
@@ -935,19 +868,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [
+      x: 
         {
-          gridLines: {
+          grid: {
             display: true
           },
           ticks: {
             autoSkip: false,
-            userCallback: (label: string) => {
+            callback: (label: string) => {
               if (label != '') {
                 const names = this.splitName(label);
-                // if (names.length > 1) {
-                //   return `${names[0][0]} ${names[1]}`
-                // } else return `${names[0]}`;
                 const name = names[0].split(' ');
                 if (names.length == 3) {
                   return `${names[0]}`;
@@ -964,73 +894,54 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             }
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
+          suggestedMin: 0,
           ticks: {
-            suggestedMin: 0,
-            userCallback: (label, index, labels) => {
+            callback: (label: number, index, labels) => {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return '$' + this.decimalPipe.transform(label);
               }
             }
           },
-          gridLines: {
-            // color: '#fbfbfc'
-          }
         }
-      ]
+      
     },
-    legend: this.legendGenerator,
-    tooltips: {
-      mode: 'x-axis',
-      bodyFontFamily: 'Gilroy-Regular',
-      cornerRadius: 0,
-      // backgroundColor: '#fff',
-      // titleFontColor: '#000',
-      // bodyFontColor: '#000',
-      // borderColor: '#000',
-      callbacks: {
-        label: (tooltipItem) => {
-          if (tooltipItem.xLabel != '') {
-            //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
-            return (
-              tooltipItem.xLabel +
-              ': $' +
-              this.decimalPipe.transform(tooltipItem.yLabel)
-            );
-          }
+    plugins: {
+      legend: this.legendGenerator,
+      tooltip: {
+        mode: 'x',
+        bodyFont: {
+          family: 'Gilroy-Regular',
         },
-        // remove title
-        title: function () {
-          return;
+        cornerRadius: 0,
+        callbacks: {
+          label: (tooltipItem) => {
+            if (tooltipItem.label != '') {
+              return (
+                tooltipItem.label +
+                ': $' +
+                this.decimalPipe.transform(tooltipItem.formattedValue)
+              );
+            }
+          },
+          // remove title
+          title: function () {
+            return;
+          }
         }
       }
     }
-    // legend: {
-    //   position: 'top',
-    //   onClick: function (e, legendItem) {
-    //     var index = legendItem.datasetIndex;
-    //     var ci = this.chart;
-    //     if (index == 0) {
-    //       ci.getDatasetMeta(1).hidden = true;
-    //       ci.getDatasetMeta(index).hidden = false;
-    //     }
-    //     else if (index == 1) {
-    //       ci.getDatasetMeta(0).hidden = true;
-    //       ci.getDatasetMeta(index).hidden = false;
-    //     }
-    //     ci.update();
-    //   },
-    // },
+
   };
-  public barChartOptions5: any = {
-    borderRadius: 50,
+  public barChartOptions5: ChartOptions = {
+    // borderRadius: 50,
     hover: { mode: null },
-    scaleShowVerticalLines: false,
-    cornerRadius: 60,
-    curvature: 1,
+    // scaleShowVerticalLines: false,
+    // cornerRadius: 60,
+    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine'
@@ -1038,19 +949,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [
+      x: 
         {
-          gridLines: {
+          grid: {
             display: true
           },
           ticks: {
             autoSkip: false,
-            userCallback: (label: string) => {
+            callback: (label: string) => {
               if (label != '') {
                 const names = this.splitName(label);
-                // if (names.length > 1) {
-                //   return `${names[0][0]} ${names[1]}`
-                // } else return `${names[0]}`;
                 const name = names[0].split(' ');
                 if (names.length == 3) {
                   return `${names[0]}`;
@@ -1067,73 +975,56 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             }
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
+          suggestedMin: 0,
           ticks: {
-            suggestedMin: 0,
-            userCallback: (label, index, labels) => {
+            callback: (label:number, index, labels) => {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return '$' + this.decimalPipe.transform(label);
               }
             }
           },
-          gridLines: {
-            // color: '#fbfbfc'
-          }
         }
-      ]
+      
     },
-    legend: this.legendGenerator,
-    tooltips: {
-      mode: 'x-axis',
-      bodyFontFamily: 'Gilroy-Regular',
-      cornerRadius: 0,
-      // backgroundColor: '#fff',
-      // titleFontColor: '#000',
-      // bodyFontColor: '#000',
-      // borderColor: '#000',
-      callbacks: {
-        label: (tooltipItem) => {
-          if (tooltipItem.xLabel != '') {
-            //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
-            return (
-              tooltipItem.xLabel +
-              ': $' +
-              this.decimalPipe.transform(tooltipItem.yLabel)
-            );
-          }
+    plugins: {
+      legend: this.legendGenerator,
+      tooltip: {
+        mode: 'x',
+        bodyFont: {
+          family: 'Gilroy-Regular'
         },
-        // remove title
-        title: function () {
-          return;
+        cornerRadius: 0,
+        callbacks: {
+          label: (tooltipItem) => {
+            if (tooltipItem.label != '') {
+              return (
+                tooltipItem.label +
+                ': $' +
+                this.decimalPipe.transform(tooltipItem.formattedValue)
+              );
+            }
+          },
+          // remove title
+          title: function () {
+            return;
+          }
         }
       }
-    }
-    // legend: {
-    //   position: 'top',
-    //   onClick: function (e, legendItem) {
-    //     var index = legendItem.datasetIndex;
-    //     var ci = this.chart;
-    //     if (index == 0) {
-    //       ci.getDatasetMeta(1).hidden = true;
-    //       ci.getDatasetMeta(index).hidden = false;
-    //     }
-    //     else if (index == 1) {
-    //       ci.getDatasetMeta(0).hidden = true;
-    //       ci.getDatasetMeta(index).hidden = false;
-    //     }
-    //     ci.update();
-    //   },
-    // },
+    },
   };
-  public barChartOptions6: any = {
-    borderRadius: 50,
+
+  public barChartOptions6: ChartOptions = {
+    
+    // borderRadius: 50,
     hover: { mode: null },
-    scaleShowVerticalLines: false,
-    cornerRadius: 60,
-    curvature: 1,
+    // scaleShowVerticalLines: false,
+    // cornerRadius: 60,
+    // curvature: 1,
+    
     animation: {
       duration: 1500,
       easing: 'easeOutSine'
@@ -1141,14 +1032,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [
+      x: 
         {
-          gridLines: {
+          grid: {
             display: true
           },
           ticks: {
             autoSkip: false,
-            userCallback: (label: string) => {
+            callback: (label: string) => {
               if (label != '') {
                 const names = this.splitName(label);
                 // if (names.length > 1) {
@@ -1170,50 +1061,51 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             }
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
+          suggestedMin: 0,
           ticks: {
-            suggestedMin: 0,
-            userCallback: (label, index, labels) => {
+            callback: (label: number, index, labels) => {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return '$' + this.decimalPipe.transform(label);
               }
             }
           },
-          gridLines: {
-            // color: '#fbfbfc'
-          }
         }
-      ]
+      
     },
-    legend: this.legendGenerator,
-    tooltips: {
-      mode: 'x-axis',
-      bodyFontFamily: 'Gilroy-Regular',
-      cornerRadius: 0,
-      // backgroundColor: '#fff',
-      // titleFontColor: '#000',
-      // bodyFontColor: '#000',
-      // borderColor: '#000',
-      callbacks: {
-        label: (tooltipItem) => {
-          if (tooltipItem.xLabel != '') {
-            //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
-            return (
-              tooltipItem.xLabel +
-              ': $' +
-              this.decimalPipe.transform(tooltipItem.yLabel)
-            );
+    plugins: {
+      
+      legend: this.legendGenerator,
+      tooltip: {
+        mode: 'x',
+        bodyFont:{family: 'Gilroy-Regular'},
+        cornerRadius: 0,
+        // backgroundColor: '#fff',
+        // titleFontColor: '#000',
+        // bodyFontColor: '#000',
+        // borderColor: '#000',
+        callbacks: {
+          label: (tooltipItem) => {
+            if (tooltipItem.label != '') {
+              //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+              return (
+                tooltipItem.label +
+                ': $' +
+                this.decimalPipe.transform(tooltipItem.formattedValue)
+              );
+            }
+          },
+          // remove title
+          title: function () {
+            return;
           }
-        },
-        // remove title
-        title: function () {
-          return;
         }
       }
     }
+
     // legend: {
     //   position: 'top',
     //   onClick: function (e, legendItem) {
@@ -1232,32 +1124,33 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     // },
   };
 
-  public barChartOptions1: any = {
-    borderRadius: 50,
+  public barChartOptions1: ChartOptions = {
+    // borderRadius: 50,
     hover: { mode: null },
-    scaleShowVerticalLines: false,
-    cornerRadius: 60,
-    curvature: 1,
+    // scaleShowVerticalLines: false,
+    // cornerRadius: 60,
+    // curvature: 1,
     animation: {
+      
       duration: 1,
       easing: 'linear',
       onComplete: function () {
-        var chartInstance = this.chart,
+        var chartInstance = this,
           ctx = chartInstance.ctx;
         ctx.textAlign = 'center';
         ctx.fillStyle = 'rgba(0, 0, 0, 1)';
         ctx.textBaseline = 'bottom';
         // Loop through each data in the datasets
         this.data.datasets.forEach(function (dataset, i) {
-          var meta = chartInstance.controller.getDatasetMeta(i);
+          var meta = chartInstance.getDatasetMeta(i);
           meta.data.forEach(function (bar, index) {
             // var data = "$"+dataset.data[index].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             let num = dataset.data[index];
             // let dataK = Math.abs(num) > 999 ? Math.sign(num)*(Math.round(Math.abs(num)/100)/10) + 'k' : Math.sign(num)*Math.abs(num);
             let dataK = shortenLargeNumber(num, 1);
             let dataDisplay = `$${dataK}`;
-            ctx.font = Chart.helpers.fontString(11, 'normal', 'Gilroy-Bold');
-            ctx.fillText(dataDisplay, bar._model.x, bar._model.y - 10);
+            ctx.font = this.helpers.fontString(11, 'normal', 'Gilroy-Bold');
+            ctx.fillText(dataDisplay, bar.x, bar.y - 10);
 
             function shortenLargeNumber(num, digits) {
               var units = ['k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'],
@@ -1280,14 +1173,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [
+      x: 
         {
-          gridLines: {
+          grid: {
             display: true
           },
           ticks: {
             autoSkip: false,
-            userCallback: (label: string) => {
+            callback: (label: string) => {
               const names = this.splitName(label);
               const name = names[0].split(' ');
               if (names.length > 1) {
@@ -1300,49 +1193,47 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             }
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
+          suggestedMin: 0,
+          max: 10000,
           ticks: {
-            suggestedMin: 0,
-            max: 10000,
-            userCallback: (label, index, labels) => {
+            callback: (label: number, index, labels) => {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return '$' + this.decimalPipe.transform(label);
               }
             }
           },
-          gridLines: {}
         }
-      ]
     },
-    tooltips: {
-      enabled: false
+    
+    plugins: {
+      tooltip: {
+        enabled: false
+      }
     }
   };
 
-  public barChartOptionsTrend: any = {
-    scaleShowVerticalLines: false,
-    cornerRadius: 60,
+  public barChartOptionsTrend: ChartOptions = {
+    // scaleShowVerticalLines: false,
+    // cornerRadius: 60,
     hover: { mode: null },
-    curvature: 1,
+    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine'
     },
     responsive: true,
     maintainAspectRatio: false,
-    scaleStartValue: 0,
+    // scaleStartValue: 0,
     scales: {
-      xAxes: [
+      x: 
         {
-          stacked: true
-        },
-        {
-          gridLines: {
+          grid: {
             display: true,
-            offsetGridLines: true
+            offset: true
           },
           ticks: {
             autoSkip: false
@@ -1351,14 +1242,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           offset: true,
           stacked: true
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           suggestedMin: 0,
+          min: 0,
+          beginAtZero: true,
           ticks: {
-            min: 0,
-            beginAtZero: true,
-            userCallback: (label, index, labels) => {
+            callback: (label: number, index, labels) => {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return '$' + this.decimalPipe.transform(label);
@@ -1366,84 +1257,85 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             }
           }
         }
-      ]
+      
     },
-    tooltips: {
-      mode: 'x-axis',
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        // disable displaying the color box;
-        tooltip.displayColors = false;
+    plugins: {
+      title: {
+        display: false,
+        text: ''
       },
-      callbacks: {
-        // use label callback to return the desired label
-        label: (tooltipItem, data) => {
-          if (tooltipItem.xLabel.includes('WE ')) {
-            return (
-              tooltipItem.xLabel +
-              ': $' +
-              this.decimalPipe.transform(tooltipItem.yLabel)
-            );
-          }
-          var Targetlable = '';
-          const v =
-            data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-          let Tlable = data.datasets[tooltipItem.datasetIndex].label;
-          if (Tlable != '') {
-            Tlable = Tlable + ': ';
-            Targetlable = Tlable;
-          }
-          let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-          var tlab = 0;
-          if (typeof data.datasets[1] === 'undefined') {
-          } else {
-            const tval = data.datasets[1].data[tooltipItem.index];
-            if (Array.isArray(tval)) {
-              tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
-              if (tlab == 0) {
-                Tlable = '';
+      tooltip: {
+        
+        mode: 'x',
+        displayColors(ctx, options) {
+          return !ctx.tooltip;
+        },
+        callbacks: {
+          // use label callback to return the desired label
+          label: (tooltipItem) => {
+            if (tooltipItem.label.includes('WE ')) {
+              return (
+                tooltipItem.label +
+                ': $' +
+                this.decimalPipe.transform(tooltipItem.formattedValue)
+              );
+            }
+            var Targetlable = '';
+            const v =
+              tooltipItem.dataset[tooltipItem.datasetIndex].data[tooltipItem.dataIndex];
+            let Tlable = tooltipItem.dataset[tooltipItem.datasetIndex].label;
+            if (Tlable != '') {
+              Tlable = Tlable + ': ';
+              Targetlable = Tlable;
+            }
+            let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            var tlab = 0;
+            if (typeof tooltipItem.dataset[1] === 'undefined') {
+            } else {
+              const tval = tooltipItem.dataset[1].data[tooltipItem.dataIndex];
+              if (Array.isArray(tval)) {
+                tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
+                if (tlab == 0) {
+                  Tlable = '';
+                }
               }
             }
+            if (tlab == 0 && Targetlable == 'Target: ') {
+              //return  Tlable + this.splitName(tooltipItem.xLabel).join(' ');
+            } else {
+              return (
+                Tlable +
+                this.splitName(tooltipItem.label).join(' ') +
+                ': $' +
+                this.decimalPipe.transform(ylable)
+              );
+            }
           }
-          if (tlab == 0 && Targetlable == 'Target: ') {
-            //return  Tlable + this.splitName(tooltipItem.xLabel).join(' ');
-          } else {
-            return (
-              Tlable +
-              this.splitName(tooltipItem.xLabel).join(' ') +
-              ': $' +
-              this.decimalPipe.transform(ylable)
-            );
+        }
+      },
+      legend: {
+        position: 'top',
+        onClick: function (e, legendItem) {
+          var index = legendItem.datasetIndex;
+          var ci = this.chart;
+          if (index == 0) {
+            ci.getDatasetMeta(1).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
+          } else if (index == 1) {
+            ci.getDatasetMeta(0).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
           }
-        },
-        // remove title
-        title: function (tooltipItem, data) {
-          return;
+          ci.update();
         }
-      }
-    },
-    legend: {
-      position: 'top',
-      onClick: function (e, legendItem) {
-        var index = legendItem.datasetIndex;
-        var ci = this.chart;
-        if (index == 0) {
-          ci.getDatasetMeta(1).hidden = true;
-          ci.getDatasetMeta(index).hidden = false;
-        } else if (index == 1) {
-          ci.getDatasetMeta(0).hidden = true;
-          ci.getDatasetMeta(index).hidden = false;
-        }
-        ci.update();
       }
     }
   };
 
-  public barChartOptionsPercent: any = {
-    scaleShowVerticalLines: false,
-    cornerRadius: 60,
+  public barChartOptionsPercent: ChartOptions = {
+    // scaleShowVerticalLines: false,
+    // cornerRadius: 60,
     hover: { mode: null },
-    curvature: 1,
+    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine'
@@ -1451,12 +1343,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [
+      x: 
         {
-          gridLines: { display: true },
+          grid: { display: true },
           ticks: {
             autoSkip: false,
-            userCallback: (label: any) => {
+            callback: (label: any) => {
               const names =
                 typeof label === 'string'
                   ? this.splitName(label)
@@ -1479,15 +1371,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             }
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           suggestedMin: 0,
-          // suggestedMax:100,
+          beginAtZero: true,
+          max: 100,
           ticks: {
-            beginAtZero: true,
-            max: 100,
-            userCallback: function (label, index, labels) {
+            callback: function (label: number, index, labels) {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return label + ' %';
@@ -1495,32 +1386,30 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             }
           }
         }
-      ]
+      
     },
     elements: {
       line: {
         fill: false
       }
     },
-    legend: this.legendGenerator,
-    tooltips: {
-      mode: 'x-axis',
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        // disable displaying the color box;
-        //tooltip.displayColors = false;
-      },
-      callbacks: {
-        // use label callback to return the desired label
-        label: function (tooltipItem, data) {
-          return tooltipItem.xLabel + ': ' + tooltipItem.yLabel + '%';
-        },
-        // remove title
-        title: function (tooltipItem, data) {
-          return;
+    plugins: {
+      legend: this.legendGenerator,
+      tooltip: {
+        mode: 'x',
+        callbacks: {
+          // use label callback to return the desired label
+          label: function (tooltipItem) {
+            return tooltipItem.label + ': ' + tooltipItem.formattedValue + '%';
+          },
+          // remove title
+          title: function (tooltipItem) {
+            return;
+          }
         }
       }
     }
+
     // legend: {
     //   position: 'top',
     //   onClick: function (e, legendItem) {
@@ -1539,11 +1428,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     // },
   };
 
-  public barChartOptionsPercentTrend: any = {
-    scaleShowVerticalLines: false,
-    cornerRadius: 60,
+  public barChartOptionsPercentTrend: ChartOptions = {
+    // scaleShowVerticalLines: false,
+    // cornerRadius: 60,
     hover: { mode: null },
-    curvature: 1,
+    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine'
@@ -1551,23 +1440,23 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [
+      x: 
         {
-          gridLines: { display: true },
+          grid: { display: true },
           ticks: {
             autoSkip: false
           },
           stacked: true
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           suggestedMin: 0,
           suggestedMax: 100,
+          beginAtZero: true,
+          max: 100,
           ticks: {
-            beginAtZero: true,
-            max: 100,
-            userCallback: function (label, index, labels) {
+            callback: function (label: number, index, labels) {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return label + ' %';
@@ -1575,76 +1464,77 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             }
           }
         }
-      ]
+      
+    },
+    plugins: {
+      tooltip: {
+        mode: 'x',
+        displayColors(ctx, options) {
+          return !ctx.tooltip
+        },
+        callbacks: {
+          // use label callback to return the desired label
+          label: function (tooltipItem) {
+            var Targetlable = '';
+            const v =
+            tooltipItem.dataset[tooltipItem.datasetIndex].data[tooltipItem.dataIndex];
+            let Tlable = tooltipItem.dataset[tooltipItem.datasetIndex].label;
+            if (Tlable != '') {
+              Tlable = Tlable + ': ';
+              Targetlable = Tlable;
+            }
+            let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            var tlab = 0;
+            if (typeof tooltipItem.dataset[1] === 'undefined') {
+            } else {
+              const tval = tooltipItem.dataset[1].data[tooltipItem.dataIndex];
+              if (Array.isArray(tval)) {
+                tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
+                if (tlab == 0) {
+                  Tlable = '';
+                }
+              }
+            }
+            if (tlab == 0 && Targetlable == 'Target: ') {
+            } else {
+              return Tlable + tooltipItem.label + ': ' + ylable + '%';
+            }
+          },
+          // remove title
+          title: function (tooltipItem) {
+            return;
+          }
+        }
+      },
+      legend: {
+        position: 'top',
+        onClick: function (e, legendItem) {
+          var index = legendItem.datasetIndex;
+          var ci = this.chart;
+          if (index == 0) {
+            ci.getDatasetMeta(1).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
+          } else if (index == 1) {
+            ci.getDatasetMeta(0).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
+          }
+          ci.update();
+        }
+      },
+
     },
     elements: {
       line: {
         fill: false
       }
     },
-    tooltips: {
-      mode: 'x-axis',
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        // disable displaying the color box;
-        tooltip.displayColors = false;
-      },
-      callbacks: {
-        // use label callback to return the desired label
-        label: function (tooltipItem, data) {
-          var Targetlable = '';
-          const v =
-            data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-          let Tlable = data.datasets[tooltipItem.datasetIndex].label;
-          if (Tlable != '') {
-            Tlable = Tlable + ': ';
-            Targetlable = Tlable;
-          }
-          let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-          var tlab = 0;
-          if (typeof data.datasets[1] === 'undefined') {
-          } else {
-            const tval = data.datasets[1].data[tooltipItem.index];
-            if (Array.isArray(tval)) {
-              tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
-              if (tlab == 0) {
-                Tlable = '';
-              }
-            }
-          }
-          if (tlab == 0 && Targetlable == 'Target: ') {
-          } else {
-            return Tlable + tooltipItem.xLabel + ': ' + ylable + '%';
-          }
-        },
-        // remove title
-        title: function (tooltipItem, data) {
-          return;
-        }
-      }
-    },
-    legend: {
-      position: 'top',
-      onClick: function (e, legendItem) {
-        var index = legendItem.datasetIndex;
-        var ci = this.chart;
-        if (index == 0) {
-          ci.getDatasetMeta(1).hidden = true;
-          ci.getDatasetMeta(index).hidden = false;
-        } else if (index == 1) {
-          ci.getDatasetMeta(0).hidden = true;
-          ci.getDatasetMeta(index).hidden = false;
-        }
-        ci.update();
-      }
-    }
   };
 
-  public barChartOptionstrend: any = {
-    scaleShowVerticalLines: false,
-    cornerRadius: 60,
+  public barChartOptionstrend: ChartOptions = {
+    // scaleShowVerticalLines: false,
+    // cornerRadius: 60,
     hover: { mode: null },
-    curvature: 1,
+    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine'
@@ -1652,21 +1542,22 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [
+      x: 
         {
-          gridLines: { display: true },
+          grid: { display: true },
           ticks: {
             autoSkip: false
           },
           stacked: true
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
           suggestedMin: 0,
+          beginAtZero: true,
           ticks: {
-            beginAtZero: true,
-            userCallback: function (label, index, labels) {
+            
+            callback: function (label: number, index, labels) {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return label;
@@ -1674,64 +1565,66 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             }
           }
         }
-      ]
+      
     },
-    tooltips: {
-      mode: 'x-axis',
-      custom: function (tooltip) {
-        if (!tooltip) return;
-        // disable displaying the color box;
-        tooltip.displayColors = false;
-      },
-      callbacks: {
-        // use label callback to return the desired label
-        label: function (tooltipItem, data) {
-          var Targetlable = '';
-          const v =
-            data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-          let Tlable = data.datasets[tooltipItem.datasetIndex].label;
-          if (Tlable != '') {
-            Tlable = Tlable + ': ';
-            Targetlable = Tlable;
-          }
-          let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-          var tlab = 0;
-          if (typeof data.datasets[1] === 'undefined') {
-          } else {
-            const tval = data.datasets[1].data[tooltipItem.index];
-            if (Array.isArray(tval)) {
-              tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
-              if (tlab == 0) {
-                Tlable = '';
+    plugins: {
+      tooltip: {
+        mode: 'x',
+        displayColors(ctx, options) {
+          return !ctx.tooltip
+        },
+        callbacks: {
+          // use label callback to return the desired label
+          label: function (tooltipItem) {
+            var Targetlable = '';
+            const v =
+            tooltipItem.dataset[tooltipItem.datasetIndex].data[tooltipItem.dataIndex];
+            let Tlable = tooltipItem.dataset[tooltipItem.datasetIndex].label;
+            if (Tlable != '') {
+              Tlable = Tlable + ': ';
+              Targetlable = Tlable;
+            }
+            let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            var tlab = 0;
+            if (typeof tooltipItem.dataset[1] === 'undefined') {
+            } else {
+              const tval = tooltipItem.dataset[1].data[tooltipItem.dataIndex];
+              if (Array.isArray(tval)) {
+                tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
+                if (tlab == 0) {
+                  Tlable = '';
+                }
               }
             }
+            if (tlab == 0 && Targetlable == 'Target: ') {
+            } else {
+              return Tlable + tooltipItem.label + ': ' + ylable;
+            }
+          },
+          // remove title
+          title: function (tooltipItem) {
+            return;
           }
-          if (tlab == 0 && Targetlable == 'Target: ') {
-          } else {
-            return Tlable + tooltipItem.xLabel + ': ' + ylable;
+        }
+      },
+      legend: {
+        position: 'top',
+        onClick: function (e, legendItem) {
+          var index = legendItem.datasetIndex;
+          var ci = this.chart;
+          if (index == 0) {
+            ci.getDatasetMeta(1).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
+          } else if (index == 1) {
+            ci.getDatasetMeta(0).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
           }
-        },
-        // remove title
-        title: function (tooltipItem, data) {
-          return;
+          ci.update();
         }
-      }
-    },
-    legend: {
-      position: 'top',
-      onClick: function (e, legendItem) {
-        var index = legendItem.datasetIndex;
-        var ci = this.chart;
-        if (index == 0) {
-          ci.getDatasetMeta(1).hidden = true;
-          ci.getDatasetMeta(index).hidden = false;
-        } else if (index == 1) {
-          ci.getDatasetMeta(0).hidden = true;
-          ci.getDatasetMeta(index).hidden = false;
-        }
-        ci.update();
       }
     }
+
+
   };
   public doughnutChartOptions: any = {
     scaleShowVerticalLines: false,
@@ -2390,64 +2283,64 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 /********** Add Space to top of graph ****/
                 let maxY = Math.max(...this.barChartData1);
                 if (maxY < 1000) {
-                  this.barChartOptions1.scales.yAxes[0].ticks.max =
+                  this.barChartOptions1.scales.y.max =
                     Math.ceil(maxY / 100) * 100;
                   if (
                     maxY + 50 >=
-                    this.barChartOptions1.scales.yAxes[0].ticks.max
+                    this.barChartOptions1.scales.y.max
                   ) {
-                    this.barChartOptions1.scales.yAxes[0].ticks.max =
-                      this.barChartOptions1.scales.yAxes[0].ticks.max + 100;
+                    this.barChartOptions1.scales.y.max =
+                      this.barChartOptions1.scales.y.max + 100;
                   }
                 } else if (maxY < 10000) {
-                  this.barChartOptions1.scales.yAxes[0].ticks.max =
+                  this.barChartOptions1.scales.y.max =
                     Math.ceil(maxY / 1000) * 1000;
                   if (
                     maxY + 500 >=
-                    this.barChartOptions1.scales.yAxes[0].ticks.max
+                    this.barChartOptions1.scales.y.max
                   ) {
-                    this.barChartOptions1.scales.yAxes[0].ticks.max =
-                      this.barChartOptions1.scales.yAxes[0].ticks.max + 1000;
+                    this.barChartOptions1.scales.y.max =
+                      this.barChartOptions1.scales.y.max + 1000;
                   }
                 } else if (maxY < 100000) {
-                  this.barChartOptions1.scales.yAxes[0].ticks.max =
+                  this.barChartOptions1.scales.y.max =
                     Math.ceil(maxY / 10000) * 10000;
                   if (
                     maxY + 5000 >=
-                    this.barChartOptions1.scales.yAxes[0].ticks.max
+                    this.barChartOptions1.scales.y.max
                   ) {
-                    this.barChartOptions1.scales.yAxes[0].ticks.max =
-                      this.barChartOptions1.scales.yAxes[0].ticks.max + 10000;
+                    this.barChartOptions1.scales.y.max =
+                      this.barChartOptions1.scales.y.max + 10000;
                   }
                 } else if (maxY < 1000000) {
-                  this.barChartOptions1.scales.yAxes[0].ticks.max =
+                  this.barChartOptions1.scales.y.max =
                     Math.ceil(maxY / 100000) * 100000;
                   if (
                     maxY + 50000 >=
-                    this.barChartOptions1.scales.yAxes[0].ticks.max
+                    this.barChartOptions1.scales.y.max
                   ) {
-                    this.barChartOptions1.scales.yAxes[0].ticks.max =
-                      this.barChartOptions1.scales.yAxes[0].ticks.max + 100000;
+                    this.barChartOptions1.scales.y.max =
+                      this.barChartOptions1.scales.y.max + 100000;
                   }
                 } else if (maxY < 5000000) {
-                  this.barChartOptions1.scales.yAxes[0].ticks.max =
+                  this.barChartOptions1.scales.y.max =
                     Math.ceil(maxY / 1000000) * 1000000;
                   if (
                     maxY + 500000 >=
-                    this.barChartOptions1.scales.yAxes[0].ticks.max
+                    this.barChartOptions1.scales.y.max
                   ) {
-                    this.barChartOptions1.scales.yAxes[0].ticks.max =
-                      this.barChartOptions1.scales.yAxes[0].ticks.max + 1000000;
+                    this.barChartOptions1.scales.y.max =
+                      this.barChartOptions1.scales.y.max + 1000000;
                   }
                 } else if (maxY > 5000000) {
-                  this.barChartOptions1.scales.yAxes[0].ticks.max =
+                  this.barChartOptions1.scales.y.max =
                     Math.ceil(maxY / 1000000) * 1000000;
                   if (
                     maxY + 500000 >=
-                    this.barChartOptions1.scales.yAxes[0].ticks.max
+                    this.barChartOptions1.scales.y.max
                   ) {
-                    this.barChartOptions1.scales.yAxes[0].ticks.max =
-                      this.barChartOptions1.scales.yAxes[0].ticks.max + 1000000;
+                    this.barChartOptions1.scales.y.max =
+                      this.barChartOptions1.scales.y.max + 1000000;
                   }
                 }
                 /********** Add Space to top of graph ****/
@@ -5541,12 +5434,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public planAllTotal = 0;
   public planAllTotalTrend = 0;
   public planChartLabels2 = [];
-  public barChartOptionsTC: any = {
-    borderRadius: 50,
+  public barChartOptionsTC: ChartOptions = {
+    // borderRadius: 50,
     hover: { mode: null },
-    scaleShowVerticalLines: false,
-    cornerRadius: 60,
-    curvature: 1,
+    // scaleShowVerticalLines: false,
+    // cornerRadius: 60,
+    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine'
@@ -5554,15 +5447,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [
+      x: 
         {
           ticks: {
             autoSkip: false,
-            userCallback: (label: string) => {
+            callback: (label: string) => {
               const names = this.splitName(label);
-              // if (names.length > 1) {
-              //   return `${names[0][0]} ${names[1]}`
-              // } else return `${names[0]}`;
               const name = names[0].split(' ');
               if (names.length == 3) {
                 return `${names[0]}`;
@@ -5578,12 +5468,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             }
           }
         }
-      ],
-      yAxes: [
+      ,
+      y: 
         {
+          suggestedMin: 0,
           ticks: {
-            suggestedMin: 0,
-            userCallback: (label, index, labels) => {
+            callback: (label: number, index, labels) => {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
                 return '$' + this.decimalPipe.transform(label);
@@ -5591,32 +5481,30 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             }
           }
         }
-      ]
     },
-    legend: this.legendGenerator,
-    tooltips: {
-      mode: 'x-axis',
-      bodyFontFamily: 'Gilroy-Regular',
-      cornerRadius: 0,
-      // backgroundColor: '#fff',
-      // titleFontColor: '#000',
-      // bodyFontColor: '#000',
-      // borderColor: '#000',
-      callbacks: {
-        label: (tooltipItem) => {
-          // return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
-          return (
-            tooltipItem.xLabel +
-            ': $' +
-            this.decimalPipe.transform(tooltipItem.yLabel)
-          );
+    plugins: {
+      legend: this.legendGenerator,
+      tooltip: {
+        mode: 'x',
+        bodyFont: {
+          family: 'Gilroy-Regular'
         },
-        // remove title
-        title: function () {
-          return;
+        cornerRadius: 0,
+        callbacks: {
+          label: (tooltipItem) => {
+            return (
+              tooltipItem.label +
+              ': $' +
+              this.decimalPipe.transform(tooltipItem.formattedValue)
+            );
+          },
+          // remove title
+          title: function () {
+            return;
+          }
         }
       }
-    }
+    },
   };
   public buildChartTreatmentLoader: boolean = false;
   public TPACAcolors: any;
@@ -5634,7 +5522,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.planChartLabels1 = [];
     this.planTotal = 0;
     this.planChartLabels = [];
-    this.barChartOptionsTC.annotation = [];
+    this.barChartOptionsTC.plugins.annotation = undefined;
     this.clinic_id &&
       this.cliniciananalysisService
         .TreatmentPlan(
@@ -5656,7 +5544,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               this.planTotal = 0;
               this.planChartLabels = [];
               this.planChartDataP[0]['data'] = [];
-              this.barChartOptionsTC.annotation = [];
+              this.barChartOptionsTC.plugins.annotation = undefined;
               if (res.status == 200) {
                 this.Apirequest = this.Apirequest - 1;
                 this.enableDiabaleButton(this.Apirequest);
@@ -5734,14 +5622,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 if (this.planTotalAverage >= this.planTotalPrev)
                   this.planTotalTooltip = 'up';
                 var index = 0;
-                this.barChartOptionsTC.annotation = [];
+                this.barChartOptionsTC.plugins.annotation = undefined;
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsTC.annotation = {
+                  this.barChartOptionsTC.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.planTotalAverage,
                         borderColor: '#0e3459',
@@ -5752,12 +5640,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                     ]
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsTC.annotation = {
+                  this.barChartOptionsTC.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.planTotalGoal * this.goalCount,
                         borderColor: 'red',
@@ -5796,7 +5684,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.planChartLabels2 = [];
     this.planTotal = 0;
     this.planChartLabels = [];
-    this.barChartOptionsTC.annotation = [];
+    this.barChartOptionsTC.plugins.annotation = undefined;
     this.clinic_id &&
       this.cliniciananalysisService
         .TreatmentPlanCompletedFees(
@@ -5818,7 +5706,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               this.planTotal = 0;
               this.planChartLabels = [];
               this.planChartDataC[0]['data'] = [];
-              this.barChartOptionsTC.annotation = [];
+              this.barChartOptionsTC.plugins.annotation = undefined;
               if (res.status == 200) {
                 this.Apirequest = this.Apirequest - 1;
                 this.enableDiabaleButton(this.Apirequest);
@@ -5895,14 +5783,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 if (this.planTotalAverage >= this.planTotalPrev)
                   this.planTotalTooltip = 'up';
                 var index = 0;
-                this.barChartOptionsTC.annotation = [];
+                this.barChartOptionsTC.plugins.annotation = undefined;
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsTC.annotation = {
+                  this.barChartOptionsTC.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.planTotalAverage,
                         borderColor: '#0e3459',
@@ -5913,12 +5801,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                     ]
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsTC.annotation = {
+                  this.barChartOptionsTC.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.planTotalGoal * this.goalCount,
                         borderColor: 'red',

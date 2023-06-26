@@ -548,7 +548,7 @@
                               [labels]="expenseMultiChartLabels"
                               [options]="labelBarOptionsMultiPercentage"
                               [legend]="false"
-                              [chartType]="stackedChartType"
+                              [type]="stackedChartType"
                               (chartHover)="chartHovered($event)"
                               (chartClick)="chartClicked($event)"
                             ></canvas>
@@ -677,7 +677,7 @@
                         baseChart
                         [data]="totalDiscountChartClinicsData"
                         [labels]="totalDiscountChartLabelsClinics"
-                        [chartType]="totalDiscountChartType"
+                        [type]="totalDiscountChartType"
                         (chartHover)="chartHovered($event)"
                         (chartClick)="chartClicked($event)"
                         [legend]="true"
@@ -697,7 +697,7 @@
                           baseChart
                           [data]="totalDiscountChartData"
                           [labels]="totalDiscountChartLabels"
-                          [chartType]="totalDiscountChartType"
+                          [type]="totalDiscountChartType"
                           (chartHover)="chartHovered($event)"
                           (chartClick)="chartClicked($event)"
                           [legend]="false"
@@ -812,7 +812,7 @@
                       baseChart
                       [data]="productionChartData"
                       [labels]="productionChartLabels"
-                      [chartType]="productionChartType"
+                      [type]="productionChartType"
                       (chartHover)="chartHovered($event)"
                       (chartClick)="chartClicked($event)"
                       [options]="pieChartOptions"
@@ -921,7 +921,7 @@
                   [datasets]="ProdPerVisit"
                   [labels]="ProductionTrendLabels1"
                   [legend]="barChartLegend"
-                  [chartType]="barChartType"
+                  [type]="barChartType"
                   (chartHover)="chartHovered($event)"
                   [options]="barChartOptionsTrend"
                   [colors]="barChartColors"
@@ -1048,7 +1048,7 @@
                         baseChart
                         [data]="totalDiscountChartData"
                         [labels]="totalDiscountChartLabels"
-                        [chartType]="totalDiscountChartType"
+                        [type]="totalDiscountChartType"
                         (chartHover)="chartHovered($event)"
                         (chartClick)="chartClicked($event)"
                         [legend]="false"
@@ -1075,7 +1075,7 @@
                         baseChart
                         [data]="totalDiscountChartClinicsData"
                         [labels]="totalDiscountChartLabelsClinics"
-                        [chartType]="totalDiscountChartType"
+                        [type]="totalDiscountChartType"
                         (chartHover)="chartHovered($event)"
                         (chartClick)="chartClicked($event)"
                         [legend]="true"
@@ -1205,7 +1205,7 @@
                         [labels]="totalProductionCollectionLabel1"
                         [options]="labelBarOptionsTC"
                         [legend]="false"
-                        [chartType]="stackedChartType"
+                        [type]="stackedChartType"
                         (chartHover)="chartHovered($event)"
                         (chartClick)="chartClicked($event)"
                       ></canvas>
@@ -1225,7 +1225,7 @@
                         [labels]="totalProductionCollectionLabel1"
                         [options]="labelBarOptionsMultiTC"
                         [legend]="true"
-                        [chartType]="stackedChartType"
+                        [type]="stackedChartType"
                         (chartHover)="chartHovered($event)"
                         (chartClick)="chartClicked($event)"
                       ></canvas>
@@ -1500,7 +1500,7 @@
                     [labels]="totalProductionChartTrendLabels"
                     [options]="labelBarOptionsSingleValue"
                     [legend]="false"
-                    [chartType]="lineChartType"
+                    [type]="lineChartType"
                     (chartHover)="chartHovered($event)"
                     [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"
@@ -1514,7 +1514,7 @@
                     [labels]="totalProductionChartTrendLabelsMulti"
                     [options]="stackedChartOptionsDiscount"
                     [legend]="true"
-                    [chartType]="stackedChartType"
+                    [type]="stackedChartType"
                     (chartHover)="chartHovered($event)"
                     (chartClick)="chartClicked($event)"
                   >
@@ -1545,7 +1545,7 @@
                     [labels]="netProfitPmsChartTrendLabels"
                     [options]="labelBarOptionsSingleValue"
                     [legend]="false"
-                    [chartType]="lineChartType"
+                    [type]="lineChartType"
                     (chartHover)="chartHovered($event)"
                     [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"
@@ -1578,7 +1578,7 @@
                     [labels]="netProfitPmsChartTrendLabels"
                     [options]="netProfitTrendMultiChartOptions"
                     [legend]="false"
-                    [chartType]="lineChartType"
+                    [type]="lineChartType"
                     [colors]="stackedChartColorsBar"
                     (chartHover)="chartHovered($event)"
                     (chartClick)="chartClicked($event)"
@@ -1602,7 +1602,7 @@
                     [labels]="netProfitPercentChartTrendLabels"
                     [options]="labelBarOptionsSingleValue1"
                     [legend]="false"
-                    [chartType]="lineChartType"
+                    [type]="lineChartType"
                     (chartHover)="chartHovered($event)"
                     [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"
@@ -1655,7 +1655,7 @@
                     [labels]="collectionChartTrendLabels"
                     [options]="labelBarOptionsSingleValue"
                     [legend]="false"
-                    [chartType]="lineChartType"
+                    [type]="lineChartType"
                     (chartHover)="chartHovered($event)"
                     [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"
@@ -1674,7 +1674,7 @@
                     [labels]="collectionChartTrendMultiLabels"
                     [options]="stackedChartOptionsDiscount"
                     [legend]="true"
-                    [chartType]="stackedChartType"
+                    [type]="stackedChartType"
                     (chartHover)="chartHovered($event)"
                     (chartClick)="chartClicked($event)"
                   >
@@ -1760,7 +1760,7 @@
                     [labels]="productionVisitChartTrendLabels"
                     [options]="labelBarOptionsSingleValue"
                     [legend]="false"
-                    [chartType]="lineChartType"
+                    [type]="lineChartType"
                     (chartHover)="chartHovered($event)"
                     [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"
@@ -1843,7 +1843,7 @@
                         [labels]="expensesChartTrendLabels"
                         [options]="stackedChartOptions"
                         [legend]="false"
-                        [chartType]="stackedChartType"
+                        [type]="stackedChartType"
                         (chartHover)="chartHovered($event)"
                         (chartClick)="chartClicked($event)"
                       >
@@ -1931,7 +1931,7 @@
                     [labels]="productionChartTrendLabels"
                     [options]="labelBarPercentOptionsStacked"
                     [legend]="false"
-                    [chartType]="stackedChartType"
+                    [type]="stackedChartType"
                     (chartHover)="chartHovered($event)"
                     (chartClick)="chartClicked($event)"
                   >
@@ -2009,7 +2009,7 @@
                       [labels]="discountsChartTrendLabels"
                       [options]="labelBarOptionsSingleValue"
                       [legend]="false"
-                      [chartType]="lineChartType"
+                      [type]="lineChartType"
                       (chartHover)="chartHovered($event)"
                       [colors]="stackedChartColorsBar"
                       (chartClick)="chartClicked($event)"
@@ -2024,7 +2024,7 @@
                       [labels]="discountsChartTrendMultiLabels1"
                       [options]="stackedChartOptionsDiscount"
                       [legend]="true"
-                      [chartType]="stackedChartType"
+                      [type]="stackedChartType"
                       (chartHover)="chartHovered($event)"
                       (chartClick)="chartClicked($event)"
                     >
@@ -2098,7 +2098,7 @@
                     [labels]="totalProductionCollectionLabel"
                     [options]="labelBarOptions"
                     [legend]="true"
-                    [chartType]="stackedChartType"
+                    [type]="stackedChartType"
                     (chartHover)="chartHovered($event)"
                     [colors]="barChartColors"
                     (chartClick)="chartClicked($event)"
@@ -2173,7 +2173,7 @@
                     [labels]="productionChartTrendLabels"
                     [options]="labelBarPercentOptionsStacked"
                     [legend]="true"
-                    [chartType]="stackedChartType"
+                    [type]="stackedChartType"
                     (chartHover)="chartHovered($event)"
                     (chartClick)="chartClicked($event)"
                   >
@@ -2217,7 +2217,7 @@
   [style.display]="'none'"
   [datasets]="chartData1"
   [labels]="chartLabels1"
-  [chartType]="productionChartType"
+  [type]="productionChartType"
 ></canvas>
 <canvas
   #myCanvas
@@ -2225,7 +2225,7 @@
   [style.display]="'none'"
   [datasets]="chartData1"
   [labels]="chartLabels1"
-  [chartType]="productionChartType"
+  [type]="productionChartType"
 ></canvas>
 
 <ngx-smart-modal #show_more identifier="show_more">

@@ -67,10 +67,6 @@ export class DateMenuBarComponent extends BaseComponent implements AfterViewInit
     chartService.duration$.pipe(
       takeUntil(this.destroyed$)
     ).subscribe((value : string) => this.currentSelectedPeriod = value);
-
-   
-
-
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd){
         this.route = router.url; 
@@ -203,10 +199,10 @@ export class DateMenuBarComponent extends BaseComponent implements AfterViewInit
         this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'yyyy-MM-dd');
         this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'yyyy-MM-dd');
       }      
-      var start = moment(this.startDate);
-      var end = moment(this.endDate);
-      this.datePicker.setStartDate(start);
-      this.datePicker.setEndDate(end);
+      // var start = moment(this.startDate);
+      // var end = moment(this.endDate);
+      this.datePicker.setStartDate(this.startDate);
+      this.datePicker.setEndDate(this.endDate);
       this.datePicker.updateView();
     }
 }
