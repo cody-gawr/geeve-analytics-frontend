@@ -285,6 +285,7 @@ export class ClinicSettingsService {
         utaFollowupDaysLater, 
         ftaFollowupDaysLater,
         referralWeeks,
+        compareMode,
         data: {
             max_chart_bars: any,
             fta_enable: any,
@@ -310,6 +311,7 @@ export class ClinicSettingsService {
         formData.append('uta_days_later', utaFollowupDaysLater);
         formData.append('fta_days_later', ftaFollowupDaysLater);
         formData.append('referral_weeks', referralWeeks);
+        formData.append('compare_mode', compareMode?'1':'0');
         if(data){
             formData.append('max_chart_bars', data.max_chart_bars);
             formData.append('fta_enable', data.fta_enable);
