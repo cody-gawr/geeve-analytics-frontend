@@ -4,7 +4,7 @@
          <button class="sa-pull-right mat-raised-button mat-dc" mat-raised-button (click)="openDialog()" disabled ="false"  *ngIf= "clinicscount > createdClinicsCount && userPlan != 'lite' && user_type != 7">Add Clinic</button>
        <button class="sa-pull-right mat-raised-button mat-dc m-l-10" mat-raised-button (click)="openLimitDialog()" *ngIf= "clinicscount <= createdClinicsCount && userPlan != 'lite'  && user_type != 7">Add Clinic</button> </mat-card-title>
 
-    <mat-form-field>
+    <mat-form-field floatLabel="never" >
     <input matInput type='text' class="form-control" placeholder='Type to filter Clinic name...' (keyup)='updateFilter($event)'/>
     </mat-form-field>
         <ngx-datatable #table class='material responsive-datatable' (activate)="onActivate($event)" [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"

@@ -12,7 +12,7 @@
         fxFlex.sm="30"
         fxFlex.xs="100"
       >
-        <mat-form-field >
+        <mat-form-field floatLabel="never"  >
           <mat-label class="goals-form-field-label">
             Monthly Goals
           </mat-label>
@@ -40,7 +40,7 @@
         fxFlex.sm="30"
         fxFlex.xs="100"
       >
-        <mat-form-field>
+        <mat-form-field floatLabel="never" >
           <mat-label class="goals-form-field-label">
           Dashboard </mat-label>
           <mat-select class="external_dentist" [(ngModel)]="selectedTab" (ngModelChange)="onTabChanged($event)" >
@@ -57,7 +57,7 @@
         fxFlex.sm="30"
         fxFlex.xs="100"
       >
-        <mat-form-field>
+        <mat-form-field floatLabel="never" >
           <mat-label class="goals-form-field-label">
           Year </mat-label>
           <mat-select class="external_dentist" [(ngModel)]="selectedYear" (ngModelChange)="onTabYearChanged($event)" >

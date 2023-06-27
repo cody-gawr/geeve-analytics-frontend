@@ -11,13 +11,13 @@
           </div>
           <div fxLayout="column" fxLayoutAlign="space-around">
             <div class="pb-1">
-              <mat-form-field>
+              <mat-form-field floatLabel="never" >
                 <input matInput placeholder="Password" type="password" [formControl]="form.controls['password']" pattern='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[~@#$%^&*+=`|{}:;!.?\"()\[\]-]).{10,}$' (click) ="setDefaultError()">
               </mat-form-field>
                 <small *ngIf="erros.required" class="text-danger support-text">You must include password.</small>
                 <small *ngIf="erros.minLength" class="text-danger support-text">Password must be a minimum of 10 characters and contain one lowercase character, one uppercase character, a number and a special character.</small>
                 <small *ngIf="erros.pattern" class="text-danger support-text">Password must be a minimum of 10 characters and contain one lowercase character, one uppercase character, a number and a special character.</small>
-                <mat-form-field>
+                <mat-form-field floatLabel="never" >
                 <input matInput placeholder="Confirm Password" type="password" [formControl]="form.controls['cpassword']">
               </mat-form-field>
                 <small *ngIf="erros.cpassword" class="text-danger support-text">You must include confirm password.</small>

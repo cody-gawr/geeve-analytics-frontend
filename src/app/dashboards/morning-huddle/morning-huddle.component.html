@@ -498,7 +498,7 @@
       <div id="mh-dentist-schedule-print">
         <div class="morning-huddle-date">
           <div>
-            <mat-form-field class="dentist-select" *ngIf="clinicDentists.length > 0 && user_type != '4'">
+            <mat-form-field floatLabel="never"  class="dentist-select" *ngIf="clinicDentists.length > 0 && user_type != '4'">
               <!-- <mat-label>Select Dentist</mat-label> -->
               <mat-select
                 (selectionChange)="refreshScheduleTab($event.value)"
@@ -1185,7 +1185,7 @@
       <div id="mh-front-desk-reminders-print">
         <div class="morning-huddle-date">
           <div *ngIf="clinicDentistsReminders.length > 0">
-            <mat-form-field class="dentist-select">
+            <mat-form-field floatLabel="never"  class="dentist-select">
               <!-- <mat-label>Select Dentist</mat-label> -->
               <mat-select
                 (selectionChange)="refreshReminderTab($event.value)"

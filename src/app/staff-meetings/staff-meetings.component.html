@@ -134,7 +134,7 @@
                 <hr>
                 <form (keydown.enter)="$event.preventDefault()" [formGroup]="invites_form" #invite>
                     <mat-card-content>
-                        <mat-form-field class="example-chip-list" appearance="outline">
+                        <mat-form-field floatLabel="never"  class="example-chip-list" appearance="outline">
                             <mat-label>Invites</mat-label>
                             <mat-chip-list #invitesChipList required [formControl]="invites_form.controls['invites']">
                                 <mat-chip
@@ -235,7 +235,7 @@
                                 <label>Meeting Topic</label>
                             </div>
                             <div  fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group">
-                                <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                                <mat-form-field floatLabel="never"  class="example-full-width create-meeting-form" appearance="outline">
                                     <input type="text" matInput autocomplete="off" [formControl]="create_meeting_form.controls['meeting_topic']" required>
                                     <mat-error>
                                         Please Enter meeting topic
@@ -248,7 +248,7 @@
                                 <mat-label>Select Date</mat-label>
                             </div>
                             <div  fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group">
-                                <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                                <mat-form-field floatLabel="never"  class="example-full-width create-meeting-form" appearance="outline">
                                     <input (click)="picker.open()" matInput [min]="minDate" [matDatepicker]="picker" autocomplete="off" type="text" [formControl]="create_meeting_form.controls['start_date']" required readonly>
                                     <mat-datepicker-toggle matSuffix [for]="picker" class="create-meeting-form"></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker> 
@@ -264,7 +264,7 @@
                                 <mat-label>Start Time</mat-label>
                             </div>
                             <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                                <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                                <mat-form-field floatLabel="never"  class="example-full-width create-meeting-form" appearance="outline">
                                     <mat-select [ngModel]="'09:00'" [formControl]="create_meeting_form.controls['start_time']" required>
                                         <mat-option *ngFor="let t of time" [value]="t">
                                         {{t}}
@@ -276,7 +276,7 @@
                                 </mat-form-field>
                             </div>
                             <div fxFlex.gt-sm="20%" fxFlex.gt-xs="20%" fxFlex="100" class="btn-group">
-                                <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                                <mat-form-field floatLabel="never"  class="example-full-width create-meeting-form" appearance="outline">
                                     <mat-select [ngModel]="'AM'" [formControl]="create_meeting_form.controls['day_time']" >
                                         <mat-option [value]="'AM'">AM</mat-option>
                                         <mat-option [value]="'PM'">PM</mat-option>
@@ -290,7 +290,7 @@
                                 <mat-label>Duration</mat-label>
                             </div>
                             <div fxFlex.gt-sm="25%" fxFlex.gt-xs="25%" fxFlex="100" class="btn-group" >
-                                <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                                <mat-form-field floatLabel="never"  class="example-full-width create-meeting-form" appearance="outline">
                                     <mat-select [formControl]="create_meeting_form.controls['duration_hr']" required>
                                         <mat-option *ngFor="let hr of hrs" [value]="hr">
                                             {{hr}}
@@ -306,7 +306,7 @@
                                 <mat-label>hours</mat-label>
                             </div>
                             <div fxFlex.gt-sm="20%" fxFlex.gt-xs="20%" fxFlex="100" class="btn-group">
-                                <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                                <mat-form-field floatLabel="never"  class="example-full-width create-meeting-form" appearance="outline">
                                     <mat-select [ngModel]="0" [formControl]="create_meeting_form.controls['duration_mins']" required>
                                         <mat-option *ngFor="let min of mins" [value]="min">
                                         {{min}}
@@ -332,7 +332,7 @@
                                 <mat-label>Timezone</mat-label>
                             </div>
                             <div fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group" >
-                                <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                                <mat-form-field floatLabel="never"  class="example-full-width create-meeting-form" appearance="outline">
                                     <mat-select [formControl]="create_meeting_form.controls['timezone']">
                                         <mat-option *ngFor="let timezone of timezones" [value]="timezone.id">
                                         {{timezone.timezone}}
@@ -350,7 +350,7 @@
                                 <mat-label>Agenda template</mat-label>
                             </div>
                             <div fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group" >
-                                <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                                <mat-form-field floatLabel="never"  class="example-full-width create-meeting-form" appearance="outline">
                                     <mat-select [ngModel]="0" [formControl]="create_meeting_form.controls['template']">
                                         <mat-option *ngFor="let template of templates" [value]="template.id">
                                         {{template.template_name}}
@@ -471,7 +471,7 @@
                                 <label>Category</label>
                             </div>
                             <div  fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group" [ngClass]="hasDisable?'input-disabled' : ''">
-                                <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                                <mat-form-field floatLabel="never"  class="example-full-width create-meeting-form" appearance="outline">
                                     <input type="text" matInput [(ngModel)]="agenda_category" [disabled]="hasDisable" [readonly]="hasDisable" [formControl]="create_agenda_form.controls['category']" required>
                                     <mat-error>
                                         Please Enter category
@@ -485,7 +485,7 @@
                                 <label>Agenda Item</label>
                             </div>
                             <div  fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group">
-                                <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                                <mat-form-field floatLabel="never"  class="example-full-width create-meeting-form" appearance="outline">
                                     <input type="text" matInput [(ngModel)]="agenda_item" [formControl]="create_agenda_form.controls['item']" required>
                                     <mat-error>
                                         Please Enter agenda item
@@ -499,7 +499,7 @@
                                 <mat-label>Select Chart</mat-label>
                             </div>
                             <div fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group" >
-                                <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                                <mat-form-field floatLabel="never"  class="example-full-width create-meeting-form" appearance="outline">
                                     <mat-select #select [(ngModel)]="chart_id" (ngModelChange)="openDateRangePicker()" [formControl]="create_agenda_form.controls['chart']">
                                         <mat-option *ngFor="let chart of charts" [value]="chart.id">
                                           {{chart.chart_name}}
@@ -514,7 +514,7 @@
                                 <mat-label>Choose clinic</mat-label>
                             </div>
                             <div fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group" >
-                                <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                                <mat-form-field floatLabel="never"  class="example-full-width create-meeting-form" appearance="outline">
                                     <mat-select #select [(ngModel)]="chart_clinic_id" [formControl]="create_agenda_form.controls['clinic']">
                                         <mat-option *ngFor="let clinic of clinics" [value]="clinic.id">
                                           {{clinic.clinicName}}
@@ -532,7 +532,7 @@
                                 <mat-label>Start & End Date</mat-label>
                             </div>
                             <div  fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group">
-                                <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                                <mat-form-field floatLabel="never"  class="example-full-width create-meeting-form" appearance="outline">
                                     <mat-date-range-input [rangePicker]="picker_range">
                                         <input [(ngModel)]="chart_start_date" [formControl]="create_agenda_form.controls['start_date']" matStartDate>
                                         <input [(ngModel)]="chart_end_date" [formControl]="create_agenda_form.controls['end_date']" matEndDate>
@@ -551,7 +551,7 @@
                                 <label>Staff Member</label>
                             </div>
                             <div  fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group">
-                                <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                                <mat-form-field floatLabel="never"  class="example-full-width create-meeting-form" appearance="outline">
                                     <input type="text" [(ngModel)]="agenda_staff_member" matInput [formControl]="create_agenda_form.controls['person']">
                                 </mat-form-field>
                             </div>
@@ -561,7 +561,7 @@
                                 <label>Duration (mins)</label>
                             </div>
                             <div  fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group">
-                                <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                                <mat-form-field floatLabel="never"  class="example-full-width create-meeting-form" appearance="outline">
                                     <input type="number" [(ngModel)]="agenda_duration" min="1" matInput [formControl]="create_agenda_form.controls['duration']">
                                 </mat-form-field>
                             </div>
@@ -571,7 +571,7 @@
                                 <label>Add a description</label>
                             </div>
                             <div  fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group">
-                                <mat-form-field class="example-full-width create-meeting-form" appearance="outline">
+                                <mat-form-field floatLabel="never"  class="example-full-width create-meeting-form" appearance="outline">
                                     <textarea matInput placeholder="..." [(ngModel)]="agenda_description" [formControl]="create_agenda_form.controls['description']" required></textarea>
                                     <mat-error>
                                         Please Enter Description
