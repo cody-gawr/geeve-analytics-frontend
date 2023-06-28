@@ -19,6 +19,7 @@ File: scss
  */
 @use '@angular/material' as mat;
 @include mat.core();
+@include mat.legacy-core();
 
 
 @import 'variable';
@@ -37,6 +38,7 @@ File: scss
 @import 'rtl';
 
 @include mat.all-component-themes($theme);
+@include mat.all-legacy-component-themes($theme);
 
 // // Red Theme
 // .danger-theme {  

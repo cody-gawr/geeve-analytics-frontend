@@ -1626,9 +1626,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
 
   };
-  public doughnutChartOptions: any = {
-    scaleShowVerticalLines: false,
-    borderWidth: 0,
+  public doughnutChartOptions: ChartOptions = {
+    // scaleShowVerticalLines: false,
+    // borderWidth: 0,
     responsive: true,
     hover: { mode: null },
     maintainAspectRatio: false,
@@ -1636,58 +1636,60 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       duration: 2000,
       easing: 'easeOutSine'
     },
-    legend: {
-      display: true,
-      position: 'bottom',
-      labels: {
-        usePointStyle: true,
-        padding: 5,
-        generateLabels: function (chart) {
-          var data = chart.data;
-          if (data.labels.length && data.datasets.length) {
-            return data.labels.map(function (label, i) {
-              var meta = chart.getDatasetMeta(0);
-              var ds = data.datasets[0];
-              var arc = meta.data[i];
-              var custom = (arc && arc.custom) || {};
-              const regex = /\w+\s\w+(?=\s)|\w+/g;
-              var names = label.toString().trim().match(regex);
-              var labls = '';
-              var name = names[0].split(' ');
-              if (names.length == 3) {
-                labls = `${names[0]}`;
-              } else if (names.length == 2) {
-                if (name.length == 2) {
-                  labls = `${names[0][0]} ${name[1]}`;
+    plugins: {
+      legend: {
+        display: true,
+        position: 'bottom',
+        labels: {
+          usePointStyle: true,
+          padding: 5,
+          generateLabels: function (chart: Chart) {
+            var data = chart.data;
+            if (data.labels.length && data.datasets.length) {
+              return data.labels.map(function (label, i) {
+                var meta = chart.getDatasetMeta(0);
+                var ds = data.datasets[0];
+                var arc = meta.data[i];
+                // var custom = (arc && arc.custom) || {};
+                const regex = /\w+\s\w+(?=\s)|\w+/g;
+                var names = label.toString().trim().match(regex);
+                var labls = '';
+                var name = names[0].split(' ');
+                if (names.length == 3) {
+                  labls = `${names[0]}`;
+                } else if (names.length == 2) {
+                  if (name.length == 2) {
+                    labls = `${names[0][0]} ${name[1]}`;
+                  } else {
+                    labls = `${names[0][0]} ${names[1]}`;
+                  }
                 } else {
-                  labls = `${names[0][0]} ${names[1]}`;
+                  labls = `${names[0]}`;
                 }
-              } else {
-                labls = `${names[0]}`;
-              }
-              return {
-                text: labls,
-                fillStyle: ds.backgroundColor[i],
-                strokeStyle: '#fff',
-                hidden: isNaN(ds.data[i]) || meta.data[i].hidden,
-                index: i
-              };
-            });
+                return {
+                  text: labls,
+                  fillStyle: ds.backgroundColor[i],
+                  strokeStyle: '#fff',
+                  //hidden: isNaN(ds.data[i]) || meta.data[i].active,
+                  index: i
+                };
+              });
+            }
+            return [];
           }
-          return [];
+        },
+        onClick: function (e) {
+          e.native.stopPropagation();
         }
       },
-      onClick: function (e) {
-        e.stopPropagation();
-      }
     },
-    elements: {
-      center: {
-        text: '',
-        sidePadding: 40,
-        minFontSize: 15
-      }
-    }
+    // elements: {
+    //   center: {
+    //     text: '',
+    //     sidePadding: 40,
+    //     minFontSize: 15
+    //   }
+    // }
   };
   public doughnutChartOptionsPercent: any = {
     scaleShowVerticalLines: false,

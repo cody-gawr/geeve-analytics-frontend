@@ -2758,25 +2758,25 @@ export class ClinicianProceeduresComponent
                 /********** Add Space to top of graph ****/
                 let maxY = Math.max(...this.proceedureChartData1);
                 if (maxY < 100) {
-                  this.proceedureChartOptions1.scales.xAxes[0].ticks.max =
+                  this.proceedureChartOptions1.scales.x[0].ticks.max =
                     Math.ceil(maxY / 10) * 10 + 4;
                 } else if (maxY < 1000) {
-                  this.proceedureChartOptions1.scales.xAxes[0].ticks.max =
+                  this.proceedureChartOptions1.scales.x[0].ticks.max =
                     Math.ceil(maxY / 100) * 100 + 50;
                 } else if (maxY < 10000) {
-                  this.proceedureChartOptions1.scales.xAxes[0].ticks.max =
+                  this.proceedureChartOptions1.scales.x[0].ticks.max =
                     Math.ceil(maxY / 1000) * 1000 + 500;
                 } else if (maxY < 100000) {
-                  this.proceedureChartOptions1.scales.xAxes[0].ticks.max =
+                  this.proceedureChartOptions1.scales.x[0].ticks.max =
                     Math.ceil(maxY / 10000) * 10000 + 5000;
                 } else if (maxY < 500000) {
-                  this.proceedureChartOptions1.scales.xAxes[0].ticks.max =
+                  this.proceedureChartOptions1.scales.x[0].ticks.max =
                     Math.ceil(maxY / 10000) * 10000 + 5000;
                 } else if (maxY < 1000000) {
-                  this.proceedureChartOptions1.scales.xAxes[0].ticks.max =
+                  this.proceedureChartOptions1.scales.x[0].ticks.max =
                     Math.ceil(maxY / 100000) * 100000 + 10000;
                 } else if (maxY > 1000000) {
-                  this.proceedureChartOptions1.scales.xAxes[0].ticks.max =
+                  this.proceedureChartOptions1.scales.x[0].ticks.max =
                     Math.ceil(maxY / 100000) * 100000 + 100000;
                 }
                 /********** Add Space to top of graph ****/

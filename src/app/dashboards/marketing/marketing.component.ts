@@ -1445,38 +1445,40 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     elements: {}
   };
 
-  public pieChartOptions: any = {
+  public pieChartOptions: ChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
-    tooltips: {
-      callbacks: {
-        label: (tooltipItem, data) => {
-          return (
-            data.labels[tooltipItem.index] +
-            ': $ ' +
-            this.decimalPipe.transform(
-              data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
-            )
-          );
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (tooltipItem) => {
+            return (
+              tooltipItem.label[tooltipItem.dataIndex] +
+              ': $ ' +
+              this.decimalPipe.transform(
+                tooltipItem.dataset[tooltipItem.datasetIndex].data[tooltipItem.dataIndex]
+              )
+            );
+          }
         }
-      }
-    },
-    legend: {
-      display: true,
-      position: 'bottom',
-      labels: {
-        usePointStyle: true,
-        padding: 20
       },
-      onClick: function (e) {
-        e.stopPropagation();
-      }
+      legend: {
+        display: true,
+        position: 'bottom',
+        labels: {
+          usePointStyle: true,
+          padding: 20
+        },
+        onClick: function (e) {
+          e.native.stopPropagation();
+        }
+      },
     },
-    elements: {
-      center: {
-        text: ''
-      }
-    }
+    // elements: {
+    //   center: {
+    //     text: ''
+    //   }
+    // }
   };
   myDateParser(dateStr: string): string {
     // 2018-01-01T12:12:12.123456; - converting valid date f74ormat like this

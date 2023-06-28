@@ -6,8 +6,8 @@ import { BaseComponent } from '../../clinic-settings/base/base.component';
 import { ChartService } from '../chart.service';
 import { Router, NavigationEnd, Event } from '@angular/router';
 import { NgxDaterangepickerMd, DaterangepickerComponent } from 'ngx-daterangepicker-material';
-import * as moment from 'moment';
 import { DatePipe } from '@angular/common';
+import * as dayjs from 'dayjs';
 interface IDateOption {
   name: string,
   value: string
@@ -146,7 +146,7 @@ export class DateMenuBarComponent extends BaseComponent implements AfterViewInit
       } else if (duration == 'q') {
         const now = new Date();
         var cmonth = now.getMonth() + 1;
-        var cyear = now.getFullYear();
+        // var cyear = now.getFullYear();
 
         if (cmonth >= 1 && cmonth <= 3) {
           this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'yyyy-MM-dd');
@@ -161,7 +161,7 @@ export class DateMenuBarComponent extends BaseComponent implements AfterViewInit
       } else if (duration == 'lq') {
         const now = new Date();
         var cmonth = now.getMonth() + 1;
-        var cyear = now.getFullYear();
+        // var cyear = now.getFullYear();
         if (cmonth >= 1 && cmonth <= 3) {
           this.startDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 9, 1), 'yyyy-MM-dd');
           this.endDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 12, 0), 'yyyy-MM-dd');
@@ -198,11 +198,13 @@ export class DateMenuBarComponent extends BaseComponent implements AfterViewInit
         var date = new Date();
         this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'yyyy-MM-dd');
         this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'yyyy-MM-dd');
-      }      
-      // var start = moment(this.startDate);
-      // var end = moment(this.endDate);
-      this.datePicker.setStartDate(this.startDate);
-      this.datePicker.setEndDate(this.endDate);
+      }   
+
+      var start = dayjs(this.startDate);
+      var end = dayjs(this.endDate);
+      
+      this.datePicker.setStartDate(start);
+      this.datePicker.setEndDate(end);
       this.datePicker.updateView();
     }
 }

@@ -4715,11 +4715,11 @@ img {
   overflow: hidden !important;
 }
 
-.cdk-overlay-pane .mat-dialog-container {
+/* .cdk-overlay-pane .mat-dialog-container {
   min-width: unset !important;
   max-width: calc(100% - 20px);
   margin: auto;
-}
+} */
 
 .sa_forms_design .sa_select,
 .sa_forms_design .mat-select {

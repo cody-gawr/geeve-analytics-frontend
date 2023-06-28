@@ -13,7 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { CookieService } from 'ngx-cookie';
 import { ToastrService } from 'ngx-toastr';
-import { Chart, ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
+import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
 import { ChartService } from '../chart.service';
 import { AppConstants } from '../../app.constants';
 import { environment } from '../../../environments/environment';
@@ -751,7 +751,7 @@ export class FrontDeskComponent implements AfterViewInit {
           ticks: {
             autoSkip: false,
             callback: function (value: string) {
-              if (value.indexOf('--') >= 0) {
+              if (value && value.toString().includes('--')) {
                 let lbl = value.split('--');
                 value = lbl[0];
               }
@@ -862,7 +862,7 @@ export class FrontDeskComponent implements AfterViewInit {
           ticks: {
             autoSkip: false,
             callback: function (value: string) {
-              if (value.indexOf('--') >= 0) {
+              if (value && value.toString().includes('--')) {
                 let lbl = value.split('--');
                 value = lbl[0];
               }
@@ -1008,7 +1008,7 @@ export class FrontDeskComponent implements AfterViewInit {
           ticks: {
             autoSkip: false,
             callback: function (value: string, index, values) {
-              if (value.indexOf('--') >= 0) {
+              if (value && value.toString().includes('--')) {
                 let lbl = value.split('--');
                 value = lbl[0];
               }

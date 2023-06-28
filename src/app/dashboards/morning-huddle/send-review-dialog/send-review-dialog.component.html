@@ -33,11 +33,13 @@
         <mat-hint align="end">{{review_msg.value.length}} / 800, {{numOfMessages}} {{numOfMessages == 0 || numOfMessages > 1?'messages':'message'}}</mat-hint>
     </mat-form-field>
 </div>
-<div mat-dialog-actions align="end">
-    <button mat-button (click)="onNoClick()">Cancel</button>
+<div mat-dialog-actions class="justify-between">
+    <button mat-button 
+      class="mat-raised-button mat-gray" 
+      (click)="onNoClick()">Cancel</button>
     <button 
-      mat-stroked-button
-      class="mat-dc"
+      mat-button
+      class="mat-raised-button mat-dc"
       mat-button 
       (click)="onSubmitClick($event)" 
       [disabled]="!isValid || isWaitingResponse" 

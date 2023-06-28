@@ -271,7 +271,6 @@ export class FollowupsComponent implements AfterViewInit {
           suggestedMin: 0,
           suggestedMax: 100,
           ticks: {
-            
             callback: (label: number, index, labels) => {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
