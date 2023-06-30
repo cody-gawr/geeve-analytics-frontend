@@ -148,7 +148,7 @@
                   "
                   #myCanvas2
                   baseChart
-                  [data]="newPatientsTimeData"
+                  [datasets]="[{ data: newPatientsTimeData} ]"
                   [labels]="newPatientsTimeLabels"
                   [type]="pieChartType"
                   (chartHover)="chartHovered($event)"
@@ -300,7 +300,7 @@
                     )
                   "
                   baseChart
-                  [data]="revenueReferralData"
+                  [datasets]="[{data: revenueReferralData}]"
                   [labels]="revenueReferralLabels"
                   [type]="pieChartType"
                   (chartHover)="chartHovered($event)"

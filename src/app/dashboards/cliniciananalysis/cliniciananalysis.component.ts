@@ -38,6 +38,7 @@ import { environment } from '../../../environments/environment';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
+import { formatXTooltipLabel, formatXLabel } from '../../util';
 
 export interface Dentist {
   providerId: string;
@@ -634,23 +635,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           },
           ticks: {
             autoSkip: false,
-            callback: (label: string) => {
-              if (label != '') {
-                const names = this.splitName(label);
-                const name = names[0].split(' ');
-                if (names.length == 3) {
-                  return `${names[0]}`;
-                } else if (names.length == 2) {
-                  if (name.length == 2) {
-                    return `${names[0][0]} ${name[1]}`;
-                  } else {
-                    return `${names[0][0]} ${names[1]}`;
-                  }
-                } else {
-                  return `${names[0]}`;
-                }
-              }
-            }
+            callback: function (tickValue: string | number, index, ticks) {
+              return formatXLabel(this.getLabelForValue(index));
+            } 
           }
         }
       ,
@@ -660,8 +647,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           ticks: {
             callback: (label: number, index, ticks) => {
               // when the floored value is the same as the value we have a whole number
-              if (Math.floor(label) === label) {
+              if (typeof label === 'number') {
                 return '$' + this.decimalPipe.transform(label);
+              }else{
+                return `$${label}`;
               }
             }
           },
@@ -676,15 +665,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         },
         cornerRadius: 0,
         callbacks: {
-          label: (tooltipItem) => {
-            if (tooltipItem.label != '') {
-              return (
-                tooltipItem.label +
-                ': $' +
-                this.decimalPipe.transform(tooltipItem.formattedValue)
-              );
-            }
-          },
+          label: (tooltipItem) => formatXTooltipLabel(
+            tooltipItem.label, tooltipItem.formattedValue
+          ),
           // remove title
           title: function () {
             return;
@@ -714,23 +697,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           },
           ticks: {
             autoSkip: false,
-            callback: (label: string) => {
-              if (label != '') {
-                const names = this.splitName(label);
-                const name = names[0].split(' ');
-                if (names.length == 3) {
-                  return `${names[0]}`;
-                } else if (names.length == 2) {
-                  if (name.length == 2) {
-                    return `${names[0][0]} ${name[1]}`;
-                  } else {
-                    return `${names[0][0]} ${names[1]}`;
-                  }
-                } else {
-                  return `${names[0]}`;
-                }
-              }
-            }
+            callback: function (tickValue: string | number, index, ticks) {
+              return formatXLabel(this.getLabelForValue(index));
+            } 
           }
         }
       ,
@@ -738,11 +707,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         {
           suggestedMin: 0,
           ticks: {
-            
-            callback: (label: number, index, labels) => {
+            callback: (label: number, index, ticks) => {
               // when the floored value is the same as the value we have a whole number
-              if (Math.floor(label) === label) {
+              if (typeof label === 'number') {
                 return '$' + this.decimalPipe.transform(label);
+              }else{
+                return `$${label}`;
               }
             }
           },
@@ -757,15 +727,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         },
         cornerRadius: 0,
         callbacks: {
-          label: (tooltipItem) => {
-            if (tooltipItem.label != '') {
-              return (
-                tooltipItem.label +
-                ': $' +
-                this.decimalPipe.transform(tooltipItem.formattedValue)
-              );
-            }
-          },
+          label: (tooltipItem) => formatXTooltipLabel(
+            tooltipItem.label, tooltipItem.formattedValue
+          ),
           // remove title
           title: function () {
             return;
@@ -794,23 +758,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         {
           ticks: {
             autoSkip: false,
-            callback: (label: string) => {
-              if (label != '') {
-                const names = this.splitName(label);
-                const name = names[0].split(' ');
-                if (names.length == 3) {
-                  return `${names[0]}`;
-                } else if (names.length == 2) {
-                  if (name.length == 2) {
-                    return `${names[0][0]} ${name[1]}`;
-                  } else {
-                    return `${names[0][0]} ${names[1]}`;
-                  }
-                } else {
-                  return `${names[0]}`;
-                }
-              }
-            }
+            callback: function (tickValue: string | number, index, ticks) {
+              return formatXLabel(this.getLabelForValue(index));
+            } 
           }
         }
       ,
@@ -818,10 +768,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         {
           suggestedMin: 0,
           ticks: {
-            callback: (label: number, index, labels) => {
+            callback: (label: number, index, ticks) => {
               // when the floored value is the same as the value we have a whole number
-              if (Math.floor(label) === label) {
+              if (typeof label === 'number') {
                 return '$' + this.decimalPipe.transform(label);
+              }else{
+                return `$${label}`;
               }
             }
           },
@@ -836,15 +788,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         },
         cornerRadius: 0,
         callbacks: {
-          label: (tooltipItem) => {
-            if (tooltipItem.label != '') {
-              return (
-                tooltipItem.label +
-                ': $' +
-                this.decimalPipe.transform(tooltipItem.formattedValue)
-              );
-            }
-          },
+          label: (tooltipItem) => formatXTooltipLabel(
+            tooltipItem.label, tooltipItem.formattedValue),
           // remove title
           title: function () {
             return;
@@ -852,8 +797,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
       }
     },
-
-
   };
   public barChartOptions4: ChartOptions = {
     // borderRadius: 50,
@@ -875,23 +818,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           },
           ticks: {
             autoSkip: false,
-            callback: (label: string) => {
-              if (label != '') {
-                const names = this.splitName(label);
-                const name = names[0].split(' ');
-                if (names.length == 3) {
-                  return `${names[0]}`;
-                } else if (names.length == 2) {
-                  if (name.length == 2) {
-                    return `${names[0][0]} ${name[1]}`;
-                  } else {
-                    return `${names[0][0]} ${names[1]}`;
-                  }
-                } else {
-                  return `${names[0]}`;
-                }
-              }
-            }
+            callback: function (tickValue: string | number, index, ticks) {
+              return formatXLabel(this.getLabelForValue(index));
+            } 
           }
         }
       ,
@@ -899,10 +828,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         {
           suggestedMin: 0,
           ticks: {
-            callback: (label: number, index, labels) => {
+            callback: (label: number, index, ticks) => {
               // when the floored value is the same as the value we have a whole number
-              if (Math.floor(label) === label) {
+              if (typeof label === 'number') {
                 return '$' + this.decimalPipe.transform(label);
+              }else{
+                return `$${label}`;
               }
             }
           },
@@ -918,15 +849,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         },
         cornerRadius: 0,
         callbacks: {
-          label: (tooltipItem) => {
-            if (tooltipItem.label != '') {
-              return (
-                tooltipItem.label +
-                ': $' +
-                this.decimalPipe.transform(tooltipItem.formattedValue)
-              );
-            }
-          },
+          label: (tooltipItem) => formatXTooltipLabel(
+            tooltipItem.label, tooltipItem.formattedValue
+          ),
           // remove title
           title: function () {
             return;
@@ -956,22 +881,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           },
           ticks: {
             autoSkip: false,
-            callback: (label: string) => {
-              if (label != '') {
-                const names = this.splitName(label);
-                const name = names[0].split(' ');
-                if (names.length == 3) {
-                  return `${names[0]}`;
-                } else if (names.length == 2) {
-                  if (name.length == 2) {
-                    return `${names[0][0]} ${name[1]}`;
-                  } else {
-                    return `${names[0][0]} ${names[1]}`;
-                  }
-                } else {
-                  return `${names[0]}`;
-                }
-              }
+            callback: function (tickValue: string | number, index, ticks) {
+              return formatXLabel(this.getLabelForValue(index));
             }
           }
         }
@@ -999,15 +910,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         },
         cornerRadius: 0,
         callbacks: {
-          label: (tooltipItem) => {
-            if (tooltipItem.label != '') {
-              return (
-                tooltipItem.label +
-                ': $' +
-                this.decimalPipe.transform(tooltipItem.formattedValue)
-              );
-            }
-          },
+          label: (tooltipItem) => formatXTooltipLabel(
+            tooltipItem.label, tooltipItem.formattedValue
+          ),
           // remove title
           title: function () {
             return;
@@ -1016,7 +921,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       }
     },
   };
-
   public barChartOptions6: ChartOptions = {
     
     // borderRadius: 50,
@@ -1039,26 +943,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           },
           ticks: {
             autoSkip: false,
-            callback: (label: string) => {
-              if (label != '') {
-                const names = this.splitName(label);
-                // if (names.length > 1) {
-                //   return `${names[0][0]} ${names[1]}`
-                // } else return `${names[0]}`;
-                const name = names[0].split(' ');
-                if (names.length == 3) {
-                  return `${names[0]}`;
-                } else if (names.length == 2) {
-                  if (name.length == 2) {
-                    return `${names[0][0]} ${name[1]}`;
-                  } else {
-                    return `${names[0][0]} ${names[1]}`;
-                  }
-                } else {
-                  return `${names[0]}`;
-                }
-              }
-            }
+            callback: function (tickValue: string | number, index, ticks) {
+              return formatXLabel(this.getLabelForValue(index));
+            } 
           }
         }
       ,
@@ -1088,16 +975,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         // bodyFontColor: '#000',
         // borderColor: '#000',
         callbacks: {
-          label: (tooltipItem) => {
-            if (tooltipItem.label != '') {
-              //  return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
-              return (
-                tooltipItem.label +
-                ': $' +
-                this.decimalPipe.transform(tooltipItem.formattedValue)
-              );
-            }
-          },
+          label: (tooltipItem) => formatXTooltipLabel(
+            tooltipItem.label, tooltipItem.formattedValue
+          ),
           // remove title
           title: function () {
             return;
@@ -1180,17 +1060,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           },
           ticks: {
             autoSkip: false,
-            callback: (label: string) => {
-              const names = this.splitName(label);
-              const name = names[0].split(' ');
-              if (names.length > 1) {
-                if (name.length == 2) {
-                  return `${names[0][0]} ${name[1]}`;
-                } else {
-                  return `${names[0][0]} ${names[1]}`;
-                }
-              } else return `${names[0]}`;
-            }
+            callback: function (tickValue: string | number, index, ticks) {
+              return formatXLabel(this.getLabelForValue(index));
+            } 
           }
         }
       ,
@@ -1277,22 +1149,22 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               return (
                 tooltipItem.label +
                 ': $' +
-                this.decimalPipe.transform(tooltipItem.formattedValue)
+                tooltipItem.formattedValue
               );
             }
             var Targetlable = '';
             const v =
-              tooltipItem.dataset[tooltipItem.datasetIndex].data[tooltipItem.dataIndex];
-            let Tlable = tooltipItem.dataset[tooltipItem.datasetIndex].label;
+              tooltipItem.dataset.data[tooltipItem.dataIndex];
+            let Tlable = tooltipItem.dataset.label;
             if (Tlable != '') {
               Tlable = Tlable + ': ';
               Targetlable = Tlable;
             }
             let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
             var tlab = 0;
-            if (typeof tooltipItem.dataset[1] === 'undefined') {
+            if (typeof tooltipItem.chart.data.datasets[1] === 'undefined') {
             } else {
-              const tval = tooltipItem.dataset[1].data[tooltipItem.dataIndex];
+              const tval = tooltipItem.chart.data.datasets[1].data[tooltipItem.dataIndex];
               if (Array.isArray(tval)) {
                 tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
                 if (tlab == 0) {
@@ -1307,7 +1179,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 Tlable +
                 this.splitName(tooltipItem.label).join(' ') +
                 ': $' +
-                this.decimalPipe.transform(ylable)
+                this.decimalPipe.transform(<number>ylable)
               );
             }
           }
@@ -1348,26 +1220,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           grid: { display: true },
           ticks: {
             autoSkip: false,
-            callback: (label: any) => {
-              const names =
-                typeof label === 'string'
-                  ? this.splitName(label)
-                  : this.splitName(label[0]);
-              // if (names.length > 1) {
-              //   return `${names[0][0]} ${names[1]}`
-              // } else return `${names[0]}`;
-              const name = names[0].split(' ');
-              if (names.length == 3) {
-                return `${names[0]}`;
-              } else if (names.length == 2) {
-                if (name.length == 2) {
-                  return `${names[0][0]} ${name[1]}`;
-                } else {
-                  return `${names[0][0]} ${names[1]}`;
-                }
-              } else {
-                return `${names[0]}`;
-              }
+            callback: function (tickValue: string | number, index, ticks) {
+              return formatXLabel(this.getLabelForValue(index));
             }
           }
         }
@@ -1477,17 +1331,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           label: function (tooltipItem) {
             var Targetlable = '';
             const v =
-            tooltipItem.dataset[tooltipItem.datasetIndex].data[tooltipItem.dataIndex];
-            let Tlable = tooltipItem.dataset[tooltipItem.datasetIndex].label;
+            tooltipItem.dataset.data[tooltipItem.dataIndex];
+            let Tlable = tooltipItem.dataset.label;
             if (Tlable != '') {
               Tlable = Tlable + ': ';
               Targetlable = Tlable;
             }
             let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
             var tlab = 0;
-            if (typeof tooltipItem.dataset[1] === 'undefined') {
+            if (typeof tooltipItem.chart.data.datasets[1] === 'undefined') {
             } else {
-              const tval = tooltipItem.dataset[1].data[tooltipItem.dataIndex];
+              const tval = tooltipItem.chart.data.datasets[1].data[tooltipItem.dataIndex];
               if (Array.isArray(tval)) {
                 tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
                 if (tlab == 0) {
@@ -1578,17 +1432,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           label: function (tooltipItem) {
             var Targetlable = '';
             const v =
-            tooltipItem.dataset[tooltipItem.datasetIndex].data[tooltipItem.dataIndex];
-            let Tlable = tooltipItem.dataset[tooltipItem.datasetIndex].label;
+            tooltipItem.dataset.data[tooltipItem.dataIndex];
+            let Tlable = tooltipItem.dataset.label;
             if (Tlable != '') {
               Tlable = Tlable + ': ';
               Targetlable = Tlable;
             }
             let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
             var tlab = 0;
-            if (typeof tooltipItem.dataset[1] === 'undefined') {
+            if (typeof tooltipItem.chart.data.datasets[1] === 'undefined') {
             } else {
-              const tval = tooltipItem.dataset[1].data[tooltipItem.dataIndex];
+              const tval = tooltipItem.chart.data.datasets[1].data[tooltipItem.dataIndex];
               if (Array.isArray(tval)) {
                 tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
                 if (tlab == 0) {
@@ -2175,18 +2029,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   }
   public productionTooltip = 'down';
   public productionTotalPrev;
-  public barChartOptionsDP: any = this.barChartOptions2;
-  public barChartOptionsDP1: any = this.barChartOptions;
-  public barChartOptionsDP2: any = this.barChartOptions;
-  public barChartOptionsDP3: any = this.barChartOptions;
-  public barChartOptionsDP4: any = this.barChartOptions2;
-  public barChartOptionsDP5: any = this.barChartOptions2;
-  public barChartOptionsDP6: any = this.barChartOptions3;
-  public barChartOptionsDP7: any = this.barChartOptions3;
-  public barChartOptionsDP8: any = this.barChartOptions3;
-  public barChartOptionsHR: any = this.barChartOptions4;
-  public barChartOptionsHR1: any = this.barChartOptions5;
-  public barChartOptionsHR2: any = this.barChartOptions6;
+  public barChartOptionsDP: ChartOptions = this.barChartOptions2;
+  public barChartOptionsDP1: ChartOptions = this.barChartOptions;
+  public barChartOptionsDP2: ChartOptions = this.barChartOptions;
+  public barChartOptionsDP3: ChartOptions = this.barChartOptions;
+  public barChartOptionsDP4: ChartOptions = this.barChartOptions2;
+  public barChartOptionsDP5: ChartOptions = this.barChartOptions2;
+  public barChartOptionsDP6: ChartOptions = this.barChartOptions3;
+  public barChartOptionsDP7: ChartOptions = this.barChartOptions3;
+  public barChartOptionsDP8: ChartOptions = this.barChartOptions3;
+  public barChartOptionsHR: ChartOptions = this.barChartOptions4;
+  public barChartOptionsHR1: ChartOptions = this.barChartOptions5;
+  public barChartOptionsHR2: ChartOptions = this.barChartOptions6;
   public buildChartLoader: boolean = true;
   public dentistKey;
   public DPcolors: any;
@@ -2202,13 +2056,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   //Dentist Production Chart for all Dentist
   public dentistProductiontbl: any = [];
   public showprodAllTbl: boolean = false;
+
   private buildChart() {
     this.buildChartLoader = true;
     this.barChartData1 = [];
     this.barChartLabels1 = [];
     this.productionTotal = 0;
     this.barChartLabels = [];
-    this.barChartOptionsDP.annotation = [];
+    this.barChartOptionsDP.plugins.annotation = undefined;
     this.clinic_id &&
       this.cliniciananalysisService
         .DentistProduction(
@@ -2275,6 +2130,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                     res.provider_name != 'Anonymous'
                   ) {
                     this.barChartLabels1.push(pName);
+
                     this.dentistKey = i;
                   } else {
                     this.barChartLabels1.push(pName);
@@ -2382,15 +2238,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   
                 if (this.productionTotal >= this.productionTotalPrev)
                   this.productionTooltip = 'up';
-                this.barChartOptionsDP1.annotation = [];
+                this.barChartOptionsDP1.plugins.annotation = undefined;
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsDP1.annotation = {
-                    drawTime: 'afterDatasetsDraw',
+                  this.barChartOptionsDP1.plugins.annotation = {
+                    // drawTime: 'afterDatasetsDraw',
                     annotations: [
                       {
                         drawTime: 'afterDraw',
                         type: 'line',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.productionTotalAverage,
                         borderColor: '#0e3459',
@@ -2398,16 +2254,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsDP1.annotation = {
-                    drawTime: 'afterDatasetsDraw',
+                  this.barChartOptionsDP1.plugins.annotation = {
+                    // drawTime: 'afterDatasetsDraw',
                     annotations: [
                       {
                         drawTime: 'afterDraw',
                         type: 'line',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.productionGoal * this.goalCount,
                         borderColor: 'red',
@@ -2415,7 +2274,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (res.status == 401) {
                   this._cookieService.put('username', '');
@@ -2462,7 +2324,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.barChartDentistsLabels1 = [];
     this.productionDentistsTotal = 0;
     this.barChartDentistLabels = [];
-    this.barChartOptionsDP2.annotation = [];
+    this.barChartOptionsDP2.plugins.annotation = undefined;
     this.clinic_id &&
       this.cliniciananalysisService
         .DentistProductionDentist(
@@ -2576,15 +2438,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 )
                   this.productionTooltip = 'up';
                 // this.productionDentists1Tooltip = 'up';
-                this.barChartOptionsDP2.annotation = [];
+                this.barChartOptionsDP2.plugins.annotation = undefined;
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsDP2.annotation = {
-                    drawTime: 'afterDatasetsDraw',
+                  this.barChartOptionsDP2.plugins.annotation = {
+                    // drawTime: 'afterDatasetsDraw',
                     annotations: [
                       {
                         drawTime: 'afterDraw',
                         type: 'line',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.productionDentistTotalAverage,
                         borderColor: '#0e3459',
@@ -2592,16 +2454,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsDP2.annotation = {
-                    drawTime: 'afterDatasetsDraw',
+                  this.barChartOptionsDP2.plugins.annotation = {
+                    // drawTime: 'afterDatasetsDraw',
                     annotations: [
                       {
                         drawTime: 'afterDraw',
                         type: 'line',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.productionGoal * this.goalCount,
                         borderColor: 'red',
@@ -2609,7 +2474,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (res.status == 401) {
                   this._cookieService.put('username', '');
@@ -2654,7 +2522,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.barChartOhtLabels1 = [];
     this.productionOhtTotal = 0;
     this.barChartOhtLabels = [];
-    this.barChartOptionsDP3.annotation = [];
+    this.barChartOptionsDP3.plugins.annotation = undefined;
     this.clinic_id &&
       this.cliniciananalysisService
         .DentistProductionOht(
@@ -2766,15 +2634,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 if (this.productionOhtTotal >= this.productionOhtTotalPrev)
                   this.productionTooltip = 'up';
                 // this.productionOhtTooltip = 'up';
-                this.barChartOptionsDP3.annotation = [];
+                this.barChartOptionsDP3.plugins.annotation = undefined;
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsDP3.annotation = {
-                    drawTime: 'afterDatasetsDraw',
+                  this.barChartOptionsDP3.plugins.annotation = {
+                    // drawTime: 'afterDatasetsDraw',
                     annotations: [
                       {
                         drawTime: 'afterDraw',
                         type: 'line',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.productionOhtTotalAverage,
                         borderColor: '#0e3459',
@@ -2782,16 +2650,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsDP3.annotation = {
-                    drawTime: 'afterDatasetsDraw',
+                  this.barChartOptionsDP3.plugins.annotation = {
+                    // drawTime: 'afterDatasetsDraw',
                     annotations: [
                       {
                         drawTime: 'afterDraw',
                         type: 'line',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.productionGoal * this.goalCount,
                         borderColor: 'red',
@@ -2799,7 +2670,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (res.status == 401) {
                   this._cookieService.put('username', '');
@@ -2845,7 +2719,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionTotal = 0;
     this.collectionTotalGoal = 0;
     this.collectionLabels = [];
-    this.barChartOptionsDP.annotation = [];
+    this.barChartOptionsDP.plugins.annotation = undefined;
     this.clinic_id &&
       this.cliniciananalysisService
         .DentistCollection(
@@ -2953,15 +2827,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   
                 if (this.collectionTotal >= this.collectionTotalPrev)
                   this.collectionTooltip = 'up';
-                this.barChartOptionsDP.annotation = [];
+                this.barChartOptionsDP.plugins.annotation = undefined;
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsDP.annotation = {
-                    drawTime: 'afterDatasetsDraw',
+                  this.barChartOptionsDP.plugins.annotation = {
+                    // drawTime: 'afterDatasetsDraw',
                     annotations: [
                       {
                         drawTime: 'afterDraw',
                         type: 'line',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.collectionTotalAverage,
                         borderColor: '#0e3459',
@@ -2969,16 +2843,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsDP.annotation = {
-                    drawTime: 'afterDatasetsDraw',
+                  this.barChartOptionsDP.plugins.annotation = {
+                    // drawTime: 'afterDatasetsDraw',
                     annotations: [
                       {
                         drawTime: 'afterDraw',
                         type: 'line',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.collectionTotalGoal * this.goalCount,
                         borderColor: 'red',
@@ -2986,7 +2863,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (res.status == 401) {
                   this._cookieService.put('username', '');
@@ -3031,7 +2911,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionDentistsLabels1 = [];
     this.collectionDentistsTotal = 0;
     this.collectionDentistsLabels = [];
-    this.barChartOptionsDP4.annotation = [];
+    this.barChartOptionsDP4.plugins.annotation = undefined;
     this.clinic_id &&
       this.cliniciananalysisService
         .DentistCollectionDentists(
@@ -3150,15 +3030,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 )
                   this.collectionTooltip = 'up';
                 // this.collectionDentistsTooltip = 'up';
-                this.barChartOptionsDP4.annotation = [];
+                this.barChartOptionsDP4.plugins.annotation = undefined;
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsDP4.annotation = {
-                    drawTime: 'afterDatasetsDraw',
+                  this.barChartOptionsDP4.plugins.annotation = {
+                    // drawTime: 'afterDatasetsDraw',
                     annotations: [
                       {
                         drawTime: 'afterDraw',
                         type: 'line',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.collectionDentistsTotalAverage,
                         borderColor: '#0e3459',
@@ -3166,16 +3046,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsDP4.annotation = {
-                    drawTime: 'afterDatasetsDraw',
+                  this.barChartOptionsDP4.plugins.annotation = {
+                    // drawTime: 'afterDatasetsDraw',
                     annotations: [
                       {
                         drawTime: 'afterDraw',
                         type: 'line',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.productionGoal * this.goalCount,
                         borderColor: 'red',
@@ -3183,7 +3066,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (res.status == 401) {
                   this._cookieService.put('username', '');
@@ -3228,7 +3114,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionOhtLabels1 = [];
     this.collectionOhtTotal = 0;
     this.collectionOhtLabels = [];
-    this.barChartOptionsDP5.annotation = [];
+    this.barChartOptionsDP5.plugins.annotation = undefined;
     this.clinic_id &&
       this.cliniciananalysisService
         .DentistCollectionOht(
@@ -3344,15 +3230,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 if (this.collectionOhtTotal >= this.collectionOhtTotalPrev)
                   this.collectionTooltip = 'up';
                 // this.collectionOhtTooltip = 'up';
-                this.barChartOptionsDP5.annotation = [];
+                this.barChartOptionsDP5.plugins.annotation = undefined;
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsDP5.annotation = {
-                    drawTime: 'afterDatasetsDraw',
+                  this.barChartOptionsDP5.plugins.annotation = {
+                    // drawTime: 'afterDatasetsDraw',
                     annotations: [
                       {
                         drawTime: 'afterDraw',
                         type: 'line',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.collectionOhtTotalAverage,
                         borderColor: '#0e3459',
@@ -3360,16 +3246,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsDP5.annotation = {
-                    drawTime: 'afterDatasetsDraw',
+                  this.barChartOptionsDP5.plugins.annotation = {
+                    // drawTime: 'afterDatasetsDraw',
                     annotations: [
                       {
                         drawTime: 'afterDraw',
                         type: 'line',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.productionGoal * this.goalCount,
                         borderColor: 'red',
@@ -3377,7 +3266,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (res.status == 401) {
                   this._cookieService.put('username', '');
@@ -3422,7 +3314,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionLabelsExp1 = [];
     this.collectionExpTotal = 0;
     this.collectionLabelsExp = [];
-    this.barChartOptionsDP6.annotation = [];
+    this.barChartOptionsDP6.plugins.annotation = undefined;
     this.clinic_id &&
       this.cliniciananalysisService
         .DentistCollectionExp(
@@ -3537,15 +3429,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   
                 if (this.collectionExpTotal >= this.collectionExpTotalPrev)
                   this.collectionExpTooltip = 'up';
-                this.barChartOptionsDP6.annotation = [];
+                this.barChartOptionsDP6.plugins.annotation = undefined;
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsDP6.annotation = {
-                    drawTime: 'afterDatasetsDraw',
+                  this.barChartOptionsDP6.plugins.annotation = {
+                    // drawTime: 'afterDatasetsDraw',
                     annotations: [
                       {
                         drawTime: 'afterDraw',
                         type: 'line',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.collectionExpTotalAverage,
                         borderColor: '#0e3459',
@@ -3553,16 +3445,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsDP6.annotation = {
-                    drawTime: 'afterDatasetsDraw',
+                  this.barChartOptionsDP6.plugins.annotation = {
+                    // drawTime: 'afterDatasetsDraw',
                     annotations: [
                       {
                         drawTime: 'afterDraw',
                         type: 'line',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.collectionTotalExpGoal * this.goalCount,
                         borderColor: 'red',
@@ -3570,7 +3465,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (res.status == 401) {
                   this._cookieService.put('username', '');
@@ -3614,7 +3512,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionLabelsDentistsExp1 = [];
     this.collectionExpDentistsTotal = 0;
     this.collectionLabelsDentistsExp = [];
-    this.barChartOptionsDP7.annotation = [];
+    this.barChartOptionsDP7.plugins.annotation = undefined;
     this.clinic_id &&
       this.cliniciananalysisService
         .DentistCollectionExpDentists(
@@ -3739,15 +3637,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 )
                   this.collectionExpTooltip = 'up';
                 // this.collectionExpDentistsTooltip = 'up';
-                this.barChartOptionsDP7.annotation = [];
+                this.barChartOptionsDP7.plugins.annotation = undefined;
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsDP7.annotation = {
-                    drawTime: 'afterDatasetsDraw',
+                  this.barChartOptionsDP7.plugins.annotation = {
+                    // drawTime: 'afterDatasetsDraw',
                     annotations: [
                       {
                         drawTime: 'afterDraw',
                         type: 'line',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.collectionTotalExpDentistsAverage,
                         borderColor: '#0e3459',
@@ -3755,16 +3653,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsDP7.annotation = {
-                    drawTime: 'afterDatasetsDraw',
+                  this.barChartOptionsDP7.plugins.annotation = {
+                    // drawTime: 'afterDatasetsDraw',
                     annotations: [
                       {
                         drawTime: 'afterDraw',
                         type: 'line',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.collectionTotalExpGoal * this.goalCount,
                         borderColor: 'red',
@@ -3772,7 +3673,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (res.status == 401) {
                   this._cookieService.put('username', '');
@@ -3816,7 +3720,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionLabelsOhtExp1 = [];
     this.collectionExpOhtTotal = 0;
     this.collectionLabelsOhtExp = [];
-    this.barChartOptionsDP8.annotation = [];
+    this.barChartOptionsDP8.plugins.annotation = undefined;
     this.clinic_id &&
       this.cliniciananalysisService
         .DentistCollectionExpOht(
@@ -3932,15 +3836,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 if (this.collectionExpOhtTotal >= this.collectionExpOhtTotalPrev)
                   this.collectionExpTooltip = 'up';
                 // this.collectionExpOhtTooltip = 'up';
-                this.barChartOptionsDP8.annotation = [];
+                this.barChartOptionsDP8.plugins.annotation = undefined;
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsDP8.annotation = {
-                    drawTime: 'afterDatasetsDraw',
+                  this.barChartOptionsDP8.plugins.annotation = {
+                    // drawTime: 'afterDatasetsDraw',
                     annotations: [
                       {
                         drawTime: 'afterDraw',
                         type: 'line',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.collectionTotalExpOhtAverage,
                         borderColor: '#0e3459',
@@ -3948,16 +3852,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsDP8.annotation = {
-                    drawTime: 'afterDatasetsDraw',
+                  this.barChartOptionsDP8.plugins.annotation = {
+                    // drawTime: 'afterDatasetsDraw',
                     annotations: [
                       {
                         drawTime: 'afterDraw',
                         type: 'line',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.productionGoal * this.goalCount,
                         borderColor: 'red',
@@ -3965,7 +3872,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (res.status == 401) {
                   this._cookieService.put('username', '');
@@ -5453,20 +5363,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         {
           ticks: {
             autoSkip: false,
-            callback: (label: string) => {
-              const names = this.splitName(label);
-              const name = names[0].split(' ');
-              if (names.length == 3) {
-                return `${names[0]}`;
-              } else if (names.length == 2) {
-                if (name.length == 2) {
-                  return `${names[0][0]} ${name[1]}`;
-                } else {
-                  return `${names[0][0]} ${names[1]}`;
-                }
-              } else {
-                return `${names[0]}`;
-              }
+            callback: function (tickValue: string | number, index, ticks) {
+              return formatXLabel(this.getLabelForValue(index));
             }
           }
         }
@@ -5493,13 +5391,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         },
         cornerRadius: 0,
         callbacks: {
-          label: (tooltipItem) => {
-            return (
-              tooltipItem.label +
-              ': $' +
-              this.decimalPipe.transform(tooltipItem.formattedValue)
-            );
-          },
+          label: (tooltipItem) => formatXTooltipLabel(
+            tooltipItem.label, tooltipItem.formattedValue
+          ),
           // remove title
           title: function () {
             return;
@@ -5639,7 +5533,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (this.goalchecked == 'goal') {
                   this.barChartOptionsTC.plugins.annotation = {
@@ -5655,7 +5552,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 }
               }
@@ -5800,7 +5700,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (this.goalchecked == 'goal') {
                   this.barChartOptionsTC.plugins.annotation = {
@@ -5816,7 +5719,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 }
               }
@@ -6405,7 +6311,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.hourlyRateChartLabels1 = [];
 
     this.hourlyRateChartLabels = [];
-    this.barChartOptionsHR.annotation = [];
+    this.barChartOptionsHR.plugins.annotation = undefined;
     this.clinic_id &&
       this.cliniciananalysisService
         .hourlyRateChart(
@@ -6423,7 +6329,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               this.hourlyRateChartData1 = [];
               this.hourlyRateChartLabels1 = [];
               this.hourlyRateChartLabels = [];
-              this.barChartOptionsHR.annotation = [];
+              this.barChartOptionsHR.plugins.annotation = undefined;
               this.hourlyRatetbl = [];
               this.hourlyRateChartData[0]['data'] = [];
               if (res.status == 200) {
@@ -6506,12 +6412,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.hourlyRateChartTooltip = 'up';
   
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsHR.annotation = {
+                  this.barChartOptionsHR.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.hourlyRateChartAverage,
                         borderColor: '#0e3459',
@@ -6519,15 +6425,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsHR.annotation = {
+                  this.barChartOptionsHR.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.hourlyRateChartGoal * this.goalCount,
                         borderColor: 'red',
@@ -6535,7 +6444,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 }
               }
@@ -6576,7 +6488,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.hourlyRateChartDesntistsLabels1 = [];
 
     this.hourlyRateChartDesntistsLabels = [];
-    this.barChartOptionsHR1.annotation = [];
+    this.barChartOptionsHR1.plugins.annotation = undefined;
     this.clinic_id &&
       this.cliniciananalysisService
         .hourlyRateChartDesntists(
@@ -6595,7 +6507,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               this.hourlyRateChartDesntistsLabels1 = [];
   
               this.hourlyRateChartDesntistsLabels = [];
-              this.barChartOptionsHR1.annotation = [];
+              this.barChartOptionsHR1.plugins.annotation = undefined;
               this.hourlyRateDenttbl = [];
               this.hourlyRateChartDentistsData[0]['data'] = [];
               if (res.status == 200) {
@@ -6687,12 +6599,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.hourlyRateChartDesntistsTooltip = 'up';
   
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsHR1.annotation = {
+                  this.barChartOptionsHR1.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.hourlyRateChartDesntistsAverage,
                         borderColor: '#0e3459',
@@ -6700,15 +6612,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsHR1.annotation = {
+                  this.barChartOptionsHR1.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.hourlyRateChartGoal * this.goalCount,
                         borderColor: 'red',
@@ -6716,7 +6631,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 }
               }
@@ -6755,7 +6673,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.hourlyRateChartOhtLabels1 = [];
 
     this.hourlyRateChartOhtLabels = [];
-    this.barChartOptionsHR2.annotation = [];
+    this.barChartOptionsHR2.plugins.annotation = undefined;
     this.clinic_id &&
       this.cliniciananalysisService
         .hourlyRateChartOht(
@@ -6774,7 +6692,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               this.hourlyRateChartOhtLabels1 = [];
               this.hourlyRateOhttbl = [];
               this.hourlyRateChartOhtLabels = [];
-              this.barChartOptionsHR2.annotation = [];
+              this.barChartOptionsHR2.plugins.annotation = undefined;
               this.hourlyRateChartOhtData[0]['data'] = [];
               this.hourlyRateChartOhtAverage = 0;
               if (res.status == 200) {
@@ -6864,12 +6782,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.hourlyRateChartOhtTooltip = 'up';
   
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsHR2.annotation = {
+                  this.barChartOptionsHR2.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.hourlyRateChartOhtAverage,
                         borderColor: '#0e3459',
@@ -6877,15 +6795,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsHR2.annotation = {
+                  this.barChartOptionsHR2.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.hourlyRateChartGoal * this.goalCount,
                         borderColor: 'red',
@@ -6893,7 +6814,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 }
               }
@@ -7304,7 +7228,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collectionhourlyRateChartLabels1 = [];
 
     this.collhourlyRateChartLabels = [];
-    this.barChartOptionsHR.annotation = [];
+    this.barChartOptionsHR.plugins.annotation = undefined;
     this.clinic_id &&
       this.cliniciananalysisService
         .collectionHourlyRate(
@@ -7322,7 +7246,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               this.collhourlyRateChartData1 = [];
               this.collectionhourlyRateChartLabels1 = [];
               this.collhourlyRateChartLabels = [];
-              this.barChartOptionsHR.annotation = [];
+              this.barChartOptionsHR.plugins.annotation = undefined;
               this.collhourlyRatetbl = [];
               this.collectionhourlyRateChartData[0]['data'] = [];
               if (res.status == 200) {
@@ -7409,12 +7333,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.collhourlyRateChartTooltip = 'up';
   
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsHR.annotation = {
+                  this.barChartOptionsHR.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.collectionhourlyRateChartAverage,
                         borderColor: '#0e3459',
@@ -7422,15 +7346,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsHR.annotation = {
+                  this.barChartOptionsHR.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value:
                           this.collectionhourlyRateChartGoal * this.goalCount,
@@ -7439,7 +7366,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 }
               }
@@ -7478,7 +7408,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collhourlyRateChartDesntistsLabels1 = [];
 
     this.collhourlyRateChartDesntistsLabels = [];
-    this.barChartOptionsHR1.annotation = [];
+    this.barChartOptionsHR1.plugins.annotation = undefined;
     this.clinic_id &&
       this.cliniciananalysisService
         .collectionHourlyRateDentist(
@@ -7497,7 +7427,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               this.collhourlyRateChartDesntistsLabels1 = [];
   
               this.collhourlyRateChartDesntistsLabels = [];
-              this.barChartOptionsHR1.annotation = [];
+              this.barChartOptionsHR1.plugins.annotation = undefined;
               this.collhourlyRateDenttbl = [];
               this.collhourlyRateChartDentistsData[0]['data'] = [];
               if (res.status == 200) {
@@ -7585,12 +7515,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.collhourlyRateChartDesntistsTooltip = 'up';
   
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsHR1.annotation = {
+                  this.barChartOptionsHR1.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.collhourlyRateChartDesntistsAverage,
                         borderColor: '#0e3459',
@@ -7598,15 +7528,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsHR1.annotation = {
+                  this.barChartOptionsHR1.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.hourlyRateChartGoal * this.goalCount,
                         borderColor: 'red',
@@ -7614,7 +7547,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 }
               }
@@ -7653,7 +7589,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collhourlyRateChartOhtLabels1 = [];
 
     this.collhourlyRateChartOhtLabels = [];
-    this.barChartOptionsHR2.annotation = [];
+    this.barChartOptionsHR2.plugins.annotation = undefined;
     this.clinic_id &&
       this.cliniciananalysisService
         .collectionHourlyRateOht(
@@ -7672,7 +7608,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               this.collhourlyRateChartOhtLabels1 = [];
               this.collhourlyRateOhttbl = [];
               this.collhourlyRateChartOhtLabels = [];
-              this.barChartOptionsHR2.annotation = [];
+              this.barChartOptionsHR2.plugins.annotation = undefined;
               this.collhourlyRateChartOhtData[0]['data'] = [];
               this.collhourlyRateChartOhtAverage = 0;
               if (res.status == 200) {
@@ -7758,12 +7694,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.collhourlyRateChartOhtTooltip = 'up';
   
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsHR2.annotation = {
+                  this.barChartOptionsHR2.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.collhourlyRateChartOhtAverage,
                         borderColor: '#0e3459',
@@ -7771,15 +7707,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsHR2.annotation = {
+                  this.barChartOptionsHR2.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.hourlyRateChartGoal * this.goalCount,
                         borderColor: 'red',
@@ -7787,7 +7726,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 }
               }
@@ -7838,7 +7780,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collExphourlyRateChartLabels1 = [];
 
     this.collExphourlyRateChartLabels = [];
-    this.barChartOptionsHR.annotation = [];
+    this.barChartOptionsHR.plugins.annotation = undefined;
     this.clinic_id &&
       this.cliniciananalysisService
         .collectionExpHourlyRate(
@@ -7856,7 +7798,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               this.collExphourlyRateChartData1 = [];
               this.collExphourlyRateChartLabels1 = [];
               this.collExphourlyRateChartLabels = [];
-              this.barChartOptionsHR.annotation = [];
+              this.barChartOptionsHR.plugins.annotation = undefined;
               this.collExphourlyRatetbl = [];
               this.collExphourlyRateChartData[0]['data'] = [];
               if (res.status == 200) {
@@ -7942,12 +7884,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.collExphourlyRateChartTooltip = 'up';
   
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsHR.annotation = {
+                  this.barChartOptionsHR.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.collExphourlyRateChartAverage,
                         borderColor: '#0e3459',
@@ -7955,15 +7897,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsHR.annotation = {
+                  this.barChartOptionsHR.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.collExphourlyRateChartGoal * this.goalCount,
                         borderColor: 'red',
@@ -7971,7 +7916,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 }
               }
@@ -8010,7 +7958,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collExphourlyRateChartDesntistsLabels1 = [];
 
     this.collExphourlyRateChartDesntistsLabels = [];
-    this.barChartOptionsHR1.annotation = [];
+    this.barChartOptionsHR1.plugins.annotation = undefined;
     this.clinic_id &&
       this.cliniciananalysisService
         .collectionExpHourlyRateDentist(
@@ -8029,7 +7977,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               this.collExphourlyRateChartDesntistsLabels1 = [];
   
               this.collExphourlyRateChartDesntistsLabels = [];
-              this.barChartOptionsHR1.annotation = [];
+              this.barChartOptionsHR1.plugins.annotation = undefined;
               this.collExphourlyRateDenttbl = [];
               this.collExphourlyRateChartDentistsData[0]['data'] = [];
               if (res.status == 200) {
@@ -8118,12 +8066,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.collExphourlyRateChartDesntistsTooltip = 'up';
   
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsHR1.annotation = {
+                  this.barChartOptionsHR1.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.collExphourlyRateChartDesntistsAverage,
                         borderColor: '#0e3459',
@@ -8131,15 +8079,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsHR1.annotation = {
+                  this.barChartOptionsHR1.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.hourlyRateChartGoal * this.goalCount,
                         borderColor: 'red',
@@ -8147,7 +8098,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 }
               }
@@ -8186,7 +8140,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.collExphourlyRateChartOhtLabels1 = [];
 
     this.collExphourlyRateChartOhtLabels = [];
-    this.barChartOptionsHR2.annotation = [];
+    this.barChartOptionsHR2.plugins.annotation = undefined;
     this.clinic_id &&
       this.cliniciananalysisService
         .collectionExpHourlyRateOht(
@@ -8205,7 +8159,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               this.collExphourlyRateChartOhtLabels1 = [];
               this.collExphourlyRateOhttbl = [];
               this.collExphourlyRateChartOhtLabels = [];
-              this.barChartOptionsHR2.annotation = [];
+              this.barChartOptionsHR2.plugins.annotation = undefined;
               this.collExphourlyRateChartOhtData[0]['data'] = [];
               this.collExphourlyRateChartOhtAverage = 0;
               if (res.status == 200) {
@@ -8293,12 +8247,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.collExphourlyRateChartOhtTooltip = 'up';
   
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsHR2.annotation = {
+                  this.barChartOptionsHR2.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.collExphourlyRateChartOhtAverage,
                         borderColor: '#0e3459',
@@ -8306,15 +8260,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsHR2.annotation = {
+                  this.barChartOptionsHR2.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
                         value: this.hourlyRateChartGoal * this.goalCount,
                         borderColor: 'red',
@@ -8322,7 +8279,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ]
+                    ],
+                    interaction: {
+                      mode: 'x'
+                    }
                   };
                 }
               }
@@ -11829,7 +11789,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     } else {
       this.showTopVlaues = false;
       this.barChartOptionsDP1 = this.barChartOptions;
-      this.barChartOptionsDP1.animation.duration = 1;
+      //this.barChartOptionsDP1.animation.duration = 1;
     }
   }
   enableDiabaleButton(val) {

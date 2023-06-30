@@ -649,8 +649,8 @@ export class FinancesComponent implements AfterViewInit {
           // use label callback to return the desired label
           label: (tooltipItem) => {
             const v =
-            tooltipItem.dataset[tooltipItem.datasetIndex].data[tooltipItem.dataIndex];
-            let Tlable = tooltipItem.dataset[tooltipItem.datasetIndex].label;
+            tooltipItem.dataset.data[tooltipItem.dataIndex];
+            let Tlable = tooltipItem.dataset.label;
             if (Tlable != '') {
               Tlable = Tlable + ': ';
             }
@@ -882,7 +882,7 @@ export class FinancesComponent implements AfterViewInit {
             currency = currency.join('.');
   
             return (
-              tooltipItems.dataset[tooltipItems.datasetIndex].label +
+              tooltipItems.dataset.label +
               `: ${parseInt(tooltipItems.formattedValue) < 0 ? '- $' : '$'}${currency}`
             );
           }
@@ -1070,7 +1070,7 @@ export class FinancesComponent implements AfterViewInit {
               .join(',');
             currency = currency.join('.');
             return (
-              tooltipItems.dataset[tooltipItems.datasetIndex].label +
+              tooltipItems.dataset.label +
               `: ${parseInt(tooltipItems.formattedValue) < 0 ? '- $' : '$'}${currency}`
             );
           }
@@ -1251,7 +1251,7 @@ export class FinancesComponent implements AfterViewInit {
               maximumFractionDigits: 0
             }).format(Number(tooltipItem.formattedValue));
             return `${
-              tooltipItem.dataset[tooltipItem.datasetIndex].label
+              tooltipItem.dataset.label
             }: ${currency}`;
           }
         }
@@ -1442,7 +1442,7 @@ export class FinancesComponent implements AfterViewInit {
           label: (
             tooltipItem
           ) => {
-            return `${tooltipItem.dataset[tooltipItem.datasetIndex].label}: ${
+            return `${tooltipItem.dataset.label}: ${
               tooltipItem.formattedValue
             }%`;
           },
@@ -1501,7 +1501,7 @@ export class FinancesComponent implements AfterViewInit {
         callbacks: {
           label: function (tooltipItems) {
             const currency =
-            tooltipItems.dataset[0]['data'][tooltipItems.dataIndex].toString();
+            tooltipItems.dataset.data[tooltipItems.dataIndex].toString();
             return new Intl.NumberFormat('en-US', {
               style: 'currency',
               currency: 'USD',
@@ -1574,7 +1574,7 @@ export class FinancesComponent implements AfterViewInit {
           label: (
             tooltipItems,
           ) => {
-            let label = tooltipItems.dataset[tooltipItems.datasetIndex]['label'];
+            let label = tooltipItems.dataset['label'];
             let currency = tooltipItems.label;
             currency = currency
               .toString()
@@ -1935,7 +1935,7 @@ export class FinancesComponent implements AfterViewInit {
         callbacks: {
           label: function (tooltipItems) {
             return `${
-              tooltipItems.dataset[tooltipItems.datasetIndex].label
+              tooltipItems.dataset.label
             }: ${Math.round(parseInt(tooltipItems.formattedValue))}%`;
           }
         }
@@ -1965,7 +1965,7 @@ export class FinancesComponent implements AfterViewInit {
             return (
               tooltipItem.label[tooltipItem.dataIndex] +
               ': ' +
-              tooltipItem.dataset[0].data[tooltipItem.dataIndex] +
+              tooltipItem.dataset.data[tooltipItem.dataIndex] +
               '%'
             );
           }
@@ -1982,9 +1982,10 @@ export class FinancesComponent implements AfterViewInit {
 
   };
 
-  public pieChartOptions2: any = {
+  public pieChartOptions2: ChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    plugins: {
     legend: {
       display: true,
       position: 'bottom',
@@ -1992,21 +1993,23 @@ export class FinancesComponent implements AfterViewInit {
         usePointStyle: true,
         padding: 20
       },
-      onClick: (event: MouseEvent) => {
-        event.stopPropagation();
+      onClick: (event) => {
+        event.native.stopPropagation();
       }
     },
-    tooltips: {
+    tooltip: {
       callbacks: {
-        label: function (tooltipItem, data, index) {
-          let currency =
-            data['datasets'][0]['data'][tooltipItem['index']].toString();
+        label: function (tooltipItem) {
+          const data = tooltipItem.chart.data.datasets[0].data;
+          let currency = data[tooltipItem.dataIndex].toString();
           // Convert the number to a string and split the string every 3 characters from the end and join comma separator
           currency = currency.split(/(?=(?:...)*$)/).join(',');
-          return data['labels'][tooltipItem['index']] + ': $' + currency;
+          return data[tooltipItem.dataIndex] + ': $' + currency;
         }
       }
     }
+    },
+
   };
   public pieChartOptions1: ChartOptions<'pie'> = {
     responsive: true,
@@ -2117,7 +2120,7 @@ export class FinancesComponent implements AfterViewInit {
         callbacks: {
           label: function (tooltipItems) {
             return (
-              tooltipItems.dataset[tooltipItems.datasetIndex].label +
+              tooltipItems.dataset.label +
               ': $' +
               tooltipItems.formattedValue
             );

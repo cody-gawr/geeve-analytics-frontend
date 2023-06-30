@@ -127,17 +127,17 @@ export class FollowupsComponent implements AfterViewInit {
           label: function (tooltipItems) {
             if (
               parseInt(tooltipItems.formattedValue) > 0 &&
-              tooltipItems.dataset[tooltipItems.datasetIndex].label != ''
+              tooltipItems.dataset.label != ''
             ) {
               if (
-                tooltipItems.dataset[tooltipItems.datasetIndex].label.indexOf(
+                tooltipItems.dataset.label.indexOf(
                   'DentistMode-'
                 ) >= 0
               ) {
                 return tooltipItems.label + ': ' + tooltipItems.formattedValue;
               } else {
                 return (
-                  tooltipItems.dataset[tooltipItems.datasetIndex].label +
+                  tooltipItems.dataset.label +
                   ': ' +
                   tooltipItems.formattedValue
                 );
@@ -149,8 +149,8 @@ export class FollowupsComponent implements AfterViewInit {
             tooltip.forEach((val) => {
               total = total + parseInt(val.formattedValue);
             });
-            if (tooltip[0].dataset[0].label.indexOf('DentistMode-') >= 0) {
-              var dentist = tooltip[0].dataset[0].label.split('Mode-');
+            if (tooltip[0].dataset.label.indexOf('DentistMode-') >= 0) {
+              var dentist = tooltip[0].dataset.label.split('Mode-');
               return dentist[1] + ':' + total;
             } else {
               return tooltip[0].label + ': ' + total;
@@ -191,13 +191,6 @@ export class FollowupsComponent implements AfterViewInit {
           },
           ticks: {
             autoSkip: false,
-            callback: (label: string) => {
-              return label;
-              /*const names = this.splitName(label);
-            if (names.length > 1) {
-              return `${names[0][0]} ${names[1]}`
-            } else return `${names[0]}`;*/
-            }
           }
         }
       ,

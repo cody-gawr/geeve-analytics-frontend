@@ -5,6 +5,7 @@ import { ChartService } from "../dashboards/chart.service";
 import { CookieService } from "ngx-cookie";
 import { GraphsService } from './graphs.service';
 import { ChartOptions } from "chart.js";
+import { formatXLabel } from "../util";
 
 @Component({
     selector: 'graphs',
@@ -212,17 +213,8 @@ export class GraphsComponent{
           grid: { display: true },
           ticks: {
             autoSkip: false,
-            callback: (label: any) => {
-              if(label != '' && label != undefined){
-                const names = this.splitName(label);
-                 if (names.length == 3) {
-                    return `${names[0]}`
-                  } else if (names.length == 2){
-                    return `${names[0][0]} ${names[1]}`
-                  } else {
-                    return `${names[0]}`;
-                  } 
-              }
+            callback: function (tickValue: string | number, index, ticks) {
+              return formatXLabel(this.getLabelForValue(index));
             }
           }
         },
@@ -301,17 +293,8 @@ export class GraphsComponent{
             },
             ticks: {
               autoSkip: false,
-              callback: (label: string) => {
-                if(label != ''){
-                  const names = this.splitName(label);
-                  if (names.length == 3) {
-                    return `${names[0]}`
-                  } else if (names.length == 2){
-                    return `${names[0][0]} ${names[1]}`
-                  } else {
-                    return `${names[0]}`;
-                  }
-                }            
+              callback: function (tickValue: string | number, index, ticks) {
+                return formatXLabel(this.getLabelForValue(index));
               }
             },
           },
@@ -365,7 +348,8 @@ export class GraphsComponent{
         x: { 
           ticks: {
             autoSkip: false,
-            callback: function (value:string, index, values) {
+            callback: function (tickValue:string, index) {
+              let value = this.getLabelForValue(index);
               if(value.indexOf('--') >= 0){
                 let lbl = value.split('--');
                 value = lbl[0];
@@ -408,8 +392,8 @@ export class GraphsComponent{
                     }                  
                   }  
                   var Targetlable = '';  
-                  const v = tooltipItems.dataset[tooltipItems.datasetIndex].data[tooltipItems.dataIndex];
-                    let Tlable = tooltipItems.dataset[tooltipItems.datasetIndex].label;
+                  const v = tooltipItems.dataset.data[tooltipItems.dataIndex];
+                    let Tlable = tooltipItems.dataset.label;
                     if(Tlable !='' && Tlable != undefined){
                       Tlable = Tlable + ": "
                       Targetlable = Tlable
@@ -419,10 +403,10 @@ export class GraphsComponent{
                     
                   let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v; 
                   var tlab = 0; 
-                  if(typeof tooltipItems.dataset[1] === 'undefined') {
+                  if(typeof tooltipItems.chart.data.datasets[1] === 'undefined') {
                     }
                     else {
-                      const tval  = tooltipItems.dataset[1].data[tooltipItems.dataIndex];
+                      const tval  = tooltipItems.chart.data.datasets[1].data[tooltipItems.dataIndex];
                       if(Array.isArray(tval)){
                         tlab =  Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
                         if(tlab == 0){
@@ -505,12 +489,12 @@ export class GraphsComponent{
         y: { 
           stacked:true, 
             ticks: {
-              callback: function(label: number, index, labels) {
-                  // when the floored value is the same as the value we have a whole number
-                  if (Math.floor(label) === label) {
-                      return label;
-                  }
-              },
+              // callback: function(label: number, index, labels) {
+              //     // when the floored value is the same as the value we have a whole number
+              //     if (Math.floor(label) === label) {
+              //         return label;
+              //     }
+              // },
             }, 
           },
       },
@@ -527,11 +511,11 @@ export class GraphsComponent{
             },
             callbacks: {
               label: function(tooltipItems) { 
-                if(parseInt(tooltipItems.formattedValue) > 0 && tooltipItems.dataset[tooltipItems.datasetIndex].label != ''){
-                  if(tooltipItems.dataset[tooltipItems.datasetIndex].label.indexOf('DentistMode-') >= 0){
+                if(parseInt(tooltipItems.formattedValue) > 0 && tooltipItems.dataset.label != ''){
+                  if(tooltipItems.dataset.label.indexOf('DentistMode-') >= 0){
                     return tooltipItems.label+": "+tooltipItems.formattedValue;
                   } else {
-                    return tooltipItems.dataset[tooltipItems.datasetIndex].label+": "+tooltipItems.formattedValue;          
+                    return tooltipItems.dataset.label+": "+tooltipItems.formattedValue;          
                   } 
                 }
               },
@@ -540,8 +524,8 @@ export class GraphsComponent{
                 tooltip.forEach( (val) => {
                   total = total + parseInt(val.formattedValue);
                 });
-                if( tooltip[0].dataset[0].label.indexOf('DentistMode-') >= 0){
-                    var dentist = tooltip[0].dataset[0].label.split('Mode-');
+                if( tooltip[0].dataset.label.indexOf('DentistMode-') >= 0){
+                    var dentist = tooltip[0].dataset.label.split('Mode-');
                     return dentist[1]+':'+total;
                 } else {
                   return tooltip[0].label+': '+total;

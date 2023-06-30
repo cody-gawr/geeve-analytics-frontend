@@ -25,13 +25,15 @@ import {
   takeUntil,
   tap
 } from 'rxjs';
-import { ChartDataset, ChartOptions, Color } from 'chart.js';
+import { ChartDataset, ChartOptions, Color, LegendOptions } from 'chart.js';
 import { ChartService } from '../chart.service';
 import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
 import { environment } from '../../../environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { formatXTooltipLabel } from '../../util';
+import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 
 export interface Dentist {
   providerId: string;
@@ -76,13 +78,13 @@ export class ClinicianProceeduresComponent
   private _routerSub = Subscription.EMPTY;
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
-  private legendLabelOptions = {
+  private legendLabelOptions:_DeepPartialObject<LegendOptions<any>> = {
     labels: {
       usePointStyle: true,
       padding: 20
     },
     onClick: function (e) {
-      e.stopPropagation();
+      e.native.stopPropagation();
     }
   };
   public get isLargeOrSmall$(): Observable<boolean> {
@@ -672,17 +674,17 @@ export class ClinicianProceeduresComponent
           label: function (tooltipItems) {
             if (
               parseInt(tooltipItems.formattedValue) > 0 &&
-              tooltipItems.dataset[tooltipItems.datasetIndex].label != ''
+              tooltipItems.dataset.label != ''
             ) {
               if (
-                tooltipItems.dataset[tooltipItems.datasetIndex].label.indexOf(
+                tooltipItems.dataset.label.indexOf(
                   'DentistMode-'
                 ) >= 0
               ) {
                 return tooltipItems.label + ': ' + tooltipItems.formattedValue;
               } else {
                 return (
-                  tooltipItems.dataset[tooltipItems.datasetIndex].label +
+                  tooltipItems.dataset.label +
                   ': ' +
                   tooltipItems.formattedValue
                 );
@@ -690,8 +692,8 @@ export class ClinicianProceeduresComponent
             }
           },
           title: function (tooltip) {
-            if (tooltip[0].dataset[0].label.indexOf('DentistMode-') >= 0) {
-              var dentist = tooltip[0].dataset[0].label.split('Mode-');
+            if (tooltip[0].dataset.label.indexOf('DentistMode-') >= 0) {
+              var dentist = tooltip[0].dataset.label.split('Mode-');
               return dentist[1];
             } else {
               return tooltip[0].label;
@@ -763,17 +765,17 @@ export class ClinicianProceeduresComponent
           label: function (tooltipItems) {
             if (
               parseInt(tooltipItems.formattedValue) > 0 &&
-              tooltipItems.dataset[tooltipItems.datasetIndex].label != ''
+              tooltipItems.dataset.label != ''
             ) {
               if (
-                tooltipItems.dataset[tooltipItems.datasetIndex].label.indexOf(
+                tooltipItems.dataset.label.indexOf(
                   'DentistMode-'
                 ) >= 0
               ) {
                 return tooltipItems.label + ': ' + tooltipItems.formattedValue;
               } else {
                 return (
-                  tooltipItems.dataset[tooltipItems.datasetIndex].label +
+                  tooltipItems.dataset.label +
                   ': ' +
                   tooltipItems.formattedValue
                 );
@@ -781,8 +783,8 @@ export class ClinicianProceeduresComponent
             }
           },
           title: function (tooltip) {
-            if (tooltip[0].dataset[0].label.indexOf('DentistMode-') >= 0) {
-              var dentist = tooltip[0].dataset[0].label.split('Mode-');
+            if (tooltip[0].dataset.label.indexOf('DentistMode-') >= 0) {
+              var dentist = tooltip[0].dataset.label.split('Mode-');
               return dentist[1];
             } else {
               return tooltip[0].label;
@@ -814,13 +816,15 @@ export class ClinicianProceeduresComponent
       pointHoverBorderColor: 'rgba(38,218,210,0.5)'
     }
   ];
-  public pieChartOptions: any = {
+  public pieChartOptions: ChartOptions<'pie'> = {
     responsive: true,
     maintainAspectRatio: false,
-    legend: {
-      display: true,
-      position: 'right',
-      ...this.legendLabelOptions
+    plugins: {
+      legend: {
+        display: true,
+        position: 'right',
+        ...this.legendLabelOptions
+      }
     }
   };
   public barChartOptions: ChartOptions = {
@@ -934,7 +938,7 @@ export class ClinicianProceeduresComponent
     },
 
   };
-  public lineChartType = 'bar';
+  public lineChartType = 'line';
 
   public proceedureChartOptions: ChartOptions = {
     
@@ -958,9 +962,6 @@ export class ClinicianProceeduresComponent
                 return '$' + this.numPipe.transform(label);
               }
             },
-            // callback: function (value) {
-            //   return value; //truncate
-            // },
             autoSkip: false
           }
         }
@@ -969,10 +970,13 @@ export class ClinicianProceeduresComponent
         {
           beginAtZero: true,
           ticks: {
-            callback: function (value: string) {
-              if (value.length > 20)
-                return value.substr(0, 20) + '....'; //truncate
-              else return value; //truncate
+            callback: function (tickValue: string | number, index) {
+              const yLabel = this.getLabelForValue(index);
+              if(yLabel.length > 20){
+                return yLabel.slice(0, 20) + '....';
+              }else{
+                return yLabel;
+              }
             }
           }
         }
@@ -993,15 +997,9 @@ export class ClinicianProceeduresComponent
             // return data.labels[idx];//do something with title
             return '';
           },
-          label: (tooltipItem) => {
-            //var idx = tooltipItems.index;
-            //return data.labels[idx] + ' €';
-            return (
-              tooltipItem.formattedValue +
-              ': $' +
-              this.numPipe.transform(tooltipItem.label)
-            );
-          }
+          label: (tooltipItem) => formatXTooltipLabel(
+            tooltipItem.label, tooltipItem.formattedValue
+          )
         }
       },
     
@@ -2758,25 +2756,25 @@ export class ClinicianProceeduresComponent
                 /********** Add Space to top of graph ****/
                 let maxY = Math.max(...this.proceedureChartData1);
                 if (maxY < 100) {
-                  this.proceedureChartOptions1.scales.x[0].ticks.max =
+                  this.proceedureChartOptions1.scales.x.ticks.maxTicksLimit =
                     Math.ceil(maxY / 10) * 10 + 4;
                 } else if (maxY < 1000) {
-                  this.proceedureChartOptions1.scales.x[0].ticks.max =
+                  this.proceedureChartOptions1.scales.x.ticks.maxTicksLimit =
                     Math.ceil(maxY / 100) * 100 + 50;
                 } else if (maxY < 10000) {
-                  this.proceedureChartOptions1.scales.x[0].ticks.max =
+                  this.proceedureChartOptions1.scales.x.ticks.maxTicksLimit =
                     Math.ceil(maxY / 1000) * 1000 + 500;
                 } else if (maxY < 100000) {
-                  this.proceedureChartOptions1.scales.x[0].ticks.max =
+                  this.proceedureChartOptions1.scales.x.ticks.maxTicksLimit =
                     Math.ceil(maxY / 10000) * 10000 + 5000;
                 } else if (maxY < 500000) {
-                  this.proceedureChartOptions1.scales.x[0].ticks.max =
+                  this.proceedureChartOptions1.scales.x.ticks.maxTicksLimit =
                     Math.ceil(maxY / 10000) * 10000 + 5000;
                 } else if (maxY < 1000000) {
-                  this.proceedureChartOptions1.scales.x[0].ticks.max =
+                  this.proceedureChartOptions1.scales.x.ticks.maxTicksLimit =
                     Math.ceil(maxY / 100000) * 100000 + 10000;
                 } else if (maxY > 1000000) {
-                  this.proceedureChartOptions1.scales.x[0].ticks.max =
+                  this.proceedureChartOptions1.scales.x.ticks.maxTicksLimit =
                     Math.ceil(maxY / 100000) * 100000 + 100000;
                 }
                 /********** Add Space to top of graph ****/

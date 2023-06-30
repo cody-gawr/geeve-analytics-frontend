@@ -37,6 +37,7 @@ import { LocalStorageService } from '../../shared/local-storage.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Plugin } from 'chart.js/dist/types/index';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
+import { formatXTooltipLabel } from '../../util';
 
 export interface Dentist {
   providerId: string;
@@ -443,12 +444,11 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       y: 
         {
           stacked: true,
-
-          ticks: {
-            callback: function (item) {
-              return item;
-            }
-          }
+          // ticks: {
+          //   callback: function (item) {
+          //     return item;
+          //   }
+          // }
         }
     },
     plugins: {
@@ -542,7 +542,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         callbacks: {
           label: function (tooltipItems) {
             return (
-              tooltipItems.dataset[tooltipItems.datasetIndex].label +
+              tooltipItems.dataset.label +
               ': ' +
               tooltipItems.formattedValue
             );
@@ -583,11 +583,11 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         {
           stacked: true,
 
-          ticks: {
-            callback: function (item) {
-              return item;
-            }
-          }
+          // ticks: {
+          //   callback: function (item) {
+          //     return item;
+          //   }
+          // }
         }
     },
     plugins: {
@@ -680,7 +680,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         callbacks: {
           label: function (tooltipItems) {
             return (
-              tooltipItems.dataset[tooltipItems.datasetIndex].label +
+              tooltipItems.dataset.label +
               ': ' +
               tooltipItems.formattedValue
             );
@@ -719,12 +719,12 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       y: 
         {
           beginAtZero: true,
-          ticks: {
-            callback: function (label) {
-              // when the floored value is the same as jhgjghe value we have a whole number
-              return label;
-            }
-          }
+          // ticks: {
+          //   callback: function (label) {
+          //     // when the floored value is the same as jhgjghe value we have a whole number
+          //     return label;
+          //   }
+          // }
         }
     },
     plugins: {
@@ -782,9 +782,9 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         {
           stacked: true,
           ticks: {
-            callback: function (item) {
-              return item;
-            }
+            // callback: function (item) {
+            //   return item;
+            // }
           }
         }
     },
@@ -905,7 +905,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         callbacks: {
           label: function (tooltipItems) {
             return (
-              tooltipItems.dataset[tooltipItems.datasetIndex].label +
+              tooltipItems.dataset.label +
               ': ' +
               Math.round(parseInt(tooltipItems.formattedValue))
             );
@@ -1096,7 +1096,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
               .join(',');
             currency = currencySegs.join('.');
             return (
-              tooltipItems.dataset[tooltipItems.datasetIndex].label +
+              tooltipItems.dataset.label +
               `: ${parseInt(tooltipItems.formattedValue.toString()) < 0 ? '- $' : '$'}${currency}`
             );
           }
@@ -1284,7 +1284,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
               .join(',');
             currency = currencySegs.join('.');
             return (
-              tooltipItems.dataset[tooltipItems.datasetIndex].label +
+              tooltipItems.dataset.label +
               `: ${parseInt(tooltipItems.formattedValue.toString()) < 0 ? '- $' : '$'}${currency}`
             );
           }
@@ -1423,7 +1423,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
               ': ' +
               this.decimalPipe.transform(
                 <number>(
-                  tooltipItem.dataset[tooltipItem.datasetIndex].data[tooltipItem.dataIndex]
+                  tooltipItem.dataset.data[tooltipItem.dataIndex]
                 )
               )
             );
@@ -1451,15 +1451,9 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     plugins: {
       tooltip: {
         callbacks: {
-          label: (tooltipItem) => {
-            return (
-              tooltipItem.label[tooltipItem.dataIndex] +
-              ': $ ' +
-              this.decimalPipe.transform(
-                tooltipItem.dataset[tooltipItem.datasetIndex].data[tooltipItem.dataIndex]
-              )
-            );
-          }
+          label: (tooltipItem) => formatXTooltipLabel(
+            tooltipItem.label, tooltipItem.formattedValue
+          )
         }
       },
       legend: {

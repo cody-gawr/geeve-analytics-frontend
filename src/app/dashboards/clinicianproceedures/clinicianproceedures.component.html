@@ -1699,7 +1699,7 @@
               >
                 <canvas
                   baseChart
-                  [data]="pieChartData1"
+                  [datasets]="[{data: pieChartData1}]"
                   [labels]="pieChartLabels1"
                   [type]="pieChartType"
                   (chartHover)="chartHovered($event)"
@@ -1735,7 +1735,7 @@
               >
                 <canvas
                   baseChart
-                  [data]="pieChartData2"
+                  [datasets]="[{data: pieChartData2}]"
                   [labels]="pieChartLabels2"
                   [type]="pieChartType"
                   (chartHover)="chartHovered($event)"
@@ -1770,7 +1770,7 @@
               >
                 <canvas
                   baseChart
-                  [data]="pieChartData3"
+                  [datasets]="[{data:pieChartData3}]"
                   [labels]="pieChartLabels3"
                   [type]="pieChartType"
                   (chartHover)="chartHovered($event)"

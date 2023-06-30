@@ -5117,7 +5117,7 @@
                     baseChart
                     id="newPatients"
                     class="chart"
-                    [data]="newPatientChartData"
+                    [datasets]="[{data: newPatientChartData}]"
                     [labels]="newPatientChartLabels"
                     [legend]="legendSettings"
                     [options]="doughnutChartOptions"
@@ -7328,7 +7328,7 @@
                     id="patientComplaints"
                     baseChart
                     class="chart"
-                    [data]="doughnutChartData"
+                    [datasets]="[{data: doughnutChartData}]"
                     [labels]="doughnutChartLabels"
                     [legend]="true"
                     [options]="doughnutChartOptions"

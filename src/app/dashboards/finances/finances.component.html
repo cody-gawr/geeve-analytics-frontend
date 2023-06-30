@@ -675,7 +675,7 @@
                         class="totalDiscount"
                         #myCanvas
                         baseChart
-                        [data]="totalDiscountChartClinicsData"
+                        [datasets]="[{data: totalDiscountChartClinicsData}]"
                         [labels]="totalDiscountChartLabelsClinics"
                         [type]="totalDiscountChartType"
                         (chartHover)="chartHovered($event)"
@@ -695,7 +695,7 @@
                           class="totalDiscount"
                           #myCanvas
                           baseChart
-                          [data]="totalDiscountChartData"
+                          [datasets]="[{data: totalDiscountChartData}]"
                           [labels]="totalDiscountChartLabels"
                           [type]="totalDiscountChartType"
                           (chartHover)="chartHovered($event)"
@@ -810,7 +810,7 @@
                       class="productionPercentage"
                       #myCanvas
                       baseChart
-                      [data]="productionChartData"
+                      [datasets]="[{data: productionChartData}]"
                       [labels]="productionChartLabels"
                       [type]="productionChartType"
                       (chartHover)="chartHovered($event)"
@@ -1046,7 +1046,7 @@
                         class="totalDiscount"
                         #myCanvas
                         baseChart
-                        [data]="totalDiscountChartData"
+                        [datasets]="[{data: totalDiscountChartData}]"
                         [labels]="totalDiscountChartLabels"
                         [type]="totalDiscountChartType"
                         (chartHover)="chartHovered($event)"
@@ -1073,7 +1073,7 @@
                         class="totalDiscount"
                         #myCanvas
                         baseChart
-                        [data]="totalDiscountChartClinicsData"
+                        [datasets]="[{data: totalDiscountChartClinicsData}]"
                         [labels]="totalDiscountChartLabelsClinics"
                         [type]="totalDiscountChartType"
                         (chartHover)="chartHovered($event)"

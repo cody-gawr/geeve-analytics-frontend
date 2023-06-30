@@ -419,17 +419,17 @@ export class FrontDeskComponent implements AfterViewInit {
             let total = parseInt(tooltipItems.label) > 100 ? 100 : tooltipItems.formattedValue;
             var Targetlable = '';
             const v =
-              tooltipItems.dataset[tooltipItems.datasetIndex].data[tooltipItems.dataIndex];
-            let Tlable = tooltipItems.dataset[tooltipItems.datasetIndex].label;
+              tooltipItems.dataset.data[tooltipItems.dataIndex];
+            let Tlable = tooltipItems.dataset.label;
             if (Tlable != '') {
               Tlable = Tlable + ': ';
               Targetlable = Tlable;
             }
             let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
             var tlab = 0;
-            if (typeof tooltipItems.dataset[1] === 'undefined') {
+            if (typeof tooltipItems.chart.data.datasets[1] === 'undefined') {
             } else {
-              const tval = tooltipItems.dataset[1].data[tooltipItems.dataIndex];
+              const tval = tooltipItems.chart.data.datasets[1].data[tooltipItems.dataIndex];
               if (Array.isArray(tval)) {
                 tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
                 if (tlab == 0) {
@@ -728,7 +728,7 @@ export class FrontDeskComponent implements AfterViewInit {
               .join(',');
             currency = currency.join('.');
             return (
-              tooltipItems.dataset[tooltipItems.datasetIndex].label +
+              tooltipItems.dataset.label +
               `: ${parseInt(tooltipItems.formattedValue) < 0 ? '- $' : '$'}${currency}`
             );
           }
@@ -799,17 +799,17 @@ export class FrontDeskComponent implements AfterViewInit {
             }
             var Targetlable = '';
             const v =
-            tooltipItems.dataset[tooltipItems.datasetIndex].data[tooltipItems.dataIndex];
-            let Tlable = tooltipItems.dataset[tooltipItems.datasetIndex].label;
+            tooltipItems.dataset.data[tooltipItems.dataIndex];
+            let Tlable = tooltipItems.dataset.label;
             if (Tlable != '') {
               Tlable = Tlable + ': ';
               Targetlable = Tlable;
             }
             let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
             var tlab = 0;
-            if (typeof tooltipItems.dataset[1] === 'undefined') {
+            if (typeof tooltipItems.chart.data.datasets[1] === 'undefined') {
             } else {
-              const tval = tooltipItems.dataset[1].data[tooltipItems.dataIndex];
+              const tval = tooltipItems.chart.data.datasets[1].data[tooltipItems.dataIndex];
               if (Array.isArray(tval)) {
                 tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
                 if (tlab == 0) {
@@ -908,17 +908,17 @@ export class FrontDeskComponent implements AfterViewInit {
             }
             var Targetlable = '';
             const v =
-              tooltipItems.dataset[tooltipItems.datasetIndex].data[tooltipItems.dataIndex];
-            let Tlable = tooltipItems.dataset[tooltipItems.datasetIndex].label;
+              tooltipItems.dataset.data[tooltipItems.dataIndex];
+            let Tlable = tooltipItems.dataset.label;
             if (Tlable != '') {
               Tlable = Tlable + ': ';
               Targetlable = Tlable;
             }
             let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
             var tlab = 0;
-            if (typeof tooltipItems.dataset[1] === 'undefined') {
+            if (typeof tooltipItems.chart.data.datasets[1] === 'undefined') {
             } else {
-              const tval = tooltipItems.dataset[1].data[tooltipItems.dataIndex];
+              const tval = tooltipItems.chart.data.datasets[1].data[tooltipItems.dataIndex];
               if (Array.isArray(tval)) {
                 tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
                 if (tlab == 0) {
