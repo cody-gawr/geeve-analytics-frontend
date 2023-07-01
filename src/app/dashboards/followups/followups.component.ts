@@ -225,7 +225,7 @@ export class FollowupsComponent implements AfterViewInit {
             );
           },
           title: function () {
-            return;
+            return '';
           }
         }
       }
@@ -291,7 +291,7 @@ export class FollowupsComponent implements AfterViewInit {
             );
           },
           title: function () {
-            return;
+            return '';
           }
         }
       }

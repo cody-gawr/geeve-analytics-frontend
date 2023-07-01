@@ -306,7 +306,6 @@ export class GraphsComponent{
                 if (Math.floor(label) === label) {
                   return '$' + this.decimalPipe.transform(label);
                 }
-    
               },
             },
           },
@@ -326,7 +325,7 @@ export class GraphsComponent{
               },
               // remove title
               title: function () {
-                return;
+                return '';
               }
             }
           },

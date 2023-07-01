@@ -670,7 +670,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           ),
           // remove title
           title: function () {
-            return;
+            return '';
           }
         }
       }
@@ -732,7 +732,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           ),
           // remove title
           title: function () {
-            return;
+            return '';
           }
         }
       }
@@ -792,7 +792,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             tooltipItem.label, tooltipItem.formattedValue),
           // remove title
           title: function () {
-            return;
+            return '';
           }
         }
       }
@@ -854,7 +854,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           ),
           // remove title
           title: function () {
-            return;
+            return '';
           }
         }
       }
@@ -915,7 +915,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           ),
           // remove title
           title: function () {
-            return;
+            return '';
           }
         }
       }
@@ -980,7 +980,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           ),
           // remove title
           title: function () {
-            return;
+            return '';
           }
         }
       }
@@ -1110,7 +1110,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           ticks: {
             autoSkip: false
           },
-          display: false,
           offset: true,
           stacked: true
         }
@@ -1497,31 +1496,32 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         labels: {
           usePointStyle: true,
           padding: 5,
-          generateLabels: function (chart: Chart) {
+          generateLabels: (chart: Chart) => {
             var data = chart.data;
             if (data.labels.length && data.datasets.length) {
-              return data.labels.map(function (label, i) {
-                var meta = chart.getDatasetMeta(0);
-                var ds = data.datasets[0];
-                var arc = meta.data[i];
+              return data.labels.map((label: string, i) => {
+                // var meta = chart.getDatasetMeta(0);
+                var ds = this.newpColors[0];
+                // var arc = meta.data[i];
                 // var custom = (arc && arc.custom) || {};
-                const regex = /\w+\s\w+(?=\s)|\w+/g;
-                var names = label.toString().trim().match(regex);
-                var labls = '';
-                var name = names[0].split(' ');
-                if (names.length == 3) {
-                  labls = `${names[0]}`;
-                } else if (names.length == 2) {
-                  if (name.length == 2) {
-                    labls = `${names[0][0]} ${name[1]}`;
-                  } else {
-                    labls = `${names[0][0]} ${names[1]}`;
-                  }
-                } else {
-                  labls = `${names[0]}`;
-                }
+                // const regex = /\w+\s\w+(?=\s)|\w+/g;
+                // var names = label.toString().trim().match(regex);
+                // var labls = '';
+                // var name = names[0].split(' ');
+                // if (names.length == 3) {
+                //   labls = `${names[0]}`;
+                // } else if (names.length == 2) {
+                //   if (name.length == 2) {
+                //     labls = `${names[0][0]} ${name[1]}`;
+                //   } else {
+                //     labls = `${names[0][0]} ${names[1]}`;
+                //   }
+                // } else {
+                //   labls = `${names[0]}`;
+                // }
+                
                 return {
-                  text: labls,
+                  text: <string>formatXLabel(label),
                   fillStyle: ds.backgroundColor[i],
                   strokeStyle: '#fff',
                   //hidden: isNaN(ds.data[i]) || meta.data[i].active,
@@ -1536,6 +1536,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           e.native.stopPropagation();
         }
       },
+      tooltip: {
+        callbacks: {
+          label: (tooltipItem) => `${tooltipItem.label}:${tooltipItem.formattedValue}`,
+          title: function(){
+            return ''
+          }
+        }
+      }
     },
     // elements: {
     //   center: {
@@ -5396,7 +5404,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           ),
           // remove title
           title: function () {
-            return;
+            return '';
           }
         }
       }
@@ -8892,6 +8900,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   
                   this.dentistProductionTrendLabels =
                     this.dentistProductionTrendLabels1;
+                  console.log(this.dentistProductionTrendLabels)
                   if (this.dentistProductionTrendLabels.length <= 0) {
                     this.gaugeValue = 0;
                   }

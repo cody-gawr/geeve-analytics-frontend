@@ -1963,7 +1963,7 @@ export class FinancesComponent implements AfterViewInit {
         callbacks: {
           label: function (tooltipItem) {
             return (
-              tooltipItem.label[tooltipItem.dataIndex] +
+              tooltipItem.label +
               ': ' +
               tooltipItem.dataset.data[tooltipItem.dataIndex] +
               '%'

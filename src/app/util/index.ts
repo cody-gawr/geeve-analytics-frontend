@@ -24,7 +24,7 @@ export function formatXLabel(label: string | number) {
 
 export function formatXTooltipLabel(label: string, yValue: string){
     if (label) {
-        return `${label}:$${yValue}`;
+        return `${label}: $${yValue}`;
     }
     return label
 }

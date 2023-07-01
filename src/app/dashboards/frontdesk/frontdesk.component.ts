@@ -361,19 +361,17 @@ export class FrontDeskComponent implements AfterViewInit {
     return dynamicColors;
   }
   public date = new Date();
-  public stackedChartOptions: ChartOptions<'bar'>= {
-    //   elements: {
-    //   point: {
-    //     radius: 5,
-    //     hoverRadius: 7,
-    //     pointStyle:'rectRounded',
-    //     hoverBorderWidth:7
-    //   },
-    // },
+  public stackedChartOptions: ChartOptions= {
+    elements: {
+      line: {
+        fill: true,
+        backgroundColor: '#18a689',
+        borderColor: '#00695C',
+      },
+    },
     // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine'
@@ -390,7 +388,6 @@ export class FrontDeskComponent implements AfterViewInit {
       ,
       y: 
         {
-          // stacked:true,
           min: 0,
           max: 100,
           ticks: {
@@ -406,11 +403,6 @@ export class FrontDeskComponent implements AfterViewInit {
     plugins: {
       tooltip: {
         mode: 'x',
-        // custom: function (tooltip) {
-        //   if (!tooltip) return;
-        //   // disable displaying the color box;
-        //   tooltip.displayColors = false;
-        // },
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
@@ -750,7 +742,8 @@ export class FrontDeskComponent implements AfterViewInit {
         {
           ticks: {
             autoSkip: false,
-            callback: function (value: string) {
+            callback: function (tickValue: string, index: number) {
+              let value = this.getLabelForValue(index);
               if (value && value.toString().includes('--')) {
                 let lbl = value.split('--');
                 value = lbl[0];
@@ -788,13 +781,14 @@ export class FrontDeskComponent implements AfterViewInit {
         },
         callbacks: {
           label: function (tooltipItems) {
-            let total = parseInt(tooltipItems.formattedValue.toString()) > 100 ? 100 : tooltipItems.formattedValue;
+            //let total = parseInt(tooltipItems.formattedValue.toString()) > 100 ? 100 : tooltipItems.formattedValue;
+            let label = tooltipItems.label;
             if ((<string>tooltipItems.label).indexOf('--') >= 0) {
               let lbl = (<string>tooltipItems.label).split('--');
               if (typeof lbl[3] === 'undefined') {
-                tooltipItems.label = lbl[0];
+                label = lbl[0];
               } else {
-                tooltipItems.label = lbl[0] + ' - ' + lbl[3];
+                label = lbl[0] + ' - ' + lbl[3];
               }
             }
             var Targetlable = '';
@@ -819,7 +813,7 @@ export class FrontDeskComponent implements AfterViewInit {
             }
             if (tlab == 0 && Targetlable == 'Target: ') {
             } else {
-              return Tlable + tooltipItems.label + ': ' + ylable;
+              return Tlable + label + ': ' + ylable;
             }
           },
           afterLabel: function (tooltipItems) {
@@ -861,7 +855,8 @@ export class FrontDeskComponent implements AfterViewInit {
         {
           ticks: {
             autoSkip: false,
-            callback: function (value: string) {
+            callback: function (tickValue: string, index: number) {
+              let value = this.getLabelForValue(index);
               if (value && value.toString().includes('--')) {
                 let lbl = value.split('--');
                 value = lbl[0];
@@ -897,13 +892,14 @@ export class FrontDeskComponent implements AfterViewInit {
         },
         callbacks: {
           label: function (tooltipItems) {
+            let label = tooltipItems.label;
             //let total = parseInt(tooltipItems.formattedValue.toString()) > 100 ? 100 : tooltipItems.formattedValue;
             if ((<string>tooltipItems.label).indexOf('--') >= 0) {
               let lbl = (<string>tooltipItems.label).split('--');
               if (typeof lbl[3] === 'undefined') {
-                tooltipItems.label = lbl[0];
+                label = lbl[0];
               } else {
-                tooltipItems.label = lbl[0] + ' - ' + lbl[3];
+                label = lbl[0] + ' - ' + lbl[3];
               }
             }
             var Targetlable = '';
@@ -928,7 +924,7 @@ export class FrontDeskComponent implements AfterViewInit {
             }
             if (tlab == 0 && Targetlable == 'Target: ') {
             } else {
-              return Tlable + tooltipItems.label + ': ' + ylable + '%';
+              return Tlable + label + ': ' + ylable + '%';
             }
           },
           afterLabel: function (tooltipItems) {
@@ -1007,7 +1003,8 @@ export class FrontDeskComponent implements AfterViewInit {
         {
           ticks: {
             autoSkip: false,
-            callback: function (value: string, index, values) {
+            callback: function (tickValue: string, index, values) {
+              let value = this.getLabelForValue(index);
               if (value && value.toString().includes('--')) {
                 let lbl = value.split('--');
                 value = lbl[0];
@@ -1211,11 +1208,9 @@ export class FrontDeskComponent implements AfterViewInit {
   public utilityratemessage: boolean = false;
   // events
   public chartClicked(e: any): void {
-    //console.log(e);
   }
 
   public chartHovered(e: any): void {
-    // console.log(e);
   }
   public gaugeType = 'arch';
   public gaugeValue = '';
@@ -1717,11 +1712,11 @@ export class FrontDeskComponent implements AfterViewInit {
       this.fdUtaRatioLoader = true;
       this.utaTotal = 0;
       this.showmulticlinicUta = false;
-      console.log(
-        typeof this.clinic_id == 'object'
-          ? this.clinic_id.join(',')
-          : this.clinic_id
-      );
+      // console.log(
+      //   typeof this.clinic_id == 'object'
+      //     ? this.clinic_id.join(',')
+      //     : this.clinic_id
+      // );
 
       this.frontdeskService
         .fdUtaRatio(this.clinic_id, this.startDate, this.endDate, this.duration, this.queryWhEnabled)
@@ -2567,10 +2562,8 @@ export class FrontDeskComponent implements AfterViewInit {
       .pipe(take(1))
       .subscribe(() => {
         if (this.isCancellationRatioContainerVisible) {
-          console.log('getCancellationRatioTrend');
           this.getCancellationRatioTrend();
         } else if (this.isUtaRatioContainerVisible) {
-          console.log('fdUtaRatioTrend');
           this.fdUtaRatioTrend();
         }
       });

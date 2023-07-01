@@ -1419,7 +1419,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         callbacks: {
           label: (tooltipItem) => {
             return (
-              tooltipItem.label[tooltipItem.dataIndex] +
+              tooltipItem.label +
               ': ' +
               this.decimalPipe.transform(
                 <number>(
@@ -1427,8 +1427,9 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                 )
               )
             );
-          }
-        }
+          },
+          title: function() {return ''}
+        },
       },
       legend: {
         display: true,
