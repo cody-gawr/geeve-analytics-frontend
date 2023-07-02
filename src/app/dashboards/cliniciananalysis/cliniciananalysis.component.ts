@@ -2256,18 +2256,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         type: 'line',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.productionTotalAverage,
+                        yMax: this.productionTotalAverage,
+                        yMin: this.productionTotalAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (this.goalchecked == 'goal') {
+                  const value = this.productionGoal * this.goalCount;
                   this.barChartOptionsDP1.plugins.annotation = {
                     // drawTime: 'afterDatasetsDraw',
                     annotations: [
@@ -2276,16 +2275,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         type: 'line',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.productionGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (res.status == 401) {
                   this._cookieService.put('username', '');
@@ -2456,18 +2453,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         type: 'line',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.productionDentistTotalAverage,
+                        yMax: this.productionDentistTotalAverage,
+                        yMin: this.productionDentistTotalAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
-                    ],
-                    interaction: {
-                      mode: 'x'
-                    }
+                    ]
                   };
                 } else if (this.goalchecked == 'goal') {
+                  const value = this.productionGoal * this.goalCount;
                   this.barChartOptionsDP2.plugins.annotation = {
                     // drawTime: 'afterDatasetsDraw',
                     annotations: [
@@ -2476,16 +2472,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         type: 'line',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.productionGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (res.status == 401) {
                   this._cookieService.put('username', '');
@@ -2652,18 +2646,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         type: 'line',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.productionOhtTotalAverage,
+                        yMax: this.productionOhtTotalAverage,
+                        yMin: this.productionOhtTotalAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (this.goalchecked == 'goal') {
+                  const value = this.productionGoal * this.goalCount;
                   this.barChartOptionsDP3.plugins.annotation = {
                     // drawTime: 'afterDatasetsDraw',
                     annotations: [
@@ -2672,16 +2665,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         type: 'line',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.productionGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (res.status == 401) {
                   this._cookieService.put('username', '');
@@ -2845,18 +2836,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         type: 'line',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.collectionTotalAverage,
+                        yMax: this.collectionTotalAverage,
+                        yMin: this.collectionTotalAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (this.goalchecked == 'goal') {
+                  const value = this.collectionTotalGoal * this.goalCount;
                   this.barChartOptionsDP.plugins.annotation = {
                     // drawTime: 'afterDatasetsDraw',
                     annotations: [
@@ -2865,16 +2855,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         type: 'line',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.collectionTotalGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (res.status == 401) {
                   this._cookieService.put('username', '');
@@ -3048,18 +3036,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         type: 'line',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.collectionDentistsTotalAverage,
+                        yMax: this.collectionDentistsTotalAverage,
+                        yMin: this.collectionDentistsTotalAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (this.goalchecked == 'goal') {
+                  const value = this.productionGoal * this.goalCount;
                   this.barChartOptionsDP4.plugins.annotation = {
                     // drawTime: 'afterDatasetsDraw',
                     annotations: [
@@ -3068,16 +3055,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         type: 'line',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.productionGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (res.status == 401) {
                   this._cookieService.put('username', '');
@@ -3248,18 +3233,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         type: 'line',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.collectionOhtTotalAverage,
+                        yMax: this.collectionOhtTotalAverage,
+                        yMin: this.collectionOhtTotalAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (this.goalchecked == 'goal') {
+                  const value = this.productionGoal * this.goalCount;
                   this.barChartOptionsDP5.plugins.annotation = {
                     // drawTime: 'afterDatasetsDraw',
                     annotations: [
@@ -3268,16 +3252,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         type: 'line',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.productionGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (res.status == 401) {
                   this._cookieService.put('username', '');
@@ -3447,18 +3429,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         type: 'line',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.collectionExpTotalAverage,
+                        yMax: this.collectionExpTotalAverage,
+                        yMin: this.collectionExpTotalAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (this.goalchecked == 'goal') {
+                  const value = this.collectionTotalExpGoal * this.goalCount;
                   this.barChartOptionsDP6.plugins.annotation = {
                     // drawTime: 'afterDatasetsDraw',
                     annotations: [
@@ -3467,16 +3448,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         type: 'line',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.collectionTotalExpGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (res.status == 401) {
                   this._cookieService.put('username', '');
@@ -3655,18 +3634,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         type: 'line',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.collectionTotalExpDentistsAverage,
+                        yMax: this.collectionTotalExpDentistsAverage,
+                        yMin: this.collectionTotalExpDentistsAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (this.goalchecked == 'goal') {
+                  const value = this.collectionTotalExpGoal * this.goalCount;
                   this.barChartOptionsDP7.plugins.annotation = {
                     // drawTime: 'afterDatasetsDraw',
                     annotations: [
@@ -3675,16 +3653,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         type: 'line',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.collectionTotalExpGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (res.status == 401) {
                   this._cookieService.put('username', '');
@@ -3854,18 +3830,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         type: 'line',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.collectionTotalExpOhtAverage,
+                        yMax: this.collectionTotalExpOhtAverage,
+                        yMin: this.collectionTotalExpOhtAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (this.goalchecked == 'goal') {
+                  const value = this.productionGoal * this.goalCount;
                   this.barChartOptionsDP8.plugins.annotation = {
                     // drawTime: 'afterDatasetsDraw',
                     annotations: [
@@ -3874,16 +3849,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         type: 'line',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.productionGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (res.status == 401) {
                   this._cookieService.put('username', '');
@@ -5533,37 +5506,32 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.planTotalAverage,
+                        yMax: this.planTotalAverage,
+                        yMin: this.planTotalAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (this.goalchecked == 'goal') {
+                  const value = this.planTotalGoal * this.goalCount;
                   this.barChartOptionsTC.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.planTotalGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 }
               }
@@ -5702,18 +5670,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         drawTime: 'afterDatasetsDraw',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.planTotalAverage,
+                        yMax: this.planTotalAverage,
+                        yMin: this.planTotalAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (this.goalchecked == 'goal') {
+                  const value = this.planTotalGoal * this.goalCount;
                   this.barChartOptionsTC.plugins.annotation = {
                     annotations: [
                       {
@@ -5721,16 +5688,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         drawTime: 'afterDatasetsDraw',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.planTotalGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 }
               }
@@ -6427,18 +6392,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         drawTime: 'afterDatasetsDraw',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.hourlyRateChartAverage,
+                        yMax: this.hourlyRateChartAverage,
+                        yMin: this.hourlyRateChartAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (this.goalchecked == 'goal') {
+                  const value = this.hourlyRateChartGoal * this.goalCount;
                   this.barChartOptionsHR.plugins.annotation = {
                     annotations: [
                       {
@@ -6446,16 +6410,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         drawTime: 'afterDatasetsDraw',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.hourlyRateChartGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 }
               }
@@ -6614,18 +6576,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         drawTime: 'afterDatasetsDraw',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.hourlyRateChartDesntistsAverage,
+                        yMax: this.hourlyRateChartDesntistsAverage,
+                        yMin: this.hourlyRateChartDesntistsAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (this.goalchecked == 'goal') {
+                  const value = this.hourlyRateChartGoal * this.goalCount;
                   this.barChartOptionsHR1.plugins.annotation = {
                     annotations: [
                       {
@@ -6633,16 +6594,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         drawTime: 'afterDatasetsDraw',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.hourlyRateChartGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 }
               }
@@ -6797,18 +6756,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         drawTime: 'afterDatasetsDraw',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.hourlyRateChartOhtAverage,
+                        yMax: this.hourlyRateChartOhtAverage,
+                        yMin: this.hourlyRateChartOhtAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (this.goalchecked == 'goal') {
+                  const value = this.hourlyRateChartGoal * this.goalCount;
                   this.barChartOptionsHR2.plugins.annotation = {
                     annotations: [
                       {
@@ -6816,16 +6774,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         drawTime: 'afterDatasetsDraw',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.hourlyRateChartGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 }
               }
@@ -7348,18 +7304,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         drawTime: 'afterDatasetsDraw',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.collectionhourlyRateChartAverage,
+                        yMax: this.collectionhourlyRateChartAverage,
+                        yMin: this.collectionhourlyRateChartAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (this.goalchecked == 'goal') {
+                  const value = this.collectionhourlyRateChartGoal * this.goalCount;
                   this.barChartOptionsHR.plugins.annotation = {
                     annotations: [
                       {
@@ -7367,17 +7322,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         drawTime: 'afterDatasetsDraw',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value:
-                          this.collectionhourlyRateChartGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 }
               }
@@ -7530,18 +7482,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         drawTime: 'afterDatasetsDraw',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.collhourlyRateChartDesntistsAverage,
+                        yMax: this.collhourlyRateChartDesntistsAverage,
+                        yMin: this.collhourlyRateChartDesntistsAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (this.goalchecked == 'goal') {
+                  const value = this.hourlyRateChartGoal * this.goalCount;
                   this.barChartOptionsHR1.plugins.annotation = {
                     annotations: [
                       {
@@ -7549,16 +7500,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         drawTime: 'afterDatasetsDraw',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.hourlyRateChartGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 }
               }
@@ -7709,18 +7658,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         drawTime: 'afterDatasetsDraw',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.collhourlyRateChartOhtAverage,
+                        yMax: this.collhourlyRateChartOhtAverage,
+                        yMin: this.collhourlyRateChartOhtAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (this.goalchecked == 'goal') {
+                  const value = this.hourlyRateChartGoal * this.goalCount;
                   this.barChartOptionsHR2.plugins.annotation = {
                     annotations: [
                       {
@@ -7728,16 +7676,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         drawTime: 'afterDatasetsDraw',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.hourlyRateChartGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 }
               }
@@ -7899,18 +7845,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         drawTime: 'afterDatasetsDraw',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.collExphourlyRateChartAverage,
+                        yMax: this.collExphourlyRateChartAverage,
+                        yMin: this.collExphourlyRateChartAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (this.goalchecked == 'goal') {
+                  const value = this.collExphourlyRateChartGoal * this.goalCount;
                   this.barChartOptionsHR.plugins.annotation = {
                     annotations: [
                       {
@@ -7918,16 +7863,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         drawTime: 'afterDatasetsDraw',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.collExphourlyRateChartGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 }
               }
@@ -8081,18 +8024,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         drawTime: 'afterDatasetsDraw',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.collExphourlyRateChartDesntistsAverage,
+                        yMax: this.collExphourlyRateChartDesntistsAverage,
+                        yMin: this.collExphourlyRateChartDesntistsAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (this.goalchecked == 'goal') {
+                  const value = this.hourlyRateChartGoal * this.goalCount;
                   this.barChartOptionsHR1.plugins.annotation = {
                     annotations: [
                       {
@@ -8100,16 +8042,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         drawTime: 'afterDatasetsDraw',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.hourlyRateChartGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 }
               }
@@ -8262,18 +8202,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         drawTime: 'afterDatasetsDraw',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.collExphourlyRateChartOhtAverage,
+                        yMax: this.collExphourlyRateChartOhtAverage,
+                        yMin: this.collExphourlyRateChartOhtAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 } else if (this.goalchecked == 'goal') {
+                  const value = this.hourlyRateChartGoal * this.goalCount;
                   this.barChartOptionsHR2.plugins.annotation = {
                     annotations: [
                       {
@@ -8281,16 +8220,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                         drawTime: 'afterDatasetsDraw',
                         // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.hourlyRateChartGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
                         borderDashOffset: 0
                       }
                     ],
-                    interaction: {
-                      mode: 'x'
-                    }
                   };
                 }
               }
@@ -11392,41 +11329,43 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     // this.treatmentPlanRate();
   }
 
-  private ChartsAvg(AvgVal, annota) {
-    annota.annotation = {
-      drawTime: 'afterDatasetsDraw',
+  private ChartsAvg(AvgVal, annota: ChartOptions) {
+    annota.plugins.annotation = {
+      // drawTime: 'afterDatasetsDraw',
       annotations: [
         {
           drawTime: 'afterDraw',
           type: 'line',
-          mode: 'horizontal',
+          // mode: 'horizontal',
           scaleID: 'y-axis-0',
-          value: AvgVal,
+          yMax: AvgVal,
+          yMin: AvgVal,
           borderColor: '#0e3459',
           borderWidth: 2,
           borderDash: [2, 2],
           borderDashOffset: 0
         }
-      ]
+      ],
     };
   }
 
-  private ChartsAvgOff(AvgVal, annota) {
-    annota.annotation = {
-      drawTime: 'afterDatasetsDraw',
+  private ChartsAvgOff(AvgVal, annota: ChartOptions) {
+    annota.plugins.annotation = {
+      // drawTime: 'afterDatasetsDraw',
       annotations: [
         {
           drawTime: 'afterDraw',
-          type: '',
-          mode: 'horizontal',
+          type: 'line',
+          // mode: 'horizontal',
           scaleID: 'y-axis-0',
-          value: AvgVal,
+          yMax: AvgVal,
+          yMin: AvgVal,
           borderColor: '#0e3459',
           borderWidth: 2,
           borderDash: [2, 2],
           borderDashOffset: 0
         }
-      ]
+      ],
     };
   }
   changePrebookRate(val, dentType) {
