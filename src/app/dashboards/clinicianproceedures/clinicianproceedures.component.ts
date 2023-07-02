@@ -820,6 +820,14 @@ export class ClinicianProceeduresComponent
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
+      tooltip: {
+        callbacks: {
+          label: function(tooltipItem){
+            return `${tooltipItem.label}:${tooltipItem.formattedValue}`;
+          },
+          title: function(){ return '' }
+        }
+      },
       legend: {
         display: true,
         position: 'right',
