@@ -751,11 +751,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      gridLines: {
-        display: true
-      },
       x: 
         {
+          grid: {
+            display: true
+          },
           ticks: {
             autoSkip: false,
             callback: function (tickValue: string | number, index, ticks) {
@@ -4646,7 +4646,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public recallChartGoal;
   public recallChartAveragePrev;
   public recallChartTooltip = 'down';
-  public barChartOptionsRP: any = this.barChartOptionsPercent;
+  public barChartOptionsRP: ChartOptions = this.barChartOptionsPercent;
   public recallPrebookLoader: boolean;
   public rpKey: any;
   public RPcolors: any;
@@ -4657,7 +4657,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.recallChartData1 = [];
     this.recallChartLabels1 = [];
     this.recallChartLabels = [];
-    this.barChartOptionsRP.annotation = [];
+    this.barChartOptionsRP.plugins.annotation = undefined;
 
     this.clinic_id &&
       this.cliniciananalysisService
@@ -4676,7 +4676,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             this.recallChartLabels1 = [];
 
             this.recallChartLabels = [];
-            this.barChartOptionsRP.annotation = [];
+            this.barChartOptionsRP.plugins.annotation = undefined;
             this.recalltbl = [];
             this.recallChartData[0]['data'] = [];
             if (res.status == 200) {
@@ -4745,16 +4745,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               }
               if (this.recallChartAverage >= this.recallChartAveragePrev)
                 this.recallChartTooltip = 'up';
-              this.barChartOptionsRP.annotation = [];
+              this.barChartOptionsRP.plugins.annotation = undefined;
               if (this.goalchecked == 'average') {
-                this.barChartOptionsRP.annotation = {
+                this.barChartOptionsRP.plugins.annotation = {
                   annotations: [
                     {
                       type: 'line',
                       drawTime: 'afterDatasetsDraw',
-                      mode: 'horizontal',
+                      // mode: 'horizontal',
                       scaleID: 'y-axis-0',
-                      value: this.recallChartAverage,
+                      yMax: this.recallChartAverage,
+                      yMin: this.recallChartAverage,
                       borderColor: '#0e3459',
                       borderWidth: 2,
                       borderDash: [2, 2],
@@ -4763,14 +4764,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   ]
                 };
               } else if (this.goalchecked == 'goal') {
-                this.barChartOptionsRP.annotation = {
+                const value = this.recallChartGoal * this.goalCount;
+                this.barChartOptionsRP.plugins.annotation = {
                   annotations: [
                     {
                       type: 'line',
                       drawTime: 'afterDatasetsDraw',
-                      mode: 'horizontal',
+                      // mode: 'horizontal',
                       scaleID: 'y-axis-0',
-                      value: this.recallChartGoal * this.goalCount,
+                      yMax: value,
+                      yMin: value,
                       borderColor: 'red',
                       borderWidth: 2,
                       borderDash: [2, 2],
@@ -4873,7 +4876,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public treatmentPreChartGoal;
   public treatmentPreChartAveragePrev;
   public treatmentPreChartTooltip = 'down';
-  public barChartOptionsTPB: any = this.barChartOptionsPercent;
+  public barChartOptionsTPB: ChartOptions = this.barChartOptionsPercent;
   public prebook = 'recall';
   public treatmentPrebookLoader: boolean;
   public tpKey: any;
@@ -4887,7 +4890,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.treatmentPreChartLabels1 = [];
 
     this.treatmentPreChartLabels = [];
-    this.barChartOptionsTPB.annotation = [];
+    this.barChartOptionsTPB.plugins.annotation = undefined;
 
     this.clinic_id &&
       this.cliniciananalysisService
@@ -4907,7 +4910,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               this.treatmentPreChartLabels1 = [];
               this.reappointtbl = [];
               this.treatmentPreChartLabels = [];
-              this.barChartOptionsTPB.annotation = [];
+              this.barChartOptionsTPB.plugins.annotation = undefined;
               this.treatmentPreChartData[0]['data'] = [];
               if (res.status == 200) {
                 this.Apirequest = this.Apirequest - 1;
@@ -4982,14 +4985,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.treatmentPreChartTooltip = 'up';
   
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsTPB.annotation = {
+                  this.barChartOptionsTPB.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.treatmentPreChartAverage,
+                        yMax: this.treatmentPreChartAverage,
+                        yMin: this.treatmentPreChartAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
@@ -4998,14 +5002,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                     ]
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsTPB.annotation = {
+                  const value = this.treatmentPreChartGoal * this.goalCount;
+                  this.barChartOptionsTPB.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.treatmentPreChartGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],
@@ -5099,7 +5105,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public treatmentChartGoal;
   public treatmentChartAveragePrev;
   public treatmentChartTooltip = 'down';
-  public barChartOptionsTP: any = this.barChartOptionsPercent;
+  public barChartOptionsTP: ChartOptions = this.barChartOptionsPercent;
   public treatmentPlanRateLoader: boolean;
   public TPRKey: any;
   public TPRcolors: any;
@@ -5112,7 +5118,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.treatmentChartLabels1 = [];
 
     this.treatmentChartLabels = [];
-    this.barChartOptionsTP.annotation = [];
+    this.barChartOptionsTP.plugins.annotation = undefined;
 
     this.clinic_id &&
       this.cliniciananalysisService
@@ -5132,7 +5138,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               this.treatmentChartLabels1 = [];
               this.tprtbl = [];
               this.treatmentChartLabels = [];
-              this.barChartOptionsTP.annotation = [];
+              this.barChartOptionsTP.plugins.annotation = undefined;
               this.treatmentChartData[0]['data'] = [];
               if (res.status == 200) {
                 this.Apirequest = this.Apirequest - 1;
@@ -5213,14 +5219,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.treatmentChartTooltip = 'up';
   
                 if (this.goalchecked == 'average') {
-                  this.barChartOptionsTP.annotation = {
+                  this.barChartOptionsTP.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.treatmentChartAverage,
+                        yMax: this.treatmentChartAverage,
+                        yMin: this.treatmentChartAverage,
                         borderColor: '#0e3459',
                         borderWidth: 2,
                         borderDash: [2, 2],
@@ -5229,14 +5236,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                     ]
                   };
                 } else if (this.goalchecked == 'goal') {
-                  this.barChartOptionsTP.annotation = {
+                  const value = this.treatmentChartGoal * this.goalCount;
+                  this.barChartOptionsTP.plugins.annotation = {
                     annotations: [
                       {
                         type: 'line',
                         drawTime: 'afterDatasetsDraw',
-                        mode: 'horizontal',
+                        // mode: 'horizontal',
                         scaleID: 'y-axis-0',
-                        value: this.treatmentChartGoal * this.goalCount,
+                        yMax: value,
+                        yMin: value,
                         borderColor: 'red',
                         borderWidth: 2,
                         borderDash: [2, 2],

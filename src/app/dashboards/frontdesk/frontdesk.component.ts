@@ -1307,7 +1307,7 @@ export class FrontDeskComponent implements AfterViewInit {
   public workTimeGoal;
   public prevWorkTimeTooltip = 'down';
   public goalchecked = 'off';
-  public stackedChartOptionssWT: any = this.stackedChartOptions;
+  public stackedChartOptionssWT: ChartOptions = this.stackedChartOptions;
   public fdWorkTimeAnalysisLoader: boolean;
   public showMultiClinicUR: boolean = false;
   public fdUtiData: any = [];
@@ -1387,9 +1387,9 @@ export class FrontDeskComponent implements AfterViewInit {
                   this.workTimeGoal = res.body.goals;
                   if (this.workTimeTotal >= this.prevWorkTimeTotal)
                     this.prevWorkTimeTooltip = 'up';
-                  this.stackedChartOptionssWT.annotation = [];
+                  this.stackedChartOptionssWT.plugins.annotation = undefined;
                   if (this.goalchecked == 'average') {
-                    this.stackedChartOptionssWT.annotation = {
+                    this.stackedChartOptionssWT.plugins.annotation = {
                       annotations: [
                         {
                           type: 'line',
@@ -1405,11 +1405,11 @@ export class FrontDeskComponent implements AfterViewInit {
                       ]
                     };
                   } else if (this.goalchecked == 'goal') {
-                    this.stackedChartOptionssWT.annotation = {
+                    this.stackedChartOptionssWT.plugins.annotation = {
                       annotations: [
                         {
                           type: 'line',
-                          mode: 'horizontal',
+                          // mode: 'horizontal',
                           scaleID: 'y-axis-0',
                           yMax: this.workTimeGoal,
                           yMin: this.workTimeGoal,
@@ -2483,20 +2483,20 @@ export class FrontDeskComponent implements AfterViewInit {
     if (val == 'current') {
       this.toggleChecked = true;
       this.trendValue = 'c';
-      this.stackedChartOptionssWT.annotation = [];
+      this.stackedChartOptionssWT.plugins.annotation = undefined;
       this.toggleChangeProcess();
     } else if (val == 'historic') {
       this.toggleChecked = true;
       this.trendValue = 'h';
-      this.stackedChartOptionssWT.annotation = [];
+      this.stackedChartOptionssWT.plugins.annotation = undefined;
       this.toggleChangeProcess();
     } else if (val == 'off') {
       if (this.goalchecked == 'average') {
-        this.stackedChartOptionssWT.annotation = {
+        this.stackedChartOptionssWT.plugins.annotation = {
           annotations: [
             {
               type: 'line',
-              mode: 'horizontal',
+              // mode: 'horizontal',
               scaleID: 'y-axis-0',
               yMax: this.workTimeTotal,
               yMin: this.workTimeTotal,
@@ -2508,11 +2508,11 @@ export class FrontDeskComponent implements AfterViewInit {
           ]
         };
       } else if (this.goalchecked == 'goal') {
-        this.stackedChartOptionssWT.annotation = {
+        this.stackedChartOptionssWT.plugins.annotation = {
           annotations: [
             {
               type: 'line',
-              mode: 'horizontal',
+              // mode: 'horizontal',
               scaleID: 'y-axis-0',
               yMax: this.workTimeGoal,
               yMin: this.workTimeGoal,
