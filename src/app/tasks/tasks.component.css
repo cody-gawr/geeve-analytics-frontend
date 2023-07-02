@@ -112,7 +112,8 @@
     position: fixed;
     top: 16px;
     z-index: 9999;
-    right: 15.5%;
+    /* right: 15.5%; */
+    right: 25px;
 }
 .sa-pull-right.kanban button.mat-gray {
   text-transform: capitalize !important;
@@ -538,12 +539,14 @@ table .e-card-wrapper .warning::before {
 
 @media screen and (max-width: 1919px) {
   .sa-pull-right.kanban {
-    right: 17%;
+    /* right: 17%; */
+    right: 25px
   }
 }
 @media screen and (max-width: 1280px) {
   .sa-pull-right.kanban {
-    right: 18%;
+    /* right: 18%; */
+    right: 25px
   }
 }
 @media screen and (max-width: 960px) {
@@ -552,8 +555,9 @@ table .e-card-wrapper .warning::before {
   }
   .sa-pull-right.kanban {
     top: 60px;
-    left: 265px;
-    right: auto;
+    /* left: 265px; */
+    /* right: auto; */
+    right: 25px;
   }
 }
 @media screen and (max-width: 767px) {

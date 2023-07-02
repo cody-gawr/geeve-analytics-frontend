@@ -1410,7 +1410,6 @@ export class ClinicianProceeduresComponent
   destroy$ = this.destroy.asObservable();
   //lOad individula dentist Chart
   loadDentist(newValue) {
-    console.log(newValue);
     this.dentistSubject.next(newValue);
   }
 
@@ -1418,11 +1417,6 @@ export class ClinicianProceeduresComponent
     if (this._cookieService.get('user_type') == '4') {
       $('.predicted_main').hide();
       $('.predicted1').show();
-      // if(this._cookieService.get("dentist_toggle") === 'true'){
-      //       newValue = this.dentistid;
-
-      // }
-      // else
       newValue = this.dentistid;
     }
 
