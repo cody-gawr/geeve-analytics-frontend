@@ -120,9 +120,6 @@ export class FollowupsComponent implements AfterViewInit {
       },
       tooltip: {
         mode: 'x',
-        displayColors(ctx, options) {
-          return !ctx.tooltip;
-        },
         callbacks: {
           label: function (tooltipItems) {
             if (

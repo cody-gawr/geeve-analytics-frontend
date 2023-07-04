@@ -1005,9 +1005,7 @@ export class ClinicianProceeduresComponent
             // return data.labels[idx];//do something with title
             return '';
           },
-          label: (tooltipItem) => formatXTooltipLabel(
-            tooltipItem.label, tooltipItem.formattedValue
-          )
+          label: (tooltipItem) => formatXTooltipLabel(tooltipItem)
         }
       },
     

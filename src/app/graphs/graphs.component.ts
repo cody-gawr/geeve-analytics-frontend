@@ -414,6 +414,7 @@ export class GraphsComponent{
                       }
                     }  
                   if(tlab == 0 && Targetlable =='Target: '){
+                    return '';
                   }else{
                   return Tlable + tooltipItems.label+": "+ ylable + '%';
                   }   

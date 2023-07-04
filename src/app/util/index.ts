@@ -1,3 +1,5 @@
+import { TooltipItem } from "chart.js";
+
 export function splitName(label: string) {
     const regex = /\w+\s\w+(?=\s)|\w+/g;
     return label.toString().trim().match(regex);
@@ -22,9 +24,6 @@ export function formatXLabel(label: string | number) {
     return label;
 }
 
-export function formatXTooltipLabel(label: string, yValue: string){
-    if (label) {
-        return `${label}: $${yValue}`;
-    }
-    return label
+export function formatXTooltipLabel(tooltipItem: TooltipItem<any>){
+    return tooltipItem.parsed.y < 0?'- $':`${tooltipItem.label}: $${tooltipItem.formattedValue}`;
 }

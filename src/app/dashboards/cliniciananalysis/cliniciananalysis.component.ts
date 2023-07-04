@@ -13,7 +13,7 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { ActivatedRoute, Router, NavigationEnd, Event } from '@angular/router';
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { CookieService } from 'ngx-cookie';
-import { Chart, ChartOptions, LegendOptions, Plugin } from 'chart.js';
+import { Chart, ChartDataset, ChartOptions, LegendOptions, Plugin } from 'chart.js';
 import * as ChartAnnotation from 'chartjs-plugin-annotation';
 import {
   BaseChartDirective,
@@ -665,9 +665,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         },
         cornerRadius: 0,
         callbacks: {
-          label: (tooltipItem) => formatXTooltipLabel(
-            tooltipItem.label, tooltipItem.formattedValue
-          ),
+          label: (tooltipItem) => formatXTooltipLabel(tooltipItem),
           // remove title
           title: function () {
             return '';
@@ -727,9 +725,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         },
         cornerRadius: 0,
         callbacks: {
-          label: (tooltipItem) => formatXTooltipLabel(
-            tooltipItem.label, tooltipItem.formattedValue
-          ),
+          label: (tooltipItem) => formatXTooltipLabel(tooltipItem),
           // remove title
           title: function () {
             return '';
@@ -788,8 +784,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         },
         cornerRadius: 0,
         callbacks: {
-          label: (tooltipItem) => formatXTooltipLabel(
-            tooltipItem.label, tooltipItem.formattedValue),
+          label: (tooltipItem) => formatXTooltipLabel(tooltipItem),
           // remove title
           title: function () {
             return '';
@@ -849,9 +844,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         },
         cornerRadius: 0,
         callbacks: {
-          label: (tooltipItem) => formatXTooltipLabel(
-            tooltipItem.label, tooltipItem.formattedValue
-          ),
+          label: (tooltipItem) => formatXTooltipLabel(tooltipItem),
           // remove title
           title: function () {
             return '';
@@ -910,9 +903,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         },
         cornerRadius: 0,
         callbacks: {
-          label: (tooltipItem) => formatXTooltipLabel(
-            tooltipItem.label, tooltipItem.formattedValue
-          ),
+          label: (tooltipItem) => formatXTooltipLabel(tooltipItem),
           // remove title
           title: function () {
             return '';
@@ -975,9 +966,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         // bodyFontColor: '#000',
         // borderColor: '#000',
         callbacks: {
-          label: (tooltipItem) => formatXTooltipLabel(
-            tooltipItem.label, tooltipItem.formattedValue
-          ),
+          label: (tooltipItem) => formatXTooltipLabel(tooltipItem),
           // remove title
           title: function () {
             return '';
@@ -1136,7 +1125,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         text: ''
       },
       tooltip: {
-        
         mode: 'x',
         displayColors(ctx, options) {
           return !ctx.tooltip;
@@ -1153,7 +1141,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             }
             var Targetlable = '';
             const v =
-              tooltipItem.dataset.data[tooltipItem.dataIndex];
+              tooltipItem.parsed.y;
             let Tlable = tooltipItem.dataset.label;
             if (Tlable != '') {
               Tlable = Tlable + ': ';
@@ -1172,7 +1160,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               }
             }
             if (tlab == 0 && Targetlable == 'Target: ') {
-              //return  Tlable + this.splitName(tooltipItem.xLabel).join(' ');
+              return '';
             } else {
               return (
                 Tlable +
@@ -1181,6 +1169,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 this.decimalPipe.transform(<number>ylable)
               );
             }
+          },
+          title: function(){
+            return '';
           }
         }
       },
@@ -1330,7 +1321,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           label: function (tooltipItem) {
             var Targetlable = '';
             const v =
-            tooltipItem.dataset.data[tooltipItem.dataIndex];
+            tooltipItem.parsed.y;
             let Tlable = tooltipItem.dataset.label;
             if (Tlable != '') {
               Tlable = Tlable + ': ';
@@ -1349,6 +1340,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               }
             }
             if (tlab == 0 && Targetlable == 'Target: ') {
+              return '';
             } else {
               return Tlable + tooltipItem.label + ': ' + ylable + '%';
             }
@@ -1401,7 +1393,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           ticks: {
             autoSkip: false
           },
-          stacked: true
+          stacked: true,
         }
       ,
       y: 
@@ -1409,7 +1401,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           suggestedMin: 0,
           beginAtZero: true,
           ticks: {
-            
             callback: function (label: number, index, labels) {
               // when the floored value is the same as the value we have a whole number
               if (Math.floor(label) === label) {
@@ -1431,7 +1422,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           label: function (tooltipItem) {
             var Targetlable = '';
             const v =
-            tooltipItem.dataset.data[tooltipItem.dataIndex];
+            tooltipItem.parsed.y;
             let Tlable = tooltipItem.dataset.label;
             if (Tlable != '') {
               Tlable = Tlable + ': ';
@@ -1450,6 +1441,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               }
             }
             if (tlab == 0 && Targetlable == 'Target: ') {
+              return '';
             } else {
               return Tlable + tooltipItem.label + ': ' + ylable;
             }
@@ -5381,9 +5373,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         },
         cornerRadius: 0,
         callbacks: {
-          label: (tooltipItem) => formatXTooltipLabel(
-            tooltipItem.label, tooltipItem.formattedValue
-          ),
+          label: (tooltipItem) => formatXTooltipLabel(tooltipItem),
           // remove title
           title: function () {
             return '';
@@ -8649,11 +8639,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   isChecked = true;
 
   public targetData = [];
-  public dentistProdTrend: any[] = [
+  public dentistProdTrend: ChartDataset<'bar'>[] = [
     {
       data: [],
       label: '',
-      shadowOffsetX: 3,
+      // shadowOffsetX: 3,
       //   xAxisID: "x-axis-actual",
       backgroundColor: 'rgba(0, 0, 255, 0.2)',
       order: 2
@@ -8664,14 +8654,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       //  xAxisID: "x-axis-target",
       backgroundColor: 'rgba(255, 0, 128, 1)',
       order: 1,
-      minHeight: 5
+      // minHeight: 5
     }
   ];
-  public dentistColTrend: any[] = [
+  public dentistColTrend: ChartDataset<'bar'>[] = [
     {
       data: [],
       label: '',
-      shadowOffsetX: 3,
+      // shadowOffsetX: 3,
       order: 2,
       backgroundColor: [
         this.chartService.colors.odd,
@@ -8687,17 +8677,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.chartService.colors.odd,
         this.chartService.colors.even
       ],
-      shadowOffsetY: 2,
-      shadowBlur: 3,
-      shadowColor: 'rgba(0, 0, 0, 0.3)',
-      pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-      pointShadowOffsetX: 3,
-      pointShadowOffsetY: 3,
-      pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
+      // shadowOffsetY: 2,
+      // shadowBlur: 3,
+      // shadowColor: 'rgba(0, 0, 0, 0.3)',
+      // pointBevelWidth: 2,
+      // pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+      // pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+      // pointShadowOffsetX: 3,
+      // pointShadowOffsetY: 3,
+      // pointShadowBlur: 10,
+      // pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+      // backgroundOverlayMode: 'multiply'
     },
     {
       data: [],
@@ -8707,11 +8697,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     }
   ];
 
-  public dentistColExpTrend: any[] = [
+  public dentistColExpTrend: ChartDataset<'bar'>[] = [
     {
       data: [],
       label: '',
-      shadowOffsetX: 3,
+      // shadowOffsetX: 3,
       backgroundColor: [
         this.chartService.colors.odd,
         this.chartService.colors.even,
@@ -8726,17 +8716,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.chartService.colors.odd,
         this.chartService.colors.even
       ],
-      shadowOffsetY: 2,
-      shadowBlur: 3,
-      shadowColor: 'rgba(0, 0, 0, 0.3)',
-      pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-      pointShadowOffsetX: 3,
-      pointShadowOffsetY: 3,
-      pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
+      // shadowOffsetY: 2,
+      // shadowBlur: 3,
+      // shadowColor: 'rgba(0, 0, 0, 0.3)',
+      // pointBevelWidth: 2,
+      // pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+      // pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+      // pointShadowOffsetX: 3,
+      // pointShadowOffsetY: 3,
+      // pointShadowBlur: 10,
+      // pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+      // backgroundOverlayMode: 'multiply'
     }
   ];
 
@@ -8843,10 +8833,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                     }
                   ); // This is dynamic array for colors of bars
                   this.dentistProdTrend[0].backgroundColor = dynamicColors;
-  
                   this.dentistProductionTrendLabels =
                     this.dentistProductionTrendLabels1;
-                  console.log(this.dentistProductionTrendLabels)
                   if (this.dentistProductionTrendLabels.length <= 0) {
                     this.gaugeValue = 0;
                   }
@@ -10761,11 +10749,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         );
   }
 
-  public newPatientsChartTrend: any[] = [
+  public newPatientsChartTrend: ChartDataset<'bar'>[] = [
     {
       data: [],
       label: '',
-      shadowOffsetX: 3,
+      // shadowOffsetX: 3,
       order: 2,
       backgroundColor: [
         this.chartService.colors.odd,
@@ -10781,22 +10769,22 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.chartService.colors.odd,
         this.chartService.colors.even
       ],
-      shadowOffsetY: 2,
-      shadowBlur: 3,
-      shadowColor: 'rgba(0, 0, 0, 0.3)',
-      pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-      pointShadowOffsetX: 3,
-      pointShadowOffsetY: 3,
-      pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
+      // shadowOffsetY: 2,
+      // shadowBlur: 3,
+      // shadowColor: 'rgba(0, 0, 0, 0.3)',
+      // pointBevelWidth: 2,
+      // pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+      // pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+      // pointShadowOffsetX: 3,
+      // pointShadowOffsetY: 3,
+      // pointShadowBlur: 10,
+      // pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+      // backgroundOverlayMode: 'multiply'
     },
     {
       data: [],
       label: '',
-      shadowOffsetX: 3,
+      // shadowOffsetX: 3,
       backgroundColor: 'rgba(255, 0, 128, 1)',
       order: 1
     }
@@ -10897,7 +10885,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 );
               }); // This is dynamic array for colors of bars
               this.newPatientsChartTrend[0].backgroundColor = dynamicColors;
-
               if (this.newPatientsChartTrendLabels.length <= 0) {
                 this.newPatientPercent = 0;
               }
