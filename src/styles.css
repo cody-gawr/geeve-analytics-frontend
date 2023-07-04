@@ -4776,6 +4776,33 @@ img {
 
 /*  test */
 
+.sa-form-group-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 15px 10px 0 10px;
+  border: 1px solid #00BFA5;
+  border-radius: 10px;
+  flex-direction: column;
+  .sa-form-group {
+    width: 100%;
+  }
+  .mat-form-field-underline{
+    display: none;
+  }
+  .mat-form-field {
+    padding-bottom: 20px;
+  }
+
+  &:active, &:hover {
+    border: 1px solid #004D40;
+  }
+}
+
+.sa-form-group-wrapper .mat-form-field-flex textarea{
+  padding-bottom: 15px;
+}
+
 .sa-form-group {
   margin-bottom: 15px;
 }
