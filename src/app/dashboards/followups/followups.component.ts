@@ -250,9 +250,6 @@ export class FollowupsComponent implements AfterViewInit {
           },
           ticks: {
             autoSkip: false,
-            callback: (label: string) => {
-              return label;
-            }
           }
         }
       ,

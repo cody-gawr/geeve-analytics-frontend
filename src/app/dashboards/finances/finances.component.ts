@@ -875,22 +875,14 @@ export class FinancesComponent implements AfterViewInit {
         // displayColors: false,
         callbacks: {
           label: function (tooltipItems) {
-            // let currency = tooltipItems.formattedValue.toString();
-            // let currencySegs = currency.split('.');
-            // currencySegs[0] = currencySegs[0]
-            //   .split('-')
-            //   .join('')
-            //   .split(/(?=(?:...)*$)/)
-            //   .join(',');
-            // currency = currencySegs.join('.');
-            // return (
-            //   tooltipItems.dataset.label +
-            //   `: ${parseInt(tooltipItems.formattedValue.toString()) < 0 ? '- $' : '$'}${currency}`
-            // );
-            return `${tooltipItems.dataset.label}: ${tooltipItems.parsed.y}`
+            if(tooltipItems.parsed.y > 0){
+              return `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`;
+            }else{
+              return ''
+            }
           },
-          title: function(tooltipItems){
-            return `${tooltipItems[0].label}: ${_.sumBy(tooltipItems, t => parseFloat(t.parsed.y))}`
+          title: (tooltipItems) => {
+            return `${tooltipItems[0].label}: $${this.decimalPipe.transform(_.sumBy(tooltipItems, t => parseFloat(t.parsed.y)))}`
           }
         }
       }
@@ -1550,7 +1542,6 @@ export class FinancesComponent implements AfterViewInit {
       y: 
         {
           stacked: true,
-
           ticks: {
             callback: function (item) {
               return item + '%';
@@ -1563,102 +1554,17 @@ export class FinancesComponent implements AfterViewInit {
       legend: this.stackLegendGenerator,
       tooltip: {
         mode: 'x',
-        // enabled: false,
-        // external: function (t) {
-        //   const tooltip = t.tooltip;
-        //   const chart = t.chart;
-        //   if (!tooltip) return;
-        //   var tooltipEl = document.getElementById('chartjs-tooltip');
-        //   if (!tooltipEl) {
-        //     tooltipEl = document.createElement('div');
-        //     tooltipEl.id = 'chartjs-tooltip';
-        //     tooltipEl.style.backgroundColor = '#FFFFFF';
-        //     tooltipEl.style.borderColor = '#B2BABB';
-        //     tooltipEl.style.borderWidth = 'thin';
-        //     tooltipEl.style.borderStyle = 'solid';
-        //     tooltipEl.style.zIndex = '999999';
-        //     tooltipEl.style.backgroundColor = '#000000';
-        //     tooltipEl.style.color = '#FFFFFF';
-        //     document.body.appendChild(tooltipEl);
-        //   }
-        //   if (tooltip.opacity === 0) {
-        //     tooltipEl.style.opacity = '0';
-        //     return;
-        //   } else {
-        //     tooltipEl.style.opacity = '0.8';
-        //   }
-  
-        //   tooltipEl.classList.remove('above', 'below', 'no-transform');
-        //   if (tooltip.yAlign) {
-        //     tooltipEl.classList.add(tooltip.yAlign);
-        //   } else {
-        //     tooltipEl.classList.add('no-transform');
-        //   }
-  
-        //   function getBody(bodyItem) {
-        //     return bodyItem.lines;
-        //   }
-        //   var bodyLineCont = 0;
-        //   if (tooltip.body) {
-        //     var titleLines = tooltip.title || [];
-        //     var bodyLines = tooltip.body.map(getBody);
-        //     var labelColorscustom = tooltip.labelColors;
-        //     var innerHtml = '<table><thead>';
-        //     innerHtml += '</thead><tbody>';
-        //     titleLines.forEach(function (title) {
-        //       innerHtml +=
-        //         '<tr><th colspan="2" style="text-align: left;">' +
-        //         title +
-        //         '</th></tr>';
-        //     });
-        //     bodyLines.forEach(function (body, i) {
-        //       if (body[0].includes('100%')) {
-        //         innerHtml +=
-        //           '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
-        //           labelColorscustom[i].backgroundColor +
-        //           '"></span></td><td style="padding: 0px">' +
-        //           body[0] +
-        //           '</td></tr>';
-        //         bodyLineCont = bodyLineCont + 1;
-        //       } else if (!body[0].split(':')[1].trim().startsWith('0')) {
-        //         innerHtml +=
-        //           '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
-        //           labelColorscustom[i].backgroundColor +
-        //           '"></span></td><td style="padding: 0px">' +
-        //           body[0] +
-        //           '</td></tr>';
-        //         bodyLineCont = bodyLineCont + 1;
-        //       }
-        //     });
-        //     innerHtml += '</tbody></table>';
-        //     tooltipEl.innerHTML = innerHtml;
-        //     //tableRoot.innerHTML = innerHtml;
-        //   }
-        //   // disable displaying the color box;
-        //   var position = chart.canvas.getBoundingClientRect();
-        //   // Display, position, and set styles for font
-        //   tooltipEl.style.position = 'fixed';
-        //   tooltipEl.style.left =
-        //     position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
-        //   tooltipEl.style.top =
-        //     position.top +
-        //     window.pageYOffset +
-        //     tooltip.caretY -
-        //     (70 + bodyLineCont * 15) +
-        //     'px';
-        //   // tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
-        //   // tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
-        //   // tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-        //   // tooltipEl.style.padding =
-        //   //   tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
-        //   tooltipEl.style.pointerEvents = 'none';
-        // },
-        // displayColors: false,
         callbacks: {
           label: function (tooltipItems) {
-            return `${
-              tooltipItems.dataset.label
-            }: ${Math.round(tooltipItems.parsed.y)}%`;
+            const yValue = Math.round(tooltipItems.parsed.y);
+            if(yValue > 0){
+              return `${
+                tooltipItems.dataset.label
+              }: ${yValue}%`;
+            }else{
+              return ''
+            }
+
           },
           title: (tooltipItems) => tooltipItems[0].label
         }

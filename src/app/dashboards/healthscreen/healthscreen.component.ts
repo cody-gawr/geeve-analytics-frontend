@@ -214,38 +214,6 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  // getCustomiseSettings() {
-  //   let clinic_id = this._cookieService.get("clinic_id");
-  //   this.health_screen_mtd = 1;
-  //   this.mtdText = 'Month To Date';
-  //   this.mtdInnText = 'Last Month';
-  //   if (clinic_id != 'all') {
-  //     this.healthscreenService.getCustomiseSettings(clinic_id)
-  //       .subscribe(
-  //         (res) => {
-  //           if (res.status == 200) {
-  //             if (res.body.data) {
-  //               this.health_screen_mtd = parseInt(res.body.data.health_screen_mtd);
-  //               if (this.health_screen_mtd == 0) {
-  //                 this.mtdText = 'Last 30 days';
-  //                 this.mtdInnText = 'Previous 30 days';
-  //               } else {
-  //                 this.mtdText = 'Month To Date';
-  //                 this.mtdInnText = 'Last Month';
-  //               }
-  //               this.loadHealthScreen();
-  //             }
-  //           }
-  //         },
-  //         (error) => {
-  //           console.log("error", error);
-  //           $(".ajax-loader").hide();
-  //         }
-  //       );
-  //   }  else{
-  //     this.loadHealthScreen();
-  //   }
-  // }
   getShortName(fullName: string) {
     return $.trim(fullName).charAt(0);
   }
@@ -274,10 +242,6 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
       );
       this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     }
-
-    // console.log("startDate:" + this.startDate + " -- End Date: " + this.endDate );
-    // console.log("clinic Id: " + this.clinic_id);
-    // console.log("this.health_screen_mtd: " + this.health_screen_mtd);
 
     this.prodpervisitstats = false;
     this.totalvisitstats = false;
@@ -500,38 +464,6 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
         }
       );
   }
-
-  /*  public chProduction(){ // Production top Card
-      this.production_c = 0;
-      this.production_dif = 0;
-      this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chProduction').subscribe((data) => {
-        if(data.status == 200){
-          this.productionstats = true;
-          this.production_c = data.total;
-          this.production_p = Math.round(data.total_ta);
-          this.production_dif = Math.round(data.total - data.total_ta);
-        }        
-      }, error => {
-        $('.ajax-loader').hide();
-        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      }); 
-    }*/
-
-  /*  public chTotalVisits(){ // Total Vists top Card
-      this.visits_c = 0;
-      this.visits_dif = 0;
-      this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chTotalVisits').subscribe((data) => {
-        if(data.status == 200){
-          this.totalvisitstats = true;
-          this.visits_c = data.total;
-          this.visits_p = data.total_ta;
-          this.visits_dif = Math.round(data.total - data.total_ta);
-        }        
-      }, error => {
-        $('.ajax-loader').hide();
-        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-      }); 
-    }*/
 
   /* functions for dentist login only */
   public dentistProduction: any = 0;
