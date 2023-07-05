@@ -93,13 +93,8 @@
                   </div>
           </td>
         </ng-container>
-        <ng-container matColumnDef="appbook">
+        <ng-container *ngIf="isD4w" matColumnDef="appbook">
           <th mat-header-cell *matHeaderCellDef >App Book
-            <!-- <div class="info-button">
-                <div class="info-icon-container">
-                  <img [tooltip]="this.constants.tipDentistsPosition" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
-                </div>
-              </div> -->
           </th>
           <td mat-cell *matCellDef="let element; let i=index">            
              <div class="jeeveProviderIdDrop sa_forms_design" >

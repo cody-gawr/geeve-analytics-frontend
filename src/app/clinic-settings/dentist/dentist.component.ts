@@ -88,6 +88,11 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   public get isExact(): boolean {
     return this.localStorageService.isEachClinicExact(this.clinic_id$.value);
   }
+
+  public get isD4w(): boolean {
+    return this.localStorageService.isEachClinicPmsD4w(this.clinic_id$.value);
+  }
+
   constructor(
     private _cookieService: CookieService,
     private dentistService: DentistService,
@@ -98,6 +103,9 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
      private localStorageService: LocalStorageService
   ) {
     super();
+    if(this.isD4w){
+      this.displayedColumns = ['providerId', 'name','position', 'jeeve_id','is_active'];
+    }
   }
 
   ngAfterViewInit() {
