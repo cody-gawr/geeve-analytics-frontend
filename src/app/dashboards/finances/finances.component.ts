@@ -882,7 +882,7 @@ export class FinancesComponent implements AfterViewInit {
             }
           },
           title: (tooltipItems) => {
-            return `${tooltipItems[0].label}: $${this.decimalPipe.transform(_.sumBy(tooltipItems, t => parseFloat(t.parsed.y)))}`
+            return `${tooltipItems[0].label}: $${this.decimalPipe.transform(_.sumBy(tooltipItems, t => t.parsed.y))}`
           }
         }
       }
@@ -943,7 +943,7 @@ export class FinancesComponent implements AfterViewInit {
             return `${tooltipItems.dataset.label}: ${tooltipItems.parsed.y}`
           },
           title: function(tooltipItems){
-            return `${tooltipItems[0].label}: ${_.sumBy(tooltipItems, t => parseFloat(t.parsed.y))}`
+            return `${tooltipItems[0].label}: ${_.sumBy(tooltipItems, t => t.parsed.y)}`
           }
         }
       }
@@ -1118,7 +1118,7 @@ export class FinancesComponent implements AfterViewInit {
             return `${tooltipItems.dataset.label}: ${tooltipItems.parsed.y}`
           },
           title: function(tooltipItems){
-            return `${tooltipItems[0].label}: ${_.sumBy(tooltipItems, t => parseFloat(t.parsed.y))}`
+            return `${tooltipItems[0].label}: ${_.sumBy(tooltipItems, t => t.parsed.y)}`
           }
         }
       }
