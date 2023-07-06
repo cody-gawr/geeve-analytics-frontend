@@ -307,8 +307,8 @@ export class ClinicSettingsService {
         formData.append('post_op_days', postOpCallsMh);
         formData.append('recall_weeks', recallWeeks);
         formData.append('fta_followup_days', ftaFollowupDays);
-        formData.append('uta_followup_days', utaFollowupDays);
-        formData.append('uta_days_later', utaFollowupDaysLater);
+        formData.append('uta_followup_days', utaFollowupDays??0);
+        formData.append('uta_days_later', utaFollowupDaysLater??0);
         formData.append('fta_days_later', ftaFollowupDaysLater);
         formData.append('referral_weeks', referralWeeks);
         formData.append('compare_mode', compareMode?'1':'0');
