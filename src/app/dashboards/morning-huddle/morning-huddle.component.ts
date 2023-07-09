@@ -221,7 +221,7 @@ export class StatusDialogMHComponent {
 @Component({
   selector: 'app-morning-huddle',
   templateUrl: './morning-huddle.component.html',
-  styleUrls: ['./morning-huddle.component.css'],
+  styleUrls: ['./morning-huddle.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class MorningHuddleComponent implements OnInit, OnDestroy {
