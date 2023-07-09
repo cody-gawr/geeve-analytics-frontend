@@ -7,40 +7,35 @@
   <mat-icon aria-hidden="false" (click)="onNoClick()">close</mat-icon>
 </div>
 <div mat-dialog-content>
-    <div class="sa-form-group-wrapper">
-      <div class="sa-form-group">
-        <input type="tel" [formControl]="phoneNumber" 
-            matInput placeholder="04## ### ### or +614## ### ###">
-            <small
-            *ngIf="phoneNumber.invalid"
-                class="text-danger support-text"
-                >{{getPhoneErrors()}}</small
-            >        
-      </div>
-
-      </div>
+    <mat-form-field>
+      <input type="tel" [formControl]="phoneNumber" 
+      matInput placeholder="Phone Number">
+      <mat-hint>04## ### ### or +614## ### ###</mat-hint>
+      <mat-error
+      *ngIf="phoneNumber.invalid"
+          >{{getPhoneErrors()}}</mat-error
+      >    
+    </mat-form-field>
     <br>
-    <div class="sa_mat_select_topbar">
-      <mat-form-field floatLabel="never">
-        <mat-label>Message Template</mat-label>
-        <mat-select
-          [(value)]="selectedReviewMsg"
-          (selectionChange)="onChangeReviewMsg()"
-        >
-          <mat-option *ngFor="let msgT of msgTemplates" [value]="msgT.id">
-            {{ msgT.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
     <br>
-    <div class="sa-form-group-wrapper">
-      <mat-form-field floatLabel="never" underlin  [hintLabel]="'Max ' + availableMsgLength +' characters'" >
-          <mat-label>Review Message</mat-label>
-          <textarea matInput [formControl]="review_msg" rows="7" [maxlength]="availableMsgLength"></textarea>
-          <mat-hint align="end">{{review_msg.value.length}} / 800, {{numOfMessages}} {{numOfMessages == 0 || numOfMessages > 1?'messages':'message'}}</mat-hint>
-      </mat-form-field>
-    </div>
+    <mat-form-field>
+      <mat-label>Message Template</mat-label>
+      <mat-select
+        [(value)]="selectedReviewMsg"
+        (selectionChange)="onChangeReviewMsg()"
+      >
+        <mat-option *ngFor="let msgT of msgTemplates" [value]="msgT.id">
+          {{ msgT.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field  [hintLabel]="'Max ' + availableMsgLength +' characters'" >
+        <mat-label>Review Message</mat-label>
+        <textarea matInput [formControl]="review_msg" rows="7" [maxlength]="availableMsgLength"></textarea>
+        <mat-hint align="end">{{review_msg.value.length}} / 800, {{numOfMessages}} {{numOfMessages == 0 || numOfMessages > 1?'messages':'message'}}</mat-hint>
+    </mat-form-field>
+    <br>
     <br>
 </div>
 <div mat-dialog-actions class="justify-between">
