@@ -1,0 +1,151 @@
+@use '@angular/material' as mat;
+@include mat.core();
+@include mat.legacy-core();
+
+// regular style toast
+@import 'ngx-toastr/toastr';
+
+@import 'assets/layout/styles/theme/jeeve/theme.scss';
+
+* {
+    outline: none;
+    box-sizing:border-box;
+}
+
+body {
+    font-family: 'Gilroy-Regular';
+    margin: 0;
+    overflow-x: hidden;
+    color: #67757c;
+    font-weight: 300;
+    font-size: 14px;
+    background: #2f3d4a;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+    background: white;
+}
+
+[hidden] {
+    visibility: hidden !important;
+}
+
+.ajax-loader {
+    z-index: 9999;
+    position: fixed;
+    top: 0;
+    /* display: none; */
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    height: 100%;
+    text-align: center;
+}
+
+.ajax-loader {
+    z-index: 9999;
+    position: absolute;
+    top: 0;
+    display: none;
+  }
+  
+.ajax-loader img {
+    border-radius: 180px;
+    overflow: hidden;
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 70px;
+    margin-top: -35px;
+    margin-left: -35px;
+}
+
+.jeeve-app {
+    @import 'assets/layout/styles/layout/layout.scss';
+    .procedure-select-panel {
+        min-width: unset !important;
+        max-width: unset !important;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-top: 0;
+        padding-bottom: 0;
+        max-height: 256px;
+        min-width: 100%;
+        border-radius: 4px;
+        outline: 0;
+    }
+    
+    .mat-dialog-container .mat-icon[fontIcon='close'] {
+    cursor: pointer;
+    }
+    
+    table {
+    width: 100%;
+    .mat-header-cell {
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        color: black !important;
+        padding: 0 8px !important;
+    }
+    .mat-cell {
+        padding: 0 8px !important;
+    }
+    .mat-row {
+        cursor: pointer !important;
+        &:hover {
+        background-color: #fafafa !important;
+        }
+    }
+    }
+
+    .custom-toggle-buttons .mat-button-toggle-label-content {
+        line-height: 34px !important;
+    }
+}
+
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700');
+@import 'assets/styles/icons/themify-icons/themify-icons.css';
+@import 'assets/styles/icons/font-awesome/css/font-awesome.css';
+
+@import 'ngx-smart-modal/ngx-smart-modal';
+@import '~@syncfusion/ej2-base/styles/material.css';
+@import '~@syncfusion/ej2-buttons/styles/material.css';
+@import '~@syncfusion/ej2-dropdowns/styles/material.css';
+@import '~@syncfusion/ej2-inputs/styles/material.css';
+@import '~@syncfusion/ej2-layouts/styles/material.css';
+@import '~@syncfusion/ej2-navigations/styles/material.css';
+@import '~@syncfusion/ej2-popups/styles/material.css';
+@import '~@syncfusion/ej2-angular-kanban/styles/material.css';
+
+@import '~perfect-scrollbar/css/perfect-scrollbar.css';
+// @import '~@swimlane/ngx-datatable/index.css';
+// @import '~@swimlane/ngx-datatable/themes/material.css';
+// @import '~@swimlane/ngx-datatable/assets/icons.css';
+
+.jeeve-legacy-app {
+    @import 'legacy.scss';
+    @import 'assets/styles/variable.scss';
+    @import 'assets/styles/app';
+    @import 'assets/styles/header';
+    @import 'assets/styles/widgets';
+    @import 'assets/styles/pages';
+    @import 'assets/styles/sidebar';
+    @import 'assets/styles/dark-sidebar';
+    @import 'assets/styles/responsive';
+    @import 'assets/styles/rtl';
+
+    @include mat.all-legacy-component-themes($theme);
+
+    .ngx-datepicker-calendar-container {
+        z-index: 999;
+    }
+    
+    .customRange {
+        position: absolute;
+    }
+}
+
+@include mat.all-component-themes($jeeve-theme);

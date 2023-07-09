@@ -1,0 +1,55 @@
+<div
+  class="finance-page-container"
+>
+  <div class="finance-tabs">
+    <button class="active">This Month</button>
+    <button>Last Month</button>
+    <button>This Quarter</button>
+    <button>Last Quarter</button>
+    <button>Calendar Year</button>
+    <button>Last Calendar Year</button>
+    <button>Financial Year</button>
+    <button>Last Financial Year</button>
+  </div>
+  <div
+    class="trend-toggle-box"
+  >
+    <label>Trend:</label>
+    <mat-button-toggle-group
+      class="custom-toggle-buttons"
+      name="Trend"
+      aria-label="Trends"
+    >
+      <mat-button-toggle checked value="off">Off</mat-button-toggle>
+      <mat-button-toggle value="current">Monthly</mat-button-toggle>
+      <mat-button-toggle value="historic">Annual</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+</div>
+<div class="finance-chart-content">
+  <div class="stats-card-list">
+    <stats-card
+      class="stats-card-finance"
+      label="Production"
+      value="$89,523"
+      toolTip="hello"
+      iconColor="#f8ca25"
+    >
+    </stats-card>
+    <stats-card
+      class="stats-card-finance"
+      label="Net Profit"
+      value="$48,523"
+      toolTip="hello"
+      iconColor="#737eef"
+    >
+    </stats-card>
+    <stats-card
+      class="stats-card-finance"
+      label="Net Profit %"
+      value="60%"
+      toolTip="hello"
+    >
+    </stats-card>
+  </div>
+</div>

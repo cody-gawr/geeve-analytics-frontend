@@ -5,7 +5,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-	production: true,
+	production: false,
 	// apiUrl : "https://localhost:4005", 
 	apiUrl: "https://test-api.jeeve.com.au/test/analytics",
 	homeUrl: "http://localhost/jeeveanalytics/client2/",

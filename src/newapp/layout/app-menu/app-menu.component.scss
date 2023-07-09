@@ -1,0 +1,30 @@
+.mat-tree {
+  background: transparent;
+  .mat-tree-node {
+    color: #89cdc2;
+    font-size: 15px;
+    font-weight: 700;
+    justify-content: flex-start;
+    cursor: pointer;
+    &.active {
+      color: white;
+    }
+    &:hover {
+      color: white;
+    }
+    .tree-node-title {
+      display: flex;
+      flex-direction: row;
+      justify-content: stretch;
+      align-items: center;
+    }
+  }
+}
+
+.tree-menu-loader {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  color: white; 
+  margin-top: 25px;
+}

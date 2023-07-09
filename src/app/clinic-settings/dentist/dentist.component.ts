@@ -316,6 +316,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
       }, (error) => {
         this.toastr.error('Opps, Error occurs in updating dentist!');
       });  
+      return true;
     }
 
     openSetJeeveName()

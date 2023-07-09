@@ -1,0 +1,33 @@
+<div class="layout-topbar">
+  <div
+    class="menu-wrapper lt-md"
+  >
+    <button mat-icon-button color="primary" (click)="toggleSideBar()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <img class="logo" src="assets/layout/images/logo.png" />
+  </div>
+  <div
+    class="menu-wrapper gt-sm"
+  >
+    <div class="hide-lt__sm">
+      <button mat-icon-button (click)="toggleSideBar()">
+        <mat-icon>{{
+          isSidenavVisible ? 'chevron_left' : 'chevron_right'
+        }}</mat-icon>
+      </button>
+      <mat-label>{{ title }}</mat-label>
+    </div>
+    <div class="dynamic-top-section">
+      <div class="date-picker-wrapper" >
+        <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+          <input matStartDate formControlName="start" placeholder="Start date">
+          <input matEndDate formControlName="end" placeholder="End date">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </div>
+    </div>
+  </div>
+  <div class="filter-wrapper"></div>
+</div>

@@ -526,6 +526,7 @@ export class AppHeaderrightComponent
           this.warningMessage = 'Please Provide Valid Inputs!';
         }
       );
+    return true;
   }
 
   checkPermissions(clinicId: string) {
@@ -930,6 +931,7 @@ export class AppHeaderrightComponent
             this.warningMessage = 'Please Provide Valid Inputs!';
           }
         );
+    return true;
   }
 
   changeClinic(newValues, allChecked) {

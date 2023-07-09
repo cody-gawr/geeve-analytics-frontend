@@ -889,6 +889,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               if (Math.floor(label) === label) {
                 return '$' + this.decimalPipe.transform(label);
               }
+              return '';
             }
           },
         }
@@ -949,6 +950,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               if (Math.floor(label) === label) {
                 return '$' + this.decimalPipe.transform(label);
               }
+              return '';
             }
           },
         }
@@ -1065,6 +1067,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               if (Math.floor(label) === label) {
                 return '$' + this.decimalPipe.transform(label);
               }
+              return '';
             }
           },
         }
@@ -1114,6 +1117,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               if (Math.floor(label) === label) {
                 return '$' + this.decimalPipe.transform(label);
               }
+              return '';
             }
           }
         }
@@ -1227,6 +1231,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               if (Math.floor(label) === label) {
                 return label + ' %';
               }
+              return '';
             }
           }
         }
@@ -1305,6 +1310,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               if (Math.floor(label) === label) {
                 return label + ' %';
               }
+              return '';
             }
           }
         }
@@ -1406,6 +1412,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               if (Math.floor(label) === label) {
                 return label;
               }
+              return '';
             }
           }
         }
@@ -1859,6 +1866,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       }
       // this.changeTreatmentCostSingle('1');
     }
+    return true;
   }
   public accountingDentist: any = [];
   //Get provider details
@@ -5360,6 +5368,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               if (Math.floor(label) === label) {
                 return '$' + this.decimalPipe.transform(label);
               }
+              return '';
             }
           }
         }
@@ -11431,6 +11440,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.averageToggle = false;
       this.showTrend = true;
     }
+    return true;
   }
 
   monthDiff(d1, d2) {

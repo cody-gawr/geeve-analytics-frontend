@@ -1,0 +1,48 @@
+<mat-tree
+  *ngIf="dataSource.data.length > 0; else loadingSpin"
+  [dataSource]="dataSource"
+  [treeControl]="treeControl"
+>
+  <!-- This is the tree node template for leaf nodes -->
+  <mat-tree-node
+    *matTreeNodeDef="let node"
+    matTreeNodePadding
+    (click)="toggleMenuItem(node)"
+    [ngClass]="{ active: node.title == activedTitle }"
+  >
+    <!-- use a disabled button to provide padding for tree leaf -->
+    <button *ngIf="node.level == 0" mat-icon-button>
+      <mat-icon>{{ node.icon }}</mat-icon>
+    </button>
+    <span *ngIf="node.level !== 0">&nbsp;&nbsp;&nbsp;</span>
+    {{ node.title }}
+  </mat-tree-node>
+  <!-- This is the tree node template for expandable nodes -->
+  <mat-tree-node
+    style="justify-content: space-between;"
+    *matTreeNodeDef="let node; when: hasChild"
+    matTreeNodePadding
+    matTreeNodeToggle
+    (click)="toggleMenuItem(node)"
+  >
+    <div class="tree-node-title">
+      <button *ngIf="node.level == 0" mat-icon-button>
+        <mat-icon>{{ node.icon }}</mat-icon>
+      </button>
+      {{ node.title }}
+    </div>
+
+    <button mat-icon-button [attr.aria-label]="'Toggle ' + node.title">
+      <mat-icon class="mat-icon-rtl-mirror">
+        {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+      </mat-icon>
+    </button>
+  </mat-tree-node>
+</mat-tree>
+<ng-template #loadingSpin>
+  <div
+    class="tree-menu-loader"
+  >
+    Loading ...
+  </div>
+</ng-template>

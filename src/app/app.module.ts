@@ -20,7 +20,7 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { SharedModule } from './shared/shared.module';
 import { CookieModule } from "ngx-cookie";
 import { AuthGuard } from './auth/authguard.service';
-import { UserIdleModule } from 'angular-user-idle';
+import { provideUserIdleConfig } from 'angular-user-idle';
 import { HeaderService } from './layouts/full/header/header.service';
 import { StepperHeaderService } from './layouts/stepper/header/header.service';
 import { StepperHeaderrightService } from './layouts/stepper/headerright/headerright.service';
@@ -36,7 +36,6 @@ import { SignupComponent } from './signup/signup.component';
 import { FollowupsComponent,FollowupsDialogComponent,StatusDialogComponent,ExportDataDialogComponent } from './followups/followups.component';
 import { CampaignsComponent, CampaignsStatusDialogComponent,CampaignsDialogComponent} from './campaigns/campaigns.component';
 import { StepperHeaderrightComponent } from './layouts/stepper/headerright/headerright.component';
-import { MatLegacyMenuModule as MatMenuModule} from '@angular/material/legacy-menu';
 import { ClinicSettingsService } from './clinic-settings/clinic-settings.service';
 import { SharedMatModule } from './shared-mat.module';
 import { DemoMaterialModule } from './demo-material-module';
@@ -53,6 +52,13 @@ import { GraphsComponent } from './graphs/graphs.component';
 import { NgxGaugeModule } from 'ngx-gauge';
 import { NgChartsModule as ChartsModule } from 'ng2-charts';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from '@/newapp/state';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '@/environments/environment';
+import { EffectsModule } from '@ngrx/effects';
+import { httpInterceptors } from '@/newapp/shared/interceptors';
+import { NewAppBlankComponent } from './layouts/blank/new-blank.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -67,6 +73,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AppHeaderComponent,
     // StepperHeaderComponent,
     AppBlankComponent,
+    NewAppBlankComponent,
     AppSidebarComponent,
     AppHeaderrightComponent,
     FeatureDialogComponent,
@@ -93,11 +100,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SortDirective,
     DndDirective,
     StaffMeetingsComponent,
-    GraphsComponent
+    GraphsComponent,
   ],
   imports: [
-    UserIdleModule.forRoot({idle: 14400, timeout: 10, ping: 10}),
-    MatMenuModule,
     DemoMaterialModule,
     BrowserModule,
     BrowserAnimationsModule,
@@ -123,7 +128,13 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     DragDropModule,
     NgxGaugeModule,
     ChartsModule,
-    NgxChartsModule
+    NgxChartsModule,
+    StoreModule.forRoot({...reducers}, {metaReducers}),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: !environment.production // Restrict extension to log-only mode
+    }),
+    EffectsModule.forRoot([])
   ],
   providers: [
     AuthGuard,
@@ -136,8 +147,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
     },
-      DentistService,
-      DecimalPipe
+    DentistService,
+    DecimalPipe,
+    provideUserIdleConfig({idle: 14400, timeout: 10, ping: 10}),
+    httpInterceptors
   ],
   bootstrap: [AppComponent]
 })

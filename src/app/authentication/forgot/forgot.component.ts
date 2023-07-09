@@ -66,6 +66,7 @@ export class ForgotComponent implements OnInit {
         }
       );
     //  this.router.navigate(['/login']);
+    return true;
   }
 
   resolved(captchaResponse: string) {

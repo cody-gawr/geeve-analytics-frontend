@@ -1,0 +1,47 @@
+<mat-card class="jeeve-login-card">
+  <mat-card-content class="jeeve-login-card-content">
+    <div class="logo-wrapper">
+      <img src="assets/layout/images/logo-icon.gif" />
+    </div>
+    <mat-card-title class="mat-headline-2"
+      >Login to Jeeve Analytics</mat-card-title
+    >
+    <br />
+    <form (ngSubmit)="login()" [formGroup]="formGroup">
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            placeholder="example@domain.com"
+            formControlName="email"
+          />
+          <mat-error>{{ getErrorMessage('email') }}</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            type="password"
+            placeholder="******"
+            formControlName="password"
+          />
+          <mat-error>{{ getErrorMessage('password') }}</mat-error>
+        </mat-form-field>
+        <a [routerLink]="['/login/forgot']">Forgot Password?</a>
+
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="isSubmitDisabled || (isLoading$ | async)"
+        >
+          <span>Login</span>
+          <mat-icon [hidden]="!(isLoading$ | async)"
+            ><mat-spinner color="primary" diameter="20"> </mat-spinner
+          ></mat-icon>
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

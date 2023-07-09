@@ -141,6 +141,7 @@ export class FinancesService {
           })
         );
     }
+    return null;
   }
   // NetProfitPercentage
   netProfitPercentage(
@@ -191,6 +192,7 @@ export class FinancesService {
           })
         );
     }
+    return null;
   }
   // categoryExpenses
   categoryExpenses(
@@ -241,6 +243,7 @@ export class FinancesService {
           })
         );
     }
+    return null;
   }
   // finProductionByClinician
   finProductionByClinician(
@@ -603,6 +606,7 @@ export class FinancesService {
           })
         );
     }
+    return null;
   }
 
   // finNetProfitPMSTrend
@@ -644,6 +648,7 @@ export class FinancesService {
           })
         );
     }
+    return null;
   }
   // finExpensesByCategoryTrend
   finExpensesByCategoryTrend(
@@ -684,6 +689,7 @@ export class FinancesService {
           })
         );
     }
+    return null;
   }
   // finExpensesByCategoryMktTrend
   finExpensesByCategoryMktTrend(clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {

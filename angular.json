@@ -32,13 +32,7 @@
               "chartjs-plugin-annotation"
             ],
             "styles": [
-              "src/styles.css",
-              "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
-              "./node_modules/@swimlane/ngx-datatable/index.css",
-              "./node_modules/@swimlane/ngx-datatable/themes/material.css",
-              "./node_modules/@swimlane/ngx-datatable/assets/icons.css",
-              "src/assets/styles/style.scss",
-              "node_modules/ngx-toastr/toastr.css"
+              "src/styles.scss"
             ],
             "scripts": ["node_modules/jquery/dist/jquery.min.js"]
           },
@@ -235,13 +229,7 @@
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": ["node_modules/jquery/dist/jquery.min.js"],
             "styles": [
-              "src/styles.css",
-              "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
-              "node_modules/@swimlane/ngx-datatable/release/index.css",
-              "node_modules/@swimlane/ngx-datatable/release/themes/material.css",
-              "node_modules/@swimlane/ngx-datatable/release/assets/icons.css",
-              "src/assets/styles/style.scss",
-              "node_modules/ngx-toastr/toastr.css"
+              "src/styles.scss"
             ],
             "assets": ["src/assets", "src/favicon.ico"]
           }

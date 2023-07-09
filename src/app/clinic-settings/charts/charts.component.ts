@@ -304,6 +304,7 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
           this.toastr.error("Opps, Error occurs in updating dentist!");
         }
       );
+    return true;
   }
 
   openSetJeeveName(chartID,chartName) {

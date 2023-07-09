@@ -1,0 +1,36 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+
+// @include mat.core();
+
+// Plus imports for other components in your app.
+@import './palette.scss';
+@import './fonts.scss';
+
+$jeeve-primary: mat.define-palette($jeeve-palette);
+$jeeve-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$jeeve-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$jeeve-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $jeeve-primary,
+      accent: $jeeve-accent,
+      warn: $jeeve-warn
+    ),
+    typography:  mat.define-typography-config(
+      $font-family: Gilroy-Regular
+    ),
+    density: 0,
+  )
+);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+

@@ -295,7 +295,7 @@ export class RolesOverviewExampleDialogComponent {
 }
 
 declare var require: any;
-const data: any = require('assets/company.json');
+const data: any = require('@/assets/company.json');
 @Component({
   selector: 'app-table-filter',
   templateUrl: './roles-users.component.html',
@@ -733,12 +733,14 @@ initiate_clinic() {
         if(d.displayName != null){
           return d.displayName.toLowerCase().indexOf(val) !== -1 || !val;
         }
+        return false;
       });
     }else{
       this.rows = this.activeData.filter(function(d) {
         if(d.displayName != null){
           return d.displayName.toLowerCase().indexOf(val) !== -1 || !val;
         }
+        return false;
       });
     }
     // Whenever the filter changes, always go back to the first page

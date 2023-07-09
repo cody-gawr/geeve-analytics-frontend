@@ -1,10 +1,11 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { UsersService } from './users.service';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';import { CookieService } from "ngx-cookie";
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { CookieService } from "ngx-cookie";
 import { Router } from "@angular/router";
 
 declare var require: any;
-const data: any = require('assets/company.json');
+const data: any = require('@/assets/company.json');
 @Component({
   selector: 'app-table-filter',
   templateUrl: './users.component.html',

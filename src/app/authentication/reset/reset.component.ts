@@ -107,13 +107,14 @@ onSubmit() {
           this.router.navigate(['/login']);
     });
       }
-  }
-  else
-  {
-     this.toastr.success('This link has expired');
-     this.router.navigate(['/login']);
-  }
-  //  this.router.navigate(['/login']);
+      }
+      else
+      {
+        this.toastr.success('This link has expired');
+        this.router.navigate(['/login']);
+      }
+      //  this.router.navigate(['/login']);
+      return true;
   }
   setDefaultError(){
     this.erros = {required: false, minLength: false, pattern: false, confirm: false,cpassword:false};

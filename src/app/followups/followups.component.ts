@@ -192,6 +192,7 @@ export class FollowupsDialogComponent {
           console.log('error', error);
         }
       );
+    return true;
   }
 
   handleUnAuthorization() {
@@ -249,6 +250,7 @@ export class StatusDialogComponent {
           console.log('error', error);
         }
       );
+    return true;
   }
   updateNext(event) {
     this.nextDate = event.chosenLabel;
@@ -990,6 +992,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
           this.getinternalReferrals();
         }
       });
+    return true;
   }
 
   updateStatus(

@@ -336,7 +336,7 @@ i{
     background: linear-gradient(to bottom, rgba(24, 166, 137, 1) 0%, rgba(0, 111, 115, 1) 99%);
     /* / W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ / */
     height: 40px;
-    color: #fff;
+    color: #fff !important;
     opacity: 1;
     margin: 3px;
 }

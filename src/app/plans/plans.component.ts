@@ -7,7 +7,7 @@ import { CookieService } from "ngx-cookie";
 import { Router } from "@angular/router";
 import {UntypedFormBuilder, Validators, UntypedFormGroup} from "@angular/forms";
 declare var require: any;
-const data: any = require('assets/company.json');
+const data: any = require('@/assets/company.json');
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',

@@ -12,6 +12,7 @@ import { CampaignsComponent } from './campaigns/campaigns.component';
 import { StepperComponent } from './layouts/stepper/stepper.component';
 import { AuthGuard } from './auth/authguard.service';
 import { StaffMeetingsComponent } from './staff-meetings/staff-meetings.component';
+import { NewAppBlankComponent } from './layouts/blank/new-blank.component';
 
 export const AppRoutes: Routes = [
   {
@@ -132,6 +133,17 @@ export const AppRoutes: Routes = [
         loadChildren:
           () => import('./authentication/authentication.module').then(m => m.AuthenticationModule)
       }
+    ]
+  },
+  {
+    path: 'newapp',
+    component: NewAppBlankComponent,
+    children: [
+      {
+        path: 'dashboard',
+        loadChildren: () => import('../newapp/dashboard/dashboard.module').then(m => m.DashboardModule),
+        canActivate: [AuthGuard]
+      },
     ]
   },
   {

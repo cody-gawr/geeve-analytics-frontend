@@ -1,0 +1,20 @@
+<div class="sidebar-wrapper">
+  <div class="sidebar-logo__wrapper">
+    <a><img alt="homepage" class="" src="assets/layout/images/logo.png" /></a>
+  </div>
+  <div class="user-wrapper">
+    <div class="user-image">
+      <span><img src="assets/layout/images/profile.jpeg" /></span>
+    </div>
+    <div class="user-name_wrapper">{{authUserName}}</div>
+  </div>
+  <div class="menu-section">
+    <app-menu></app-menu>
+    <div class="logout-wrapper">
+      <button mat-flat-button color="primary" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </div>
+  </div>
+</div>

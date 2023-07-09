@@ -385,6 +385,8 @@ export class MarketingService {
           })
         );
     }
+
+    return null;
   }
 
   // finExpensesByCategoryTrend
@@ -426,6 +428,8 @@ export class MarketingService {
           })
         );
     }
+
+    return null;
   }
 
   saveXeroCategories(clinic_id, categories): Observable<any> {

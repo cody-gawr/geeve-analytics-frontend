@@ -22,7 +22,8 @@ import { DOCUMENT } from '@angular/common';
 		
         </div>
     </div>`,
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['../../assets/styles/spinner.scss']
 })
 export class SpinnerComponent implements OnDestroy {
   public isSpinnerVisible = true;

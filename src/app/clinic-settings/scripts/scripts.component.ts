@@ -30,7 +30,7 @@ export class AddScriptsComponent {
       event.stopPropagation();
       return false;
     }
-
+    return true;
   }
   countCharUp(event) {
     this.charLimit = 1500 - event.target.value.length;
@@ -53,6 +53,7 @@ export class AddScriptsComponent {
     }, error => {
       console.log('error', error)
     });
+    return true;
   }
 
   validate() {

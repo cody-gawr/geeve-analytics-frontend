@@ -7,14 +7,10 @@ import {
   OnDestroy
 } from '@angular/core';
 import { HealthScreenService } from './healthscreen.service';
-// import { DentistService } from '../../dentist/dentist.service';
-
 import { DatePipe } from '@angular/common';
-// import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { CookieService } from 'ngx-cookie';
 import { ToastrService } from 'ngx-toastr';
-// import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 import { ChartstipsService } from '../../shared/chartstips.service';
 import { AppConstants } from '../../app.constants';
 import { environment } from '../../../environments/environment';
@@ -103,14 +99,10 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   constructor(
     private localStorageService: LocalStorageService,
     private healthscreenService: HealthScreenService,
-    // private dentistService: DentistService,
     private datePipe: DatePipe,
-    // private route: ActivatedRoute,
     private headerService: HeaderService,
     private _cookieService: CookieService,
-    // private router: Router,
     private toastr: ToastrService,
-    // private clinicSettingsService: ClinicSettingsService,
     public constants: AppConstants,
     public chartstipsService: ChartstipsService
   ) {
@@ -219,10 +211,10 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   }
 
   getShortNameLeader(fullName: string) {
-    return fullName
+    return fullName?fullName
       .split(' ')
       .map((n) => n[0])
-      .join('');
+      .join(''):'';
   }
 
   public loadHealthScreen() {
@@ -299,7 +291,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public productionTooltip = 'down';
   public productionTotalPrev;
   public production_c;
-  public production_c_avg;
+  public production_c_avg: number;
   public profit_c;
   public visits_c;
   public visits_c_avg;

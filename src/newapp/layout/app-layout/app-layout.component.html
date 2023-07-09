@@ -1,0 +1,21 @@
+<mat-drawer-container class="layout-wrapper">
+  <mat-drawer
+    #drawer
+    class="layout-sidenav"
+    [opened]="isSidenavVisible"
+    [mode]="sidenavMode"
+    (openedChange)="onMainNavOpenedChange($event)"
+  >
+    <app-sidebar></app-sidebar>
+  </mat-drawer>
+
+  <div class="layout-main-container">
+    <app-topbar
+      [toggleSideBar]="toggleSideBar"
+      [isSidenavVisible]="isSidenavVisible"
+    ></app-topbar>
+    <div class="page-container">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</mat-drawer-container>

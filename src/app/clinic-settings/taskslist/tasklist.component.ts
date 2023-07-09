@@ -69,6 +69,7 @@ export class DialogOverviewTasklistDialogComponent {
     }, error => {
       console.log('error', error)
     });
+    return true;
   }
 
   update(data){
@@ -89,6 +90,7 @@ export class DialogOverviewTasklistDialogComponent {
       }, error => {
         console.log('error', error)
       });
+      return true;
   }
 
   validate() {

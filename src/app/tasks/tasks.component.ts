@@ -35,7 +35,7 @@ import { HeaderService } from "../layouts/full/header/header.service";
 
 /**** Adoptor Updates ****/
 class CustomAdaptor extends UrlAdaptor {
-  public beforeSend(args: DataManager, xhr: XMLHttpRequest) {
+  public override beforeSend(args: DataManager, xhr: XMLHttpRequest) {
     xhr.withCredentials = true;
     super.beforeSend(args, xhr);
   }

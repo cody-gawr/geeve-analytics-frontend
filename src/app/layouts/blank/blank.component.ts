@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-blank',
-  templateUrl: './blank.component.html',
+  template: '<div class="jeeve-legacy-app"><router-outlet></router-outlet></div>',
   styleUrls: []
 })
 export class AppBlankComponent {}

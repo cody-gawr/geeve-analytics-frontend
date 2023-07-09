@@ -947,6 +947,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                 currency = currency.split(/(?=(?:...)*$)/).join(',');
                 return `${label < 0 ? '- $' : '$'}${currency}`;
               }
+              return '';
             }
           }
         }
@@ -1011,6 +1012,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                 currency = currency.split(/(?=(?:...)*$)/).join(',');
                 return label; // `${label < 0 ? '- $' : '$'}${currency}`;
               }
+              return '';
             }
           }
         }

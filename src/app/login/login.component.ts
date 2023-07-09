@@ -7,6 +7,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { LoginService } from './login.service';
 import { RolesUsersService } from '../roles-users/roles-users.service';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { LocalStorageService } from '../shared/local-storage.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -29,7 +30,8 @@ export class LoginComponent implements OnInit {
     private _cookieService: CookieService,
     private rolesUsersService: RolesUsersService,
     public constants: AppConstants,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private localStorage: LocalStorageService
   ) {
     if (this._cookieService.get('userid')) {
       var user_type = this._cookieService.get('user_type');
@@ -80,6 +82,10 @@ export class LoginComponent implements OnInit {
           this._cookieService.removeAll();
           if (res.status == 200) {
             var datares = [];
+            this.localStorage.saveData(
+              'authUserData',
+              JSON.stringify(res.body.data.data)
+            );
             datares['username'] = res.body.data.data.username;
             datares['email'] = res.body.data.data.email;
             datares['token'] = res.body.data.data.token;

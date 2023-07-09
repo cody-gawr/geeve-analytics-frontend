@@ -13,8 +13,6 @@ $bodyfont: 'Gilroy-Regular';
 $headingfont: 'Gilroy-Regular'; 
 
 @import './palettes.scss';
-/*Material Theme Colors*/
-
 
 $primary: mat.define-palette($blue-palette, 600);
 $accent: mat.define-palette(mat.$indigo-palette, 500);
@@ -27,18 +25,12 @@ $theme: mat.define-light-theme(
             accent: $accent,
             warn: $warn,
         ),
+        typography:  mat.define-typography-config(
+          $font-family: $bodyfont
+        ),
         density: 0,
     ),
 );
-
-
-// $background: mat.get($theme, 'background');
-// $foreground: mat.get($theme, 'foreground');
-
-// Default Theme
-
-
-// Dark Theme
 
 /*Theme Colors*/
  

@@ -99,6 +99,8 @@ export class DialogOverviewExampleDialogComponent {
             this.handleUnAuthorization();
           }
       });
+
+    return true;
   }
 
   handleUnAuthorization() {
@@ -1731,6 +1733,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
           this.getUtaFollowups();
         }
       });
+    return true;
   }
 
   updateStatus(

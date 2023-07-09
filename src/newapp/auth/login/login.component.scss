@@ -1,0 +1,25 @@
+@import '../../../assets/layout/styles/layout/mixin';
+
+.auth-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../../../assets/jeeve/images/login-register.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: start center;
+  height: 100vh;
+  position: relative;
+  z-index: 1;
+  transition: opacity 0.4s ease 0ms;
+  .footer-logo {
+    position: fixed;
+    bottom: 40px;
+    right: 60px;
+    width: 120px;
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 99;
+  }
+}

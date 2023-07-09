@@ -637,6 +637,7 @@ export class FinancesComponent implements AfterViewInit {
               if (Math.floor(label) === label) {
                 return '$' + this.decimalPipe.transform(label);
               }
+              return '';
             }
           }
         }
@@ -737,6 +738,7 @@ export class FinancesComponent implements AfterViewInit {
                 currency = currency.split(/(?=(?:...)*$)/).join(',');
                 return `${label < 0 ? '- $' : '$'}${currency}`;
               }
+              return '';
             }
           }
         }
@@ -930,6 +932,7 @@ export class FinancesComponent implements AfterViewInit {
                 currency = currency.split(/(?=(?:...)*$)/).join(',');
                 return `${label < 0 ? '- $' : '$'}${currency}`;
               }
+              return '';
             }
           }
         }
@@ -1290,6 +1293,7 @@ export class FinancesComponent implements AfterViewInit {
 
                 return `${label < 0 ? '- $' : '$'}${currency}`;
               }
+              return '';
             }
           }
         }
@@ -2638,6 +2642,7 @@ export class FinancesComponent implements AfterViewInit {
     if (typeof value != 'undefined') {
       if (String(value).includes('.')) return true;
     }
+    return false;
   }
 
   public collectionPercentageC;

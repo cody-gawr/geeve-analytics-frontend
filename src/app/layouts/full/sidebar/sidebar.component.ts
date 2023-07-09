@@ -108,6 +108,8 @@ export class ReferFriendComponent {
           // this.warningMessage = "Please Provide Valid Inputs!";
         }
       );
+
+    return true;
   }
 }
 

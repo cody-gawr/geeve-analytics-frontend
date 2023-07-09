@@ -103,7 +103,7 @@ export class DialogOverviewExampleLimitDialogComponent {
 }
 
 declare var require: any;
-const data: any = require('assets/company.json');
+const data: any = require('@/assets/company.json');
 @Component({
   selector: 'app-table-filter',
   templateUrl: './clinic.component.html',

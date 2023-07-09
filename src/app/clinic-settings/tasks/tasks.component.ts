@@ -41,6 +41,7 @@ export class DialogOverviewExampleDialogComponent {
     }, error => {
       console.log('error', error)
     });
+    return true;
   }
 
   validate() {

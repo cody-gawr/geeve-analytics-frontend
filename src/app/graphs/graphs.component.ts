@@ -230,7 +230,7 @@ export class GraphsComponent{
               if (Math.floor(label) === label) {
                 return label + ' %';
               }
-  
+              return '';
             },
           },
         },
@@ -306,6 +306,7 @@ export class GraphsComponent{
                 if (Math.floor(label) === label) {
                   return '$' + this.decimalPipe.transform(label);
                 }
+                return '';
               },
             },
           },
@@ -322,6 +323,7 @@ export class GraphsComponent{
                 if(tooltipItem.label != ''){
                   return tooltipItem.label + ": $" + this.decimalPipe.transform(tooltipItem.formattedValue);
                 }
+                return '';
               },
               // remove title
               title: function () {
@@ -369,6 +371,7 @@ export class GraphsComponent{
                 if (Math.floor(label) === label) {
                     return label+"%";
                 }
+                return '';
             },
           },
           },
@@ -429,7 +432,7 @@ export class GraphsComponent{
                     phour = parseInt(lbl[2]);
                     return ['',"Available Hours: "+phour,"Used Hours: "+hour];
                   } 
-                  return;
+                  return '';
                 },
                 title: function() {
                   return "";
@@ -511,13 +514,14 @@ export class GraphsComponent{
             },
             callbacks: {
               label: function(tooltipItems) { 
-                if(parseInt(tooltipItems.formattedValue) > 0 && tooltipItems.dataset.label != ''){
+                if(tooltipItems.parsed.y > 0 && tooltipItems.dataset.label != ''){
                   if(tooltipItems.dataset.label.indexOf('DentistMode-') >= 0){
                     return tooltipItems.label+": "+tooltipItems.formattedValue;
                   } else {
                     return tooltipItems.dataset.label+": "+tooltipItems.formattedValue;          
-                  } 
+                  }
                 }
+                return '';
               },
               title : function(tooltip){
                 let total = 0;

@@ -1,0 +1,440 @@
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { Observable, Subject } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
+import {
+  MatTreeFlatDataSource,
+  MatTreeFlattener
+} from '@angular/material/tree';
+import { NavigationEnd, Router } from '@angular/router';
+import { MenuService } from '../../shared/services/menu.service';
+import { AuthFacade } from '../../auth/facades/auth.facade';
+import { environment } from '@/environments/environment';
+import { ClinicFacade } from '../../clinic/facades/clinic.facade';
+
+/**
+ * Menu data with nested structure.
+ * Each node has a name and an optional list of children.
+ */
+interface MenuNode {
+  title: string;
+  path: string;
+  icon?: string;
+  children?: MenuNode[];
+  permissions?: string[];
+  userTypes?: number[];
+  validatorFn?: Function;
+  isInternalRoute?: boolean;
+}
+
+interface MenuValidatorParams {
+  permissions?: string[];
+  userType?: number;
+  userPlan?: string;
+  hasPrimeClinics?: string;
+}
+
+const MENU_DATA: MenuNode[] = [
+  {
+    title: 'Health Screen',
+    path: 'dashboards/healthscreen',
+    icon: 'home-health',
+    validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
+      return (
+        (permissions!.indexOf('healthscreen') >= 0 ||
+          [2, 7].indexOf(userType!) >= 0) &&
+        userType == 4
+      );
+    }
+  },
+  {
+    title: 'Clinic Health',
+    path: 'dashboards/healthscreen',
+    icon: 'home-health',
+    validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
+      return (
+        (permissions!.indexOf('healthscreen') >= 0 ||
+          [2, 7].indexOf(userType!) >= 0) &&
+        userType !== 4
+      );
+    }
+  },
+  // user_type==2 || permissions.contains(morninghuddle) || user_type==7
+  {
+    title: 'Morning Huddle',
+    path: 'morning-huddle',
+    icon: 'coffee',
+    validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
+      return (
+        permissions!.indexOf('morninghuddle') >= 0 ||
+        [2, 7].indexOf(userType!) >= 0
+      );
+    }
+  },
+  // user_type==2 || permissions.contains(followups) || user_type==7
+  {
+    title: 'Follow Ups',
+    path: 'followups',
+    icon: 'phone-enabled',
+    validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
+      return (
+        permissions!.indexOf('followups') >= 0 || [2, 7].indexOf(userType!) >= 0
+      );
+    }
+  },
+  // (user_type==2 || permissions.indexOf(campaigns) || user_type==7) && apiUrl.includes('test')
+  {
+    title: 'Campaigns',
+    path: 'campaigns',
+    icon: 'groups-3',
+    validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
+      return (
+        (permissions!.indexOf('campaigns') >= 0 ||
+          [2, 7].indexOf(userType!) >= 0) &&
+        environment.apiUrl.includes('test')
+      );
+    }
+  },
+  // user_type==2 || permissions.indexOf('dashboard') || user_type==7
+  {
+    title: 'Dashboard',
+    path: '/newapp/dashboard',
+    icon: 'monitoring',
+    validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
+      return (
+        permissions!.indexOf('dashboard') >= 0 || [2, 7].indexOf(userType!) >= 0
+      );
+    },
+    children: [
+      // user_type==2 || permissions.contains(dashboard1) || user_type==7
+      {
+        title: 'Clinician Analysis',
+        path: 'dashboards/cliniciananalysis',
+        validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
+          return (
+            permissions!.indexOf('dashboard1') >= 0 ||
+            [2, 7].indexOf(userType!) >= 0
+          );
+        }
+      },
+      // user_type==2 || permissions.contains(dashboard2) || user_type==7
+      {
+        title: 'Clinician Procedures & Referrals',
+        path: 'dashboards/clinicianproceedures',
+        validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
+          return (
+            permissions!.indexOf('dashboard2') >= 0 ||
+            [2, 7].indexOf(userType!) >= 0
+          );
+        }
+      },
+      // user_type==2 || permissions.contains(dashboard3) || user_type==7
+      {
+        title: 'Front Desk',
+        path: 'dashboards/frontdesk',
+        validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
+          return (
+            permissions!.indexOf('dashboard3') >= 0 ||
+            [2, 7].indexOf(userType!) >= 0
+          );
+        }
+      },
+      // user_type==2 || permissions.contains(dashboard6) || user_type==7
+      {
+        title: 'Follow Ups',
+        path: 'dashboards/followups',
+        validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
+          return (
+            permissions!.indexOf('dashboard6') >= 0 ||
+            [2, 7].indexOf(userType!) >= 0
+          );
+        }
+      },
+      //(user_type==2 || permissions.contains(dashboard4) || user_type==7) && userPlan!='lite'
+      {
+        title: 'Marketing',
+        path: 'dashboards/marketing',
+        validatorFn: ({
+          permissions,
+          userType,
+          userPlan
+        }: MenuValidatorParams) => {
+          return (
+            (permissions!.indexOf('dashboard4') >= 0 ||
+              [2, 7].indexOf(userType!) >= 0) &&
+            userPlan != 'lite'
+          );
+        }
+      },
+      // user_type==2 || permissions.contains(dashboard5) || user_type==7
+      {
+        title: 'Finances',
+        path: '/newapp/dashboard/finances',
+        validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
+          return (
+            permissions!.indexOf('dashboard5') >= 0 ||
+            [2, 7].indexOf(userType!) >= 0
+          );
+        },
+        isInternalRoute: true
+      }
+    ]
+  },
+  // (user_type == 2 || permisions.indexOf('staffmeeting') >= 0 || user_type == 7) && apiUrl.includes('test')
+  {
+    title: 'Staff Meetings',
+    path: 'staff-meetings',
+    icon: 'badge',
+    validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
+      return (
+        (permissions!.indexOf('staffmeeting') >= 0 ||
+          [2, 7].indexOf(userType!) >= 0) &&
+        environment.apiUrl.includes('test')
+      );
+    }
+  },
+  // (hasPrimeClinics == 'yes' && user_type == 2) || (hasPrimeClinics == 'yes' && permisions.indexOf('kpireport') >= 0) || user_type == 7
+  {
+    title: 'Prime KPI Report',
+    path: 'kpi-report',
+    icon: 'description',
+    validatorFn: ({
+      permissions,
+      userType,
+      hasPrimeClinics
+    }: MenuValidatorParams) => {
+      return (
+        (userType == 2 && hasPrimeClinics == 'yes') ||
+        (permissions!.indexOf('kpireport') >= 0 && hasPrimeClinics == 'yes') ||
+        userType == 7
+      );
+    }
+  },
+  // user_type == 2 || permisions.indexOf('lostopportunity') >= 0 || user_type == 7
+  {
+    title: 'Lost Opportunity',
+    path: 'lost-opportunity',
+    icon: 'checkroom',
+    validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
+      return (
+        permissions!.indexOf('lostopportunity') >= 0 ||
+        [2, 7].indexOf(userType!) >= 0
+      );
+    }
+  },
+  // apiUrl.includes('test')
+  {
+    title: 'Rewards', // icon=new
+    path: 'rewards',
+    icon: 'volunteer_activism',
+    validatorFn: () => {
+      return environment.apiUrl.includes('test');
+    }
+  },
+  {
+    title: 'Refer A Friend', // Get 50% off
+    path: '',
+    icon: 'group_add'
+  },
+  // user_type != 7 && apiUrl.includes('test')
+  {
+    title: 'Tasks',
+    path: 'tasks',
+    icon: 'splitscreen',
+    validatorFn: ({ userType }: MenuValidatorParams) => {
+      return userType != 7 && environment.apiUrl.includes('test');
+    }
+  },
+  // nav_open == 'setting'
+  {
+    title: 'Settings',
+    path: '',
+    icon: 'settings',
+    children: [
+      // user_type == 2 || permisions.indexOf('profilesettings') >= 0 || user_type == 7
+      {
+        title: 'Clinics',
+        path: 'clinic',
+        validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
+          return (
+            permissions!.indexOf('profilesettings') >= 0 ||
+            [2, 7].indexOf(userType!) >= 0
+          );
+        }
+      },
+      {
+        title: 'Users',
+        path: 'roles-users',
+        validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
+          return (
+            (permissions!.indexOf('profilesettings') >= 0 || userType == 2) &&
+            userType != 7
+          );
+        }
+      },
+      {
+        title: 'My Account',
+        path: 'profile-settings'
+      }
+    ]
+  },
+  {
+    title: 'Help',
+    path: 'https://jeeve.crunch.help/jeeve-analytics',
+    icon: 'help'
+  }
+];
+
+/** Flat node with expandable and level information */
+interface MenuFlatNode {
+  expandable: boolean;
+  title: string;
+  path: string;
+  icon: string | undefined;
+  level: number;
+  isInternalRoute: boolean | undefined;
+}
+
+@Component({
+  selector: 'app-menu',
+  templateUrl: './app-menu.component.html',
+  styleUrls: ['./app-menu.component.scss']
+})
+export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
+  // @ViewChild('tree') tree: Tree;
+
+  private _transformer = (node: MenuNode, level: number) => {
+    return {
+      expandable: !!node.children && node.children.length > 0,
+      title: node.title,
+      path: node.path,
+      icon: node.icon,
+      isInternalRoute: node.isInternalRoute,
+      level: level
+    };
+  };
+
+  treeControl = new FlatTreeControl<MenuFlatNode>(
+    (node) => node.level,
+    (node) => node.expandable
+  );
+
+  treeFlattener = new MatTreeFlattener(
+    this._transformer,
+    (node) => node.level,
+    (node) => node.expandable,
+    (node) => node.children
+  );
+
+  activedTitle: string = '';
+  activedUrl: string = '';
+  destroy = new Subject<void>();
+  destroy$ = this.destroy.asObservable();
+
+  dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+
+  // defaultMenu = '/dashboard/finances';
+
+  get rolesIndividual$() {
+    return this.authFacade.rolesIndividualAndClinics$;
+  }
+
+  constructor(
+    private router: Router,
+    private menuService: MenuService,
+    private authFacade: AuthFacade,
+    private clinicFacade: ClinicFacade
+  ) {
+    this.dataSource.data = [];
+    this.authFacade.getRolesIndividual();
+    this.clinicFacade.loadClinics();
+
+    this.rolesIndividual$.pipe(takeUntil(this.destroy$)).subscribe((result) => {
+      if (result.data) {
+        const params: MenuValidatorParams = {
+          permissions: result.data,
+          userType: parseInt(result.type!),
+          userPlan: result.plan,
+          hasPrimeClinics: result.hasPrimeClinics
+        };
+        const menuData = MENU_DATA.filter((item) =>
+          item.validatorFn ? item.validatorFn(params) : true
+        );
+        this.dataSource.data = menuData;
+        const treeNode = this.treeControl.dataNodes.find(
+          (node) => this.activedUrl.includes(node.path) && node.level == 0
+        );
+        if (treeNode) this.treeControl.expand(treeNode);
+      }
+    });
+
+    this.router.events
+      .pipe(
+        takeUntil(this.destroy$),
+        map((event: any) => event.routerEvent??event),
+        filter((event) => event instanceof NavigationEnd)
+      )
+      .subscribe((event) => {
+        const { url } = <NavigationEnd>event;
+        // const path = this.router.parseUrl(url).root.children['primary']
+        //   ? this.router.parseUrl(url).root.children['primary'].segments[0].path
+        //   : this.defaultMenu;
+        this.activedUrl = url;
+        const node = this.findNodeByPath(url, MENU_DATA);
+
+        if (node) {
+          this.updateActivateState(node.title);
+        }
+      });
+    this.activedTitle$.subscribe((v) => {
+      this.activedTitle = v;
+    });
+  }
+
+  get activedTitle$(): Observable<string> {
+    return this.menuService.menuSource$.pipe(
+      takeUntil(this.destroy$),
+      map((v) => v.key)
+    );
+  }
+
+  hasChild = (_: number, node: MenuFlatNode) => node.expandable;
+  ngOnInit() {}
+
+  ngAfterViewInit(): void {}
+
+  ngOnDestroy(): void {
+    this.destroy.next();
+  }
+
+  toggleMenuItem = (node: MenuFlatNode): void => {
+    if (!node.expandable) {
+      if (node.isInternalRoute) {
+        this.router.navigateByUrl(`/${node.path}`);
+      } else window.location.href = `/${node.path}`;
+    }
+  };
+
+  updateActivateState(title: string) {
+    this.menuService.onMenuStateChange({
+      key: title,
+      routeEvent: true
+    });
+  }
+
+  findNodeByPath(path: string, menuNodes: MenuNode[]): MenuNode | undefined {
+    for (let menuNode of menuNodes) {
+      if (menuNode.path == path) return menuNode;
+      else if (menuNode.children) {
+        return this.findNodeByPath(path, menuNode.children);
+      }
+    }
+    return undefined;
+  }
+}

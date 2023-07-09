@@ -592,6 +592,7 @@ export class ProfileSettingsComponent implements OnInit {
       this.errorLogin = true;
       this.toastr.error("Password and Confirm Password doesn't Match!");
     }
+    return true;
   }
 
   /******** GET CHARTS TIPS*****/
@@ -669,6 +670,7 @@ export class ProfileSettingsComponent implements OnInit {
         return false;
       }
     }
+    return true;
   }
   /********* Check Length****************/
 }

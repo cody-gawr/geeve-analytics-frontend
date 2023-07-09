@@ -62,6 +62,7 @@ export class DialogSetColorsDialogComponent {
     }, error => {
       console.log('error', error)
     });
+    return true;
   }
 
   removeItem(i) {
@@ -116,7 +117,7 @@ export class CustomisationsComponent
   public recallCode3: any;
   public labCode1: any;
   public labCode2: any;
-  public newPatients: any = 0;
+  public newPatients: number = 0;
   //public health_screen_mtd: any = 0;
   public recall_rate_default: any = 1;
   public hourly_rate_appt_hours: any = 1;
@@ -402,8 +403,6 @@ export class CustomisationsComponent
         $(".ajax-loader").hide();
       }
     );
-    // console.log("huddles", huddles);
-    // console.log("dashboard", dashboard);
   }
 
   //

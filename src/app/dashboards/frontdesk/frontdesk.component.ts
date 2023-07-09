@@ -393,6 +393,7 @@ export class FrontDeskComponent implements AfterViewInit {
               if (Math.floor(label) === label) {
                 return label + '%';
               }
+              return '';
             }
           }
         }
@@ -570,6 +571,7 @@ export class FrontDeskComponent implements AfterViewInit {
                 currency = currency.split(/(?=(?:...)*$)/).join(',');
                 return label; // `${label < 0 ? '- $' : '$'}${currency}`;
               }
+              return '';
             }
           }
         }
@@ -767,6 +769,7 @@ export class FrontDeskComponent implements AfterViewInit {
               if (Math.floor(label) === label) {
                 return label;
               }
+              return '';
             }
           }
         }
@@ -831,7 +834,7 @@ export class FrontDeskComponent implements AfterViewInit {
               phour = lbl[2];
               return ['', 'Available Hours: ' + phour, 'Used Hours: ' + hour];
             }
-            return;
+            return '';
           },
           title: function () {
             return '';
@@ -947,7 +950,7 @@ export class FrontDeskComponent implements AfterViewInit {
                 'Used Hours: ' + Math.round(hour * 100) / 100
               ];
             }
-            return;
+            return '';
           },
           title: function () {
             return '';
@@ -1078,6 +1081,7 @@ export class FrontDeskComponent implements AfterViewInit {
               if (Math.floor(label) === label) {
                 return label;
               }
+              return '';
             }
           }
         }
@@ -1145,6 +1149,7 @@ export class FrontDeskComponent implements AfterViewInit {
               if (Math.floor(label) === label) {
                 return label;
               }
+              return '';
             }
           }
         }

@@ -37,6 +37,7 @@ export class AuthGuard implements CanActivate {
       ) {
         this.router.navigateByUrl('/login');
         //this.router.navigateByUrl('/setup');
+        return false;
       } else {
         return true;
       }
@@ -45,6 +46,7 @@ export class AuthGuard implements CanActivate {
     } else {
       this.router.navigateByUrl('/login');
       //this.snackBar.open('Please Login to Continue');
+      return false;
     }
   }
 }

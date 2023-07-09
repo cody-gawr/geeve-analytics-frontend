@@ -107,6 +107,7 @@ export class FollowupsComponent implements AfterViewInit {
               if (Math.floor(label) === label) {
                 return label;
               }
+              return '';
             }
           }
         }
@@ -140,6 +141,7 @@ export class FollowupsComponent implements AfterViewInit {
                 );
               }
             }
+            return ''
           },
           title: function (tooltip) {
             let total = 0;
@@ -201,6 +203,7 @@ export class FollowupsComponent implements AfterViewInit {
               if (Math.floor(label) === label) {
                 return this.decimalPipe.transform(label);
               }
+              return '';
             }
           },
         }
@@ -263,6 +266,7 @@ export class FollowupsComponent implements AfterViewInit {
               if (Math.floor(label) === label) {
                 return this.decimalPipe.transform(label) + '%';
               }
+              return '';
             }
           },
         }

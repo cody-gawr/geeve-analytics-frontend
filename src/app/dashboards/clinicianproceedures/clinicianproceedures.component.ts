@@ -654,6 +654,7 @@ export class ClinicianProceeduresComponent
               if (Math.floor(label) === label) {
                 return label;
               }
+              return '';
             }
           }
         }
@@ -690,6 +691,7 @@ export class ClinicianProceeduresComponent
                 );
               }
             }
+            return '';
           },
           title: function (tooltip) {
             if (tooltip[0].dataset.label.indexOf('DentistMode-') >= 0) {
@@ -745,6 +747,7 @@ export class ClinicianProceeduresComponent
               if (Math.floor(label) === label) {
                 return label;
               }
+              return '';
             }
           }
         }
@@ -781,6 +784,7 @@ export class ClinicianProceeduresComponent
                 );
               }
             }
+            return '';
           },
           title: function (tooltip) {
             if (tooltip[0].dataset.label.indexOf('DentistMode-') >= 0) {
@@ -861,6 +865,7 @@ export class ClinicianProceeduresComponent
               if (Math.floor(label) === label) {
                 return label;
               }
+              return '';
             }
           }
         }
@@ -969,6 +974,7 @@ export class ClinicianProceeduresComponent
               if (Math.floor(label) === label) {
                 return '$' + this.numPipe.transform(label);
               }
+              return '';
             },
             autoSkip: false
           }
@@ -1073,6 +1079,7 @@ export class ClinicianProceeduresComponent
               if (Math.floor(label) === label) {
                 return '$' + this.numPipe.transform(label);
               }
+              return '';
             },
             autoSkip: false
           }
@@ -2254,6 +2261,7 @@ export class ClinicianProceeduresComponent
           }
         }
       );
+    return true;
   }
 
   /********Procedure Special Dentist Hanney**********/
@@ -2315,6 +2323,7 @@ export class ClinicianProceeduresComponent
           }
         }
       );
+    return true;
   }
 
   /********Procedure Special**********/
@@ -2570,6 +2579,7 @@ export class ClinicianProceeduresComponent
           }
         }
       );
+    return true;
   }
 
   //Chnage predictor tab
@@ -2721,6 +2731,7 @@ export class ClinicianProceeduresComponent
           }
         }
       );
+    return true;
   }
 
   //Total Revenue of Clinician Per Procedure
@@ -2787,6 +2798,7 @@ export class ClinicianProceeduresComponent
             }
           }
         );
+    return true;
   }
 
   //Total Revenue of Clinician Per Procedure- all Dentist

@@ -1,0 +1,18 @@
+<div class="stats-card">
+  <mat-icon
+    [matTooltip]="toolTip"
+    matTooltipPosition="below"
+    color="primary"
+    class="help-tip"
+    fontIcon="help"
+  ></mat-icon>
+  <div class="card-icon">
+    <mat-icon [style]="{color: iconColor}" color="primary" [fontIcon]="fontIcon" card-icon></mat-icon>
+  </div>
+  <div class="card-text">
+    <h4>
+      {{ label }}
+    </h4>
+    <h3>{{ value }}</h3>
+  </div>
+</div>

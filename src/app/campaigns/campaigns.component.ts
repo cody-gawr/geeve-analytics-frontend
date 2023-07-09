@@ -47,6 +47,7 @@ export class CampaignsDialogComponent {
     }, error => {
       console.log('error', error)
     });
+    return true;
   }
 
 
@@ -88,6 +89,7 @@ export class CampaignsStatusDialogComponent {
     }, error => {
       console.log('error', error)
     });
+    return true;
   }
   updateNext(event) {
     this.nextDate = event.chosenLabel;
@@ -458,6 +460,7 @@ export class CampaignsComponent implements OnInit, OnDestroy {
         this.getTickFollowups();
       } 
     });
+    return true;
   }
 
   updateStatus(event, pid, date, cid, firstname, surname, original_appt_date, followup_date, type, nextBussinessDay, treatItem = '') {

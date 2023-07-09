@@ -44,6 +44,7 @@ export class DialogOverviewExampleComponent {
     }, error => {
       console.log('error', error)
     });
+    return true;
   }
 
   
