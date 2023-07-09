@@ -30,7 +30,6 @@ interface MenuNode {
   permissions?: string[];
   userTypes?: number[];
   validatorFn?: Function;
-  isInternalRoute?: boolean;
 }
 
 interface MenuValidatorParams {
@@ -181,8 +180,7 @@ const MENU_DATA: MenuNode[] = [
             permissions!.indexOf('dashboard5') >= 0 ||
             [2, 7].indexOf(userType!) >= 0
           );
-        },
-        isInternalRoute: true
+        }
       }
     ]
   },
@@ -298,7 +296,6 @@ interface MenuFlatNode {
   path: string;
   icon: string | undefined;
   level: number;
-  isInternalRoute: boolean | undefined;
 }
 
 @Component({
@@ -315,7 +312,6 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       title: node.title,
       path: node.path,
       icon: node.icon,
-      isInternalRoute: node.isInternalRoute,
       level: level
     };
   };
@@ -414,11 +410,8 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   toggleMenuItem = (node: MenuFlatNode): void => {
-    if (!node.expandable) {
-      if (node.isInternalRoute) {
-        this.router.navigateByUrl(`/${node.path}`);
-      } else window.location.href = `/${node.path}`;
-    }
+    if (!node.expandable) this.router.navigateByUrl(`/${node.path}`);
+      
   };
 
   updateActivateState(title: string) {
