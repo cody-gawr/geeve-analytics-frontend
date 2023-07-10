@@ -74,7 +74,7 @@ export class AddScriptsComponent {
 @Component({
   selector: 'app-scripts-settings',
   templateUrl: './scripts.component.html',
-  styleUrls: ['./scripts.component.css'],
+  styleUrls: ['./scripts.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class ScriptsComponent extends BaseComponent implements AfterViewInit {

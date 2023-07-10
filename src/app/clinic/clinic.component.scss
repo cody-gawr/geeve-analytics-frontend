@@ -1,10 +1,12 @@
-.lds-roller div::after {
-    background: black;
-}
-.spinner {
-    position: relative;
-    background: none;
-}
-.datatable-row-center.datatable-row-group.ng-star-inserted {
-    cursor: pointer !important;
+.jeeve-legacy-app {
+    .lds-roller div::after {
+        background: black;
+    }
+    .spinner {
+        position: relative;
+        background: none;
+    }
+    .datatable-row-center.datatable-row-group.ng-star-inserted {
+        cursor: pointer !important;
+    }
 }

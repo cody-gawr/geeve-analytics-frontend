@@ -341,7 +341,7 @@ export class StatusDialogComponent {
 @Component({
   selector: 'app-morning-huddle',
   templateUrl: './followups.component.html',
-  styleUrls: ['./followups.component.css'],
+  styleUrls: ['./followups.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class FollowupsComponent implements OnInit, OnDestroy {

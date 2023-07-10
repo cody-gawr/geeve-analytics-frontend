@@ -17,7 +17,7 @@ export interface Dentist {
 @Component({
 	selector: 'app-kpi-report',
 	templateUrl: './kpi-report.component.html',
-	styleUrls: ['./kpi-report.component.css'],
+	styleUrls: ['./kpi-report.component.scss'],
 	encapsulation: ViewEncapsulation.None
 })
 export class KpiReportComponent implements OnInit, OnDestroy {

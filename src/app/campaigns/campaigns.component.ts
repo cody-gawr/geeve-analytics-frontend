@@ -139,7 +139,7 @@ export class CampaignsStatusDialogComponent {
 @Component({
   selector: 'app-campaigns',
   templateUrl: './campaigns.component.html',
-  styleUrls: ['./campaigns.component.css'],
+  styleUrls: ['./campaigns.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class CampaignsComponent implements OnInit, OnDestroy {

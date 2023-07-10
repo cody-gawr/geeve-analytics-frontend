@@ -92,7 +92,7 @@ export class DialogSetColorsDialogComponent {
 @Component({
   selector: "app-customisations-settings",
   templateUrl: "./customisations.component.html",
-  styleUrls: ["./customisations.component.css"],
+  styleUrls: ["./customisations.component.scss"],
   encapsulation: ViewEncapsulation.None,
 })
 export class CustomisationsComponent

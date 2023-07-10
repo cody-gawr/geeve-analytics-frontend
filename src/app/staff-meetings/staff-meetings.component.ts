@@ -36,7 +36,7 @@ export const notZeroValidator: ValidatorFn = (control: AbstractControl): Validat
 @Component({
     selector: 'staff-meetings',
     templateUrl : './staff-meetings.component.html',
-    styleUrls : ['./staff-meetings.component.css'],
+    styleUrls : ['./staff-meetings.component.scss'],
     providers: [
       { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
     ],

@@ -1,82 +1,84 @@
-.utiTablecon {
-    height: 315px;
-    width: 100%;
-    overflow: auto;
-    overflow-x: hidden; 
-}
-table.utiTable {
-    width: 100%;
-}
-.utiTable thead tr th {
-    text-align: left;
-    font-size: 13px;
-}
-.utiTable tbody tr td {
-    padding: 5px;
-    font-size: 13px;
-}
-
-.fa-margin{
-    margin-right: 10px;
-}
-.fa-margin-color{
-    margin-right: 10px; color: #1aa591;
-}
-.chart-utilisation-rate{
-    height: 330px; 
-    width: 100%;
-}
-.chart-recall-rate{
-    height: 190px;
-    width: 100%;
-}
-.chart-recall-rate-trend{
-    height: 300px;
-    width: 100%;
-}
-.chart-utilisation-rate.utigraph{
-    height: 285px; 
-}
-
-.chart-date-range{
-    float: right;
-    font-size: 11px;
-}
-
-.div-pro-coll-show-graphs {
-    // height: 300px;
-    height: 250px;
-    margin-bottom: -30px;
-}
-.agenda-graphs{
-    // width: 50%;
-    width: 40%;
-}
-
-.meeting_card_header_graphs {
-    font-weight: 600;
-    font-size: initial;
-}
-
-.sa_chart_details_sec_graphs {
-    place-content: center!important;
-    margin: 10px 0 0!important;
-    padding: 10px 0 0px;
-    border-radius: 10px;
-    color: #5e5e5e;
-    background: #f8f9fd;
-}
-
-.chart-recall-rate-graphs {
-    height: 190px;
-    width: 100%;
-    margin-left: 25px;
-}
-
-.chart-placeholder-text-error {
-    margin-top: 0;
-    text-align: center;
-    font-size: 16px;
-    line-height: 1.1;
-    color: red;
+.jeeve-legacy-app {
+    .utiTablecon {
+        height: 315px;
+        width: 100%;
+        overflow: auto;
+        overflow-x: hidden; 
+    }
+    table.utiTable {
+        width: 100%;
+    }
+    .utiTable thead tr th {
+        text-align: left;
+        font-size: 13px;
+    }
+    .utiTable tbody tr td {
+        padding: 5px;
+        font-size: 13px;
+    }
+    
+    .fa-margin{
+        margin-right: 10px;
+    }
+    .fa-margin-color{
+        margin-right: 10px; color: #1aa591;
+    }
+    .chart-utilisation-rate{
+        height: 330px; 
+        width: 100%;
+    }
+    .chart-recall-rate{
+        height: 190px;
+        width: 100%;
+    }
+    .chart-recall-rate-trend{
+        height: 300px;
+        width: 100%;
+    }
+    .chart-utilisation-rate.utigraph{
+        height: 285px; 
+    }
+    
+    .chart-date-range{
+        float: right;
+        font-size: 11px;
+    }
+    
+    .div-pro-coll-show-graphs {
+        // height: 300px;
+        height: 250px;
+        margin-bottom: -30px;
+    }
+    .agenda-graphs{
+        // width: 50%;
+        width: 40%;
+    }
+    
+    .meeting_card_header_graphs {
+        font-weight: 600;
+        font-size: initial;
+    }
+    
+    .sa_chart_details_sec_graphs {
+        place-content: center!important;
+        margin: 10px 0 0!important;
+        padding: 10px 0 0px;
+        border-radius: 10px;
+        color: #5e5e5e;
+        background: #f8f9fd;
+    }
+    
+    .chart-recall-rate-graphs {
+        height: 190px;
+        width: 100%;
+        margin-left: 25px;
+    }
+    
+    .chart-placeholder-text-error {
+        margin-top: 0;
+        text-align: center;
+        font-size: 16px;
+        line-height: 1.1;
+        color: red;
+    }
 }

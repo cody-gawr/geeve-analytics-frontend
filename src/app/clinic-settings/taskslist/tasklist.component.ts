@@ -16,7 +16,7 @@ import { MatSort } from '@angular/material/sort';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
-  styleUrls :['./tasklist.component.css'],
+  styleUrls :['./tasklist.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 
@@ -229,7 +229,8 @@ export class DialogOverviewTasklistDialogComponent {
 @Component({
   selector: 'app-tasklist-settings',
   templateUrl: './tasklist.component.html',
-  styleUrls: ['./tasklist.component.css']
+  styleUrls: ['./tasklist.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class TasklistComponent extends BaseComponent implements AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;

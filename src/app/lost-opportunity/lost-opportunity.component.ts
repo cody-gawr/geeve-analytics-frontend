@@ -11,7 +11,7 @@ import { LocalStorageService } from '../shared/local-storage.service';
 @Component({
   selector: 'app-lost-opportunity',
   templateUrl: './lost-opportunity.component.html',
-  styleUrls: ['./lost-opportunity.component.css'],
+  styleUrls: ['./lost-opportunity.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class LostOpportunityComponent implements OnInit, OnDestroy {

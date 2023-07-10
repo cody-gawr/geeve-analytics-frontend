@@ -45,7 +45,7 @@ class CustomAdaptor extends UrlAdaptor {
 @Component({
   selector: "app-tasks",
   templateUrl: "./tasks.component.html",
-  styleUrls: ["./tasks.component.css"],
+  styleUrls: ["./tasks.component.scss"],
   encapsulation: ViewEncapsulation.None,
 })
 /**** Component Declare ****/

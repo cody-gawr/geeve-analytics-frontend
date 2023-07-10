@@ -6,7 +6,7 @@ import {  Router } from "@angular/router";
 @Component({
   selector: 'app-rewards',
   templateUrl: './rewards.component.html',
-  styleUrls: ['./rewards.component.css'],
+  styleUrls: ['./rewards.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class RewardsComponent implements OnInit, OnDestroy {

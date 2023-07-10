@@ -1,68 +1,70 @@
-.w-100 {
-  width: 100%;
-}
-
-.header_filters.healthscreen { flex-direction: row-reverse !important; }
-.no-found-data{
-  margin: 0 !important;
-  max-width: 100%;
-  background-size: auto 100%;
-  padding: 0;
-  height: 100%;
-  min-height: 100px;
-
-  p{
-    margin: 0;
-    position: absolute;
-    left: 50%;
+.jeeve-legacy-app {
+  .w-100 {
     width: 100%;
-    top: 50%;
-    transform: translate(-50%,-50%);
-    font-size: 18px;
   }
-
-}
-
-.hccard-container {
-  @media screen and (min-width: 991px) {
-    max-width: 340px !important;  
-    justify-content: space-between !important;  
+  
+  .header_filters.healthscreen { flex-direction: row-reverse !important; }
+  .no-found-data{
+    margin: 0 !important;
+    max-width: 100%;
+    background-size: auto 100%;
+    padding: 0;
+    height: 100%;
+    min-height: 100px;
+  
+    p{
+      margin: 0;
+      position: absolute;
+      left: 50%;
+      width: 100%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      font-size: 18px;
+    }
+  
   }
-}
-
-
-.AllClinicHltp .custom-tooltip {
-    background: #000000;
-    opacity: .95 !important;
-    width: auto;
-    right: 0;
-}
-.AllClinicHltp .tooltip-title-container {
-    display: none;
-}
-.AllClinicHltp .tooltip-info-text span {
-    width: 100%;
-    float: left;
-    padding: 0 0 2px 0;
-    font-size: 14px;
-}
-.AllClinicHltp .custom-tooltip::after {
-    border-bottom-color: #000000;
-    top: -1px;
-    right: 3px;
-}
-.yellow_guagechart .reading-affix {
-  text-decoration: none;
-  font-size: inherit !important;
-  opacity: 1 !important;
-  padding: 0px !important;
-}
-
-.sa_matcard_content .no-data-placeholder .ngx-gauge-meter {
-  margin-bottom: -40px;
-}
-
-.chart.card-body.no-data-placeholder {
-  padding: 0px !important;
-  padding-top: 20px !important;
+  
+  .hccard-container {
+    @media screen and (min-width: 991px) {
+      max-width: 340px !important;  
+      justify-content: space-between !important;  
+    }
+  }
+  
+  
+  .AllClinicHltp .custom-tooltip {
+      background: #000000;
+      opacity: .95 !important;
+      width: auto;
+      right: 0;
+  }
+  .AllClinicHltp .tooltip-title-container {
+      display: none;
+  }
+  .AllClinicHltp .tooltip-info-text span {
+      width: 100%;
+      float: left;
+      padding: 0 0 2px 0;
+      font-size: 14px;
+  }
+  .AllClinicHltp .custom-tooltip::after {
+      border-bottom-color: #000000;
+      top: -1px;
+      right: 3px;
+  }
+  .yellow_guagechart .reading-affix {
+    text-decoration: none;
+    font-size: inherit !important;
+    opacity: 1 !important;
+    padding: 0px !important;
+  }
+  
+  .sa_matcard_content .no-data-placeholder .ngx-gauge-meter {
+    margin-bottom: -40px;
+  }
+  
+  .chart.card-body.no-data-placeholder {
+    padding: 0px !important;
+    padding-top: 20px !important;
+  }
 }

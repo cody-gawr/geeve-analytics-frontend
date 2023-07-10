@@ -1,4 +1,5 @@
-.header_filters.followups { flex-direction: row-reverse !important; }
+.jeeve-legacy-app {
+    .header_filters.followups { flex-direction: row-reverse !important; }
 
 .chart-conversion{
     height: 350px; 
@@ -39,3 +40,4 @@
     animation       : tooltipIn 0.5s ease-in-out;
     z-index         : 999;
   }
+}

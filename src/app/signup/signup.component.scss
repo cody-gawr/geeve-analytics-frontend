@@ -2,115 +2,117 @@
 @import url("../../assets/styles/home/all.min.css");
 @import url("../../assets/styles/home/style.css");
 @import url("../../assets/styles/home/responsive.css");
-.mainCon {
-    width: 100%;
-    height: 100%;
-    margin-top: 80px;
-    padding: 0px;
-    background : #fff;
-}
-.mainCon .banner {
-    width: 100%;
-    min-height: 150px;
-    text-align: center;
-    background: url(/assets/images/Signup/banner.jpg);
-    background-size: 100% 100%;
-}
-.mainCon .banner h1 {
-    color: #fff;
-    font-size: 35px;
-    padding-top: 50px;
-}
-.know-more {
-    width: 100%;
-    text-align: center;
-    padding: 50px 0;
-}
-.know-more p {
-    padding: 20px 0;
-    font-size: 20px;
-    width: 51%;
-    margin: 0 auto;
-}
-span#under-line-exp {
-    border-bottom: 4px solid #05a090;
-}
-.xero-btn, .ml-form-embedSubmit button {
-    font-size: 16px;
-    text-transform: uppercase;
-    color: #FFF;
-    background-image: linear-gradient(14deg, #17a5aa 0%, #18a689 100%);
-    box-shadow: none !important;
-    border: 0;
-    font-family: 'Gilroy-Medium';
-    border-radius: 5px;
-    padding: 15px 20px;
-}
-
-
-.banner img.login_logo {
-    position: relative;
-    padding-top: 40px;
-    width: 150px;
-}
-
-.ml-form-embedWrapper.embedForm {
-    width: 100% !important;
-    max-width: 100% !important;
-}
-.ml-form-fieldRow {
-    width: 29% !important;
-    float: left;
-    display: block;
-    margin: 2% !important;
-    height: 55px;
-    padding: 0 !important;
-}
-.ml-form-fieldRow.ml-last-item {
-    height: 100%;
-    width: 95% !important;
-}
-.ml-form-fieldRow.ml-last-item textarea.form-control {
-    height: 150px !important;
-}
-
-.sign-form-inner {
-    width: 55%;
-    margin: 0 auto;
-    border: 1px solid #05a090;
-    box-shadow: 0px 0px 9px #0a312d;
-    position: relative;
-}
-
-body #mlb2-2732798.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit button{
-    width: auto !important;
-}
-.sign-form {
-    margin-bottom: 100px;
-}
-div.sign-form-inner:before {
-    position: absolute;
-    content: "";
-    background: url(/assets/images/Signup/contact-corner.png);
-    width: 64px;
-    height: 60px;
-    top: -26px;
-    left: -27px;
-    z-index: 0;
-}
-div.sign-form-inner:after {
-    position: absolute;
-    content: "";
-    background: url(/assets/images/Signup/contact-right-bottom.png);
-    width: 63px;
-    height: 61px;
-    bottom: 0;
-    right: 0;
-    z-index: 0;
-}
-header#header {
-    background: #fff;
-}
-.footer-signin{
-    text-align: center;
+.jeeve-legacy-app {
+    .mainCon {
+        width: 100%;
+        height: 100%;
+        margin-top: 80px;
+        padding: 0px;
+        background : #fff;
+    }
+    .mainCon .banner {
+        width: 100%;
+        min-height: 150px;
+        text-align: center;
+        background: url(/assets/images/Signup/banner.jpg);
+        background-size: 100% 100%;
+    }
+    .mainCon .banner h1 {
+        color: #fff;
+        font-size: 35px;
+        padding-top: 50px;
+    }
+    .know-more {
+        width: 100%;
+        text-align: center;
+        padding: 50px 0;
+    }
+    .know-more p {
+        padding: 20px 0;
+        font-size: 20px;
+        width: 51%;
+        margin: 0 auto;
+    }
+    span#under-line-exp {
+        border-bottom: 4px solid #05a090;
+    }
+    .xero-btn, .ml-form-embedSubmit button {
+        font-size: 16px;
+        text-transform: uppercase;
+        color: #FFF;
+        background-image: linear-gradient(14deg, #17a5aa 0%, #18a689 100%);
+        box-shadow: none !important;
+        border: 0;
+        font-family: 'Gilroy-Medium';
+        border-radius: 5px;
+        padding: 15px 20px;
+    }
+    
+    
+    .banner img.login_logo {
+        position: relative;
+        padding-top: 40px;
+        width: 150px;
+    }
+    
+    .ml-form-embedWrapper.embedForm {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    .ml-form-fieldRow {
+        width: 29% !important;
+        float: left;
+        display: block;
+        margin: 2% !important;
+        height: 55px;
+        padding: 0 !important;
+    }
+    .ml-form-fieldRow.ml-last-item {
+        height: 100%;
+        width: 95% !important;
+    }
+    .ml-form-fieldRow.ml-last-item textarea.form-control {
+        height: 150px !important;
+    }
+    
+    .sign-form-inner {
+        width: 55%;
+        margin: 0 auto;
+        border: 1px solid #05a090;
+        box-shadow: 0px 0px 9px #0a312d;
+        position: relative;
+    }
+    
+    body #mlb2-2732798.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit button{
+        width: auto !important;
+    }
+    .sign-form {
+        margin-bottom: 100px;
+    }
+    div.sign-form-inner:before {
+        position: absolute;
+        content: "";
+        background: url(/assets/images/Signup/contact-corner.png);
+        width: 64px;
+        height: 60px;
+        top: -26px;
+        left: -27px;
+        z-index: 0;
+    }
+    div.sign-form-inner:after {
+        position: absolute;
+        content: "";
+        background: url(/assets/images/Signup/contact-right-bottom.png);
+        width: 63px;
+        height: 61px;
+        bottom: 0;
+        right: 0;
+        z-index: 0;
+    }
+    header#header {
+        background: #fff;
+    }
+    .footer-signin{
+        text-align: center;
+    }
 }
