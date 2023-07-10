@@ -891,9 +891,10 @@
   font-weight: 400;
   position: absolute;
   right: 8px;
-  top: 6px;
+  top: 50%;
   color: #18a689;
   pointer-events: none;
+  transform: translateY(-52%);
 }
 
 .sa_mat_menu_icon {
