@@ -4,9 +4,11 @@ import { Observable } from 'rxjs';
 import { DashboardPageActions } from '../state/actions';
 import {
   DashboardState,
+  selectChartTips,
+  selectConnectedWith,
   selectErrors
 } from '../state/reducers/dashboard.reducer';
-import { JeeveError } from '../state/actions/dashboard-api.actions';
+import { JeeveError } from '@/newapp/models';
 
 @Injectable()
 export class DashboardFacade {
@@ -16,9 +18,23 @@ export class DashboardFacade {
     select(selectErrors)
   );
 
+  public readonly chartTips$ = this.store.pipe(
+    select(selectChartTips)
+  );
+
+  public readonly connectedWith$ = this.store.pipe(
+    select(selectConnectedWith)
+  )
+
   public loadChartTips(dashboardId: number, clinicId: number) {
     this.store.dispatch(
       DashboardPageActions.loadChartTips({ dashboardId, clinicId })
+    );
+  }
+
+  public loadClinicAccountingPlatform(clinicId: number) {
+    this.store.dispatch(
+      DashboardPageActions.loadClinicAccountingPlatform({ clinicId })
     );
   }
 }

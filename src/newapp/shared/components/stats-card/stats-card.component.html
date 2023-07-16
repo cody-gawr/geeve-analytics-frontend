@@ -1,4 +1,4 @@
-<div class="stats-card">
+<div *ngIf="isFullMonths && isConnectedWith; else placeh" class="stats-card">
   <mat-icon
     [matTooltip]="toolTip"
     matTooltipPosition="below"
@@ -13,6 +13,17 @@
     <h4>
       {{ label }}
     </h4>
-    <h3>{{ value }}</h3>
+    <h3>{{ isLoading? 'Calculating...' : value }}</h3>
   </div>
 </div>
+<ng-template #placeh>
+  <div class="stats-card-placeh">
+    <p *ngIf="!isFullMonths">
+      Please select a date range consisting of full months to view Accounting charts
+    </p>
+    <p *ngIf="!isConnectedWith">
+      Please ensure your Xero/MYOB account is connected
+    </p>
+  </div>
+</ng-template>
+

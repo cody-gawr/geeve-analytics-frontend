@@ -1,0 +1,18 @@
+.date-range-menu {
+    button {
+      color: #919191;
+      font-size: 13px;
+      padding: 10px 0 5px;
+      font-family: Gilroy-Medium;
+      font-weight: 500;
+      margin: 0 8px;
+      border: 0px;
+  
+      border-radius: none;
+      background: transparent;
+      cursor: pointer;
+    }
+    button.active {
+      border-bottom: 1px solid #119582;
+    }
+}

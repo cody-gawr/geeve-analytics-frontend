@@ -1,54 +1,41 @@
 <div
   class="finance-page-container"
 >
-  <div class="finance-tabs">
-    <button class="active">This Month</button>
-    <button>Last Month</button>
-    <button>This Quarter</button>
-    <button>Last Quarter</button>
-    <button>Calendar Year</button>
-    <button>Last Calendar Year</button>
-    <button>Financial Year</button>
-    <button>Last Financial Year</button>
-  </div>
-  <div
-    class="trend-toggle-box"
-  >
-    <label>Trend:</label>
-    <mat-button-toggle-group
-      class="custom-toggle-buttons"
-      name="Trend"
-      aria-label="Trends"
-    >
-      <mat-button-toggle checked value="off">Off</mat-button-toggle>
-      <mat-button-toggle value="current">Monthly</mat-button-toggle>
-      <mat-button-toggle value="historic">Annual</mat-button-toggle>
-    </mat-button-toggle-group>
-  </div>
+  <date-range-menu></date-range-menu>
+  <trend-mode-toggle></trend-mode-toggle>
 </div>
 <div class="finance-chart-content">
   <div class="stats-card-list">
     <stats-card
       class="stats-card-finance"
       label="Production"
-      value="$89,523"
-      toolTip="hello"
+      [value]="'$' + (netProfitProductionVal$ | async | number: '1.0-0')"
+      [toolTip]="netProfitProductionTip$ | async"
       iconColor="#f8ca25"
+      [isLoading]="isLoadingNetProfitProduction$ | async"
+      [isFullMonths]="true"
+      [isConnectedWith]="true"
     >
     </stats-card>
     <stats-card
       class="stats-card-finance"
       label="Net Profit"
-      value="$48,523"
-      toolTip="hello"
+      [value]="'$' + (netProfitVal$ | async |  number: '1.0-0')"
+      [toolTip]="netProfitTip$ | async"
       iconColor="#737eef"
+      [isLoading]="isLoadingNetProfit$ | async"
+      [isFullMonths]="isFullMonthsDateRange$ | async"
+      [isConnectedWith]="isConnectedWith$ | async"
     >
     </stats-card>
     <stats-card
       class="stats-card-finance"
       label="Net Profit %"
-      value="60%"
-      toolTip="hello"
+      [value]="'%' + (netProfitPercentageVal$ | async |  number: '1.0-0')"
+      [toolTip]="netProfitPercentTip$ | async"
+      [isLoading]="isLoadingNetProfitPercentage$ | async"
+      [isFullMonths]="isFullMonthsDateRange$ | async"
+      [isConnectedWith]="isConnectedWith$ | async"
     >
     </stats-card>
   </div>

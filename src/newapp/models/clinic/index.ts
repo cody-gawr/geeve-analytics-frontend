@@ -18,52 +18,36 @@ type CLINIC_TIMEZONE =
 export type FPT_UTA = 'status' | 'item';
 
 export interface Clinic {
-  // id: number;
-  // clinicName: string;
-  // pms: string;
-  // core: ClinicAppDataCore | null;
-  // d4W: ClinicAppDataD4w | null;
-  // exact: ClinicAppDataExact | null;
-  // myob: ClinicAppDataMyob | null;
-  // xero: ClinicAppDataXero | null;
-  // setting: ClinicSetting | null;
-  // syncHistories: SyncHistory[];
-  // dbServer: string;
-  // dbName: string;
-  // whServer: string;
-  // whName: string;
-  // user: Pick<User, 'email'>;
-
-  accepted_sms_terms: number;
+  acceptedSmsTerms: number;
   address: string;
   clinicEmail: string;
   clinicName: string;
   compare_mode: number;
-  config_user: { id: number; clinics_count: number };
+  configUser: { id: number; clinicsCount: number };
   connectedwith: string;
   consultant: string;
   contactName: string;
   created: string;
-  daily_task_enable: number;
+  dailyTaskEnable: number;
   datasource: string;
   days: string;
-  db_name: string;
-  db_server: string;
-  equip_list_enable: number;
-  fta_uta: string;
+  dbName: string;
+  dbServer: string;
+  equipListEnable: number;
+  ftaUta: string;
   id: number;
-  is_deleted: number;
-  net_profit_exclusions: string;
+  isDeleted: number;
+  netProfit_exclusions: string;
   phoneNo: string;
   pms: string;
-  sms_enabled: number;
+  smsEnabled: number;
   sr: number;
   timezone: CLINIC_TIMEZONE;
-  trial_end_date: string;
-  user_id: number;
+  trialEndDate: string;
+  userId: number;
   utility_ver: string;
-  wh_name: string;
-  wh_server: string;
+  whName: string;
+  whServer: string;
 }
 
 export interface ClinicRow extends Clinic {

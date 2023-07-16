@@ -8,7 +8,11 @@ export function localStorageSyncReducer(
   reducer: ActionReducer<any>
 ): ActionReducer<any> {
   return localStorageSync({
-    keys: [{ clinic: ['clinics'], auth: ['authUserInfo'] }],
+    keys: [
+      { clinic: [ 'clinics', 'currentClinicId' ] },
+      { auth: [ 'authUserData', 'rolesIndividual' ] },
+      // { layout: ['startDate', 'endDate', 'enableDateRagne', 'duration', 'trend'] }
+    ],
     rehydrate: true
   })(reducer);
 }

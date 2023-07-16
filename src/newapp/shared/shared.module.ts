@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import { MatTableResponsiveModule } from './directives/mat-table-responsive.module';
 import { TimeMaskDirective } from './directives/time-mask.directive';
 import { StatsCardComponent } from './components/stats-card/stats-card.component';
+import { DateRangeMenuComponent } from './components/date-range-menu/date-range-menu.component';
+import { TrendModeToggleComponent } from './components/trend-mode-toggle/trend-mode-toggle.component';
 const modules = [
   AngularMaterialModule,
   ReactiveFormsModule,
@@ -14,7 +16,11 @@ const modules = [
   MatTableResponsiveModule
 ];
 
-const components = [StatsCardComponent];
+const components = [
+  StatsCardComponent, 
+  DateRangeMenuComponent, 
+  TrendModeToggleComponent
+];
 
 @NgModule({
   declarations: [TimeMaskDirective, ...components],

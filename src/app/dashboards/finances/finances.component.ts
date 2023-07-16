@@ -172,10 +172,10 @@ export class FinancesComponent implements AfterViewInit {
   //   return this.localStorageService.isEachClinicExact(this.clinic_id);
   // }
   constructor(
-    private localStorageService: LocalStorageService,
+    // private localStorageService: LocalStorageService,
     private toastr: ToastrService,
     private financesService: FinancesService,
-    private dentistService: DentistService,
+    // private dentistService: DentistService,
     private datePipe: DatePipe,
     private route: ActivatedRoute,
     private headerService: HeaderService,
@@ -188,7 +188,7 @@ export class FinancesComponent implements AfterViewInit {
     public chartstipsService: ChartstipsService,
     private decimalPipe: DecimalPipe
   ) {
-    router.routerState.root.queryParams.subscribe(val => {
+    this.router.routerState.root.queryParams.subscribe(val => {
       if(val && val.wh){
         this.queryWhEnabled = val.wh;
       }
@@ -3128,24 +3128,24 @@ export class FinancesComponent implements AfterViewInit {
   }
 
   // Get Dentist
-  getDentists() {
-    this.dentistService.getDentists(this.clinic_id).subscribe(
-      (res) => {
-        if (res.status == 200) {
-          this.dentists = res.body.data;
-          this.dentistCount = res.body.data.length;
-        } else if (res.status == 401) {
-          this._cookieService.put('username', '');
-          this._cookieService.put('email', '');
-          this._cookieService.put('userid', '');
-          this.router.navigateByUrl('/login');
-        }
-      },
-      (error) => {
-        this.warningMessage = 'Please Provide Valid Inputs!';
-      }
-    );
-  }
+  // getDentists() {
+  //   this.dentistService.getDentists(this.clinic_id).subscribe(
+  //     (res) => {
+  //       if (res.status == 200) {
+  //         this.dentists = res.body.data;
+  //         this.dentistCount = res.body.data.length;
+  //       } else if (res.status == 401) {
+  //         this._cookieService.put('username', '');
+  //         this._cookieService.put('email', '');
+  //         this._cookieService.put('userid', '');
+  //         this.router.navigateByUrl('/login');
+  //       }
+  //     },
+  //     (error) => {
+  //       this.warningMessage = 'Please Provide Valid Inputs!';
+  //     }
+  //   );
+  // }
   changeDentistPredictor(val) {
     if (val == '1') {
       this.gaugeValuePredicted = this.gaugeValuePredicted1 * 100;

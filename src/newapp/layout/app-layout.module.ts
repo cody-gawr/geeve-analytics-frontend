@@ -17,6 +17,11 @@ import { ClinicEffects } from '../clinic/state/effects/clinic.effects';
 import { AppLayoutService } from './services/app-layout.service';
 import { ClinicFacade } from '../clinic/facades/clinic.facade';
 import { CommonModule } from '@angular/common';
+import { LayoutFacade } from './facades/layout.facade';
+import { layoutFeature } from './state/reducers/layout.reducer';
+import { dentistFeature } from '../dentist/state/reducers/dentist.reducer';
+import { DentistEffects } from '../dentist/state/effects/dentist.effects';
+import { DentistFacade } from '../dentist/facades/dentists.facade';
 
 const components = [
   AppTopbarComponent,
@@ -25,7 +30,11 @@ const components = [
   AppMenuComponent
 ];
 
-const services = [AuthFacade, MenuService, AppLayoutService, ClinicFacade];
+const services = [
+  AuthFacade, MenuService,
+  AppLayoutService, ClinicFacade,
+  LayoutFacade, DentistFacade
+];
 
 @NgModule({
   imports: [
@@ -34,7 +43,9 @@ const services = [AuthFacade, MenuService, AppLayoutService, ClinicFacade];
     SharedModule,
     StoreModule.forFeature(authFeature),
     StoreModule.forFeature(clinicFeature),
-    EffectsModule.forFeature([AuthEffects, ClinicEffects])
+    StoreModule.forFeature(layoutFeature),
+    StoreModule.forFeature(dentistFeature),
+    EffectsModule.forFeature([AuthEffects, ClinicEffects, DentistEffects])
   ],
   declarations: [...components],
   exports: [AppLayoutComponent],

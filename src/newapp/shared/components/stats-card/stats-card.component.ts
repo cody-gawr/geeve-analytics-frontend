@@ -11,6 +11,9 @@ export class StatsCardComponent implements OnInit, OnDestroy {
   @Input() fontIcon = 'insert_chart';
   @Input() toolTip = '';
   @Input() iconColor = '';
+  @Input() isLoading = false;
+  @Input() isFullMonths = false;
+  @Input() isConnectedWith = false;
 
   constructor() {}
 

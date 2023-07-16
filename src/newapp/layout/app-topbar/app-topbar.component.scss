@@ -39,10 +39,25 @@
       align-items: center;
       width: 100%;
       .dynamic-top-section {
+
+
+        
         display: flex;
-        justify-content: center;
         flex: 1;
-        .date-picker-wrapper {
+
+        .date-picker-wrapper{
+          display: flex;
+          justify-content: center;
+          flex: 1;
+        }
+
+        .clinic-selector-wrapper {
+          display: flex;
+          justify-content: center;
+          flex: 0;
+        }
+        
+        .date-picker-field, .clinic-selector-field {
             display: flex;
             justify-content: center;
             align-items: center;

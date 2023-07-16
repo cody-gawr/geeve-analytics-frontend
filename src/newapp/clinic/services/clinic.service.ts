@@ -6,7 +6,7 @@ import {
   ClinicsListApiResponse,
 } from '../../models/clinic';
 import { environment } from '@/environments/environment';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import camelcaseKeys from 'camelcase-keys';
 
 @Injectable({
@@ -24,8 +24,8 @@ export class ClinicService {
   // }
 
   public getClinics(): Observable<ClinicsListApiResponse> {
-    return this.http.get<HttpResponse<ClinicsListApiResponse>>(`${this.apiUrl}/clinics/clinicGet`, {
+    return this.http.get<ClinicsListApiResponse>(`${this.apiUrl}/clinics/clinicGet`, {
       withCredentials: true
-    }).pipe(map(res => <ClinicsListApiResponse> (<any>camelcaseKeys(res.body, {deep: true}))));
+    }).pipe(map(res => <any>camelcaseKeys(res, {deep: true})));
   }
 }

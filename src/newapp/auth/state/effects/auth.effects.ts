@@ -25,8 +25,8 @@ export class AuthEffects {
       mergeMap(({ form }) => {
         return this.authService.login(form).pipe(
           map((res) => res.data.data),
-          map((authUserInfo) => {
-            return AuthApiActions.loginSuccess({authUserInfo});
+          map((authUserData) => {
+            return AuthApiActions.loginSuccess({authUserData});
           }),
           catchError((error: HttpErrorResponse) =>
             of(AuthApiActions.loginFailure({ error: error.message }))

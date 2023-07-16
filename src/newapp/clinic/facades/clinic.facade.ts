@@ -1,12 +1,13 @@
 import { Clinic } from '../../models/clinic';
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { filter, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ClinicPageActions } from '../state/actions';
 import {
   ClinicState,
   selectClinics,
   selectCurrentClinic,
+  selectCurrentClinicId,
   selectError,
   selectSuccess
 } from '../state/reducers/clinic.reducer';
@@ -20,8 +21,7 @@ export class ClinicFacade {
   );
 
   public readonly error$: Observable<string> = this.store.pipe(
-    select(selectError),
-    filter(Boolean)
+    select(selectError)
   );
 
   public readonly clinics$: Observable<Array<Clinic>> = this.store.pipe(
@@ -29,15 +29,18 @@ export class ClinicFacade {
   );
 
   public readonly currentClinic$: Observable<Clinic> = this.store.pipe(
-    select(selectCurrentClinic),
-    filter(Boolean)
+    select(selectCurrentClinic)
   );
+
+  public readonly currentClinicId$: Observable<'all' | number | null> = this.store.pipe(
+    select(selectCurrentClinicId)
+  ); 
 
   public loadClinics() {
     this.store.dispatch(ClinicPageActions.loadClinics());
   }
 
-  public setCurrentClinicId(clinicId: number | null) {
+  public setCurrentClinicId(clinicId: 'all' | number | null) {
     this.store.dispatch(ClinicPageActions.setCurrentClinicId({ clinicId }));
   }
 }

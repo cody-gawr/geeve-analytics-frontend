@@ -7,7 +7,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { LoginService } from './login.service';
 import { RolesUsersService } from '../roles-users/roles-users.service';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { LocalStorageService } from '../shared/local-storage.service';
+import camelcaseKeys from 'camelcase-keys';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -30,8 +30,7 @@ export class LoginComponent implements OnInit {
     private _cookieService: CookieService,
     private rolesUsersService: RolesUsersService,
     public constants: AppConstants,
-    public dialog: MatDialog,
-    private localStorage: LocalStorageService
+    public dialog: MatDialog
   ) {
     if (this._cookieService.get('userid')) {
       var user_type = this._cookieService.get('user_type');
@@ -82,9 +81,9 @@ export class LoginComponent implements OnInit {
           this._cookieService.removeAll();
           if (res.status == 200) {
             var datares = [];
-            this.localStorage.saveData(
+            localStorage.setItem(
               'authUserData',
-              JSON.stringify(res.body.data.data)
+              JSON.stringify(camelcaseKeys(res.body.data.data, {deep: true}))
             );
             datares['username'] = res.body.data.data.username;
             datares['email'] = res.body.data.data.email;

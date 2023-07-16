@@ -5,7 +5,7 @@ import { filter, Observable } from 'rxjs';
 import { AuthApiActions, AuthPageActions, RolesPageActions } from '../state/actions';
 import {
   AuthState,
-  selectAuthUserInfo,
+  selectAuthUserData,
   selectError,
   selectIsLoading,
   selectLogoutError,
@@ -15,14 +15,11 @@ import {
   selectSuccess
 } from '../state/reducers/auth.reducer';
 import { LoginUser, RolesIndividualApiResponse } from '../../models/user';
-import { LocalStorageService } from '../../shared/services/local-storage.service';
-import camelcaseKeys from 'camelcase-keys';
 
 @Injectable()
 export class AuthFacade {
   constructor(
-    private readonly store: Store<AuthState>,
-    private localStorage: LocalStorageService
+    private readonly store: Store<AuthState>
   ) {}
 
   public readonly success$: Observable<boolean> = this.store.pipe(
@@ -42,8 +39,8 @@ export class AuthFacade {
     filter(Boolean)
   );
 
-  public readonly authUserInfo$: Observable<LoginUser> = this.store.pipe(
-    select(selectAuthUserInfo)
+  public readonly authUserData$: Observable<LoginUser> = this.store.pipe(
+    select(selectAuthUserData)
   );
 
   public readonly rolesIndividual$: Observable<RolesIndividualApiResponse | null> =
@@ -77,6 +74,7 @@ export class AuthFacade {
   }
 
   public getAuthUserData(): LoginUser {
-    return camelcaseKeys(JSON.parse(this.localStorage.getData('authUserData') ?? ''), {deep: true});
+    const data = localStorage.getItem('authUserData');
+    return data?JSON.parse(data):null;
   }
 }

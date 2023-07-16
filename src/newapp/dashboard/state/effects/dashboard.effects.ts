@@ -32,6 +32,27 @@ export class DashboardEffects {
     );
   });
 
+  
+  public readonly getClinicAccountingPlatform$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DashboardPageActions.loadClinicAccountingPlatform),
+      mergeMap(({ clinicId }) => {
+        return this.dashboardService.getClinicAccountingPlatform(clinicId).pipe(
+          map((res) =>
+            DashboardApiActions.clinicAccountingPlatformSuccess({ connectWith: res.data })
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              DashboardApiActions.clinicAccountingPlatformFailure({
+                error: error.error ?? error
+              })
+            )
+          )
+        );
+      })
+    );
+  });
+
   //   public readonly loadClinicsInfo$ = createEffect(() => {
   //     return this.actions$.pipe(
   //       ofType(DashboardPageActions.loadClinicsInfo),

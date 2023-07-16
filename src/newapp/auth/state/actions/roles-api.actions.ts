@@ -1,5 +1,5 @@
 /* NgRx */
-import { JeeveError } from '../../../dashboard/state/actions/dashboard-api.actions';
+import { JeeveError } from '@/newapp/models';
 import { RolesApiResponse, RolesIndividualApiResponse } from '../../../models/user';
 import { createAction, props } from '@ngrx/store';
 

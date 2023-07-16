@@ -3,8 +3,9 @@ import { Clinic } from '../../models/clinic';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDrawerMode } from '@angular/material/sidenav';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil, map, filter } from 'rxjs';
 import { AppLayoutService } from '../services/app-layout.service';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-layout',
@@ -17,17 +18,34 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
   sidenavMode: MatDrawerMode = 'side';
   isSidenavVisible = false;
   clinic: Clinic | null;
+  activatedUrl: string = '';
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private appLayoutService: AppLayoutService,
-    private clinicFacade: ClinicFacade,
-    private ref: ChangeDetectorRef
-  ) {}
+    private router: Router
+    // private appLayoutService: AppLayoutService,
+    // private clinicFacade: ClinicFacade,
+    // private ref: ChangeDetectorRef
+  ) {
 
-  get clinicDetailSidenavOpened$(): Observable<boolean> {
-    return this.appLayoutService.clinicDetailSidenavOpened$;
+    this.router.events
+    .pipe(
+      takeUntil(this.destroy$),
+      map((event: any) => event.routerEvent??event),
+      filter((event) => event instanceof NavigationEnd)
+    )
+    .subscribe((event) => {
+      const { url } = <NavigationEnd>event;
+      // const path = this.router.parseUrl(url).root.children['primary']
+      //   ? this.router.parseUrl(url).root.children['primary'].segments[0].path
+      //   : this.defaultMenu;
+      this.activatedUrl = url;
+    });
   }
+
+  // get clinicDetailSidenavOpened$(): Observable<boolean> {
+  //   return this.appLayoutService.clinicDetailSidenavOpened$;
+  // }
 
   ngOnInit(): void {
     this.breakpointObserver
@@ -52,9 +70,9 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.appLayoutService.currentClinic$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((clinic) => (this.clinic = clinic));
+    // this.appLayoutService.currentClinic$
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((clinic) => (this.clinic = clinic));
   }
 
   ngOnDestroy(): void {
@@ -62,9 +80,9 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
   }
 
   onOpenedChange = (e: boolean) => {
-    if (!e) {
-      this.clinicFacade.setCurrentClinicId(null);
-    }
+    // if (!e) {
+    //   this.clinicFacade.setCurrentClinicId(null);
+    // }
   };
 
   onMainNavOpenedChange = (e: boolean) => {

@@ -6,7 +6,7 @@ export interface ClinicState {
   success: boolean;
   isLoading: boolean;
   clinics: Clinic[];
-  currentClinicId: number | null;
+  currentClinicId: 'all' | number | null;
   error: string | null;
   hasPrimeClinics: 'yes' | 'no';
 }
@@ -17,7 +17,7 @@ const initialState: ClinicState = {
   currentClinicId: null,
   clinics: [],
   error: null,
-  hasPrimeClinics: 'no'
+  hasPrimeClinics: 'no',
 };
 
 export const clinicFeature = createFeature({
@@ -44,13 +44,14 @@ export const clinicFeature = createFeature({
     }),
     on(
       ClinicApiActions.loadClinicsSuccess,
-      (state, { clinics, hasPrimeClinics }): ClinicState => {
+      (state, { clinics, hasPrimeClinics }): ClinicState => {        
         return {
           ...state,
           success: true,
           isLoading: false,
           clinics,
-          hasPrimeClinics
+          hasPrimeClinics,
+          ...(clinics.length > 0 && state.currentClinicId == null?{currentClinicId: clinics[0].id}:{})
         };
       }
     ),

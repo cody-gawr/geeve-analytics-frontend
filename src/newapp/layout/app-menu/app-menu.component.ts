@@ -355,7 +355,7 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       if (result.data) {
         const params: MenuValidatorParams = {
           permissions: result.data,
-          userType: parseInt(result.type!),
+          userType: result.type,
           userPlan: result.plan,
           hasPrimeClinics: result.hasPrimeClinics
         };

@@ -11,8 +11,10 @@
 
   <div class="layout-main-container">
     <app-topbar
+      *ngIf="!!activatedUrl"
       [toggleSideBar]="toggleSideBar"
       [isSidenavVisible]="isSidenavVisible"
+      [activatedUrl]="activatedUrl"
     ></app-topbar>
     <div class="page-container">
       <router-outlet></router-outlet>

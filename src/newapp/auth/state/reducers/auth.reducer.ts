@@ -8,8 +8,8 @@ import {
 } from '../actions';
 import { RolesIndividualApiResponse, RolesApiResponse, LoginUser } from '../../../models/user';
 import _ from 'lodash';
-import { JeeveError } from '../../../dashboard/state/actions/dashboard-api.actions';
 import { selectHasPrimeClinics } from '../../../clinic/state/reducers/clinic.reducer';
+import { JeeveError } from '@/newapp/models';
 
 export interface AuthState {
   success: boolean;
@@ -21,7 +21,7 @@ export interface AuthState {
   logoutError: string | null;
   rolesIndividual: RolesIndividualApiResponse | null;
   roles: RolesApiResponse | null;
-  authUserInfo: LoginUser | null;
+  authUserData: LoginUser | null;
 }
 
 const initialState: AuthState = {
@@ -34,7 +34,7 @@ const initialState: AuthState = {
   logoutError: null,
   rolesIndividual: null,
   roles: null,
-  authUserInfo: null
+  authUserData: null
 };
 
 export const authFeature = createFeature({
@@ -50,13 +50,13 @@ export const authFeature = createFeature({
       };
     }),
 
-    on(AuthApiActions.loginSuccess, (state, {authUserInfo}): AuthState => {
+    on(AuthApiActions.loginSuccess, (state, {authUserData}): AuthState => {
       return {
         ...state,
         success: true,
         logoutSuccess: false,
         isLoading: false,
-        authUserInfo
+        authUserData
       };
     }),
     on(AuthApiActions.loginFailure, (state, { error }): AuthState => {
@@ -65,7 +65,7 @@ export const authFeature = createFeature({
         success: false,
         error,
         isLoading: false,
-        authUserInfo: null
+        authUserData: null
       };
     }),
     on(AuthApiActions.logoutSuccess, (state): AuthState => {
@@ -152,7 +152,7 @@ export const {
   selectLogoutError,
   selectRoles,
   selectRolesIndividual,
-  selectAuthUserInfo
+  selectAuthUserData
 } = authFeature;
 
 export const selectRolesIndividualPermissions = createSelector(

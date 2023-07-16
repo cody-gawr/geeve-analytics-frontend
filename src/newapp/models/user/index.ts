@@ -18,12 +18,13 @@ export interface LoginUser {
   dentistId: string;
   featuresDismissed: string;
   healthScreenMtd: string;
+  multiClinicEnabled: number;
 }
 
 export interface RolesApiResponse {}
 
 export interface RolesIndividualApiResponse {
   data: string[];
-  type: string;
+  type: number;
   plan: string;
 }

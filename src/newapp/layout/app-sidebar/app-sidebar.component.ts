@@ -19,12 +19,13 @@ export class AppSidebarComponent implements OnInit, OnDestroy {
     private router: Router,
     private toastr: ToastrService,
     private localStorage: LocalStorageService
-  ) {}
+  ) {
 
-  get authUserName() {
-    // return this.authFacade.authUserInfo$.pipe(
-    //   map(authUserInfo => this.authFacade.getAuthUserData().displayName))
-    return this.authFacade.getAuthUserData().displayName;
+  }
+
+  get authUserName$() {
+    return this.authFacade.authUserData$.pipe(
+      map(authUserData => (authUserData??this.authFacade.getAuthUserData()).displayName))
   }
 
   ngOnInit() {
