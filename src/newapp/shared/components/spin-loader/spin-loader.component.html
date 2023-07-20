@@ -1,0 +1,10 @@
+<div class="spin-loader">
+    <div class="spin-content">
+        <div class="spin-box">
+            <mat-spinner *ngIf="!disableSpin" class="spin"></mat-spinner>
+            <p *ngIf="disableSpin">
+                <ng-content></ng-content>
+            </p>
+        </div>
+    </div>
+</div>

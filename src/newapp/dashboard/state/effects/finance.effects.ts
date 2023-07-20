@@ -18,11 +18,33 @@ export class FinanceEffects {
       mergeMap((params) => {
         return this.financeService.fnTotalProduction(params).pipe(
           map((res) =>
-            FinanceApiActions.fnTotalProductionSuccess({ value: res.total })
+            FinanceApiActions.fnTotalProductionSuccess({ 
+              value: res.total, trendVal: res.totalTa, totalProdChartData: res.data })
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               FinanceApiActions.fnTotalProductionFailure({
+                error: error.error ?? error
+              })
+            )
+          )
+        );
+      })
+    );
+  });
+
+  public readonly loadFnTotalCollection$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(FinancePageActions.loadFnTotalCollection),
+      mergeMap((params) => {
+        return this.financeService.fnTotalCollection(params).pipe(
+          map((res) =>
+            FinanceApiActions.fnTotalCollectionSuccess({ 
+              value: res.total, trendVal: res.totalTa, collectionChartData: res.data })
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              FinanceApiActions.fnTotalCollectionFailure({
                 error: error.error ?? error
               })
             )
@@ -78,11 +100,85 @@ export class FinanceEffects {
       mergeMap((params) => {
         return this.financeService.fnExpenses(params).pipe(
           map((res) =>
-            FinanceApiActions.fnExpensesSuccess({ expensesData: res.data })
+            FinanceApiActions.fnExpensesSuccess({ 
+              expensesData: res.data, 
+              production: res.production
+            })
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               FinanceApiActions.fnExpensesFailure({
+                error: error.error ?? error
+              })
+            )
+          )
+        );
+      })
+    );
+  });
+
+  public readonly loadfnProductionByClinician$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(FinancePageActions.loadFnProductionByClinician),
+      mergeMap((params) => {
+        return this.financeService.fnProductionByClinician(params).pipe(
+          map((res) =>
+            FinanceApiActions.fnProductionByClinicianSuccess({ 
+              productionChartData: res.data, 
+              prodByClinicianTotal: res.total
+            })
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              FinanceApiActions.fnProductionByClinicianFailure({
+                error: error.error ?? error
+              })
+            )
+          )
+        );
+      })
+    );
+  });
+
+  public readonly loadfnProductionPerVisit$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(FinancePageActions.loadFnProductionPerVisit),
+      mergeMap((params) => {
+        return this.financeService.fnProductionPerVisit(params).pipe(
+          map((res) =>
+            FinanceApiActions.fnProductionPerVisitSuccess({ 
+              prodPerVisitData: res.data, 
+              prodPerVisitTotal: res.total,
+              prodPerVisitTrendTotal: res.totalTa
+            })
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              FinanceApiActions.fnProductionPerVisitFailure({
+                error: error.error ?? error
+              })
+            )
+          )
+        );
+      })
+    );
+  });
+
+  public readonly loadFnTotalDiscounts$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(FinancePageActions.loadFnTotalDiscounts),
+      mergeMap((params) => {
+        return this.financeService.fnTotalDiscounts(params).pipe(
+          map((res) =>
+            FinanceApiActions.fnTotalDiscountsSuccess({ 
+              totalDiscountChartData: res.data, 
+              totalDiscountTotal: res.total,
+              totalDiscountTrendTotal: res.totalTa
+            })
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              FinanceApiActions.fnTotalDiscountsFailure({
                 error: error.error ?? error
               })
             )

@@ -1,0 +1,57 @@
+<div class="chart-container">
+    <mat-icon
+        [matTooltip]="toolTip"
+        matTooltipPosition="below"
+        color="primary"
+        class="help-tip"
+        fontIcon="help"
+    ></mat-icon>
+    <div class="chart-title">
+        Production & Collection
+    </div>
+    <div class="chart-content">
+        <div class="prod-col-content">
+            <div class="prod-col-ngx-chart">
+                <canvas
+                    *ngIf="!(isLoading$ | async)"
+                    baseChart
+                    [datasets]="datasets"
+                    [labels]="labels"
+                    [options]="chartOptions"
+                    [legend]="false"
+                    type="bar"
+                ></canvas>
+                <spin-loader *ngIf="isLoading$ | async"></spin-loader>
+                <spin-loader *ngIf="labels.length <= 0" [disableSpin]="true">
+                    No expenses found for the selected period
+                </spin-loader>
+            </div>
+            <div class="text-content">
+                <div class="prod-col-text-summary">
+                    <div class="prod-col-txt-01">
+                        <h3>Production</h3>
+                        <div class="sub-txt-01">
+                            <h4>$ {{ totalProdVal$ | async | number: '1.0-0' }}</h4>
+                            <span>{{ durationLabel$ | async }}</span>
+                        </div>
+                        <div class="sub-txt-02">
+                            <h4>$ {{ totalProdTrendVal$ | async | number: '1.0-0' }}</h4>
+                            <span>{{ durationTrendLabel$ | async }}</span>
+                        </div>
+                    </div>
+                    <div class="prod-col-txt-02">
+                        <h3>Collection</h3>
+                        <div class="sub-txt-01">
+                            <h4>$ {{ collectionVal$ | async | number: '1.0-0' }}</h4>
+                            <span>{{ durationLabel$ | async }}</span>
+                        </div>
+                        <div class="sub-txt-02">
+                            <h4>$ {{ collectionTrendVal$ | async | number: '1.0-0' }}</h4>
+                            <span>{{ durationTrendLabel$ | async }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

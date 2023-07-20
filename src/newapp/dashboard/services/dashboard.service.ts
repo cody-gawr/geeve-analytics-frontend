@@ -26,7 +26,7 @@ export class DashboardService {
 
   getCharts = (
     dashboardId: number,
-    clinicId: number
+    clinicId: string | number
   ): Observable<ChartTipsApiResponse> => {
     return this.http.get<ChartTipsApiResponse>(
       `${this.apiUrl}/chartsTips/ctGetPageTips?dashboard_id=${dashboardId}&clinic_id=${clinicId}`,
@@ -35,7 +35,7 @@ export class DashboardService {
   };
 
   getClinicAccountingPlatform = (
-    clinicId: number
+    clinicId: string | number
   ): Observable<{data: CONNECT_WITH_PLATFORM, message: string}> => {
     return this.http.get<any>(
       `${this.apiUrl}/Clinics/clinicGetAccountingPlatform?clinic_id=${clinicId}`,

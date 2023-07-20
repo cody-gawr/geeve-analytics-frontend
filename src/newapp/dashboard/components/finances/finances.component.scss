@@ -18,6 +18,14 @@
 .finance-chart-content {
   background-color: #fafafa;
   padding: 15px;
+  gap: 30px;
+  display: flex;
+  flex-direction: column;
+  .chart-list{
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
+  }
   .stats-card-list {
     display: flex;
     flex-direction: row;
@@ -27,6 +35,31 @@
       flex-direction: column;
     }
     .stats-card-finance {
+      flex: 1;
+    }
+  }
+  .chart-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: stretch;
+    gap: 15px;
+    @include respond-from('tablet-landscape') {
+      flex-direction: column;
+    }
+    .expenses-chart {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .prod-per-clinic-chart, .prod-per-visit-chart, .total-discount-chart {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .prod-collection-chart {
       flex: 1;
     }
   }

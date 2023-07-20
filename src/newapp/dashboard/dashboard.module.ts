@@ -14,6 +14,14 @@ import { FinanceService } from './services/finance.service';
 import { FinanceFacade } from './facades/finance.facade';
 import { FinanceEffects } from './state/effects/finance.effects';
 import { financeFeature } from './state/reducers/finance.reducer';
+import { FinanceExpensesComponent } from './components/finances/none-trend/expenses/expenses.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { NgChartsModule as ChartsModule } from 'ng2-charts';
+import { ProductionPerClinicComponent } from './components/finances/none-trend/prod-per-clinic/prod-per-clinic.component';
+import { NgxGaugeModule } from 'ngx-gauge';
+import { ProductionPerVisitComponent } from './components/finances/none-trend/prod-per-visit/prod-per-visit.component';
+import { TotalDiscountComponent } from './components/finances/none-trend/total-discount/total-discount.component';
+import { ProdCollectionComponent } from './components/finances/none-trend/prod-collection/prod-collection.component';
 
 @NgModule({
   imports: [
@@ -23,9 +31,24 @@ import { financeFeature } from './state/reducers/finance.reducer';
     StoreModule.forFeature(dashboardFeature),
     StoreModule.forFeature(financeFeature),
     EffectsModule.forFeature([DashboardEffects, FinanceEffects]),
-    AppLayoutModule
+    AppLayoutModule,
+    NgxChartsModule,
+    ChartsModule,
+    NgxGaugeModule
   ],
-  declarations: [FinancesComponent],
-  providers: [DashboardService, DashboardFacade, FinanceService, FinanceFacade]
+  declarations: [
+    FinancesComponent, 
+    FinanceExpensesComponent,
+    ProductionPerClinicComponent,
+    ProductionPerVisitComponent,
+    TotalDiscountComponent,
+    ProdCollectionComponent
+  ],
+  providers: [
+    DashboardService, 
+    DashboardFacade, 
+    FinanceService, 
+    FinanceFacade
+  ]
 })
 export class DashboardModule {}

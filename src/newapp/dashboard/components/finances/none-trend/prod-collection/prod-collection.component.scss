@@ -1,0 +1,85 @@
+@import '../../../../../../assets/layout/styles/layout/mixin';
+
+.prod-col-content {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    padding: 15px;
+    @include respond-from('mid-desktop') {
+        flex-direction: column;
+    }
+    @include respond-from('tablet-landscape') {
+        flex-direction: row;
+    }
+    .prod-col-ngx-chart {
+        flex: 1;
+    }
+
+    .text-content {
+        flex: 1;
+        display: flex;
+        justify-content: stretch;
+        align-items: center;
+    }
+    
+    .prod-col-text-summary {
+        background-color: #f8f9fd;
+        border-radius: 10px;
+        padding: 30px 15px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+        h3 {
+            color: #f39293;
+            font-size: 16px;
+            font-family: 'Gilroy-bold';
+        }
+
+        h4 {
+            font-family: "Gilroy-Bold";
+            font-size: 16px;
+            line-height: normal;
+            margin: 0;
+        }
+
+        span {
+            font-size: 12px;
+            position: relative;
+            padding-left: 20px;
+            
+            &:before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 1px;
+                border-radius: 100%;
+                width: 12px;
+                height: 12px;
+                background-color: #d1d1d1;
+            }
+        }
+
+        .sub-txt-02 {
+            margin-top: 25px;
+        }
+
+        .prod-col-txt-01{
+            .sub-txt-01 span:before {
+                background-color: #f39293;
+            }
+        } 
+
+        .prod-col-txt-02{
+            h3 {
+                color: #5bd2af;
+            }
+            .sub-txt-01 span:before {
+                background-color: #5bd2af;
+            }
+        }
+        
+    }
+}

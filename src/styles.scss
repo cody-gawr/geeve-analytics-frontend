@@ -82,26 +82,109 @@ html {
     }
     
     table {
-    width: 100%;
-    .mat-header-cell {
-        font-size: 14px !important;
-        font-weight: 600 !important;
-        color: black !important;
-        padding: 0 8px !important;
-    }
-    .mat-cell {
-        padding: 0 8px !important;
-    }
-    .mat-row {
-        cursor: pointer !important;
-        &:hover {
-        background-color: #fafafa !important;
+        width: 100%;
+        .mat-header-cell {
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            color: black !important;
+            padding: 0 8px !important;
         }
-    }
+        .mat-cell {
+            padding: 0 8px !important;
+        }
+        .mat-row {
+            cursor: pointer !important;
+            &:hover {
+            background-color: #fafafa !important;
+            }
+        }
     }
 
     .custom-toggle-buttons .mat-button-toggle-label-content {
         line-height: 34px !important;
+    }
+
+    .chart-container {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 11px 54px #0062531a;
+        padding: 0;
+        flex: 1;
+        .help-tip {
+            position: absolute;
+            right: 8px;
+            top: 8px;
+            font-size: 16px;
+            width: auto;
+        }
+    
+        .chart-title {
+            font-size: 17px;
+            color: #686d6c;
+            font-family: "Gilroy-Bold";
+            font-weight: 500;
+            line-height: 23px;
+            padding: 15px 30px;
+            border-bottom: 2px solid #f3f3f3;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+    
+        .chart-content {
+            display: flex;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            .canvas-wrapper {
+                width: 100%;
+                height: 100%;
+                padding: 15px;
+            }
+            
+            .chart-box {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                gap: 5px;
+                align-items: center;
+                .chart-gauge {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                }
+
+                .chart-foot{
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-around;
+                    padding: 15px 0px 10px;
+                    border-radius: 10px;
+                    color: #5e5e5e;
+                    background: #f8f9fd;
+                    text-align: center;
+                    h3 {
+                        font-family: "Gilroy-Bold";
+                        font-size: 16px;
+                        line-height: normal;
+                    }
+                    span {
+                        font-size: 12px;
+                    }
+                }
+            }
+            
+            .reading-block {
+                color: #454649;
+                font-size: 37px !important;
+                font-family: "Gilroy-Bold";
+            }
+        }
     }
 }
 

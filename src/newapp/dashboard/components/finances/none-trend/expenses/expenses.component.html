@@ -1,0 +1,50 @@
+<div class="chart-container">
+    <mat-icon
+        [matTooltip]="toolTip"
+        matTooltipPosition="below"
+        color="primary"
+        class="help-tip"
+        fontIcon="help"
+    ></mat-icon>
+    <div class="chart-title">
+        Expenses
+    </div>
+    <div class="chart-content">
+        <div class="expenses-content">
+            <div class="expenses-ngx-chart">
+                <ngx-charts-pie-chart
+                        *ngIf="!(isLoading$ | async) && selectedData.length > 0"
+                        [view]="[500, 320]"
+                        [scheme]="colorScheme"
+                        [trimLabels]="true"
+                        [maxLabelLength]="15"
+                        [results]="selectedData"
+                        [legend]="false"
+                        [explodeSlices]="isExplodeSlices"
+                        [labels]="isShowLabels"
+                        [arcWidth]="arcWidth"
+                        [doughnut]="isDoughnut"
+                        [gradient]="isGradient"
+                        [tooltipDisabled]="isTooltipDisabled"
+                        [tooltipText]="pieTooltipText"
+                        [labelFormatting]="pieLabelText"
+                >
+                </ngx-charts-pie-chart>
+                <spin-loader *ngIf="isLoading$ | async"></spin-loader>
+                <spin-loader *ngIf="selectedData.length <= 0" [disableSpin]="true">
+                    No expenses found for the selected period
+                </spin-loader>
+            </div>
+            <div class="benchmarks-content">
+                <h6>Industry Benchmarks</h6>
+                <span><b>Dentist:</b> 35-40%</span><br>
+                <span><b>Lab Fees:</b> 2-4%</span><br>
+                <span><b>Consumables:</b> 6-8%</span><br>
+                <span><b>Advertising:</b> 2-5%</span><br>
+                <span><b>Rent:</b> 4-8%</span><br>
+                <span><b>Wages (non-clinical):</b> 18-23%</span><br>
+                <span><b>EBITDA (profit):</b> 5-25%</span>
+            </div>
+        </div>
+    </div>
+</div>

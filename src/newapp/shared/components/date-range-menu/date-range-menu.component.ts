@@ -3,7 +3,7 @@ import { DATE_RANGE_DURATION } from '@/newapp/models/layout';
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import moment from 'moment';
 
-export const dateRangeMenus: {range: DATE_RANGE_DURATION, label: string}[] = [
+export const DateRangeMenus: {range: DATE_RANGE_DURATION, label: string}[] = [
     { range: 'm', label: 'This Month' }, 
     { range: 'lm', label: 'Last Month' },
     { range: 'q', label: 'This Quarter' },
@@ -20,7 +20,7 @@ export const dateRangeMenus: {range: DATE_RANGE_DURATION, label: string}[] = [
   styleUrls: ['./date-range-menu.component.scss']
 })
 export class DateRangeMenuComponent implements OnInit, OnDestroy {
-  dateRangeMenus = dateRangeMenus;
+  dateRangeMenus = DateRangeMenus;
   constructor(
     private layoutFacade: LayoutFacade
   ) {}

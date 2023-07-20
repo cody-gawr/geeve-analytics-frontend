@@ -32,7 +32,7 @@ export class ClinicFacade {
     select(selectCurrentClinic)
   );
 
-  public readonly currentClinicId$: Observable<'all' | number | null> = this.store.pipe(
+  public readonly currentClinicId$: Observable<string | number | null> = this.store.pipe(
     select(selectCurrentClinicId)
   ); 
 
@@ -40,7 +40,7 @@ export class ClinicFacade {
     this.store.dispatch(ClinicPageActions.loadClinics());
   }
 
-  public setCurrentClinicId(clinicId: 'all' | number | null) {
+  public setCurrentClinicId(clinicId: string | number | null) {
     this.store.dispatch(ClinicPageActions.setCurrentClinicId({ clinicId }));
   }
 }

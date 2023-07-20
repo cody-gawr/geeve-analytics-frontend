@@ -89,10 +89,14 @@ export class AppTopbarComponent implements OnInit {
     });
 
     this.clinicFacade.currentClinicId$.pipe(takeUntil(this.destroy$)).subscribe(c => {
-      this.selectedClinic = c;
-      if(this.selectedClinic != 'all') {
-        this.dashboardFacade.loadClinicAccountingPlatform(this.selectedClinic);
+      if(typeof c != 'string') {
+        this.selectedClinic = c;
+        
+      }else{
+        this.selectedClinic = 'all';
       }
+
+      this.dashboardFacade.loadClinicAccountingPlatform(c);
     });
 
     
@@ -124,6 +128,14 @@ export class AppTopbarComponent implements OnInit {
   }
 
   onChangeCurrentClinic(event) {
-    this.clinicFacade.setCurrentClinicId(event.value);
+    if(event.value != 'all'){
+      this.clinicFacade.setCurrentClinicId(event.value);
+    }else{
+      this.clinics$.pipe(takeUntil(this.destroy$)).subscribe(
+        v => {
+          this.clinicFacade.setCurrentClinicId(v.map(c => c.id).join(','));
+        }
+      );
+    }
   }
 }

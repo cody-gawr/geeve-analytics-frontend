@@ -1,0 +1,58 @@
+<div class="chart-container">
+    <mat-icon
+        [matTooltip]="toolTip"
+        matTooltipPosition="below"
+        color="primary"
+        class="help-tip"
+        fontIcon="help"
+    ></mat-icon>
+    <div class="chart-title">
+        <mat-icon [color]="trendingIcon == 'trending_up'?'primary':'warn'" [fontIcon]="trendingIcon"></mat-icon>
+        <span>
+            Production Per Visit
+        </span>
+    </div>
+    <div class="chart-content">
+        <div class="canvas-wrapper chart-box">
+            <div class="chart-gauge prod-per-visit-gauge">
+                <ngx-gauge
+                    *ngIf="!(isLoading$ | async) && !(isMultipleClinic$ | async)"
+                    type="arch"
+                    [value]="productionVisitVal"
+                    [thick]="20"
+                    prepend="$"
+                    foregroundColor="#4ccfae"
+                    backgroundColor="#f4f0fa"
+                    cap="round"
+                    size="250"
+                >
+                </ngx-gauge>
+                <canvas
+                    *ngIf="!(isLoading$ | async) && (isMultipleClinic$ | async)"
+                    baseChart
+                    [datasets]="datasets"
+                    [labels]="labels"
+                    [legend]="false"
+                    type="bar"
+                    [options]="barChartOptionsTrend"
+                    [colors]="barChartColors"
+                >
+                </canvas>
+                <spin-loader *ngIf="isLoading$ | async"></spin-loader>
+                <spin-loader *ngIf="productionVisitVal <= 0" [disableSpin]="true">
+                    You have no production in the selected period
+                </spin-loader>
+            </div>
+            <div class="chart-foot">
+                <div>
+                    <h3>${{ productionVisitVal | number: '1.0-0' }}</h3>
+                    <span>{{ durationLabel$ | async }}</span>
+                </div>
+                <div>
+                    <h3>${{ productionVisitTrendVal | number: '1.0-0' }}</h3>
+                    <span>{{ durationTrendLabel$ | async }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

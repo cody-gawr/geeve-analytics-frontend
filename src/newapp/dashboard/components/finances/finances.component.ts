@@ -19,20 +19,47 @@ export class FinancesComponent implements OnInit, OnDestroy {
     destroy$ = this.destroy.asObservable();
 
     get netProfitProductionVal$(){
-        return this.financeFacade.netProfitProduction$.pipe(
+        return this.financeFacade.productionVal$.pipe(
+            takeUntil(this.destroy$),
             map(c => Math.round(c??0))
         )
     }
 
     get netProfitVal$(){
         return this.financeFacade.netProfit$.pipe(
+            takeUntil(this.destroy$),
             map(c => Math.round(c??0))
         )
     }
 
     get netProfitPercentageVal$(){
         return this.financeFacade.netProfitPercentage$.pipe(
+            takeUntil(this.destroy$),
             map(c => Math.round(c??0))
+        )
+    }
+
+    get productionPerVisit$() {
+        return this.financeFacade.prodPerVisitTotal$.pipe(
+            takeUntil(this.destroy$),
+            map(v => v)
+        )
+    }
+
+    get collectionVal$() {
+        return this.financeFacade.collectionVal$.pipe(
+            takeUntil(this.destroy$),
+            map(v => v)
+        )
+    }
+
+    get isLoadingCollectionVal$() {
+        return combineLatest([
+            this.financeFacade.isLoadingNetProfitProduction$, 
+            this.financeFacade.isLoadingCollection$
+        ]) .pipe(
+            takeUntil(this.destroy$),
+            map(([v, v1]) => v && v1)
         )
     }
 
@@ -56,6 +83,14 @@ export class FinancesComponent implements OnInit, OnDestroy {
         return this.dashbordFacade.connectedWith$.pipe(map(v => v && v != 'none'));
     }
 
+    
+    get isLoadingProductionPerVisit$() {
+        return this.financeFacade.isLoadingFnProdPerVisit$.pipe(
+            takeUntil(this.destroy$),
+            v => v
+        )
+    };
+
     constructor(
         private dashbordFacade: DashboardFacade,
         private clinicFacade: ClinicFacade,
@@ -74,21 +109,27 @@ export class FinancesComponent implements OnInit, OnDestroy {
         .pipe(
             takeUntil(this.destroy$)
         ).subscribe(([clinicId, startDate, endDate, duration, connectedWith, route]) => {
-            if(clinicId != 'all' && connectedWith && connectedWith != 'none'){
-                this.dashbordFacade.loadChartTips(5, clinicId);
-                const params: FnNetProfitParams = {
-                    clinicId: clinicId,
-                    startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
-                    endDate: endDate && moment(endDate).format('DD-MM-YYYY'),
-                    duration: duration,
-                    queryWhEnabled: route && parseInt(route.wh??'0') == 1?1:0,
-                    connectedWith: connectedWith
-                };
+            this.dashbordFacade.loadChartTips(5, clinicId);
+            const params: FnNetProfitParams = {
+                clinicId: clinicId,
+                startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
+                endDate: endDate && moment(endDate).format('DD-MM-YYYY'),
+                duration: duration,
+                queryWhEnabled: route && parseInt(route.wh??'0') == 1?1:0,
+                connectedWith: connectedWith
+            };
+
+            if( connectedWith && connectedWith != 'none'){
                 this.financeFacade.loadFnNetProfit(params);
-                this.financeFacade.loadFnTotalProduction(params);
                 this.financeFacade.loadFnNetProfitPercentage(params);
                 this.financeFacade.loadFnExpenses(params);
-            }
+            }   
+            
+            this.financeFacade.loadFnTotalProduction(params);
+            this.financeFacade.loadFnProductionByClinician(params);
+            this.financeFacade.loadFnProductionPerVisit(params);
+            this.financeFacade.loadFnTotalDiscounts(params);
+            this.financeFacade.loadFnTotalCollection(params);
         });
     }
 
@@ -103,17 +144,12 @@ export class FinancesComponent implements OnInit, OnDestroy {
         this.destroy.next();
     }
 
-    get netProfitProductionTip$(){
-        return this.chartTips$.pipe(
-            map(c => c&&c[31].info),
-        )
-    }
-
-    get netProfitTip$(){
-        return this.chartTips$.pipe(map(c => c&&c[26].info))
-    }
-
-    get netProfitPercentTip$(){
-        return this.chartTips$.pipe(map(c => c&&c[27].info))
+    getChartTip(index: number) {
+        return this.chartTips$.pipe(map(c => {
+            if(c && c[index]){
+                return c[index].info;
+            }
+            return '';
+        }))
     }
 }

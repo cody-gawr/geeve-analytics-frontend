@@ -8,6 +8,7 @@ import { TimeMaskDirective } from './directives/time-mask.directive';
 import { StatsCardComponent } from './components/stats-card/stats-card.component';
 import { DateRangeMenuComponent } from './components/date-range-menu/date-range-menu.component';
 import { TrendModeToggleComponent } from './components/trend-mode-toggle/trend-mode-toggle.component';
+import { SpinLoaderComponent } from './components/spin-loader/spin-loader.component';
 const modules = [
   AngularMaterialModule,
   ReactiveFormsModule,
@@ -19,7 +20,8 @@ const modules = [
 const components = [
   StatsCardComponent, 
   DateRangeMenuComponent, 
-  TrendModeToggleComponent
+  TrendModeToggleComponent,
+  SpinLoaderComponent
 ];
 
 @NgModule({

@@ -5,6 +5,7 @@ import { LayoutState, selectDateRange, selectDuration, selectEndDate, selectIsFu
 import moment, { isMoment, Moment } from 'moment';
 import { layoutPageActions } from '../state/actions';
 import { DATE_RANGE_DURATION, TREND_MODE } from '@/newapp/models/layout';
+import { DateRangeMenus } from '@/newapp/shared/components/date-range-menu/date-range-menu.component';
 
 @Injectable()
 export class LayoutFacade {
@@ -59,5 +60,20 @@ export class LayoutFacade {
 
   public setTrend(trend: TREND_MODE) {
     this.store.dispatch(layoutPageActions.setTrend({ trend }));
+  }
+
+  get durationLabel$() {
+    return this.duration$.pipe(
+          map(d => {
+              const menu = DateRangeMenus.find(m => m.range == d);
+              if(menu) return menu.label;
+              else return 'Current';
+          })
+      );
+  }
+
+  get durationTrendLabel$() {
+      return this.durationLabel$.pipe(
+          map(l => l.replace(/^Last/g, 'Previous').replace(/^This/g, 'Last')));
   }
 }

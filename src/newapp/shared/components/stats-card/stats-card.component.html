@@ -13,7 +13,8 @@
     <h4>
       {{ label }}
     </h4>
-    <h3>{{ isLoading? 'Calculating...' : value }}</h3>
+    <p *ngIf="isLoading; val">Calculating...</p>
+    <h3 #val>{{ value }}</h3>
   </div>
 </div>
 <ng-template #placeh>

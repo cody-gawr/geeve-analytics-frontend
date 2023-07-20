@@ -1,3 +1,5 @@
+@import '../../../../assets/layout/styles/layout/mixin';
+
 .stats-card {
   display: flex;
   flex-direction: row;
@@ -8,6 +10,13 @@
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 11px 54px #0062531a;
+  @include respond-from('tablet-landscape') {
+    flex-direction: column;
+  }
+
+  @include respond-from('phone') {
+    flex-direction: row;
+  }
 
   .help-tip {
     position: absolute;

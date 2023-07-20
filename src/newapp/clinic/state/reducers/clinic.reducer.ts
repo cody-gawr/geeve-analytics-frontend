@@ -6,7 +6,7 @@ export interface ClinicState {
   success: boolean;
   isLoading: boolean;
   clinics: Clinic[];
-  currentClinicId: 'all' | number | null;
+  currentClinicId: string | number | null;
   error: string | null;
   hasPrimeClinics: 'yes' | 'no';
 }

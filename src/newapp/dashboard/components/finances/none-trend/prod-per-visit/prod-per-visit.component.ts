@@ -1,0 +1,203 @@
+import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
+import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
+import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
+import { DateRangeMenus } from "@/newapp/shared/components/date-range-menu/date-range-menu.component";
+import { splitName } from "@/newapp/shared/utils";
+import { DecimalPipe } from "@angular/common";
+import { Component, OnInit, OnDestroy, Input } from "@angular/core";
+import { ChartOptions } from "chart.js";
+import _ from "lodash";
+import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+
+@Component({
+    selector: 'prod-per-visit-chart',
+    templateUrl: './prod-per-visit.component.html',
+    styleUrls: ['./prod-per-visit.component.scss']
+})
+export class ProductionPerVisitComponent implements OnInit, OnDestroy {
+    @Input() toolTip = '';
+
+    destroy = new Subject<void>();
+    destroy$ = this.destroy.asObservable();
+
+    get trendingIcon() {
+        if(this.productionVisitVal >= this.productionVisitTrendVal){
+            return 'trending_up';
+        }
+        return 'trending_down';
+    };
+
+    productionVisitVal = 0;
+    productionVisitTrendVal = 0;
+
+    datasets = [{data: []}];
+    labels = [];
+
+    get isLoading$() {
+        return this.financeFacade.isLoadingFnProdPerVisit$.pipe(
+            takeUntil(this.destroy$),
+            v => v
+        )
+    };
+
+    get isMultipleClinic$(){
+        return this.clinicFacade.currentClinicId$.pipe(
+          takeUntil(this.destroy$),
+          map(v => typeof v == 'string')
+        )
+    }
+
+    get durationLabel$() {
+        return this.layoutFacade.duration$.pipe(
+            takeUntil(this.destroy$),
+            map(d => {
+                const menu = DateRangeMenus.find(m => m.range == d);
+                if(menu) return menu.label;
+                else return 'Current';
+            })
+        );
+    }
+
+    get durationTrendLabel$() {
+        return this.durationLabel$.pipe(
+            takeUntil(this.destroy$),
+            map(l => l.replace(/^Last/g, 'Previous').replace(/^This/g, 'Last')));
+    }
+
+    constructor(
+        private financeFacade: FinanceFacade,
+        private clinicFacade: ClinicFacade,
+        private layoutFacade: LayoutFacade,
+        private decimalPipe: DecimalPipe
+    ) {
+        
+        
+        combineLatest([
+            this.financeFacade.prodPerVisitTotal$,
+            this.financeFacade.prodPerVisitTrendTotal$,
+            this.financeFacade.prodPerVisitData$,
+        ]).pipe(
+            takeUntil(this.destroy$)
+        ).subscribe(([val, trendVal, visitData]) => {
+            this.productionVisitVal = Math.round(val);
+            this.productionVisitTrendVal = Math.round(trendVal);
+            const chartData = [], chartLabels = [];
+            visitData.forEach( d => {
+                chartData.push(Math.round(parseFloat(<string>d.prodPerVisit??'0')));
+                chartLabels.push(d.clinicName);
+            });
+            
+            this.datasets = [{data: chartData}];
+            this.labels = chartLabels;
+            
+        });
+    }
+
+    ngOnInit(): void {
+    }
+
+    ngOnDestroy(): void {
+        this.destroy.next();
+    }
+
+    public barChartOptionsTrend: ChartOptions<'bar'> = {
+        // scaleShowVerticalLines: false,
+        // cornerRadius: 60,
+        hover: { mode: null },
+        // curvature: 1,
+        animation: {
+          duration: 1500,
+          easing: 'easeOutSine'
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        // scaleStartValue: 0,
+        scales: {
+          x: 
+            {
+              grid: {
+                display: true,
+                offset: true
+              },
+              ticks: {
+                autoSkip: false
+              },
+              display: false,
+              offset: true,
+              stacked: true
+            },
+          y: 
+            {
+              suggestedMin: 0,
+              min: 0,
+              beginAtZero: true,
+              ticks: {
+                callback: (label: number, index, labels) => {
+                  // when the floored value is the same as the value we have a whole number
+                  if (Math.floor(label) === label) {
+                    return '$' + this.decimalPipe.transform(label);
+                  }
+                  return '';
+                }
+              }
+            }
+        },
+        plugins: {
+          tooltip: {
+            mode: 'x',
+            displayColors(ctx, options) {
+              return !ctx.tooltip;
+            },
+            callbacks: {
+              // use label callback to return the desired label
+              label: (tooltipItem) => {
+                const v =
+                tooltipItem.parsed.y;
+                let Tlable = tooltipItem.dataset.label;
+                if (Tlable != '') {
+                  Tlable = Tlable + ': ';
+                }
+                let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+                if (ylable == 0 && Tlable == 'Target: ') {
+                  //return  Tlable + this.splitName(tooltipItem.xLabel).join(' ');
+                  return '';
+                } else {
+                  return (
+                    Tlable +
+                    splitName(tooltipItem.label).join(' ') +
+                    ': $' +
+                    ylable
+                  );
+                }
+              },
+              // remove title
+              title: function (tooltipItem) {
+                return;
+              }
+            }
+          },
+          legend: {
+            position: 'top',
+            onClick: function (e, legendItem) {
+              var index = legendItem.datasetIndex;
+              var ci = this.chart;
+              if (index == 0) {
+                ci.getDatasetMeta(1).hidden = true;
+                ci.getDatasetMeta(index).hidden = false;
+              } else if (index == 1) {
+                ci.getDatasetMeta(0).hidden = true;
+                ci.getDatasetMeta(index).hidden = false;
+              }
+              ci.update();
+            }
+          }
+        },
+    
+    };
+
+    barChartColors = [
+        { backgroundColor: '#39acac' },
+        { backgroundColor: '#48daba' }
+    ];
+
+}

@@ -26,13 +26,13 @@ export class DashboardFacade {
     select(selectConnectedWith)
   )
 
-  public loadChartTips(dashboardId: number, clinicId: number) {
+  public loadChartTips(dashboardId: number, clinicId: string | number) {
     this.store.dispatch(
       DashboardPageActions.loadChartTips({ dashboardId, clinicId })
     );
   }
 
-  public loadClinicAccountingPlatform(clinicId: number) {
+  public loadClinicAccountingPlatform(clinicId: string | number) {
     this.store.dispatch(
       DashboardPageActions.loadClinicAccountingPlatform({ clinicId })
     );
