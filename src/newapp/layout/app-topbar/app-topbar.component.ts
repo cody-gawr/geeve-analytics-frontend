@@ -1,12 +1,9 @@
-import { MenuService } from '../../shared/services/menu.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import moment, { Moment } from 'moment';
 import { map, Observable, Subject, takeUntil, combineLatest } from 'rxjs';
 import { LayoutFacade } from '../facades/layout.facade';
-import { Clinic } from '@/newapp/models/clinic';
-import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
@@ -66,7 +63,7 @@ export class AppTopbarComponent implements OnInit {
   selectedClinic: 'all' | number | null = null;
 
   constructor(
-    private menuService: MenuService,
+    // private menuService: MenuService,
     private layoutFacade: LayoutFacade,
     // private dentistFacade: DentistFacade,
     private dashboardFacade: DashboardFacade,
@@ -74,12 +71,15 @@ export class AppTopbarComponent implements OnInit {
     private authFacade: AuthFacade,
   ) {
     // this.dentistFacade.loadDentists();
-    this.menuService.menuSource$
-      .pipe(
-        takeUntil(this.destroy$),
-        map((menu) => menu.key),
-      )
-      .subscribe((v) => (this.title = v));
+    // this.menuService.menuSource$
+    //   .pipe(
+    //     takeUntil(this.destroy$),
+    //     map((menu) => menu.key),
+    //   )
+    //   .subscribe((v) => {this.title = v});
+    this.layoutFacade.activatedRouteTitle$.pipe(
+      takeUntil(this.destroy$),
+    ).subscribe( v => (this.title = v));
 
     this.layoutFacade.dateRange$.pipe(
       takeUntil(this.destroy$)
@@ -98,8 +98,6 @@ export class AppTopbarComponent implements OnInit {
 
       this.dashboardFacade.loadClinicAccountingPlatform(c);
     });
-
-    
 
     this.clinicFacade.clinics$.pipe(
       takeUntil(this.destroy$)

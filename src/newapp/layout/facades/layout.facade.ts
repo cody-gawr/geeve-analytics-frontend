@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable, map, filter } from 'rxjs';
-import { LayoutState, selectDateRange, selectDuration, selectEndDate, selectIsFullMonthsDateRange, selectStartDate, selectTrend } from '../state/reducers/layout.reducer';
+import { LayoutState, selectActivatedRouteTitle, selectDateRange, selectDuration, selectEndDate, selectIsFullMonthsDateRange, selectStartDate, selectTrend } from '../state/reducers/layout.reducer';
 import moment, { isMoment, Moment } from 'moment';
 import { layoutPageActions } from '../state/actions';
 import { DATE_RANGE_DURATION, TREND_MODE } from '@/newapp/models/layout';
@@ -12,6 +12,10 @@ export class LayoutFacade {
   constructor(
     private readonly store: Store<LayoutState>
   ) {}
+
+  public readonly activatedRouteTitle$ = this.store.pipe(
+    select(selectActivatedRouteTitle)
+  );
 
   public readonly startDate$: Observable<Moment | null > = this.store.pipe(
     select(selectStartDate),
@@ -60,6 +64,10 @@ export class LayoutFacade {
 
   public setTrend(trend: TREND_MODE) {
     this.store.dispatch(layoutPageActions.setTrend({ trend }));
+  }
+
+  public setActivatedRouteTitle(title: string) {
+    this.store.dispatch(layoutPageActions.setActivatedRouteTitle({ title }));
   }
 
   get durationLabel$() {

@@ -1,0 +1,32 @@
+<div class="chart-container">
+    <mat-icon
+        [matTooltip]="toolTip"
+        matTooltipPosition="below"
+        color="primary"
+        class="help-tip"
+        fontIcon="help"
+    ></mat-icon>
+    <div class="chart-title">
+        Production & Collection
+    </div>
+    <div class="chart-content flex-column">
+        <div class="prod-collection-trend-chart">
+            <spin-loader *ngIf="isLoading$ | async; else chartElement"></spin-loader>
+            <ng-template #chartElement>
+                <canvas
+                    *ngIf="hasData"
+                    baseChart
+                    [datasets]="datasets"
+                    [labels]="labels"
+                    [options]="labelBarOptions"
+                    [legend]="true"
+                    type="bar"
+                >
+                </canvas>
+            </ng-template>
+            <spin-loader *ngIf="!hasData && !(isLoading$ | async)" [disableSpin]="true">
+                You have no data in the selected period
+            </spin-loader>
+        </div>
+    </div>
+</div>

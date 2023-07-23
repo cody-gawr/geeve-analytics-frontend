@@ -17,11 +17,19 @@ import { financeFeature } from './state/reducers/finance.reducer';
 import { FinanceExpensesComponent } from './components/finances/none-trend/expenses/expenses.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { NgChartsModule as ChartsModule } from 'ng2-charts';
-import { ProductionPerClinicComponent } from './components/finances/none-trend/prod-per-clinic/prod-per-clinic.component';
+import { FinanceProdPerClinicComponent } from './components/finances/none-trend/prod-per-clinic/prod-per-clinic.component';
 import { NgxGaugeModule } from 'ngx-gauge';
-import { ProductionPerVisitComponent } from './components/finances/none-trend/prod-per-visit/prod-per-visit.component';
-import { TotalDiscountComponent } from './components/finances/none-trend/total-discount/total-discount.component';
-import { ProdCollectionComponent } from './components/finances/none-trend/prod-collection/prod-collection.component';
+import { FinanceProdPerVisitComponent } from './components/finances/none-trend/prod-per-visit/prod-per-visit.component';
+import { FinanceTotalDiscountComponent } from './components/finances/none-trend/total-discount/total-discount.component';
+import { FinanceProdColComponent } from './components/finances/none-trend/prod-collection/prod-collection.component';
+import { NoneTrendFinanceComponent } from './components/finances/none-trend/none-trend.component';
+import { FinanceProdTrendComponent } from './components/finances/trend/production/production.component';
+import { TrendFinanceComponent } from './components/finances/trend/trend.component';
+import { FinanceProdPerVisitTrendComponent } from './components/finances/trend/prod-per-visit-trend/prod-per-visit-trend.component';
+import { FinanceExpenseTrendComponent } from './components/finances/trend/expense-trend/expense-trend.component';
+import { FinanceProdPerClinicTrendComponent } from './components/finances/trend/prod-per-clinic-trend/prod-per-clinic-trend.component';
+import { FinanceTotalDiscountTrendComponent } from './components/finances/trend/total-discount-trend/total-discount-trend.component';
+import { FinanceProdColTrendComponent } from './components/finances/trend/prod-col-trend/prod-col-trend.component';
 
 @NgModule({
   imports: [
@@ -38,11 +46,20 @@ import { ProdCollectionComponent } from './components/finances/none-trend/prod-c
   ],
   declarations: [
     FinancesComponent, 
+    NoneTrendFinanceComponent,
+    TrendFinanceComponent,
+
     FinanceExpensesComponent,
-    ProductionPerClinicComponent,
-    ProductionPerVisitComponent,
-    TotalDiscountComponent,
-    ProdCollectionComponent
+    FinanceProdPerClinicComponent,
+    FinanceProdPerVisitComponent,
+    FinanceTotalDiscountComponent,
+    FinanceProdColComponent,
+    FinanceProdTrendComponent,
+    FinanceProdPerVisitTrendComponent,
+    FinanceExpenseTrendComponent,
+    FinanceProdPerClinicTrendComponent,
+    FinanceTotalDiscountTrendComponent,
+    FinanceProdColTrendComponent
   ],
   providers: [
     DashboardService, 

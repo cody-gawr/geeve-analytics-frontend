@@ -13,10 +13,10 @@ import {
   MatTreeFlattener
 } from '@angular/material/tree';
 import { NavigationEnd, Router } from '@angular/router';
-import { MenuService } from '../../shared/services/menu.service';
 import { AuthFacade } from '../../auth/facades/auth.facade';
 import { environment } from '@/environments/environment';
 import { ClinicFacade } from '../../clinic/facades/clinic.facade';
+import { LayoutFacade } from '../facades/layout.facade';
 
 /**
  * Menu data with nested structure.
@@ -343,9 +343,10 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private menuService: MenuService,
+    // private menuService: MenuService,
     private authFacade: AuthFacade,
-    private clinicFacade: ClinicFacade
+    private clinicFacade: ClinicFacade,
+    private layoutFacade: LayoutFacade
   ) {
     this.dataSource.data = [];
     this.authFacade.getRolesIndividual();
@@ -388,16 +389,18 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
           this.updateActivateState(node.title);
         }
       });
+
     this.activedTitle$.subscribe((v) => {
       this.activedTitle = v;
     });
   }
 
   get activedTitle$(): Observable<string> {
-    return this.menuService.menuSource$.pipe(
-      takeUntil(this.destroy$),
-      map((v) => v.key)
-    );
+    // return this.menuService.menuSource$.pipe(
+    //   takeUntil(this.destroy$),
+    //   map((v) => v.key)
+    // );
+    return this.layoutFacade.activatedRouteTitle$;
   }
 
   hasChild = (_: number, node: MenuFlatNode) => node.expandable;
@@ -415,10 +418,11 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   updateActivateState(title: string) {
-    this.menuService.onMenuStateChange({
-      key: title,
-      routeEvent: true
-    });
+    this.layoutFacade.setActivatedRouteTitle(title);
+    // this.menuService.onMenuStateChange({
+    //   key: title,
+    //   routeEvent: true
+    // });
   }
 
   findNodeByPath(path: string, menuNodes: MenuNode[]): MenuNode | undefined {

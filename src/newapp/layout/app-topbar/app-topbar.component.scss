@@ -8,7 +8,7 @@
   flex-direction: column;
   justify-items: flex-start;
   align-items: flex-start;
-  @include respond-to('tablet-landscape') {
+  @include respond-to('phone') {
     padding: 10px 30px 10px 0;
   }
   .menu-wrapper {
@@ -39,11 +39,12 @@
       align-items: center;
       width: 100%;
       .dynamic-top-section {
-
-
-        
         display: flex;
         flex: 1;
+        gap: 15px;
+        @include respond-from('phone') {
+          flex-direction: column;
+        }
 
         .date-picker-wrapper{
           display: flex;

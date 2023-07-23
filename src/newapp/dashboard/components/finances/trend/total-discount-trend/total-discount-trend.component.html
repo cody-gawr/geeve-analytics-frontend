@@ -1,0 +1,32 @@
+<div class="chart-container">
+    <mat-icon
+        [matTooltip]="toolTip"
+        matTooltipPosition="below"
+        color="primary"
+        class="help-tip"
+        fontIcon="help"
+    ></mat-icon>
+    <div class="chart-title">
+        Total Discounts
+    </div>
+    <div class="chart-content flex-column">
+        <div class="total-discount-trend-chart">
+            <spin-loader *ngIf="isLoading$ | async; else chartElement"></spin-loader>
+            <ng-template #chartElement>
+                <canvas
+                    *ngIf="datasets.length > 0 && datasets[0].data.length > 0"
+                    baseChart
+                    [datasets]="datasets"
+                    [labels]="labels"
+                    [options]="chartOptions$ | async"
+                    [legend]="false"
+                    [type]="chartType$ | async"
+                >
+                </canvas>
+            </ng-template>
+            <spin-loader *ngIf="!(datasets.length > 0 && datasets[0].data.length > 0) && !(isLoading$ | async)" [disableSpin]="true">
+                You have no data in the selected period
+            </spin-loader>
+        </div>
+    </div>
+</div>

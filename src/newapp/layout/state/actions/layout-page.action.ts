@@ -27,3 +27,8 @@ export const setTrend = createAction(
   '[Layout Pages] Set Trend Mode',
   props<{ trend: TREND_MODE}>()
 );
+
+export const setActivatedRouteTitle = createAction(
+  '[Layout Pages] Set Activated Route Title',
+  props<{ title: string}>()
+);

@@ -11,7 +11,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from '../auth/state/effects/auth.effects';
 import { StoreModule } from '@ngrx/store';
 import { authFeature } from '../auth/state/reducers/auth.reducer';
-import { MenuService } from '../shared/services/menu.service';
 import { clinicFeature } from '../clinic/state/reducers/clinic.reducer';
 import { ClinicEffects } from '../clinic/state/effects/clinic.effects';
 import { AppLayoutService } from './services/app-layout.service';
@@ -31,7 +30,7 @@ const components = [
 ];
 
 const services = [
-  AuthFacade, MenuService,
+  AuthFacade,
   AppLayoutService, ClinicFacade,
   LayoutFacade, DentistFacade
 ];

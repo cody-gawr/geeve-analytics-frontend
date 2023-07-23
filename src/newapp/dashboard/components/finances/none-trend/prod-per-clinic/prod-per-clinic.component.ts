@@ -11,7 +11,7 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
     templateUrl: './prod-per-clinic.component.html',
     styleUrls: ['./prod-per-clinic.component.scss']
 })
-export class ProductionPerClinicComponent implements OnInit, OnDestroy {
+export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
     @Input() toolTip = '';
 
     destroy = new Subject<void>();
@@ -52,12 +52,12 @@ export class ProductionPerClinicComponent implements OnInit, OnDestroy {
             clinicId,
             prodByClinicianTotal, 
             prodByClinicianTrendTotal, 
-            productionChartData,
+            prodByClinicData,
         ]) => {
             // missing sort
               const chartData = [], chartLabels = [];
               let chartTotal = 0;
-              productionChartData.forEach((val, index) => {
+              prodByClinicData.forEach((val, index) => {
                 if(typeof clinicId == 'number'){
                   const prodPerClinician = Math.round(parseFloat(<string>val.prodPerClinician));
                   

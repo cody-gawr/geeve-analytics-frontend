@@ -1,4 +1,6 @@
 .date-range-menu {
+    display: flex;
+    flex-wrap: wrap;
     button {
       color: #919191;
       font-size: 13px;

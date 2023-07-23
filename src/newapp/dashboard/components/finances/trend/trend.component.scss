@@ -1,0 +1,26 @@
+@import '../../../../../assets/layout/styles/layout/mixin';
+
+.trend-finances {
+    gap: 15px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .trend-chart {
+        display: flex;
+        flex-direction: column;
+        @include respond-from('big-desktop') {
+            width: calc(50% - 7.5px);
+        }
+    }
+
+    // .chart-row{
+    //     display: flex;
+    //     flex-direction: row;
+    //     justify-content: stretch;
+    //     align-items: stretch;
+    //     gap: 15px;
+    //     @include respond-from('tablet-landscape') {
+    //       flex-direction: column;
+    //     }
+    // }
+}

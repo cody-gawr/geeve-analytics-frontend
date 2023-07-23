@@ -104,6 +104,10 @@ html {
         line-height: 34px !important;
     }
 
+    .flex-column {
+        // flex-direction: column;
+    }
+
     .chart-container {
         display: flex;
         flex-direction: column;
@@ -136,7 +140,7 @@ html {
     
         .chart-content {
             display: flex;
-            height: 100%;
+            flex: 1;
             justify-content: center;
             align-items: center;
             .canvas-wrapper {

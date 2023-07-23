@@ -14,7 +14,7 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
     templateUrl: './prod-per-visit.component.html',
     styleUrls: ['./prod-per-visit.component.scss']
 })
-export class ProductionPerVisitComponent implements OnInit, OnDestroy {
+export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
     @Input() toolTip = '';
 
     destroy = new Subject<void>();

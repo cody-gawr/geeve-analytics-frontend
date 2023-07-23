@@ -14,7 +14,7 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
     templateUrl: './total-discount.component.html',
     styleUrls: ['./total-discount.component.scss']
 })
-export class TotalDiscountComponent implements OnInit, OnDestroy {
+export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
     @Input() toolTip = '';
 
     destroy = new Subject<void>();
@@ -67,19 +67,19 @@ export class TotalDiscountComponent implements OnInit, OnDestroy {
             this.clinicFacade.currentClinicId$,
             this.financeFacade.totalDiscountTotal$,
             this.financeFacade.totalDiscountTrendTotal$,
-            this.financeFacade.totalDiscountChartData$,
+            this.financeFacade.totalDiscountData$,
         ]).pipe(
             takeUntil(this.destroy$)
         ).subscribe(([
             clinicId,
             totalDiscountTotal, 
             totalDiscountTrendTotal, 
-            totalDiscountChartData
+            totalDiscountData
         ]) => {
             const chartData = [], chartLabels = [];
 
             if(typeof clinicId == 'string'){
-                const data = _.chain(totalDiscountChartData).groupBy('clinicId').map(
+                const data = _.chain(totalDiscountData).groupBy('clinicId').map(
                     (values, cId) => {
                         return {
                             clinicName: values[0].clinicName,
@@ -95,7 +95,7 @@ export class TotalDiscountComponent implements OnInit, OnDestroy {
 
             }else{
 
-                totalDiscountChartData.forEach((val, index) => {
+                totalDiscountData.forEach((val, index) => {
                     const discounts = Math.round(parseFloat(<string>val.discounts));
                     if(discounts > 0){
                         chartData.push(discounts);

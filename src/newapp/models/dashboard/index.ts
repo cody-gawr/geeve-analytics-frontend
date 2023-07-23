@@ -21,6 +21,14 @@ export interface FnTotalProductionApiResponse {
   totalTa: number;
 }
 
+export interface FnTotalProductionTrendApiResponse {
+  app: string;
+  data: FnTotalProductionItem[];
+  goals: number;
+  message: string;
+  status: string | number;
+}
+
 export interface FnTotalCollectionApiResponse {
   app: string;
   data: FnTotalCollectionItem[];
@@ -32,11 +40,52 @@ export interface FnTotalCollectionApiResponse {
   totalTa: number;
 }
 
+export interface FnTotalCollectionTrendApiResponse {
+  app: string;
+  data: FnTotalCollectionItem[];
+  message: string;
+  status: string | number;
+}
+
 export interface FnNetProfitApiResponse {
   app: string;
   data: number;
   message: string;
   status: string | number;
+}
+
+export interface FnNetProfitTrendApiResponse {
+  app: string;
+  data: FnNetProfitTrendItem[];
+  message: string;
+  status: string | number;
+}
+
+export interface FnNetProfitPercentTrendApiResponse {
+  app: string;
+  data: FnNetProfitPercentTrendItem[];
+  message: string;
+  status: string | number;
+}
+
+export interface FnNetProfitTrendItem {
+  clinicId: number;
+  clinicName: string;
+  month: number;
+  netProfit: string | number;
+  year: number;
+  yearMonth: string;
+}
+
+export interface FnNetProfitPercentTrendItem {
+  clinicId: number;
+  clinicName: string;
+  collection: string | number;
+  month: number;
+  netProfit: string | number;
+  netProfitPercent: string | number;
+  year: number;
+  yearMonth: string;
 }
 
 export interface FnNetProfitParams {
@@ -57,6 +106,14 @@ export interface FnExpensesApiResponse {
   status: string | number;
 }
 
+export interface FnExpensesTrendApiResponse {
+  app: string;
+  data: FnExpensesDataItem[];
+  durations: string[];
+  message: string;
+  status: string | number;
+}
+
 export interface FnProductionByClinicianApiResponse {
   app: string;
   data: FnProductionByClinicianItem[];
@@ -67,6 +124,24 @@ export interface FnProductionByClinicianApiResponse {
   totalTa: number;
 }
 
+export interface FnProdByClinicianTrendApiResponse {
+  app: string;
+  data: FnProdByClinicianTrendItem[];
+  mesage: string;
+  status: string | number;
+  total: number;
+}
+
+export interface FnProdByClinicianTrendItem {
+  duration: string,
+  val: Array<{
+    prodPerClinician?: string,
+    providerName?: string,
+    production?: string,
+    clinicName?: string;
+  }>
+}
+
 export interface FnProductionPerVisitApiResponse {
   app: string;
   data: FnProductionPerVisitItem[];
@@ -75,6 +150,13 @@ export interface FnProductionPerVisitApiResponse {
   total: number;
   totalAverage: number;
   totalTa: number;
+}
+
+export interface FnProdPerVisitTrendApiResponse {
+  app: string;
+  data: FnProductionPerVisitItem[];
+  mesage: string;
+  status: string | number;
 }
 
 export interface FnTotalDiscountItem {
@@ -98,6 +180,13 @@ export interface FnTotalDiscountsApiResponse {
   total: number;
   totalAverage: number;
   totalTa: number;
+}
+
+export interface FnTotalDiscountsTrendApiResponse {
+  app: string;
+  data: FnTotalDiscountItem[];
+  mesage: string;
+  status: string | number;
 }
 
 export interface FnProductionByClinicianItem {

@@ -1,25 +1,29 @@
 @import '../../../../../../assets/layout/styles/layout/mixin';
 
 .prod-col-content {
-    flex: 1;
+    width: 100%;
     display: flex;
     flex-direction: row;
     padding: 15px;
-    @include respond-from('mid-desktop') {
+    gap: 10px;
+    @include respond-from('tablet-landscape') {
         flex-direction: column;
     }
-    @include respond-from('tablet-landscape') {
-        flex-direction: row;
-    }
     .prod-col-ngx-chart {
-        flex: 1;
+        width: 50%;
+        @include respond-from('tablet-landscape') {
+            width: 100%;
+        }
     }
 
     .text-content {
-        flex: 1;
+        width: 50%;
         display: flex;
         justify-content: stretch;
         align-items: center;
+        @include respond-from('tablet-landscape') {
+            width: 100%;
+        }
     }
     
     .prod-col-text-summary {

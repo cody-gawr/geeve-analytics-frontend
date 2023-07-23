@@ -18,78 +18,12 @@ export class FinancesComponent implements OnInit, OnDestroy {
     destroy = new Subject<void>();
     destroy$ = this.destroy.asObservable();
 
-    get netProfitProductionVal$(){
-        return this.financeFacade.productionVal$.pipe(
+    get isTrend$(){
+        return this.layoutFacade.trend$.pipe(
             takeUntil(this.destroy$),
-            map(c => Math.round(c??0))
+            map(t => t !== 'off')
         )
     }
-
-    get netProfitVal$(){
-        return this.financeFacade.netProfit$.pipe(
-            takeUntil(this.destroy$),
-            map(c => Math.round(c??0))
-        )
-    }
-
-    get netProfitPercentageVal$(){
-        return this.financeFacade.netProfitPercentage$.pipe(
-            takeUntil(this.destroy$),
-            map(c => Math.round(c??0))
-        )
-    }
-
-    get productionPerVisit$() {
-        return this.financeFacade.prodPerVisitTotal$.pipe(
-            takeUntil(this.destroy$),
-            map(v => v)
-        )
-    }
-
-    get collectionVal$() {
-        return this.financeFacade.collectionVal$.pipe(
-            takeUntil(this.destroy$),
-            map(v => v)
-        )
-    }
-
-    get isLoadingCollectionVal$() {
-        return combineLatest([
-            this.financeFacade.isLoadingNetProfitProduction$, 
-            this.financeFacade.isLoadingCollection$
-        ]) .pipe(
-            takeUntil(this.destroy$),
-            map(([v, v1]) => v && v1)
-        )
-    }
-
-    get isLoadingNetProfitProduction$() {
-        return this.financeFacade.isLoadingNetProfitProduction$;
-    }
-
-    get isLoadingNetProfit$() {
-        return this.financeFacade.isLoadingNetProfit$;
-    }
-
-    get isLoadingNetProfitPercentage$() {
-        return this.financeFacade.isLoadingNetProfitPercentage$;
-    }
-
-    get isFullMonthsDateRange$() {
-        return this.layoutFacade.isFullMonthsDateRange$;
-    }
-
-    get isConnectedWith$() {
-        return this.dashbordFacade.connectedWith$.pipe(map(v => v && v != 'none'));
-    }
-
-    
-    get isLoadingProductionPerVisit$() {
-        return this.financeFacade.isLoadingFnProdPerVisit$.pipe(
-            takeUntil(this.destroy$),
-            v => v
-        )
-    };
 
     constructor(
         private dashbordFacade: DashboardFacade,
@@ -104,37 +38,130 @@ export class FinancesComponent implements OnInit, OnDestroy {
             this.layoutFacade.endDate$,
             this.layoutFacade.duration$,
             this.dashbordFacade.connectedWith$,
-            this.router.routerState.root.queryParams
+            this.router.routerState.root.queryParams,
+            this.layoutFacade.trend$
         ])
         .pipe(
             takeUntil(this.destroy$)
-        ).subscribe(([clinicId, startDate, endDate, duration, connectedWith, route]) => {
+        ).subscribe(([clinicId, startDate, endDate, duration, connectedWith, route, trend]) => {
             this.dashbordFacade.loadChartTips(5, clinicId);
-            const params: FnNetProfitParams = {
-                clinicId: clinicId,
-                startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
-                endDate: endDate && moment(endDate).format('DD-MM-YYYY'),
-                duration: duration,
-                queryWhEnabled: route && parseInt(route.wh??'0') == 1?1:0,
-                connectedWith: connectedWith
-            };
+            const queryWhEnabled = route && parseInt(route.wh??'0') == 1?1:0;
+            switch(trend){
+                case 'off':
+                    const params: FnNetProfitParams = {
+                        clinicId: clinicId,
+                        startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
+                        endDate: endDate && moment(endDate).format('DD-MM-YYYY'),
+                        duration: duration,
+                        queryWhEnabled,
+                        connectedWith: connectedWith
+                    };
+        
+                    if( connectedWith && connectedWith != 'none'){
+                        this.financeFacade.loadFnNetProfit(params);
+                        this.financeFacade.loadFnNetProfitPercentage(params);
+                        this.financeFacade.loadFnExpenses(params);
+                    }   
+                    
+                    this.financeFacade.loadFnTotalProduction(params);
+                    this.financeFacade.loadFnProductionByClinician(params);
+                    this.financeFacade.loadFnProductionPerVisit(params);
+                    this.financeFacade.loadFnTotalDiscounts(params);
+                    this.financeFacade.loadFnTotalCollection(params);
+                    break;
+                case 'current':
+                    this.financeFacade.loadFnTotalProductionTrend(
+                        clinicId,
+                        'c',
+                        queryWhEnabled
+                    );
+                    this.financeFacade.loadFnTotalCollectionTrend(
+                        clinicId,
+                        'c',
+                        queryWhEnabled
+                    );
+                    this.financeFacade.loadFnNetProfitTrend(
+                        clinicId,
+                        'c',
+                        connectedWith,
+                        queryWhEnabled
+                    );
+                    this.financeFacade.loadFnNetProfitPercentageTrend(
+                        clinicId,
+                        'c',
+                        connectedWith,
+                        queryWhEnabled
+                    );
+                    this.financeFacade.loadFnProductionPerVisitTrend(
+                        clinicId,
+                        'c',
+                        queryWhEnabled
+                    );
+                    this.financeFacade.loadFnExpensesTrend(
+                        clinicId,
+                        'c',
+                        connectedWith,
+                        queryWhEnabled
+                    );
+                    this.financeFacade.loadFnTotalDiscountsTrend(
+                        clinicId,
+                        'c',
+                        queryWhEnabled
+                    );
+                    this.financeFacade.loadFnProductionByClinicianTrend(
+                        clinicId,
+                        'c',
+                        queryWhEnabled
+                    );
+                    break;
+                case 'historic':
+                    this.financeFacade.loadFnTotalProductionTrend(
+                        clinicId,
+                        'h',
+                        queryWhEnabled
+                    )
+                    this.financeFacade.loadFnTotalCollectionTrend(
+                        clinicId,
+                        'h',
+                        queryWhEnabled
+                    )
+                    this.financeFacade.loadFnNetProfitTrend(
+                        clinicId,
+                        'h',
+                        connectedWith,
+                        queryWhEnabled
+                    );
+                    this.financeFacade.loadFnNetProfitPercentageTrend(
+                        clinicId,
+                        'h',
+                        connectedWith,
+                        queryWhEnabled
+                    );
+                    this.financeFacade.loadFnProductionPerVisitTrend(
+                        clinicId,
+                        'h',
+                        queryWhEnabled
+                    );
+                    this.financeFacade.loadFnExpensesTrend(
+                        clinicId,
+                        'h',
+                        connectedWith,
+                        queryWhEnabled
+                    );
+                    this.financeFacade.loadFnTotalDiscountsTrend(
+                        clinicId,
+                        'h',
+                        queryWhEnabled
+                    );
+                    this.financeFacade.loadFnProductionByClinicianTrend(
+                        clinicId,
+                        'h',
+                        queryWhEnabled
+                    );
+                    break;
+            }
 
-            if( connectedWith && connectedWith != 'none'){
-                this.financeFacade.loadFnNetProfit(params);
-                this.financeFacade.loadFnNetProfitPercentage(params);
-                this.financeFacade.loadFnExpenses(params);
-            }   
-            
-            this.financeFacade.loadFnTotalProduction(params);
-            this.financeFacade.loadFnProductionByClinician(params);
-            this.financeFacade.loadFnProductionPerVisit(params);
-            this.financeFacade.loadFnTotalDiscounts(params);
-            this.financeFacade.loadFnTotalCollection(params);
         });
-    }
-
-    get chartTips$(){
-        return this.dashbordFacade.chartTips$;
     }
 
     ngOnInit(): void {
@@ -142,14 +169,5 @@ export class FinancesComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.destroy.next();
-    }
-
-    getChartTip(index: number) {
-        return this.chartTips$.pipe(map(c => {
-            if(c && c[index]){
-                return c[index].info;
-            }
-            return '';
-        }))
     }
 }

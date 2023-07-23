@@ -8,11 +8,12 @@
     @include respond-from('mid-desktop') {
         flex-direction: column;
     }
-    @include respond-from('tablet-landscape') {
-        flex-direction: row;
-    }
+
     .expenses-ngx-chart {
         flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .benchmarks-content {

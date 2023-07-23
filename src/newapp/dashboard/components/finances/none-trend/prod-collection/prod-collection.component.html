@@ -13,6 +13,7 @@
         <div class="prod-col-content">
             <div class="prod-col-ngx-chart">
                 <canvas
+                    #myCanvas
                     *ngIf="!(isLoading$ | async)"
                     baseChart
                     [datasets]="datasets"

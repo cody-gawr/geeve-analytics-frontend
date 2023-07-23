@@ -3,7 +3,7 @@ import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
 import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
 import { DateRangeMenus } from "@/newapp/shared/components/date-range-menu/date-range-menu.component";
 import { JeeveLineFillOptions } from "@/newapp/shared/utils";
-import { Component, OnInit, OnDestroy, Input } from "@angular/core";
+import { Component, OnInit, OnDestroy, Input, ViewChild, ElementRef } from "@angular/core";
 import { ChartOptions, LegendOptions } from "chart.js";
 import _, { forEach } from "lodash";
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
@@ -14,11 +14,11 @@ import { _DeepPartialObject } from "chart.js/dist/types/utils";
     templateUrl: './prod-collection.component.html',
     styleUrls: ['./prod-collection.component.scss']
 })
-export class ProdCollectionComponent implements OnInit, OnDestroy {
+export class FinanceProdColComponent implements OnInit, OnDestroy {
     @Input() toolTip = '';
     get isLoading$() {
         return combineLatest([
-            this.financeFacade.isLoadingNetProfitProduction$, 
+            this.financeFacade.isLoadingTotalProduction$, 
             this.financeFacade.isLoadingCollection$
         ]) .pipe(
             takeUntil(this.destroy$),
@@ -77,8 +77,8 @@ export class ProdCollectionComponent implements OnInit, OnDestroy {
     ) {
         combineLatest([
             this.financeFacade.productionVal$,
-            this.financeFacade.prodChartData$,
-            this.financeFacade.collectionChartData$,
+            this.financeFacade.prodData$,
+            this.financeFacade.collectionData$,
             this.financeFacade.collectionVal$,
             this.clinicFacade.currentClinicId$
         ])
@@ -122,6 +122,10 @@ export class ProdCollectionComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+      
+    }
+
+    ngAfterViewInit(): void {
     }
 
     ngOnDestroy(): void {

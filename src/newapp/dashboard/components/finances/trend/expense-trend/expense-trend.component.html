@@ -1,0 +1,35 @@
+<div class="chart-container">
+    <mat-icon
+        [matTooltip]="toolTip"
+        matTooltipPosition="below"
+        color="primary"
+        class="help-tip"
+        fontIcon="help"
+    ></mat-icon>
+    <div class="chart-title">
+        Expenses
+    </div>
+    <div class="chart-content flex-column">
+        <div class="expense-trend-chart">
+            <spin-loader *ngIf="isLoading$ | async; else chartElement"></spin-loader>
+            <ng-template #chartElement>
+                <canvas
+                    *ngIf="datasets.length > 0 && datasets[0].data.length > 0 && isConnectedWith$ | async"
+                    baseChart
+                    [datasets]="datasets"
+                    [labels]="labels"
+                    [options]="stackedChartOptions"
+                    [legend]="false"
+                    type="bar"
+                >
+                </canvas>
+            </ng-template>
+            <spin-loader *ngIf="!(isConnectedWith$ | async)" [disableSpin]="true">
+                Please connect to Xero/MYOB to display this chart
+            </spin-loader>
+            <spin-loader *ngIf="!(datasets.length > 0 && datasets[0].data.length > 0) && !(isLoading$ | async)" [disableSpin]="true">
+                You have no data in the selected period
+            </spin-loader>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+@import '../../../../../assets/layout/styles/layout/mixin';
+
+.none-trend-finances {
+    gap: 30px;
+    display: flex;
+    flex-direction: column;
+
+    .chart-list{
+        gap: 15px;
+        display: flex;
+        flex-direction: column;
+      }
+    .stats-card-list {
+        display: flex;
+        flex-direction: row;
+        gap: 25px;
+        justify-content: space-around;
+        @include respond-from('phone') {
+          flex-direction: column;
+        }
+        .stats-card-finance {
+          flex: 1;
+        }
+    }
+    .chart-row{
+        display: flex;
+        flex-direction: row;
+        justify-content: stretch;
+        align-items: stretch;
+        gap: 15px;
+        @include respond-from('tablet-landscape') {
+          flex-direction: column;
+        }
+        .expenses-chart {
+          width: 70%;
+          display: flex;
+          flex-direction: column;
+          @include respond-from('tablet-landscape') {
+            width: 100%;
+          }
+        }
+        .prod-per-clinic-chart {
+          display: flex;
+          flex-direction: column;
+          width: 30%;
+          @include respond-from('tablet-landscape') {
+            width: 100%;
+          }
+        }
+        .prod-per-visit-chart, .total-discount-chart {
+          width: 50%;
+          display: flex;
+          flex-direction: column;
+          @include respond-from('tablet-landscape') {
+            width: 100%;
+          }
+        }
+    
+        .prod-collection-chart {
+          width: 100%;
+        }
+    }
+}

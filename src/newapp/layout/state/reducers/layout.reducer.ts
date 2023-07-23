@@ -8,7 +8,8 @@ export interface LayoutState {
     startDate: string | Moment;
     endDate: string | Moment;
     duration: DATE_RANGE_DURATION;
-    trend: TREND_MODE
+    trend: TREND_MODE,
+    activatedRouteTitle: string;
 }
 
 const initialState: LayoutState = {
@@ -16,7 +17,8 @@ const initialState: LayoutState = {
     startDate: moment().startOf('month'),
     endDate: moment(),
     duration: 'm',
-    trend: 'off'
+    trend: 'off',
+    activatedRouteTitle: ''
 }
 
 export const layoutFeature = createFeature({
@@ -54,13 +56,20 @@ export const layoutFeature = createFeature({
                 trend
             }
         }),
+        on(layoutPageActions.setActivatedRouteTitle, (state, {title}): LayoutState => {
+            return {
+                ...state,
+                activatedRouteTitle: title
+            }
+        }),
     )
 });
 
 export const { 
     selectStartDate, selectEndDate,
     selectEnableDateRagne, selectDuration,
-    selectTrend 
+    selectTrend,
+    selectActivatedRouteTitle
 } = layoutFeature;
 
 export const selectDateRange = createSelector(

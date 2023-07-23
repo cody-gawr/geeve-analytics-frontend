@@ -1,4 +1,11 @@
+@import '../../../../../../assets/layout/styles/layout/mixin';
+
 .prod-per-clinic-pie-chart {
-    max-width: 350px;
-    max-height: 280px;
+    @include respond-from('big-desktop') {
+        max-height: 280px;
+    }
+
+    @include respond-to('big-desktop') {
+        max-height: auto;
+    }
 }
