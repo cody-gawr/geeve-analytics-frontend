@@ -11,6 +11,10 @@
         @include respond-from('big-desktop') {
             width: calc(50% - 7.5px);
         }
+
+        @include respond-from('tablet-portrait') {
+            width: 100%;
+        }
     }
 
     // .chart-row{

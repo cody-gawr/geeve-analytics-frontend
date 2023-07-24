@@ -92,9 +92,7 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
                     chartData.push(_.sumBy(v.discounts, l => l));
                     chartLabels.push(v.clinicName);
                 })
-
             }else{
-
                 totalDiscountData.forEach((val, index) => {
                     const discounts = Math.round(parseFloat(<string>val.discounts));
                     if(discounts > 0){
@@ -103,7 +101,7 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
                     }
                 });
             }
-           
+
             this.totalDiscountChartTrendTotal = Math.round(totalDiscountTrendTotal??0);
             this.totalDiscountChartTotal = Math.round(totalDiscountTotal);
             this.totalDiscountChartLabels = chartLabels;
@@ -127,10 +125,10 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
             }
             },
             tooltip: {
-            callbacks: {
-                label: tooltipItem => formatXTooltipLabel(tooltipItem),
-                title: () => ''
-            }
+                callbacks: {
+                    label: tooltipItem => formatXTooltipLabel(tooltipItem),
+                    title: () => ''
+                }
             }
         },
     };

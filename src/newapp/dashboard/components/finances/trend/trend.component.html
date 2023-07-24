@@ -1,8 +1,20 @@
 <div class="trend-finances">
-    <finance-prod-trend-chart class="trend-chart"></finance-prod-trend-chart>
-    <finance-prod-per-visit-trend-chart class="trend-chart"></finance-prod-per-visit-trend-chart>
-    <finance-expense-trend-chart class="trend-chart"></finance-expense-trend-chart>
-    <finance-total-discount-trend-chart class="trend-chart"></finance-total-discount-trend-chart>
-    <finance-prod-col-trend-chart class="trend-chart"></finance-prod-col-trend-chart>
-    <finance-prod-per-clinic-trend-chart class="trend-chart"></finance-prod-per-clinic-trend-chart>
+    <finance-prod-trend-chart 
+        [toolTip]="profitTrendTip$ | async" 
+        class="trend-chart"></finance-prod-trend-chart>
+    <finance-prod-per-visit-trend-chart 
+        [toolTip]="getChartTip(32) | async" 
+        class="trend-chart"></finance-prod-per-visit-trend-chart>
+    <finance-expense-trend-chart 
+        [toolTip]="getChartTip(28) | async" 
+        class="trend-chart"></finance-expense-trend-chart>
+    <finance-total-discount-trend-chart 
+        [toolTip]="getChartTip(34) | async" 
+        class="trend-chart"></finance-total-discount-trend-chart>
+    <finance-prod-col-trend-chart 
+        [toolTip]="getChartTip(33) | async" 
+        class="trend-chart"></finance-prod-col-trend-chart>
+    <finance-prod-per-clinic-trend-chart 
+        [toolTip]="getChartTip(30) | async" 
+        class="trend-chart"></finance-prod-per-clinic-trend-chart>
 </div>

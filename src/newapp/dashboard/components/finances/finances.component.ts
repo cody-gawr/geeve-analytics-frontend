@@ -43,6 +43,7 @@ export class FinancesComponent implements OnInit, OnDestroy {
             takeUntil(this.destroy$),
         ).subscribe(([clinicId, dateRange, connectedWith, route, trend]) => {
             if(clinicId == null || connectedWith == null ) return;
+
             const startDate = dateRange.start;
             const endDate = dateRange.end;
             const duration = dateRange.duration; 

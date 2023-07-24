@@ -51,22 +51,16 @@
         </ng-template>
     </div>
     <div class="chart-list">
-        <div class="chart-row">
-            <finance-expense-chart class="expenses-chart" 
+        <finance-expense-chart class="expenses-chart" 
             [toolTip]="getChartTip(29) | async">
-            </finance-expense-chart>
-            <prod-per-clinic-chart class="prod-per-clinic-chart"
-              [toolTip]="getChartTip(20) | async"></prod-per-clinic-chart>
-        </div>
-        <div class="chart-row">
-            <prod-per-visit-chart class="prod-per-visit-chart"
-              *ngIf="isConnectedWith$ | async"
-              [toolTip]="getChartTip(32) | async"
-            ></prod-per-visit-chart>
-            <total-discount-chart class="total-discount-chart"></total-discount-chart>
-        </div>
-        <div class="chart-row">
-            <prod-collection-chart class="prod-collection-chart"></prod-collection-chart>
-        </div>
+        </finance-expense-chart>
+        <prod-per-clinic-chart class="prod-per-clinic-chart"
+            [toolTip]="getChartTip(30) | async"></prod-per-clinic-chart>
+        <prod-per-visit-chart class="prod-per-visit-chart"
+            *ngIf="isConnectedWith$ | async"
+            [toolTip]="getChartTip(32) | async"
+        ></prod-per-visit-chart>
+        <total-discount-chart [toolTip]="getChartTip(34) | async" class="total-discount-chart"></total-discount-chart>
+        <prod-collection-chart [toolTip]="getChartTip(33) | async" class="prod-collection-chart"></prod-collection-chart>
     </div>
 </div>

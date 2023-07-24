@@ -32,6 +32,30 @@ export class TrendFinanceComponent implements OnInit, OnDestroy {
         this.destroy.next();
     }
 
+    get profitTrendTip$(){
+        return combineLatest([
+            this.financeFacade.profitTrendChartName$,
+            this.chartTips$
+        ]).pipe(
+            takeUntil(this.destroy$),
+            map(([chartName, tips]) => {
+                if(tips){
+                    switch(chartName){
+                        case 'Production':
+                            return tips[31].info;
+                        case 'Collection':
+                            return tips[33].info;
+                        case 'Net Profit':
+                            return tips[26].info;
+                        case 'Net Profit %':
+                            return tips[27].info;
+                    }
+                }
+                return '';
+            })
+        )
+    }
+
     getChartTip(index: number) {
         return this.chartTips$.pipe(map(c => {
             if(c && c[index]){
