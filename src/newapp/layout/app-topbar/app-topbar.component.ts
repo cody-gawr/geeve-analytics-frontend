@@ -26,6 +26,18 @@ export class AppTopbarComponent implements OnInit {
     end: new FormControl<Moment | null>(null),
   });
 
+  get enableAllClinics$(){
+    return this.authFacade.rolesIndividual$.pipe(
+      takeUntil(this.destroy$),
+      map(rolesIndividual => {
+        const userType = rolesIndividual?rolesIndividual.type:0;
+        return ['/dashboards/healthscreen'].includes(
+                this.activatedUrl
+              ) && userType != 7
+      })
+    )
+  }
+
   get isMultiClinics$() {
     return combineLatest([
       this.authFacade.authUserData$, 
@@ -61,6 +73,7 @@ export class AppTopbarComponent implements OnInit {
   };
 
   selectedClinic: 'all' | number | null = null;
+  selectedMultiClinics: Array<'all' | number> = [];
 
   constructor(
     // private menuService: MenuService,
@@ -88,21 +101,30 @@ export class AppTopbarComponent implements OnInit {
       this.range.controls['end'].setValue(end);
     });
 
-    this.clinicFacade.currentClinicId$.pipe(takeUntil(this.destroy$)).subscribe(c => {
+    this.clinicFacade.currentClinicId$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(c => {
       if(typeof c != 'string') {
         this.selectedClinic = c;
         
       }else{
         this.selectedClinic = 'all';
       }
-
-      this.dashboardFacade.loadClinicAccountingPlatform(c);
+      if(c != null) this.dashboardFacade.loadClinicAccountingPlatform(c);
     });
 
-    this.clinicFacade.clinics$.pipe(
+    combineLatest([
+      this.clinicFacade.currentMultiClinicIDs$,
+      this.clinicFacade.clinics$
+    ]).pipe(
       takeUntil(this.destroy$)
-    ).subscribe((clinics) => {
-        console.log(clinics);
+    ).subscribe(([currentClinicIDs, clinics]) => {
+        if(currentClinicIDs == undefined) return;
+        if(currentClinicIDs.length === clinics.length){
+          this.selectedMultiClinics = [...currentClinicIDs, 'all']
+        }else{
+          this.selectedMultiClinics = currentClinicIDs;
+        }
     });
   }
 
@@ -110,6 +132,14 @@ export class AppTopbarComponent implements OnInit {
 
   get clinics$() {
     return this.clinicFacade.clinics$;
+  }
+
+  getClinicName$(clinicId: number | null) {
+    return this.clinicFacade.clinics$.pipe(
+      takeUntil(this.destroy$),
+      map(
+        values => values.find(v => v.id==clinicId)?.clinicName || ''
+    ));
   }
 
   // get dentists$() {
@@ -134,5 +164,10 @@ export class AppTopbarComponent implements OnInit {
         }
       );
     }
+  }
+
+  onChangeMultiClinics(event) {
+    const isPrevAll = this.selectedMultiClinics.includes('all');
+    this.clinicFacade.setCurrentMultiClinicIDs(event.value, isPrevAll);
   }
 }

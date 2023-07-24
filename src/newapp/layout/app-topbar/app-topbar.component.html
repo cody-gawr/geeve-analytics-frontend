@@ -31,10 +31,21 @@
       </div>
       <div class="clinic-selector-wrapper">
         <div class="clinic-selector-field">
-          <div *ngIf="(isMultiClinics$ | async); else singleClinicsSection"></div>
+          <mat-select (selectionChange)="onChangeMultiClinics($event)" [value]="selectedMultiClinics" *ngIf="(isMultiClinics$ | async); else singleClinicsSection" multiple>
+            <mat-select-trigger>
+              {{getClinicName$(selectedMultiClinics?.[0]) | async}}
+              <span *ngIf="(selectedMultiClinics?.length || 0) > 1">
+                (+{{(selectedMultiClinics?.length || 0) - 1}} {{selectedMultiClinics?.length === 2 ? 'other' : 'others'}})
+              </span>
+            </mat-select-trigger>
+            <mat-option value="all">All Clinics</mat-option>
+            <mat-option *ngFor="let clinic of (clinics$ | async)" [value]="clinic.id">
+              {{ clinic.clinicName }}
+            </mat-option>
+          </mat-select>
           <ng-template #singleClinicsSection>
             <mat-select (selectionChange)="onChangeCurrentClinic($event)" [value] = "selectedClinic">
-                <mat-option value="all">All Clinics</mat-option>
+                <mat-option *ngIf="enableAllClinics$ | async" value="all">All Clinics</mat-option>
                 <mat-option *ngFor="let clinic of (clinics$ | async)" [value]="clinic.id">
                   {{ clinic.clinicName }}
                 </mat-option>

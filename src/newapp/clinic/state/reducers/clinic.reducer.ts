@@ -33,6 +33,32 @@ export const clinicFeature = createFeature({
         };
       }
     ),
+    on(
+      ClinicPageActions.setCurrentMultiClinicIDs,
+      (state, { clinicIDs, isPrevAll }): ClinicState => {
+        if(clinicIDs.length == state.clinics.length && 
+          !clinicIDs.includes('all') && 
+          isPrevAll)
+        {
+          return {
+            ...state,
+            currentClinicId: null
+          }
+        }else 
+        if(clinicIDs.length > 0 && clinicIDs.includes('all') && !isPrevAll){
+          return {
+            ...state,
+            currentClinicId: state.clinics.map(c => c.id).join(',')
+          }
+        }else{
+          const selectedClinicIDs = <number[]>clinicIDs.filter(c => c !='all');
+          return {
+            ...state,
+            currentClinicId: selectedClinicIDs.length > 0?(selectedClinicIDs.length == 1?selectedClinicIDs[0]:selectedClinicIDs.join(',')):null
+          };
+        }
+      }
+    ),
     on(ClinicPageActions.loadClinics, (state): ClinicState => {
       return {
         ...state,
@@ -72,7 +98,7 @@ export const {
   selectIsLoading,
   selectClinics,
   selectCurrentClinicId,
-  selectHasPrimeClinics
+  selectHasPrimeClinics,
 } = clinicFeature;
 
 export const selectCurrentClinic = createSelector(
@@ -81,3 +107,16 @@ export const selectCurrentClinic = createSelector(
   (clinics, currentClinicId): Clinic | undefined =>
     clinics.find((c) => c.id == currentClinicId)
 );
+
+export const selectCurrentMultiClinicIDs = createSelector(
+  selectCurrentClinicId,
+  (currentClinicId) => {
+    if(typeof currentClinicId === 'string'){
+      return currentClinicId.split(',').map(v => parseInt(v));
+    }else if(currentClinicId != null){
+      return [currentClinicId];
+    }else{
+      return [];
+    }
+  }
+)

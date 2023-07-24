@@ -8,6 +8,7 @@ import {
   selectClinics,
   selectCurrentClinic,
   selectCurrentClinicId,
+  selectCurrentMultiClinicIDs,
   selectError,
   selectSuccess
 } from '../state/reducers/clinic.reducer';
@@ -36,11 +37,19 @@ export class ClinicFacade {
     select(selectCurrentClinicId)
   ); 
 
+  public readonly currentMultiClinicIDs$ = this.store.pipe(
+    select(selectCurrentMultiClinicIDs)
+  ); 
+
   public loadClinics() {
     this.store.dispatch(ClinicPageActions.loadClinics());
   }
 
   public setCurrentClinicId(clinicId: string | number | null) {
     this.store.dispatch(ClinicPageActions.setCurrentClinicId({ clinicId }));
+  }
+
+  public setCurrentMultiClinicIDs(clinicIDs: Array<'all' | number>, isPrevAll: boolean) {
+    this.store.dispatch(ClinicPageActions.setCurrentMultiClinicIDs({ clinicIDs, isPrevAll }));
   }
 }
