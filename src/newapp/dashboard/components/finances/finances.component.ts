@@ -44,6 +44,7 @@ export class FinancesComponent implements OnInit, OnDestroy {
         .pipe(
             takeUntil(this.destroy$)
         ).subscribe(([clinicId, startDate, endDate, duration, connectedWith, route, trend]) => {
+            if(clinicId == null || connectedWith == null) return;
             this.dashbordFacade.loadChartTips(5, clinicId);
             const queryWhEnabled = route && parseInt(route.wh??'0') == 1?1:0;
             switch(trend){
