@@ -5,18 +5,22 @@ import { DATE_RANGE_DURATION, TREND_MODE } from "@/newapp/models/layout";
 
 export interface LayoutState {
     enableDateRagne: boolean;
-    startDate: string | Moment;
-    endDate: string | Moment;
-    duration: DATE_RANGE_DURATION;
+    dateRange: {
+        start: Moment,
+        end: Moment,
+        duration: DATE_RANGE_DURATION
+    };
     trend: TREND_MODE,
     activatedRouteTitle: string;
 }
 
 const initialState: LayoutState = {
     enableDateRagne: false,
-    startDate: moment().startOf('month'),
-    endDate: moment(),
-    duration: 'm',
+    dateRange: {
+        start: moment().startOf('month'),
+        end: moment(),
+        duration: 'm'
+    },
     trend: 'off',
     activatedRouteTitle: ''
 }
@@ -25,29 +29,14 @@ export const layoutFeature = createFeature({
     name: 'layout',
     reducer: createReducer(
         initialState,
-        on(layoutPageActions.saveDateRange, (state, {start, end}): LayoutState => {
+        on(layoutPageActions.saveDateRange, (state, {start, end, duration}): LayoutState => {
             return {
                 ...state,
-                startDate: start,
-                endDate: end
-            }
-        }),
-        on(layoutPageActions.saveStartDate, (state, {start}): LayoutState => {
-            return {
-                ...state,
-                startDate: start,
-            }
-        }), 
-        on(layoutPageActions.saveEndDate, (state, {end}): LayoutState => {
-            return {
-                ...state,
-                endDate: end
-            }
-        }),
-        on(layoutPageActions.setDuration, (state, {duration}): LayoutState => {
-            return {
-                ...state,
-                duration
+                dateRange: {
+                    start,
+                    end,
+                    duration
+                }
             }
         }),
         on(layoutPageActions.setTrend, (state, {trend}): LayoutState => {
@@ -66,25 +55,17 @@ export const layoutFeature = createFeature({
 });
 
 export const { 
-    selectStartDate, selectEndDate,
-    selectEnableDateRagne, selectDuration,
+    selectDateRange,
+    selectEnableDateRagne,
     selectTrend,
     selectActivatedRouteTitle
 } = layoutFeature;
 
-export const selectDateRange = createSelector(
-    selectStartDate,
-    selectEndDate,
-    (startDate, endDate) => {
-        return {start: startDate, end: endDate};
-    }
-)
 export const selectIsFullMonthsDateRange = createSelector(
-    selectStartDate,
-    selectEndDate,
-    (startDate, endDate) => {
-        const _startDate = isMoment(startDate)?startDate:moment(startDate);
-        const _endDate = isMoment(endDate)?endDate:moment(endDate);
+    selectDateRange,
+    ({start, end}) => {
+        const _startDate = isMoment(start)?start:moment(start);
+        const _endDate = isMoment(end)?end:moment(end);
         return _startDate.date() == 1 && 
         (_endDate.date() == _endDate.clone().endOf('month').date() 
             || _endDate.date() == moment().date())

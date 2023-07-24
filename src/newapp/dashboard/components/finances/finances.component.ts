@@ -33,18 +33,20 @@ export class FinancesComponent implements OnInit, OnDestroy {
         private router: Router
     ) {
         combineLatest([
-            this.clinicFacade.currentClinicId$, 
-            this.layoutFacade.startDate$,
-            this.layoutFacade.endDate$,
-            this.layoutFacade.duration$,
+            this.clinicFacade.currentClinicId$,
+            this.layoutFacade.dateRange$,
             this.dashbordFacade.connectedWith$,
             this.router.routerState.root.queryParams,
             this.layoutFacade.trend$
         ])
         .pipe(
-            takeUntil(this.destroy$)
-        ).subscribe(([clinicId, startDate, endDate, duration, connectedWith, route, trend]) => {
-            if(clinicId == null || connectedWith == null) return;
+            takeUntil(this.destroy$),
+        ).subscribe(([clinicId, dateRange, connectedWith, route, trend]) => {
+            if(clinicId == null || connectedWith == null ) return;
+            const startDate = dateRange.start;
+            const endDate = dateRange.end;
+            const duration = dateRange.duration; 
+  
             this.dashbordFacade.loadChartTips(5, clinicId);
             const queryWhEnabled = route && parseInt(route.wh??'0') == 1?1:0;
             switch(trend){

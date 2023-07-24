@@ -498,16 +498,16 @@
       <div id="mh-dentist-schedule-print">
         <div class="morning-huddle-date">
           <div>
-            <mat-form-field floatLabel="never"  class="dentist-select" *ngIf="clinicDentists.length > 0 && user_type != '4'">
+            <mat-form-field floatLabel="never" class="dentist-select" *ngIf="clinicDentists.length > 0 && user_type != '4'">
               <!-- <mat-label>Select Dentist</mat-label> -->
               <mat-select
                 (selectionChange)="refreshScheduleTab($event.value)"
                 id="setPreviousDay2"
                 [(ngModel)]="currentDentistSchedule"
               >
-                <mat-option [value]="0">All Dentists</mat-option>
+                <mat-option [value]="0">All Providers</mat-option>
                 <mat-option
-                  [value]="dentist.provider_id"
+                  [value]="dentist.provider_id??dentist.hyg_id"
                   *ngFor="let dentist of clinicDentists"
                 >
                   {{ dentist.provider_name }}</mat-option
@@ -753,9 +753,16 @@
             </ng-container>
 
             <ng-container matColumnDef="dentist">
-              <th mat-header-cell *matHeaderCellDef>Dentists</th>
+              <th mat-header-cell *matHeaderCellDef>Dentist</th>
               <td mat-cell *matCellDef="let element">
                 {{ element.provider_name }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="hygienist">
+              <th mat-header-cell *matHeaderCellDef>Hygienist</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.hyg_name }}
               </td>
             </ng-container>
 
@@ -1185,16 +1192,16 @@
       <div id="mh-front-desk-reminders-print">
         <div class="morning-huddle-date">
           <div *ngIf="clinicDentistsReminders.length > 0">
-            <mat-form-field floatLabel="never"  class="dentist-select">
+            <mat-form-field floatLabel="never" class="dentist-select">
               <!-- <mat-label>Select Dentist</mat-label> -->
               <mat-select
                 (selectionChange)="refreshReminderTab($event.value)"
                 id="setPreviousDay3"
                 [(ngModel)]="currentDentistReminder"
               >
-                <mat-option [value]="0">All Dentists</mat-option>
+                <mat-option [value]="0">All Providers</mat-option>
                 <mat-option
-                  [value]="dentist.provider_id"
+                  [value]="dentist.provider_id??dentist.hyg_id"
                   *ngFor="let dentist of clinicDentistsReminders"
                 >
                   {{ dentist.provider_name }}</mat-option
@@ -1449,6 +1456,13 @@
               <th mat-header-cell *matHeaderCellDef>Dentist</th>
               <td mat-cell *matCellDef="let element">
                 {{ element.provider_name }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="hygienist">
+              <th mat-header-cell *matHeaderCellDef>Hygienist</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.hyg_name }}
               </td>
             </ng-container>
   

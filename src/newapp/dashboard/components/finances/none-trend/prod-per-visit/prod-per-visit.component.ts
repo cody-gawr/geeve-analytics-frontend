@@ -48,10 +48,10 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
     }
 
     get durationLabel$() {
-        return this.layoutFacade.duration$.pipe(
+        return this.layoutFacade.dateRange$.pipe(
             takeUntil(this.destroy$),
-            map(d => {
-                const menu = DateRangeMenus.find(m => m.range == d);
+            map(val => {
+                const menu = DateRangeMenus.find(m => m.range == val.duration);
                 if(menu) return menu.label;
                 else return 'Current';
             })

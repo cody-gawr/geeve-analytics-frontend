@@ -120,8 +120,7 @@ export class AppTopbarComponent implements OnInit {
     if(target === 'start'){
       this.range.controls['start'].setValue(event.value);
     }else if(event.value){
-      this.layoutFacade.saveDateRange(this.range.controls['start'].value, event.value);
-      this.layoutFacade.setDuration('custom');
+      this.layoutFacade.saveDateRange(this.range.controls['start'].value, event.value, 'custom');
     }
   }
 

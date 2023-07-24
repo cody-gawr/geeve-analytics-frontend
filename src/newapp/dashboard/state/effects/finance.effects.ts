@@ -1,21 +1,26 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, of } from 'rxjs';
+import { catchError, map, mergeMap, of, withLatestFrom, filter } from 'rxjs';
 import { FinanceService } from '../../services/finance.service';
 import { FinanceApiActions, FinancePageActions } from '../actions';
+import { Store } from '@ngrx/store';
+import { FinanceState, selectIsLoadingCollection, selectIsLoadingCollectionTrend, selectIsLoadingNetProfit, selectIsLoadingNetProfitTrend, selectIsLoadingTotalProduction, selectIsLoadingTotalProductionTrend } from '../reducers/finance.reducer';
 
 @Injectable()
 export class FinanceEffects {
   constructor(
     private actions$: Actions,
-    private financeService: FinanceService
+    private financeService: FinanceService,
+    private store: Store<FinanceState>
   ) {}
 
   public readonly loadFnTotalProduction$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnTotalProduction),
-      mergeMap((params) => {
+      withLatestFrom(this.store.select(selectIsLoadingTotalProduction)),
+      filter(([action, isLoading]) => isLoading),
+      mergeMap(([params]) => {
         return this.financeService.fnTotalProduction(params).pipe(
           map((res) =>
             FinanceApiActions.fnTotalProductionSuccess({ 
@@ -36,7 +41,9 @@ export class FinanceEffects {
   public readonly loadFnTotalProductionTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnTotalProductionTrend),
-      mergeMap(({clinicId, mode, queryWhEnabled}) => {
+      withLatestFrom(this.store.select(selectIsLoadingTotalProductionTrend)),
+      filter(([action, isLoading]) => isLoading),
+      mergeMap(([{clinicId, mode, queryWhEnabled}]) => {
         return this.financeService.fnTotalProductionTrend(clinicId, mode, queryWhEnabled).pipe(
           map((res) =>
             FinanceApiActions.fnTotalProductionTrendSuccess({ 
@@ -57,7 +64,9 @@ export class FinanceEffects {
   public readonly loadFnTotalCollection$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnTotalCollection),
-      mergeMap((params) => {
+      withLatestFrom(this.store.select(selectIsLoadingCollection)),
+      filter(([action, isLoading]) => isLoading),
+      mergeMap(([params]) => {
         return this.financeService.fnTotalCollection(params).pipe(
           map((res) =>
             FinanceApiActions.fnTotalCollectionSuccess({ 
@@ -78,7 +87,9 @@ export class FinanceEffects {
   public readonly loadFnTotalCollectionTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnTotalCollectionTrend),
-      mergeMap(({clinicId, mode, queryWhEnabled}) => {
+      withLatestFrom(this.store.select(selectIsLoadingCollectionTrend)),
+      filter(([action, isLoading]) => isLoading),
+      mergeMap(([{clinicId, mode, queryWhEnabled}]) => {
         return this.financeService.fnTotalCollectionTrend(clinicId, mode, queryWhEnabled).pipe(
           map((res) =>
             FinanceApiActions.fnTotalCollectionTrendSuccess({ 
@@ -99,7 +110,9 @@ export class FinanceEffects {
   public readonly loadfnNetProfit$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnNetProfit),
-      mergeMap((params) => {
+      withLatestFrom(this.store.select(selectIsLoadingNetProfit)),
+      filter(([action, isLoading]) => isLoading),
+      mergeMap(([params]) => {
         return this.financeService.fnNetProfit(params).pipe(
           map((res) =>
             FinanceApiActions.fnNetProfitSuccess({ value: res.data })
@@ -119,7 +132,9 @@ export class FinanceEffects {
   public readonly loadfnNetProfitTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnNetProfitTrend),
-      mergeMap(({clinicId, mode, connectedWith, queryWhEnabled}) => {
+      withLatestFrom(this.store.select(selectIsLoadingNetProfitTrend)),
+      filter(([action, isLoading]) => isLoading),
+      mergeMap(([{clinicId, mode, connectedWith, queryWhEnabled}]) => {
         return this.financeService.fnNetProfitTrend(
           clinicId, mode, connectedWith, queryWhEnabled
         ).pipe(

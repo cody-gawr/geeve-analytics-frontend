@@ -24,7 +24,7 @@
           *ngIf="isConnectedWith$ | async; else collectionStatsCard"
           class="stats-card-finance"
           label="Net Profit %"
-          [value]="'%' + (netProfitPercentageVal$ | async |  number: '1.0-0')"
+          [value]="(netProfitPercentageVal$ | async |  number: '1.0-0') + '%'"
           [toolTip]="getChartTip(27) | async"
           [isLoading]="isLoadingNetProfitPercentage$ | async"
           [isFullMonths]="isFullMonthsDateRange$ | async"
@@ -43,7 +43,7 @@
             <stats-card
                 class="stats-card-finance"
                 label="Collection"
-                [value]="'%' + (collectionVal$ | async |  number: '1.0-0')"
+                [value]="'$' + (collectionVal$ | async |  number: '1.0-0')"
                 [toolTip]="getChartTip(33) | async"
                 [isLoading]="isLoadingCollectionVal$ | async"
             >
