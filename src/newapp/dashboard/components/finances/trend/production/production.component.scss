@@ -5,6 +5,7 @@
     width: 100%;
     padding: 15px;
     gap: 15px;
+    height: 100%;
 
     .profit-switch {
         display: flex;
@@ -33,5 +34,9 @@
                 background: linear-gradient(to bottom, rgb(24, 166, 137) 0%, rgb(0, 111, 115) 99%);
             }
         }
+    }
+
+    .profit-graph {
+        flex: 1;
     }
 }

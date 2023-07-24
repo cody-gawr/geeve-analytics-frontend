@@ -403,6 +403,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
                     if(typeof clinicId === 'string'){
                         chartDataset = (<any>netProfitTrendChartData).datasets;
                         chartLabels = (<any>netProfitTrendChartData).labels;
+                        
                     }else {
                         chartDataset = [{data: []}];
                         (<any>netProfitTrendChartData).forEach(

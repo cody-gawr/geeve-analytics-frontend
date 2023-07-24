@@ -820,7 +820,7 @@ export const selectNetProfitPercentTrendChartData = createSelector(
           const sumCollection = _.sumBy(values, v => parseFloat(<string>v.collection??'0'));
           return {
             label: trendMode == 'current'? moment(duration).format('MMM YYYY'):duration,
-            value: _.round(sumNetProfit / sumCollection) * 100
+            value: _.round(sumNetProfit / sumCollection * 100)
           }
         }
       ).value();
@@ -924,7 +924,7 @@ export const selectNetProfitTrendChartData = createSelector(
   selectCurrentClinicId,
   (netProfitTrendData, trendMode, clinicId) => {
     if(typeof clinicId === 'string'){
-      const chartData = [];
+      const chartData = [], chartLabels = [];
       _.chain(netProfitTrendData)
       .groupBy(trendMode == 'current' ? 'yearMonth' : 'year')
       .map(
@@ -935,23 +935,19 @@ export const selectNetProfitTrendChartData = createSelector(
                   value: sumNetProfit,
               }
           }
-      ).value();
+      ).value().forEach(
+        (values, index) => {
+          chartData.push(values.value);
+          chartLabels.push(values.label);
+        }
+      );
   
       let chartDataset:any = [{label: 'Total', data: chartData}];
-      const labels = [];
-      let i = 0;
+
       _.chain(netProfitTrendData)
       .groupBy('clinicId')
       .map(
           (values, clinicId) => {
-              if(i == 0){
-                labels.push(
-                  values.map(
-                    val => trendMode == 'current'? moment(val.yearMonth).format('MMM YYYY'): val.year
-                  )
-                )
-              }
-              i++;
               return {
                   label: values[0].clinicName,
                   values: values.map(v => Math.round(parseFloat(<string>v.netProfit??'0'))),
@@ -971,7 +967,7 @@ export const selectNetProfitTrendChartData = createSelector(
               })
           }
       );
-      return { datasets: chartDataset, labels: labels };
+      return { datasets: chartDataset, labels: chartLabels };
     }else{
       return netProfitTrendData.map(
           val => {
