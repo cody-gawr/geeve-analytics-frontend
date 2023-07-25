@@ -138,8 +138,8 @@
             </div>
           </div>
 
-          <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+          <div *ngIf="isPmsD4W$ | async" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
+            <div  fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
               <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Lab Needed <div class="info-button">
                     <div class="info-icon-container"> 
@@ -225,7 +225,7 @@
       <div class="gray_area">
         <div class="working-days">
           <h4 class="clinic-settings-form-title">Dashboards</h4>
-          <div *ngIf="isPMSExact; else elseBlock" class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px"
+          <div *ngIf="isPMSExact$ | async; else elseBlock" class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px"
             fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
             <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
               <div class="sa-form-group sa-group">

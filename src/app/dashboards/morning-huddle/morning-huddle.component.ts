@@ -397,7 +397,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   //displayedColumns11: string[] = ['start', 'dentist', 'name', 'statuscode', 'card', 'rebooked'];
   get displayedColumns11() {
     if (this.isSMSEnabled) {
-      if(this.isExact && (this.remindersRecallsOverdue.filter((a:any) => a.hyg_id && !!a.hyg_id.trim()) >= 0)){
+      if(this.isHygienist){
         return [
           'start',
           'dentist',
@@ -419,7 +419,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         'rebooked'
       ];
     } else {
-      if(this.isExact && (this.remindersRecallsOverdue.filter((a:any) => a.hyg_id && !!a.hyg_id.trim()) >= 0)){
+      if(this.isHygienist){
         return ['start', 'dentist', 'hygienist', 'name', 'statuscode', 'card', 'rebooked'];
       }
       return ['start', 'dentist', 'name', 'statuscode', 'card', 'rebooked'];

@@ -8,7 +8,7 @@ import {
 import { Router } from "@angular/router";
 import { CookieService } from "ngx-cookie";
 import { ToastrService } from "ngx-toastr";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, map } from "rxjs";
 import { CustomisationsService } from "./customisations.service";
 import { BaseComponent } from "../base/base.component";
 import { environment } from "../../../environments/environment";
@@ -155,9 +155,9 @@ export class CustomisationsComponent
       //health_screen_mtd: [null],
       recall_rate_default: [null],
       hourly_rate_appt_hours: [null],
-      disc_code_1: null,
-      disc_code_2: null,
-      disc_code_3: null,
+      disc_code_1: '',
+      disc_code_2: '',
+      disc_code_3: '',
       max_chart_bars: this.visibleMaxBarSetting?null: [null, Validators.compose([Validators.required])],
     });
 
@@ -169,8 +169,12 @@ export class CustomisationsComponent
     this.setVisibilityOfMaxBar();
   }
 
-  get isPMSExact() {
-    return this.clinic_pms$.value == 'exact';
+  get isPMSExact$() {
+    return this.clinic_pms$.pipe(map(pms => pms == 'exact'));
+  }
+
+  get isPmsD4W$() {
+    return this.clinic_pms$.pipe(map(pms => pms == 'd4w'));
   }
 
   ngAfterViewInit() { }
@@ -303,9 +307,9 @@ export class CustomisationsComponent
             this.recallCode2 = res.body.data.recall_code2;
             this.recallCode3 = res.body.data.recall_code3;
 
-            this.form.controls['disc_code_1'].setValue(res.body.data.disc_code_1);
-            this.form.controls['disc_code_2'].setValue(res.body.data.disc_code_2);
-            this.form.controls['disc_code_3'].setValue(res.body.data.disc_code_3);
+            this.form.controls['disc_code_1'].setValue(res.body.data.disc_code_1??'');
+            this.form.controls['disc_code_2'].setValue(res.body.data.disc_code_2??'');
+            this.form.controls['disc_code_3'].setValue(res.body.data.disc_code_3??'');
 
             this.labCode1 = res.body.data.lab_code1;
             this.labCode2 = res.body.data.lab_code2;
@@ -403,6 +407,8 @@ export class CustomisationsComponent
         $(".ajax-loader").hide();
       }
     );
+    // console.log("huddles", huddles);
+    // console.log("dashboard", dashboard);
   }
 
   //
