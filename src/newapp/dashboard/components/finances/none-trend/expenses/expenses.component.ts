@@ -10,6 +10,7 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 })
 export class FinanceExpensesComponent implements OnInit, OnDestroy {
     @Input() toolTip = '';
+    @Input() isFullMonths = false;
     get isLoading$() {
         return this.financeFacade.isLoadingFnExpenses$
     }

@@ -122,6 +122,8 @@ export class FinanceProdPerClinicTrendComponent implements OnInit, OnDestroy {
           y: 
             {
               stacked: true,
+              max: 100,
+              min: 0,
               ticks: {
                 callback: function (item) {
                   return item + '%';

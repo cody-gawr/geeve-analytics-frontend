@@ -12,28 +12,33 @@
     <div class="chart-content">
         <div class="expenses-content">
             <div class="expenses-ngx-chart">
-                <ngx-charts-pie-chart
-                        *ngIf="!(isLoading$ | async) && selectedData.length > 0"
-                        [view]="[500, 320]"
-                        [scheme]="colorScheme"
-                        [trimLabels]="true"
-                        [maxLabelLength]="15"
-                        [results]="selectedData"
-                        [legend]="false"
-                        [explodeSlices]="isExplodeSlices"
-                        [labels]="isShowLabels"
-                        [arcWidth]="arcWidth"
-                        [doughnut]="isDoughnut"
-                        [gradient]="isGradient"
-                        [tooltipDisabled]="isTooltipDisabled"
-                        [tooltipText]="pieTooltipText"
-                        [labelFormatting]="pieLabelText"
-                >
-                </ngx-charts-pie-chart>
-                <spin-loader *ngIf="isLoading$ | async"></spin-loader>
-                <spin-loader *ngIf="selectedData.length <= 0" [disableSpin]="true">
-                    No expenses found for the selected period
+                <spin-loader  class="empty-placeholder" *ngIf="!isFullMonths; else chartElement" [disableSpin]="true">
+                    Please select a date range consisting of full months to view Accounting charts
                 </spin-loader>
+                <ng-template #chartElement>
+                    <ngx-charts-pie-chart
+                            *ngIf="!(isLoading$ | async) && selectedData.length > 0"
+                            [view]="[500, 320]"
+                            [scheme]="colorScheme"
+                            [trimLabels]="true"
+                            [maxLabelLength]="15"
+                            [results]="selectedData"
+                            [legend]="false"
+                            [explodeSlices]="isExplodeSlices"
+                            [labels]="isShowLabels"
+                            [arcWidth]="arcWidth"
+                            [doughnut]="isDoughnut"
+                            [gradient]="isGradient"
+                            [tooltipDisabled]="isTooltipDisabled"
+                            [tooltipText]="pieTooltipText"
+                            [labelFormatting]="pieLabelText"
+                    >
+                    </ngx-charts-pie-chart>
+                    <spin-loader *ngIf="isLoading$ | async"></spin-loader>
+                    <spin-loader *ngIf="selectedData.length <= 0" [disableSpin]="true">
+                        No expenses found for the selected period
+                    </spin-loader>
+                </ng-template>
             </div>
             <div class="benchmarks-content">
                 <h6>Industry Benchmarks</h6>

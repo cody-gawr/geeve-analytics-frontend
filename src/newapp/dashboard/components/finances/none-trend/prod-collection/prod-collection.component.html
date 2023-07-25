@@ -18,7 +18,7 @@
                     baseChart
                     [datasets]="datasets"
                     [labels]="labels"
-                    [options]="chartOptions"
+                    [options]="chartOptions$ | async"
                     [legend]="false"
                     type="bar"
                 ></canvas>

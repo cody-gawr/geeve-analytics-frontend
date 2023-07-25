@@ -203,10 +203,16 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
             mode: 'x',
             callbacks: {
               label: function (tooltipItems) {
-                return `${tooltipItems.dataset.label}: ${tooltipItems.parsed.y}`
+                return `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`
               },
               title: function(tooltipItems){
-                return `${tooltipItems[0].label}: ${_.sumBy(tooltipItems, t => t.parsed.y)}`
+                return `${tooltipItems[0].label}: ${
+                  new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                  }).format(_.sumBy(tooltipItems, t => t.parsed.y))}`
               }
             }
           }
@@ -222,9 +228,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
               label: (
                 tooltipItems
               ) => {
-                const datasetIndex = tooltipItems.datasetIndex;
-                const label = tooltipItems.dataset[datasetIndex].label;
-                return `${label} : ${new Intl.NumberFormat('en-US', {
+                return `${tooltipItems.dataset.label} : ${new Intl.NumberFormat('en-US', {
                   style: 'currency',
                   currency: 'USD',
                   minimumFractionDigits: 0,
@@ -401,9 +405,9 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
                     break;
                 case 'Net Profit':
                     if(typeof clinicId === 'string'){
+
                         chartDataset = (<any>netProfitTrendChartData).datasets;
                         chartLabels = (<any>netProfitTrendChartData).labels;
-                        
                     }else {
                         chartDataset = [{data: []}];
                         (<any>netProfitTrendChartData).forEach(
@@ -413,7 +417,6 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
                             }
                         );
                     }
-                    
                     break;
                 case 'Net Profit %':
                     chartDataset = [{data: []}];

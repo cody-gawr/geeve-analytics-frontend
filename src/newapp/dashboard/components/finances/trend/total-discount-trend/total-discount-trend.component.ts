@@ -3,7 +3,7 @@ import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
 import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
 import { JeeveLineFillOptions } from "@/newapp/shared/utils";
 import { Component, OnDestroy, OnInit, Input } from "@angular/core";
-import { ChartOptions, LegendOptions } from "chart.js";
+import { ChartOptions, LegendOptions, TooltipItem } from "chart.js";
 import { _DeepPartialObject } from "chart.js/dist/types/utils";
 import _ from "lodash";
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
@@ -105,60 +105,69 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
         },
         // onClick: (event: MouseEvent, legendItem: LegendItem) => {}
     };
-    public labelBarOptionsSingleValue1: ChartOptions<'line'> = {
-        elements: {
-          point: {
-            radius: 5,
-            hoverRadius: 7,
-            pointStyle: 'rectRounded',
-            hoverBorderWidth: 7
-          },
-          line: JeeveLineFillOptions,
+    public labelBarOptionsSingleValue: ChartOptions<'line'> = {
+      elements: {
+        point: {
+          radius: 5,
+          hoverRadius: 7,
+          pointStyle: 'rectRounded',
+          hoverBorderWidth: 7
         },
-        responsive: true,
-        maintainAspectRatio: false,
-        animation: {
-          duration: 500,
-          easing: 'easeOutSine'
-        },
-        scales: {
-          x: 
-            {
-              stacked: false,
-              ticks: {
-                autoSkip: false
-              }
-            }
-          ,
-          y: 
-            {
-              stacked: true,
-              ticks: {
-                callback: (label: string | number) => {
-                  return `${Number(label)}%`;
-                }
-              }
-            }
-          
-        },
-        plugins: {
-          legend: {
-            display: true
-          },
-          tooltip: {
-            mode: 'x',
-            displayColors(ctx, options) {
-              return !ctx.tooltip
-            },
-            callbacks: {
-              label: function (tooltipItems) {
-                return `${tooltipItems.label} : ${tooltipItems.formattedValue}%`;
-              },
-              title: () => ''
+        line: JeeveLineFillOptions,
+      },
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: {
+        duration: 500,
+        easing: 'easeOutSine'
+      },
+      scales: {
+        x: 
+          {
+            stacked: false,
+            ticks: {
+              autoSkip: false
             }
           }
+        ,
+        y: 
+          {
+            stacked: false,
+            ticks: {
+              callback: function (label, index, labels) {
+                return `${new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0
+                }).format(Number(label))}`;
+              }
+            }
+          }
+      },
+      plugins: {
+        legend: {
+          display: true
+        },
+        tooltip: {
+          mode: 'x',
+          displayColors(ctx, options) {
+            return !ctx.tooltip
+          },
+          callbacks: {
+            label: (tooltipItems: TooltipItem<any>) => {
+              let label = tooltipItems.label;
+              return `${label} : ${new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+              }).format(Number(tooltipItems.parsed.y))}`;
+            },
+            title: () => ''
+          }
         }
-    
+      }
     };
 
     public stackedChartOptionsDiscount: ChartOptions<'bar'> = {
@@ -212,10 +221,17 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
             mode: 'x',
             callbacks: {
               label: function (tooltipItems) {
-                return `${tooltipItems.dataset.label}: ${tooltipItems.parsed.y}`
+                return `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`
               },
               title: function(tooltipItems){
-                return `${tooltipItems[0].label}: ${_.sumBy(tooltipItems, t => t.parsed.y)}`
+                return `${tooltipItems[0].label}: ${
+                  new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                  }).format(_.sumBy(tooltipItems, t => t.parsed.y))
+                }`
               }
             }
           }
@@ -226,7 +242,7 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
     get chartOptions$(){
         return this.clinicFacade.currentClinicId$.pipe(
             takeUntil(this.destroy$),
-            map(v => typeof v === 'string'?this.stackedChartOptionsDiscount:this.labelBarOptionsSingleValue1)
+            map(v => typeof v === 'string'?this.stackedChartOptionsDiscount:this.labelBarOptionsSingleValue)
         )
     }
 }

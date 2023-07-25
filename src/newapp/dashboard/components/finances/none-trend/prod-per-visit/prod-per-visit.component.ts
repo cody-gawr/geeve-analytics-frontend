@@ -30,7 +30,12 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
     productionVisitVal = 0;
     productionVisitTrendVal = 0;
 
-    datasets = [{data: []}];
+    datasets = [{
+      data: [],
+      label: '',
+      shadowOffsetX: 3,
+      backgroundColor: 'rgba(0, 0, 255, 0.2)'
+    }];
     labels = [];
 
     get isLoading$() {
@@ -81,13 +86,15 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
         ).subscribe(([val, trendVal, visitData]) => {
             this.productionVisitVal = Math.round(val);
             this.productionVisitTrendVal = Math.round(trendVal);
-            const chartData = [], chartLabels = [];
+            const chartLabels = [];
+            
+            this.datasets[0].data = [];
             visitData.forEach( d => {
-                chartData.push(Math.round(parseFloat(<string>d.prodPerVisit??'0')));
+                this.datasets[0].data.push(Math.round(parseFloat(<string>d.prodPerVisit??'0')));
                 chartLabels.push(d.clinicName);
             });
             
-            this.datasets = [{data: chartData}];
+            
             this.labels = chartLabels;
             
         });

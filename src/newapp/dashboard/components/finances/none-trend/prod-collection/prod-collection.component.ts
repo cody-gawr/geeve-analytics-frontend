@@ -8,6 +8,7 @@ import { ChartOptions, LegendOptions } from "chart.js";
 import _, { forEach } from "lodash";
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 import { _DeepPartialObject } from "chart.js/dist/types/utils";
+import { DoughnutChartColors } from "@/newapp/shared/constants";
 
 @Component({
     selector: 'prod-collection-chart',
@@ -26,7 +27,18 @@ export class FinanceProdColComponent implements OnInit, OnDestroy {
         )
     }
 
-    chartOptions: ChartOptions<'bar'>;
+    get chartOptions$(){
+      return this.clinicFacade.currentClinicId$.pipe(
+        takeUntil(this.destroy$),
+        map(v => {
+          if(typeof v === 'string'){
+            return this.labelBarOptionsMultiTC;
+          }else{
+            return this.labelBarOptionsTC;
+          }
+        })
+      )
+    };
 
     datasets = [];
     labels = [];
@@ -93,8 +105,8 @@ export class FinanceProdColComponent implements OnInit, OnDestroy {
                 pChartData.push({
                   data: [Math.round(parseFloat(<string>item.production))],
                   label: item.clinicName,
-                  // backgroundColor: this.doughnutChartColors[idx],
-                  // hoverBackgroundColor: this.doughnutChartColors[idx]
+                  backgroundColor: DoughnutChartColors[index],
+                  hoverBackgroundColor: DoughnutChartColors[index]
                 })
               })
               chartData = pChartData.map((item) => {
@@ -108,12 +120,10 @@ export class FinanceProdColComponent implements OnInit, OnDestroy {
                     : item.data
                 };
               });
-              this.chartOptions = this.labelBarOptionsMultiTC;
               this.datasets = chartData;
             }else{
               chartData.push(prodVal);
               chartData.push(collectionVal);
-              this.chartOptions = this.labelBarOptionsTC;
               this.datasets = [{data: chartData}];
             }
             this.labels = [ 'Production', 'Collection'];
@@ -272,130 +282,20 @@ export class FinanceProdColComponent implements OnInit, OnDestroy {
       legend: this.stackLegendGenerator,
       tooltip: {
         mode: 'x',
-        // enabled: false,
-        // external: function (tooltipChart) {
-        //   const tooltip = tooltipChart.tooltip;
-        //   if (!tooltip) return;
-        //   var tooltipEl = document.getElementById('chartjs-tooltip');
-        //   if (!tooltipEl) {
-        //     tooltipEl = document.createElement('div');
-        //     tooltipEl.id = 'chartjs-tooltip';
-        //     tooltipEl.style.backgroundColor = '#FFFFFF';
-        //     tooltipEl.style.borderColor = '#B2BABB';
-        //     tooltipEl.style.borderWidth = 'thin';
-        //     tooltipEl.style.borderStyle = 'solid';
-        //     tooltipEl.style.zIndex = '999999';
-        //     tooltipEl.style.backgroundColor = '#000000';
-        //     tooltipEl.style.color = '#FFFFFF';
-        //     document.body.appendChild(tooltipEl);
-        //   }
-        //   if (tooltip.opacity === 0) {
-        //     tooltipEl.style.opacity = '0';
-        //     return;
-        //   } else {
-        //     tooltipEl.style.opacity = '0.8';
-        //   }
-  
-        //   tooltipEl.classList.remove('above', 'below', 'no-transform');
-        //   if (tooltip.yAlign) {
-        //     tooltipEl.classList.add(tooltip.yAlign);
-        //   } else {
-        //     tooltipEl.classList.add('no-transform');
-        //   }
-  
-        //   function getBody(bodyItem) {
-        //     return bodyItem.lines;
-        //   }
-        //   if (tooltip.body) {
-        //     var titleLines = tooltip.title || [];
-        //     var bodyLines = tooltip.body.map(getBody);
-        //     var labelColorscustom = tooltip.labelColors;
-        //     var innerHtml = '<table><thead>';
-        //     innerHtml += '</thead><tbody>';
-  
-        //     let total: any = 0;
-        //     bodyLines.forEach(function (body, i) {
-        //       if (!body[0].includes('$0')) {
-        //         var singleval = body[0].split(':');
-        //         if (singleval[1].includes('-')) {
-        //           var temp = singleval[1].split('$');
-        //           var amount = temp[1]?.replace(/,/g, '');
-        //           total -= parseFloat(amount??'0');
-        //         } else {
-        //           var temp = singleval[1].split('$');
-        //           var amount = temp[1]?.replace(/,/g, '');
-        //           total += parseFloat(amount??'0');
-        //         }
-        //       }
-        //     });
-        //     total = Math.round(total);
-        //     if (total != 0) {
-        //       var num_parts = total.toString().split('.');
-        //       num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        //       total = num_parts.join('.');
-        //     }
-        //     titleLines.forEach(function (title) {
-        //       innerHtml +=
-        //         '<tr><th colspan="2" style="text-align: left;">' +
-        //         title +
-        //         ': $' +
-        //         total +
-        //         '</th></tr>';
-        //     });
-        //     bodyLines.forEach(function (body, i) {
-        //       if (!body[0].includes('$0')) {
-        //         var body_custom = body[0];
-        //         body_custom = body_custom.split(':');
-        //         const lastIndex = body_custom.length - 1;
-        //         if (body_custom[lastIndex].includes('-')) {
-        //           var temp_ = body_custom[lastIndex].split('$');
-        //           temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
-        //           temp_[1] = temp_[1].toString();
-        //           temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-        //           body_custom[lastIndex] = temp_.join('$');
-        //         } else {
-        //           var temp_ = body_custom[lastIndex].split('$');
-        //           temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
-        //           temp_[1] = temp_[1].toString();
-        //           temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-        //           body_custom[lastIndex] = temp_.join('$');
-        //         }
-  
-        //         body[0] = body_custom.join(':');
-        //         innerHtml +=
-        //           '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
-        //           labelColorscustom[i].backgroundColor +
-        //           '"></span></td><td style="padding: 0px">' +
-        //           body[0] +
-        //           '</td></tr>';
-        //       }
-        //     });
-        //     innerHtml += '</tbody></table>';
-        //     tooltipEl.innerHTML = innerHtml;
-        //     //tableRoot.innerHTML = innerHtml;
-        //   }
-        //   // disable displaying the color box;
-        //   var position = tooltipChart.chart.canvas.getBoundingClientRect();
-        //   // Display, position, and set styles for font
-        //   tooltipEl.style.position = 'fixed';
-        //   tooltipEl.style.left =
-        //     position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
-        //   tooltipEl.style.top =
-        //     position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
-        //   // tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
-        //   // tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
-        //   // tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-        //   // tooltipEl.style.padding =
-        //   //   tooltip.yPadding + 'px ' + tooltip. + 'px';
-        //   tooltipEl.style.pointerEvents = 'none';
-        // },
-        // displayColors: false,
         callbacks: {
           label: function (tooltipItems) {
-            return `${tooltipItems.dataset.label}: ${tooltipItems.parsed.y}`
+            return `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`
           },
+          
           title: function(tooltipItems){
-            return `${tooltipItems[0].label}: ${_.sumBy(tooltipItems, t => t.parsed.y)}`
+            return `${tooltipItems[0].label}: ${
+              new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+              }).format( _.sumBy(tooltipItems, t => t.parsed.y))
+             }`
           }
         }
       }

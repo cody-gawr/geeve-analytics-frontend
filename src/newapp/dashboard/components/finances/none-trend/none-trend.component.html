@@ -52,7 +52,9 @@
     </div>
     <div class="chart-list">
         <finance-expense-chart class="expenses-chart" 
-            [toolTip]="getChartTip(29) | async">
+            [toolTip]="getChartTip(29) | async" 
+            [isFullMonths]="isFullMonthsDateRange$ | async"
+        >
         </finance-expense-chart>
         <prod-per-clinic-chart class="prod-per-clinic-chart"
             [toolTip]="getChartTip(30) | async"></prod-per-clinic-chart>
