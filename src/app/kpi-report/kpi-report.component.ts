@@ -10,6 +10,7 @@ import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-pag
 import { ToastrService } from 'ngx-toastr';
 import { DentistService } from '../dentist/dentist.service';
 import { AppConstants } from '../app.constants';
+import { LocalStorageService } from '../shared/local-storage.service';
 export interface Dentist {
 	providerId: string;
 	name: string;
@@ -43,20 +44,36 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 		{ providerId: 'all', name: 'All Dentists' },
 	];
 
+	get isExact(): boolean {
+		return this.localStorageService.isEachClinicExact(this.clinic_id);
+	}
+
 	get newReportData(){
-		return this.reportData.filter(
-			v => [
-			'Utilisation Rate',
-			'Dentist Days', 
-			'Dentist Production Per Day', 
-			'Hours Available', 
-			'Hours Worked', 
-			'Dentist Production Per Hr'
-		].indexOf(v.kpi_type) < 0);
+		if(this.isExact){
+			return this.reportData.filter(
+				v => [
+				'Utilisation Rate',
+				'Dentist Days', 
+				'Dentist Production Per Day', 
+				'Hours Available', 
+				'Hours Worked', 
+				'Dentist Production Per Hr'
+			].indexOf(v.kpi_type) < 0);
+		}else{
+			return this.reportData;
+		}
 	}
 
 	constructor(private datepipe: DatePipe,
-		private titleService: Title, private dentistService: DentistService, public KpiReportService: KpiReportService, private _cookieService: CookieService, private toastr: ToastrService, private router: Router, public constants: AppConstants) {
+		private titleService: Title, 
+		private dentistService: DentistService, 
+		public KpiReportService: KpiReportService, 
+		private _cookieService: CookieService, 
+		private toastr: ToastrService, 
+		private router: Router, 
+		public constants: AppConstants,
+		private localStorageService: LocalStorageService,
+	) {
 		$('#title').html('Prime KPI Report');
 		// this.selectedMonthYear = this.datepipe.transform(new Date(), 'MMMM-yyyy');
 		this.selectedMonthYear = this.datepipe.transform(new Date(), 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
