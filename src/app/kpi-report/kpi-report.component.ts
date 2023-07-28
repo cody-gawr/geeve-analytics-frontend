@@ -43,6 +43,18 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 		{ providerId: 'all', name: 'All Dentists' },
 	];
 
+	get newReportData(){
+		return this.reportData.filter(
+			v => [
+			'Utilisation Rate',
+			'Dentist Days', 
+			'Dentist Production Per Day', 
+			'Hours Available', 
+			'Hours Worked', 
+			'Dentist Production Per Hr'
+		].indexOf(v.kpi_type) < 0);
+	}
+
 	constructor(private datepipe: DatePipe,
 		private titleService: Title, private dentistService: DentistService, public KpiReportService: KpiReportService, private _cookieService: CookieService, private toastr: ToastrService, private router: Router, public constants: AppConstants) {
 		$('#title').html('Prime KPI Report');
@@ -336,6 +348,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
 				this.reportData[8]['kpi_type'] = 'Discounts';
 				this.reportData[5]['kpi_type'] = 'Dentist Production Per Hr';
 				this.reportMonths = res.body.months;
+				console.log('wfwef', this.reportData)
 			}
 		}, error => {
 			this.reportloader = false;	
