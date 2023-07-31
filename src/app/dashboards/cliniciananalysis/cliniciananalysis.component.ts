@@ -433,11 +433,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     } else {
       dynamicColors = [];
       labels.forEach((label, labelIndex) => {
-        dynamicColors.push(
-          labelIndex % 2 === 0
-            ? this.chartService.colors.odd
-            : this.chartService.colors.even
-        );
+        if(!this.showTrend && this.averageToggle){
+          dynamicColors.push(
+            label != 'Anonymous'
+              ? this.chartService.colors.odd
+              : this.chartService.colors.even
+          ); 
+        }else{
+          dynamicColors.push(
+            labelIndex % 2 === 0
+              ? this.chartService.colors.odd
+              : this.chartService.colors.even
+          );  
+        }
+
       });
     }
     return dynamicColors;
@@ -535,6 +544,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public doughnutChartData1: number[] = [];
   public newPatientChartData: number[] = [350, 450, 100];
   public newPatientChartData1: number[] = [];
+  pieDataColors: string[] = [];
   //Total
   public productionTotal = 0;
   public productionTotalAverage = 0;
@@ -1522,10 +1532,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 // } else {
                 //   labls = `${names[0]}`;
                 // }
-                
                 return {
                   text: <string>formatXLabel(label),
-                  fillStyle: ds.backgroundColor[i],
+                  fillStyle: ds.backgroundColor[i]??this.chartService.colors.even,
                   strokeStyle: '#fff',
                   //hidden: isNaN(ds.data[i]) || meta.data[i].active,
                   index: i
@@ -2226,15 +2235,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.DPcolors = this.barChartColors;
                 } else this.DPcolors = this.lineChartColors;
                 this.barChartData[0]['data'] = this.barChartData1;
-                const colors = [
-                  this.chartService.colors.odd,
-                  this.chartService.colors.even,
-                  this.chartService.colors.odd,
-                  this.chartService.colors.even,
-                  this.chartService.colors.odd,
-                  this.chartService.colors.even,
-                  this.chartService.colors.odd
-                ]; // this is static array for colors of bars
+                // const colors = [
+                //   this.chartService.colors.odd,
+                //   this.chartService.colors.even,
+                //   this.chartService.colors.odd,
+                //   this.chartService.colors.even,
+                //   this.chartService.colors.odd,
+                //   this.chartService.colors.even,
+                //   this.chartService.colors.odd
+                // ]; // this is static array for colors of bars
   
                 let dynamicColors = this.barBackgroundColor(
                   res.body.data,
@@ -6179,7 +6188,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   
                 this.newPatientChartData = this.newPatientChartData1;
                 this.newPatientChartLabels = this.newPatientChartLabels1;
-  
+                this.pieDataColors = this.barBackgroundColor(this.newPatientChartData, this.newPatientChartLabels);
                 this.newPatientTotal = res.body.total;
                 this.newPatientTotal$.next(res.body.total);
                 //this.doughnutChartOptions.elements.center.text = this.newPatientTotal;
@@ -6382,15 +6391,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.barChartColors = [{ backgroundColor: [] }];
                   this.barChartColors[0].backgroundColor[this.hrKey] = '#1CA49F';
                   this.HRcolors = this.barChartColors;
-                } else {
-                  this.HRcolors = this.lineChartColors;
-                  let dynamicColors = this.barBackgroundColor(
-                    res.body.data,
-                    this.hourlyRateChartLabels
-                  );
-                  this.hourlyRateChartData[0].backgroundColor = dynamicColors;
-                }
-  
+                } else this.HRcolors = this.lineChartColors;
+
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.hourlyRateChartLabels
+                );
+                this.hourlyRateChartData[0].backgroundColor = dynamicColors;
+
+
                 if (
                   this.hourlyRateChartAverage >= this.hourlyRateChartAveragePrev
                 )
@@ -6566,13 +6575,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.HRcolorsDent = this.barChartColorsHrDent;
                 } else {
                   this.HRcolorsDent = this.lineChartColors;
-                  let dynamicColors = this.barBackgroundColor(
-                    res.body.data,
-                    this.hourlyRateChartDesntistsLabels
-                  );
-                  this.hourlyRateChartDentistsData[0].backgroundColor =
-                    dynamicColors;
                 }
+
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.hourlyRateChartDesntistsLabels
+                );
+                this.hourlyRateChartDentistsData[0].backgroundColor =
+                  dynamicColors;
   
                 if (
                   this.hourlyRateChartDesntistsAverage >=
@@ -6747,12 +6757,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.HRcolorsOht = this.barChartColorsHrOht;
                 } else {
                   this.HRcolorsOht = this.lineChartColors;
-                  let dynamicColors = this.barBackgroundColor(
-                    res.body.data,
-                    this.hourlyRateChartOhtLabels
-                  );
-                  this.hourlyRateChartOhtData[0].backgroundColor = dynamicColors;
+
                 }
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.hourlyRateChartOhtLabels
+                );
+                this.hourlyRateChartOhtData[0].backgroundColor = dynamicColors;
   
                 if (
                   this.hourlyRateChartOhtAverage >=
@@ -7294,13 +7305,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.cHRcolors = this.barChartColors;
                 } else {
                   this.cHRcolors = this.lineChartColors;
-                  let dynamicColors = this.barBackgroundColor(
-                    res.body.data,
-                    this.collhourlyRateChartLabels
-                  );
-                  this.collectionhourlyRateChartData[0].backgroundColor =
-                    dynamicColors;
                 }
+
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.collhourlyRateChartLabels
+                );
+                this.collectionhourlyRateChartData[0].backgroundColor =
+                  dynamicColors;
   
                 if (
                   this.collectionhourlyRateChartAverage >=
@@ -7472,13 +7484,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.HRcolorsDent = this.barChartColorsHrDent;
                 } else {
                   this.HRcolorsDent = this.lineChartColors;
-                  let dynamicColors = this.barBackgroundColor(
-                    res.body.data,
-                    this.collhourlyRateChartDesntistsLabels
-                  );
-                  this.collhourlyRateChartDentistsData[0].backgroundColor =
-                    dynamicColors;
                 }
+
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.collhourlyRateChartDesntistsLabels
+                );
+                this.collhourlyRateChartDentistsData[0].backgroundColor =
+                  dynamicColors;
   
                 if (
                   this.collhourlyRateChartDesntistsAverage >=
@@ -7648,14 +7661,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.HRcolorsOht = this.barChartColorsHrOht;
                 } else {
                   this.HRcolorsOht = this.lineChartColors;
-                  let dynamicColors = this.barBackgroundColor(
-                    res.body.data,
-                    this.collhourlyRateChartOhtLabels
-                  );
-                  this.collhourlyRateChartOhtData[0].backgroundColor =
-                    dynamicColors;
+
                 }
   
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.collhourlyRateChartOhtLabels
+                );
+                this.collhourlyRateChartOhtData[0].backgroundColor =
+                  dynamicColors;
+
                 if (
                   this.collhourlyRateChartOhtAverage >=
                   this.collhourlyRateChartOhtAveragePrev
@@ -7835,13 +7850,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.collExpHRcolors = this.barChartColors;
                 } else {
                   this.collExpHRcolors = this.lineChartColors;
-                  let dynamicColors = this.barBackgroundColor(
-                    res.body.data,
-                    this.collExphourlyRateChartLabels
-                  );
-                  this.collExphourlyRateChartData[0].backgroundColor =
-                    dynamicColors;
+
                 }
+
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.collExphourlyRateChartLabels
+                );
+                this.collExphourlyRateChartData[0].backgroundColor =
+                  dynamicColors;
   
                 if (
                   this.collExphourlyRateChartAverage >=
@@ -8014,13 +8031,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.HRcolorsDent = this.barChartColorsHrDent;
                 } else {
                   this.HRcolorsDent = this.lineChartColors;
-                  let dynamicColors = this.barBackgroundColor(
-                    res.body.data,
-                    this.collExphourlyRateChartDesntistsLabels
-                  );
-                  this.collExphourlyRateChartDentistsData[0].backgroundColor =
-                    dynamicColors;
+
                 }
+
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.collExphourlyRateChartDesntistsLabels
+                );
+                this.collExphourlyRateChartDentistsData[0].backgroundColor =
+                  dynamicColors;
   
                 if (
                   this.collExphourlyRateChartDesntistsAverage >=
@@ -8192,13 +8211,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.HRcolorsOht = this.barChartColorsHrOht;
                 } else {
                   this.HRcolorsOht = this.lineChartColors;
-                  let dynamicColors = this.barBackgroundColor(
-                    res.body.data,
-                    this.collExphourlyRateChartOhtLabels
-                  );
-                  this.collExphourlyRateChartOhtData[0].backgroundColor =
-                    dynamicColors;
+
                 }
+
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.collExphourlyRateChartOhtLabels
+                );
+                this.collExphourlyRateChartOhtData[0].backgroundColor =
+                  dynamicColors;
   
                 if (
                   this.collExphourlyRateChartOhtAverage >=
@@ -11430,6 +11451,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   }
 
   toggleCompareFilter(val) {
+    alert();
     if (
       (this.averageToggle == true && val == 'on') ||
       (this.averageToggle == false && val != 'on')
