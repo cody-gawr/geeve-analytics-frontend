@@ -11361,20 +11361,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   private ChartsAvgOff(AvgVal, annota: ChartOptions) {
     annota.plugins.annotation = {
       // drawTime: 'afterDatasetsDraw',
-      annotations: [
-        {
-          drawTime: 'afterDraw',
-          type: 'line',
-          // mode: 'horizontal',
-          scaleID: 'y-axis-0',
-          yMax: AvgVal,
-          yMin: AvgVal,
-          borderColor: '#0e3459',
-          borderWidth: 2,
-          borderDash: [2, 2],
-          borderDashOffset: 0
-        }
-      ],
+      // annotations: [
+      //   {
+      //     drawTime: 'afterDraw',
+      //     type: 'line',
+      //     // mode: 'horizontal',
+      //     scaleID: 'y-axis-0',
+      //     yMax: AvgVal,
+      //     yMin: AvgVal,
+      //     borderColor: '#0e3459',
+      //     borderWidth: 2,
+      //     borderDash: [2, 2],
+      //     borderDashOffset: 0
+      //   }
+      // ],
     };
   }
   changePrebookRate(val, dentType) {
