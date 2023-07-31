@@ -415,7 +415,8 @@ export class FrontDeskComponent implements AfterViewInit {
               Tlable = Tlable + ': ';
               Targetlable = Tlable;
             }
-            let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            let ylable = tooltipItems.parsed._custom ? +(tooltipItems.parsed._custom.max + tooltipItems.parsed._custom.min) / 2 : v;
             var tlab = 0;
             if (typeof tooltipItems.chart.data.datasets[1] === 'undefined') {
             } else {
@@ -804,7 +805,8 @@ export class FrontDeskComponent implements AfterViewInit {
               Tlable = Tlable + ': ';
               Targetlable = Tlable;
             }
-            let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            let ylable = tooltipItems.parsed._custom ? +(tooltipItems.parsed._custom.max + tooltipItems.parsed._custom.min) / 2 : v;
             var tlab = 0;
             if (typeof tooltipItems.chart.data.datasets[1] === 'undefined') {
             } else {
@@ -916,7 +918,9 @@ export class FrontDeskComponent implements AfterViewInit {
               Tlable = Tlable + ': ';
               Targetlable = Tlable;
             }
-            let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            let ylable = tooltipItems.parsed._custom ? +(tooltipItems.parsed._custom.max + tooltipItems.parsed._custom.min) / 2 : v;
+            
             var tlab = 0;
             if (typeof tooltipItems.chart.data.datasets[1] === 'undefined') {
             } else {

@@ -657,7 +657,8 @@ export class FinancesComponent implements AfterViewInit {
             if (Tlable != '') {
               Tlable = Tlable + ': ';
             }
-            let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            let ylable = tooltipItem.parsed._custom ? +(tooltipItem.parsed._custom.max + tooltipItem.parsed._custom.min) / 2 : v;
             if (ylable == 0 && Tlable == 'Target: ') {
               //return  Tlable + this.splitName(tooltipItem.xLabel).join(' ');
               return '';
@@ -672,7 +673,7 @@ export class FinancesComponent implements AfterViewInit {
           },
           // remove title
           title: function (tooltipItem) {
-            return;
+            return '';
           }
         }
       },

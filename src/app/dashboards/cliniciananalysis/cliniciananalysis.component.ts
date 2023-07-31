@@ -1151,7 +1151,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               Tlable = Tlable + ': ';
               Targetlable = Tlable;
             }
-            let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            let ylable = tooltipItem.parsed._custom ? +(tooltipItem.parsed._custom.max + tooltipItem.parsed._custom.min) / 2 : v;
             var tlab = 0;
             if (typeof tooltipItem.chart.data.datasets[1] === 'undefined') {
             } else {
@@ -1253,7 +1254,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           },
           // remove title
           title: function (tooltipItem) {
-            return;
+            return '';
           }
         }
       }
@@ -1333,7 +1334,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               Tlable = Tlable + ': ';
               Targetlable = Tlable;
             }
-            let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            let ylable = tooltipItem.parsed._custom ? +(tooltipItem.parsed._custom.max + tooltipItem.parsed._custom.min) / 2 : v;
             var tlab = 0;
             if (typeof tooltipItem.chart.data.datasets[1] === 'undefined') {
             } else {
@@ -1353,7 +1355,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           },
           // remove title
           title: function (tooltipItem) {
-            return;
+            return '';
           }
         }
       },
@@ -1435,7 +1437,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               Tlable = Tlable + ': ';
               Targetlable = Tlable;
             }
-            let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            let ylable = tooltipItem.parsed._custom ? +(tooltipItem.parsed._custom.max + tooltipItem.parsed._custom.min) / 2 : v;
             var tlab = 0;
             if (typeof tooltipItem.chart.data.datasets[1] === 'undefined') {
             } else {
@@ -1455,7 +1458,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           },
           // remove title
           title: function (tooltipItem) {
-            return;
+            return '';
           }
         }
       },

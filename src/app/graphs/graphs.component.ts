@@ -250,7 +250,7 @@ export class GraphsComponent{
             },
             // remove title
             title: function (tooltipItem) {
-              return;
+              return '';
             }
           }
         },
@@ -403,7 +403,8 @@ export class GraphsComponent{
                       Tlable = '';
                     }
                     
-                  let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v; 
+                  //let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v; 
+                  let ylable = tooltipItems.parsed._custom ? +(tooltipItems.parsed._custom.max + tooltipItems.parsed._custom.min) / 2 : v;
                   var tlab = 0; 
                   if(typeof tooltipItems.chart.data.datasets[1] === 'undefined') {
                     }
