@@ -545,6 +545,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public newPatientChartData: number[] = [350, 450, 100];
   public newPatientChartData1: number[] = [];
   pieDataColors: string[] = [];
+  pieDataColors1: string[] = [];
   //Total
   public productionTotal = 0;
   public productionTotalAverage = 0;
@@ -6027,6 +6028,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 } else this.npColors = this.doughnutChartColors;
                 if (this.doughnutTotalAverage >= this.doughnutTotalPrev)
                   this.doughnutTotalTooltip = 'down';
+                
+                if(!this.showTrend && this.averageToggle){
+                  this.pieDataColors1 = this.barBackgroundColor(this.doughnutChartData, this.doughnutChartLabels);
+                }else{
+                  this.pieDataColors1 = this.npColors[0].backgroundColor;
+                }
               }
             },
             error: (error) => {
@@ -6188,7 +6195,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   
                 this.newPatientChartData = this.newPatientChartData1;
                 this.newPatientChartLabels = this.newPatientChartLabels1;
-                this.pieDataColors = this.barBackgroundColor(this.newPatientChartData, this.newPatientChartLabels);
+                
                 this.newPatientTotal = res.body.total;
                 this.newPatientTotal$.next(res.body.total);
                 //this.doughnutChartOptions.elements.center.text = this.newPatientTotal;
@@ -6204,6 +6211,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 if (this.newPatientTotal >= this.newPatientTotalPrev)
                   this.newPatientTotalTooltip = 'up';
                 this.newPatientsDataMax = Math.max(...this.newPatientChartData);
+
+                if(!this.showTrend && this.averageToggle){
+                  this.pieDataColors = this.barBackgroundColor(this.newPatientChartData, this.newPatientChartLabels);
+                }else{
+                  this.pieDataColors = this.newpColors[0].backgroundColor;
+                }
               }
             },
             error: (error) => {

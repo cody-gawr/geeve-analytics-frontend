@@ -217,9 +217,9 @@ html {
 @import '~@syncfusion/ej2-angular-kanban/styles/material.css';
 
 @import '~perfect-scrollbar/css/perfect-scrollbar.css';
-// @import '~@swimlane/ngx-datatable/index.css';
-// @import '~@swimlane/ngx-datatable/themes/material.css';
-// @import '~@swimlane/ngx-datatable/assets/icons.css';
+@import '../node_modules/@swimlane/ngx-datatable/index.css';
+@import '../node_modules/@swimlane/ngx-datatable/themes/material.css';
+@import '../node_modules/@swimlane/ngx-datatable/assets/icons.css';
 
 .jeeve-legacy-app {
     @import 'legacy.scss';

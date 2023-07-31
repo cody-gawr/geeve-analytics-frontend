@@ -4,7 +4,7 @@ import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-pag
 import { Router } from '@angular/router';
 import { CookieService } from "ngx-cookie";
 import { ToastrService } from 'ngx-toastr';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DentistService } from '../../dentist/dentist.service';
 import { BaseComponent } from '../base/base.component';
@@ -85,12 +85,20 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   public activeDentist:any = 0;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  public get isExact(): boolean {
-    return this.localStorageService.isEachClinicExact(this.clinic_id$.value);
+  public get isExact$() {
+    return this.clinic_id$.pipe(
+      takeUntil(this.destroyed$),
+      map(v => this.localStorageService.isEachClinicExact(v.value))
+    )
+    //return this.localStorageService.isEachClinicExact(this.clinic_id$.value);
   }
 
-  public get isD4w(): boolean {
-    return this.localStorageService.isEachClinicPmsD4w(this.clinic_id$.value);
+  public get isD4w$() {
+    return this.clinic_id$.pipe(
+      takeUntil(this.destroyed$),
+      map(v => this.localStorageService.isEachClinicPmsD4w(v.value))
+    )
+    //return this.localStorageService.isEachClinicPmsD4w(this.clinic_id$.value);
   }
 
   constructor(
@@ -103,9 +111,13 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
      private localStorageService: LocalStorageService
   ) {
     super();
-    if(this.isD4w){
-      this.displayedColumns = ['providerId', 'name','position', 'jeeve_id','is_active'];
-    }
+    this.isD4w$.pipe(
+      takeUntil(this.destroyed$),
+    ).subscribe(v => {
+      if(v){
+        this.displayedColumns = ['providerId', 'name','position', 'jeeve_id','is_active'];
+      }
+    });
   }
 
   ngAfterViewInit() {
