@@ -975,7 +975,7 @@ export class FrontDeskComponent implements AfterViewInit {
       easing: 'linear',
       onComplete: function () {
         var chartInstance = this,
-          ctx = chartInstance.ctx;
+        ctx = chartInstance.ctx;
         ctx.textAlign = 'center';
         ctx.fillStyle = 'rgba(0, 0, 0, 1)';
         ctx.textBaseline = 'bottom';
@@ -988,7 +988,8 @@ export class FrontDeskComponent implements AfterViewInit {
             // let dataK = Math.abs(num) > 999 ? Math.sign(num)*(Math.round(Math.abs(num)/100)/10) + 'k' : Math.sign(num)*Math.abs(num);
             let dataK = shortenLargeNumber(num, 1);
             let dataDisplay = `${dataK}%`;
-            ctx.font = this.helpers.fontString(11, 'normal', 'Gilroy-Bold');
+            //ctx.font = this.helpers.fontString(11, 'normal', 'Gilroy-Bold');
+            ctx.font = 'normal 11px Gilroy-Bold';
             ctx.fillText(dataDisplay, bar.x, bar.y + 2);
 
             function shortenLargeNumber(num, digits) {

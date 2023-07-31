@@ -730,8 +730,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
           label: (tooltipItems) => {
             return (
               tooltipItems.label +
-              ': ' +
-              this.decimalPipe.transform(tooltipItems.formattedValue)
+              ': ' + tooltipItems.formattedValue
             );
           },
           title: function () {
@@ -3193,8 +3192,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
           label: (tooltipItems) => {
             return (
               tooltipItems.label +
-              ': $' +
-              this.decimalPipe.transform(tooltipItems.formattedValue)
+              ': $' + tooltipItems.formattedValue
             );
           },
           title: function () {

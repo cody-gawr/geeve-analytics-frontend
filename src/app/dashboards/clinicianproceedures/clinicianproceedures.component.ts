@@ -1020,16 +1020,7 @@ export class ClinicianProceeduresComponent
 
   /************ for top values on graph *******/
   public proceedureChartOptions1: ChartOptions = {
-    // scaleShowVerticalLines: false,
-    responsive: true,
-    // showTooltips: false,
-    maintainAspectRatio: false,
-    // barThickness: 10,
-    
-
-    elements: {
-      bar: {borderWidth: 10},
-    },
+    ...this.proceedureChartOptions,
     animation: {
       duration: 1,
       easing: 'linear',
@@ -1040,13 +1031,13 @@ export class ClinicianProceeduresComponent
         ctx.fillStyle = 'rgba(0, 0, 0, 1)';
         ctx.textBaseline = 'bottom';
         // Loop through each data in the datasets
-        this.data.datasets.forEach(function (dataset, i) {
+        this.data.datasets.forEach( (dataset, i) => {
           var meta = chartInstance.getDatasetMeta(i);
-          meta.data.forEach(function (bar, index) {
+          meta.data.forEach((bar, index) => {
             let num = dataset.data[index];
             let dataK = shortenLargeNumber(num, 1);
             let dataDisplay = `$${dataK}`;
-            ctx.font = this.helpers.fontString(11, 'normal', 'Gilroy-Bold');
+            ctx.font = 'normal 11px Gilroy-Bold';
             ctx.fillText(dataDisplay, bar.x + 20, bar.y + 5);
 
             function shortenLargeNumber(num, digits) {
@@ -1065,46 +1056,6 @@ export class ClinicianProceeduresComponent
             }
           });
         });
-      }
-    },
-    scales: {
-      x: 
-        {
-          beginAtZero: true,
-          min: 0,
-          max: 10000,
-          ticks: {
-            callback: (label: number, index, labels) => {
-              // when the floored value is the same as the value we have a whole number
-              if (Math.floor(label) === label) {
-                return '$' + this.numPipe.transform(label);
-              }
-              return '';
-            },
-            autoSkip: false
-          }
-        }
-      ,
-      y: 
-        {
-          ticks: {
-            callback: function (value: string) {
-              if (value.length > 20)
-                return value.substr(0, 20) + '....'; //truncate
-              else return value; //truncate
-            }
-          }
-        }
-    },
-    plugins: {
-      legend: {
-        position: 'top',
-        onClick: function (e) {
-          e.native.stopPropagation();
-        }
-      },
-      tooltip: {
-        enabled: false
       }
     },
 
