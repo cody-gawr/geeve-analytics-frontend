@@ -110,7 +110,12 @@ export class LoginComponent implements OnInit {
             this._cookieService.put('stepper', nextStep, opts);
             this._cookieService.put('userid', '', opts);
 
-            this._cookieService.put('multiClinicEnabled', res.body.data.data.multi_clinic_enabled, opts);
+            //this._cookieService.put('multiClinicEnabled', res.body.data.data.multi_clinic_enabled, opts);
+            this._cookieService.put('dash1_multi', res.body.data.data.dash1_multi);
+            this._cookieService.put('dash2_multi', res.body.data.data.dash2_multi);
+            this._cookieService.put('dash3_multi', res.body.data.data.dash3_multi);
+            this._cookieService.put('dash4_multi', res.body.data.data.dash4_multi);
+            this._cookieService.put('dash5_multi', res.body.data.data.dash5_multi);
 
             this._cookieService.put('childid', '', opts);
             this._cookieService.put('dentistid', '', opts);
