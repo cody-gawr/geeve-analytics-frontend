@@ -47,30 +47,27 @@ export class AppTopbarComponent implements OnInit {
       map((data) => {
         const [authUserData, rolesIndividual] = data;
         return {
-          multiClinicEnabled: (authUserData??this.authFacade.getAuthUserData()).multiClinicEnabled, 
+          multiClinicEnabled: {
+            dash1Multi: (authUserData??this.authFacade.getAuthUserData()).dash1Multi,
+            dash2Multi: (authUserData??this.authFacade.getAuthUserData()).dash2Multi,
+            dash3Multi: (authUserData??this.authFacade.getAuthUserData()).dash3Multi,
+            dash4Multi: (authUserData??this.authFacade.getAuthUserData()).dash4Multi,
+            dash5Multi: (authUserData??this.authFacade.getAuthUserData()).dash5Multi,
+          }, 
           userType: rolesIndividual?rolesIndividual.type:0
         }
       }),
       map( ({multiClinicEnabled, userType}) => {
         return (
-          (['/dashboards/clinicianproceedures', '/dashboards/finances'].includes(
-            this.activatedUrl
-          ) &&
-            [4, 7].indexOf(userType) < 0 &&
-            multiClinicEnabled == 1) ||
-          ([
-            '/dashboards/cliniciananalysis',
-            '/dashboards/clinicianproceedures',
-            '/dashboards/finances',
-            '/dashboards/marketing',
-            '/dashboards/frontdesk'
-          ].includes(this.activatedUrl) &&
-            [4, 7].indexOf(userType) < 0 &&
-            multiClinicEnabled == 1)
-        );
+          (this.activatedUrl == '/dashboards/cliniciananalysis' && multiClinicEnabled.dash1Multi == 1) ||
+          (this.activatedUrl == '/dashboards/clinicianproceedures' && multiClinicEnabled.dash2Multi == 1) ||
+          (this.activatedUrl == '/dashboards/frontdesk' && multiClinicEnabled.dash3Multi == 1) ||
+          (this.activatedUrl == '/dashboards/marketing' && multiClinicEnabled.dash4Multi == 1) ||
+          (this.activatedUrl == '/dashboards/finances' && multiClinicEnabled.dash5Multi == 1)
+        ) && ![4, 7].includes(userType);
       })
     );
-  };
+  }
 
   selectedClinic: 'all' | number | null = null;
   selectedMultiClinics: Array<'all' | number> = [];
