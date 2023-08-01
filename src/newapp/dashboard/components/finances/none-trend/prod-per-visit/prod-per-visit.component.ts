@@ -75,8 +75,6 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
         private layoutFacade: LayoutFacade,
         private decimalPipe: DecimalPipe
     ) {
-        
-        
         combineLatest([
             this.financeFacade.prodPerVisitTotal$,
             this.financeFacade.prodPerVisitTrendTotal$,
@@ -120,8 +118,7 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
         maintainAspectRatio: false,
         // scaleStartValue: 0,
         scales: {
-          x: 
-            {
+          x: {
               grid: {
                 display: true,
                 offset: true
@@ -133,8 +130,7 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
               offset: true,
               stacked: true
             },
-          y: 
-            {
+          y: {
               suggestedMin: 0,
               min: 0,
               beginAtZero: true,
@@ -164,7 +160,8 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
                 if (Tlable != '') {
                   Tlable = Tlable + ': ';
                 }
-                let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+                //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+                let ylable = tooltipItem.parsed._custom ? +(tooltipItem.parsed._custom.max + tooltipItem.parsed._custom.min) / 2 : v;
                 if (ylable == 0 && Tlable == 'Target: ') {
                   //return  Tlable + this.splitName(tooltipItem.xLabel).join(' ');
                   return '';
@@ -179,7 +176,7 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
               },
               // remove title
               title: function (tooltipItem) {
-                return;
+                return '';
               }
             }
           },

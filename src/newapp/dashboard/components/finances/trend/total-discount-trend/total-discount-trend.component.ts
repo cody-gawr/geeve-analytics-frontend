@@ -3,7 +3,7 @@ import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
 import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
 import { JeeveLineFillOptions } from "@/newapp/shared/utils";
 import { Component, OnDestroy, OnInit, Input } from "@angular/core";
-import { ChartOptions, LegendOptions, TooltipItem } from "chart.js";
+import { ChartOptions, LegendOptions, TooltipItem, ChartDataset } from "chart.js";
 import { _DeepPartialObject } from "chart.js/dist/types/utils";
 import _ from "lodash";
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
@@ -19,7 +19,7 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
     destroy = new Subject<void>();
     destroy$ = this.destroy.asObservable();
 
-    datasets = [];
+    datasets: ChartDataset[] = [];
     labels = [];
 
     get isMultiClinic$(){

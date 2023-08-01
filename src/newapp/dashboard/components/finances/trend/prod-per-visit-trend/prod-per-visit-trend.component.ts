@@ -2,7 +2,7 @@ import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
 import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
 import { JeeveLineFillOptions } from "@/newapp/shared/utils";
 import { Component, OnDestroy, OnInit, Input } from "@angular/core";
-import { ChartOptions, TooltipItem } from "chart.js";
+import { ChartOptions, TooltipItem, ChartDataset } from "chart.js";
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
 @Component({
@@ -16,7 +16,7 @@ export class FinanceProdPerVisitTrendComponent implements OnInit, OnDestroy {
     destroy = new Subject<void>();
     destroy$ = this.destroy.asObservable();
 
-    datasets = [];
+    datasets: ChartDataset[] = [];
     labels = [];
 
     get isLoading$(){

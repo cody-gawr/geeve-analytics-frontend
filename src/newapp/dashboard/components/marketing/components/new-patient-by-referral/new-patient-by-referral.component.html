@@ -1,0 +1,40 @@
+<div class="chart-container">
+    <mat-icon
+        [matTooltip]="toolTip"
+        matTooltipPosition="below"
+        color="primary"
+        class="help-tip"
+        fontIcon="help"
+    ></mat-icon>
+    <div class="chart-title">
+        New Patients By Referral
+    </div>
+    <div class="chart-content">
+        <div class="canvas-wrapper chart-box">
+            <div class="chart-gauge new-patient-by-referral-chart">
+                <spin-loader *ngIf="isLoading$ | async"></spin-loader>
+                <spin-loader class="empty-placeholder" *ngIf="!hasData; else chartElem1" [disableSpin]="true">
+                    You have no new patients from referral sources in the selected period
+                </spin-loader>
+                <ng-template #chartElem1>
+                    <canvas
+                        #mkNewPatientsByReferralCanvas
+                        *ngIf="!(isLoading$ | async)"
+                        baseChart
+                        [datasets]="datasets"
+                        [labels]="labels"
+                        [type]="chartType$ | async"
+                        [options]="chartOptions$ | async"
+                    ></canvas>
+                </ng-template>
+            </div>
+            <div class="chart-foot" *ngIf="!(isTrend$ | async) && (isMultipleClinic$ | async) && (isActivePatients$ | async)">
+                <div class="w-100">
+                    <h3>${{ newPatientsByReferralVal | number: '1.0-0' }}</h3>
+                    <span>Total</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

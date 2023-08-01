@@ -3,7 +3,7 @@ import { DashboardFacade } from "@/newapp/dashboard/facades/dashboard.facade";
 import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
 import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
 import { Component, OnDestroy, OnInit, Input } from "@angular/core";
-import { ChartOptions, LegendOptions } from "chart.js";
+import { ChartOptions, LegendOptions, ChartDataset } from "chart.js";
 import { _DeepPartialObject } from "chart.js/dist/types/utils";
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
@@ -18,7 +18,7 @@ export class FinanceProdPerClinicTrendComponent implements OnInit, OnDestroy {
     destroy = new Subject<void>();
     destroy$ = this.destroy.asObservable();
 
-    datasets = [];
+    datasets: ChartDataset[] = [];
     labels = [];
 
     get isMultiClinic$(){

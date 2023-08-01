@@ -55,7 +55,6 @@ export class FinanceService {
     ).pipe(map(res => <FnTotalProductionTrendApiResponse> camelcaseKeys(res, {deep: true})));
   };
 
-
   fnTotalCollection = (params: FnNetProfitParams): Observable<FnTotalCollectionApiResponse> => {
     const {
         clinicId,

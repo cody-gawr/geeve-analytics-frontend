@@ -3,7 +3,7 @@ import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
 import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
 import { DecimalPipe } from "@angular/common";
 import { Component, OnDestroy, OnInit, Input } from "@angular/core";
-import { ChartOptions } from "chart.js";
+import { ChartOptions, ChartDataset } from "chart.js";
 import _ from "lodash";
 import moment from "moment";
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
@@ -52,7 +52,7 @@ export class FinanceExpenseTrendComponent implements OnInit, OnDestroy {
     destroy = new Subject<void>();
     destroy$ = this.destroy.asObservable();
 
-    datasets = [];
+    datasets: ChartDataset[] = [];
     labels = [];
 
     get isLoading$(){

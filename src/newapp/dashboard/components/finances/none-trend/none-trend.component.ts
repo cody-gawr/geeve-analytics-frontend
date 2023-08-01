@@ -80,7 +80,9 @@ export class NoneTrendFinanceComponent implements OnInit, OnDestroy {
     }
 
     get isConnectedWith$() {
-        return this.dashbordFacade.connectedWith$.pipe(map(v => v && v != 'none'));
+        return this.dashbordFacade.connectedWith$.pipe(
+            takeUntil(this.destroy$),
+            map(v => v && v != 'none'));
     }
 
     

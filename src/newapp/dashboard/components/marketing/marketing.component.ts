@@ -1,0 +1,120 @@
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { DashboardFacade } from "../../facades/dashboard.facade";
+import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
+import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { FinanceFacade } from "../../facades/finance.facade";
+import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
+import { Router } from "@angular/router";
+import { FnNetProfitParams } from "@/newapp/models/dashboard";
+import moment from "moment";
+import { MarketingFacade } from "../../facades/marketing.facade";
+
+@Component({
+    selector: 'dashboard-marketing',
+    templateUrl: './marketing.component.html',
+    styleUrls: ['./marketing.component.scss']
+})
+export class MarketingComponent implements OnInit, OnDestroy {
+
+    destroy = new Subject<void>();
+    destroy$ = this.destroy.asObservable();
+
+    get isTrend$(){
+        return this.layoutFacade.trend$.pipe(
+            takeUntil(this.destroy$),
+            map(t => t !== 'off')
+        )
+    }
+
+    constructor(
+        private dashbordFacade: DashboardFacade,
+        private clinicFacade: ClinicFacade,
+        private marketingFacade: MarketingFacade,
+        private layoutFacade: LayoutFacade,
+        private router: Router
+    ) {
+        combineLatest([
+            this.clinicFacade.currentClinicId$,
+            this.layoutFacade.dateRange$,
+            this.dashbordFacade.connectedWith$,
+            this.router.routerState.root.queryParams,
+            this.layoutFacade.trend$
+        ])
+        .pipe(
+            takeUntil(this.destroy$),
+        ).subscribe(([clinicId, dateRange, connectedWith, route, trend]) => {
+            if(clinicId == null || connectedWith == null ) return;
+
+            const startDate = dateRange.start;
+            const endDate = dateRange.end;
+            const duration = dateRange.duration; 
+  
+            this.dashbordFacade.loadChartTips(4, clinicId);
+            const queryWhEnabled = route && parseInt(route.wh??'0') == 1?1:0;
+            switch(trend){
+                case 'off':
+                    const params: FnNetProfitParams = {
+                        clinicId: clinicId,
+                        startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
+                        endDate: endDate && moment(endDate).format('DD-MM-YYYY'),
+                        duration: duration,
+                        queryWhEnabled,
+                        connectedWith: connectedWith
+                    };
+
+                    this.marketingFacade.loadMkNewPatientsByReferral(params);
+                    this.marketingFacade.loadNewPatientsAcq({
+                        ...params,
+                        connectedWith
+                    });
+                    this.marketingFacade.loadNewNumPatients(params);
+                    this.marketingFacade.loadActivePatients(params);
+                    this.marketingFacade.loadRevByReferral(params);
+                    this.marketingFacade.loadTotalVisits(params);
+                    break;
+                case 'current':
+                case 'historic':
+                    this.marketingFacade.loadMkNewPatientsByReferralTrend({
+                        clinicId,
+                        mode: trend==='current'?'c':'h',
+                        queryWhEnabled
+                    });
+                    this.marketingFacade.loadNewPatientsAcqTrend({
+                        clinicId,
+                        mode: trend==='current'?'c':'h',
+                        queryWhEnabled,
+                        connectedWith
+                    });
+                    this.marketingFacade.loadNewNumPatientsTrend({
+                        clinicId,
+                        mode: trend==='current'?'c':'h',
+                        queryWhEnabled
+                    });
+                    this.marketingFacade.loadActivePatientsTrend({
+                        clinicId,
+                        mode: trend==='current'?'c':'h',
+                        queryWhEnabled
+                    })
+                    this.marketingFacade.loadRevByReferralTrend({
+                        clinicId,
+                        mode: trend==='current'?'c':'h',
+                        queryWhEnabled
+                    })
+                    this.marketingFacade.loadTotalVisitsTrend({
+                        clinicId,
+                        mode: trend==='current'?'c':'h',
+                        queryWhEnabled
+                    })
+                    break;
+            }
+
+        });
+    }
+
+    ngOnInit(): void {
+    }
+
+    ngOnDestroy(): void {
+        this.destroy.next();
+    }
+}

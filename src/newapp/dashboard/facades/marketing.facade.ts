@@ -1,0 +1,307 @@
+import { Injectable } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { JeeveError } from '@/newapp/models';
+import { MarketingPageActions } from '../state/actions';
+import { MarketingState, selectActivePatientsChartData, selectActivePatientsTrendChartData, selectErrors, selectIsActivePatients, selectIsLoadingMkNewPatientAcq, selectIsLoadingMkNewPatientAcqTrend, selectIsLoadingMkNewPatientsByReferral, selectIsLoadingMkNewPatientsByReferralTrend, selectIsLoadingMkNumNewPatients, selectIsLoadingMkNumNewPatientsTrend, selectIsLoadingMkRevByReferral, selectIsLoadingMkRevByReferralTrend, selectIsLoadingMkTotalVisits, selectIsLoadingMkTotalVisitsTrend, selectNewPatientAcqChartData, selectNewPatientAcqTrendChartData, selectNewPatientsByReferralChartData, selectNewPatientsByReferralData, selectNewPatientsByReferralTrendChartData, selectNumNewPatientsChartData, selectNumNewPatientsTrendChartData, selectRevByReferralChartData, selectRevByReferralTrendChartData, selectTotalVisitsChartData, selectTotalVisitsTrendChartData } from '../state/reducers/marketing.reducer';
+
+@Injectable()
+export class MarketingFacade {
+  constructor(private store: Store<MarketingState>) {}
+
+  public readonly errors$: Observable<JeeveError[]> = this.store.pipe(
+    select(selectErrors)
+  );
+
+  public readonly newPatientsByReferralChartData$ = this.store.pipe(
+    select(selectNewPatientsByReferralChartData)
+  );
+
+  public readonly newPatientsByReferralTrendChartData$ = this.store.pipe(
+    select(selectNewPatientsByReferralTrendChartData)
+  );
+
+  public readonly newNumPatientsChartData$ = this.store.pipe(
+    select(selectNumNewPatientsChartData)
+  );
+
+  public readonly newNumPatientsTrendChartData$ = this.store.pipe(
+    select(selectNumNewPatientsTrendChartData)
+  );
+
+  public readonly activePatientsChartData$ = this.store.pipe(
+    select(selectActivePatientsChartData)
+  );
+
+  public readonly activePatientsTrendChartData$ = this.store.pipe(
+    select(selectActivePatientsTrendChartData)
+  );
+
+  public readonly revByReferralChartData$ = this.store.pipe(
+    select(selectRevByReferralChartData)
+  );
+
+  public readonly revByReferralTrendChartData$ = this.store.pipe(
+    select(selectRevByReferralTrendChartData)
+  );
+
+  public readonly newPatientsAcqChartData$ = this.store.pipe(
+    select(selectNewPatientAcqChartData)
+  );
+
+  public readonly newPatientsAcqTrendChartData$ = this.store.pipe(
+    select(selectNewPatientAcqTrendChartData)
+  );
+
+  public readonly totalVisitsChartData$ = this.store.pipe(
+    select(selectTotalVisitsChartData)
+  );
+
+  public readonly totalVisitsTrendChartData$ = this.store.pipe(
+    select(selectTotalVisitsTrendChartData)
+  );
+
+  public readonly isLoadingNewPatientsByReferral$ = this.store.pipe(
+    select(selectIsLoadingMkNewPatientsByReferral)
+  );
+
+  public readonly isLoadingNewPatientsByReferralTrend$ = this.store.pipe(
+    select(selectIsLoadingMkNewPatientsByReferralTrend)
+  );
+
+  public readonly isLoadingRevByReferral$ = this.store.pipe(
+    select(selectIsLoadingMkRevByReferral)
+  );
+
+  public readonly isLoadingRevByReferralTrend$ = this.store.pipe(
+    select(selectIsLoadingMkRevByReferralTrend)
+  );
+
+  public readonly isLoadingNewNumPatients$ = this.store.pipe(
+    select(selectIsLoadingMkNumNewPatients)
+  );
+
+  public readonly isLoadingNewNumPatientsTrend$ = this.store.pipe(
+    select(selectIsLoadingMkNumNewPatientsTrend)
+  );
+
+  public readonly isLoadingNewPatientsAcq$ = this.store.pipe(
+    select(selectIsLoadingMkNewPatientAcq)
+  );
+
+  public readonly isLoadingNewPatientsAcqTrend$ = this.store.pipe(
+    select(selectIsLoadingMkNewPatientAcqTrend)
+  );
+
+  public readonly isLoadingTotalVisits$ = this.store.pipe(
+    select(selectIsLoadingMkTotalVisits)
+  );
+
+  public readonly isLoadingTotalVisitsTrend$ = this.store.pipe(
+    select(selectIsLoadingMkTotalVisitsTrend)
+  );
+
+  public readonly isActivePatients$ = this.store.pipe(
+    select(selectIsActivePatients)
+  );
+
+  public loadMkNewPatientsByReferral({
+    clinicId,
+    startDate,
+    endDate,
+    duration,
+    queryWhEnabled
+  }) {
+    this.store.dispatch(
+      MarketingPageActions.loadMkNewPatientsByReferral({
+        clinicId,
+        startDate,
+        endDate,
+        duration,
+        queryWhEnabled
+      })
+    );
+  }
+
+  public loadMkNewPatientsByReferralTrend({
+    clinicId,
+    mode,
+    queryWhEnabled
+  }) {
+    this.store.dispatch(
+      MarketingPageActions.loadMkNewPatientsByReferralTrend({
+        clinicId,
+        mode,
+        queryWhEnabled
+      })
+    );
+  }
+
+  public loadNewPatientsAcq({
+    clinicId,
+    startDate,
+    endDate,
+    duration,
+    queryWhEnabled,
+    connectedWith
+  }){
+    this.store.dispatch(
+      MarketingPageActions.loadMkNewPatientAcq({
+        clinicId,
+        startDate,
+        endDate,
+        duration,
+        queryWhEnabled,
+        connectedWith
+      })
+    );
+  }
+
+  public loadNewPatientsAcqTrend({
+    clinicId,
+    mode,
+    queryWhEnabled,
+    connectedWith
+  }){
+    this.store.dispatch(
+      MarketingPageActions.loadMkNewPatientAcqTrend({
+        clinicId,
+        mode,
+        queryWhEnabled,
+        connectedWith
+      })
+    );
+  }
+
+  public loadNewNumPatients({
+    clinicId,
+    startDate,
+    endDate,
+    duration,
+    queryWhEnabled,
+  }){
+    this.store.dispatch(
+      MarketingPageActions.loadMkNumNewPatients({
+        clinicId,
+        startDate,
+        endDate,
+        duration,
+        queryWhEnabled,
+      })
+    )
+  }
+
+  public loadNewNumPatientsTrend({
+    clinicId,
+    mode,
+    queryWhEnabled,
+  }){
+    this.store.dispatch(
+      MarketingPageActions.loadMkNumNewPatientsTrend({
+        clinicId,
+        mode,
+        queryWhEnabled,
+      })
+    )
+  }
+
+  public loadActivePatients({
+    clinicId,
+    startDate,
+    endDate,
+    duration,
+    queryWhEnabled,
+  }){
+    this.store.dispatch(
+      MarketingPageActions.loadMkActivePatients(
+        {
+          clinicId,
+          startDate,
+          endDate,
+          duration,
+          queryWhEnabled,
+        }
+      )
+    )
+  }
+
+  public loadActivePatientsTrend({
+    clinicId,
+    mode,
+    queryWhEnabled,
+  }){
+    this.store.dispatch(
+      MarketingPageActions.loadMkActivePatientsTrend(
+        {
+          clinicId,
+          mode,
+          queryWhEnabled,
+        }
+      )
+    )
+  }
+
+  public loadRevByReferral({
+    clinicId,
+    startDate,
+    endDate,
+    duration,
+    queryWhEnabled,
+  }){
+    this.store.dispatch(
+      MarketingPageActions.loadMkRevenueByReferral({
+        clinicId,
+        startDate,
+        endDate,
+        duration,
+        queryWhEnabled,
+      })
+    )
+  }
+
+  public loadRevByReferralTrend({
+    clinicId,
+    mode,
+    queryWhEnabled,
+  }){
+    this.store.dispatch(
+      MarketingPageActions.loadMkRevByReferralTrend({
+        clinicId,
+        mode,
+        queryWhEnabled,
+      })
+    )
+  }
+
+  public loadTotalVisits({
+    clinicId,
+    startDate,
+    endDate,
+    duration,
+    queryWhEnabled,
+  }){
+    this.store.dispatch(
+      MarketingPageActions.loadMkTotalVisits({
+        clinicId,
+        startDate,
+        endDate,
+        duration,
+        queryWhEnabled,
+      })
+    )
+  }
+
+  public loadTotalVisitsTrend({
+    clinicId,
+    mode,
+    queryWhEnabled,
+  }){
+    this.store.dispatch(
+      MarketingPageActions.loadMkTotalVisitsTrend({
+        clinicId,
+        mode,
+        queryWhEnabled,
+      })
+    )
+  }
+}

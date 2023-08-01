@@ -30,6 +30,16 @@ import { FinanceExpenseTrendComponent } from './components/finances/trend/expens
 import { FinanceProdPerClinicTrendComponent } from './components/finances/trend/prod-per-clinic-trend/prod-per-clinic-trend.component';
 import { FinanceTotalDiscountTrendComponent } from './components/finances/trend/total-discount-trend/total-discount-trend.component';
 import { FinanceProdColTrendComponent } from './components/finances/trend/prod-col-trend/prod-col-trend.component';
+import { MarketingEffects } from './state/effects/marketing.effects';
+import { marketingFeature } from './state/reducers/marketing.reducer';
+import { MarketingComponent } from './components/marketing/marketing.component';
+import { MarketingNewPatientByReferralComponent } from './components/marketing/components/new-patient-by-referral/new-patient-by-referral.component';
+import { MarketingRevByReferralComponent } from './components/marketing/components/revenue-by-referral/revenue-by-referral.component';
+import { MarketingNumNewPatientsComponent } from './components/marketing/components/num-new-patients/num-new-patients.component';
+import { MarketingNewPatientsAcqComponent } from './components/marketing/components/new-patients-acq/new-patients-acq.component';
+import { MarketingTotalVisitsComponent } from './components/marketing/components/total-visits/total-visits.component';
+import { MarketingService } from '@/app/dashboards/marketing/marketing.service';
+import { MarketingFacade } from './facades/marketing.facade';
 
 @NgModule({
   imports: [
@@ -38,7 +48,12 @@ import { FinanceProdColTrendComponent } from './components/finances/trend/prod-c
     DashboardRoutingModule,
     StoreModule.forFeature(dashboardFeature),
     StoreModule.forFeature(financeFeature),
-    EffectsModule.forFeature([DashboardEffects, FinanceEffects]),
+    StoreModule.forFeature(marketingFeature),
+    EffectsModule.forFeature([
+      DashboardEffects, 
+      FinanceEffects,
+      MarketingEffects
+    ]),
     AppLayoutModule,
     NgxChartsModule,
     ChartsModule,
@@ -59,13 +74,22 @@ import { FinanceProdColTrendComponent } from './components/finances/trend/prod-c
     FinanceExpenseTrendComponent,
     FinanceProdPerClinicTrendComponent,
     FinanceTotalDiscountTrendComponent,
-    FinanceProdColTrendComponent
+    FinanceProdColTrendComponent,
+
+    MarketingComponent,
+    MarketingNewPatientByReferralComponent,
+    MarketingRevByReferralComponent,
+    MarketingNumNewPatientsComponent,
+    MarketingNewPatientsAcqComponent,
+    MarketingTotalVisitsComponent
   ],
   providers: [
     DashboardService, 
     DashboardFacade, 
     FinanceService, 
-    FinanceFacade
+    FinanceFacade,
+    MarketingService,
+    MarketingFacade
   ]
 })
 export class DashboardModule {}
