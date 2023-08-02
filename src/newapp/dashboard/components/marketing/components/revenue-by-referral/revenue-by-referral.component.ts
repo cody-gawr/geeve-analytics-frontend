@@ -141,7 +141,8 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
         plugins: {
           tooltip: {
             callbacks: {
-              label: (tooltipItem) => formatXTooltipLabel(tooltipItem)
+              label: (tooltipItem) => formatXTooltipLabel(tooltipItem),
+              title: ()=> ''
             }
           },
           legend: {

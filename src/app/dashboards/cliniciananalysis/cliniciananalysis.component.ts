@@ -1551,7 +1551,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       },
       tooltip: {
         callbacks: {
-          label: (tooltipItem) => `${tooltipItem.label}:${tooltipItem.formattedValue}`,
+          label: (tooltipItem) => `${tooltipItem.label}: ${tooltipItem.formattedValue}`,
           title: function(){
             return ''
           }

@@ -827,7 +827,7 @@ export class ClinicianProceeduresComponent
       tooltip: {
         callbacks: {
           label: function(tooltipItem){
-            return `${tooltipItem.label}:${tooltipItem.formattedValue}`;
+            return `${tooltipItem.label}: ${tooltipItem.formattedValue}`;
           },
           title: function(){ return '' }
         }

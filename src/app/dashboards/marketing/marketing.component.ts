@@ -893,9 +893,11 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         // displayColors: false,
         callbacks: {
           label: function (tooltipItems) {
-            return (
-              tooltipItems.dataset.label + ': ' +tooltipItems.formattedValue
-            );
+              if(tooltipItems.parsed.y > 0){
+                return tooltipItems.dataset.label + ': ' +tooltipItems.formattedValue;
+              }else{
+                return '';
+              }
           },
           title: (tooltipItems) => {
             const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
@@ -1031,7 +1033,11 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         },
         callbacks: {
           label: function (tooltipItems) {
-            return `${tooltipItems.dataset.label}: ${tooltipItems.formattedValue}`
+            if(tooltipItems.parsed.y > 0){
+              return `${tooltipItems.dataset.label}: ${tooltipItems.formattedValue}`;
+            }else{
+              return '';
+            }
           },
           title: (tooltipItems)=>{
             const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
@@ -1198,7 +1204,8 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     plugins: {
       tooltip: {
         callbacks: {
-          label: (tooltipItem) => formatXTooltipLabel(tooltipItem)
+          label: (tooltipItem) => formatXTooltipLabel(tooltipItem),
+          title: ()=> ''
         }
       },
       legend: {
@@ -1210,7 +1217,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         },
         onClick: function (e) {
           e.native.stopPropagation();
-        }
+        },
       },
     },
     // elements: {

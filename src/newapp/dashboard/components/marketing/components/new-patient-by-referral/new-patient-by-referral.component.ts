@@ -222,7 +222,11 @@ export class MarketingNewPatientByReferralComponent implements OnInit, OnDestroy
                 },
                 callbacks: {
                     label: function (tooltipItems) {
-                    return `${tooltipItems.dataset.label}: ${tooltipItems.formattedValue}`
+                        if(tooltipItems.parsed.y > 0){
+                            return `${tooltipItems.dataset.label}: ${tooltipItems.formattedValue}`;
+                        }else{
+                            return '';
+                        }
                     },
                     title: (tooltipItems) => {
                         const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
