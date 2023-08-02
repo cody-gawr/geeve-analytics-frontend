@@ -63,9 +63,11 @@ export class AddJeeveNameComponent
 })
 export class DentistComponent extends BaseComponent implements AfterViewInit {
    @ViewChild(MatSort) sort: MatSort;
-  clinic_id$ = new BehaviorSubject<any>(null);
+  //clinic_id$ = new BehaviorSubject<any>(null);
+  clinic_id$: string;
   @Input() set clinicId(value: any) {
-    this.clinic_id$.next(value);
+    //this.clinic_id$.next(value);
+    this.clinic_id$ = value;
   }
   public apiUrl = environment.apiUrl; 
 
@@ -76,10 +78,8 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   dentistList = new MatTableDataSource([]);
   dentistListLoading: boolean = false;
   //displayedColumns: string[] = ['providerId', 'name','position', 'appbook','jeeve_id','is_active'];
-  get displayedColumns$() {
-    return this.isD4w$.pipe(
-      map(v => v?['providerId', 'name','position', 'appbook','jeeve_id','is_active']:['providerId', 'name','position', 'jeeve_id','is_active'])
-    )
+  get displayedColumns() {
+    return this.isD4w?['providerId', 'name','position', 'appbook','jeeve_id','is_active']:['providerId', 'name','position', 'jeeve_id','is_active'];
   }
   jeeveProviderIds: any = [];
   appBooks: any = [];
@@ -90,20 +90,22 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   public activeDentist:any = 0;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  public get isExact$() {
-    return this.clinic_id$.pipe(
-      takeUntil(this.destroyed$),
-      map(v => this.localStorageService.isEachClinicExact(v.value))
-    )
-    //return this.localStorageService.isEachClinicExact(this.clinic_id$.value);
+  public get isExact() {
+    return this.localStorageService.isClinicPmsType(this.clinic_id$, 'exact');
+    // return this.clinic_id$.pipe(
+    //   takeUntil(this.destroyed$),
+    //   map(v => this.localStorageService.isClinicPmsType(v, 'exact'))
+    // )
+    //return this.localStorageService.isEachClinicExact(this.clinic_id$);
   }
 
-  public get isD4w$() {
-    return this.clinic_id$.pipe(
-      takeUntil(this.destroyed$),
-      map(v => this.localStorageService.isEachClinicPmsD4w(v.value))
-    )
-    //return this.localStorageService.isEachClinicPmsD4w(this.clinic_id$.value);
+  public get isD4w() {
+    return this.localStorageService.isClinicPmsType(this.clinic_id$, 'd4w');
+    // return this.clinic_id$.pipe(
+    //   takeUntil(this.destroyed$),
+    //   map(v => this.localStorageService.isClinicPmsType(v, 'd4w'))
+    // )
+    //return this.localStorageService.isEachClinicPmsD4w(this.clinic_id$);
   }
 
   constructor(
@@ -122,14 +124,15 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
     this.userPlan =  this._cookieService.get("user_plan"); 
     this.dentistList.paginator = this.paginator;
     this.dentistList.sort = this.sort;
-    this.clinic_id$.pipe(
-      takeUntil(this.destroyed$)
-    ).subscribe(id => {
-      if (id) {
-        this.getDentists(id);
-        this.getJeeveNames(id);
-      }
-    })
+    this.getDentists(this.clinic_id$);
+    this.getJeeveNames(this.clinic_id$);
+    // this.clinic_id$.pipe(
+    //   takeUntil(this.destroyed$)
+    // ).subscribe(id => {
+    //   if (id) {
+        
+    //   }
+    // })
   }
   advanceToggle(event){
     this.advanceOption = event.checked;
@@ -313,7 +316,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
         isActive = 1;
       }
     }
-    this.dentistService.updateDentists(providerId, updatedValue, this.clinic_id$.value, isActive,jeeveId,updatedColumn,appBookId)
+    this.dentistService.updateDentists(providerId, updatedValue, this.clinic_id$, isActive,jeeveId,updatedColumn,appBookId)
       .pipe(
         takeUntil(this.destroyed$)
       )
@@ -321,7 +324,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
         this.editing[index + '-' + column] = false;
         if (res.status == 200) {
           this.toastr.success('Dentist Updated');
-          this.getDentists(this.clinic_id$.value);
+          this.getDentists(this.clinic_id$);
         }
       }, (error) => {
         this.toastr.error('Opps, Error occurs in updating dentist!');
@@ -333,15 +336,15 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
     {
       const dialogRef = this.dialog.open(AddJeeveNameComponent, {
         width: '650px',
-        data: { clinic_id: this.clinic_id$.value,jeeveNames: this.jeeveNames }
+        data: { clinic_id: this.clinic_id$,jeeveNames: this.jeeveNames }
       });
       dialogRef.afterClosed().subscribe(result => {
-        this.getDentists(this.clinic_id$.value);
+        this.getDentists(this.clinic_id$);
       }); 
     }
 
     showActiveToggle(e){
       this.isShowInactive = e.checked;
-      this.getDentists(this.clinic_id$.value);
+      this.getDentists(this.clinic_id$);
     }
 }

@@ -93,7 +93,7 @@
                   </div>
           </td>
         </ng-container>
-        <ng-container *ngIf="isD4w$ | async" matColumnDef="appbook">
+        <ng-container *ngIf="isD4w" matColumnDef="appbook">
           <th mat-header-cell *matHeaderCellDef >App Book
           </th>
           <td mat-cell *matCellDef="let element; let i=index">            
@@ -137,8 +137,8 @@
           </td> 
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns$ | async"></tr>
-        <tr mat-row *matRowDef="let row; columns: (displayedColumns$ | async)"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: (displayedColumns)"></tr>
       </table>
       <mat-paginator
         hidePageSize

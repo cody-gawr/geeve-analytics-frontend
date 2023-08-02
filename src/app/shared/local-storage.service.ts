@@ -96,4 +96,10 @@ export class LocalStorageService {
     }
     return clinics.every((c) => c.pms == 'd4w');
   }
+
+  public isClinicPmsType(clinicId: number | string, pms: 'd4w' | 'exact' | 'core'){
+    let clinics = this.getObject<any[]>('clinics') || [];
+    const clinic = clinics.find((c) => c.id == parseInt(<string>clinicId));
+    return clinic.pms && clinic.pms == pms;
+  } 
 }
