@@ -75,7 +75,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   currentPage: number = 1;
   dentistList = new MatTableDataSource([]);
   dentistListLoading: boolean = false;
-  displayedColumns: string[] = ['providerId', 'name','position', 'appbook','jeeve_id','is_active'];
+  //displayedColumns: string[] = ['providerId', 'name','position', 'appbook','jeeve_id','is_active'];
   get displayedColumns$() {
     return this.isD4w$.pipe(
       map(v => v?['providerId', 'name','position', 'appbook','jeeve_id','is_active']:['providerId', 'name','position', 'jeeve_id','is_active'])
@@ -116,13 +116,6 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
      private localStorageService: LocalStorageService
   ) {
     super();
-    this.isD4w$.pipe(
-      takeUntil(this.destroyed$),
-    ).subscribe(v => {
-      if(v){
-        this.displayedColumns = ['providerId', 'name','position', 'jeeve_id','is_active'];
-      }
-    });
   }
 
   ngAfterViewInit() {
