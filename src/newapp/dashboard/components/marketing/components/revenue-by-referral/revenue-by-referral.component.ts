@@ -214,10 +214,13 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
             mode: 'x',
             // enabled: false,
             itemSort: (itemA, itemB): number => {
-              return parseInt(itemB.formattedValue) - parseInt(itemA.formattedValue);
+              return itemB.parsed.y - itemA.parsed.y;
             },
             callbacks: {
               label: function (tooltipItem) {
+                if(tooltipItem.parsed.y == 0){
+                  return '';
+                }
                 return tooltipItem.parsed.y < 0?'- $':`${tooltipItem.dataset.label}: $${tooltipItem.formattedValue}`;;
               },
               title: function(tooltipItems){

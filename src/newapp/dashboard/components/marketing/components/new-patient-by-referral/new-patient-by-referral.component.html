@@ -12,20 +12,22 @@
     <div class="chart-content">
         <div class="canvas-wrapper chart-box">
             <div class="chart-gauge new-patient-by-referral-chart">
-                <spin-loader *ngIf="isLoading$ | async"></spin-loader>
-                <spin-loader class="empty-placeholder" *ngIf="!hasData; else chartElem1" [disableSpin]="true">
-                    You have no new patients from referral sources in the selected period
-                </spin-loader>
-                <ng-template #chartElem1>
-                    <canvas
-                        #mkNewPatientsByReferralCanvas
-                        *ngIf="!(isLoading$ | async)"
-                        baseChart
-                        [datasets]="datasets"
-                        [labels]="labels"
-                        [type]="chartType$ | async"
-                        [options]="chartOptions$ | async"
-                    ></canvas>
+                <spin-loader *ngIf="(isLoading$ | async); else mainElem"></spin-loader>
+                <ng-template #mainElem>
+                    <spin-loader class="empty-placeholder" *ngIf="!hasData; else chartElem1" [disableSpin]="true">
+                        You have no new patients from referral sources in the selected period
+                    </spin-loader>
+                    <ng-template #chartElem1>
+                        <canvas
+                            #mkNewPatientsByReferralCanvas
+                            *ngIf="!(isLoading$ | async)"
+                            baseChart
+                            [datasets]="datasets"
+                            [labels]="labels"
+                            [type]="chartType$ | async"
+                            [options]="chartOptions$ | async"
+                        ></canvas>
+                    </ng-template>
                 </ng-template>
             </div>
             <div class="chart-foot" *ngIf="!(isTrend$ | async) && (isMultipleClinic$ | async) && (isActivePatients$ | async)">

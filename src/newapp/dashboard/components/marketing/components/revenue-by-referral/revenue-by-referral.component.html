@@ -12,20 +12,22 @@
     <div class="chart-content">
         <div class="canvas-wrapper chart-box">
             <div class="chart-gauge rev-by-referral-chart">
-                <spin-loader *ngIf="isLoading$ | async"></spin-loader>
-                <spin-loader class="empty-placeholder" *ngIf="!hasData; else chartElem3" [disableSpin]="true">
-                    You have no revenue from referral sources in the selected period
-                </spin-loader>
-                <ng-template #chartElem3>
-                    <canvas
-                        #mkRevByReferral
-                        *ngIf="!(isLoading$ | async) && hasData"
-                        baseChart
-                        [datasets]="datasets"
-                        [labels]="labels"
-                        [type]="chartType$ | async"
-                        [options]="chartOptions$ | async"
-                    ></canvas>
+                <spin-loader *ngIf="(isLoading$ | async); else mainElem"></spin-loader>
+                <ng-template #mainElem>
+                    <spin-loader class="empty-placeholder" *ngIf="!hasData; else chartElem3" [disableSpin]="true">
+                        You have no revenue from referral sources in the selected period
+                    </spin-loader>
+                    <ng-template #chartElem3>
+                        <canvas
+                            #mkRevByReferral
+                            *ngIf="!(isLoading$ | async) && hasData"
+                            baseChart
+                            [datasets]="datasets"
+                            [labels]="labels"
+                            [type]="chartType$ | async"
+                            [options]="chartOptions$ | async"
+                        ></canvas>
+                    </ng-template>
                 </ng-template>
             </div>
             <div class="chart-foot" *ngIf="!(isTrend$ | async) && isMultipleClinic$ | async">

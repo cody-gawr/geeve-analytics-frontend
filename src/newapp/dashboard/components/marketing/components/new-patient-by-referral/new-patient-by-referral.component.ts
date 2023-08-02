@@ -218,7 +218,7 @@ export class MarketingNewPatientByReferralComponent implements OnInit, OnDestroy
             tooltip: {
             mode: 'x',
             itemSort: (itemA, itemB): number => {
-                return parseInt(itemB.formattedValue) - parseInt(itemA.formattedValue);
+                return itemB.parsed.y - itemA.parsed.y;
             },
             callbacks: {
                 label: function (tooltipItems) {

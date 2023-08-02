@@ -21,35 +21,37 @@
                     
                 </spin-loader>
                 <ng-template #chartElem2>
-                    <ngx-gauge
-                        *ngIf="!(isLoading$ | async) && !(isMultipleClinic$ | async) && (hasData$ | async) && !(isTrend$ | async)"
-                        type="arch"
-                        [value]="newPatientsAcqVal"
-                        [thick]="20"
-                        prepend="$"
-                        foregroundColor="#4ccfae"
-                        backgroundColor="#f4f0fa"
-                        cap="round"
-                        size="250"
-                        [max]="maxNewPatientsAcqGoal"
-                    >
-                    </ngx-gauge>
-                    <canvas
-                        #mkNewPatientsAcqCanvas
-                        *ngIf="!(isLoading$ | async) && ((isMultipleClinic$ | async) || (isTrend$ | async)) && (hasData$ | async)"
-                        baseChart
-                        [datasets]="datasets"
-                        [labels]="labels"
-                        [legend]="false"
-                        type="bar"
-                        [options]="chartOptions$ | async"
-                        [colors]="lineChartColors"
-                    >
-                    </canvas>
-                    <spin-loader *ngIf="isLoading$ | async"></spin-loader>
-                    <spin-loader class="empty-placeholder" *ngIf="!(hasData$ | async)" [disableSpin]="true">
-                        Unable to determine your cost of new patients for this period
-                    </spin-loader>
+                    <spin-loader *ngIf="(isLoading$ | async); else emptyCheck"></spin-loader>
+                    <ng-template #emptyCheck>
+                        <spin-loader class="empty-placeholder" *ngIf="!(hasData$ | async)" [disableSpin]="true">
+                            Unable to determine your cost of new patients for this period
+                        </spin-loader>
+                        <ngx-gauge
+                            *ngIf="!(isMultipleClinic$ | async) && (hasData$ | async) && !(isTrend$ | async)"
+                            type="arch"
+                            [value]="newPatientsAcqVal"
+                            [thick]="20"
+                            prepend="$"
+                            foregroundColor="#4ccfae"
+                            backgroundColor="#f4f0fa"
+                            cap="round"
+                            size="250"
+                            [max]="maxNewPatientsAcqGoal"
+                        >
+                        </ngx-gauge>
+                        <canvas
+                            #mkNewPatientsAcqCanvas
+                            *ngIf="((isMultipleClinic$ | async) || (isTrend$ | async)) && (hasData$ | async)"
+                            baseChart
+                            [datasets]="datasets"
+                            [labels]="labels"
+                            [legend]="false"
+                            type="bar"
+                            [options]="chartOptions$ | async"
+                            [colors]="lineChartColors"
+                        >
+                        </canvas>
+                    </ng-template>
                 </ng-template>
             </div>
             <div class="chart-foot"  *ngIf="!(isTrend$ | async)">

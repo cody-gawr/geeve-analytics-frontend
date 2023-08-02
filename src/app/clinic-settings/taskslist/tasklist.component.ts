@@ -368,7 +368,18 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
           res.body.data.end_of_day_tasks.sort((a, b) => parseInt(b.id) - parseInt(a.id));     
           const dialogRef = this.dialog.open(DialogOverviewTasklistDialogComponent, {
             width: '500px',
-            data: { list_id: id, tasksListItems: res.body.data.end_of_day_tasks, list_name: name, assigned_roles: assigned_roles.split(","), clinic_id: this.clinic_id$.value, old: name, old_assigned_roles: assigned_roles , totalRecords: this.totalRecords, currPage:this.currPage ,itemsPerPage: this.itemsPerPage}
+            data: { 
+                list_id: id, 
+                tasksListItems: res.body.data.end_of_day_tasks, 
+                list_name: name, 
+                assigned_roles: assigned_roles.split(","), 
+                clinic_id: this.clinic_id$.value, 
+                old: name, 
+                old_assigned_roles: assigned_roles , 
+                totalRecords: this.totalRecords, 
+                currPage:this.currPage,
+                itemsPerPage: this.itemsPerPage
+            }
           });
           dialogRef.afterClosed().subscribe(result => {
             this.getTasks(this.clinic_id$.value);
