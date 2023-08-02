@@ -4388,7 +4388,7 @@ export class FinancesComponent implements AfterViewInit {
                 this.expensesChartTrend.push({
                   data: durations.map((d) => {
                     const data = dataByDuration.find((e) => e.duration === d);
-                    return !!data ? data.expense : 0;
+                    return !!data ? Math.round(data.expense) : 0;
                   }),
                   label: accountName,
                   backgroundColor: this.doughnutChartColors[index],

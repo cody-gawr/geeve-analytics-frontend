@@ -216,18 +216,19 @@ export class MarketingNewPatientByReferralComponent implements OnInit, OnDestroy
             display: true
             },
             tooltip: {
-            mode: 'x',
-            itemSort: (itemA, itemB): number => {
-                return itemB.parsed.y - itemA.parsed.y;
-            },
-            callbacks: {
-                label: function (tooltipItems) {
-                return `${tooltipItems.dataset.label}: ${tooltipItems.parsed.y}`
+                mode: 'x',
+                itemSort: (itemA, itemB): number => {
+                    return itemB.parsed.y - itemA.parsed.y;
                 },
-                title: function(tooltipItems){
-                return `${tooltipItems[0].label}: ${_.sumBy(tooltipItems, t => t.parsed.y)}`
+                callbacks: {
+                    label: function (tooltipItems) {
+                    return `${tooltipItems.dataset.label}: ${tooltipItems.formattedValue}`
+                    },
+                    title: (tooltipItems) => {
+                        const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
+                        return `${tooltipItems[0].label}: ${this.decimalPipe.transform(sumV)}`;
+                    }
                 }
-            }
             }
         }
     };

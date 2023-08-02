@@ -894,13 +894,12 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         callbacks: {
           label: function (tooltipItems) {
             return (
-              tooltipItems.dataset.label +
-              ': ' +
-              Math.round(parseInt(tooltipItems.formattedValue))
+              tooltipItems.dataset.label + ': ' +tooltipItems.formattedValue
             );
           },
-          title: function(tooltipItems){
-            return `${tooltipItems[0].label}: ${_.sumBy(tooltipItems, t => t.parsed.y)}`
+          title: (tooltipItems) => {
+            const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
+            return `${tooltipItems[0].label}: ${this.decimalPipe.transform(sumV)}`
           }
         }
       }
@@ -968,9 +967,9 @@ export class MarketingComponent implements OnInit, AfterViewInit {
             }
             return tooltipItem.parsed.y < 0?'- $':`${tooltipItem.dataset.label}: $${tooltipItem.formattedValue}`;;
           },
-          title: function(tooltipItems){
+          title: (tooltipItems) => {
               const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
-              return `${tooltipItems[0].label}: $${sumV}`;
+              return `${tooltipItems[0].label}: $${this.decimalPipe.transform(sumV)}`;
           }
         }
       }
@@ -1032,10 +1031,11 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         },
         callbacks: {
           label: function (tooltipItems) {
-            return `${tooltipItems.dataset.label}: ${tooltipItems.parsed.y}`
+            return `${tooltipItems.dataset.label}: ${tooltipItems.formattedValue}`
           },
-          title: function(tooltipItems){
-            return `${tooltipItems[0].label}: ${_.sumBy(tooltipItems, t => t.parsed.y)}`
+          title: (tooltipItems)=>{
+            const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
+            return `${tooltipItems[0].label}: ${this.decimalPipe.transform(sumV)}`
           }
         }
       }

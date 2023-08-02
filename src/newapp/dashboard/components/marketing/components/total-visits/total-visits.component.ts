@@ -295,13 +295,12 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
             callbacks: {
               label: function (tooltipItems) {
                 return (
-                  tooltipItems.dataset.label +
-                  ': ' +
-                  Math.round(parseInt(tooltipItems.formattedValue))
+                  tooltipItems.dataset.label + ': ' + tooltipItems.formattedValue
                 );
               },
-              title: function(tooltipItems){
-                return `${tooltipItems[0].label}: ${_.sumBy(tooltipItems, t => t.parsed.y)}`
+              title: (tooltipItems) => {
+                const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
+                return `${tooltipItems[0].label}: ${this.decimalPipe.transform(sumV)}`;
               }
             }
           }

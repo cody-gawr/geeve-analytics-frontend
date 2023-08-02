@@ -1022,7 +1022,7 @@ export const selectExpensesTrendChartData = createSelector(
         return {
           values: expensesTrendDurations.map(dur => {
             const item = data.find(d => d.duration == dur);
-            return !!item? item.expense: 0;
+            return !!item? Math.round(item.expense): 0;
           }),
           label: accountName,
         }

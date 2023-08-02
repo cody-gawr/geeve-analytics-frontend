@@ -221,10 +221,11 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
                 if(tooltipItem.parsed.y == 0){
                   return '';
                 }
-                return tooltipItem.parsed.y < 0?'- $':`${tooltipItem.dataset.label}: $${tooltipItem.formattedValue}`;;
+                return tooltipItem.parsed.y < 0?'- $':`${tooltipItem.dataset.label}: $${tooltipItem.formattedValue}`;
               },
-              title: function(tooltipItems){
-                return `${tooltipItems[0].label}: $${_.sumBy(tooltipItems, t => t.parsed.y)}`
+              title: (tooltipItems) => {
+                const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
+                return `${tooltipItems[0].label}: ${this.decimalPipe.transform(sumV)}`;
               }
             }
           }
