@@ -76,6 +76,11 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   dentistList = new MatTableDataSource([]);
   dentistListLoading: boolean = false;
   displayedColumns: string[] = ['providerId', 'name','position', 'appbook','jeeve_id','is_active'];
+  get displayedColumns$() {
+    return this.isD4w$.pipe(
+      map(v => v?['providerId', 'name','position', 'appbook','jeeve_id','is_active']:['providerId', 'name','position', 'jeeve_id','is_active'])
+    )
+  }
   jeeveProviderIds: any = [];
   appBooks: any = [];
   editing = {};
