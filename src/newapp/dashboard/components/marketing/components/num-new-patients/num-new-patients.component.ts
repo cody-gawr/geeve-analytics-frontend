@@ -54,6 +54,14 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
         )
     }
 
+    enableActivePatients(){
+      this.marketingFacade.setActivePatients(true);
+    }
+
+    disableActivePatients(){
+      this.marketingFacade.setActivePatients(false);
+    }
+
     newNumPatientsVal = 0;
     newNumPatientsPrev = 0;
     newNumPatientsGoal = 0;

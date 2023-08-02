@@ -12,10 +12,10 @@
     <div class="chart-content">
         <div class="expenses-content">
             <div class="expenses-ngx-chart">
-                <spin-loader  class="empty-placeholder" *ngIf="!isFullMonths; else chartElement" [disableSpin]="true">
+                <spin-loader  class="empty-placeholder" *ngIf="!isFullMonths; else chartElem" [disableSpin]="true">
                     Please select a date range consisting of full months to view Accounting charts
                 </spin-loader>
-                <ng-template #chartElement>
+                <ng-template #chartElem>
                     <ngx-charts-pie-chart
                             *ngIf="!(isLoading$ | async) && selectedData.length > 0"
                             [view]="[500, 320]"

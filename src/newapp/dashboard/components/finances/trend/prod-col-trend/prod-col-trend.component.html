@@ -11,8 +11,8 @@
     </div>
     <div class="chart-content flex-column">
         <div class="prod-collection-trend-chart">
-            <spin-loader *ngIf="isLoading$ | async; else chartElement"></spin-loader>
-            <ng-template #chartElement>
+            <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+            <ng-template #chartElem>
                 <canvas
                     *ngIf="hasData"
                     baseChart
@@ -23,10 +23,10 @@
                     type="bar"
                 >
                 </canvas>
+                <spin-loader *ngIf="!hasData && !(isLoading$ | async)" [disableSpin]="true">
+                    You have no data in the selected period
+                </spin-loader>
             </ng-template>
-            <spin-loader *ngIf="!hasData && !(isLoading$ | async)" [disableSpin]="true">
-                You have no data in the selected period
-            </spin-loader>
         </div>
     </div>
 </div>

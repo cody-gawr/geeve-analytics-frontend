@@ -15,14 +15,14 @@
     <div class="chart-content">
         <div class="canvas-wrapper chart-box">
             <div class="chart-gauge new-patients-acq-gauge">
-                <spin-loader class="empty-placeholder" *ngIf="!(isConnectedWith$ | async) && (isFullMonthsDateRange$ | async); else chartElem2" [disableSpin]="true">
+                <spin-loader class="empty-placeholder" 
+                        *ngIf="!(isConnectedWith$ | async) && (isFullMonthsDateRange$ | async); else chartElem1" [disableSpin]="true">
                     {{(isFullMonthsDateRange$ | async)?'Please select a date range consisting of full months to view Accounting charts':
                     'Please connect to Xero/MYOB to display this chart'}}
-                    
                 </spin-loader>
-                <ng-template #chartElem2>
-                    <spin-loader *ngIf="(isLoading$ | async); else emptyCheck"></spin-loader>
-                    <ng-template #emptyCheck>
+                <ng-template #chartElem1>
+                    <spin-loader *ngIf="(isLoading$ | async); else chartElem2"></spin-loader>
+                    <ng-template #chartElem2>
                         <spin-loader class="empty-placeholder" *ngIf="!(hasData$ | async)" [disableSpin]="true">
                             Unable to determine your cost of new patients for this period
                         </spin-loader>

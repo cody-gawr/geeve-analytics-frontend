@@ -11,8 +11,8 @@
     </div>
     <div class="chart-content flex-column">
         <div class="total-discount-trend-chart">
-            <spin-loader *ngIf="isLoading$ | async; else chartElement"></spin-loader>
-            <ng-template #chartElement>
+            <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+            <ng-template #chartElem>
                 <canvas
                     *ngIf="datasets.length > 0 && datasets[0].data.length > 0"
                     baseChart
@@ -23,10 +23,10 @@
                     [type]="chartType$ | async"
                 >
                 </canvas>
+                <spin-loader *ngIf="!(datasets.length > 0 && datasets[0].data.length > 0) && !(isLoading$ | async)" [disableSpin]="true">
+                    You have no data in the selected period
+                </spin-loader>
             </ng-template>
-            <spin-loader *ngIf="!(datasets.length > 0 && datasets[0].data.length > 0) && !(isLoading$ | async)" [disableSpin]="true">
-                You have no data in the selected period
-            </spin-loader>
         </div>
     </div>
 </div>

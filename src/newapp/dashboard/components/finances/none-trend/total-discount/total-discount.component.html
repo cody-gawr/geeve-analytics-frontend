@@ -15,21 +15,23 @@
     <div class="chart-content">
         <div class="canvas-wrapper chart-box">
             <div class="chart-gauge total-discount-gauge">
-                <canvas
-                    *ngIf="!(isLoading$ | async)"
-                    baseChart
-                    [datasets]="datasets"
-                    [labels]="totalDiscountChartLabels"
-                    type="doughnut"
-                    [legend]="false"
-                    [options]="pieChartOptions"
-                    [plugins]="plugins$ | async"
-                >
-                </canvas>
-                <spin-loader *ngIf="isLoading$ | async"></spin-loader>
-                <spin-loader *ngIf="datasets[0].data.length <= 0" [disableSpin]="true">
-                    You have offered no discounts in the selected period
-                </spin-loader>
+                <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+                <ng-template #chartElem>
+                    <canvas
+                        *ngIf="!(isLoading$ | async)"
+                        baseChart
+                        [datasets]="datasets"
+                        [labels]="totalDiscountChartLabels"
+                        type="doughnut"
+                        [legend]="false"
+                        [options]="pieChartOptions"
+                        [plugins]="plugins$ | async"
+                    >
+                    </canvas>
+                    <spin-loader *ngIf="datasets[0].data.length <= 0" [disableSpin]="true">
+                        You have offered no discounts in the selected period
+                    </spin-loader>
+                </ng-template>
             </div>
             <div class="chart-foot">
                 <div>

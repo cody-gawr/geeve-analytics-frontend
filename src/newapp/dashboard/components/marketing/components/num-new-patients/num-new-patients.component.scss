@@ -1,3 +1,16 @@
 .num-new-patients-gauge {
     min-height: 280px;
 }
+
+.active-toggle {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    button {
+        width: 44%;
+        font-size: 12px;
+        font-weight: 400;
+        font-family: Gilroy-Regular;
+    }
+}

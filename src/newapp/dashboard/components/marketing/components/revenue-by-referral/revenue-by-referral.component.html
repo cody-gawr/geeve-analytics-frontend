@@ -14,6 +14,7 @@
             <div class="chart-gauge rev-by-referral-chart">
                 <spin-loader *ngIf="(isLoading$ | async); else mainElem"></spin-loader>
                 <ng-template #mainElem>
+                    <button *ngIf="isChartClicked" (click)="loadData()" mat-flat-button color="primary">Back</button>
                     <spin-loader class="empty-placeholder" *ngIf="!hasData; else chartElem3" [disableSpin]="true">
                         You have no revenue from referral sources in the selected period
                     </spin-loader>
@@ -26,6 +27,7 @@
                             [labels]="labels"
                             [type]="chartType$ | async"
                             [options]="chartOptions$ | async"
+                            (chartClick)="chartClicked($event)"
                         ></canvas>
                     </ng-template>
                 </ng-template>

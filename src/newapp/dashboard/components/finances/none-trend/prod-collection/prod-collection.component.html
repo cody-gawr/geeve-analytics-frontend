@@ -12,20 +12,22 @@
     <div class="chart-content">
         <div class="prod-col-content">
             <div class="prod-col-ngx-chart">
-                <canvas
-                    #myCanvas
-                    *ngIf="!(isLoading$ | async)"
-                    baseChart
-                    [datasets]="datasets"
-                    [labels]="labels"
-                    [options]="chartOptions$ | async"
-                    [legend]="false"
-                    type="bar"
-                ></canvas>
-                <spin-loader *ngIf="isLoading$ | async"></spin-loader>
-                <spin-loader *ngIf="labels.length <= 0" [disableSpin]="true">
-                    No expenses found for the selected period
-                </spin-loader>
+                <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+                <ng-template #chartElem>
+                    <canvas
+                        #myCanvas
+                        *ngIf="!(isLoading$ | async)"
+                        baseChart
+                        [datasets]="datasets"
+                        [labels]="labels"
+                        [options]="chartOptions$ | async"
+                        [legend]="false"
+                        type="bar"
+                    ></canvas>
+                    <spin-loader *ngIf="labels.length <= 0" [disableSpin]="true">
+                        No expenses found for the selected period
+                    </spin-loader>
+                </ng-template>
             </div>
             <div class="text-content">
                 <div class="prod-col-text-summary">

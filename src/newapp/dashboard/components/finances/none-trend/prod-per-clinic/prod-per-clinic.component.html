@@ -11,18 +11,20 @@
     </div>
     <div class="chart-content">
         <div class="canvas-wrapper prod-per-clinic-pie-chart">
-            <canvas
-                    *ngIf="!(isLoading$ | async)"
-                    baseChart
-                    [datasets]="datasets"
-                    [labels]="productionChartLabels"
-                    type="doughnut"
-                    [options]="pieChartOptions"
-            ></canvas>
-            <spin-loader *ngIf="isLoading$ | async"></spin-loader>
-            <spin-loader *ngIf="datasets[0].data.length <= 0" [disableSpin]="true">
-                You have no production in the selected period
-            </spin-loader>
+            <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+            <ng-template #chartElem>
+                <canvas
+                        *ngIf="!(isLoading$ | async)"
+                        baseChart
+                        [datasets]="datasets"
+                        [labels]="productionChartLabels"
+                        type="doughnut"
+                        [options]="pieChartOptions"
+                ></canvas>
+                <spin-loader *ngIf="datasets[0].data.length <= 0" [disableSpin]="true">
+                    You have no production in the selected period
+                </spin-loader>
+            </ng-template>
         </div>
     </div>
 </div>

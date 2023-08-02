@@ -1,11 +1,12 @@
 import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
 import { MarketingFacade } from "@/newapp/dashboard/facades/marketing.facade";
 import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
+import { MkRevByReferral, MkRevenueByReferralApiResponse } from "@/newapp/models/dashboard/marketing";
 import { formatXTooltipLabel } from "@/newapp/shared/utils";
 import { DecimalPipe } from "@angular/common";
 import { Component, OnInit, OnDestroy, Input } from "@angular/core";
-import { ChartOptions } from "chart.js";
-import _ from "lodash";
+import { Chart, ChartOptions } from "chart.js";
+import _, { camelCase } from "lodash";
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
 @Component({
@@ -22,6 +23,8 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
     datasets = [{data: []}];
     labels = [];
     revByReferralVal = 0;
+
+    isChartClicked = false;
 
     get isLoading$() {
         return combineLatest([
@@ -103,28 +106,33 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
         private layoutFacade: LayoutFacade,
         private decimalPipe: DecimalPipe
     ) {
-        combineLatest([
-            this.marketingFacade.revByReferralChartData$,
-            this.isTrend$,
-            this.marketingFacade.revByReferralTrendChartData$
-        ]).pipe(
-            takeUntil(this.destroy$)
-        ).subscribe(([
-            chartData,
-            isTrend,
-            trendChartData
-        ]) => {
-            // missing sort
-            if(isTrend){
-              this.datasets = trendChartData.datasets;
-              this.labels = trendChartData.labels;
-              //this.revByReferralVal = trendChartData.revByReferralVal;
-            }else{
-              this.datasets = chartData.datasets;
-              this.labels = chartData.labels;
-              this.revByReferralVal = chartData.revByReferralVal;
-            }
-        });
+      this.loadData();
+    }
+
+    loadData(){
+      combineLatest([
+          this.marketingFacade.revByReferralChartData$,
+          this.isTrend$,
+          this.marketingFacade.revByReferralTrendChartData$
+      ]).pipe(
+          takeUntil(this.destroy$)
+      ).subscribe(([
+          chartData,
+          isTrend,
+          trendChartData
+      ]) => {
+          this.isChartClicked = false;
+          // missing sort
+          if(isTrend){
+            this.datasets = trendChartData.datasets;
+            this.labels = trendChartData.labels;
+            //this.revByReferralVal = trendChartData.revByReferralVal;
+          }else{
+            this.datasets = chartData.datasets;
+            this.labels = chartData.labels;
+            this.revByReferralVal = chartData.revByReferralVal;
+          }
+      });
     }
 
     ngOnInit(): void {
@@ -133,6 +141,39 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.destroy.next();
     }
+
+  
+    public chartClicked(event: any){
+      if(!this.isChartClicked && event.active.length > 0){ // pms != exact or core
+          const clickedElementIndex = event.active[0].index;
+          const activeLabel = camelCase(<string>(<Chart>event.event.chart).data.labels[clickedElementIndex]);
+          combineLatest([
+            this.isMultipleClinic$,
+            this.marketingFacade.revByReferralData$
+          ])
+          .pipe(
+              takeUntil(this.destroy$)
+          ).subscribe(([isMulti, result]) => {
+              if(result != null && !isMulti){
+                  const apiResData = <MkRevByReferral>result.data;
+                  let chartData=[], chartLabels = [];
+                  if (
+                      apiResData.patientsRefname[activeLabel].length > 0
+                  ) {
+                      this.isChartClicked = true;
+                      apiResData.patientsRefname[activeLabel]
+                          .slice(0, 15)
+                          .forEach(item => {
+                              chartData.push(parseFloat(<string>item.invoiceAmount));
+                              chartLabels.push(item.referralName);
+                          });
+                  }
+                  this.datasets = [{data: chartData}];
+                  this.labels = chartLabels;
+              }
+          });
+      }
+  }
 
 
     public pieChartOptions: ChartOptions<'doughnut'> = {

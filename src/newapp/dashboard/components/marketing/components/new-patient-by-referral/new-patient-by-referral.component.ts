@@ -1,10 +1,11 @@
 import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
 import { MarketingFacade } from "@/newapp/dashboard/facades/marketing.facade";
 import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
+import { MkNewPatientsByReferral } from "@/newapp/models/dashboard/marketing";
 import { DecimalPipe } from "@angular/common";
 import { Component, OnInit, OnDestroy, Input } from "@angular/core";
-import { ChartOptions } from "chart.js";
-import _ from "lodash";
+import { ChartOptions, Chart } from "chart.js";
+import _, { camelCase } from "lodash";
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
 @Component({
@@ -21,6 +22,7 @@ export class MarketingNewPatientByReferralComponent implements OnInit, OnDestroy
     datasets = [];
     labels = [];
     newPatientsByReferralVal = 0;
+    isChartClicked = false;
 
     get isLoading$() {
         return combineLatest([
@@ -102,6 +104,10 @@ export class MarketingNewPatientByReferralComponent implements OnInit, OnDestroy
         private layoutFacade: LayoutFacade,
         private decimalPipe: DecimalPipe
     ) {
+        this.loadData();
+    }
+
+    loadData(){
         combineLatest([
             this.marketingFacade.newPatientsByReferralChartData$,
             this.isTrend$,
@@ -113,7 +119,7 @@ export class MarketingNewPatientByReferralComponent implements OnInit, OnDestroy
             isTrend,
             trendChartData
         ]) => {
-            // missing sort
+            this.isChartClicked = false;
             if(isTrend){
                 this.datasets = trendChartData.datasets;
                 this.labels = trendChartData.labels;
@@ -130,6 +136,38 @@ export class MarketingNewPatientByReferralComponent implements OnInit, OnDestroy
 
     ngOnDestroy(): void {
         this.destroy.next();
+    }
+
+    public chartClicked(event: any){
+        if(!this.isChartClicked && event.active.length > 0){ // pms != exact or core
+            const clickedElementIndex = event.active[0].index;
+            const activeLabel = camelCase(<string>(<Chart>event.event.chart).data.labels[clickedElementIndex]);
+            combineLatest([
+                this.isMultipleClinic$,
+                this.marketingFacade.newPatientsByReferralData$
+            ])
+            .pipe(
+                takeUntil(this.destroy$)
+            ).subscribe(([isMulti, result]) => {
+                if(result != null && !isMulti){
+                    const apiResData = <MkNewPatientsByReferral>result.data;
+                    let chartData=[], chartLabels = [];
+                    if (
+                        apiResData.patientsRefname[activeLabel].length > 0
+                    ) {
+                        this.isChartClicked = true;
+                        apiResData.patientsRefname[activeLabel]
+                            .slice(0, 15)
+                            .forEach(item => {
+                                chartData.push(parseInt(<string>item.numReferrals));
+                                chartLabels.push(item.referralName);
+                            });
+                    }
+                    this.datasets = [{data: chartData}];
+                    this.labels = chartLabels;
+                }
+            });
+        }
     }
 
 

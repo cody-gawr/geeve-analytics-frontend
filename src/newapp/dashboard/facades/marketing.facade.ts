@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { JeeveError } from '@/newapp/models';
 import { MarketingPageActions } from '../state/actions';
-import { MarketingState, selectActivePatientsChartData, selectActivePatientsTrendChartData, selectErrors, selectIsActivePatients, selectIsLoadingMkNewPatientAcq, selectIsLoadingMkNewPatientAcqTrend, selectIsLoadingMkNewPatientsByReferral, selectIsLoadingMkNewPatientsByReferralTrend, selectIsLoadingMkNumNewPatients, selectIsLoadingMkNumNewPatientsTrend, selectIsLoadingMkRevByReferral, selectIsLoadingMkRevByReferralTrend, selectIsLoadingMkTotalVisits, selectIsLoadingMkTotalVisitsTrend, selectNewPatientAcqChartData, selectNewPatientAcqTrendChartData, selectNewPatientsByReferralChartData, selectNewPatientsByReferralData, selectNewPatientsByReferralTrendChartData, selectNumNewPatientsChartData, selectNumNewPatientsTrendChartData, selectRevByReferralChartData, selectRevByReferralTrendChartData, selectTotalVisitsChartData, selectTotalVisitsTrendChartData } from '../state/reducers/marketing.reducer';
+import { MarketingState, selectActivePatientsChartData, selectActivePatientsTrendChartData, selectErrors, selectIsActivePatients, selectIsLoadingMkNewPatientAcq, selectIsLoadingMkNewPatientAcqTrend, selectIsLoadingMkNewPatientsByReferral, selectIsLoadingMkNewPatientsByReferralTrend, selectIsLoadingMkNumNewPatients, selectIsLoadingMkNumNewPatientsTrend, selectIsLoadingMkRevByReferral, selectIsLoadingMkRevByReferralTrend, selectIsLoadingMkTotalVisits, selectIsLoadingMkTotalVisitsTrend, selectNewPatientAcqChartData, selectNewPatientAcqTrendChartData, selectNewPatientsByReferralChartData, selectNewPatientsByReferralData, selectNewPatientsByReferralTrendChartData, selectNumNewPatientsChartData, selectNumNewPatientsTrendChartData, selectRevByReferralChartData, selectRevByReferralTrendChartData, selectRevenueByReferralData, selectTotalVisitsChartData, selectTotalVisitsTrendChartData } from '../state/reducers/marketing.reducer';
 
 @Injectable()
 export class MarketingFacade {
@@ -15,6 +15,10 @@ export class MarketingFacade {
 
   public readonly newPatientsByReferralChartData$ = this.store.pipe(
     select(selectNewPatientsByReferralChartData)
+  );
+
+  public readonly newPatientsByReferralData$ = this.store.pipe(
+    select(selectNewPatientsByReferralData)
   );
 
   public readonly newPatientsByReferralTrendChartData$ = this.store.pipe(
@@ -39,6 +43,10 @@ export class MarketingFacade {
 
   public readonly revByReferralChartData$ = this.store.pipe(
     select(selectRevByReferralChartData)
+  );
+
+  public readonly revByReferralData$ = this.store.pipe(
+    select(selectRevenueByReferralData)
   );
 
   public readonly revByReferralTrendChartData$ = this.store.pipe(
@@ -104,6 +112,12 @@ export class MarketingFacade {
   public readonly isActivePatients$ = this.store.pipe(
     select(selectIsActivePatients)
   );
+
+  public setActivePatients(isActive: boolean){
+    this.store.dispatch(
+      MarketingPageActions.setIsActivePatients({isActive})
+    )
+  }
 
   public loadMkNewPatientsByReferral({
     clinicId,
