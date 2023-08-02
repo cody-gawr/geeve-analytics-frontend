@@ -4751,12 +4751,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 this.RPcolors = this.barChartColors;
               } else {
                 this.RPcolors = this.lineChartColors;
-                let dynamicColors = this.barBackgroundColor(
-                  res.body.data,
-                  this.recallChartLabels
-                );
-                this.recallChartData[0].backgroundColor = dynamicColors;
               }
+              let dynamicColors = this.barBackgroundColor(
+                res.body.data,
+                this.recallChartLabels
+              );
+              this.recallChartData[0].backgroundColor = dynamicColors;
               if (this.recallChartAverage >= this.recallChartAveragePrev)
                 this.recallChartTooltip = 'up';
               this.barChartOptionsRP.plugins.annotation = undefined;
@@ -4986,12 +4986,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 } else {
                   this.TPcolors = this.lineChartColors;
   
-                  let dynamicColors = this.barBackgroundColor(
-                    res.body.data,
-                    this.treatmentPreChartLabels
-                  );
-                  this.treatmentPreChartData[0].backgroundColor = dynamicColors;
+                  
                 }
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.treatmentPreChartLabels
+                );
+                this.treatmentPreChartData[0].backgroundColor = dynamicColors;
                 if (
                   this.treatmentPreChartAverage >=
                   this.treatmentPreChartAveragePrev
