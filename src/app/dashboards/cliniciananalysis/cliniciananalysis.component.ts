@@ -5223,12 +5223,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 } else {
                   this.TPRcolors = this.lineChartColors;
   
-                  let dynamicColors = this.barBackgroundColor(
-                    res.body.data,
-                    this.treatmentChartLabels
-                  );
-                  this.treatmentChartData[0].backgroundColor = dynamicColors;
+                  
                 }
+
+                let dynamicColors = this.barBackgroundColor(
+                  res.body.data,
+                  this.treatmentChartLabels
+                );
+                this.treatmentChartData[0].backgroundColor = dynamicColors;
+                  
                 if (this.treatmentChartAverage >= this.treatmentChartAveragePrev)
                   this.treatmentChartTooltip = 'up';
   
@@ -5512,12 +5515,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 } else {
                   this.TPACAcolors = this.lineChartColors;
                   this.TPACCcolors = this.lineChartColors;
-                  let dynamicColors1 = this.barBackgroundColor(
-                    res.body.data,
-                    this.planChartLabels1
-                  );
-                  this.planChartDataP[0].backgroundColor = dynamicColors1;
+                  
                 }
+
+                let dynamicColors1 = this.barBackgroundColor(
+                  res.body.data,
+                  this.planChartLabels1
+                );
+                this.planChartDataP[0].backgroundColor = dynamicColors1;
                 if (this.planTotalAverage >= this.planTotalPrev)
                   this.planTotalTooltip = 'up';
                 var index = 0;
@@ -5674,12 +5679,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 } else {
                   this.TPACAcolors = this.lineChartColors;
                   this.TPACCcolors = this.lineChartColors;
-                  let dynamicColors2 = this.barBackgroundColor(
-                    res.body.data,
-                    this.planChartLabels1
-                  );
-                  this.planChartDataC[0].backgroundColor = dynamicColors2;
+                  
                 }
+                let dynamicColors2 = this.barBackgroundColor(
+                  res.body.data,
+                  this.planChartLabels1
+                );
+                this.planChartDataC[0].backgroundColor = dynamicColors2;
                 if (this.planTotalAverage >= this.planTotalPrev)
                   this.planTotalTooltip = 'up';
                 var index = 0;
@@ -11464,7 +11470,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   }
 
   toggleCompareFilter(val) {
-    alert();
     if (
       (this.averageToggle == true && val == 'on') ||
       (this.averageToggle == false && val != 'on')
