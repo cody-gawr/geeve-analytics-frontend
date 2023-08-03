@@ -161,7 +161,7 @@ export interface MkNewPatientAcqApiResponse {
     goals: number;
     message: string;
     status: string | number;
-    data_ta: number;
+    dataTa: number;
 }
 
 export interface MkTotalVisitsApiResponse {

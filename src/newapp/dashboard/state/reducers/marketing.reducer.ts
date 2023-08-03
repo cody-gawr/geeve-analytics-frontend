@@ -984,7 +984,7 @@ export const selectNewPatientAcqChartData = createSelector(
         );
         return {
             newPatientAcqVal: newPatientAcqVal,
-            newPatientAcqPrev: Math.round(newPatientAcqData.data_ta),
+            newPatientAcqPrev: Math.round(newPatientAcqData.dataTa),
             newPatientAcqGoal: newPatientAcqData.goals,
             labels: newPatientAcqData.data.map(v => v.clinicName),
             datasets: [{
