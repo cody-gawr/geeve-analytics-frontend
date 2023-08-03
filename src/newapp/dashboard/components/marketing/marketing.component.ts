@@ -117,4 +117,32 @@ export class MarketingComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.destroy.next();
     }
+
+    get getNumNewPatientsTip$(){
+        return combineLatest([
+            this.dashbordFacade.chartTips$,
+            this.marketingFacade.isActivePatients$
+        ])
+        .pipe(
+            takeUntil(this.destroy$),
+            map(([tip, v]) => {
+                if(v){
+                    return tip && tip[61] && tip[61].info;
+                }else{
+                    return tip && tip[36] && tip[36].info;
+                }
+            })
+        )
+    }
+
+    getChartTip(index: number) {
+        return this.dashbordFacade.chartTips$.pipe(
+            takeUntil(this.destroy$),
+            map(c => {
+            if(c && c[index]){
+                return c[index].info;
+            }
+            return '';
+        }))
+    }
 }

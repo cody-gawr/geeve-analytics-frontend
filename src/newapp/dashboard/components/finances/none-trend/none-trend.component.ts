@@ -4,9 +4,6 @@ import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 import { FinanceFacade } from "../../../facades/finance.facade";
 import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
-import { Router } from "@angular/router";
-import { FnNetProfitParams } from "@/newapp/models/dashboard";
-import moment from "moment";
 
 @Component({
     selector: 'none-trend-finances',
@@ -100,10 +97,6 @@ export class NoneTrendFinanceComponent implements OnInit, OnDestroy {
     ) {
     }
 
-    get chartTips$(){
-        return this.dashbordFacade.chartTips$;
-    }
-
     ngOnInit(): void {
     }
 
@@ -112,7 +105,7 @@ export class NoneTrendFinanceComponent implements OnInit, OnDestroy {
     }
 
     getChartTip(index: number) {
-        return this.chartTips$.pipe(map(c => {
+        return this.dashbordFacade.chartTips$.pipe(map(c => {
             if(c && c[index]){
                 return c[index].info;
             }

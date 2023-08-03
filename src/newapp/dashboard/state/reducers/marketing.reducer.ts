@@ -15,6 +15,7 @@ import { DoughnutChartColors } from '@/newapp/shared/constants';
 import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
 import moment from 'moment';
 import { ChartDataset } from 'chart.js';
+import { selectConnectedWith } from './dashboard.reducer';
 
 type MarketingEndpoints =  
     'mkNumPatientsByReferral' | 'mkRevByReferral' |
@@ -1144,3 +1145,11 @@ export const selectTotalVisitsTrendChartData = createSelector(
         }
     }
 );
+
+export const selectIsActivePatientsWithPlatform = createSelector(
+    selectIsActivePatients,
+    selectConnectedWith,
+    (isActive, isConnected) => {
+        return isActive && isConnected;
+    }
+)

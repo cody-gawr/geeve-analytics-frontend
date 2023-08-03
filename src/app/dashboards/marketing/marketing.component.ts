@@ -1274,7 +1274,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       // if(!this.isVisibleAccountGraphs){
       //   this.fdActivePatient();
       // }
-      if (this.connectedwith != 'none') {
+      if (['myob', 'xero'].indexOf(this.connectedwith) >=0) {
         this.fdnewPatientsAcq();
       }
 

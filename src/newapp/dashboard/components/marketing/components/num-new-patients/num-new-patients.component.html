@@ -14,7 +14,7 @@
     </div>
     <div class="chart-content">
         <div class="canvas-wrapper chart-box">
-            <div class="active-toggle">
+            <div class="active-toggle" *ngIf="isConnectedWith$ | async">
                 <button *ngIf="isActivePatients$ | async; else elem1" (click)="disableActivePatients()" mat-stroked-button color="primary">New Patients</button>
                 <ng-template #elem1>
                     <button mat-flat-button (click)="disableActivePatients()" color="primary">New Patients</button>

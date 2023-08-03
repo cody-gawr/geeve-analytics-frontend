@@ -21,10 +21,6 @@ export class TrendFinanceComponent implements OnInit, OnDestroy {
     ) {
     }
 
-    get chartTips$(){
-        return this.dashbordFacade.chartTips$;
-    }
-
     ngOnInit(): void {
     }
 
@@ -35,7 +31,7 @@ export class TrendFinanceComponent implements OnInit, OnDestroy {
     get profitTrendTip$(){
         return combineLatest([
             this.financeFacade.profitTrendChartName$,
-            this.chartTips$
+            this.dashbordFacade.chartTips$
         ]).pipe(
             takeUntil(this.destroy$),
             map(([chartName, tips]) => {
@@ -57,7 +53,9 @@ export class TrendFinanceComponent implements OnInit, OnDestroy {
     }
 
     getChartTip(index: number) {
-        return this.chartTips$.pipe(map(c => {
+        return this.dashbordFacade.chartTips$.pipe(
+            takeUntil(this.destroy$),
+            map(c => {
             if(c && c[index]){
                 return c[index].info;
             }

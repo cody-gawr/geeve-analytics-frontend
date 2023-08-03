@@ -1,5 +1,5 @@
 import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
-import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
+import { DashboardFacade } from "@/newapp/dashboard/facades/dashboard.facade";
 import { MarketingFacade } from "@/newapp/dashboard/facades/marketing.facade";
 import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
 import { DateRangeMenus } from "@/newapp/shared/components/date-range-menu/date-range-menu.component";
@@ -69,6 +69,13 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
     datasets: ChartDataset[] = [];
     labels = [];
 
+    get isConnectedWith$(){
+        return this.dashboardFacade.connectedWith$.pipe(
+            takeUntil(this.destroy$),
+            map(v => v && v != 'none')
+        )
+    }
+
     get isLoading$() {
         return combineLatest([
             this.isTrend$,
@@ -132,6 +139,7 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
         private marketingFacade: MarketingFacade,
         private clinicFacade: ClinicFacade,
         private layoutFacade: LayoutFacade,
+        private dashboardFacade: DashboardFacade,
         private decimalPipe: DecimalPipe
     ) {
         combineLatest([

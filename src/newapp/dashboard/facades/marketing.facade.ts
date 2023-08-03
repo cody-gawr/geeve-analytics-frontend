@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { JeeveError } from '@/newapp/models';
 import { MarketingPageActions } from '../state/actions';
-import { MarketingState, selectActivePatientsChartData, selectActivePatientsTrendChartData, selectErrors, selectIsActivePatients, selectIsLoadingMkNewPatientAcq, selectIsLoadingMkNewPatientAcqTrend, selectIsLoadingMkNewPatientsByReferral, selectIsLoadingMkNewPatientsByReferralTrend, selectIsLoadingMkNumNewPatients, selectIsLoadingMkNumNewPatientsTrend, selectIsLoadingMkRevByReferral, selectIsLoadingMkRevByReferralTrend, selectIsLoadingMkTotalVisits, selectIsLoadingMkTotalVisitsTrend, selectNewPatientAcqChartData, selectNewPatientAcqTrendChartData, selectNewPatientsByReferralChartData, selectNewPatientsByReferralData, selectNewPatientsByReferralTrendChartData, selectNumNewPatientsChartData, selectNumNewPatientsTrendChartData, selectRevByReferralChartData, selectRevByReferralTrendChartData, selectRevenueByReferralData, selectTotalVisitsChartData, selectTotalVisitsTrendChartData } from '../state/reducers/marketing.reducer';
+import { MarketingState, selectActivePatientsChartData, selectActivePatientsTrendChartData, selectErrors, selectIsActivePatients, selectIsActivePatientsWithPlatform, selectIsLoadingMkNewPatientAcq, selectIsLoadingMkNewPatientAcqTrend, selectIsLoadingMkNewPatientsByReferral, selectIsLoadingMkNewPatientsByReferralTrend, selectIsLoadingMkNumNewPatients, selectIsLoadingMkNumNewPatientsTrend, selectIsLoadingMkRevByReferral, selectIsLoadingMkRevByReferralTrend, selectIsLoadingMkTotalVisits, selectIsLoadingMkTotalVisitsTrend, selectNewPatientAcqChartData, selectNewPatientAcqTrendChartData, selectNewPatientsByReferralChartData, selectNewPatientsByReferralData, selectNewPatientsByReferralTrendChartData, selectNumNewPatientsChartData, selectNumNewPatientsTrendChartData, selectRevByReferralChartData, selectRevByReferralTrendChartData, selectRevenueByReferralData, selectTotalVisitsChartData, selectTotalVisitsTrendChartData } from '../state/reducers/marketing.reducer';
 
 @Injectable()
 export class MarketingFacade {
@@ -110,7 +110,7 @@ export class MarketingFacade {
   );
 
   public readonly isActivePatients$ = this.store.pipe(
-    select(selectIsActivePatients)
+    select(selectIsActivePatientsWithPlatform)
   );
 
   public setActivePatients(isActive: boolean){
