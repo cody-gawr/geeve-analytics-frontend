@@ -8,7 +8,7 @@ import {
     MkNewPatientAcqApiResponse, MkNewPatientAcqTrendApiResponse, MkNewPatientsByReferral, MkNewPatientsByReferralApiResponse, 
     MkNewPatientsByReferralMultiItem, 
     MkNewPatientsByReferralTrendApiResponse, 
-    MkNumNewPatientsApiResponse, MkNumNewPatientsTrendApiResponse, MkRevByReferral, MkRevByReferralMultiItem, MkRevByReferralTrendApiResponse, MkRevenueByReferralApiResponse, MkTotalVisitsApiResponse, MkTotalVisitsTrendApiResponse 
+    MkNumNewPatientsApiResponse, MkNumNewPatientsTrendApiResponse, MkRevByReferral, MkRevByReferralMultiItem, MkRevByReferralTrendApiResponse, MkRevenueByReferralApiResponse, MkTotalVisitsApiResponse, MkTotalVisitsTrendApiResponse, MkXeroOrMyobAccountsApiResponse 
 } from '@/newapp/models/dashboard/marketing';
 import { selectCurrentClinicId } from '@/newapp/clinic/state/reducers/clinic.reducer';
 import { DoughnutChartColors } from '@/newapp/shared/constants';
@@ -23,7 +23,8 @@ type MarketingEndpoints =
     'mkTotalVisits' | 'mkNumPatientsByReferralTrend' |
     'mkRevByReferralTrend' | 'mkTotalVisitsTrend' |
     'mkNumNewPatientsTrend' | 'mkNewPatientAcqTrend' |
-    'mkActivePatients' | 'mkActivePatientsTrend';
+    'mkActivePatients' | 'mkActivePatientsTrend' |
+    'mkGetXeroAcct' | 'mkGetMyobAcct' | 'mkSaveAcctMyob' | 'mkSaveAcctXero';
 
 export interface MarketingState {
   isLoadingData: Array<MarketingEndpoints>;
@@ -43,6 +44,8 @@ export interface MarketingState {
   totalVisitsData: MkTotalVisitsApiResponse | null;
   totalVisitsTrendData: MkTotalVisitsTrendApiResponse | null;
   isActivePatients: boolean;
+  xeroAccounts: MkXeroOrMyobAccountsApiResponse | null;
+  myobAccounts: MkXeroOrMyobAccountsApiResponse | null;
 }
 
 const initialState: MarketingState = {
@@ -60,7 +63,9 @@ const initialState: MarketingState = {
   newPatientAcqTrendData: null,
   totalVisitsData: null,
   totalVisitsTrendData: null,
-  isActivePatients: false
+  xeroAccounts: null,
+  isActivePatients: false,
+  myobAccounts: null
 };
 
 export const marketingFeature = createFeature({
@@ -485,7 +490,102 @@ export const marketingFeature = createFeature({
             };
         }
     ),
-
+    // mkGetXeroAcct
+    on(MarketingPageActions.loadMkGetXeroAccounts, (state): MarketingState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          xeroAccounts: null,
+          errors: _.filter(errors, (n) => n.api != 'mkGetXeroAcct'),
+          isLoadingData: _.union(isLoadingData, ['mkGetXeroAcct'])
+        };
+    }),
+    on(
+        MarketingApiActions.mkGetXeroAcctSuccess,
+        (state, { xeroAccounts }): MarketingState => {
+          const { isLoadingData, errors } = state;
+          return {
+            ...state,
+            errors: _.filter(errors, (n) => n.api != 'mkGetXeroAcct'),
+            xeroAccounts,
+            isLoadingData: _.filter(isLoadingData, (n) => n != 'mkGetXeroAcct')
+          };
+        }
+    ),
+    on(
+        MarketingApiActions.mkGetXeroAcctFailure,
+        (state, { error }): MarketingState => {
+            const { isLoadingData, errors } = state;
+            return {
+                ...state,
+                xeroAccounts: null,
+                isLoadingData: _.filter(isLoadingData, (n) => n != 'mkGetXeroAcct'),
+                errors: [...errors, { ...error, api: 'mkGetXeroAcct' }]
+            };
+        }
+    ),
+    // mkGetMyobAcct
+    on(MarketingPageActions.saveAcctMyob, (state): MarketingState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          errors: _.filter(errors, (n) => n.api != 'mkSaveAcctMyob'),
+          isLoadingData: _.union(isLoadingData, ['mkSaveAcctMyob'])
+        };
+    }),
+    on(
+        MarketingApiActions.mkSaveAcctMyobSuccess,
+        (state): MarketingState => {
+          const { isLoadingData, errors } = state;
+          return {
+            ...state,
+            errors: _.filter(errors, (n) => n.api != 'mkSaveAcctMyob'),
+            isLoadingData: _.filter(isLoadingData, (n) => n != 'mkSaveAcctMyob')
+          };
+        }
+    ),
+    on(
+        MarketingApiActions.mkSaveAcctMyobFailure,
+        (state, { error }): MarketingState => {
+            const { isLoadingData, errors } = state;
+            return {
+                ...state,
+                isLoadingData: _.filter(isLoadingData, (n) => n != 'mkSaveAcctMyob'),
+                errors: [...errors, { ...error, api: 'mkSaveAcctMyob' }]
+            };
+        }
+    ),
+    // mkSaveAcctXero
+    on(MarketingPageActions.saveAcctXero, (state): MarketingState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          errors: _.filter(errors, (n) => n.api != 'mkSaveAcctXero'),
+          isLoadingData: _.union(isLoadingData, ['mkSaveAcctXero'])
+        };
+    }),
+    on(
+        MarketingApiActions.mkSaveAcctXeroSuccess,
+        (state): MarketingState => {
+          const { isLoadingData, errors } = state;
+          return {
+            ...state,
+            errors: _.filter(errors, (n) => n.api != 'mkSaveAcctXero'),
+            isLoadingData: _.filter(isLoadingData, (n) => n != 'mkSaveAcctXero')
+          };
+        }
+    ),
+    on(
+        MarketingApiActions.mkSaveAcctXeroFailure,
+        (state, { error }): MarketingState => {
+            const { isLoadingData, errors } = state;
+            return {
+                ...state,
+                isLoadingData: _.filter(isLoadingData, (n) => n != 'mkSaveAcctXero'),
+                errors: [...errors, { ...error, api: 'mkSaveAcctXero' }]
+            };
+        }
+    ),
     on(
         MarketingPageActions.setIsActivePatients,
         (state, { isActive }): MarketingState => {
@@ -513,7 +613,9 @@ export const {
     selectTotalVisitsTrendData,
     selectNewPatientAcqData,
     selectNewPatientAcqTrendData,
-    selectIsActivePatients
+    selectIsActivePatients,
+    selectXeroAccounts,
+    selectMyobAccounts
  } = marketingFeature;
 
  // Loading State
@@ -576,6 +678,28 @@ export const selectIsLoadingMkTotalVisitsTrend = createSelector(
     selectIsLoadingData,
     (loadingData) => _.findIndex(loadingData, (l) => l == 'mkTotalVisitsTrend') >= 0
 );
+
+export const selectIsLoadingMkXeroAccounts = createSelector(
+    selectIsLoadingData,
+    (loadingData) => _.findIndex(loadingData, (l) => l == 'mkGetXeroAcct') >= 0
+);
+
+export const selectIsLoadingMkMyobAccounts = createSelector(
+    selectIsLoadingData,
+    (loadingData) => _.findIndex(loadingData, (l) => l == 'mkGetMyobAcct') >= 0
+);
+
+export const selectIsLoadingMkSaveAcctMyob = createSelector(
+    selectIsLoadingData,
+    (loadingData) => _.findIndex(loadingData, (l) => l == 'mkSaveAcctMyob') >= 0
+);
+
+export const selectIsLoadingMkSaveAcctXero = createSelector(
+    selectIsLoadingData,
+    (loadingData) => _.findIndex(loadingData, (l) => l == 'mkSaveAcctXero') >= 0
+);
+
+
 
 // Chart Data
 

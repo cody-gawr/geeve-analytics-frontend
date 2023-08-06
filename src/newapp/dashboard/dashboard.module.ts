@@ -40,6 +40,7 @@ import { MarketingNewPatientsAcqComponent } from './components/marketing/compone
 import { MarketingTotalVisitsComponent } from './components/marketing/components/total-visits/total-visits.component';
 import { MarketingService } from '@/app/dashboards/marketing/marketing.service';
 import { MarketingFacade } from './facades/marketing.facade';
+import { MkSelectAccountsModalComponent } from './components/marketing/components/select-accounts-modal/select-accounts-modal.component';
 
 @NgModule({
   imports: [
@@ -81,7 +82,8 @@ import { MarketingFacade } from './facades/marketing.facade';
     MarketingRevByReferralComponent,
     MarketingNumNewPatientsComponent,
     MarketingNewPatientsAcqComponent,
-    MarketingTotalVisitsComponent
+    MarketingTotalVisitsComponent,
+    MkSelectAccountsModalComponent
   ],
   providers: [
     DashboardService, 

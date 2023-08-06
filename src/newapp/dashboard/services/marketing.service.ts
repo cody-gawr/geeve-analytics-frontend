@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, map } from 'rxjs';
 import camelcaseKeys from 'camelcase-keys';
-import { MkNewPatientAcqApiResponse, MkNewPatientsByReferralApiResponse, MkNewPatientsByReferralTrendApiResponse, MkNumNewPatientsApiResponse, MkRevenueByReferralApiResponse, MkRevByReferralTrendApiResponse, MkTotalVisitsApiResponse, MkTotalVisitsTrendApiResponse, MkNumNewPatientsTrendApiResponse, MkActiveNewPatientsItem, MkActivePatientsApiResponse } from "@/newapp/models/dashboard/marketing";
+import { MkNewPatientAcqApiResponse, MkNewPatientsByReferralApiResponse, MkNewPatientsByReferralTrendApiResponse, MkNumNewPatientsApiResponse, MkRevenueByReferralApiResponse, MkRevByReferralTrendApiResponse, MkTotalVisitsApiResponse, MkTotalVisitsTrendApiResponse, MkNumNewPatientsTrendApiResponse, MkActiveNewPatientsItem, MkActivePatientsApiResponse, MkXeroOrMyobAccountsApiResponse } from "@/newapp/models/dashboard/marketing";
 
 @Injectable({
     providedIn: 'root'
@@ -303,4 +303,84 @@ export class MarketingService {
         );
     }
 
+    mkGetXeroAcct(
+        clinicId: number | string,
+        userId: number
+    ){
+        return this.http
+        .get(
+            `${this.apiUrl}/Marketing/mkGetXeroAcct`,
+            {
+                params: {
+                    clinic_id: clinicId,
+                    user_id: userId
+                },
+                withCredentials: true
+            }
+        )
+        .pipe(
+            map((resBody) => <MkXeroOrMyobAccountsApiResponse> camelcaseKeys(resBody, {deep: true}))
+        );
+    }
+
+    mkGetMyobAcct(
+        clinicId: number | string,
+        userId: number
+    ){
+        return this.http
+        .get(
+            `${this.apiUrl}/Marketing/mkGetMyobAcct`,
+            {
+                params: {
+                    clinic_id: clinicId,
+                    user_id: userId
+                },
+                withCredentials: true
+            }
+        )
+        .pipe(
+            map((resBody) => <MkXeroOrMyobAccountsApiResponse> camelcaseKeys(resBody, {deep: true}))
+        );
+    }
+
+    mkSaveAcctMyob(
+        clinicId: number | string,
+        categories: string[]
+    ){
+        return this.http
+        .post(
+            `${this.apiUrl}/Marketing/mkSaveAcctMyob`,
+            {
+                clinic_id: clinicId,
+                categories,
+            },
+            {
+                withCredentials: true
+            }
+        )
+        .pipe(
+            map((resBody) => <any> camelcaseKeys(resBody, {deep: true}))
+        );
+    }
+
+
+    mkSaveAcctXero(
+        clinicId: number | string,
+        categories: string[]
+    ){
+        return this.http
+        .post(
+            `${this.apiUrl}/Marketing/mkSaveAcctXero`,
+            {
+                clinic_id: clinicId,
+                categories,
+            },
+            {
+                withCredentials: true
+            }
+        )
+        .pipe(
+            map((resBody) => <any> camelcaseKeys(resBody, {deep: true}))
+        );
+    }
 }

@@ -48,7 +48,7 @@ html {
     position: absolute;
     top: 0;
     display: none;
-  }
+}
   
 .ajax-loader img {
     border-radius: 180px;
@@ -104,8 +104,14 @@ html {
         line-height: 34px !important;
     }
 
-    .flex-column {
-        // flex-direction: column;
+    div.dialog-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+      
+    div.dialog-header .mat-icon {
+        cursor: pointer;
     }
 
     .empty-placeholder {

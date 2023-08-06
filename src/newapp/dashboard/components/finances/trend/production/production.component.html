@@ -9,7 +9,7 @@
     <div class="chart-title">
         {{chartName$ | async}}
     </div>
-    <div class="chart-content flex-column">
+    <div class="chart-content">
         <div class="profit-prod-trend-chart">
             <div class="profit-switch">
                 <button *ngFor="let chartName of profitChartNames" (click)="switchChartName(chartName)" 

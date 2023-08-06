@@ -7,12 +7,16 @@
         fontIcon="help"
     ></mat-icon>
     <div class="chart-title">
-        <mat-icon 
+        <div class="icon-title">
+            <mat-icon 
             [matTooltip]="(durationTrendLabel$ | async)+': $'+ (newPatientsAcqPrev | number : '1.0-0')"
             [color]="trendingIcon == 'trending_up'?'primary':'warn'" [fontIcon]="trendingIcon"></mat-icon>
-        <span>
-            New Patient Cost
-        </span>
+            <span>
+                New Patient Cost
+            </span>
+        </div>
+
+        <button (click)="openAccountsDialog()" mat-flat-button color="primary">Account</button>
     </div>
     <div class="chart-content">
         <div class="canvas-wrapper chart-box">

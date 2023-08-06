@@ -7,10 +7,12 @@ import { DateRangeMenus } from "@/newapp/shared/components/date-range-menu/date-
 import { splitName } from "@/newapp/shared/utils";
 import { DecimalPipe } from "@angular/common";
 import { Component, OnInit, OnDestroy, Input } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { ChartOptions, LegendOptions, ChartDataset } from "chart.js";
 import { _DeepPartialObject } from "chart.js/dist/types/utils";
 import _ from "lodash";
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { MkSelectAccountsModalComponent } from "../select-accounts-modal/select-accounts-modal.component";
 
 @Component({
     selector: 'new-patients-acq-chart',
@@ -37,7 +39,6 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
             return this.newPatientsAcqGoal;
         }
     }
-
 
     get isActivePatients$(){
         return this.marketingFacade.isActivePatients$.pipe(
@@ -131,7 +132,8 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
         private clinicFacade: ClinicFacade,
         private layoutFacade: LayoutFacade,
         private decimalPipe: DecimalPipe,
-        private dashboardFacade: DashboardFacade
+        private dashboardFacade: DashboardFacade,
+        public dialog: MatDialog
     ) {
         combineLatest([
             this.isTrend$,
@@ -165,6 +167,10 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.destroy.next();
+    }
+
+    openAccountsDialog(): void {
+      this.dialog.open(MkSelectAccountsModalComponent);
     }
 
     get chartOptions$(){

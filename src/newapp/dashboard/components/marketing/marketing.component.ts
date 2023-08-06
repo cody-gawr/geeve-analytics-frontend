@@ -8,6 +8,7 @@ import { Router } from "@angular/router";
 import { FnNetProfitParams } from "@/newapp/models/dashboard";
 import moment from "moment";
 import { MarketingFacade } from "../../facades/marketing.facade";
+import { AuthFacade } from "@/newapp/auth/facades/auth.facade";
 
 @Component({
     selector: 'dashboard-marketing',
@@ -26,11 +27,17 @@ export class MarketingComponent implements OnInit, OnDestroy {
         )
     }
 
+    get authUserId$() {
+        return this.authFacade.authUserData$.pipe(
+          map(authUserData => (authUserData??this.authFacade.getAuthUserData()).id))
+    }
+
     constructor(
         private dashbordFacade: DashboardFacade,
         private clinicFacade: ClinicFacade,
         private marketingFacade: MarketingFacade,
         private layoutFacade: LayoutFacade,
+        private authFacade: AuthFacade,
         private router: Router
     ) {
         combineLatest([
@@ -38,11 +45,12 @@ export class MarketingComponent implements OnInit, OnDestroy {
             this.layoutFacade.dateRange$,
             this.dashbordFacade.connectedWith$,
             this.router.routerState.root.queryParams,
-            this.layoutFacade.trend$
+            this.layoutFacade.trend$,
+            this.authUserId$
         ])
         .pipe(
             takeUntil(this.destroy$),
-        ).subscribe(([clinicId, dateRange, connectedWith, route, trend]) => {
+        ).subscribe(([clinicId, dateRange, connectedWith, route, trend, userId]) => {
             if(clinicId == null || connectedWith == null ) return;
 
             const startDate = dateRange.start;
@@ -51,6 +59,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
   
             this.dashbordFacade.loadChartTips(4, clinicId);
             const queryWhEnabled = route && parseInt(route.wh??'0') == 1?1:0;
+
             switch(trend){
                 case 'off':
                     const params: FnNetProfitParams = {
@@ -108,6 +117,16 @@ export class MarketingComponent implements OnInit, OnDestroy {
                     break;
             }
 
+            
+            if(connectedWith == 'myob'){
+                this.marketingFacade.loadMkGetMyobAccounts(
+                    { clinicId, userId }
+                )
+            }else if(connectedWith == 'xero'){
+                this.marketingFacade.loadMkGetXeroAccounts(
+                    { clinicId, userId }
+                )
+            }
         });
     }
 

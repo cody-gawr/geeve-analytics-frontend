@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { JeeveError } from '@/newapp/models';
 import { MarketingPageActions } from '../state/actions';
-import { MarketingState, selectActivePatientsChartData, selectActivePatientsTrendChartData, selectErrors, selectIsActivePatients, selectIsActivePatientsWithPlatform, selectIsLoadingMkNewPatientAcq, selectIsLoadingMkNewPatientAcqTrend, selectIsLoadingMkNewPatientsByReferral, selectIsLoadingMkNewPatientsByReferralTrend, selectIsLoadingMkNumNewPatients, selectIsLoadingMkNumNewPatientsTrend, selectIsLoadingMkRevByReferral, selectIsLoadingMkRevByReferralTrend, selectIsLoadingMkTotalVisits, selectIsLoadingMkTotalVisitsTrend, selectNewPatientAcqChartData, selectNewPatientAcqTrendChartData, selectNewPatientsByReferralChartData, selectNewPatientsByReferralData, selectNewPatientsByReferralTrendChartData, selectNumNewPatientsChartData, selectNumNewPatientsTrendChartData, selectRevByReferralChartData, selectRevByReferralTrendChartData, selectRevenueByReferralData, selectTotalVisitsChartData, selectTotalVisitsTrendChartData } from '../state/reducers/marketing.reducer';
+import { MarketingState, selectActivePatientsChartData, selectActivePatientsTrendChartData, selectErrors, selectIsActivePatients, selectIsActivePatientsWithPlatform, selectIsLoadingMkMyobAccounts, selectIsLoadingMkNewPatientAcq, selectIsLoadingMkNewPatientAcqTrend, selectIsLoadingMkNewPatientsByReferral, selectIsLoadingMkNewPatientsByReferralTrend, selectIsLoadingMkNumNewPatients, selectIsLoadingMkNumNewPatientsTrend, selectIsLoadingMkRevByReferral, selectIsLoadingMkRevByReferralTrend, selectIsLoadingMkSaveAcctMyob, selectIsLoadingMkSaveAcctXero, selectIsLoadingMkTotalVisits, selectIsLoadingMkTotalVisitsTrend, selectIsLoadingMkXeroAccounts, selectMyobAccounts, selectNewPatientAcqChartData, selectNewPatientAcqTrendChartData, selectNewPatientsByReferralChartData, selectNewPatientsByReferralData, selectNewPatientsByReferralTrendChartData, selectNumNewPatientsChartData, selectNumNewPatientsTrendChartData, selectRevByReferralChartData, selectRevByReferralTrendChartData, selectRevenueByReferralData, selectTotalVisitsChartData, selectTotalVisitsTrendChartData, selectXeroAccounts } from '../state/reducers/marketing.reducer';
 
 @Injectable()
 export class MarketingFacade {
@@ -11,6 +11,14 @@ export class MarketingFacade {
 
   public readonly errors$: Observable<JeeveError[]> = this.store.pipe(
     select(selectErrors)
+  );
+
+  public readonly xeroAccounts$ = this.store.pipe(
+    select(selectXeroAccounts)
+  );
+
+  public readonly myobAccounts$ = this.store.pipe(
+    select(selectMyobAccounts)
   );
 
   public readonly newPatientsByReferralChartData$ = this.store.pipe(
@@ -107,6 +115,22 @@ export class MarketingFacade {
 
   public readonly isLoadingTotalVisitsTrend$ = this.store.pipe(
     select(selectIsLoadingMkTotalVisitsTrend)
+  );
+
+  public readonly isLoadingMkMyobAccounts$ = this.store.pipe(
+    select(selectIsLoadingMkMyobAccounts)
+  );
+
+  public readonly isLoadingMkXeroAccounts$ = this.store.pipe(
+    select(selectIsLoadingMkXeroAccounts)
+  );
+
+  public readonly isLoadingMkSaveMyobAccounts$ = this.store.pipe(
+    select(selectIsLoadingMkSaveAcctMyob)
+  );
+
+  public readonly isLoadingMkSaveXeroAccounts$ = this.store.pipe(
+    select(selectIsLoadingMkSaveAcctXero)
   );
 
   public readonly isActivePatients$ = this.store.pipe(
@@ -315,6 +339,54 @@ export class MarketingFacade {
         clinicId,
         mode,
         queryWhEnabled,
+      })
+    )
+  }
+
+  public loadMkGetMyobAccounts({
+    clinicId,
+    userId
+  }){
+    this.store.dispatch(
+      MarketingPageActions.loadMkGetMyobAccounts({
+        clinicId,
+        userId
+      })
+    )
+  }
+
+  public loadMkGetXeroAccounts({
+    clinicId,
+    userId
+  }){
+    this.store.dispatch(
+      MarketingPageActions.loadMkGetXeroAccounts({
+        clinicId,
+        userId
+      })
+    )
+  }
+  
+  public saveXeroAccounts({
+    clinicId,
+    categories
+  }){
+    this.store.dispatch(
+      MarketingPageActions.saveAcctXero({
+        clinicId,
+        categories
+      })
+    )
+  }
+
+  public saveMyobAccounts({
+    clinicId,
+    categories
+  }){
+    this.store.dispatch(
+      MarketingPageActions.saveAcctMyob({
+        clinicId,
+        categories
       })
     )
   }

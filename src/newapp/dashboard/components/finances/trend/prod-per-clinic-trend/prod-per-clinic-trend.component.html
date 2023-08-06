@@ -9,7 +9,7 @@
     <div class="chart-title">
         {{ (isMultiClinic$ | async)? 'Production % Per Clinic': 'Production % Per Clinician' }}
     </div>
-    <div class="chart-content flex-column">
+    <div class="chart-content">
         <div class="prod-per-clinic-trend-chart">
             <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
             <ng-template #chartElem>

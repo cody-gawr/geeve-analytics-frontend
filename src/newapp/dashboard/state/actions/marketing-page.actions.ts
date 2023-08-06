@@ -131,3 +131,35 @@ export const setIsActivePatients = createAction(
     isActive: boolean
    }>()
 );
+
+export const loadMkGetXeroAccounts = createAction(
+  '[Marketing Page] Load mkGetXeroAcct',
+  props<{ 
+    clinicId: number | string,
+    userId: number
+   }>()
+);
+
+export const loadMkGetMyobAccounts = createAction(
+  '[Marketing Page] Load mkGetMyobAcct',
+  props<{ 
+    clinicId: number | string,
+    userId: number
+   }>()
+);
+
+export const saveAcctMyob = createAction(
+  '[Marketing Page] Save mkSaveAcctMyob',
+  props<{
+    clinicId: number | string,
+    categories: string[]
+   }>()
+);
+
+export const saveAcctXero = createAction(
+  '[Marketing Page] Save mkSaveAcctXero',
+  props<{
+    clinicId: number | string,
+    categories: string[]
+   }>()
+);

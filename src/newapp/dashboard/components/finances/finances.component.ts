@@ -74,92 +74,48 @@ export class FinancesComponent implements OnInit, OnDestroy {
                     this.financeFacade.loadFnTotalCollection(params);
                     break;
                 case 'current':
-                    this.financeFacade.loadFnTotalProductionTrend(
-                        clinicId,
-                        'c',
-                        queryWhEnabled
-                    );
-                    this.financeFacade.loadFnTotalCollectionTrend(
-                        clinicId,
-                        'c',
-                        queryWhEnabled
-                    );
-                    this.financeFacade.loadFnNetProfitTrend(
-                        clinicId,
-                        'c',
-                        connectedWith,
-                        queryWhEnabled
-                    );
-                    this.financeFacade.loadFnNetProfitPercentageTrend(
-                        clinicId,
-                        'c',
-                        connectedWith,
-                        queryWhEnabled
-                    );
-                    this.financeFacade.loadFnProductionPerVisitTrend(
-                        clinicId,
-                        'c',
-                        queryWhEnabled
-                    );
-                    this.financeFacade.loadFnExpensesTrend(
-                        clinicId,
-                        'c',
-                        connectedWith,
-                        queryWhEnabled
-                    );
-                    this.financeFacade.loadFnTotalDiscountsTrend(
-                        clinicId,
-                        'c',
-                        queryWhEnabled
-                    );
-                    this.financeFacade.loadFnProductionByClinicianTrend(
-                        clinicId,
-                        'c',
-                        queryWhEnabled
-                    );
-                    break;
                 case 'historic':
                     this.financeFacade.loadFnTotalProductionTrend(
                         clinicId,
-                        'h',
+                        trend === 'current'?'c':'h',
                         queryWhEnabled
-                    )
+                    );
                     this.financeFacade.loadFnTotalCollectionTrend(
                         clinicId,
-                        'h',
+                        trend === 'current'?'c':'h',
                         queryWhEnabled
-                    )
+                    );
                     this.financeFacade.loadFnNetProfitTrend(
                         clinicId,
-                        'h',
+                        trend === 'current'?'c':'h',
                         connectedWith,
                         queryWhEnabled
                     );
                     this.financeFacade.loadFnNetProfitPercentageTrend(
                         clinicId,
-                        'h',
+                        trend === 'current'?'c':'h',
                         connectedWith,
                         queryWhEnabled
                     );
                     this.financeFacade.loadFnProductionPerVisitTrend(
                         clinicId,
-                        'h',
+                        trend === 'current'?'c':'h',
                         queryWhEnabled
                     );
                     this.financeFacade.loadFnExpensesTrend(
                         clinicId,
-                        'h',
+                        trend === 'current'?'c':'h',
                         connectedWith,
                         queryWhEnabled
                     );
                     this.financeFacade.loadFnTotalDiscountsTrend(
                         clinicId,
-                        'h',
+                        trend === 'current'?'c':'h',
                         queryWhEnabled
                     );
                     this.financeFacade.loadFnProductionByClinicianTrend(
                         clinicId,
-                        'h',
+                        trend === 'current'?'c':'h',
                         queryWhEnabled
                     );
                     break;

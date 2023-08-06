@@ -1,3 +1,15 @@
+export interface MkXeroOrMyobAccountsApiResponse {
+    app: string;
+    data: XeroOrAccountData;
+    message: string;
+    status: string | number;
+}
+
+export interface XeroOrAccountData {
+    categories: Record<number, string>[],
+    selectedCategories: string[]
+}
+
 export interface MkNewPatientsByReferralApiResponse {
     app: string;
     data: MkNewPatientsByReferral | Array<MkNewPatientsByReferralMultiItem>;

@@ -9,7 +9,7 @@
     <div class="chart-title">
         Expenses
     </div>
-    <div class="chart-content flex-column">
+    <div class="chart-content">
         <div class="expense-trend-chart">
             <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
             <ng-template #chartElem>

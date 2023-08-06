@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of, withLatestFrom, filter } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { MarketingState, selectIsLoadingMkActivePatients, selectIsLoadingMkActivePatientsTrend, selectIsLoadingMkNewPatientAcq, selectIsLoadingMkNewPatientAcqTrend, selectIsLoadingMkNewPatientsByReferral, selectIsLoadingMkNewPatientsByReferralTrend, selectIsLoadingMkNumNewPatients, selectIsLoadingMkNumNewPatientsTrend, selectIsLoadingMkRevByReferral, selectIsLoadingMkRevByReferralTrend, selectIsLoadingMkTotalVisits, selectIsLoadingMkTotalVisitsTrend } from '../reducers/marketing.reducer';
+import { MarketingState, selectIsLoadingMkActivePatients, selectIsLoadingMkActivePatientsTrend, selectIsLoadingMkMyobAccounts, selectIsLoadingMkNewPatientAcq, selectIsLoadingMkNewPatientAcqTrend, selectIsLoadingMkNewPatientsByReferral, selectIsLoadingMkNewPatientsByReferralTrend, selectIsLoadingMkNumNewPatients, selectIsLoadingMkNumNewPatientsTrend, selectIsLoadingMkRevByReferral, selectIsLoadingMkRevByReferralTrend, selectIsLoadingMkSaveAcctMyob, selectIsLoadingMkSaveAcctXero, selectIsLoadingMkTotalVisits, selectIsLoadingMkTotalVisitsTrend, selectIsLoadingMkXeroAccounts } from '../reducers/marketing.reducer';
 import { MarketingApiActions, MarketingPageActions } from '../actions';
 import { MarketingService } from '../../services/marketing.service';
 
@@ -395,7 +395,6 @@ export class MarketingEffects {
     );
   });
 
-  
   public readonly loadMkTotalVisitsTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(MarketingPageActions.loadMkTotalVisitsTrend),
@@ -419,6 +418,123 @@ export class MarketingEffects {
           catchError((error: HttpErrorResponse) =>
             of(
               MarketingApiActions.mkTotalVisitsTrendFailure({
+                error: error.error ?? error
+              })
+            )
+          )
+        );
+      })
+    );
+  });
+
+  public readonly loadMkXeroAccounts$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(MarketingPageActions.loadMkGetXeroAccounts),
+      withLatestFrom(this.store.select(selectIsLoadingMkXeroAccounts)),
+      filter(([action, isLoading]) => isLoading),
+      mergeMap(([{
+        clinicId,
+        userId,
+      }]) => {
+        return this.marketingService.mkGetXeroAcct(
+            clinicId,
+            userId
+        ).pipe(
+          map((data) =>
+            MarketingApiActions.mkGetXeroAcctSuccess({ 
+                xeroAccounts: data
+            })
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              MarketingApiActions.mkGetXeroAcctFailure({
+                error: error.error ?? error
+              })
+            )
+          )
+        );
+      })
+    );
+  });
+
+  
+  public readonly loadMkMyobAccounts$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(MarketingPageActions.loadMkGetMyobAccounts),
+      withLatestFrom(this.store.select(selectIsLoadingMkMyobAccounts)),
+      filter(([action, isLoading]) => isLoading),
+      mergeMap(([{
+        clinicId,
+        userId,
+      }]) => {
+        return this.marketingService.mkGetMyobAcct(
+            clinicId,
+            userId
+        ).pipe(
+          map((data) =>
+            MarketingApiActions.mkGetMyobAcctSuccess({ 
+                myobAccounts: data
+            })
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              MarketingApiActions.mkGetMyobAcctFailure({
+                error: error.error ?? error
+              })
+            )
+          )
+        );
+      })
+    );
+  });
+
+  public readonly saveMkMyobAccounts$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(MarketingPageActions.saveAcctMyob),
+      withLatestFrom(this.store.select(selectIsLoadingMkSaveAcctMyob)),
+      filter(([action, isLoading]) => isLoading),
+      mergeMap(([{
+        clinicId,
+        categories,
+      }]) => {
+        return this.marketingService.mkSaveAcctMyob(
+            clinicId,
+            categories
+        ).pipe(
+          map((data) =>
+            MarketingApiActions.mkSaveAcctMyobSuccess()
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              MarketingApiActions.mkSaveAcctMyobFailure({
+                error: error.error ?? error
+              })
+            )
+          )
+        );
+      })
+    );
+  });
+
+  public readonly saveMkXeroAccounts$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(MarketingPageActions.saveAcctXero),
+      withLatestFrom(this.store.select(selectIsLoadingMkSaveAcctXero)),
+      filter(([action, isLoading]) => isLoading),
+      mergeMap(([{
+        clinicId,
+        categories,
+      }]) => {
+        return this.marketingService.mkSaveAcctXero(
+            clinicId,
+            categories
+        ).pipe(
+          map((data) =>
+            MarketingApiActions.mkSaveAcctXeroSuccess()
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              MarketingApiActions.mkSaveAcctXeroFailure({
                 error: error.error ?? error
               })
             )

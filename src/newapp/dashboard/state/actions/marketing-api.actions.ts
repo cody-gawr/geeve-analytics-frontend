@@ -1,5 +1,5 @@
 import { JeeveError } from '@/newapp/models';
-import { MkActivePatientsApiResponse, MkActivePatientsTrendApiResponse, MkNewPatientAcqApiResponse, MkNewPatientAcqTrendApiResponse, MkNewPatientsByReferralApiResponse, MkNewPatientsByReferralTrendApiResponse, MkNumNewPatientsApiResponse, MkNumNewPatientsTrendApiResponse, MkRevByReferralTrendApiResponse, MkRevenueByReferralApiResponse, MkTotalVisitsApiResponse, MkTotalVisitsTrendApiResponse } from '@/newapp/models/dashboard/marketing';
+import { MkActivePatientsApiResponse, MkActivePatientsTrendApiResponse, MkNewPatientAcqApiResponse, MkNewPatientAcqTrendApiResponse, MkNewPatientsByReferralApiResponse, MkNewPatientsByReferralTrendApiResponse, MkNumNewPatientsApiResponse, MkNumNewPatientsTrendApiResponse, MkRevByReferralTrendApiResponse, MkRevenueByReferralApiResponse, MkTotalVisitsApiResponse, MkTotalVisitsTrendApiResponse, MkXeroOrMyobAccountsApiResponse } from '@/newapp/models/dashboard/marketing';
 import { createAction, props } from '@ngrx/store';
 
 export const mkNewPatientsByReferralSuccess = createAction(
@@ -150,5 +150,51 @@ export const mkTotalVisitsTrendFailure = createAction(
     }>()
 );
 
+export const mkGetXeroAcctSuccess = createAction(
+    '[Marketing API] Load mkGetXeroAcct Success',
+    props<{ xeroAccounts: MkXeroOrMyobAccountsApiResponse }>()
+);
+  
+export const mkGetXeroAcctFailure = createAction(
+    '[Marketing API] Load mkGetXeroAcct Failure',
+    props<{
+        error: JeeveError;
+    }>()
+);
+
+export const mkGetMyobAcctSuccess = createAction(
+    '[Marketing API] Load mkGetMyobAcct Success',
+    props<{ myobAccounts: MkXeroOrMyobAccountsApiResponse }>()
+);
+  
+export const mkGetMyobAcctFailure = createAction(
+    '[Marketing API] Load mkGetMyobAcct Failure',
+    props<{
+        error: JeeveError;
+    }>()
+);
+
+
+export const mkSaveAcctMyobSuccess = createAction(
+    '[Marketing API] Save mkSaveAcctMyob Success',
+);
+  
+export const mkSaveAcctMyobFailure = createAction(
+    '[Marketing API] Save mkSaveAcctMyob Failure',
+    props<{
+        error: JeeveError;
+    }>()
+);
+
+export const mkSaveAcctXeroSuccess = createAction(
+    '[Marketing API] Save mkSaveAcctXero Success',
+);
+  
+export const mkSaveAcctXeroFailure = createAction(
+    '[Marketing API] Save mkSaveAcctXero Failure',
+    props<{
+        error: JeeveError;
+    }>()
+);
 
   
