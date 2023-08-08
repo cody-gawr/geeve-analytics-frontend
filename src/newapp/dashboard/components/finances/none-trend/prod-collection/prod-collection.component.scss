@@ -10,6 +10,9 @@
         flex-direction: column;
     }
     .prod-col-ngx-chart {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 50%;
         @include respond-from('tablet-landscape') {
             width: 100%;

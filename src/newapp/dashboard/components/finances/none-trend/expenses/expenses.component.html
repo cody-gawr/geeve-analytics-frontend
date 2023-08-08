@@ -35,7 +35,7 @@
                     >
                     </ngx-charts-pie-chart>
                     <spin-loader *ngIf="isLoading$ | async"></spin-loader>
-                    <spin-loader *ngIf="selectedData.length <= 0" [disableSpin]="true">
+                    <spin-loader class="empty-placeholder" *ngIf="selectedData.length <= 0" [disableSpin]="true">
                         No expenses found for the selected period
                     </spin-loader>
                 </ng-template>

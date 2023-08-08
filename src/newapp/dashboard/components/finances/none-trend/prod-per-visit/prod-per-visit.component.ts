@@ -38,6 +38,18 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
     }];
     labels = [];
 
+    get hasData$() {
+      return this.isMultipleClinic$.pipe(
+        map(v => {
+          if(v){
+            return this.labels.length > 0;
+          }else{
+            return this.productionVisitVal > 0;
+          }
+        })
+      )
+    }
+
     get isLoading$() {
         return this.financeFacade.isLoadingFnProdPerVisit$.pipe(
             takeUntil(this.destroy$),

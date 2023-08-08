@@ -16,7 +16,7 @@
                 <ng-template #chartElem>
                     <canvas
                         #myCanvas
-                        *ngIf="!(isLoading$ | async)"
+                        *ngIf="!(isLoading$ | async) && labels.length > 0"
                         baseChart
                         [datasets]="datasets"
                         [labels]="labels"
@@ -24,7 +24,7 @@
                         [legend]="false"
                         type="bar"
                     ></canvas>
-                    <spin-loader *ngIf="labels.length <= 0" [disableSpin]="true">
+                    <spin-loader class="empty-placeholder" *ngIf="labels.length <= 0" [disableSpin]="true">
                         No expenses found for the selected period
                     </spin-loader>
                 </ng-template>

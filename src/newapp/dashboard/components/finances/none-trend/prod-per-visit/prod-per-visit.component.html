@@ -18,7 +18,7 @@
                 <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
                 <ng-template #chartElem>
                     <ngx-gauge
-                        *ngIf="!(isLoading$ | async) && !(isMultipleClinic$ | async)"
+                        *ngIf="!(isLoading$ | async) && !(isMultipleClinic$ | async) && (hasData$ | async)"
                         type="arch"
                         [value]="productionVisitVal"
                         [thick]="20"
@@ -30,7 +30,7 @@
                     >
                     </ngx-gauge>
                     <canvas
-                        *ngIf="!(isLoading$ | async) && (isMultipleClinic$ | async)"
+                        *ngIf="!(isLoading$ | async) && (isMultipleClinic$ | async) && (hasData$ | async)"
                         baseChart
                         [datasets]="datasets"
                         [labels]="labels"
@@ -40,7 +40,7 @@
                         [colors]="barChartColors"
                     >
                     </canvas>
-                    <spin-loader *ngIf="productionVisitVal <= 0" [disableSpin]="true">
+                    <spin-loader class="empty-placeholder" *ngIf="!(hasData$ | async)" [disableSpin]="true">
                         You have no production in the selected period
                     </spin-loader>                    
                 </ng-template>

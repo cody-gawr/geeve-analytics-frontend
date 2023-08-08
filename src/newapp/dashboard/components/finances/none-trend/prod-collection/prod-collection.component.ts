@@ -121,12 +121,21 @@ export class FinanceProdColComponent implements OnInit, OnDestroy {
                 };
               });
               this.datasets = chartData;
+              if(prodData.length > 0 || collData.length > 0){
+                this.labels = [ 'Production', 'Collection'];
+              }else{
+                this.labels = [];
+              }
             }else{
               chartData.push(prodVal);
               chartData.push(collectionVal);
               this.datasets = [{data: chartData}];
+              if(prodVal > 0 || collectionVal > 0){
+                this.labels = [ 'Production', 'Collection'];
+              }else{
+                this.labels = [];
+              }
             }
-            this.labels = [ 'Production', 'Collection'];
             
         });
     }

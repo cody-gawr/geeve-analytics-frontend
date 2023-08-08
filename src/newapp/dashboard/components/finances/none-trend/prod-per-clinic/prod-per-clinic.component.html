@@ -14,14 +14,14 @@
             <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
             <ng-template #chartElem>
                 <canvas
-                        *ngIf="!(isLoading$ | async)"
+                        *ngIf="!(isLoading$ | async) && productionChartLabels.length > 0"
                         baseChart
                         [datasets]="datasets"
                         [labels]="productionChartLabels"
                         type="doughnut"
                         [options]="pieChartOptions"
                 ></canvas>
-                <spin-loader *ngIf="datasets[0].data.length <= 0" [disableSpin]="true">
+                <spin-loader class="empty-placeholder" *ngIf="productionChartLabels.length <= 0" [disableSpin]="true">
                     You have no production in the selected period
                 </spin-loader>
             </ng-template>
