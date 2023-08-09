@@ -15,11 +15,13 @@ import {
   selectSuccess
 } from '../state/reducers/auth.reducer';
 import { LoginUser, RolesIndividualApiResponse } from '../../models/user';
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 
 @Injectable()
 export class AuthFacade {
   constructor(
-    private readonly store: Store<AuthState>
+    private readonly store: Store<AuthState>,
+    private clinicFacade: ClinicFacade
   ) {}
 
   public readonly success$: Observable<boolean> = this.store.pipe(
@@ -66,6 +68,7 @@ export class AuthFacade {
   }
 
   public logout() {
+    this.clinicFacade.setCurrentClinicId(null);
     this.store.dispatch(AuthPageActions.logout());
   }
 

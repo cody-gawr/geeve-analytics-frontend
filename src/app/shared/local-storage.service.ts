@@ -40,7 +40,7 @@ export class LocalStorageService {
   }
 
   public getObject<T>(key: string): T {
-    return <T>JSON.parse(this.getData(key));
+    return <T>JSON.parse(this.getData(key)??'{}');
   }
 
   public getClinicData(clinicId: string){

@@ -59,6 +59,8 @@ import { environment } from '@/environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { httpInterceptors } from '@/newapp/shared/interceptors';
 import { NewAppBlankComponent } from './layouts/blank/new-blank.component';
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
+import { clinicFeature } from '@/newapp/clinic/state/reducers/clinic.reducer';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -130,6 +132,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ChartsModule,
     NgxChartsModule,
     StoreModule.forRoot({...reducers}, {metaReducers}),
+    StoreModule.forFeature(clinicFeature),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: !environment.production // Restrict extension to log-only mode
@@ -150,7 +153,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     DentistService,
     DecimalPipe,
     provideUserIdleConfig({idle: 14400, timeout: 10, ping: 10}),
-    httpInterceptors
+    httpInterceptors,
+    ClinicFacade
   ],
   bootstrap: [AppComponent]
 })

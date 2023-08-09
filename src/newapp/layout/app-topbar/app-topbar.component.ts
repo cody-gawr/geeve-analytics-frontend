@@ -46,13 +46,14 @@ export class AppTopbarComponent implements OnInit {
       takeUntil(this.destroy$),
       map((data) => {
         const [authUserData, rolesIndividual] = data;
+        const result = authUserData??this.authFacade.getAuthUserData();
         return {
           multiClinicEnabled: {
-            dash1Multi: (authUserData??this.authFacade.getAuthUserData()).dash1Multi,
-            dash2Multi: (authUserData??this.authFacade.getAuthUserData()).dash2Multi,
-            dash3Multi: (authUserData??this.authFacade.getAuthUserData()).dash3Multi,
-            dash4Multi: (authUserData??this.authFacade.getAuthUserData()).dash4Multi,
-            dash5Multi: (authUserData??this.authFacade.getAuthUserData()).dash5Multi,
+            dash1Multi: result?.dash1Multi,
+            dash2Multi: result?.dash2Multi,
+            dash3Multi: result?.dash3Multi,
+            dash4Multi: result?.dash4Multi,
+            dash5Multi: result?.dash5Multi,
           }, 
           userType: rolesIndividual?rolesIndividual.type:0
         }

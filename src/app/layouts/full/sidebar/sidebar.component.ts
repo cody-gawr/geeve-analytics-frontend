@@ -22,6 +22,7 @@ import {
   MatLegacyDialogRef as MatDialogRef,
   MatLegacyDialog as MatDialog
 } from '@angular/material/legacy-dialog';
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 
 @Component({
   selector: 'refer-friend',
@@ -159,7 +160,8 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     private _cookieService: CookieService,
     private route: ActivatedRoute,
     private router: Router,
-    public constants: AppConstants
+    public constants: AppConstants,
+    private clinicFacade: ClinicFacade
   ) {
     // this.router.events.subscribe((event: Event) => {
     //   if (event instanceof NavigationEnd && event.url != '/login') {
@@ -225,6 +227,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
   logout() {
     this.headerService.logout().subscribe(
       () => {
+        this.clinicFacade.setCurrentClinicId(null);
         this._cookieService.removeAll();
         this.rolesUsersService.setRoleIndividual({
           body: { message: '', data: [], plan: '', type: 0 },
