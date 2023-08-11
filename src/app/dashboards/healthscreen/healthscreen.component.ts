@@ -96,6 +96,10 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     return this.localStorageService.isEachClinicExact(this.clinic_id);
   }
 
+  public get isCore(): boolean {
+    return this.localStorageService.isEachClinicPmsCore(this.clinic_id);
+  }
+
   constructor(
     private localStorageService: LocalStorageService,
     private healthscreenService: HealthScreenService,

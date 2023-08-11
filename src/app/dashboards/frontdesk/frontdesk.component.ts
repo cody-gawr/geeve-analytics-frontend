@@ -92,6 +92,10 @@ export class FrontDeskComponent implements AfterViewInit {
     return this.localStorageService.isEachClinicExact(this.clinic_id);
   }
 
+  public get isCore(): boolean {
+    return this.localStorageService.isEachClinicPmsCore(this.clinic_id);
+  }
+
   constructor(
     private localStorageService: LocalStorageService,
     private toastr: ToastrService,

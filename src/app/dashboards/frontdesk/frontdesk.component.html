@@ -182,7 +182,7 @@
             <div class="card-body">
               <div
                 class="no-data-placeholder"
-                *ngIf="isExact; else nonExactTemplate"
+                *ngIf="isExact || isCore; else nonExactTemplate"
               >
                 <div class="sa_nodata_div"></div>
                 <p class="chart-placeholder-text">Coming Soon...</p>

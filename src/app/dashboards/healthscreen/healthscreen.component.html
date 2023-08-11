@@ -710,7 +710,7 @@
                   />
                 </div>
               </mat-card-title>
-              <div *ngIf="isExact; else nonExactTemplate">
+              <div *ngIf="isExact || isCore; else nonExactTemplate">
                 <div class="sa_nodata_div"></div>
                 <p class="chart-placeholder-text">Coming Soon...</p>
               </div>

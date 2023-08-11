@@ -6,6 +6,7 @@ import { CookieService } from 'ngx-cookie';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { CancellationRatioResponse } from './frontdesk.interfaces';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,6 +21,7 @@ export class FrontDeskService {
     private _cookieService: CookieService,
     private router: Router
   ) {}
+
   getHeaders() {
     if (
       this._cookieService.get('user_type') != '1' &&
@@ -36,6 +38,7 @@ export class FrontDeskService {
     };
     return headers;
   }
+
   // Items Predictor Analysis
   fdWorkTimeAnalysis(
     clinic_id,
@@ -64,6 +67,7 @@ export class FrontDeskService {
         })
       );
   } // Items Predictor Analysis
+
   fdWorkTimeAnalysisByDay(
     clinic_id,
     startDate = '',
@@ -330,6 +334,7 @@ export class FrontDeskService {
         })
       );
   }
+
   frontdeskdRecallPrebookRateTrend(clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
     var header = this.getHeaders();
     return this.http
