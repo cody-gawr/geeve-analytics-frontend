@@ -36,20 +36,25 @@
                         available
                     </spin-loader>
                     <ng-template #chartElem1>
-                        <canvas
-                            #fdUtilRateChart
-                            *ngIf="!(isLoading$ | async) && (hasData$ | async) && !(isDateRageInvalid$ | async)"
-                            baseChart
-                            [datasets]="datasets"
-                            [labels]="labels"
-                            [legend]="(isMultipleClinic$ | async) && !(isByDayData$ | async)"
-                            type="bar"
-                            [options]="chartOptions$ | async"
-                        >
-                        </canvas>                    
-                        <spin-loader class="empty-placeholder" *ngIf="!(hasData$ | async)" [disableSpin]="true">
-                            You have no appointments in the selected period
+                        <spin-loader class="empty-placeholder" *ngIf="(isExact$ | async) || (isCore$ | async); else chartElem2" [disableSpin]="true">
+                            Coming Soon...
                         </spin-loader>
+                        <ng-template #chartElem2>
+                            <canvas
+                                #fdUtilRateChart
+                                *ngIf="!(isLoading$ | async) && (hasData$ | async) && !(isDateRageInvalid$ | async)"
+                                baseChart
+                                [datasets]="datasets"
+                                [labels]="labels"
+                                [legend]="(isMultipleClinic$ | async) && !(isByDayData$ | async)"
+                                type="bar"
+                                [options]="chartOptions$ | async"
+                            >
+                            </canvas>                    
+                            <spin-loader class="empty-placeholder" *ngIf="!(hasData$ | async)" [disableSpin]="true">
+                                You have no appointments in the selected period
+                            </spin-loader>
+                        </ng-template>
                     </ng-template>
                 </ng-template>
             </div>
