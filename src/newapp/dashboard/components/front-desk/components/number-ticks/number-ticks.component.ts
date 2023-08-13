@@ -124,15 +124,15 @@ export class FrontDeskNumberTicksComponent implements OnInit, OnDestroy {
         ).subscribe(([
             isTrend, chartData, trendChartData
         ]) => {
-                if(isTrend){
-                    this.datasets = trendChartData.datasets;
-                    this.labels = trendChartData.labels;
-                }else{
-                    this.datasets = chartData.datasets;
-                    this.labels = chartData.labels;
-                    this.fdNumOfTicksVal = chartData.fdNumOfTicksVal;
-                    this.fdNumOfTicksPrev = chartData.fdNumOfTicksPrev;
-                }
+              if(isTrend){
+                  this.datasets = trendChartData.datasets;
+                  this.labels = trendChartData.labels;
+              }else{
+                  this.datasets = chartData.datasets;
+                  this.labels = chartData.labels;
+                  this.fdNumOfTicksVal = chartData.fdNumOfTicksVal;
+                  this.fdNumOfTicksPrev = chartData.fdNumOfTicksPrev;
+              }
         });
     }
 

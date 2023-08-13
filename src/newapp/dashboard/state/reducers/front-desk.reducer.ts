@@ -933,7 +933,41 @@ export const selectFdRecallRateChartData = createSelector(
                     }
                 }
             );
-            chartDatasets = [{data: chartData}];
+            chartDatasets = [
+                {
+                  data: [],
+                  label: '',
+                  backgroundColor: [
+                    '#119582',
+                    '#ffb4b5',
+                    '#119582',
+                    '#ffb4b5',
+                    '#119582',
+                    '#ffb4b5',
+                    '#119582',
+                    '#ffb4b5',
+                    '#119582',
+                    '#ffb4b5',
+                    '#119582',
+                    '#ffb4b5'
+                  ],
+                  hoverBackgroundColor: [
+                    '#119582',
+                    '#ffb4b5',
+                    '#119582',
+                    '#ffb4b5',
+                    '#119582',
+                    '#ffb4b5',
+                    '#119582',
+                    '#ffb4b5',
+                    '#119582',
+                    '#ffb4b5',
+                    '#119582',
+                    '#ffb4b5'
+                  ]
+                }
+            ];
+            chartDatasets[0]['data'] = chartData;
         }
 
         return {
@@ -1266,7 +1300,10 @@ export const selectFdNumTicksChartData = createSelector(
     selectCurrentClinicId,
     (resBody, clinicId) => {
         if(resBody == null){
-            return {}
+            return {
+                datasets: [],
+                labels: []
+            }
         }
         let chartDatasets = [], chartLabels = [], chartData = [];
         if(typeof clinicId === 'string'){

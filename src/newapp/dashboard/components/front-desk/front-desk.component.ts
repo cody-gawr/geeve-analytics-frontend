@@ -50,7 +50,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
         .pipe(
             takeUntil(this.destroy$),
         ).subscribe(([clinicId, dateRange, connectedWith, route, trend, userId]) => {
-            if(clinicId == null || connectedWith == null ) return;
+            if(clinicId == null) return;
 
             const startDate = dateRange.start;
             const endDate = dateRange.end;
