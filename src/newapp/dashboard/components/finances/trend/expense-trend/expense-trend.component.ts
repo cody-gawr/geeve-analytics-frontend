@@ -86,6 +86,7 @@ export class FinanceExpenseTrendComponent implements OnInit, OnDestroy {
             takeUntil(this.destroy$),
         ).subscribe(
             ([chartData, durations, trendMode]) => {
+                this.datasets = [];
                 chartData.forEach(
                     (v, index) => {
                         this.datasets.push(
@@ -98,7 +99,7 @@ export class FinanceExpenseTrendComponent implements OnInit, OnDestroy {
                         )
                     }
                 );
-                this.labels = trendMode === 'current'? durations.map(
+                this.labels = (trendMode === 'current')? durations.map(
                     dur => moment(dur).format('MMM YYYY')
                 ):durations;
             }
