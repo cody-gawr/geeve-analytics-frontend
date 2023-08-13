@@ -101,13 +101,6 @@ export const {
   selectHasPrimeClinics,
 } = clinicFeature;
 
-export const selectCurrentClinic = createSelector(
-  selectClinics,
-  selectCurrentClinicId,
-  (clinics, currentClinicId): Clinic | undefined =>
-    clinics.find((c) => c.id == currentClinicId)
-);
-
 export const selectCurrentMultiClinicIDs = createSelector(
   selectCurrentClinicId,
   (currentClinicId) => {
@@ -119,4 +112,33 @@ export const selectCurrentMultiClinicIDs = createSelector(
       return [];
     }
   }
-)
+);
+
+export const selectCurrentClinics = createSelector(
+  selectClinics,
+  selectCurrentMultiClinicIDs,
+  (clinics, clinicIds): Clinic[] =>{
+    return clinics.filter((c) => clinicIds.includes(c.id));
+  }
+);
+
+export const selectIsExactCurrentClinics = createSelector(
+  selectCurrentClinics,
+  (clinics) => {
+    return clinics.every( c=> c.pms == 'exact');
+  }
+);
+
+export const selectIsCoreCurrentClinics = createSelector(
+  selectCurrentClinics,
+  (clinics) => {
+    return clinics.every( c=> c.pms == 'core');
+  }
+);
+
+export const selectIsD4wCurrentClinics = createSelector(
+  selectCurrentClinics,
+  (clinics) => {
+    return clinics.every( c=> c.pms == 'd4w');
+  }
+);

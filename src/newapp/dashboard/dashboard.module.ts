@@ -41,6 +41,16 @@ import { MarketingTotalVisitsComponent } from './components/marketing/components
 import { MarketingService } from '@/app/dashboards/marketing/marketing.service';
 import { MarketingFacade } from './facades/marketing.facade';
 import { MkSelectAccountsModalComponent } from './components/marketing/components/select-accounts-modal/select-accounts-modal.component';
+import { FrontDeskUtilRateComponent } from './components/front-desk/components/utilisation-rate/utilisation-rate.component';
+import { FrontDeskComponent } from './components/front-desk/front-desk.component';
+import { frontDeskFeature } from './state/reducers/front-desk.reducer';
+import { FrontDeskFacade } from './facades/front-desk.facade';
+import { FrontDeskEffects } from './state/effects/front-desk.effects';
+import { FrontDeskRecallRateComponent } from './components/front-desk/components/recall-rate/recall-rate.component';
+import { FrontDeskReappointRateComponent } from './components/front-desk/components/reappoint-rate/reappoint-rate.component';
+import { FrontDeskNumberTicksComponent } from './components/front-desk/components/number-ticks/number-ticks.component';
+import { FrontDeskFtaRatioComponent } from './components/front-desk/components/fta-ratio/fta-ratio.component';
+import { FrontDeskUtaRatioComponent } from './components/front-desk/components/uta-ratio/uta-ratio.component';
 
 @NgModule({
   imports: [
@@ -50,10 +60,12 @@ import { MkSelectAccountsModalComponent } from './components/marketing/component
     StoreModule.forFeature(dashboardFeature),
     StoreModule.forFeature(financeFeature),
     StoreModule.forFeature(marketingFeature),
+    StoreModule.forFeature(frontDeskFeature),
     EffectsModule.forFeature([
       DashboardEffects, 
       FinanceEffects,
-      MarketingEffects
+      MarketingEffects,
+      FrontDeskEffects
     ]),
     AppLayoutModule,
     NgxChartsModule,
@@ -83,7 +95,15 @@ import { MkSelectAccountsModalComponent } from './components/marketing/component
     MarketingNumNewPatientsComponent,
     MarketingNewPatientsAcqComponent,
     MarketingTotalVisitsComponent,
-    MkSelectAccountsModalComponent
+    MkSelectAccountsModalComponent,
+
+    FrontDeskComponent,
+    FrontDeskUtilRateComponent,
+    FrontDeskRecallRateComponent,
+    FrontDeskReappointRateComponent,
+    FrontDeskNumberTicksComponent,
+    FrontDeskFtaRatioComponent,
+    FrontDeskUtaRatioComponent
   ],
   providers: [
     DashboardService, 
@@ -91,7 +111,8 @@ import { MkSelectAccountsModalComponent } from './components/marketing/component
     FinanceService, 
     FinanceFacade,
     MarketingService,
-    MarketingFacade
+    MarketingFacade,
+    FrontDeskFacade
   ]
 })
 export class DashboardModule {}

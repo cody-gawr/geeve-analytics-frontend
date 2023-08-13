@@ -70,4 +70,4 @@ export const selectIsFullMonthsDateRange = createSelector(
         (_endDate.date() == _endDate.clone().endOf('month').date() 
             || _endDate.date() == moment().date())
     }
-)
+);

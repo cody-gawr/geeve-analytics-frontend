@@ -944,29 +944,6 @@ export const selectNetProfitTrendChartData = createSelector(
   
       let chartDataset:any = [{label: 'Total', data: chartData}];
 
-      // _.chain(netProfitTrendData)
-      // .groupBy('clinicId')
-      // .map(
-      //     (values, clinicId) => {
-      //         return {
-      //             label: values[0].clinicName,
-      //             values: values.map(v => Math.round(parseFloat(<string>v.netProfit??'0'))),
-      //         }
-      //     }
-      // )
-      // .value().forEach(
-      //     (val, index) => {
-      //         chartDataset.push({
-      //             data: val.values,
-      //             label: val.label,
-      //             backgroundColor: '#ffffff00',
-      //             borderColor: '#ffffff00',
-      //             radius: 0,
-      //             hoverRadius: 0,
-      //             pointStyle: false
-      //         })
-      //     }
-      // );
       return { datasets: chartDataset, labels: chartLabels };
     }else{
       return netProfitTrendData.map(

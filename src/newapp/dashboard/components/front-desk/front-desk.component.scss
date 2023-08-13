@@ -1,0 +1,38 @@
+@import '../../../../assets/layout/styles/layout/mixin';
+
+.front-desk-page-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  @include respond-from('phone') {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 15px;
+  }
+
+  .mat-tab {
+    padding: 0 !important;
+  }
+}
+
+.front-desk-chart-content {
+  background-color: #fafafa;
+  padding: 15px;
+  gap: 15px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  .front-desk-chart {
+      display: flex;
+      flex-direction: column;
+      @include respond-from('big-desktop') {
+        width: calc(33.3% - 10px);
+      }
+
+      @include respond-from('tablet-portrait') {
+          width: 100%;
+      }
+  }
+}
+
+

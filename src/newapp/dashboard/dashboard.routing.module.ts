@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { FinancesComponent } from './components/finances/finances.component';
 import { AppLayoutComponent } from '../layout/app-layout/app-layout.component';
 import { MarketingComponent } from './components/marketing/marketing.component';
+import { FrontDeskComponent } from './components/front-desk/front-desk.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,11 @@ const routes: Routes = [
       {
         path: 'marketing',
         component: MarketingComponent
-      }
+      },
+      {
+        path: 'frontdesk',
+        component: FrontDeskComponent
+      },
     ]
   }
 ];

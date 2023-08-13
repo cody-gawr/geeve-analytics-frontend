@@ -6,11 +6,14 @@ import { ClinicPageActions } from '../state/actions';
 import {
   ClinicState,
   selectClinics,
-  selectCurrentClinic,
+  selectCurrentClinics,
   selectCurrentClinicId,
   selectCurrentMultiClinicIDs,
   selectError,
-  selectSuccess
+  selectSuccess,
+  selectIsExactCurrentClinics,
+  selectIsCoreCurrentClinics,
+  selectIsD4wCurrentClinics
 } from '../state/reducers/clinic.reducer';
 
 @Injectable()
@@ -29,8 +32,8 @@ export class ClinicFacade {
     select(selectClinics)
   );
 
-  public readonly currentClinic$: Observable<Clinic> = this.store.pipe(
-    select(selectCurrentClinic)
+  public readonly currentClinics$: Observable<Clinic[]> = this.store.pipe(
+    select(selectCurrentClinics)
   );
 
   public readonly currentClinicId$: Observable<string | number | null> = this.store.pipe(
@@ -39,7 +42,19 @@ export class ClinicFacade {
 
   public readonly currentMultiClinicIDs$ = this.store.pipe(
     select(selectCurrentMultiClinicIDs)
-  ); 
+  );
+
+  public readonly isExactCurrentClinics$ = this.store.pipe(
+    select(selectIsExactCurrentClinics)
+  );
+
+  public readonly isCoreCurrentClinics$ = this.store.pipe(
+    select(selectIsCoreCurrentClinics)
+  );
+
+  public readonly isD4wCurrentClinics$ = this.store.pipe(
+    select(selectIsD4wCurrentClinics)
+  );
 
   public loadClinics() {
     this.store.dispatch(ClinicPageActions.loadClinics());

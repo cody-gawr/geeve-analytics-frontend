@@ -19,7 +19,7 @@ import { Clinic } from '../../models/clinic';
 import { select, Store } from '@ngrx/store';
 import {
   ClinicState,
-  selectCurrentClinic
+  selectCurrentClinics
 } from '../state/reducers/clinic.reducer';
 import { NotificationService } from '../../shared/services/notification.service';
 
@@ -41,7 +41,7 @@ export class ClinicResolver implements Resolve<Clinic | null> {
 
     if (clinicId !== null && parseInt(clinicId)) {
       return this.store.pipe(
-        select(selectCurrentClinic),
+        select(selectCurrentClinics),
         first(),
         map((c) => {
           if (c === undefined) {

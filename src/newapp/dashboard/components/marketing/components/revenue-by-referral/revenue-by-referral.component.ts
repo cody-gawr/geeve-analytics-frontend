@@ -53,7 +53,7 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
 
     get chartType$(){
         return combineLatest([
-          this.clinicFacade.currentClinic$,
+          this.clinicFacade.currentClinicId$,
           this.isTrend$
         ]).pipe(
             takeUntil(this.destroy$),
@@ -70,7 +70,7 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
 
     get chartOptions$(){
         return combineLatest([
-            this.clinicFacade.currentClinic$,
+            this.clinicFacade.currentClinicId$,
             this.isTrend$
         ]).pipe(
             takeUntil(this.destroy$),

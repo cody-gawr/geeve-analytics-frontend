@@ -4,6 +4,8 @@ import * as FinancePageActions from './finance-page.actions';
 import * as FinanceApiActions from './finance-api.actions';
 import * as MarketingPageActions from './marketing-page.actions';
 import * as MarketingApiActions from './marketing-api.actions';
+import * as FrontDeskPageActions from './front-desk-page.actions';
+import * as FrontDeskApiActions from './front-desk-api.actions';
 
 export { 
     DashboardApiActions,
@@ -11,5 +13,7 @@ export {
     FinancePageActions,
     FinanceApiActions ,
     MarketingPageActions,
-    MarketingApiActions
+    MarketingApiActions,
+    FrontDeskPageActions,
+    FrontDeskApiActions
 };
