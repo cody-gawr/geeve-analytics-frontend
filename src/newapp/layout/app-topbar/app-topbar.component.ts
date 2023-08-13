@@ -60,11 +60,11 @@ export class AppTopbarComponent implements OnInit {
       }),
       map( ({multiClinicEnabled, userType}) => {
         return (
-          (this.activatedUrl == '/dashboards/cliniciananalysis' && multiClinicEnabled.dash1Multi == 1) ||
-          (this.activatedUrl == '/dashboards/clinicianproceedures' && multiClinicEnabled.dash2Multi == 1) ||
-          (this.activatedUrl == '/dashboards/frontdesk' && multiClinicEnabled.dash3Multi == 1) ||
-          (this.activatedUrl == '/dashboards/marketing' && multiClinicEnabled.dash4Multi == 1) ||
-          (this.activatedUrl == '/dashboards/finances' && multiClinicEnabled.dash5Multi == 1)
+          (this.activatedUrl == '/newapp/dashboard/cliniciananalysis' && multiClinicEnabled.dash1Multi == 1) ||
+          (this.activatedUrl == '/newapp/dashboard/clinicianproceedures' && multiClinicEnabled.dash2Multi == 1) ||
+          (this.activatedUrl == '/newapp/dashboard/frontdesk' && multiClinicEnabled.dash3Multi == 1) ||
+          (this.activatedUrl == '/newapp/dashboard/marketing' && multiClinicEnabled.dash4Multi == 1) ||
+          (this.activatedUrl == '/newapp/dashboard/finances' && multiClinicEnabled.dash5Multi == 1)
         ) && ![4, 7].includes(userType);
       })
     );
@@ -104,11 +104,10 @@ export class AppTopbarComponent implements OnInit {
     ).subscribe(c => {
       if(typeof c != 'string') {
         this.selectedClinic = c;
-        
+        if(c != null) this.dashboardFacade.loadClinicAccountingPlatform(c);
       }else{
         this.selectedClinic = 'all';
       }
-      if(c != null) this.dashboardFacade.loadClinicAccountingPlatform(c);
     });
 
     combineLatest([
