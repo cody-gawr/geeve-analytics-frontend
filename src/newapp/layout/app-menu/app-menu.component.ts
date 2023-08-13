@@ -136,7 +136,7 @@ const MENU_DATA: MenuNode[] = [
       // user_type==2 || permissions.contains(dashboard3) || user_type==7
       {
         title: 'Front Desk',
-        path: 'dashboards/frontdesk',
+        path: '/newapp/dashboard/frontdesk',
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
             permissions!.indexOf('dashboard3') >= 0 ||
@@ -158,7 +158,7 @@ const MENU_DATA: MenuNode[] = [
       //(user_type==2 || permissions.contains(dashboard4) || user_type==7) && userPlan!='lite'
       {
         title: 'Marketing',
-        path: 'dashboards/marketing',
+        path: '/newapp/dashboard/marketing',
         validatorFn: ({
           permissions,
           userType,
