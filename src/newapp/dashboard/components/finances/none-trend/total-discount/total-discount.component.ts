@@ -83,7 +83,7 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
                     (values, cId) => {
                         return {
                             clinicName: values[0].clinicName,
-                            discounts: values.map(v => parseFloat(<string>v.discounts??'0')) 
+                            discounts: values.map(v => _.round(<number>v.discounts)) 
                         }
                     }
                 ).value();
@@ -94,7 +94,7 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
                 })
             }else{
                 totalDiscountData.forEach((val, index) => {
-                    const discounts = Math.round(parseFloat(<string>val.discounts));
+                    const discounts = _.round(<number>val.discounts);
                     if(discounts > 0){
                         chartData.push(discounts);
                         chartLabels.push(val.providerName??'');
