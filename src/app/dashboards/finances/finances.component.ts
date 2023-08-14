@@ -944,10 +944,10 @@ export class FinancesComponent implements AfterViewInit {
         mode: 'x',
         callbacks: {
           label: function (tooltipItems) {
-            return `${tooltipItems.dataset.label}: ${tooltipItems.parsed.y}`
+            return `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`
           },
-          title: function(tooltipItems){
-            return `${tooltipItems[0].label}: ${_.sumBy(tooltipItems, t => t.parsed.y)}`
+          title: (tooltipItems) => {
+            return `${tooltipItems[0].label}: $${this.decimalPipe.transform(_.sumBy(tooltipItems, t => t.parsed.y))}`
           }
         }
       }
@@ -1119,10 +1119,11 @@ export class FinancesComponent implements AfterViewInit {
         // displayColors: false,
         callbacks: {
           label: function (tooltipItems) {
-            return `${tooltipItems.dataset.label}: ${tooltipItems.parsed.y}`
+            return `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`
           },
-          title: function(tooltipItems){
-            return `${tooltipItems[0].label}: ${_.sumBy(tooltipItems, t => t.parsed.y)}`
+          title: (tooltipItems) => {
+            const val = _.sumBy(tooltipItems, t => t.parsed.y);
+            return `${tooltipItems[0].label}: $${this.decimalPipe.transform(val)}`
           }
         }
       }
@@ -1387,8 +1388,7 @@ export class FinancesComponent implements AfterViewInit {
           label: (
             tooltipItems
           ) => {
-            const datasetIndex = tooltipItems.datasetIndex;
-            const label = tooltipItems.dataset[datasetIndex].label;
+            const label = tooltipItems.dataset.label;
             return `${label} : ${new Intl.NumberFormat('en-US', {
               style: 'currency',
               currency: 'USD',
