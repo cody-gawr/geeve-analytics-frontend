@@ -1,8 +1,8 @@
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { DATE_RANGE_DURATION } from '@/newapp/models/layout';
-import { Component, OnDestroy, OnInit, Input } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import moment from 'moment';
-import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { Subject, takeUntil, map } from 'rxjs';
 
 export const DateRangeMenus: {range: DATE_RANGE_DURATION, label: string}[] = [
     { range: 'm', label: 'This Month' }, 

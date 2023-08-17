@@ -68,7 +68,8 @@ export class AuthFacade {
   }
 
   public logout() {
-    this.clinicFacade.setCurrentClinicId(null);
+    this.clinicFacade.setCurrentSingleClinicId(null);
+    this.clinicFacade.setCurrentMultiClinicIDs([], false);
     this.store.dispatch(AuthPageActions.logout());
   }
 

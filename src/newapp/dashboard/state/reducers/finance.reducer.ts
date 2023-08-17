@@ -28,6 +28,7 @@ type FInanceEndpoints =
 
 export interface FinanceState {
   isLoadingData: Array<FInanceEndpoints>;
+  errors: Array<JeeveError>;
   // FnTotalProduction
   netProfitProductionVal: number;
   prodData: FnTotalProductionItem[];
@@ -43,7 +44,6 @@ export interface FinanceState {
   netProfitPercentageVal: number;
   netProfitPercentTrendData: FnNetProfitPercentTrendItem[];
 
-  errors: Array<JeeveError>;
   expensesData: FnExpensesDataItem[];
   expensesTrendData: FnExpensesDataItem[];
   expensesTrendDurations: string[];
@@ -76,6 +76,8 @@ export interface FinanceState {
 
 const initialState: FinanceState = {
   isLoadingData: [],
+  errors: [],
+
   netProfitProductionVal: 0,
   netProfitTrendData: [],
   prodData: [],
@@ -86,7 +88,7 @@ const initialState: FinanceState = {
   netProfitPercentageVal: 0,
   netProfitPercentTrendData: [],
   expenseProduction: 0,
-  errors: [],
+
   expensesData: [],
   expensesTrendData: [],
   expensesTrendDurations: [],

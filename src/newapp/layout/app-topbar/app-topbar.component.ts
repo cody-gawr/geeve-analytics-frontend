@@ -7,6 +7,7 @@ import { LayoutFacade } from '../facades/layout.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
+import { Clinic } from '@/newapp/models/clinic';
 
 @Component({
   selector: 'app-topbar',
@@ -43,7 +44,6 @@ export class AppTopbarComponent implements OnInit {
       this.authFacade.authUserData$, 
       this.authFacade.rolesIndividual$
     ]).pipe(
-      takeUntil(this.destroy$),
       map((data) => {
         const [authUserData, rolesIndividual] = data;
         const result = authUserData??this.authFacade.getAuthUserData();
@@ -59,13 +59,15 @@ export class AppTopbarComponent implements OnInit {
         }
       }),
       map( ({multiClinicEnabled, userType}) => {
-        return (
+        const value = (
           (this.activatedUrl == '/newapp/dashboard/cliniciananalysis' && multiClinicEnabled.dash1Multi == 1) ||
           (this.activatedUrl == '/newapp/dashboard/clinicianproceedures' && multiClinicEnabled.dash2Multi == 1) ||
           (this.activatedUrl == '/newapp/dashboard/frontdesk' && multiClinicEnabled.dash3Multi == 1) ||
           (this.activatedUrl == '/newapp/dashboard/marketing' && multiClinicEnabled.dash4Multi == 1) ||
           (this.activatedUrl == '/newapp/dashboard/finances' && multiClinicEnabled.dash5Multi == 1)
         ) && ![4, 7].includes(userType);
+        this.clinicFacade.setMultiClinicSelection(value);
+        return value;
       })
     );
   }
@@ -88,6 +90,7 @@ export class AppTopbarComponent implements OnInit {
     //     map((menu) => menu.key),
     //   )
     //   .subscribe((v) => {this.title = v});
+
     this.layoutFacade.activatedRouteTitle$.pipe(
       takeUntil(this.destroy$),
     ).subscribe( v => (this.title = v));
@@ -99,28 +102,33 @@ export class AppTopbarComponent implements OnInit {
       this.range.controls['end'].setValue(end);
     });
 
-    this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(c => {
-      if(typeof c != 'string') {
-        this.selectedClinic = c;
-        if(c != null) this.dashboardFacade.loadClinicAccountingPlatform(c);
-      }else{
-        this.selectedClinic = 'all';
-      }
-    });
-
     combineLatest([
-      this.clinicFacade.currentMultiClinicIDs$,
+      this.clinicFacade.currentClinics$,
+      this.enableAllClinics$,
+      this.clinicFacade.isMultiSelection$,
       this.clinicFacade.clinics$
     ]).pipe(
       takeUntil(this.destroy$)
-    ).subscribe(([currentClinicIDs, clinics]) => {
-        if(currentClinicIDs == undefined) return;
-        if(currentClinicIDs.length === clinics.length){
-          this.selectedMultiClinics = [...currentClinicIDs, 'all']
+    ).subscribe(([currentClinics, isEnableAll, isMulti, clinics]) => {
+        if(isMulti == null) return;
+        const currentClinicIDs = currentClinics.map(c => c.id);
+        if(isMulti) {
+          if(currentClinicIDs == undefined) return;
+          if(currentClinicIDs.length === clinics.length){
+            this.selectedMultiClinics = [...currentClinicIDs, 'all']
+          }else{
+            this.selectedMultiClinics = currentClinicIDs;
+          }
         }else{
-          this.selectedMultiClinics = currentClinicIDs;
+          if(currentClinicIDs.length === 1){
+            this.selectedClinic = currentClinicIDs[0];
+            this.dashboardFacade.loadClinicAccountingPlatform(currentClinicIDs[0]);
+          }else if(currentClinicIDs.length == clinics.length && isEnableAll) {
+            this.selectedClinic = 'all';
+          }else {
+            this.selectedClinic = null;
+          }
+          
         }
     });
   }
@@ -152,15 +160,7 @@ export class AppTopbarComponent implements OnInit {
   }
 
   onChangeCurrentClinic(event) {
-    if(event.value != 'all'){
-      this.clinicFacade.setCurrentClinicId(event.value);
-    }else{
-      this.clinics$.pipe(takeUntil(this.destroy$)).subscribe(
-        v => {
-          this.clinicFacade.setCurrentClinicId(v.map(c => c.id).join(','));
-        }
-      );
-    }
+    this.clinicFacade.setCurrentSingleClinicId(event.value);
   }
 
   onChangeMultiClinics(event) {

@@ -60,12 +60,15 @@ export class FinancesComponent implements OnInit, OnDestroy {
                         queryWhEnabled,
                         connectedWith: connectedWith
                     };
-        
-                    if( connectedWith && connectedWith != 'none'){
-                        this.financeFacade.loadFnNetProfit(params);
-                        this.financeFacade.loadFnNetProfitPercentage(params);
+
+                    if( (connectedWith && connectedWith != 'none') || typeof clinicId === 'string'){
+                        if(connectedWith && connectedWith != 'none'){
+                            this.financeFacade.loadFnNetProfit(params);
+                            this.financeFacade.loadFnNetProfitPercentage(params);
+                        }
+
                         this.financeFacade.loadFnExpenses(params);
-                    }   
+                    }
                     
                     this.financeFacade.loadFnTotalProduction(params);
                     this.financeFacade.loadFnProductionByClinician(params);

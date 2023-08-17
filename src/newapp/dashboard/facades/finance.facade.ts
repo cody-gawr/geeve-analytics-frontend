@@ -18,7 +18,15 @@ import { FinanceState, selectErrors, selectExpensesData,
   selectProdData, selectProdTrendData, 
   selectIsLoadingTotalProductionTrend, selectTrendProfitChartName, 
   selectCollectionTrendData, selectIsLoadingCollectionTrend, 
-  selectIsLoadingNetProfitTrend, selectNetProfitTrendData, selectIsLoadingNetProfitPercentTrend, selectNetProfitPercentTrendChartData, selectProdTrendChartData, selectCollectionTrendChartData, selectNetProfitTrendChartData, selectExpensesTrendChartData, selectIsLoadingFnExpensesTrend, selectExpensesTrendDurations, selectIsLoadingFnProdPerClinicTrend, selectProdByClinicianTrendChartData, selectIsLoadingFnTotalDiscountTrend, selectTotalDiscountTrendChartData, selectIsLoadingFnProdPerVisitTrend, selectProdPerVisitTrendChartData } from '../state/reducers/finance.reducer';
+  selectIsLoadingNetProfitTrend, selectNetProfitTrendData, 
+  selectIsLoadingNetProfitPercentTrend, selectNetProfitPercentTrendChartData, 
+  selectProdTrendChartData, selectCollectionTrendChartData, 
+  selectNetProfitTrendChartData, selectExpensesTrendChartData, 
+  selectIsLoadingFnExpensesTrend, selectExpensesTrendDurations, 
+  selectIsLoadingFnProdPerClinicTrend, selectProdByClinicianTrendChartData, 
+  selectIsLoadingFnTotalDiscountTrend, selectTotalDiscountTrendChartData, 
+  selectIsLoadingFnProdPerVisitTrend, selectProdPerVisitTrendChartData 
+} from '../state/reducers/finance.reducer';
 import { FnNetProfitParams } from '@/newapp/models/dashboard';
 import { FinancePageActions } from '../state/actions';
 
@@ -217,15 +225,13 @@ export class FinanceFacade {
     select(selectTotalDiscountTotal)
   );
 
-
-
   public readonly totalDiscountTrendTotal$ = this.store.pipe(
     select(selectTotalDiscountTrendTotal)
   );
 
   public readonly profitTrendChartName$ = this.store.pipe(
     select(selectTrendProfitChartName)
-  )
+  );
 
   public loadFnTotalProduction(params: FnNetProfitParams) {
     this.store.dispatch(

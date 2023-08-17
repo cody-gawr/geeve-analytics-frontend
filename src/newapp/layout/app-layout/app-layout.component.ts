@@ -1,11 +1,9 @@
 import { ClinicFacade } from '../../clinic/facades/clinic.facade';
 import { Clinic } from '../../models/clinic';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDrawerMode } from '@angular/material/sidenav';
-import { Observable, Subject, takeUntil, map, filter } from 'rxjs';
-import { AppLayoutService } from '../services/app-layout.service';
-import { NavigationEnd, Router } from '@angular/router';
+import { Subject, takeUntil, map, filter } from 'rxjs';import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 
 @Component({
   selector: 'app-layout',
@@ -22,11 +20,21 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private router: Router
+    private router: Router,
     // private appLayoutService: AppLayoutService,
-    // private clinicFacade: ClinicFacade,
+    private clinicFacade: ClinicFacade,
     // private ref: ChangeDetectorRef
   ) {
+
+    this.router.events
+    .pipe(
+      takeUntil(this.destroy$),
+      map((event: any) => event.routerEvent??event),
+      filter((event) => event instanceof NavigationStart)
+    )
+    .subscribe((event) => {
+      this.clinicFacade.setMultiClinicSelection(null);
+    });
 
     this.router.events
     .pipe(

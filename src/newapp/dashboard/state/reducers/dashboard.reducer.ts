@@ -7,7 +7,7 @@ import { JeeveError } from '@/newapp/models';
 export interface DashboardState {
   isLoadingData: Array<API_ENDPOINTS>;
   chartTips: {[key: number]: ChartTip} | null;
-  connectedWith: CONNECT_WITH_PLATFORM | null;
+  connectedWith: CONNECT_WITH_PLATFORM;
   errors: Array<JeeveError>;
 }
 

@@ -6,15 +6,18 @@ import { ClinicPageActions } from '../state/actions';
 import {
   ClinicState,
   selectClinics,
-  selectCurrentClinics,
-  selectCurrentClinicId,
-  selectCurrentMultiClinicIDs,
   selectError,
   selectSuccess,
+  selectCurrentMultiClinicIds,
+  selectCurrentSingleClinicId,
+  selectIsMultiSelection,
+  selectCurrentClinicId,
+  selectCurrentClinics,
   selectIsExactCurrentClinics,
   selectIsCoreCurrentClinics,
   selectIsD4wCurrentClinics
 } from '../state/reducers/clinic.reducer';
+import { combineLatest, map } from 'rxjs';
 
 @Injectable()
 export class ClinicFacade {
@@ -32,22 +35,23 @@ export class ClinicFacade {
     select(selectClinics)
   );
 
-  public readonly currentClinics$: Observable<Clinic[]> = this.store.pipe(
-    select(selectCurrentClinics)
+  public readonly currentMultiClinicIDs$ = this.store.pipe(
+    select(selectCurrentMultiClinicIds)
   );
 
-  public readonly currentClinicId$: Observable<string | number | null> = this.store.pipe(
+  public readonly currentClinicId$ = this.store.pipe(
     select(selectCurrentClinicId)
-  ); 
+  );
 
-  public readonly currentMultiClinicIDs$ = this.store.pipe(
-    select(selectCurrentMultiClinicIDs)
+  public readonly currentClinics$ = this.store.pipe(
+    select(selectCurrentClinics)
   );
 
   public readonly isExactCurrentClinics$ = this.store.pipe(
     select(selectIsExactCurrentClinics)
   );
 
+  
   public readonly isCoreCurrentClinics$ = this.store.pipe(
     select(selectIsCoreCurrentClinics)
   );
@@ -56,15 +60,50 @@ export class ClinicFacade {
     select(selectIsD4wCurrentClinics)
   );
 
+  public readonly currentSingleClinicId$ = this.store.pipe(
+    select(selectCurrentSingleClinicId)
+  );
+
+  public readonly currentMultiClinicIds$ = this.store.pipe(
+    select(selectCurrentMultiClinicIds)
+  );
+
+  public readonly isMultiSelection$ = this.store.pipe(
+    select(selectIsMultiSelection)
+  )
+
   public loadClinics() {
     this.store.dispatch(ClinicPageActions.loadClinics());
   }
 
-  public setCurrentClinicId(clinicId: string | number | null) {
-    this.store.dispatch(ClinicPageActions.setCurrentClinicId({ clinicId }));
+  public setCurrentSingleClinicId(clinicId: 'all' | number | null) {
+    this.store.dispatch(ClinicPageActions.setCurrentSingleClinicId({ clinicId }));
   }
 
   public setCurrentMultiClinicIDs(clinicIDs: Array<'all' | number>, isPrevAll: boolean) {
     this.store.dispatch(ClinicPageActions.setCurrentMultiClinicIDs({ clinicIDs, isPrevAll }));
+  }
+
+  public getCurrentClinics$(isMulti: boolean, isString = false) {
+    return combineLatest([
+      this.currentSingleClinicId$,
+      this.currentMultiClinicIds$,
+      this.clinics$
+    ]).pipe(
+      map(([singleId, multiIds, clinics]) => {
+        if(isMulti){
+          return clinics.filter((c) => multiIds.includes(c.id));
+        }else{
+          return singleId === 'all'?clinics:[clinics.find(c => c.id == <number>singleId)];
+        }
+      }),
+      map(v => {
+        return isString?v.join(','):v;
+      })
+    )
+  }
+
+  public setMultiClinicSelection(value: boolean) {
+    this.store.dispatch(ClinicPageActions.setMultiClinicSelection({ value }));
   }
 }

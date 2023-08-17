@@ -52,7 +52,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
             takeUntil(this.destroy$),
         ).subscribe(([clinicId, dateRange, connectedWith, route, trend, userId]) => {
             if(clinicId == null) return;
-
+            if(typeof clinicId !== 'string' && connectedWith == null) return;
             const startDate = dateRange.start;
             const endDate = dateRange.end;
             const duration = dateRange.duration; 

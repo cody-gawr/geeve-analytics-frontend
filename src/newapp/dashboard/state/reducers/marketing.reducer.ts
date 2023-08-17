@@ -739,11 +739,12 @@ export const selectNewPatientsByReferralChartData = createSelector(
         }else{
             const data = <MkNewPatientsByReferral>newPatientsByReferralData.data;
             const chartData = [], chartLabels = [];
-            data.patientsReftype.slice(0, 15).forEach(v => {
-                chartData.push(v.patientsVisits);
-                chartLabels.push(v.reftypeName);
-            });
-
+            if(data.patientsReftype){
+                data.patientsReftype.slice(0, 15).forEach(v => {
+                    chartData.push(v.patientsVisits);
+                    chartLabels.push(v.reftypeName);
+                });
+            }
             return {
                 newPatientsByReferralVal: Math.round(newPatientsByReferralData.total),
                 datasets: [{data: chartData}],
@@ -834,14 +835,16 @@ export const selectRevByReferralChartData = createSelector(
         }else{
             const data = <MkRevByReferral>revByReferralData.data;
             const chartData = [], chartLabels = [];
-            data.patientsReftype.slice(0, 15).forEach(
-                (v, idx)=>{
-                    if(v.invoiceAmount > 0){
-                        chartData.push(Math.round(v.invoiceAmount));
-                        chartLabels.push(v.reftypeName);
+            if(data.patientsReftype){
+                data.patientsReftype.slice(0, 15).forEach(
+                    (v, idx)=>{
+                        if(v.invoiceAmount > 0){
+                            chartData.push(Math.round(v.invoiceAmount));
+                            chartLabels.push(v.reftypeName);
+                        }
                     }
-                }
-            );
+                );
+            }
 
             return {
                 revByReferralVal: Math.round(revByReferralData.total??0),

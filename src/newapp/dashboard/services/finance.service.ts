@@ -195,7 +195,7 @@ export class FinanceService {
         connectedWith = ''
     } = params;
     return this.http.get<FnExpensesApiResponse>(
-      `${this.apiUrl}/Finance/fnExpenses${connectedWith == 'xero'? '':'Myob'}`,
+      `${this.apiUrl}/Finance/fnExpenses${connectedWith == 'myob'? 'Myob':''}`,
       {
         params: {
             clinic_id: clinicId, 
