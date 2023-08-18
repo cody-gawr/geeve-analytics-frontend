@@ -77,23 +77,22 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
             totalDiscountData
         ]) => {
             const chartData = [], chartLabels = [];
-
             if(typeof clinicId == 'string'){
-                const data = _.chain(totalDiscountData).groupBy('clinicId').map(
+                const data = _.chain(totalDiscountData).sortBy(t => t.discounts).groupBy('clinicId').map(
                     (values, cId) => {
                         return {
                             clinicName: values[0].clinicName,
-                            discounts: values.map(v => _.round(<number>v.discounts)) 
+                            discounts: _.sumBy(values, v => _.round(<number>v.discounts))
                         }
                     }
                 ).value();
-
+                data.sort((a,b) => b.discounts - a.discounts);
                 data.forEach(v => {
-                    chartData.push(_.sumBy(v.discounts, l => l));
+                    chartData.push(v.discounts);
                     chartLabels.push(v.clinicName);
                 })
             }else{
-                totalDiscountData.forEach((val, index) => {
+                totalDiscountData.sort((a, b) => parseFloat(<string>b.discounts) - parseFloat(<string>a.discounts)).forEach((val, index) => {
                     const discounts = _.round(<number>val.discounts);
                     if(discounts > 0){
                         chartData.push(discounts);

@@ -109,7 +109,7 @@ export class FinanceProdColComponent implements OnInit, OnDestroy {
                   hoverBackgroundColor: DoughnutChartColors[index]
                 })
               })
-              chartData = pChartData.map((item) => {
+              chartData = pChartData.sort((a, b) => a.data[0] - b.data[0]).map((item) => {
                 const collectionItem = collData.find(
                   (ele) => ele.clinicName == item.label
                 );
@@ -291,11 +291,11 @@ export class FinanceProdColComponent implements OnInit, OnDestroy {
       legend: this.stackLegendGenerator,
       tooltip: {
         mode: 'x',
+        itemSort: (a, b) =>  b.parsed.y - a.parsed.y,
         callbacks: {
           label: function (tooltipItems) {
             return `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`
           },
-          
           title: function(tooltipItems){
             return `${tooltipItems[0].label}: ${
               new Intl.NumberFormat('en-US', {

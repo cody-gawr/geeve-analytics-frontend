@@ -57,7 +57,14 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
             // missing sort
               const chartData = [], chartLabels = [];
               let chartTotal = 0;
-              prodByClinicData.forEach((val, index) => {
+              
+              _.sortBy(prodByClinicData, p => {
+                if(typeof clinicId === 'string'){
+                  return p.productionPerClinic;
+                }else{
+                  return p.prodPerClinician
+                }
+              }).forEach((val, index) => {
                 if(typeof clinicId == 'number'){
                   const prodPerClinician = Math.round(parseFloat(<string>val.prodPerClinician));
                   
