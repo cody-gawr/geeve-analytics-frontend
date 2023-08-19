@@ -92,7 +92,9 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
                     chartLabels.push(v.clinicName);
                 })
             }else{
-                totalDiscountData.sort((a, b) => parseFloat(<string>b.discounts) - parseFloat(<string>a.discounts)).forEach((val, index) => {
+                const data = [...totalDiscountData];
+                data.sort((a, b) => parseFloat(<string>b.discounts) - parseFloat(<string>a.discounts));
+                data.forEach((val, index) => {
                     const discounts = _.round(<number>val.discounts);
                     if(discounts > 0){
                         chartData.push(discounts);

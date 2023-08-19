@@ -16,14 +16,14 @@
             </span>
         </div>
 
-        <button (click)="openAccountsDialog()" mat-flat-button color="primary">Account</button>
+        <button  *ngIf="!(isMultipleClinic$ | async)" (click)="openAccountsDialog()" mat-flat-button color="primary">Account</button>
     </div>
     <div class="chart-content">
         <div class="canvas-wrapper chart-box">
             <div class="chart-gauge new-patients-acq-gauge">
                 <spin-loader class="empty-placeholder" 
-                        *ngIf="!(isConnectedWith$ | async) && (isFullMonthsDateRange$ | async); else chartElem1" [disableSpin]="true">
-                    {{(isFullMonthsDateRange$ | async)?'Please select a date range consisting of full months to view Accounting charts':
+                        *ngIf="(!(isConnectedWith$ | async) && !(isMultipleClinic$ | async)) || !(isFullMonthsDateRange$ | async) ; else chartElem1" [disableSpin]="true">
+                    {{!(isFullMonthsDateRange$ | async)?'Please select a date range consisting of full months to view Accounting charts':
                     'Please connect to Xero/MYOB to display this chart'}}
                 </spin-loader>
                 <ng-template #chartElem1>

@@ -19,9 +19,8 @@
             <div class="chart-gauge total-visits-gauge">
                 <spin-loader *ngIf="(isLoading$ | async); else mainElem"></spin-loader>
                 <ng-template #mainElem>
-                    <spin-loader class="empty-placeholder" *ngIf="!(isConnectedWith$ | async) && (isFullMonthsDateRange$ | async); else chartElem4" [disableSpin]="true">
-                        {{(isFullMonthsDateRange$ | async)?'Please select a date range consisting of full months to view Accounting charts':
-                        'Please connect to Xero/MYOB to display this chart'}}
+                    <spin-loader class="empty-placeholder" *ngIf="!(isConnectedWith$ | async) && !(isMultipleClinic$ | async); else chartElem4" [disableSpin]="true">
+                        Please connect to Xero/MYOB to display this chart
                     </spin-loader>
                     <ng-template #chartElem4>
                         <ngx-gauge
@@ -59,11 +58,11 @@
             </div>
             <div class="chart-foot"  *ngIf="!(isTrend$ | async)">
                 <div>
-                    <h3>${{ totalVisitsVal | number: '1.0-0' }}</h3>
+                    <h3>{{ totalVisitsVal | number: '1.0-0' }}</h3>
                     <span>{{ durationLabel$ | async }}</span>
                 </div>
                 <div>
-                    <h3>${{ totalVisitsPrev | number: '1.0-0' }}</h3>
+                    <h3>{{ totalVisitsPrev | number: '1.0-0' }}</h3>
                     <span>{{ durationTrendLabel$ | async }}</span>
                 </div>
             </div>

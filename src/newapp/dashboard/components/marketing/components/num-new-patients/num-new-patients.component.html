@@ -62,15 +62,15 @@
             </div>
             <div class="chart-foot"  *ngIf="!(isTrend$ | async)">
                 <div>
-                    <h3>${{ newNumPatientsVal | number: '1.0-0' }}</h3>
+                    <h3>{{ newNumPatientsVal | number: '1.0-0' }}</h3>
                     <span>{{ durationLabel$ | async }}</span>
                 </div>
                 <div>
-                    <h3>${{ newNumPatientsPrev | number: '1.0-0' }}</h3>
+                    <h3>{{ newNumPatientsPrev | number: '1.0-0' }}</h3>
                     <span>{{ durationTrendLabel$ | async }}</span>
                 </div>
-                <div *ngIf="!(isActivePatients$ | async)">
-                    <h3>${{ newNumPatientsGoal * (goalCount$ | async) | number: '1.0-0' }}</h3>
+                <div *ngIf="!(isActivePatients$ | async) && newNumPatientsGoal > 0">
+                    <h3>{{ newNumPatientsGoal * (goalCount$ | async) | number: '1.0-0' }}</h3>
                     <span>Goal</span>
                 </div>
             </div>

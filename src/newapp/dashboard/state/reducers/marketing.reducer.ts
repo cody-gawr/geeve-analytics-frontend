@@ -918,18 +918,56 @@ export const selectNumNewPatientsChartData = createSelector(
                 labels: []
             }
         }
+
+
         const chartData = [], chartLabels = [];
         newNumPatientsData.data.forEach(v => {
             chartData.push(Math.round(parseFloat(<string>v.newPatients)));
             chartLabels.push(v.clinicName);
         });
+        const chartDatasets = [
+            {
+              data: [],
+              label: '',
+              shadowOffsetX: 3,
+              backgroundColor: [
+                '#119682',
+                '#EEEEF8',
+                '#119682',
+                '#EEEEF8',
+                '#119682',
+                '#EEEEF8',
+                '#119682',
+                '#EEEEF8',
+                '#119682',
+                '#EEEEF8',
+                '#119682',
+                '#EEEEF8',
+                '#119682',
+              ],
+              shadowOffsetY: 2,
+              shadowBlur: 3,
+              // hoverBackgroundColor: 'rgba(0, 0, 0, 0.6)',
+              shadowColor: 'rgba(0, 0, 0, 0.3)',
+              pointBevelWidth: 2,
+              pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+              pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+              pointShadowOffsetX: 3,
+              pointShadowOffsetY: 3,
+              pointShadowBlur: 10,
+              pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+              backgroundOverlayMode: 'multiply'
+            }
+        ];
+        chartDatasets[0]['data'] = chartData;
         return {
             newNumPatientsVal: newNumPatientsData.total,
             newNumPatientsPrev: newNumPatientsData.totalTa,
             newNumPatientsGoal: newNumPatientsData.goals,
-            datasets: [{data: chartData}],
+            datasets: chartDatasets,
             labels: chartLabels
         }
+        
     }
 );
 

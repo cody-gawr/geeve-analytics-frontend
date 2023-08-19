@@ -26,6 +26,7 @@
                             [datasets]="datasets"
                             [labels]="labels"
                             [type]="chartType$ | async"
+                            [legend]="false"
                             [options]="chartOptions$ | async"
                             (chartClick)="chartClicked($event)"
                         ></canvas>

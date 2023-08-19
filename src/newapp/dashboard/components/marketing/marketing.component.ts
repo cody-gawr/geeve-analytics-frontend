@@ -70,7 +70,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
                         queryWhEnabled,
                         connectedWith: connectedWith
                     };
-
+                    this.marketingFacade.loadRevByReferral(params);
                     this.marketingFacade.loadMkNewPatientsByReferral(params);
                     this.marketingFacade.loadNewPatientsAcq({
                         ...params,
@@ -78,11 +78,16 @@ export class MarketingComponent implements OnInit, OnDestroy {
                     });
                     this.marketingFacade.loadNewNumPatients(params);
                     this.marketingFacade.loadActivePatients(params);
-                    this.marketingFacade.loadRevByReferral(params);
+                    
                     this.marketingFacade.loadTotalVisits(params);
                     break;
                 case 'current':
                 case 'historic':
+                    this.marketingFacade.loadRevByReferralTrend({
+                        clinicId,
+                        mode: trend==='current'?'c':'h',
+                        queryWhEnabled
+                    })
                     this.marketingFacade.loadMkNewPatientsByReferralTrend({
                         clinicId,
                         mode: trend==='current'?'c':'h',
@@ -104,11 +109,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
                         mode: trend==='current'?'c':'h',
                         queryWhEnabled
                     })
-                    this.marketingFacade.loadRevByReferralTrend({
-                        clinicId,
-                        mode: trend==='current'?'c':'h',
-                        queryWhEnabled
-                    })
+                    
                     this.marketingFacade.loadTotalVisitsTrend({
                         clinicId,
                         mode: trend==='current'?'c':'h',

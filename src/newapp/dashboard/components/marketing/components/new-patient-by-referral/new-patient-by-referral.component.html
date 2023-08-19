@@ -21,20 +21,20 @@
                     <ng-template #chartElem1>
                         <canvas
                             #mkNewPatientsByReferralCanvas
-                            *ngIf="!(isLoading$ | async)"
                             baseChart
                             [datasets]="datasets"
                             [labels]="labels"
                             [type]="chartType$ | async"
+                            [legend]="false"
                             [options]="chartOptions$ | async"
                             (chartClick)="chartClicked($event)"
                         ></canvas>
                     </ng-template>
                 </ng-template>
             </div>
-            <div class="chart-foot" *ngIf="!(isTrend$ | async) && (isMultipleClinic$ | async) && (isActivePatients$ | async)">
+            <div class="chart-foot" *ngIf="!(isTrend$ | async) && (isMultipleClinic$ | async)">
                 <div class="w-100">
-                    <h3>${{ newPatientsByReferralVal | number: '1.0-0' }}</h3>
+                    <h3>{{ newPatientsByReferralVal | number: '1.0-0' }}</h3>
                     <span>Total</span>
                 </div>
             </div>
