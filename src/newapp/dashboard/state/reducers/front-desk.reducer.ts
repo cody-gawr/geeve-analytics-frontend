@@ -10,9 +10,8 @@ import {
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { FrontDeskApiActions, FrontDeskPageActions } from "../actions";
 import _ from "lodash";
-import { resolveObjectKey } from "chart.js/dist/helpers/helpers.core";
 import * as moment from "moment";
-import { selectCurrentClinicId } from "@/newapp/clinic/state/reducers/clinic.reducer";
+import { selectCurrentClinicId, selectCurrentClinics, selectCurrentSingleClinicId } from "@/newapp/clinic/state/reducers/clinic.reducer";
 import { DoughnutChartColors } from "@/newapp/shared/constants";
 import { selectTrend } from "@/newapp/layout/state/reducers/layout.reducer";
 
@@ -627,7 +626,8 @@ export const selectIsLoadingFdUtaRatioTrendData = createSelector(
 
 export const selectFdUtilRateChartData = createSelector(
     selectFdUtilisationRateData,
-    (resBody) => {
+    selectCurrentClinics,
+    (resBody, clinics) => {
         if(resBody == null) {
             return {
                 fdUtiData: [],
@@ -690,6 +690,33 @@ export const selectFdUtilRateChartData = createSelector(
         ];
 
         chartDatasets[0]['data'] = chartData;
+        if(clinics.length > 1){
+            let dynamicColors = [], legendBackgroundColor = [
+                '#6edbbb',
+                '#b0fffa',
+                '#abb3ff',
+                '#ffb4b5',
+                '#fffcac',
+                '#FFE4E4',
+                '#FFD578',
+                '#54D2FF',
+                '#E58DD7',
+                '#A9AABC',
+                '#F2ECFF',
+                '#5689C9',
+                '#F9F871'
+            ];;
+            
+            resBody.data.forEach((res) => {
+                clinics.forEach((item, index) => {
+                    if (res.clinicId == item.id) {
+                        dynamicColors.push(legendBackgroundColor[index]);
+                    }
+                });
+            });
+
+            chartDatasets[0]['backgroundColor'] = dynamicColors;
+        }
 
         return {
             fdUtiData,
