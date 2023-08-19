@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { JeeveError } from '@/newapp/models';
-import { FrontDeskState, selectErrors, selectFdFtaRatioChartData, selectFdFtaRatioTrendChartData, selectFdNumTicksChartData, selectFdNumTicksTrendChartData, selectFdReappointRateChartData, selectFdRecallRateChartData, selectFdRecallRateTrendChartData, selectFdUtaRatioChartData, selectFdUtaRatioTrendChartData, selectFdUtilRateByDayChartData, selectFdUtilRateChartData, selectFdUtilRateTrendChartData, selectIsByDayData, selectIsLoadingFdFtaRatioData, selectIsLoadingFdFtaRatioTrendData, selectIsLoadingFdNumTicksData, selectIsLoadingFdNumTicksTrendData, selectIsLoadingFdReappointRateData, selectIsLoadingFdReappointRateTrendData, selectIsLoadingFdRecallRateData, selectIsLoadingFdRecallRateTrendData, selectIsLoadingFdUtaRatioData, selectIsLoadingFdUtaRatioTrendData, selectIsLoadingFdUtilisationRateData, selectIsLoadingFdUtilisationRateTrendData } from '../state/reducers/front-desk.reducer';
+import { FrontDeskState, selectErrors, selectFdFtaRatioChartData, selectFdFtaRatioTrendChartData, selectFdNumTicksChartData, selectFdNumTicksTrendChartData, selectFdReappointRateChartData, selectFdReappointRateTrendChartData, selectFdRecallRateChartData, selectFdRecallRateTrendChartData, selectFdUtaRatioChartData, selectFdUtaRatioTrendChartData, selectFdUtilRateByDayChartData, selectFdUtilRateChartData, selectFdUtilRateTrendChartData, selectIsByDayData, selectIsLoadingFdFtaRatioData, selectIsLoadingFdFtaRatioTrendData, selectIsLoadingFdNumTicksData, selectIsLoadingFdNumTicksTrendData, selectIsLoadingFdReappointRateData, selectIsLoadingFdReappointRateTrendData, selectIsLoadingFdRecallRateData, selectIsLoadingFdRecallRateTrendData, selectIsLoadingFdUtaRatioData, selectIsLoadingFdUtaRatioTrendData, selectIsLoadingFdUtilisationRateData, selectIsLoadingFdUtilisationRateTrendData } from '../state/reducers/front-desk.reducer';
 import { FrontDeskPageActions } from '../state/actions';
 
 @Injectable()
@@ -70,7 +70,7 @@ export class FrontDeskFacade {
     );
 
     public readonly fdReappointRateTrendChartData$ = this.store.pipe(
-        select(selectFdRecallRateTrendChartData)
+        select(selectFdReappointRateTrendChartData)
     );
 
     public readonly fdNumTicksChartData$ = this.store.pipe(
