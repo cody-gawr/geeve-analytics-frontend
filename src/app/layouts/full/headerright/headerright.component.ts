@@ -266,21 +266,23 @@ export class AppHeaderrightComponent
   public allChecked: boolean = false;
 
   public get isMultiClinicsVisible(): boolean {
+    if(this.userId == 1){
+      const dash1_multi = parseInt(this._cookieService.get('dash1_multi')??'0');
+      const dash2_multi = parseInt(this._cookieService.get('dash2_multi')??'0');
+      const dash3_multi = parseInt(this._cookieService.get('dash3_multi')??'0');
+      const dash4_multi = parseInt(this._cookieService.get('dash4_multi')??'0');
+      const dash5_multi = parseInt(this._cookieService.get('dash5_multi')??'0');
+      return (
+            (this.route == '/dashboards/cliniciananalysis' && dash1_multi == 1) ||
+            (this.route == '/dashboards/clinicianproceedures' && dash2_multi == 1) ||
+            (this.route == '/dashboards/frontdesk' && dash3_multi == 1) ||
+            (this.route == '/dashboards/marketing' && dash4_multi == 1) ||
+            (this.route == '/dashboards/finances' && dash5_multi == 1)
+          )
+          &&
+          !['4', '7'].includes(this.user_type);
+    }
     return false;
-    // const dash1_multi = parseInt(this._cookieService.get('dash1_multi')??'0');
-    // const dash2_multi = parseInt(this._cookieService.get('dash2_multi')??'0');
-    // const dash3_multi = parseInt(this._cookieService.get('dash3_multi')??'0');
-    // const dash4_multi = parseInt(this._cookieService.get('dash4_multi')??'0');
-    // const dash5_multi = parseInt(this._cookieService.get('dash5_multi')??'0');
-    // return (
-    //       (this.route == '/dashboards/cliniciananalysis' && dash1_multi == 1) ||
-    //       (this.route == '/dashboards/clinicianproceedures' && dash2_multi == 1) ||
-    //       (this.route == '/dashboards/frontdesk' && dash3_multi == 1) ||
-    //       (this.route == '/dashboards/marketing' && dash4_multi == 1) ||
-    //       (this.route == '/dashboards/finances' && dash5_multi == 1)
-    //     )
-    //     &&
-    //     !['4', '7'].includes(this.user_type);
   }
 
   public get isAllOptionVisible(): boolean {
