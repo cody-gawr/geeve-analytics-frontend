@@ -878,11 +878,7 @@ export class FinancesComponent implements AfterViewInit {
         // displayColors: false,
         callbacks: {
           label: function (tooltipItems) {
-            if(tooltipItems.parsed.y > 0){
-              return `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`;
-            }else{
-              return ''
-            }
+            return `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`;
           },
           title: (tooltipItems) => {
             return `${tooltipItems[0].label}: $${this.decimalPipe.transform(_.sumBy(tooltipItems, t => t.parsed.y))}`

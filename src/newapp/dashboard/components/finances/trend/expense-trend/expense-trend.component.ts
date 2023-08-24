@@ -167,11 +167,7 @@ export class FinanceExpenseTrendComponent implements OnInit, OnDestroy {
             mode: 'x',
             callbacks: {
               label: function (tooltipItems) {
-                if(tooltipItems.parsed.y > 0){
                   return `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`;
-                }else{
-                  return ''
-                }
               },
               title: (tooltipItems) => {
                 return `${tooltipItems[0].label}: $${this.decimalPipe.transform(_.sumBy(tooltipItems, t => t.parsed.y))}`
