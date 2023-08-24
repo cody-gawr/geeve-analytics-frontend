@@ -2282,7 +2282,7 @@ export class FinancesComponent implements AfterViewInit {
                     data: _.chain(items)
                       .orderBy('clinic_id', 'asc')
                       .value()
-                      .map((item) => _.round((item.expense / production) * 100)),
+                      .map((item) => _.round((item.expense / production) * 100 * 10)/10),
                     label: accountName,
                     backgroundColor: this.doughnutChartColors[index],
                     hoverBackgroundColor: this.doughnutChartColors[index]

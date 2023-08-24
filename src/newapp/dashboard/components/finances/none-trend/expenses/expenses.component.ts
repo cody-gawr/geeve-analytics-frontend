@@ -101,7 +101,7 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
                         this.datasets.push({
                             data: _.chain(v.items).orderBy('clinicId', 'asc')
                             .value()
-                            .map(item => _.round((item.expense / production) * 100)),
+                            .map(item => _.round((item.expense / production) * 100 * 10)/10),
                             label: v.accountName,
                             backgroundColor: bgColor,
                             hoverBackgroundColor: bgColor
