@@ -1188,7 +1188,6 @@ export class FinancesComponent implements AfterViewInit {
         }
       }
     }
-
   };
 
   public labelBarOptionsTC: ChartOptions = {
@@ -2297,12 +2296,12 @@ export class FinancesComponent implements AfterViewInit {
                 res.body.data.forEach((item: any) => {
                   this.single.push({
                     name: `${item.account_name}--${item.expense}`,
-                    value: _.round((item.expense / res.body.production) * 100)
+                    value: _.round((item.expense / res.body.production) * 100 * 10)/10
                   });
   
                   this.pieChartDatares.push(Math.round(item.expense));
                   this.pieChartDataPercentres.push(
-                    _.round((item.expense / res.body.production) * 100)
+                    _.round((item.expense / res.body.production) * 100 * 10) / 10
                   );
                   this.pieChartLabelsres.push(item.account_name);
                   this.pieChartTotal += item.expense;

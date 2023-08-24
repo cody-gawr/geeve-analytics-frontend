@@ -119,7 +119,7 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
                     expenses.forEach((item, index) => {
                         const chartItem = {
                             name: `${item.accountName}--${item.expense}`,
-                            value: _.round((item.expense/production) * 100)
+                            value: _.round((item.expense/production) * 100 * 10)/10
                         };
         
                         if(index < 15){
