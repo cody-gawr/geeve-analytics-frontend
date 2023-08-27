@@ -17,7 +17,7 @@
     <div class="chart-content">
         <div class="canvas-wrapper chart-box">
             <div class="active-toggle" *ngIf="!(isTrend$ | async)">
-                <button *ngIf="isByDayData$ | async; else elem1" (click)="disableIsByDayData()" mat-stroked-button color="primary">By Appt Book</button>
+                <button *ngIf="isByDayData$ | async; else elem1" (click)="disableIsByDayData()" mat-stroked-button>By Appt Book</button>
                 <ng-template #elem1>
                     <button mat-flat-button (click)="disableIsByDayData()" color="primary">By ApptBook</button>
                 </ng-template>

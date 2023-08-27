@@ -52,6 +52,14 @@
             </mat-select>
           </ng-template>
         </div>
+        <div *ngIf="isEnableDentistDropdown$ | async" class="clinic-selector-field">
+          <mat-select (selectionChange)="onChangeCurrentDentist($event)" [value] = "selectedDentist">
+              <mat-option value="all">All Dentists</mat-option>
+              <mat-option *ngFor="let dentist of (dentists$ | async)" [value]="dentist.providerId">
+                {{ dentist.jeeveName??dentist.name }}
+              </mat-option>
+          </mat-select>
+        </div>
       </div>
     </div>
   </div>

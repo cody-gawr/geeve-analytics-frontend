@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { DentistState, selectDentists, selectDentistsError, selectDentistsLoading } from '../state/reducers/dentist.reducer';
+import { DentistState, selectCurrentDentistId, selectDentists, 
+  selectDentistsError, selectDentistsLoading } from '../state/reducers/dentist.reducer';
 import { Dentist } from '@/newapp/models/dentist';
 import { JeeveError } from '@/newapp/models';
 import { DentistPageActions } from '../state/actions';
-
 @Injectable()
 export class DentistFacade {
   constructor(
@@ -15,6 +15,10 @@ export class DentistFacade {
   public readonly dentists$: Observable<Dentist[] | null > = this.store.pipe(
     select(selectDentists)
   );
+
+  public readonly currentDentistId$ = this.store.pipe(
+    select(selectCurrentDentistId)
+  )
 
   public readonly isDentistsLoading$: Observable<boolean> = this.store.pipe(
     select(selectDentistsLoading)

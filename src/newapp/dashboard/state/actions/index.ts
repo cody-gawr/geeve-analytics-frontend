@@ -6,6 +6,8 @@ import * as MarketingPageActions from './marketing-page.actions';
 import * as MarketingApiActions from './marketing-api.actions';
 import * as FrontDeskPageActions from './front-desk-page.actions';
 import * as FrontDeskApiActions from './front-desk-api.actions';
+import * as ClinicianProcedurePageActions from './clinician-procedure-page.actions';
+import * as ClinicianProcedureApiActions from './clinician-procedure-api.actions';
 
 export { 
     DashboardApiActions,
@@ -15,5 +17,7 @@ export {
     MarketingPageActions,
     MarketingApiActions,
     FrontDeskPageActions,
-    FrontDeskApiActions
+    FrontDeskApiActions,
+    ClinicianProcedurePageActions,
+    ClinicianProcedureApiActions
 };

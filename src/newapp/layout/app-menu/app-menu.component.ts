@@ -1,22 +1,23 @@
-import { FlatTreeControl } from '@angular/cdk/tree';
-import { Observable, Subject } from 'rxjs';
-import { filter, map, takeUntil } from 'rxjs/operators';
+import { FlatTreeControl } from "@angular/cdk/tree";
+import { Observable, Subject } from "rxjs";
+import { filter, map, takeUntil } from "rxjs/operators";
 import {
   AfterViewInit,
   Component,
   OnDestroy,
   OnInit,
-  ViewChild
-} from '@angular/core';
+  ViewChild,
+} from "@angular/core";
 import {
   MatTreeFlatDataSource,
-  MatTreeFlattener
-} from '@angular/material/tree';
-import { NavigationEnd, Router } from '@angular/router';
-import { AuthFacade } from '../../auth/facades/auth.facade';
-import { environment } from '@/environments/environment';
-import { ClinicFacade } from '../../clinic/facades/clinic.facade';
-import { LayoutFacade } from '../facades/layout.facade';
+  MatTreeFlattener,
+} from "@angular/material/tree";
+import { NavigationEnd, Router } from "@angular/router";
+import { AuthFacade } from "../../auth/facades/auth.facade";
+import { environment } from "@/environments/environment";
+import { ClinicFacade } from "../../clinic/facades/clinic.facade";
+import { LayoutFacade } from "../facades/layout.facade";
+import { DentistFacade } from "@/newapp/dentist/facades/dentists.facade";
 
 /**
  * Menu data with nested structure.
@@ -41,252 +42,252 @@ interface MenuValidatorParams {
 
 const MENU_DATA: MenuNode[] = [
   {
-    title: 'Health Screen',
-    path: 'dashboards/healthscreen',
-    icon: 'home-health',
+    title: "Health Screen",
+    path: "dashboards/healthscreen",
+    icon: "home-health",
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        (permissions!.indexOf('healthscreen') >= 0 ||
+        (permissions!.indexOf("healthscreen") >= 0 ||
           [2, 7].indexOf(userType!) >= 0) &&
         userType == 4
       );
-    }
+    },
   },
   {
-    title: 'Clinic Health',
-    path: 'dashboards/healthscreen',
-    icon: 'home-health',
+    title: "Clinic Health",
+    path: "dashboards/healthscreen",
+    icon: "home-health",
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        (permissions!.indexOf('healthscreen') >= 0 ||
+        (permissions!.indexOf("healthscreen") >= 0 ||
           [2, 7].indexOf(userType!) >= 0) &&
         userType !== 4
       );
-    }
+    },
   },
   // user_type==2 || permissions.contains(morninghuddle) || user_type==7
   {
-    title: 'Morning Huddle',
-    path: 'morning-huddle',
-    icon: 'coffee',
+    title: "Morning Huddle",
+    path: "morning-huddle",
+    icon: "coffee",
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        permissions!.indexOf('morninghuddle') >= 0 ||
+        permissions!.indexOf("morninghuddle") >= 0 ||
         [2, 7].indexOf(userType!) >= 0
       );
-    }
+    },
   },
   // user_type==2 || permissions.contains(followups) || user_type==7
   {
-    title: 'Follow Ups',
-    path: 'followups',
-    icon: 'phone-enabled',
+    title: "Follow Ups",
+    path: "followups",
+    icon: "phone-enabled",
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        permissions!.indexOf('followups') >= 0 || [2, 7].indexOf(userType!) >= 0
+        permissions!.indexOf("followups") >= 0 || [2, 7].indexOf(userType!) >= 0
       );
-    }
+    },
   },
   // (user_type==2 || permissions.indexOf(campaigns) || user_type==7) && apiUrl.includes('test')
   {
-    title: 'Campaigns',
-    path: 'campaigns',
-    icon: 'groups-3',
+    title: "Campaigns",
+    path: "campaigns",
+    icon: "groups-3",
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        (permissions!.indexOf('campaigns') >= 0 ||
+        (permissions!.indexOf("campaigns") >= 0 ||
           [2, 7].indexOf(userType!) >= 0) &&
-        environment.apiUrl.includes('test')
+        environment.apiUrl.includes("test")
       );
-    }
+    },
   },
   // user_type==2 || permissions.indexOf('dashboard') || user_type==7
   {
-    title: 'Dashboard',
-    path: '/newapp/dashboard',
-    icon: 'monitoring',
+    title: "Dashboard",
+    path: "/newapp/dashboard",
+    icon: "monitoring",
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        permissions!.indexOf('dashboard') >= 0 || [2, 7].indexOf(userType!) >= 0
+        permissions!.indexOf("dashboard") >= 0 || [2, 7].indexOf(userType!) >= 0
       );
     },
     children: [
       // user_type==2 || permissions.contains(dashboard1) || user_type==7
       {
-        title: 'Clinician Analysis',
-        path: 'dashboards/cliniciananalysis',
+        title: "Clinician Analysis",
+        path: "dashboards/cliniciananalysis",
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
-            permissions!.indexOf('dashboard1') >= 0 ||
+            permissions!.indexOf("dashboard1") >= 0 ||
             [2, 7].indexOf(userType!) >= 0
           );
-        }
+        },
       },
       // user_type==2 || permissions.contains(dashboard2) || user_type==7
       {
-        title: 'Clinician Procedures & Referrals',
-        path: 'dashboards/clinicianproceedures',
+        title: "Clinician Procedures & Referrals",
+        path: "/newapp/dashboard/clinicianproceedures",
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
-            permissions!.indexOf('dashboard2') >= 0 ||
+            permissions!.indexOf("dashboard2") >= 0 ||
             [2, 7].indexOf(userType!) >= 0
           );
-        }
+        },
       },
       // user_type==2 || permissions.contains(dashboard3) || user_type==7
       {
-        title: 'Front Desk',
-        path: '/newapp/dashboard/frontdesk',
+        title: "Front Desk",
+        path: "/newapp/dashboard/frontdesk",
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
-            permissions!.indexOf('dashboard3') >= 0 ||
+            permissions!.indexOf("dashboard3") >= 0 ||
             [2, 7].indexOf(userType!) >= 0
           );
-        }
+        },
       },
       // user_type==2 || permissions.contains(dashboard6) || user_type==7
       {
-        title: 'Follow Ups',
-        path: 'dashboards/followups',
+        title: "Follow Ups",
+        path: "dashboards/followups",
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
-            permissions!.indexOf('dashboard6') >= 0 ||
+            permissions!.indexOf("dashboard6") >= 0 ||
             [2, 7].indexOf(userType!) >= 0
           );
-        }
+        },
       },
       //(user_type==2 || permissions.contains(dashboard4) || user_type==7) && userPlan!='lite'
       {
-        title: 'Marketing',
-        path: '/newapp/dashboard/marketing',
+        title: "Marketing",
+        path: "/newapp/dashboard/marketing",
         validatorFn: ({
           permissions,
           userType,
-          userPlan
+          userPlan,
         }: MenuValidatorParams) => {
           return (
-            (permissions!.indexOf('dashboard4') >= 0 ||
+            (permissions!.indexOf("dashboard4") >= 0 ||
               [2, 7].indexOf(userType!) >= 0) &&
-            userPlan != 'lite'
+            userPlan != "lite"
           );
-        }
+        },
       },
       // user_type==2 || permissions.contains(dashboard5) || user_type==7
       {
-        title: 'Finances',
-        path: '/newapp/dashboard/finances',
+        title: "Finances",
+        path: "/newapp/dashboard/finances",
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
-            permissions!.indexOf('dashboard5') >= 0 ||
+            permissions!.indexOf("dashboard5") >= 0 ||
             [2, 7].indexOf(userType!) >= 0
           );
-        }
-      }
-    ]
+        },
+      },
+    ],
   },
   // (user_type == 2 || permisions.indexOf('staffmeeting') >= 0 || user_type == 7) && apiUrl.includes('test')
   {
-    title: 'Staff Meetings',
-    path: 'staff-meetings',
-    icon: 'badge',
+    title: "Staff Meetings",
+    path: "staff-meetings",
+    icon: "badge",
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        (permissions!.indexOf('staffmeeting') >= 0 ||
+        (permissions!.indexOf("staffmeeting") >= 0 ||
           [2, 7].indexOf(userType!) >= 0) &&
-        environment.apiUrl.includes('test')
+        environment.apiUrl.includes("test")
       );
-    }
+    },
   },
   // (hasPrimeClinics == 'yes' && user_type == 2) || (hasPrimeClinics == 'yes' && permisions.indexOf('kpireport') >= 0) || user_type == 7
   {
-    title: 'Prime KPI Report',
-    path: 'kpi-report',
-    icon: 'description',
+    title: "Prime KPI Report",
+    path: "kpi-report",
+    icon: "description",
     validatorFn: ({
       permissions,
       userType,
-      hasPrimeClinics
+      hasPrimeClinics,
     }: MenuValidatorParams) => {
       return (
-        (userType == 2 && hasPrimeClinics == 'yes') ||
-        (permissions!.indexOf('kpireport') >= 0 && hasPrimeClinics == 'yes') ||
+        (userType == 2 && hasPrimeClinics == "yes") ||
+        (permissions!.indexOf("kpireport") >= 0 && hasPrimeClinics == "yes") ||
         userType == 7
       );
-    }
+    },
   },
   // user_type == 2 || permisions.indexOf('lostopportunity') >= 0 || user_type == 7
   {
-    title: 'Lost Opportunity',
-    path: 'lost-opportunity',
-    icon: 'checkroom',
+    title: "Lost Opportunity",
+    path: "lost-opportunity",
+    icon: "checkroom",
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        permissions!.indexOf('lostopportunity') >= 0 ||
+        permissions!.indexOf("lostopportunity") >= 0 ||
         [2, 7].indexOf(userType!) >= 0
       );
-    }
+    },
   },
   // apiUrl.includes('test')
   {
-    title: 'Rewards', // icon=new
-    path: 'rewards',
-    icon: 'volunteer_activism',
+    title: "Rewards", // icon=new
+    path: "rewards",
+    icon: "volunteer_activism",
     validatorFn: () => {
-      return environment.apiUrl.includes('test');
-    }
+      return environment.apiUrl.includes("test");
+    },
   },
   {
-    title: 'Refer A Friend', // Get 50% off
-    path: '',
-    icon: 'group_add'
+    title: "Refer A Friend", // Get 50% off
+    path: "",
+    icon: "group_add",
   },
   // user_type != 7 && apiUrl.includes('test')
   {
-    title: 'Tasks',
-    path: 'tasks',
-    icon: 'splitscreen',
+    title: "Tasks",
+    path: "tasks",
+    icon: "splitscreen",
     validatorFn: ({ userType }: MenuValidatorParams) => {
-      return userType != 7 && environment.apiUrl.includes('test');
-    }
+      return userType != 7 && environment.apiUrl.includes("test");
+    },
   },
   // nav_open == 'setting'
   {
-    title: 'Settings',
-    path: '',
-    icon: 'settings',
+    title: "Settings",
+    path: "",
+    icon: "settings",
     children: [
       // user_type == 2 || permisions.indexOf('profilesettings') >= 0 || user_type == 7
       {
-        title: 'Clinics',
-        path: 'clinic',
+        title: "Clinics",
+        path: "clinic",
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
-            permissions!.indexOf('profilesettings') >= 0 ||
+            permissions!.indexOf("profilesettings") >= 0 ||
             [2, 7].indexOf(userType!) >= 0
           );
-        }
+        },
       },
       {
-        title: 'Users',
-        path: 'roles-users',
+        title: "Users",
+        path: "roles-users",
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
-            (permissions!.indexOf('profilesettings') >= 0 || userType == 2) &&
+            (permissions!.indexOf("profilesettings") >= 0 || userType == 2) &&
             userType != 7
           );
-        }
+        },
       },
       {
-        title: 'My Account',
-        path: 'profile-settings'
-      }
-    ]
+        title: "My Account",
+        path: "profile-settings",
+      },
+    ],
   },
   {
-    title: 'Help',
-    path: 'https://jeeve.crunch.help/jeeve-analytics',
-    icon: 'help'
-  }
+    title: "Help",
+    path: "https://jeeve.crunch.help/jeeve-analytics",
+    icon: "help",
+  },
 ];
 
 /** Flat node with expandable and level information */
@@ -299,9 +300,9 @@ interface MenuFlatNode {
 }
 
 @Component({
-  selector: 'app-menu',
-  templateUrl: './app-menu.component.html',
-  styleUrls: ['./app-menu.component.scss']
+  selector: "app-menu",
+  templateUrl: "./app-menu.component.html",
+  styleUrls: ["./app-menu.component.scss"],
 })
 export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   // @ViewChild('tree') tree: Tree;
@@ -312,7 +313,7 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       title: node.title,
       path: node.path,
       icon: node.icon,
-      level: level
+      level: level,
     };
   };
 
@@ -328,8 +329,8 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     (node) => node.children
   );
 
-  activedTitle: string = '';
-  activedUrl: string = '';
+  activedTitle: string = "";
+  activedUrl: string = "";
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 
@@ -346,11 +347,20 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     // private menuService: MenuService,
     private authFacade: AuthFacade,
     private clinicFacade: ClinicFacade,
-    private layoutFacade: LayoutFacade
+    private layoutFacade: LayoutFacade,
+    private dentistFacade: DentistFacade
   ) {
     this.dataSource.data = [];
     this.authFacade.getRolesIndividual();
     this.clinicFacade.loadClinics();
+
+    this.clinicFacade.currentClinics$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((clinics) => {
+        if (clinics.length == 1) {
+          this.dentistFacade.loadDentists(clinics[0].id, 0);
+        }
+      });
 
     this.rolesIndividual$.pipe(takeUntil(this.destroy$)).subscribe((result) => {
       if (result.data) {
@@ -358,7 +368,7 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
           permissions: result.data,
           userType: result.type,
           userPlan: result.plan,
-          hasPrimeClinics: result.hasPrimeClinics
+          hasPrimeClinics: result.hasPrimeClinics,
         };
         const menuData = MENU_DATA.filter((item) =>
           item.validatorFn ? item.validatorFn(params) : true
@@ -374,7 +384,7 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.events
       .pipe(
         takeUntil(this.destroy$),
-        map((event: any) => event.routerEvent??event),
+        map((event: any) => event.routerEvent ?? event),
         filter((event) => event instanceof NavigationEnd)
       )
       .subscribe((event) => {
@@ -414,7 +424,6 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   toggleMenuItem = (node: MenuFlatNode): void => {
     if (!node.expandable) this.router.navigateByUrl(`/${node.path}`);
-      
   };
 
   updateActivateState(title: string) {

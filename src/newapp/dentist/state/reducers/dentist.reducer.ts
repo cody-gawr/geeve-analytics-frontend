@@ -7,12 +7,13 @@ import { DentistApiActions, DentistPageActions } from '../actions';
 export interface DentistState {
   isLoadingData: Array<'dentGet'>;
   dentists: Dentist[] | null;
-
+  currentDentistId: 'all' | number;
   errors: Array<JeeveError>;
 }
 
 const initialState: DentistState = {
   isLoadingData: [],
+  currentDentistId: 'all',
   dentists: null,
   errors: []
 };
@@ -53,12 +54,25 @@ export const dentistFeature = createFeature({
           errors: [...errors, { ...error, api: 'dentGet' }]
         };
       }
+    ),
+    on(
+      DentistPageActions.setCurrentDentistId,
+      (state, {dentistId}): DentistState => {
+        return {
+          ...state,
+          currentDentistId: dentistId
+        }
+      }
     )
   )
 });
 
-export const { selectErrors, selectIsLoadingData, selectDentists } =
-  dentistFeature;
+export const { 
+  selectErrors, 
+  selectIsLoadingData, 
+  selectDentists,
+  selectCurrentDentistId
+} = dentistFeature;
 
 export const selectDentistsLoading = createSelector(
   selectIsLoadingData,

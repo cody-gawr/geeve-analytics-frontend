@@ -1,0 +1,11 @@
+<div
+  class="cp-page-container"
+>
+  <date-range-menu></date-range-menu>
+</div>
+<div class="cp-chart-content">
+    <cp-procedure-analysis-chart [toolTip]="cpPredictorAnalysisTip$ | async" class="cp-chart"></cp-procedure-analysis-chart>
+    <cp-rev-per-procedure-chart [toolTip]="getChartTip(13) | async" class="cp-chart"></cp-rev-per-procedure-chart>
+    <cp-predictor-ratio-chart [toolTip]="cpPredictorRatioTip$ | async"  class="cp-chart"></cp-predictor-ratio-chart>
+    <cp-clinician-referrals-chart [toolTip]="getChartTip(14) | async" class="cp-chart"></cp-clinician-referrals-chart>
+</div>

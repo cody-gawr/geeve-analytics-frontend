@@ -1,9 +1,9 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, of } from 'rxjs';
-import { DentistApiActions, DentistPageActions } from '../actions';
-import { DentistService } from '../../services/dentist.service';
+import { HttpErrorResponse } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { catchError, map, mergeMap, of } from "rxjs";
+import { DentistApiActions, DentistPageActions } from "../actions";
+import { DentistService } from "../../services/dentist.service";
 
 @Injectable()
 export class DentistEffects {
@@ -18,10 +18,16 @@ export class DentistEffects {
       mergeMap(({ clinicId, all }) => {
         return this.dentistService.getDentists(clinicId, all).pipe(
           map((data) => {
-            return DentistApiActions.loadDentistsSuccess({ dentists: data.data});
+            return DentistApiActions.loadDentistsSuccess({
+              dentists: data.data,
+            });
           }),
           catchError((error: HttpErrorResponse) =>
-            of(DentistApiActions.loadDentistsFailure({ error: error.error??error }))
+            of(
+              DentistApiActions.loadDentistsFailure({
+                error: error.error ?? error,
+              })
+            )
           )
         );
       })

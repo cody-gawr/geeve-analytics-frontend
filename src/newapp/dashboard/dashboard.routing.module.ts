@@ -4,6 +4,7 @@ import { FinancesComponent } from './components/finances/finances.component';
 import { AppLayoutComponent } from '../layout/app-layout/app-layout.component';
 import { MarketingComponent } from './components/marketing/marketing.component';
 import { FrontDeskComponent } from './components/front-desk/front-desk.component';
+import { ClinicianProcedureComponent } from './components/clinician-procedures/clinician-procedures.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
       {
         path: 'frontdesk',
         component: FrontDeskComponent
+      },
+      {
+        path: 'clinicianproceedures',
+        component: ClinicianProcedureComponent
       },
     ]
   }

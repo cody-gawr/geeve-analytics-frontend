@@ -4,7 +4,6 @@ import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
 import { Router } from "@angular/router";
-import { FnNetProfitParams } from "@/newapp/models/dashboard";
 import moment from "moment";
 import { AuthFacade } from "@/newapp/auth/facades/auth.facade";
 import { FrontDeskFacade } from "../../facades/front-desk.facade";
@@ -61,7 +60,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
 
             switch(trend){
                 case 'off':
-                    const params: FnNetProfitParams = {
+                    const params = {
                         clinicId: clinicId,
                         startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
                         endDate: endDate && moment(endDate).format('DD-MM-YYYY'),

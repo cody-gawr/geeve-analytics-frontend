@@ -1,0 +1,144 @@
+<div class="chart-container">
+    <mat-icon
+        [matTooltip]="toolTip"
+        matTooltipPosition="below"
+        color="primary"
+        class="help-tip"
+        fontIcon="help"
+    ></mat-icon>
+    <ng-template [ngIf]="showPaTable" [ngIfElse]="disabledIconBtn">
+      <mat-icon
+        matTooltipPosition="below"
+        color="primary"
+        class="table-info-icon"
+        (click)="toggleShowPaTable()"
+        fontIcon="table_rows"></mat-icon>
+    </ng-template>
+    <ng-template #disabledIconBtn>
+      <mat-icon
+        matTooltipPosition="below"
+        class="table-info-icon"
+        (click)="toggleShowPaTable()"
+        fontIcon="table_rows"></mat-icon>
+    </ng-template>
+
+    <div class="chart-title">
+        <span>
+            Procedure Analysis
+        </span>
+    </div>
+    <div class="chart-content">
+        <div class="canvas-wrapper chart-box">
+            <div class="active-toggle" *ngIf="!(isTrend$ | async) && !(enablePaTable$ | async)">
+                <button 
+                    mat-flat-button
+                    *ngIf="isGeneral$ | async; else elem1" 
+                    (click)="setVisibility('general')" 
+                    color="primary">General</button>
+                <ng-template #elem1>
+                    <button 
+                        mat-stroked-button 
+                        (click)="setVisibility('general')"
+                    >General</button>
+                </ng-template>
+
+                <button 
+                    (click)="setVisibility('specialist')" 
+                    *ngIf="isSpecialList$ | async; else elem2" 
+                    color="primary"
+                    mat-flat-button>Specialist</button>
+                <ng-template #elem2>
+                    <button (click)="setVisibility('specialist')" mat-stroked-button>Specialist</button>
+                </ng-template>
+            </div>
+            <div class="chart-gauge procedure-analysis-gauge" *ngIf="!(enablePaTable$ | async)">
+                <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+                <ng-template #chartElem>
+                    <canvas
+                        *ngIf="!(isLoading$ | async) && hasData"
+                        baseChart
+                        [datasets]="datasets"
+                        [labels]="labels"
+                        [legend]="legend$"
+                        type="bar"
+                        [options]="chartOptions$ | async"
+                        [colors]="bgColors"
+                    >
+                    </canvas>                    
+                    <spin-loader class="empty-placeholder" *ngIf="!hasData" [disableSpin]="true">
+                        {{ noDataAlertMessage$ | async }}
+                    </spin-loader>
+                </ng-template>
+            </div>
+            <div class="pa-table" 
+                *ngIf="enablePaTable$ | async">
+                <table *ngIf="(isGeneral$ | async); else specialTableElem">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Crowns/Onlays</th>
+                        <th>Splints</th>
+                        <th>RCT</th>
+                        <th>Perio</th>
+                        <th>Surg Ext</th>
+                        <th>Imp Crowns</th>
+                        <th>SS Crowns</th>
+                        <th>Comp Veneers</th>
+                        <th>Whitening</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let paInfo of paTableData">
+                        <td>{{ paInfo.name }}</td>
+                        <td>{{ paInfo.Crowns_Onlays }}</td>
+                        <td>{{ paInfo.Splints }}</td>
+                        <td>{{ paInfo.RCT }}</td>
+                        <td>{{ paInfo.Perio }}</td>
+                        <td>{{ paInfo.Surg_Ext }}</td>
+                        <td>{{ paInfo.Imp_Crowns }}</td>
+                        <td>{{ paInfo.SS_Crowns }}</td>
+                        <td>{{ paInfo.Comp_Veneers }}</td>
+                        <td>{{ paInfo.Whitening }}</td>
+                      </tr>
+                      <tr
+                        class="patable-total"
+                        [innerHTML]="generatePaGeneralTotal(paTableData)"
+                      ></tr>
+                    </tbody>
+                </table>
+                <ng-template #specialTableElem>
+                    <table>
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Implant Surg</th>
+                            <th>Braces</th>
+                            <th>Aligners</th>
+                            <th>MAS</th>
+                            <th>Perio Surg</th>
+                            <th>Endo Re-treat</th>
+                            <th>Veneers(indirect)</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let paInfo of paTableData">
+                            <td>{{ paInfo.name }}</td>
+                            <td>{{ paInfo.Implant_Surg }}</td>
+                            <td>{{ paInfo.Braces }}</td>
+                            <td>{{ paInfo.Aligners }}</td>
+                            <td>{{ paInfo.MAS }}</td>
+                            <td>{{ paInfo.Perio_Surg }}</td>
+                            <td>{{ paInfo.Endo_Re_treat }}</td>
+                            <td>{{ paInfo.Veneers_ind }}</td>
+                          </tr>
+                          <tr
+                            class="patable-total"
+                            [innerHTML]="generatePaSpecialTotal(paTableData)"
+                          ></tr>
+                        </tbody>
+                      </table>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

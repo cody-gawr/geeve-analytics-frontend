@@ -2,10 +2,8 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { DashboardFacade } from "../../facades/dashboard.facade";
 import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
-import { FinanceFacade } from "../../facades/finance.facade";
 import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
 import { Router } from "@angular/router";
-import { FnNetProfitParams } from "@/newapp/models/dashboard";
 import moment from "moment";
 import { MarketingFacade } from "../../facades/marketing.facade";
 import { AuthFacade } from "@/newapp/auth/facades/auth.facade";
@@ -62,7 +60,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
 
             switch(trend){
                 case 'off':
-                    const params: FnNetProfitParams = {
+                    const params = {
                         clinicId: clinicId,
                         startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
                         endDate: endDate && moment(endDate).format('DD-MM-YYYY'),
@@ -118,7 +116,6 @@ export class MarketingComponent implements OnInit, OnDestroy {
                     break;
             }
 
-            
             if(connectedWith == 'myob'){
                 this.marketingFacade.loadMkGetMyobAccounts(
                     { clinicId, userId }

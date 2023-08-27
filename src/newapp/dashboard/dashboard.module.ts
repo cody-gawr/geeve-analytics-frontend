@@ -51,6 +51,15 @@ import { FrontDeskReappointRateComponent } from './components/front-desk/compone
 import { FrontDeskNumberTicksComponent } from './components/front-desk/components/number-ticks/number-ticks.component';
 import { FrontDeskFtaRatioComponent } from './components/front-desk/components/fta-ratio/fta-ratio.component';
 import { FrontDeskUtaRatioComponent } from './components/front-desk/components/uta-ratio/uta-ratio.component';
+import { ClinicianProcedureComponent } from './components/clinician-procedures/clinician-procedures.component';
+import { CpAnalysisComponent } from './components/clinician-procedures/components/procedure-analysis/procedure-analysis.component';
+import { CpRevPerProcedureComponent } from './components/clinician-procedures/components/rev-per-procedure/rev-per-procedure.component';
+import { CpPredictorRatioComponent } from './components/clinician-procedures/components/predictor-ratio/predictor-ratio.component';
+import { CpClinicianReferralsComponent } from './components/clinician-procedures/components/clinician-referrals/clinician-referrals.component';
+import { ClinicianProcedureService } from './services/clinician-procedure.service';
+import { clinicianProcedureFeature } from './state/reducers/clinician-procedure.reducer';
+import { ClinicianProcedureEffects } from './state/effects/clinician-procedure.effects';
+import { ClinicianProcedureFacade } from './facades/clinician-procedures.facade';
 
 @NgModule({
   imports: [
@@ -61,11 +70,13 @@ import { FrontDeskUtaRatioComponent } from './components/front-desk/components/u
     StoreModule.forFeature(financeFeature),
     StoreModule.forFeature(marketingFeature),
     StoreModule.forFeature(frontDeskFeature),
+    StoreModule.forFeature(clinicianProcedureFeature),
     EffectsModule.forFeature([
       DashboardEffects, 
       FinanceEffects,
       MarketingEffects,
-      FrontDeskEffects
+      FrontDeskEffects,
+      ClinicianProcedureEffects
     ]),
     AppLayoutModule,
     NgxChartsModule,
@@ -103,7 +114,13 @@ import { FrontDeskUtaRatioComponent } from './components/front-desk/components/u
     FrontDeskReappointRateComponent,
     FrontDeskNumberTicksComponent,
     FrontDeskFtaRatioComponent,
-    FrontDeskUtaRatioComponent
+    FrontDeskUtaRatioComponent,
+
+    ClinicianProcedureComponent,
+    CpAnalysisComponent,
+    CpRevPerProcedureComponent,
+    CpPredictorRatioComponent,
+    CpClinicianReferralsComponent
   ],
   providers: [
     DashboardService, 
@@ -112,7 +129,9 @@ import { FrontDeskUtaRatioComponent } from './components/front-desk/components/u
     FinanceFacade,
     MarketingService,
     MarketingFacade,
-    FrontDeskFacade
+    FrontDeskFacade,
+    ClinicianProcedureService,
+    ClinicianProcedureFacade
   ]
 })
 export class DashboardModule {}

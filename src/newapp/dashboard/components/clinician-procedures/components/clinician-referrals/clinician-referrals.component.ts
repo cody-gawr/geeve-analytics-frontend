@@ -1,0 +1,305 @@
+import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
+import { ClinicianProcedureFacade } from "@/newapp/dashboard/facades/clinician-procedures.facade";
+import { DentistFacade } from "@/newapp/dentist/facades/dentists.facade";
+import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
+import { DateRangeMenus } from "@/newapp/shared/components/date-range-menu/date-range-menu.component";
+import { Component, OnInit, OnDestroy, Input } from "@angular/core";
+import { ChartOptions, LegendOptions, ChartDataset } from "chart.js";
+import { _DeepPartialObject } from "chart.js/dist/types/utils";
+import _ from "lodash";
+import { Subject, takeUntil, combineLatest, map } from "rxjs";
+import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
+
+@Component({
+  selector: "cp-clinician-referrals-chart",
+  templateUrl: "./clinician-referrals.component.html",
+  styleUrls: ["./clinician-referrals.component.scss"],
+})
+export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
+  @Input() toolTip = "";
+
+  destroy = new Subject<void>();
+  destroy$ = this.destroy.asObservable();
+
+  datasets: ChartDataset[] = [];
+  labels = [];
+  bgColors = [];
+
+  referralsVal = 0;
+  referralsPrev = 0;
+  referralsVal2 = 0;
+  referralsPrev2 = 0;
+  referralsVal3 = 0;
+  referralsPrev3 = 0;
+  maxValue = 0;
+
+  get durationLabel$() {
+    return this.layoutFacade.dateRange$.pipe(
+      takeUntil(this.destroy$),
+      map((val) => {
+        const menu = DateRangeMenus.find((m) => m.range == val.duration);
+        if (menu) return menu.label;
+        else return "Current";
+      })
+    );
+  }
+
+  get durationTrendLabel$() {
+    return this.durationLabel$.pipe(
+      takeUntil(this.destroy$),
+      map((l) => l.replace(/^Last/g, "Previous").replace(/^This/g, "Last"))
+    );
+  }
+
+  get isLoading$() {
+    return this.cpFacade.isLoadingCpReferrals$.pipe(
+      takeUntil(this.destroy$),
+      map((v) => v)
+    );
+  }
+
+  get isMultipleClinic$() {
+    return this.clinicFacade.currentClinicId$.pipe(
+      takeUntil(this.destroy$),
+      map((v) => typeof v == "string")
+    );
+  }
+
+  get isTrend$() {
+    return this.layoutFacade.trend$.pipe(
+      takeUntil(this.destroy$),
+      map((t) => t !== "off")
+    );
+  }
+
+  get legend$() {
+    return combineLatest([this.isTrend$]).pipe(
+      takeUntil(this.destroy$),
+      map(([isTrend]) => {
+        return isTrend ? false : true;
+      })
+    );
+  }
+
+  get hasData() {
+    return this.maxValue > 0;
+  }
+
+  get noDataAlertMessage$() {
+    return combineLatest([this.cpFacade.cpReferralsVisibility$]).pipe(
+      takeUntil(this.destroy$),
+      map(([visibility]) => {
+        switch (visibility) {
+          case "internal":
+            return "You have no internal referrals in the selected period";
+          case "external":
+            return "You have no external referrals in the selected period";
+          case "combined":
+            return "You have no referrals in the selected period";
+        }
+        return "";
+      })
+    );
+  }
+
+  get visibility$() {
+    return this.cpFacade.cpReferralsVisibility$.pipe(
+      takeUntil(this.destroy$),
+      map((v) => v)
+    );
+  }
+
+  public get isLargeOrSmall$() {
+    return this.breakpointObserver
+      .observe([Breakpoints.Large, Breakpoints.Small])
+      .pipe(
+        takeUntil(this.destroy$),
+        map((result) => result.matches)
+      );
+  }
+
+  constructor(
+    private clinicFacade: ClinicFacade,
+    private layoutFacade: LayoutFacade,
+    // private dentistFacade: DentistFacade,
+    private cpFacade: ClinicianProcedureFacade,
+    private breakpointObserver: BreakpointObserver
+  ) {
+    combineLatest([
+      // this.isTrend$,
+      // this.dentistFacade.currentDentistId$,
+      this.cpFacade.cpReferralsChartData$,
+      // this.isMultipleClinic$
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        ([
+          //isTrend,
+          //dentistId,
+          chartData,
+          // isMultiClinics
+        ]) => {
+          this.datasets = chartData.datasets;
+          this.labels = chartData.labels;
+          this.referralsVal = chartData.referralsVal;
+          this.referralsPrev = chartData.referralsPrev;
+          this.referralsVal2 = chartData.referralsVal2;
+          this.referralsPrev2 = chartData.referralsPrev2;
+          this.referralsVal3 = chartData.referralsVal3;
+          this.referralsPrev3 = chartData.referralsPrev3;
+          this.maxValue = chartData.maxVal;
+        }
+      );
+  }
+
+  ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this.destroy.next();
+  }
+
+  get chartOptions$() {
+    return combineLatest([
+      this.isTrend$,
+      this.clinicFacade.currentClinics$,
+    ]).pipe(
+      takeUntil(this.destroy$),
+      map(([isTrend, clinics]) => {
+        if (isTrend) {
+          return this.stackedChartOptions;
+        } else {
+          return this.pieChartOptions;
+        }
+      })
+    );
+  }
+
+  setVisibility(val: "combined" | "internal" | "external") {
+    this.cpFacade.setCpReferralsVisibility(val);
+  }
+
+  get chartType$() {
+    return combineLatest([
+      //this.isMultipleClinic$,
+      this.isTrend$,
+    ]).pipe(
+      map(([isTrend]) => {
+        return isTrend ? "bar" : "doughnut";
+      })
+    );
+  }
+
+  private legendLabelOptions: _DeepPartialObject<LegendOptions<any>> = {
+    labels: {
+      usePointStyle: true,
+      padding: 20,
+    },
+    onClick: function (e) {
+      e.native.stopPropagation();
+    },
+  };
+
+  public stackedChartOptions: ChartOptions = {
+    hover: {
+      mode: null,
+    },
+    elements: {
+      point: {
+        radius: 5,
+        hoverRadius: 7,
+        pointStyle: "rectRounded",
+        hoverBorderWidth: 7,
+      },
+    },
+    // scaleShowVerticalLines: false,
+    responsive: true,
+    maintainAspectRatio: false,
+    // barThickness: 10,
+    animation: {
+      duration: 500,
+      easing: "easeOutSine",
+    },
+    scales: {
+      x: {
+        stacked: true,
+        ticks: {
+          autoSkip: false,
+        },
+      },
+      y: {
+        stacked: true,
+        ticks: {
+          callback: function (label: number, index, labels) {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              return label;
+            }
+            return "";
+          },
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: "top",
+        ...this.legendLabelOptions,
+      },
+      tooltip: {
+        mode: "x",
+        displayColors(ctx, options) {
+          return !!ctx.tooltip;
+        },
+        callbacks: {
+          label: function (tooltipItems) {
+            if (
+              parseInt(tooltipItems.formattedValue) > 0 &&
+              tooltipItems.dataset.label != ""
+            ) {
+              if (tooltipItems.dataset.label.indexOf("DentistMode-") >= 0) {
+                return tooltipItems.label + ": " + tooltipItems.formattedValue;
+              } else {
+                return (
+                  tooltipItems.dataset.label +
+                  ": " +
+                  tooltipItems.formattedValue
+                );
+              }
+            }
+            return "";
+          },
+          title: function (tooltip) {
+            if (tooltip[0].dataset.label.indexOf("DentistMode-") >= 0) {
+              var dentist = tooltip[0].dataset.label.split("Mode-");
+              return dentist[1];
+            } else {
+              return tooltip[0].label;
+            }
+          },
+        },
+      },
+    },
+  };
+
+  public pieChartOptions: ChartOptions<"pie"> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: function (tooltipItem) {
+            return `${tooltipItem.label}: ${tooltipItem.formattedValue}`;
+          },
+          title: function () {
+            return "";
+          },
+        },
+      },
+      legend: {
+        display: true,
+        position: "right",
+        ...this.legendLabelOptions,
+      },
+    },
+  };
+}
