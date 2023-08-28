@@ -217,6 +217,10 @@ export class AppTopbarComponent implements OnInit {
     this.clinicFacade.setCurrentSingleClinicId(event.value);
   }
 
+  onChangeCurrentDentist(event) {
+    this.dentistFacade.setCurrentDentistId(event.value);
+  }
+
   onChangeMultiClinics(event) {
     const isPrevAll = this.selectedMultiClinics.includes("all");
     this.clinicFacade.setCurrentMultiClinicIDs(event.value, isPrevAll);
