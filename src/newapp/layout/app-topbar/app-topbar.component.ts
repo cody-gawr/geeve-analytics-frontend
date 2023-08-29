@@ -134,6 +134,17 @@ export class AppTopbarComponent implements OnInit {
     //   )
     //   .subscribe((v) => {this.title = v});
 
+    combineLatest([
+      this.isEnableDentistDropdown$,
+      this.clinicFacade.currentClinics$,
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([isEnable, clinics]) => {
+        if (isEnable && clinics.length > 0) {
+          this.dentistFacade.loadDentists(clinics[0].id, 0);
+        }
+      });
+
     this.layoutFacade.activatedRouteTitle$
       .pipe(takeUntil(this.destroy$))
       .subscribe((v) => (this.title = v));

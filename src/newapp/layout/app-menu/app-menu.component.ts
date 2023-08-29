@@ -1,13 +1,7 @@
 import { FlatTreeControl } from "@angular/cdk/tree";
 import { Observable, Subject } from "rxjs";
 import { filter, map, takeUntil } from "rxjs/operators";
-import {
-  AfterViewInit,
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from "@angular/core";
+import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
 import {
   MatTreeFlatDataSource,
   MatTreeFlattener,
@@ -347,20 +341,11 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     // private menuService: MenuService,
     private authFacade: AuthFacade,
     private clinicFacade: ClinicFacade,
-    private layoutFacade: LayoutFacade,
-    private dentistFacade: DentistFacade
+    private layoutFacade: LayoutFacade
   ) {
     this.dataSource.data = [];
     this.authFacade.getRolesIndividual();
     this.clinicFacade.loadClinics();
-
-    this.clinicFacade.currentClinics$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((clinics) => {
-        if (clinics.length == 1) {
-          this.dentistFacade.loadDentists(clinics[0].id, 0);
-        }
-      });
 
     this.rolesIndividual$.pipe(takeUntil(this.destroy$)).subscribe((result) => {
       if (result.data) {
