@@ -1,15 +1,15 @@
-import { Clinic } from '../../../models/clinic';
-import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
-import { ClinicApiActions, ClinicPageActions } from '../actions';
+import { Clinic } from "../../../models/clinic";
+import { createFeature, createReducer, createSelector, on } from "@ngrx/store";
+import { ClinicApiActions, ClinicPageActions } from "../actions";
 
 export interface ClinicState {
   success: boolean;
   isLoading: boolean;
   clinics: Clinic[];
-  currentSingleClinicId: 'all' | number | null;
+  currentSingleClinicId: "all" | number | null;
   currentMultiClinicIds: number[];
   error: string | null;
-  hasPrimeClinics: 'yes' | 'no';
+  hasPrimeClinics: "yes" | "no";
   isMultiSelection: boolean;
 }
 
@@ -20,12 +20,12 @@ const initialState: ClinicState = {
   currentMultiClinicIds: [],
   clinics: [],
   error: null,
-  hasPrimeClinics: 'no',
-  isMultiSelection: null
+  hasPrimeClinics: "no",
+  isMultiSelection: null,
 };
 
 export const clinicFeature = createFeature({
-  name: 'clinic',
+  name: "clinic",
   reducer: createReducer(
     initialState,
     on(
@@ -33,32 +33,39 @@ export const clinicFeature = createFeature({
       (state, { clinicId }): ClinicState => {
         return {
           ...state,
-          currentSingleClinicId: clinicId
+          currentSingleClinicId: clinicId,
         };
       }
     ),
     on(
       ClinicPageActions.setCurrentMultiClinicIDs,
       (state, { clinicIDs, isPrevAll }): ClinicState => {
-        if(clinicIDs.length == state.clinics.length && 
-          !clinicIDs.includes('all') && 
-          isPrevAll)
-        {
+        if (
+          clinicIDs.length == state.clinics.length &&
+          !clinicIDs.includes("all") &&
+          isPrevAll
+        ) {
           return {
             ...state,
-            currentMultiClinicIds: null
-          }
-        }else 
-        if(clinicIDs.length > 0 && clinicIDs.includes('all') && !isPrevAll){
+            currentMultiClinicIds: null,
+          };
+        } else if (
+          clinicIDs.length > 0 &&
+          clinicIDs.includes("all") &&
+          !isPrevAll
+        ) {
           return {
             ...state,
-            currentMultiClinicIds: state.clinics.map(c => c.id)
-          }
-        }else{
-          const selectedClinicIDs = <number[]>clinicIDs.filter(c => c !='all');
+            currentMultiClinicIds: state.clinics.map((c) => c.id),
+          };
+        } else {
+          const selectedClinicIDs = <number[]>(
+            clinicIDs.filter((c) => c != "all")
+          );
           return {
             ...state,
-            currentMultiClinicIds: selectedClinicIDs.length > 0?selectedClinicIDs:[]
+            currentMultiClinicIds:
+              selectedClinicIDs.length > 0 ? selectedClinicIDs : [],
           };
         }
       }
@@ -69,20 +76,24 @@ export const clinicFeature = createFeature({
         success: false,
         error: null,
         isLoading: true,
-        clinics: []
+        clinics: [],
       };
     }),
     on(
       ClinicApiActions.loadClinicsSuccess,
-      (state, { clinics, hasPrimeClinics }): ClinicState => {        
+      (state, { clinics, hasPrimeClinics }): ClinicState => {
         return {
           ...state,
           success: true,
           isLoading: false,
           clinics,
           hasPrimeClinics,
-          ...(clinics.length > 0 && state.currentSingleClinicId == null?{currentSingleClinicId: clinics[0].id}:{}),
-          ...(clinics.length > 0 && state.currentMultiClinicIds == null?{currentMultiClinicIds: [clinics[0].id]}:{})
+          ...(clinics.length > 0 && state.currentSingleClinicId == null
+            ? { currentSingleClinicId: clinics[0].id }
+            : {}),
+          ...(clinics.length > 0 && state.currentMultiClinicIds == null
+            ? { currentMultiClinicIds: [clinics[0].id] }
+            : {}),
         };
       }
     ),
@@ -91,18 +102,19 @@ export const clinicFeature = createFeature({
         ...state,
         success: false,
         isLoading: false,
-        error
+        error,
       };
     }),
-    on(ClinicPageActions.setMultiClinicSelection, 
+    on(
+      ClinicPageActions.setMultiClinicSelection,
       (state, { value }): ClinicState => {
         return {
           ...state,
-          isMultiSelection: value
+          isMultiSelection: value,
         };
       }
     )
-  )
+  ),
 });
 
 export const {
@@ -113,7 +125,7 @@ export const {
   selectCurrentSingleClinicId,
   selectCurrentMultiClinicIds,
   selectHasPrimeClinics,
-  selectIsMultiSelection
+  selectIsMultiSelection,
 } = clinicFeature;
 
 export const selectCurrentClinics = createSelector(
@@ -122,44 +134,47 @@ export const selectCurrentClinics = createSelector(
   selectCurrentMultiClinicIds,
   selectClinics,
   (isMulti, singleId, multiIds, clinics) => {
-    if(isMulti == null) return [];
-    if(isMulti){
-      return clinics.filter((c) => multiIds.includes(c.id));
-    }else{
-      return singleId === 'all'?clinics:clinics.filter(c => c.id == <number>singleId);
+    if (isMulti == null) return [];
+    if (isMulti) {
+      return clinics.filter((c) => multiIds && multiIds.includes(c.id));
+    } else {
+      return singleId === "all"
+        ? clinics
+        : clinics.filter((c) => c.id == <number>singleId);
     }
   }
-)
+);
 
 export const selectCurrentClinicId = createSelector(
   selectCurrentClinics,
   (clinics) => {
-    if(clinics.length >0){
-      return clinics.length>1?clinics.map(c => c.id).join(','):clinics[0].id;
-    }else{
+    if (clinics.length > 0) {
+      return clinics.length > 1
+        ? clinics.map((c) => c.id).join(",")
+        : clinics[0].id;
+    } else {
       return null;
     }
   }
-)
-
+);
 
 export const selectIsExactCurrentClinics = createSelector(
   selectCurrentClinics,
   (clinics) => {
-    return clinics.every( c=> c.pms == 'exact');
+    return clinics.every((c) => c.pms == "exact");
   }
 );
 
 export const selectIsCoreCurrentClinics = createSelector(
   selectCurrentClinics,
   (clinics) => {
-    return clinics.every( c=> c.pms == 'core');
+    return clinics.every((c) => c.pms == "core");
   }
 );
 
 export const selectIsD4wCurrentClinics = createSelector(
   selectCurrentClinics,
   (clinics) => {
-    return clinics.every( c=> c.pms == 'd4w');
+    return clinics.every((c) => c.pms == "d4w");
   }
 );

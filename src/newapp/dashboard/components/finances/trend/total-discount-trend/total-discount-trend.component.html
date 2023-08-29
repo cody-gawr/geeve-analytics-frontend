@@ -19,7 +19,7 @@
                     [datasets]="datasets"
                     [labels]="labels"
                     [options]="chartOptions$ | async"
-                    [legend]="false"
+                    [legend]="legend$ | async"
                     [type]="chartType$ | async"
                 >
                 </canvas>

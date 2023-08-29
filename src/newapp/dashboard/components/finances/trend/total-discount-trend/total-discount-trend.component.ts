@@ -3,246 +3,246 @@ import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
 import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
 import { JeeveLineFillOptions } from "@/newapp/shared/utils";
 import { Component, OnDestroy, OnInit, Input } from "@angular/core";
-import { ChartOptions, LegendOptions, TooltipItem, ChartDataset } from "chart.js";
+import {
+  ChartOptions,
+  LegendOptions,
+  TooltipItem,
+  ChartDataset,
+} from "chart.js";
 import { _DeepPartialObject } from "chart.js/dist/types/utils";
 import _ from "lodash";
-import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { Subject, takeUntil, combineLatest, map } from "rxjs";
 
 @Component({
-    selector: 'finance-total-discount-trend-chart',
-    templateUrl: './total-discount-trend.component.html',
-    styleUrls: ['./total-discount-trend.component.scss']
+  selector: "finance-total-discount-trend-chart",
+  templateUrl: "./total-discount-trend.component.html",
+  styleUrls: ["./total-discount-trend.component.scss"],
 })
 export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
-    @Input() toolTip = '';
+  @Input() toolTip = "";
 
-    destroy = new Subject<void>();
-    destroy$ = this.destroy.asObservable();
+  destroy = new Subject<void>();
+  destroy$ = this.destroy.asObservable();
 
-    datasets: ChartDataset[] = [];
-    labels = [];
+  datasets: ChartDataset[] = [];
+  labels = [];
 
-    get isMultiClinic$(){
-        return this.clinicFacade.currentClinicId$.pipe(
-            takeUntil(this.destroy$),
-            map(v => typeof v === 'string')
-        )
-    }
+  get isMultiClinic$() {
+    return this.clinicFacade.currentClinicId$.pipe(
+      takeUntil(this.destroy$),
+      map((v) => typeof v === "string")
+    );
+  }
 
-    get isLoading$(){
-        return this.financeFacade.isLoadingFnTotalDiscountTrend$.pipe(
-            takeUntil(this.destroy$),
-            map(v => v)
-        )
-    }
+  get isLoading$() {
+    return this.financeFacade.isLoadingFnTotalDiscountTrend$.pipe(
+      takeUntil(this.destroy$),
+      map((v) => v)
+    );
+  }
 
-    get chartType$(){
-        return this.clinicFacade.currentClinicId$.pipe(
-            takeUntil(this.destroy$),
-            map(v => typeof v === 'string'?'bar':'line')
-        )
-    }
+  get chartType$() {
+    return this.clinicFacade.currentClinicId$.pipe(
+      takeUntil(this.destroy$),
+      map((v) => (typeof v === "string" ? "bar" : "line"))
+    );
+  }
 
-    constructor(
-        private financeFacade: FinanceFacade,
-        private clinicFacade: ClinicFacade,
-        private layoutFacade: LayoutFacade
-    ){
-        combineLatest(
-            [
-                this.financeFacade.totalDiscountTrendChartData$,
-                this.layoutFacade.trend$,
-                this.clinicFacade.currentClinicId$
-            ]
-        )
-        .pipe(
-            takeUntil(this.destroy$),
-        ).subscribe(
-            ([chartData, trendMode, clinicId]) => {
-                if(typeof clinicId === 'string'){
-                    this.datasets = chartData.datasets;
-                    this.labels = chartData.labels;
-                }else{
-                    this.datasets = [{data: chartData.data}];
-                    this.labels = chartData.labels
-                }
-            }
-        )
-    }
+  get legend$() {
+    return this.clinicFacade.currentClinicId$.pipe(
+      map((v) => (typeof v === "string" ? true : false))
+    );
+  }
 
-    ngOnInit(): void {
-    }
-
-    ngOnDestroy(): void {
-        this.destroy.next();
-    }
-
-    public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
-        display: true,
-        position: 'bottom',
-        labels: {
-        boxWidth: 8,
-        usePointStyle: true,
-        generateLabels: (chart) => {
-            let labels = [];
-            let bg_color = {};
-            chart.data.datasets.forEach((item) => {
-            item.data.forEach((val: number) => {
-                if (val > 0) {
-                labels.push(item.label);
-                bg_color[item.label] = item.backgroundColor;
-                }
-            });
-            });
-            labels = [...new Set(labels)];
-            labels = labels.splice(0, 10);
-            return labels.map((item) => ({
-            text: item,
-            strokeStyle: bg_color[item],
-            fillStyle: bg_color[item]
-            }));
+  constructor(
+    private financeFacade: FinanceFacade,
+    private clinicFacade: ClinicFacade,
+    private layoutFacade: LayoutFacade
+  ) {
+    combineLatest([
+      this.financeFacade.totalDiscountTrendChartData$,
+      this.layoutFacade.trend$,
+      this.clinicFacade.currentClinicId$,
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([chartData, trendMode, clinicId]) => {
+        if (typeof clinicId === "string") {
+          this.datasets = chartData.datasets;
+          this.labels = chartData.labels;
+        } else {
+          this.datasets = [{ data: chartData.data }];
+          this.labels = chartData.labels;
         }
-        },
-        // onClick: (event: MouseEvent, legendItem: LegendItem) => {}
-    };
-    public labelBarOptionsSingleValue: ChartOptions<'line'> = {
-      elements: {
-        point: {
-          radius: 5,
-          hoverRadius: 7,
-          pointStyle: 'rectRounded',
-          hoverBorderWidth: 7
-        },
-        line: JeeveLineFillOptions,
-      },
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: {
-        duration: 500,
-        easing: 'easeOutSine'
-      },
-      scales: {
-        x: 
-          {
-            stacked: false,
-            ticks: {
-              autoSkip: false
+      });
+  }
+
+  ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this.destroy.next();
+  }
+
+  public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
+    display: true,
+    position: "bottom",
+    labels: {
+      boxWidth: 8,
+      usePointStyle: true,
+      generateLabels: (chart) => {
+        let labels = [];
+        let bg_color = {};
+        chart.data.datasets.forEach((item) => {
+          item.data.forEach((val: number) => {
+            if (val > 0) {
+              labels.push(item.label);
+              bg_color[item.label] = item.backgroundColor;
             }
-          }
-        ,
-        y: 
-          {
-            stacked: false,
-            ticks: {
-              callback: function (label, index, labels) {
-                return `${new Intl.NumberFormat('en-US', {
-                  style: 'currency',
-                  currency: 'USD',
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits: 0
-                }).format(Number(label))}`;
-              }
-            }
-          }
+          });
+        });
+        labels = [...new Set(labels)];
+        labels = labels.splice(0, 10);
+        return labels.map((item) => ({
+          text: item,
+          strokeStyle: bg_color[item],
+          fillStyle: bg_color[item],
+        }));
       },
-      plugins: {
-        legend: {
-          display: true
+    },
+    // onClick: (event: MouseEvent, legendItem: LegendItem) => {}
+  };
+  public labelBarOptionsSingleValue: ChartOptions<"line"> = {
+    elements: {
+      point: {
+        radius: 5,
+        hoverRadius: 7,
+        pointStyle: "rectRounded",
+        hoverBorderWidth: 7,
+      },
+      line: JeeveLineFillOptions,
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: {
+      duration: 500,
+      easing: "easeOutSine",
+    },
+    scales: {
+      x: {
+        stacked: false,
+        ticks: {
+          autoSkip: false,
         },
-        tooltip: {
-          mode: 'x',
-          displayColors(ctx, options) {
-            return !ctx.tooltip
+      },
+      y: {
+        stacked: false,
+        ticks: {
+          callback: function (label, index, labels) {
+            return `${new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "USD",
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            }).format(Number(label))}`;
           },
-          callbacks: {
-            label: (tooltipItems: TooltipItem<any>) => {
-              let label = tooltipItems.label;
-              return `${label} : ${new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-              }).format(Number(tooltipItems.parsed.y))}`;
-            },
-            title: () => ''
-          }
-        }
-      }
-    };
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        display: true,
+      },
+      tooltip: {
+        mode: "x",
+        displayColors(ctx, options) {
+          return !ctx.tooltip;
+        },
+        callbacks: {
+          label: (tooltipItems: TooltipItem<any>) => {
+            let label = tooltipItems.label;
+            return `${label} : ${new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "USD",
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            }).format(Number(tooltipItems.parsed.y))}`;
+          },
+          title: () => "",
+        },
+      },
+    },
+  };
 
-    public stackedChartOptionsDiscount: ChartOptions<'bar'> = {
-        elements: {
-          point: {
-            radius: 5,
-            hoverRadius: 7,
-            pointStyle: 'rectRounded',
-            hoverBorderWidth: 7
-          }
+  public stackedChartOptionsDiscount: ChartOptions<"bar"> = {
+    elements: {
+      point: {
+        radius: 5,
+        hoverRadius: 7,
+        pointStyle: "rectRounded",
+        hoverBorderWidth: 7,
+      },
+    },
+    // scaleShowVerticalLines: false,
+    responsive: true,
+    maintainAspectRatio: false,
+    // barThickness: 10,
+    animation: {
+      duration: 500,
+      easing: "easeOutSine",
+    },
+    scales: {
+      x: {
+        stacked: true,
+        ticks: {
+          autoSkip: false,
         },
-        // scaleShowVerticalLines: false,
-        responsive: true,
-        maintainAspectRatio: false,
-        // barThickness: 10,
-        animation: {
-          duration: 500,
-          easing: 'easeOutSine'
-        },
-        scales: {
-          x: 
-            {
-              stacked: true,
-              ticks: {
-                autoSkip: false
-              }
+      },
+      y: {
+        stacked: true,
+        ticks: {
+          callback: function (label: number, index, labels) {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              let currency =
+                label < 0
+                  ? label.toString().split("-").join("")
+                  : label.toString();
+              currency = currency.split(/(?=(?:...)*$)/).join(",");
+              return `${label < 0 ? "- $" : "$"}${currency}`;
             }
-          ,
-          y: 
-            {
-              stacked: true,
-              ticks: {
-                callback: function (label: number, index, labels) {
-                  // when the floored value is the same as the value we have a whole number
-                  if (Math.floor(label) === label) {
-                    let currency =
-                      label < 0
-                        ? label.toString().split('-').join('')
-                        : label.toString();
-                    currency = currency.split(/(?=(?:...)*$)/).join(',');
-                    return `${label < 0 ? '- $' : '$'}${currency}`;
-                  }
-                  return '';
-                }
-              }
-            }
+            return "";
+          },
         },
-        plugins: {
-          legend: this.stackLegendGenerator,
-          tooltip: {
-            mode: 'x',
-            callbacks: {
-              label: function (tooltipItems) {
-                return `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`
-              },
-              title: function(tooltipItems){
-                return `${tooltipItems[0].label}: ${
-                  new Intl.NumberFormat('en-US', {
-                    style: 'currency',
-                    currency: 'USD',
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0
-                  }).format(_.sumBy(tooltipItems, t => t.parsed.y))
-                }`
-              }
-            }
-          }
+      },
+    },
+    plugins: {
+      legend: this.stackLegendGenerator,
+      tooltip: {
+        mode: "x",
+        callbacks: {
+          label: function (tooltipItems) {
+            return `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`;
+          },
+          title: function (tooltipItems) {
+            return `${tooltipItems[0].label}: ${new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "USD",
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            }).format(_.sumBy(tooltipItems, (t) => t.parsed.y))}`;
+          },
         },
-    
-    };
+      },
+    },
+  };
 
-    get chartOptions$(){
-        return this.clinicFacade.currentClinicId$.pipe(
-            takeUntil(this.destroy$),
-            map(v => typeof v === 'string'?this.stackedChartOptionsDiscount:this.labelBarOptionsSingleValue)
-        )
-    }
+  get chartOptions$() {
+    return this.clinicFacade.currentClinicId$.pipe(
+      takeUntil(this.destroy$),
+      map((v) =>
+        typeof v === "string"
+          ? this.stackedChartOptionsDiscount
+          : this.labelBarOptionsSingleValue
+      )
+    );
+  }
 }
