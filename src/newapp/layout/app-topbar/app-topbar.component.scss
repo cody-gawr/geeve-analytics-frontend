@@ -17,8 +17,10 @@
     flex: 1;
     position: relative;
     &.lt-md {
+      width: 100%;
       justify-items: center;
       align-items: center;
+      justify-content: center;
       button {
         position: absolute;
         left: 4px;
