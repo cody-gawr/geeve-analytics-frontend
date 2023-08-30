@@ -316,8 +316,15 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
   }
 
   get legend$() {
-    return this.clinicFacade.currentClinicId$.pipe(
-      map((v) => (typeof v === "string" ? true : false))
+    return combineLatest([
+      this.clinicFacade.currentClinicId$,
+      this.financeFacade.profitTrendChartName$,
+    ]).pipe(
+      map(([v, chartName]) => {
+        if (["Net Profit %", "Net Profit"].indexOf(chartName) >= 0)
+          return false;
+        return typeof v === "string" ? true : false;
+      })
     );
   }
 
