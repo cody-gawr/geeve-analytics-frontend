@@ -39,35 +39,11 @@ export const clinicFeature = createFeature({
     ),
     on(
       ClinicPageActions.setCurrentMultiClinicIDs,
-      (state, { clinicIDs, isPrevAll }): ClinicState => {
-        if (
-          clinicIDs.length == state.clinics.length &&
-          !clinicIDs.includes("all") &&
-          isPrevAll
-        ) {
-          return {
-            ...state,
-            currentMultiClinicIds: null,
-          };
-        } else if (
-          clinicIDs.length > 0 &&
-          clinicIDs.includes("all") &&
-          !isPrevAll
-        ) {
-          return {
-            ...state,
-            currentMultiClinicIds: state.clinics.map((c) => c.id),
-          };
-        } else {
-          const selectedClinicIDs = <number[]>(
-            clinicIDs.filter((c) => c != "all")
-          );
-          return {
-            ...state,
-            currentMultiClinicIds:
-              selectedClinicIDs.length > 0 ? selectedClinicIDs : [],
-          };
-        }
+      (state, { clinicIDs }): ClinicState => {
+        return {
+          ...state,
+          currentMultiClinicIds: clinicIDs,
+        };
       }
     ),
     on(ClinicPageActions.loadClinics, (state): ClinicState => {

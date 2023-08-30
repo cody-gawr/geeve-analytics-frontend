@@ -8,6 +8,7 @@ import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
 import { AuthFacade } from "@/newapp/auth/facades/auth.facade";
 import { DashboardFacade } from "@/newapp/dashboard/facades/dashboard.facade";
 import { DentistFacade } from "@/newapp/dentist/facades/dentists.facade";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-topbar",
@@ -124,7 +125,8 @@ export class AppTopbarComponent implements OnInit {
     private dashboardFacade: DashboardFacade,
     private clinicFacade: ClinicFacade,
     private authFacade: AuthFacade,
-    private dentistFacade: DentistFacade
+    private dentistFacade: DentistFacade,
+    private toastr: ToastrService
   ) {
     // this.dentistFacade.loadDentists();
     // this.menuService.menuSource$
@@ -232,24 +234,53 @@ export class AppTopbarComponent implements OnInit {
     this.dentistFacade.setCurrentDentistId(event.value);
   }
 
+  previousSelectedMultiClinics: Array<number | "all"> = null;
+
   onChangeMultiClinics(event) {
-    this.clinicFacade.clinics$.pipe(take(1)).subscribe((v) => {
-      if (event.value.filter((v) => v !== "all").length === v.length) {
-        this.selectedMultiClinics = [...this.selectedMultiClinics, "all"];
-      } else {
-        this.selectedMultiClinics = this.selectedMultiClinics.filter(
-          (v) => v !== "all"
-        );
-      }
-    });
+    combineLatest([
+      this.clinicFacade.clinics$,
+      // this.clinicFacade.currentClinics$,
+    ])
+      .pipe(take(1))
+      .subscribe(([clinics]) => {
+        this.previousSelectedMultiClinics = this.selectedMultiClinics.slice();
+        const clinicIDs = event.value;
+        const isPrevAll =
+          this.previousSelectedMultiClinics.filter((v) => v !== "all")
+            .length === clinics.length;
+        let currentMultiClinicIds: Array<"all" | number> = [];
+        if (
+          clinicIDs.length == clinics.length &&
+          !clinicIDs.includes("all") &&
+          isPrevAll
+        ) {
+          currentMultiClinicIds = [];
+        } else if (
+          (clinicIDs.length == clinics.length &&
+            !clinicIDs.includes("all") &&
+            !isPrevAll) ||
+          (clinicIDs.includes("all") && !isPrevAll)
+        ) {
+          currentMultiClinicIds = [...clinics.map((c) => c.id), "all"];
+        } else {
+          const selectedClinicIDs = <number[]>(
+            clinicIDs.filter((c) => c != "all")
+          );
+          currentMultiClinicIds = selectedClinicIDs;
+        }
+        this.selectedMultiClinics = currentMultiClinicIds;
+      });
   }
 
   onApplyMultiClinics() {
-    const isPrevAll = this.selectedMultiClinics.includes("all");
-    this.clinicFacade.setCurrentMultiClinicIDs(
-      this.selectedMultiClinics,
-      isPrevAll
+    const values = <number[]>(
+      this.selectedMultiClinics.filter((v) => v !== "all")
     );
+    if (values.length > 0) {
+      this.clinicFacade.setCurrentMultiClinicIDs(values);
+    } else {
+      this.toastr.error("You must select one clinic at least!");
+    }
     this.multiSelectElement.toggle();
   }
 

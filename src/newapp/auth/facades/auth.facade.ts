@@ -1,8 +1,12 @@
-import { Login } from '../../models/auth';
-import { Injectable } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { filter, Observable } from 'rxjs';
-import { AuthApiActions, AuthPageActions, RolesPageActions } from '../state/actions';
+import { Login } from "../../models/auth";
+import { Injectable } from "@angular/core";
+import { select, Store } from "@ngrx/store";
+import { filter, Observable } from "rxjs";
+import {
+  AuthApiActions,
+  AuthPageActions,
+  RolesPageActions,
+} from "../state/actions";
 import {
   AuthState,
   selectAuthUserData,
@@ -12,10 +16,10 @@ import {
   selectLogoutSuccess,
   selectRolesIndividual,
   selectRolesIndividualAndClinics,
-  selectSuccess
-} from '../state/reducers/auth.reducer';
-import { LoginUser, RolesIndividualApiResponse } from '../../models/user';
-import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
+  selectSuccess,
+} from "../state/reducers/auth.reducer";
+import { LoginUser, RolesIndividualApiResponse } from "../../models/user";
+import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
 
 @Injectable()
 export class AuthFacade {
@@ -61,15 +65,13 @@ export class AuthFacade {
     this.store.dispatch(AuthPageActions.login({ form }));
   }
 
-  public loginFailed(msg: string = 'unknown'){
-    this.store.dispatch(
-      AuthApiActions.loginFailure({ error: msg })
-    );
+  public loginFailed(msg: string = "unknown") {
+    this.store.dispatch(AuthApiActions.loginFailure({ error: msg }));
   }
 
   public logout() {
     this.clinicFacade.setCurrentSingleClinicId(null);
-    this.clinicFacade.setCurrentMultiClinicIDs([], false);
+    this.clinicFacade.setCurrentMultiClinicIDs([]);
     this.store.dispatch(AuthPageActions.logout());
   }
 
@@ -78,7 +80,7 @@ export class AuthFacade {
   }
 
   public getAuthUserData(): LoginUser {
-    const data = localStorage.getItem('authUserData');
-    return data?JSON.parse(data):null;
+    const data = localStorage.getItem("authUserData");
+    return data ? JSON.parse(data) : null;
   }
 }

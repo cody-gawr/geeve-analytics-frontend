@@ -31,7 +31,15 @@
       </div>
       <div class="clinic-selector-wrapper">
         <div class="clinic-selector-field">
-          <mat-select #multiClinicsSelectElem (selectionChange)="onChangeMultiClinics($event)" (openedChange)="onMultiSelectPanelOpened($event)" [(value)]="selectedMultiClinics" *ngIf="(isMultiClinics$ | async); else singleClinicsSection" multiple>
+          <mat-select 
+              multiple
+              *ngIf="(isMultiClinics$ | async); else singleClinicsSection"
+              #multiClinicsSelectElem 
+              (selectionChange)="onChangeMultiClinics($event)" 
+              (openedChange)="onMultiSelectPanelOpened($event)" 
+              [value]="selectedMultiClinics" 
+              panelClass="custom-select-panel"
+          >
             <mat-select-trigger>
               {{getClinicName$(selectedMultiClinics?.[0]) | async}}
               <span *ngIf="(selectedMultiClinics?.length || 0) > 1">
