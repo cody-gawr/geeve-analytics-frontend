@@ -4,7 +4,7 @@
   <date-range-menu></date-range-menu>
   <trend-mode-toggle></trend-mode-toggle>
 </div>
-<div class="finance-chart-content">
+<div *ngIf="(clinicId$ | async) !== null" class="finance-chart-content">
   <trend-finances *ngIf="isTrend$ | async; else trendSection"></trend-finances>
   <ng-template #trendSection>
     <none-trend-finances></none-trend-finances>

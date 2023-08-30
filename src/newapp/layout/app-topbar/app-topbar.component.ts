@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import { Moment } from "moment";
-import { map, Subject, takeUntil, combineLatest } from "rxjs";
+import { map, Subject, takeUntil, combineLatest, take } from "rxjs";
 import { LayoutFacade } from "../facades/layout.facade";
 import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
 import { AuthFacade } from "@/newapp/auth/facades/auth.facade";
@@ -18,6 +18,7 @@ export class AppTopbarComponent implements OnInit {
   @Input() toggleSideBar: () => void;
   @Input() isSidenavVisible: Boolean;
   @Input() activatedUrl: string;
+  @ViewChild("multiClinicsSelectElem") multiSelectElement;
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
   title: string;
@@ -31,7 +32,6 @@ export class AppTopbarComponent implements OnInit {
     return this.authFacade.rolesIndividual$.pipe(
       takeUntil(this.destroy$),
       map((rolesIndividual) => {
-        return true;
         const userType = rolesIndividual ? rolesIndividual.type : 0;
         return (
           ["/dashboards/healthscreen"].includes(this.activatedUrl) &&
@@ -233,7 +233,64 @@ export class AppTopbarComponent implements OnInit {
   }
 
   onChangeMultiClinics(event) {
+    this.clinicFacade.clinics$.pipe(take(1)).subscribe((v) => {
+      if (event.value.filter((v) => v !== "all").length === v.length) {
+        this.selectedMultiClinics = [...this.selectedMultiClinics, "all"];
+      } else {
+        this.selectedMultiClinics = this.selectedMultiClinics.filter(
+          (v) => v !== "all"
+        );
+      }
+    });
+  }
+
+  onApplyMultiClinics() {
     const isPrevAll = this.selectedMultiClinics.includes("all");
-    this.clinicFacade.setCurrentMultiClinicIDs(event.value, isPrevAll);
+    this.clinicFacade.setCurrentMultiClinicIDs(
+      this.selectedMultiClinics,
+      isPrevAll
+    );
+    this.multiSelectElement.toggle();
+  }
+
+  onMultiSelectPanelOpened(event) {
+    if (!event) {
+      combineLatest([
+        this.clinicFacade.currentClinics$,
+        this.clinicFacade.isMultiSelection$,
+        this.clinicFacade.clinics$,
+      ])
+        .pipe(take(1))
+        .subscribe(([currentClinics, isMulti, clinics]) => {
+          if (isMulti == null) return;
+          const currentClinicIDs = currentClinics.map((c) => c.id);
+          if (isMulti) {
+            if (currentClinicIDs == undefined) return;
+            if (currentClinicIDs.length === clinics.length) {
+              this.selectedMultiClinics = [...currentClinicIDs, "all"];
+            } else {
+              this.selectedMultiClinics = currentClinicIDs;
+            }
+            // if (currentClinicIDs.length == 1) {
+            //   this.dashboardFacade.loadClinicAccountingPlatform(
+            //     currentClinicIDs[0]
+            //   );
+            // }
+          }
+
+          // else {
+          //   if (currentClinicIDs.length === 1) {
+          //     this.selectedClinic = currentClinicIDs[0];
+          //     this.dashboardFacade.loadClinicAccountingPlatform(
+          //       currentClinicIDs[0]
+          //     );
+          //   } else if (currentClinicIDs.length == clinics.length && isEnableAll) {
+          //     this.selectedClinic = "all";
+          //   } else {
+          //     this.selectedClinic = null;
+          //   }
+          // }
+        });
+    }
   }
 }

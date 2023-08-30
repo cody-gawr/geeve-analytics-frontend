@@ -4,7 +4,7 @@
   <date-range-menu></date-range-menu>
   <trend-mode-toggle></trend-mode-toggle>
 </div>
-<div class="front-desk-chart-content">
+<div *ngIf="(clinicId$ | async) !== null" class="front-desk-chart-content">
     <fd-utilisation-rate-chart [toolTip]="getChartTip(15) | async" class="front-desk-chart"></fd-utilisation-rate-chart>
     <fd-recall-rate-chart [toolTip]="getChartTip(16) | async" class="front-desk-chart"></fd-recall-rate-chart>
     <fd-reappoint-rate-chart [toolTip]="getChartTip(17) | async" class="front-desk-chart"></fd-reappoint-rate-chart>
