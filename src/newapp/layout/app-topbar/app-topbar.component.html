@@ -20,7 +20,7 @@
     </div>
     <div class="dynamic-top-section">
       <div class="date-picker-wrapper">
-        <div *ngIf="!(isMultiClinics$ | async)" class="date-picker-field">
+        <div class="date-picker-field">
           <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
             <input matStartDate formControlName="start" (dateChange)="onDateRangeChange('start', $event)" placeholder="Start date">
             <input matEndDate formControlName="end" (dateChange)="onDateRangeChange('end', $event)" placeholder="End date">

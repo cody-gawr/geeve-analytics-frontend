@@ -1,5 +1,3 @@
-import { environment } from "@/environments/environment";
-import moment from "moment-timezone";
 import { Chart, Plugin, TooltipItem } from "chart.js";
 
 export function splitName(label: string) {
