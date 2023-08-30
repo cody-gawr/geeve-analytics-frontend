@@ -302,25 +302,7 @@ export class AppTopbarComponent implements OnInit {
             } else {
               this.selectedMultiClinics = currentClinicIDs;
             }
-            // if (currentClinicIDs.length == 1) {
-            //   this.dashboardFacade.loadClinicAccountingPlatform(
-            //     currentClinicIDs[0]
-            //   );
-            // }
           }
-
-          // else {
-          //   if (currentClinicIDs.length === 1) {
-          //     this.selectedClinic = currentClinicIDs[0];
-          //     this.dashboardFacade.loadClinicAccountingPlatform(
-          //       currentClinicIDs[0]
-          //     );
-          //   } else if (currentClinicIDs.length == clinics.length && isEnableAll) {
-          //     this.selectedClinic = "all";
-          //   } else {
-          //     this.selectedClinic = null;
-          //   }
-          // }
         });
     }
   }
