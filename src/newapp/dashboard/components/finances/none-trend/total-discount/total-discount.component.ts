@@ -75,6 +75,15 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
     );
   }
 
+  get legend$() {
+    return this.clinicFacade.currentClinicId$.pipe(
+      takeUntil(this.destroy$),
+      map((v) => {
+        return typeof v === "string";
+      })
+    );
+  }
+
   constructor(
     private financeFacade: FinanceFacade,
     private clinicFacade: ClinicFacade,

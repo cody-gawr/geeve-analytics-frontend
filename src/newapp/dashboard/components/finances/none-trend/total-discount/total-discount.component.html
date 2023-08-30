@@ -27,7 +27,7 @@
                         [datasets]="datasets"
                         [labels]="totalDiscountChartLabels"
                         type="doughnut"
-                        [legend]="false"
+                        [legend]="legend$ | async"
                         [options]="pieChartOptions"
                         [plugins]="plugins$ | async"
                     >
