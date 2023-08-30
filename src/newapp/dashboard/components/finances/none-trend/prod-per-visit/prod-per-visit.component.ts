@@ -7,213 +7,228 @@ import { DecimalPipe } from "@angular/common";
 import { Component, OnInit, OnDestroy, Input } from "@angular/core";
 import { ChartOptions } from "chart.js";
 import _ from "lodash";
-import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { Subject, takeUntil, combineLatest, map } from "rxjs";
 
 @Component({
-    selector: 'prod-per-visit-chart',
-    templateUrl: './prod-per-visit.component.html',
-    styleUrls: ['./prod-per-visit.component.scss']
+  selector: "prod-per-visit-chart",
+  templateUrl: "./prod-per-visit.component.html",
+  styleUrls: ["./prod-per-visit.component.scss"],
 })
 export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
-    @Input() toolTip = '';
+  @Input() toolTip = "";
 
-    destroy = new Subject<void>();
-    destroy$ = this.destroy.asObservable();
+  destroy = new Subject<void>();
+  destroy$ = this.destroy.asObservable();
 
-    get trendingIcon() {
-        if(this.productionVisitVal >= this.productionVisitTrendVal){
-            return 'trending_up';
-        }
-        return 'trending_down';
-    };
+  get trendingIcon() {
+    if (this.productionVisitVal >= this.productionVisitTrendVal) {
+      return "trending_up";
+    }
+    return "trending_down";
+  }
 
-    productionVisitVal = 0;
-    productionVisitTrendVal = 0;
+  productionVisitVal = 0;
+  productionVisitTrendVal = 0;
 
-    datasets = [{
+  datasets = [
+    {
       data: [],
-      label: '',
+      label: "",
       shadowOffsetX: 3,
-      backgroundColor: 'rgba(0, 0, 255, 0.2)'
-    }];
-    labels = [];
+      backgroundColor: "rgba(0, 0, 255, 0.2)",
+    },
+  ];
+  labels = [];
 
-    get hasData$() {
-      return this.isMultipleClinic$.pipe(
-        map(v => {
-          if(v){
-            return this.labels.length > 0;
-          }else{
-            return this.productionVisitVal > 0;
-          }
-        })
-      )
-    }
+  get hasData$() {
+    return this.isMultipleClinic$.pipe(
+      map((v) => {
+        if (v) {
+          return this.labels.length > 0;
+        } else {
+          return this.productionVisitVal > 0;
+        }
+      })
+    );
+  }
 
-    get isLoading$() {
-        return this.financeFacade.isLoadingFnProdPerVisit$.pipe(
-            takeUntil(this.destroy$),
-            v => v
-        )
-    };
+  get isLoading$() {
+    return this.financeFacade.isLoadingFnProdPerVisit$.pipe(
+      takeUntil(this.destroy$),
+      (v) => v
+    );
+  }
 
-    get isMultipleClinic$(){
-        return this.clinicFacade.currentClinicId$.pipe(
-          takeUntil(this.destroy$),
-          map(v => typeof v == 'string')
-        )
-    }
+  get isMultipleClinic$() {
+    return this.clinicFacade.currentClinicId$.pipe(
+      takeUntil(this.destroy$),
+      map((v) => typeof v == "string")
+    );
+  }
 
-    get durationLabel$() {
-        return this.layoutFacade.dateRange$.pipe(
-            takeUntil(this.destroy$),
-            map(val => {
-                const menu = DateRangeMenus.find(m => m.range == val.duration);
-                if(menu) return menu.label;
-                else return 'Current';
-            })
-        );
-    }
+  get durationLabel$() {
+    return this.layoutFacade.dateRange$.pipe(
+      takeUntil(this.destroy$),
+      map((val) => {
+        const menu = DateRangeMenus.find((m) => m.range == val.duration);
+        if (menu) return menu.label;
+        else return "Current";
+      })
+    );
+  }
 
-    get durationTrendLabel$() {
-        return this.durationLabel$.pipe(
-            takeUntil(this.destroy$),
-            map(l => l.replace(/^Last/g, 'Previous').replace(/^This/g, 'Last')));
-    }
+  get durationTrendLabel$() {
+    return this.durationLabel$.pipe(
+      takeUntil(this.destroy$),
+      map((l) => l.replace(/^Last/g, "Previous").replace(/^This/g, "Last"))
+    );
+  }
 
-    constructor(
-        private financeFacade: FinanceFacade,
-        private clinicFacade: ClinicFacade,
-        private layoutFacade: LayoutFacade,
-        private decimalPipe: DecimalPipe
-    ) {
-        combineLatest([
-            this.financeFacade.prodPerVisitTotal$,
-            this.financeFacade.prodPerVisitTrendTotal$,
-            this.financeFacade.prodPerVisitData$,
-        ]).pipe(
-            takeUntil(this.destroy$)
-        ).subscribe(([val, trendVal, visitData]) => {
-            this.productionVisitVal = Math.round(val);
-            this.productionVisitTrendVal = Math.round(trendVal);
-            const chartLabels = [];
-            
-            this.datasets[0].data = [];
-            visitData.forEach( d => {
-                this.datasets[0].data.push(Math.round(parseFloat(<string>d.prodPerVisit??'0')));
-                chartLabels.push(d.clinicName);
-            });
-            
-            
-            this.labels = chartLabels;
-            
+  get getTrendTip$() {
+    return this.durationLabel$.pipe(
+      takeUntil(this.destroy$),
+      map((v) => {
+        if (this.productionVisitTrendVal > 0) {
+          return (
+            v + ": $" + this.decimalPipe.transform(this.productionVisitTrendVal)
+          );
+        }
+        return "";
+      })
+    );
+  }
+
+  constructor(
+    private financeFacade: FinanceFacade,
+    private clinicFacade: ClinicFacade,
+    private layoutFacade: LayoutFacade,
+    private decimalPipe: DecimalPipe
+  ) {
+    combineLatest([
+      this.financeFacade.prodPerVisitTotal$,
+      this.financeFacade.prodPerVisitTrendTotal$,
+      this.financeFacade.prodPerVisitData$,
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([val, trendVal, visitData]) => {
+        this.productionVisitVal = Math.round(val);
+        this.productionVisitTrendVal = Math.round(trendVal);
+        const chartLabels = [];
+
+        this.datasets[0].data = [];
+        visitData.forEach((d) => {
+          this.datasets[0].data.push(
+            Math.round(parseFloat(<string>d.prodPerVisit ?? "0"))
+          );
+          chartLabels.push(d.clinicName);
         });
-    }
 
-    ngOnInit(): void {
-    }
+        this.labels = chartLabels;
+      });
+  }
 
-    ngOnDestroy(): void {
-        this.destroy.next();
-    }
+  ngOnInit(): void {}
 
-    public barChartOptionsTrend: ChartOptions<'bar'> = {
-        // scaleShowVerticalLines: false,
-        // cornerRadius: 60,
-        hover: { mode: null },
-        // curvature: 1,
-        animation: {
-          duration: 1500,
-          easing: 'easeOutSine'
+  ngOnDestroy(): void {
+    this.destroy.next();
+  }
+
+  public barChartOptionsTrend: ChartOptions<"bar"> = {
+    // scaleShowVerticalLines: false,
+    // cornerRadius: 60,
+    hover: { mode: null },
+    // curvature: 1,
+    animation: {
+      duration: 1500,
+      easing: "easeOutSine",
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    // scaleStartValue: 0,
+    scales: {
+      x: {
+        grid: {
+          display: true,
+          offset: true,
         },
-        responsive: true,
-        maintainAspectRatio: false,
-        // scaleStartValue: 0,
-        scales: {
-          x: {
-              grid: {
-                display: true,
-                offset: true
-              },
-              ticks: {
-                autoSkip: false
-              },
-              display: false,
-              offset: true,
-              stacked: true
-            },
-          y: {
-              suggestedMin: 0,
-              min: 0,
-              beginAtZero: true,
-              ticks: {
-                callback: (label: number, index, labels) => {
-                  // when the floored value is the same as the value we have a whole number
-                  if (Math.floor(label) === label) {
-                    return '$' + this.decimalPipe.transform(label);
-                  }
-                  return '';
-                }
-              }
+        ticks: {
+          autoSkip: false,
+        },
+        display: false,
+        offset: true,
+        stacked: true,
+      },
+      y: {
+        suggestedMin: 0,
+        min: 0,
+        beginAtZero: true,
+        ticks: {
+          callback: (label: number, index, labels) => {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              return "$" + this.decimalPipe.transform(label);
             }
+            return "";
+          },
         },
-        plugins: {
-          tooltip: {
-            mode: 'x',
-            displayColors(ctx, options) {
-              return !ctx.tooltip;
-            },
-            callbacks: {
-              // use label callback to return the desired label
-              label: (tooltipItem) => {
-                const v =
-                tooltipItem.parsed.y;
-                let Tlable = tooltipItem.dataset.label;
-                if (Tlable != '') {
-                  Tlable = Tlable + ': ';
-                }
-                //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-                let ylable = tooltipItem.parsed._custom ? +(tooltipItem.parsed._custom.max + tooltipItem.parsed._custom.min) / 2 : v;
-                if (ylable == 0 && Tlable == 'Target: ') {
-                  //return  Tlable + this.splitName(tooltipItem.xLabel).join(' ');
-                  return '';
-                } else {
-                  return (
-                    Tlable +
-                    splitName(tooltipItem.label).join(' ') +
-                    ': $' +
-                    ylable
-                  );
-                }
-              },
-              // remove title
-              title: function (tooltipItem) {
-                return '';
-              }
+      },
+    },
+    plugins: {
+      tooltip: {
+        mode: "x",
+        displayColors(ctx, options) {
+          return !ctx.tooltip;
+        },
+        callbacks: {
+          // use label callback to return the desired label
+          label: (tooltipItem) => {
+            const v = tooltipItem.parsed.y;
+            let Tlable = tooltipItem.dataset.label;
+            if (Tlable != "") {
+              Tlable = Tlable + ": ";
+            }
+            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            let ylable = tooltipItem.parsed._custom
+              ? +(
+                  tooltipItem.parsed._custom.max +
+                  tooltipItem.parsed._custom.min
+                ) / 2
+              : v;
+            if (ylable == 0 && Tlable == "Target: ") {
+              //return  Tlable + this.splitName(tooltipItem.xLabel).join(' ');
+              return "";
+            } else {
+              return (
+                Tlable + splitName(tooltipItem.label).join(" ") + ": $" + ylable
+              );
             }
           },
-          legend: {
-            position: 'top',
-            onClick: function (e, legendItem) {
-              var index = legendItem.datasetIndex;
-              var ci = this.chart;
-              if (index == 0) {
-                ci.getDatasetMeta(1).hidden = true;
-                ci.getDatasetMeta(index).hidden = false;
-              } else if (index == 1) {
-                ci.getDatasetMeta(0).hidden = true;
-                ci.getDatasetMeta(index).hidden = false;
-              }
-              ci.update();
-            }
-          }
+          // remove title
+          title: function (tooltipItem) {
+            return "";
+          },
         },
-    
-    };
+      },
+      legend: {
+        position: "top",
+        onClick: function (e, legendItem) {
+          var index = legendItem.datasetIndex;
+          var ci = this.chart;
+          if (index == 0) {
+            ci.getDatasetMeta(1).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
+          } else if (index == 1) {
+            ci.getDatasetMeta(0).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
+          }
+          ci.update();
+        },
+      },
+    },
+  };
 
-    barChartColors = [
-        { backgroundColor: '#39acac' },
-        { backgroundColor: '#48daba' }
-    ];
-
+  barChartColors = [
+    { backgroundColor: "#39acac" },
+    { backgroundColor: "#48daba" },
+  ];
 }

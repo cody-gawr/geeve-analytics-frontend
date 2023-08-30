@@ -38,7 +38,7 @@
               (selectionChange)="onChangeMultiClinics($event)" 
               (openedChange)="onMultiSelectPanelOpened($event)" 
               [value]="selectedMultiClinics" 
-              panelClass="custom-select-panel"
+              panelClass="jeeve-custom-select-panel"
           >
             <mat-select-trigger>
               {{getClinicName$(selectedMultiClinics?.[0]) | async}}

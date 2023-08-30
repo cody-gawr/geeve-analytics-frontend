@@ -7,7 +7,11 @@
         fontIcon="help"
     ></mat-icon>
     <div class="chart-title">
-        <mat-icon [color]="trendingIcon == 'trending_up'?'primary':'warn'" [fontIcon]="trendingIcon"></mat-icon>
+        <mat-icon 
+            [color]="trendingIcon == 'trending_up'?'primary':'warn'" 
+            [fontIcon]="trendingIcon"
+            [matTooltip]="getTrendTip$ | async"
+        ></mat-icon>
         <span>
             Total Discounts
         </span>

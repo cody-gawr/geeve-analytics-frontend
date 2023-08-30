@@ -1,4 +1,5 @@
 import { Chart, Plugin, TooltipItem } from "chart.js";
+import moment from "moment-timezone";
 
 export function splitName(label: string) {
   const regex = /\w+\s\w+(?=\s)|\w+/g;
@@ -61,9 +62,9 @@ export const compare = (
   return (a! < b! ? -1 : 1) * (isAsc ? 1 : -1);
 };
 
-// export const getTodayMoment = () => {
-//   return moment().tz(environment.defaultTimezone);
-// };
+export const getTodayMoment = (tz = "Australia/Brisbane") => {
+  return moment().tz(tz);
+};
 
 // export const convertTimeFormatAndTimezone = (dt_str:string, tz = 'Australia/Brisbane') => {
 //   const utc_dt = moment_tz.utc(dt_str);
@@ -130,6 +131,7 @@ import {
 } from "chart.js";
 import { _DeepPartialObject } from "chart.js/dist/types/utils";
 import { HttpErrorResponse } from "@angular/common/http";
+import { environment } from "@/environments/environment";
 
 export const JeeveLineFillOptions: _DeepPartialObject<
   ScriptableAndArrayOptions<
