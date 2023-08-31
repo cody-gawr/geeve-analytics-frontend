@@ -22,6 +22,8 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    height: calc(100vh - 135px);
+    overflow-y: auto;
     .cp-chart {
         display: flex;
         flex-direction: column;
@@ -33,4 +35,4 @@
             width: 100%;
         }
     }
-  }
+}

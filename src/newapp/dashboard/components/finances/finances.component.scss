@@ -18,6 +18,8 @@
 .finance-chart-content {
   background-color: #fafafa;
   padding: 15px;
+  height: calc(100vh - 135px);
+  overflow-y: auto;
 }
 
 

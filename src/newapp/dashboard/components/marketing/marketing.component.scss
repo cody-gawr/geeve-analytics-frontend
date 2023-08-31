@@ -19,6 +19,8 @@
   background-color: #fafafa;
   padding: 15px;
   gap: 15px;
+  height: calc(100vh - 135px);
+  overflow-y: auto;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
