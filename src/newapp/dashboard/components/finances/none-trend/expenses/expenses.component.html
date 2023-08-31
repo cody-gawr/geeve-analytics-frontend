@@ -7,7 +7,13 @@
         fontIcon="help"
     ></mat-icon>
     <div class="chart-title">
-        Expenses
+        <div>
+            Expenses
+        </div>
+        <button 
+            *ngIf="unSelectedData.length >= 15"
+            (click)="openExpensesDialog()" 
+            mat-flat-button color="primary">Show More</button>
     </div>
     <div class="chart-content expenses-content">
         <div class="expenses-ngx-chart">

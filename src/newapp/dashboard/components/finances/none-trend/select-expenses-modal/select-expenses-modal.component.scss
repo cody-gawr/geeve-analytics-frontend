@@ -1,0 +1,28 @@
+.items-move {
+    min-width: 500px;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    .selected, .none-selected{
+        max-width: 550px;
+        h4 {
+            margin-top: 0;
+        }
+        width: calc(50% - 7.5px);
+        display: flex;
+        flex-direction: column;
+        .board {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 3px;
+            button {
+                margin-bottom: 3px;
+            }
+        }
+    }
+    button {
+        font-size: 13px;
+        height: 23px;
+    }
+}
