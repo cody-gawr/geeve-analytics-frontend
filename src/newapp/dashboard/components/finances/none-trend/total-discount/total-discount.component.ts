@@ -6,7 +6,7 @@ import { DateRangeMenus } from "@/newapp/shared/components/date-range-menu/date-
 import { chartPlugin } from "@/newapp/shared/utils";
 import { DecimalPipe } from "@angular/common";
 import { Component, OnInit, OnDestroy, Input } from "@angular/core";
-import { Chart, ChartOptions, Plugin } from "chart.js";
+import { ChartOptions } from "chart.js";
 import _ from "lodash";
 import { Subject, takeUntil, combineLatest, map } from "rxjs";
 
@@ -42,20 +42,16 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
   }
 
   get durationLabel$() {
-    return this.layoutFacade.dateRange$.pipe(
+    return this.layoutFacade.durationLabel$.pipe(
       takeUntil(this.destroy$),
-      map((val) => {
-        const menu = DateRangeMenus.find((m) => m.range == val.duration);
-        if (menu) return menu.label;
-        else return "Current";
-      })
+      map((val) => val)
     );
   }
 
   get durationTrendLabel$() {
-    return this.durationLabel$.pipe(
+    return this.layoutFacade.durationTrendLabel$.pipe(
       takeUntil(this.destroy$),
-      map((l) => l.replace(/^Last/g, "Previous").replace(/^This/g, "Last"))
+      map((l) => l)
     );
   }
 

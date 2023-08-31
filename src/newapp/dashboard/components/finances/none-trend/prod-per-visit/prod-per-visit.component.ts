@@ -67,25 +67,21 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
   }
 
   get durationLabel$() {
-    return this.layoutFacade.dateRange$.pipe(
+    return this.layoutFacade.durationLabel$.pipe(
       takeUntil(this.destroy$),
-      map((val) => {
-        const menu = DateRangeMenus.find((m) => m.range == val.duration);
-        if (menu) return menu.label;
-        else return "Current";
-      })
+      map((val) => val)
     );
   }
 
   get durationTrendLabel$() {
-    return this.durationLabel$.pipe(
+    return this.layoutFacade.durationTrendLabel$.pipe(
       takeUntil(this.destroy$),
-      map((l) => l.replace(/^Last/g, "Previous").replace(/^This/g, "Last"))
+      map((l) => l)
     );
   }
 
   get getTrendTip$() {
-    return this.durationLabel$.pipe(
+    return this.durationTrendLabel$.pipe(
       takeUntil(this.destroy$),
       map((v) => {
         if (this.productionVisitTrendVal > 0) {

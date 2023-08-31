@@ -3,6 +3,7 @@ import { createFeature, createReducer, on, createSelector } from "@ngrx/store";
 import { layoutPageActions } from "../actions";
 import { DATE_RANGE_DURATION, TREND_MODE } from "@/newapp/models/layout";
 import { getTodayMoment } from "@/newapp/shared/utils";
+import { DateRangeMenus } from "@/newapp/shared/components/date-range-menu/date-range-menu.component";
 
 export interface LayoutState {
   enableDateRagne: boolean;
@@ -78,5 +79,25 @@ export const selectIsFullMonthsDateRange = createSelector(
       (_endDate.date() == _endDate.clone().endOf("month").date() ||
         _endDate.date() == moment().date())
     );
+  }
+);
+
+export const selectDurationLabel = createSelector(
+  selectDateRange,
+  ({ duration }) => {
+    const menu = DateRangeMenus.find((m) => m.range == duration);
+    if (menu) return menu.label;
+    else return "Current";
+  }
+);
+
+export const selectDurationTrendLabel = createSelector(
+  selectDurationLabel,
+  (l) => {
+    if (l.includes("Last") || l.includes("This")) {
+      return l.replace(/^Last/g, "Previous").replace(/^This/g, "Last");
+    } else {
+      return "Last " + l;
+    }
   }
 );

@@ -1,25 +1,29 @@
-import { Injectable } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { Observable, map, filter } from 'rxjs';
-import { LayoutState, selectActivatedRouteTitle, selectDateRange, selectIsFullMonthsDateRange, selectTrend } from '../state/reducers/layout.reducer';
-import { Moment } from 'moment';
-import { layoutPageActions } from '../state/actions';
-import { DATE_RANGE_DURATION, TREND_MODE } from '@/newapp/models/layout';
-import { DateRangeMenus } from '@/newapp/shared/components/date-range-menu/date-range-menu.component';
+import { Injectable } from "@angular/core";
+import { select, Store } from "@ngrx/store";
+import { Observable, map, filter } from "rxjs";
+import {
+  LayoutState,
+  selectActivatedRouteTitle,
+  selectDateRange,
+  selectDurationLabel,
+  selectDurationTrendLabel,
+  selectIsFullMonthsDateRange,
+  selectTrend,
+} from "../state/reducers/layout.reducer";
+import { Moment } from "moment";
+import { layoutPageActions } from "../state/actions";
+import { DATE_RANGE_DURATION, TREND_MODE } from "@/newapp/models/layout";
+import { DateRangeMenus } from "@/newapp/shared/components/date-range-menu/date-range-menu.component";
 
 @Injectable()
 export class LayoutFacade {
-  constructor(
-    private readonly store: Store<LayoutState>
-  ) {}
+  constructor(private readonly store: Store<LayoutState>) {}
 
   public readonly activatedRouteTitle$ = this.store.pipe(
     select(selectActivatedRouteTitle)
   );
 
-  public readonly dateRange$ = this.store.pipe(
-    select(selectDateRange)
-  );
+  public readonly dateRange$ = this.store.pipe(select(selectDateRange));
 
   public readonly trend$: Observable<TREND_MODE> = this.store.pipe(
     select(selectTrend)
@@ -29,10 +33,15 @@ export class LayoutFacade {
     select(selectIsFullMonthsDateRange)
   );
 
-  public saveDateRange(start: Moment | null, end: Moment | null, duration: DATE_RANGE_DURATION) {
-    this.store.dispatch(layoutPageActions.saveDateRange({ start, end, duration }));
+  public saveDateRange(
+    start: Moment | null,
+    end: Moment | null,
+    duration: DATE_RANGE_DURATION
+  ) {
+    this.store.dispatch(
+      layoutPageActions.saveDateRange({ start, end, duration })
+    );
   }
-
 
   public setTrend(trend: TREND_MODE) {
     this.store.dispatch(layoutPageActions.setTrend({ trend }));
@@ -42,18 +51,9 @@ export class LayoutFacade {
     this.store.dispatch(layoutPageActions.setActivatedRouteTitle({ title }));
   }
 
-  get durationLabel$() {
-    return this.dateRange$.pipe(
-          map(({duration}) => {
-              const menu = DateRangeMenus.find(m => m.range == duration);
-              if(menu) return menu.label;
-              else return 'Current';
-          })
-      );
-  }
+  public readonly durationLabel$ = this.store.pipe(select(selectDurationLabel));
 
-  get durationTrendLabel$() {
-      return this.durationLabel$.pipe(
-          map(l => l.replace(/^Last/g, 'Previous').replace(/^This/g, 'Last')));
-  }
+  public readonly durationTrendLabel$ = this.store.pipe(
+    select(selectDurationTrendLabel)
+  );
 }
