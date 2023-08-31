@@ -126,12 +126,7 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
       tooltip: {
         callbacks: {
           label: function (tooltipItem) {
-            return (
-              tooltipItem.label +
-              ": " +
-              tooltipItem.dataset.data[tooltipItem.dataIndex] +
-              "%"
-            );
+            return tooltipItem.label + ": " + tooltipItem.formattedValue + "%";
           },
         },
       },

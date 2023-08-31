@@ -152,6 +152,9 @@ export class FinanceExpenseTrendComponent implements OnInit, OnDestroy {
       },
       tooltip: {
         mode: "x",
+        itemSort: (a, b) => {
+          return b.parsed.y - a.parsed.y;
+        },
         callbacks: {
           label: function (tooltipItems) {
             if (tooltipItems.parsed.y == 0) {
