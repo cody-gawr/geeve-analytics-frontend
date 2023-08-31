@@ -26,6 +26,8 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
 
   selectedData: { value: number; name: string }[] = [];
   unSelectedData: { value: number; name: string }[] = [];
+  totalDataLength = 0;
+
   isShowLabels = true;
   isExplodeSlices = false;
   arcWidth = 0.75;
@@ -129,6 +131,7 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
                 this.unSelectedData.push(chartItem);
               }
             });
+            this.totalDataLength = expenses.length;
           }
         }
       });
