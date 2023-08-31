@@ -150,7 +150,6 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
         ticks: {
           autoSkip: false,
         },
-        display: false,
         offset: true,
         stacked: true,
       },
