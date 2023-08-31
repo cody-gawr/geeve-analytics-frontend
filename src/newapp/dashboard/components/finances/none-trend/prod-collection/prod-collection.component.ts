@@ -146,7 +146,13 @@ export class FinanceProdColComponent implements OnInit, OnDestroy {
         } else {
           chartData.push(prodVal);
           chartData.push(collectionVal);
-          this.datasets = [{ data: chartData }];
+          this.datasets = [
+            {
+              data: chartData,
+              backgroundColor: ["#ffb4b5", "#4ccfae"],
+              hoverBackgroundColor: ["#ffb4b5", "#4ccfae"],
+            },
+          ];
           if (prodVal > 0 || collectionVal > 0) {
             this.labels = ["Production", "Collection"];
           } else {
