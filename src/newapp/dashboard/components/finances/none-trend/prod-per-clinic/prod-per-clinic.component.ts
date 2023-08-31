@@ -17,7 +17,7 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   datasets = [{ data: [] }];
-  productionChartLabels = [];
+  labels = [];
   productionChartTotal = 0;
   productionChartTrendTotal = 0;
   productionChartTrendIcon = "down";
@@ -99,7 +99,7 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
           });
           this.productionChartTrendTotal = prodByClinicianTrendTotal;
           this.productionChartTotal = chartTotal;
-          this.productionChartLabels = chartLabels;
+          this.labels = chartLabels;
           this.datasets = [{ data: chartData }];
           if (this.productionChartTotal >= this.productionChartTrendTotal) {
             this.productionChartTrendIcon = "up";
@@ -126,7 +126,9 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
       tooltip: {
         callbacks: {
           label: function (tooltipItem) {
-            return tooltipItem.label + ": " + tooltipItem.formattedValue + "%";
+            return (
+              tooltipItem.label + ": " + Math.round(tooltipItem.parsed) + "%"
+            );
           },
         },
       },

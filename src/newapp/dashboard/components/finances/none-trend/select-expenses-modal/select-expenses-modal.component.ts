@@ -1,13 +1,8 @@
 import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
 import { DashboardFacade } from "@/newapp/dashboard/facades/dashboard.facade";
 import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
-import { MarketingFacade } from "@/newapp/dashboard/facades/marketing.facade";
-import { Component, Inject, OnInit, OnDestroy, Input } from "@angular/core";
-import {
-  MatDialog,
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-} from "@angular/material/dialog";
+import { Component, Inject, OnInit, OnDestroy } from "@angular/core";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import _ from "lodash";
 import { Subject, takeUntil, combineLatest, map } from "rxjs";
 export interface DialogData {

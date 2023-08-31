@@ -11,7 +11,6 @@ import { AuthFacade } from "../../auth/facades/auth.facade";
 import { environment } from "@/environments/environment";
 import { ClinicFacade } from "../../clinic/facades/clinic.facade";
 import { LayoutFacade } from "../facades/layout.facade";
-import { DentistFacade } from "@/newapp/dentist/facades/dentists.facade";
 
 /**
  * Menu data with nested structure.
@@ -120,7 +119,7 @@ const MENU_DATA: MenuNode[] = [
       // user_type==2 || permissions.contains(dashboard2) || user_type==7
       {
         title: "Clinician Procedures & Referrals",
-        path: "/newapp/dashboard/clinicianproceedures",
+        path: "dashboards/clinicianproceedures",
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
             permissions!.indexOf("dashboard2") >= 0 ||
@@ -131,7 +130,7 @@ const MENU_DATA: MenuNode[] = [
       // user_type==2 || permissions.contains(dashboard3) || user_type==7
       {
         title: "Front Desk",
-        path: "/newapp/dashboard/frontdesk",
+        path: "dashboards/frontdesk",
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
             permissions!.indexOf("dashboard3") >= 0 ||
@@ -153,7 +152,7 @@ const MENU_DATA: MenuNode[] = [
       //(user_type==2 || permissions.contains(dashboard4) || user_type==7) && userPlan!='lite'
       {
         title: "Marketing",
-        path: "/newapp/dashboard/marketing",
+        path: "dashboards/marketing",
         validatorFn: ({
           permissions,
           userType,
