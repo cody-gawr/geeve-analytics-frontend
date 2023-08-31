@@ -225,6 +225,120 @@ html {
         font-size: 37px;
         font-family: "Gilroy-Bold";
     }
+
+    .custom-tooltip {
+        position: absolute;
+        top: 30px;
+        right: -6px;
+        width: 330px;
+        padding: 8px 20px;
+        box-shadow: 2px 15px 21px rgba(3, 83, 72, 0.19);
+        border-radius: 6px;
+        background-color: #1daa96;
+        color: #fff;
+        //opacity: 0;
+        //visibility: hidden;
+        animation: tooltipIn 0.5s ease-in-out;
+        z-index: 999;
+      }
+      
+      .custom-tooltip-right {
+        position: absolute;
+        bottom: -140px;
+        right: -275px;
+        height: max-content;
+      }
+      
+      .custom-tooltip-top {
+        position: absolute;
+        top: -265px;
+        left: -286px;
+        height: max-content;
+      }
+      
+      .custom-tooltip-top-right {
+        position: absolute;
+        top: -172px;
+        left: -56px;
+        height: max-content;
+      }
+      
+      .custom-tooltip-top-right-discount {
+        position: absolute;
+        top: -90px;
+        left: -30px;
+        height: max-content;
+      }
+      
+      @keyframes tooltipIn {
+        from {
+          visibility: hidden;
+          opacity: 0;
+        }
+      
+        to {
+          visibility: visible;
+          opacity: 1;
+        }
+      }
+      
+      .help-tip:hover .custom-tooltip {
+        opacity: 1;
+        visibility: visible;
+      }
+      
+      .tooltip-title-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .custom-tooltip .tooltip-title {
+        font-size: 17px;
+        letter-spacing: normal !important;
+        font-family: 'Gilroy-Medium';
+      }
+      
+      .white-heart-icon {
+        width: 26px;
+        height: 25px !important;
+        image-rendering: auto;
+        image-rendering: crisp-edges;
+        image-rendering: pixelated;
+      }
+      
+      .custom-tooltip .tooltip-info-text {
+        font-size: 13px;
+        font-family: 'Gilroy-Regular';
+        line-height: 1.3;
+        margin-top: 8px;
+        width: 90%;
+      }
+      
+      .custom-tooltip::after {
+        content: ' ';
+        position: absolute;
+        margin-top: -6px;
+        margin-left: -5px;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 8px solid #1daa96 !important;
+        right: 8px;
+        top: 0px;
+      }
+      
+      .custom-tooltip-right::after {
+        content: none;
+      }
+      .custom-tooltip-top::after {
+        content: none;
+      }
+      .custom-tooltip-top-right::after {
+        content: none;
+      }
+      .custom-tooltip-top-right-discount::after {
+        content: none;
+      }    
 }
 
 .jeeve-custom-select-panel {

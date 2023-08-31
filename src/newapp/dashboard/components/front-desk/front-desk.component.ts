@@ -136,7 +136,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$),
       map((c) => {
         if (c && c[index]) {
-          return c[index].info;
+          return c[index];
         }
         return "";
       })

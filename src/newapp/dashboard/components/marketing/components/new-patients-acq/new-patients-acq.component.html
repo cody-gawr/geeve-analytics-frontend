@@ -1,6 +1,6 @@
 <div class="chart-container">
     <mat-icon
-        [matTooltip]="toolTip"
+        [tooltip]="toolTip"
         matTooltipPosition="below"
         color="primary"
         class="help-tip"
@@ -9,7 +9,7 @@
     <div class="chart-title">
         <div class="icon-title">
             <mat-icon 
-            [matTooltip]="(durationTrendLabel$ | async)+': $'+ (newPatientsAcqPrev | number : '1.0-0')"
+            [tooltip]="(durationTrendLabel$ | async)+': $'+ (newPatientsAcqPrev | number : '1.0-0')"
             [color]="trendingIcon == 'trending_up'?'primary':'warn'" [fontIcon]="trendingIcon"></mat-icon>
             <span>
                 New Patient Cost

@@ -1,6 +1,6 @@
 <div class="chart-container">
     <mat-icon
-        [matTooltip]="toolTip"
+        [tooltip]="toolTip"
         matTooltipPosition="below"
         color="primary"
         class="help-tip"
@@ -10,7 +10,7 @@
         <mat-icon 
             [color]="trendingIcon == 'trending_up'?'primary':'warn'"
             [fontIcon]="trendingIcon"
-            [matTooltip]="getTrendTip$ | async"
+            [tooltip]="getTrendTip$ | async"
         ></mat-icon>
         <span>
             Production Per Visit

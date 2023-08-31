@@ -149,9 +149,9 @@ export class MarketingComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$),
       map(([tip, v]) => {
         if (v) {
-          return tip && tip[61] && tip[61].info;
+          return tip && tip[61] && tip[61];
         } else {
-          return tip && tip[36] && tip[36].info;
+          return tip && tip[36] && tip[36];
         }
       })
     );
@@ -162,7 +162,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$),
       map((c) => {
         if (c && c[index]) {
-          return c[index].info;
+          return c[index];
         }
         return "";
       })

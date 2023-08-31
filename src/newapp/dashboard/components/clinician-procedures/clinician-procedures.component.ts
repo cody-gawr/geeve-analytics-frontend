@@ -33,11 +33,11 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
       map(([tips, visibility]) => {
         if (visibility === "general") {
           if (tips && tips[9]) {
-            return tips[9].info;
+            return tips[9];
           }
         } else {
           if (tips && tips[50]) {
-            return tips[50].info;
+            return tips[50];
           }
         }
         return "";
@@ -54,15 +54,15 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
       map(([tips, visibility]) => {
         if (visibility === 1) {
           if (tips && tips[10]) {
-            return tips[10].info;
+            return tips[10];
           }
         } else if (visibility === 2) {
           if (tips && tips[11]) {
-            return tips[11].info;
+            return tips[11];
           }
         } else {
           if (tips && tips[12]) {
-            return tips[12].info;
+            return tips[12];
           }
         }
         return "";
@@ -143,7 +143,7 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$),
       map((c) => {
         if (c && c[index]) {
-          return c[index].info;
+          return c[index];
         }
         return "";
       })

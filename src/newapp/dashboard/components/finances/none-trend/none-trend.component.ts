@@ -1,115 +1,114 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { DashboardFacade } from "../../../facades/dashboard.facade";
 import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
-import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { Subject, takeUntil, combineLatest, map } from "rxjs";
 import { FinanceFacade } from "../../../facades/finance.facade";
 import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
 
 @Component({
-    selector: 'none-trend-finances',
-    templateUrl: './none-trend.component.html',
-    styleUrls: ['./none-trend.component.scss']
+  selector: "none-trend-finances",
+  templateUrl: "./none-trend.component.html",
+  styleUrls: ["./none-trend.component.scss"],
 })
 export class NoneTrendFinanceComponent implements OnInit, OnDestroy {
+  destroy = new Subject<void>();
+  destroy$ = this.destroy.asObservable();
 
-    destroy = new Subject<void>();
-    destroy$ = this.destroy.asObservable();
+  get netProfitProductionVal$() {
+    return this.financeFacade.productionVal$.pipe(
+      takeUntil(this.destroy$),
+      map((c) => Math.round(c ?? 0))
+    );
+  }
 
-    get netProfitProductionVal$(){
-        return this.financeFacade.productionVal$.pipe(
-            takeUntil(this.destroy$),
-            map(c => Math.round(c??0))
-        )
-    }
+  get netProfitVal$() {
+    return this.financeFacade.netProfitVal$.pipe(
+      takeUntil(this.destroy$),
+      map((c) => Math.round(c ?? 0))
+    );
+  }
 
-    get netProfitVal$(){
-        return this.financeFacade.netProfitVal$.pipe(
-            takeUntil(this.destroy$),
-            map(c => Math.round(c??0))
-        )
-    }
+  get netProfitPercentageVal$() {
+    return this.financeFacade.netProfitPercentageVal$.pipe(
+      takeUntil(this.destroy$),
+      map((c) => Math.round(c ?? 0))
+    );
+  }
 
-    get netProfitPercentageVal$(){
-        return this.financeFacade.netProfitPercentageVal$.pipe(
-            takeUntil(this.destroy$),
-            map(c => Math.round(c??0))
-        )
-    }
+  get productionPerVisit$() {
+    return this.financeFacade.prodPerVisitTotal$.pipe(
+      takeUntil(this.destroy$),
+      map((v) => v)
+    );
+  }
 
-    get productionPerVisit$() {
-        return this.financeFacade.prodPerVisitTotal$.pipe(
-            takeUntil(this.destroy$),
-            map(v => v)
-        )
-    }
+  get collectionVal$() {
+    return this.financeFacade.collectionVal$.pipe(
+      takeUntil(this.destroy$),
+      map((v) => v)
+    );
+  }
 
-    get collectionVal$() {
-        return this.financeFacade.collectionVal$.pipe(
-            takeUntil(this.destroy$),
-            map(v => v)
-        )
-    }
+  get isLoadingCollectionVal$() {
+    return combineLatest([
+      this.financeFacade.isLoadingTotalProduction$,
+      this.financeFacade.isLoadingCollection$,
+    ]).pipe(
+      takeUntil(this.destroy$),
+      map(([v, v1]) => v && v1)
+    );
+  }
 
-    get isLoadingCollectionVal$() {
-        return combineLatest([
-            this.financeFacade.isLoadingTotalProduction$, 
-            this.financeFacade.isLoadingCollection$
-        ]) .pipe(
-            takeUntil(this.destroy$),
-            map(([v, v1]) => v && v1)
-        )
-    }
+  get isLoadingNetProfitProduction$() {
+    return this.financeFacade.isLoadingTotalProduction$;
+  }
 
-    get isLoadingNetProfitProduction$() {
-        return this.financeFacade.isLoadingTotalProduction$;
-    }
+  get isLoadingNetProfit$() {
+    return this.financeFacade.isLoadingNetProfit$;
+  }
 
-    get isLoadingNetProfit$() {
-        return this.financeFacade.isLoadingNetProfit$;
-    }
+  get isLoadingNetProfitPercentage$() {
+    return this.financeFacade.isLoadingNetProfitPercentage$;
+  }
 
-    get isLoadingNetProfitPercentage$() {
-        return this.financeFacade.isLoadingNetProfitPercentage$;
-    }
+  get isFullMonthsDateRange$() {
+    return this.layoutFacade.isFullMonthsDateRange$;
+  }
 
-    get isFullMonthsDateRange$() {
-        return this.layoutFacade.isFullMonthsDateRange$;
-    }
+  get isConnectedWith$() {
+    return this.dashbordFacade.connectedWith$.pipe(
+      takeUntil(this.destroy$),
+      map((v) => v != "none")
+    );
+  }
 
-    get isConnectedWith$() {
-        return this.dashbordFacade.connectedWith$.pipe(
-            takeUntil(this.destroy$),
-            map(v => v != 'none'));
-    }
+  get isLoadingProductionPerVisit$() {
+    return this.financeFacade.isLoadingFnProdPerVisit$.pipe(
+      takeUntil(this.destroy$),
+      (v) => v
+    );
+  }
 
-    
-    get isLoadingProductionPerVisit$() {
-        return this.financeFacade.isLoadingFnProdPerVisit$.pipe(
-            takeUntil(this.destroy$),
-            v => v
-        )
-    };
+  constructor(
+    private dashbordFacade: DashboardFacade,
+    private financeFacade: FinanceFacade,
+    private layoutFacade: LayoutFacade
+  ) {}
 
-    constructor(
-        private dashbordFacade: DashboardFacade,
-        private financeFacade: FinanceFacade,
-        private layoutFacade: LayoutFacade,
-    ) {
-    }
+  ngOnInit(): void {}
 
-    ngOnInit(): void {
-    }
+  ngOnDestroy(): void {
+    this.destroy.next();
+  }
 
-    ngOnDestroy(): void {
-        this.destroy.next();
-    }
-
-    getChartTip(index: number) {
-        return this.dashbordFacade.chartTips$.pipe(map(c => {
-            if(c && c[index]){
-                return c[index].info;
-            }
-            return '';
-        }))
-    }
+  getChartTip(index: number) {
+    return this.dashbordFacade.chartTips$.pipe(
+      map((c) => {
+        if (c && c[index]) {
+          return c[index];
+        }
+        return null;
+      })
+    );
+  }
 }
