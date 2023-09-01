@@ -176,15 +176,15 @@ export class MkSelectExpensesModalComponent implements OnInit, OnDestroy {
   }
 
   removeFromSelected(index: number) {
-    if (this.selectedData.length <= 20) {
+    if (this.selectedData.length > 2) {
+      this.unSelectedData.push(this.selectedData[index]);
+      this.selectedData.splice(index, 1);
+    } else {
       Swal.fire({
         icon: "error",
         title: "Oops....",
-        text: "Minimum " + 20 + " expense account will remain selected",
+        text: "Minimum " + 2 + " expense account will remain selected",
       });
-    } else {
-      this.unSelectedData.push(this.selectedData[index]);
-      this.selectedData.splice(index, 1);
     }
   }
 

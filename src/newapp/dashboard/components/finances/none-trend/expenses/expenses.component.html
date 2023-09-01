@@ -11,7 +11,7 @@
             Expenses
         </div>
         <button 
-            *ngIf="totalDataLength > 15"
+            *ngIf="selectedData.length > 1"
             (click)="openExpensesDialog()" 
             mat-flat-button color="primary">Show More</button>
     </div>

@@ -23,7 +23,7 @@
                 <h4>Other Expenses</h4>
                 <div class="board">
                     <button 
-                        *ngFor="let category of unselectedAccounts; let i = index;" 
+                        *ngFor="let category of unSelectedData; let i = index;" 
                         (click)="addToSelected(i)" 
                         mat-stroked-button color="primary" extended
                     >
