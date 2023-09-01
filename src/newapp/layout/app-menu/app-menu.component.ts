@@ -376,8 +376,9 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
         // const path = this.router.parseUrl(url).root.children['primary']
         //   ? this.router.parseUrl(url).root.children['primary'].segments[0].path
         //   : this.defaultMenu;
-        this.activedUrl = url;
-        const node = this.findNodeByPath(url, MENU_DATA);
+        this.activedUrl = url.split("?")[0];
+
+        const node = this.findNodeByPath(this.activedUrl, MENU_DATA);
 
         if (node) {
           this.updateActivateState(node.title);
