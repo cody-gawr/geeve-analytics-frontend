@@ -1,5 +1,5 @@
-import { ActionReducerMap, ActionReducer, MetaReducer } from '@ngrx/store';
-import { localStorageSync } from 'ngrx-store-localstorage';
+import { ActionReducerMap, ActionReducer, MetaReducer } from "@ngrx/store";
+import { localStorageSync } from "ngrx-store-localstorage";
 
 interface State {}
 
@@ -9,14 +9,25 @@ export function localStorageSyncReducer(
 ): ActionReducer<any> {
   return localStorageSync({
     keys: [
-      { clinic: [ 'clinics', 'currentClinicId' ] },
-      { auth: [ 'authUserData', 'rolesIndividual' ] },
+      {
+        clinic: [
+          //'clinics',
+          "currentSingleClinicId",
+          "currentMultiClinicIds",
+        ],
+      },
+      {
+        auth: [
+          "authUserData",
+          //"rolesIndividual"
+        ],
+      },
       // { layout: ['startDate', 'endDate', 'enableDateRagne', 'duration', 'trend'] }
     ],
-    rehydrate: true
+    rehydrate: true,
   })(reducer);
 }
 
 export const metaReducers: Array<MetaReducer<any, any>> = [
-  localStorageSyncReducer
+  localStorageSyncReducer,
 ];

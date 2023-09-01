@@ -10,7 +10,7 @@
         <mat-icon 
             [color]="trendingIcon == 'trending_up'?'primary':'warn'" 
             [fontIcon]="trendingIcon"
-            [tooltip]="getTrendTip$ | async"
+            [matTooltip]="getTrendTip$ | async"
         ></mat-icon>
         <span>
             Total Discounts
