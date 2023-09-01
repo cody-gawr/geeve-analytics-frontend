@@ -6,7 +6,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import _ from "lodash";
 import { Subject, takeUntil, combineLatest, map } from "rxjs";
 export interface DialogData {
-  title: string;
+  selectedData: any[];
+  unSelectedData: any[];
 }
 import Swal from "sweetalert2";
 
@@ -56,6 +57,8 @@ export class MkSelectExpensesModalComponent implements OnInit, OnDestroy {
     private financeFacade: FinanceFacade,
     private clinicFacade: ClinicFacade
   ) {
+    this.selectedData = data.selectedData;
+    this.unSelectedData = data.unSelectedData;
     // combineLatest([
     //     this.dashboardFacade.connectedWith$,
     //     this.marketingFacade.xeroAccounts$,
@@ -88,64 +91,64 @@ export class MkSelectExpensesModalComponent implements OnInit, OnDestroy {
     //     }
     // });
 
-    combineLatest([
-      this.financeFacade.expensesData$,
-      this.financeFacade.expensesProduction$,
-      this.clinicFacade.currentClinicId$,
-    ])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(([expenses, production, clinicId]) => {
-        //   if (typeof clinicId === "string") {
-        //     this.datasets = [];
-        //     let i = 0;
-        //     _.chain(expenses)
-        //       .groupBy("accountName")
-        //       .map((items, accountName) => {
-        //         return {
-        //           items,
-        //           accountName,
-        //         };
-        //       })
-        //       .value()
-        //       .forEach((v) => {
-        //         const bgColor = DoughnutChartColors[i];
-        //         i++;
-        //         this.datasets.push({
-        //           data: _.chain(v.items)
-        //             .orderBy("clinicId", "asc")
-        //             .value()
-        //             .map(
-        //               (item) =>
-        //                 _.round((item.expense / production) * 100 * 10) / 10
-        //             ),
-        //           label: v.accountName,
-        //           backgroundColor: bgColor,
-        //           hoverBackgroundColor: bgColor,
-        //         });
-        //       });
-        //     this.labels = _.chain(expenses)
-        //       .unionBy((item) => item.clinicName)
-        //       .value()
-        //       .map((item) => item.clinicName);
-        //   } else {
-        if (production > 0) {
-          this.selectedData = [];
-          this.unSelectedData = [];
-          expenses.forEach((item, index) => {
-            const chartItem = {
-              name: `${item.accountName}--${item.expense}`,
-              value: _.round((item.expense / production) * 100 * 10) / 10,
-            };
+    // combineLatest([
+    //   this.financeFacade.expensesData$,
+    //   this.financeFacade.expensesProduction$,
+    //   this.clinicFacade.currentClinicId$,
+    // ])
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe(([expenses, production, clinicId]) => {
+    //     //   if (typeof clinicId === "string") {
+    //     //     this.datasets = [];
+    //     //     let i = 0;
+    //     //     _.chain(expenses)
+    //     //       .groupBy("accountName")
+    //     //       .map((items, accountName) => {
+    //     //         return {
+    //     //           items,
+    //     //           accountName,
+    //     //         };
+    //     //       })
+    //     //       .value()
+    //     //       .forEach((v) => {
+    //     //         const bgColor = DoughnutChartColors[i];
+    //     //         i++;
+    //     //         this.datasets.push({
+    //     //           data: _.chain(v.items)
+    //     //             .orderBy("clinicId", "asc")
+    //     //             .value()
+    //     //             .map(
+    //     //               (item) =>
+    //     //                 _.round((item.expense / production) * 100 * 10) / 10
+    //     //             ),
+    //     //           label: v.accountName,
+    //     //           backgroundColor: bgColor,
+    //     //           hoverBackgroundColor: bgColor,
+    //     //         });
+    //     //       });
+    //     //     this.labels = _.chain(expenses)
+    //     //       .unionBy((item) => item.clinicName)
+    //     //       .value()
+    //     //       .map((item) => item.clinicName);
+    //     //   } else {
+    //     if (production > 0) {
+    //       this.selectedData = [];
+    //       this.unSelectedData = [];
+    //       expenses.forEach((item, index) => {
+    //         const chartItem = {
+    //           name: `${item.accountName}--${item.expense}`,
+    //           value: _.round((item.expense / production) * 100 * 10) / 10,
+    //         };
 
-            if (index < 15) {
-              this.selectedData.push(chartItem);
-            } else {
-              this.unSelectedData.push(chartItem);
-            }
-          });
-        }
-        //   }
-      });
+    //         if (index < 15) {
+    //           this.selectedData.push(chartItem);
+    //         } else {
+    //           this.unSelectedData.push(chartItem);
+    //         }
+    //       });
+    //     }
+    //     //   }
+    //   });
   }
 
   ngOnInit(): void {}

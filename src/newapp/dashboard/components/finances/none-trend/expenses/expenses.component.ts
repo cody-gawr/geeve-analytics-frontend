@@ -164,7 +164,12 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
   }
 
   openExpensesDialog() {
-    const dialogRef = this.dialog.open(MkSelectExpensesModalComponent);
+    const dialogRef = this.dialog.open(MkSelectExpensesModalComponent, {
+      data: {
+        selectedData: this.selectedData.slice(),
+        unSelectedData: this.unSelectedData.slice(),
+      },
+    });
     dialogRef.afterClosed().subscribe((result) => {
       this.selectedData = result.selectedData;
       this.unSelectedData = result.unSelectedData;
