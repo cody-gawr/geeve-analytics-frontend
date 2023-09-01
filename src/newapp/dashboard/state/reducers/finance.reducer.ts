@@ -1,30 +1,41 @@
-import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
-import * as _ from 'lodash';
-import { JeeveError } from '@/newapp/models';
-import { FinanceApiActions, FinancePageActions } from '../actions';
-import { FnTotalDiscountItem, FnExpensesDataItem, FnProductionByClinicianItem, FnProductionPerVisitItem, FnTotalProductionApiResponse, FnTotalProductionItem, FnTotalCollectionItem, FnNetProfitTrendItem, FnNetProfitPercentTrendItem, FnProdByClinicianTrendItem } from '@/newapp/models/dashboard';
-import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
-import moment from 'moment';
-import { selectCurrentClinicId } from '@/newapp/clinic/state/reducers/clinic.reducer';
-import { DoughnutChartColors } from '@/newapp/shared/constants';
+import { createFeature, createReducer, createSelector, on } from "@ngrx/store";
+import * as _ from "lodash";
+import { JeeveError } from "@/newapp/models";
+import { FinanceApiActions, FinancePageActions } from "../actions";
+import {
+  FnTotalDiscountItem,
+  FnExpensesDataItem,
+  FnProductionByClinicianItem,
+  FnProductionPerVisitItem,
+  FnTotalProductionApiResponse,
+  FnTotalProductionItem,
+  FnTotalCollectionItem,
+  FnNetProfitTrendItem,
+  FnNetProfitPercentTrendItem,
+  FnProdByClinicianTrendItem,
+} from "@/newapp/models/dashboard";
+import { selectTrend } from "@/newapp/layout/state/reducers/layout.reducer";
+import moment from "moment";
+import { selectCurrentClinicId } from "@/newapp/clinic/state/reducers/clinic.reducer";
+import { DoughnutChartColors } from "@/newapp/shared/constants";
 
-type FInanceEndpoints =  
-    'fnTotalProduction' | 
-    'fnNetProfit' | 
-    'fnNetProfitPercentage' |
-    'fnExpenses' |
-    'fnProductionByClinician' |
-    'fnProductionPerVisit' |
-    'fnTotalDiscounts' |
-    'fnTotalCollection' | 
-    'fnTotalProductionTrend' | 
-    'fnTotalCollectionTrend' |
-    'fnNetProfitTrend' | 
-    'fnNetProfitPercentageTrend' | 
-    'fnProductionPerVisitTrend' |
-    'fnExpensesTrend' |
-    'fnProductionByClinicianTrend' |
-    'fnTotalDiscountsTrend';
+type FInanceEndpoints =
+  | "fnTotalProduction"
+  | "fnNetProfit"
+  | "fnNetProfitPercentage"
+  | "fnExpenses"
+  | "fnProductionByClinician"
+  | "fnProductionPerVisit"
+  | "fnTotalDiscounts"
+  | "fnTotalCollection"
+  | "fnTotalProductionTrend"
+  | "fnTotalCollectionTrend"
+  | "fnNetProfitTrend"
+  | "fnNetProfitPercentageTrend"
+  | "fnProductionPerVisitTrend"
+  | "fnExpensesTrend"
+  | "fnProductionByClinicianTrend"
+  | "fnTotalDiscountsTrend";
 
 export interface FinanceState {
   isLoadingData: Array<FInanceEndpoints>;
@@ -40,7 +51,6 @@ export interface FinanceState {
   // FnNetProfitTrend
   netProfitTrendData: FnNetProfitTrendItem[];
 
-  
   netProfitPercentageVal: number;
   netProfitPercentTrendData: FnNetProfitPercentTrendItem[];
 
@@ -48,8 +58,8 @@ export interface FinanceState {
   expensesTrendData: FnExpensesDataItem[];
   expensesTrendDurations: string[];
   expenseProduction: number;
-  prodByClinicData: FnProductionByClinicianItem[],
-  prodByClinicTrendData: FnProdByClinicianTrendItem[],
+  prodByClinicData: FnProductionByClinicianItem[];
+  prodByClinicTrendData: FnProdByClinicianTrendItem[];
   prodByClinicianTotal: number;
   prodByClinicianTrendTotal: number;
 
@@ -114,21 +124,21 @@ const initialState: FinanceState = {
 
   collectionTrendData: [],
 
-  trendProfitChartName: 'Production'
+  trendProfitChartName: "Production",
 };
 
 export const financeFeature = createFeature({
-  name: 'finance',
+  name: "finance",
   reducer: createReducer(
     initialState,
     on(FinancePageActions.loadFnTotalProduction, (state): FinanceState => {
       const { isLoadingData, errors } = state;
       return {
         ...state,
-        errors: _.filter(errors, (n) => n.api != 'fnTotalProduction'),
+        errors: _.filter(errors, (n) => n.api != "fnTotalProduction"),
         netProfitProductionVal: 0,
         prodData: [],
-        isLoadingData: _.union(isLoadingData, ['fnTotalProduction'])
+        isLoadingData: _.union(isLoadingData, ["fnTotalProduction"]),
       };
     }),
     on(
@@ -137,11 +147,14 @@ export const financeFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != 'fnTotalProduction'),
+          errors: _.filter(errors, (n) => n.api != "fnTotalProduction"),
           netProfitProductionVal: value,
           prodData: prodData,
           productionTrendVal: trendVal,
-          isLoadingData: _.filter(isLoadingData, (n) => n != 'fnTotalProduction')
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnTotalProduction"
+          ),
         };
       }
     ),
@@ -154,8 +167,11 @@ export const financeFeature = createFeature({
           netProfitProductionVal: null,
           prodData: [],
           productionTrendVal: 0,
-          isLoadingData: _.filter(isLoadingData, (n) => n != 'fnTotalProduction'),
-          errors: [...errors, { ...error, api: 'fnTotalProduction' }]
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnTotalProduction"
+          ),
+          errors: [...errors, { ...error, api: "fnTotalProduction" }],
         };
       }
     ),
@@ -163,11 +179,11 @@ export const financeFeature = createFeature({
       const { isLoadingData, errors } = state;
       return {
         ...state,
-        errors: _.filter(errors, (n) => n.api != 'fnTotalCollection'),
+        errors: _.filter(errors, (n) => n.api != "fnTotalCollection"),
         collectionVal: 0,
         collectionData: [],
         collectionTrendVal: 0,
-        isLoadingData: _.union(isLoadingData, ['fnTotalCollection'])
+        isLoadingData: _.union(isLoadingData, ["fnTotalCollection"]),
       };
     }),
     on(
@@ -176,11 +192,14 @@ export const financeFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != 'fnTotalCollection'),
+          errors: _.filter(errors, (n) => n.api != "fnTotalCollection"),
           collectionVal: value,
           collectionData: collectionData,
           collectionTrendVal: trendVal,
-          isLoadingData: _.filter(isLoadingData, (n) => n != 'fnTotalCollection')
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnTotalCollection"
+          ),
         };
       }
     ),
@@ -193,358 +212,441 @@ export const financeFeature = createFeature({
           collectionVal: null,
           collectionData: [],
           collectionTrendVal: 0,
-          isLoadingData: _.filter(isLoadingData, (n) => n != 'fnTotalCollection'),
-          errors: [...errors, { ...error, api: 'fnTotalCollection' }]
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnTotalCollection"
+          ),
+          errors: [...errors, { ...error, api: "fnTotalCollection" }],
         };
       }
     ),
     on(FinancePageActions.loadFnNetProfit, (state): FinanceState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        errors: _.filter(errors, (n) => n.api != "fnNetProfit"),
+        netProfitVal: 0,
+        isLoadingData: _.union(isLoadingData, ["fnNetProfit"]),
+      };
+    }),
+    on(
+      FinanceApiActions.fnNetProfitSuccess,
+      (state, { value }): FinanceState => {
         const { isLoadingData, errors } = state;
         return {
-            ...state,
-            errors: _.filter(errors, (n) => n.api != 'fnNetProfit'),
-            netProfitVal: 0,
-            isLoadingData: _.union(isLoadingData, ['fnNetProfit'])
+          ...state,
+          errors: _.filter(errors, (n) => n.api != "fnNetProfit"),
+          netProfitVal: value,
+          isLoadingData: _.filter(isLoadingData, (n) => n != "fnNetProfit"),
         };
-    }),
-    on(FinanceApiActions.fnNetProfitSuccess,
-        (state, { value }): FinanceState => {
-            const { isLoadingData, errors } = state;
-            return {
-                ...state,
-                errors: _.filter(errors, (n) => n.api != 'fnNetProfit'),
-                netProfitVal: value,
-                isLoadingData: _.filter(isLoadingData, (n) => n != 'fnNetProfit')
-            };
-        }
+      }
     ),
-    on(FinanceApiActions.fnNetProfitFailure,
-        (state, { error }): FinanceState => {
-            const { isLoadingData, errors } = state;
-            return {
-                ...state,
-                netProfitVal: null,
-                isLoadingData: _.filter(isLoadingData, (n) => n != 'fnNetProfit'),
-                errors: [...errors, { ...error, api: 'fnNetProfit' }]
-            };
-        }
+    on(
+      FinanceApiActions.fnNetProfitFailure,
+      (state, { error }): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          netProfitVal: null,
+          isLoadingData: _.filter(isLoadingData, (n) => n != "fnNetProfit"),
+          errors: [...errors, { ...error, api: "fnNetProfit" }],
+        };
+      }
     ),
     on(FinancePageActions.loadFnNetProfitPercentage, (state): FinanceState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        errors: _.filter(errors, (n) => n.api != "fnNetProfitPercentage"),
+        netProfitPercentageVal: 0,
+        isLoadingData: _.union(isLoadingData, ["fnNetProfitPercentage"]),
+      };
+    }),
+    on(
+      FinanceApiActions.fnNetProfitPercentageSuccess,
+      (state, { value }): FinanceState => {
         const { isLoadingData, errors } = state;
         return {
-            ...state,
-            errors: _.filter(errors, (n) => n.api != 'fnNetProfitPercentage'),
-            netProfitPercentageVal: 0,
-            isLoadingData: _.union(isLoadingData, ['fnNetProfitPercentage'])
+          ...state,
+          errors: _.filter(errors, (n) => n.api != "fnNetProfitPercentage"),
+          netProfitPercentageVal: value,
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnNetProfitPercentage"
+          ),
         };
-    }),
-    on(FinanceApiActions.fnNetProfitPercentageSuccess,
-        (state, { value }): FinanceState => {
-            const { isLoadingData, errors } = state;
-            return {
-                ...state,
-                errors: _.filter(errors, (n) => n.api != 'fnNetProfitPercentage'),
-                netProfitPercentageVal: value,
-                isLoadingData: _.filter(isLoadingData, (n) => n != 'fnNetProfitPercentage')
-            };
-        }
+      }
     ),
-    on(FinanceApiActions.fnNetProfitPercentageFailure,
-        (state, { error }): FinanceState => {
-            const { isLoadingData, errors } = state;
-            return {
-                ...state,
-                netProfitPercentageVal: null,
-                isLoadingData: _.filter(isLoadingData, (n) => n != 'fnNetProfitPercentage'),
-                errors: [...errors, { ...error, api: 'fnNetProfitPercentage' }]
-            };
-        }
+    on(
+      FinanceApiActions.fnNetProfitPercentageFailure,
+      (state, { error }): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          netProfitPercentageVal: null,
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnNetProfitPercentage"
+          ),
+          errors: [...errors, { ...error, api: "fnNetProfitPercentage" }],
+        };
+      }
     ),
     // FnExpenses API
     on(FinancePageActions.loadFnExpenses, (state): FinanceState => {
       const { isLoadingData, errors } = state;
       return {
-          ...state,
-          errors: _.filter(errors, (n) => n.api != 'fnExpenses'),
-          expensesData: [],
-          expenseProduction: 0,
-          isLoadingData: _.union(isLoadingData, ['fnExpenses'])
+        ...state,
+        errors: _.filter(errors, (n) => n.api != "fnExpenses"),
+        expensesData: [],
+        expenseProduction: 0,
+        isLoadingData: _.union(isLoadingData, ["fnExpenses"]),
       };
     }),
-    on(FinanceApiActions.fnExpensesSuccess,
-        (state, { expensesData, production }): FinanceState => {
-            const { isLoadingData, errors } = state;
-            return {
-                ...state,
-                errors: _.filter(errors, (n) => n.api != 'fnExpenses'),
-                expensesData: expensesData,
-                expenseProduction: production,
-                isLoadingData: _.filter(isLoadingData, (n) => n != 'fnExpenses')
-            };
-        }
+    on(
+      FinanceApiActions.fnExpensesSuccess,
+      (state, { expensesData, production }): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          errors: _.filter(errors, (n) => n.api != "fnExpenses"),
+          expensesData: expensesData,
+          expenseProduction: production,
+          isLoadingData: _.filter(isLoadingData, (n) => n != "fnExpenses"),
+        };
+      }
     ),
-    on(FinanceApiActions.fnExpensesFailure,
-        (state, { error }): FinanceState => {
-            const { isLoadingData, errors } = state;
-            return {
-                ...state,
-                expensesData: [],
-                expenseProduction: 0,
-                isLoadingData: _.filter(isLoadingData, (n) => n != 'fnExpenses'),
-                errors: [...errors, { ...error, api: 'fnExpenses' }]
-            };
-        }
+    on(
+      FinanceApiActions.fnExpensesFailure,
+      (state, { error }): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          expensesData: [],
+          expenseProduction: 0,
+          isLoadingData: _.filter(isLoadingData, (n) => n != "fnExpenses"),
+          errors: [...errors, { ...error, api: "fnExpenses" }],
+        };
+      }
     ),
     // FnExpensesTrend API
     on(FinancePageActions.loadFnExpensesTrend, (state): FinanceState => {
       const { isLoadingData, errors } = state;
       return {
+        ...state,
+        errors: _.filter(errors, (n) => n.api != "fnExpensesTrend"),
+        expensesTrendData: [],
+        expensesTrendDurations: [],
+        isLoadingData: _.union(isLoadingData, ["fnExpensesTrend"]),
+      };
+    }),
+    on(
+      FinanceApiActions.fnExpensesTrendSuccess,
+      (state, { expensesTrendData, durations }): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != 'fnExpensesTrend'),
+          errors: _.filter(errors, (n) => n.api != "fnExpensesTrend"),
+          expensesTrendData: expensesTrendData,
+          expensesTrendDurations: durations,
+          isLoadingData: _.filter(isLoadingData, (n) => n != "fnExpensesTrend"),
+        };
+      }
+    ),
+    on(
+      FinanceApiActions.fnExpensesTrendFailure,
+      (state, { error }): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
           expensesTrendData: [],
           expensesTrendDurations: [],
-          isLoadingData: _.union(isLoadingData, ['fnExpensesTrend'])
-      };
-    }),
-    on(FinanceApiActions.fnExpensesTrendSuccess,
-        (state, { expensesTrendData, durations }): FinanceState => {
-            const { isLoadingData, errors } = state;
-            return {
-                ...state,
-                errors: _.filter(errors, (n) => n.api != 'fnExpensesTrend'),
-                expensesTrendData: expensesTrendData,
-                expensesTrendDurations: durations,
-                isLoadingData: _.filter(isLoadingData, (n) => n != 'fnExpensesTrend')
-            };
-        }
-    ),
-    on(FinanceApiActions.fnExpensesTrendFailure,
-        (state, { error }): FinanceState => {
-            const { isLoadingData, errors } = state;
-            return {
-                ...state,
-                expensesTrendData: [],
-                expensesTrendDurations: [],
-                isLoadingData: _.filter(isLoadingData, (n) => n != 'fnExpensesTrend'),
-                errors: [...errors, { ...error, api: 'fnExpensesTrend' }]
-            };
-        }
+          isLoadingData: _.filter(isLoadingData, (n) => n != "fnExpensesTrend"),
+          errors: [...errors, { ...error, api: "fnExpensesTrend" }],
+        };
+      }
     ),
     // FnProductionByClinician API
-    on(FinancePageActions.loadFnProductionByClinician, (state): FinanceState => {
-      const { isLoadingData, errors } = state;
-      return {
+    on(
+      FinancePageActions.loadFnProductionByClinician,
+      (state): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != 'fnProductionByClinician'),
+          errors: _.filter(errors, (n) => n.api != "fnProductionByClinician"),
           prodByClinicData: [],
           prodByClinicianTotal: 0,
-          isLoadingData: _.union(isLoadingData, ['fnProductionByClinician'])
-      };
-    }),
-    on(FinanceApiActions.fnProductionByClinicianSuccess,
-        (state, { prodByClinicData, prodByClinicianTotal }): FinanceState => {
-            const { isLoadingData, errors } = state;
-            return {
-                ...state,
-                errors: _.filter(errors, (n) => n.api != 'fnProductionByClinician'),
-                prodByClinicData: prodByClinicData,
-                prodByClinicianTotal: prodByClinicianTotal,
-                isLoadingData: _.filter(isLoadingData, (n) => n != 'fnProductionByClinician')
-            };
-        }
+          isLoadingData: _.union(isLoadingData, ["fnProductionByClinician"]),
+        };
+      }
     ),
-    on(FinanceApiActions.fnProductionByClinicianFailure,
-        (state, { error }): FinanceState => {
-            const { isLoadingData, errors } = state;
-            return {
-                ...state,
-                prodByClinicData: [],
-                prodByClinicianTotal: 0,
-                isLoadingData: _.filter(isLoadingData, (n) => n != 'fnProductionByClinician'),
-                errors: [...errors, { ...error, api: 'fnProductionByClinician' }]
-            };
-        }
-    ),    
+    on(
+      FinanceApiActions.fnProductionByClinicianSuccess,
+      (state, { prodByClinicData, prodByClinicianTotal }): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          errors: _.filter(errors, (n) => n.api != "fnProductionByClinician"),
+          prodByClinicData: prodByClinicData,
+          prodByClinicianTotal: prodByClinicianTotal,
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnProductionByClinician"
+          ),
+        };
+      }
+    ),
+    on(
+      FinanceApiActions.fnProductionByClinicianFailure,
+      (state, { error }): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          prodByClinicData: [],
+          prodByClinicianTotal: 0,
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnProductionByClinician"
+          ),
+          errors: [...errors, { ...error, api: "fnProductionByClinician" }],
+        };
+      }
+    ),
     // FnProdutionByClinicianTrend API
     on(FinancePageActions.loadFnProdByClinicianTrend, (state): FinanceState => {
       const { isLoadingData, errors } = state;
       return {
-          ...state,
-          errors: _.filter(errors, (n) => n.api != 'fnProductionByClinicianTrend'),
-          prodByClinicTrendData: [],
-          isLoadingData: _.union(isLoadingData, ['fnProductionByClinicianTrend'])
+        ...state,
+        errors: _.filter(
+          errors,
+          (n) => n.api != "fnProductionByClinicianTrend"
+        ),
+        prodByClinicTrendData: [],
+        isLoadingData: _.union(isLoadingData, ["fnProductionByClinicianTrend"]),
       };
     }),
-    on(FinanceApiActions.fnProdByClinicianTrendSuccess,
-        (state, { prodByClinicTrendData }): FinanceState => {
-            const { isLoadingData, errors } = state;
-            return {
-                ...state,
-                errors: _.filter(errors, (n) => n.api != 'fnProductionByClinicianTrend'),
-                prodByClinicTrendData: prodByClinicTrendData,
-                isLoadingData: _.filter(isLoadingData, (n) => n != 'fnProductionByClinicianTrend')
-            };
-        }
+    on(
+      FinanceApiActions.fnProdByClinicianTrendSuccess,
+      (state, { prodByClinicTrendData }): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          errors: _.filter(
+            errors,
+            (n) => n.api != "fnProductionByClinicianTrend"
+          ),
+          prodByClinicTrendData: prodByClinicTrendData,
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnProductionByClinicianTrend"
+          ),
+        };
+      }
     ),
-    on(FinanceApiActions.fnProdByClinicianTrendFailure,
-        (state, { error }): FinanceState => {
-            const { isLoadingData, errors } = state;
-            return {
-                ...state,
-                prodByClinicTrendData: [],
-                isLoadingData: _.filter(isLoadingData, (n) => n != 'fnProductionByClinicianTrend'),
-                errors: [...errors, { ...error, api: 'fnProductionByClinicianTrend' }]
-            };
-        }
-    ),    
+    on(
+      FinanceApiActions.fnProdByClinicianTrendFailure,
+      (state, { error }): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          prodByClinicTrendData: [],
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnProductionByClinicianTrend"
+          ),
+          errors: [
+            ...errors,
+            { ...error, api: "fnProductionByClinicianTrend" },
+          ],
+        };
+      }
+    ),
     // FnProductionPerVisit API
     on(FinancePageActions.loadFnProductionPerVisit, (state): FinanceState => {
       const { isLoadingData, errors } = state;
       return {
+        ...state,
+        errors: _.filter(errors, (n) => n.api != "fnProductionPerVisit"),
+        prodPerVisitData: [],
+        prodPerVisitTotal: 0,
+        prodPerVisitTrendTotal: 0,
+        isLoadingData: _.union(isLoadingData, ["fnProductionPerVisit"]),
+      };
+    }),
+    on(
+      FinanceApiActions.fnProductionPerVisitSuccess,
+      (
+        state,
+        { prodPerVisitData, prodPerVisitTotal, prodPerVisitTrendTotal }
+      ): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != 'fnProductionPerVisit'),
+          errors: _.filter(errors, (n) => n.api != "fnProductionPerVisit"),
+          prodPerVisitData: prodPerVisitData,
+          prodPerVisitTotal: prodPerVisitTotal,
+          prodPerVisitTrendTotal: prodPerVisitTrendTotal,
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnProductionPerVisit"
+          ),
+        };
+      }
+    ),
+    on(
+      FinanceApiActions.fnProductionPerVisitFailure,
+      (state, { error }): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
           prodPerVisitData: [],
           prodPerVisitTotal: 0,
           prodPerVisitTrendTotal: 0,
-          isLoadingData: _.union(isLoadingData, ['fnProductionPerVisit'])
-      };
-    }),
-    on(FinanceApiActions.fnProductionPerVisitSuccess,
-        (state, { prodPerVisitData, prodPerVisitTotal, prodPerVisitTrendTotal }): FinanceState => {
-            const { isLoadingData, errors } = state;
-            return {
-                ...state,
-                errors: _.filter(errors, (n) => n.api != 'fnProductionPerVisit'),
-                prodPerVisitData: prodPerVisitData,
-                prodPerVisitTotal: prodPerVisitTotal,
-                prodPerVisitTrendTotal: prodPerVisitTrendTotal,
-                isLoadingData: _.filter(isLoadingData, (n) => n != 'fnProductionPerVisit')
-            };
-        }
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnProductionPerVisit"
+          ),
+          errors: [...errors, { ...error, api: "fnProductionPerVisit" }],
+        };
+      }
     ),
-    on(FinanceApiActions.fnProductionPerVisitFailure,
-        (state, { error }): FinanceState => {
-            const { isLoadingData, errors } = state;
-            return {
-                ...state,
-                prodPerVisitData: [],
-                prodPerVisitTotal: 0,
-                prodPerVisitTrendTotal: 0,
-                isLoadingData: _.filter(isLoadingData, (n) => n != 'fnProductionPerVisit'),
-                errors: [...errors, { ...error, api: 'fnProductionPerVisit' }]
-            };
-        }
-    ),   
     // FnProdutionPerVisitTrend API
     on(FinancePageActions.loadFnProdPerVisitTrend, (state): FinanceState => {
       const { isLoadingData, errors } = state;
       return {
-          ...state,
-          errors: _.filter(errors, (n) => n.api != 'fnProductionPerVisitTrend'),
-          prodPerVisitTrendData: [],
-          isLoadingData: _.union(isLoadingData, ['fnProductionPerVisitTrend'])
+        ...state,
+        errors: _.filter(errors, (n) => n.api != "fnProductionPerVisitTrend"),
+        prodPerVisitTrendData: [],
+        isLoadingData: _.union(isLoadingData, ["fnProductionPerVisitTrend"]),
       };
     }),
-    on(FinanceApiActions.fnProductionPerVisitTrendSuccess,
-        (state, { prodPerVisitTrendData }): FinanceState => {
-            const { isLoadingData, errors } = state;
-            return {
-                ...state,
-                errors: _.filter(errors, (n) => n.api != 'fnProductionPerVisitTrend'),
-                prodPerVisitTrendData: prodPerVisitTrendData,
-                isLoadingData: _.filter(isLoadingData, (n) => n != 'fnProductionPerVisitTrend')
-            };
-        }
+    on(
+      FinanceApiActions.fnProductionPerVisitTrendSuccess,
+      (state, { prodPerVisitTrendData }): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          errors: _.filter(errors, (n) => n.api != "fnProductionPerVisitTrend"),
+          prodPerVisitTrendData: prodPerVisitTrendData,
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnProductionPerVisitTrend"
+          ),
+        };
+      }
     ),
-    on(FinanceApiActions.fnProductionPerVisitTrendFailure,
-        (state, { error }): FinanceState => {
-            const { isLoadingData, errors } = state;
-            return {
-                ...state,
-                prodPerVisitTrendData: [],
-                isLoadingData: _.filter(isLoadingData, (n) => n != 'fnProductionPerVisitTrend'),
-                errors: [...errors, { ...error, api: 'fnProductionPerVisitTrend' }]
-            };
-        }
-    ),    
+    on(
+      FinanceApiActions.fnProductionPerVisitTrendFailure,
+      (state, { error }): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          prodPerVisitTrendData: [],
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnProductionPerVisitTrend"
+          ),
+          errors: [...errors, { ...error, api: "fnProductionPerVisitTrend" }],
+        };
+      }
+    ),
     // FnTotalDiscounts API
     on(FinancePageActions.loadFnTotalDiscounts, (state): FinanceState => {
       const { isLoadingData, errors } = state;
       return {
+        ...state,
+        errors: _.filter(errors, (n) => n.api != "fnTotalDiscounts"),
+        totalDiscountData: [],
+        totalDiscountTotal: 0,
+        totalDiscountTrendTotal: 0,
+        isLoadingData: _.union(isLoadingData, ["fnTotalDiscounts"]),
+      };
+    }),
+    on(
+      FinanceApiActions.fnTotalDiscountsSuccess,
+      (
+        state,
+        { totalDiscountData, totalDiscountTotal, totalDiscountTrendTotal }
+      ): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != 'fnTotalDiscounts'),
+          errors: _.filter(errors, (n) => n.api != "fnTotalDiscounts"),
+          totalDiscountData: totalDiscountData,
+          totalDiscountTotal,
+          totalDiscountTrendTotal,
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnTotalDiscounts"
+          ),
+        };
+      }
+    ),
+    on(
+      FinanceApiActions.fnTotalDiscountsFailure,
+      (state, { error }): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
           totalDiscountData: [],
           totalDiscountTotal: 0,
           totalDiscountTrendTotal: 0,
-          isLoadingData: _.union(isLoadingData, ['fnTotalDiscounts'])
-      };
-    }),
-    on(FinanceApiActions.fnTotalDiscountsSuccess,
-        (state, { totalDiscountData, totalDiscountTotal, totalDiscountTrendTotal }): FinanceState => {
-            const { isLoadingData, errors } = state;
-            return {
-                ...state,
-                errors: _.filter(errors, (n) => n.api != 'fnTotalDiscounts'),
-                totalDiscountData: totalDiscountData,
-                totalDiscountTotal,
-                totalDiscountTrendTotal,
-                isLoadingData: _.filter(isLoadingData, (n) => n != 'fnTotalDiscounts')
-            };
-        }
-    ),
-    on(FinanceApiActions.fnTotalDiscountsFailure,
-        (state, { error }): FinanceState => {
-            const { isLoadingData, errors } = state;
-            return {
-                ...state,
-                totalDiscountData: [],
-                totalDiscountTotal: 0,
-                totalDiscountTrendTotal: 0,
-                isLoadingData: _.filter(isLoadingData, (n) => n != 'fnTotalDiscounts'),
-                errors: [...errors, { ...error, api: 'fnTotalDiscounts' }]
-            };
-        }
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnTotalDiscounts"
+          ),
+          errors: [...errors, { ...error, api: "fnTotalDiscounts" }],
+        };
+      }
     ),
     // FnTotalDiscountsTrend API
     on(FinancePageActions.loadFnTotalDiscountsTrend, (state): FinanceState => {
       const { isLoadingData, errors } = state;
       return {
-          ...state,
-          errors: _.filter(errors, (n) => n.api != 'fnTotalDiscountsTrend'),
-          totalDiscountTrendData: [],
-          isLoadingData: _.union(isLoadingData, ['fnTotalDiscountsTrend'])
+        ...state,
+        errors: _.filter(errors, (n) => n.api != "fnTotalDiscountsTrend"),
+        totalDiscountTrendData: [],
+        isLoadingData: _.union(isLoadingData, ["fnTotalDiscountsTrend"]),
       };
     }),
-    on(FinanceApiActions.fnTotalDiscountsTrendSuccess,
-        (state, { totalDiscountTrendData }): FinanceState => {
-            const { isLoadingData, errors } = state;
-            return {
-                ...state,
-                errors: _.filter(errors, (n) => n.api != 'fnTotalDiscountsTrend'),
-                totalDiscountTrendData: totalDiscountTrendData,
-                isLoadingData: _.filter(isLoadingData, (n) => n != 'fnTotalDiscountsTrend')
-            };
-        }
+    on(
+      FinanceApiActions.fnTotalDiscountsTrendSuccess,
+      (state, { totalDiscountTrendData }): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          errors: _.filter(errors, (n) => n.api != "fnTotalDiscountsTrend"),
+          totalDiscountTrendData: totalDiscountTrendData,
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnTotalDiscountsTrend"
+          ),
+        };
+      }
     ),
-    on(FinanceApiActions.fnTotalDiscountsTrendFailure,
-        (state, { error }): FinanceState => {
-            const { isLoadingData, errors } = state;
-            return {
-                ...state,
-                totalDiscountTrendData: [],
-                isLoadingData: _.filter(isLoadingData, (n) => n != 'fnTotalDiscountsTrend'),
-                errors: [...errors, { ...error, api: 'fnTotalDiscountsTrend' }]
-            };
-        }
+    on(
+      FinanceApiActions.fnTotalDiscountsTrendFailure,
+      (state, { error }): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          totalDiscountTrendData: [],
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnTotalDiscountsTrend"
+          ),
+          errors: [...errors, { ...error, api: "fnTotalDiscountsTrend" }],
+        };
+      }
     ),
     // FnTotalProductionTrend API
     on(FinancePageActions.loadFnTotalProductionTrend, (state): FinanceState => {
       const { isLoadingData, errors } = state;
       return {
         ...state,
-        errors: _.filter(errors, (n) => n.api != 'fnTotalProductionTrend'),
+        errors: _.filter(errors, (n) => n.api != "fnTotalProductionTrend"),
         prodTrendData: [],
-        isLoadingData: _.union(isLoadingData, ['fnTotalProductionTrend'])
+        isLoadingData: _.union(isLoadingData, ["fnTotalProductionTrend"]),
       };
     }),
     on(
@@ -553,9 +655,12 @@ export const financeFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != 'fnTotalProductionTrend'),
+          errors: _.filter(errors, (n) => n.api != "fnTotalProductionTrend"),
           prodTrendData: prodTrendData,
-          isLoadingData: _.filter(isLoadingData, (n) => n != 'fnTotalProductionTrend')
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnTotalProductionTrend"
+          ),
         };
       }
     ),
@@ -566,8 +671,11 @@ export const financeFeature = createFeature({
         return {
           ...state,
           prodTrendData: [],
-          isLoadingData: _.filter(isLoadingData, (n) => n != 'fnTotalProductionTrend'),
-          errors: [...errors, { ...error, api: 'fnTotalProductionTrend' }]
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnTotalProductionTrend"
+          ),
+          errors: [...errors, { ...error, api: "fnTotalProductionTrend" }],
         };
       }
     ),
@@ -576,9 +684,9 @@ export const financeFeature = createFeature({
       const { isLoadingData, errors } = state;
       return {
         ...state,
-        errors: _.filter(errors, (n) => n.api != 'fnTotalCollectionTrend'),
+        errors: _.filter(errors, (n) => n.api != "fnTotalCollectionTrend"),
         collectionTrendData: [],
-        isLoadingData: _.union(isLoadingData, ['fnTotalCollectionTrend'])
+        isLoadingData: _.union(isLoadingData, ["fnTotalCollectionTrend"]),
       };
     }),
     on(
@@ -587,9 +695,12 @@ export const financeFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != 'fnTotalCollectionTrend'),
+          errors: _.filter(errors, (n) => n.api != "fnTotalCollectionTrend"),
           collectionTrendData: collectionTrendData,
-          isLoadingData: _.filter(isLoadingData, (n) => n != 'fnTotalCollectionTrend')
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnTotalCollectionTrend"
+          ),
         };
       }
     ),
@@ -600,8 +711,11 @@ export const financeFeature = createFeature({
         return {
           ...state,
           collectionTrendData: [],
-          isLoadingData: _.filter(isLoadingData, (n) => n != 'fnTotalCollectionTrend'),
-          errors: [...errors, { ...error, api: 'fnTotalCollectionTrend' }]
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnTotalCollectionTrend"
+          ),
+          errors: [...errors, { ...error, api: "fnTotalCollectionTrend" }],
         };
       }
     ),
@@ -610,9 +724,9 @@ export const financeFeature = createFeature({
       const { isLoadingData, errors } = state;
       return {
         ...state,
-        errors: _.filter(errors, (n) => n.api != 'fnNetProfitTrend'),
+        errors: _.filter(errors, (n) => n.api != "fnNetProfitTrend"),
         netProfitTrendData: [],
-        isLoadingData: _.union(isLoadingData, ['fnNetProfitTrend'])
+        isLoadingData: _.union(isLoadingData, ["fnNetProfitTrend"]),
       };
     }),
     on(
@@ -621,9 +735,12 @@ export const financeFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != 'fnNetProfitTrend'),
+          errors: _.filter(errors, (n) => n.api != "fnNetProfitTrend"),
           netProfitTrendData: netProfitTrendData,
-          isLoadingData: _.filter(isLoadingData, (n) => n != 'fnNetProfitTrend')
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnNetProfitTrend"
+          ),
         };
       }
     ),
@@ -634,30 +751,45 @@ export const financeFeature = createFeature({
         return {
           ...state,
           netProfitTrendData: [],
-          isLoadingData: _.filter(isLoadingData, (n) => n != 'fnNetProfitTrend'),
-          errors: [...errors, { ...error, api: 'fnNetProfitTrend' }]
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnNetProfitTrend"
+          ),
+          errors: [...errors, { ...error, api: "fnNetProfitTrend" }],
         };
       }
     ),
     // FnNetProfitPercentageTrend
-    on(FinancePageActions.loadFnNetProfitPercentageTrend, (state): FinanceState => {
-      const { isLoadingData, errors } = state;
-      return {
-        ...state,
-        errors: _.filter(errors, (n) => n.api != 'fnNetProfitPercentageTrend'),
-        netProfitPercentTrendData: [],
-        isLoadingData: _.union(isLoadingData, ['fnNetProfitPercentageTrend'])
-      };
-    }),
+    on(
+      FinancePageActions.loadFnNetProfitPercentageTrend,
+      (state): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          errors: _.filter(
+            errors,
+            (n) => n.api != "fnNetProfitPercentageTrend"
+          ),
+          netProfitPercentTrendData: [],
+          isLoadingData: _.union(isLoadingData, ["fnNetProfitPercentageTrend"]),
+        };
+      }
+    ),
     on(
       FinanceApiActions.fnNetProfitPercentTrendSuccess,
       (state, { netProfitPercentTrendData }): FinanceState => {
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != 'fnNetProfitPercentageTrend'),
+          errors: _.filter(
+            errors,
+            (n) => n.api != "fnNetProfitPercentageTrend"
+          ),
           netProfitPercentTrendData: netProfitPercentTrendData,
-          isLoadingData: _.filter(isLoadingData, (n) => n != 'fnNetProfitPercentageTrend')
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnNetProfitPercentageTrend"
+          ),
         };
       }
     ),
@@ -668,314 +800,380 @@ export const financeFeature = createFeature({
         return {
           ...state,
           netProfitPercentTrendData: [],
-          isLoadingData: _.filter(isLoadingData, (n) => n != 'fnNetProfitPercentageTrend'),
-          errors: [...errors, { ...error, api: 'fnNetProfitPercentageTrend' }]
+          isLoadingData: _.filter(
+            isLoadingData,
+            (n) => n != "fnNetProfitPercentageTrend"
+          ),
+          errors: [...errors, { ...error, api: "fnNetProfitPercentageTrend" }],
         };
       }
     ),
 
-    on(FinancePageActions.setTrendProfitChart, (state, {chartName}): FinanceState => {
-      return {
-        ...state,
-        trendProfitChartName: chartName,
-      };
-    }),
-  )
+    on(
+      FinancePageActions.setTrendProfitChart,
+      (state, { chartName }): FinanceState => {
+        return {
+          ...state,
+          trendProfitChartName: chartName,
+        };
+      }
+    )
+  ),
 });
 
-export const { 
-    selectErrors, 
-    selectIsLoadingData, 
-    selectNetProfitProductionVal,
-    selectProductionTrendVal,
-    selectNetProfitVal,
-    selectNetProfitTrendData,
-    selectNetProfitPercentageVal,
-    selectNetProfitPercentTrendData,
-    selectExpensesData,
-    selectExpensesTrendData,
-    selectExpensesTrendDurations,
-    selectExpenseProduction,
-    selectProdByClinicData,
-    selectProdByClinicTrendData,
-    selectProdData,
-    selectProdTrendData,
-    selectCollectionData,
-    selectCollectionTrendData,
-    selectCollectionVal,
-    selectCollectionTrendVal,
-    selectProdByClinicianTotal,
-    selectProdByClinicianTrendTotal,
-    selectProdPerVisitData,
-    selectProdPerVisitTrendData,
-    selectProdPerVisitTotal,
-    selectProdPerVisitTrendTotal,
-    selectTotalDiscountData,
-    selectTotalDiscountTrendData,
-    selectTotalDiscountTotal,
-    selectTotalDiscountTrendTotal,
-    selectTrendProfitChartName,
+export const {
+  selectErrors,
+  selectIsLoadingData,
+  selectNetProfitProductionVal,
+  selectProductionTrendVal,
+  selectNetProfitVal,
+  selectNetProfitTrendData,
+  selectNetProfitPercentageVal,
+  selectNetProfitPercentTrendData,
+  selectExpensesData,
+  selectExpensesTrendData,
+  selectExpensesTrendDurations,
+  selectExpenseProduction,
+  selectProdByClinicData,
+  selectProdByClinicTrendData,
+  selectProdData,
+  selectProdTrendData,
+  selectCollectionData,
+  selectCollectionTrendData,
+  selectCollectionVal,
+  selectCollectionTrendVal,
+  selectProdByClinicianTotal,
+  selectProdByClinicianTrendTotal,
+  selectProdPerVisitData,
+  selectProdPerVisitTrendData,
+  selectProdPerVisitTotal,
+  selectProdPerVisitTrendTotal,
+  selectTotalDiscountData,
+  selectTotalDiscountTrendData,
+  selectTotalDiscountTotal,
+  selectTotalDiscountTrendTotal,
+  selectTrendProfitChartName,
 } = financeFeature;
 
 export const selectFnTotalProductionError = createSelector(
   selectErrors,
   (errors): JeeveError | undefined =>
-    _.find(errors, (e) => e.api == 'fnTotalProduction')
+    _.find(errors, (e) => e.api == "fnTotalProduction")
 );
 
 export const selectFnNetProfitError = createSelector(
-    selectErrors,
-    (errors): JeeveError | undefined =>
-      _.find(errors, (e) => e.api == 'fnNetProfit')
+  selectErrors,
+  (errors): JeeveError | undefined =>
+    _.find(errors, (e) => e.api == "fnNetProfit")
 );
 
 export const selectIsLoadingTotalProduction = createSelector(
-    selectIsLoadingData,
-    (loadingData) => _.findIndex(loadingData, (l) => l == 'fnTotalProduction') >= 0
+  selectIsLoadingData,
+  (loadingData) =>
+    _.findIndex(loadingData, (l) => l == "fnTotalProduction") >= 0
 );
 
 export const selectIsLoadingTotalProductionTrend = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == 'fnTotalProductionTrend') >= 0
+  (loadingData) =>
+    _.findIndex(loadingData, (l) => l == "fnTotalProductionTrend") >= 0
 );
 
 export const selectIsLoadingCollection = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == 'fnTotalCollection') >= 0
+  (loadingData) =>
+    _.findIndex(loadingData, (l) => l == "fnTotalCollection") >= 0
 );
 
 export const selectIsLoadingCollectionTrend = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == 'fnTotalCollectionTrend') >= 0
+  (loadingData) =>
+    _.findIndex(loadingData, (l) => l == "fnTotalCollectionTrend") >= 0
 );
 
 export const selectIsLoadingNetProfit = createSelector(
-    selectIsLoadingData,
-    (loadingData) => _.findIndex(loadingData, (l) => l == 'fnNetProfit') >= 0
+  selectIsLoadingData,
+  (loadingData) => _.findIndex(loadingData, (l) => l == "fnNetProfit") >= 0
 );
 
 export const selectIsLoadingNetProfitTrend = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == 'fnNetProfitTrend') >= 0
+  (loadingData) => _.findIndex(loadingData, (l) => l == "fnNetProfitTrend") >= 0
 );
 
 export const selectIsLoadingNetProfitPercentage = createSelector(
-    selectIsLoadingData,
-    (loadingData) => _.findIndex(loadingData, (l) => l == 'fnNetProfitPercentage') >= 0
-)
+  selectIsLoadingData,
+  (loadingData) =>
+    _.findIndex(loadingData, (l) => l == "fnNetProfitPercentage") >= 0
+);
 
 export const selectIsLoadingNetProfitPercentTrend = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == 'fnNetProfitPercentageTrend') >= 0
-)
+  (loadingData) =>
+    _.findIndex(loadingData, (l) => l == "fnNetProfitPercentageTrend") >= 0
+);
 
-export const selectIsLoadingFnExpenses= createSelector(
+export const selectIsLoadingFnExpenses = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == 'fnExpenses') >= 0
-)
+  (loadingData) => _.findIndex(loadingData, (l) => l == "fnExpenses") >= 0
+);
 
-export const selectIsLoadingFnExpensesTrend= createSelector(
+export const selectIsLoadingFnExpensesTrend = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == 'fnExpensesTrend') >= 0
-)
+  (loadingData) => _.findIndex(loadingData, (l) => l == "fnExpensesTrend") >= 0
+);
 
-export const selectIsLoadingFnProdPerVisit= createSelector(
+export const selectIsLoadingFnProdPerVisit = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == 'fnProductionPerVisit') >= 0
+  (loadingData) =>
+    _.findIndex(loadingData, (l) => l == "fnProductionPerVisit") >= 0
 );
 
 export const selectIsLoadingFnProdPerVisitTrend = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == 'fnProductionPerVisitTrend') >= 0
+  (loadingData) =>
+    _.findIndex(loadingData, (l) => l == "fnProductionPerVisitTrend") >= 0
 );
 
-export const selectIsLoadingFnProdPerClinic= createSelector(
+export const selectIsLoadingFnProdPerClinic = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == 'fnProductionByClinician') >= 0
-)
+  (loadingData) =>
+    _.findIndex(loadingData, (l) => l == "fnProductionByClinician") >= 0
+);
 
-export const selectIsLoadingFnProdPerClinicTrend= createSelector(
+export const selectIsLoadingFnProdPerClinicTrend = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == 'fnProductionByClinicianTrend') >= 0
-)
+  (loadingData) =>
+    _.findIndex(loadingData, (l) => l == "fnProductionByClinicianTrend") >= 0
+);
 
-export const selectIsLoadingFnTotalDiscount= createSelector(
+export const selectIsLoadingFnTotalDiscount = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == 'fnTotalDiscounts') >= 0
-)
+  (loadingData) => _.findIndex(loadingData, (l) => l == "fnTotalDiscounts") >= 0
+);
 
 export const selectIsLoadingFnTotalDiscountTrend = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == 'fnTotalDiscountsTrend') >= 0
-)
+  (loadingData) =>
+    _.findIndex(loadingData, (l) => l == "fnTotalDiscountsTrend") >= 0
+);
 
 export const selectNetProfitPercentTrendChartData = createSelector(
   selectNetProfitPercentTrendData,
   selectTrend,
   selectCurrentClinicId,
   (netPrifitPercentTrendData, trendMode, clinicId) => {
-    if(typeof clinicId === 'string'){
+    if (typeof clinicId === "string") {
       return _.chain(netPrifitPercentTrendData)
-      .groupBy(trendMode == 'current'?'yearMonth':'year').map(
-        (values, duration) => {
-          const sumNetProfit = _.sumBy(values, v => parseFloat(<string>v.netProfit??'0'));
-          const sumCollection = _.sumBy(values, v => parseFloat(<string>v.collection??'0'));
+        .groupBy(trendMode == "current" ? "yearMonth" : "year")
+        .map((values, duration) => {
+          const sumNetProfit = _.sumBy(values, (v) =>
+            parseFloat(<string>v.netProfit ?? "0")
+          );
+          const sumCollection = _.sumBy(values, (v) =>
+            parseFloat(<string>v.collection ?? "0")
+          );
           return {
-            label: trendMode == 'current'? moment(duration).format('MMM YYYY'):duration,
-            value: _.round(sumNetProfit / sumCollection * 100)
-          }
-        }
-      ).value();
-    }else{
-      return netPrifitPercentTrendData.map(v => {
+            label:
+              trendMode == "current"
+                ? moment(duration).format("MMM YYYY")
+                : duration,
+            value: _.round((sumNetProfit / sumCollection) * 100),
+          };
+        })
+        .value();
+    } else {
+      return netPrifitPercentTrendData.map((v) => {
         return {
-          label: trendMode == 'current'? moment(v.yearMonth).format('MMM YYYY'):v.year,
-          value: _.round(parseFloat(<string>v.netProfitPercent??'0'))
-        }
-      })
+          label:
+            trendMode == "current"
+              ? moment(v.yearMonth).format("MMM YYYY")
+              : v.year,
+          value: _.round(parseFloat(<string>v.netProfitPercent ?? "0")),
+        };
+      });
     }
   }
-)
+);
 
 export const selectProdTrendChartData = createSelector(
   selectProdTrendData,
   selectTrend,
   selectCurrentClinicId,
   (prodTrendData, trendMode, clinicId) => {
-    if(typeof clinicId === 'string'){
+    if (typeof clinicId === "string") {
       let i = 0;
-      const chartDataset = _.chain(prodTrendData).groupBy('clinicId').map(
-          (values, clinicId) => {
-              const item =  {
-                  label: values[0].clinicName,
-                  data: values.map(v => Math.round(parseFloat(<string>v.production??'0'))),
-                  backgroundColor: DoughnutChartColors[i],
-                  hoverBackgroundColor: DoughnutChartColors[i],
-              }
-              i++;
-              return item;
-          }
-      ).value();  
+      const chartDataset = _.chain(prodTrendData)
+        .groupBy("clinicId")
+        .map((values, clinicId) => {
+          const item = {
+            label: values[0].clinicName,
+            data: values.map((v) =>
+              Math.round(parseFloat(<string>v.production ?? "0"))
+            ),
+            backgroundColor: DoughnutChartColors[i],
+            hoverBackgroundColor: DoughnutChartColors[i],
+          };
+          i++;
+          return item;
+        })
+        .value();
       return {
         datasets: chartDataset,
-        labels: _.chain(prodTrendData).sortBy('year')
-        .groupBy(trendMode === 'current'?'yearMonth':'year').map(
-            (values, duration) => trendMode == 'current'? moment(duration).format('MMM YYYY'):duration
-        ).value()
-      }
-    }else{
-      return _.chain(prodTrendData).sortBy('year')
-      .groupBy(trendMode === 'current'?'yearMonth':'year').map(
-          (values, duration) => {
-              const sumProd = _.sumBy(values, v => _.round(parseFloat(<string>v.production??'0')));
-              return {
-                  label: trendMode == 'current'? moment(duration).format('MMM YYYY'):duration,
-                  value: sumProd
-              }
-          }
-      ).value();
+        labels: _.chain(prodTrendData)
+          .sortBy("year")
+          .groupBy(trendMode === "current" ? "yearMonth" : "year")
+          .map((values, duration) =>
+            trendMode == "current"
+              ? moment(duration).format("MMM YYYY")
+              : duration
+          )
+          .value(),
+      };
+    } else {
+      return _.chain(prodTrendData)
+        .sortBy("year")
+        .groupBy(trendMode === "current" ? "yearMonth" : "year")
+        .map((values, duration) => {
+          const sumProd = _.sumBy(values, (v) =>
+            _.round(parseFloat(<string>v.production ?? "0"))
+          );
+          return {
+            label:
+              trendMode == "current"
+                ? moment(duration).format("MMM YYYY")
+                : duration,
+            value: sumProd,
+          };
+        })
+        .value();
     }
   }
-)
+);
 
 export const selectCollectionTrendChartData = createSelector(
   selectCollectionTrendData,
   selectTrend,
   selectCurrentClinicId,
   (collectionTrendData, trendMode, clinicId) => {
-    if(typeof clinicId === 'string'){
+    if (typeof clinicId === "string") {
       let i = 0;
-      const chartDataset = _.chain(collectionTrendData).groupBy('clinicId').map(
-          (values, clinicId) => {
-              const item =  {
-                  label: values[0].clinicName,
-                  data: values.map(v => Math.round(parseFloat(<string>v.collection??'0'))),
-                  backgroundColor: DoughnutChartColors[i],
-                  hoverBackgroundColor: DoughnutChartColors[i],
-              }
-              i++;
-              return item;
-          }
-      ).value();  
+      const chartDataset = _.chain(collectionTrendData)
+        .groupBy("clinicId")
+        .map((values, clinicId) => {
+          const item = {
+            label: values[0].clinicName,
+            data: values.map((v) =>
+              Math.round(parseFloat(<string>v.collection ?? "0"))
+            ),
+            backgroundColor: DoughnutChartColors[i],
+            hoverBackgroundColor: DoughnutChartColors[i],
+          };
+          i++;
+          return item;
+        })
+        .value();
       return {
         datasets: chartDataset,
-        labels: _.chain(collectionTrendData).sortBy('year')
-        .groupBy(trendMode === 'current'?'yearMonth':'year').map(
-            (values, duration) => trendMode == 'current'? moment(duration).format('MMM YYYY'):duration
-        ).value()
-      }
-    }else{
+        labels: _.chain(collectionTrendData)
+          .sortBy("year")
+          .groupBy(trendMode === "current" ? "yearMonth" : "year")
+          .map((values, duration) =>
+            trendMode == "current"
+              ? moment(duration).format("MMM YYYY")
+              : duration
+          )
+          .value(),
+      };
+    } else {
       return _.chain(collectionTrendData)
-      .sortBy('year')
-      .groupBy(trendMode === 'current'? 'yearMonth': 'year').map(
-          (values, duration) => {
-              const sumCollection = _.sumBy(values, v => _.round(parseFloat(<string>v.collection??'0')))
-              return {
-                  label: trendMode == 'current'? moment(duration).format('MMM YYYY'):duration,
-                  value: sumCollection
-              }
-          }
-      ).value();
+        .sortBy("year")
+        .groupBy(trendMode === "current" ? "yearMonth" : "year")
+        .map((values, duration) => {
+          const sumCollection = _.sumBy(values, (v) =>
+            _.round(parseFloat(<string>v.collection ?? "0"))
+          );
+          return {
+            label:
+              trendMode == "current"
+                ? moment(duration).format("MMM YYYY")
+                : duration,
+            value: sumCollection,
+          };
+        })
+        .value();
     }
   }
-)
+);
 
 export const selectNetProfitTrendChartData = createSelector(
   selectNetProfitTrendData,
   selectTrend,
   selectCurrentClinicId,
   (netProfitTrendData, trendMode, clinicId) => {
-    if(typeof clinicId === 'string'){
-      const chartData = [], chartLabels = [];
+    if (typeof clinicId === "string") {
+      const chartData = [],
+        chartLabels = [];
       _.chain(netProfitTrendData)
-      .groupBy(trendMode == 'current' ? 'yearMonth' : 'year')
-      .map(
-          (values, duration) => {
-              const sumNetProfit = _.sumBy(values, v => parseFloat(<string>v.netProfit??'0'))
-              return {
-                  label: trendMode == 'current'? moment(duration).format('MMM YYYY'):duration,
-                  value: sumNetProfit,
-              }
-          }
-      ).value().forEach(
-        (values, index) => {
+        .groupBy(trendMode == "current" ? "yearMonth" : "year")
+        .map((values, duration) => {
+          const sumNetProfit = _.sumBy(values, (v) =>
+            parseFloat(<string>v.netProfit ?? "0")
+          );
+          return {
+            label:
+              trendMode == "current"
+                ? moment(duration).format("MMM YYYY")
+                : duration,
+            value: sumNetProfit,
+          };
+        })
+        .value()
+        .forEach((values, index) => {
           chartData.push(values.value);
           chartLabels.push(values.label);
-        }
-      );
-  
-      let chartDataset:any = [{label: 'Total', data: chartData}];
+        });
+
+      let chartDataset: any = [{ label: "Total", data: chartData }];
 
       return { datasets: chartDataset, labels: chartLabels };
-    }else{
-      return netProfitTrendData.map(
-          val => {
-              return {
-                label: trendMode == 'current'? moment(val.yearMonth).format('MMM YYYY'): val.year,
-                value: _.round(parseFloat(<string>val.netProfit??'0')),
-              }
-          }
-      )
+    } else {
+      return netProfitTrendData.map((val) => {
+        return {
+          label:
+            trendMode == "current"
+              ? moment(val.yearMonth).format("MMM YYYY")
+              : val.year,
+          value: _.round(parseFloat(<string>val.netProfit ?? "0")),
+        };
+      });
     }
   }
-)
+);
 
 export const selectProdPerVisitTrendChartData = createSelector(
   selectProdPerVisitTrendData,
   selectTrend,
   (prodPerVisitTrendData, trendMode) => {
-    return _.chain(prodPerVisitTrendData).sortBy('year_month')
-    .groupBy(trendMode === 'current'?'yearMonth':'year').map(
-        (values, duration) => {
-          
-            const sumProd = _.sumBy(values, v => _.round(parseFloat(<string>v.production??'0')));
-            const sumVisits = _.sumBy(values, v => _.round(parseFloat(<string>v.numVisits??'0')));
-            return {
-                label: trendMode == 'current'? moment(duration).format('MMM YYYY'):duration,
-                value: _.round(sumProd / sumVisits)
-            }
-        }
-    ).value();
+    return _.chain(prodPerVisitTrendData)
+      .sortBy("year_month")
+      .groupBy(trendMode === "current" ? "yearMonth" : "year")
+      .map((values, duration) => {
+        const sumProd = _.sumBy(values, (v) =>
+          _.round(parseFloat(<string>v.production ?? "0"))
+        );
+        const sumVisits = _.sumBy(values, (v) =>
+          _.round(parseFloat(<string>v.numVisits ?? "0"))
+        );
+        return {
+          label:
+            trendMode == "current"
+              ? moment(duration).format("MMM YYYY")
+              : duration,
+          value: _.round(sumProd / sumVisits),
+        };
+      })
+      .value();
   }
 );
 
@@ -985,135 +1183,142 @@ export const selectExpensesTrendChartData = createSelector(
   selectTrend,
   (expensesTrendData, expensesTrendDurations, trendMode) => {
     const chartDataset = [];
-    return _.chain(expensesTrendData).groupBy('accountName').map(
-      (values, accountName) => {
-        const data = _.chain(values).groupBy(
-          trendMode === 'current'?'yearMonth':'year'
-        ).map(
-          (subValues, duration)=> {
+    return _.chain(expensesTrendData)
+      .groupBy("accountName")
+      .map((values, accountName) => {
+        const data = _.chain(values)
+          .groupBy(trendMode === "current" ? "yearMonth" : "year")
+          .map((subValues, duration) => {
             return {
               duration,
-              expense: _.sumBy(subValues, v => v.expense)
-            }
-          }
-        ).value()
+              expense: _.sumBy(subValues, (v) => v.expense),
+            };
+          })
+          .value();
 
         return {
-          values: expensesTrendDurations.map(dur => {
-            const item = data.find(d => d.duration == dur);
-            return !!item? Math.round(item.expense): 0;
+          values: expensesTrendDurations.map((dur) => {
+            const item = data.find((d) => d.duration == dur);
+            return !!item ? Math.round(item.expense) : 0;
           }),
           label: accountName,
-        }
-      }
-    ).value();
+        };
+      })
+      .value();
   }
-)
+);
 
 export const selectTotalDiscountTrendChartData = createSelector(
   selectTotalDiscountTrendData,
   selectTrend,
   selectCurrentClinicId,
   (trendData, trendMode, clinicId) => {
-    if(typeof clinicId === 'string'){
-      let chartDataset = [], labels = [];
+    if (typeof clinicId === "string") {
+      let chartDataset = [],
+        labels = [];
       let i = 0;
-      _.chain(trendData).groupBy('clinicId').map(
-        (values, cId) => {
+      _.chain(trendData)
+        .groupBy("clinicId")
+        .map((values, cId) => {
           return values;
-        }
-      ).value().forEach(
-        values => {
+        })
+        .value()
+        .forEach((values) => {
           chartDataset.push({
-            data: values.map(v => _.round(parseFloat(<string>v.discounts??'0'))),
+            data: values.map((v) =>
+              _.round(parseFloat(<string>v.discounts ?? "0"))
+            ),
             label: values[0].clinicName,
             backgroundColor: DoughnutChartColors[i],
-            hoverBackgroundColor: DoughnutChartColors[i]
+            hoverBackgroundColor: DoughnutChartColors[i],
           });
 
-          if(i == 0){
-            labels = values.map(v => trendMode=='current'?moment(v.yearMonth).format('MMM YYYY'):v.year)
+          if (i == 0) {
+            labels = values.map((v) =>
+              trendMode == "current"
+                ? moment(v.yearMonth).format("MMM YYYY")
+                : v.year
+            );
           }
           i++;
-        }
-      );
+        });
       return {
         datasets: chartDataset,
-        labels: labels
-      }
-    }else{
-      const chartData = [], labels = [];
+        labels: labels,
+      };
+    } else {
+      const chartData = [],
+        labels = [];
       trendData.forEach((res) => {
-        const discount = parseFloat(<string>res.discounts??'0');
-        if(discount > 0){
+        const discount = parseFloat(<string>res.discounts ?? "0");
+        if (discount > 0) {
           chartData.push(discount);
           labels.push(
-            trendMode == 'current'?
-              moment(res.yearMonth).format('MMM YYYY'):res.year
+            trendMode == "current"
+              ? moment(res.yearMonth).format("MMM YYYY")
+              : res.year
           );
         }
       });
       return {
         data: chartData,
-        labels: labels
-      }
+        labels: labels,
+      };
     }
   }
-)
+);
 
 export const selectProdByClinicianTrendChartData = createSelector(
   selectProdByClinicTrendData,
   selectTrend,
   selectCurrentClinicId,
-  (prodByClinicTrendData, trendMode, clinicId)  => {
-    const chartDataset = [], labels = [];
-    _.chain(prodByClinicTrendData).sortBy('duration')
-    .value().forEach(
-      value => {
-          let sumProd = 0;
-          if(typeof clinicId === 'string'){
-            sumProd = _.sumBy(value.val, v => parseFloat(v.production));
+  (prodByClinicTrendData, trendMode, clinicId) => {
+    const chartDataset = [],
+      labels = [];
+    _.chain(prodByClinicTrendData)
+      .sortBy("duration")
+      .value()
+      .forEach((value) => {
+        let sumProd = 0;
+        if (typeof clinicId === "string") {
+          sumProd = _.sumBy(value.val, (v) => parseFloat(v.production));
+        }
+
+        value.val.forEach((result, key) => {
+          let production = 0,
+            total = 0;
+          if (typeof clinicId === "string") {
+            production = parseFloat(result.production);
+          } else {
+            production = parseFloat(result.prodPerClinician);
+          }
+          if (production > 0) {
+            total = Math.round(<number>production);
           }
 
-          value.val.forEach(
-            (result, key) => {
-              let production = 0, total = 0;
-              if(typeof clinicId === 'string'){
-                production = parseFloat(result.production);
-              }else{
-                production = parseFloat(result.prodPerClinician);
-              }
-              if (
-                production > 0
-              ) {
-                total = parseFloat(production.toFixed(1));
-              }
+          if (chartDataset[key] === undefined) {
+            chartDataset[key] = { data: [], label: "" };
+          }
 
-              if(chartDataset[key] === undefined){
-                chartDataset[key] = {data:[], label: ''};
-              }
-
-              if(typeof clinicId === 'string'){
-                chartDataset[key].data.push(
-                  (total / sumProd) * 100
-                );
-                chartDataset[key].label = result.clinicName;
-              }else{
-                chartDataset[key].data.push(
-                  total
-                );
-                chartDataset[key].label = result.providerName;
-              }
-              chartDataset[key].backgroundColor = DoughnutChartColors[key];
-              chartDataset[key].hoverBackgroundColor = DoughnutChartColors[key];
-            }
-          )
-          labels.push(trendMode == 'current'?moment(value.duration).format('MMM YYYY'):value.duration);
-      }
-    );
+          if (typeof clinicId === "string") {
+            chartDataset[key].data.push((total / sumProd) * 100);
+            chartDataset[key].label = result.clinicName;
+          } else {
+            chartDataset[key].data.push(total);
+            chartDataset[key].label = result.providerName;
+          }
+          chartDataset[key].backgroundColor = DoughnutChartColors[key];
+          chartDataset[key].hoverBackgroundColor = DoughnutChartColors[key];
+        });
+        labels.push(
+          trendMode == "current"
+            ? moment(value.duration).format("MMM YYYY")
+            : value.duration
+        );
+      });
     return {
       datasets: chartDataset,
-      labels: labels
+      labels: labels,
     };
   }
-)
+);

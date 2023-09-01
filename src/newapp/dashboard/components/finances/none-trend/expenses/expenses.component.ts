@@ -24,8 +24,8 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 
-  selectedData: { value: number; name: string }[] = [];
-  unSelectedData: { value: number; name: string }[] = [];
+  selectedData: { value: number | string; name: string }[] = [];
+  unSelectedData: { value: number | string; name: string }[] = [];
   // totalDataLength = 0;
 
   isShowLabels = true;
@@ -102,9 +102,8 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
                 data: _.chain(v.items)
                   .orderBy("clinicId", "asc")
                   .value()
-                  .map(
-                    (item) =>
-                      _.round((item.expense / production) * 100 * 10) / 10
+                  .map((item) =>
+                    ((item.expense / production) * 100).toFixed(1)
                   ),
                 label: v.accountName,
                 backgroundColor: bgColor,
@@ -122,7 +121,7 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
             expenses.forEach((item, index) => {
               const chartItem = {
                 name: `${item.accountName}--${item.expense}`,
-                value: _.round((item.expense / production) * 100 * 10) / 10,
+                value: ((item.expense / production) * 100).toFixed(1),
               };
 
               if (index < 15) {

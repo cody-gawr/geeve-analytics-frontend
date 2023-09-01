@@ -10,9 +10,9 @@
                 <h4>Selected Expenses</h4>
                 <div class="board">
                     <button 
-                            *ngFor="let category of selectedData;let i = index;" 
-                            (click)="removeFromSelected(i)" 
-                            mat-stroked-button color="primary" extended
+                        *ngFor="let category of selectedData;let i = index;" 
+                        (click)="removeFromSelected(i)" 
+                        mat-stroked-button color="primary" extended
                     >
                         <mat-icon>close</mat-icon>
                         {{ category.name.split('--')[0] }}
