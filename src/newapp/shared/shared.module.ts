@@ -14,6 +14,7 @@ import {
   TooltipComponent,
   TooltipContainerDirective,
 } from "./directives/tooltip/tooltip.component";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 const modules = [
   AngularMaterialModule,
@@ -21,6 +22,7 @@ const modules = [
   FormsModule,
   RouterModule,
   MatTableResponsiveModule,
+  FontAwesomeModule,
 ];
 
 const components = [

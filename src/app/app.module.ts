@@ -61,6 +61,7 @@ import { httpInterceptors } from '@/newapp/shared/interceptors';
 import { NewAppBlankComponent } from './layouts/blank/new-blank.component';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { clinicFeature } from '@/newapp/clinic/state/reducers/clinic.reducer';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -119,7 +120,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SharedMatModule.forRoot(),
     CookieModule.withOptions(),
     RouterModule.forRoot(AppRoutes),
-    ToastrModule.forRoot({ 
+    ToastrModule.forRoot({
       timeOut: 2000,
       positionClass: 'toast-top-right',
       preventDuplicates: true,
@@ -137,7 +138,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       maxAge: 25, // Retains last 25 states
       logOnly: !environment.production // Restrict extension to log-only mode
     }),
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([]),
+    FontAwesomeModule
   ],
   providers: [
     AuthGuard,

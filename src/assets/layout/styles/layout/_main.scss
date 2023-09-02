@@ -25,11 +25,7 @@ a {
   }
   .layout-sidenav {
     width: 250px;
-    background: linear-gradient(
-      0deg,
-      rgb(0, 111, 115) 0%,
-      rgb(24, 166, 137) 100%
-    );
+    background: linear-gradient(to bottom, rgb(24, 166, 137) 0%, rgb(0, 111, 115) 99%);
   }
 }
 

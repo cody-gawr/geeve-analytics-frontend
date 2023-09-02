@@ -61,7 +61,7 @@ export class AuthService {
       `${this.apiUrl}/users/userLogin`,
       form,
       { withCredentials: true }
-    ).pipe(map(res => <LoginApiResponse> camelcaseKeys(res, {deep: true})));
+    ).pipe(map(res => <LoginApiResponse> <unknown> camelcaseKeys(res, {deep: true})));
   };
 
   logout = (): Observable<LogoutApiResponse> => {
@@ -71,7 +71,7 @@ export class AuthService {
       {
         withCredentials: true
       }
-    ).pipe(map(res => <LogoutApiResponse> camelcaseKeys(res, {deep: true})));
+    ).pipe(map(res => <LogoutApiResponse> <unknown> camelcaseKeys(res, {deep: true})));
   };
 
   getRolesIndividual = (
@@ -84,7 +84,7 @@ export class AuthService {
       {
         withCredentials: true
       }
-    ).pipe(map(data => <RolesIndividualApiResponse> (camelcaseKeys(data, {deep: true}))));
+    ).pipe(map(data => <RolesIndividualApiResponse> <unknown> (camelcaseKeys(data, {deep: true}))));
   };
 
   getRoles = (): Observable<RolesApiResponse> => {

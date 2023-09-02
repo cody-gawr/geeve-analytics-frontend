@@ -11,9 +11,9 @@
     [ngClass]="{ active: node.title == activedTitle }"
   >
     <!-- use a disabled button to provide padding for tree leaf -->
-    <button *ngIf="node.level == 0" mat-icon-button>
-      <mat-icon>{{ node.icon }}</mat-icon>
-    </button>
+    <div *ngIf="node.level == 0" class="menu-icon-btn">
+      <fa-icon *ngIf="!!node.icon" [icon]="node.icon"></fa-icon>
+    </div>
     <span *ngIf="node.level !== 0">&nbsp;&nbsp;&nbsp;</span>
     {{ node.title }}
   </mat-tree-node>
@@ -26,17 +26,18 @@
     (click)="toggleMenuItem(node)"
   >
     <div class="tree-node-title">
-      <button *ngIf="node.level == 0" mat-icon-button>
-        <mat-icon>{{ node.icon }}</mat-icon>
-      </button>
+      <div *ngIf="node.level == 0" class="menu-icon-btn">
+        <fa-icon *ngIf="!!node.icon" [icon]="node.icon"></fa-icon>
+      </div>
       {{ node.title }}
     </div>
 
-    <button mat-icon-button [attr.aria-label]="'Toggle ' + node.title">
-      <mat-icon class="mat-icon-rtl-mirror">
+    <div style="margin-right: 25px;" [attr.aria-label]="'Toggle ' + node.title">
+      <fa-icon [icon]="treeControl.isExpanded(node) ? faCaretRight : faCaretDown"></fa-icon>
+      <!-- <mat-icon class="mat-icon-rtl-mirror">
         {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
-      </mat-icon>
-    </button>
+      </mat-icon> -->
+    </div>
   </mat-tree-node>
 </mat-tree>
 <ng-template #loadingSpin>

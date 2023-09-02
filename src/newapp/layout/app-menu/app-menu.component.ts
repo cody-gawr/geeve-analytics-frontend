@@ -11,6 +11,23 @@ import { AuthFacade } from "../../auth/facades/auth.facade";
 import { environment } from "@/environments/environment";
 import { ClinicFacade } from "../../clinic/facades/clinic.facade";
 import { LayoutFacade } from "../facades/layout.facade";
+import {
+  IconDefinition,
+  faBriefcase,
+  faChartArea,
+  faClinicMedical,
+  faCoffee,
+  faCog,
+  faFile,
+  faHandHoldingUsd,
+  faHandshake,
+  faIdCard,
+  faPhone,
+  faQuestion,
+  faUsers,
+  faCaretRight,
+  faCaretDown,
+} from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Menu data with nested structure.
@@ -19,7 +36,7 @@ import { LayoutFacade } from "../facades/layout.facade";
 interface MenuNode {
   title: string;
   path: string;
-  icon?: string;
+  icon?: IconDefinition;
   children?: MenuNode[];
   permissions?: string[];
   userTypes?: number[];
@@ -37,7 +54,7 @@ const MENU_DATA: MenuNode[] = [
   {
     title: "Health Screen",
     path: "dashboards/healthscreen",
-    icon: "home-health",
+    icon: faClinicMedical,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
         (permissions!.indexOf("healthscreen") >= 0 ||
@@ -49,7 +66,7 @@ const MENU_DATA: MenuNode[] = [
   {
     title: "Clinic Health",
     path: "dashboards/healthscreen",
-    icon: "home-health",
+    icon: faClinicMedical,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
         (permissions!.indexOf("healthscreen") >= 0 ||
@@ -62,7 +79,7 @@ const MENU_DATA: MenuNode[] = [
   {
     title: "Morning Huddle",
     path: "morning-huddle",
-    icon: "coffee",
+    icon: faCoffee,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
         permissions!.indexOf("morninghuddle") >= 0 ||
@@ -74,7 +91,7 @@ const MENU_DATA: MenuNode[] = [
   {
     title: "Follow Ups",
     path: "followups",
-    icon: "phone-enabled",
+    icon: faPhone,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
         permissions!.indexOf("followups") >= 0 || [2, 7].indexOf(userType!) >= 0
@@ -85,7 +102,7 @@ const MENU_DATA: MenuNode[] = [
   {
     title: "Campaigns",
     path: "campaigns",
-    icon: "groups-3",
+    icon: faUsers,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
         (permissions!.indexOf("campaigns") >= 0 ||
@@ -98,7 +115,7 @@ const MENU_DATA: MenuNode[] = [
   {
     title: "Dashboard",
     path: "/newapp/dashboard",
-    icon: "monitoring",
+    icon: faChartArea,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
         permissions!.indexOf("dashboard") >= 0 || [2, 7].indexOf(userType!) >= 0
@@ -182,7 +199,7 @@ const MENU_DATA: MenuNode[] = [
   {
     title: "Staff Meetings",
     path: "staff-meetings",
-    icon: "badge",
+    icon: faIdCard,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
         (permissions!.indexOf("staffmeeting") >= 0 ||
@@ -195,7 +212,7 @@ const MENU_DATA: MenuNode[] = [
   {
     title: "Prime KPI Report",
     path: "kpi-report",
-    icon: "description",
+    icon: faFile,
     validatorFn: ({
       permissions,
       userType,
@@ -212,7 +229,7 @@ const MENU_DATA: MenuNode[] = [
   {
     title: "Lost Opportunity",
     path: "lost-opportunity",
-    icon: "checkroom",
+    icon: faHandHoldingUsd,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
         permissions!.indexOf("lostopportunity") >= 0 ||
@@ -224,7 +241,7 @@ const MENU_DATA: MenuNode[] = [
   {
     title: "Rewards", // icon=new
     path: "rewards",
-    icon: "volunteer_activism",
+    icon: faHandHoldingUsd,
     validatorFn: () => {
       return environment.apiUrl.includes("test");
     },
@@ -232,13 +249,13 @@ const MENU_DATA: MenuNode[] = [
   {
     title: "Refer A Friend", // Get 50% off
     path: "",
-    icon: "group_add",
+    icon: faHandshake,
   },
   // user_type != 7 && apiUrl.includes('test')
   {
     title: "Tasks",
     path: "tasks",
-    icon: "splitscreen",
+    icon: faBriefcase,
     validatorFn: ({ userType }: MenuValidatorParams) => {
       return userType != 7 && environment.apiUrl.includes("test");
     },
@@ -247,7 +264,7 @@ const MENU_DATA: MenuNode[] = [
   {
     title: "Settings",
     path: "",
-    icon: "settings",
+    icon: faCog,
     children: [
       // user_type == 2 || permisions.indexOf('profilesettings') >= 0 || user_type == 7
       {
@@ -279,7 +296,7 @@ const MENU_DATA: MenuNode[] = [
   {
     title: "Help",
     path: "https://jeeve.crunch.help/jeeve-analytics",
-    icon: "help",
+    icon: faQuestion,
   },
 ];
 
@@ -288,7 +305,7 @@ interface MenuFlatNode {
   expandable: boolean;
   title: string;
   path: string;
-  icon: string | undefined;
+  icon: IconDefinition | undefined;
   level: number;
 }
 
@@ -299,7 +316,8 @@ interface MenuFlatNode {
 })
 export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   // @ViewChild('tree') tree: Tree;
-
+  faCaretRight = faCaretRight;
+  faCaretDown = faCaretDown;
   private _transformer = (node: MenuNode, level: number) => {
     return {
       expandable: !!node.children && node.children.length > 0,
