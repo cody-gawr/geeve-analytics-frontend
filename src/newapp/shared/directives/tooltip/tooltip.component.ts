@@ -19,7 +19,7 @@ export class TooltipContainerDirective {}
       }"
     >
       <div class="tooltip-title-container">
-        <div class="tooltip-title">{{ tooltipData.title }}</div>
+        <div class="tooltip-title">{{ tooltipData?.title ?? "" }}</div>
         <img
           src="../assets/images/white_heart.png"
           class="white-heart-icon"
