@@ -6,26 +6,28 @@ a {
   height: 100vh;
   min-height: 100vh;
   overflow-x: hidden;
-  /* width */
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: 0px;
-    background: -moz-linear-gradient(top, #fff 20%, rgba(0, 111, 115, 1) 99%);
-    background: -webkit-linear-gradient(top, #fff 20%, rgba(0, 111, 115, 1) 99%);
-    background: linear-gradient(to bottom, #fff 20%, rgba(0, 111, 115, 1) 99%);
-    background-repeat: no-repeat;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: -moz-linear-gradient(top, #fff 20%, rgba(0, 111, 115, 1) 99%);
-    background: -webkit-linear-gradient(top, #fff 20%, rgba(0, 111, 115, 1) 99%);
-    background: linear-gradient(to bottom, #fff 20%, rgba(0, 111, 115, 1) 99%);
-  }
-  .layout-main-container {
-    height: 100%;
-  }
   .layout-sidenav {
-    width: 250px;
-    //background: linear-gradient(to bottom, rgb(24, 166, 137) 0%, rgb(0, 111, 115) 99%);
+      /* width */
+      ::-webkit-scrollbar {
+        width: 10px;
+        height: 0px;
+        background: -moz-linear-gradient(top, #fff 20%, rgba(0, 111, 115, 1) 99%);
+        background: -webkit-linear-gradient(top, #fff 20%, rgba(0, 111, 115, 1) 99%);
+        background: linear-gradient(to bottom, #fff 20%, rgba(0, 111, 115, 1) 99%);
+        background-repeat: no-repeat;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: -moz-linear-gradient(top, #fff 20%, rgba(0, 111, 115, 1) 99%);
+        background: -webkit-linear-gradient(top, #fff 20%, rgba(0, 111, 115, 1) 99%);
+        background: linear-gradient(to bottom, #fff 20%, rgba(0, 111, 115, 1) 99%);
+      }
+      .layout-main-container {
+        height: 100%;
+      }
+      .layout-sidenav {
+        width: 250px;
+        //background: linear-gradient(to bottom, rgb(24, 166, 137) 0%, rgb(0, 111, 115) 99%);
+      }
   }
 }
 
