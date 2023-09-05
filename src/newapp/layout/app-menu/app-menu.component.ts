@@ -22,11 +22,11 @@ import {
   faHandHoldingUsd,
   faHandshake,
   faIdCard,
-  faPhone,
   faQuestion,
   faUsers,
   faCaretRight,
   faCaretDown,
+  faPhoneFlip,
 } from "@fortawesome/free-solid-svg-icons";
 
 /**
@@ -91,7 +91,7 @@ const MENU_DATA: MenuNode[] = [
   {
     title: "Follow Ups",
     path: "followups",
-    icon: faPhone,
+    icon: faPhoneFlip,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
         permissions!.indexOf("followups") >= 0 || [2, 7].indexOf(userType!) >= 0
