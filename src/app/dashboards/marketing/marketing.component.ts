@@ -2446,6 +2446,23 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       this.duration = "custom";
       this.currentText = "";
       let selectedDate = this.chartService.customSelectedDate$.value;
+      if (selectedDate == null) {
+        let newAppLayoutData: any = localStorage.getItem("layout");
+        if (newAppLayoutData) {
+          newAppLayoutData = JSON.parse(newAppLayoutData);
+          if (newAppLayoutData.dateRange) {
+            selectedDate = {
+              startDate: moment(newAppLayoutData.dateRange.start).format(
+                "YYYY-MM-DD"
+              ),
+              endDate: moment(newAppLayoutData.dateRange.end).format(
+                "YYYY-MM-DD"
+              ),
+            };
+          }
+        }
+      }
+
       this.startDate = this.datePipe.transform(
         selectedDate.startDate,
         "dd-MM-yyyy"

@@ -1,48 +1,59 @@
-import * as $ from 'jquery';
+import * as $ from "jquery";
 import {
   Component,
   AfterViewInit,
   ViewEncapsulation,
   ViewChild,
-  ElementRef
-} from '@angular/core';
-import { FinancesService } from './finances.service';
-import { DentistService } from '../../dentist/dentist.service';
-import { DatePipe, DecimalPipe } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { HeaderService } from '../../layouts/full/header/header.service';
-import { CookieService } from 'ngx-cookie';
-import { ToastrService } from 'ngx-toastr';
-import Swal from 'sweetalert2';
-import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+  ElementRef,
+} from "@angular/core";
+import { FinancesService } from "./finances.service";
+import { DentistService } from "../../dentist/dentist.service";
+import { DatePipe, DecimalPipe } from "@angular/common";
+import { ActivatedRoute, Router } from "@angular/router";
+import { HeaderService } from "../../layouts/full/header/header.service";
+import { CookieService } from "ngx-cookie";
+import { ToastrService } from "ngx-toastr";
+import Swal from "sweetalert2";
+import { BehaviorSubject, Observable, ReplaySubject } from "rxjs";
 // import { PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
-import { map, takeUntil } from 'rxjs/operators';
-import { ChartService } from '../chart.service';
-import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
-import { AppConstants } from '../../app.constants';
-import { ChartstipsService } from '../../shared/chartstips.service';
-import { environment } from '../../../environments/environment';
-import { NgxSmartModalService } from 'ngx-smart-modal';
-import * as _ from 'lodash';
-import {Chart, ChartDataset, ChartOptions, LegendOptions, LegendItem, TooltipItem, ChartType, BarControllerChartOptions, ChartTypeRegistry, Plugin} from 'chart.js';
-import * as moment from 'moment';
-import { LocalStorageService } from '../../shared/local-storage.service';
-import { _DeepPartialObject } from 'chart.js/dist/types/utils';
-import { formatXTooltipLabel } from '../../util';
-import { JeeveLineFillOptions } from '../../shared/chart-options';
+import { map, takeUntil } from "rxjs/operators";
+import { ChartService } from "../chart.service";
+import { ClinicSettingsService } from "../../clinic-settings/clinic-settings.service";
+import { AppConstants } from "../../app.constants";
+import { ChartstipsService } from "../../shared/chartstips.service";
+import { environment } from "../../../environments/environment";
+import { NgxSmartModalService } from "ngx-smart-modal";
+import * as _ from "lodash";
+import {
+  Chart,
+  ChartDataset,
+  ChartOptions,
+  LegendOptions,
+  LegendItem,
+  TooltipItem,
+  ChartType,
+  BarControllerChartOptions,
+  ChartTypeRegistry,
+  Plugin,
+} from "chart.js";
+import * as moment from "moment";
+import { LocalStorageService } from "../../shared/local-storage.service";
+import { _DeepPartialObject } from "chart.js/dist/types/utils";
+import { formatXTooltipLabel } from "../../util";
+import { JeeveLineFillOptions } from "../../shared/chart-options";
 export interface Dentist {
   providerId: string;
   name: string;
 }
 
 @Component({
-  templateUrl: './finances.component.html',
-  styleUrls: ['./finances.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  templateUrl: "./finances.component.html",
+  styleUrls: ["./finances.component.scss"],
+  encapsulation: ViewEncapsulation.None,
 })
 export class FinancesComponent implements AfterViewInit {
-  @ViewChild('myCanvas') canvas: ElementRef;
-  @ViewChild('myCanvas2') canvas2: ElementRef;
+  @ViewChild("myCanvas") canvas: ElementRef;
+  @ViewChild("myCanvas2") canvas2: ElementRef;
 
   lineChartColors;
   doughnutChartColors;
@@ -62,7 +73,7 @@ export class FinancesComponent implements AfterViewInit {
   public unSelectedData = [];
   public upperLimit = 20;
   public lowerLimit = 1;
-  public user_type: string = '';
+  public user_type: string = "";
   public isCompleteMonth: boolean = true;
   public queryWhEnabled = 0;
 
@@ -76,50 +87,50 @@ export class FinancesComponent implements AfterViewInit {
         // '#fffcac',
         // '#D7F8EF',
         // '#FEEFB8'
-        '#6edbbb',
-        '#b0fffa',
-        '#abb3ff',
-        '#ffb4b5',
-        '#fffcac',
-        '#FFE4E4',
-        '#FFD578',
-        '#54D2FF',
-        '#E58DD7',
-        '#A9AABC',
-        '#F2ECFF',
-        '#5689C9',
-        '#F9F871'
-      ]
-    }
+        "#6edbbb",
+        "#b0fffa",
+        "#abb3ff",
+        "#ffb4b5",
+        "#fffcac",
+        "#FFE4E4",
+        "#FFD578",
+        "#54D2FF",
+        "#E58DD7",
+        "#A9AABC",
+        "#F2ECFF",
+        "#5689C9",
+        "#F9F871",
+      ],
+    },
   ];
 
   preoceedureChartColors;
   subtitle: string;
   public clinic_id: any = {};
   public dentistCount: any = {};
-  public netProfitIcon: string = '';
-  public netProfitProductionIcon: string = '';
-  public netProfitPmsIcon: string = '';
-  public barChartType = 'bar';
+  public netProfitIcon: string = "";
+  public netProfitProductionIcon: string = "";
+  public netProfitPmsIcon: string = "";
+  public barChartType = "bar";
   public barChartLegend = false;
   public netProfitVal: any = 0;
   public netProfitProductionVal: any = 0;
   public netProfitPmsVal: any = 0;
-  public duration = 'm';
+  public duration = "m";
   public predictedChartColors;
   public trendText;
   public apiUrl = environment.apiUrl;
   colorScheme = {
     domain: [
-      '#6edbba',
-      '#abb3ff',
-      '#b0fffa',
-      '#ffb4b5',
-      '#d7f8ef',
-      '#fffdac',
-      '#fef0b8',
-      '#4ccfae'
-    ]
+      "#6edbba",
+      "#abb3ff",
+      "#b0fffa",
+      "#ffb4b5",
+      "#d7f8ef",
+      "#fffdac",
+      "#fef0b8",
+      "#4ccfae",
+    ],
   };
   single = [];
   dateData: any[];
@@ -137,34 +148,30 @@ export class FinancesComponent implements AfterViewInit {
   roundDomains = false;
   maxRadius = 20;
   minRadius = 8;
-  view = '';
+  view = "";
   showLabels = true;
   explodeSlices = false;
   doughnut = false;
   arcWidth = 0.75;
   rangeFillOpacity = 0.75;
   pluginObservable$: Observable<Plugin[]>;
-  totalDiscountPluginObservable$: Observable<
-    Plugin[]
-  >;
-  currentOverduePluginObservable$: Observable<
-    Plugin[]
-  >;
+  totalDiscountPluginObservable$: Observable<Plugin[]>;
+  currentOverduePluginObservable$: Observable<Plugin[]>;
   destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   public percentOfProductionCount$ = new BehaviorSubject<number>(99);
   public percentOfTotalDiscount$ = new BehaviorSubject<number>(0);
   public percentOfCurrentOverdue$ = new BehaviorSubject<number>(0);
-  chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
-  chartLabels1 = ['January', 'February', 'Mars', 'April'];
+  chartData1 = [{ data: [330, 600, 260, 700], label: "Account A" }];
+  chartLabels1 = ["January", "February", "Mars", "April"];
   profitChartTitles = [
-    'Production',
-    'Net Profit',
-    'Net Profit %',
-    'Collection'
+    "Production",
+    "Net Profit",
+    "Net Profit %",
+    "Collection",
   ];
   barChartColors = [
-    { backgroundColor: '#39acac' },
-    { backgroundColor: '#48daba' }
+    { backgroundColor: "#39acac" },
+    { backgroundColor: "#48daba" },
   ];
   public isVisibleAccountGraphs: boolean = false;
   public maxLegendLabelLimit = 10;
@@ -188,21 +195,21 @@ export class FinancesComponent implements AfterViewInit {
     public chartstipsService: ChartstipsService,
     private decimalPipe: DecimalPipe
   ) {
-    this.router.routerState.root.queryParams.subscribe(val => {
-      if(val && val.wh){
+    this.router.routerState.root.queryParams.subscribe((val) => {
+      if (val && val.wh) {
         this.queryWhEnabled = val.wh;
       }
-    })
-    this.user_type = this._cookieService.get('user_type');
-    this.connectedwith = this._cookieService.get('a_connect');
-    this.isVisibleAccountGraphs = this.connectedwith == 'none' ? false : true;
+    });
+    this.user_type = this._cookieService.get("user_type");
+    this.connectedwith = this._cookieService.get("a_connect");
+    this.isVisibleAccountGraphs = this.connectedwith == "none" ? false : true;
     // this.getChartsTips();
     this.getAllClinics();
   }
 
   public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
     display: true,
-    position: 'bottom',
+    position: "bottom",
     labels: {
       boxWidth: 8,
       usePointStyle: true,
@@ -222,32 +229,32 @@ export class FinancesComponent implements AfterViewInit {
         return labels.map((item) => ({
           text: item,
           strokeStyle: bg_color[item],
-          fillStyle: bg_color[item]
+          fillStyle: bg_color[item],
         }));
-      }
+      },
     },
     // onClick: (event: MouseEvent, legendItem: LegendItem) => {}
   };
   private warningMessage: string;
   async initiate_clinic() {
-    var val = $('#currentClinic').attr('cid');
+    var val = $("#currentClinic").attr("cid");
     // this.clinic_id = val;
-    if (val != undefined && val != '') {
-      if (val == 'all') {
+    if (val != undefined && val != "") {
+      if (val == "all") {
         this.clinic_id = this.clinics;
       } else {
         this.clinic_id = val;
       }
-      if (val.indexOf(',') == -1 && val != 'all') {
+      if (val.indexOf(",") == -1 && val != "all") {
         this.multipleClinicsSelected = false;
         this.clinic_id = val;
         await this.clinicGetAccountingPlatform();
         this.isVisibleAccountGraphs =
-          this.connectedwith == 'none' ? false : true;
-        if (this.connectedwith == 'myob') {
+          this.connectedwith == "none" ? false : true;
+        if (this.connectedwith == "myob") {
           this.xeroConnect = false;
           this.checkMyobStatus();
-        } else if (this.connectedwith == 'xero') {
+        } else if (this.connectedwith == "xero") {
           this.myobConnect = false;
           this.checkXeroStatus();
         } else {
@@ -288,20 +295,20 @@ export class FinancesComponent implements AfterViewInit {
         .subscribe(
           (res) => {
             if (res.status == 200) {
-              if (res.body.data != '') {
+              if (res.body.data != "") {
                 self.connectedwith = res.body.data;
                 resolve(true);
               } else {
-                self.connectedwith = '';
+                self.connectedwith = "";
                 resolve(true);
               }
             } else {
-              self.connectedwith = '';
+              self.connectedwith = "";
               resolve(true);
             }
           },
           (error) => {
-            self.warningMessage = 'Please Provide Valid Inputs!';
+            self.warningMessage = "Please Provide Valid Inputs!";
             resolve(true);
           }
         );
@@ -310,10 +317,10 @@ export class FinancesComponent implements AfterViewInit {
 
   formatDate(date) {
     if (date) {
-      var dateArray = date.split('-');
+      var dateArray = date.split("-");
       const d = new Date();
       d.setFullYear(+dateArray[2], +dateArray[1] - 1, +dateArray[0]);
-      const formattedDate = this.datePipe.transform(d, 'dd MMM yyyy');
+      const formattedDate = this.datePipe.transform(d, "dd MMM yyyy");
       return formattedDate;
     } else return date;
   }
@@ -343,255 +350,255 @@ export class FinancesComponent implements AfterViewInit {
       })
     );
 
-    $('#currentDentist').attr('did', 'all');
+    $("#currentDentist").attr("did", "all");
     this.route.params.subscribe((params) => {
-      $('.external_clinic').show();
+      $(".external_clinic").show();
       //$('.dentist_dropdown').hide();
-      $('.header_filters').removeClass('hide_header');
-      $('.header_filters').addClass('flex_direct_mar');
-      $('.external_clinic').show();
+      $(".header_filters").removeClass("hide_header");
+      $(".header_filters").addClass("flex_direct_mar");
+      $(".external_clinic").show();
       //$('.external_dentist').show();
-      $('#title').html('<span>Finances</span>');
-      $('#sa_datepicker').val(
-        this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate)
+      $("#title").html("<span>Finances</span>");
+      $("#sa_datepicker").val(
+        this.formatDate(this.startDate) + " - " + this.formatDate(this.endDate)
       );
-      $(document).on('click', function (e) {
-        if ($(document.activeElement).attr('id') == 'sa_datepicker') {
-          $('.customRange').show();
-        } else if ($(document.activeElement).attr('id') == 'customRange') {
-          $('.customRange').show();
+      $(document).on("click", function (e) {
+        if ($(document.activeElement).attr("id") == "sa_datepicker") {
+          $(".customRange").show();
+        } else if ($(document.activeElement).attr("id") == "customRange") {
+          $(".customRange").show();
         } else {
-          $('.customRange').hide();
+          $(".customRange").hide();
         }
       });
     });
     let gradient = this.canvas.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, '#17a2a6');
-    gradient.addColorStop(1, '#17a2a6');
+    gradient.addColorStop(0, "#17a2a6");
+    gradient.addColorStop(1, "#17a2a6");
     let gradient1 = this.canvas.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 100);
-    gradient1.addColorStop(1, '#82edd8');
-    gradient1.addColorStop(0, '#82edd8');
+    gradient1.addColorStop(1, "#82edd8");
+    gradient1.addColorStop(0, "#82edd8");
     let gradient2 = this.canvas.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 100);
-    gradient2.addColorStop(1, '#2C7294');
-    gradient2.addColorStop(0, '#2C7294');
+    gradient2.addColorStop(1, "#2C7294");
+    gradient2.addColorStop(0, "#2C7294");
     let gradient3 = this.canvas.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 100);
-    gradient3.addColorStop(1, '#3c7cb7');
-    gradient3.addColorStop(0, '#3c7cb7');
+    gradient3.addColorStop(1, "#3c7cb7");
+    gradient3.addColorStop(0, "#3c7cb7");
     let gradient4 = this.canvas.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 100);
-    gradient4.addColorStop(1, '#175088');
-    gradient4.addColorStop(0, '#175088');
+    gradient4.addColorStop(1, "#175088");
+    gradient4.addColorStop(0, "#175088");
     let gradient5 = this.canvas.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 100);
-    gradient5.addColorStop(1, '#1fd6b1');
-    gradient5.addColorStop(0, '#1fd6b1');
+    gradient5.addColorStop(1, "#1fd6b1");
+    gradient5.addColorStop(0, "#1fd6b1");
     let gradient6 = this.canvas.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 100);
-    gradient6.addColorStop(1, '#09b391');
-    gradient6.addColorStop(0, '#09b391');
+    gradient6.addColorStop(1, "#09b391");
+    gradient6.addColorStop(0, "#09b391");
     let gradient7 = this.canvas.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 100);
-    gradient7.addColorStop(1, '#168F7F');
-    gradient7.addColorStop(0, '#168F7F');
+    gradient7.addColorStop(1, "#168F7F");
+    gradient7.addColorStop(0, "#168F7F");
 
     // this.doughnutChartColors = [{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}];
     this.doughnutChartColors = [
-      '#6cd8ba',
-      '#b0fffa',
-      '#abb3ff',
-      '#feefb8',
-      '#91ADEA',
-      '#ffb4b5',
-      '#F2C6C6',
-      '#FDC6C0',
-      '#FEEEE1',
-      '#FFDD99',
-      '#A8DDDD',
-      '#F4F4A0',
-      '#C3DDFF',
-      '#9FDBDB',
-      '#CCFDCC',
-      '#B1F2EC',
-      '#D7ECF3',
-      '#C8CDF0',
-      '#F7C4F5',
-      '#BBEBFA',
-      '#D7ECF3',
-      '#BBE7FF',
-      '#9BD0F5',
-      '#36A2EB',
-      '#FF6384',
-      '#fe7b85',
-      '#87ada9',
-      '#386087',
-      '#54D2FF',
-      '#E58DD7'
+      "#6cd8ba",
+      "#b0fffa",
+      "#abb3ff",
+      "#feefb8",
+      "#91ADEA",
+      "#ffb4b5",
+      "#F2C6C6",
+      "#FDC6C0",
+      "#FEEEE1",
+      "#FFDD99",
+      "#A8DDDD",
+      "#F4F4A0",
+      "#C3DDFF",
+      "#9FDBDB",
+      "#CCFDCC",
+      "#B1F2EC",
+      "#D7ECF3",
+      "#C8CDF0",
+      "#F7C4F5",
+      "#BBEBFA",
+      "#D7ECF3",
+      "#BBE7FF",
+      "#9BD0F5",
+      "#36A2EB",
+      "#FF6384",
+      "#fe7b85",
+      "#87ada9",
+      "#386087",
+      "#54D2FF",
+      "#E58DD7",
     ];
     let stackedGradient = this.canvas.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 400);
-    stackedGradient.addColorStop(0, '#168F7F');
-    stackedGradient.addColorStop(1, '#168F7F');
+    stackedGradient.addColorStop(0, "#168F7F");
+    stackedGradient.addColorStop(1, "#168F7F");
     let stackedGradient1 = this.canvas.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 100);
-    stackedGradient1.addColorStop(1, '#1fd6b1');
-    stackedGradient1.addColorStop(0, '#1fd6b1');
+    stackedGradient1.addColorStop(1, "#1fd6b1");
+    stackedGradient1.addColorStop(0, "#1fd6b1");
     let stackedGradient2 = this.canvas.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 100);
-    stackedGradient2.addColorStop(1, '#09b391');
-    stackedGradient2.addColorStop(0, '#09b391');
+    stackedGradient2.addColorStop(1, "#09b391");
+    stackedGradient2.addColorStop(0, "#09b391");
     let stackedGradient3 = this.canvas.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 100);
-    stackedGradient3.addColorStop(1, '#82EDD8');
-    stackedGradient3.addColorStop(0, '#82EDD8');
+    stackedGradient3.addColorStop(1, "#82EDD8");
+    stackedGradient3.addColorStop(0, "#82EDD8");
     let stackedGradient4 = this.canvas.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 100);
-    stackedGradient4.addColorStop(1, '#17A2A6');
-    stackedGradient4.addColorStop(0, '#17A2A6');
+    stackedGradient4.addColorStop(1, "#17A2A6");
+    stackedGradient4.addColorStop(0, "#17A2A6");
     let stackedGradient5 = this.canvas.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 100);
-    stackedGradient5.addColorStop(1, 'rgba(22, 82, 141, 1)');
-    stackedGradient5.addColorStop(0, 'rgba(12, 209,169,1)');
+    stackedGradient5.addColorStop(1, "rgba(22, 82, 141, 1)");
+    stackedGradient5.addColorStop(0, "rgba(12, 209,169,1)");
 
     this.stackedChartColors = [
       {
         backgroundColor: stackedGradient,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(255,255,255,0.6)'
+        hoverBorderColor: "#1CA49F",
+        borderColor: "rgba(255,255,255,0.6)",
       },
       {
         backgroundColor: stackedGradient1,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(255,255,255,0.6)'
+        hoverBorderColor: "#1CA49F",
+        borderColor: "rgba(255,255,255,0.6)",
       },
       {
         backgroundColor: stackedGradient2,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(255,255,255,0.6)'
+        hoverBorderColor: "#1CA49F",
+        borderColor: "rgba(255,255,255,0.6)",
       },
       {
         backgroundColor: stackedGradient3,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(255,255,255,0.6)'
+        hoverBorderColor: "#1CA49F",
+        borderColor: "rgba(255,255,255,0.6)",
       },
       {
         backgroundColor: stackedGradient4,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(255,255,255,0.6)'
+        hoverBorderColor: "#1CA49F",
+        borderColor: "rgba(255,255,255,0.6)",
       },
       {
         backgroundColor: stackedGradient5,
         hoverBorderWidth: 2,
-        hoverBorderColor: 'rgba(255,255,255,0.6)'
-      }
+        hoverBorderColor: "rgba(255,255,255,0.6)",
+      },
     ];
     let stackedGradient6 = this.canvas2.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 100);
-    stackedGradient6.addColorStop(1, 'rgba(22, 82, 141, 0.4)');
-    stackedGradient6.addColorStop(0, 'rgba(12, 209,169,0.4)');
+    stackedGradient6.addColorStop(1, "rgba(22, 82, 141, 0.4)");
+    stackedGradient6.addColorStop(0, "rgba(12, 209,169,0.4)");
     this.stackedChartColorsBar = [
       {
         backgroundColor: stackedGradient6,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-        borderColor: '#1CA49F'
-      }
+        hoverBorderColor: "#1CA49F",
+        borderColor: "#1CA49F",
+      },
     ];
     let stackedGradient7 = this.canvas2.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 100);
-    stackedGradient7.addColorStop(1, 'rgba(94, 232,205,0.8)');
-    stackedGradient7.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
+    stackedGradient7.addColorStop(1, "rgba(94, 232,205,0.8)");
+    stackedGradient7.addColorStop(0, "rgba(22, 82, 141, 0.9)");
     let proceedureGradient = this.canvas2.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 400);
-    proceedureGradient.addColorStop(0, 'rgba(22, 82, 141, 0.8)');
-    proceedureGradient.addColorStop(1, 'rgba(12, 209,169,0.9)');
+    proceedureGradient.addColorStop(0, "rgba(22, 82, 141, 0.8)");
+    proceedureGradient.addColorStop(1, "rgba(12, 209,169,0.9)");
     let proceedureGradient1 = this.canvas2.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 100);
-    proceedureGradient1.addColorStop(1, 'rgba(12, 209,169,0.8)');
-    proceedureGradient1.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
+    proceedureGradient1.addColorStop(1, "rgba(12, 209,169,0.8)");
+    proceedureGradient1.addColorStop(0, "rgba(22, 82, 141, 0.9)");
     let proceedureGradient2 = this.canvas2.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 100);
-    proceedureGradient2.addColorStop(1, 'rgba(59, 227,193,0.8');
-    proceedureGradient2.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
+    proceedureGradient2.addColorStop(1, "rgba(59, 227,193,0.8");
+    proceedureGradient2.addColorStop(0, "rgba(22, 82, 141, 0.9)");
     let proceedureGradient3 = this.canvas2.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 100);
-    proceedureGradient3.addColorStop(1, 'rgba(94, 232,205,0.8)');
-    proceedureGradient3.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
+    proceedureGradient3.addColorStop(1, "rgba(94, 232,205,0.8)");
+    proceedureGradient3.addColorStop(0, "rgba(22, 82, 141, 0.9)");
     let proceedureGradient4 = this.canvas2.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 100);
-    proceedureGradient4.addColorStop(1, 'rgba(148, 240,221,0.8)');
-    proceedureGradient4.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
+    proceedureGradient4.addColorStop(1, "rgba(148, 240,221,0.8)");
+    proceedureGradient4.addColorStop(0, "rgba(22, 82, 141, 0.9)");
     let proceedureGradient5 = this.canvas2.nativeElement
-      .getContext('2d')
+      .getContext("2d")
       .createLinearGradient(0, 0, 0, 100);
-    proceedureGradient5.addColorStop(1, 'rgba(201, 247,238,0.8)');
-    proceedureGradient5.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
+    proceedureGradient5.addColorStop(1, "rgba(201, 247,238,0.8)");
+    proceedureGradient5.addColorStop(0, "rgba(22, 82, 141, 0.9)");
 
     this.preoceedureChartColors = [
       {
         backgroundColor: proceedureGradient,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)'
+        hoverBorderColor: "#1CA49F",
+        borderColor: "rgba(25,179,148,0.7)",
       },
       {
         backgroundColor: proceedureGradient1,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)'
+        hoverBorderColor: "#1CA49F",
+        borderColor: "rgba(25,179,148,0.7)",
       },
       {
         backgroundColor: proceedureGradient2,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)'
+        hoverBorderColor: "#1CA49F",
+        borderColor: "rgba(25,179,148,0.7)",
       },
       {
         backgroundColor: proceedureGradient3,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)'
+        hoverBorderColor: "#1CA49F",
+        borderColor: "rgba(25,179,148,0.7)",
       },
       {
         backgroundColor: proceedureGradient4,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F',
-        borderColor: 'rgba(25,179,148,0.7)'
+        hoverBorderColor: "#1CA49F",
+        borderColor: "rgba(25,179,148,0.7)",
       },
       {
         backgroundColor: proceedureGradient5,
         hoverBorderWidth: 2,
-        hoverBorderColor: '#1CA49F'
-      }
+        hoverBorderColor: "#1CA49F",
+      },
     ];
     //this.filterDate(this.chartService.duration$.value);
   }
@@ -607,78 +614,80 @@ export class FinancesComponent implements AfterViewInit {
     // curvature: 1,
     animation: {
       duration: 1500,
-      easing: 'easeOutSine'
+      easing: "easeOutSine",
     },
     responsive: true,
     maintainAspectRatio: false,
     // scaleStartValue: 0,
     scales: {
-      x: 
-        {
-          grid: {
-            display: true,
-            offset: true
-          },
-          ticks: {
-            autoSkip: false
-          },
-          display: false,
+      x: {
+        grid: {
+          display: true,
           offset: true,
-          stacked: true
         },
-      y: 
-        {
-          suggestedMin: 0,
-          min: 0,
-          beginAtZero: true,
-          ticks: {
-            callback: (label: number, index, labels) => {
-              // when the floored value is the same as the value we have a whole number
-              if (Math.floor(label) === label) {
-                return '$' + this.decimalPipe.transform(label);
-              }
-              return '';
+        ticks: {
+          autoSkip: false,
+        },
+        display: false,
+        offset: true,
+        stacked: true,
+      },
+      y: {
+        suggestedMin: 0,
+        min: 0,
+        beginAtZero: true,
+        ticks: {
+          callback: (label: number, index, labels) => {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              return "$" + this.decimalPipe.transform(label);
             }
-          }
-        }
+            return "";
+          },
+        },
+      },
     },
     plugins: {
       tooltip: {
-        mode: 'x',
+        mode: "x",
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
         callbacks: {
           // use label callback to return the desired label
           label: (tooltipItem) => {
-            const v =
-            tooltipItem.parsed.y;
+            const v = tooltipItem.parsed.y;
             let Tlable = tooltipItem.dataset.label;
-            if (Tlable != '') {
-              Tlable = Tlable + ': ';
+            if (Tlable != "") {
+              Tlable = Tlable + ": ";
             }
             //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-            let ylable = tooltipItem.parsed._custom ? +(tooltipItem.parsed._custom.max + tooltipItem.parsed._custom.min) / 2 : v;
-            if (ylable == 0 && Tlable == 'Target: ') {
+            let ylable = tooltipItem.parsed._custom
+              ? +(
+                  tooltipItem.parsed._custom.max +
+                  tooltipItem.parsed._custom.min
+                ) / 2
+              : v;
+            if (ylable == 0 && Tlable == "Target: ") {
               //return  Tlable + this.splitName(tooltipItem.xLabel).join(' ');
-              return '';
+              return "";
             } else {
               return (
                 Tlable +
-                this.splitName(tooltipItem.label).join(' ') +
-                ': $' +
+                this.splitName(tooltipItem.label).join(" ") +
+                ": $" +
                 ylable
               );
             }
           },
           // remove title
           title: function (tooltipItem) {
-            return '';
-          }
-        }
+            return "";
+          },
+        },
       },
       legend: {
-        position: 'top',
+        position: "top",
         onClick: function (e, legendItem) {
           var index = legendItem.datasetIndex;
           var ci = this.chart;
@@ -690,23 +699,22 @@ export class FinancesComponent implements AfterViewInit {
             ci.getDatasetMeta(index).hidden = false;
           }
           ci.update();
-        }
-      }
+        },
+      },
     },
-
   };
   public date = new Date();
   public lineChartOptions: any = { responsive: true };
 
-  dentists: Dentist[] = [{ providerId: 'all', name: 'All Dentists' }];
+  dentists: Dentist[] = [{ providerId: "all", name: "All Dentists" }];
   public stackedChartOptions: ChartOptions = {
     elements: {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: 'rectRounded',
-        hoverBorderWidth: 7
-      }
+        pointStyle: "rectRounded",
+        hoverBorderWidth: 7,
+      },
     },
     // scaleShowVerticalLines: false,
     responsive: true,
@@ -714,43 +722,39 @@ export class FinancesComponent implements AfterViewInit {
     // barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine'
+      easing: "easeOutSine",
     },
     scales: {
-      x: 
-        {
-          stacked: true,
-          ticks: {
-            autoSkip: false
-          }
-        }
-      ,
-      y: 
-        {
-          stacked: true,
-          ticks: {
-            callback: function (label: number, index, labels) {
-              // when the floored value is the same as the value we have a whole number
-              if (Math.floor(label) === label) {
-                let currency =
-                  label < 0
-                    ? label.toString().split('-').join('')
-                    : label.toString();
-                currency = currency.split(/(?=(?:...)*$)/).join(',');
-                return `${label < 0 ? '- $' : '$'}${currency}`;
-              }
-              return '';
+      x: {
+        stacked: true,
+        ticks: {
+          autoSkip: false,
+        },
+      },
+      y: {
+        stacked: true,
+        ticks: {
+          callback: function (label: number, index, labels) {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              let currency =
+                label < 0
+                  ? label.toString().split("-").join("")
+                  : label.toString();
+              currency = currency.split(/(?=(?:...)*$)/).join(",");
+              return `${label < 0 ? "- $" : "$"}${currency}`;
             }
-          }
-        }
-      
+            return "";
+          },
+        },
+      },
     },
     plugins: {
       legend: {
-        display: true
+        display: true,
       },
       tooltip: {
-        mode: 'x',
+        mode: "x",
         // enabled: false,
         // external: function (t) {
         //   const tooltip = t.tooltip;
@@ -774,14 +778,14 @@ export class FinancesComponent implements AfterViewInit {
         //   } else {
         //     tooltipEl.style.opacity = '0.8';
         //   }
-  
+
         //   tooltipEl.classList.remove('above', 'below', 'no-transform');
         //   if (tooltip.yAlign) {
         //     tooltipEl.classList.add(tooltip.yAlign);
         //   } else {
         //     tooltipEl.classList.add('no-transform');
         //   }
-  
+
         //   function getBody(bodyItem) {
         //     return bodyItem.lines;
         //   }
@@ -791,7 +795,7 @@ export class FinancesComponent implements AfterViewInit {
         //     var labelColorscustom = tooltip.labelColors;
         //     var innerHtml = '<table><thead>';
         //     innerHtml += '</thead><tbody>';
-  
+
         //     let total: any = 0;
         //     bodyLines.forEach(function (body, i) {
         //       if (!body[0].includes('$0')) {
@@ -802,7 +806,7 @@ export class FinancesComponent implements AfterViewInit {
         //           if(temp.length > 1 ){
         //             amount = temp[1].replace(/,/g, '');
         //           }
-                  
+
         //           total -= parseFloat(amount);
         //         } else {
         //           var temp = singleval[1].split('$');
@@ -846,7 +850,7 @@ export class FinancesComponent implements AfterViewInit {
         //           temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
         //           body_custom[lastIndex] = temp_.join('$');
         //         }
-  
+
         //         body[0] = body_custom.join(':');
         //         innerHtml +=
         //           '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
@@ -881,12 +885,13 @@ export class FinancesComponent implements AfterViewInit {
             return `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`;
           },
           title: (tooltipItems) => {
-            return `${tooltipItems[0].label}: $${this.decimalPipe.transform(_.sumBy(tooltipItems, t => t.parsed.y))}`
-          }
-        }
-      }
+            return `${tooltipItems[0].label}: $${this.decimalPipe.transform(
+              _.sumBy(tooltipItems, (t) => t.parsed.y)
+            )}`;
+          },
+        },
+      },
     },
-
   };
 
   public stackedChartOptionsDiscount: ChartOptions = {
@@ -894,9 +899,9 @@ export class FinancesComponent implements AfterViewInit {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: 'rectRounded',
-        hoverBorderWidth: 7
-      }
+        pointStyle: "rectRounded",
+        hoverBorderWidth: 7,
+      },
     },
     // scaleShowVerticalLines: false,
     responsive: true,
@@ -904,51 +909,49 @@ export class FinancesComponent implements AfterViewInit {
     // barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine'
+      easing: "easeOutSine",
     },
     scales: {
-      x: 
-        {
-          stacked: true,
-          ticks: {
-            autoSkip: false
-          }
-        }
-      ,
-      y: 
-        {
-          stacked: true,
-          ticks: {
-            callback: function (label: number, index, labels) {
-              // when the floored value is the same as the value we have a whole number
-              if (Math.floor(label) === label) {
-                let currency =
-                  label < 0
-                    ? label.toString().split('-').join('')
-                    : label.toString();
-                currency = currency.split(/(?=(?:...)*$)/).join(',');
-                return `${label < 0 ? '- $' : '$'}${currency}`;
-              }
-              return '';
+      x: {
+        stacked: true,
+        ticks: {
+          autoSkip: false,
+        },
+      },
+      y: {
+        stacked: true,
+        ticks: {
+          callback: function (label: number, index, labels) {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              let currency =
+                label < 0
+                  ? label.toString().split("-").join("")
+                  : label.toString();
+              currency = currency.split(/(?=(?:...)*$)/).join(",");
+              return `${label < 0 ? "- $" : "$"}${currency}`;
             }
-          }
-        }
+            return "";
+          },
+        },
+      },
     },
     plugins: {
       legend: this.stackLegendGenerator,
       tooltip: {
-        mode: 'x',
+        mode: "x",
         callbacks: {
           label: function (tooltipItems) {
-            return `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`
+            return `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`;
           },
           title: (tooltipItems) => {
-            return `${tooltipItems[0].label}: $${this.decimalPipe.transform(_.sumBy(tooltipItems, t => t.parsed.y))}`
-          }
-        }
-      }
+            return `${tooltipItems[0].label}: $${this.decimalPipe.transform(
+              _.sumBy(tooltipItems, (t) => t.parsed.y)
+            )}`;
+          },
+        },
+      },
     },
-
   };
 
   public labelBarOptionsMultiTC: ChartOptions = {
@@ -956,8 +959,8 @@ export class FinancesComponent implements AfterViewInit {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: 'rectRounded',
-        hoverBorderWidth: 7
+        pointStyle: "rectRounded",
+        hoverBorderWidth: 7,
       },
       line: JeeveLineFillOptions,
     },
@@ -965,36 +968,34 @@ export class FinancesComponent implements AfterViewInit {
     maintainAspectRatio: false,
     animation: {
       duration: 500,
-      easing: 'easeOutSine'
+      easing: "easeOutSine",
     },
     scales: {
-      x: 
-        {
-          stacked: true,
-          ticks: {
-            autoSkip: false
-          }
+      x: {
+        stacked: true,
+        ticks: {
+          autoSkip: false,
         },
-      y: 
-        {
-          stacked: true,
-          ticks: {
-            callback: function (label: string | number, index, labels) {
-              // when the floored value is the same as the value we have a whole number
-              return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-              }).format(Number(label));
-            }
-          }
-        }
+      },
+      y: {
+        stacked: true,
+        ticks: {
+          callback: function (label: string | number, index, labels) {
+            // when the floored value is the same as the value we have a whole number
+            return new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "USD",
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            }).format(Number(label));
+          },
+        },
+      },
     },
     plugins: {
       legend: this.stackLegendGenerator,
       tooltip: {
-        mode: 'x',
+        mode: "x",
         // enabled: false,
         // external: function (tooltipChart) {
         //   const tooltip = tooltipChart.tooltip;
@@ -1018,14 +1019,14 @@ export class FinancesComponent implements AfterViewInit {
         //   } else {
         //     tooltipEl.style.opacity = '0.8';
         //   }
-  
+
         //   tooltipEl.classList.remove('above', 'below', 'no-transform');
         //   if (tooltip.yAlign) {
         //     tooltipEl.classList.add(tooltip.yAlign);
         //   } else {
         //     tooltipEl.classList.add('no-transform');
         //   }
-  
+
         //   function getBody(bodyItem) {
         //     return bodyItem.lines;
         //   }
@@ -1035,7 +1036,7 @@ export class FinancesComponent implements AfterViewInit {
         //     var labelColorscustom = tooltip.labelColors;
         //     var innerHtml = '<table><thead>';
         //     innerHtml += '</thead><tbody>';
-  
+
         //     let total: any = 0;
         //     bodyLines.forEach(function (body, i) {
         //       if (!body[0].includes('$0')) {
@@ -1083,7 +1084,7 @@ export class FinancesComponent implements AfterViewInit {
         //           temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
         //           body_custom[lastIndex] = temp_.join('$');
         //         }
-  
+
         //         body[0] = body_custom.join(':');
         //         innerHtml +=
         //           '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
@@ -1115,15 +1116,17 @@ export class FinancesComponent implements AfterViewInit {
         // displayColors: false,
         callbacks: {
           label: function (tooltipItems) {
-            return `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`
+            return `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`;
           },
           title: (tooltipItems) => {
-            const val = _.sumBy(tooltipItems, t => t.parsed.y);
-            return `${tooltipItems[0].label}: $${this.decimalPipe.transform(val)}`
-          }
-        }
-      }
-    }
+            const val = _.sumBy(tooltipItems, (t) => t.parsed.y);
+            return `${tooltipItems[0].label}: $${this.decimalPipe.transform(
+              val
+            )}`;
+          },
+        },
+      },
+    },
   };
 
   public labelBarOptionsMultiPercentage: ChartOptions = {
@@ -1131,8 +1134,8 @@ export class FinancesComponent implements AfterViewInit {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: 'rectRounded',
-        hoverBorderWidth: 7
+        pointStyle: "rectRounded",
+        hoverBorderWidth: 7,
       },
       line: JeeveLineFillOptions,
     },
@@ -1140,50 +1143,44 @@ export class FinancesComponent implements AfterViewInit {
     maintainAspectRatio: false,
     animation: {
       duration: 500,
-      easing: 'easeOutSine'
+      easing: "easeOutSine",
     },
     scales: {
-      x: 
-        {
-          stacked: true,
-          ticks: {
-            autoSkip: false
-          }
+      x: {
+        stacked: true,
+        ticks: {
+          autoSkip: false,
         },
-      y: 
-        {
-          stacked: true,
-          ticks: {
-            callback: (label: string | number) => {
-              return `${Number(label)}%`;
-            }
-          }
-        }
+      },
+      y: {
+        stacked: true,
+        ticks: {
+          callback: (label: string | number) => {
+            return `${Number(label)}%`;
+          },
+        },
+      },
     },
     plugins: {
       legend: {
-        display: false
+        display: false,
       },
       tooltip: {
         displayColors: (ctx, options) => {
           const tooltip = ctx.tooltip;
           if (!tooltip) return true;
           // disable displaying the color box;
-          return false
+          return false;
         },
-        mode: 'x',
+        mode: "x",
         callbacks: {
-          label: (
-            tooltipItem
-          ) => {
-            return `${tooltipItem.dataset.label}: ${
-              tooltipItem.formattedValue
-            }%`;
+          label: (tooltipItem) => {
+            return `${tooltipItem.dataset.label}: ${tooltipItem.formattedValue}%`;
           },
-          title: () => ''
-        }
-      }
-    }
+          title: () => "",
+        },
+      },
+    },
   };
 
   public labelBarOptionsTC: ChartOptions = {
@@ -1191,58 +1188,53 @@ export class FinancesComponent implements AfterViewInit {
     maintainAspectRatio: false,
     animation: {
       duration: 500,
-      easing: 'easeOutSine'
+      easing: "easeOutSine",
     },
     scales: {
-      x: 
-        {
-          grid: {
-            color: 'transparent'
-          },
-          stacked: false,
-        }
-      ,
-      y: 
-        {
-          stacked: false,
-          grid: {
-            color: 'transparent'
-          },
-          suggestedMin: 0,
-          ticks: {
-            callback: function (label: string | number, index, labels) {
-              // when the floored value is the same as the value we have a whole number
-              return `${new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-              }).format(Number(label))}`;
-            },
-            autoSkip: false
-          }
+      x: {
+        grid: {
+          color: "transparent",
         },
-        
-        
+        stacked: false,
+      },
+      y: {
+        stacked: false,
+        grid: {
+          color: "transparent",
+        },
+        suggestedMin: 0,
+        ticks: {
+          callback: function (label: string | number, index, labels) {
+            // when the floored value is the same as the value we have a whole number
+            return `${new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "USD",
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            }).format(Number(label))}`;
+          },
+          autoSkip: false,
+        },
+      },
     },
     plugins: {
       legend: {
-        display: true
+        display: true,
       },
       tooltip: {
-        mode: 'x',
+        mode: "x",
         callbacks: {
           label: function (tooltipItems) {
-            return new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
+            return new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "USD",
               minimumFractionDigits: 0,
-              maximumFractionDigits: 0
+              maximumFractionDigits: 0,
             }).format(tooltipItems.parsed.y);
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   };
 
   public labelBarOptions: ChartOptions = {
@@ -1250,9 +1242,9 @@ export class FinancesComponent implements AfterViewInit {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: 'rectRounded',
-        hoverBorderWidth: 7
-      }
+        pointStyle: "rectRounded",
+        hoverBorderWidth: 7,
+      },
     },
     // scaleShowVerticalLines: false,
     responsive: true,
@@ -1260,53 +1252,49 @@ export class FinancesComponent implements AfterViewInit {
     // barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine'
+      easing: "easeOutSine",
     },
     scales: {
-      x: 
-        {
-          stacked: false,
-          ticks: {
-            autoSkip: false
-          }
-        }
-      ,
-      y: 
-        {
-          stacked: false,
-          ticks: {
-            callback: function (label: number, index, labels) {
-              // when the floored value is the same as the value we have a whole number
-              if (Math.floor(label) === label) {
-                let currency =
-                  label < 0
-                    ? label.toString().split('-').join('')
-                    : label.toString();
-                //  if (currency.length > 3) {
-                //    currency = currency.substring(0, 1) + 'K'
-                //  } else{
-                currency = currency.split(/(?=(?:...)*$)/).join(',');
-                //  }
+      x: {
+        stacked: false,
+        ticks: {
+          autoSkip: false,
+        },
+      },
+      y: {
+        stacked: false,
+        ticks: {
+          callback: function (label: number, index, labels) {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              let currency =
+                label < 0
+                  ? label.toString().split("-").join("")
+                  : label.toString();
+              //  if (currency.length > 3) {
+              //    currency = currency.substring(0, 1) + 'K'
+              //  } else{
+              currency = currency.split(/(?=(?:...)*$)/).join(",");
+              //  }
 
-                return `${label < 0 ? '- $' : '$'}${currency}`;
-              }
-              return '';
+              return `${label < 0 ? "- $" : "$"}${currency}`;
             }
-          }
-        }
+            return "";
+          },
+        },
+      },
     },
     plugins: {
       legend: {
-        display: true
+        display: true,
       },
       tooltip: {
         callbacks: {
           label: (tooltipItem) => formatXTooltipLabel(tooltipItem),
-          title: () => ''
-        }
-      }
-    }
-
+          title: () => "",
+        },
+      },
+    },
   };
 
   public labelBarOptionsSingleValue: ChartOptions = {
@@ -1314,8 +1302,8 @@ export class FinancesComponent implements AfterViewInit {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: 'rectRounded',
-        hoverBorderWidth: 7
+        pointStyle: "rectRounded",
+        hoverBorderWidth: 7,
       },
       line: JeeveLineFillOptions,
     },
@@ -1323,79 +1311,73 @@ export class FinancesComponent implements AfterViewInit {
     maintainAspectRatio: false,
     animation: {
       duration: 500,
-      easing: 'easeOutSine'
+      easing: "easeOutSine",
     },
     scales: {
-      x: 
-        {
-          stacked: false,
-          ticks: {
-            autoSkip: false
-          }
-        }
-      ,
-      y: 
-        {
-          stacked: false,
-          ticks: {
-            callback: function (label, index, labels) {
-              return `${new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-              }).format(Number(label))}`;
-            }
-          }
-        }
+      x: {
+        stacked: false,
+        ticks: {
+          autoSkip: false,
+        },
+      },
+      y: {
+        stacked: false,
+        ticks: {
+          callback: function (label, index, labels) {
+            return `${new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "USD",
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            }).format(Number(label))}`;
+          },
+        },
+      },
     },
     plugins: {
       legend: {
-        display: true
+        display: true,
       },
       tooltip: {
-        mode: 'x',
+        mode: "x",
         displayColors(ctx, options) {
-          return !ctx.tooltip
+          return !ctx.tooltip;
         },
         callbacks: {
           label: (tooltipItems: TooltipItem<any>) => {
             let label = tooltipItems.label;
-            return `${label} : ${new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
+            return `${label} : ${new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "USD",
               minimumFractionDigits: 0,
-              maximumFractionDigits: 0
+              maximumFractionDigits: 0,
             }).format(Number(tooltipItems.parsed.y))}`;
           },
-          title: () => ''
-        }
-      }
-    }
+          title: () => "",
+        },
+      },
+    },
   };
 
   public netProfitTrendMultiChartOptions: ChartOptions = {
     ...this.labelBarOptionsSingleValue,
     plugins: {
       tooltip: {
-        mode: 'x',
+        mode: "x",
         callbacks: {
-          label: (
-            tooltipItems
-          ) => {
+          label: (tooltipItems) => {
             const label = tooltipItems.dataset.label;
-            return `${label} : ${new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
+            return `${label} : ${new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "USD",
               minimumFractionDigits: 0,
-              maximumFractionDigits: 0
+              maximumFractionDigits: 0,
             }).format(tooltipItems.parsed.y)}`;
           },
-          title: () => ''
-        }
-      }
-    }
-
+          title: () => "",
+        },
+      },
+    },
   };
 
   /************ Net Profit Percentage trend *************/
@@ -1404,8 +1386,8 @@ export class FinancesComponent implements AfterViewInit {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: 'rectRounded',
-        hoverBorderWidth: 7
+        pointStyle: "rectRounded",
+        hoverBorderWidth: 7,
       },
       line: JeeveLineFillOptions,
     },
@@ -1413,46 +1395,41 @@ export class FinancesComponent implements AfterViewInit {
     maintainAspectRatio: false,
     animation: {
       duration: 500,
-      easing: 'easeOutSine'
+      easing: "easeOutSine",
     },
     scales: {
-      x: 
-        {
-          stacked: false,
-          ticks: {
-            autoSkip: false
-          }
-        }
-      ,
-      y: 
-        {
-          stacked: true,
-          ticks: {
-            callback: (label: string | number) => {
-              return `${Number(label)}%`;
-            }
-          }
-        }
-      
+      x: {
+        stacked: false,
+        ticks: {
+          autoSkip: false,
+        },
+      },
+      y: {
+        stacked: true,
+        ticks: {
+          callback: (label: string | number) => {
+            return `${Number(label)}%`;
+          },
+        },
+      },
     },
     plugins: {
       legend: {
-        display: true
+        display: true,
       },
       tooltip: {
-        mode: 'x',
+        mode: "x",
         displayColors(ctx, options) {
-          return !ctx.tooltip
+          return !ctx.tooltip;
         },
         callbacks: {
           label: function (tooltipItems) {
             return `${tooltipItems.label} : ${tooltipItems.formattedValue}%`;
           },
-          title: () => ''
-        }
-      }
-    }
-
+          title: () => "",
+        },
+      },
+    },
   };
   /************ Net Profit Percentage trend *************/
 
@@ -1461,9 +1438,9 @@ export class FinancesComponent implements AfterViewInit {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: 'rectRounded',
-        hoverBorderWidth: 7
-      }
+        pointStyle: "rectRounded",
+        hoverBorderWidth: 7,
+      },
     },
     scaleShowVerticalLines: false,
     responsive: true,
@@ -1471,34 +1448,30 @@ export class FinancesComponent implements AfterViewInit {
     barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine'
+      easing: "easeOutSine",
     },
     scales: {
-      x: 
-        {
-          stacked: true,
-          ticks: {
-            autoSkip: false
-          }
-        }
-      ,
-      y: 
-        {
-          stacked: true,
+      x: {
+        stacked: true,
+        ticks: {
+          autoSkip: false,
+        },
+      },
+      y: {
+        stacked: true,
 
-          ticks: {
-            userCallback: function (item) {
-              return item + '%';
-            }
-          }
-        }
-      
+        ticks: {
+          userCallback: function (item) {
+            return item + "%";
+          },
+        },
+      },
     },
     legend: {
-      display: true
+      display: true,
     },
     tooltips: {
-      mode: 'x-axis',
+      mode: "x-axis",
       custom: function (tooltip) {
         if (!tooltip) return;
         // disable displaying the color box;
@@ -1507,10 +1480,10 @@ export class FinancesComponent implements AfterViewInit {
       callbacks: {
         // use label callback to return the desired label
         label: function (tooltipItem, data) {
-          return tooltipItem.xLabel + ': ' + tooltipItem.yLabel + '%';
-        }
-      }
-    }
+          return tooltipItem.xLabel + ": " + tooltipItem.yLabel + "%";
+        },
+      },
+    },
   };
 
   public labelBarPercentOptionsStacked: ChartOptions = {
@@ -1518,9 +1491,9 @@ export class FinancesComponent implements AfterViewInit {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: 'rectRounded',
-        hoverBorderWidth: 7
-      }
+        pointStyle: "rectRounded",
+        hoverBorderWidth: 7,
+      },
     },
     // scaleShowVerticalLines: false,
     responsive: true,
@@ -1528,78 +1501,70 @@ export class FinancesComponent implements AfterViewInit {
     // barThickness: 10,
     animation: {
       duration: 500,
-      easing: 'easeOutSine'
+      easing: "easeOutSine",
     },
     scales: {
-      x: 
-        {
-          stacked: true,
-          ticks: {
-            autoSkip: false
-          }
-        }
-      ,
-      y: 
-        {
-          stacked: true,
-          ticks: {
-            callback: function (item) {
-              return item + '%';
-            }
-          }
-        }
-      
+      x: {
+        stacked: true,
+        ticks: {
+          autoSkip: false,
+        },
+      },
+      y: {
+        stacked: true,
+        ticks: {
+          callback: function (item) {
+            return item + "%";
+          },
+        },
+      },
     },
     plugins: {
       legend: this.stackLegendGenerator,
       tooltip: {
-        mode: 'x',
+        mode: "x",
         callbacks: {
           label: function (tooltipItems) {
             const yValue = Math.round(tooltipItems.parsed.y);
-            if(yValue > 0){
-              return `${
-                tooltipItems.dataset.label
-              }: ${yValue}%`;
-            }else{
-              return ''
+            if (yValue > 0) {
+              return `${tooltipItems.dataset.label}: ${yValue}%`;
+            } else {
+              return "";
             }
-
           },
-          title: (tooltipItems) => tooltipItems[0].label
-        }
-      }
+          title: (tooltipItems) => tooltipItems[0].label,
+        },
+      },
     },
-
   };
 
-  public pieChartOptions: ChartOptions<'pie'> = {
+  public pieChartOptions: ChartOptions<"pie"> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
         display: true,
-        position: 'bottom',
+        position: "bottom",
         labels: {
           usePointStyle: true,
-          padding: 20
+          padding: 20,
         },
-        onClick(e){
+        onClick(e) {
           e.native.stopPropagation();
-        }
+        },
       },
       tooltip: {
         callbacks: {
           label: function (tooltipItem) {
             return (
               tooltipItem.label +
-              ': ' +
+              ": " +
               tooltipItem.dataset.data[tooltipItem.dataIndex] +
-              '%'
+              "%"
             );
-          }
-        }
-      }
+          },
+        },
+      },
     },
 
     elements: {
@@ -1608,145 +1573,134 @@ export class FinancesComponent implements AfterViewInit {
       //   // sidePadding: 60
       // }
     },
-
   };
 
   public pieChartOptions2: ChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-    legend: {
-      display: true,
-      position: 'bottom',
-      labels: {
-        usePointStyle: true,
-        padding: 20
+      legend: {
+        display: true,
+        position: "bottom",
+        labels: {
+          usePointStyle: true,
+          padding: 20,
+        },
+        onClick: (event) => {
+          event.native.stopPropagation();
+        },
       },
-      onClick: (event) => {
-        event.native.stopPropagation();
-      }
+      tooltip: {
+        callbacks: {
+          label: (tooltipItem) => formatXTooltipLabel(tooltipItem),
+          title: () => "",
+        },
+      },
     },
-    tooltip: {
-      callbacks: {
-        label: tooltipItem => formatXTooltipLabel(tooltipItem),
-        title: () => ''
-      }
-    }
-    },
-
   };
-  public pieChartOptions1: ChartOptions<'pie'> = {
+  public pieChartOptions1: ChartOptions<"pie"> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
         display: true,
-        position: 'right'
-      }
-    }
+        position: "right",
+      },
+    },
   };
-  public barChartOptions: ChartOptions<'bar'> = {
+  public barChartOptions: ChartOptions<"bar"> = {
     // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
     animation: {
       duration: 1500,
-      easing: 'easeOutSine'
+      easing: "easeOutSine",
     },
     // barThickness: 10,
     scales: {
-      x: 
-        {
-          ticks: {
-            autoSkip: false
-          }
-        }
-      ,
-      y: 
-        {
-          suggestedMin: 0
-        }
-      
+      x: {
+        ticks: {
+          autoSkip: false,
+        },
+      },
+      y: {
+        suggestedMin: 0,
+      },
     },
     plugins: {
       legend: {
-        position: 'top',
+        position: "top",
         onClick: function (e, legendItem) {
           var index = legendItem.datasetIndex;
           var ci = this.chart;
           if (index == 0) {
-            (<HTMLElement>document.querySelector('.predicted1')).style.display =
-              'flex';
-            (<HTMLElement>document.querySelector('.predicted2')).style.display =
-              'none';
-            (<HTMLElement>document.querySelector('.predicted3')).style.display =
-              'none';
+            (<HTMLElement>document.querySelector(".predicted1")).style.display =
+              "flex";
+            (<HTMLElement>document.querySelector(".predicted2")).style.display =
+              "none";
+            (<HTMLElement>document.querySelector(".predicted3")).style.display =
+              "none";
             ci.getDatasetMeta(1).hidden = true;
             ci.getDatasetMeta(2).hidden = true;
             ci.getDatasetMeta(index).hidden = false;
           } else if (index == 1) {
-            (<HTMLElement>document.querySelector('.predicted1')).style.display =
-              'none';
-            (<HTMLElement>document.querySelector('.predicted2')).style.display =
-              'flex';
-            (<HTMLElement>document.querySelector('.predicted3')).style.display =
-              'none';
+            (<HTMLElement>document.querySelector(".predicted1")).style.display =
+              "none";
+            (<HTMLElement>document.querySelector(".predicted2")).style.display =
+              "flex";
+            (<HTMLElement>document.querySelector(".predicted3")).style.display =
+              "none";
             ci.getDatasetMeta(0).hidden = true;
             ci.getDatasetMeta(2).hidden = true;
             ci.getDatasetMeta(index).hidden = false;
           } else if (index == 2) {
-            (<HTMLElement>document.querySelector('.predicted1')).style.display =
-              'none';
-            (<HTMLElement>document.querySelector('.predicted2')).style.display =
-              'none';
-            (<HTMLElement>document.querySelector('.predicted3')).style.display =
-              'flex';
+            (<HTMLElement>document.querySelector(".predicted1")).style.display =
+              "none";
+            (<HTMLElement>document.querySelector(".predicted2")).style.display =
+              "none";
+            (<HTMLElement>document.querySelector(".predicted3")).style.display =
+              "flex";
             ci.getDatasetMeta(0).hidden = true;
             ci.getDatasetMeta(1).hidden = true;
             ci.getDatasetMeta(index).hidden = false;
           }
           ci.update();
-        }
-      }
+        },
+      },
     },
-
   };
 
-  public proceedureChartOptions: ChartOptions<'bar'> = {
+  public proceedureChartOptions: ChartOptions<"bar"> = {
     // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
     // barThickness: 10,
     animation: {
       duration: 1500,
-      easing: 'easeOutSine'
+      easing: "easeOutSine",
     },
     scales: {
-      x: 
-        {
-          ticks: {
-            autoSkip: false
-          }
-        }
-      ,
-      y: 
-        {
-          ticks: {}
-        }
-      
+      x: {
+        ticks: {
+          autoSkip: false,
+        },
+      },
+      y: {
+        ticks: {},
+      },
     },
     plugins: {
       legend: {
-        position: 'top'
+        position: "top",
       },
       tooltip: {
-        mode: 'x',
+        mode: "x",
         callbacks: {
-          label: tooltipItems => `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`
-        }
-      }
+          label: (tooltipItems) =>
+            `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`,
+        },
+      },
     },
-
   };
 
   public selectedDentist: string;
@@ -1756,7 +1710,7 @@ export class FinancesComponent implements AfterViewInit {
   public showInternal: boolean = true;
   public showExternal: boolean = false;
   public showCombined: boolean = false;
-  public stackedChartType = 'bar';
+  public stackedChartType = "bar";
   // public stackedChartTypeHorizontal = 'bar';
   public stackedChartLegend = true;
 
@@ -1769,88 +1723,88 @@ export class FinancesComponent implements AfterViewInit {
   public proceedureChartLabels1: string[] = [];
   public proceedureDentistChartLabels: string[] = [];
   //data
-  public lineChartType = 'line';
+  public lineChartType = "line";
   public stackedChartData: any[] = [
     {
       data: [],
-      label: 'Crowns',
+      label: "Crowns",
       shadowOffsetX: 3,
       shadowOffsetY: 3,
       shadowBlur: 5,
-      shadowColor: 'rgba(0, 0, 0, 0.5)',
+      shadowColor: "rgba(0, 0, 0, 0.5)",
       pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
+      pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
+      pointBevelShadowColor: "rgba(0, 0, 0, 0.5)",
       pointShadowOffsetX: 3,
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
+      pointShadowColor: "rgba(0, 0, 0, 0.5)",
+      backgroundOverlayMode: "multiply",
     },
     {
       data: [],
-      label: 'Splints ',
+      label: "Splints ",
       shadowOffsetX: 3,
       shadowOffsetY: 3,
       shadowBlur: 5,
-      shadowColor: 'rgba(0, 0, 0, 0.5)',
+      shadowColor: "rgba(0, 0, 0, 0.5)",
       pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
+      pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
+      pointBevelShadowColor: "rgba(0, 0, 0, 0.5)",
       pointShadowOffsetX: 3,
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
+      pointShadowColor: "rgba(0, 0, 0, 0.5)",
+      backgroundOverlayMode: "multiply",
     },
     {
       data: [],
-      label: 'Root Canals',
+      label: "Root Canals",
       shadowOffsetX: 3,
       shadowOffsetY: 3,
       shadowBlur: 5,
-      shadowColor: 'rgba(0, 0, 0, 0.5)',
+      shadowColor: "rgba(0, 0, 0, 0.5)",
       pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
+      pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
+      pointBevelShadowColor: "rgba(0, 0, 0, 0.5)",
       pointShadowOffsetX: 3,
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
+      pointShadowColor: "rgba(0, 0, 0, 0.5)",
+      backgroundOverlayMode: "multiply",
     },
     {
       data: [],
-      label: 'Perio Charts',
+      label: "Perio Charts",
       shadowOffsetX: 3,
       shadowOffsetY: 3,
       shadowBlur: 5,
-      shadowColor: 'rgba(0, 0, 0, 0.5)',
+      shadowColor: "rgba(0, 0, 0, 0.5)",
       pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
+      pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
+      pointBevelShadowColor: "rgba(0, 0, 0, 0.5)",
       pointShadowOffsetX: 3,
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
+      pointShadowColor: "rgba(0, 0, 0, 0.5)",
+      backgroundOverlayMode: "multiply",
     },
     {
       data: [],
-      label: 'Surgical Extractions',
+      label: "Surgical Extractions",
       shadowOffsetX: 3,
       shadowOffsetY: 3,
       shadowBlur: 5,
-      shadowColor: 'rgba(0, 0, 0, 0.5)',
+      shadowColor: "rgba(0, 0, 0, 0.5)",
       pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
+      pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
+      pointBevelShadowColor: "rgba(0, 0, 0, 0.5)",
       pointShadowOffsetX: 3,
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
-    }
+      pointShadowColor: "rgba(0, 0, 0, 0.5)",
+      backgroundOverlayMode: "multiply",
+    },
   ];
 
   public stackedChartData1: any[] = [];
@@ -1862,54 +1816,54 @@ export class FinancesComponent implements AfterViewInit {
   public predictedChartData: any[] = [
     {
       data: [],
-      label: 'Indirect to Large Direct Fillings',
+      label: "Indirect to Large Direct Fillings",
       shadowOffsetX: 3,
       shadowOffsetY: 3,
       shadowBlur: 5,
-      shadowColor: 'rgba(0, 0, 0, 0.5)',
+      shadowColor: "rgba(0, 0, 0, 0.5)",
       pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
+      pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
+      pointBevelShadowColor: "rgba(0, 0, 0, 0.5)",
       pointShadowOffsetX: 3,
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
+      pointShadowColor: "rgba(0, 0, 0, 0.5)",
+      backgroundOverlayMode: "multiply",
     },
     {
       data: [],
-      label: 'Extraction to RCT',
+      label: "Extraction to RCT",
       hidden: true,
       shadowOffsetX: 3,
       shadowOffsetY: 3,
       shadowBlur: 5,
-      shadowColor: 'rgba(0, 0, 0, 0.5)',
+      shadowColor: "rgba(0, 0, 0, 0.5)",
       pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
+      pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
+      pointBevelShadowColor: "rgba(0, 0, 0, 0.5)",
       pointShadowOffsetX: 3,
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
+      pointShadowColor: "rgba(0, 0, 0, 0.5)",
+      backgroundOverlayMode: "multiply",
     },
     {
       data: [],
-      label: 'RCT Conversion',
+      label: "RCT Conversion",
       hidden: true,
       shadowOffsetX: 3,
       shadowOffsetY: 3,
       shadowBlur: 5,
-      shadowColor: 'rgba(0, 0, 0, 0.5)',
+      shadowColor: "rgba(0, 0, 0, 0.5)",
       pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
+      pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
+      pointBevelShadowColor: "rgba(0, 0, 0, 0.5)",
       pointShadowOffsetX: 3,
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
-    }
+      pointShadowColor: "rgba(0, 0, 0, 0.5)",
+      backgroundOverlayMode: "multiply",
+    },
   ];
 
   public predictedChartData1: any[] = [];
@@ -1921,38 +1875,38 @@ export class FinancesComponent implements AfterViewInit {
   public proceedureChartData: any[] = [
     {
       data: [],
-      label: 'Total Revenue of Clinician Per Procedure',
+      label: "Total Revenue of Clinician Per Procedure",
       shadowOffsetX: 3,
       shadowOffsetY: 3,
       shadowBlur: 5,
-      shadowColor: 'rgba(0, 0, 0, 0.5)',
+      shadowColor: "rgba(0, 0, 0, 0.5)",
       pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
+      pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
+      pointBevelShadowColor: "rgba(0, 0, 0, 0.5)",
       pointShadowOffsetX: 3,
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
-    }
+      pointShadowColor: "rgba(0, 0, 0, 0.5)",
+      backgroundOverlayMode: "multiply",
+    },
   ];
   public proceedureDentistChartData: any[] = [
     {
       data: [],
-      label: 'Total Revenue of Clinician Per Procedure',
+      label: "Total Revenue of Clinician Per Procedure",
       shadowOffsetX: 3,
       shadowOffsetY: 3,
       shadowBlur: 5,
-      shadowColor: 'rgba(0, 0, 0, 0.5)',
+      shadowColor: "rgba(0, 0, 0, 0.5)",
       pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
+      pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
+      pointBevelShadowColor: "rgba(0, 0, 0, 0.5)",
       pointShadowOffsetX: 3,
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
-    }
+      pointShadowColor: "rgba(0, 0, 0, 0.5)",
+      backgroundOverlayMode: "multiply",
+    },
   ];
   public proceedureChartData1: any[] = [];
 
@@ -1970,7 +1924,7 @@ export class FinancesComponent implements AfterViewInit {
   // Pie
   public pieChartLabels: string[] = [];
   public pieChartData: number[] = [];
-  public pieChartType = 'doughnut';
+  public pieChartType = "doughnut";
   public pieChartDatares: number[] = [];
 
   public pieChartLabelsres: string[] = [];
@@ -1980,7 +1934,7 @@ export class FinancesComponent implements AfterViewInit {
   // production
   public productionChartLabels: string[] = [];
   public productionChartData: number[] = [];
-  public productionChartType = 'doughnut';
+  public productionChartType = "doughnut";
   public productionChartDatares: number[] = [];
 
   public productionChartLabelsres: string[] = [];
@@ -1989,7 +1943,7 @@ export class FinancesComponent implements AfterViewInit {
   // totalDiscount
   public totalDiscountChartLabels: string[] = [];
   public totalDiscountChartData: number[] = [];
-  public totalDiscountChartType = 'doughnut';
+  public totalDiscountChartType = "doughnut";
   public totalDiscountChartDatares: number[] = [];
 
   public totalDiscountChartLabelsres: string[] = [];
@@ -2008,20 +1962,20 @@ export class FinancesComponent implements AfterViewInit {
   public itemPredictedChartData: any[] = [
     {
       data: [10, 1, 5],
-      label: 'Items Predictor Analysis ',
+      label: "Items Predictor Analysis ",
       shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
-      shadowColor: 'rgba(0, 0, 0, 0.3)',
+      shadowColor: "rgba(0, 0, 0, 0.3)",
       pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
+      pointBevelShadowColor: "rgba(0, 0, 0, 0.3)",
       pointShadowOffsetX: 3,
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
-    }
+      pointShadowColor: "rgba(0, 0, 0, 0.3)",
+      backgroundOverlayMode: "multiply",
+    },
   ];
 
   public itemPredictedChartData1: any[] = [];
@@ -2032,15 +1986,15 @@ export class FinancesComponent implements AfterViewInit {
   public chartClicked(e: any): void {}
 
   public chartHovered(e: any): void {}
-  public gaugeType = 'arch';
-  public gaugeValue = '';
-  public totalProductionLabel = '';
-  public gaugeThick = '20';
-  public foregroundColor = '#4ccfae';
-  public foregroundColor2 = '#4ccfae';
-  public backgroundColor = '#f4f0fa';
-  public cap = 'round';
-  public size = '250';
+  public gaugeType = "arch";
+  public gaugeValue = "";
+  public totalProductionLabel = "";
+  public gaugeThick = "20";
+  public foregroundColor = "#4ccfae";
+  public foregroundColor2 = "#4ccfae";
+  public backgroundColor = "#f4f0fa";
+  public cap = "round";
+  public size = "250";
   public totalProductionVal: any = 10;
   public gaugeValuePredicted1 = 0;
   public gaugeValuePredicted = 0;
@@ -2048,12 +2002,12 @@ export class FinancesComponent implements AfterViewInit {
   public gaugeValuePredicted2 = 0;
 
   public gaugeValuePredicted3 = 0;
-  public gaugeLabelPredicted = '';
+  public gaugeLabelPredicted = "";
   public predictedDentistTotal = 0;
-  public gaugePrependText = '$';
-  public startDate = '';
-  public endDate = '';
-  public collectionAppend = '%';
+  public gaugePrependText = "$";
+  public startDate = "";
+  public endDate = "";
+  public collectionAppend = "%";
 
   public collectionPercentage = 0;
   public productionVal = 0;
@@ -2061,15 +2015,15 @@ export class FinancesComponent implements AfterViewInit {
   public collectionVal = 0;
 
   loadDentist(newValue) {
-    $('.sa_tabs_data button').prop('disabled', true);
+    $(".sa_tabs_data button").prop("disabled", true);
     this.Apirequest = 5;
 
-    $('#title').html('<span>Finances</span>');
-    $('#sa_datepicker').val(
-      this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate)
+    $("#title").html("<span>Finances</span>");
+    $("#sa_datepicker").val(
+      this.formatDate(this.startDate) + " - " + this.formatDate(this.endDate)
     );
-    if (newValue == 'all') {
-      $('.trend_toggle').hide();
+    if (newValue == "all") {
+      $(".trend_toggle").hide();
       this.finTotalProduction();
 
       //this.netProfit();
@@ -2078,8 +2032,8 @@ export class FinancesComponent implements AfterViewInit {
       this.netprofitstats = false;
       this.netprofitpercentstats = false;
       if (
-        this.connectedwith != '' &&
-        this.connectedwith != 'none' &&
+        this.connectedwith != "" &&
+        this.connectedwith != "none" &&
         this.connectedwith != undefined
       ) {
         this.Apirequest = 8;
@@ -2102,29 +2056,29 @@ export class FinancesComponent implements AfterViewInit {
           (<HTMLElement>document.querySelector('.noPatientsSingle')).style.display = 'none';
           (<HTMLElement>document.querySelector('.noPatients')).style.display = 'block';*/
     } else {
-      $('.trendToggle').show();
+      $(".trendToggle").show();
       this.selectedDentist = newValue;
       //   this.buildChartDentist();
       (<HTMLElement>(
-        document.querySelector('.itemsPredictorSingle')
-      )).style.display = 'block';
-      (<HTMLElement>document.querySelector('.itemsPredictor')).style.display =
-        'none';
+        document.querySelector(".itemsPredictorSingle")
+      )).style.display = "block";
+      (<HTMLElement>document.querySelector(".itemsPredictor")).style.display =
+        "none";
 
       //  this.buildChartPredictorDentist();
       (<HTMLElement>(
-        document.querySelector('.ratioPredictorSingle')
-      )).style.display = 'block';
-      (<HTMLElement>document.querySelector('.ratioPredictor')).style.display =
-        'none';
+        document.querySelector(".ratioPredictorSingle")
+      )).style.display = "block";
+      (<HTMLElement>document.querySelector(".ratioPredictor")).style.display =
+        "none";
 
       //   this.buildChartProceedureDentist();
       (<HTMLElement>(
-        document.querySelector('.revenueProceedureSingle')
-      )).style.display = 'block';
+        document.querySelector(".revenueProceedureSingle")
+      )).style.display = "block";
       (<HTMLElement>(
-        document.querySelector('.revenueProceedure')
-      )).style.display = 'none';
+        document.querySelector(".revenueProceedure")
+      )).style.display = "none";
       //   this.buildChartReferralDentist();
       /*    this.buildChartTreatmentDentist();
           (<HTMLElement>document.querySelector('.treatmentPlanSingle')).style.display = 'block';
@@ -2158,25 +2112,23 @@ export class FinancesComponent implements AfterViewInit {
         this.connectedwith,
         this.queryWhEnabled
       )
-      .subscribe(
-        {
-          next: (res) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            if (res.status == 200) {
-              this.netprofitstats = true;
-              this.netProfitVal = Math.round(res.body.data);
-            }
-          },
-          error: (error) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            this.netprofitstatsError = true;
+      .subscribe({
+        next: (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
             this.netprofitstats = true;
-            this.warningMessage = 'Please Provide Valid Inputs!';
+            this.netProfitVal = Math.round(res.body.data);
           }
-        }
-      );
+        },
+        error: (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.netprofitstatsError = true;
+          this.netprofitstats = true;
+          this.warningMessage = "Please Provide Valid Inputs!";
+        },
+      });
   }
 
   // Added by Hanney Sharma on 07-04-2021 for Net Profit %
@@ -2193,33 +2145,31 @@ export class FinancesComponent implements AfterViewInit {
         this.connectedwith,
         this.queryWhEnabled
       )
-      .subscribe(
-        {
-          next: (res) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            if (res.status == 200) {
-              this.netprofitpercentstats = true;
-              this.netProfitPmsVal = Math.round(res.body.data);
-            }
-          },
-          error: (error) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
+      .subscribe({
+        next: (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
             this.netprofitpercentstats = true;
-            this.netprofitPerError = true;
-            this.warningMessage = 'Please Provide Valid Inputs!';
+            this.netProfitPmsVal = Math.round(res.body.data);
           }
-        }
-      );
+        },
+        error: (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.netprofitpercentstats = true;
+          this.netprofitPerError = true;
+          this.warningMessage = "Please Provide Valid Inputs!";
+        },
+      });
   }
 
   pieTooltipText({ data, index }) {
-    const labl = data.name.split('--');
+    const labl = data.name.split("--");
     const label = labl[0];
     const exp = Math.round(labl[1])
       .toString()
-      .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     const val = data.value;
     return `
       <span class="tooltip-label">${label}</span>
@@ -2228,7 +2178,7 @@ export class FinancesComponent implements AfterViewInit {
   }
 
   pieLabelText(labels) {
-    const labl = labels.split('--');
+    const labl = labels.split("--");
     return labl[0];
   }
 
@@ -2241,7 +2191,7 @@ export class FinancesComponent implements AfterViewInit {
   private categoryExpenses() {
     this.categoryExpensesLoader = true;
     this.categoryExpensesError = false;
-    this.expensescChartTrendIcon = 'down';
+    this.expensescChartTrendIcon = "down";
     this.expensescChartTrendTotal = 0;
     this.pieChartLabels = [];
     this.pieChartLabelsres = [];
@@ -2261,70 +2211,72 @@ export class FinancesComponent implements AfterViewInit {
         this.connectedwith,
         this.queryWhEnabled
       )
-      .subscribe(
-        {
-          next: (res) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            if (res.status == 200) {
-              this.categoryExpensesLoader = false;
-              if (this.multipleClinicsSelected) {
-                const production: number = res.body.production;
-  
-                Object.entries(
-                  _.chain(res.body.data).groupBy('account_name').value()
-                ).forEach(([accountName, items], index) => {
-                  this.expenseMultiChartData.push({
-                    data: _.chain(items)
-                      .orderBy('clinic_id', 'asc')
-                      .value()
-                      .map((item) => _.round((item.expense / production) * 100 * 10)/10),
-                    label: accountName,
-                    backgroundColor: this.doughnutChartColors[index],
-                    hoverBackgroundColor: this.doughnutChartColors[index]
-                  });
-                });
-                this.expenseMultiChartLabels = _.chain(res.body.data)
-                  .uniqBy((item) => item.clinic_name)
-                  .value()
-                  .map((item) => item.clinic_name);
-              } else {
-                res.body.data.forEach((item: any) => {
-                  this.single.push({
-                    name: `${item.account_name}--${item.expense}`,
-                    value: _.round((item.expense / res.body.production) * 100 * 10)/10
-                  });
-  
-                  this.pieChartDatares.push(Math.round(item.expense));
-                  this.pieChartDataPercentres.push(
-                    _.round((item.expense / res.body.production) * 100 * 10) / 10
-                  );
-                  this.pieChartLabelsres.push(item.account_name);
-                  this.pieChartTotal += item.expense;
-                });
-              }
-              this.selectedDataFilter();
-              this.unSelectedDataFilter();
-              this.expensescChartTrendTotal = res.data_ta;
-              if (
-                Math.round(this.pieChartTotal) >=
-                Math.round(this.expensescChartTrendTotal)
-              ) {
-                this.expensescChartTrendIcon = 'up';
-              }
-              this.pieChartData = this.pieChartDatares;
-              this.pieChartLabels = this.pieChartLabelsres;
-            }
-          },
-          error: (error) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            this.categoryExpensesError = true;
-            this.warningMessage = 'Please Provide Valid Inputs!';
-          }
-        }
+      .subscribe({
+        next: (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
+            this.categoryExpensesLoader = false;
+            if (this.multipleClinicsSelected) {
+              const production: number = res.body.production;
 
-      );
+              Object.entries(
+                _.chain(res.body.data).groupBy("account_name").value()
+              ).forEach(([accountName, items], index) => {
+                this.expenseMultiChartData.push({
+                  data: _.chain(items)
+                    .orderBy("clinic_id", "asc")
+                    .value()
+                    .map(
+                      (item) =>
+                        _.round((item.expense / production) * 100 * 10) / 10
+                    ),
+                  label: accountName,
+                  backgroundColor: this.doughnutChartColors[index],
+                  hoverBackgroundColor: this.doughnutChartColors[index],
+                });
+              });
+              this.expenseMultiChartLabels = _.chain(res.body.data)
+                .uniqBy((item) => item.clinic_name)
+                .value()
+                .map((item) => item.clinic_name);
+            } else {
+              res.body.data.forEach((item: any) => {
+                this.single.push({
+                  name: `${item.account_name}--${item.expense}`,
+                  value:
+                    _.round((item.expense / res.body.production) * 100 * 10) /
+                    10,
+                });
+
+                this.pieChartDatares.push(Math.round(item.expense));
+                this.pieChartDataPercentres.push(
+                  _.round((item.expense / res.body.production) * 100 * 10) / 10
+                );
+                this.pieChartLabelsres.push(item.account_name);
+                this.pieChartTotal += item.expense;
+              });
+            }
+            this.selectedDataFilter();
+            this.unSelectedDataFilter();
+            this.expensescChartTrendTotal = res.data_ta;
+            if (
+              Math.round(this.pieChartTotal) >=
+              Math.round(this.expensescChartTrendTotal)
+            ) {
+              this.expensescChartTrendIcon = "up";
+            }
+            this.pieChartData = this.pieChartDatares;
+            this.pieChartLabels = this.pieChartLabelsres;
+          }
+        },
+        error: (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.categoryExpensesError = true;
+          this.warningMessage = "Please Provide Valid Inputs!";
+        },
+      });
   }
 
   public productionChartTrendIcon;
@@ -2348,85 +2300,83 @@ export class FinancesComponent implements AfterViewInit {
         this.duration,
         this.queryWhEnabled
       )
-      .subscribe(
-        {
-          next: (res) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            this.productionChartLabelsres = [];
-            this.productionChartTotal = 0;
-            this.productionChartTrendIcon = 'down';
-            this.productionChartTrendTotal = 0;
-            if (res.status == 200) {
-              if (
-                this.clinic_id.indexOf(',') >= 0 ||
-                Array.isArray(this.clinic_id)
-              ) {
-                this.showClinicByclinic = true;
-                res.body.data.sort(
-                  (a: any, b: any) =>
-                    b.production_per_clinic - a.production_per_clinic
-                );
-              } else {
-                res.body.data.sort(
-                  (a: any, b: any) => b.prod_per_clinician - a.prod_per_clinician
-                );
-              }
-              this.finProductionByClinicianLoader = false;
-              this.productionChartDatares = [];
-              var totalPer = 0;
-              if (res.body.data) {
-                res.body.data.forEach((val) => {
-                  if (this.showClinicByclinic) {
-                    if (parseInt(val.production_per_clinic) > 0) {
-                      totalPer =
-                        (Math.round(val.production_per_clinic) * 100) /
-                        res.body.total;
-                      this.productionChartDatares.push(Math.round(totalPer));
-                      this.productionChartLabelsres.push(val.clinic_name);
-                      this.productionChartTotal =
-                        this.productionChartTotal + Math.round(totalPer);
-                    }
-                  } else {
-                    if (parseInt(val.prod_per_clinician) > 0) {
-                      this.productionChartDatares.push(
-                        Math.round(val.prod_per_clinician)
-                      );
-                      this.productionChartLabelsres.push(val.provider_name);
-                      this.productionChartTotal =
-                        this.productionChartTotal +
-                        parseInt(val.prod_per_clinician);
-                    }
-                  }
-                });
-              }
-              this.productionChartTrendTotal = res.body.total_ta;
-              if (
-                Math.round(this.productionChartTotal) >=
-                Math.round(this.productionChartTrendTotal)
-              )
-                this.productionChartTrendIcon = 'up';
-              if (this.productionChartDatares.every((item) => item == 0))
-                this.productionChartDatares = [];
-              this.productionChartData = this.productionChartDatares;
-              this.productionChartLabels = this.productionChartLabelsres;
-            }
-          },
-          error: (error) => {
-            this.finProductionByClinicianError = true;
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            if (this.user_type != '7') {
-              this.toastr.error(
-                'There was an error retrieving your report data, please contact our support team.'
+      .subscribe({
+        next: (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.productionChartLabelsres = [];
+          this.productionChartTotal = 0;
+          this.productionChartTrendIcon = "down";
+          this.productionChartTrendTotal = 0;
+          if (res.status == 200) {
+            if (
+              this.clinic_id.indexOf(",") >= 0 ||
+              Array.isArray(this.clinic_id)
+            ) {
+              this.showClinicByclinic = true;
+              res.body.data.sort(
+                (a: any, b: any) =>
+                  b.production_per_clinic - a.production_per_clinic
               );
-              this.warningMessage = 'Please Provide Valid Inputs!';
+            } else {
+              res.body.data.sort(
+                (a: any, b: any) => b.prod_per_clinician - a.prod_per_clinician
+              );
             }
+            this.finProductionByClinicianLoader = false;
+            this.productionChartDatares = [];
+            var totalPer = 0;
+            if (res.body.data) {
+              res.body.data.forEach((val) => {
+                if (this.showClinicByclinic) {
+                  if (parseInt(val.production_per_clinic) > 0) {
+                    totalPer =
+                      (Math.round(val.production_per_clinic) * 100) /
+                      res.body.total;
+                    this.productionChartDatares.push(Math.round(totalPer));
+                    this.productionChartLabelsres.push(val.clinic_name);
+                    this.productionChartTotal =
+                      this.productionChartTotal + Math.round(totalPer);
+                  }
+                } else {
+                  if (parseInt(val.prod_per_clinician) > 0) {
+                    this.productionChartDatares.push(
+                      Math.round(val.prod_per_clinician)
+                    );
+                    this.productionChartLabelsres.push(val.provider_name);
+                    this.productionChartTotal =
+                      this.productionChartTotal +
+                      parseInt(val.prod_per_clinician);
+                  }
+                }
+              });
+            }
+            this.productionChartTrendTotal = res.body.total_ta;
+            if (
+              Math.round(this.productionChartTotal) >=
+              Math.round(this.productionChartTrendTotal)
+            )
+              this.productionChartTrendIcon = "up";
+            if (this.productionChartDatares.every((item) => item == 0))
+              this.productionChartDatares = [];
+            this.productionChartData = this.productionChartDatares;
+            this.productionChartLabels = this.productionChartLabelsres;
           }
-        }
-      );
+        },
+        error: (error) => {
+          this.finProductionByClinicianError = true;
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (this.user_type != "7") {
+            this.toastr.error(
+              "There was an error retrieving your report data, please contact our support team."
+            );
+            this.warningMessage = "Please Provide Valid Inputs!";
+          }
+        },
+      });
   }
-  public totalDiscountChartTrendIcon = 'down';
+  public totalDiscountChartTrendIcon = "down";
   public totalDiscountChartTrendTotal;
   public finTotalDiscountsLoader: any;
   public clinicsName: any;
@@ -2452,90 +2402,87 @@ export class FinancesComponent implements AfterViewInit {
         this.duration,
         this.queryWhEnabled
       )
-      .subscribe(
-        {
-          next: (res) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            this.totalDiscountChartDatares = [];
-            this.totalDiscountChartLabelsres = [];
-            this.totalDiscountChartLabelsClinics = [];
+      .subscribe({
+        next: (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.totalDiscountChartDatares = [];
+          this.totalDiscountChartLabelsres = [];
+          this.totalDiscountChartLabelsClinics = [];
+          this.clinicsName = [];
+          this.clinicsids = [];
+          this.totalDiscountChartTotal = 0;
+          this.totalDiscountChartTrendIcon = "down";
+          this.totalDiscountChartTrendTotal = 0;
+          if (res.status == 200) {
+            if (
+              this.clinic_id.indexOf(",") >= 0 ||
+              Array.isArray(this.clinic_id)
+            ) {
+              this.showClinicBar = true;
+            } else {
+              this.showClinicBar = false;
+            }
+            this.totalDiscountChartClinicsData = [];
+            this.totalDiscountChartClinicsData1 = [];
             this.clinicsName = [];
             this.clinicsids = [];
+            this.finTotalDiscountsLoader = false;
+            this.totalDiscountChartDatares = [];
             this.totalDiscountChartTotal = 0;
-            this.totalDiscountChartTrendIcon = 'down';
-            this.totalDiscountChartTrendTotal = 0;
-            if (res.status == 200) {
-              if (
-                this.clinic_id.indexOf(',') >= 0 ||
-                Array.isArray(this.clinic_id)
-              ) {
-                this.showClinicBar = true;
-              } else {
-                this.showClinicBar = false;
-              }
-              this.totalDiscountChartClinicsData = [];
-              this.totalDiscountChartClinicsData1 = [];
-              this.clinicsName = [];
-              this.clinicsids = [];
+            if (res.body.data == null || res.body.data.length <= 0) {
               this.finTotalDiscountsLoader = false;
-              this.totalDiscountChartDatares = [];
-              this.totalDiscountChartTotal = 0;
-              if (res.body.data == null || res.body.data.length <= 0) {
-                this.finTotalDiscountsLoader = false;
-                return;
-              }
-              res.body.data.sort((a, b) => b.discounts - a.discounts);
-              res.body.data.forEach((res) => {
-                if (res.total != 0) {
-                  this.clinicsName.push(res.clinic_name);
-                  this.clinicsids.push(res.clinic_id);
-                  this.totalDiscountChartDatares.push(Math.round(res.discounts));
-                  var name = '';
-                  if (res.provider_name != '' && res.provider_name != null) {
-                    name = res.provider_name;
-                  }
-                  this.totalDiscountChartLabelsres.push(name);
-                }
-              });
-              this.clinicsName = [...new Set(this.clinicsName)];
-              this.clinicsids = [...new Set(this.clinicsids)];
-              this.totalDiscountChartLabelsClinics = this.clinicsName;
-              const sumOfId = (id: any) =>
-                res.body.data
-                  .filter((i) => i.clinic_id === id)
-                  .reduce((a, b) => a + Math.round(b.discounts), 0);
-              this.clinicsids.forEach((element) => {
-                this.totalDiscountChartClinicsData1.push(sumOfId(element));
-              });
-              this.totalDiscountChartClinicsData =
-                this.totalDiscountChartClinicsData1;
-  
-              this.totalDiscountChartTotal = Math.round(res.body.total);
-              this.percentOfTotalDiscount$.next(this.totalDiscountChartTotal);
-              if (res.body.total_ta)
-                this.totalDiscountChartTrendTotal = Math.round(res.body.total_ta);
-              else this.totalDiscountChartTrendTotal = 0;
-  
-              if (
-                Math.round(this.totalDiscountChartTotal) >=
-                Math.round(this.totalDiscountChartTrendTotal)
-              )
-                this.totalDiscountChartTrendIcon = 'up';
-              if (this.totalDiscountChartDatares.every((item) => item == 0))
-                this.totalDiscountChartDatares = [];
-              this.totalDiscountChartData = this.totalDiscountChartDatares;
-              this.totalDiscountChartLabels = this.totalDiscountChartLabelsres;
+              return;
             }
-          },
-          error: (error) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            this.warningMessage = 'Please Provide Valid Inputs!';
+            res.body.data.sort((a, b) => b.discounts - a.discounts);
+            res.body.data.forEach((res) => {
+              if (res.total != 0) {
+                this.clinicsName.push(res.clinic_name);
+                this.clinicsids.push(res.clinic_id);
+                this.totalDiscountChartDatares.push(Math.round(res.discounts));
+                var name = "";
+                if (res.provider_name != "" && res.provider_name != null) {
+                  name = res.provider_name;
+                }
+                this.totalDiscountChartLabelsres.push(name);
+              }
+            });
+            this.clinicsName = [...new Set(this.clinicsName)];
+            this.clinicsids = [...new Set(this.clinicsids)];
+            this.totalDiscountChartLabelsClinics = this.clinicsName;
+            const sumOfId = (id: any) =>
+              res.body.data
+                .filter((i) => i.clinic_id === id)
+                .reduce((a, b) => a + Math.round(b.discounts), 0);
+            this.clinicsids.forEach((element) => {
+              this.totalDiscountChartClinicsData1.push(sumOfId(element));
+            });
+            this.totalDiscountChartClinicsData =
+              this.totalDiscountChartClinicsData1;
+
+            this.totalDiscountChartTotal = Math.round(res.body.total);
+            this.percentOfTotalDiscount$.next(this.totalDiscountChartTotal);
+            if (res.body.total_ta)
+              this.totalDiscountChartTrendTotal = Math.round(res.body.total_ta);
+            else this.totalDiscountChartTrendTotal = 0;
+
+            if (
+              Math.round(this.totalDiscountChartTotal) >=
+              Math.round(this.totalDiscountChartTrendTotal)
+            )
+              this.totalDiscountChartTrendIcon = "up";
+            if (this.totalDiscountChartDatares.every((item) => item == 0))
+              this.totalDiscountChartDatares = [];
+            this.totalDiscountChartData = this.totalDiscountChartDatares;
+            this.totalDiscountChartLabels = this.totalDiscountChartLabelsres;
           }
-        }
-        
-      );
+        },
+        error: (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = "Please Provide Valid Inputs!";
+        },
+      });
   }
   public totalProductionTrendIcon;
   public totalProductionTrendVal;
@@ -2543,17 +2490,17 @@ export class FinancesComponent implements AfterViewInit {
   public totalProductionCollection1: any[] = [
     {
       data: [],
-      label: '',
+      label: "",
       backgroundColor: [],
-      hoverBackgroundColor: []
-    }
+      hoverBackgroundColor: [],
+    },
   ];
   public totalProductionCollectionLabel1 = [];
   public finTotalProductionLoader: any;
   //finTotalProduction
   private finTotalProduction() {
     this.finTotalProductionLoader = true;
-    this.totalProductionTrendIcon = 'down';
+    this.totalProductionTrendIcon = "down";
     this.totalProductionTrendVal = 0;
     this.netProfitProductionVal = 0;
     this.financesService
@@ -2571,10 +2518,10 @@ export class FinancesComponent implements AfterViewInit {
           this.totalProductionCollection1 = [
             {
               data: [],
-              label: '',
+              label: "",
               backgroundColor: [],
-              hoverBackgroundColor: []
-            }
+              hoverBackgroundColor: [],
+            },
           ];
           if (res.status == 200) {
             this.productionstats = true;
@@ -2589,7 +2536,7 @@ export class FinancesComponent implements AfterViewInit {
               ? Math.round(res.body.total_ta)
               : 0;
             if (
-              this.clinic_id.indexOf(',') >= 0 ||
+              this.clinic_id.indexOf(",") >= 0 ||
               Array.isArray(this.clinic_id)
             ) {
               this.isAllClinic = true;
@@ -2600,18 +2547,18 @@ export class FinancesComponent implements AfterViewInit {
                   data: [Math.round(item.production)],
                   label: item.clinic_name,
                   backgroundColor: this.doughnutChartColors[idx],
-                  hoverBackgroundColor: this.doughnutChartColors[idx]
+                  hoverBackgroundColor: this.doughnutChartColors[idx],
                 });
               });
               this.totalProductionCollection1 = productions;
             } else {
               this.isAllClinic = false;
-              this.totalProductionCollection1[0]['data'] = [];
+              this.totalProductionCollection1[0]["data"] = [];
               this.totalProductionLabel = res.body.data[0]
                 ? res.body.data[0].provider_name
-                : '';
+                : "";
 
-              this.totalProductionCollection1[0]['data'].push(
+              this.totalProductionCollection1[0]["data"].push(
                 this.totalProductionVal
               );
 
@@ -2619,7 +2566,7 @@ export class FinancesComponent implements AfterViewInit {
                 Math.round(this.totalProductionVal) >=
                 Math.round(this.totalProductionTrendVal)
               )
-                this.totalProductionTrendIcon = 'up';
+                this.totalProductionTrendIcon = "up";
             }
 
             this.finCollection();
@@ -2628,15 +2575,15 @@ export class FinancesComponent implements AfterViewInit {
         (error) => {
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
-          this.warningMessage = 'Please Provide Valid Inputs!';
+          this.warningMessage = "Please Provide Valid Inputs!";
         }
       );
   }
 
   //validate if input is decimal
   isDecimal(value: any) {
-    if (typeof value != 'undefined') {
-      if (String(value).includes('.')) return true;
+    if (typeof value != "undefined") {
+      if (String(value).includes(".")) return true;
     }
     return false;
   }
@@ -2650,7 +2597,7 @@ export class FinancesComponent implements AfterViewInit {
   //Collection
   private finCollection() {
     this.finCollectionLoader = true;
-    this.collectionTrendIcon = 'down';
+    this.collectionTrendIcon = "down";
     this.collectionTrendVal = 0;
     this.financesService
       .finCollection(
@@ -2660,97 +2607,94 @@ export class FinancesComponent implements AfterViewInit {
         this.duration,
         this.queryWhEnabled
       )
-      .subscribe(
-        {
-          next: (res) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            if (res.status == 200) {
-              this.finCollectionLoader = false;
-              this.collectionVal = 0;
-              this.collectionVal = res.body.total
-                ? Math.round(res.body.total)
-                : 0;
-              this.collectionPercentage = res.body.total_average
-                ? Math.round(res.body.total_average)
-                : 0;
-              this.collectionTrendVal = res.body.total_ta
-                ? Math.round(res.body.total_ta)
-                : 0;
-  
-              if (
-                this.clinic_id.indexOf(',') >= 0 ||
-                Array.isArray(this.clinic_id)
-              ) {
-                this.isAllClinic = true;
-                this.totalProductionCollection1 =
-                  this.totalProductionCollection1.map((item) => {
-                    const collectionItem = (<any[]>res.body.data).find(
-                      (ele) => ele.clinic_name == item.label
-                    );
-                    return {
-                      ...item,
-                      data: !!collectionItem
-                        ? [...item.data, Math.round(collectionItem.collection)]
-                        : item.data
-                    };
-                  });
-  
-                this.totalProductionCollectionLabel1 = [
-                  'Production',
-                  'Collection'
-                ];
-              } else {
-                this.isAllClinic = false;
-                this.totalProductionCollection1[0]['data'].push(
-                  this.collectionVal
-                );
-                this.totalProductionCollectionLabel1 = [
-                  'Production',
-                  'Collection'
-                ];
-                this.totalProductionCollection1[0]['hoverBackgroundColor'] = [
-                  '#ffb4b5',
-                  '#4ccfae'
-                ];
-                this.totalProductionCollection1[0]['backgroundColor'] = [
-                  '#ffb4b5',
-                  '#4ccfae'
-                ]; //as label are static we can add background color for that particular column as static
-              }
-              this.totalProductionCollectionMax = Math.max(
-                ...this.totalProductionCollection1[0]['data']
+      .subscribe({
+        next: (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
+            this.finCollectionLoader = false;
+            this.collectionVal = 0;
+            this.collectionVal = res.body.total
+              ? Math.round(res.body.total)
+              : 0;
+            this.collectionPercentage = res.body.total_average
+              ? Math.round(res.body.total_average)
+              : 0;
+            this.collectionTrendVal = res.body.total_ta
+              ? Math.round(res.body.total_ta)
+              : 0;
+
+            if (
+              this.clinic_id.indexOf(",") >= 0 ||
+              Array.isArray(this.clinic_id)
+            ) {
+              this.isAllClinic = true;
+              this.totalProductionCollection1 =
+                this.totalProductionCollection1.map((item) => {
+                  const collectionItem = (<any[]>res.body.data).find(
+                    (ele) => ele.clinic_name == item.label
+                  );
+                  return {
+                    ...item,
+                    data: !!collectionItem
+                      ? [...item.data, Math.round(collectionItem.collection)]
+                      : item.data,
+                  };
+                });
+
+              this.totalProductionCollectionLabel1 = [
+                "Production",
+                "Collection",
+              ];
+            } else {
+              this.isAllClinic = false;
+              this.totalProductionCollection1[0]["data"].push(
+                this.collectionVal
               );
-              if (this.totalProductionVal)
-                this.collectionPercentageC = Math.round(
-                  (this.collectionVal / this.totalProductionVal) * 100
-                );
-              else this.collectionPercentageC = 0;
-  
-              if (
-                Math.round(this.collectionVal) >=
-                Math.round(this.collectionTrendVal)
-              )
-                this.collectionTrendIcon = 'up';
+              this.totalProductionCollectionLabel1 = [
+                "Production",
+                "Collection",
+              ];
+              this.totalProductionCollection1[0]["hoverBackgroundColor"] = [
+                "#ffb4b5",
+                "#4ccfae",
+              ];
+              this.totalProductionCollection1[0]["backgroundColor"] = [
+                "#ffb4b5",
+                "#4ccfae",
+              ]; //as label are static we can add background color for that particular column as static
             }
-          },
-          error: (error) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            this.warningMessage = 'Please Provide Valid Inputs!';
+            this.totalProductionCollectionMax = Math.max(
+              ...this.totalProductionCollection1[0]["data"]
+            );
+            if (this.totalProductionVal)
+              this.collectionPercentageC = Math.round(
+                (this.collectionVal / this.totalProductionVal) * 100
+              );
+            else this.collectionPercentageC = 0;
+
+            if (
+              Math.round(this.collectionVal) >=
+              Math.round(this.collectionTrendVal)
+            )
+              this.collectionTrendIcon = "up";
           }
-        }
-       
-      );
+        },
+        error: (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = "Please Provide Valid Inputs!";
+        },
+      });
   }
 
   public ProdPerVisit: any[] = [
     {
       data: [],
-      label: '',
+      label: "",
       shadowOffsetX: 3,
-      backgroundColor: 'rgba(0, 0, 255, 0.2)'
-    }
+      backgroundColor: "rgba(0, 0, 255, 0.2)",
+    },
   ];
   public productionTrendIcon;
   public showBar: boolean = false;
@@ -2764,7 +2708,7 @@ export class FinancesComponent implements AfterViewInit {
     this.productionVal = 0;
     this.ProductionTrend1 = [];
     this.ProductionTrendLabels1 = [];
-    this.productionTrendIcon = 'down';
+    this.productionTrendIcon = "down";
     this.productionTrendVal = 0;
     this.financesService
       .finProductionPerVisit(
@@ -2774,46 +2718,43 @@ export class FinancesComponent implements AfterViewInit {
         this.duration,
         this.queryWhEnabled
       )
-      .subscribe(
-        {
-          next: (res) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            if (res.status == 200) {
-              this.ProdPerVisit[0]['data'] = [];
-              this.ProductionTrend1 = [];
-              this.ProductionTrendLabels1 = [];
-              if (res.body.total > 0) {
-                res.body.data.forEach((res) => {
-                  this.ProductionTrend1.push(Math.round(res.prod_per_visit));
-                  this.ProductionTrendLabels1.push(res.clinic_name);
-                });
-              }
-              if (
-                this.clinic_id.indexOf(',') >= 0 ||
-                Array.isArray(this.clinic_id)
-              ) {
-                this.showBar = true;
-              }
-              this.ProdPerVisit[0]['data'] = this.ProductionTrend1;
-              this.finProductionPerVisitLoader = false;
-              this.productionVal = Math.round(res.body.total);
-              this.productionTrendVal = Math.round(res.body.total_ta);
-              if (
-                Math.round(this.productionVal) >=
-                Math.round(this.productionTrendVal)
-              )
-                this.productionTrendIcon = 'up';
+      .subscribe({
+        next: (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
+            this.ProdPerVisit[0]["data"] = [];
+            this.ProductionTrend1 = [];
+            this.ProductionTrendLabels1 = [];
+            if (res.body.total > 0) {
+              res.body.data.forEach((res) => {
+                this.ProductionTrend1.push(Math.round(res.prod_per_visit));
+                this.ProductionTrendLabels1.push(res.clinic_name);
+              });
             }
-          },
-          error: (error) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            this.warningMessage = 'Please Provide Valid Inputs!';
+            if (
+              this.clinic_id.indexOf(",") >= 0 ||
+              Array.isArray(this.clinic_id)
+            ) {
+              this.showBar = true;
+            }
+            this.ProdPerVisit[0]["data"] = this.ProductionTrend1;
+            this.finProductionPerVisitLoader = false;
+            this.productionVal = Math.round(res.body.total);
+            this.productionTrendVal = Math.round(res.body.total_ta);
+            if (
+              Math.round(this.productionVal) >=
+              Math.round(this.productionTrendVal)
+            )
+              this.productionTrendIcon = "up";
           }
-        }
-        
-      );
+        },
+        error: (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = "Please Provide Valid Inputs!";
+        },
+      });
   }
 
   public totalOverdueTrendAccount;
@@ -2832,54 +2773,52 @@ export class FinancesComponent implements AfterViewInit {
         this.duration,
         this.queryWhEnabled
       )
-      .subscribe(
-        {
-          next: (res) => {
-            if (res.status == 200) {
-              this.finOverdueAccountsLoader = false;
-  
-              this.totalOverdueAccountLabels = [];
-              this.totalOverdueAccountres = [];
-              this.totalOverdueAccountLabelsres = [];
-              res.body.data.forEach((res) => {
-                if (res.overdue > 0) {
-                  this.totalOverdueAccountres.push(Math.round(res.overdue));
-                  this.totalOverdueAccountLabelsres.push(res.label);
-                }
-              });
-              this.totalOverdueAccount = res.body.total;
-              this.percentOfCurrentOverdue$.next(res.body.total);
-              this.totalOverdueAccountData = this.totalOverdueAccountres;
-              this.totalOverdueAccountLabels = this.totalOverdueAccountLabelsres;
-              this.totalOverdueAccountDataMax = Math.max(
-                ...this.totalOverdueAccountData
-              );
-            }
-          },
-          error: (error) => {
-            this.warningMessage = 'Please Provide Valid Inputs!';
+      .subscribe({
+        next: (res) => {
+          if (res.status == 200) {
+            this.finOverdueAccountsLoader = false;
+
+            this.totalOverdueAccountLabels = [];
+            this.totalOverdueAccountres = [];
+            this.totalOverdueAccountLabelsres = [];
+            res.body.data.forEach((res) => {
+              if (res.overdue > 0) {
+                this.totalOverdueAccountres.push(Math.round(res.overdue));
+                this.totalOverdueAccountLabelsres.push(res.label);
+              }
+            });
+            this.totalOverdueAccount = res.body.total;
+            this.percentOfCurrentOverdue$.next(res.body.total);
+            this.totalOverdueAccountData = this.totalOverdueAccountres;
+            this.totalOverdueAccountLabels = this.totalOverdueAccountLabelsres;
+            this.totalOverdueAccountDataMax = Math.max(
+              ...this.totalOverdueAccountData
+            );
           }
-        }
-      );
+        },
+        error: (error) => {
+          this.warningMessage = "Please Provide Valid Inputs!";
+        },
+      });
   }
 
   public currentText;
 
   filterDate(duration) {
-    $('.customRange').css('display', 'none');
+    $(".customRange").css("display", "none");
     if (this.toggleChecked)
       // $('.target_off').click();
       this.toggleChecked = false;
     this.isCompleteMonth = true;
-    $('.trendMode').hide();
-    $('.nonTrendMode').css('display', 'block');
-    $('.target_filter').removeClass('mat-button-toggle-checked');
-    $('.target_off').addClass('mat-button-toggle-checked');
+    $(".trendMode").hide();
+    $(".nonTrendMode").css("display", "block");
+    $(".target_filter").removeClass("mat-button-toggle-checked");
+    $(".target_off").addClass("mat-button-toggle-checked");
     //   $('.trend_arrow').hide();
-    if (duration == 'w') {
-      this.duration = 'w';
-      this.trendText = 'Last Week';
-      this.currentText = 'This Week';
+    if (duration == "w") {
+      this.duration = "w";
+      this.trendText = "Last Week";
+      this.currentText = "This Week";
 
       const now = new Date();
       if (now.getDay() == 0) var day = 7;
@@ -2889,78 +2828,78 @@ export class FinancesComponent implements AfterViewInit {
       var last = first + 6;
       var sd = new Date(now.setDate(first));
 
-      this.startDate = this.datePipe.transform(sd.toUTCString(), 'dd-MM-yyyy');
+      this.startDate = this.datePipe.transform(sd.toUTCString(), "dd-MM-yyyy");
       var end = now.setDate(sd.getDate() + 6);
       this.endDate = this.datePipe.transform(
         new Date(end).toUTCString(),
-        'dd-MM-yyyy'
+        "dd-MM-yyyy"
       );
-      this.loadDentist('all');
-    } else if (duration == 'm') {
-      this.duration = 'm';
-      this.trendText = 'Last Month';
-      this.currentText = 'This Month';
+      this.loadDentist("all");
+    } else if (duration == "m") {
+      this.duration = "m";
+      this.trendText = "Last Month";
+      this.currentText = "This Month";
 
       var date = new Date();
       this.startDate = this.datePipe.transform(
         new Date(date.getFullYear(), date.getMonth(), 1),
-        'dd-MM-yyyy'
+        "dd-MM-yyyy"
       );
-      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
-      this.loadDentist('all');
-    } else if (duration == 'lm') {
-      this.trendText = 'Previous Month';
-      this.currentText = 'Last Month';
+      this.endDate = this.datePipe.transform(new Date(), "dd-MM-yyyy");
+      this.loadDentist("all");
+    } else if (duration == "lm") {
+      this.trendText = "Previous Month";
+      this.currentText = "Last Month";
 
       const date = new Date();
       this.startDate = this.datePipe.transform(
         new Date(date.getFullYear(), date.getMonth() - 1, 1),
-        'dd-MM-yyyy'
+        "dd-MM-yyyy"
       );
       this.endDate = this.datePipe.transform(
         new Date(date.getFullYear(), date.getMonth(), 0),
-        'dd-MM-yyyy'
+        "dd-MM-yyyy"
       );
-      this.duration = 'lm';
-      this.loadDentist('all');
-    } else if (duration == 'q') {
-      this.duration = 'q';
-      this.trendText = 'Last Quarter';
-      this.currentText = 'This Quarter';
+      this.duration = "lm";
+      this.loadDentist("all");
+    } else if (duration == "q") {
+      this.duration = "q";
+      this.trendText = "Last Quarter";
+      this.currentText = "This Quarter";
 
       const now = new Date();
       var cmonth = now.getMonth() + 1;
       if (cmonth >= 1 && cmonth <= 3) {
         this.startDate = this.datePipe.transform(
           new Date(now.getFullYear(), 0, 1),
-          'dd-MM-yyyy'
+          "dd-MM-yyyy"
         );
         // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy')
       } else if (cmonth >= 4 && cmonth <= 6) {
         this.startDate = this.datePipe.transform(
           new Date(now.getFullYear(), 3, 1),
-          'dd-MM-yyyy'
+          "dd-MM-yyyy"
         );
         // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy');
       } else if (cmonth >= 7 && cmonth <= 9) {
         this.startDate = this.datePipe.transform(
           new Date(now.getFullYear(), 6, 1),
-          'dd-MM-yyyy'
+          "dd-MM-yyyy"
         );
         // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');
       } else if (cmonth >= 10 && cmonth <= 12) {
         this.startDate = this.datePipe.transform(
           new Date(now.getFullYear(), 9, 1),
-          'dd-MM-yyyy'
+          "dd-MM-yyyy"
         );
         // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');
       }
-      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
-      this.loadDentist('all');
-    } else if (duration == 'lq') {
-      this.duration = 'lq';
-      this.trendText = 'Previous Quarter';
-      this.currentText = 'Last Quarter';
+      this.endDate = this.datePipe.transform(new Date(), "dd-MM-yyyy");
+      this.loadDentist("all");
+    } else if (duration == "lq") {
+      this.duration = "lq";
+      this.trendText = "Previous Quarter";
+      this.currentText = "Last Quarter";
 
       const now = new Date();
       var cmonth = now.getMonth() + 1;
@@ -2968,141 +2907,157 @@ export class FinancesComponent implements AfterViewInit {
       if (cmonth >= 1 && cmonth <= 3) {
         this.startDate = this.datePipe.transform(
           new Date(now.getFullYear() - 1, 9, 1),
-          'dd-MM-yyyy'
+          "dd-MM-yyyy"
         );
         this.endDate = this.datePipe.transform(
           new Date(now.getFullYear() - 1, 12, 0),
-          'dd-MM-yyyy'
+          "dd-MM-yyyy"
         );
       } else if (cmonth >= 4 && cmonth <= 6) {
         this.startDate = this.datePipe.transform(
           new Date(now.getFullYear(), 0, 1),
-          'dd-MM-yyyy'
+          "dd-MM-yyyy"
         );
         this.endDate = this.datePipe.transform(
           new Date(now.getFullYear(), 3, 0),
-          'dd-MM-yyyy'
+          "dd-MM-yyyy"
         );
       } else if (cmonth >= 7 && cmonth <= 9) {
         this.startDate = this.datePipe.transform(
           new Date(now.getFullYear(), 3, 1),
-          'dd-MM-yyyy'
+          "dd-MM-yyyy"
         );
         this.endDate = this.datePipe.transform(
           new Date(now.getFullYear(), 6, 0),
-          'dd-MM-yyyy'
+          "dd-MM-yyyy"
         );
       } else if (cmonth >= 10 && cmonth <= 12) {
         this.startDate = this.datePipe.transform(
           new Date(now.getFullYear(), 6, 1),
-          'dd-MM-yyyy'
+          "dd-MM-yyyy"
         );
         this.endDate = this.datePipe.transform(
           new Date(now.getFullYear(), 9, 0),
-          'dd-MM-yyyy'
+          "dd-MM-yyyy"
         );
       }
-      this.loadDentist('all');
-    } else if (duration == 'cytd') {
-      this.trendText = 'Last Year';
-      this.currentText = 'This Year';
+      this.loadDentist("all");
+    } else if (duration == "cytd") {
+      this.trendText = "Last Year";
+      this.currentText = "This Year";
 
-      this.duration = 'cytd';
+      this.duration = "cytd";
       var date = new Date();
       this.startDate = this.datePipe.transform(
         new Date(date.getFullYear(), 0, 1),
-        'dd-MM-yyyy'
+        "dd-MM-yyyy"
       );
-      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
-      this.loadDentist('all');
-    } else if (duration == 'lcytd') {
-      this.trendText = 'Previous Year';
-      this.currentText = 'Last Year';
-      this.duration = 'lcytd';
+      this.endDate = this.datePipe.transform(new Date(), "dd-MM-yyyy");
+      this.loadDentist("all");
+    } else if (duration == "lcytd") {
+      this.trendText = "Previous Year";
+      this.currentText = "Last Year";
+      this.duration = "lcytd";
 
       var date = new Date();
       this.startDate = this.datePipe.transform(
         new Date(date.getFullYear() - 1, 0, 1),
-        'dd-MM-yyyy'
+        "dd-MM-yyyy"
       );
       this.endDate = this.datePipe.transform(
         new Date(date.getFullYear() - 1, 11, 31),
-        'dd-MM-yyyy'
+        "dd-MM-yyyy"
       );
-      this.loadDentist('all');
-    } else if (duration == 'fytd') {
-      this.duration = 'fytd';
-      this.trendText = 'Last Financial Year';
-      this.currentText = 'This Financial Year';
+      this.loadDentist("all");
+    } else if (duration == "fytd") {
+      this.duration = "fytd";
+      this.trendText = "Last Financial Year";
+      this.currentText = "This Financial Year";
 
       var date = new Date();
       if (date.getMonth() + 1 <= 6) {
         this.startDate = this.datePipe.transform(
           new Date(date.getFullYear() - 1, 6, 1),
-          'dd-MM-yyyy'
+          "dd-MM-yyyy"
         );
       } else {
         this.startDate = this.datePipe.transform(
           new Date(date.getFullYear(), 6, 1),
-          'dd-MM-yyyy'
+          "dd-MM-yyyy"
         );
       }
-      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
-      this.loadDentist('all');
-    } else if (duration == 'lfytd') {
-      this.trendText = 'Previous Financial Year';
-      this.currentText = 'Last Financial Year';
-      this.duration = 'lfytd';
+      this.endDate = this.datePipe.transform(new Date(), "dd-MM-yyyy");
+      this.loadDentist("all");
+    } else if (duration == "lfytd") {
+      this.trendText = "Previous Financial Year";
+      this.currentText = "Last Financial Year";
+      this.duration = "lfytd";
       var date = new Date();
       if (date.getMonth() + 1 <= 6) {
         this.startDate = this.datePipe.transform(
           new Date(date.getFullYear() - 2, 6, 1),
-          'dd-MM-yyyy'
+          "dd-MM-yyyy"
         );
       } else {
         this.startDate = this.datePipe.transform(
           new Date(date.getFullYear() - 1, 6, 1),
-          'dd-MM-yyyy'
+          "dd-MM-yyyy"
         );
       }
       if (date.getMonth() + 1 <= 6) {
         this.endDate = this.datePipe.transform(
           new Date(date.getFullYear() - 1, 5, 30),
-          'dd-MM-yyyy'
+          "dd-MM-yyyy"
         );
       } else {
         this.endDate = this.datePipe.transform(
           new Date(date.getFullYear(), 5, 30),
-          'dd-MM-yyyy'
+          "dd-MM-yyyy"
         );
       }
       /* this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'dd-MM-yyyy');
        this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'dd-MM-yyyy');       */
-      this.loadDentist('all');
-    } else if (duration == 'custom') {
-      this.trendText = '';
-      this.currentText = '';
-      this.duration = 'custom';
+      this.loadDentist("all");
+    } else if (duration == "custom") {
+      this.trendText = "";
+      this.currentText = "";
+      this.duration = "custom";
       // $('.customRange').css('display', 'block');
       let selectedDate = this.chartService.customSelectedDate$.value;
+      if (selectedDate == null) {
+        let newAppLayoutData: any = localStorage.getItem("layout");
+        if (newAppLayoutData) {
+          newAppLayoutData = JSON.parse(newAppLayoutData);
+          if (newAppLayoutData.dateRange) {
+            selectedDate = {
+              startDate: moment(newAppLayoutData.dateRange.start).format(
+                "YYYY-MM-DD"
+              ),
+              endDate: moment(newAppLayoutData.dateRange.end).format(
+                "YYYY-MM-DD"
+              ),
+            };
+          }
+        }
+      }
       this.startDate = this.datePipe.transform(
         selectedDate.startDate,
-        'dd-MM-yyyy'
+        "dd-MM-yyyy"
       );
       this.endDate = this.datePipe.transform(
         selectedDate.endDate,
-        'dd-MM-yyyy'
+        "dd-MM-yyyy"
       );
-      var selectedMonth = this.datePipe.transform(selectedDate.startDate, 'M');
+      var selectedMonth = this.datePipe.transform(selectedDate.startDate, "M");
       var selectedYear = this.datePipe.transform(
         selectedDate.startDate,
-        'yyyy'
+        "yyyy"
       );
       var selectedStartDate = this.datePipe.transform(
         selectedDate.startDate,
-        'd'
+        "d"
       );
-      var selectedEndDate = this.datePipe.transform(selectedDate.endDate, 'd');
+      var selectedEndDate = this.datePipe.transform(selectedDate.endDate, "d");
       var LastDay = new Date(
         parseInt(selectedYear),
         parseInt(selectedMonth),
@@ -3116,10 +3071,10 @@ export class FinancesComponent implements AfterViewInit {
       } else {
         this.isCompleteMonth = false;
       }
-      this.loadDentist('all');
+      this.loadDentist("all");
     }
-    $('.filter').removeClass('active');
-    $('.filter_' + duration).addClass('active');
+    $(".filter").removeClass("active");
+    $(".filter_" + duration).addClass("active");
     // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
   }
 
@@ -3143,41 +3098,41 @@ export class FinancesComponent implements AfterViewInit {
   //   );
   // }
   changeDentistPredictor(val) {
-    if (val == '1') {
+    if (val == "1") {
       this.gaugeValuePredicted = this.gaugeValuePredicted1 * 100;
       this.predictedDentistTotal = this.gaugeValuePredicted1;
-    } else if (val == '2') {
+    } else if (val == "2") {
       this.gaugeValuePredicted = this.gaugeValuePredicted2 * 100;
       this.predictedDentistTotal = this.gaugeValuePredicted2;
-    } else if (val == '3') {
+    } else if (val == "3") {
       this.gaugeValuePredicted = this.gaugeValuePredicted3 * 100;
       this.predictedDentistTotal = this.gaugeValuePredicted3;
     }
   }
   ytd_load(val) {
-    alert(this.datePipe.transform(val, 'dd-MM-yyyy'));
+    alert(this.datePipe.transform(val, "dd-MM-yyyy"));
   }
   async choosedDate(val) {
     val = val.chosenLabel;
-    var val = val.toString().split(' - ');
+    var val = val.toString().split(" - ");
 
     var date2: any = new Date(val[1]);
     var date1: any = new Date(val[0]);
     var diffTime: any = Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
     if (diffTime <= 365) {
-      this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
-      this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
-      this.duration = 'custom';
+      this.startDate = this.datePipe.transform(val[0], "dd-MM-yyyy");
+      this.endDate = this.datePipe.transform(val[1], "dd-MM-yyyy");
+      this.duration = "custom";
 
       // this.loadDentist('all');
       // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
-      $('.customRange').css('display', 'none');
+      $(".customRange").css("display", "none");
     } else {
       await Swal.fire({
-        text: 'Please select date range within 365 Days',
-        icon: 'warning',
+        text: "Please select date range within 365 Days",
+        icon: "warning",
         showCancelButton: false,
-        confirmButtonText: 'Ok'
+        confirmButtonText: "Ok",
       });
     }
   }
@@ -3192,58 +3147,58 @@ export class FinancesComponent implements AfterViewInit {
     return validDate;
   }
   toggleFilter(val) {
-    $('.target_filter').removeClass('mat-button-toggle-checked');
-    $('.target_' + val).addClass('mat-button-toggle-checked');
-    $('.filter').removeClass('active');
+    $(".target_filter").removeClass("mat-button-toggle-checked");
+    $(".target_" + val).addClass("mat-button-toggle-checked");
+    $(".filter").removeClass("active");
 
     this.Apirequest = 0;
     var date = new Date();
-    this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
-    if (val == 'current') {
+    this.endDate = this.datePipe.transform(new Date(), "dd-MM-yyyy");
+    if (val == "current") {
       this.toggleChecked = true;
-      this.trendValue = 'c';
+      this.trendValue = "c";
       this.startDate = this.datePipe.transform(
         new Date(date.getFullYear() - 1, date.getMonth(), 1),
-        'dd-MM-yyyy'
+        "dd-MM-yyyy"
       );
 
       this.toggleChangeProcess();
       this.displayProfit(1);
-    } else if (val == 'historic') {
+    } else if (val == "historic") {
       this.toggleChecked = true;
-      this.trendValue = 'h';
+      this.trendValue = "h";
       this.startDate = this.datePipe.transform(
         new Date(date.getFullYear() - 10, date.getMonth(), 1),
-        'dd-MM-yyyy'
+        "dd-MM-yyyy"
       );
 
       this.toggleChangeProcess();
       this.displayProfit(1);
-    } else if (val == 'off') {
-      this.filterDate('m');
-      $('.trendMode').hide();
-      $('.nonTrendMode').css('display', 'block');
+    } else if (val == "off") {
+      this.filterDate("m");
+      $(".trendMode").hide();
+      $(".nonTrendMode").css("display", "block");
     }
-    $('.expenses_card').removeClass('active');
+    $(".expenses_card").removeClass("active");
   }
   flipcard(div: string) {
-    if ($('.' + div).hasClass('active')) $('.' + div).removeClass('active');
-    else $('.' + div).addClass('active');
+    if ($("." + div).hasClass("active")) $("." + div).removeClass("active");
+    else $("." + div).addClass("active");
   }
   initiate_dentist() {
-    var val = $('.internal_dentist').val();
+    var val = $(".internal_dentist").val();
     //this.loadDentist(val);
   }
 
   toggleChecked = false;
-  trendValue = '';
+  trendValue = "";
   isDisabled = true;
   isChecked = true;
-  mode = 'Internal';
+  mode = "Internal";
   toggleChanged() {
     if (this.toggleChecked == true) {
       this.isDisabled = false;
-      this.trendValue = 'c';
+      this.trendValue = "c";
       this.isChecked = true;
       this.toggleChangeProcess();
     } else if (this.toggleChecked == false) {
@@ -3257,8 +3212,8 @@ export class FinancesComponent implements AfterViewInit {
     this.toggleChangeProcess();
   }
   public totalProductionCollection: any[] = [
-    { data: [], label: 'Production' },
-    { data: [], label: 'Collection' }
+    { data: [], label: "Production" },
+    { data: [], label: "Collection" },
   ];
   public totalProductionCollectionLabel = [];
   public netProfitDisplayVal;
@@ -3266,14 +3221,14 @@ export class FinancesComponent implements AfterViewInit {
   toggleChangeProcess() {
     this.Apirequest = 5;
     if (this.toggleChecked) {
-      $('.filter').removeClass('active');
-      $('.trendMode').css('display', 'block');
-      $('.nonTrendMode').hide();
+      $(".filter").removeClass("active");
+      $(".trendMode").css("display", "block");
+      $(".nonTrendMode").hide();
 
       this.finTotalProductionTrend();
       if (
-        this.connectedwith != '' &&
-        this.connectedwith != 'none' &&
+        this.connectedwith != "" &&
+        this.connectedwith != "none" &&
         this.connectedwith != undefined
       ) {
         this.Apirequest = 8;
@@ -3286,34 +3241,34 @@ export class FinancesComponent implements AfterViewInit {
       this.finProductionPerVisitTrend();
       this.finTotalDiscountsTrend();
       this.finProductionByClinicianTrend();
-      this.netProfitDisplayVal = '1';
+      this.netProfitDisplayVal = "1";
     }
   }
 
   public productionChartTrend: any[] = [
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' }
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
   ];
   public productionChartTrendLabels = [];
   public productionChartTrendLabels1 = [];
@@ -3327,130 +3282,131 @@ export class FinancesComponent implements AfterViewInit {
     this.productionChartTrendLabels1 = [];
     this.productionChartTrend = [];
     this.financesService
-      .finProductionByClinicianTrend(this.clinic_id, this.trendValue, this.queryWhEnabled)
-      .subscribe(
-        {
-          next: (res) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            this.showClinic = false;
-            this.finProductionByClinicianTrendLoader = false;
-            if (res.status == 200) {
-              res.body.data.sort((a, b) =>
-                a.duration === b.duration ? 0 : a.duration > b.duration || -1
+      .finProductionByClinicianTrend(
+        this.clinic_id,
+        this.trendValue,
+        this.queryWhEnabled
+      )
+      .subscribe({
+        next: (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.showClinic = false;
+          this.finProductionByClinicianTrendLoader = false;
+          if (res.status == 200) {
+            res.body.data.sort((a, b) =>
+              a.duration === b.duration ? 0 : a.duration > b.duration || -1
+            );
+            res.body.data.forEach((res) => {
+              const sumProd = res.val.reduce(
+                (accumulator, current) =>
+                  accumulator + Number(current["production"]),
+                0
               );
-              res.body.data.forEach((res) => {
-                const sumProd = res.val.reduce(
-                  (accumulator, current) =>
-                    accumulator + Number(current['production']),
-                  0
-                );
-                res.val.forEach((result, key) => {
-                  if (typeof this.productionChartTrend[key] == 'undefined') {
-                    this.productionChartTrend[key] = { data: [], label: '' };
-                  }
+              res.val.forEach((result, key) => {
+                if (typeof this.productionChartTrend[key] == "undefined") {
+                  this.productionChartTrend[key] = { data: [], label: "" };
+                }
+                if (
+                  typeof this.productionChartTrend[key]["data"] == "undefined"
+                ) {
+                  this.productionChartTrend[key]["data"] = [];
+                }
+                if (this.clinic_id.indexOf(",") >= 0) {
+                  this.showClinic = true;
+                  var total = Math.trunc(result.production);
                   if (
-                    typeof this.productionChartTrend[key]['data'] == 'undefined'
+                    result.production > 0 &&
+                    result.production.toString().includes(".")
                   ) {
-                    this.productionChartTrend[key]['data'] = [];
+                    var num_parts = result.production.split(".");
+                    num_parts[1] = num_parts[1].charAt(0);
+                    total = num_parts.join(".");
                   }
-                  if (this.clinic_id.indexOf(',') >= 0) {
+                  this.productionChartTrend[key]["data"].push(
+                    (total / sumProd) * 100
+                  );
+                  this.productionChartTrend[key]["label"] = result.clinic_name;
+                } else {
+                  if (Array.isArray(this.clinic_id)) {
                     this.showClinic = true;
-                    var total = Math.trunc(result.production);
+                    var total1 = Math.trunc(result.production);
                     if (
                       result.production > 0 &&
-                      result.production.toString().includes('.')
+                      result.production.toString().includes(".")
                     ) {
-                      var num_parts = result.production.split('.');
+                      var num_parts = result.production.split(".");
                       num_parts[1] = num_parts[1].charAt(0);
-                      total = num_parts.join('.');
+                      total1 = num_parts.join(".");
                     }
-                    this.productionChartTrend[key]['data'].push(
-                      (total / sumProd) * 100
+                    this.productionChartTrend[key]["data"].push(
+                      (total1 / sumProd) * 100
                     );
-                    this.productionChartTrend[key]['label'] = result.clinic_name;
+                    this.productionChartTrend[key]["label"] =
+                      result.clinic_name;
                   } else {
-                    if (Array.isArray(this.clinic_id)) {
-                      this.showClinic = true;
-                      var total1 = Math.trunc(result.production);
-                      if (
-                        result.production > 0 &&
-                        result.production.toString().includes('.')
-                      ) {
-                        var num_parts = result.production.split('.');
-                        num_parts[1] = num_parts[1].charAt(0);
-                        total1 = num_parts.join('.');
-                      }
-                      this.productionChartTrend[key]['data'].push(
-                        (total1 / sumProd) * 100
-                      );
-                      this.productionChartTrend[key]['label'] =
-                        result.clinic_name;
-                    } else {
-                      this.showClinic = false;
-                      var total2 = result.prod_per_clinician;
-                      if (
-                        result.prod_per_clinician > 0 &&
-                        result.prod_per_clinician.toString().includes('.')
-                      ) {
-                        var num_parts = result.prod_per_clinician.split('.');
-                        num_parts[1] = num_parts[1].charAt(0);
-                        total2 = num_parts.join('.');
-                      }
-                      this.productionChartTrend[key]['data'].push(
-                        parseFloat(total2)
-                      );
-                      this.productionChartTrend[key]['label'] =
-                        result.provider_name;
+                    this.showClinic = false;
+                    var total2 = result.prod_per_clinician;
+                    if (
+                      result.prod_per_clinician > 0 &&
+                      result.prod_per_clinician.toString().includes(".")
+                    ) {
+                      var num_parts = result.prod_per_clinician.split(".");
+                      num_parts[1] = num_parts[1].charAt(0);
+                      total2 = num_parts.join(".");
                     }
+                    this.productionChartTrend[key]["data"].push(
+                      parseFloat(total2)
+                    );
+                    this.productionChartTrend[key]["label"] =
+                      result.provider_name;
                   }
-                  this.productionChartTrend[key]['backgroundColor'] =
-                    this.doughnutChartColors[key];
-                  this.productionChartTrend[key]['hoverBackgroundColor'] =
-                    this.doughnutChartColors[key];
-                });
-                if (this.trendValue == 'c')
-                  this.productionChartTrendLabels1.push(
-                    this.datePipe.transform(res.duration, 'MMM y')
-                  );
-                else this.productionChartTrendLabels1.push(res.duration);
+                }
+                this.productionChartTrend[key]["backgroundColor"] =
+                  this.doughnutChartColors[key];
+                this.productionChartTrend[key]["hoverBackgroundColor"] =
+                  this.doughnutChartColors[key];
               });
-              this.productionChartTrendLabels = this.productionChartTrendLabels1;
-            }
-          },
-          error: (error) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            this.finProductionByClinicianTrendError = true;
-            this.toastr.error(
-              'There was an error retrieving your report data, please contact our support team.'
-            );
-            this.warningMessage = 'Please Provide Valid Inputs!';
+              if (this.trendValue == "c")
+                this.productionChartTrendLabels1.push(
+                  this.datePipe.transform(res.duration, "MMM y")
+                );
+              else this.productionChartTrendLabels1.push(res.duration);
+            });
+            this.productionChartTrendLabels = this.productionChartTrendLabels1;
           }
-        }
-        
-      );
+        },
+        error: (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.finProductionByClinicianTrendError = true;
+          this.toastr.error(
+            "There was an error retrieving your report data, please contact our support team."
+          );
+          this.warningMessage = "Please Provide Valid Inputs!";
+        },
+      });
   }
 
   public discountsChartTrend: any[] = [
     {
       data: [],
-      label: '',
+      label: "",
       shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
-      shadowColor: 'rgba(0, 0, 0, 0.3)',
+      shadowColor: "rgba(0, 0, 0, 0.3)",
       pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
+      pointBevelShadowColor: "rgba(0, 0, 0, 0.3)",
       pointShadowOffsetX: 3,
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
-    }
+      pointShadowColor: "rgba(0, 0, 0, 0.3)",
+      backgroundOverlayMode: "multiply",
+    },
   ];
-  public discountsChartTrendMulti: any[] = [{ data: [], label: '' }];
+  public discountsChartTrendMulti: any[] = [{ data: [], label: "" }];
   public discountsChartTrend1 = [];
   public discountsChartTrendLabels = [];
   public discountsChartTrendLabels1 = [];
@@ -3469,99 +3425,101 @@ export class FinancesComponent implements AfterViewInit {
     this.showByclinic = false;
     this.discountsChartTrendMulti = [];
     this.financesService
-      .finTotalDiscountsTrend(this.clinic_id, this.trendValue, this.queryWhEnabled)
-      .subscribe(
-        {
-          next: (res) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            if (res.status == 200) {
-              if (res.body.data == null || res.body.data.length <= 0) {
-                this.finTotalDiscountsTrendLoader = false;
-                return;
-              }
-  
-              if (
-                this.clinic_id.indexOf(',') >= 0 ||
-                Array.isArray(this.clinic_id)
-              ) {
-                this.showByclinic = true;
-              }
+      .finTotalDiscountsTrend(
+        this.clinic_id,
+        this.trendValue,
+        this.queryWhEnabled
+      )
+      .subscribe({
+        next: (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
+            if (res.body.data == null || res.body.data.length <= 0) {
               this.finTotalDiscountsTrendLoader = false;
-              if (
-                this.clinic_id.indexOf(',') >= 0 ||
-                Array.isArray(this.clinic_id)
-              ) {
-                this.discountsChartTrendMulti = [];
-                Object.entries(
-                  _.chain(res.body.data).groupBy('clinic_id').value()
-                ).forEach(([, items], index) => {
-                  const data: number[] = (<any>items).map((item) =>
-                    Math.round(parseInt(item.discounts))
-                  );
-                  const label = items[0].clinic_name;
-                  const backgroundColor = this.doughnutChartColors[index];
-                  this.discountsChartTrendMulti.push({
-                    data,
-                    label,
-                    backgroundColor,
-                    hoverBackgroundColor: backgroundColor
-                  });
-  
-                  if (index == 0) {
-                    this.discountsChartTrendMultiLabels1 =
-                      this.trendValue == 'c'
-                        ? (<any>items).map((item) =>
-                            this.datePipe.transform(item.year_month, 'MMM y')
-                          )
-                        : (<any>items).map((item) => item.year);
-                  }
-                });
-  
-                this.discountsChartTrendMultiLabels =
-                  this.discountsChartTrendMultiLabels1;
-              } else {
-                res.body.data.forEach((res) => {
-                  this.discountsChartTrend1.push(Math.round(res.discounts));
-                  if (this.trendValue == 'c')
-                    this.discountsChartTrendLabels1.push(
-                      this.datePipe.transform(res.year_month, 'MMM y')
-                    );
-                  else this.discountsChartTrendLabels1.push(res.year);
-                });
-                if (this.discountsChartTrend1.every((item) => item == 0))
-                  this.discountsChartTrend1 = [];
-                this.discountsChartTrend[0]['data'] = this.discountsChartTrend1;
-                this.discountsChartTrendLabels = this.discountsChartTrendLabels1;
-              }
+              return;
             }
-          },
-          error: (error) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            this.warningMessage = 'Please Provide Valid Inputs!';
+
+            if (
+              this.clinic_id.indexOf(",") >= 0 ||
+              Array.isArray(this.clinic_id)
+            ) {
+              this.showByclinic = true;
+            }
+            this.finTotalDiscountsTrendLoader = false;
+            if (
+              this.clinic_id.indexOf(",") >= 0 ||
+              Array.isArray(this.clinic_id)
+            ) {
+              this.discountsChartTrendMulti = [];
+              Object.entries(
+                _.chain(res.body.data).groupBy("clinic_id").value()
+              ).forEach(([, items], index) => {
+                const data: number[] = (<any>items).map((item) =>
+                  Math.round(parseInt(item.discounts))
+                );
+                const label = items[0].clinic_name;
+                const backgroundColor = this.doughnutChartColors[index];
+                this.discountsChartTrendMulti.push({
+                  data,
+                  label,
+                  backgroundColor,
+                  hoverBackgroundColor: backgroundColor,
+                });
+
+                if (index == 0) {
+                  this.discountsChartTrendMultiLabels1 =
+                    this.trendValue == "c"
+                      ? (<any>items).map((item) =>
+                          this.datePipe.transform(item.year_month, "MMM y")
+                        )
+                      : (<any>items).map((item) => item.year);
+                }
+              });
+
+              this.discountsChartTrendMultiLabels =
+                this.discountsChartTrendMultiLabels1;
+            } else {
+              res.body.data.forEach((res) => {
+                this.discountsChartTrend1.push(Math.round(res.discounts));
+                if (this.trendValue == "c")
+                  this.discountsChartTrendLabels1.push(
+                    this.datePipe.transform(res.year_month, "MMM y")
+                  );
+                else this.discountsChartTrendLabels1.push(res.year);
+              });
+              if (this.discountsChartTrend1.every((item) => item == 0))
+                this.discountsChartTrend1 = [];
+              this.discountsChartTrend[0]["data"] = this.discountsChartTrend1;
+              this.discountsChartTrendLabels = this.discountsChartTrendLabels1;
+            }
           }
-        }
-      );
+        },
+        error: (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = "Please Provide Valid Inputs!";
+        },
+      });
   }
 
   public overdueChartTrend: any[] = [
     {
       data: [],
-      label: '',
+      label: "",
       shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
-      shadowColor: 'rgba(0, 0, 0, 0.3)',
+      shadowColor: "rgba(0, 0, 0, 0.3)",
       pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
+      pointBevelShadowColor: "rgba(0, 0, 0, 0.3)",
       pointShadowOffsetX: 3,
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
-    }
+      pointShadowColor: "rgba(0, 0, 0, 0.3)",
+      backgroundOverlayMode: "multiply",
+    },
   ];
   public overdueChartTrend1 = [];
   public overdueChartTrendLabels = [];
@@ -3574,84 +3532,86 @@ export class FinancesComponent implements AfterViewInit {
     this.overdueChartTrendLabels = [];
     this.overdueChartTrend1 = [];
     this.financesService
-      .finOverdueAccountsTrend(this.clinic_id, this.trendValue, this.queryWhEnabled)
-      .subscribe(
-        {
-          next: (res) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            if (res.status == 200) {
-              this.finOverdueAccountsTrendLoader = false;
-              res.body.data.forEach((res) => {
-                this.overdueChartTrend1.push(Math.round(res.val.total));
-                if (this.trendValue == 'c')
-                  this.overdueChartTrendLabels1.push(
-                    this.datePipe.transform(res.duration, 'MMM y')
-                  );
-                else this.overdueChartTrendLabels1.push(res.duration);
-              });
-              this.overdueChartTrend[0]['data'] = this.overdueChartTrend1;
-  
-              this.overdueChartTrendLabels = this.overdueChartTrendLabels1;
-            }
-          },
-          error: (error) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            this.warningMessage = 'Please Provide Valid Inputs!';
+      .finOverdueAccountsTrend(
+        this.clinic_id,
+        this.trendValue,
+        this.queryWhEnabled
+      )
+      .subscribe({
+        next: (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
+            this.finOverdueAccountsTrendLoader = false;
+            res.body.data.forEach((res) => {
+              this.overdueChartTrend1.push(Math.round(res.val.total));
+              if (this.trendValue == "c")
+                this.overdueChartTrendLabels1.push(
+                  this.datePipe.transform(res.duration, "MMM y")
+                );
+              else this.overdueChartTrendLabels1.push(res.duration);
+            });
+            this.overdueChartTrend[0]["data"] = this.overdueChartTrend1;
+
+            this.overdueChartTrendLabels = this.overdueChartTrendLabels1;
           }
-        }
-      );
+        },
+        error: (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = "Please Provide Valid Inputs!";
+        },
+      });
   }
 
   public totalProductionChartTrend: any[] = [
     {
       data: [],
-      label: '',
+      label: "",
       shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
-      shadowColor: 'rgba(0, 0, 0, 0.3)',
+      shadowColor: "rgba(0, 0, 0, 0.3)",
       pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
+      pointBevelShadowColor: "rgba(0, 0, 0, 0.3)",
       pointShadowOffsetX: 3,
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
-    }
+      pointShadowColor: "rgba(0, 0, 0, 0.3)",
+      backgroundOverlayMode: "multiply",
+    },
   ];
   public netProfitPercentChartTrendMulti: any[] = [
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' }
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
   ];
 
   public totalProductionChartTrendMulti: any[] = [
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' },
-    { data: [], label: '' }
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
+    { data: [], label: "" },
   ];
 
   public netProfitPmsChartTrendMulti: any[] = [
-    { data: [], label: '' },
-    { data: [], label: '' }
+    { data: [], label: "" },
+    { data: [], label: "" },
   ];
 
   public netProfitPmsPercentChartTrendMulti: any[] = [
-    { data: [], label: '' },
-    { data: [], label: '' }
+    { data: [], label: "" },
+    { data: [], label: "" },
   ];
 
   public totalProductionChartTrend1 = [];
@@ -3716,117 +3676,119 @@ export class FinancesComponent implements AfterViewInit {
     this.totalProductionChartTrend1 = [];
     this.showProdByclinic = false;
     this.financesService
-      .finTotalProductionTrend(this.clinic_id, this.trendValue, this.queryWhEnabled)
-      .subscribe(
-        {
-          next: (res) => {
-            this.totalProductionChartTrendLabels1 = [];
-            this.PMonthRange = [];
-            this.PYearRange = [];
-            this.cName = [];
-            this.cids = [];
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            if (res.status == 200) {
-              if (
-                this.clinic_id.indexOf(',') >= 0 ||
-                Array.isArray(this.clinic_id)
-              ) {
-                this.showProdByclinic = true;
-              }
-              this.finTotalProductionTrendLoader = false;
-              this.finNetProfitTrendLoader = false;
-              res.body.data.sort((a, b) => a.year - b.year);
-              res.body.data.forEach((item) => {
-                this.PMonthRange.push(item.year_month);
-                this.PYearRange.push(item.year);
-                this.cName.push(item.clinic_name);
-                this.cids.push(item.clinic_id);
-              });
-              const sumClinics = (range: any) =>
-                res.body.data
-                  .filter((i) => i.year_month === range)
-                  .reduce((a, b) => a + Math.round(b.production), 0);
-              const sumClinics1 = (range: any) =>
-                res.body.data
-                  .filter((i) => i.year === range)
-                  .reduce((a, b) => a + Math.round(b.production), 0);
-              this.cName = [...new Set(this.cName)];
-              this.cids = [...new Set(this.cids)];
-              this.PMonthRange = [...new Set(this.PMonthRange)];
-              this.PYearRange = [...new Set(this.PYearRange)];
-              if (this.trendValue == 'c') {
-                this.PMonthRange.forEach((ele) => {
-                  this.totalProductionChartTrend1.push(sumClinics(ele));
-                  this.totalProductionChartTrendLabels1.push(
-                    this.datePipe.transform(ele, 'MMM y')
-                  );
-                });
-              } else {
-                this.PYearRange.forEach((ele) => {
-                  this.totalProductionChartTrend1.push(sumClinics1(ele));
-                  this.totalProductionChartTrendLabels1.push(ele);
-                });
-              }
-  
-              this.totalProductionChartTrend[0]['data'] =
-                this.totalProductionChartTrend1;
-              this.totalProductionChartTrendLabels =
-                this.totalProductionChartTrendLabels1;
-              this.finCollectionTrend();
-  
-              if (
-                this.clinic_id.indexOf(',') >= 0 ||
-                Array.isArray(this.clinic_id)
-              ) {
-                this.totalProductionChartTrendMulti = [];
-                Object.entries(
-                  _.chain(res.body.data).groupBy('clinic_id').value()
-                ).forEach(([, items], index) => {
-                  const data: number[] = (<any>items).map((item) =>
-                    Math.round(parseInt(item.production))
-                  );
-                  const label = items[0].clinic_name;
-                  const backgroundColor = this.doughnutChartColors[index];
-                  this.totalProductionChartTrendMulti.push({
-                    data,
-                    label,
-                    backgroundColor,
-                    hoverBackgroundColor: backgroundColor
-                  });
-                });
-  
-                this.totalProductionChartTrendLabelsMulti =
-                  this.totalProductionChartTrendLabels1;
-              }
+      .finTotalProductionTrend(
+        this.clinic_id,
+        this.trendValue,
+        this.queryWhEnabled
+      )
+      .subscribe({
+        next: (res) => {
+          this.totalProductionChartTrendLabels1 = [];
+          this.PMonthRange = [];
+          this.PYearRange = [];
+          this.cName = [];
+          this.cids = [];
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
+            if (
+              this.clinic_id.indexOf(",") >= 0 ||
+              Array.isArray(this.clinic_id)
+            ) {
+              this.showProdByclinic = true;
             }
-          },
-          error: (error) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            this.warningMessage = 'Please Provide Valid Inputs!';
+            this.finTotalProductionTrendLoader = false;
+            this.finNetProfitTrendLoader = false;
+            res.body.data.sort((a, b) => a.year - b.year);
+            res.body.data.forEach((item) => {
+              this.PMonthRange.push(item.year_month);
+              this.PYearRange.push(item.year);
+              this.cName.push(item.clinic_name);
+              this.cids.push(item.clinic_id);
+            });
+            const sumClinics = (range: any) =>
+              res.body.data
+                .filter((i) => i.year_month === range)
+                .reduce((a, b) => a + Math.round(b.production), 0);
+            const sumClinics1 = (range: any) =>
+              res.body.data
+                .filter((i) => i.year === range)
+                .reduce((a, b) => a + Math.round(b.production), 0);
+            this.cName = [...new Set(this.cName)];
+            this.cids = [...new Set(this.cids)];
+            this.PMonthRange = [...new Set(this.PMonthRange)];
+            this.PYearRange = [...new Set(this.PYearRange)];
+            if (this.trendValue == "c") {
+              this.PMonthRange.forEach((ele) => {
+                this.totalProductionChartTrend1.push(sumClinics(ele));
+                this.totalProductionChartTrendLabels1.push(
+                  this.datePipe.transform(ele, "MMM y")
+                );
+              });
+            } else {
+              this.PYearRange.forEach((ele) => {
+                this.totalProductionChartTrend1.push(sumClinics1(ele));
+                this.totalProductionChartTrendLabels1.push(ele);
+              });
+            }
+
+            this.totalProductionChartTrend[0]["data"] =
+              this.totalProductionChartTrend1;
+            this.totalProductionChartTrendLabels =
+              this.totalProductionChartTrendLabels1;
+            this.finCollectionTrend();
+
+            if (
+              this.clinic_id.indexOf(",") >= 0 ||
+              Array.isArray(this.clinic_id)
+            ) {
+              this.totalProductionChartTrendMulti = [];
+              Object.entries(
+                _.chain(res.body.data).groupBy("clinic_id").value()
+              ).forEach(([, items], index) => {
+                const data: number[] = (<any>items).map((item) =>
+                  Math.round(parseInt(item.production))
+                );
+                const label = items[0].clinic_name;
+                const backgroundColor = this.doughnutChartColors[index];
+                this.totalProductionChartTrendMulti.push({
+                  data,
+                  label,
+                  backgroundColor,
+                  hoverBackgroundColor: backgroundColor,
+                });
+              });
+
+              this.totalProductionChartTrendLabelsMulti =
+                this.totalProductionChartTrendLabels1;
+            }
           }
-        }
-      );
+        },
+        error: (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = "Please Provide Valid Inputs!";
+        },
+      });
   }
 
   public collectionChartTrend: any[] = [
     {
       data: [],
-      label: '',
+      label: "",
       shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
-      shadowColor: 'rgba(0, 0, 0, 0.3)',
+      shadowColor: "rgba(0, 0, 0, 0.3)",
       pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
+      pointBevelShadowColor: "rgba(0, 0, 0, 0.3)",
       pointShadowOffsetX: 3,
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
-    }
+      pointShadowColor: "rgba(0, 0, 0, 0.3)",
+      backgroundOverlayMode: "multiply",
+    },
   ];
   public collectionChartTrend1 = [];
   public collectionChartTrendLabels = [];
@@ -3843,146 +3805,144 @@ export class FinancesComponent implements AfterViewInit {
 
     this.financesService
       .finCollectionTrend(this.clinic_id, this.trendValue, this.queryWhEnabled)
-      .subscribe(
-        {
-          next: (res) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            this.CMonthRange = [];
-            this.CYearRange = [];
-            this.collectionChartTrendMultiData = [];
-            if (res.status == 200) {
-              this.finCollectionTrendLoader = false;
-              if (
-                this.clinic_id.indexOf(',') >= 0 ||
-                Array.isArray(this.clinic_id)
-              ) {
-                this.collectionChartTrendMultiData = [];
-                Object.entries(
-                  _.chain(res.body.data).groupBy('clinic_id').value()
-                ).forEach(([, items], index) => {
-                  const data: number[] = (<any>items).map((item) =>
-                    Math.round(parseInt(item.collection))
-                  );
-                  const label = items[0].clinic_name;
-                  const backgroundColor = this.doughnutChartColors[index];
-                  this.collectionChartTrendMultiData.push({
-                    data,
-                    label,
-                    backgroundColor,
-                    hoverBackgroundColor: backgroundColor
-                  });
+      .subscribe({
+        next: (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.CMonthRange = [];
+          this.CYearRange = [];
+          this.collectionChartTrendMultiData = [];
+          if (res.status == 200) {
+            this.finCollectionTrendLoader = false;
+            if (
+              this.clinic_id.indexOf(",") >= 0 ||
+              Array.isArray(this.clinic_id)
+            ) {
+              this.collectionChartTrendMultiData = [];
+              Object.entries(
+                _.chain(res.body.data).groupBy("clinic_id").value()
+              ).forEach(([, items], index) => {
+                const data: number[] = (<any>items).map((item) =>
+                  Math.round(parseInt(item.collection))
+                );
+                const label = items[0].clinic_name;
+                const backgroundColor = this.doughnutChartColors[index];
+                this.collectionChartTrendMultiData.push({
+                  data,
+                  label,
+                  backgroundColor,
+                  hoverBackgroundColor: backgroundColor,
                 });
-                this.isAllClinic = true;
-                // res.body.data_combined.sort((a, b) =>
-                //   a.duration === b.duration ? 0 : a.duration > b.duration || -1
-                // );
-                // res.body.data_combined.forEach((res) => {
-                //   res.val.forEach((result, key) => {
-                //     if (
-                //       typeof this.collectionChartTrendMultiData[key] ==
-                //       'undefined'
-                //     ) {
-                //       this.collectionChartTrendMultiData[key] = {
-                //         data: [],
-                //         label: '',
-                //       };
-                //     }
-                //     if (
-                //       typeof this.collectionChartTrendMultiData[key]['data'] ==
-                //       'undefined'
-                //     ) {
-                //       this.collectionChartTrendMultiData[key]['data'] = [];
-                //     }
-                //     this.collectionChartTrendMultiData[key]['data'].push(
-                //       Math.round(result.collection)
-                //     );
-                //     this.collectionChartTrendMultiData[key]['label'] =
-                //       result.clinic_name;
-                //     this.collectionChartTrendMultiData[key]['backgroundColor'] =
-                //       this.doughnutChartColors[key];
-                //     this.collectionChartTrendMultiData[key][
-                //       'hoverBackgroundColor'
-                //     ] = this.doughnutChartColors[key];
-                //   });
-                // });
-              } else {
-                this.isAllClinic = false;
-              }
-              res.body.data.sort((a, b) => a.year - b.year);
-              res.body.data.forEach((res) => {
-                this.CMonthRange.push(res.year_month);
-                this.CYearRange.push(res.year);
-                // this.collectionChartTrend1.push(Math.round(res.collection));
-                // if (this.trendValue == 'c')
-                //   this.collectionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-                // else
-                //   this.collectionChartTrendLabels1.push(res.year);
               });
-              const CsumClinics = (range: any) =>
-                res.body.data
-                  .filter((i) => i.year_month === range)
-                  .reduce((a, b) => a + Math.round(b.collection), 0);
-              const CsumClinics1 = (range: any) =>
-                res.body.data
-                  .filter((i) => i.year === range)
-                  .reduce((a, b) => a + Math.round(b.collection), 0);
-  
-              this.CMonthRange = [...new Set(this.CMonthRange)];
-              this.CYearRange = [...new Set(this.CYearRange)];
-              if (this.trendValue == 'c') {
-                this.CMonthRange.forEach((ele) => {
-                  this.collectionChartTrend1.push(CsumClinics(ele));
-                  this.collectionChartTrendLabels1.push(
-                    this.datePipe.transform(ele, 'MMM y')
-                  );
-                });
-              } else {
-                this.CYearRange.forEach((ele) => {
-                  this.collectionChartTrend1.push(CsumClinics1(ele));
-                  this.collectionChartTrendLabels1.push(ele);
-                });
-              }
-  
-              this.totalProductionCollection[0]['data'] =
-                this.totalProductionChartTrend1;
-              this.totalProductionCollection[1]['data'] =
-                this.collectionChartTrend1;
-              this.totalProductionCollectionLabel =
-                this.totalProductionChartTrendLabels1;
-              this.collectionChartTrendMultiLabels =
-                this.collectionChartTrendLabels1;
-  
-              this.collectionChartTrend[0]['data'] = this.collectionChartTrend1;
-              this.collectionChartTrendLabels = this.collectionChartTrendLabels1;
+              this.isAllClinic = true;
+              // res.body.data_combined.sort((a, b) =>
+              //   a.duration === b.duration ? 0 : a.duration > b.duration || -1
+              // );
+              // res.body.data_combined.forEach((res) => {
+              //   res.val.forEach((result, key) => {
+              //     if (
+              //       typeof this.collectionChartTrendMultiData[key] ==
+              //       'undefined'
+              //     ) {
+              //       this.collectionChartTrendMultiData[key] = {
+              //         data: [],
+              //         label: '',
+              //       };
+              //     }
+              //     if (
+              //       typeof this.collectionChartTrendMultiData[key]['data'] ==
+              //       'undefined'
+              //     ) {
+              //       this.collectionChartTrendMultiData[key]['data'] = [];
+              //     }
+              //     this.collectionChartTrendMultiData[key]['data'].push(
+              //       Math.round(result.collection)
+              //     );
+              //     this.collectionChartTrendMultiData[key]['label'] =
+              //       result.clinic_name;
+              //     this.collectionChartTrendMultiData[key]['backgroundColor'] =
+              //       this.doughnutChartColors[key];
+              //     this.collectionChartTrendMultiData[key][
+              //       'hoverBackgroundColor'
+              //     ] = this.doughnutChartColors[key];
+              //   });
+              // });
+            } else {
+              this.isAllClinic = false;
             }
-          },
-          error: (error) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            this.warningMessage = 'Please Provide Valid Inputs!';
+            res.body.data.sort((a, b) => a.year - b.year);
+            res.body.data.forEach((res) => {
+              this.CMonthRange.push(res.year_month);
+              this.CYearRange.push(res.year);
+              // this.collectionChartTrend1.push(Math.round(res.collection));
+              // if (this.trendValue == 'c')
+              //   this.collectionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+              // else
+              //   this.collectionChartTrendLabels1.push(res.year);
+            });
+            const CsumClinics = (range: any) =>
+              res.body.data
+                .filter((i) => i.year_month === range)
+                .reduce((a, b) => a + Math.round(b.collection), 0);
+            const CsumClinics1 = (range: any) =>
+              res.body.data
+                .filter((i) => i.year === range)
+                .reduce((a, b) => a + Math.round(b.collection), 0);
+
+            this.CMonthRange = [...new Set(this.CMonthRange)];
+            this.CYearRange = [...new Set(this.CYearRange)];
+            if (this.trendValue == "c") {
+              this.CMonthRange.forEach((ele) => {
+                this.collectionChartTrend1.push(CsumClinics(ele));
+                this.collectionChartTrendLabels1.push(
+                  this.datePipe.transform(ele, "MMM y")
+                );
+              });
+            } else {
+              this.CYearRange.forEach((ele) => {
+                this.collectionChartTrend1.push(CsumClinics1(ele));
+                this.collectionChartTrendLabels1.push(ele);
+              });
+            }
+
+            this.totalProductionCollection[0]["data"] =
+              this.totalProductionChartTrend1;
+            this.totalProductionCollection[1]["data"] =
+              this.collectionChartTrend1;
+            this.totalProductionCollectionLabel =
+              this.totalProductionChartTrendLabels1;
+            this.collectionChartTrendMultiLabels =
+              this.collectionChartTrendLabels1;
+
+            this.collectionChartTrend[0]["data"] = this.collectionChartTrend1;
+            this.collectionChartTrendLabels = this.collectionChartTrendLabels1;
           }
-        }
-      );
+        },
+        error: (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = "Please Provide Valid Inputs!";
+        },
+      });
   }
 
   public productionVisitChartTrend: any[] = [
     {
       data: [],
-      label: '',
+      label: "",
       shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
-      shadowColor: 'rgba(0, 0, 0, 0.3)',
+      shadowColor: "rgba(0, 0, 0, 0.3)",
       pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
+      pointBevelShadowColor: "rgba(0, 0, 0, 0.3)",
       pointShadowOffsetX: 3,
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
-    }
+      pointShadowColor: "rgba(0, 0, 0, 0.3)",
+      backgroundOverlayMode: "multiply",
+    },
   ];
   public productionVisitChartTrend1 = [];
   public productionVisitChartTrendLabels = [];
@@ -4002,102 +3962,104 @@ export class FinancesComponent implements AfterViewInit {
     this.VYearRange = [];
     this.clinicIds = [];
     this.financesService
-      .finProductionPerVisitTrend(this.clinic_id, this.trendValue, this.queryWhEnabled)
-      .subscribe(
-        {
-          next: (res) => {
-            this.productionVisitChartTrendLabels = [];
-            this.productionVisitChartTrendLabels1 = [];
-            this.finProductionPerVisitTrendLoader = false;
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            if (res.body.data && res.status == 200) {
-              res.body.data.sort((a, b) =>
-                a.year_month === b.year_month
-                  ? 0
-                  : a.year_month > b.year_month || -1
-              );
-              res.body.data.forEach((res) => {
-                this.VMonthRange.push(res.year_month);
-                this.VYearRange.push(res.year);
-                this.clinicIds.push(res.clinic_id);
-                // this.productionVisitChartTrend1.push(Math.round(res.production));
-                // if (this.trendValue == 'c')
-                //   this.productionVisitChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-                // else
-                //   this.productionVisitChartTrendLabels1.push(res.year);
+      .finProductionPerVisitTrend(
+        this.clinic_id,
+        this.trendValue,
+        this.queryWhEnabled
+      )
+      .subscribe({
+        next: (res) => {
+          this.productionVisitChartTrendLabels = [];
+          this.productionVisitChartTrendLabels1 = [];
+          this.finProductionPerVisitTrendLoader = false;
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.body.data && res.status == 200) {
+            res.body.data.sort((a, b) =>
+              a.year_month === b.year_month
+                ? 0
+                : a.year_month > b.year_month || -1
+            );
+            res.body.data.forEach((res) => {
+              this.VMonthRange.push(res.year_month);
+              this.VYearRange.push(res.year);
+              this.clinicIds.push(res.clinic_id);
+              // this.productionVisitChartTrend1.push(Math.round(res.production));
+              // if (this.trendValue == 'c')
+              //   this.productionVisitChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+              // else
+              //   this.productionVisitChartTrendLabels1.push(res.year);
+            });
+
+            const vsumClinics = (range: any) =>
+              res.body.data
+                .filter((i) => i.year_month === range)
+                .reduce((a, b) => a + Math.round(b.production), 0);
+            const vsumClinicsVisits = (range: any) =>
+              res.body.data
+                .filter((i) => i.year_month === range)
+                .reduce((a, b) => a + Math.round(b.num_visits), 0);
+            const vsumClinics1 = (range: any) =>
+              res.body.data
+                .filter((i) => i.year === range)
+                .reduce((a, b) => a + Math.round(b.production), 0);
+            const vsumClinics1Visits = (range: any) =>
+              res.body.data
+                .filter((i) => i.year === range)
+                .reduce((a, b) => a + Math.round(b.num_visits), 0);
+
+            this.VMonthRange = [...new Set(this.VMonthRange)];
+            this.VYearRange = [...new Set(this.VYearRange)];
+            this.clinicIds = [...new Set(this.clinicIds)];
+            if (this.trendValue == "c") {
+              this.VMonthRange.forEach((ele) => {
+                this.productionVisitChartTrend1.push(
+                  Math.round(vsumClinics(ele) / vsumClinicsVisits(ele))
+                );
+                this.productionVisitChartTrendLabels1.push(
+                  this.datePipe.transform(ele, "MMM y")
+                );
               });
-  
-              const vsumClinics = (range: any) =>
-                res.body.data
-                  .filter((i) => i.year_month === range)
-                  .reduce((a, b) => a + Math.round(b.production), 0);
-              const vsumClinicsVisits = (range: any) =>
-                res.body.data
-                  .filter((i) => i.year_month === range)
-                  .reduce((a, b) => a + Math.round(b.num_visits), 0);
-              const vsumClinics1 = (range: any) =>
-                res.body.data
-                  .filter((i) => i.year === range)
-                  .reduce((a, b) => a + Math.round(b.production), 0);
-              const vsumClinics1Visits = (range: any) =>
-                res.body.data
-                  .filter((i) => i.year === range)
-                  .reduce((a, b) => a + Math.round(b.num_visits), 0);
-  
-              this.VMonthRange = [...new Set(this.VMonthRange)];
-              this.VYearRange = [...new Set(this.VYearRange)];
-              this.clinicIds = [...new Set(this.clinicIds)];
-              if (this.trendValue == 'c') {
-                this.VMonthRange.forEach((ele) => {
-                  this.productionVisitChartTrend1.push(
-                    Math.round(vsumClinics(ele) / vsumClinicsVisits(ele))
-                  );
-                  this.productionVisitChartTrendLabels1.push(
-                    this.datePipe.transform(ele, 'MMM y')
-                  );
-                });
-              } else {
-                this.VYearRange.forEach((ele) => {
-                  this.productionVisitChartTrend1.push(
-                    Math.round(vsumClinics1(ele) / vsumClinics1Visits(ele))
-                  );
-                  this.productionVisitChartTrendLabels1.push(ele);
-                });
-              }
-              this.productionVisitChartTrend[0]['data'] =
-                this.productionVisitChartTrend1;
-  
-              this.productionVisitChartTrendLabels =
-                this.productionVisitChartTrendLabels1;
+            } else {
+              this.VYearRange.forEach((ele) => {
+                this.productionVisitChartTrend1.push(
+                  Math.round(vsumClinics1(ele) / vsumClinics1Visits(ele))
+                );
+                this.productionVisitChartTrendLabels1.push(ele);
+              });
             }
-          },
-          error: (error) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            this.warningMessage = 'Please Provide Valid Inputs!';
+            this.productionVisitChartTrend[0]["data"] =
+              this.productionVisitChartTrend1;
+
+            this.productionVisitChartTrendLabels =
+              this.productionVisitChartTrendLabels1;
           }
-        }
-      );
+        },
+        error: (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = "Please Provide Valid Inputs!";
+        },
+      });
   }
 
   public netProfitChartTrend: any[] = [
     {
       data: [],
-      label: '',
+      label: "",
       shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
-      shadowColor: 'rgba(0, 0, 0, 0.3)',
+      shadowColor: "rgba(0, 0, 0, 0.3)",
       pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
+      pointBevelShadowColor: "rgba(0, 0, 0, 0.3)",
       pointShadowOffsetX: 3,
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
-    }
+      pointShadowColor: "rgba(0, 0, 0, 0.3)",
+      backgroundOverlayMode: "multiply",
+    },
   ];
   public netProfitChartTrend1 = [];
   public netProfitChartTrendLabels = [];
@@ -4107,20 +4069,20 @@ export class FinancesComponent implements AfterViewInit {
   public netProfitPercentChartTrend: any[] = [
     {
       data: [],
-      label: '',
+      label: "",
       shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
-      shadowColor: 'rgba(0, 0, 0, 0.3)',
+      shadowColor: "rgba(0, 0, 0, 0.3)",
       pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
+      pointBevelShadowColor: "rgba(0, 0, 0, 0.3)",
       pointShadowOffsetX: 3,
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
-    }
+      pointShadowColor: "rgba(0, 0, 0, 0.3)",
+      backgroundOverlayMode: "multiply",
+    },
   ];
   public netProfitPercentChartTrend1 = [];
   public netProfitPercentChartTrendLabels = [];
@@ -4130,20 +4092,20 @@ export class FinancesComponent implements AfterViewInit {
   public netProfitPmsChartTrend: any[] = [
     {
       data: [],
-      label: '',
+      label: "",
       shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
-      shadowColor: 'rgba(0, 0, 0, 0.3)',
+      shadowColor: "rgba(0, 0, 0, 0.3)",
       pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
+      pointBevelShadowColor: "rgba(0, 0, 0, 0.3)",
       pointShadowOffsetX: 3,
       pointShadowOffsetY: 3,
       pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-      backgroundOverlayMode: 'multiply'
-    }
+      pointShadowColor: "rgba(0, 0, 0, 0.3)",
+      backgroundOverlayMode: "multiply",
+    },
   ];
   public netProfitPmsChartTrend1 = [];
   public netProfitPmsChartTrendLabels = [];
@@ -4153,7 +4115,7 @@ export class FinancesComponent implements AfterViewInit {
   public checkXeroStatus() {
     this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe(
       (res) => {
-        if (res.body.message != 'error') {
+        if (res.body.message != "error") {
           if (res.body.data.xero_connect == 1) {
             this.xeroConnect = true;
           } else {
@@ -4164,7 +4126,7 @@ export class FinancesComponent implements AfterViewInit {
         }
       },
       (error) => {
-        this.warningMessage = 'Please Provide Valid Inputs!';
+        this.warningMessage = "Please Provide Valid Inputs!";
       }
     );
   }
@@ -4172,7 +4134,7 @@ export class FinancesComponent implements AfterViewInit {
   checkMyobStatus() {
     this.clinicSettingsService.checkMyobStatus(this.clinic_id).subscribe(
       (res) => {
-        if (res.body.message != 'error') {
+        if (res.body.message != "error") {
           if (res.body.data.myob_connect == 1) {
             this.myobConnect = true;
           } else {
@@ -4183,7 +4145,7 @@ export class FinancesComponent implements AfterViewInit {
         }
       },
       (error) => {
-        this.warningMessage = 'Please Provide Valid Inputs!';
+        this.warningMessage = "Please Provide Valid Inputs!";
       }
     );
   }
@@ -4195,80 +4157,83 @@ export class FinancesComponent implements AfterViewInit {
     this.netProfitPmsChartTrendLabels = [];
     this.trendxero = true;
     this.financesService
-      .finNetProfitPMSTrend(this.clinic_id, this.trendValue, this.connectedwith, this.queryWhEnabled)
-      .subscribe(
-        {
-          next: (res) => {
-            this.trendxero = false;
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-  
-            if (res.status == 200) {
-              if (res.body.data) {
-                if (this.multipleClinicsSelected) {
-                  this.netProfitPmsChartTrendMulti = [];
-                  const datasets: any[] = [];
-                  const totalData: number[] = [];
-  
-                  Object.entries(
-                    _.chain(res.body.data)
-                      .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
-                      .value()
-                  ).forEach(([duration, items], index) => {
-                    totalData.push(
-                      _.sumBy(items, (item) => Number(item.net_profit) || 0)
-                    );
-                    labels.push(duration);
-                  });
+      .finNetProfitPMSTrend(
+        this.clinic_id,
+        this.trendValue,
+        this.connectedwith,
+        this.queryWhEnabled
+      )
+      .subscribe({
+        next: (res) => {
+          this.trendxero = false;
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+
+          if (res.status == 200) {
+            if (res.body.data) {
+              if (this.multipleClinicsSelected) {
+                this.netProfitPmsChartTrendMulti = [];
+                const datasets: any[] = [];
+                const totalData: number[] = [];
+
+                Object.entries(
+                  _.chain(res.body.data)
+                    .groupBy(this.trendValue == "c" ? "year_month" : "year")
+                    .value()
+                ).forEach(([duration, items], index) => {
+                  totalData.push(
+                    _.sumBy(items, (item) => Number(item.net_profit) || 0)
+                  );
+                  labels.push(duration);
+                });
+                datasets.push({
+                  label: "Total",
+                  data: totalData,
+                });
+
+                Object.entries(
+                  _.chain(res.body.data).groupBy("clinic_id").value()
+                ).forEach(([, items], index) => {
+                  const data: number[] = (<any>items).map((item) =>
+                    Math.round(parseInt(item.net_profit) || 0)
+                  );
+                  const label = items[0].clinic_name;
                   datasets.push({
-                    label: 'Total',
-                    data: totalData
+                    data,
+                    label,
+                    backgroundColor: "#ffffff00",
+                    borderColor: "#ffffff00",
+                    radius: 0,
+                    hoverRadius: 0,
+                    pointStyle: false,
                   });
-  
-                  Object.entries(
-                    _.chain(res.body.data).groupBy('clinic_id').value()
-                  ).forEach(([, items], index) => {
-                    const data: number[] = (<any>items).map((item) =>
-                      Math.round(parseInt(item.net_profit) || 0)
-                    );
-                    const label = items[0].clinic_name;
-                    datasets.push({
-                      data,
-                      label,
-                      backgroundColor: '#ffffff00',
-                      borderColor: '#ffffff00',
-                      radius: 0,
-                      hoverRadius: 0,
-                      pointStyle: false
-                    });
-                  });
-  
-                  this.netProfitPmsChartTrendMulti = datasets;
-                } else {
-                  res.body.data.forEach((item) => {
-                    this.netProfitChartTrend1.push(
-                      Math.round(item.net_profit || 0)
-                    );
-  
-                    labels.push(
-                      this.trendValue == 'c'
-                        ? this.datePipe.transform(item.year_month, 'MMM y')
-                        : item.year
-                    );
-                  });
-                  this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
-                }
+                });
+
+                this.netProfitPmsChartTrendMulti = datasets;
+              } else {
+                res.body.data.forEach((item) => {
+                  this.netProfitChartTrend1.push(
+                    Math.round(item.net_profit || 0)
+                  );
+
+                  labels.push(
+                    this.trendValue == "c"
+                      ? this.datePipe.transform(item.year_month, "MMM y")
+                      : item.year
+                  );
+                });
+                this.netProfitChartTrend[0]["data"] = this.netProfitChartTrend1;
               }
-              this.netProfitPmsChartTrendLabels = labels;
             }
-          },
-          error: (error) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            this.warningMessage = 'Please Provide Valid Inputs!';
+            this.netProfitPmsChartTrendLabels = labels;
           }
-        }
-      );
+        },
+        error: (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = "Please Provide Valid Inputs!";
+        },
+      });
   }
 
   // Added by Hanney Sharma on 09-04-2021 for net profit %
@@ -4283,63 +4248,61 @@ export class FinancesComponent implements AfterViewInit {
         this.connectedwith,
         this.queryWhEnabled
       )
-      .subscribe(
-        {
-          next: (res) => {
-            this.trendxero = false;
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            this.netProfitPmsPercentChartTrendMulti = [];
-            let labels: string[] = [];
-  
-            if (res.status == 200) {
-              if (res.body.data) {
-                const data: number[] = [];
-                if (this.multipleClinicsSelected) {
-                  Object.entries(
-                    _.chain(res.body.data)
-                      .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
-                      .value()
-                  ).forEach(([duration, items]) => {
-                    data.push(
-                      _.round(
-                        (_.chain(items)
-                          .sumBy((item) => Number(item.net_profit) || 0)
-                          .value() /
-                          _.chain(items)
-                            .sumBy((item) => Number(item.collection) || 0)
-                            .value() || 0) * 100,
-                        0
-                      )
-                    );
-                    labels.push(
-                      this.trendValue == 'c'
-                        ? this.datePipe.transform(duration, 'MMM y')
-                        : duration
-                    );
-                  });
-                } else {
-                  res.body.data.forEach((item: any) => {
-                    data.push(_.round(item.net_profit_percent??0));
-                    labels.push(
-                      this.trendValue == 'c'
-                        ? this.datePipe.transform(item.year_month, 'MMM y')
-                        : item.year
-                    );
-                  });
-                }
-                this.netProfitPercentChartTrend[0]['data'] = data;
-                this.netProfitPercentChartTrendLabels = labels;
+      .subscribe({
+        next: (res) => {
+          this.trendxero = false;
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.netProfitPmsPercentChartTrendMulti = [];
+          let labels: string[] = [];
+
+          if (res.status == 200) {
+            if (res.body.data) {
+              const data: number[] = [];
+              if (this.multipleClinicsSelected) {
+                Object.entries(
+                  _.chain(res.body.data)
+                    .groupBy(this.trendValue == "c" ? "year_month" : "year")
+                    .value()
+                ).forEach(([duration, items]) => {
+                  data.push(
+                    _.round(
+                      (_.chain(items)
+                        .sumBy((item) => Number(item.net_profit) || 0)
+                        .value() /
+                        _.chain(items)
+                          .sumBy((item) => Number(item.collection) || 0)
+                          .value() || 0) * 100,
+                      0
+                    )
+                  );
+                  labels.push(
+                    this.trendValue == "c"
+                      ? this.datePipe.transform(duration, "MMM y")
+                      : duration
+                  );
+                });
+              } else {
+                res.body.data.forEach((item: any) => {
+                  data.push(_.round(item.net_profit_percent ?? 0));
+                  labels.push(
+                    this.trendValue == "c"
+                      ? this.datePipe.transform(item.year_month, "MMM y")
+                      : item.year
+                  );
+                });
               }
+              this.netProfitPercentChartTrend[0]["data"] = data;
+              this.netProfitPercentChartTrendLabels = labels;
             }
-          },
-          error: (_) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        }
-      );
+        },
+        error: (_) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.warningMessage = "Please Provide Valid Inputs!";
+        },
+      });
   }
 
   public expensesChartTrend: ChartDataset[] = [];
@@ -4357,85 +4320,82 @@ export class FinancesComponent implements AfterViewInit {
         this.connectedwith,
         this.queryWhEnabled
       )
-      .subscribe(
-        {
-          next: (res) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            if (res.status == 200) {
-              this.expensestrendstats = true;
-              const durations: string[] = res.body.durations;
-              Object.entries(
-                _.chain(res.body.data).groupBy('account_name').value()
-              ).forEach(([accountName, items], index) => {
-                const dataByDuration: { duration: string; expense: number }[] =
-                  _.chain(items)
-                    .groupBy(this.trendValue == 'c' ? 'year_month' : 'year')
-                    .map((eles: any[], duration) => {
-                      return {
-                        duration,
-                        expense: _.chain(eles)
-                          .sumBy((ele) => ele.expense)
-                          .value()
-                      };
-                    })
-                    .value();
-                this.expensesChartTrend.push({
-                  data: durations.map((d) => {
-                    const data = dataByDuration.find((e) => e.duration === d);
-                    return !!data ? Math.round(data.expense) : 0;
-                  }),
-                  label: accountName,
-                  backgroundColor: this.doughnutChartColors[index],
-                  hoverBackgroundColor: this.doughnutChartColors[index]
-                });
+      .subscribe({
+        next: (res) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          if (res.status == 200) {
+            this.expensestrendstats = true;
+            const durations: string[] = res.body.durations;
+            Object.entries(
+              _.chain(res.body.data).groupBy("account_name").value()
+            ).forEach(([accountName, items], index) => {
+              const dataByDuration: { duration: string; expense: number }[] =
+                _.chain(items)
+                  .groupBy(this.trendValue == "c" ? "year_month" : "year")
+                  .map((eles: any[], duration) => {
+                    return {
+                      duration,
+                      expense: _.chain(eles)
+                        .sumBy((ele) => ele.expense)
+                        .value(),
+                    };
+                  })
+                  .value();
+              this.expensesChartTrend.push({
+                data: durations.map((d) => {
+                  const data = dataByDuration.find((e) => e.duration === d);
+                  return !!data ? Math.round(data.expense) : 0;
+                }),
+                label: accountName,
+                backgroundColor: this.doughnutChartColors[index],
+                hoverBackgroundColor: this.doughnutChartColors[index],
               });
-              this.expensesChartTrendLabels =
-                this.trendValue == 'c'
-                  ? durations.map((d: string) =>
-                      moment(d, 'YYYY-MM').format('MMM YYYY')
-                    )
-                  : durations;
-            }
-          },
-          error: (error) => {
-            this.Apirequest = this.Apirequest - 1;
-            this.enableDiabaleButton(this.Apirequest);
-            this.expensesChartTrendError = true;
-            this.warningMessage = 'Please Provide Valid Inputs!';
+            });
+            this.expensesChartTrendLabels =
+              this.trendValue == "c"
+                ? durations.map((d: string) =>
+                    moment(d, "YYYY-MM").format("MMM YYYY")
+                  )
+                : durations;
           }
-        }
-      );
+        },
+        error: (error) => {
+          this.Apirequest = this.Apirequest - 1;
+          this.enableDiabaleButton(this.Apirequest);
+          this.expensesChartTrendError = true;
+          this.warningMessage = "Please Provide Valid Inputs!";
+        },
+      });
   }
 
   displayProfit(val) {
-    $('.net_profit').hide();
-    $('.profit' + val).show();
-    $('.profit_btn').removeClass('active');
-    $('.netProfit' + val).addClass('active');
+    $(".net_profit").hide();
+    $(".profit" + val).show();
+    $(".profit_btn").removeClass("active");
+    $(".netProfit" + val).addClass("active");
     this.netProfitDisplayVal = val;
   }
 
   thousands_separators(num) {
-    var num_parts = num.toString().split('.');
-    num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    return num_parts.join('.');
+    var num_parts = num.toString().split(".");
+    num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return num_parts.join(".");
   }
 
   getChartsTips() {
     this.chartstipsService.getCharts(5, this.clinic_id).subscribe(
       (res) => {
-          this.charTips = res.data;
-        
+        this.charTips = res.data;
       },
       (error) => {}
     );
   }
   enableDiabaleButton(val) {
     if (val <= 0) {
-      $('.sa_tabs_data button').prop('disabled', false);
+      $(".sa_tabs_data button").prop("disabled", false);
     } else {
-      $('.sa_tabs_data button').prop('disabled', true);
+      $(".sa_tabs_data button").prop("disabled", true);
     }
   }
 
@@ -4457,10 +4417,12 @@ export class FinancesComponent implements AfterViewInit {
   removeFromSelected(index) {
     if (this.selectedData.length <= this.lowerLimit) {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops....',
+        icon: "error",
+        title: "Oops....",
         text:
-          'Minimum ' + this.lowerLimit + ' expense account will remain selected'
+          "Minimum " +
+          this.lowerLimit +
+          " expense account will remain selected",
       });
     } else {
       this.unSelectedData.push(this.selectedData[index]);
@@ -4470,12 +4432,12 @@ export class FinancesComponent implements AfterViewInit {
   addToSelected(index) {
     if (this.selectedData.length >= this.upperLimit) {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops....',
+        icon: "error",
+        title: "Oops....",
         text:
-          'You can select a maximum of ' +
+          "You can select a maximum of " +
           this.upperLimit +
-          ' expense accounts at a time'
+          " expense accounts at a time",
       });
     } else {
       this.selectedData.push(this.unSelectedData[index]);
@@ -4485,6 +4447,6 @@ export class FinancesComponent implements AfterViewInit {
 
   refreshFinanceChart() {
     Object.assign(this, { selectedData: [...this.selectedData] });
-    $('.close_modal').click();
+    $(".close_modal").click();
   }
 }
