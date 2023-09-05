@@ -3023,7 +3023,8 @@ export class FinancesComponent implements AfterViewInit {
       this.currentText = "";
       this.duration = "custom";
       // $('.customRange').css('display', 'block');
-      let selectedDate = this.chartService.customSelectedDate$.value;
+      //let selectedDate = this.chartService.customSelectedDate$.value;
+      let selectedDate = null;
       if (selectedDate == null) {
         let newAppLayoutData: any = localStorage.getItem("layout");
         if (newAppLayoutData) {

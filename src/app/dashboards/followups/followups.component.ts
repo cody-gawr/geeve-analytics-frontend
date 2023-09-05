@@ -575,7 +575,8 @@ export class FollowupsComponent implements AfterViewInit {
       this.trendText = "";
       this.duration = "custom";
       this.currentText = "";
-      let selectedDate = this.chartService.customSelectedDate$.value;
+      //let selectedDate = this.chartService.customSelectedDate$.value;
+      let selectedDate = null;
       if (selectedDate == null) {
         let newAppLayoutData: any = localStorage.getItem("layout");
         if (newAppLayoutData) {

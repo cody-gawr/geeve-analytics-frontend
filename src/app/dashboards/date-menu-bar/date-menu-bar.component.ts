@@ -130,6 +130,11 @@ export class DateMenuBarComponent
       this.route == "/dashboards/clinicianproceedures" ||
       this.route == "/dashboards/frontdesk"
     ) {
+      let val = event.chosenLabel;
+      val = val.toString().split(" - ");
+      this.startDate = val[0];
+      this.endDate = val[1];
+
       this.chartService.selectDateFromCalender(event);
       this.filterDate("custom");
       this.changeDate.emit(event);
@@ -141,6 +146,8 @@ export class DateMenuBarComponent
       var date1: any = new Date(val[0]);
       var diffTime: any = Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
       if (diffTime <= 365) {
+        this.startDate = date1;
+        this.endDate = date2;
         this.chartService.selectDateFromCalender(event);
         this.filterDate("custom");
         this.changeDate.emit(event);
@@ -321,6 +328,7 @@ export class DateMenuBarComponent
     }
 
     localStorage.setItem("layout", JSON.stringify(newAppLayoutData));
+    console.log("update", start, end);
     this.datePicker.setStartDate(start);
     this.datePicker.setEndDate(end);
     this.datePicker.updateView();

@@ -8469,7 +8469,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.trendText = "";
         this.currentText = "";
         // $('.customRange').css('display', 'block');
-        let selectedDate = this.chartService.customSelectedDate$.value;
+        //let selectedDate = this.chartService.customSelectedDate$.value;
+        let selectedDate = null;
         if (selectedDate == null) {
           let newAppLayoutData: any = localStorage.getItem("layout");
           if (newAppLayoutData) {
