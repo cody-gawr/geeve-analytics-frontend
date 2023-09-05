@@ -34,6 +34,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { formatXTooltipLabel } from "../../util";
 import { _DeepPartialObject } from "chart.js/dist/types/utils";
+import moment from "moment";
 
 export interface Dentist {
   providerId: string;
@@ -183,7 +184,23 @@ export class ClinicianProceeduresComponent
         this.multiclinic = false;
         this.getDentists();
       }
-      this.filterDate(this.chartService.duration$.value);
+
+      let newAppLayoutData: any = localStorage.getItem("layout");
+      if (newAppLayoutData) {
+        newAppLayoutData = JSON.parse(newAppLayoutData);
+        if (newAppLayoutData.dateRange) {
+          this.startDate = moment(newAppLayoutData.dateRange.start).format(
+            "YYYY-MM-DD"
+          );
+          this.endDate = moment(newAppLayoutData.dateRange.end).format(
+            "YYYY-MM-DD"
+          );
+          this.filterDate(newAppLayoutData.dateRange.duration);
+        }
+      } else {
+        this.filterDate(this.chartService.duration$.value);
+      }
+      //this.filterDate(this.chartService.duration$.value);
       this.getChartsTips();
     }
   }
@@ -1651,11 +1668,7 @@ export class ClinicianProceeduresComponent
                   this.stackedChartData[7]["data"] = this.stackedChartData8;
                   this.stackedChartData[8]["data"] = this.stackedChartData9;
                   this.stackedChartLabels = this.stackedChartLabels1;
-                  console.log(
-                    "test old data",
-                    this.stackedChartData[5]["data"],
-                    this.stackedChartData6
-                  );
+
                   if (this.user_type == "4" && this.childid != "") {
                     this.barChartColors = [
                       {
@@ -2099,7 +2112,6 @@ export class ClinicianProceeduresComponent
                   } else
                     this.predictorAnalysisChartColors =
                       this.ItemPredictorSpecialColors;
-                  console.log("test", this.stackedChartDataItemSpecial);
                   this.predictorAnalysisDataMax =
                     Math.max(...this.stackedChartDataItemSpecial[0]["data"]) +
                     Math.max(...this.stackedChartDataItemSpecial[1]["data"]) +

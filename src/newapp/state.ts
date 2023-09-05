@@ -22,7 +22,7 @@ export function localStorageSyncReducer(
           //"rolesIndividual"
         ],
       },
-      // { layout: ['startDate', 'endDate', 'enableDateRagne', 'duration', 'trend'] }
+      { layout: ["dateRange", "trend"] },
     ],
     rehydrate: true,
   })(reducer);

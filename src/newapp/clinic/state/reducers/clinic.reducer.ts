@@ -67,7 +67,9 @@ export const clinicFeature = createFeature({
           ...(clinics.length > 0 && state.currentSingleClinicId == null
             ? { currentSingleClinicId: clinics[0].id }
             : {}),
-          ...(clinics.length > 0 && state.currentMultiClinicIds == null
+          ...(clinics.length > 0 &&
+          (state.currentMultiClinicIds == null ||
+            state.currentMultiClinicIds.length == 0)
             ? { currentMultiClinicIds: [clinics[0].id] }
             : {}),
         };

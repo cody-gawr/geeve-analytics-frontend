@@ -2,7 +2,6 @@ import { formatXTooltipLabel } from "@/app/util";
 import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
 import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
 import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
-import { DateRangeMenus } from "@/newapp/shared/components/date-range-menu/date-range-menu.component";
 import { chartPlugin } from "@/newapp/shared/utils";
 import { DecimalPipe } from "@angular/common";
 import { Component, OnInit, OnDestroy, Input } from "@angular/core";
@@ -170,25 +169,25 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
     },
   };
 
-  public pieChartColors = [
-    {
-      backgroundColor: [
-        "#6edbbb",
-        "#b0fffa",
-        "#abb3ff",
-        "#ffb4b5",
-        "#fffcac",
-        "#FFE4E4",
-        "#FFD578",
-        "#54D2FF",
-        "#E58DD7",
-        "#A9AABC",
-        "#F2ECFF",
-        "#5689C9",
-        "#F9F871",
-      ],
-    },
-  ];
+  // public pieChartColors = [
+  //   {
+  //     backgroundColor: [
+  //       "#6edbbb",
+  //       "#b0fffa",
+  //       "#abb3ff",
+  //       "#ffb4b5",
+  //       "#fffcac",
+  //       "#FFE4E4",
+  //       "#FFD578",
+  //       "#54D2FF",
+  //       "#E58DD7",
+  //       "#A9AABC",
+  //       "#F2ECFF",
+  //       "#5689C9",
+  //       "#F9F871",
+  //     ],
+  //   },
+  // ];
 
   ngOnInit(): void {}
 
