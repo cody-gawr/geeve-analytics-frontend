@@ -679,6 +679,29 @@ export class AppHeaderrightComponent
 
       let opts = this.constants.cookieOpt as CookieOptions;
       this._cookieService.put("clinic_id", newValue, opts);
+      let newAppClinicData: any = localStorage.getItem("clinic");
+      if (newAppClinicData) {
+        newAppClinicData = JSON.parse(newAppClinicData);
+      } else {
+        newAppClinicData = {
+          currentMultiClinicIds: [],
+          currentSingleClinicId: "all",
+        };
+      }
+
+      if (this.isMultiClinicsVisible) {
+        if (newValue == "all") {
+          newAppClinicData.currentMultiClinicIds = this.clinicsData.map(
+            (v) => v.id
+          );
+        } else {
+          newAppClinicData.currentMultiClinicIds = newValue;
+        }
+      } else {
+        newAppClinicData.currentSingleClinicId = newValue;
+      }
+
+      localStorage.setItem("clinic", JSON.stringify(newAppClinicData));
       this.clinicsData.forEach((data) => {
         if (data.id == newValue) {
           this.checkTrailEnd(data);
