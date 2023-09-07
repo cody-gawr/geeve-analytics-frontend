@@ -89,7 +89,21 @@ export class DateMenuBarComponent
       if (event instanceof NavigationEnd) {
         this.route = router.url;
         if (this.chartService.duration$.value == "custom") {
-          this.filterDate("m");
+          let newAppLayoutData: any = localStorage.getItem("layout");
+          if (newAppLayoutData) {
+            newAppLayoutData = JSON.parse(newAppLayoutData);
+            if (newAppLayoutData.dateRange) {
+              this.startDate = moment(newAppLayoutData.dateRange.start).format(
+                "YYYY-MM-DD"
+              );
+              this.endDate = moment(newAppLayoutData.dateRange.end).format(
+                "YYYY-MM-DD"
+              );
+              this.filterDate(newAppLayoutData.dateRange.duration);
+            }
+          } else {
+            this.filterDate("m");
+          }
         }
       }
     });
@@ -328,7 +342,6 @@ export class DateMenuBarComponent
     }
 
     localStorage.setItem("layout", JSON.stringify(newAppLayoutData));
-    console.log("update", start, end);
     this.datePicker.setStartDate(start);
     this.datePicker.setEndDate(end);
     this.datePicker.updateView();
