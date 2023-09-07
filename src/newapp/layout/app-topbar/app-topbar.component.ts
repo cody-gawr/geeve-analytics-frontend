@@ -9,6 +9,7 @@ import { AuthFacade } from "@/newapp/auth/facades/auth.facade";
 import { DashboardFacade } from "@/newapp/dashboard/facades/dashboard.facade";
 import { DentistFacade } from "@/newapp/dentist/facades/dentists.facade";
 import { ToastrService } from "ngx-toastr";
+import { CookieService } from "ngx-cookie";
 
 @Component({
   selector: "app-topbar",
@@ -126,7 +127,8 @@ export class AppTopbarComponent implements OnInit {
     private clinicFacade: ClinicFacade,
     private authFacade: AuthFacade,
     private dentistFacade: DentistFacade,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cookieService: CookieService
   ) {
     // this.dentistFacade.loadDentists();
     // this.menuService.menuSource$
@@ -172,8 +174,11 @@ export class AppTopbarComponent implements OnInit {
           if (currentClinicIDs == undefined) return;
           if (currentClinicIDs.length === clinics.length) {
             this.selectedMultiClinics = [...currentClinicIDs, "all"];
+            this.setCookieVal("all");
           } else {
             this.selectedMultiClinics = currentClinicIDs;
+            const idList = currentClinicIDs.join(",");
+            this.setCookieVal(idList);
           }
           if (currentClinicIDs.length == 1) {
             this.dashboardFacade.loadClinicAccountingPlatform(
@@ -186,8 +191,11 @@ export class AppTopbarComponent implements OnInit {
             this.dashboardFacade.loadClinicAccountingPlatform(
               currentClinicIDs[0]
             );
+            const val = currentClinicIDs[0].toString();
+            this.setCookieVal(val);
           } else if (currentClinicIDs.length == clinics.length && isEnableAll) {
             this.selectedClinic = "all";
+            this.setCookieVal("all");
           } else {
             this.selectedClinic = null;
           }
@@ -200,6 +208,12 @@ export class AppTopbarComponent implements OnInit {
         this.selectedDentist = dentistId;
       })
     );
+  }
+  setCookieVal(val: string) {
+    this.cookieService.put("clinic_id", val);
+    const values = this.cookieService.get("clinic_dentist").split("_");
+    values[0] = val;
+    this.cookieService.put("clinic_dentist", values.join("_"));
   }
 
   ngOnInit() {}
