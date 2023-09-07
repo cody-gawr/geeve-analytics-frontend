@@ -43,7 +43,6 @@ export class ReferFriendComponent {
     public dialogRef: MatDialogRef<ReferFriendComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _cookieService: CookieService,
-    private router: Router,
     private dentistService: DentistService,
     private toastr: ToastrService,
     private headerService: HeaderService // private chartsService: ChartsService,
@@ -137,6 +136,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
   public permisions_var: any = "";
   public clinic_id;
   public hasPrimeClinics;
+  public userId: number;
 
   clickEvent(val) {
     this.status = !this.status;
@@ -149,6 +149,37 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
 
   subclickEvent() {
     this.status = true;
+  }
+
+  public get isMultiClinicsVisible(): boolean {
+    if (this.userId == 1) {
+      const dash1_multi = parseInt(
+        this._cookieService.get("dash1_multi") ?? "0"
+      );
+      const dash2_multi = parseInt(
+        this._cookieService.get("dash2_multi") ?? "0"
+      );
+      const dash3_multi = parseInt(
+        this._cookieService.get("dash3_multi") ?? "0"
+      );
+      const dash4_multi = parseInt(
+        this._cookieService.get("dash4_multi") ?? "0"
+      );
+      const dash5_multi = parseInt(
+        this._cookieService.get("dash5_multi") ?? "0"
+      );
+      return (
+        ((this.activeRoute == "/dashboards/cliniciananalysis" &&
+          dash1_multi == 1) ||
+          (this.activeRoute == "/dashboards/clinicianproceedures" &&
+            dash2_multi == 1) ||
+          (this.activeRoute == "/dashboards/frontdesk" && dash3_multi == 1) ||
+          (this.activeRoute == "/dashboards/marketing" && dash4_multi == 1) ||
+          (this.activeRoute == "/dashboards/finances" && dash5_multi == 1)) &&
+        !["4", "7"].includes(this.user_type)
+      );
+    }
+    return false;
   }
 
   constructor(
@@ -166,6 +197,9 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     // this.router.events.subscribe((event: Event) => {
     //   if (event instanceof NavigationEnd && event.url != '/login') {
     this.user_type = this._cookieService.get("user_type");
+    if (this._cookieService.get("userid")) {
+      this.userId = Number(this._cookieService.get("userid"));
+    }
     this.userPlan = this._cookieService.get("user_plan");
     if (!this._cookieService.get("user_image")) {
       this.user_image = "assets/images/gPZwCbdS.jpg";
@@ -176,10 +210,25 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     this.display_name = this._cookieService.get("display_name");
     this.login_status = this._cookieService.get("login_status");
 
-    this.clinic_id = this._cookieService.get("clinic_id");
+    let newAppClinicData: any = localStorage.getItem("clinic");
+    if (newAppClinicData) {
+      newAppClinicData = JSON.parse(newAppClinicData);
+      if (this.isMultiClinicsVisible) {
+        this.clinic_id =
+          newAppClinicData.currentMultiClinicIds.length ===
+          this.clinicsData.length
+            ? "all"
+            : newAppClinicData.currentMultiClinicIds.join(",");
+      } else {
+        this.clinic_id = newAppClinicData.currentSingleClinicId;
+      }
+    } else {
+      this.clinic_id = this._cookieService.get("clinic_id");
+    }
+
     if (this.user_type == 7) {
       if (this.clinic_id != null && typeof this.clinic_id != "undefined") {
-        this.clinic_id = this._cookieService.get("clinic_id");
+        //this.clinic_id = this._cookieService.get("clinic_id");
         this.getRolesIndividual();
       } else {
         this.getClinic();
@@ -221,6 +270,9 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+  goTo(path) {
+    window.location.href = path;
   }
 
   logout() {

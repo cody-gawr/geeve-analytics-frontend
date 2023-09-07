@@ -432,13 +432,28 @@ export class AppHeaderrightComponent
                   });
                 }
               } else {
-                if (this.isMultiClinicsVisible) {
-                  this.selectedClinic = [];
-                  this.selectedClinic.push(res.body.data[0].id);
+                let newAppClinicData: any = localStorage.getItem("clinic");
+                if (newAppClinicData) {
+                  newAppClinicData = JSON.parse(newAppClinicData);
+                  if (this.isMultiClinicsVisible) {
+                    this.selectedClinic =
+                      newAppClinicData.currentMultiClinicIds.length ===
+                      this.clinicsData.length
+                        ? ["all"]
+                        : newAppClinicData.currentMultiClinicIds;
+                  } else {
+                    this.selectedClinic =
+                      newAppClinicData.currentSingleClinicId;
+                  }
                 } else {
-                  this.clinic_id = res.body.data[0].id;
-                  this.selectedClinic = res.body.data[0].id;
-                  this.placeHolder = res.body.data[0].clinicName;
+                  if (this.isMultiClinicsVisible) {
+                    this.selectedClinic = [];
+                    this.selectedClinic.push(res.body.data[0].id);
+                  } else {
+                    this.clinic_id = res.body.data[0].id;
+                    this.selectedClinic = res.body.data[0].id;
+                    this.placeHolder = res.body.data[0].clinicName;
+                  }
                 }
               }
             }
@@ -698,7 +713,8 @@ export class AppHeaderrightComponent
           newAppClinicData.currentMultiClinicIds = newValue;
         }
       } else {
-        newAppClinicData.currentSingleClinicId = newValue;
+        newAppClinicData.currentSingleClinicId =
+          newValue == "all" ? newValue : parseInt(newValue);
       }
 
       localStorage.setItem("clinic", JSON.stringify(newAppClinicData));
