@@ -35,7 +35,6 @@
       <div fxFlex>
         <app-date-menu-bar
           #dateBar
-          [isAllClinic]="multipleClinicsSelected"
           (filter)="filterDate($event)"
           (changeDate)="choosedDate($event)"
         >

@@ -42,7 +42,6 @@
       <div class="sa_frontdesk_left-ratio" fxFlex>
         <app-date-menu-bar
           #dateBar
-          [isAllClinic]="isAllClinic"
           (filter)="filterDate($event)"
           (changeDate)="choosedDate($event)"
         >
