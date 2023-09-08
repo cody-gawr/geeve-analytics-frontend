@@ -211,8 +211,8 @@ export class AppTopbarComponent implements OnInit {
   }
   setCookieVal(val: string) {
     this.cookieService.put("clinic_id", val);
-    const values = this.cookieService.get("clinic_dentist").split("_");
-    if (val) {
+    const values = this.cookieService.get("clinic_dentist")?.split("_");
+    if (val && values) {
       values[0] = val;
       this.cookieService.put("clinic_dentist", values.join("_"));
     }
@@ -224,7 +224,8 @@ export class AppTopbarComponent implements OnInit {
     return this.clinicFacade.clinics$.pipe(
       takeUntil(this.destroy$),
       map((values) => {
-        if (clinicId.includes("all")) return "All Clinics";
+        if (clinicId.length > 1 && clinicId.includes("all"))
+          return "All Clinics";
         else return values.find((v) => v.id == clinicId[0])?.clinicName || "";
       })
     );

@@ -718,12 +718,21 @@ export class AppHeaderrightComponent
           newAppClinicData.currentMultiClinicIds = this.clinicsData.map(
             (v) => v.id
           );
+          newAppClinicData.currentSingleClinicId = "all";
         } else {
           newAppClinicData.currentMultiClinicIds = newValue;
         }
       } else {
         newAppClinicData.currentSingleClinicId =
           newValue == "all" ? newValue : parseInt(newValue);
+
+        if (newValue == "all") {
+          newAppClinicData.currentMultiClinicIds = this.clinicsData.map(
+            (v) => v.id
+          );
+        } else {
+          newAppClinicData.currentMultiClinicIds = [parseInt(newValue)];
+        }
       }
 
       localStorage.setItem("clinic", JSON.stringify(newAppClinicData));
