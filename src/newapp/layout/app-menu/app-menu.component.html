@@ -7,23 +7,23 @@
   <mat-tree-node
     *matTreeNodeDef="let node"
     matTreeNodePadding
-    (click)="toggleMenuItem(node)"
-    [ngClass]="{ active: node.title == activedTitle }"
   >
-    <!-- use a disabled button to provide padding for tree leaf -->
-    <div *ngIf="node.level == 0" class="menu-icon-btn">
-      <fa-icon *ngIf="!!node.icon" [icon]="node.icon"></fa-icon>
-    </div>
-    <span *ngIf="node.level !== 0">&nbsp;&nbsp;&nbsp;</span>
-    {{ node.title }}
+    <a [routerLink]="'/' + node.path" [ngClass]="{ active: node.title == activedTitle }">
+      <!-- use a disabled button to provide padding for tree leaf -->
+      <div *ngIf="node.level == 0" class="menu-icon-btn">
+        <fa-icon *ngIf="!!node.icon" [icon]="node.icon"></fa-icon>
+      </div>
+      <span *ngIf="node.level !== 0">&nbsp;&nbsp;&nbsp;</span>
+      {{ node.title }}
+    </a>
   </mat-tree-node>
   <!-- This is the tree node template for expandable nodes -->
   <mat-tree-node
+    class="expand-tree-node"
     style="justify-content: space-between;"
     *matTreeNodeDef="let node; when: hasChild"
     matTreeNodePadding
     matTreeNodeToggle
-    (click)="toggleMenuItem(node)"
   >
     <div class="tree-node-title">
       <div *ngIf="node.level == 0" class="menu-icon-btn">
