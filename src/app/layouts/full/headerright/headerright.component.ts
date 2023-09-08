@@ -23,6 +23,7 @@ import { MatLegacyDialog as MatDialog } from "@angular/material/legacy-dialog";
 
 import { environment } from "../../../../environments/environment";
 import { LocalStorageService } from "../../../shared/local-storage.service";
+import _ from "lodash";
 
 export interface Dentist {
   providerId: string;
@@ -665,7 +666,11 @@ export class AppHeaderrightComponent
       } else {
         newValue = newValues;
         if (this.route != "/dashboards/healthscreen") {
-          this.getAccountConnection(newValue);
+          if (newValue == "all") {
+            newValue = _.min(this.clinicsData.map((c) => parseInt(c.id)));
+          } else {
+            this.getAccountConnection(newValue);
+          }
         }
       }
 
