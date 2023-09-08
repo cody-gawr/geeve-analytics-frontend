@@ -10,6 +10,7 @@ import { DashboardFacade } from "@/newapp/dashboard/facades/dashboard.facade";
 import { DentistFacade } from "@/newapp/dentist/facades/dentists.facade";
 import { ToastrService } from "ngx-toastr";
 import { CookieService } from "ngx-cookie";
+import _ from "lodash";
 
 @Component({
   selector: "app-topbar",
@@ -180,17 +181,9 @@ export class AppTopbarComponent implements OnInit {
             const idList = currentClinicIDs.join(",");
             this.setCookieVal(idList);
           }
-          if (currentClinicIDs.length == 1) {
-            this.dashboardFacade.loadClinicAccountingPlatform(
-              currentClinicIDs[0]
-            );
-          }
         } else {
           if (currentClinicIDs.length === 1) {
             this.selectedClinic = currentClinicIDs[0];
-            this.dashboardFacade.loadClinicAccountingPlatform(
-              currentClinicIDs[0]
-            );
             const val = currentClinicIDs[0].toString();
             this.setCookieVal(val);
           } else if (currentClinicIDs.length == clinics.length && isEnableAll) {
@@ -199,6 +192,11 @@ export class AppTopbarComponent implements OnInit {
           } else {
             this.selectedClinic = null;
           }
+        }
+        if (currentClinicIDs.length > 0) {
+          this.dashboardFacade.loadClinicAccountingPlatform(
+            _.min(currentClinicIDs)
+          );
         }
       });
 
