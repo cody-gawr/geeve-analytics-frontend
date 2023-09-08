@@ -66,9 +66,7 @@
                 <mat-option
                   value="all"
                   *ngIf="
-                    route == '/dashboards/healthscreen' &&
-                    clinicsData.length > 1 &&
-                    user_type != 7
+                    isSingleClinicAllEnabled
                   "
                   >All Clinics</mat-option
                 >

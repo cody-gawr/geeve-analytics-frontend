@@ -317,7 +317,13 @@ export class AppHeaderrightComponent
               this.route == "/dashboards/healthscreen" &&
               this.user_type != "7"
             ) {
-              if (this._cookieService.get("clinic_dentist")) {
+              if (
+                this._cookieService.get("clinic_dentist") &&
+                [
+                  "/dashboards/cliniciananalysis",
+                  "/dashboards/clinicianproceedures",
+                ].indexOf(this.route) >= 0
+              ) {
                 if (
                   this._cookieService
                     .get("clinic_dentist")
@@ -341,7 +347,13 @@ export class AppHeaderrightComponent
                 this.placeHolder = res.body.data[0].clinicName;
               }
             } else {
-              if (this._cookieService.get("clinic_dentist")) {
+              if (
+                this._cookieService.get("clinic_dentist") &&
+                [
+                  "/dashboards/cliniciananalysis",
+                  "/dashboards/clinicianproceedures",
+                ].indexOf(this.route) >= 0
+              ) {
                 let dentistclinic = this._cookieService
                   .get("clinic_dentist")
                   .split("_");
@@ -438,6 +450,7 @@ export class AppHeaderrightComponent
                 let t1 = false;
                 if (newAppClinicData) {
                   newAppClinicData = JSON.parse(newAppClinicData);
+                  console.log("multi flag:", this.isMultiClinicsVisible);
                   if (this.isMultiClinicsVisible) {
                     if (newAppClinicData.currentMultiClinicIds) {
                       this.selectedClinic =
@@ -447,13 +460,29 @@ export class AppHeaderrightComponent
                           : newAppClinicData.currentMultiClinicIds;
                     } else t1 = true;
                   } else {
+                    console.log(
+                      "newAPp",
+                      newAppClinicData.currentSingleClinicId
+                    );
                     if (newAppClinicData.currentSingleClinicId) {
-                      this.selectedClinic =
-                        newAppClinicData.currentSingleClinicId;
+                      if (
+                        !this.isSingleClinicAllEnabled &&
+                        newAppClinicData.currentSingleClinicId == "all"
+                      ) {
+                        this.selectedClinic = res.body.data[0].id;
+                        newAppClinicData.currentSingleClinicId =
+                          this.selectedClinic;
+                        localStorage.setItem(
+                          "clinic",
+                          JSON.stringify(newAppClinicData)
+                        );
+                      } else {
+                        this.selectedClinic =
+                          newAppClinicData.currentSingleClinicId;
+                      }
                     } else t1 = true;
                   }
                 }
-
                 if (t1) {
                   if (this.isMultiClinicsVisible) {
                     this.selectedClinic = [];
@@ -482,6 +511,14 @@ export class AppHeaderrightComponent
         }
       },
     });
+  }
+
+  get isSingleClinicAllEnabled() {
+    return (
+      this.route == "/dashboards/healthscreen" &&
+      this.clinicsData.length > 1 &&
+      this.user_type != 7
+    );
   }
 
   addNewItem(value: any) {
@@ -615,6 +652,7 @@ export class AppHeaderrightComponent
   }
 
   loadClinic(newValues) {
+    console.log("newValues", newValues);
     $(".toast-close-button").click();
     $(".sa_dashboard_inner_content").removeClass("unauth-hide");
     $(".settings-table-card").removeClass("unauth-hide");

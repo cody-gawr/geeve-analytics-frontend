@@ -31,19 +31,36 @@ export const clinicFeature = createFeature({
     on(
       ClinicPageActions.setCurrentSingleClinicId,
       (state, { clinicId }): ClinicState => {
-        return {
-          ...state,
-          currentSingleClinicId: clinicId,
-        };
+        if (clinicId === "all") {
+          return {
+            ...state,
+            currentSingleClinicId: clinicId,
+            currentMultiClinicIds: state.clinics.slice().map((v) => v.id),
+          };
+        } else {
+          return {
+            ...state,
+            currentSingleClinicId: clinicId,
+            currentMultiClinicIds: [clinicId],
+          };
+        }
       }
     ),
     on(
       ClinicPageActions.setCurrentMultiClinicIDs,
       (state, { clinicIDs }): ClinicState => {
-        return {
-          ...state,
-          currentMultiClinicIds: clinicIDs,
-        };
+        if (clinicIDs.length === 1) {
+          return {
+            ...state,
+            currentMultiClinicIds: clinicIDs,
+            currentSingleClinicId: clinicIDs[0],
+          };
+        } else {
+          return {
+            ...state,
+            currentMultiClinicIds: clinicIDs,
+          };
+        }
       }
     ),
     on(ClinicPageActions.loadClinics, (state): ClinicState => {
