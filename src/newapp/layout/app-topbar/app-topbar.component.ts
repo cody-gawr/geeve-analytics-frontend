@@ -220,10 +220,13 @@ export class AppTopbarComponent implements OnInit {
 
   ngOnInit() {}
 
-  getClinicName$(clinicId: number | null) {
+  getClinicName$(clinicId: Array<number | "all">) {
     return this.clinicFacade.clinics$.pipe(
       takeUntil(this.destroy$),
-      map((values) => values.find((v) => v.id == clinicId)?.clinicName || "")
+      map((values) => {
+        if (clinicId.includes("all")) return "All Clinics";
+        else return values.find((v) => v.id == clinicId[0])?.clinicName || "";
+      })
     );
   }
 

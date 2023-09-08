@@ -41,8 +41,8 @@
               panelClass="jeeve-custom-select-panel"
           >
             <mat-select-trigger>
-              {{getClinicName$(selectedMultiClinics?.[0]) | async}}
-              <span *ngIf="(selectedMultiClinics?.length || 0) > 1">
+              {{getClinicName$(selectedMultiClinics) | async}}
+              <span *ngIf="(selectedMultiClinics?.length || 0) > 1 && !selectedMultiClinics.includes('all')">
                 (+{{(selectedMultiClinics?.length || 0) - 1}} {{selectedMultiClinics?.length === 2 ? 'other' : 'others'}})
               </span>
             </mat-select-trigger>
