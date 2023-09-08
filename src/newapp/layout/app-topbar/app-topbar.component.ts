@@ -212,8 +212,10 @@ export class AppTopbarComponent implements OnInit {
   setCookieVal(val: string) {
     this.cookieService.put("clinic_id", val);
     const values = this.cookieService.get("clinic_dentist").split("_");
-    values[0] = val;
-    this.cookieService.put("clinic_dentist", values.join("_"));
+    if (val) {
+      values[0] = val;
+      this.cookieService.put("clinic_dentist", values.join("_"));
+    }
   }
 
   ngOnInit() {}

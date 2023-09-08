@@ -408,6 +408,7 @@ export class AppHeaderrightComponent
                     }
                     let opts = this.constants.cookieOpt as CookieOptions;
                     this._cookieService.put("clinic_id", this.clinic_id, opts);
+
                     this._cookieService.put(
                       "clinic_dentist",
                       this.clinic_id + "_" + dentistclinic[1],
@@ -433,19 +434,26 @@ export class AppHeaderrightComponent
                 }
               } else {
                 let newAppClinicData: any = localStorage.getItem("clinic");
+                let t1 = false;
                 if (newAppClinicData) {
                   newAppClinicData = JSON.parse(newAppClinicData);
                   if (this.isMultiClinicsVisible) {
-                    this.selectedClinic =
-                      newAppClinicData.currentMultiClinicIds.length ===
-                      this.clinicsData.length
-                        ? ["all"]
-                        : newAppClinicData.currentMultiClinicIds;
+                    if (newAppClinicData.currentMultiClinicIds) {
+                      this.selectedClinic =
+                        newAppClinicData.currentMultiClinicIds.length ===
+                        this.clinicsData.length
+                          ? ["all"]
+                          : newAppClinicData.currentMultiClinicIds;
+                    } else t1 = true;
                   } else {
-                    this.selectedClinic =
-                      newAppClinicData.currentSingleClinicId;
+                    if (newAppClinicData.currentSingleClinicId) {
+                      this.selectedClinic =
+                        newAppClinicData.currentSingleClinicId;
+                    } else t1 = true;
                   }
-                } else {
+                }
+
+                if (t1) {
                   if (this.isMultiClinicsVisible) {
                     this.selectedClinic = [];
                     this.selectedClinic.push(res.body.data[0].id);
@@ -532,6 +540,7 @@ export class AppHeaderrightComponent
               ].includes(this.route)
             ) {
               let opts = this.constants.cookieOpt as CookieOptions;
+
               this._cookieService.put(
                 "clinic_dentist",
                 this.clinic_id + "_" + this.selectedDentist,
