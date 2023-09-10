@@ -488,11 +488,14 @@ export class AppHeaderrightComponent
                     this.selectedClinic = [];
                     this.selectedClinic.push(res.body.data[0].id);
                   } else {
-                    this.clinic_id = res.body.data[0].id;
+                    //this.clinic_id = res.body.data[0].id;
                     this.selectedClinic = res.body.data[0].id;
                     this.placeHolder = res.body.data[0].clinicName;
                   }
                 }
+
+                if (!Array.isArray(this.selectedClinic))
+                  this.clinic_id = this.selectedClinic;
               }
             }
             this.title = $("#page_title").val();
