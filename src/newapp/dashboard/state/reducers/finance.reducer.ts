@@ -1106,6 +1106,72 @@ export const selectCollectionTrendChartData = createSelector(
   }
 );
 
+export const selectProductionCollectionTrendChartData = createSelector(
+  selectProdTrendData,
+  selectCollectionTrendData,
+  selectTrend,
+  (prodData, collData, trendMode) => {
+    const totalProductionCollection = [
+        { data: [], label: "Production" },
+        { data: [], label: "Collection" },
+      ],
+      chartLabels = [];
+
+    if (!trendMode && trendMode == "off") {
+      return {
+        datasets: [],
+        labels: [],
+      };
+    }
+    _.chain(prodData)
+      .sortBy("yearMonth")
+      .groupBy(trendMode === "current" ? "yearMonth" : "year")
+      .map((values, duration) => {
+        const sumProd = _.sumBy(values, (v) =>
+          _.round(parseFloat(<string>v.production ?? "0"))
+        );
+        return {
+          label:
+            trendMode == "current"
+              ? moment(duration).format("MMM YYYY")
+              : duration,
+          value: _.round(sumProd),
+        };
+      })
+      .value()
+      .forEach((item) => {
+        totalProductionCollection[0].data.push(item.value);
+        chartLabels.push(item.label);
+      });
+
+    const collChartData = _.chain(collData)
+      .sortBy("yearMonth")
+      .groupBy(trendMode === "current" ? "yearMonth" : "year")
+      .map((values, duration) => {
+        const sumColl = _.sumBy(values, (v) =>
+          _.round(parseFloat(<string>v.collection ?? "0"))
+        );
+        return {
+          label:
+            trendMode == "current"
+              ? moment(duration).format("MMM YYYY")
+              : duration,
+          value: _.round(sumColl),
+        };
+      })
+      .value();
+
+    chartLabels.forEach((dur) => {
+      const itemValue = collChartData.find((item) => item.label == dur);
+      totalProductionCollection[1].data.push(itemValue ? itemValue.value : 0);
+    });
+    return {
+      datasets: totalProductionCollection,
+      labels: chartLabels,
+    };
+  }
+);
+
 export const selectNetProfitTrendChartData = createSelector(
   selectNetProfitTrendData,
   selectTrend,
@@ -1156,7 +1222,7 @@ export const selectProdPerVisitTrendChartData = createSelector(
   selectTrend,
   (prodPerVisitTrendData, trendMode) => {
     return _.chain(prodPerVisitTrendData)
-      .sortBy("year_month")
+      .sortBy("yearMonth")
       .groupBy(trendMode === "current" ? "yearMonth" : "year")
       .map((values, duration) => {
         const sumProd = _.sumBy(values, (v) =>

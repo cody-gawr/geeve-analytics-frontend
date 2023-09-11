@@ -55,6 +55,7 @@ import {
   selectProdPerVisitTrendChartData,
   selectIsLoadingAllData,
   selectIsLoadingAllTrendData,
+  selectProductionCollectionTrendChartData,
 } from "../state/reducers/finance.reducer";
 import { FnNetProfitParams } from "@/newapp/models/dashboard";
 import { FinancePageActions } from "../state/actions";
@@ -255,6 +256,10 @@ export class FinanceFacade {
 
   public readonly isLoadingAllTrendData$ = this.store.pipe(
     select(selectIsLoadingAllTrendData)
+  );
+
+  public readonly prodCollChartData$ = this.store.pipe(
+    select(selectProductionCollectionTrendChartData)
   );
 
   public loadFnTotalProduction(params: FnNetProfitParams) {

@@ -1,18 +1,10 @@
 import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
 import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
 import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
-import { DateRangeMenus } from "@/newapp/shared/components/date-range-menu/date-range-menu.component";
 import { JeeveLineFillOptions } from "@/newapp/shared/utils";
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  Input,
-  ViewChild,
-  ElementRef,
-} from "@angular/core";
+import { Component, OnInit, OnDestroy, Input } from "@angular/core";
 import { ChartOptions, LegendOptions, ChartDataset } from "chart.js";
-import _, { forEach } from "lodash";
+import _ from "lodash";
 import { Subject, takeUntil, combineLatest, map } from "rxjs";
 import { _DeepPartialObject } from "chart.js/dist/types/utils";
 import { DoughnutChartColors } from "@/newapp/shared/constants";

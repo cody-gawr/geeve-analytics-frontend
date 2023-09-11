@@ -1,6 +1,4 @@
-import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
 import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
-import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
 import { formatXTooltipLabel } from "@/newapp/shared/utils";
 import { Component, OnDestroy, OnInit, Input } from "@angular/core";
 import { ChartDataset, ChartOptions } from "chart.js";
@@ -29,58 +27,60 @@ export class FinanceProdColTrendComponent implements OnInit, OnDestroy {
     );
   }
 
-  constructor(
-    private financeFacade: FinanceFacade,
-    private layoutFacade: LayoutFacade,
-    private clinicFacade: ClinicFacade
-  ) {
-    combineLatest([
-      this.financeFacade.prodTrendChartData$,
-      this.financeFacade.collectionTrendChartData$,
-      this.clinicFacade.currentClinicId$,
-      this.financeFacade.collectionTrendData$,
-    ])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(([prodChartData, colChartData, clinicId, trendColData]) => {
-        if (!prodChartData || !colChartData) {
-          return;
-        }
-        if (typeof clinicId == "string") {
-          this.datasets = (<any>prodChartData).datasets;
-          // this.labels = (<any>prodChartData).labels;
-          (<any>prodChartData).datasets.map((item) => {
-            const collectionItem = trendColData.find(
-              (ele) => ele.clinicName == item.label
-            );
-            return {
-              ...item,
-              data: !!collectionItem
-                ? [...item.data, Math.round(<number>collectionItem.collection)]
-                : item.data,
-            };
-          });
-          this.labels = ["Production", "Collection"];
-        } else {
-          this.datasets = [
-            { data: [], label: "Production" },
-            { data: [], label: "Collection" },
-          ];
-          this.labels = [];
-          if (Array.isArray(prodChartData)) {
-            (<any>prodChartData).forEach(
-              (data: { label: string; value: number } & any, index) => {
-                this.datasets[0].data.push(data.value);
-                this.labels.push(data.label);
-              }
-            );
+  constructor(private financeFacade: FinanceFacade) {
+    // combineLatest([
+    //   this.financeFacade.prodTrendChartData$,
+    //   this.financeFacade.collectionTrendChartData$,
+    //   this.clinicFacade.currentClinicId$,
+    //   this.financeFacade.collectionTrendData$,
+    // ])
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe(([prodChartData, colChartData, clinicId, trendColData]) => {
+    //     if (!prodChartData || !colChartData) {
+    //       return;
+    //     }
+    //     if (typeof clinicId == "string") {
+    //       this.datasets = (<any>prodChartData).datasets;
+    //       // this.labels = (<any>prodChartData).labels;
+    //       (<any>prodChartData).datasets.map((item) => {
+    //         const collectionItem = trendColData.find(
+    //           (ele) => ele.clinicName == item.label
+    //         );
+    //         return {
+    //           ...item,
+    //           data: !!collectionItem
+    //             ? [...item.data, Math.round(<number>collectionItem.collection)]
+    //             : item.data,
+    //         };
+    //       });
+    //       this.labels = ["Production", "Collection"];
+    //     } else {
+    //       this.datasets = [
+    //         { data: [], label: "Production" },
+    //         { data: [], label: "Collection" },
+    //       ];
+    //       this.labels = [];
+    //       if (Array.isArray(prodChartData)) {
+    //         (<any>prodChartData).forEach(
+    //           (data: { label: string; value: number } & any, index) => {
+    //             this.datasets[0].data.push(data.value);
+    //             this.labels.push(data.label);
+    //           }
+    //         );
 
-            (<any>colChartData).forEach(
-              (data: { label: string; value: number } & any, index) => {
-                this.datasets[1].data.push(data.value);
-              }
-            );
-          }
-        }
+    //         (<any>colChartData).forEach(
+    //           (data: { label: string; value: number } & any, index) => {
+    //             this.datasets[1].data.push(data.value);
+    //           }
+    //         );
+    //       }
+    //     }
+    //   });
+    combineLatest([this.financeFacade.prodCollChartData$])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([prodCollChartData]) => {
+        this.datasets = prodCollChartData.datasets;
+        this.labels = prodCollChartData.labels;
       });
   }
 
