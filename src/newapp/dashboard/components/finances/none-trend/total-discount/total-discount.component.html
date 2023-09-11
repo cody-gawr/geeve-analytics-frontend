@@ -42,7 +42,7 @@
                     <h3>${{ totalDiscountChartTotal | number: '1.0-0' }}</h3>
                     <span>{{ durationLabel$ | async }}</span>
                 </div>
-                <div>
+                <div *ngIf="(duration$ | async) != 'custom'">
                     <h3>${{ totalDiscountChartTrendTotal | number: '1.0-0' }}</h3>
                     <span>{{ durationTrendLabel$ | async }}</span>
                 </div>

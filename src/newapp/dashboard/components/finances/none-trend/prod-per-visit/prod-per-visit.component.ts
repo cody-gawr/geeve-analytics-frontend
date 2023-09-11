@@ -40,6 +40,13 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
   ];
   labels = [];
 
+  get duration$() {
+    return this.layoutFacade.dateRange$.pipe(
+      takeUntil(this.destroy$),
+      map((v) => v.duration)
+    );
+  }
+
   get hasData$() {
     return this.isMultipleClinic$.pipe(
       map((v) => {

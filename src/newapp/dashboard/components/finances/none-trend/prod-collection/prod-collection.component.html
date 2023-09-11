@@ -37,7 +37,7 @@
                             <h4>$ {{ totalProdVal$ | async | number: '1.0-0' }}</h4>
                             <span>{{ durationLabel$ | async }}</span>
                         </div>
-                        <div class="sub-txt-02">
+                        <div class="sub-txt-02" *ngIf="(duration$ | async) != 'custom'">
                             <h4>$ {{ totalProdTrendVal$ | async | number: '1.0-0' }}</h4>
                             <span>{{ durationTrendLabel$ | async }}</span>
                         </div>
@@ -48,7 +48,7 @@
                             <h4>$ {{ collectionVal$ | async | number: '1.0-0' }}</h4>
                             <span>{{ durationLabel$ | async }}</span>
                         </div>
-                        <div class="sub-txt-02">
+                        <div class="sub-txt-02" *ngIf="(duration$ | async) != 'custom'">
                             <h4>$ {{ collectionTrendVal$ | async | number: '1.0-0' }}</h4>
                             <span>{{ durationTrendLabel$ | async }}</span>
                         </div>

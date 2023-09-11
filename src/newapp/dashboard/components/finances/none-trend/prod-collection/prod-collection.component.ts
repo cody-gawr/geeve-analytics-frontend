@@ -47,6 +47,13 @@ export class FinanceProdColComponent implements OnInit, OnDestroy {
     );
   }
 
+  get duration$() {
+    return this.layoutFacade.dateRange$.pipe(
+      takeUntil(this.destroy$),
+      map((v) => v.duration)
+    );
+  }
+
   datasets: ChartDataset[] = [];
   labels = [];
 

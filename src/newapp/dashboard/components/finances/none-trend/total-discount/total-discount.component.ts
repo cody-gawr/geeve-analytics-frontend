@@ -79,6 +79,13 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
     );
   }
 
+  get duration$() {
+    return this.layoutFacade.dateRange$.pipe(
+      takeUntil(this.destroy$),
+      map((v) => v.duration)
+    );
+  }
+
   constructor(
     private financeFacade: FinanceFacade,
     private clinicFacade: ClinicFacade,
