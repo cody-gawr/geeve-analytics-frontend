@@ -1,5 +1,5 @@
-export type API_ENDPOINTS = 'ctGetPageTips' | 'clinicGetAccountingPlatform';
-export type CONNECT_WITH_PLATFORM = 'xero' | 'myob' | 'none';
+export type API_ENDPOINTS = "ctGetPageTips" | "clinicGetAccountingPlatform";
+export type CONNECT_WITH_PLATFORM = "xero" | "myob" | "none";
 export interface ChartTip {
   title: string;
   info: string;
@@ -7,7 +7,7 @@ export interface ChartTip {
 
 export interface ChartTipsApiResponse {
   app: string;
-  data: {[key: number]: ChartTip };
+  data: { [key: number]: ChartTip };
 }
 
 export interface FnTotalProductionApiResponse {
@@ -89,12 +89,12 @@ export interface FnNetProfitPercentTrendItem {
 }
 
 export interface FnNetProfitParams {
-  clinicId: string | number,
-  startDate: string,
-  endDate: string,
-  duration: string ,
-  queryWhEnabled: number,
-  connectedWith?: string
+  clinicId: string | number;
+  startDate: string;
+  endDate: string;
+  duration: string;
+  queryWhEnabled: number;
+  connectedWith?: string;
 }
 
 export interface FnExpensesApiResponse {
@@ -133,13 +133,14 @@ export interface FnProdByClinicianTrendApiResponse {
 }
 
 export interface FnProdByClinicianTrendItem {
-  duration: string,
+  duration: string;
   val: Array<{
-    prodPerClinician?: string,
-    providerName?: string,
-    production?: string,
+    prodPerClinician?: string;
+    providerName?: string;
+    production?: string;
     clinicName?: string;
-  }>
+    clinicId?: string | number;
+  }>;
 }
 
 export interface FnProductionPerVisitApiResponse {
@@ -165,12 +166,11 @@ export interface FnTotalDiscountItem {
   day: null | unknown;
   discounts: string | number;
   month: null | unknown;
-  providerId: string | number; 
+  providerId: string | number;
   providerName: string;
   year: null | unknown;
   yearMonth: null | unknown;
 }
-
 
 export interface FnTotalDiscountsApiResponse {
   app: string;
@@ -221,39 +221,39 @@ export interface FnExpensesDataItem {
   clinicName: string;
   expense: number;
   month: null | unknown;
-  year: null | unknown
+  year: null | unknown;
   yearMonth: null | unknown;
 }
 
 export interface FnTotalProductionItem {
-    clinicId: string | number;
-    clinicName: string;
-    day: unknown | null;
-    month: unknown | null;
-    production: string | number;
-    providerId: unknown | null;
-    providerName: string | null;
-    providerType: string | null;
-    week: unknown | null;
-    weekEnd: unknown | null;
-    weekStart: unknown | null;
-    year: unknown | null;
-    yearMonth: unknown | null;
+  clinicId: string | number;
+  clinicName: string;
+  day: unknown | null;
+  month: unknown | null;
+  production: string | number;
+  providerId: unknown | null;
+  providerName: string | null;
+  providerType: string | null;
+  week: unknown | null;
+  weekEnd: unknown | null;
+  weekStart: unknown | null;
+  year: unknown | null;
+  yearMonth: unknown | null;
 }
 
 export interface FnTotalCollectionItem {
-    clinicId: string | number;
-    clinicName: string;
-    collection: string | number;
-    day: unknown | null;
-    month: unknown | null;
-    production: string | number;
-    providerId: unknown | null;
-    providerName: string | null;
-    providerType: string | null;
-    week: unknown | null;
-    weekEnd: unknown | null;
-    weekStart: unknown | null;
-    year: unknown | null;
-    yearMonth: unknown | null;
+  clinicId: string | number;
+  clinicName: string;
+  collection: string | number;
+  day: unknown | null;
+  month: unknown | null;
+  production: string | number;
+  providerId: unknown | null;
+  providerName: string | null;
+  providerType: string | null;
+  week: unknown | null;
+  weekEnd: unknown | null;
+  weekStart: unknown | null;
+  year: unknown | null;
+  yearMonth: unknown | null;
 }

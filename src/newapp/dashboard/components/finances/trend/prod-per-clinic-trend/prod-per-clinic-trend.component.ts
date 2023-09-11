@@ -50,10 +50,10 @@ export class FinanceProdPerClinicTrendComponent implements OnInit, OnDestroy {
   ) {
     combineLatest([
       this.financeFacade.prodByClinicianTrendChartData$,
-      this.layoutFacade.trend$,
+      // this.layoutFacade.trend$,
     ])
       .pipe(takeUntil(this.destroy$))
-      .subscribe(([chartData, trendMode]) => {
+      .subscribe(([chartData]) => {
         this.datasets = chartData.datasets;
         this.labels = chartData.labels;
       });

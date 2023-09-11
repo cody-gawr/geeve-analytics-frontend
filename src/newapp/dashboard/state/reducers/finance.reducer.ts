@@ -16,7 +16,10 @@ import {
 } from "@/newapp/models/dashboard";
 import { selectTrend } from "@/newapp/layout/state/reducers/layout.reducer";
 import moment from "moment";
-import { selectCurrentClinicId } from "@/newapp/clinic/state/reducers/clinic.reducer";
+import {
+  selectCurrentClinicId,
+  selectCurrentClinics,
+} from "@/newapp/clinic/state/reducers/clinic.reducer";
 import { DoughnutChartColors } from "@/newapp/shared/constants";
 
 type FInanceEndpoints =
@@ -1338,7 +1341,8 @@ export const selectProdByClinicianTrendChartData = createSelector(
   selectProdByClinicTrendData,
   selectTrend,
   selectCurrentClinicId,
-  (prodByClinicTrendData, trendMode, clinicId) => {
+  selectCurrentClinics,
+  (prodByClinicTrendData, trendMode, clinicId, clinics) => {
     const chartDataset = [],
       labels = [];
     _.chain(prodByClinicTrendData)
@@ -1349,8 +1353,29 @@ export const selectProdByClinicianTrendChartData = createSelector(
         if (typeof clinicId === "string") {
           sumProd = _.sumBy(value.val, (v) => parseFloat(v.production));
         }
-
-        value.val.forEach((result, key) => {
+        let newVal = [];
+        if (
+          typeof clinicId === "string" &&
+          value.val.length !== clinics.length
+        ) {
+          newVal = clinics.map((c) => {
+            const val = value.val.find(
+              (v) => parseInt(<string>v.clinicId) == c.id
+            );
+            if (val) {
+              return val;
+            } else {
+              return {
+                production: 0,
+                clinicName: c.clinicName,
+                clinicId: c.id,
+              };
+            }
+          });
+        } else {
+          newVal = value.val;
+        }
+        newVal.forEach((result, key) => {
           let production = 0,
             total = 0;
           if (typeof clinicId === "string") {
@@ -1359,7 +1384,7 @@ export const selectProdByClinicianTrendChartData = createSelector(
             production = parseFloat(result.prodPerClinician);
           }
           if (production > 0) {
-            total = Math.round(<number>production);
+            total = production;
           }
 
           if (chartDataset[key] === undefined) {
