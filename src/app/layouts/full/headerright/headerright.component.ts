@@ -773,9 +773,13 @@ export class AppHeaderrightComponent
           newValue == "all" ? newValue : parseInt(newValue);
 
         if (newValue == "all") {
-          newAppClinicData.currentMultiClinicIds = this.clinicsData.map(
-            (v) => v.id
-          );
+          if (this.route == "/dashboards/healthscreen") {
+            newAppClinicData.currentMultiClinicIds = [this.clinicsData[0].id];
+          } else {
+            newAppClinicData.currentMultiClinicIds = this.clinicsData.map(
+              (v) => v.id
+            );
+          }
         } else {
           newAppClinicData.currentMultiClinicIds = [parseInt(newValue)];
         }
