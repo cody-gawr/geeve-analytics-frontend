@@ -1,34 +1,63 @@
-import { Injectable } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { JeeveError } from '@/newapp/models';
-import { FinanceState, selectErrors, selectExpensesData, 
-  selectIsLoadingFnExpenses, selectIsLoadingNetProfit, 
-  selectIsLoadingNetProfitPercentage, selectIsLoadingTotalProduction, 
-  selectNetProfitPercentageVal, selectNetProfitProductionVal, 
-  selectNetProfitVal, selectExpenseProduction, 
-  selectProdByClinicianTotal, selectProdByClinicData, 
-  selectProdByClinicianTrendTotal, selectProdPerVisitData, 
-  selectProdPerVisitTotal, selectProdPerVisitTrendTotal, 
-  selectTotalDiscountData, selectTotalDiscountTotal, 
-  selectTotalDiscountTrendTotal, selectIsLoadingFnProdPerVisit, 
-  selectIsLoadingFnProdPerClinic, selectIsLoadingFnTotalDiscount, 
-  selectCollectionData, selectCollectionVal, selectIsLoadingCollection, 
-  selectCollectionTrendVal, selectProductionTrendVal, 
-  selectProdData, selectProdTrendData, 
-  selectIsLoadingTotalProductionTrend, selectTrendProfitChartName, 
-  selectCollectionTrendData, selectIsLoadingCollectionTrend, 
-  selectIsLoadingNetProfitTrend, selectNetProfitTrendData, 
-  selectIsLoadingNetProfitPercentTrend, selectNetProfitPercentTrendChartData, 
-  selectProdTrendChartData, selectCollectionTrendChartData, 
-  selectNetProfitTrendChartData, selectExpensesTrendChartData, 
-  selectIsLoadingFnExpensesTrend, selectExpensesTrendDurations, 
-  selectIsLoadingFnProdPerClinicTrend, selectProdByClinicianTrendChartData, 
-  selectIsLoadingFnTotalDiscountTrend, selectTotalDiscountTrendChartData, 
-  selectIsLoadingFnProdPerVisitTrend, selectProdPerVisitTrendChartData 
-} from '../state/reducers/finance.reducer';
-import { FnNetProfitParams } from '@/newapp/models/dashboard';
-import { FinancePageActions } from '../state/actions';
+import { Injectable } from "@angular/core";
+import { select, Store } from "@ngrx/store";
+import { Observable } from "rxjs";
+import { JeeveError } from "@/newapp/models";
+import {
+  FinanceState,
+  selectErrors,
+  selectExpensesData,
+  selectIsLoadingFnExpenses,
+  selectIsLoadingNetProfit,
+  selectIsLoadingNetProfitPercentage,
+  selectIsLoadingTotalProduction,
+  selectNetProfitPercentageVal,
+  selectNetProfitProductionVal,
+  selectNetProfitVal,
+  selectExpenseProduction,
+  selectProdByClinicianTotal,
+  selectProdByClinicData,
+  selectProdByClinicianTrendTotal,
+  selectProdPerVisitData,
+  selectProdPerVisitTotal,
+  selectProdPerVisitTrendTotal,
+  selectTotalDiscountData,
+  selectTotalDiscountTotal,
+  selectTotalDiscountTrendTotal,
+  selectIsLoadingFnProdPerVisit,
+  selectIsLoadingFnProdPerClinic,
+  selectIsLoadingFnTotalDiscount,
+  selectCollectionData,
+  selectCollectionVal,
+  selectIsLoadingCollection,
+  selectCollectionTrendVal,
+  selectProductionTrendVal,
+  selectProdData,
+  selectProdTrendData,
+  selectIsLoadingTotalProductionTrend,
+  selectTrendProfitChartName,
+  selectCollectionTrendData,
+  selectIsLoadingCollectionTrend,
+  selectIsLoadingNetProfitTrend,
+  selectNetProfitTrendData,
+  selectIsLoadingNetProfitPercentTrend,
+  selectNetProfitPercentTrendChartData,
+  selectProdTrendChartData,
+  selectCollectionTrendChartData,
+  selectNetProfitTrendChartData,
+  selectExpensesTrendChartData,
+  selectIsLoadingFnExpensesTrend,
+  selectExpensesTrendDurations,
+  selectIsLoadingFnProdPerClinicTrend,
+  selectProdByClinicianTrendChartData,
+  selectIsLoadingFnTotalDiscountTrend,
+  selectTotalDiscountTrendChartData,
+  selectIsLoadingFnProdPerVisitTrend,
+  selectProdPerVisitTrendChartData,
+  selectIsLoadingAllData,
+  selectIsLoadingAllTrendData,
+} from "../state/reducers/finance.reducer";
+import { FnNetProfitParams } from "@/newapp/models/dashboard";
+import { FinancePageActions } from "../state/actions";
 
 @Injectable()
 export class FinanceFacade {
@@ -42,9 +71,7 @@ export class FinanceFacade {
     select(selectNetProfitProductionVal)
   );
 
-  public readonly netProfitVal$ = this.store.pipe(
-    select(selectNetProfitVal)
-  );
+  public readonly netProfitVal$ = this.store.pipe(select(selectNetProfitVal));
 
   public readonly netProfitTrendData$ = this.store.pipe(
     select(selectNetProfitTrendData)
@@ -80,7 +107,7 @@ export class FinanceFacade {
 
   public readonly isLoadingCollectionTrend$ = this.store.pipe(
     select(selectIsLoadingCollectionTrend)
-  )
+  );
 
   public readonly isLoadingNetProfit$ = this.store.pipe(
     select(selectIsLoadingNetProfit)
@@ -130,9 +157,7 @@ export class FinanceFacade {
     select(selectIsLoadingFnTotalDiscountTrend)
   );
 
-  public readonly expensesData$ = this.store.pipe(
-    select(selectExpensesData)
-  );
+  public readonly expensesData$ = this.store.pipe(select(selectExpensesData));
 
   public readonly expensesTrendChartData$ = this.store.pipe(
     select(selectExpensesTrendChartData)
@@ -150,18 +175,13 @@ export class FinanceFacade {
     select(selectProdByClinicData)
   );
 
-
   public readonly prodByClinicianTrendChartData$ = this.store.pipe(
     select(selectProdByClinicianTrendChartData)
   );
 
-  public readonly prodData$ = this.store.pipe(
-    select(selectProdData)
-  );
+  public readonly prodData$ = this.store.pipe(select(selectProdData));
 
-  public readonly prodTrendData$ = this.store.pipe(
-    select(selectProdTrendData)
-  );
+  public readonly prodTrendData$ = this.store.pipe(select(selectProdTrendData));
 
   public readonly prodTrendChartData$ = this.store.pipe(
     select(selectProdTrendChartData)
@@ -179,22 +199,19 @@ export class FinanceFacade {
     select(selectCollectionTrendChartData)
   );
 
-  public readonly collectionVal$ = this.store.pipe(
-    select(selectCollectionVal)
-  );
+  public readonly collectionVal$ = this.store.pipe(select(selectCollectionVal));
 
-  
   public readonly collectionTrendVal$ = this.store.pipe(
     select(selectCollectionTrendVal)
-  )
+  );
 
   public readonly prodByClinicianTotal$ = this.store.pipe(
     select(selectProdByClinicianTotal)
-  )
+  );
 
   public readonly prodByClinicianTrendTotal$ = this.store.pipe(
     select(selectProdByClinicianTrendTotal)
-  )
+  );
 
   public readonly prodPerVisitData$ = this.store.pipe(
     select(selectProdPerVisitData)
@@ -216,7 +233,6 @@ export class FinanceFacade {
     select(selectTotalDiscountData)
   );
 
-
   public readonly totalDiscountTrendChartData$ = this.store.pipe(
     select(selectTotalDiscountTrendChartData)
   );
@@ -233,66 +249,92 @@ export class FinanceFacade {
     select(selectTrendProfitChartName)
   );
 
+  public readonly isLoadingAllData$ = this.store.pipe(
+    select(selectIsLoadingAllData)
+  );
+
+  public readonly isLoadingAllTrendData$ = this.store.pipe(
+    select(selectIsLoadingAllTrendData)
+  );
+
   public loadFnTotalProduction(params: FnNetProfitParams) {
-    this.store.dispatch(
-      FinancePageActions.loadFnTotalProduction(params)
-    );
+    this.store.dispatch(FinancePageActions.loadFnTotalProduction(params));
   }
 
-  public loadFnTotalProductionTrend(clinicId: string | number, mode = '', queryWhEnabled = 0) {
+  public loadFnTotalProductionTrend(
+    clinicId: string | number,
+    mode = "",
+    queryWhEnabled = 0
+  ) {
     this.store.dispatch(
-      FinancePageActions.loadFnTotalProductionTrend({clinicId, mode, queryWhEnabled})
+      FinancePageActions.loadFnTotalProductionTrend({
+        clinicId,
+        mode,
+        queryWhEnabled,
+      })
     );
   }
 
   public loadFnTotalCollection(params: FnNetProfitParams) {
-    this.store.dispatch(
-      FinancePageActions.loadFnTotalCollection(params)
-    );
+    this.store.dispatch(FinancePageActions.loadFnTotalCollection(params));
   }
 
-  public loadFnTotalCollectionTrend(clinicId: string | number, mode = '', queryWhEnabled = 0) {
+  public loadFnTotalCollectionTrend(
+    clinicId: string | number,
+    mode = "",
+    queryWhEnabled = 0
+  ) {
     this.store.dispatch(
-      FinancePageActions.loadFnTotalCollectionTrend({clinicId, mode, queryWhEnabled})
+      FinancePageActions.loadFnTotalCollectionTrend({
+        clinicId,
+        mode,
+        queryWhEnabled,
+      })
     );
   }
 
   public loadFnNetProfit(params: FnNetProfitParams) {
-    this.store.dispatch(
-      FinancePageActions.loadFnNetProfit(params)
-    );
+    this.store.dispatch(FinancePageActions.loadFnNetProfit(params));
   }
 
   public loadFnNetProfitTrend(
-    clinicId: string | number, mode='', connectedWith = '', queryWhEnabled=0
+    clinicId: string | number,
+    mode = "",
+    connectedWith = "",
+    queryWhEnabled = 0
   ) {
     this.store.dispatch(
-      FinancePageActions.loadFnNetProfitTrend(
-        {clinicId, mode, connectedWith, queryWhEnabled}
-      )
+      FinancePageActions.loadFnNetProfitTrend({
+        clinicId,
+        mode,
+        connectedWith,
+        queryWhEnabled,
+      })
     );
   }
 
   public loadFnNetProfitPercentage(params: FnNetProfitParams) {
-    this.store.dispatch(
-      FinancePageActions.loadFnNetProfitPercentage(params)
-    );
+    this.store.dispatch(FinancePageActions.loadFnNetProfitPercentage(params));
   }
 
   public loadFnNetProfitPercentageTrend(
-    clinicId: string | number, mode = '', connectedWith = '', queryWhEnabled = 0 
+    clinicId: string | number,
+    mode = "",
+    connectedWith = "",
+    queryWhEnabled = 0
   ) {
     this.store.dispatch(
-      FinancePageActions.loadFnNetProfitPercentageTrend(
-        {clinicId, mode, queryWhEnabled, connectedWith}
-      )
+      FinancePageActions.loadFnNetProfitPercentageTrend({
+        clinicId,
+        mode,
+        queryWhEnabled,
+        connectedWith,
+      })
     );
   }
 
   public loadFnExpenses(params: FnNetProfitParams) {
-    this.store.dispatch(
-      FinancePageActions.loadFnExpenses(params)
-    )
+    this.store.dispatch(FinancePageActions.loadFnExpenses(params));
   }
 
   public loadFnExpensesTrend(
@@ -303,62 +345,69 @@ export class FinanceFacade {
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnExpensesTrend({
-        clinicId, mode, connectedWith, queryWhEnabled
+        clinicId,
+        mode,
+        connectedWith,
+        queryWhEnabled,
       })
-    )
+    );
   }
 
   public loadFnProductionByClinician(params: FnNetProfitParams) {
-    this.store.dispatch(
-      FinancePageActions.loadFnProductionByClinician(params)
-    )
+    this.store.dispatch(FinancePageActions.loadFnProductionByClinician(params));
   }
 
   public loadFnProductionByClinicianTrend(
-    clinicId: string | number, mode: string, queryWhEnabled: number
+    clinicId: string | number,
+    mode: string,
+    queryWhEnabled: number
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnProdByClinicianTrend({
-        clinicId, mode, queryWhEnabled
+        clinicId,
+        mode,
+        queryWhEnabled,
       })
-    )
+    );
   }
 
   public loadFnProductionPerVisit(params: FnNetProfitParams) {
-    this.store.dispatch(
-      FinancePageActions.loadFnProductionPerVisit(params)
-    )
+    this.store.dispatch(FinancePageActions.loadFnProductionPerVisit(params));
   }
 
   public loadFnProductionPerVisitTrend(
-    clinicId: string | number, mode: string, queryWhEnabled: number
+    clinicId: string | number,
+    mode: string,
+    queryWhEnabled: number
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnProdPerVisitTrend({
-        clinicId, mode, queryWhEnabled
+        clinicId,
+        mode,
+        queryWhEnabled,
       })
-    )
+    );
   }
 
   public loadFnTotalDiscounts(params: FnNetProfitParams) {
-    this.store.dispatch(
-      FinancePageActions.loadFnTotalDiscounts(params)
-    )
+    this.store.dispatch(FinancePageActions.loadFnTotalDiscounts(params));
   }
 
   public loadFnTotalDiscountsTrend(
-    clinicId: string | number, mode: string, queryWhEnabled: number
+    clinicId: string | number,
+    mode: string,
+    queryWhEnabled: number
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnTotalDiscountsTrend({
-        clinicId, mode, queryWhEnabled
+        clinicId,
+        mode,
+        queryWhEnabled,
       })
-    )
+    );
   }
 
   public setTrendChartName(chartName: string) {
-    this.store.dispatch(
-      FinancePageActions.setTrendProfitChart({chartName})
-    )
+    this.store.dispatch(FinancePageActions.setTrendProfitChart({ chartName }));
   }
 }

@@ -1322,3 +1322,31 @@ export const selectProdByClinicianTrendChartData = createSelector(
     };
   }
 );
+
+export const selectIsLoadingAllData = createSelector(
+  selectIsLoadingNetProfit,
+  selectIsLoadingNetProfitPercentage,
+  selectIsLoadingFnExpenses,
+  selectIsLoadingTotalProduction,
+  selectIsLoadingFnProdPerClinic,
+  selectIsLoadingFnProdPerVisit,
+  selectIsLoadingFnTotalDiscount,
+  selectIsLoadingCollection,
+  (s1, s2, s3, s4, s5, s6, s7, s8) => {
+    return s1 || s2 || s3 || s4 || s5 || s6 || s7 || s8;
+  }
+);
+
+export const selectIsLoadingAllTrendData = createSelector(
+  selectIsLoadingNetProfitTrend,
+  selectIsLoadingNetProfitPercentTrend,
+  selectIsLoadingFnExpensesTrend,
+  selectIsLoadingTotalProductionTrend,
+  selectIsLoadingFnProdPerClinicTrend,
+  selectIsLoadingFnProdPerVisitTrend,
+  selectIsLoadingFnTotalDiscountTrend,
+  selectIsLoadingCollectionTrend,
+  (s1, s2, s3, s4, s5, s6, s7, s8) => {
+    return s1 || s2 || s3 || s4 || s5 || s6 || s7 || s8;
+  }
+);
