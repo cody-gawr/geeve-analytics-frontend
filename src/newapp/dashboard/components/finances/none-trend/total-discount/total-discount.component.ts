@@ -55,7 +55,7 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
   }
 
   get getTrendTip$() {
-    return this.durationLabel$.pipe(
+    return this.durationTrendLabel$.pipe(
       takeUntil(this.destroy$),
       map((v) => {
         if (this.totalDiscountChartTrendTotal > 0) {
