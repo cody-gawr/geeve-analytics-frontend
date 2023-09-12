@@ -38,9 +38,16 @@ export class ServerErrorInterceptor implements HttpInterceptor {
             this.router.navigateByUrl("/login");
           }
         } else if (error.status === 403) {
-          this.router.navigateByUrl("/login");
+          this.toastr.warning(``, getApiErrorMesssage(error), {
+            closeButton: true,
+            disableTimeOut: true,
+            enableHtml: true,
+            toastClass: "ngx-toastr un-auth",
+          });
+          this.router.navigateByUrl("/dashboards/healthscreen");
+        } else {
+          this.toastr.error(getApiErrorMesssage(error));
         }
-        this.toastr.error(getApiErrorMesssage(error));
         return throwError(() => error);
       })
     );
