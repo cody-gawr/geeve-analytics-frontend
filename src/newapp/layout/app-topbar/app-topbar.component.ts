@@ -189,8 +189,8 @@ export class AppTopbarComponent implements OnInit {
           } else if (currentClinicIDs.length == clinics.length && isEnableAll) {
             this.selectedClinic = "all";
             this.setCookieVal("all");
-          } else {
-            this.selectedClinic = clinics[0]?.id;
+          } else if (currentClinicIDs.length > 1 && !isEnableAll) {
+            this.clinicFacade.setCurrentSingleClinicId(currentClinicIDs[0]);
           }
         }
         if (currentClinicIDs.length > 0) {
