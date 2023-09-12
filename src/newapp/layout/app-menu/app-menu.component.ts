@@ -374,9 +374,22 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
         userPlan: result.plan,
         hasPrimeClinics: result.hasPrimeClinics,
       };
-      const menuData = MENU_DATA.filter((item) =>
-        item.validatorFn ? item.validatorFn(params) : true
-      );
+      const menuData: MenuNode[] = [];
+
+      MENU_DATA.forEach((item) => {
+        //return item.validatorFn ? item.validatorFn(params) : true;
+        if (item.validatorFn) {
+          const mainMenuValid = item.validatorFn(params);
+          if (item.children && mainMenuValid) {
+            const children = item.children.filter((c) =>
+              c.validatorFn ? c.validatorFn(params) : true
+            );
+            menuData.push({ ...item, ...{ children } });
+            return;
+          }
+        }
+        menuData.push({ ...item });
+      });
 
       this.dataSource.data = menuData;
       const treeNode = this.treeControl.dataNodes.find(
