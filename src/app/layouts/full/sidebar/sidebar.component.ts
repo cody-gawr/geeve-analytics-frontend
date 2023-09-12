@@ -23,6 +23,7 @@ import {
   MatLegacyDialog as MatDialog,
 } from "@angular/material/legacy-dialog";
 import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
+import { CONSULTANT } from "@/newapp/constants";
 
 @Component({
   selector: "refer-friend",
@@ -226,7 +227,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
       this.clinic_id = this._cookieService.get("clinic_id");
     }
 
-    if (this.user_type == 7) {
+    if (this.user_type == CONSULTANT) {
       if (this.clinic_id != null && typeof this.clinic_id != "undefined") {
         //this.clinic_id = this._cookieService.get("clinic_id");
         this.getRolesIndividual();

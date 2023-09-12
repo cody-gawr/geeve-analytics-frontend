@@ -28,6 +28,7 @@ import {
   faCaretDown,
   faPhoneFlip,
 } from "@fortawesome/free-solid-svg-icons";
+import { USER_MASTER, CONSULTANT, USER_CLINICIAN } from "@/newapp/constants";
 
 /**
  * Menu data with nested structure.
@@ -58,8 +59,8 @@ const MENU_DATA: MenuNode[] = [
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
         (permissions?.indexOf("healthscreen") >= 0 ||
-          [2, 7].indexOf(userType!) >= 0) &&
-        userType == 4
+          [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
+        userType == USER_CLINICIAN
       );
     },
   },
@@ -70,8 +71,8 @@ const MENU_DATA: MenuNode[] = [
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
         (permissions?.indexOf("healthscreen") >= 0 ||
-          [2, 7].indexOf(userType!) >= 0) &&
-        userType !== 4
+          [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
+        userType !== USER_CLINICIAN
       );
     },
   },
@@ -83,7 +84,7 @@ const MENU_DATA: MenuNode[] = [
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
         permissions?.indexOf("morninghuddle") >= 0 ||
-        [2, 7].indexOf(userType!) >= 0
+        [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
       );
     },
   },
@@ -94,7 +95,8 @@ const MENU_DATA: MenuNode[] = [
     icon: faPhoneFlip,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        permissions?.indexOf("followups") >= 0 || [2, 7].indexOf(userType!) >= 0
+        permissions?.indexOf("followups") >= 0 ||
+        [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
       );
     },
   },
@@ -106,7 +108,7 @@ const MENU_DATA: MenuNode[] = [
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
         (permissions?.indexOf("campaigns") >= 0 ||
-          [2, 7].indexOf(userType!) >= 0) &&
+          [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
         environment.apiUrl.includes("test")
       );
     },
@@ -118,7 +120,8 @@ const MENU_DATA: MenuNode[] = [
     icon: faChartArea,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        permissions?.indexOf("dashboard") >= 0 || [2, 7].indexOf(userType!) >= 0
+        permissions?.indexOf("dashboard") >= 0 ||
+        [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
       );
     },
     children: [
@@ -129,7 +132,7 @@ const MENU_DATA: MenuNode[] = [
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
             permissions?.indexOf("dashboard1") >= 0 ||
-            [2, 7].indexOf(userType!) >= 0
+            [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
           );
         },
       },
@@ -140,7 +143,7 @@ const MENU_DATA: MenuNode[] = [
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
             permissions?.indexOf("dashboard2") >= 0 ||
-            [2, 7].indexOf(userType!) >= 0
+            [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
           );
         },
       },
@@ -151,7 +154,7 @@ const MENU_DATA: MenuNode[] = [
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
             permissions?.indexOf("dashboard3") >= 0 ||
-            [2, 7].indexOf(userType!) >= 0
+            [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
           );
         },
       },
@@ -162,7 +165,7 @@ const MENU_DATA: MenuNode[] = [
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
             permissions?.indexOf("dashboard6") >= 0 ||
-            [2, 7].indexOf(userType!) >= 0
+            [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
           );
         },
       },
@@ -177,7 +180,7 @@ const MENU_DATA: MenuNode[] = [
         }: MenuValidatorParams) => {
           return (
             (permissions?.indexOf("dashboard4") >= 0 ||
-              [2, 7].indexOf(userType!) >= 0) &&
+              [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
             userPlan != "lite"
           );
         },
@@ -189,7 +192,7 @@ const MENU_DATA: MenuNode[] = [
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
             permissions?.indexOf("dashboard5") >= 0 ||
-            [2, 7].indexOf(userType!) >= 0
+            [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
           );
         },
       },
@@ -203,7 +206,7 @@ const MENU_DATA: MenuNode[] = [
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
         (permissions?.indexOf("staffmeeting") >= 0 ||
-          [2, 7].indexOf(userType!) >= 0) &&
+          [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
         environment.apiUrl.includes("test")
       );
     },
@@ -233,7 +236,7 @@ const MENU_DATA: MenuNode[] = [
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
         permissions?.indexOf("lostopportunity") >= 0 ||
-        [2, 7].indexOf(userType!) >= 0
+        [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
       );
     },
   },
@@ -273,7 +276,7 @@ const MENU_DATA: MenuNode[] = [
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
             permissions?.indexOf("profilesettings") >= 0 ||
-            [2, 7].indexOf(userType!) >= 0
+            [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
           );
         },
       },
