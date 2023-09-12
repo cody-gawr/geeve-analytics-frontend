@@ -190,7 +190,7 @@ export class AppTopbarComponent implements OnInit {
             this.selectedClinic = "all";
             this.setCookieVal("all");
           } else {
-            this.selectedClinic = null;
+            this.selectedClinic = clinics[0]?.id;
           }
         }
         if (currentClinicIDs.length > 0) {
