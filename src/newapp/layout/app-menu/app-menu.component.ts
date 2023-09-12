@@ -57,7 +57,7 @@ const MENU_DATA: MenuNode[] = [
     icon: faClinicMedical,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        (permissions!.indexOf("healthscreen") >= 0 ||
+        (permissions?.indexOf("healthscreen") >= 0 ||
           [2, 7].indexOf(userType!) >= 0) &&
         userType == 4
       );
@@ -69,7 +69,7 @@ const MENU_DATA: MenuNode[] = [
     icon: faClinicMedical,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        (permissions!.indexOf("healthscreen") >= 0 ||
+        (permissions?.indexOf("healthscreen") >= 0 ||
           [2, 7].indexOf(userType!) >= 0) &&
         userType !== 4
       );
@@ -82,7 +82,7 @@ const MENU_DATA: MenuNode[] = [
     icon: faCoffee,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        permissions!.indexOf("morninghuddle") >= 0 ||
+        permissions?.indexOf("morninghuddle") >= 0 ||
         [2, 7].indexOf(userType!) >= 0
       );
     },
@@ -94,7 +94,7 @@ const MENU_DATA: MenuNode[] = [
     icon: faPhoneFlip,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        permissions!.indexOf("followups") >= 0 || [2, 7].indexOf(userType!) >= 0
+        permissions?.indexOf("followups") >= 0 || [2, 7].indexOf(userType!) >= 0
       );
     },
   },
@@ -105,7 +105,7 @@ const MENU_DATA: MenuNode[] = [
     icon: faUsers,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        (permissions!.indexOf("campaigns") >= 0 ||
+        (permissions?.indexOf("campaigns") >= 0 ||
           [2, 7].indexOf(userType!) >= 0) &&
         environment.apiUrl.includes("test")
       );
@@ -118,7 +118,7 @@ const MENU_DATA: MenuNode[] = [
     icon: faChartArea,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        permissions!.indexOf("dashboard") >= 0 || [2, 7].indexOf(userType!) >= 0
+        permissions?.indexOf("dashboard") >= 0 || [2, 7].indexOf(userType!) >= 0
       );
     },
     children: [
@@ -128,7 +128,7 @@ const MENU_DATA: MenuNode[] = [
         path: "dashboards/cliniciananalysis",
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
-            permissions!.indexOf("dashboard1") >= 0 ||
+            permissions?.indexOf("dashboard1") >= 0 ||
             [2, 7].indexOf(userType!) >= 0
           );
         },
@@ -139,7 +139,7 @@ const MENU_DATA: MenuNode[] = [
         path: "dashboards/clinicianproceedures",
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
-            permissions!.indexOf("dashboard2") >= 0 ||
+            permissions?.indexOf("dashboard2") >= 0 ||
             [2, 7].indexOf(userType!) >= 0
           );
         },
@@ -150,7 +150,7 @@ const MENU_DATA: MenuNode[] = [
         path: "dashboards/frontdesk",
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
-            permissions!.indexOf("dashboard3") >= 0 ||
+            permissions?.indexOf("dashboard3") >= 0 ||
             [2, 7].indexOf(userType!) >= 0
           );
         },
@@ -161,7 +161,7 @@ const MENU_DATA: MenuNode[] = [
         path: "dashboards/followups",
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
-            permissions!.indexOf("dashboard6") >= 0 ||
+            permissions?.indexOf("dashboard6") >= 0 ||
             [2, 7].indexOf(userType!) >= 0
           );
         },
@@ -176,7 +176,7 @@ const MENU_DATA: MenuNode[] = [
           userPlan,
         }: MenuValidatorParams) => {
           return (
-            (permissions!.indexOf("dashboard4") >= 0 ||
+            (permissions?.indexOf("dashboard4") >= 0 ||
               [2, 7].indexOf(userType!) >= 0) &&
             userPlan != "lite"
           );
@@ -188,7 +188,7 @@ const MENU_DATA: MenuNode[] = [
         path: "/newapp/dashboard/finances",
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
-            permissions!.indexOf("dashboard5") >= 0 ||
+            permissions?.indexOf("dashboard5") >= 0 ||
             [2, 7].indexOf(userType!) >= 0
           );
         },
@@ -202,7 +202,7 @@ const MENU_DATA: MenuNode[] = [
     icon: faIdCard,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        (permissions!.indexOf("staffmeeting") >= 0 ||
+        (permissions?.indexOf("staffmeeting") >= 0 ||
           [2, 7].indexOf(userType!) >= 0) &&
         environment.apiUrl.includes("test")
       );
@@ -220,7 +220,7 @@ const MENU_DATA: MenuNode[] = [
     }: MenuValidatorParams) => {
       return (
         (userType == 2 && hasPrimeClinics == "yes") ||
-        (permissions!.indexOf("kpireport") >= 0 && hasPrimeClinics == "yes") ||
+        (permissions?.indexOf("kpireport") >= 0 && hasPrimeClinics == "yes") ||
         userType == 7
       );
     },
@@ -232,7 +232,7 @@ const MENU_DATA: MenuNode[] = [
     icon: faHandHoldingUsd,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        permissions!.indexOf("lostopportunity") >= 0 ||
+        permissions?.indexOf("lostopportunity") >= 0 ||
         [2, 7].indexOf(userType!) >= 0
       );
     },
@@ -272,7 +272,7 @@ const MENU_DATA: MenuNode[] = [
         path: "clinic",
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
-            permissions!.indexOf("profilesettings") >= 0 ||
+            permissions?.indexOf("profilesettings") >= 0 ||
             [2, 7].indexOf(userType!) >= 0
           );
         },
@@ -282,7 +282,7 @@ const MENU_DATA: MenuNode[] = [
         path: "roles-users",
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
-            (permissions!.indexOf("profilesettings") >= 0 || userType == 2) &&
+            (permissions?.indexOf("profilesettings") >= 0 || userType == 2) &&
             userType != 7
           );
         },
@@ -365,22 +365,21 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     this.clinicFacade.loadClinics();
 
     this.rolesIndividual$.pipe(takeUntil(this.destroy$)).subscribe((result) => {
-      if (result.data) {
-        const params: MenuValidatorParams = {
-          permissions: result.data,
-          userType: result.type,
-          userPlan: result.plan,
-          hasPrimeClinics: result.hasPrimeClinics,
-        };
-        const menuData = MENU_DATA.filter((item) =>
-          item.validatorFn ? item.validatorFn(params) : true
-        );
-        this.dataSource.data = menuData;
-        const treeNode = this.treeControl.dataNodes.find(
-          (node) => this.activedUrl.includes(node.path) && node.level == 0
-        );
-        if (treeNode) this.treeControl.expand(treeNode);
-      }
+      const params: MenuValidatorParams = {
+        permissions: result.data,
+        userType: result.type,
+        userPlan: result.plan,
+        hasPrimeClinics: result.hasPrimeClinics,
+      };
+      const menuData = MENU_DATA.filter((item) =>
+        item.validatorFn ? item.validatorFn(params) : true
+      );
+
+      this.dataSource.data = menuData;
+      const treeNode = this.treeControl.dataNodes.find(
+        (node) => this.activedUrl.includes(node.path) && node.level == 0
+      );
+      if (treeNode) this.treeControl.expand(treeNode);
     });
 
     this.router.events
