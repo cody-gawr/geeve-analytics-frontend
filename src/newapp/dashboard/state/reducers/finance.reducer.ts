@@ -88,7 +88,24 @@ export interface FinanceState {
 }
 
 const initialState: FinanceState = {
-  isLoadingData: [],
+  isLoadingData: [
+    "fnTotalProduction",
+    "fnNetProfit",
+    "fnNetProfitPercentage",
+    "fnExpenses",
+    "fnProductionByClinician",
+    "fnProductionPerVisit",
+    "fnTotalDiscounts",
+    "fnTotalCollection",
+    "fnTotalProductionTrend",
+    "fnTotalCollectionTrend",
+    "fnNetProfitTrend",
+    "fnNetProfitPercentageTrend",
+    "fnProductionPerVisitTrend",
+    "fnExpensesTrend",
+    "fnProductionByClinicianTrend",
+    "fnTotalDiscountsTrend",
+  ],
   errors: [],
 
   netProfitProductionVal: 0,

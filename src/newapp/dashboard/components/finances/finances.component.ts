@@ -7,6 +7,7 @@ import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
 import { Router } from "@angular/router";
 import { FnNetProfitParams } from "@/newapp/models/dashboard";
 import moment from "moment";
+import { AuthFacade } from "@/newapp/auth/facades/auth.facade";
 
 @Component({
   selector: "dashboard-finances",
@@ -31,12 +32,16 @@ export class FinancesComponent implements OnInit, OnDestroy {
     );
   }
 
+  errMsg = "";
+  noPermission = false;
+
   constructor(
     private dashbordFacade: DashboardFacade,
     private clinicFacade: ClinicFacade,
     private financeFacade: FinanceFacade,
     private layoutFacade: LayoutFacade,
-    private router: Router
+    private router: Router,
+    private authFacade: AuthFacade
   ) {
     combineLatest([
       this.clinicFacade.currentClinicId$,
@@ -127,6 +132,32 @@ export class FinancesComponent implements OnInit, OnDestroy {
               queryWhEnabled
             );
             break;
+        }
+      });
+
+    combineLatest([
+      this.financeFacade.errors$,
+      this.financeFacade.isLoadingAllData$,
+      this.financeFacade.isLoadingAllTrendData$,
+      this.authFacade.rolesIndividual$,
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([errs, isLoadingAll, isLoadingAllTrend, roleData]) => {
+        if (roleData.type === 7) {
+          if (errs.length > 0) {
+            if (errs.every((e) => e.status === 403)) {
+              this.errMsg = errs[0].message;
+              this.noPermission = false;
+              return;
+            }
+          }
+          if (isLoadingAll || isLoadingAllTrend) {
+            this.noPermission = false;
+          } else {
+            this.noPermission = true;
+          }
+        } else {
+          this.noPermission = true;
         }
       });
   }

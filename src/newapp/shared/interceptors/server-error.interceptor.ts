@@ -38,8 +38,9 @@ export class ServerErrorInterceptor implements HttpInterceptor {
             this.router.navigateByUrl("/login");
           }
         } else if (error.status === 403) {
-          this.toastr.warning(``, getApiErrorMesssage(error));
-          this.router.navigateByUrl("/dashboards/healthscreen");
+          // const errMsg = getApiErrorMesssage(error);
+          // this.toastr.warning(``, getApiErrorMesssage(error));
+          // this.router.navigateByUrl("/dashboards/healthscreen");
         } else {
           this.toastr.error(getApiErrorMesssage(error));
         }

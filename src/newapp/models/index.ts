@@ -1,12 +1,11 @@
-import { FormControl, FormGroup } from '@angular/forms';
-import { API_ENDPOINTS } from './dashboard';
+import { FormControl, FormGroup } from "@angular/forms";
+import { API_ENDPOINTS } from "./dashboard";
 
 export type ControlsOf<T extends Record<string, any>> = {
   [K in keyof T]: T[K] extends Record<any, any>
     ? FormGroup<ControlsOf<T[K]>>
     : FormControl<T[K]>;
 };
-
 
 export class JeeveError {
   api: API_ENDPOINTS | string;
@@ -18,7 +17,7 @@ export class JeeveError {
     message: string,
     status: number = 500,
     errors: any[] = [],
-    api = ''
+    api = ""
   ) {
     this.message = message;
     this.status = status;

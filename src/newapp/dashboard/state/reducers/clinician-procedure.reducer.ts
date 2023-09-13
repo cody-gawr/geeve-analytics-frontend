@@ -13,7 +13,6 @@ import {
   CpRevPerProcedureApiResponse,
 } from "@/newapp/models/dashboard/clinician-procedure";
 import { selectCurrentClinics } from "@/newapp/clinic/state/reducers/clinic.reducer";
-import { selectRolesIndividual } from "@/newapp/auth/state/reducers/auth.reducer";
 import { DoughnutChartColors1 } from "@/newapp/shared/constants";
 
 type ClinicianProcedureEndpoints =

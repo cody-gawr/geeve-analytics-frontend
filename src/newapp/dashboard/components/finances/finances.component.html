@@ -1,12 +1,19 @@
 <div
   class="finance-page-container"
+  *ngIf="noPermission"
 >
   <date-range-menu></date-range-menu>
   <trend-mode-toggle></trend-mode-toggle>
 </div>
-<div *ngIf="(clinicId$ | async) !== null" class="finance-chart-content">
+<div *ngIf="(clinicId$ | async) !== null && noPermission" class="finance-chart-content">
   <trend-finances *ngIf="isTrend$ | async; else trendSection"></trend-finances>
   <ng-template #trendSection>
     <none-trend-finances></none-trend-finances>
   </ng-template>
+</div>
+<div class="j-flex j-justify-center j-text-error" *ngIf="!noPermission && errMsg">
+  {{errMsg}}
+</div>
+<div class="j-flex j-justify-center" *ngIf="!noPermission && !errMsg">
+  Checking permissions against requesting apis for this page...
 </div>
