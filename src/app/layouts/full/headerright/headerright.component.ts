@@ -633,9 +633,9 @@ export class AppHeaderrightComponent
             this.unAuth = false;
           } else {
             this.unAuth = true;
-            // $(".sa_dashboard_inner_content").addClass("unauth-hide");
-            // $(".settings-table-card").addClass("unauth-hide");
-            // $(".page-content").addClass("unauth-hide");
+            $(".sa_dashboard_inner_content").addClass("unauth-hide");
+            $(".settings-table-card").addClass("unauth-hide");
+            $(".page-content").addClass("unauth-hide");
           }
         } else if (
           ["/rewards", "/clinic", "/profile-settings"].includes(this.route)
@@ -643,9 +643,9 @@ export class AppHeaderrightComponent
           this.unAuth = false;
         } else {
           this.unAuth = true;
-          // $(".sa_dashboard_inner_content").addClass("unauth-hide");
-          // $(".settings-table-card").addClass("unauth-hide");
-          // $(".page-content").addClass("unauth-hide");
+          $(".sa_dashboard_inner_content").addClass("unauth-hide");
+          $(".settings-table-card").addClass("unauth-hide");
+          $(".page-content").addClass("unauth-hide");
         }
         this.rolesUsersService.setUnAuth(
           this.unAuth,
