@@ -450,7 +450,6 @@ export class AppHeaderrightComponent
                 let t1 = false;
                 if (newAppClinicData) {
                   newAppClinicData = JSON.parse(newAppClinicData);
-                  console.log("multi flag:", this.isMultiClinicsVisible);
                   if (this.isMultiClinicsVisible) {
                     if (newAppClinicData.currentMultiClinicIds) {
                       this.selectedClinic =
@@ -602,7 +601,7 @@ export class AppHeaderrightComponent
     return true;
   }
 
-  checkPermissions(clinicId: string) {
+  checkPermissions(clinicId: string, cliName) {
     let permissions: string[] = [];
     const permission2Route: Record<string, string> = {
       healthscreen: "/dashboards/healthscreen",
@@ -626,7 +625,6 @@ export class AppHeaderrightComponent
           const permissionByRoute = Object.keys(permission2Route).find(
             (permission) => permission2Route[permission] == this.route
           );
-          console.log(permissionByRoute);
           if (permissions.includes(permissionByRoute)) {
             this.unAuth = false;
           } else if (
@@ -635,9 +633,9 @@ export class AppHeaderrightComponent
             this.unAuth = false;
           } else {
             this.unAuth = true;
-            $(".sa_dashboard_inner_content").addClass("unauth-hide");
-            $(".settings-table-card").addClass("unauth-hide");
-            $(".page-content").addClass("unauth-hide");
+            // $(".sa_dashboard_inner_content").addClass("unauth-hide");
+            // $(".settings-table-card").addClass("unauth-hide");
+            // $(".page-content").addClass("unauth-hide");
           }
         } else if (
           ["/rewards", "/clinic", "/profile-settings"].includes(this.route)
@@ -645,17 +643,20 @@ export class AppHeaderrightComponent
           this.unAuth = false;
         } else {
           this.unAuth = true;
-          $(".sa_dashboard_inner_content").addClass("unauth-hide");
-          $(".settings-table-card").addClass("unauth-hide");
-          $(".page-content").addClass("unauth-hide");
+          // $(".sa_dashboard_inner_content").addClass("unauth-hide");
+          // $(".settings-table-card").addClass("unauth-hide");
+          // $(".page-content").addClass("unauth-hide");
         }
+        this.rolesUsersService.setUnAuth(
+          this.unAuth,
+          `You do not have permission to access this page for ${cliName}. Please contact the clinic owner.`
+        );
       },
       error: (error) => {},
     });
   }
 
   loadClinic(newValues) {
-    console.log("newValues", newValues);
     $(".toast-close-button").click();
     $(".sa_dashboard_inner_content").removeClass("unauth-hide");
     $(".settings-table-card").removeClass("unauth-hide");
@@ -738,13 +739,14 @@ export class AppHeaderrightComponent
             cliName = element.clinicName;
           }
         });
-        this.checkPermissions(clid);
-        setTimeout(() => {
-          if (this.unAuth) {
-            this.unAuthorisedAlert(cliName);
-            return;
-          }
-        }, 2000);
+        this.checkPermissions(clid, cliName);
+
+        // setTimeout(() => {
+        //   if (this.unAuth) {
+        //     this.unAuthorisedAlert(cliName);
+        //     return;
+        //   }
+        // }, 2000);
       }
 
       let opts = this.constants.cookieOpt as CookieOptions;

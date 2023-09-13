@@ -20,7 +20,7 @@ import {
   BaseChartDirective,
   // PluginServiceGlobalRegistrationAndOptions
 } from "ng2-charts";
-import { Observable, ReplaySubject, map } from "rxjs";
+import { Observable, ReplaySubject, map, takeUntil } from "rxjs";
 import { ChartService } from "../chart.service";
 import { ClinicSettingsService } from "../../clinic-settings/clinic-settings.service";
 import { AppConstants } from "../../app.constants";

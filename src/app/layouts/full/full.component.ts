@@ -1,32 +1,33 @@
-import * as $ from 'jquery';
-import { DOCUMENT, Location } from '@angular/common';
-import { MediaMatcher } from '@angular/cdk/layout';
-import { Router, ActivatedRoute } from '@angular/router';
+import * as $ from "jquery";
+import { DOCUMENT, Location } from "@angular/common";
+import { MediaMatcher } from "@angular/cdk/layout";
+import { Router, ActivatedRoute } from "@angular/router";
 import {
   ChangeDetectorRef,
   Component,
   OnDestroy,
   AfterViewInit,
-  Inject
-} from '@angular/core';
+  Inject,
+} from "@angular/core";
 // import { MenuItems } from '../../shared/menu-items/menu-items';
 
-import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-import { HeaderService } from './header/header.service';
-import { CookieService, CookieOptions } from 'ngx-cookie';
-import { AppConstants } from '../../app.constants';
-import { environment } from '../../../environments/environment';
+import { PerfectScrollbarConfigInterface } from "ngx-perfect-scrollbar";
+// import { HeaderService } from "./header/header.service";
+import { CookieService, CookieOptions } from "ngx-cookie";
+import { AppConstants } from "../../app.constants";
+import { environment } from "../../../environments/environment";
+import { RolesUsersService } from "@/app/roles-users/roles-users.service";
 
 /** @title Responsive sidenav */
 @Component({
-  selector: 'app-full-layout',
-  templateUrl: 'full.component.html',
-  styleUrls: []
+  selector: "app-full-layout",
+  templateUrl: "full.component.html",
+  styleUrls: [],
 })
 export class FullComponent implements OnDestroy, AfterViewInit {
   elem;
   mobileQuery: MediaQueryList;
-  dir = 'ltr';
+  dir = "ltr";
   green: boolean;
   blue: boolean;
   dark: boolean;
@@ -43,44 +44,45 @@ export class FullComponent implements OnDestroy, AfterViewInit {
   public finalUrl: string;
   public id: string;
   public trailDays: Number = 0;
-  selectedClinic: any = '1';
+  selectedClinic: any = "1";
   public title;
   public showTrail: boolean = false;
   constructor(
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
     // public menuItems: MenuItems,
-    private headerService: HeaderService,
-    private router: Router,
+    // private headerService: HeaderService,
+    // private router: Router,
     private _cookieService: CookieService,
-    private location: Location,
+    // private location: Location,
     private route: ActivatedRoute,
     public constants: AppConstants,
+    private rolesUsersService: RolesUsersService,
     @Inject(DOCUMENT) private document: any
   ) {
-    if (!this._cookieService.get('trailInfo')) {
+    if (!this._cookieService.get("trailInfo")) {
       this.showTrail = true;
     } else {
       this.showTrail = false;
     }
 
-    this.id = this.route.snapshot.paramMap.get('id');
+    this.id = this.route.snapshot.paramMap.get("id");
 
-    this.mobileQuery = media.matchMedia('(min-width: 768px)');
+    this.mobileQuery = media.matchMedia("(min-width: 768px)");
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     document.addEventListener(
-      'fullscreenchange',
+      "fullscreenchange",
       this.onFullScreenChange,
       false
     );
     document.addEventListener(
-      'webkitfullscreenchange',
+      "webkitfullscreenchange",
       this.onFullScreenChange,
       false
     );
     document.addEventListener(
-      'mozfullscreenchange',
+      "mozfullscreenchange",
       this.onFullScreenChange,
       false
     );
@@ -90,43 +92,51 @@ export class FullComponent implements OnDestroy, AfterViewInit {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
   ngAfterViewInit() {
-    this.title = $('#page_title').val();
+    this.title = $("#page_title").val();
     this.elem = document.documentElement;
     // This is for the topbar search
-    (<any>$('.srh-btn, .cl-srh-btn')).on('click', function () {
-      (<any>$('.app-search')).toggle(200);
+    (<any>$(".srh-btn, .cl-srh-btn")).on("click", function () {
+      (<any>$(".app-search")).toggle(200);
     });
     // this.getClinics();
 
-    $('.hamburger_menu').click(function (e) {
-      if ($(this).hasClass('active')) $(this).removeClass('active');
-      else $(this).addClass('active');
+    $(".hamburger_menu").click(function (e) {
+      if ($(this).hasClass("active")) $(this).removeClass("active");
+      else $(this).addClass("active");
     });
-    $('#snav .mat-nav-list .sub-item').css('display', 'block');
+    $("#snav .mat-nav-list .sub-item").css("display", "block");
     // This is for the megamenu
   }
 
-  private loadClinic(value) {
-    this.finalUrl = this.router.url.substring(
-      0,
-      this.router.url.lastIndexOf('/') + 1
-    );
+  get unAuth$() {
+    return this.rolesUsersService.unAuth$;
+  }
 
-    this.router.navigate([this.finalUrl + value]);
-    //this.location.go(this.finalUrl+value);
+  get unAuthMsg$() {
+    return this.rolesUsersService.unAuthMsg$;
   }
-  private getClinics() {
-    this.headerService.getClinics().subscribe(
-      (res) => {
-        if (res.status == 200) {
-          this.clinicsData = res.body.data;
-        }
-      },
-      (error) => {
-        // this.warningMessage = "Please Provide Valid Inputs!";
-      }
-    );
-  }
+
+  // private loadClinic(value) {
+  //   this.finalUrl = this.router.url.substring(
+  //     0,
+  //     this.router.url.lastIndexOf("/") + 1
+  //   );
+
+  //   this.router.navigate([this.finalUrl + value]);
+  //   //this.location.go(this.finalUrl+value);
+  // }
+  // private getClinics() {
+  //   this.headerService.getClinics().subscribe(
+  //     (res) => {
+  //       if (res.status == 200) {
+  //         this.clinicsData = res.body.data;
+  //       }
+  //     },
+  //     (error) => {
+  //       // this.warningMessage = "Please Provide Valid Inputs!";
+  //     }
+  //   );
+  // }
   fullScreen() {
     if (this.elem.requestFullscreen) {
       this.elem.requestFullscreen();
@@ -144,8 +154,8 @@ export class FullComponent implements OnDestroy, AfterViewInit {
   onFullScreenChange() {
     //alert(window.screenTop);
     if (window.screenTop > 0) {
-      $('.fullscreen').removeClass('active');
-    } else if (window.screenTop == 0) $('.fullscreen').addClass('active');
+      $(".fullscreen").removeClass("active");
+    } else if (window.screenTop == 0) $(".fullscreen").addClass("active");
 
     // if in fullscreen mode fullscreenElement won't be null
   }
@@ -165,7 +175,7 @@ export class FullComponent implements OnDestroy, AfterViewInit {
   }
 
   clickEventSideMenu() {
-    $('mat-sidenav').scrollTop(10);
+    $("mat-sidenav").scrollTop(10);
   }
 
   addItem(newItem: number) {
@@ -174,10 +184,10 @@ export class FullComponent implements OnDestroy, AfterViewInit {
 
   hideTrail() {
     this.showTrail = false;
-    console.log('trailInfo', this._cookieService.get('trailInfo'));
-    if (!this._cookieService.get('trailInfo')) {
+    console.log("trailInfo", this._cookieService.get("trailInfo"));
+    if (!this._cookieService.get("trailInfo")) {
       let opts = this.constants.cookieOpt as CookieOptions;
-      this._cookieService.put('trailInfo', 'false', opts);
+      this._cookieService.put("trailInfo", "false", opts);
       this.showTrail = false;
     }
   }

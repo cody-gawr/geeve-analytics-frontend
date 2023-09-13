@@ -208,9 +208,14 @@
         </div>
 
         <div class="page-content p-0">
-          <router-outlet>
-            <app-spinner></app-spinner>
-          </router-outlet>
+          <ng-template *ngIf="!(unAuth$ | async); else alertMsg">
+            <router-outlet>
+              <app-spinner></app-spinner>
+            </router-outlet>
+          </ng-template>
+          <ng-template #alertMsg>
+            <p style="text-align: center;color: red;">{{unAuthMsg$ | async}}</p>
+          </ng-template>
         </div>
       </mat-sidenav-content>
       <!-- ============================================================== -->
