@@ -281,6 +281,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
       this.clinicFacade.setCurrentSingleClinicId(null);
       this.clinicFacade.setCurrentMultiClinicIDs([]);
       this._cookieService.removeAll();
+      localStorage.clear();
       this.rolesUsersService.setRoleIndividual({
         body: { message: "", data: [], plan: "", type: 0 },
         status: 0,

@@ -19,13 +19,16 @@ import {
   selectSuccess,
 } from "../state/reducers/auth.reducer";
 import { LoginUser, RolesIndividualApiResponse } from "../../models/user";
-import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
+//import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
+//import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
+import { CookieService } from "ngx-cookie";
 
 @Injectable()
 export class AuthFacade {
   constructor(
     private readonly store: Store<AuthState>,
-    private clinicFacade: ClinicFacade
+    private cookieService: CookieService // private clinicFacade: ClinicFacade,
+    // private layoutFacade: LayoutFacade
   ) {}
 
   public readonly success$: Observable<boolean> = this.store.pipe(
@@ -70,8 +73,10 @@ export class AuthFacade {
   }
 
   public logout() {
-    this.clinicFacade.setCurrentSingleClinicId(null);
-    this.clinicFacade.setCurrentMultiClinicIDs([]);
+    // this.clinicFacade.setCurrentSingleClinicId(null);
+    // this.clinicFacade.setCurrentMultiClinicIDs([]);
+    localStorage.clear();
+    this.cookieService.removeAll();
     this.store.dispatch(AuthPageActions.logout());
   }
 
