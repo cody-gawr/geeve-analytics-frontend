@@ -24,6 +24,8 @@ import {
 } from "@angular/material/legacy-dialog";
 import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
 import { CONSULTANT } from "@/newapp/constants";
+import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
+import { ChartService } from "@/app/dashboards/chart.service";
 
 @Component({
   selector: "refer-friend",
@@ -193,7 +195,9 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     private route: ActivatedRoute,
     private router: Router,
     public constants: AppConstants,
-    private clinicFacade: ClinicFacade
+    private clinicFacade: ClinicFacade,
+    private layoutFacde: LayoutFacade,
+    private chartService: ChartService
   ) {
     // this.router.events.subscribe((event: Event) => {
     //   if (event instanceof NavigationEnd && event.url != '/login') {
@@ -280,6 +284,8 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     this.headerService.logout().subscribe(() => {
       this.clinicFacade.setCurrentSingleClinicId(null);
       this.clinicFacade.setCurrentMultiClinicIDs([]);
+      this.layoutFacde.saveDateRange(null, null, "m");
+      this.chartService.changeDuration("m");
       this._cookieService.removeAll();
       localStorage.clear();
       this.rolesUsersService.setRoleIndividual({
