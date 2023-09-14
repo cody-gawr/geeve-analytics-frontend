@@ -386,9 +386,12 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
             );
             menuData.push({ ...item, ...{ children } });
             return;
+          } else if (mainMenuValid) {
+            menuData.push({ ...item });
           }
+        } else {
+          menuData.push({ ...item });
         }
-        menuData.push({ ...item });
       });
 
       this.dataSource.data = menuData;

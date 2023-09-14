@@ -23,7 +23,7 @@
                     type="bar"
                 >
                 </canvas>
-                <spin-loader *ngIf="!hasData && !(isLoading$ | async)" [disableSpin]="true">
+                <spin-loader class="empty-placeholder" *ngIf="!hasData && !(isLoading$ | async)" [disableSpin]="true">
                     You have no data in the selected period
                 </spin-loader>
             </ng-template>

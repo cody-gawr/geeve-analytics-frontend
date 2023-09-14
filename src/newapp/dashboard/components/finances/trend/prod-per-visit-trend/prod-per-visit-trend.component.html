@@ -22,7 +22,7 @@
                         [legend]="false"
                         type="line"
                     ></canvas>
-                    <spin-loader *ngIf="!(datasets.length > 0 && datasets[0].data.length > 0) && !(isLoading$ | async)" [disableSpin]="true">
+                    <spin-loader class="empty-placeholder" *ngIf="!(datasets.length > 0 && datasets[0].data.length > 0) && !(isLoading$ | async)" [disableSpin]="true">
                         You have no data in the selected period
                     </spin-loader>
                 </ng-template>
