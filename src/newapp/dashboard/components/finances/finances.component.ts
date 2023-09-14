@@ -33,7 +33,7 @@ export class FinancesComponent implements OnInit, OnDestroy {
   }
 
   errMsg = "";
-  noPermission = false;
+  noPermission = true;
 
   constructor(
     private dashbordFacade: DashboardFacade,
@@ -43,7 +43,6 @@ export class FinancesComponent implements OnInit, OnDestroy {
     private router: Router,
     private authFacade: AuthFacade
   ) {
-    let startLoading = true;
     combineLatest([
       this.clinicFacade.currentClinicId$,
       this.layoutFacade.dateRange$,
@@ -134,18 +133,16 @@ export class FinancesComponent implements OnInit, OnDestroy {
             );
             break;
         }
-        startLoading = false;
       });
 
     combineLatest([
       this.financeFacade.errors$,
-      this.financeFacade.isLoadingAllData$,
-      this.financeFacade.isLoadingAllTrendData$,
+      // this.financeFacade.isLoadingAllData$,
+      // this.financeFacade.isLoadingAllTrendData$,
       this.authFacade.rolesIndividual$,
     ])
       .pipe(takeUntil(this.destroy$))
-      .subscribe(([errs, isLoadingAll, isLoadingAllTrend, roleData]) => {
-        if (startLoading) return;
+      .subscribe(([errs, roleData]) => {
         if (roleData?.type === 7) {
           if (errs.length > 0) {
             if (errs.every((e) => e.status === 403)) {
@@ -154,14 +151,13 @@ export class FinancesComponent implements OnInit, OnDestroy {
               return;
             }
           }
-          if (isLoadingAll || isLoadingAllTrend) {
-            this.noPermission = false;
-          } else {
-            this.noPermission = true;
-          }
-        } else {
-          this.noPermission = true;
+          // if (isLoadingAll || isLoadingAllTrend) {
+          //   this.noPermission = false;
+          //   return;
+          // }
         }
+
+        this.noPermission = true;
       });
   }
 
