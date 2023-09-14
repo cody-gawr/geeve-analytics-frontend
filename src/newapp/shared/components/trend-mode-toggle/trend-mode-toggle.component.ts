@@ -1,7 +1,7 @@
 import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
 import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
 import { Component, OnDestroy, OnInit, Input } from "@angular/core";
-import { Subject, takeUntil, map } from "rxjs";
+import { Subject, takeUntil, map, combineLatest } from "rxjs";
 
 @Component({
   selector: "trend-mode-toggle",
@@ -21,17 +21,13 @@ export class TrendModeToggleComponent implements OnInit, OnDestroy {
     return this.layoutFacade.trend$;
   }
 
-  get isLoadingAll$() {
-    return this.financeFacade.isLoadingAllData$.pipe(
+  get isLoading$() {
+    return combineLatest([
+      this.financeFacade.isLoadingAllData$,
+      this.financeFacade.isLoadingAllTrendData$,
+    ]).pipe(
       takeUntil(this.destroy$),
-      map((v) => v)
-    );
-  }
-
-  get isLoadingAllTrend$() {
-    return this.financeFacade.isLoadingAllTrendData$.pipe(
-      takeUntil(this.destroy$),
-      map((v) => v)
+      map(([v1, v2]) => v1 || v2)
     );
   }
 
