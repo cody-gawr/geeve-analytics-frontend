@@ -494,6 +494,9 @@ export class AppHeaderrightComponent
               }
             }
             this.title = $("#page_title").val();
+            if (this.selectedClinic == null) {
+              this.selectedClinic = res.body.data[0].id;
+            }
             this.loadClinic(this.selectedClinic);
             this.isSwitchingClinic = false;
           }
