@@ -145,7 +145,7 @@ export class FinancesComponent implements OnInit, OnDestroy {
       .subscribe(([errs, roleData]) => {
         if (roleData?.type === 7) {
           if (errs.length > 0) {
-            if (errs.every((e) => e.status === 403)) {
+            if (errs.every((e) => e.status === 403 || e.status === 502)) {
               this.errMsg = errs[0].message;
               this.noPermission = false;
               return;
