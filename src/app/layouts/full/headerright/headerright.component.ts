@@ -459,10 +459,6 @@ export class AppHeaderrightComponent
                           : newAppClinicData.currentMultiClinicIds;
                     } else t1 = true;
                   } else {
-                    console.log(
-                      "newAPp",
-                      newAppClinicData.currentSingleClinicId
-                    );
                     if (newAppClinicData.currentSingleClinicId) {
                       if (
                         !this.isSingleClinicAllEnabled &&

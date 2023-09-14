@@ -1271,7 +1271,11 @@ export class FrontDeskComponent implements AfterViewInit {
     $("#sa_datepicker").val(
       this.formatDate(this.startDate) + " - " + this.formatDate(this.endDate)
     );
-    if (newValue == "all" && this.clinic_id) {
+    if (
+      newValue == "all" &&
+      this.clinic_id &&
+      typeof this.clinic_id != "object"
+    ) {
       if (!this.isExact) {
         if (this.utilShow == 1) {
           this.fdWorkTimeAnalysis();

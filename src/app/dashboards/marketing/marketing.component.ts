@@ -225,6 +225,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     }
     this.getRolesIndividual();
     var val = $("#currentClinic").attr("cid");
+    //const val = this._cookieService.get("clinic_id");
     // this.clinic_id = val;
     if (val != undefined) {
       if (val == "all") {
@@ -1243,6 +1244,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   }
 
   loadDentist(newValue) {
+    if (typeof this.clinic_id == "object") return;
     // $('.sa_tabs_data button').prop('disabled',true);
     this.Apirequest = 4;
     if (
