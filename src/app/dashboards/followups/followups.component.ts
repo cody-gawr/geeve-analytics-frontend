@@ -626,16 +626,20 @@ export class FollowupsComponent implements AfterViewInit {
       }
       // $('.customRange').css('display','block');
     }
+
     $(".filter").removeClass("active");
     $(".filter_" + duration).addClass("active");
     $("#sa_datepicker").val(
       this.formatDate(this.startDate) + " - " + this.formatDate(this.endDate)
     );
-    this.getConversion();
-    this.getCompletionRate();
-    this.getFollowupOutcome();
-    this.getConversionPerUser();
-    this.getFollowupsPerUser();
+
+    if (this.clinic_id != undefined) {
+      this.getConversion();
+      this.getCompletionRate();
+      this.getFollowupOutcome();
+      this.getConversionPerUser();
+      this.getFollowupsPerUser();
+    }
   }
 
   monthDiff(d1, d2) {
