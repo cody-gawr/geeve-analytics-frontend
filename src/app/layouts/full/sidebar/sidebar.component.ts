@@ -26,6 +26,7 @@ import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
 import { CONSULTANT } from "@/newapp/constants";
 import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
 import { ChartService } from "@/app/dashboards/chart.service";
+import { getTodayMoment } from "@/newapp/shared/utils";
 
 @Component({
   selector: "refer-friend",
@@ -284,7 +285,11 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     this.headerService.logout().subscribe(() => {
       this.clinicFacade.setCurrentSingleClinicId(null);
       this.clinicFacade.setCurrentMultiClinicIDs([]);
-      this.layoutFacde.saveDateRange(null, null, "m");
+      this.layoutFacde.saveDateRange(
+        getTodayMoment().startOf("month"),
+        getTodayMoment(),
+        "m"
+      );
       this.chartService.changeDuration("m");
       this._cookieService.removeAll();
       localStorage.clear();

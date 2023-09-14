@@ -22,6 +22,7 @@ import { LoginUser, RolesIndividualApiResponse } from "../../models/user";
 import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
 import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
 import { CookieService } from "ngx-cookie";
+import { getTodayMoment } from "@/newapp/shared/utils";
 
 @Injectable()
 export class AuthFacade {
@@ -76,7 +77,11 @@ export class AuthFacade {
   public logout() {
     this.clinicFacade.setCurrentSingleClinicId(null);
     this.clinicFacade.setCurrentMultiClinicIDs([]);
-    this.layoutFacade.saveDateRange(null, null, "m");
+    this.layoutFacade.saveDateRange(
+      getTodayMoment().startOf("month"),
+      getTodayMoment(),
+      "m"
+    );
     localStorage.clear();
     this.cookieService.removeAll();
     this.store.dispatch(AuthPageActions.logout());

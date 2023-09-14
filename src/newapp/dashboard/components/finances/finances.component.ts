@@ -43,6 +43,7 @@ export class FinancesComponent implements OnInit, OnDestroy {
     private router: Router,
     private authFacade: AuthFacade
   ) {
+    let startLoading = true;
     combineLatest([
       this.clinicFacade.currentClinicId$,
       this.layoutFacade.dateRange$,
@@ -133,6 +134,7 @@ export class FinancesComponent implements OnInit, OnDestroy {
             );
             break;
         }
+        startLoading = false;
       });
 
     combineLatest([
@@ -143,7 +145,8 @@ export class FinancesComponent implements OnInit, OnDestroy {
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([errs, isLoadingAll, isLoadingAllTrend, roleData]) => {
-        if (roleData.type === 7) {
+        if (startLoading) return;
+        if (roleData?.type === 7) {
           if (errs.length > 0) {
             if (errs.every((e) => e.status === 403)) {
               this.errMsg = errs[0].message;

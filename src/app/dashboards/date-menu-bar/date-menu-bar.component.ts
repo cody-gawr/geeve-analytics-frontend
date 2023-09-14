@@ -342,8 +342,10 @@ export class DateMenuBarComponent
     }
 
     localStorage.setItem("layout", JSON.stringify(newAppLayoutData));
-    this.datePicker.setStartDate(start);
-    this.datePicker.setEndDate(end);
-    this.datePicker.updateView();
+    if (this.datePicker) {
+      this.datePicker.setStartDate(start);
+      this.datePicker.setEndDate(end);
+      this.datePicker.updateView();
+    }
   }
 }

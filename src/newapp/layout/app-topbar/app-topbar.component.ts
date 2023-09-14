@@ -2,7 +2,14 @@ import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import { Moment } from "moment";
-import { map, Subject, takeUntil, combineLatest, take } from "rxjs";
+import {
+  map,
+  Subject,
+  takeUntil,
+  combineLatest,
+  take,
+  distinctUntilChanged,
+} from "rxjs";
 import { LayoutFacade } from "../facades/layout.facade";
 import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
 import { AuthFacade } from "@/newapp/auth/facades/auth.facade";
@@ -143,7 +150,17 @@ export class AppTopbarComponent implements OnInit {
       this.isEnableDentistDropdown$,
       this.clinicFacade.currentClinics$,
     ])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged(
+          ([prevEnable, prevClinics], [currEnable, currClinics]) => {
+            return (
+              prevEnable == currEnable &&
+              prevClinics[0]?.id == currClinics[0]?.id
+            );
+          }
+        )
+      )
       .subscribe(([isEnable, clinics]) => {
         if (isEnable && clinics.length > 0) {
           this.dentistFacade.loadDentists(clinics[0].id, 0);
@@ -193,6 +210,15 @@ export class AppTopbarComponent implements OnInit {
             this.clinicFacade.setCurrentSingleClinicId(currentClinicIDs[0]);
           }
         }
+      });
+
+    this.clinicFacade.currentClinics$
+      .pipe(
+        takeUntil(this.destroy$),
+        map((currentClinics) => currentClinics.map((c) => c.id)),
+        distinctUntilChanged((prev, curr) => _.min(prev) == _.min(curr))
+      )
+      .subscribe((currentClinicIDs) => {
         if (currentClinicIDs.length > 0) {
           this.dashboardFacade.loadClinicAccountingPlatform(
             _.min(currentClinicIDs)
