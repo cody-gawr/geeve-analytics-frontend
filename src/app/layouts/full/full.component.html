@@ -212,7 +212,7 @@
             <app-spinner></app-spinner>
           </router-outlet>
         </div>
-        <div class="page-content p-0" *ngIf="unAuth$ | async">
+        <div *ngIf="unAuth$ | async">
           <p style="text-align: center;color: red;">{{unAuthMsg$ | async}}</p>
         </div>
       </mat-sidenav-content>
