@@ -1,13 +1,16 @@
-import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
-import * as _ from 'lodash';
-import { environment } from '@/environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { CONNECT_WITH_PLATFORM, ChartTipsApiResponse } from '../../models/dashboard';
-import camelcaseKeys from 'camelcase-keys';
+import { Injectable } from "@angular/core";
+import { Observable, map } from "rxjs";
+import * as _ from "lodash";
+import { environment } from "@/environments/environment";
+import { HttpClient } from "@angular/common/http";
+import {
+  CONNECT_WITH_PLATFORM,
+  ChartTipsApiResponse,
+} from "../../models/dashboard";
+import camelcaseKeys from "camelcase-keys";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class DashboardService {
   private apiUrl = environment.apiUrl;
@@ -28,18 +31,24 @@ export class DashboardService {
     dashboardId: number,
     clinicId: string | number
   ): Observable<ChartTipsApiResponse> => {
-    return this.http.get<ChartTipsApiResponse>(
-      `${this.apiUrl}/chartsTips/ctGetPageTips?dashboard_id=${dashboardId}&clinic_id=${clinicId}`,
-      { withCredentials: true }
-    ).pipe(map(res => <ChartTipsApiResponse> camelcaseKeys(res, {deep: true})));
+    return this.http
+      .get<ChartTipsApiResponse>(
+        `${this.apiUrl}/chartsTips/ctGetPageTips?dashboard_id=${dashboardId}&clinic_id=${clinicId}`,
+        { withCredentials: true }
+      )
+      .pipe(
+        map((res) => <ChartTipsApiResponse>camelcaseKeys(res, { deep: true }))
+      );
   };
 
   getClinicAccountingPlatform = (
-    clinicId: string | number
-  ): Observable<{data: CONNECT_WITH_PLATFORM, message: string}> => {
-    return this.http.get<any>(
-      `${this.apiUrl}/Clinics/clinicGetAccountingPlatform?clinic_id=${clinicId}`,
-      { withCredentials: true }
-    ).pipe(map(res => <any> camelcaseKeys(res, {deep: true})));
+    clinicId: number
+  ): Observable<{ data: CONNECT_WITH_PLATFORM; message: string }> => {
+    return this.http
+      .get<any>(
+        `${this.apiUrl}/Clinics/clinicGetAccountingPlatform?clinic_id=${clinicId}`,
+        { withCredentials: true }
+      )
+      .pipe(map((res) => <any>camelcaseKeys(res, { deep: true })));
   };
 }

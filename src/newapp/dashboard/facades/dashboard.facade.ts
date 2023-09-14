@@ -1,14 +1,16 @@
-import { Injectable } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { DashboardPageActions } from '../state/actions';
+import { Injectable } from "@angular/core";
+import { select, Store } from "@ngrx/store";
+import { Observable } from "rxjs";
+import { DashboardPageActions } from "../state/actions";
 import {
   DashboardState,
   selectChartTips,
+  selectConnectedClinicId,
   selectConnectedWith,
-  selectErrors
-} from '../state/reducers/dashboard.reducer';
-import { JeeveError } from '@/newapp/models';
+  selectErrors,
+  selectIsLoadingClinicAccountingPlatform,
+} from "../state/reducers/dashboard.reducer";
+import { JeeveError } from "@/newapp/models";
 
 @Injectable()
 export class DashboardFacade {
@@ -18,13 +20,17 @@ export class DashboardFacade {
     select(selectErrors)
   );
 
-  public readonly chartTips$ = this.store.pipe(
-    select(selectChartTips)
+  public readonly chartTips$ = this.store.pipe(select(selectChartTips));
+
+  public readonly connectedWith$ = this.store.pipe(select(selectConnectedWith));
+
+  public readonly isLoadingClinicAccounting$ = this.store.pipe(
+    select(selectIsLoadingClinicAccountingPlatform)
   );
 
-  public readonly connectedWith$ = this.store.pipe(
-    select(selectConnectedWith)
-  )
+  public readonly connectedClinicId$ = this.store.pipe(
+    select(selectConnectedClinicId)
+  );
 
   public loadChartTips(dashboardId: number, clinicId: string | number) {
     this.store.dispatch(
@@ -32,9 +38,15 @@ export class DashboardFacade {
     );
   }
 
-  public loadClinicAccountingPlatform(clinicId: string | number) {
+  public loadClinicAccountingPlatform(clinicId: number) {
     this.store.dispatch(
       DashboardPageActions.loadClinicAccountingPlatform({ clinicId })
+    );
+  }
+
+  public setConnectedClinicId(clinicId: number) {
+    this.store.dispatch(
+      DashboardPageActions.setConnectedClinicId({ clinicId })
     );
   }
 }

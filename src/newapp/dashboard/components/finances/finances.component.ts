@@ -8,6 +8,7 @@ import { Router } from "@angular/router";
 import { FnNetProfitParams } from "@/newapp/models/dashboard";
 import moment from "moment";
 import { AuthFacade } from "@/newapp/auth/facades/auth.facade";
+import _ from "lodash";
 
 @Component({
   selector: "dashboard-finances",
@@ -49,17 +50,48 @@ export class FinancesComponent implements OnInit, OnDestroy {
       this.dashbordFacade.connectedWith$,
       this.router.routerState.root.queryParams,
       this.layoutFacade.trend$,
+      this.dashbordFacade.connectedClinicId$,
     ])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(([clinicId, dateRange, connectedWith, route, trend]) => {
-        if (clinicId == null) return;
+      .pipe(
+        takeUntil(this.destroy$)
+        // distinctUntilChanged((prev, curr) => {
+        //   return (
+        //     prev[0] == curr[0] &&
+        //     ((prev[1].duration !== "custom" &&
+        //       prev[1].duration == curr[1].duration) ||
+        //       (prev[1].start?.isSame(curr[1].start) &&
+        //         prev[1].end?.isSame(curr[1].end))) &&
+        //     prev[2] == curr[2] &&
+        //     prev[3] == curr[3] &&
+        //     prev[4] == curr[4]
+        //   );
+        // })
+      )
+      .subscribe((params) => {
+        const [
+          clinicId,
+          dateRange,
+          connectedWith,
+          route,
+          trend,
+          connectedClinicId,
+        ] = params;
+
         if (typeof clinicId !== "string" && connectedWith == null) return;
+        const newConnectedId =
+          typeof clinicId == "string"
+            ? _.min(clinicId.split(",").map((c) => parseInt(c)))
+            : clinicId;
+        if (newConnectedId !== connectedClinicId) {
+          return;
+        }
         const startDate = dateRange.start;
         const endDate = dateRange.end;
         const duration = dateRange.duration;
 
         this.dashbordFacade.loadChartTips(5, clinicId);
         const queryWhEnabled = route && parseInt(route.wh ?? "0") == 1 ? 1 : 0;
+        console.log("test", params);
         switch (trend) {
           case "off":
             const params: FnNetProfitParams = {
@@ -137,8 +169,6 @@ export class FinancesComponent implements OnInit, OnDestroy {
 
     combineLatest([
       this.financeFacade.errors$,
-      // this.financeFacade.isLoadingAllData$,
-      // this.financeFacade.isLoadingAllTrendData$,
       this.authFacade.rolesIndividual$,
     ])
       .pipe(takeUntil(this.destroy$))
@@ -151,10 +181,6 @@ export class FinancesComponent implements OnInit, OnDestroy {
               return;
             }
           }
-          // if (isLoadingAll || isLoadingAllTrend) {
-          //   this.noPermission = false;
-          //   return;
-          // }
         }
 
         this.noPermission = true;

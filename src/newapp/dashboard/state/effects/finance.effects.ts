@@ -1,18 +1,27 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { catchError, map, mergeMap, of, withLatestFrom, filter } from "rxjs";
+import {
+  catchError,
+  map,
+  of,
+  withLatestFrom,
+  filter,
+  mergeMap,
+  Subject,
+  takeUntil,
+} from "rxjs";
 import { FinanceService } from "../../services/finance.service";
 import { FinanceApiActions, FinancePageActions } from "../actions";
 import { Store } from "@ngrx/store";
 import {
   FinanceState,
-  selectIsLoadingCollection,
-  selectIsLoadingCollectionTrend,
+  // selectIsLoadingCollection,
+  // selectIsLoadingCollectionTrend,
   selectIsLoadingNetProfit,
-  selectIsLoadingNetProfitTrend,
-  selectIsLoadingTotalProduction,
-  selectIsLoadingTotalProductionTrend,
+  // selectIsLoadingNetProfitTrend,
+  // selectIsLoadingTotalProduction,
+  // selectIsLoadingTotalProductionTrend,
 } from "../reducers/finance.reducer";
 
 @Injectable()
@@ -23,12 +32,15 @@ export class FinanceEffects {
     private store: Store<FinanceState>
   ) {}
 
+  destroy = new Subject<void>();
+  destroy$ = this.destroy.asObservable();
+
   public readonly loadFnTotalProduction$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnTotalProduction),
-      withLatestFrom(this.store.select(selectIsLoadingTotalProduction)),
-      filter(([action, isLoading]) => isLoading),
-      mergeMap(([params]) => {
+      // withLatestFrom(interval(1000)),
+      // filter(([action, isLoading]) => !isLoading),
+      mergeMap((params) => {
         return this.financeService.fnTotalProduction(params).pipe(
           map((res) =>
             FinanceApiActions.fnTotalProductionSuccess({
@@ -52,9 +64,9 @@ export class FinanceEffects {
   public readonly loadFnTotalProductionTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnTotalProductionTrend),
-      withLatestFrom(this.store.select(selectIsLoadingTotalProductionTrend)),
-      filter(([action, isLoading]) => isLoading),
-      mergeMap(([{ clinicId, mode, queryWhEnabled }]) => {
+      // withLatestFrom(this.store.select(selectIsLoadingTotalProductionTrend)),
+      // filter(([action, isLoading]) => isLoading),
+      mergeMap(({ clinicId, mode, queryWhEnabled }) => {
         return this.financeService
           .fnTotalProductionTrend(clinicId, mode, queryWhEnabled)
           .pipe(
@@ -71,16 +83,17 @@ export class FinanceEffects {
               )
             )
           );
-      })
+      }),
+      takeUntil(this.destroy$)
     );
   });
 
   public readonly loadFnTotalCollection$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnTotalCollection),
-      withLatestFrom(this.store.select(selectIsLoadingCollection)),
-      filter(([action, isLoading]) => isLoading),
-      mergeMap(([params]) => {
+      // withLatestFrom(this.store.select(selectIsLoadingCollection)),
+      // filter(([action, isLoading]) => isLoading),
+      mergeMap((params) => {
         return this.financeService.fnTotalCollection(params).pipe(
           map((res) =>
             FinanceApiActions.fnTotalCollectionSuccess({
@@ -104,9 +117,9 @@ export class FinanceEffects {
   public readonly loadFnTotalCollectionTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnTotalCollectionTrend),
-      withLatestFrom(this.store.select(selectIsLoadingCollectionTrend)),
-      filter(([action, isLoading]) => isLoading),
-      mergeMap(([{ clinicId, mode, queryWhEnabled }]) => {
+      // withLatestFrom(this.store.select(selectIsLoadingCollectionTrend)),
+      // filter(([action, isLoading]) => isLoading),
+      mergeMap(({ clinicId, mode, queryWhEnabled }) => {
         return this.financeService
           .fnTotalCollectionTrend(clinicId, mode, queryWhEnabled)
           .pipe(
@@ -137,13 +150,16 @@ export class FinanceEffects {
           map((res) =>
             FinanceApiActions.fnNetProfitSuccess({ value: res.data })
           ),
-          catchError((error: HttpErrorResponse) =>
-            of(
+          catchError((error: HttpErrorResponse) => {
+            const jeeErr = error.error?.jeeveError ?? error;
+            jeeErr.api = "fnNetProfit";
+            jeeErr.platform = params.connectedWith;
+            return of(
               FinanceApiActions.fnNetProfitFailure({
-                error: error.error?.jeeveError ?? error,
+                error: jeeErr,
               })
-            )
-          )
+            );
+          })
         );
       })
     );
@@ -152,9 +168,9 @@ export class FinanceEffects {
   public readonly loadfnNetProfitTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnNetProfitTrend),
-      withLatestFrom(this.store.select(selectIsLoadingNetProfitTrend)),
-      filter(([action, isLoading]) => isLoading),
-      mergeMap(([{ clinicId, mode, connectedWith, queryWhEnabled }]) => {
+      // withLatestFrom(this.store.select(selectIsLoadingNetProfitTrend)),
+      // filter(([action, isLoading]) => isLoading),
+      mergeMap(({ clinicId, mode, connectedWith, queryWhEnabled }) => {
         return this.financeService
           .fnNetProfitTrend(clinicId, mode, connectedWith, queryWhEnabled)
           .pipe(
@@ -163,13 +179,16 @@ export class FinanceEffects {
                 netProfitTrendData: res.data,
               })
             ),
-            catchError((error: HttpErrorResponse) =>
-              of(
+            catchError((error: HttpErrorResponse) => {
+              const jeeErr = error.error?.jeeveError ?? error;
+              jeeErr.api = "fnNetProfitTrend";
+              jeeErr.platform = connectedWith;
+              return of(
                 FinanceApiActions.fnNetProfitTrendFailure({
-                  error: error.error?.jeeveError ?? error,
+                  error: jeeErr,
                 })
-              )
-            )
+              );
+            })
           );
       })
     );
@@ -183,13 +202,16 @@ export class FinanceEffects {
           map((res) =>
             FinanceApiActions.fnNetProfitPercentageSuccess({ value: res.data })
           ),
-          catchError((error: HttpErrorResponse) =>
-            of(
+          catchError((error: HttpErrorResponse) => {
+            const jeeErr = error.error?.jeeveError ?? error;
+            jeeErr.api = "fnNetProfitPercentage";
+            jeeErr.platform = params.connectedWith;
+            return of(
               FinanceApiActions.fnNetProfitPercentageFailure({
-                error: error.error?.jeeveError ?? error,
+                error: jeeErr,
               })
-            )
-          )
+            );
+          })
         );
       })
     );
@@ -212,13 +234,16 @@ export class FinanceEffects {
                 netProfitPercentTrendData: res.data,
               })
             ),
-            catchError((error: HttpErrorResponse) =>
-              of(
+            catchError((error: HttpErrorResponse) => {
+              const jeeErr = error.error?.jeeveError ?? error;
+              jeeErr.api = "fnNetProfitPercentageTrend";
+              jeeErr.platform = connectedWith;
+              return of(
                 FinanceApiActions.fnNetProfitPercentTrendFailure({
-                  error: error.error?.jeeveError ?? error,
+                  error: jeeErr,
                 })
-              )
-            )
+              );
+            })
           );
       })
     );
@@ -235,13 +260,16 @@ export class FinanceEffects {
               production: res.production,
             })
           ),
-          catchError((error: HttpErrorResponse) =>
-            of(
+          catchError((error: HttpErrorResponse) => {
+            const jeeErr = error.error?.jeeveError ?? error;
+            jeeErr.api = "fnExpenses";
+            jeeErr.platform = params.connectedWith;
+            return of(
               FinanceApiActions.fnExpensesFailure({
-                error: error.error?.jeeveError ?? error,
+                error: jeeErr,
               })
-            )
-          )
+            );
+          })
         );
       })
     );
@@ -260,13 +288,16 @@ export class FinanceEffects {
                 durations: res.durations,
               })
             ),
-            catchError((error: HttpErrorResponse) =>
-              of(
+            catchError((error: HttpErrorResponse) => {
+              const jeeErr = error.error?.jeeveError ?? error;
+              jeeErr.api = "fnExpensesTrend";
+              jeeErr.platform = connectedWith;
+              return of(
                 FinanceApiActions.fnExpensesTrendFailure({
-                  error: error.error?.jeeveError ?? error,
+                  error: jeeErr,
                 })
-              )
-            )
+              );
+            })
           );
       })
     );

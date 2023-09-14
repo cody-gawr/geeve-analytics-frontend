@@ -262,6 +262,10 @@ export class FinanceFacade {
     select(selectProductionCollectionTrendChartData)
   );
 
+  public setErrors(errors: JeeveError[]) {
+    this.store.dispatch(FinancePageActions.setErrors({ errors }));
+  }
+
   public loadFnTotalProduction(params: FnNetProfitParams) {
     this.store.dispatch(FinancePageActions.loadFnTotalProduction(params));
   }

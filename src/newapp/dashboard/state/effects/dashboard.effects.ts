@@ -1,9 +1,9 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, of } from 'rxjs';
-import { DashboardService } from '../../services/dashboard.service';
-import { DashboardApiActions, DashboardPageActions } from '../actions';
+import { HttpErrorResponse } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { catchError, map, mergeMap, of } from "rxjs";
+import { DashboardService } from "../../services/dashboard.service";
+import { DashboardApiActions, DashboardPageActions } from "../actions";
 
 @Injectable()
 export class DashboardEffects {
@@ -23,7 +23,7 @@ export class DashboardEffects {
           catchError((error: HttpErrorResponse) =>
             of(
               DashboardApiActions.loadChartTipsFailure({
-                error: error.error ?? error
+                error: error.error ?? error,
               })
             )
           )
@@ -32,19 +32,21 @@ export class DashboardEffects {
     );
   });
 
-  
   public readonly getClinicAccountingPlatform$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(DashboardPageActions.loadClinicAccountingPlatform),
       mergeMap(({ clinicId }) => {
         return this.dashboardService.getClinicAccountingPlatform(clinicId).pipe(
           map((res) =>
-            DashboardApiActions.clinicAccountingPlatformSuccess({ connectWith: res.data })
+            DashboardApiActions.clinicAccountingPlatformSuccess({
+              connectWith: res.data,
+              clinicId,
+            })
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               DashboardApiActions.clinicAccountingPlatformFailure({
-                error: error.error ?? error
+                error: error.error ?? error,
               })
             )
           )

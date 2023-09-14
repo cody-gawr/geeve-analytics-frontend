@@ -837,7 +837,13 @@ export const financeFeature = createFeature({
           trendProfitChartName: chartName,
         };
       }
-    )
+    ),
+    on(FinancePageActions.setErrors, (state, { errors }): FinanceState => {
+      return {
+        ...state,
+        errors,
+      };
+    })
   ),
 });
 

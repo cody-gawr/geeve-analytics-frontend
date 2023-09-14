@@ -12,16 +12,19 @@ export class JeeveError {
   message!: string;
   status!: number;
   errors!: any[];
+  platform?: string;
 
   constructor(
     message: string,
     status: number = 500,
     errors: any[] = [],
-    api = ""
+    api = "",
+    platform = null
   ) {
     this.message = message;
     this.status = status;
     this.errors = errors;
     this.api = api;
+    this.platform = platform;
   }
 }
