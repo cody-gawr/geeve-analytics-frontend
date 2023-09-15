@@ -37,11 +37,13 @@ import { USER_MASTER, CONSULTANT, USER_CLINICIAN } from "@/newapp/constants";
 interface MenuNode {
   title: string;
   path: string;
+  linkType?: "open" | "route" | "modal";
   icon?: IconDefinition;
   children?: MenuNode[];
   permissions?: string[];
   userTypes?: number[];
   validatorFn?: Function;
+  badgeText?: string;
 }
 
 interface MenuValidatorParams {
@@ -256,6 +258,7 @@ const MENU_DATA: MenuNode[] = [
     title: "Refer A Friend", // Get 50% off
     path: "",
     icon: faHandshake,
+    badgeText: "Get 50% off",
   },
   // user_type != 7 && apiUrl.includes('test')
   {
@@ -304,6 +307,7 @@ const MENU_DATA: MenuNode[] = [
     title: "Help",
     path: "https://jeeve.crunch.help/jeeve-analytics",
     icon: faQuestion,
+    linkType: "open",
   },
 ];
 
@@ -332,6 +336,8 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       path: node.path,
       icon: node.icon,
       level: level,
+      badgeText: node.badgeText,
+      linkType: node.linkType,
     };
   };
 

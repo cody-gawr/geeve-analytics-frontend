@@ -8,13 +8,23 @@
     *matTreeNodeDef="let node"
     matTreeNodePadding
   >
-    <a [routerLink]="'/' + node.path" [ngClass]="{ active: node.title == activedTitle }">
+    <a *ngIf="!node.linkType || node.linkType == 'route'" [routerLink]="'/' + node.path" [ngClass]="{ active: node.title == activedTitle }">
       <!-- use a disabled button to provide padding for tree leaf -->
       <div *ngIf="node.level == 0" class="menu-icon-btn">
         <fa-icon *ngIf="!!node.icon" [icon]="node.icon"></fa-icon>
       </div>
       <span *ngIf="node.level !== 0">&nbsp;&nbsp;&nbsp;</span>
       {{ node.title }}
+      <span class="badge-yellow" *ngIf="node.badgeText">{{node.badgeText}}</span>
+    </a>
+    <a *ngIf="node.linkType && node.linkType == 'open'" [href]="node.path" target="_blank" [ngClass]="{ active: node.title == activedTitle }">
+      <!-- use a disabled button to provide padding for tree leaf -->
+      <div *ngIf="node.level == 0" class="menu-icon-btn">
+        <fa-icon *ngIf="!!node.icon" [icon]="node.icon"></fa-icon>
+      </div>
+      <span *ngIf="node.level !== 0">&nbsp;&nbsp;&nbsp;</span>
+      {{ node.title }}
+      <span class="badge-yellow" *ngIf="node.badgeText">{{node.badgeText}}</span>
     </a>
   </mat-tree-node>
   <!-- This is the tree node template for expandable nodes -->
