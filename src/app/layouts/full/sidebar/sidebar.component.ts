@@ -291,6 +291,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
         "m"
       );
       this.chartService.changeDuration("m");
+      this.rolesUsersService.setUnAuth(false);
       this._cookieService.removeAll();
       localStorage.clear();
       this.rolesUsersService.setRoleIndividual({

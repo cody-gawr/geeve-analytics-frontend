@@ -72,7 +72,7 @@
       (user_type == 2 ||
         permisions.indexOf('campaigns') >= 0 ||
         user_type == 7) &&
-      apiUrl.includes('test')
+      apiUrl.includes('test') && false
     "
   >
     <a class="" appAccordionToggle [routerLink]="['/campaigns']">
@@ -241,7 +241,7 @@
       (user_type == 2 ||
         permisions.indexOf('staffmeeting') >= 0 ||
         user_type == 7) &&
-      apiUrl.includes('test')
+      apiUrl.includes('test') && false
     "
   >
     <!-- *ngIf="apiUrl.includes('test')"> -->
@@ -288,7 +288,7 @@
     appAccordionLink
     routerLinkActive="selected"
     group="string"
-    *ngIf="apiUrl.includes('test')"
+    *ngIf="apiUrl.includes('test') && false"
   >
     <a class="" appAccordionToggle [routerLink]="['/rewards']">
       <i class="fas fa-hand-holding-usd"></i>
@@ -314,7 +314,7 @@
     appAccordionLink
     routerLinkActive="selected"
     group="string"
-    *ngIf="user_type != 7 && apiUrl.includes('test')"
+    *ngIf="user_type != 7 && apiUrl.includes('test') && false"
   >
     <a class="" appAccordionToggle [routerLink]="['/tasks']">
       <i class="fa-briefcase fas"></i>

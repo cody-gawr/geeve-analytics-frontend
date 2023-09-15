@@ -106,6 +106,7 @@ const MENU_DATA: MenuNode[] = [
     path: "campaigns",
     icon: faUsers,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
+      return false;
       return (
         (permissions?.indexOf("campaigns") >= 0 ||
           [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
@@ -204,6 +205,7 @@ const MENU_DATA: MenuNode[] = [
     path: "staff-meetings",
     icon: faIdCard,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
+      return false;
       return (
         (permissions?.indexOf("staffmeeting") >= 0 ||
           [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
@@ -246,6 +248,7 @@ const MENU_DATA: MenuNode[] = [
     path: "rewards",
     icon: faHandHoldingUsd,
     validatorFn: () => {
+      return false;
       return environment.apiUrl.includes("test");
     },
   },
@@ -260,6 +263,7 @@ const MENU_DATA: MenuNode[] = [
     path: "tasks",
     icon: faBriefcase,
     validatorFn: ({ userType }: MenuValidatorParams) => {
+      return false;
       return userType != 7 && environment.apiUrl.includes("test");
     },
   },
