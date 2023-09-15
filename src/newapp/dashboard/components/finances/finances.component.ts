@@ -77,7 +77,6 @@ export class FinancesComponent implements OnInit, OnDestroy {
           connectedClinicId,
         ] = params;
 
-        if (typeof clinicId !== "string" && connectedWith == null) return;
         const newConnectedId =
           typeof clinicId == "string"
             ? _.min(clinicId.split(",").map((c) => parseInt(c)))
