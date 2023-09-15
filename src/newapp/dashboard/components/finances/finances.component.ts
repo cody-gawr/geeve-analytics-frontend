@@ -91,7 +91,7 @@ export class FinancesComponent implements OnInit, OnDestroy {
 
         this.dashbordFacade.loadChartTips(5, clinicId);
         const queryWhEnabled = route && parseInt(route.wh ?? "0") == 1 ? 1 : 0;
-        console.log("test", params);
+        this.financeFacade.setErrors([]);
         switch (trend) {
           case "off":
             const params: FnNetProfitParams = {
@@ -170,19 +170,27 @@ export class FinancesComponent implements OnInit, OnDestroy {
     combineLatest([
       this.financeFacade.errors$,
       this.authFacade.rolesIndividual$,
+      this.layoutFacade.trend$,
     ])
       .pipe(takeUntil(this.destroy$))
-      .subscribe(([errs, roleData]) => {
+      .subscribe(([errs, roleData, trendMode]) => {
         if (roleData?.type === 7) {
           if (errs.length > 0) {
-            if (errs.every((e) => e.status === 403 || e.status === 502)) {
+            if (
+              errs.every(
+                (e) =>
+                  (e.status == 403 || e.status == 502 || e.status == 401) &&
+                  (trendMode && trendMode !== "off"
+                    ? e.api.includes("Trend")
+                    : !e.api.includes("Trend"))
+              )
+            ) {
               this.errMsg = errs[0].message;
               this.noPermission = false;
               return;
             }
           }
         }
-
         this.noPermission = true;
       });
   }
