@@ -1,5 +1,5 @@
 import { JeeveError } from "@/newapp/models";
-import { CONNECT_WITH_PLATFORM, ChartTip } from "../../../models/dashboard";
+import { ChartTip } from "../../../models/dashboard";
 import { createAction, props } from "@ngrx/store";
 
 export const loadChartTipsSuccess = createAction(

@@ -7,6 +7,7 @@ import { Router } from "@angular/router";
 import moment from "moment";
 import { AuthFacade } from "@/newapp/auth/facades/auth.facade";
 import { FrontDeskFacade } from "../../facades/front-desk.facade";
+import _ from "lodash";
 
 @Component({
   selector: "dashboard-front-desk",
@@ -53,76 +54,89 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
       this.dashbordFacade.connectedWith$,
       this.router.routerState.root.queryParams,
       this.layoutFacade.trend$,
-      this.authUserId$,
+      this.dashbordFacade.connectedClinicId$,
     ])
       .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        ([clinicId, dateRange, connectedWith, route, trend, userId]) => {
-          if (clinicId == null) return;
-          if (typeof clinicId !== "string" && connectedWith == null) return;
-          const startDate = dateRange.start;
-          const endDate = dateRange.end;
-          const duration = dateRange.duration;
-
-          this.dashbordFacade.loadChartTips(3, clinicId);
-          const queryWhEnabled =
-            route && parseInt(route.wh ?? "0") == 1 ? 1 : 0;
-
-          switch (trend) {
-            case "off":
-              const params = {
-                clinicId: clinicId,
-                startDate: startDate && moment(startDate).format("DD-MM-YYYY"),
-                endDate: endDate && moment(endDate).format("DD-MM-YYYY"),
-                duration: duration,
-                queryWhEnabled,
-                connectedWith: connectedWith,
-              };
-
-              this.frontDeskFacade.loadFdUtilisationRate(params);
-              this.frontDeskFacade.loadFdUtilisationRateByDay(params);
-              this.frontDeskFacade.loadFdRecallRate(params);
-              this.frontDeskFacade.loadFdReappointRate(params);
-              this.frontDeskFacade.loadFdNumTicks(params);
-              this.frontDeskFacade.loadFdFtaRatio(params);
-              this.frontDeskFacade.loadFdUtaRatio(params);
-              break;
-            case "current":
-            case "historic":
-              this.frontDeskFacade.loadFdUtilisationRateTrend(
-                clinicId,
-                trend === "current" ? "c" : "h",
-                queryWhEnabled
-              );
-              this.frontDeskFacade.loadFdRecallRateTrend(
-                clinicId,
-                trend === "current" ? "c" : "h",
-                queryWhEnabled
-              );
-              this.frontDeskFacade.loadFdReappointRateTrend(
-                clinicId,
-                trend === "current" ? "c" : "h",
-                queryWhEnabled
-              );
-              this.frontDeskFacade.loadFdNumTicksTrend(
-                clinicId,
-                trend === "current" ? "c" : "h",
-                queryWhEnabled
-              );
-              this.frontDeskFacade.loadFdFtaRatioTrend(
-                clinicId,
-                trend === "current" ? "c" : "h",
-                queryWhEnabled
-              );
-              this.frontDeskFacade.loadFdUtaRatioTrend(
-                clinicId,
-                trend === "current" ? "c" : "h",
-                queryWhEnabled
-              );
-              break;
-          }
+      .subscribe((params) => {
+        const [
+          clinicId,
+          dateRange,
+          connectedWith,
+          route,
+          trend,
+          connectedClinicId,
+        ] = params;
+        if (clinicId == null) return;
+        //if (typeof clinicId !== "string" && connectedWith == null) return;
+        const newConnectedId =
+          typeof clinicId == "string"
+            ? _.min(clinicId.split(",").map((c) => parseInt(c)))
+            : clinicId;
+        if (newConnectedId !== connectedClinicId) {
+          return;
         }
-      );
+
+        const startDate = dateRange.start;
+        const endDate = dateRange.end;
+        const duration = dateRange.duration;
+
+        this.dashbordFacade.loadChartTips(3, clinicId);
+        const queryWhEnabled = route && parseInt(route.wh ?? "0") == 1 ? 1 : 0;
+        this.frontDeskFacade.setErrors([]);
+        switch (trend) {
+          case "off":
+            const params = {
+              clinicId: clinicId,
+              startDate: startDate && moment(startDate).format("DD-MM-YYYY"),
+              endDate: endDate && moment(endDate).format("DD-MM-YYYY"),
+              duration: duration,
+              queryWhEnabled,
+              connectedWith: connectedWith,
+            };
+
+            this.frontDeskFacade.loadFdUtilisationRate(params);
+            this.frontDeskFacade.loadFdUtilisationRateByDay(params);
+            this.frontDeskFacade.loadFdRecallRate(params);
+            this.frontDeskFacade.loadFdReappointRate(params);
+            this.frontDeskFacade.loadFdNumTicks(params);
+            this.frontDeskFacade.loadFdFtaRatio(params);
+            this.frontDeskFacade.loadFdUtaRatio(params);
+            break;
+          case "current":
+          case "historic":
+            this.frontDeskFacade.loadFdUtilisationRateTrend(
+              clinicId,
+              trend === "current" ? "c" : "h",
+              queryWhEnabled
+            );
+            this.frontDeskFacade.loadFdRecallRateTrend(
+              clinicId,
+              trend === "current" ? "c" : "h",
+              queryWhEnabled
+            );
+            this.frontDeskFacade.loadFdReappointRateTrend(
+              clinicId,
+              trend === "current" ? "c" : "h",
+              queryWhEnabled
+            );
+            this.frontDeskFacade.loadFdNumTicksTrend(
+              clinicId,
+              trend === "current" ? "c" : "h",
+              queryWhEnabled
+            );
+            this.frontDeskFacade.loadFdFtaRatioTrend(
+              clinicId,
+              trend === "current" ? "c" : "h",
+              queryWhEnabled
+            );
+            this.frontDeskFacade.loadFdUtaRatioTrend(
+              clinicId,
+              trend === "current" ? "c" : "h",
+              queryWhEnabled
+            );
+            break;
+        }
+      });
   }
 
   ngOnInit(): void {}

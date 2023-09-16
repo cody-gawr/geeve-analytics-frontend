@@ -1,21 +1,18 @@
-import { Moment } from 'moment';
-import { User } from '../user';
+import { Moment } from "moment";
 
 type CLINIC_TIMEZONE =
-  | 'Australia/Lord_Howe'
-  | 'Australia/Hobart'
-  | 'Australia/Currie'
-  | 'Australia/Melbourne'
-  | 'Australia/Sydney'
-  | 'Australia/Broken_Hill'
-  | 'Australia/Brisbane'
-  | 'Australia/Lindeman'
-  | 'Australia/Adelaide'
-  | 'Australia/Darwin'
-  | 'Australia/Perth'
-  | 'Australia/Eucla';
-
-export type FPT_UTA = 'status' | 'item';
+  | "Australia/Lord_Howe"
+  | "Australia/Hobart"
+  | "Australia/Currie"
+  | "Australia/Melbourne"
+  | "Australia/Sydney"
+  | "Australia/Broken_Hill"
+  | "Australia/Brisbane"
+  | "Australia/Lindeman"
+  | "Australia/Adelaide"
+  | "Australia/Darwin"
+  | "Australia/Perth"
+  | "Australia/Eucla";
 
 export interface Clinic {
   acceptedSmsTerms: number;
@@ -109,7 +106,7 @@ export interface ClinicsListApiResponse {
   message: string;
   status: string;
   total: number;
-  hasPrimeClinics: 'yes' | 'no';
+  hasPrimeClinics: "yes" | "no";
 }
 
 export interface MasterUsersListApiResponse {
@@ -132,8 +129,6 @@ export interface ClinicSetting {
 export interface SyncHistory {
   syncDate: string;
 }
-
-export type PMS = 'core' | 'd4w' | 'exact' | 'myob' | 'xero';
 
 export interface UpdateClinicRequest {
   pms: PMS;

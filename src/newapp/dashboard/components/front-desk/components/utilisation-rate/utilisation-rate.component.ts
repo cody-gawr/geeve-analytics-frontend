@@ -1,11 +1,11 @@
 import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
 import { FrontDeskFacade } from "@/newapp/dashboard/facades/front-desk.facade";
 import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
-import { DateRangeMenus } from "@/newapp/shared/components/date-range-menu/date-range-menu.component";
 import { Component, OnInit, OnDestroy, Input } from "@angular/core";
 import { ChartOptions, LegendOptions, ChartDataset } from "chart.js";
 import { _DeepPartialObject } from "chart.js/dist/types/utils";
 import _ from "lodash";
+import moment from "moment";
 import { Subject, takeUntil, combineLatest, map } from "rxjs";
 
 @Component({
@@ -115,7 +115,8 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
       map(([trendMode, dateRange]) => {
         if (trendMode === "historic") return true;
         if (!!trendMode && trendMode != "off") {
-          const difference = dateRange.end.diff(dateRange.start, "days");
+          const endDateObj = moment(dateRange.end);
+          const difference = endDateObj.diff(dateRange.start, "days");
           if (difference > 365) {
             return true;
           }

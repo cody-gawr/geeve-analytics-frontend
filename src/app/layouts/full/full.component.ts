@@ -1,7 +1,7 @@
 import * as $ from "jquery";
-import { DOCUMENT, Location } from "@angular/common";
+import { DOCUMENT } from "@angular/common";
 import { MediaMatcher } from "@angular/cdk/layout";
-import { Router, ActivatedRoute } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import {
   ChangeDetectorRef,
   Component,
@@ -43,7 +43,7 @@ export class FullComponent implements OnDestroy, AfterViewInit {
   private apiUrl = environment.apiUrl;
   public finalUrl: string;
   public id: string;
-  public trailDays: Number = 0;
+  public trailDays: number = 0;
   selectedClinic: any = "1";
   public title;
   public showTrail: boolean = false;

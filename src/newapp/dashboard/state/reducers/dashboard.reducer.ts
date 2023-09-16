@@ -1,8 +1,4 @@
-import {
-  API_ENDPOINTS,
-  CONNECT_WITH_PLATFORM,
-  ChartTip,
-} from "../../../models/dashboard";
+import { ChartTip } from "../../../models/dashboard";
 import { createFeature, createReducer, createSelector, on } from "@ngrx/store";
 import { DashboardApiActions, DashboardPageActions } from "../actions";
 import * as _ from "lodash";

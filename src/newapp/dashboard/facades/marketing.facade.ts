@@ -1,9 +1,43 @@
-import { Injectable } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { JeeveError } from '@/newapp/models';
-import { MarketingPageActions } from '../state/actions';
-import { MarketingState, selectActivePatientsChartData, selectActivePatientsTrendChartData, selectErrors, selectIsActivePatients, selectIsActivePatientsWithPlatform, selectIsLoadingMkMyobAccounts, selectIsLoadingMkNewPatientAcq, selectIsLoadingMkNewPatientAcqTrend, selectIsLoadingMkNewPatientsByReferral, selectIsLoadingMkNewPatientsByReferralTrend, selectIsLoadingMkNumNewPatients, selectIsLoadingMkNumNewPatientsTrend, selectIsLoadingMkRevByReferral, selectIsLoadingMkRevByReferralTrend, selectIsLoadingMkSaveAcctMyob, selectIsLoadingMkSaveAcctXero, selectIsLoadingMkTotalVisits, selectIsLoadingMkTotalVisitsTrend, selectIsLoadingMkXeroAccounts, selectMyobAccounts, selectNewPatientAcqChartData, selectNewPatientAcqTrendChartData, selectNewPatientsByReferralChartData, selectNewPatientsByReferralData, selectNewPatientsByReferralTrendChartData, selectNumNewPatientsChartData, selectNumNewPatientsTrendChartData, selectRevByReferralChartData, selectRevByReferralTrendChartData, selectRevenueByReferralData, selectTotalVisitsChartData, selectTotalVisitsTrendChartData, selectXeroAccounts } from '../state/reducers/marketing.reducer';
+import { Injectable } from "@angular/core";
+import { select, Store } from "@ngrx/store";
+import { Observable } from "rxjs";
+import { MarketingPageActions } from "../state/actions";
+import {
+  MarketingState,
+  selectActivePatientsChartData,
+  selectActivePatientsTrendChartData,
+  selectErrors,
+  selectIsActivePatients,
+  selectIsActivePatientsWithPlatform,
+  selectIsLoadingMkMyobAccounts,
+  selectIsLoadingMkNewPatientAcq,
+  selectIsLoadingMkNewPatientAcqTrend,
+  selectIsLoadingMkNewPatientsByReferral,
+  selectIsLoadingMkNewPatientsByReferralTrend,
+  selectIsLoadingMkNumNewPatients,
+  selectIsLoadingMkNumNewPatientsTrend,
+  selectIsLoadingMkRevByReferral,
+  selectIsLoadingMkRevByReferralTrend,
+  selectIsLoadingMkSaveAcctMyob,
+  selectIsLoadingMkSaveAcctXero,
+  selectIsLoadingMkTotalVisits,
+  selectIsLoadingMkTotalVisitsTrend,
+  selectIsLoadingMkXeroAccounts,
+  selectMyobAccounts,
+  selectNewPatientAcqChartData,
+  selectNewPatientAcqTrendChartData,
+  selectNewPatientsByReferralChartData,
+  selectNewPatientsByReferralData,
+  selectNewPatientsByReferralTrendChartData,
+  selectNumNewPatientsChartData,
+  selectNumNewPatientsTrendChartData,
+  selectRevByReferralChartData,
+  selectRevByReferralTrendChartData,
+  selectRevenueByReferralData,
+  selectTotalVisitsChartData,
+  selectTotalVisitsTrendChartData,
+  selectXeroAccounts,
+} from "../state/reducers/marketing.reducer";
 
 @Injectable()
 export class MarketingFacade {
@@ -13,13 +47,9 @@ export class MarketingFacade {
     select(selectErrors)
   );
 
-  public readonly xeroAccounts$ = this.store.pipe(
-    select(selectXeroAccounts)
-  );
+  public readonly xeroAccounts$ = this.store.pipe(select(selectXeroAccounts));
 
-  public readonly myobAccounts$ = this.store.pipe(
-    select(selectMyobAccounts)
-  );
+  public readonly myobAccounts$ = this.store.pipe(select(selectMyobAccounts));
 
   public readonly newPatientsByReferralChartData$ = this.store.pipe(
     select(selectNewPatientsByReferralChartData)
@@ -137,10 +167,8 @@ export class MarketingFacade {
     select(selectIsActivePatientsWithPlatform)
   );
 
-  public setActivePatients(isActive: boolean){
-    this.store.dispatch(
-      MarketingPageActions.setIsActivePatients({isActive})
-    )
+  public setActivePatients(isActive: boolean) {
+    this.store.dispatch(MarketingPageActions.setIsActivePatients({ isActive }));
   }
 
   public loadMkNewPatientsByReferral({
@@ -148,7 +176,7 @@ export class MarketingFacade {
     startDate,
     endDate,
     duration,
-    queryWhEnabled
+    queryWhEnabled,
   }) {
     this.store.dispatch(
       MarketingPageActions.loadMkNewPatientsByReferral({
@@ -156,21 +184,17 @@ export class MarketingFacade {
         startDate,
         endDate,
         duration,
-        queryWhEnabled
+        queryWhEnabled,
       })
     );
   }
 
-  public loadMkNewPatientsByReferralTrend({
-    clinicId,
-    mode,
-    queryWhEnabled
-  }) {
+  public loadMkNewPatientsByReferralTrend({ clinicId, mode, queryWhEnabled }) {
     this.store.dispatch(
       MarketingPageActions.loadMkNewPatientsByReferralTrend({
         clinicId,
         mode,
-        queryWhEnabled
+        queryWhEnabled,
       })
     );
   }
@@ -181,8 +205,8 @@ export class MarketingFacade {
     endDate,
     duration,
     queryWhEnabled,
-    connectedWith
-  }){
+    connectedWith,
+  }) {
     this.store.dispatch(
       MarketingPageActions.loadMkNewPatientAcq({
         clinicId,
@@ -190,7 +214,7 @@ export class MarketingFacade {
         endDate,
         duration,
         queryWhEnabled,
-        connectedWith
+        connectedWith,
       })
     );
   }
@@ -199,14 +223,14 @@ export class MarketingFacade {
     clinicId,
     mode,
     queryWhEnabled,
-    connectedWith
-  }){
+    connectedWith,
+  }) {
     this.store.dispatch(
       MarketingPageActions.loadMkNewPatientAcqTrend({
         clinicId,
         mode,
         queryWhEnabled,
-        connectedWith
+        connectedWith,
       })
     );
   }
@@ -217,7 +241,7 @@ export class MarketingFacade {
     endDate,
     duration,
     queryWhEnabled,
-  }){
+  }) {
     this.store.dispatch(
       MarketingPageActions.loadMkNumNewPatients({
         clinicId,
@@ -226,21 +250,17 @@ export class MarketingFacade {
         duration,
         queryWhEnabled,
       })
-    )
+    );
   }
 
-  public loadNewNumPatientsTrend({
-    clinicId,
-    mode,
-    queryWhEnabled,
-  }){
+  public loadNewNumPatientsTrend({ clinicId, mode, queryWhEnabled }) {
     this.store.dispatch(
       MarketingPageActions.loadMkNumNewPatientsTrend({
         clinicId,
         mode,
         queryWhEnabled,
       })
-    )
+    );
   }
 
   public loadActivePatients({
@@ -249,34 +269,26 @@ export class MarketingFacade {
     endDate,
     duration,
     queryWhEnabled,
-  }){
+  }) {
     this.store.dispatch(
-      MarketingPageActions.loadMkActivePatients(
-        {
-          clinicId,
-          startDate,
-          endDate,
-          duration,
-          queryWhEnabled,
-        }
-      )
-    )
+      MarketingPageActions.loadMkActivePatients({
+        clinicId,
+        startDate,
+        endDate,
+        duration,
+        queryWhEnabled,
+      })
+    );
   }
 
-  public loadActivePatientsTrend({
-    clinicId,
-    mode,
-    queryWhEnabled,
-  }){
+  public loadActivePatientsTrend({ clinicId, mode, queryWhEnabled }) {
     this.store.dispatch(
-      MarketingPageActions.loadMkActivePatientsTrend(
-        {
-          clinicId,
-          mode,
-          queryWhEnabled,
-        }
-      )
-    )
+      MarketingPageActions.loadMkActivePatientsTrend({
+        clinicId,
+        mode,
+        queryWhEnabled,
+      })
+    );
   }
 
   public loadRevByReferral({
@@ -285,7 +297,7 @@ export class MarketingFacade {
     endDate,
     duration,
     queryWhEnabled,
-  }){
+  }) {
     this.store.dispatch(
       MarketingPageActions.loadMkRevenueByReferral({
         clinicId,
@@ -294,21 +306,17 @@ export class MarketingFacade {
         duration,
         queryWhEnabled,
       })
-    )
+    );
   }
 
-  public loadRevByReferralTrend({
-    clinicId,
-    mode,
-    queryWhEnabled,
-  }){
+  public loadRevByReferralTrend({ clinicId, mode, queryWhEnabled }) {
     this.store.dispatch(
       MarketingPageActions.loadMkRevByReferralTrend({
         clinicId,
         mode,
         queryWhEnabled,
       })
-    )
+    );
   }
 
   public loadTotalVisits({
@@ -317,7 +325,7 @@ export class MarketingFacade {
     endDate,
     duration,
     queryWhEnabled,
-  }){
+  }) {
     this.store.dispatch(
       MarketingPageActions.loadMkTotalVisits({
         clinicId,
@@ -326,68 +334,60 @@ export class MarketingFacade {
         duration,
         queryWhEnabled,
       })
-    )
+    );
   }
 
-  public loadTotalVisitsTrend({
-    clinicId,
-    mode,
-    queryWhEnabled,
-  }){
+  public loadTotalVisitsTrend({ clinicId, mode, queryWhEnabled }) {
     this.store.dispatch(
       MarketingPageActions.loadMkTotalVisitsTrend({
         clinicId,
         mode,
         queryWhEnabled,
       })
-    )
+    );
   }
 
-  public loadMkGetMyobAccounts({
-    clinicId,
-    userId
-  }){
+  public loadMkGetMyobAccounts({ clinicId, userId }) {
     this.store.dispatch(
       MarketingPageActions.loadMkGetMyobAccounts({
         clinicId,
-        userId
+        userId,
       })
-    )
+    );
   }
 
-  public loadMkGetXeroAccounts({
-    clinicId,
-    userId
-  }){
+  public loadMkGetXeroAccounts({ clinicId, userId }) {
     this.store.dispatch(
       MarketingPageActions.loadMkGetXeroAccounts({
         clinicId,
-        userId
+        userId,
       })
-    )
+    );
   }
-  
-  public saveXeroAccounts({
-    clinicId,
-    categories
-  }){
+
+  public saveXeroAccounts({ clinicId, categories }) {
     this.store.dispatch(
       MarketingPageActions.saveAcctXero({
         clinicId,
-        categories
+        categories,
       })
-    )
+    );
   }
 
-  public saveMyobAccounts({
-    clinicId,
-    categories
-  }){
+  public saveMyobAccounts({ clinicId, categories }) {
     this.store.dispatch(
       MarketingPageActions.saveAcctMyob({
         clinicId,
-        categories
+        categories,
       })
-    )
+    );
+  }
+
+  public setErrors(errors: JeeveError[]) {
+    this.store.dispatch(
+      MarketingPageActions.setErrors({
+        errors,
+      })
+    );
   }
 }

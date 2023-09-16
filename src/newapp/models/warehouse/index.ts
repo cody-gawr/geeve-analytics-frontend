@@ -1,4 +1,4 @@
-import { Clinic } from '../clinic';
+import { Clinic } from "../clinic";
 
 export interface DailyScheduleItem {
   index?: number;
@@ -30,13 +30,6 @@ export interface HourlyScheduleItem {
   enabled?: boolean;
   exists?: boolean;
 }
-
-export type T_SP_TYPE =
-  | 'Clinic Total'
-  | 'Clinic Monthly'
-  | 'Dentist Total'
-  | 'Dentist Monthly';
-export type T_MODE = 'clinic' | 'provider';
 
 export interface WarehouseProcedureItem {
   position?: number;
@@ -92,7 +85,7 @@ export interface WarehouseValidatorHistoryItem {
 }
 
 export interface WarehouseSchedulerInfo {
-  clinics?: Pick<Clinic, 'id' | 'clinicName'>[];
+  clinics?: Pick<Clinic, "id" | "clinicName">[];
   procedures?: WarehouseProcedureItem[];
 }
 

@@ -3,10 +3,7 @@ import { Observable, map } from "rxjs";
 import * as _ from "lodash";
 import { environment } from "@/environments/environment";
 import { HttpClient } from "@angular/common/http";
-import {
-  CONNECT_WITH_PLATFORM,
-  ChartTipsApiResponse,
-} from "../../models/dashboard";
+import { ChartTipsApiResponse } from "../../models/dashboard";
 import camelcaseKeys from "camelcase-keys";
 
 @Injectable({

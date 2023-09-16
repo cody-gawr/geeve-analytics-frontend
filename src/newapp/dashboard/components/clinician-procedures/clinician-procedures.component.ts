@@ -94,7 +94,8 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
       this.dentistFacade.currentDentistId$,
     ])
       .pipe(takeUntil(this.destroy$))
-      .subscribe(([clinicId, dateRange, route, trend, dentistId]) => {
+      .subscribe((params) => {
+        const [clinicId, dateRange, route, trend, dentistId] = params;
         if (clinicId == null) return;
         const providerId =
           dentistId !== "all" && typeof clinicId !== "string"

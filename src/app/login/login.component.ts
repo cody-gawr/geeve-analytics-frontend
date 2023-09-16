@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { CookieService, CookieOptions } from "ngx-cookie";
 import { AppConstants } from "../app.constants";
 import { environment } from "../../environments/environment";
@@ -34,7 +34,8 @@ export class LoginComponent implements OnInit {
     private _cookieService: CookieService,
     private rolesUsersService: RolesUsersService,
     public constants: AppConstants,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private route: ActivatedRoute
   ) {
     if (this._cookieService.get("userid")) {
       var user_type = this._cookieService.get("user_type");
@@ -63,6 +64,12 @@ export class LoginComponent implements OnInit {
       uname: ["", Validators.compose([Validators.required])],
       password: ["", Validators.compose([Validators.required])],
     });
+  }
+
+  goTo(defaultUrl: string) {
+    const returnUrl =
+      this.route.snapshot.queryParams["returnUrl"] || defaultUrl;
+    this.router.navigateByUrl(returnUrl);
   }
 
   onSubmit() {
@@ -181,14 +188,14 @@ export class LoginComponent implements OnInit {
             }
 
             if (parseInt(datares["stepper_status"]) < 4) {
-              this.router.navigate(["/setup"]);
+              this.goTo("/setup");
               // } else if (
               //   parseInt(datares['stepper_status']) < 4 &&
               //   datares['user_type'] == '2'
               // ) {
               // this.router.navigate(['/setup']);
             } else if (datares["user_type"] == "2") {
-              this.router.navigate(["/dashboards/healthscreen"]);
+              this.goTo("/dashboards/healthscreen");
             } else {
               this.clinic_id = this._cookieService.get("clinic_id");
               if (datares["user_type"] == "7") {
@@ -232,28 +239,28 @@ export class LoginComponent implements OnInit {
         permision = res.data;
         if (permision != "" && user_type != "2" && user_type != "7") {
           if (permision.indexOf("healthscreen") >= 0) {
-            this.router.navigate(["/dashboards/healthscreen"]);
+            this.goTo("/dashboards/healthscreen");
           } else if (permision.indexOf("dashboard1") >= 0) {
-            this.router.navigate(["/dashboards/cliniciananalysis"]);
+            this.goTo("/dashboards/cliniciananalysis");
           } else if (permision.indexOf("dashboard2") >= 0) {
-            this.router.navigate(["/dashboards/clinicianproceedures"]);
+            this.goTo("/dashboards/clinicianproceedures");
           } else if (permision.indexOf("dashboard3") >= 0) {
-            this.router.navigate(["/dashboards/frontdesk"]);
+            this.goTo("/dashboards/frontdesk");
           } else if (permision.indexOf("dashboard4") >= 0) {
-            this.router.navigate(["/dashboards/marketing"]);
+            this.goTo("/dashboards/marketing");
           } else if (permision.indexOf("dashboard5") >= 0) {
-            this.router.navigate(["/dashboards/finances"]);
+            this.goTo("/dashboards/finances");
           } else if (permision.indexOf("morninghuddle") >= 0) {
-            this.router.navigate(["/morning-huddle"]);
+            this.goTo("/morning-huddle");
           } else if (permision.indexOf("lostopportunity") >= 0) {
-            this.router.navigate(["/lost-opportunity"]);
+            this.goTo("/lost-opportunity");
           } else {
-            this.router.navigate(["/profile-settings"]);
+            this.goTo("/profile-settings");
           }
         } else if (user_type == "2" || user_type == "7") {
-          this.router.navigate(["/dashboards/healthscreen"]);
+          this.goTo("/dashboards/healthscreen");
         } else {
-          this.router.navigate(["/profile-settings"]);
+          this.goTo("/profile-settings");
         }
 
         this.showLoginForm();
@@ -277,31 +284,31 @@ export class LoginComponent implements OnInit {
           });
 
           if (res.body.plan == "lite") {
-            this.router.navigate(["/dashboards/healthscreen"]);
+            this.goTo("/dashboards/healthscreen");
           } else if (permision != "" && this.userType != "7") {
             if (permision.indexOf("healthscreen") >= 0) {
-              this.router.navigate(["/dashboards/healthscreen"]);
+              this.goTo("/dashboards/healthscreen");
             } else if (permision.indexOf("dashboard1") >= 0) {
-              this.router.navigate(["/dashboards/cliniciananalysis"]);
+              this.goTo("/dashboards/cliniciananalysis");
             } else if (permision.indexOf("dashboard2") >= 0) {
-              this.router.navigate(["/dashboards/clinicianproceedures"]);
+              this.goTo("/dashboards/clinicianproceedures");
             } else if (permision.indexOf("dashboard3") >= 0) {
-              this.router.navigate(["/dashboards/frontdesk"]);
+              this.goTo("/dashboards/frontdesk");
             } else if (permision.indexOf("dashboard4") >= 0) {
-              this.router.navigate(["/dashboards/marketing"]);
+              this.goTo("/dashboards/marketing");
             } else if (permision.indexOf("dashboard5") >= 0) {
-              this.router.navigate(["/dashboards/finances"]);
+              this.goTo("/dashboards/finances");
             } else if (permision.indexOf("morninghuddle") >= 0) {
-              this.router.navigate(["/morning-huddle"]);
+              this.goTo("/morning-huddle");
             } else if (permision.indexOf("lostopportunity") >= 0) {
-              this.router.navigate(["/lost-opportunity"]);
+              this.goTo("/lost-opportunity");
             } else {
-              this.router.navigate(["/profile-settings"]);
+              this.goTo("/profile-settings");
             }
           } else if (this.userType == "7") {
-            this.router.navigate(["/dashboards/healthscreen"]);
+            this.goTo("/dashboards/healthscreen");
           } else {
-            this.router.navigate(["/profile-settings"]);
+            this.goTo("/profile-settings");
           }
         }
         this.showLoginForm();

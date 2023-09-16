@@ -1,5 +1,3 @@
-export type API_ENDPOINTS = "ctGetPageTips" | "clinicGetAccountingPlatform";
-export type CONNECT_WITH_PLATFORM = "xero" | "myob" | "none";
 export interface ChartTip {
   title: string;
   info: string;

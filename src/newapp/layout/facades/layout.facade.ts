@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { select, Store } from "@ngrx/store";
-import { Observable, map, filter } from "rxjs";
+import { Observable } from "rxjs";
 import {
   LayoutState,
   selectActivatedRouteTitle,
@@ -12,8 +12,6 @@ import {
 } from "../state/reducers/layout.reducer";
 import { Moment } from "moment";
 import { layoutPageActions } from "../state/actions";
-import { DATE_RANGE_DURATION, TREND_MODE } from "@/newapp/models/layout";
-import { DateRangeMenus } from "@/newapp/shared/components/date-range-menu/date-range-menu.component";
 
 @Injectable()
 export class LayoutFacade {

@@ -1,7 +1,6 @@
 import moment, { Moment, isMoment } from "moment";
 import { createFeature, createReducer, on, createSelector } from "@ngrx/store";
 import { layoutPageActions } from "../actions";
-import { DATE_RANGE_DURATION, TREND_MODE } from "@/newapp/models/layout";
 import { getTodayMoment } from "@/newapp/shared/utils";
 import { DateRangeMenus } from "@/newapp/shared/components/date-range-menu/date-range-menu.component";
 
