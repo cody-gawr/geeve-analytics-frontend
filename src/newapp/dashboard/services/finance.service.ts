@@ -20,7 +20,7 @@ import {
   FnTotalDiscountsTrendApiResponse,
   FnTotalProductionApiResponse,
   FnTotalProductionTrendApiResponse,
-} from "../../models/dashboard";
+} from "../../models/dashboard/finance";
 import camelcaseKeys from "camelcase-keys";
 
 @Injectable({

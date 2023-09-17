@@ -57,7 +57,7 @@ import {
   selectIsLoadingAllTrendData,
   selectProductionCollectionTrendChartData,
 } from "../state/reducers/finance.reducer";
-import { FnNetProfitParams } from "@/newapp/models/dashboard";
+import { FnNetProfitParams } from "@/newapp/models/dashboard/finance";
 import { FinancePageActions } from "../state/actions";
 
 @Injectable()

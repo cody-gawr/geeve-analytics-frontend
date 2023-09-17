@@ -3,7 +3,7 @@ import { Observable, map } from "rxjs";
 import * as _ from "lodash";
 import { environment } from "@/environments/environment";
 import { HttpClient } from "@angular/common/http";
-import { ChartTipsApiResponse } from "../../models/dashboard";
+import { ChartTipsApiResponse } from "../../models/dashboard/finance";
 import camelcaseKeys from "camelcase-keys";
 
 @Injectable({

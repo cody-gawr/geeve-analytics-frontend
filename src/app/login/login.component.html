@@ -20,7 +20,7 @@
                         <!-- col full-->
                         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="dc_input">
                             <mat-form-field floatLabel="never" >
-                                <input matInput placeholder="Email" [formControl]="form.controls['uname']">
+                                <input type="email" matInput placeholder="Email" [formControl]="form.controls['uname']">
                             </mat-form-field>
                             <small *ngIf="errorForm.email" class="text-danger support-text">Email is required.</small>
                         </div>

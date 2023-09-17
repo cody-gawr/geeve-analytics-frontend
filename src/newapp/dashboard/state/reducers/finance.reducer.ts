@@ -7,13 +7,13 @@ import {
   FnExpensesDataItem,
   FnProductionByClinicianItem,
   FnProductionPerVisitItem,
-  FnTotalProductionApiResponse,
+  // FnTotalProductionApiResponse,
   FnTotalProductionItem,
   FnTotalCollectionItem,
   FnNetProfitTrendItem,
   FnNetProfitPercentTrendItem,
   FnProdByClinicianTrendItem,
-} from "@/newapp/models/dashboard";
+} from "@/newapp/models/dashboard/finance";
 import { selectTrend } from "@/newapp/layout/state/reducers/layout.reducer";
 import moment from "moment";
 import {

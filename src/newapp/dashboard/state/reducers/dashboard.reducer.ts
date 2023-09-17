@@ -1,4 +1,4 @@
-import { ChartTip } from "../../../models/dashboard";
+import { ChartTip } from "../../../models/dashboard/finance";
 import { createFeature, createReducer, createSelector, on } from "@ngrx/store";
 import { DashboardApiActions, DashboardPageActions } from "../actions";
 import * as _ from "lodash";

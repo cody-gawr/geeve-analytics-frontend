@@ -5,7 +5,7 @@ import { Subject, takeUntil, combineLatest, map } from "rxjs";
 import { FinanceFacade } from "../../facades/finance.facade";
 import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
 import { Router } from "@angular/router";
-import { FnNetProfitParams } from "@/newapp/models/dashboard";
+import { FnNetProfitParams } from "@/newapp/models/dashboard/finance";
 import moment from "moment";
 import { AuthFacade } from "@/newapp/auth/facades/auth.facade";
 import _ from "lodash";
