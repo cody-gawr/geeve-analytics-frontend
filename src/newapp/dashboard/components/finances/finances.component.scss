@@ -25,23 +25,23 @@
 .finance-chart-content {
   background-color: #fafafa;
   padding: 15px;
-  height: calc(100vh - 135px);
+  height: calc(100vh - 142px);
   overflow-y: auto;
 
   @include respond-from('desktop') {
-    height: calc(100vh - 165px);
+    height: calc(100vh - 160px);
   }
 
   @include respond-from('tablet-landscape') {
-    height: calc(100vh - 202px);
+    height: calc(100vh - 220px);
   }
 
   @include respond-from('tablet-portrait') {
-    height: calc(100vh - 240px);
+    height: calc(100vh - 210px);
   }  
 
   @include respond-from('phone') {
-    height: calc(100vh - 265px);
+    height: calc(100vh - 245px);
   }
 }
 
