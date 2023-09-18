@@ -24,8 +24,15 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
+  selectedMenu: DATE_RANGE_DURATION;
 
-  constructor(private layoutFacade: LayoutFacade) {}
+  constructor(private layoutFacade: LayoutFacade) {
+    this.layoutFacade.dateRange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((v) => {
+        this.selectedMenu = v.duration;
+      });
+  }
 
   get duration$() {
     return this.layoutFacade.dateRange$.pipe(

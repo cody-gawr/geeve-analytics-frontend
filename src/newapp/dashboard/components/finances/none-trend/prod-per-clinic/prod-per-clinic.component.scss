@@ -4,6 +4,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 15px;
     @include respond-from('big-desktop') {
         max-height: 280px;
     }

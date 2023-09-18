@@ -1,6 +1,15 @@
 <div class="date-range-menu">
-    <button *ngFor="let menu of dateRangeMenus" 
+    <div class="menu">
+        <button *ngFor="let menu of dateRangeMenus" 
         (click)="setDuration(menu.range)"
         [class]="menu.range === (duration$ | async)?'active':''"
     >{{ menu.label }}</button>
-  </div>
+    </div>
+    <div class="dropdown-box">
+        <mat-select (selectionChange)="setDuration($event.value)" [value] = "selectedMenu">
+            <mat-option *ngFor="let menu of dateRangeMenus" [value]="menu.range">
+              {{ menu.label }}
+            </mat-option>
+        </mat-select>
+    </div>
+</div>

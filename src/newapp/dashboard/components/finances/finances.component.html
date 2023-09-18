@@ -2,7 +2,7 @@
   class="finance-page-container"
   *ngIf="noPermission"
 >
-  <date-range-menu></date-range-menu>
+  <date-range-menu class="date-range-container"></date-range-menu>
   <trend-mode-toggle></trend-mode-toggle>
 </div>
 <div *ngIf="(clinicId$ | async) !== null && noPermission" class="finance-chart-content">

@@ -8,6 +8,7 @@
   flex-direction: column;
   justify-items: flex-start;
   align-items: flex-start;
+  gap: 15px;
   @include respond-to('phone') {
     padding: 10px 30px 10px 0;
   }

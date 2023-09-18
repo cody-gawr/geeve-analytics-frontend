@@ -5,9 +5,15 @@
   flex-direction: row;
   justify-content: space-between;
   padding-bottom: 10px;
-  @include respond-from('phone') {
-    flex-direction: column;
-    justify-content: flex-start;
+  .date-range-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+  }
+  @include respond-from('tablet-portrait') {
+    // flex-direction: column;
+    // justify-content: flex-start;
     gap: 15px;
   }
 
@@ -35,7 +41,7 @@
   }  
 
   @include respond-from('phone') {
-    height: calc(100vh - 365px);
+    height: calc(100vh - 265px);
   }
 }
 
