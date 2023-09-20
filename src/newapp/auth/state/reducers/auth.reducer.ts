@@ -4,9 +4,13 @@ import {
   AuthApiActions,
   AuthPageActions,
   RolesApiActions,
-  RolesPageActions
+  RolesPageActions,
 } from '../actions';
-import { RolesIndividualApiResponse, RolesApiResponse, LoginUser } from '../../../models/user';
+import {
+  RolesIndividualApiResponse,
+  RolesApiResponse,
+  LoginUser,
+} from '../../../models/user';
 import _ from 'lodash';
 import { selectHasPrimeClinics } from '../../../clinic/state/reducers/clinic.reducer';
 import { JeeveError } from '@/newapp/models';
@@ -34,7 +38,7 @@ const initialState: AuthState = {
   logoutError: null,
   rolesIndividual: null,
   roles: null,
-  authUserData: null
+  authUserData: null,
 };
 
 export const authFeature = createFeature({
@@ -46,17 +50,17 @@ export const authFeature = createFeature({
         ...state,
         isLoading: true,
         success: false,
-        error: null
+        error: null,
       };
     }),
 
-    on(AuthApiActions.loginSuccess, (state, {authUserData}): AuthState => {
+    on(AuthApiActions.loginSuccess, (state, { authUserData }): AuthState => {
       return {
         ...state,
         success: true,
         logoutSuccess: false,
         isLoading: false,
-        authUserData
+        authUserData,
       };
     }),
     on(AuthApiActions.loginFailure, (state, { error }): AuthState => {
@@ -65,52 +69,52 @@ export const authFeature = createFeature({
         success: false,
         error,
         isLoading: false,
-        authUserData: null
+        authUserData: null,
       };
     }),
     on(AuthApiActions.logoutSuccess, (state): AuthState => {
       return {
         ...state,
-        logoutSuccess: true
+        logoutSuccess: true,
       };
     }),
     on(AuthApiActions.logoutFailure, (state, { error }): AuthState => {
       return {
         ...state,
         logoutSuccess: false,
-        logoutError: error
+        logoutError: error,
       };
     }),
     on(RolesPageActions.getRoles, (state): AuthState => {
       return {
         ...state,
-        errors: _.filter(state.errors, (n) => n.api != 'rolesGet'),
+        errors: _.filter(state.errors, n => n.api != 'rolesGet'),
         isLoadingData: _.union(state.isLoadingData, ['rolesGet']),
-        roles: null
+        roles: null,
       };
     }),
     on(RolesApiActions.getRolesSuccess, (state, { userRoles }): AuthState => {
       return {
         ...state,
         roles: userRoles,
-        errors: _.filter(state.errors, (n) => n.api != 'rolesGet'),
-        isLoadingData: _.filter(state.isLoadingData, (n) => n != 'rolesGet')
+        errors: _.filter(state.errors, n => n.api != 'rolesGet'),
+        isLoadingData: _.filter(state.isLoadingData, n => n != 'rolesGet'),
       };
     }),
     on(RolesApiActions.getRolesFailure, (state, { error }): AuthState => {
       return {
         ...state,
         roles: null,
-        isLoadingData: _.filter(state.isLoadingData, (n) => n != 'rolesGet'),
-        errors: [...state.errors, { ...error, api: 'rolesGet' }]
+        isLoadingData: _.filter(state.isLoadingData, n => n != 'rolesGet'),
+        errors: [...state.errors, { ...error, api: 'rolesGet' }],
       };
     }),
     on(RolesPageActions.getRolesIndividual, (state): AuthState => {
       return {
         ...state,
-        errors: _.filter(state.errors, (n) => n.api != 'rolesIndividual'),
+        errors: _.filter(state.errors, n => n.api != 'rolesIndividual'),
         isLoadingData: _.union(state.isLoadingData, ['rolesIndividual']),
-        rolesIndividual: null
+        rolesIndividual: null,
       };
     }),
     on(
@@ -119,11 +123,11 @@ export const authFeature = createFeature({
         return {
           ...state,
           rolesIndividual: userRolesIndividual,
-          errors: _.filter(state.errors, (n) => n.api != 'rolesIndividual'),
+          errors: _.filter(state.errors, n => n.api != 'rolesIndividual'),
           isLoadingData: _.filter(
             state.isLoadingData,
-            (n) => n != 'rolesIndividual'
-          )
+            n => n != 'rolesIndividual'
+          ),
         };
       }
     ),
@@ -135,13 +139,13 @@ export const authFeature = createFeature({
           rolesIndividual: null,
           isLoadingData: _.filter(
             state.isLoadingData,
-            (n) => n != 'rolesIndividual'
+            n => n != 'rolesIndividual'
           ),
-          errors: [...state.errors, { ...error, api: 'rolesIndividual' }]
+          errors: [...state.errors, { ...error, api: 'rolesIndividual' }],
         };
       }
     )
-  )
+  ),
 });
 
 export const {
@@ -152,8 +156,14 @@ export const {
   selectLogoutError,
   selectRoles,
   selectRolesIndividual,
-  selectAuthUserData
+  selectAuthUserData,
+  selectIsLoadingData,
 } = authFeature;
+
+export const selectIsLoadingRolesIndividual = createSelector(
+  selectIsLoadingData,
+  loadingData => _.findIndex(loadingData, l => l == 'rolesIndividual') >= 0
+);
 
 export const selectRolesIndividualPermissions = createSelector(
   selectRolesIndividual,

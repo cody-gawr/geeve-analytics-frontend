@@ -1,68 +1,83 @@
 <div class="chart-container">
+  <mat-icon
+    [tooltip]="toolTip"
+    matTooltipPosition="below"
+    color="primary"
+    class="help-tip"
+    fontIcon="help"></mat-icon>
+  <div class="chart-title">
     <mat-icon
-        [tooltip]="toolTip"
-        matTooltipPosition="below"
-        color="primary"
-        class="help-tip"
-        fontIcon="help"
-    ></mat-icon>
-    <div class="chart-title">
-        <mat-icon 
-            [matTooltip]="(durationTrendLabel$ | async)+': '+ (fdReappointRatePrev | number : '1.0-0')"
-            [color]="trendingIcon == 'trending_up'?'primary':'warn'" [fontIcon]="trendingIcon"></mat-icon>
-        <span> 
-            Reappointment Rate (%)
-        </span>
-    </div>
-    <div class="chart-content">
-        <div class="canvas-wrapper chart-box">
-            <div class="chart-gauge reappoint-rate-gauge">
-                <spin-loader *ngIf="(isLoading$ | async); else mainElem"></spin-loader>
-                <ng-template #mainElem>
-                    <ngx-gauge
-                        *ngIf="!(isMultipleClinic$ | async) && (hasData$ | async) && !(isTrend$ | async)"
-                        type="arch"
-                        [value]="fdReappointRateVal"
-                        [thick]="20"
-                        foregroundColor="#4ccfae"
-                        backgroundColor="#f4f0fa"
-                        cap="round"
-                        size="250"
-                        append="%"
-                        [max]="maxFdReappointRateGoal"
-                    >
-                    </ngx-gauge>
-                    <canvas
-                        #fdReappointRateChart
-                        *ngIf="((isTrend$ | async) || (isMultipleClinic$ | async)) && (hasData$ | async)"
-                        baseChart
-                        [datasets]="datasets"
-                        [labels]="labels"
-                        [legend]="false"
-                        type="bar"
-                        [options]="chartOptions$ | async"
-                    >
-                    </canvas>
-                    
-                    <spin-loader class="empty-placeholder" *ngIf="!(hasData$ | async)" [disableSpin]="true">
-                        You have no reappointments in the selected period
-                    </spin-loader>
-                </ng-template>
-            </div>
-            <div class="chart-foot"  *ngIf="!(isTrend$ | async)">
-                <div>
-                    <h3>{{ fdReappointRateVal | number: '1.0-0' }}%</h3>
-                    <span>{{ durationLabel$ | async }}</span>
-                </div>
-                <div>
-                    <h3>{{ fdReappointRatePrev | number: '1.0-0' }}%</h3>
-                    <span>{{ durationTrendLabel$ | async }}</span>
-                </div>
-                <div *ngIf="fdReappointRateGoal > 0 && showGoals$ | async">
-                    <h3>{{ (fdReappointRateGoal > 100?100:fdReappointRateGoal) | number: '1.0-0' }}%</h3>
-                    <span>Goal</span>
-                </div>
-            </div>
+      [matTooltip]="
+        (durationTrendLabel$ | async) +
+        ': ' +
+        (fdReappointRatePrev | number: '1.0-0')
+      "
+      [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
+      [fontIcon]="trendingIcon"></mat-icon>
+    <span> Reappointment Rate (%) </span>
+  </div>
+  <div class="chart-content">
+    <div class="canvas-wrapper chart-box reappoint-rate-gauge">
+      <div class="chart-gauge">
+        <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
+        <ng-template #mainElem>
+          <ngx-gauge
+            *ngIf="
+              !(isMultipleClinic$ | async) &&
+              (hasData$ | async) &&
+              !(isTrend$ | async)
+            "
+            type="arch"
+            [value]="fdReappointRateVal"
+            [thick]="20"
+            foregroundColor="#4ccfae"
+            backgroundColor="#f4f0fa"
+            cap="round"
+            size="250"
+            append="%"
+            [max]="maxFdReappointRateGoal">
+          </ngx-gauge>
+          <canvas
+            #fdReappointRateChart
+            *ngIf="
+              ((isTrend$ | async) || (isMultipleClinic$ | async)) &&
+              (hasData$ | async)
+            "
+            baseChart
+            [datasets]="datasets"
+            [labels]="labels"
+            [legend]="false"
+            type="bar"
+            [options]="chartOptions$ | async">
+          </canvas>
+
+          <spin-loader
+            class="empty-placeholder"
+            *ngIf="!(hasData$ | async)"
+            [disableSpin]="true">
+            You have no reappointments in the selected period
+          </spin-loader>
+        </ng-template>
+      </div>
+      <div class="chart-foot" *ngIf="!(isTrend$ | async)">
+        <div>
+          <h3>{{ fdReappointRateVal | number: '1.0-0' }}%</h3>
+          <span>{{ durationLabel$ | async }}</span>
         </div>
+        <div>
+          <h3>{{ fdReappointRatePrev | number: '1.0-0' }}%</h3>
+          <span>{{ durationTrendLabel$ | async }}</span>
+        </div>
+        <div *ngIf="fdReappointRateGoal > 0 && showGoals$ | async">
+          <h3>
+            {{
+              (fdReappointRateGoal > 100 ? 100 : fdReappointRateGoal)
+                | number: '1.0-0'
+            }}%
+          </h3>
+          <span>Goal</span>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

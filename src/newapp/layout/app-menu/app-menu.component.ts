@@ -1,16 +1,16 @@
-import { FlatTreeControl } from "@angular/cdk/tree";
-import { Observable, Subject } from "rxjs";
-import { filter, map, takeUntil } from "rxjs/operators";
-import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { Observable, Subject, distinctUntilChanged } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import {
   MatTreeFlatDataSource,
   MatTreeFlattener,
-} from "@angular/material/tree";
-import { NavigationEnd, Router } from "@angular/router";
-import { AuthFacade } from "../../auth/facades/auth.facade";
-import { environment } from "@/environments/environment";
-import { ClinicFacade } from "../../clinic/facades/clinic.facade";
-import { LayoutFacade } from "../facades/layout.facade";
+} from '@angular/material/tree';
+import { NavigationEnd, Router } from '@angular/router';
+import { AuthFacade } from '../../auth/facades/auth.facade';
+import { environment } from '@/environments/environment';
+import { ClinicFacade } from '../../clinic/facades/clinic.facade';
+import { LayoutFacade } from '../facades/layout.facade';
 import {
   IconDefinition,
   faBriefcase,
@@ -27,8 +27,8 @@ import {
   faCaretRight,
   faCaretDown,
   faPhoneFlip,
-} from "@fortawesome/free-solid-svg-icons";
-import { USER_MASTER, CONSULTANT, USER_CLINICIAN } from "@/newapp/constants";
+} from '@fortawesome/free-solid-svg-icons';
+import { USER_MASTER, CONSULTANT, USER_CLINICIAN } from '@/newapp/constants';
 
 /**
  * Menu data with nested structure.
@@ -37,7 +37,7 @@ import { USER_MASTER, CONSULTANT, USER_CLINICIAN } from "@/newapp/constants";
 interface MenuNode {
   title: string;
   path: string;
-  linkType?: "open" | "route" | "modal";
+  linkType?: 'open' | 'route' | 'modal';
   icon?: IconDefinition;
   children?: MenuNode[];
   permissions?: string[];
@@ -55,24 +55,24 @@ interface MenuValidatorParams {
 
 const MENU_DATA: MenuNode[] = [
   {
-    title: "Health Screen",
-    path: "dashboards/healthscreen",
+    title: 'Health Screen',
+    path: 'dashboards/healthscreen',
     icon: faClinicMedical,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        (permissions?.indexOf("healthscreen") >= 0 ||
+        (permissions?.indexOf('healthscreen') >= 0 ||
           [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
         userType == USER_CLINICIAN
       );
     },
   },
   {
-    title: "Clinic Health",
-    path: "dashboards/healthscreen",
+    title: 'Clinic Health',
+    path: 'dashboards/healthscreen',
     icon: faClinicMedical,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        (permissions?.indexOf("healthscreen") >= 0 ||
+        (permissions?.indexOf('healthscreen') >= 0 ||
           [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
         userType !== USER_CLINICIAN
       );
@@ -80,121 +80,121 @@ const MENU_DATA: MenuNode[] = [
   },
   // user_type==2 || permissions.contains(morninghuddle) || user_type==7
   {
-    title: "Morning Huddle",
-    path: "morning-huddle",
+    title: 'Morning Huddle',
+    path: 'morning-huddle',
     icon: faCoffee,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        permissions?.indexOf("morninghuddle") >= 0 ||
+        permissions?.indexOf('morninghuddle') >= 0 ||
         [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
       );
     },
   },
   // user_type==2 || permissions.contains(followups) || user_type==7
   {
-    title: "Follow Ups",
-    path: "followups",
+    title: 'Follow Ups',
+    path: 'followups',
     icon: faPhoneFlip,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        permissions?.indexOf("followups") >= 0 ||
+        permissions?.indexOf('followups') >= 0 ||
         [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
       );
     },
   },
   // (user_type==2 || permissions.indexOf(campaigns) || user_type==7) && apiUrl.includes('test')
   {
-    title: "Campaigns",
-    path: "campaigns",
+    title: 'Campaigns',
+    path: 'campaigns',
     icon: faUsers,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return false;
-      return (
-        (permissions?.indexOf("campaigns") >= 0 ||
-          [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
-        environment.apiUrl.includes("test")
-      );
+      // return (
+      //   (permissions?.indexOf("campaigns") >= 0 ||
+      //     [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
+      //   environment.apiUrl.includes("test")
+      // );
     },
   },
   // user_type==2 || permissions.indexOf('dashboard') || user_type==7
   {
-    title: "Dashboard",
-    path: "/newapp/dashboard",
+    title: 'Dashboard',
+    path: '/newapp/dashboard',
     icon: faChartArea,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        permissions?.indexOf("dashboard") >= 0 ||
+        permissions?.indexOf('dashboard') >= 0 ||
         [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
       );
     },
     children: [
       // user_type==2 || permissions.contains(dashboard1) || user_type==7
       {
-        title: "Clinician Analysis",
-        path: "dashboards/cliniciananalysis",
+        title: 'Clinician Analysis',
+        path: 'dashboards/cliniciananalysis',
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
-            permissions?.indexOf("dashboard1") >= 0 ||
+            permissions?.indexOf('dashboard1') >= 0 ||
             [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
           );
         },
       },
       // user_type==2 || permissions.contains(dashboard2) || user_type==7
       {
-        title: "Clinician Procedures & Referrals",
-        path: "dashboards/clinicianproceedures",
+        title: 'Clinician Procedures & Referrals',
+        path: 'dashboards/clinicianproceedures',
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
-            permissions?.indexOf("dashboard2") >= 0 ||
+            permissions?.indexOf('dashboard2') >= 0 ||
             [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
           );
         },
       },
       // user_type==2 || permissions.contains(dashboard3) || user_type==7
       {
-        title: "Front Desk",
-        path: "dashboards/frontdesk",
+        title: 'Front Desk',
+        path: 'dashboards/frontdesk',
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
-            permissions?.indexOf("dashboard3") >= 0 ||
+            permissions?.indexOf('dashboard3') >= 0 ||
             [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
           );
         },
       },
       // user_type==2 || permissions.contains(dashboard6) || user_type==7
       {
-        title: "Follow Ups",
-        path: "dashboards/followups",
+        title: 'Follow Ups',
+        path: 'dashboards/followups',
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
-            permissions?.indexOf("dashboard6") >= 0 ||
+            permissions?.indexOf('dashboard6') >= 0 ||
             [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
           );
         },
       },
       //(user_type==2 || permissions.contains(dashboard4) || user_type==7) && userPlan!='lite'
       {
-        title: "Marketing",
-        path: "dashboards/marketing",
+        title: 'Marketing',
+        path: 'dashboards/marketing',
         validatorFn: ({
           permissions,
           userType,
           userPlan,
         }: MenuValidatorParams) => {
           return (
-            (permissions?.indexOf("dashboard4") >= 0 ||
+            (permissions?.indexOf('dashboard4') >= 0 ||
               [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
-            userPlan != "lite"
+            userPlan != 'lite'
           );
         },
       },
       // user_type==2 || permissions.contains(dashboard5) || user_type==7
       {
-        title: "Finances",
-        path: "/newapp/dashboard/finances",
+        title: 'Finances',
+        path: '/newapp/dashboard/finances',
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
-            permissions?.indexOf("dashboard5") >= 0 ||
+            permissions?.indexOf('dashboard5') >= 0 ||
             [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
           );
         },
@@ -203,22 +203,22 @@ const MENU_DATA: MenuNode[] = [
   },
   // (user_type == 2 || permisions.indexOf('staffmeeting') >= 0 || user_type == 7) && apiUrl.includes('test')
   {
-    title: "Staff Meetings",
-    path: "staff-meetings",
+    title: 'Staff Meetings',
+    path: 'staff-meetings',
     icon: faIdCard,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return false;
-      return (
-        (permissions?.indexOf("staffmeeting") >= 0 ||
-          [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
-        environment.apiUrl.includes("test")
-      );
+      // return (
+      //   (permissions?.indexOf('staffmeeting') >= 0 ||
+      //     [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
+      //   environment.apiUrl.includes('test')
+      // );
     },
   },
   // (hasPrimeClinics == 'yes' && user_type == 2) || (hasPrimeClinics == 'yes' && permisions.indexOf('kpireport') >= 0) || user_type == 7
   {
-    title: "Prime KPI Report",
-    path: "kpi-report",
+    title: 'Prime KPI Report',
+    path: 'kpi-report',
     icon: faFile,
     validatorFn: ({
       permissions,
@@ -226,88 +226,88 @@ const MENU_DATA: MenuNode[] = [
       hasPrimeClinics,
     }: MenuValidatorParams) => {
       return (
-        (userType == 2 && hasPrimeClinics == "yes") ||
-        (permissions?.indexOf("kpireport") >= 0 && hasPrimeClinics == "yes") ||
+        (userType == 2 && hasPrimeClinics == 'yes') ||
+        (permissions?.indexOf('kpireport') >= 0 && hasPrimeClinics == 'yes') ||
         userType == 7
       );
     },
   },
   // user_type == 2 || permisions.indexOf('lostopportunity') >= 0 || user_type == 7
   {
-    title: "Lost Opportunity",
-    path: "lost-opportunity",
+    title: 'Lost Opportunity',
+    path: 'lost-opportunity',
     icon: faHandHoldingUsd,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        permissions?.indexOf("lostopportunity") >= 0 ||
+        permissions?.indexOf('lostopportunity') >= 0 ||
         [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
       );
     },
   },
   // apiUrl.includes('test')
   {
-    title: "Rewards", // icon=new
-    path: "rewards",
+    title: 'Rewards', // icon=new
+    path: 'rewards',
     icon: faHandHoldingUsd,
     validatorFn: () => {
       return false;
-      return environment.apiUrl.includes("test");
+      // return environment.apiUrl.includes('test');
     },
   },
   {
-    title: "Refer A Friend", // Get 50% off
-    path: "",
+    title: 'Refer A Friend', // Get 50% off
+    path: '',
     icon: faHandshake,
-    badgeText: "Get 50% off",
+    badgeText: 'Get 50% off',
   },
   // user_type != 7 && apiUrl.includes('test')
   {
-    title: "Tasks",
-    path: "tasks",
+    title: 'Tasks',
+    path: 'tasks',
     icon: faBriefcase,
     validatorFn: ({ userType }: MenuValidatorParams) => {
       return false;
-      return userType != 7 && environment.apiUrl.includes("test");
+      return userType != 7 && environment.apiUrl.includes('test');
     },
   },
   // nav_open == 'setting'
   {
-    title: "Settings",
-    path: "",
+    title: 'Settings',
+    path: '',
     icon: faCog,
     children: [
       // user_type == 2 || permisions.indexOf('profilesettings') >= 0 || user_type == 7
       {
-        title: "Clinics",
-        path: "clinic",
+        title: 'Clinics',
+        path: 'clinic',
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
-            permissions?.indexOf("profilesettings") >= 0 ||
+            permissions?.indexOf('profilesettings') >= 0 ||
             [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
           );
         },
       },
       {
-        title: "Users",
-        path: "roles-users",
+        title: 'Users',
+        path: 'roles-users',
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
-            (permissions?.indexOf("profilesettings") >= 0 || userType == 2) &&
+            (permissions?.indexOf('profilesettings') >= 0 || userType == 2) &&
             userType != 7
           );
         },
       },
       {
-        title: "My Account",
-        path: "profile-settings",
+        title: 'My Account',
+        path: 'profile-settings',
       },
     ],
   },
   {
-    title: "Help",
-    path: "https://jeeve.crunch.help/jeeve-analytics",
+    title: 'Help',
+    path: 'https://jeeve.crunch.help/jeeve-analytics',
     icon: faQuestion,
-    linkType: "open",
+    linkType: 'open',
   },
 ];
 
@@ -321,9 +321,9 @@ interface MenuFlatNode {
 }
 
 @Component({
-  selector: "app-menu",
-  templateUrl: "./app-menu.component.html",
-  styleUrls: ["./app-menu.component.scss"],
+  selector: 'app-menu',
+  templateUrl: './app-menu.component.html',
+  styleUrls: ['./app-menu.component.scss'],
 })
 export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   // @ViewChild('tree') tree: Tree;
@@ -342,19 +342,19 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   treeControl = new FlatTreeControl<MenuFlatNode>(
-    (node) => node.level,
-    (node) => node.expandable
+    node => node.level,
+    node => node.expandable
   );
 
   treeFlattener = new MatTreeFlattener(
     this._transformer,
-    (node) => node.level,
-    (node) => node.expandable,
-    (node) => node.children
+    node => node.level,
+    node => node.expandable,
+    node => node.children
   );
 
-  activedTitle: string = "";
-  activedUrl: string = "";
+  activedTitle: string = '';
+  activedUrl: string = '';
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 
@@ -362,8 +362,14 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // defaultMenu = '/dashboard/finances';
 
-  get rolesIndividual$() {
-    return this.authFacade.rolesIndividualAndClinics$;
+  // get rolesIndividual$() {
+  //   return this.authFacade.rolesIndividualAndClinics$;
+  // }
+
+  get isLoadingRolesIndividual$() {
+    return this.authFacade.isLoadingRolesIndividual$.pipe(
+      takeUntil(this.destroy$)
+    );
   }
 
   constructor(
@@ -377,52 +383,54 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     this.authFacade.getRolesIndividual();
     this.clinicFacade.loadClinics();
 
-    this.rolesIndividual$.pipe(takeUntil(this.destroy$)).subscribe((result) => {
-      const params: MenuValidatorParams = {
-        permissions: result.data,
-        userType: result.type,
-        userPlan: result.plan,
-        hasPrimeClinics: result.hasPrimeClinics,
-      };
-      const menuData: MenuNode[] = [];
+    this.authFacade.rolesIndividualAndClinics$
+      .pipe(takeUntil(this.destroy$), distinctUntilChanged())
+      .subscribe(result => {
+        const params: MenuValidatorParams = {
+          permissions: result.data,
+          userType: result.type,
+          userPlan: result.plan,
+          hasPrimeClinics: result.hasPrimeClinics,
+        };
+        const menuData: MenuNode[] = [];
 
-      MENU_DATA.forEach((item) => {
-        //return item.validatorFn ? item.validatorFn(params) : true;
-        if (item.validatorFn) {
-          const mainMenuValid = item.validatorFn(params);
-          if (item.children && mainMenuValid) {
-            const children = item.children.filter((c) =>
-              c.validatorFn ? c.validatorFn(params) : true
-            );
-            menuData.push({ ...item, ...{ children } });
-            return;
-          } else if (mainMenuValid) {
+        MENU_DATA.forEach(item => {
+          //return item.validatorFn ? item.validatorFn(params) : true;
+          if (item.validatorFn) {
+            const mainMenuValid = item.validatorFn(params);
+            if (item.children && mainMenuValid) {
+              const children = item.children.filter(c =>
+                c.validatorFn ? c.validatorFn(params) : true
+              );
+              menuData.push({ ...item, ...{ children } });
+              return;
+            } else if (mainMenuValid) {
+              menuData.push({ ...item });
+            }
+          } else {
             menuData.push({ ...item });
           }
-        } else {
-          menuData.push({ ...item });
-        }
-      });
+        });
 
-      this.dataSource.data = menuData;
-      const treeNode = this.treeControl.dataNodes.find(
-        (node) => this.activedUrl.includes(node.path) && node.level == 0
-      );
-      if (treeNode) this.treeControl.expand(treeNode);
-    });
+        this.dataSource.data = menuData;
+        const treeNode = this.treeControl.dataNodes.find(
+          node => this.activedUrl.includes(node.path) && node.level == 0
+        );
+        if (treeNode) this.treeControl.expand(treeNode);
+      });
 
     this.router.events
       .pipe(
         takeUntil(this.destroy$),
         map((event: any) => event.routerEvent ?? event),
-        filter((event) => event instanceof NavigationEnd)
+        filter(event => event instanceof NavigationEnd)
       )
-      .subscribe((event) => {
+      .subscribe(event => {
         const { url } = <NavigationEnd>event;
         // const path = this.router.parseUrl(url).root.children['primary']
         //   ? this.router.parseUrl(url).root.children['primary'].segments[0].path
         //   : this.defaultMenu;
-        this.activedUrl = url.split("?")[0];
+        this.activedUrl = url.split('?')[0];
 
         const node = this.findNodeByPath(this.activedUrl, MENU_DATA);
 
@@ -431,7 +439,7 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
 
-    this.activedTitle$.subscribe((v) => {
+    this.activedTitle$.subscribe(v => {
       this.activedTitle = v;
     });
   }

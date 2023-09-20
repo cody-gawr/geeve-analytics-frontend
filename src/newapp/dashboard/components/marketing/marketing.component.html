@@ -1,13 +1,21 @@
-<div
-  class="marketing-page-container"
->
+<div class="dashboard-header-box">
   <date-range-menu></date-range-menu>
   <trend-mode-toggle></trend-mode-toggle>
 </div>
-<div *ngIf="(clinicId$ | async) !== null" class="marketing-chart-content">
-    <new-patient-by-referral-chart [toolTip]="getChartTip(23) | async" class="marketing-chart"></new-patient-by-referral-chart>
-    <revenue-by-referral-chart [toolTip]="getChartTip(24) | async" class="marketing-chart"></revenue-by-referral-chart>
-    <num-new-patients-chart [toolTip]="getNumNewPatientsTip$ | async" class="marketing-chart-1"></num-new-patients-chart>
-    <new-patients-acq-chart [toolTip]="getChartTip(37) | async" class="marketing-chart-1"></new-patients-acq-chart>
-    <mk-total-visits-chart [toolTip]="getChartTip(25) | async"  class="marketing-chart-1"></mk-total-visits-chart>
+<div *ngIf="(clinicId$ | async) !== null" class="dashboard-content-box">
+  <new-patient-by-referral-chart
+    [toolTip]="getChartTip(23) | async"
+    class="marketing-chart"></new-patient-by-referral-chart>
+  <revenue-by-referral-chart
+    [toolTip]="getChartTip(24) | async"
+    class="marketing-chart"></revenue-by-referral-chart>
+  <num-new-patients-chart
+    [toolTip]="getNumNewPatientsTip$ | async"
+    class="marketing-chart-1"></num-new-patients-chart>
+  <new-patients-acq-chart
+    [toolTip]="getChartTip(37) | async"
+    class="marketing-chart-1"></new-patients-acq-chart>
+  <mk-total-visits-chart
+    [toolTip]="getChartTip(25) | async"
+    class="marketing-chart-1"></mk-total-visits-chart>
 </div>

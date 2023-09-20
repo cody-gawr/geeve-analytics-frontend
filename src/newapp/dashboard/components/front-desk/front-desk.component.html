@@ -1,14 +1,24 @@
-<div
-  class="front-desk-page-container"
->
+<div class="dashboard-header-box">
   <date-range-menu></date-range-menu>
   <trend-mode-toggle></trend-mode-toggle>
 </div>
-<div *ngIf="(clinicId$ | async) !== null" class="front-desk-chart-content">
-    <fd-utilisation-rate-chart [toolTip]="getChartTip(15) | async" class="front-desk-chart"></fd-utilisation-rate-chart>
-    <fd-recall-rate-chart [toolTip]="getChartTip(16) | async" class="front-desk-chart"></fd-recall-rate-chart>
-    <fd-reappoint-rate-chart [toolTip]="getChartTip(17) | async" class="front-desk-chart"></fd-reappoint-rate-chart>
-    <fd-number-ticks-chart [toolTip]="getChartTip(20) | async" class="front-desk-chart"></fd-number-ticks-chart>
-    <fd-fta-ratio-chart [toolTip]="getChartTip(18) | async" class="front-desk-chart"></fd-fta-ratio-chart>
-    <fd-uta-ratio-chart [toolTip]="getChartTip(19) | async" class="front-desk-chart"></fd-uta-ratio-chart>
+<div *ngIf="(clinicId$ | async) !== null" class="dashboard-content-box">
+  <fd-utilisation-rate-chart
+    [toolTip]="getChartTip(15) | async"
+    class="fd-chart"></fd-utilisation-rate-chart>
+  <fd-recall-rate-chart
+    [toolTip]="getChartTip(16) | async"
+    class="fd-chart"></fd-recall-rate-chart>
+  <fd-reappoint-rate-chart
+    [toolTip]="getChartTip(17) | async"
+    class="fd-chart"></fd-reappoint-rate-chart>
+  <fd-number-ticks-chart
+    [toolTip]="getChartTip(20) | async"
+    class="fd-chart"></fd-number-ticks-chart>
+  <fd-fta-ratio-chart
+    [toolTip]="getChartTip(18) | async"
+    class="fd-chart"></fd-fta-ratio-chart>
+  <fd-uta-ratio-chart
+    [toolTip]="getChartTip(19) | async"
+    class="fd-chart"></fd-uta-ratio-chart>
 </div>

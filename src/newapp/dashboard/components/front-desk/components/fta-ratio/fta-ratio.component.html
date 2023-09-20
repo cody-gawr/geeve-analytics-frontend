@@ -1,68 +1,82 @@
 <div class="chart-container">
+  <mat-icon
+    [tooltip]="toolTip"
+    matTooltipPosition="below"
+    color="primary"
+    class="help-tip"
+    fontIcon="help"></mat-icon>
+  <div class="chart-title">
     <mat-icon
-        [tooltip]="toolTip"
-        matTooltipPosition="below"
-        color="primary"
-        class="help-tip"
-        fontIcon="help"
-    ></mat-icon>
-    <div class="chart-title">
-        <mat-icon 
-            [matTooltip]="(durationTrendLabel$ | async)+': '+ (fdFtaRatioPrev | number : '1.0-0')"
-            [color]="trendingIcon == 'trending_up'?'primary':'warn'" [fontIcon]="trendingIcon"></mat-icon>
-        <span> 
-            FTA ratio (%)
-        </span>
-    </div>
-    <div class="chart-content">
-        <div class="canvas-wrapper chart-box">
-            <div class="chart-gauge fta-ratio-gauge">
-                <spin-loader *ngIf="(isLoading$ | async); else mainElem"></spin-loader>
-                <ng-template #mainElem>
-                    <ngx-gauge
-                        *ngIf="!(isMultipleClinic$ | async) && (hasData$ | async) && !(isTrend$ | async)"
-                        type="arch"
-                        [value]="fdFtaRatioVal"
-                        [thick]="20"
-                        foregroundColor="#4ccfae"
-                        backgroundColor="#f4f0fa"
-                        cap="round"
-                        size="250"
-                        append="%"
-                        [max]="maxFdFtaRatioGoal"
-                    >
-                    </ngx-gauge>
-                    <canvas
-                        #fdFtaRatioChart
-                        *ngIf="((isTrend$ | async) || (isMultipleClinic$ | async)) && (hasData$ | async)"
-                        baseChart
-                        [datasets]="datasets"
-                        [labels]="labels"
-                        [legend]="false"
-                        [type]="chartType$ | async"
-                        [options]="chartOptions$ | async"
-                    >
-                    </canvas>
-                    
-                    <spin-loader class="empty-placeholder" *ngIf="!(hasData$ | async)" [disableSpin]="true">
-                        You have no FTA's in the selected period
-                    </spin-loader>
-                </ng-template>
-            </div>
-            <div class="chart-foot"  *ngIf="!(isTrend$ | async)">
-                <div>
-                    <h3>{{ fdFtaRatioVal | number: '1.0-0' }}%</h3>
-                    <span>{{ durationLabel$ | async }}</span>
-                </div>
-                <div>
-                    <h3>{{ fdFtaRatioPrev | number: '1.0-0' }}%</h3>
-                    <span>{{ durationTrendLabel$ | async }}</span>
-                </div>
-                <div *ngIf="fdFtaRatioGoal > 0 && showGoals$ | async">
-                    <h3>{{ (fdFtaRatioGoal > 100?100:fdFtaRatioGoal) | number: '1.0-0' }}%</h3>
-                    <span>Goal</span>
-                </div>
-            </div>
+      [matTooltip]="
+        (durationTrendLabel$ | async) +
+        ': ' +
+        (fdFtaRatioPrev | number: '1.0-0')
+      "
+      [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
+      [fontIcon]="trendingIcon"></mat-icon>
+    <span> FTA ratio (%) </span>
+  </div>
+  <div class="chart-content">
+    <div class="canvas-wrapper chart-box fta-ratio-gauge">
+      <div class="chart-gauge">
+        <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
+        <ng-template #mainElem>
+          <ngx-gauge
+            *ngIf="
+              !(isMultipleClinic$ | async) &&
+              (hasData$ | async) &&
+              !(isTrend$ | async)
+            "
+            type="arch"
+            [value]="fdFtaRatioVal"
+            [thick]="20"
+            foregroundColor="#4ccfae"
+            backgroundColor="#f4f0fa"
+            cap="round"
+            size="250"
+            append="%"
+            [max]="maxFdFtaRatioGoal">
+          </ngx-gauge>
+          <canvas
+            #fdFtaRatioChart
+            *ngIf="
+              ((isTrend$ | async) || (isMultipleClinic$ | async)) &&
+              (hasData$ | async)
+            "
+            baseChart
+            [datasets]="datasets"
+            [labels]="labels"
+            [legend]="false"
+            [type]="chartType$ | async"
+            [options]="chartOptions$ | async">
+          </canvas>
+
+          <spin-loader
+            class="empty-placeholder"
+            *ngIf="!(hasData$ | async)"
+            [disableSpin]="true">
+            You have no FTA's in the selected period
+          </spin-loader>
+        </ng-template>
+      </div>
+      <div class="chart-foot" *ngIf="!(isTrend$ | async)">
+        <div>
+          <h3>{{ fdFtaRatioVal | number: '1.0-0' }}%</h3>
+          <span>{{ durationLabel$ | async }}</span>
         </div>
+        <div>
+          <h3>{{ fdFtaRatioPrev | number: '1.0-0' }}%</h3>
+          <span>{{ durationTrendLabel$ | async }}</span>
+        </div>
+        <div *ngIf="fdFtaRatioGoal > 0 && showGoals$ | async">
+          <h3>
+            {{
+              (fdFtaRatioGoal > 100 ? 100 : fdFtaRatioGoal) | number: '1.0-0'
+            }}%
+          </h3>
+          <span>Goal</span>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

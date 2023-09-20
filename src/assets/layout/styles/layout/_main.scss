@@ -7,23 +7,39 @@ a {
   min-height: 100vh;
   overflow-x: hidden;
   .layout-sidenav {
-      /* width */
-      ::-webkit-scrollbar {
-        width: 10px;
-        height: 0px;
-        background: -moz-linear-gradient(top, #fff 20%, rgba(0, 111, 115, 1) 99%);
-        background: -webkit-linear-gradient(top, #fff 20%, rgba(0, 111, 115, 1) 99%);
-        background: linear-gradient(to bottom, #fff 20%, rgba(0, 111, 115, 1) 99%);
-        background-repeat: no-repeat;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: -moz-linear-gradient(top, #fff 20%, rgba(0, 111, 115, 1) 99%);
-        background: -webkit-linear-gradient(top, #fff 20%, rgba(0, 111, 115, 1) 99%);
-        background: linear-gradient(to bottom, #fff 20%, rgba(0, 111, 115, 1) 99%);
-      }
-      .layout-main-container {
-        height: 100%;
-      }
+    /* width */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 0px;
+      background: -moz-linear-gradient(top, #fff 20%, rgba(0, 111, 115, 1) 99%);
+      background: -webkit-linear-gradient(
+        top,
+        #fff 20%,
+        rgba(0, 111, 115, 1) 99%
+      );
+      background: linear-gradient(
+        to bottom,
+        #fff 20%,
+        rgba(0, 111, 115, 1) 99%
+      );
+      background-repeat: no-repeat;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: -moz-linear-gradient(top, #fff 20%, rgba(0, 111, 115, 1) 99%);
+      background: -webkit-linear-gradient(
+        top,
+        #fff 20%,
+        rgba(0, 111, 115, 1) 99%
+      );
+      background: linear-gradient(
+        to bottom,
+        #fff 20%,
+        rgba(0, 111, 115, 1) 99%
+      );
+    }
+    .layout-main-container {
+      height: 100%;
+    }
 
     width: 250px;
     //background: linear-gradient(to bottom, rgb(24, 166, 137) 0%, rgb(0, 111, 115) 99%);
@@ -32,5 +48,46 @@ a {
 
 .page-container {
   //padding: 15px;
-  padding: 15px 15px 0px 15px
+  padding: 15px 15px 0px 15px;
+}
+
+.dashboard-header-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  @include respond-from('tablet-portrait') {
+    gap: 15px;
+  }
+
+  .mat-tab {
+    padding: 0 !important;
+  }
+}
+
+.dashboard-content-box {
+  background-color: #fafafa;
+  padding: 15px;
+  gap: 15px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: calc(100vh - 142px);
+  overflow-y: auto;
+
+  @include respond-from('desktop') {
+    height: calc(100vh - 160px);
+  }
+
+  @include respond-from('tablet-landscape') {
+    height: calc(100vh - 220px);
+  }
+
+  @include respond-from('tablet-portrait') {
+    height: calc(100vh - 210px);
+  }
+
+  @include respond-from('phone') {
+    height: calc(100vh - 245px);
+  }
 }

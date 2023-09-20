@@ -1,11 +1,17 @@
-<div
-  class="cp-page-container"
->
+<div class="dashboard-header-box">
   <date-range-menu></date-range-menu>
 </div>
-<div *ngIf="(clinicId$ | async) !== null" class="cp-chart-content">
-    <cp-procedure-analysis-chart [toolTip]="cpPredictorAnalysisTip$ | async" class="cp-chart"></cp-procedure-analysis-chart>
-    <cp-rev-per-procedure-chart [toolTip]="getChartTip(13) | async" class="cp-chart"></cp-rev-per-procedure-chart>
-    <cp-predictor-ratio-chart [toolTip]="cpPredictorRatioTip$ | async"  class="cp-chart"></cp-predictor-ratio-chart>
-    <cp-clinician-referrals-chart [toolTip]="getChartTip(14) | async" class="cp-chart"></cp-clinician-referrals-chart>
+<div *ngIf="(clinicId$ | async) !== null" class="dashboard-content-box">
+  <cp-procedure-analysis-chart
+    [toolTip]="cpPredictorAnalysisTip$ | async"
+    class="cp-chart"></cp-procedure-analysis-chart>
+  <cp-rev-per-procedure-chart
+    [toolTip]="getChartTip(13) | async"
+    class="cp-chart"></cp-rev-per-procedure-chart>
+  <cp-predictor-ratio-chart
+    [toolTip]="cpPredictorRatioTip$ | async"
+    class="cp-chart"></cp-predictor-ratio-chart>
+  <cp-clinician-referrals-chart
+    [toolTip]="getChartTip(14) | async"
+    class="cp-chart"></cp-clinician-referrals-chart>
 </div>

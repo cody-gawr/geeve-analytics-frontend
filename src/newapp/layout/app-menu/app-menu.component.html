@@ -1,40 +1,49 @@
 <mat-tree
-  *ngIf="dataSource.data.length > 0; else loadingSpin"
+  *ngIf="
+    dataSource.data.length > 0 && !(isLoadingRolesIndividual$ | async);
+    else loadingSpin
+  "
   [dataSource]="dataSource"
-  [treeControl]="treeControl"
->
+  [treeControl]="treeControl">
   <!-- This is the tree node template for leaf nodes -->
-  <mat-tree-node
-    *matTreeNodeDef="let node"
-    matTreeNodePadding
-  >
-    <a *ngIf="!node.linkType || node.linkType == 'route'" [routerLink]="'/' + node.path" [ngClass]="{ active: node.title == activedTitle }">
+  <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+    <a
+      *ngIf="!node.linkType || node.linkType == 'route'"
+      [routerLink]="'/' + node.path"
+      [ngClass]="{ active: node.title == activedTitle }">
       <!-- use a disabled button to provide padding for tree leaf -->
       <div *ngIf="node.level == 0" class="menu-icon-btn">
         <fa-icon *ngIf="!!node.icon" [icon]="node.icon"></fa-icon>
       </div>
       <span *ngIf="node.level !== 0">&nbsp;&nbsp;&nbsp;</span>
       {{ node.title }}
-      <span class="badge-yellow" *ngIf="node.badgeText">{{node.badgeText}}</span>
+      <span class="badge-yellow" *ngIf="node.badgeText">{{
+        node.badgeText
+      }}</span>
     </a>
-    <a *ngIf="node.linkType && node.linkType == 'open'" [href]="node.path" target="_blank" [ngClass]="{ active: node.title == activedTitle }">
+    <a
+      *ngIf="node.linkType && node.linkType == 'open'"
+      [href]="node.path"
+      target="_blank"
+      [ngClass]="{ active: node.title == activedTitle }">
       <!-- use a disabled button to provide padding for tree leaf -->
       <div *ngIf="node.level == 0" class="menu-icon-btn">
         <fa-icon *ngIf="!!node.icon" [icon]="node.icon"></fa-icon>
       </div>
       <span *ngIf="node.level !== 0">&nbsp;&nbsp;&nbsp;</span>
       {{ node.title }}
-      <span class="badge-yellow" *ngIf="node.badgeText">{{node.badgeText}}</span>
+      <span class="badge-yellow" *ngIf="node.badgeText">{{
+        node.badgeText
+      }}</span>
     </a>
   </mat-tree-node>
   <!-- This is the tree node template for expandable nodes -->
   <mat-tree-node
     class="expand-tree-node"
-    style="justify-content: space-between;"
+    style="justify-content: space-between"
     *matTreeNodeDef="let node; when: hasChild"
     matTreeNodePadding
-    matTreeNodeToggle
-  >
+    matTreeNodeToggle>
     <div class="tree-node-title">
       <div *ngIf="node.level == 0" class="menu-icon-btn">
         <fa-icon *ngIf="!!node.icon" [icon]="node.icon"></fa-icon>
@@ -42,8 +51,11 @@
       {{ node.title }}
     </div>
 
-    <div style="margin-right: 25px;" [attr.aria-label]="'Toggle ' + node.title">
-      <fa-icon [icon]="treeControl.isExpanded(node) ? faCaretRight : faCaretDown"></fa-icon>
+    <div style="margin-right: 25px" [attr.aria-label]="'Toggle ' + node.title">
+      <fa-icon
+        [icon]="
+          treeControl.isExpanded(node) ? faCaretRight : faCaretDown
+        "></fa-icon>
       <!-- <mat-icon class="mat-icon-rtl-mirror">
         {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
       </mat-icon> -->
@@ -51,9 +63,5 @@
   </mat-tree-node>
 </mat-tree>
 <ng-template #loadingSpin>
-  <div
-    class="tree-menu-loader"
-  >
-    Loading ...
-  </div>
+  <div class="tree-menu-loader">Loading ...</div>
 </ng-template>

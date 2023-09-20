@@ -1,28 +1,29 @@
-import { Login } from "../../models/auth";
-import { Injectable } from "@angular/core";
-import { select, Store } from "@ngrx/store";
-import { filter, Observable } from "rxjs";
+import { Login } from '../../models/auth';
+import { Injectable } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { filter, Observable } from 'rxjs';
 import {
   AuthApiActions,
   AuthPageActions,
   RolesPageActions,
-} from "../state/actions";
+} from '../state/actions';
 import {
   AuthState,
   selectAuthUserData,
   selectError,
   selectIsLoading,
+  selectIsLoadingRolesIndividual,
   selectLogoutError,
   selectLogoutSuccess,
   selectRolesIndividual,
   selectRolesIndividualAndClinics,
   selectSuccess,
-} from "../state/reducers/auth.reducer";
-import { LoginUser, RolesIndividualApiResponse } from "../../models/user";
-import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
-import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
-import { CookieService } from "ngx-cookie";
-import { getTodayMoment } from "@/newapp/shared/utils";
+} from '../state/reducers/auth.reducer';
+import { LoginUser, RolesIndividualApiResponse } from '../../models/user';
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
+import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { CookieService } from 'ngx-cookie';
+import { getTodayMoment } from '@/newapp/shared/utils';
 
 @Injectable()
 export class AuthFacade {
@@ -54,6 +55,10 @@ export class AuthFacade {
     select(selectAuthUserData)
   );
 
+  public readonly isLoadingRolesIndividual$ = this.store.pipe(
+    select(selectIsLoadingRolesIndividual)
+  );
+
   public readonly rolesIndividual$: Observable<RolesIndividualApiResponse | null> =
     this.store.pipe(select(selectRolesIndividual));
 
@@ -70,7 +75,7 @@ export class AuthFacade {
     this.store.dispatch(AuthPageActions.login({ form }));
   }
 
-  public loginFailed(msg: string = "unknown") {
+  public loginFailed(msg: string = 'unknown') {
     this.store.dispatch(AuthApiActions.loginFailure({ error: msg }));
   }
 
@@ -78,9 +83,9 @@ export class AuthFacade {
     this.clinicFacade.setCurrentSingleClinicId(null);
     this.clinicFacade.setCurrentMultiClinicIDs([]);
     this.layoutFacade.saveDateRange(
-      getTodayMoment().startOf("month"),
+      getTodayMoment().startOf('month'),
       getTodayMoment(),
-      "m"
+      'm'
     );
     localStorage.clear();
     this.cookieService.removeAll();
@@ -92,7 +97,7 @@ export class AuthFacade {
   }
 
   public getAuthUserData(): LoginUser {
-    const data = localStorage.getItem("authUserData");
+    const data = localStorage.getItem('authUserData');
     return data ? JSON.parse(data) : null;
   }
 }
