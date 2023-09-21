@@ -1,19 +1,19 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { DashboardFacade } from "../../facades/dashboard.facade";
-import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
-import { Subject, takeUntil, combineLatest, map } from "rxjs";
-import { FinanceFacade } from "../../facades/finance.facade";
-import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
-import { Router } from "@angular/router";
-import { FnNetProfitParams } from "@/newapp/models/dashboard/finance";
-import moment from "moment";
-import { AuthFacade } from "@/newapp/auth/facades/auth.facade";
-import _ from "lodash";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { DashboardFacade } from '../../facades/dashboard.facade';
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
+import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { FinanceFacade } from '../../facades/finance.facade';
+import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { Router } from '@angular/router';
+import { FnNetProfitParams } from '@/newapp/models/dashboard/finance';
+import moment from 'moment';
+import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
+import _ from 'lodash';
 
 @Component({
-  selector: "dashboard-finances",
-  templateUrl: "./finances.component.html",
-  styleUrls: ["./finances.component.scss"],
+  selector: 'dashboard-finances',
+  templateUrl: './finances.component.html',
+  styleUrls: ['./finances.component.scss'],
 })
 export class FinancesComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
@@ -22,18 +22,18 @@ export class FinancesComponent implements OnInit, OnDestroy {
   get isTrend$() {
     return this.layoutFacade.trend$.pipe(
       takeUntil(this.destroy$),
-      map((t) => t !== "off")
+      map(t => t !== 'off')
     );
   }
 
   get clinicId$() {
     return this.clinicFacade.currentClinicId$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v)
+      map(v => v)
     );
   }
 
-  errMsg = "";
+  errMsg = '';
   noPermission = true;
 
   constructor(
@@ -67,7 +67,7 @@ export class FinancesComponent implements OnInit, OnDestroy {
         //   );
         // })
       )
-      .subscribe((params) => {
+      .subscribe(params => {
         const [
           clinicId,
           dateRange,
@@ -78,8 +78,8 @@ export class FinancesComponent implements OnInit, OnDestroy {
         ] = params;
         if (clinicId == null) return;
         const newConnectedId =
-          typeof clinicId == "string"
-            ? _.min(clinicId.split(",").map((c) => parseInt(c)))
+          typeof clinicId == 'string'
+            ? _.min(clinicId.split(',').map(c => parseInt(c)))
             : clinicId;
         if (newConnectedId !== connectedClinicId) {
           return;
@@ -89,22 +89,24 @@ export class FinancesComponent implements OnInit, OnDestroy {
         const duration = dateRange.duration;
 
         this.dashbordFacade.loadChartTips(5, clinicId);
-        const queryWhEnabled = route && parseInt(route.wh ?? "0") == 1 ? 1 : 0;
+
+        const queryWhEnabled =
+          route && route.wh !== undefined ? parseInt(route.wh) : undefined;
         this.financeFacade.setErrors([]);
         switch (trend) {
-          case "off":
+          case 'off':
             const params: FnNetProfitParams = {
               clinicId: clinicId,
-              startDate: startDate && moment(startDate).format("DD-MM-YYYY"),
-              endDate: endDate && moment(endDate).format("DD-MM-YYYY"),
+              startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
+              endDate: endDate && moment(endDate).format('DD-MM-YYYY'),
               duration: duration,
               queryWhEnabled,
               connectedWith: connectedWith,
             };
 
             if (
-              (connectedWith && connectedWith != "none") ||
-              typeof clinicId === "string"
+              (connectedWith && connectedWith != 'none') ||
+              typeof clinicId === 'string'
             ) {
               this.financeFacade.loadFnNetProfit(params);
               this.financeFacade.loadFnNetProfitPercentage(params);
@@ -117,49 +119,49 @@ export class FinancesComponent implements OnInit, OnDestroy {
             this.financeFacade.loadFnTotalDiscounts(params);
             this.financeFacade.loadFnTotalCollection(params);
             break;
-          case "current":
-          case "historic":
+          case 'current':
+          case 'historic':
             this.financeFacade.loadFnTotalProductionTrend(
               clinicId,
-              trend === "current" ? "c" : "h",
+              trend === 'current' ? 'c' : 'h',
               queryWhEnabled
             );
             this.financeFacade.loadFnTotalCollectionTrend(
               clinicId,
-              trend === "current" ? "c" : "h",
+              trend === 'current' ? 'c' : 'h',
               queryWhEnabled
             );
             this.financeFacade.loadFnNetProfitTrend(
               clinicId,
-              trend === "current" ? "c" : "h",
+              trend === 'current' ? 'c' : 'h',
               connectedWith,
               queryWhEnabled
             );
             this.financeFacade.loadFnNetProfitPercentageTrend(
               clinicId,
-              trend === "current" ? "c" : "h",
+              trend === 'current' ? 'c' : 'h',
               connectedWith,
               queryWhEnabled
             );
             this.financeFacade.loadFnProductionPerVisitTrend(
               clinicId,
-              trend === "current" ? "c" : "h",
+              trend === 'current' ? 'c' : 'h',
               queryWhEnabled
             );
             this.financeFacade.loadFnExpensesTrend(
               clinicId,
-              trend === "current" ? "c" : "h",
+              trend === 'current' ? 'c' : 'h',
               connectedWith,
               queryWhEnabled
             );
             this.financeFacade.loadFnTotalDiscountsTrend(
               clinicId,
-              trend === "current" ? "c" : "h",
+              trend === 'current' ? 'c' : 'h',
               queryWhEnabled
             );
             this.financeFacade.loadFnProductionByClinicianTrend(
               clinicId,
-              trend === "current" ? "c" : "h",
+              trend === 'current' ? 'c' : 'h',
               queryWhEnabled
             );
             break;
@@ -177,11 +179,11 @@ export class FinancesComponent implements OnInit, OnDestroy {
           if (errs.length > 0) {
             if (
               errs.every(
-                (e) =>
+                e =>
                   (e.status == 403 || e.status == 502 || e.status == 401) &&
-                  (trendMode && trendMode !== "off"
-                    ? e.api.includes("Trend")
-                    : !e.api.includes("Trend"))
+                  (trendMode && trendMode !== 'off'
+                    ? e.api.includes('Trend')
+                    : !e.api.includes('Trend'))
               )
             ) {
               this.errMsg = errs[0].message;

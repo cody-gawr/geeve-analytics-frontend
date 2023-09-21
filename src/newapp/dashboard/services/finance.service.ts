@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { Observable, map } from "rxjs";
-import * as _ from "lodash";
-import { environment } from "@/environments/environment";
-import { HttpClient } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { Observable, map } from 'rxjs';
+import * as _ from 'lodash';
+import { environment } from '@/environments/environment';
+import { HttpClient } from '@angular/common/http';
 import {
   FnExpensesApiResponse,
   FnExpensesTrendApiResponse,
@@ -20,11 +20,11 @@ import {
   FnTotalDiscountsTrendApiResponse,
   FnTotalProductionApiResponse,
   FnTotalProductionTrendApiResponse,
-} from "../../models/dashboard/finance";
-import camelcaseKeys from "camelcase-keys";
+} from '../../models/dashboard/finance';
+import camelcaseKeys from 'camelcase-keys';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class FinanceService {
   private apiUrl = environment.apiUrl;
@@ -36,28 +36,31 @@ export class FinanceService {
   ): Observable<FnTotalProductionApiResponse> => {
     const {
       clinicId,
-      startDate = "",
-      endDate = "",
-      duration = "",
-      queryWhEnabled = 0,
+      startDate = '',
+      endDate = '',
+      duration = '',
+      queryWhEnabled = undefined,
     } = params;
+    const queryParams = {
+      clinic_id: clinicId,
+      start_date: startDate,
+      end_date: endDate,
+      duration: duration,
+    };
+    if (queryWhEnabled !== undefined) {
+      queryParams['wh'] = queryWhEnabled;
+    }
     return this.http
       .get<FnTotalProductionApiResponse>(
         `${this.apiUrl}/Finance/fnTotalProduction`,
         {
-          params: {
-            clinic_id: clinicId,
-            start_date: startDate,
-            end_date: endDate,
-            duration: duration,
-            wh: queryWhEnabled,
-          },
+          params: queryParams,
           withCredentials: true,
         }
       )
       .pipe(
         map(
-          (res) =>
+          res =>
             <FnTotalProductionApiResponse>camelcaseKeys(res, { deep: true })
         )
       );
@@ -65,24 +68,27 @@ export class FinanceService {
 
   fnTotalProductionTrend = (
     clinicId: string | number,
-    mode = "",
-    queryWhEnabled = 0
+    mode = '',
+    queryWhEnabled = undefined
   ): Observable<FnTotalProductionTrendApiResponse> => {
+    const queryParams = {
+      clinic_id: clinicId,
+      mode,
+    };
+    if (queryWhEnabled !== undefined) {
+      queryParams['wh'] = queryWhEnabled;
+    }
     return this.http
       .get<FnTotalProductionTrendApiResponse>(
         `${this.apiUrl}/Finance/fnTotalProductionTrend`,
         {
-          params: {
-            clinic_id: clinicId,
-            mode,
-            wh: queryWhEnabled,
-          },
+          params: queryParams,
           withCredentials: true,
         }
       )
       .pipe(
         map(
-          (res) =>
+          res =>
             <FnTotalProductionTrendApiResponse>(
               camelcaseKeys(res, { deep: true })
             )
@@ -95,28 +101,31 @@ export class FinanceService {
   ): Observable<FnTotalCollectionApiResponse> => {
     const {
       clinicId,
-      startDate = "",
-      endDate = "",
-      duration = "",
-      queryWhEnabled = 0,
+      startDate = '',
+      endDate = '',
+      duration = '',
+      queryWhEnabled = undefined,
     } = params;
+    const queryParams = {
+      clinic_id: clinicId,
+      start_date: startDate,
+      end_date: endDate,
+      duration: duration,
+    };
+    if (queryWhEnabled !== undefined) {
+      queryParams['wh'] = queryWhEnabled;
+    }
     return this.http
       .get<FnTotalCollectionApiResponse>(
         `${this.apiUrl}/Finance/fnTotalCollection`,
         {
-          params: {
-            clinic_id: clinicId,
-            start_date: startDate,
-            end_date: endDate,
-            duration: duration,
-            wh: queryWhEnabled,
-          },
+          params: queryParams,
           withCredentials: true,
         }
       )
       .pipe(
         map(
-          (res) =>
+          res =>
             <FnTotalCollectionApiResponse>camelcaseKeys(res, { deep: true })
         )
       );
@@ -124,24 +133,27 @@ export class FinanceService {
 
   fnTotalCollectionTrend = (
     clinicId: string | number,
-    mode = "",
-    queryWhEnabled = 0
+    mode = '',
+    queryWhEnabled = undefined
   ): Observable<FnTotalCollectionTrendApiResponse> => {
+    const queryParams = {
+      clinic_id: clinicId,
+      mode,
+    };
+    if (queryWhEnabled !== undefined) {
+      queryParams['wh'] = queryWhEnabled;
+    }
     return this.http
       .get<FnTotalCollectionTrendApiResponse>(
         `${this.apiUrl}/Finance/fnTotalCollectionTrend`,
         {
-          params: {
-            clinic_id: clinicId,
-            mode,
-            wh: queryWhEnabled,
-          },
+          params: queryParams,
           withCredentials: true,
         }
       )
       .pipe(
         map(
-          (res) =>
+          res =>
             <FnTotalCollectionTrendApiResponse>(
               camelcaseKeys(res, { deep: true })
             )
@@ -154,57 +166,62 @@ export class FinanceService {
   ): Observable<FnNetProfitApiResponse> => {
     const {
       clinicId,
-      startDate = "",
-      endDate = "",
-      duration = "",
-      queryWhEnabled = 0,
-      connectedWith = "",
+      startDate = '',
+      endDate = '',
+      duration = '',
+      queryWhEnabled = undefined,
+      connectedWith = '',
     } = params;
+    const queryParams = {
+      clinic_id: clinicId,
+      start_date: startDate,
+      end_date: endDate,
+      duration: duration,
+    };
+    if (queryWhEnabled !== undefined) {
+      queryParams['wh'] = queryWhEnabled;
+    }
     return this.http
       .get<FnNetProfitApiResponse>(
         `${this.apiUrl}/Finance/fnNetProfit${
-          connectedWith == "myob" ? "Myob" : ""
+          connectedWith == 'myob' ? 'Myob' : ''
         }`,
         {
-          params: {
-            clinic_id: clinicId,
-            start_date: startDate,
-            end_date: endDate,
-            duration: duration,
-            wh: queryWhEnabled,
-          },
+          params: queryParams,
           withCredentials: true,
         }
       )
       .pipe(
-        map((res) => <FnNetProfitApiResponse>camelcaseKeys(res, { deep: true }))
+        map(res => <FnNetProfitApiResponse>camelcaseKeys(res, { deep: true }))
       );
   };
 
   fnNetProfitTrend = (
     clinicId: string | number,
-    mode = "",
-    connectedWith = "",
-    queryWhEnabled = 0
+    mode = '',
+    connectedWith = '',
+    queryWhEnabled = undefined
   ): Observable<FnNetProfitTrendApiResponse> => {
+    const queryParams = {
+      clinic_id: clinicId,
+      mode,
+    };
+    if (queryWhEnabled !== undefined) {
+      queryParams['wh'] = queryWhEnabled;
+    }
     return this.http
       .get<FnNetProfitTrendApiResponse>(
         `${this.apiUrl}/Finance/fnNetProfit${
-          connectedWith == "myob" ? "Myob" : ""
+          connectedWith == 'myob' ? 'Myob' : ''
         }Trend`,
         {
-          params: {
-            clinic_id: clinicId,
-            mode,
-            wh: queryWhEnabled,
-          },
+          params: queryParams,
           withCredentials: true,
         }
       )
       .pipe(
         map(
-          (res) =>
-            <FnNetProfitTrendApiResponse>camelcaseKeys(res, { deep: true })
+          res => <FnNetProfitTrendApiResponse>camelcaseKeys(res, { deep: true })
         )
       );
   };
@@ -214,56 +231,62 @@ export class FinanceService {
   ): Observable<FnNetProfitApiResponse> => {
     const {
       clinicId,
-      startDate = "",
-      endDate = "",
-      duration = "",
-      queryWhEnabled = 0,
-      connectedWith = "",
+      startDate = '',
+      endDate = '',
+      duration = '',
+      queryWhEnabled = undefined,
+      connectedWith = '',
     } = params;
+    const queryParams = {
+      clinic_id: clinicId,
+      start_date: startDate,
+      end_date: endDate,
+      duration: duration,
+    };
+    if (queryWhEnabled !== undefined) {
+      queryParams['wh'] = queryWhEnabled;
+    }
     return this.http
       .get<FnNetProfitApiResponse>(
         `${this.apiUrl}/Finance/fnNetProfitPercentage${
-          connectedWith == "myob" ? "Myob" : ""
+          connectedWith == 'myob' ? 'Myob' : ''
         }`,
         {
-          params: {
-            clinic_id: clinicId,
-            start_date: startDate,
-            end_date: endDate,
-            duration: duration,
-            wh: queryWhEnabled,
-          },
+          params: queryParams,
           withCredentials: true,
         }
       )
       .pipe(
-        map((res) => <FnNetProfitApiResponse>camelcaseKeys(res, { deep: true }))
+        map(res => <FnNetProfitApiResponse>camelcaseKeys(res, { deep: true }))
       );
   };
 
   fnNetProfitPercentageTrend = (
     clinicId: string | number,
-    mode = "",
-    connectedWith = "",
-    queryWhEnabled = 0
+    mode = '',
+    connectedWith = '',
+    queryWhEnabled = undefined
   ): Observable<FnNetProfitPercentTrendApiResponse> => {
+    const queryParams = {
+      clinic_id: clinicId,
+      mode,
+    };
+    if (queryWhEnabled !== undefined) {
+      queryParams['wh'] = queryWhEnabled;
+    }
     return this.http
       .get<FnNetProfitPercentTrendApiResponse>(
         `${this.apiUrl}/Finance/fnNetProfitPercentage${
-          connectedWith == "myob" ? "Myob" : ""
+          connectedWith == 'myob' ? 'Myob' : ''
         }Trend`,
         {
-          params: {
-            clinic_id: clinicId,
-            mode,
-            wh: queryWhEnabled,
-          },
+          params: queryParams,
           withCredentials: true,
         }
       )
       .pipe(
         map(
-          (res) =>
+          res =>
             <FnNetProfitPercentTrendApiResponse>(
               camelcaseKeys(res, { deep: true })
             )
@@ -276,30 +299,33 @@ export class FinanceService {
   ): Observable<FnExpensesApiResponse> => {
     const {
       clinicId,
-      startDate = "",
-      endDate = "",
-      duration = "",
-      queryWhEnabled = 0,
-      connectedWith = "",
+      startDate = '',
+      endDate = '',
+      duration = '',
+      queryWhEnabled = undefined,
+      connectedWith = '',
     } = params;
+    const queryParams = {
+      clinic_id: clinicId,
+      start_date: startDate,
+      end_date: endDate,
+      duration: duration,
+    };
+    if (queryWhEnabled !== undefined) {
+      queryParams['wh'] = queryWhEnabled;
+    }
     return this.http
       .get<FnExpensesApiResponse>(
         `${this.apiUrl}/Finance/fnExpenses${
-          connectedWith == "myob" ? "Myob" : ""
+          connectedWith == 'myob' ? 'Myob' : ''
         }`,
         {
-          params: {
-            clinic_id: clinicId,
-            start_date: startDate,
-            end_date: endDate,
-            duration: duration,
-            wh: queryWhEnabled,
-          },
+          params: queryParams,
           withCredentials: true,
         }
       )
       .pipe(
-        map((res) => <FnExpensesApiResponse>camelcaseKeys(res, { deep: true }))
+        map(res => <FnExpensesApiResponse>camelcaseKeys(res, { deep: true }))
       );
   };
 
@@ -307,26 +333,28 @@ export class FinanceService {
     clinicId: string | number,
     mode: string,
     connectedWith: string,
-    queryWhEnabled: number
+    queryWhEnabled: number = undefined
   ): Observable<FnExpensesTrendApiResponse> => {
+    const queryParams = {
+      clinic_id: clinicId,
+      mode,
+    };
+    if (queryWhEnabled !== undefined) {
+      queryParams['wh'] = queryWhEnabled;
+    }
     return this.http
       .get<FnExpensesTrendApiResponse>(
         `${this.apiUrl}/Finance/fnExpenses${
-          connectedWith == "myob" ? "Myob" : ""
+          connectedWith == 'myob' ? 'Myob' : ''
         }Trend`,
         {
-          params: {
-            clinic_id: clinicId,
-            mode,
-            wh: queryWhEnabled,
-          },
+          params: queryParams,
           withCredentials: true,
         }
       )
       .pipe(
         map(
-          (res) =>
-            <FnExpensesTrendApiResponse>camelcaseKeys(res, { deep: true })
+          res => <FnExpensesTrendApiResponse>camelcaseKeys(res, { deep: true })
         )
       );
   };
@@ -336,25 +364,28 @@ export class FinanceService {
   ): Observable<FnProductionByClinicianApiResponse> {
     const {
       clinicId,
-      startDate = "",
-      endDate = "",
-      duration = "",
-      queryWhEnabled = 0,
+      startDate = '',
+      endDate = '',
+      duration = '',
+      queryWhEnabled = undefined,
     } = params;
+    const queryParams = {
+      clinic_id: clinicId,
+      start_date: startDate,
+      end_date: endDate,
+      duration: duration,
+    };
+    if (queryWhEnabled !== undefined) {
+      queryParams['wh'] = queryWhEnabled;
+    }
     return this.http
       .get(`${this.apiUrl}/Finance/fnProductionByClinician`, {
-        params: {
-          clinic_id: clinicId,
-          start_date: startDate,
-          end_date: endDate,
-          duration: duration,
-          wh: queryWhEnabled,
-        },
+        params: queryParams,
         withCredentials: true,
       })
       .pipe(
         map(
-          (res) =>
+          res =>
             <FnProductionByClinicianApiResponse>(
               camelcaseKeys(res, { deep: true })
             )
@@ -365,20 +396,23 @@ export class FinanceService {
   fnProductionByClinicianTrend(
     clinicId: string | number,
     mode: string,
-    queryWhEnabled: number
+    queryWhEnabled: number = undefined
   ): Observable<FnProdByClinicianTrendApiResponse> {
+    const queryParams = {
+      clinic_id: clinicId,
+      mode,
+    };
+    if (queryWhEnabled !== undefined) {
+      queryParams['wh'] = queryWhEnabled;
+    }
     return this.http
       .get(`${this.apiUrl}/Finance/fnProductionByClinicianTrend`, {
-        params: {
-          clinic_id: clinicId,
-          mode,
-          wh: queryWhEnabled,
-        },
+        params: queryParams,
         withCredentials: true,
       })
       .pipe(
         map(
-          (res) =>
+          res =>
             <FnProdByClinicianTrendApiResponse>(
               camelcaseKeys(res, { deep: true })
             )
@@ -389,25 +423,28 @@ export class FinanceService {
   fnProductionPerVisit(params: FnNetProfitParams) {
     const {
       clinicId,
-      startDate = "",
-      endDate = "",
-      duration = "",
-      queryWhEnabled = 0,
+      startDate = '',
+      endDate = '',
+      duration = '',
+      queryWhEnabled = undefined,
     } = params;
+    const queryParams = {
+      clinic_id: clinicId,
+      start_date: startDate,
+      end_date: endDate,
+      duration: duration,
+    };
+    if (queryWhEnabled !== undefined) {
+      queryParams['wh'] = queryWhEnabled;
+    }
     return this.http
       .get(`${this.apiUrl}/Finance/fnProductionPerVisit`, {
-        params: {
-          clinic_id: clinicId,
-          start_date: startDate,
-          end_date: endDate,
-          duration: duration,
-          wh: queryWhEnabled,
-        },
+        params: queryParams,
         withCredentials: true,
       })
       .pipe(
         map(
-          (res) =>
+          res =>
             <FnProductionPerVisitApiResponse>camelcaseKeys(res, { deep: true })
         )
       );
@@ -416,20 +453,23 @@ export class FinanceService {
   fnProductionPerVisitTrend(
     clinicId: string | number,
     mode: string,
-    queryWhEnabled: number
+    queryWhEnabled: number = undefined
   ) {
+    const queryParams = {
+      clinic_id: clinicId,
+      mode,
+    };
+    if (queryWhEnabled !== undefined) {
+      queryParams['wh'] = queryWhEnabled;
+    }
     return this.http
       .get(`${this.apiUrl}/Finance/fnProductionPerVisitTrend`, {
-        params: {
-          clinic_id: clinicId,
-          mode,
-          wh: queryWhEnabled,
-        },
+        params: queryParams,
         withCredentials: true,
       })
       .pipe(
         map(
-          (res) =>
+          res =>
             <FnProdPerVisitTrendApiResponse>camelcaseKeys(res, { deep: true })
         )
       );
@@ -438,26 +478,28 @@ export class FinanceService {
   fnTotalDiscounts(params: FnNetProfitParams) {
     const {
       clinicId,
-      startDate = "",
-      endDate = "",
-      duration = "",
-      queryWhEnabled = 0,
+      startDate = '',
+      endDate = '',
+      duration = '',
+      queryWhEnabled = undefined,
     } = params;
+    const queryParams = {
+      clinic_id: clinicId,
+      start_date: startDate,
+      end_date: endDate,
+      duration: duration,
+    };
+    if (queryWhEnabled !== undefined) {
+      queryParams['wh'] = queryWhEnabled;
+    }
     return this.http
       .get(`${this.apiUrl}/Finance/fnDiscounts`, {
-        params: {
-          clinic_id: clinicId,
-          start_date: startDate,
-          end_date: endDate,
-          duration: duration,
-          wh: queryWhEnabled,
-        },
+        params: queryParams,
         withCredentials: true,
       })
       .pipe(
         map(
-          (res) =>
-            <FnTotalDiscountsApiResponse>camelcaseKeys(res, { deep: true })
+          res => <FnTotalDiscountsApiResponse>camelcaseKeys(res, { deep: true })
         )
       );
   }
@@ -465,20 +507,23 @@ export class FinanceService {
   fnTotalDiscountsTrend(
     clinicId: string | number,
     mode: string,
-    queryWhEnabled: number
+    queryWhEnabled: number = undefined
   ) {
+    const queryParams = {
+      clinic_id: clinicId,
+      mode,
+    };
+    if (queryWhEnabled !== undefined) {
+      queryParams['wh'] = queryWhEnabled;
+    }
     return this.http
       .get(`${this.apiUrl}/Finance/fnDiscountsTrend`, {
-        params: {
-          clinic_id: clinicId,
-          mode,
-          wh: queryWhEnabled,
-        },
+        params: queryParams,
         withCredentials: true,
       })
       .pipe(
         map(
-          (res) =>
+          res =>
             <FnTotalDiscountsTrendApiResponse>camelcaseKeys(res, { deep: true })
         )
       );

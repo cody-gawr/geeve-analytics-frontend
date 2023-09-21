@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
-import { select, Store } from "@ngrx/store";
-import { Observable } from "rxjs";
-import { JeeveError } from "@/newapp/models";
+import { Injectable } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { JeeveError } from '@/newapp/models';
 import {
   FinanceState,
   selectErrors,
@@ -56,9 +56,9 @@ import {
   selectIsLoadingAllData,
   selectIsLoadingAllTrendData,
   selectProductionCollectionTrendChartData,
-} from "../state/reducers/finance.reducer";
-import { FnNetProfitParams } from "@/newapp/models/dashboard/finance";
-import { FinancePageActions } from "../state/actions";
+} from '../state/reducers/finance.reducer';
+import { FnNetProfitParams } from '@/newapp/models/dashboard/finance';
+import { FinancePageActions } from '../state/actions';
 
 @Injectable()
 export class FinanceFacade {
@@ -272,8 +272,8 @@ export class FinanceFacade {
 
   public loadFnTotalProductionTrend(
     clinicId: string | number,
-    mode = "",
-    queryWhEnabled = 0
+    mode = '',
+    queryWhEnabled = undefined
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnTotalProductionTrend({
@@ -290,8 +290,8 @@ export class FinanceFacade {
 
   public loadFnTotalCollectionTrend(
     clinicId: string | number,
-    mode = "",
-    queryWhEnabled = 0
+    mode = '',
+    queryWhEnabled = undefined
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnTotalCollectionTrend({
@@ -308,9 +308,9 @@ export class FinanceFacade {
 
   public loadFnNetProfitTrend(
     clinicId: string | number,
-    mode = "",
-    connectedWith = "",
-    queryWhEnabled = 0
+    mode = '',
+    connectedWith = '',
+    queryWhEnabled = undefined
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnNetProfitTrend({
@@ -328,9 +328,9 @@ export class FinanceFacade {
 
   public loadFnNetProfitPercentageTrend(
     clinicId: string | number,
-    mode = "",
-    connectedWith = "",
-    queryWhEnabled = 0
+    mode = '',
+    connectedWith = '',
+    queryWhEnabled = undefined
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnNetProfitPercentageTrend({
@@ -350,7 +350,7 @@ export class FinanceFacade {
     clinicId: string | number,
     mode: string,
     connectedWith: string,
-    queryWhEnabled: number
+    queryWhEnabled: number = undefined
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnExpensesTrend({
@@ -369,7 +369,7 @@ export class FinanceFacade {
   public loadFnProductionByClinicianTrend(
     clinicId: string | number,
     mode: string,
-    queryWhEnabled: number
+    queryWhEnabled: number = undefined
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnProdByClinicianTrend({
@@ -387,7 +387,7 @@ export class FinanceFacade {
   public loadFnProductionPerVisitTrend(
     clinicId: string | number,
     mode: string,
-    queryWhEnabled: number
+    queryWhEnabled: number = undefined
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnProdPerVisitTrend({
@@ -405,7 +405,7 @@ export class FinanceFacade {
   public loadFnTotalDiscountsTrend(
     clinicId: string | number,
     mode: string,
-    queryWhEnabled: number
+    queryWhEnabled: number = undefined
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnTotalDiscountsTrend({
