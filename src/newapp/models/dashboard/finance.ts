@@ -101,6 +101,7 @@ export interface FnExpensesApiResponse {
   dataTa: number;
   message: string;
   production: number;
+  productions: FnProduction[];
   status: string | number;
 }
 

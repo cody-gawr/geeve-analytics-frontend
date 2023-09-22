@@ -1,6 +1,6 @@
-import { HttpErrorResponse } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   catchError,
   map,
@@ -10,10 +10,10 @@ import {
   mergeMap,
   Subject,
   takeUntil,
-} from "rxjs";
-import { FinanceService } from "../../services/finance.service";
-import { FinanceApiActions, FinancePageActions } from "../actions";
-import { Store } from "@ngrx/store";
+} from 'rxjs';
+import { FinanceService } from '../../services/finance.service';
+import { FinanceApiActions, FinancePageActions } from '../actions';
+import { Store } from '@ngrx/store';
 import {
   FinanceState,
   // selectIsLoadingCollection,
@@ -22,7 +22,7 @@ import {
   // selectIsLoadingNetProfitTrend,
   // selectIsLoadingTotalProduction,
   // selectIsLoadingTotalProductionTrend,
-} from "../reducers/finance.reducer";
+} from '../reducers/finance.reducer';
 
 @Injectable()
 export class FinanceEffects {
@@ -40,9 +40,9 @@ export class FinanceEffects {
       ofType(FinancePageActions.loadFnTotalProduction),
       // withLatestFrom(interval(1000)),
       // filter(([action, isLoading]) => !isLoading),
-      mergeMap((params) => {
+      mergeMap(params => {
         return this.financeService.fnTotalProduction(params).pipe(
-          map((res) =>
+          map(res =>
             FinanceApiActions.fnTotalProductionSuccess({
               value: res.total,
               trendVal: res.totalTa,
@@ -70,7 +70,7 @@ export class FinanceEffects {
         return this.financeService
           .fnTotalProductionTrend(clinicId, mode, queryWhEnabled)
           .pipe(
-            map((res) =>
+            map(res =>
               FinanceApiActions.fnTotalProductionTrendSuccess({
                 prodTrendData: res.data,
               })
@@ -93,9 +93,9 @@ export class FinanceEffects {
       ofType(FinancePageActions.loadFnTotalCollection),
       // withLatestFrom(this.store.select(selectIsLoadingCollection)),
       // filter(([action, isLoading]) => isLoading),
-      mergeMap((params) => {
+      mergeMap(params => {
         return this.financeService.fnTotalCollection(params).pipe(
-          map((res) =>
+          map(res =>
             FinanceApiActions.fnTotalCollectionSuccess({
               value: res.total,
               trendVal: res.totalTa,
@@ -123,7 +123,7 @@ export class FinanceEffects {
         return this.financeService
           .fnTotalCollectionTrend(clinicId, mode, queryWhEnabled)
           .pipe(
-            map((res) =>
+            map(res =>
               FinanceApiActions.fnTotalCollectionTrendSuccess({
                 collectionTrendData: res.data,
               })
@@ -147,12 +147,10 @@ export class FinanceEffects {
       filter(([action, isLoading]) => isLoading),
       mergeMap(([params]) => {
         return this.financeService.fnNetProfit(params).pipe(
-          map((res) =>
-            FinanceApiActions.fnNetProfitSuccess({ value: res.data })
-          ),
+          map(res => FinanceApiActions.fnNetProfitSuccess({ value: res.data })),
           catchError((error: HttpErrorResponse) => {
             const jeeErr = error.error?.jeeveError ?? error;
-            jeeErr.api = "fnNetProfit";
+            jeeErr.api = 'fnNetProfit';
             jeeErr.platform = params.connectedWith;
             return of(
               FinanceApiActions.fnNetProfitFailure({
@@ -174,14 +172,14 @@ export class FinanceEffects {
         return this.financeService
           .fnNetProfitTrend(clinicId, mode, connectedWith, queryWhEnabled)
           .pipe(
-            map((res) =>
+            map(res =>
               FinanceApiActions.fnNetProfitTrendSuccess({
                 netProfitTrendData: res.data,
               })
             ),
             catchError((error: HttpErrorResponse) => {
               const jeeErr = error.error?.jeeveError ?? error;
-              jeeErr.api = "fnNetProfitTrend";
+              jeeErr.api = 'fnNetProfitTrend';
               jeeErr.platform = connectedWith;
               return of(
                 FinanceApiActions.fnNetProfitTrendFailure({
@@ -197,14 +195,14 @@ export class FinanceEffects {
   public readonly loadfnNetProfitPercentage$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnNetProfitPercentage),
-      mergeMap((params) => {
+      mergeMap(params => {
         return this.financeService.fnNetProfitPercentage(params).pipe(
-          map((res) =>
+          map(res =>
             FinanceApiActions.fnNetProfitPercentageSuccess({ value: res.data })
           ),
           catchError((error: HttpErrorResponse) => {
             const jeeErr = error.error?.jeeveError ?? error;
-            jeeErr.api = "fnNetProfitPercentage";
+            jeeErr.api = 'fnNetProfitPercentage';
             jeeErr.platform = params.connectedWith;
             return of(
               FinanceApiActions.fnNetProfitPercentageFailure({
@@ -229,14 +227,14 @@ export class FinanceEffects {
             queryWhEnabled
           )
           .pipe(
-            map((res) =>
+            map(res =>
               FinanceApiActions.fnNetProfitPercentTrendSuccess({
                 netProfitPercentTrendData: res.data,
               })
             ),
             catchError((error: HttpErrorResponse) => {
               const jeeErr = error.error?.jeeveError ?? error;
-              jeeErr.api = "fnNetProfitPercentageTrend";
+              jeeErr.api = 'fnNetProfitPercentageTrend';
               jeeErr.platform = connectedWith;
               return of(
                 FinanceApiActions.fnNetProfitPercentTrendFailure({
@@ -252,17 +250,16 @@ export class FinanceEffects {
   public readonly loadfnExpenses$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnExpenses),
-      mergeMap((params) => {
+      mergeMap(params => {
         return this.financeService.fnExpenses(params).pipe(
-          map((res) =>
+          map(res =>
             FinanceApiActions.fnExpensesSuccess({
-              expensesData: res.data,
-              production: res.production,
+              expensesBodyData: res,
             })
           ),
           catchError((error: HttpErrorResponse) => {
             const jeeErr = error.error?.jeeveError ?? error;
-            jeeErr.api = "fnExpenses";
+            jeeErr.api = 'fnExpenses';
             jeeErr.platform = params.connectedWith;
             return of(
               FinanceApiActions.fnExpensesFailure({
@@ -282,7 +279,7 @@ export class FinanceEffects {
         return this.financeService
           .fnExpensesTrend(clinicId, mode, connectedWith, queryWhEnabled)
           .pipe(
-            map((res) =>
+            map(res =>
               FinanceApiActions.fnExpensesTrendSuccess({
                 expensesTrendData: res.data,
                 durations: res.durations,
@@ -290,7 +287,7 @@ export class FinanceEffects {
             ),
             catchError((error: HttpErrorResponse) => {
               const jeeErr = error.error?.jeeveError ?? error;
-              jeeErr.api = "fnExpensesTrend";
+              jeeErr.api = 'fnExpensesTrend';
               jeeErr.platform = connectedWith;
               return of(
                 FinanceApiActions.fnExpensesTrendFailure({
@@ -306,9 +303,9 @@ export class FinanceEffects {
   public readonly loadfnProductionByClinician$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnProductionByClinician),
-      mergeMap((params) => {
+      mergeMap(params => {
         return this.financeService.fnProductionByClinician(params).pipe(
-          map((res) =>
+          map(res =>
             FinanceApiActions.fnProductionByClinicianSuccess({
               prodByClinicData: res.data,
               prodByClinicianTotal: res.total,
@@ -333,7 +330,7 @@ export class FinanceEffects {
         return this.financeService
           .fnProductionByClinicianTrend(clinicId, mode, queryWhEnabled)
           .pipe(
-            map((res) =>
+            map(res =>
               FinanceApiActions.fnProdByClinicianTrendSuccess({
                 prodByClinicTrendData: res.data,
               })
@@ -353,9 +350,9 @@ export class FinanceEffects {
   public readonly loadfnProductionPerVisit$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnProductionPerVisit),
-      mergeMap((params) => {
+      mergeMap(params => {
         return this.financeService.fnProductionPerVisit(params).pipe(
-          map((res) =>
+          map(res =>
             FinanceApiActions.fnProductionPerVisitSuccess({
               prodPerVisitData: res.data,
               prodPerVisitTotal: res.total,
@@ -381,7 +378,7 @@ export class FinanceEffects {
         return this.financeService
           .fnProductionPerVisitTrend(clinicId, mode, queryWhEnabled)
           .pipe(
-            map((res) =>
+            map(res =>
               FinanceApiActions.fnProductionPerVisitTrendSuccess({
                 prodPerVisitTrendData: res.data,
               })
@@ -401,9 +398,9 @@ export class FinanceEffects {
   public readonly loadFnTotalDiscounts$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnTotalDiscounts),
-      mergeMap((params) => {
+      mergeMap(params => {
         return this.financeService.fnTotalDiscounts(params).pipe(
-          map((res) =>
+          map(res =>
             FinanceApiActions.fnTotalDiscountsSuccess({
               totalDiscountData: res.data,
               totalDiscountTotal: res.total,
@@ -429,7 +426,7 @@ export class FinanceEffects {
         return this.financeService
           .fnTotalDiscountsTrend(clinicId, mode, queryWhEnabled)
           .pipe(
-            map((res) =>
+            map(res =>
               FinanceApiActions.fnTotalDiscountsTrendSuccess({
                 totalDiscountTrendData: res.data,
               })

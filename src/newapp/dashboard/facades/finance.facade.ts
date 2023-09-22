@@ -56,6 +56,7 @@ import {
   selectIsLoadingAllData,
   selectIsLoadingAllTrendData,
   selectProductionCollectionTrendChartData,
+  selectFnExpensesData,
 } from '../state/reducers/finance.reducer';
 import { FnNetProfitParams } from '@/newapp/models/dashboard/finance';
 import { FinancePageActions } from '../state/actions';
@@ -159,6 +160,9 @@ export class FinanceFacade {
   );
 
   public readonly expensesData$ = this.store.pipe(select(selectExpensesData));
+  public readonly fnExpensesData$ = this.store.pipe(
+    select(selectFnExpensesData)
+  );
 
   public readonly expensesTrendChartData$ = this.store.pipe(
     select(selectExpensesTrendChartData)

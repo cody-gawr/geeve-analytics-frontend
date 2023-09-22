@@ -1,21 +1,21 @@
-import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
-import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
-import { DoughnutChartColors } from "@/newapp/shared/constants";
-import { JeeveLineFillOptions } from "@/newapp/shared/utils";
-import { Component, OnInit, OnDestroy, Input } from "@angular/core";
-import { ChartOptions } from "chart.js";
-import _ from "lodash";
-import { Subject, takeUntil, combineLatest, map } from "rxjs";
-import { MkSelectExpensesModalComponent } from "../select-expenses-modal/select-expenses-modal.component";
-import { MatDialog } from "@angular/material/dialog";
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
+import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
+import { DoughnutChartColors } from '@/newapp/shared/constants';
+import { JeeveLineFillOptions } from '@/newapp/shared/utils';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { ChartOptions } from 'chart.js';
+import _ from 'lodash';
+import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { MkSelectExpensesModalComponent } from '../select-expenses-modal/select-expenses-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: "finance-expense-chart",
-  templateUrl: "./expenses.component.html",
-  styleUrls: ["./expenses.component.scss"],
+  selector: 'finance-expense-chart',
+  templateUrl: './expenses.component.html',
+  styleUrls: ['./expenses.component.scss'],
 })
 export class FinanceExpensesComponent implements OnInit, OnDestroy {
-  @Input() toolTip = "";
+  @Input() toolTip = '';
   @Input() isFullMonths = false;
   get isLoading$() {
     return this.financeFacade.isLoadingFnExpenses$;
@@ -42,7 +42,7 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
     return combineLatest([this.clinicFacade.currentClinicId$]).pipe(
       takeUntil(this.destroy$),
       map(([clinicId]) => {
-        if (typeof clinicId === "string") {
+        if (typeof clinicId === 'string') {
           return this.datasets.length > 0;
         } else {
           return this.selectedData.length > 0;
@@ -54,20 +54,20 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
   get isMultipleClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
       takeUntil(this.destroy$),
-      map((v) => typeof v == "string")
+      map(v => typeof v == 'string')
     );
   }
 
   colorScheme = {
     domain: [
-      "#6edbba",
-      "#abb3ff",
-      "#b0fffa",
-      "#ffb4b5",
-      "#d7f8ef",
-      "#fffdac",
-      "#fef0b8",
-      "#4ccfae",
+      '#6edbba',
+      '#abb3ff',
+      '#b0fffa',
+      '#ffb4b5',
+      '#d7f8ef',
+      '#fffdac',
+      '#fef0b8',
+      '#4ccfae',
     ],
   };
 
@@ -77,17 +77,19 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
     public dialog: MatDialog
   ) {
     combineLatest([
-      this.financeFacade.expensesData$,
-      this.financeFacade.expensesProduction$,
+      this.financeFacade.fnExpensesData$,
       this.clinicFacade.currentClinicId$,
     ])
       .pipe(takeUntil(this.destroy$))
-      .subscribe(([expenses, production, clinicId]) => {
-        if (typeof clinicId === "string") {
+      .subscribe(([resBody, clinicId]) => {
+        if (resBody === null) return;
+        const expenses = resBody.data,
+          production = resBody.production;
+        if (typeof clinicId === 'string') {
           this.datasets = [];
           let i = 0;
           _.chain(expenses)
-            .groupBy("accountName")
+            .groupBy('accountName')
             .map((items, accountName) => {
               return {
                 items,
@@ -95,25 +97,32 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
               };
             })
             .value()
-            .forEach((v) => {
+            .forEach(v => {
               const bgColor = DoughnutChartColors[i];
               i++;
               this.datasets.push({
                 data: _.chain(v.items)
-                  .orderBy("clinicId", "asc")
+                  .orderBy('clinicId', 'asc')
                   .value()
-                  .map((item) =>
-                    ((item.expense / production) * 100).toFixed(1)
-                  ),
+                  .map(item => {
+                    const clinicProd = parseFloat(
+                      <string>(
+                        resBody.productions.find(
+                          p => p.clinicId == item.clinicId
+                        )?.production
+                      )
+                    );
+                    return ((item.expense / clinicProd) * 100).toFixed(1);
+                  }),
                 label: v.accountName,
                 backgroundColor: bgColor,
                 hoverBackgroundColor: bgColor,
               });
             });
           this.labels = _.chain(expenses)
-            .unionBy((item) => item.clinicName)
+            .unionBy(item => item.clinicName)
             .value()
-            .map((item) => item.clinicName);
+            .map(item => item.clinicName);
         } else {
           if (production > 0) {
             this.selectedData = [];
@@ -143,23 +152,23 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
   }
 
   pieTooltipText({ data, index }) {
-    const labl = data.name.split("--");
+    const labl = data.name.split('--');
     if (labl.length > 1) {
       const label = labl[0];
       const exp = Math.round(labl[1])
         .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       return `
               <span class="tooltip-label">${label}</span>
               <span class="tooltip-val"> ${data.value}% ($${exp})</span>
             `;
     } else {
-      return "";
+      return '';
     }
   }
 
   pieLabelText(labels) {
-    return labels.split("--")[0];
+    return labels.split('--')[0];
   }
 
   openExpensesDialog() {
@@ -169,18 +178,18 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
         unSelectedData: this.unSelectedData.slice(),
       },
     });
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(result => {
       this.selectedData = result.selectedData;
       this.unSelectedData = result.unSelectedData;
     });
   }
 
-  public labelBarOptionsMultiPercentage: ChartOptions<"bar"> = {
+  public labelBarOptionsMultiPercentage: ChartOptions<'bar'> = {
     elements: {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: "rectRounded",
+        pointStyle: 'rectRounded',
         hoverBorderWidth: 7,
       },
       line: JeeveLineFillOptions,
@@ -189,7 +198,7 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
     maintainAspectRatio: false,
     animation: {
       duration: 500,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
     },
     scales: {
       x: {
@@ -218,12 +227,12 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
           // disable displaying the color box;
           return false;
         },
-        mode: "x",
+        mode: 'x',
         callbacks: {
-          label: (tooltipItem) => {
+          label: tooltipItem => {
             return `${tooltipItem.dataset.label}: ${tooltipItem.formattedValue}%`;
           },
-          title: () => "",
+          title: () => '',
         },
       },
     },
