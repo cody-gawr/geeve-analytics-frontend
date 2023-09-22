@@ -1,72 +1,72 @@
-import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
-import { DashboardFacade } from "@/newapp/dashboard/facades/dashboard.facade";
-import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
-import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
-import { JeeveLineFillOptions } from "@/newapp/shared/utils";
-import { Component, OnInit, OnDestroy, Input } from "@angular/core";
-import { ChartOptions, LegendOptions, TooltipItem } from "chart.js";
-import { _DeepPartialObject } from "chart.js/dist/types/utils";
-import _ from "lodash";
-import { Subject, takeUntil, combineLatest, map } from "rxjs";
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
+import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
+import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
+import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { JeeveLineFillOptions } from '@/newapp/shared/utils';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { ChartOptions, LegendOptions, TooltipItem } from 'chart.js';
+import { _DeepPartialObject } from 'chart.js/dist/types/utils';
+import _ from 'lodash';
+import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
 @Component({
-  selector: "finance-prod-trend-chart",
-  templateUrl: "./production.component.html",
-  styleUrls: ["./production.component.scss"],
+  selector: 'finance-prod-trend-chart',
+  templateUrl: './production.component.html',
+  styleUrls: ['./production.component.scss'],
 })
 export class FinanceProdTrendComponent implements OnInit, OnDestroy {
-  @Input() toolTip = "";
+  @Input() toolTip = '';
 
   doughnutChartColors = [
-    "#6cd8ba",
-    "#b0fffa",
-    "#abb3ff",
-    "#feefb8",
-    "#91ADEA",
-    "#ffb4b5",
-    "#F2C6C6",
-    "#FDC6C0",
-    "#FEEEE1",
-    "#FFDD99",
-    "#A8DDDD",
-    "#F4F4A0",
-    "#C3DDFF",
-    "#9FDBDB",
-    "#CCFDCC",
-    "#B1F2EC",
-    "#D7ECF3",
-    "#C8CDF0",
-    "#F7C4F5",
-    "#BBEBFA",
-    "#D7ECF3",
-    "#BBE7FF",
-    "#9BD0F5",
-    "#36A2EB",
-    "#FF6384",
-    "#fe7b85",
-    "#87ada9",
-    "#386087",
-    "#54D2FF",
-    "#E58DD7",
+    '#6cd8ba',
+    '#b0fffa',
+    '#abb3ff',
+    '#feefb8',
+    '#91ADEA',
+    '#ffb4b5',
+    '#F2C6C6',
+    '#FDC6C0',
+    '#FEEEE1',
+    '#FFDD99',
+    '#A8DDDD',
+    '#F4F4A0',
+    '#C3DDFF',
+    '#9FDBDB',
+    '#CCFDCC',
+    '#B1F2EC',
+    '#D7ECF3',
+    '#C8CDF0',
+    '#F7C4F5',
+    '#BBEBFA',
+    '#D7ECF3',
+    '#BBE7FF',
+    '#9BD0F5',
+    '#36A2EB',
+    '#FF6384',
+    '#fe7b85',
+    '#87ada9',
+    '#386087',
+    '#54D2FF',
+    '#E58DD7',
   ];
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
-  profitChartNames = ["Production", "Collection", "Net Profit", "Net Profit %"];
+  profitChartNames = ['Production', 'Collection', 'Net Profit', 'Net Profit %'];
 
   datasets: any = [{ data: [] }];
   labels = [];
 
   public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
     display: true,
-    position: "bottom",
+    position: 'bottom',
     labels: {
       boxWidth: 8,
       usePointStyle: true,
-      generateLabels: (chart) => {
+      generateLabels: chart => {
         let labels = [];
         let bg_color = {};
-        chart.data.datasets.forEach((item) => {
+        chart.data.datasets.forEach(item => {
           item.data.forEach((val: number) => {
             if (val > 0) {
               labels.push(item.label);
@@ -76,7 +76,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
         });
         labels = [...new Set(labels)];
         labels = labels.splice(0, 10);
-        return labels.map((item) => ({
+        return labels.map(item => ({
           text: item,
           strokeStyle: bg_color[item],
           fillStyle: bg_color[item],
@@ -91,7 +91,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: "rectRounded",
+        pointStyle: 'rectRounded',
         hoverBorderWidth: 7,
       },
       line: JeeveLineFillOptions,
@@ -100,7 +100,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
     maintainAspectRatio: false,
     animation: {
       duration: 500,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
     },
     scales: {
       x: {
@@ -113,9 +113,9 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
         stacked: false,
         ticks: {
           callback: function (label, index, labels) {
-            return `${new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
+            return `${new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'USD',
               minimumFractionDigits: 0,
               maximumFractionDigits: 0,
             }).format(Number(label))}`;
@@ -128,21 +128,21 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
         display: true,
       },
       tooltip: {
-        mode: "x",
+        mode: 'x',
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
         callbacks: {
           label: (tooltipItems: TooltipItem<any>) => {
             let label = tooltipItems.label;
-            return `${label} : ${new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
+            return `${label} : ${new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'USD',
               minimumFractionDigits: 0,
               maximumFractionDigits: 0,
             }).format(Number(tooltipItems.parsed.y))}`;
           },
-          title: () => "",
+          title: () => '',
         },
       },
     },
@@ -153,7 +153,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: "rectRounded",
+        pointStyle: 'rectRounded',
         hoverBorderWidth: 7,
       },
     },
@@ -163,7 +163,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
     // barThickness: 10,
     animation: {
       duration: 500,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
     },
     scales: {
       x: {
@@ -180,12 +180,12 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
             if (Math.floor(label) === label) {
               let currency =
                 label < 0
-                  ? label.toString().split("-").join("")
+                  ? label.toString().split('-').join('')
                   : label.toString();
-              currency = currency.split(/(?=(?:...)*$)/).join(",");
-              return `${label < 0 ? "- $" : "$"}${currency}`;
+              currency = currency.split(/(?=(?:...)*$)/).join(',');
+              return `${label < 0 ? '- $' : '$'}${currency}`;
             }
-            return "";
+            return '';
           },
         },
       },
@@ -193,18 +193,18 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
     plugins: {
       legend: this.stackLegendGenerator,
       tooltip: {
-        mode: "x",
+        mode: 'x',
         callbacks: {
           label: function (tooltipItems) {
             return `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`;
           },
           title: function (tooltipItems) {
-            return `${tooltipItems[0].label}: ${new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
+            return `${tooltipItems[0].label}: ${new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'USD',
               minimumFractionDigits: 0,
               maximumFractionDigits: 0,
-            }).format(_.sumBy(tooltipItems, (t) => t.parsed.y))}`;
+            }).format(_.sumBy(tooltipItems, t => t.parsed.y))}`;
           },
         },
       },
@@ -215,20 +215,20 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
     ...this.labelBarOptionsSingleValue,
     plugins: {
       tooltip: {
-        mode: "x",
+        mode: 'x',
         callbacks: {
-          label: (tooltipItems) => {
+          label: tooltipItems => {
             return `${tooltipItems.dataset.label} : ${new Intl.NumberFormat(
-              "en-US",
+              'en-US',
               {
-                style: "currency",
-                currency: "USD",
+                style: 'currency',
+                currency: 'USD',
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0,
               }
             ).format(tooltipItems.parsed.y)}`;
           },
-          title: () => "",
+          title: () => '',
         },
       },
     },
@@ -239,7 +239,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: "rectRounded",
+        pointStyle: 'rectRounded',
         hoverBorderWidth: 7,
       },
       line: JeeveLineFillOptions,
@@ -248,7 +248,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
     maintainAspectRatio: false,
     animation: {
       duration: 500,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
     },
     scales: {
       x: {
@@ -271,7 +271,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
         display: true,
       },
       tooltip: {
-        mode: "x",
+        mode: 'x',
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
@@ -279,7 +279,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
           label: function (tooltipItems) {
             return `${tooltipItems.label} : ${tooltipItems.formattedValue}%`;
           },
-          title: () => "",
+          title: () => '',
         },
       },
     },
@@ -292,22 +292,22 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
     ]).pipe(
       takeUntil(this.destroy$),
       map(([t, clinicId]) => {
-        const isMultiClinic = typeof clinicId == "string";
+        const isMultiClinic = typeof clinicId == 'string';
 
         switch (t) {
-          case "Production":
+          case 'Production':
             return isMultiClinic
               ? this.stackedChartOptionsDiscount
               : this.labelBarOptionsSingleValue;
-          case "Collection":
+          case 'Collection':
             return isMultiClinic
               ? this.stackedChartOptionsDiscount
               : this.labelBarOptionsSingleValue;
-          case "Net Profit":
+          case 'Net Profit':
             return isMultiClinic
               ? this.netProfitTrendMultiChartOptions
               : this.labelBarOptionsSingleValue;
-          case "Net Profit %":
+          case 'Net Profit %':
             return this.labelBarOptionsSingleValue1;
         }
         return {};
@@ -321,9 +321,9 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
       this.financeFacade.profitTrendChartName$,
     ]).pipe(
       map(([v, chartName]) => {
-        if (["Net Profit %", "Net Profit"].indexOf(chartName) >= 0)
+        if (['Net Profit %', 'Net Profit'].indexOf(chartName) >= 0)
           return false;
-        return typeof v === "string" ? true : false;
+        return typeof v === 'string' ? true : false;
       })
     );
   }
@@ -346,13 +346,13 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
           isNetProfitPercentTrend,
         ]) => {
           switch (t) {
-            case "Production":
+            case 'Production':
               return isLoadingProdTrend;
-            case "Collection":
+            case 'Collection':
               return isLoadingColTrend;
-            case "Net Profit":
+            case 'Net Profit':
               return isNetProfitTrend;
-            case "Net Profit %":
+            case 'Net Profit %':
               return isNetProfitPercentTrend;
           }
           return false;
@@ -364,7 +364,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
   get chartName$() {
     return this.financeFacade.profitTrendChartName$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v)
+      map(v => v)
     );
   }
 
@@ -400,8 +400,8 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
           let chartDataset = [],
             chartLabels = [];
           switch (chartName) {
-            case "Production":
-              if (typeof clinicId === "string") {
+            case 'Production':
+              if (typeof clinicId === 'string') {
                 chartDataset = (<any>prodChartData).datasets;
                 chartLabels = (<any>prodChartData).labels;
               } else {
@@ -416,8 +416,8 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
                 }
               }
               break;
-            case "Collection":
-              if (typeof clinicId === "string") {
+            case 'Collection':
+              if (typeof clinicId === 'string') {
                 chartDataset = (<any>collectionTrendChartData).datasets;
                 chartLabels = (<any>collectionTrendChartData).labels;
               } else {
@@ -431,8 +431,8 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
               }
 
               break;
-            case "Net Profit":
-              if (typeof clinicId === "string") {
+            case 'Net Profit':
+              if (typeof clinicId === 'string') {
                 chartDataset = (<any>netProfitTrendChartData).datasets;
                 chartLabels = (<any>netProfitTrendChartData).labels;
               } else {
@@ -445,7 +445,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
                 );
               }
               break;
-            case "Net Profit %":
+            case 'Net Profit %':
               chartDataset = [{ data: [] }];
               netProfitPercentChartData.forEach(
                 (data: { label: string; value: number } & any, index) => {
@@ -468,18 +468,18 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
     ]).pipe(
       takeUntil(this.destroy$),
       map(([t, clinicId]) => {
-        const isMultiClinic = typeof clinicId == "string";
+        const isMultiClinic = typeof clinicId == 'string';
         switch (t) {
-          case "Production":
-            return isMultiClinic ? "bar" : "line";
-          case "Collection":
-            return isMultiClinic ? "bar" : "line";
-          case "Net Profit":
-            return "line";
-          case "Net Profit %":
-            return "line";
+          case 'Production':
+            return isMultiClinic ? 'bar' : 'line';
+          case 'Collection':
+            return isMultiClinic ? 'bar' : 'line';
+          case 'Net Profit':
+            return 'line';
+          case 'Net Profit %':
+            return 'line';
         }
-        return "line";
+        return 'line';
       })
     );
   }
@@ -488,17 +488,13 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
     return combineLatest([
       this.dashboardFacade.connectedWith$,
       this.financeFacade.profitTrendChartName$,
-      this.clinicFacade.currentClinicId$,
+      // this.clinicFacade.currentClinicId$,
     ]).pipe(
-      map(([v, chartName, clinicId]) => {
-        const isDisconnected = !(v && v != "none");
-        const isMultiClinic = typeof clinicId == "string";
+      map(([v, chartName]) => {
+        const isDisconnected = !(v && v != 'none');
+        // const isMultiClinic = typeof clinicId == "string";
 
-        return (
-          isDisconnected &&
-          ((chartName == "Collection" && !isMultiClinic) ||
-            (chartName == "Net Profit" && !isMultiClinic))
-        );
+        return isDisconnected && chartName !== 'Collection';
       })
     );
   }

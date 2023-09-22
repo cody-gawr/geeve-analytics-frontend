@@ -104,10 +104,7 @@ export class FinancesComponent implements OnInit, OnDestroy {
               connectedWith: connectedWith,
             };
 
-            if (
-              (connectedWith && connectedWith != 'none') ||
-              typeof clinicId === 'string'
-            ) {
+            if (connectedWith && connectedWith != 'none') {
               this.financeFacade.loadFnNetProfit(params);
               this.financeFacade.loadFnNetProfitPercentage(params);
               this.financeFacade.loadFnExpenses(params);
@@ -121,6 +118,26 @@ export class FinancesComponent implements OnInit, OnDestroy {
             break;
           case 'current':
           case 'historic':
+            if (connectedWith && connectedWith != 'none') {
+              this.financeFacade.loadFnExpensesTrend(
+                clinicId,
+                trend === 'current' ? 'c' : 'h',
+                connectedWith,
+                queryWhEnabled
+              );
+              this.financeFacade.loadFnNetProfitTrend(
+                clinicId,
+                trend === 'current' ? 'c' : 'h',
+                connectedWith,
+                queryWhEnabled
+              );
+              this.financeFacade.loadFnNetProfitPercentageTrend(
+                clinicId,
+                trend === 'current' ? 'c' : 'h',
+                connectedWith,
+                queryWhEnabled
+              );
+            }
             this.financeFacade.loadFnTotalProductionTrend(
               clinicId,
               trend === 'current' ? 'c' : 'h',
@@ -131,29 +148,12 @@ export class FinancesComponent implements OnInit, OnDestroy {
               trend === 'current' ? 'c' : 'h',
               queryWhEnabled
             );
-            this.financeFacade.loadFnNetProfitTrend(
-              clinicId,
-              trend === 'current' ? 'c' : 'h',
-              connectedWith,
-              queryWhEnabled
-            );
-            this.financeFacade.loadFnNetProfitPercentageTrend(
-              clinicId,
-              trend === 'current' ? 'c' : 'h',
-              connectedWith,
-              queryWhEnabled
-            );
             this.financeFacade.loadFnProductionPerVisitTrend(
               clinicId,
               trend === 'current' ? 'c' : 'h',
               queryWhEnabled
             );
-            this.financeFacade.loadFnExpensesTrend(
-              clinicId,
-              trend === 'current' ? 'c' : 'h',
-              connectedWith,
-              queryWhEnabled
-            );
+
             this.financeFacade.loadFnTotalDiscountsTrend(
               clinicId,
               trend === 'current' ? 'c' : 'h',
