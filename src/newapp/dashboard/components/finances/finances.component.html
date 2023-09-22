@@ -5,9 +5,11 @@
 <div
   *ngIf="(clinicId$ | async) !== null && noPermission"
   class="dashboard-content-box">
-  <trend-finances *ngIf="isTrend$ | async; else trendSection"></trend-finances>
+  <trend-finances
+    class="trend-finances-container"
+    *ngIf="isTrend$ | async; else trendSection"></trend-finances>
   <ng-template #trendSection>
-    <none-trend-finances></none-trend-finances>
+    <none-trend-finances class="trend-finances-container"></none-trend-finances>
   </ng-template>
 </div>
 <div

@@ -1,19 +1,20 @@
 @import '../../../../../assets/layout/styles/layout/mixin';
 
 .trend-finances {
-    gap: 15px;
+  gap: 15px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex: 1;
+  .trend-chart {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    .trend-chart {
-        display: flex;
-        flex-direction: column;
-        @include respond-from('big-desktop') {
-            width: calc(50% - 7.5px);
-        }
-
-        @include respond-from('tablet-portrait') {
-            width: 100%;
-        }
+    flex-direction: column;
+    @include respond-from('big-desktop') {
+      width: calc(50% - 7.5px);
     }
+
+    @include respond-from('tablet-portrait') {
+      width: 100%;
+    }
+  }
 }
