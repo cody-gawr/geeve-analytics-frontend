@@ -1228,12 +1228,20 @@ export const selectProdPerVisitTrendChartData = createSelector(
         const sumVisits = _.sumBy(values, v =>
           _.round(parseFloat(<string>v.numVisits ?? '0'))
         );
+
+        const sumProdPerVisits = _.sumBy(values, v =>
+          _.round(parseFloat(<string>v.prodPerVisit ?? '0'))
+        );
+
         return {
           label:
             trendMode == 'current'
               ? moment(duration).format('MMM YYYY')
               : duration,
           value: _.round(sumProd / sumVisits),
+          prod: sumProd,
+          numVisits: sumVisits,
+          prodPerVisits: sumProdPerVisits,
         };
       })
       .value();
