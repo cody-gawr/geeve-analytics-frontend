@@ -1,30 +1,29 @@
-import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
-import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
-import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
-import { DateRangeMenus } from "@/newapp/shared/components/date-range-menu/date-range-menu.component";
-import { splitName } from "@/newapp/shared/utils";
-import { DecimalPipe } from "@angular/common";
-import { Component, OnInit, OnDestroy, Input } from "@angular/core";
-import { ChartOptions } from "chart.js";
-import _ from "lodash";
-import { Subject, takeUntil, combineLatest, map } from "rxjs";
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
+import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
+import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { splitName } from '@/newapp/shared/utils';
+import { DecimalPipe } from '@angular/common';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { ChartOptions } from 'chart.js';
+import _ from 'lodash';
+import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
 @Component({
-  selector: "prod-per-visit-chart",
-  templateUrl: "./prod-per-visit.component.html",
-  styleUrls: ["./prod-per-visit.component.scss"],
+  selector: 'prod-per-visit-chart',
+  templateUrl: './prod-per-visit.component.html',
+  styleUrls: ['./prod-per-visit.component.scss'],
 })
 export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
-  @Input() toolTip = "";
+  @Input() toolTip = '';
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 
   get trendingIcon() {
     if (this.productionVisitVal >= this.productionVisitTrendVal) {
-      return "trending_up";
+      return 'trending_up';
     }
-    return "trending_down";
+    return 'trending_down';
   }
 
   productionVisitVal = 0;
@@ -33,9 +32,9 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
   datasets = [
     {
       data: [],
-      label: "",
+      label: '',
       shadowOffsetX: 3,
-      backgroundColor: "rgba(0, 0, 255, 0.2)",
+      backgroundColor: 'rgba(0, 0, 255, 0.2)',
     },
   ];
   labels = [];
@@ -43,13 +42,13 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
   get duration$() {
     return this.layoutFacade.dateRange$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v.duration)
+      map(v => v.duration)
     );
   }
 
   get hasData$() {
     return this.isMultipleClinic$.pipe(
-      map((v) => {
+      map(v => {
         if (v) {
           return this.labels.length > 0;
         } else {
@@ -62,41 +61,41 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
   get isLoading$() {
     return this.financeFacade.isLoadingFnProdPerVisit$.pipe(
       takeUntil(this.destroy$),
-      (v) => v
+      v => v
     );
   }
 
   get isMultipleClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
       takeUntil(this.destroy$),
-      map((v) => typeof v == "string")
+      map(v => typeof v == 'string')
     );
   }
 
   get durationLabel$() {
     return this.layoutFacade.durationLabel$.pipe(
       takeUntil(this.destroy$),
-      map((val) => val)
+      map(val => val)
     );
   }
 
   get durationTrendLabel$() {
     return this.layoutFacade.durationTrendLabel$.pipe(
       takeUntil(this.destroy$),
-      map((l) => l)
+      map(l => l)
     );
   }
 
   get getTrendTip$() {
     return this.durationTrendLabel$.pipe(
       takeUntil(this.destroy$),
-      map((v) => {
+      map(v => {
         if (this.productionVisitTrendVal > 0) {
           return (
-            v + ": $" + this.decimalPipe.transform(this.productionVisitTrendVal)
+            v + ': $' + this.decimalPipe.transform(this.productionVisitTrendVal)
           );
         }
-        return "";
+        return '';
       })
     );
   }
@@ -119,9 +118,9 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
         const chartLabels = [];
 
         this.datasets[0].data = [];
-        visitData.forEach((d) => {
+        visitData.forEach(d => {
           this.datasets[0].data.push(
-            Math.round(parseFloat(<string>d.prodPerVisit ?? "0"))
+            Math.round(parseFloat(<string>d.prodPerVisit ?? '0'))
           );
           chartLabels.push(d.clinicName);
         });
@@ -136,14 +135,14 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
     this.destroy.next();
   }
 
-  public barChartOptionsTrend: ChartOptions<"bar"> = {
+  public barChartOptionsTrend: ChartOptions<'bar'> = {
     // scaleShowVerticalLines: false,
     // cornerRadius: 60,
     hover: { mode: null },
     // curvature: 1,
     animation: {
       duration: 1500,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
     },
     responsive: true,
     maintainAspectRatio: false,
@@ -168,26 +167,26 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
           callback: (label: number, index, labels) => {
             // when the floored value is the same as the value we have a whole number
             if (Math.floor(label) === label) {
-              return "$" + this.decimalPipe.transform(label);
+              return '$' + this.decimalPipe.transform(label);
             }
-            return "";
+            return '';
           },
         },
       },
     },
     plugins: {
       tooltip: {
-        mode: "x",
+        mode: 'x',
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
         callbacks: {
           // use label callback to return the desired label
-          label: (tooltipItem) => {
+          label: tooltipItem => {
             const v = tooltipItem.parsed.y;
             let Tlable = tooltipItem.dataset.label;
-            if (Tlable != "") {
-              Tlable = Tlable + ": ";
+            if (Tlable != '') {
+              Tlable = Tlable + ': ';
             }
             //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
             let ylable = tooltipItem.parsed._custom
@@ -196,23 +195,23 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
                   tooltipItem.parsed._custom.min
                 ) / 2
               : v;
-            if (ylable == 0 && Tlable == "Target: ") {
+            if (ylable == 0 && Tlable == 'Target: ') {
               //return  Tlable + this.splitName(tooltipItem.xLabel).join(' ');
-              return "";
+              return '';
             } else {
               return (
-                Tlable + splitName(tooltipItem.label).join(" ") + ": $" + ylable
+                Tlable + splitName(tooltipItem.label).join(' ') + ': $' + ylable
               );
             }
           },
           // remove title
           title: function (tooltipItem) {
-            return "";
+            return '';
           },
         },
       },
       legend: {
-        position: "top",
+        position: 'top',
         onClick: function (e, legendItem) {
           var index = legendItem.datasetIndex;
           var ci = this.chart;
@@ -229,8 +228,8 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
     },
   };
 
-  barChartColors = [
-    { backgroundColor: "#39acac" },
-    { backgroundColor: "#48daba" },
-  ];
+  // barChartColors = [
+  //   { backgroundColor: '#39acac' },
+  //   { backgroundColor: '#48daba' },
+  // ];
 }

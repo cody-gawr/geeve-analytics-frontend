@@ -1,65 +1,69 @@
 <div class="chart-container">
+  <mat-icon
+    [tooltip]="toolTip"
+    matTooltipPosition="below"
+    color="primary"
+    class="help-tip"
+    fontIcon="help"></mat-icon>
+  <div class="chart-title">
     <mat-icon
-        [tooltip]="toolTip"
-        matTooltipPosition="below"
-        color="primary"
-        class="help-tip"
-        fontIcon="help"
-    ></mat-icon>
-    <div class="chart-title">
-        <mat-icon 
-            *ngIf="(duration$ | async) != 'custom'"
-            [color]="trendingIcon == 'trending_up'?'primary':'warn'"
-            [fontIcon]="trendingIcon"
-            [matTooltip]="getTrendTip$ | async"
-        ></mat-icon>
-        <span>
-            Production Per Visit
-        </span>
-    </div>
-    <div class="chart-content">
-        <div class="canvas-wrapper chart-box">
-            <div class="chart-gauge prod-per-visit-gauge">
-                <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
-                <ng-template #chartElem>
-                    <ngx-gauge
-                        *ngIf="!(isLoading$ | async) && !(isMultipleClinic$ | async) && (hasData$ | async)"
-                        type="arch"
-                        [value]="productionVisitVal"
-                        [thick]="20"
-                        prepend="$"
-                        foregroundColor="#4ccfae"
-                        backgroundColor="#f4f0fa"
-                        cap="round"
-                        size="250"
-                    >
-                    </ngx-gauge>
-                    <canvas
-                        *ngIf="!(isLoading$ | async) && (isMultipleClinic$ | async) && (hasData$ | async)"
-                        baseChart
-                        [datasets]="datasets"
-                        [labels]="labels"
-                        [legend]="false"
-                        type="bar"
-                        [options]="barChartOptionsTrend"
-                        [colors]="barChartColors"
-                    >
-                    </canvas>
-                    <spin-loader class="empty-placeholder" *ngIf="!(hasData$ | async)" [disableSpin]="true">
-                        You have no production in the selected period
-                    </spin-loader>                    
-                </ng-template>
-            </div>
-            <div class="chart-foot">
-                <div>
-                    <h3>${{ productionVisitVal | number: '1.0-0' }}</h3>
-                    <span>{{ durationLabel$ | async }}</span>
-                </div>
-                <div *ngIf="(duration$ | async) != 'custom'">
-                    <h3>${{ productionVisitTrendVal | number: '1.0-0' }}</h3>
-                    <span>{{ durationTrendLabel$ | async }}</span>
-                </div>
-            </div>
+      *ngIf="(duration$ | async) != 'custom'"
+      [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
+      [fontIcon]="trendingIcon"
+      [matTooltip]="getTrendTip$ | async"></mat-icon>
+    <span> Production Per Visit </span>
+  </div>
+  <div class="chart-content">
+    <div class="canvas-wrapper chart-box">
+      <div class="chart-gauge prod-per-visit-gauge">
+        <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+        <ng-template #chartElem>
+          <ngx-gauge
+            *ngIf="
+              !(isLoading$ | async) &&
+              !(isMultipleClinic$ | async) &&
+              (hasData$ | async)
+            "
+            type="arch"
+            [value]="productionVisitVal"
+            [thick]="20"
+            prepend="$"
+            foregroundColor="#4ccfae"
+            backgroundColor="#f4f0fa"
+            cap="round"
+            [size]="250">
+          </ngx-gauge>
+          <canvas
+            *ngIf="
+              !(isLoading$ | async) &&
+              (isMultipleClinic$ | async) &&
+              (hasData$ | async)
+            "
+            baseChart
+            [datasets]="datasets"
+            [labels]="labels"
+            [legend]="false"
+            type="bar"
+            [options]="barChartOptionsTrend">
+          </canvas>
+          <spin-loader
+            class="empty-placeholder"
+            *ngIf="!(hasData$ | async)"
+            [disableSpin]="true">
+            You have no production in the selected period
+          </spin-loader>
+        </ng-template>
+      </div>
+      <div class="chart-foot">
+        <div>
+          <h3>${{ productionVisitVal | number: '1.0-0' }}</h3>
+          <span>{{ durationLabel$ | async }}</span>
         </div>
+        <div *ngIf="(duration$ | async) != 'custom'">
+          <h3>${{ productionVisitTrendVal | number: '1.0-0' }}</h3>
+          <span>{{ durationTrendLabel$ | async }}</span>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

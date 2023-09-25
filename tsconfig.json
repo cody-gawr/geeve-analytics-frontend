@@ -17,15 +17,9 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "es2022",
-    "lib": [
-      "es2022",
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2022", "es2020", "dom"],
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
+      "@/*": ["src/*"]
     },
     "allowSyntheticDefaultImports": true,
     "useDefineForClassFields": false
@@ -35,5 +29,5 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": false
-  },
+  }
 }
