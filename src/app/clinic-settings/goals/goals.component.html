@@ -10,24 +10,28 @@
         fxFlex="20"
         fxFlex.md="20"
         fxFlex.sm="30"
-        fxFlex.xs="100"
-      >
-        <mat-form-field floatLabel="never"  >
-          <mat-label class="goals-form-field-label">
-            Monthly Goals
-          </mat-label>
-          <mat-select class="external_dentist" [ngModel]="selectedGoalCategory$.value" (ngModelChange)="handleGoalCategorySelection($event)"  *ngIf="selectedTab == 1 || selectedTab == 10">
+        fxFlex.xs="100">
+        <mat-form-field floatLabel="never">
+          <mat-label class="goals-form-field-label"> Monthly Goals </mat-label>
+          <mat-select
+            class="external_dentist"
+            [ngModel]="selectedGoalCategory$.value"
+            (ngModelChange)="handleGoalCategorySelection($event)"
+            *ngIf="selectedTab == 1 || selectedTab == 10">
             <mat-option value="">Clinic Total</mat-option>
             <mat-option
               *ngFor="let dentist of dentists"
-              [value]="dentist.providerId"
-            >
-              <span *ngIf="dentist.jeeve_name">{{dentist.jeeve_name}}</span>
-              <span *ngIf="!dentist.jeeve_name">{{dentist.name}}</span>
+              [value]="dentist.providerId">
+              <span *ngIf="dentist.jeeve_name">{{ dentist.jeeve_name }}</span>
+              <span *ngIf="!dentist.jeeve_name">{{ dentist.name }}</span>
             </mat-option>
           </mat-select>
-          <mat-select class="external_dentist" [ngModel]="selectedGoalCategory$.value" (ngModelChange)="handleGoalCategorySelection($event)"  *ngIf="selectedTab != 1 && selectedTab != 10">
-            <mat-option value="">Clinic Total</mat-option>            
+          <mat-select
+            class="external_dentist"
+            [ngModel]="selectedGoalCategory$.value"
+            (ngModelChange)="handleGoalCategorySelection($event)"
+            *ngIf="selectedTab != 1 && selectedTab != 10">
+            <mat-option value="">Clinic Total</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -38,13 +42,16 @@
         fxFlex="20"
         fxFlex.md="20"
         fxFlex.sm="30"
-        fxFlex.xs="100"
-      >
-        <mat-form-field floatLabel="never" >
-          <mat-label class="goals-form-field-label">
-          Dashboard </mat-label>
-          <mat-select class="external_dentist" [(ngModel)]="selectedTab" (ngModelChange)="onTabChanged($event)" >
-            <mat-option *ngFor="let tab of tabs" [value]="tab.d_id">{{ updateName(tab.d_name) }} </mat-option>
+        fxFlex.xs="100">
+        <mat-form-field floatLabel="never">
+          <mat-label class="goals-form-field-label"> Dashboard </mat-label>
+          <mat-select
+            class="external_dentist"
+            [(ngModel)]="selectedTab"
+            (ngModelChange)="onTabChanged($event)">
+            <mat-option *ngFor="let tab of tabs" [value]="tab.d_id"
+              >{{ updateName(tab.d_name) }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -55,65 +62,81 @@
         fxFlex="20"
         fxFlex.md="20"
         fxFlex.sm="30"
-        fxFlex.xs="100"
-      >
-        <mat-form-field floatLabel="never" >
-          <mat-label class="goals-form-field-label">
-          Year </mat-label>
-          <mat-select class="external_dentist" [(ngModel)]="selectedYear" (ngModelChange)="onTabYearChanged($event)" >
-            <mat-option *ngFor="let yearRange of range" [value]="yearRange">{{ yearRange }} </mat-option>
+        fxFlex.xs="100">
+        <mat-form-field floatLabel="never">
+          <mat-label class="goals-form-field-label"> Year </mat-label>
+          <mat-select
+            class="external_dentist"
+            [(ngModel)]="selectedYear"
+            (ngModelChange)="onTabYearChanged($event)">
+            <mat-option *ngFor="let yearRange of range" [value]="yearRange"
+              >{{ yearRange }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
     </div>
-
-
   </mat-card-content>
   <div mat-dialog-content class="sa_forms_design">
     <div>
       <div *ngFor="let tab of tabs">
-      
-
-    <form  class="basic-form goalsTable" *ngIf="selectedTab == tab.d_id"> 
-      <table class="goalsEditTable">       
-        
-        <thead>       
-          <tr>
-             <th width="20%">&nbsp;</th>
-              <th>January</th>
-              <th>February</th>
-              <th>March</th>
-              <th>April</th>
-              <th>May</th>
-              <th>June</th>
-              <th>July</th>
-              <th>August</th>
-              <th>September</th>
-              <th>October</th>
-              <th>November</th>
-              <th>December</th>
-            </tr>             
-          </thead>
-          <tbody>
-            <tr *ngFor="let charts of tab.charts">
-              <td>{{ charts.c_name }}  <span class="goalSignFix" *ngIf="charts.sign">( {{ charts.sign }} )</span></td>
-              <td *ngFor="let goalsD of charts.goals; let sn =  index;">
-                <div class="goal-value">
-                  <!-- <span matPrefix  [ngStyle]="{'opacity':  charts.sign == '$' ? '1' : '0'}">$</span>            -->
-                  <input autocomplete="off" type="text" name="goal{{ charts.c_id }}{{ sn }}" value="{{ goalsD != -1 ? goalsD : ''}}" (keydown)="keyDown($event)" (keyup)="onKeyUp(charts.c_id, $event.target.value,$event,sn, tab.d_name)" class="sign{{charts.sign}}" />                
-                  <!-- (focusout)="onBlur(charts.c_id, $event.target.value,$event,sn)" -->
-                  <!-- <span matSuffix *ngIf=" charts.sign == '%'">%</span> -->
-                </div>
-              </td>
-            </tr>
-          </tbody>          
-      
-          
-      </table>
-    </form>
-  </div>
+        <form class="basic-form goalsTable" *ngIf="selectedTab == tab.d_id">
+          <table class="goalsEditTable">
+            <thead>
+              <tr>
+                <th width="20%">&nbsp;</th>
+                <th>January</th>
+                <th>February</th>
+                <th>March</th>
+                <th>April</th>
+                <th>May</th>
+                <th>June</th>
+                <th>July</th>
+                <th>August</th>
+                <th>September</th>
+                <th>October</th>
+                <th>November</th>
+                <th>December</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let charts of tab.charts">
+                <td>
+                  {{ charts.c_name }}
+                  <span class="goalSignFix" *ngIf="charts.sign"
+                    >( {{ charts.sign }} )</span
+                  >
+                </td>
+                <td *ngFor="let goalsD of charts.goals; let sn = index">
+                  <div class="goal-value">
+                    <!-- <span matPrefix  [ngStyle]="{'opacity':  charts.sign == '$' ? '1' : '0'}">$</span>            -->
+                    <input
+                      autocomplete="off"
+                      type="text"
+                      name="goal{{ charts.c_id }}{{ sn }}"
+                      value="{{ goalsD != -1 ? goalsD : '' }}"
+                      (keydown)="keyDown($event)"
+                      (keyup)="
+                        onKeyUp(
+                          charts.c_id,
+                          $event.target.value,
+                          $event,
+                          sn,
+                          tab.d_name
+                        )
+                      "
+                      class="sign{{ charts.sign }}" />
+                    <!-- (focusout)="onBlur(charts.c_id, $event.target.value,$event,sn)" -->
+                    <!-- <span matSuffix *ngIf=" charts.sign == '%'">%</span> -->
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
     </div>
-  </div> 
+  </div>
   <div class="sa-form-group-btn">
     <button class="btn save-button" (click)="onSubmit()">Save</button>
   </div>
