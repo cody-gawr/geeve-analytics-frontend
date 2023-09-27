@@ -1,5 +1,5 @@
-import { Chart, Plugin, TooltipItem } from "chart.js";
-import moment from "moment-timezone";
+import { Chart, Plugin, TooltipItem } from 'chart.js';
+import moment from 'moment-timezone';
 
 export function splitName(label: string) {
   const regex = /\w+\s\w+(?=\s)|\w+/g;
@@ -7,37 +7,37 @@ export function splitName(label: string) {
 }
 
 export function correctTime(value: string) {
-  const s = (value || "").split(":");
+  const s = (value || '').split(':');
 
-  let hh = s[0].replace(/\D/g, "");
+  let hh = s[0].replace(/\D/g, '');
 
   if (hh.length > 2 && s.length == 1) {
     while (hh.length < 4) {
-      hh = "0" + hh;
+      hh = '0' + hh;
     }
     hh = hh.substring(0, 4);
-    return hh.replace(/^(\d{0,2})(\d{0,2})/, "$1:$2");
+    return hh.replace(/^(\d{0,2})(\d{0,2})/, '$1:$2');
     //newVal = newVal.replace(/^(\d{0,2})(\d{0,2})/, '$1:$2');
   } else if (hh.length > 2 && s.length > 1) {
     hh = hh.substring(0, 2);
-    let mm = s[1].replace(/\D/g, "");
+    let mm = s[1].replace(/\D/g, '');
     while (mm.length < 2) {
-      mm = "0" + mm;
+      mm = '0' + mm;
     }
     mm = mm.substring(0, 2);
     return `${hh}:${mm}`;
   } else if (hh.length <= 2 && s.length == 1) {
     while (hh.length < 4) {
-      hh = "0" + hh;
+      hh = '0' + hh;
     }
-    return hh.replace(/^(\d{0,2})(\d{0,2})/, "$1:$2");
+    return hh.replace(/^(\d{0,2})(\d{0,2})/, '$1:$2');
   } else {
     while (hh.length < 2) {
-      hh = "0" + hh;
+      hh = '0' + hh;
     }
-    let mm = s[1].replace(/\D/g, "");
+    let mm = s[1].replace(/\D/g, '');
     while (mm.length < 2) {
-      mm = "0" + mm;
+      mm = '0' + mm;
     }
     mm = mm.substring(0, 2);
     return `${hh}:${mm}`;
@@ -49,7 +49,7 @@ export const compare = (
   b: number | string | boolean | undefined,
   isAsc: boolean
 ) => {
-  if (typeof a == "number" && typeof b == "number" && isNaN(a)) {
+  if (typeof a == 'number' && typeof b == 'number' && isNaN(a)) {
     return 1 - (isNaN(b) ? 1 : 0) * (isAsc ? 1 : -1);
   }
 
@@ -62,7 +62,7 @@ export const compare = (
   return (a! < b! ? -1 : 1) * (isAsc ? 1 : -1);
 };
 
-export const getTodayMoment = (tz = "Australia/Brisbane") => {
+export const getTodayMoment = (tz = 'Australia/Brisbane') => {
   return moment().tz(tz);
 };
 
@@ -73,9 +73,9 @@ export const getTodayMoment = (tz = "Australia/Brisbane") => {
 // }
 
 export function formatXLabel(label: string | number) {
-  if (label && typeof label == "string") {
+  if (label && typeof label == 'string') {
     const names = splitName(label);
-    const name = names[0].split(" ");
+    const name = names[0].split(' ');
     if (names.length == 3) {
       return `${names[0]}`;
     } else if (names.length == 2) {
@@ -93,29 +93,38 @@ export function formatXLabel(label: string | number) {
 
 export function formatXTooltipLabel(tooltipItem: TooltipItem<any>) {
   return tooltipItem.parsed.y < 0
-    ? "- $"
+    ? '- $'
     : `${tooltipItem.label}: $${tooltipItem.formattedValue}`;
 }
 
 export function chartPlugin(count: number, isCurrency?: boolean): Plugin {
   return {
-    id: "plugin-123",
+    id: 'plugin-123',
     beforeDraw: (chart: Chart) => {
       const ctx = chart.ctx;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       const centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
       const centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
-      ctx.font = (count.toString().length > 4 ? 24 : 37) + "px Gilroy-Bold";
-      ctx.fillStyle = "#454649";
+      const digitCnt = Math.floor(count).toString().length;
+      let px = 30;
+      if (digitCnt > 8) {
+        px = 12;
+      } else if (digitCnt > 6) {
+        px = 18;
+      } else if (digitCnt > 4) {
+        px = 24;
+      }
+      ctx.font = px + 'px Gilroy-Bold';
+      ctx.fillStyle = '#454649';
       // Draw text in center
       let perThousands = count
         .toFixed(0)
         .split(/(?=(?:...)*$)/)
-        .join(","); //decimal numbers fixed to zero number of digits after decimal point
+        .join(','); //decimal numbers fixed to zero number of digits after decimal point
 
       if (isCurrency) {
-        ctx.fillText("$ " + perThousands, centerX, centerY);
+        ctx.fillText('$ ' + perThousands, centerX, centerY);
       } else {
         ctx.fillText(perThousands, centerX, centerY);
       }
@@ -128,10 +137,10 @@ import {
   LineOptions,
   ScriptableAndArrayOptions,
   ScriptableContext,
-} from "chart.js";
-import { _DeepPartialObject } from "chart.js/dist/types/utils";
-import { HttpErrorResponse } from "@angular/common/http";
-import { environment } from "@/environments/environment";
+} from 'chart.js';
+import { _DeepPartialObject } from 'chart.js/dist/types/utils';
+import { HttpErrorResponse } from '@angular/common/http';
+import { environment } from '@/environments/environment';
 
 export const JeeveLineFillOptions: _DeepPartialObject<
   ScriptableAndArrayOptions<
@@ -140,18 +149,18 @@ export const JeeveLineFillOptions: _DeepPartialObject<
   >
 > = {
   fill: true,
-  backgroundColor: "rgba(34,127,127, 0.5)",
-  borderColor: "#00695C",
-  borderCapStyle: "round",
+  backgroundColor: 'rgba(34,127,127, 0.5)',
+  borderColor: '#00695C',
+  borderCapStyle: 'round',
   tension: 0.3,
 };
 
 export function getApiErrorMesssage(error: HttpErrorResponse) {
-  let errorMsg = "";
+  let errorMsg = '';
   if (error && error.error && error.error.jeeveError) {
     errorMsg = error.error.jeeveError.message;
   } else {
     errorMsg = error && error.message;
   }
-  return errorMsg ?? "Unknown Error!";
+  return errorMsg ?? 'Unknown Error!';
 }

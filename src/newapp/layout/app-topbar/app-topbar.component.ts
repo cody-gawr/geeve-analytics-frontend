@@ -63,7 +63,6 @@ export class AppTopbarComponent implements OnInit {
     ]).pipe(
       map(data => {
         const [authUserData, rolesIndividual, clinics] = data;
-        console.log('data', data);
         const result = authUserData ?? this.authFacade.getAuthUserData();
         return {
           multiClinicEnabled: {

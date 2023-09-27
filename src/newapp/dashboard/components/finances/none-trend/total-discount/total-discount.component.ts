@@ -1,21 +1,21 @@
-import { formatXTooltipLabel } from "@/app/util";
-import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
-import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
-import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
-import { chartPlugin } from "@/newapp/shared/utils";
-import { DecimalPipe } from "@angular/common";
-import { Component, OnInit, OnDestroy, Input } from "@angular/core";
-import { ChartOptions } from "chart.js";
-import _ from "lodash";
-import { Subject, takeUntil, combineLatest, map } from "rxjs";
+import { formatXTooltipLabel } from '@/app/util';
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
+import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
+import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { chartPlugin } from '@/newapp/shared/utils';
+import { DecimalPipe } from '@angular/common';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { ChartOptions } from 'chart.js';
+import _ from 'lodash';
+import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
 @Component({
-  selector: "total-discount-chart",
-  templateUrl: "./total-discount.component.html",
-  styleUrls: ["./total-discount.component.scss"],
+  selector: 'total-discount-chart',
+  templateUrl: './total-discount.component.html',
+  styleUrls: ['./total-discount.component.scss'],
 })
 export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
-  @Input() toolTip = "";
+  @Input() toolTip = '';
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
@@ -29,43 +29,43 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
   get isLoading$() {
     return this.financeFacade.isLoadingFnTotalDiscount$.pipe(
       takeUntil(this.destroy$),
-      (v) => v
+      v => v
     );
   }
 
   get trendingIcon() {
     if (this.totalDiscountChartTotal >= this.totalDiscountChartTrendTotal) {
-      return "trending_up";
+      return 'trending_up';
     }
-    return "trending_down";
+    return 'trending_down';
   }
 
   get durationLabel$() {
     return this.layoutFacade.durationLabel$.pipe(
       takeUntil(this.destroy$),
-      map((val) => val)
+      map(val => val)
     );
   }
 
   get durationTrendLabel$() {
     return this.layoutFacade.durationTrendLabel$.pipe(
       takeUntil(this.destroy$),
-      map((l) => l)
+      map(l => l)
     );
   }
 
   get getTrendTip$() {
     return this.durationTrendLabel$.pipe(
       takeUntil(this.destroy$),
-      map((v) => {
+      map(v => {
         if (this.totalDiscountChartTrendTotal > 0) {
           return (
             v +
-            ": $" +
+            ': $' +
             this.decimalPipe.transform(this.totalDiscountChartTrendTotal)
           );
         }
-        return "";
+        return '';
       })
     );
   }
@@ -73,8 +73,8 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
   get legend$() {
     return this.clinicFacade.currentClinicId$.pipe(
       takeUntil(this.destroy$),
-      map((v) => {
-        return typeof v === "string";
+      map(v => {
+        return typeof v === 'string';
       })
     );
   }
@@ -82,7 +82,7 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
   get duration$() {
     return this.layoutFacade.dateRange$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v.duration)
+      map(v => v.duration)
     );
   }
 
@@ -108,21 +108,19 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
         ]) => {
           const chartData = [],
             chartLabels = [];
-          if (typeof clinicId == "string") {
+          if (typeof clinicId == 'string') {
             const data = _.chain(totalDiscountData)
-              .sortBy((t) => t.discounts)
-              .groupBy("clinicId")
+              .sortBy(t => t.discounts)
+              .groupBy('clinicId')
               .map((values, cId) => {
                 return {
                   clinicName: values[0].clinicName,
-                  discounts: _.sumBy(values, (v) =>
-                    _.round(<number>v.discounts)
-                  ),
+                  discounts: _.sumBy(values, v => _.round(<number>v.discounts)),
                 };
               })
               .value();
             data.sort((a, b) => b.discounts - a.discounts);
-            data.forEach((v) => {
+            data.forEach(v => {
               chartData.push(v.discounts);
               chartLabels.push(v.clinicName);
             });
@@ -137,7 +135,7 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
               const discounts = _.round(<number>val.discounts);
               if (discounts > 0) {
                 chartData.push(discounts);
-                chartLabels.push(val.providerName ?? "");
+                chartLabels.push(val.providerName ?? '');
               }
             });
           }
@@ -145,6 +143,7 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
           this.totalDiscountChartTrendTotal = Math.round(
             totalDiscountTrendTotal ?? 0
           );
+
           this.totalDiscountChartTotal = Math.round(totalDiscountTotal);
           this.totalDiscountChartLabels = chartLabels;
           this.datasets = [{ data: chartData }];
@@ -152,25 +151,25 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
       );
   }
 
-  public pieChartOptions: ChartOptions<"doughnut"> = {
+  public pieChartOptions: ChartOptions<'doughnut'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
         display: true,
-        position: "bottom",
+        position: 'bottom',
         labels: {
           usePointStyle: true,
           padding: 20,
         },
-        onClick: (event) => {
+        onClick: event => {
           event.native.stopPropagation();
         },
       },
       tooltip: {
         callbacks: {
-          label: (tooltipItem) => formatXTooltipLabel(tooltipItem),
-          title: () => "",
+          label: tooltipItem => formatXTooltipLabel(tooltipItem),
+          title: () => '',
         },
       },
     },
@@ -205,7 +204,7 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
   get plugins$() {
     return this.financeFacade.totalDiscountTotal$.pipe(
       takeUntil(this.destroy$),
-      map((dC) => {
+      map(dC => {
         {
           return [chartPlugin(dC, true)];
         }
