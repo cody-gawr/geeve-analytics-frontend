@@ -39,11 +39,15 @@ export class AppTopbarComponent implements OnInit {
   });
 
   get enableAllClinics$() {
-    return this.authFacade.rolesIndividual$.pipe(
+    return combineLatest([
+      this.authFacade.rolesIndividual$,
+      this.clinicFacade.clinics$,
+    ]).pipe(
       takeUntil(this.destroy$),
-      map(rolesIndividual => {
+      map(([rolesIndividual, totalClinics]) => {
         const userType = rolesIndividual ? rolesIndividual.type : 0;
         return (
+          totalClinics.length > 1 &&
           ['/dashboards/healthscreen'].includes(this.activatedUrl) &&
           userType != 7
         );
@@ -55,9 +59,11 @@ export class AppTopbarComponent implements OnInit {
     return combineLatest([
       this.authFacade.authUserData$,
       this.authFacade.rolesIndividual$,
+      this.clinicFacade.clinics$,
     ]).pipe(
       map(data => {
-        const [authUserData, rolesIndividual] = data;
+        const [authUserData, rolesIndividual, clinics] = data;
+        console.log('data', data);
         const result = authUserData ?? this.authFacade.getAuthUserData();
         return {
           multiClinicEnabled: {
@@ -68,10 +74,12 @@ export class AppTopbarComponent implements OnInit {
             dash5Multi: result?.dash5Multi,
           },
           userType: rolesIndividual ? rolesIndividual.type : 0,
+          totalClinicsLength: clinics.length,
         };
       }),
-      map(({ multiClinicEnabled, userType }) => {
+      map(({ multiClinicEnabled, userType, totalClinicsLength }) => {
         const value =
+          totalClinicsLength > 1 &&
           ((this.activatedUrl == '/newapp/dashboard/cliniciananalysis' &&
             multiClinicEnabled.dash1Multi == 1) ||
             (this.activatedUrl == '/newapp/dashboard/clinicianproceedures' &&

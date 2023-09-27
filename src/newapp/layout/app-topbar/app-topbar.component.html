@@ -1,15 +1,11 @@
 <div class="layout-topbar">
-  <div
-    class="menu-wrapper lt-md"
-  >
+  <div class="menu-wrapper lt-md">
     <button mat-icon-button color="primary" (click)="toggleSideBar()">
       <mat-icon>menu</mat-icon>
     </button>
     <img class="logo" src="assets/layout/images/logo.png" />
   </div>
-  <div
-    class="menu-wrapper gt-sm"
-  >
+  <div class="menu-wrapper gt-sm">
     <div class="hide-lt__sm">
       <button mat-icon-button (click)="toggleSideBar()">
         <mat-icon>{{
@@ -22,53 +18,86 @@
       <div class="date-picker-wrapper">
         <div class="date-picker-field">
           <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-            <input matStartDate formControlName="start" (dateChange)="onDateRangeChange('start', $event)" placeholder="Start date">
-            <input matEndDate formControlName="end" (dateChange)="onDateRangeChange('end', $event)" placeholder="End date">
+            <input
+              matStartDate
+              formControlName="start"
+              (dateChange)="onDateRangeChange('start', $event)"
+              placeholder="Start date" />
+            <input
+              matEndDate
+              formControlName="end"
+              (dateChange)="onDateRangeChange('end', $event)"
+              placeholder="End date" />
           </mat-date-range-input>
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"></mat-datepicker-toggle>
           <mat-date-range-picker #picker></mat-date-range-picker>
         </div>
       </div>
       <div class="clinic-selector-wrapper">
         <div class="clinic-selector-field">
-          <mat-select 
-              multiple
-              *ngIf="(isMultiClinics$ | async); else singleClinicsSection"
-              #multiClinicsSelectElem 
-              (selectionChange)="onChangeMultiClinics($event)" 
-              (openedChange)="onMultiSelectPanelOpened($event)" 
-              [value]="selectedMultiClinics" 
-              panelClass="jeeve-custom-select-panel"
-          >
+          <mat-select
+            multiple
+            *ngIf="isMultiClinics$ | async; else singleClinicsSection"
+            #multiClinicsSelectElem
+            (selectionChange)="onChangeMultiClinics($event)"
+            (openedChange)="onMultiSelectPanelOpened($event)"
+            [value]="selectedMultiClinics"
+            panelClass="jeeve-custom-select-panel">
             <mat-select-trigger>
-              {{getClinicName$(selectedMultiClinics) | async}}
-              <span *ngIf="(selectedMultiClinics?.length || 0) > 1 && !selectedMultiClinics.includes('all')">
-                (+{{(selectedMultiClinics?.length || 0) - 1}} {{selectedMultiClinics?.length === 2 ? 'other' : 'others'}})
+              {{ getClinicName$(selectedMultiClinics) | async }}
+              <span
+                *ngIf="
+                  (selectedMultiClinics?.length || 0) > 1 &&
+                  !selectedMultiClinics.includes('all')
+                ">
+                (+{{ (selectedMultiClinics?.length || 0) - 1 }}
+                {{ selectedMultiClinics?.length === 2 ? 'other' : 'others' }})
               </span>
             </mat-select-trigger>
             <mat-option value="all">All Clinics</mat-option>
-            <mat-option *ngFor="let clinic of (clinics$ | async)" [value]="clinic.id">
+            <mat-option
+              *ngFor="let clinic of clinics$ | async"
+              [value]="clinic.id">
               {{ clinic.clinicName }}
             </mat-option>
             <div class="apply-btn">
-              <button (click)="onApplyMultiClinics()" mat-raised-button color="primary">Apply</button>
+              <button
+                (click)="onApplyMultiClinics()"
+                mat-raised-button
+                color="primary">
+                Apply
+              </button>
             </div>
           </mat-select>
           <ng-template #singleClinicsSection>
-            <mat-select (selectionChange)="onChangeCurrentClinic($event)" [value] = "selectedClinic">
-                <mat-option *ngIf="enableAllClinics$ | async" value="all">All Clinics</mat-option>
-                <mat-option *ngFor="let clinic of (clinics$ | async)" [value]="clinic.id">
-                  {{ clinic.clinicName }}
-                </mat-option>
+            <mat-select
+              (selectionChange)="onChangeCurrentClinic($event)"
+              [value]="selectedClinic">
+              <mat-option *ngIf="enableAllClinics$ | async" value="all"
+                >All Clinics</mat-option
+              >
+              <mat-option
+                *ngFor="let clinic of clinics$ | async"
+                [value]="clinic.id">
+                {{ clinic.clinicName }}
+              </mat-option>
             </mat-select>
           </ng-template>
         </div>
-        <div *ngIf="isEnableDentistDropdown$ | async" class="clinic-selector-field">
-          <mat-select (selectionChange)="onChangeCurrentDentist($event)" [value] = "selectedDentist">
-              <mat-option value="all">All Dentists</mat-option>
-              <mat-option *ngFor="let dentist of (dentists$ | async)" [value]="dentist.providerId">
-                {{ dentist.jeeveName??dentist.name }}
-              </mat-option>
+        <div
+          *ngIf="isEnableDentistDropdown$ | async"
+          class="clinic-selector-field">
+          <mat-select
+            (selectionChange)="onChangeCurrentDentist($event)"
+            [value]="selectedDentist">
+            <mat-option value="all">All Dentists</mat-option>
+            <mat-option
+              *ngFor="let dentist of dentists$ | async"
+              [value]="dentist.providerId">
+              {{ dentist.jeeveName ?? dentist.name }}
+            </mat-option>
           </mat-select>
         </div>
       </div>
