@@ -348,12 +348,15 @@ export class GoalsComponent
   }
 
   onKeyUp(id, val, event, sn, tab) {
+    val = parseFloat(val);
     if ($(event.target).hasClass('sign%') && val > 100) {
       val = 100;
+      $(event.target).val(val);
     } else if (val == '') {
       val = '';
+      $(event.target).val(val);
     }
-    $(event.target).val(val);
+    //$(event.target).val(val);
     val = +val;
     this.goalsData['goals'][id][sn] = val == 0 ? -1 : val;
     if (tab === 'Prime KPI Report') {
@@ -361,6 +364,7 @@ export class GoalsComponent
         +$("input[name='goal63" + sn + "']").val() *
         +$("input[name='goal64" + sn + "']").val();
       $("input[name='goal1" + sn + "']").val(product == 0 ? '' : product);
+      console.log('product', product);
       this.goalsData['goals'][1][sn] = product == 0 ? -1 : product;
     }
   }
@@ -384,7 +388,8 @@ export class GoalsComponent
       (event.keyCode < 96 || event.keyCode > 105) &&
       event.keyCode != 9 &&
       event.keyCode != 8 &&
-      event.keyCode != 46
+      event.keyCode != 46 &&
+      event.keyCode != 190
     ) {
       event.preventDefault();
     }
