@@ -9,6 +9,7 @@ import {
   combineLatest,
   take,
   distinctUntilChanged,
+  filter,
 } from 'rxjs';
 import { LayoutFacade } from '../facades/layout.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
@@ -61,6 +62,10 @@ export class AppTopbarComponent implements OnInit {
       this.authFacade.rolesIndividual$,
       this.clinicFacade.clinics$,
     ]).pipe(
+      filter(
+        ([authUserData, rolesIndividual, clinics]) =>
+          rolesIndividual !== null && clinics.length > 0
+      ),
       map(data => {
         const [authUserData, rolesIndividual, clinics] = data;
         const result = authUserData ?? this.authFacade.getAuthUserData();
@@ -191,7 +196,13 @@ export class AppTopbarComponent implements OnInit {
       this.clinicFacade.isMultiSelection$,
       this.clinicFacade.clinics$,
     ])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(
+          ([currentClinics, isEnableAll, isMulti, clinics]) =>
+            clinics.length > 0 && isMulti !== null
+        )
+      )
       .subscribe(([currentClinics, isEnableAll, isMulti, clinics]) => {
         if (isMulti == null) return;
         const currentClinicIDs = currentClinics.map(c => c.id);
