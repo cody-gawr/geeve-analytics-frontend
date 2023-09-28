@@ -112,7 +112,9 @@ export function chartPlugin(count: number, isCurrency?: boolean): Plugin {
         px = 12;
       } else if (digitCnt > 6) {
         px = 18;
-      } else if (digitCnt > 4) {
+      } else if (digitCnt == 6) {
+        px = 20;
+      } else if (digitCnt == 5) {
         px = 24;
       }
       ctx.font = px + 'px Gilroy-Bold';
