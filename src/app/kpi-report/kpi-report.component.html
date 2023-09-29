@@ -2,8 +2,7 @@
   type="button"
   id="clinic_initiate"
   (click)="initiate_clinic()"
-  [style.display]="'none'"
-/>
+  [style.display]="'none'" />
 <div id="notAuth" class="unAutho consult">
   <span>Selected clinic is not authorised/Prime clinic</span>
 </div>
@@ -14,13 +13,11 @@
         <mat-select
           class="external_dentist"
           [(ngModel)]="selectedDentist"
-          (ngModelChange)="loadDentist($event)"
-        >
+          (ngModelChange)="loadDentist($event)">
           <mat-option value="all" *ngIf="showAll">All Dentists</mat-option>
           <mat-option
             *ngFor="let dentist of dentists"
-            [value]="dentist.providerId"
-          >
+            [value]="dentist.providerId">
             <span *ngIf="dentist.jeeve_name">{{ dentist.jeeve_name }}</span>
             <span *ngIf="!dentist.jeeve_name">{{ dentist.name }}</span>
           </mat-option>
@@ -28,14 +25,13 @@
       </mat-form-field>
     </div>
     <div class="sa_mat_select_topbar matwdth monthyear">
-      <mat-form-field floatLabel="never" >
+      <mat-form-field floatLabel="never">
         <mat-select
           class="external_dentist"
           [(ngModel)]="selectedMonthYear"
-          (ngModelChange)="onTabChanged($event)"
-        >
+          (ngModelChange)="onTabChanged($event)">
           <mat-option *ngFor="let yearRange of range" [value]="yearRange"
-            >{{ yearRange | date : 'MMMM y' : 'timezone' }}
+            >{{ yearRange | date: 'MMMM y' : 'timezone' }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -44,12 +40,11 @@
       <span class="infotxt">and previous</span>
     </div>
     <div class="sa_mat_select_topbar matwdth monthRange monthali">
-      <mat-form-field floatLabel="never" >
+      <mat-form-field floatLabel="never">
         <mat-select
           class="external_dentist"
           [(ngModel)]="selectedMonthRange"
-          (ngModelChange)="onMonthRangeChange($event)"
-        >
+          (ngModelChange)="onMonthRangeChange($event)">
           <mat-option *ngFor="let mRange of monthrange" [value]="mRange"
             >{{ mRange }}
           </mat-option>
@@ -66,24 +61,21 @@
    </div> -->
   <div
     *ngIf="reportloader == true"
-    class="loader_container loader_container_middle"
-  >
+    class="loader_container loader_container_middle">
     <img class="loader_ico" src="../assets/images/720.gif" />
     <div class="loader-text">Calculating...</div>
   </div>
   <div class="table-responsive">
     <table
       class="report-table-main align report-tbl"
-      *ngIf="reportloader == false"
-    >
+      *ngIf="reportloader == false">
       <thead>
         <tr>
           <th>&nbsp;</th>
           <th>&nbsp;</th>
           <th
             class="align strong"
-            *ngFor="let reportM of reportMonths['months']"
-          >
+            *ngFor="let reportM of reportMonths['months']">
             {{ reportM }}
           </th>
           <th class="align strong">TOTAL</th>
@@ -96,94 +88,78 @@
             <!-- <div class="kpi_report_tip" > -->
             <span
               class="info-icon-container kpi_report_tip"
-              *ngIf="reportD.kpi_type == 'Production'"
-            >
+              *ngIf="reportD.kpi_type == 'Production'">
               <img
                 [tooltip]="this.constants.tipProductionKpi"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </span>
             <span
               class="info-icon-container kpi_report_tip"
-              *ngIf="reportD.kpi_type == 'Collection'"
-            >
+              *ngIf="reportD.kpi_type == 'Collection'">
               <img
                 [tooltip]="this.constants.tipCollectionKpi"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </span>
 
             <span
               class="info-icon-container kpi_report_tip"
-              *ngIf="reportD.kpi_type == 'Dentist Days'"
-            >
+              *ngIf="reportD.kpi_type == 'Dentist Days'">
               <img
                 [tooltip]="this.constants.tipDentistDaysKpi"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </span>
             <span
               class="info-icon-container kpi_report_tip"
-              *ngIf="reportD.kpi_type == 'Dentist Production Per Day'"
-            >
+              *ngIf="reportD.kpi_type == 'Dentist Production Per Day'">
               <img
                 [tooltip]="this.constants.tipDentistProductionPerDayKpi"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </span>
 
             <span
               class="info-icon-container kpi_report_tip"
-              *ngIf="reportD.kpi_type == 'Dentist Production Per Hr'"
-            >
+              *ngIf="reportD.kpi_type == 'Dentist Production Per Hr'">
               <img
                 [tooltip]="this.constants.tipDentistProductionPerHrKpi"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </span>
             <span
               class="info-icon-container kpi_report_tip"
-              *ngIf="reportD.kpi_type == 'Production Units'"
-            >
+              *ngIf="reportD.kpi_type == 'Production Units'">
               <img
                 [tooltip]="this.constants.tipProductionUnitsKpi"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </span>
 
             <span
               class="info-icon-container kpi_report_tip"
-              *ngIf="reportD.kpi_type == 'New patients'"
-            >
+              *ngIf="reportD.kpi_type == 'New patients'">
               <img
                 [tooltip]="this.constants.tipNewPatientsKpi"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </span>
             <span
               class="info-icon-container kpi_report_tip"
-              *ngIf="reportD.kpi_type == 'Discounts'"
-            >
+              *ngIf="reportD.kpi_type == 'Discounts'">
               <img
                 [tooltip]="this.constants.tipDiscountsKpi"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </span>
             <!-- </div> -->
           </td>
@@ -197,8 +173,7 @@
                       [tooltip]="this.constants.tipHoursAvailableKpi"
                       src="../assets/images/info-icon.png"
                       alt="info-icon"
-                      class="info-icon"
-                    />
+                      class="info-icon" />
                   </span>
                 </td>
               </tr>
@@ -210,8 +185,7 @@
                       [tooltip]="this.constants.tipHoursWorkedKpi"
                       src="../assets/images/info-icon.png"
                       alt="info-icon"
-                      class="info-icon"
-                    />
+                      class="info-icon" />
                   </span>
                 </td>
               </tr>
@@ -224,8 +198,7 @@
             *ngIf="
               reportD.kpi_type != 'Utilisation Rate' &&
               reportD.kpi_type != 'Discounts'
-            "
-          >
+            ">
             <table class="report-table-main report-table">
               <tr>
                 <td>Goal</td>
@@ -264,8 +237,7 @@
               *ngIf="
                 reportD.kpi_type != 'Utilisation Rate' &&
                 reportD.kpi_type != 'Discounts'
-              "
-            >
+              ">
               <tr>
                 <td
                   *ngIf="
@@ -273,18 +245,18 @@
                     reportD.kpi_type == 'Collection' ||
                     reportD.kpi_type == 'Dentist Production Per Day' ||
                     reportD.kpi_type == 'Dentist Production Per Hr'
-                  "
-                >
-                  ${{ reportVal.goal | number : '1.0-0' }}
+                  ">
+                  ${{ reportVal.goal | number: '1.0-0' }}
                 </td>
                 <td
                   *ngIf="
-                    reportD.kpi_type == 'Dentist Days' ||
                     reportD.kpi_type == 'Production Units' ||
                     reportD.kpi_type == 'New patients'
-                  "
-                >
-                  {{ reportVal.goal | number : '1.0-0' }}
+                  ">
+                  {{ reportVal.goal | number: '1.0-0' }}
+                </td>
+                <td *ngIf="reportD.kpi_type == 'Dentist Days'">
+                  {{ reportVal.goal | number: '1.0-2' }}
                 </td>
               </tr>
               <tr>
@@ -294,53 +266,47 @@
                     reportD.kpi_type == 'Collection' ||
                     reportD.kpi_type == 'Dentist Production Per Day' ||
                     reportD.kpi_type == 'Dentist Production Per Hr'
-                  "
-                >
-                  ${{ reportVal.actual | number : '1.0-0' }}
+                  ">
+                  ${{ reportVal.actual | number: '1.0-0' }}
                 </td>
                 <td
                   *ngIf="
                     reportD.kpi_type == 'Dentist Days' ||
                     reportD.kpi_type == 'Production Units' ||
                     reportD.kpi_type == 'New patients'
-                  "
-                >
-                  {{ reportVal.actual | number : '1.0-0' }}
+                  ">
+                  {{ reportVal.actual | number: '1.0-0' }}
                 </td>
               </tr>
               <tr>
                 <td *ngIf="reportVal.goal == 0">N/A</td>
                 <td
                   *ngIf="reportVal.goal > 0"
-                  [ngClass]="reportVal.goal_percent >= 100 ? 'complete' : ''"
-                >
-                  {{ reportVal.goal_percent | number : '1.0-0' }}%
+                  [ngClass]="reportVal.goal_percent >= 100 ? 'complete' : ''">
+                  {{ reportVal.goal_percent | number: '1.0-0' }}%
                 </td>
               </tr>
             </table>
             <table
               class="report-table-main report-table"
-              *ngIf="reportD.kpi_type == 'Utilisation Rate'"
-            >
+              *ngIf="reportD.kpi_type == 'Utilisation Rate'">
               <tr>
-                <td>{{ reportVal.available_hours | number : '1.0-2' }}</td>
+                <td>{{ reportVal.available_hours | number: '1.0-2' }}</td>
               </tr>
               <tr>
-                <td>{{ reportVal.used_hours | number : '1.0-2' }}</td>
+                <td>{{ reportVal.used_hours | number: '1.0-2' }}</td>
               </tr>
               <tr>
                 <td
-                  [ngClass]="reportVal.hours_percent >= 100 ? 'complete' : ''"
-                >
-                  {{ reportVal.hours_percent | number : '1.0-0' }}%
+                  [ngClass]="reportVal.hours_percent >= 100 ? 'complete' : ''">
+                  {{ reportVal.hours_percent | number: '1.0-0' }}%
                 </td>
               </tr>
             </table>
             <table
               class="report-table-main report-table"
-              *ngIf="reportD.kpi_type == 'Discounts'"
-            >
-              <td>${{ reportVal.actual | number : '1.0-0' }}</td>
+              *ngIf="reportD.kpi_type == 'Discounts'">
+              <td>${{ reportVal.actual | number: '1.0-0' }}</td>
             </table>
           </td>
         </tr>
