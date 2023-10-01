@@ -1,19 +1,19 @@
-import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
-import { DashboardFacade } from "@/newapp/dashboard/facades/dashboard.facade";
-import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
-import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
-import { Component, OnDestroy, OnInit, Input } from "@angular/core";
-import { ChartOptions, LegendOptions, ChartDataset } from "chart.js";
-import { _DeepPartialObject } from "chart.js/dist/types/utils";
-import { Subject, takeUntil, combineLatest, map } from "rxjs";
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
+import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
+import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
+import { externalTooltipHandler } from '@/newapp/shared/utils';
+import { Component, OnDestroy, OnInit, Input } from '@angular/core';
+import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
+import { _DeepPartialObject } from 'chart.js/dist/types/utils';
+import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
 @Component({
-  selector: "finance-prod-per-clinic-trend-chart",
-  templateUrl: "./prod-per-clinic-trend.component.html",
-  styleUrls: ["./prod-per-clinic-trend.component.scss"],
+  selector: 'finance-prod-per-clinic-trend-chart',
+  templateUrl: './prod-per-clinic-trend.component.html',
+  styleUrls: ['./prod-per-clinic-trend.component.scss'],
 })
 export class FinanceProdPerClinicTrendComponent implements OnInit, OnDestroy {
-  @Input() toolTip = "";
+  @Input() toolTip = '';
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
@@ -24,34 +24,30 @@ export class FinanceProdPerClinicTrendComponent implements OnInit, OnDestroy {
   get isMultiClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
       takeUntil(this.destroy$),
-      map((v) => typeof v === "string")
+      map(v => typeof v === 'string')
     );
   }
 
   get isLoading$() {
     return this.financeFacade.isLoadingFnProdPerClinicianTrend$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v)
+      map(v => v)
     );
   }
 
   get legend$() {
     return this.dashboardFacade.connectedWith$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v && v != "none")
+      map(v => v && v != 'none')
     );
   }
 
   constructor(
     private financeFacade: FinanceFacade,
     private clinicFacade: ClinicFacade,
-    private layoutFacade: LayoutFacade,
     private dashboardFacade: DashboardFacade
   ) {
-    combineLatest([
-      this.financeFacade.prodByClinicianTrendChartData$,
-      // this.layoutFacade.trend$,
-    ])
+    combineLatest([this.financeFacade.prodByClinicianTrendChartData$])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([chartData]) => {
         this.datasets = chartData.datasets;
@@ -67,14 +63,14 @@ export class FinanceProdPerClinicTrendComponent implements OnInit, OnDestroy {
 
   public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
     display: true,
-    position: "bottom",
+    position: 'bottom',
     labels: {
       boxWidth: 8,
       usePointStyle: true,
-      generateLabels: (chart) => {
+      generateLabels: chart => {
         let labels = [];
         let bg_color = {};
-        chart.data.datasets.forEach((item) => {
+        chart.data.datasets.forEach(item => {
           item.data.forEach((val: number) => {
             if (val > 0) {
               labels.push(item.label);
@@ -84,7 +80,7 @@ export class FinanceProdPerClinicTrendComponent implements OnInit, OnDestroy {
         });
         labels = [...new Set(labels)];
         labels = labels.splice(0, 10);
-        return labels.map((item) => ({
+        return labels.map(item => ({
           text: item,
           strokeStyle: bg_color[item],
           fillStyle: bg_color[item],
@@ -94,12 +90,12 @@ export class FinanceProdPerClinicTrendComponent implements OnInit, OnDestroy {
     // onClick: (event: MouseEvent, legendItem: LegendItem) => {}
   };
 
-  public labelBarPercentOptionsStacked: ChartOptions<"bar"> = {
+  public labelBarPercentOptionsStacked: ChartOptions<'bar'> = {
     elements: {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: "rectRounded",
+        pointStyle: 'rectRounded',
         hoverBorderWidth: 7,
       },
     },
@@ -109,7 +105,7 @@ export class FinanceProdPerClinicTrendComponent implements OnInit, OnDestroy {
     // barThickness: 10,
     animation: {
       duration: 500,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
     },
     scales: {
       x: {
@@ -124,7 +120,7 @@ export class FinanceProdPerClinicTrendComponent implements OnInit, OnDestroy {
         min: 0,
         ticks: {
           callback: function (item) {
-            return item + "%";
+            return item + '%';
           },
         },
       },
@@ -132,17 +128,20 @@ export class FinanceProdPerClinicTrendComponent implements OnInit, OnDestroy {
     plugins: {
       legend: this.stackLegendGenerator,
       tooltip: {
-        mode: "x",
+        mode: 'x',
+        enabled: false,
+        position: 'nearest',
+        external: externalTooltipHandler,
         callbacks: {
           label: function (tooltipItems) {
             const yValue = Math.round(tooltipItems.parsed.y);
             if (yValue > 0) {
               return `${tooltipItems.dataset.label}: ${yValue}%`;
             } else {
-              return "";
+              return '';
             }
           },
-          title: (tooltipItems) => tooltipItems[0].label,
+          title: tooltipItems => tooltipItems[0].label,
         },
       },
     },

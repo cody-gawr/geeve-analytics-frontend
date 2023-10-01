@@ -1,16 +1,19 @@
-import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
-import { formatXTooltipLabel } from "@/newapp/shared/utils";
-import { Component, OnDestroy, OnInit, Input } from "@angular/core";
-import { ChartDataset, ChartOptions } from "chart.js";
-import { Subject, takeUntil, combineLatest, map } from "rxjs";
+import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
+import {
+  externalTooltipHandler,
+  formatXTooltipLabel,
+} from '@/newapp/shared/utils';
+import { Component, OnDestroy, OnInit, Input } from '@angular/core';
+import { ChartDataset, ChartOptions } from 'chart.js';
+import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
 @Component({
-  selector: "finance-prod-col-trend-chart",
-  templateUrl: "./prod-col-trend.component.html",
-  styleUrls: ["./prod-col-trend.component.scss"],
+  selector: 'finance-prod-col-trend-chart',
+  templateUrl: './prod-col-trend.component.html',
+  styleUrls: ['./prod-col-trend.component.scss'],
 })
 export class FinanceProdColTrendComponent implements OnInit, OnDestroy {
-  @Input() toolTip = "";
+  @Input() toolTip = '';
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
@@ -28,54 +31,6 @@ export class FinanceProdColTrendComponent implements OnInit, OnDestroy {
   }
 
   constructor(private financeFacade: FinanceFacade) {
-    // combineLatest([
-    //   this.financeFacade.prodTrendChartData$,
-    //   this.financeFacade.collectionTrendChartData$,
-    //   this.clinicFacade.currentClinicId$,
-    //   this.financeFacade.collectionTrendData$,
-    // ])
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe(([prodChartData, colChartData, clinicId, trendColData]) => {
-    //     if (!prodChartData || !colChartData) {
-    //       return;
-    //     }
-    //     if (typeof clinicId == "string") {
-    //       this.datasets = (<any>prodChartData).datasets;
-    //       // this.labels = (<any>prodChartData).labels;
-    //       (<any>prodChartData).datasets.map((item) => {
-    //         const collectionItem = trendColData.find(
-    //           (ele) => ele.clinicName == item.label
-    //         );
-    //         return {
-    //           ...item,
-    //           data: !!collectionItem
-    //             ? [...item.data, Math.round(<number>collectionItem.collection)]
-    //             : item.data,
-    //         };
-    //       });
-    //       this.labels = ["Production", "Collection"];
-    //     } else {
-    //       this.datasets = [
-    //         { data: [], label: "Production" },
-    //         { data: [], label: "Collection" },
-    //       ];
-    //       this.labels = [];
-    //       if (Array.isArray(prodChartData)) {
-    //         (<any>prodChartData).forEach(
-    //           (data: { label: string; value: number } & any, index) => {
-    //             this.datasets[0].data.push(data.value);
-    //             this.labels.push(data.label);
-    //           }
-    //         );
-
-    //         (<any>colChartData).forEach(
-    //           (data: { label: string; value: number } & any, index) => {
-    //             this.datasets[1].data.push(data.value);
-    //           }
-    //         );
-    //       }
-    //     }
-    //   });
     combineLatest([this.financeFacade.prodCollChartData$])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([prodCollChartData]) => {
@@ -98,12 +53,12 @@ export class FinanceProdColTrendComponent implements OnInit, OnDestroy {
     );
   }
 
-  public labelBarOptions: ChartOptions<"bar"> = {
+  public labelBarOptions: ChartOptions<'bar'> = {
     elements: {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: "rectRounded",
+        pointStyle: 'rectRounded',
         hoverBorderWidth: 7,
       },
     },
@@ -113,7 +68,7 @@ export class FinanceProdColTrendComponent implements OnInit, OnDestroy {
     // barThickness: 10,
     animation: {
       duration: 500,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
     },
     scales: {
       x: {
@@ -130,17 +85,12 @@ export class FinanceProdColTrendComponent implements OnInit, OnDestroy {
             if (Math.floor(label) === label) {
               let currency =
                 label < 0
-                  ? label.toString().split("-").join("")
+                  ? label.toString().split('-').join('')
                   : label.toString();
-              //  if (currency.length > 3) {
-              //    currency = currency.substring(0, 1) + 'K'
-              //  } else{
-              currency = currency.split(/(?=(?:...)*$)/).join(",");
-              //  }
-
-              return `${label < 0 ? "- $" : "$"}${currency}`;
+              currency = currency.split(/(?=(?:...)*$)/).join(',');
+              return `${label < 0 ? '- $' : '$'}${currency}`;
             }
-            return "";
+            return '';
           },
         },
       },
@@ -150,9 +100,12 @@ export class FinanceProdColTrendComponent implements OnInit, OnDestroy {
         display: true,
       },
       tooltip: {
+        enabled: false,
+        position: 'nearest',
+        external: externalTooltipHandler,
         callbacks: {
-          label: (tooltipItem) => formatXTooltipLabel(tooltipItem),
-          title: () => "",
+          label: tooltipItem => formatXTooltipLabel(tooltipItem),
+          title: () => '',
         },
       },
     },

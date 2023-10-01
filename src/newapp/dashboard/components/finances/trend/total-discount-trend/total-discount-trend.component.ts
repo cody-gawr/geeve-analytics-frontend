@@ -1,25 +1,28 @@
-import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
-import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
-import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
-import { JeeveLineFillOptions } from "@/newapp/shared/utils";
-import { Component, OnDestroy, OnInit, Input } from "@angular/core";
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
+import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
+import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import {
+  JeeveLineFillOptions,
+  externalTooltipHandler,
+} from '@/newapp/shared/utils';
+import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import {
   ChartOptions,
   LegendOptions,
   TooltipItem,
   ChartDataset,
-} from "chart.js";
-import { _DeepPartialObject } from "chart.js/dist/types/utils";
-import _ from "lodash";
-import { Subject, takeUntil, combineLatest, map } from "rxjs";
+} from 'chart.js';
+import { _DeepPartialObject } from 'chart.js/dist/types/utils';
+import _ from 'lodash';
+import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
 @Component({
-  selector: "finance-total-discount-trend-chart",
-  templateUrl: "./total-discount-trend.component.html",
-  styleUrls: ["./total-discount-trend.component.scss"],
+  selector: 'finance-total-discount-trend-chart',
+  templateUrl: './total-discount-trend.component.html',
+  styleUrls: ['./total-discount-trend.component.scss'],
 })
 export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
-  @Input() toolTip = "";
+  @Input() toolTip = '';
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
@@ -30,27 +33,27 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
   get isMultiClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
       takeUntil(this.destroy$),
-      map((v) => typeof v === "string")
+      map(v => typeof v === 'string')
     );
   }
 
   get isLoading$() {
     return this.financeFacade.isLoadingFnTotalDiscountTrend$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v)
+      map(v => v)
     );
   }
 
   get chartType$() {
     return this.clinicFacade.currentClinicId$.pipe(
       takeUntil(this.destroy$),
-      map((v) => (typeof v === "string" ? "bar" : "line"))
+      map(v => (typeof v === 'string' ? 'bar' : 'line'))
     );
   }
 
   get legend$() {
     return this.clinicFacade.currentClinicId$.pipe(
-      map((v) => (typeof v === "string" ? true : false))
+      map(v => (typeof v === 'string' ? true : false))
     );
   }
 
@@ -66,7 +69,7 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([chartData, trendMode, clinicId]) => {
-        if (typeof clinicId === "string") {
+        if (typeof clinicId === 'string') {
           this.datasets = chartData.datasets;
           this.labels = chartData.labels;
         } else {
@@ -84,14 +87,14 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
 
   public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
     display: true,
-    position: "bottom",
+    position: 'bottom',
     labels: {
       boxWidth: 8,
       usePointStyle: true,
-      generateLabels: (chart) => {
+      generateLabels: chart => {
         let labels = [];
         let bg_color = {};
-        chart.data.datasets.forEach((item) => {
+        chart.data.datasets.forEach(item => {
           item.data.forEach((val: number) => {
             if (val > 0) {
               labels.push(item.label);
@@ -101,7 +104,7 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
         });
         labels = [...new Set(labels)];
         labels = labels.splice(0, 10);
-        return labels.map((item) => ({
+        return labels.map(item => ({
           text: item,
           strokeStyle: bg_color[item],
           fillStyle: bg_color[item],
@@ -110,12 +113,12 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
     },
     // onClick: (event: MouseEvent, legendItem: LegendItem) => {}
   };
-  public labelBarOptionsSingleValue: ChartOptions<"line"> = {
+  public labelBarOptionsSingleValue: ChartOptions<'line'> = {
     elements: {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: "rectRounded",
+        pointStyle: 'rectRounded',
         hoverBorderWidth: 7,
       },
       line: JeeveLineFillOptions,
@@ -124,7 +127,7 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
     maintainAspectRatio: false,
     animation: {
       duration: 500,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
     },
     scales: {
       x: {
@@ -137,9 +140,9 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
         stacked: false,
         ticks: {
           callback: function (label, index, labels) {
-            return `${new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
+            return `${new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'USD',
               minimumFractionDigits: 0,
               maximumFractionDigits: 0,
             }).format(Number(label))}`;
@@ -152,32 +155,32 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
         display: true,
       },
       tooltip: {
-        mode: "x",
+        mode: 'x',
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
         callbacks: {
           label: (tooltipItems: TooltipItem<any>) => {
             let label = tooltipItems.label;
-            return `${label} : ${new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
+            return `${label} : ${new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'USD',
               minimumFractionDigits: 0,
               maximumFractionDigits: 0,
             }).format(Number(tooltipItems.parsed.y))}`;
           },
-          title: () => "",
+          title: () => '',
         },
       },
     },
   };
 
-  public stackedChartOptionsDiscount: ChartOptions<"bar"> = {
+  public stackedChartOptionsDiscount: ChartOptions<'bar'> = {
     elements: {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: "rectRounded",
+        pointStyle: 'rectRounded',
         hoverBorderWidth: 7,
       },
     },
@@ -187,7 +190,7 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
     // barThickness: 10,
     animation: {
       duration: 500,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
     },
     scales: {
       x: {
@@ -204,12 +207,12 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
             if (Math.floor(label) === label) {
               let currency =
                 label < 0
-                  ? label.toString().split("-").join("")
+                  ? label.toString().split('-').join('')
                   : label.toString();
-              currency = currency.split(/(?=(?:...)*$)/).join(",");
-              return `${label < 0 ? "- $" : "$"}${currency}`;
+              currency = currency.split(/(?=(?:...)*$)/).join(',');
+              return `${label < 0 ? '- $' : '$'}${currency}`;
             }
-            return "";
+            return '';
           },
         },
       },
@@ -217,18 +220,21 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
     plugins: {
       legend: this.stackLegendGenerator,
       tooltip: {
-        mode: "x",
+        mode: 'x',
+        enabled: false,
+        position: 'nearest',
+        external: externalTooltipHandler,
         callbacks: {
           label: function (tooltipItems) {
             return `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`;
           },
           title: function (tooltipItems) {
-            return `${tooltipItems[0].label}: ${new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
+            return `${tooltipItems[0].label}: ${new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'USD',
               minimumFractionDigits: 0,
               maximumFractionDigits: 0,
-            }).format(_.sumBy(tooltipItems, (t) => t.parsed.y))}`;
+            }).format(_.sumBy(tooltipItems, t => t.parsed.y))}`;
           },
         },
       },
@@ -238,8 +244,8 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
   get chartOptions$() {
     return this.clinicFacade.currentClinicId$.pipe(
       takeUntil(this.destroy$),
-      map((v) =>
-        typeof v === "string"
+      map(v =>
+        typeof v === 'string'
           ? this.stackedChartOptionsDiscount
           : this.labelBarOptionsSingleValue
       )

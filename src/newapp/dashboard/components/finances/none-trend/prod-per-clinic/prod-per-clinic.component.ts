@@ -1,17 +1,17 @@
-import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
-import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
-import { Component, OnInit, OnDestroy, Input } from "@angular/core";
-import { ChartOptions } from "chart.js";
-import _ from "lodash";
-import { Subject, takeUntil, combineLatest, map } from "rxjs";
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
+import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { ChartOptions } from 'chart.js';
+import _ from 'lodash';
+import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
 @Component({
-  selector: "prod-per-clinic-chart",
-  templateUrl: "./prod-per-clinic.component.html",
-  styleUrls: ["./prod-per-clinic.component.scss"],
+  selector: 'prod-per-clinic-chart',
+  templateUrl: './prod-per-clinic.component.html',
+  styleUrls: ['./prod-per-clinic.component.scss'],
 })
 export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
-  @Input() toolTip = "";
+  @Input() toolTip = '';
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
@@ -20,19 +20,19 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
   labels = [];
   productionChartTotal = 0;
   productionChartTrendTotal = 0;
-  productionChartTrendIcon = "down";
+  productionChartTrendIcon = 'down';
 
   get isLoading$() {
     return this.financeFacade.isLoadingFnProdPerClinician$.pipe(
       takeUntil(this.destroy$),
-      (v) => v
+      v => v
     );
   }
 
   get isMultipleClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
       takeUntil(this.destroy$),
-      map((v) => typeof v == "string")
+      map(v => typeof v == 'string')
     );
   }
 
@@ -60,7 +60,7 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
           let chartTotal = 0;
           const prodByClinicData = _prodByClinicData.slice();
 
-          if (typeof clinicId === "string") {
+          if (typeof clinicId === 'string') {
             prodByClinicData.sort(
               (a, b) =>
                 parseFloat(<string>b.productionPerClinic) -
@@ -75,7 +75,7 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
           }
 
           prodByClinicData.forEach((val, index) => {
-            if (typeof clinicId == "number") {
+            if (typeof clinicId == 'number') {
               const prodPerClinician = Math.round(
                 parseFloat(<string>val.prodPerClinician)
               );
@@ -102,19 +102,19 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
           this.labels = chartLabels;
           this.datasets = [{ data: chartData }];
           if (this.productionChartTotal >= this.productionChartTrendTotal) {
-            this.productionChartTrendIcon = "up";
+            this.productionChartTrendIcon = 'up';
           }
         }
       );
   }
 
-  public pieChartOptions: ChartOptions<"doughnut"> = {
+  public pieChartOptions: ChartOptions<'doughnut'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
         display: true,
-        position: "bottom",
+        position: 'bottom',
         labels: {
           usePointStyle: true,
           padding: 20,
@@ -127,7 +127,7 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
         callbacks: {
           label: function (tooltipItem) {
             return (
-              tooltipItem.label + ": " + Math.round(tooltipItem.parsed) + "%"
+              tooltipItem.label + ': ' + Math.round(tooltipItem.parsed) + '%'
             );
           },
         },
@@ -138,19 +138,19 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
   public pieChartColors = [
     {
       backgroundColor: [
-        "#6edbbb",
-        "#b0fffa",
-        "#abb3ff",
-        "#ffb4b5",
-        "#fffcac",
-        "#FFE4E4",
-        "#FFD578",
-        "#54D2FF",
-        "#E58DD7",
-        "#A9AABC",
-        "#F2ECFF",
-        "#5689C9",
-        "#F9F871",
+        '#6edbbb',
+        '#b0fffa',
+        '#abb3ff',
+        '#ffb4b5',
+        '#fffcac',
+        '#FFE4E4',
+        '#FFD578',
+        '#54D2FF',
+        '#E58DD7',
+        '#A9AABC',
+        '#F2ECFF',
+        '#5689C9',
+        '#F9F871',
       ],
     },
   ];

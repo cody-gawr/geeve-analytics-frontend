@@ -2,7 +2,10 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { JeeveLineFillOptions } from '@/newapp/shared/utils';
+import {
+  JeeveLineFillOptions,
+  externalTooltipHandler,
+} from '@/newapp/shared/utils';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, TooltipItem } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
@@ -194,6 +197,9 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
       legend: this.stackLegendGenerator,
       tooltip: {
         mode: 'x',
+        enabled: false,
+        position: 'nearest',
+        external: externalTooltipHandler,
         callbacks: {
           label: function (tooltipItems) {
             return `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`;
