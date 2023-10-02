@@ -1,5 +1,6 @@
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
+import { externalTooltipHandler } from '@/newapp/shared/utils';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions } from 'chart.js';
 import _ from 'lodash';
@@ -124,6 +125,9 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
         },
       },
       tooltip: {
+        enabled: false,
+        position: 'nearest',
+        external: externalTooltipHandler,
         callbacks: {
           label: function (tooltipItem) {
             return (

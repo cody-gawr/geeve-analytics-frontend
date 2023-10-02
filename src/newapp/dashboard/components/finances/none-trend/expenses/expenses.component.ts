@@ -1,7 +1,10 @@
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
 import { DoughnutChartColors } from '@/newapp/shared/constants';
-import { JeeveLineFillOptions } from '@/newapp/shared/utils';
+import {
+  JeeveLineFillOptions,
+  externalTooltipHandler,
+} from '@/newapp/shared/utils';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions } from 'chart.js';
 import _ from 'lodash';
@@ -227,6 +230,9 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
           // disable displaying the color box;
           return false;
         },
+        enabled: false,
+        position: 'nearest',
+        external: externalTooltipHandler,
         mode: 'x',
         callbacks: {
           label: tooltipItem => {

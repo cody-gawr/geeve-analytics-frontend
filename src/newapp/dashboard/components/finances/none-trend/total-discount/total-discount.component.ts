@@ -2,7 +2,7 @@ import { formatXTooltipLabel } from '@/app/util';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { chartPlugin } from '@/newapp/shared/utils';
+import { chartPlugin, externalTooltipHandler } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions } from 'chart.js';
@@ -167,6 +167,9 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
         },
       },
       tooltip: {
+        enabled: false,
+        position: 'nearest',
+        external: externalTooltipHandler,
         callbacks: {
           label: tooltipItem => formatXTooltipLabel(tooltipItem),
           title: () => '',
