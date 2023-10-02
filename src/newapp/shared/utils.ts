@@ -224,32 +224,32 @@ export const externalTooltipHandler = context => {
 
     const tableBody = document.createElement('tbody');
     bodyLines.forEach((body, i) => {
-      if (body?.length > 0) {
-        const colors = tooltip.labelColors[i];
+      if (body?.length) {
+        for (const item of body) {
+          const text = document.createTextNode(item);
+          const colors = tooltip.labelColors[i];
 
-        const span = document.createElement('span');
-        span.style.background = colors.backgroundColor;
-        span.style.borderColor = colors.borderColor;
-        span.style.borderWidth = '2px';
-        span.style.marginRight = '10px';
-        span.style.height = '10px';
-        span.style.width = '10px';
-        span.style.display = 'inline-block';
+          const span = document.createElement('span');
+          span.style.background = colors.backgroundColor;
+          span.style.borderColor = colors.borderColor;
+          span.style.borderWidth = '2px';
+          span.style.marginRight = '10px';
+          span.style.height = '10px';
+          span.style.width = '10px';
+          span.style.display = 'inline-block';
 
-        const tr = document.createElement('tr');
-        tr.style.backgroundColor = 'inherit';
-        tr.style.borderWidth = '0px';
+          const tr = document.createElement('tr');
+          tr.style.backgroundColor = 'inherit';
+          tr.style.borderWidth = '0px';
 
-        const td = document.createElement('td');
-        td.style.borderWidth = '0px';
-        td.style.whiteSpace = 'nowrap';
-
-        const text = document.createTextNode(body);
-
-        td.appendChild(span);
-        td.appendChild(text);
-        tr.appendChild(td);
-        tableBody.appendChild(tr);
+          const td = document.createElement('td');
+          td.style.borderWidth = '0px';
+          td.style.whiteSpace = 'nowrap';
+          td.appendChild(span);
+          td.appendChild(text);
+          tr.appendChild(td);
+          tableBody.appendChild(tr);
+        }
       }
     });
 

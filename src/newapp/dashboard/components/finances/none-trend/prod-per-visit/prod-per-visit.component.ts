@@ -1,6 +1,7 @@
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { FnProductionPerVisitItem } from '@/newapp/models/dashboard/finance';
 import { externalTooltipHandler, splitName } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
@@ -28,6 +29,8 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
 
   productionVisitVal = 0;
   productionVisitTrendVal = 0;
+
+  chartData: FnProductionPerVisitItem[];
 
   datasets = [
     {
@@ -118,6 +121,7 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
         const chartLabels = [];
 
         this.datasets[0].data = [];
+        this.chartData = visitData;
         visitData.forEach(d => {
           this.datasets[0].data.push(
             Math.round(parseFloat(<string>d.prodPerVisit ?? '0'))
@@ -186,31 +190,57 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
         callbacks: {
           // use label callback to return the desired label
           label: tooltipItem => {
-            const v = tooltipItem.parsed.y;
-            let Tlable = tooltipItem.dataset.label;
-            if (Tlable != '') {
-              Tlable = Tlable + ': ';
-            }
-            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-            let ylable = tooltipItem.parsed._custom
-              ? +(
-                  tooltipItem.parsed._custom.max +
-                  tooltipItem.parsed._custom.min
-                ) / 2
-              : v;
-            if (ylable == 0 && Tlable == 'Target: ') {
-              //return  Tlable + this.splitName(tooltipItem.xLabel).join(' ');
-              return '';
-            } else {
-              return (
-                Tlable + splitName(tooltipItem.label).join(' ') + ': $' + ylable
-              );
-            }
+            //const v = tooltipItem.parsed.y;
+            //let Tlable = tooltipItem.dataset.label;
+            let label = tooltipItem.label;
+            const extraData = this.chartData[tooltipItem.dataIndex];
+            const labelItems = [];
+            labelItems.push(
+              `${label} : ${new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              }).format(Number(tooltipItem.parsed.y))}`
+            );
+
+            labelItems.push(
+              `Production : ${new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              }).format(parseFloat(<string>extraData.production))}`
+            );
+
+            labelItems.push(
+              `Num Visits : ${new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              }).format(parseFloat(<string>extraData.numVisits))}`
+            );
+            return labelItems;
+            // if (Tlable != '') {
+            //   Tlable = Tlable + ': ';
+            // }
+            // //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            // let ylable = tooltipItem.parsed._custom
+            //   ? +(
+            //       tooltipItem.parsed._custom.max +
+            //       tooltipItem.parsed._custom.min
+            //     ) / 2
+            //   : v;
+            // if (ylable == 0 && Tlable == 'Target: ') {
+            //   //return  Tlable + this.splitName(tooltipItem.xLabel).join(' ');
+            //   return '';
+            // } else {
+            //   return (
+            //     Tlable + splitName(tooltipItem.label).join(' ') + ': $' + ylable
+            //   );
+            // }
           },
           // remove title
-          title: function (tooltipItem) {
-            return '';
-          },
+          title: () => '',
         },
       },
       legend: {
