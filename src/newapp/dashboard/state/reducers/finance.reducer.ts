@@ -1342,9 +1342,9 @@ export const selectTotalDiscountTrendChartData = createSelector(
 export const selectProdByClinicianTrendChartData = createSelector(
   selectProdByClinicTrendData,
   selectTrend,
-  selectCurrentClinicId,
+  // selectCurrentClinicId,
   selectCurrentClinics,
-  (prodByClinicTrendData, trendMode, clinicId, clinics) => {
+  (prodByClinicTrendData, trendMode, clinics) => {
     const chartDataset = [],
       labels = [];
     _.chain(prodByClinicTrendData)
@@ -1352,14 +1352,9 @@ export const selectProdByClinicianTrendChartData = createSelector(
       .value()
       .forEach(value => {
         let sumProd = 0;
-        if (typeof clinicId === 'string') {
-          sumProd = _.sumBy(value.val, v => parseFloat(v.production));
-        }
         let newVal = [];
-        if (
-          typeof clinicId === 'string' &&
-          value.val.length !== clinics.length
-        ) {
+        if (clinics.length > 1) {
+          sumProd = _.sumBy(value.val, v => parseFloat(v.production));
           newVal = clinics.map(c => {
             const val = value.val.find(
               v => parseInt(<string>v.clinicId) == c.id
@@ -1377,10 +1372,11 @@ export const selectProdByClinicianTrendChartData = createSelector(
         } else {
           newVal = value.val;
         }
+
         newVal.forEach((result, key) => {
           let production = 0,
             total = 0;
-          if (typeof clinicId === 'string') {
+          if (clinics.length > 1) {
             production = parseFloat(result.production);
           } else {
             production = parseFloat(result.prodPerClinician);
@@ -1393,7 +1389,7 @@ export const selectProdByClinicianTrendChartData = createSelector(
             chartDataset[key] = { data: [], label: '' };
           }
 
-          if (typeof clinicId === 'string') {
+          if (clinics.length > 1) {
             chartDataset[key].data.push((total / sumProd) * 100);
             chartDataset[key].label = result.clinicName;
           } else {
