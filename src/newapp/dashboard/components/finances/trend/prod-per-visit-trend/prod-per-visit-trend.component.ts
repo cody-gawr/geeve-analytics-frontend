@@ -1,7 +1,10 @@
 // import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
 // import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { JeeveLineFillOptions, splitName } from '@/newapp/shared/utils';
+import {
+  JeeveLineFillOptions,
+  externalTooltipHandler,
+} from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { ChartOptions, TooltipItem, ChartDataset } from 'chart.js';
@@ -118,6 +121,9 @@ export class FinanceProdPerVisitTrendComponent implements OnInit, OnDestroy {
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
+        enabled: false,
+        position: 'nearest',
+        external: externalTooltipHandler,
         callbacks: {
           label: (tooltipItem: TooltipItem<any>) => {
             let label = tooltipItem.label;

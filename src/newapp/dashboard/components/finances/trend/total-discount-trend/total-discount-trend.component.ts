@@ -159,6 +159,9 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
+        enabled: false,
+        position: 'nearest',
+        external: externalTooltipHandler,
         callbacks: {
           label: (tooltipItems: TooltipItem<any>) => {
             let label = tooltipItems.label;

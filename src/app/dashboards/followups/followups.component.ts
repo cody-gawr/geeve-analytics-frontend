@@ -1,22 +1,22 @@
-import * as $ from "jquery";
+import * as $ from 'jquery';
 import {
   Component,
   AfterViewInit,
   ViewEncapsulation,
   ViewChild,
   ElementRef,
-} from "@angular/core";
-import { DatePipe, DecimalPipe } from "@angular/common";
-import { ChartService } from "../chart.service";
-import { FollowupsService } from "./followups.service";
-import { ChartstipsService } from "../../shared/chartstips.service";
-import { Router } from "@angular/router";
-import { CookieService } from "ngx-cookie";
-import { ChartOptions } from "chart.js";
-import moment from "moment";
+} from '@angular/core';
+import { DatePipe, DecimalPipe } from '@angular/common';
+import { ChartService } from '../chart.service';
+import { FollowupsService } from './followups.service';
+import { ChartstipsService } from '../../shared/chartstips.service';
+import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie';
+import { ChartOptions } from 'chart.js';
+import moment from 'moment';
 @Component({
-  templateUrl: "./followups.component.html",
-  styleUrls: ["./followups.component.scss"],
+  templateUrl: './followups.component.html',
+  styleUrls: ['./followups.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 export class FollowupsComponent implements AfterViewInit {
@@ -26,33 +26,33 @@ export class FollowupsComponent implements AfterViewInit {
   public startDate: any;
   public endDate: any;
   public duration: any;
-  public trendValue: any = "";
+  public trendValue: any = '';
   public Apirequest: any = 0;
   public showTrend: boolean = false;
   public toggleChecked: boolean = false;
   public showGoals: boolean = false;
   public barChartColors: Array<any>;
   public colors: any = [
-    { backgroundColor: "#39acac" },
-    { backgroundColor: "#48daba" },
+    { backgroundColor: '#39acac' },
+    { backgroundColor: '#48daba' },
   ];
   public colorScheme = {
     domain: [
-      "#6edbba",
-      "#abb3ff",
-      "#b0fffa",
-      "#ffb4b5",
-      "#d7f8ef",
-      "#fffdac",
-      "#fef0b8",
-      "#4ccfae",
+      '#6edbba',
+      '#abb3ff',
+      '#b0fffa',
+      '#ffb4b5',
+      '#d7f8ef',
+      '#fffdac',
+      '#fef0b8',
+      '#4ccfae',
     ],
   };
   public single = [];
   public arcWidth = 0.75;
-  public foregroundColor = "#39acac";
-  public backgroundColor = "#f4f0fa";
-  public user_type: string = "";
+  public foregroundColor = '#39acac';
+  public backgroundColor = '#f4f0fa';
+  public user_type: string = '';
   private legendLabelOptions = {
     labels: {
       usePointStyle: true,
@@ -64,10 +64,10 @@ export class FollowupsComponent implements AfterViewInit {
   };
 
   public perUserData: any[] = [
-    { data: [], label: "Ticks" },
-    { data: [], label: "Post Op" },
-    { data: [], label: "Recall" },
-    { data: [], label: "Ftas" },
+    { data: [], label: 'Ticks' },
+    { data: [], label: 'Post Op' },
+    { data: [], label: 'Recall' },
+    { data: [], label: 'Ftas' },
   ];
   public clinic_id: any;
   public stackedChartOptions: ChartOptions = {
@@ -78,7 +78,7 @@ export class FollowupsComponent implements AfterViewInit {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: "rectRounded",
+        pointStyle: 'rectRounded',
         hoverBorderWidth: 7,
       },
     },
@@ -88,7 +88,7 @@ export class FollowupsComponent implements AfterViewInit {
     maintainAspectRatio: false,
     animation: {
       duration: 500,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
     },
     scales: {
       x: {
@@ -105,7 +105,7 @@ export class FollowupsComponent implements AfterViewInit {
             if (Math.floor(label) === label) {
               return label;
             }
-            return "";
+            return '';
           },
         },
       },
@@ -113,39 +113,39 @@ export class FollowupsComponent implements AfterViewInit {
     plugins: {
       legend: {
         display: true,
-        position: "top",
+        position: 'top',
         ...this.legendLabelOptions,
       },
       tooltip: {
-        mode: "x",
+        mode: 'x',
         callbacks: {
           label: function (tooltipItems) {
             if (
               parseInt(tooltipItems.formattedValue) > 0 &&
-              tooltipItems.dataset.label != ""
+              tooltipItems.dataset.label != ''
             ) {
-              if (tooltipItems.dataset.label.indexOf("DentistMode-") >= 0) {
-                return tooltipItems.label + ": " + tooltipItems.formattedValue;
+              if (tooltipItems.dataset.label.indexOf('DentistMode-') >= 0) {
+                return tooltipItems.label + ': ' + tooltipItems.formattedValue;
               } else {
                 return (
                   tooltipItems.dataset.label +
-                  ": " +
+                  ': ' +
                   tooltipItems.formattedValue
                 );
               }
             }
-            return "";
+            return '';
           },
           title: function (tooltip) {
             let total = 0;
-            tooltip.forEach((val) => {
+            tooltip.forEach(val => {
               total = total + parseInt(val.formattedValue);
             });
-            if (tooltip[0].dataset.label.indexOf("DentistMode-") >= 0) {
-              var dentist = tooltip[0].dataset.label.split("Mode-");
-              return dentist[1] + ":" + total;
+            if (tooltip[0].dataset.label?.indexOf('DentistMode-') >= 0) {
+              var dentist = tooltip[0].dataset.label.split('Mode-');
+              return dentist[1] + ':' + total;
             } else {
-              return tooltip[0].label + ": " + total;
+              return tooltip[0].label + ': ' + total;
             }
           },
         },
@@ -154,15 +154,15 @@ export class FollowupsComponent implements AfterViewInit {
   };
 
   public IPcolors = [
-    { backgroundColor: "#6cd8ba" },
-    { backgroundColor: "#b0fffa" },
-    { backgroundColor: "#abb3ff" },
-    { backgroundColor: "#feefb8" },
-    { backgroundColor: "#ffb4b5" },
-    { backgroundColor: "#fffcac" },
+    { backgroundColor: '#6cd8ba' },
+    { backgroundColor: '#b0fffa' },
+    { backgroundColor: '#abb3ff' },
+    { backgroundColor: '#feefb8' },
+    { backgroundColor: '#ffb4b5' },
+    { backgroundColor: '#fffcac' },
   ];
 
-  public barChartOptions: ChartOptions<"bar"> = {
+  public barChartOptions: ChartOptions<'bar'> = {
     // borderRadius: 50,
     hover: { mode: null },
     // scaleShowVerticalLines: false,
@@ -170,7 +170,7 @@ export class FollowupsComponent implements AfterViewInit {
     // curvature: 1,
     animation: {
       duration: 1500,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
     },
     responsive: true,
     maintainAspectRatio: false,
@@ -191,35 +191,35 @@ export class FollowupsComponent implements AfterViewInit {
             if (Math.floor(label) === label) {
               return this.decimalPipe.transform(label);
             }
-            return "";
+            return '';
           },
         },
       },
     },
     plugins: {
       tooltip: {
-        mode: "x",
+        mode: 'x',
         bodyFont: {
-          family: "Gilroy-Regular",
+          family: 'Gilroy-Regular',
         },
         cornerRadius: 0,
         callbacks: {
-          label: (tooltipItem) => {
+          label: tooltipItem => {
             return (
-              this.splitName(tooltipItem.label).join(" ") +
-              ": " +
+              this.splitName(tooltipItem.label).join(' ') +
+              ': ' +
               this.decimalPipe.transform(tooltipItem.formattedValue)
             );
           },
           title: function () {
-            return "";
+            return '';
           },
         },
       },
     },
   };
 
-  public barChartOptions1: ChartOptions<"bar"> = {
+  public barChartOptions1: ChartOptions<'bar'> = {
     // borderRadius: 50,
     hover: { mode: null },
     // scaleShowVerticalLines: false,
@@ -227,7 +227,7 @@ export class FollowupsComponent implements AfterViewInit {
     // curvature: 1,
     animation: {
       duration: 1500,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
     },
     responsive: true,
     maintainAspectRatio: false,
@@ -247,31 +247,31 @@ export class FollowupsComponent implements AfterViewInit {
           callback: (label: number, index, labels) => {
             // when the floored value is the same as the value we have a whole number
             if (Math.floor(label) === label) {
-              return this.decimalPipe.transform(label) + "%";
+              return this.decimalPipe.transform(label) + '%';
             }
-            return "";
+            return '';
           },
         },
       },
     },
     plugins: {
       tooltip: {
-        mode: "x",
+        mode: 'x',
         bodyFont: {
-          family: "Gilroy-Regular",
+          family: 'Gilroy-Regular',
         },
         cornerRadius: 0,
         callbacks: {
-          label: (tooltipItem) => {
+          label: tooltipItem => {
             return (
-              this.splitName(tooltipItem.label).join(" ") +
-              ": " +
+              this.splitName(tooltipItem.label).join(' ') +
+              ': ' +
               this.decimalPipe.transform(tooltipItem.formattedValue) +
-              "%"
+              '%'
             );
           },
           title: function () {
-            return "";
+            return '';
           },
         },
       },
@@ -287,19 +287,19 @@ export class FollowupsComponent implements AfterViewInit {
     public router: Router,
     private _cookieService: CookieService
   ) {
-    this.user_type = this._cookieService.get("user_type");
+    this.user_type = this._cookieService.get('user_type');
     // this.getChartsTips();
   }
 
   ngAfterViewInit() {
-    $("#title").html("<span>Follow Ups</span>");
-    $(document).on("click", function (e) {
-      if ($(document.activeElement).attr("id") == "sa_datepicker") {
-        $(".customRange").show();
-      } else if ($(document.activeElement).attr("id") == "customRange") {
-        $(".customRange").show();
+    $('#title').html('<span>Follow Ups</span>');
+    $(document).on('click', function (e) {
+      if ($(document.activeElement).attr('id') == 'sa_datepicker') {
+        $('.customRange').show();
+      } else if ($(document.activeElement).attr('id') == 'customRange') {
+        $('.customRange').show();
       } else {
-        $(".customRange").hide();
+        $('.customRange').hide();
       }
     });
     //
@@ -311,19 +311,19 @@ export class FollowupsComponent implements AfterViewInit {
   }
 
   async initiate_clinic() {
-    var val = $("#currentClinic").attr("cid");
-    if (val != undefined && val != "all") {
+    var val = $('#currentClinic').attr('cid');
+    if (val != undefined && val != 'all') {
       this.clinic_id = val;
 
-      let newAppLayoutData: any = localStorage.getItem("layout");
+      let newAppLayoutData: any = localStorage.getItem('layout');
       if (newAppLayoutData) {
         newAppLayoutData = JSON.parse(newAppLayoutData);
         if (newAppLayoutData.dateRange) {
           this.startDate = moment(newAppLayoutData.dateRange.start).format(
-            "YYYY-MM-DD"
+            'YYYY-MM-DD'
           );
           this.endDate = moment(newAppLayoutData.dateRange.end).format(
-            "YYYY-MM-DD"
+            'YYYY-MM-DD'
           );
           this.filterDate(newAppLayoutData.dateRange.duration);
         }
@@ -331,15 +331,15 @@ export class FollowupsComponent implements AfterViewInit {
         this.filterDate(this.chartService.duration$.value);
       }
       //this.filterDate(this.chartService.duration$.value);
-      $("#sa_datepicker").val(
-        this.formatDate(this.startDate) + " - " + this.formatDate(this.endDate)
+      $('#sa_datepicker').val(
+        this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate)
       );
       this.getChartsTips();
     }
   }
 
   pieTooltipText({ data, index }) {
-    const labl = data.name.split("--");
+    const labl = data.name.split('--');
     const label = labl[0].charAt(0).toUpperCase() + labl[0].slice(1);
     const val = data.value;
     return `
@@ -349,184 +349,184 @@ export class FollowupsComponent implements AfterViewInit {
   }
 
   pieLabelText(labels) {
-    const labl = labels.split("--");
+    const labl = labels.split('--');
     return labl[0].charAt(0).toUpperCase() + labl[0].slice(1);
   }
 
   choosedDate(val) {
     val = val.chosenLabel;
-    var val = val.toString().split(" - ");
-    this.startDate = this.datePipe.transform(val[0], "dd-MM-yyyy");
-    this.endDate = this.datePipe.transform(val[1], "dd-MM-yyyy");
-    this.duration = "custom";
-    $(".customRange").css("display", "none");
+    var val = val.toString().split(' - ');
+    this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
+    this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
+    this.duration = 'custom';
+    $('.customRange').css('display', 'none');
   }
 
   formatDate(date) {
     if (date) {
-      var dateArray = date.split("-");
+      var dateArray = date.split('-');
       const d = new Date();
       d.setFullYear(+dateArray[2], +dateArray[1] - 1, +dateArray[0]);
-      const formattedDate = this.datePipe.transform(d, "dd MMM yyyy");
+      const formattedDate = this.datePipe.transform(d, 'dd MMM yyyy');
       return formattedDate;
     } else return date;
   }
 
   filterDate(duration) {
-    $(".target_filter").removeClass("mat-button-toggle-checked");
-    $(".target_off").addClass("mat-button-toggle-checked");
-    $(".customRange").css("display", "none");
+    $('.target_filter').removeClass('mat-button-toggle-checked');
+    $('.target_off').addClass('mat-button-toggle-checked');
+    $('.customRange').css('display', 'none');
     this.showTrend = false;
-    if (duration == "m") {
+    if (duration == 'm') {
       this.showGoals = true;
       this.goalCount = 1;
-      this.trendText = "Last Month";
-      this.currentText = "This Month";
+      this.trendText = 'Last Month';
+      this.currentText = 'This Month';
       var date = new Date();
       this.startDate = this.datePipe.transform(
         new Date(date.getFullYear(), date.getMonth(), 1),
-        "dd-MM-yyyy"
+        'dd-MM-yyyy'
       );
-      this.endDate = this.datePipe.transform(new Date(), "dd-MM-yyyy");
-      this.duration = "m";
-    } else if (duration == "lm") {
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+      this.duration = 'm';
+    } else if (duration == 'lm') {
       this.showGoals = true;
       this.goalCount = 1;
-      this.trendText = "Previous Month";
-      this.currentText = "Last Month";
+      this.trendText = 'Previous Month';
+      this.currentText = 'Last Month';
       const date = new Date();
       this.startDate = this.datePipe.transform(
         new Date(date.getFullYear(), date.getMonth() - 1, 1),
-        "dd-MM-yyyy"
+        'dd-MM-yyyy'
       );
       this.endDate = this.datePipe.transform(
         new Date(date.getFullYear(), date.getMonth(), 0),
-        "dd-MM-yyyy"
+        'dd-MM-yyyy'
       );
-      this.duration = "lm";
-    } else if (duration == "q") {
+      this.duration = 'lm';
+    } else if (duration == 'q') {
       this.showGoals = false;
       this.goalCount = 3;
-      this.trendText = "Last Quarter";
-      this.currentText = "This Quarter";
+      this.trendText = 'Last Quarter';
+      this.currentText = 'This Quarter';
       const now = new Date();
       var cmonth = now.getMonth() + 1;
       var cyear = now.getFullYear();
       if (cmonth >= 1 && cmonth <= 3) {
         this.startDate = this.datePipe.transform(
           new Date(now.getFullYear(), 0, 1),
-          "dd-MM-yyyy"
+          'dd-MM-yyyy'
         );
       } else if (cmonth >= 4 && cmonth <= 6) {
         this.startDate = this.datePipe.transform(
           new Date(now.getFullYear(), 3, 1),
-          "dd-MM-yyyy"
+          'dd-MM-yyyy'
         );
       } else if (cmonth >= 7 && cmonth <= 9) {
         this.startDate = this.datePipe.transform(
           new Date(now.getFullYear(), 6, 1),
-          "dd-MM-yyyy"
+          'dd-MM-yyyy'
         );
       } else if (cmonth >= 10 && cmonth <= 12) {
         this.startDate = this.datePipe.transform(
           new Date(now.getFullYear(), 9, 1),
-          "dd-MM-yyyy"
+          'dd-MM-yyyy'
         );
       }
-      this.endDate = this.datePipe.transform(new Date(), "dd-MM-yyyy");
-      this.duration = "q";
-    } else if (duration == "lq") {
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+      this.duration = 'q';
+    } else if (duration == 'lq') {
       this.showGoals = false;
       this.goalCount = 3;
-      this.trendText = "Previous Quarter";
-      this.currentText = "Last Quarter";
+      this.trendText = 'Previous Quarter';
+      this.currentText = 'Last Quarter';
       const now = new Date();
       var cmonth = now.getMonth() + 1;
       var cyear = now.getFullYear();
       if (cmonth >= 1 && cmonth <= 3) {
         this.startDate = this.datePipe.transform(
           new Date(now.getFullYear() - 1, 9, 1),
-          "dd-MM-yyyy"
+          'dd-MM-yyyy'
         );
         this.endDate = this.datePipe.transform(
           new Date(now.getFullYear() - 1, 12, 0),
-          "dd-MM-yyyy"
+          'dd-MM-yyyy'
         );
       } else if (cmonth >= 4 && cmonth <= 6) {
         this.startDate = this.datePipe.transform(
           new Date(now.getFullYear(), 0, 1),
-          "dd-MM-yyyy"
+          'dd-MM-yyyy'
         );
         this.endDate = this.datePipe.transform(
           new Date(now.getFullYear(), 3, 0),
-          "dd-MM-yyyy"
+          'dd-MM-yyyy'
         );
       } else if (cmonth >= 7 && cmonth <= 9) {
         this.startDate = this.datePipe.transform(
           new Date(now.getFullYear(), 3, 1),
-          "dd-MM-yyyy"
+          'dd-MM-yyyy'
         );
         this.endDate = this.datePipe.transform(
           new Date(now.getFullYear(), 6, 0),
-          "dd-MM-yyyy"
+          'dd-MM-yyyy'
         );
       } else if (cmonth >= 10 && cmonth <= 12) {
         this.startDate = this.datePipe.transform(
           new Date(now.getFullYear(), 6, 1),
-          "dd-MM-yyyy"
+          'dd-MM-yyyy'
         );
         this.endDate = this.datePipe.transform(
           new Date(now.getFullYear(), 9, 0),
-          "dd-MM-yyyy"
+          'dd-MM-yyyy'
         );
       }
-      this.duration = "lq";
-    } else if (duration == "cytd") {
+      this.duration = 'lq';
+    } else if (duration == 'cytd') {
       this.showGoals = false;
-      this.trendText = "Last Year";
-      this.currentText = "This Year";
+      this.trendText = 'Last Year';
+      this.currentText = 'This Year';
       var date = new Date();
       this.startDate = this.datePipe.transform(
         new Date(date.getFullYear(), 0, 1),
-        "dd-MM-yyyy"
+        'dd-MM-yyyy'
       );
-      this.endDate = this.datePipe.transform(new Date(), "dd-MM-yyyy");
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       var difMonths =
         new Date().getMonth() - new Date(date.getFullYear(), 0, 1).getMonth();
       this.goalCount = difMonths + 1;
-      this.duration = "cytd";
-    } else if (duration == "lcytd") {
+      this.duration = 'cytd';
+    } else if (duration == 'lcytd') {
       this.showGoals = false;
-      this.trendText = "Previous Year";
-      this.currentText = "Last Year";
-      this.duration = "lcytd";
+      this.trendText = 'Previous Year';
+      this.currentText = 'Last Year';
+      this.duration = 'lcytd';
       var date = new Date();
       this.startDate = this.datePipe.transform(
         new Date(date.getFullYear() - 1, 0, 1),
-        "dd-MM-yyyy"
+        'dd-MM-yyyy'
       );
       this.endDate = this.datePipe.transform(
         new Date(date.getFullYear() - 1, 11, 31),
-        "dd-MM-yyyy"
+        'dd-MM-yyyy'
       );
       this.goalCount = 12;
-    } else if (duration == "fytd") {
+    } else if (duration == 'fytd') {
       this.showGoals = false;
-      this.trendText = "Last Financial Year";
-      this.currentText = "This Financial Year";
+      this.trendText = 'Last Financial Year';
+      this.currentText = 'This Financial Year';
       var date = new Date();
       if (date.getMonth() + 1 <= 6) {
         this.startDate = this.datePipe.transform(
           new Date(date.getFullYear() - 1, 6, 1),
-          "dd-MM-yyyy"
+          'dd-MM-yyyy'
         );
       } else {
         this.startDate = this.datePipe.transform(
           new Date(date.getFullYear(), 6, 1),
-          "dd-MM-yyyy"
+          'dd-MM-yyyy'
         );
       }
-      this.endDate = this.datePipe.transform(new Date(), "dd-MM-yyyy");
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
       if (date.getMonth() + 1 <= 6) {
         this.goalCount = this.monthDiff(
@@ -539,55 +539,55 @@ export class FollowupsComponent implements AfterViewInit {
           new Date()
         );
       }
-      this.duration = "fytd";
-    } else if (duration == "lfytd") {
+      this.duration = 'fytd';
+    } else if (duration == 'lfytd') {
       this.showGoals = false;
-      this.trendText = "Previous Financial Year";
-      this.currentText = "Last Financial Year";
-      this.duration = "lfytd";
+      this.trendText = 'Previous Financial Year';
+      this.currentText = 'Last Financial Year';
+      this.duration = 'lfytd';
       this.goalCount = 12;
       var date = new Date();
       if (date.getMonth() + 1 <= 6) {
         this.startDate = this.datePipe.transform(
           new Date(date.getFullYear() - 2, 6, 1),
-          "dd-MM-yyyy"
+          'dd-MM-yyyy'
         );
       } else {
         this.startDate = this.datePipe.transform(
           new Date(date.getFullYear() - 1, 6, 1),
-          "dd-MM-yyyy"
+          'dd-MM-yyyy'
         );
       }
       if (date.getMonth() + 1 <= 6) {
         this.endDate = this.datePipe.transform(
           new Date(date.getFullYear() - 1, 5, 30),
-          "dd-MM-yyyy"
+          'dd-MM-yyyy'
         );
       } else {
         this.endDate = this.datePipe.transform(
           new Date(date.getFullYear(), 5, 30),
-          "dd-MM-yyyy"
+          'dd-MM-yyyy'
         );
       }
       /*    this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'dd-MM-yyyy');
         this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'dd-MM-yyyy');       */
-    } else if (duration == "custom") {
-      this.trendText = "";
-      this.duration = "custom";
-      this.currentText = "";
+    } else if (duration == 'custom') {
+      this.trendText = '';
+      this.duration = 'custom';
+      this.currentText = '';
       //let selectedDate = this.chartService.customSelectedDate$.value;
       let selectedDate = null;
       if (selectedDate == null) {
-        let newAppLayoutData: any = localStorage.getItem("layout");
+        let newAppLayoutData: any = localStorage.getItem('layout');
         if (newAppLayoutData) {
           newAppLayoutData = JSON.parse(newAppLayoutData);
           if (newAppLayoutData.dateRange) {
             selectedDate = {
               startDate: moment(newAppLayoutData.dateRange.start).format(
-                "YYYY-MM-DD"
+                'YYYY-MM-DD'
               ),
               endDate: moment(newAppLayoutData.dateRange.end).format(
-                "YYYY-MM-DD"
+                'YYYY-MM-DD'
               ),
             };
           }
@@ -595,22 +595,22 @@ export class FollowupsComponent implements AfterViewInit {
       }
       this.startDate = this.datePipe.transform(
         selectedDate.startDate,
-        "dd-MM-yyyy"
+        'dd-MM-yyyy'
       );
       this.endDate = this.datePipe.transform(
         selectedDate.endDate,
-        "dd-MM-yyyy"
+        'dd-MM-yyyy'
       );
-      var selectedMonth = this.datePipe.transform(selectedDate.startDate, "M");
+      var selectedMonth = this.datePipe.transform(selectedDate.startDate, 'M');
       var selectedYear = this.datePipe.transform(
         selectedDate.startDate,
-        "yyyy"
+        'yyyy'
       );
       var selectedStartDate = this.datePipe.transform(
         selectedDate.startDate,
-        "d"
+        'd'
       );
-      var selectedEndDate = this.datePipe.transform(selectedDate.endDate, "d");
+      var selectedEndDate = this.datePipe.transform(selectedDate.endDate, 'd');
       var LastDay = new Date(
         parseInt(selectedYear),
         parseInt(selectedMonth),
@@ -627,10 +627,10 @@ export class FollowupsComponent implements AfterViewInit {
       // $('.customRange').css('display','block');
     }
 
-    $(".filter").removeClass("active");
-    $(".filter_" + duration).addClass("active");
-    $("#sa_datepicker").val(
-      this.formatDate(this.startDate) + " - " + this.formatDate(this.endDate)
+    $('.filter').removeClass('active');
+    $('.filter_' + duration).addClass('active');
+    $('#sa_datepicker').val(
+      this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate)
     );
 
     if (this.clinic_id != undefined) {
@@ -651,29 +651,29 @@ export class FollowupsComponent implements AfterViewInit {
   }
 
   toggleFilter(val) {
-    $(".target_filter").removeClass("mat-button-toggle-checked");
-    $(".target_" + val).addClass("mat-button-toggle-checked");
-    $(".filter").removeClass("active");
+    $('.target_filter').removeClass('mat-button-toggle-checked');
+    $('.target_' + val).addClass('mat-button-toggle-checked');
+    $('.filter').removeClass('active');
     this.Apirequest = 0;
     var date = new Date();
-    this.endDate = this.datePipe.transform(new Date(), "dd-MM-yyyy");
-    if (val == "current") {
+    this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+    if (val == 'current') {
       this.toggleChecked = true;
-      this.trendValue = "c";
+      this.trendValue = 'c';
       this.startDate = this.datePipe.transform(
         new Date(date.getFullYear() - 1, date.getMonth(), 1),
-        "dd-MM-yyyy"
+        'dd-MM-yyyy'
       );
       this.showsTrend();
-    } else if (val == "historic") {
+    } else if (val == 'historic') {
       this.toggleChecked = true;
-      this.trendValue = "h";
+      this.trendValue = 'h';
       this.startDate = this.datePipe.transform(
         new Date(date.getFullYear() - 10, date.getMonth(), 1),
-        "dd-MM-yyyy"
+        'dd-MM-yyyy'
       );
       this.showsTrend();
-    } else if (val == "off") {
+    } else if (val == 'off') {
       this.showTrend = false;
     }
   }
@@ -689,7 +689,7 @@ export class FollowupsComponent implements AfterViewInit {
   public perUserTotal: any = 10;
   public perUserPrev: any = 20;
   //public perUserGoal:any = 0;
-  public perUserStatus: any = "up";
+  public perUserStatus: any = 'up';
   public perUserLoader: boolean = false;
 
   public perUserData1: any = [];
@@ -708,13 +708,13 @@ export class FollowupsComponent implements AfterViewInit {
         this.duration
       )
       .subscribe(
-        (res) => {
+        res => {
           this.perUserData = [
-            { data: [], label: "Ticks" },
-            { data: [], label: "Post Op" },
-            { data: [], label: "Recall" },
-            { data: [], label: "Ftas" },
-            { data: [], label: "Utas" },
+            { data: [], label: 'Ticks' },
+            { data: [], label: 'Post Op' },
+            { data: [], label: 'Recall' },
+            { data: [], label: 'Ftas' },
+            { data: [], label: 'Utas' },
           ];
           this.perUserData1 = [];
           this.perUserData2 = [];
@@ -727,7 +727,7 @@ export class FollowupsComponent implements AfterViewInit {
           this.perUserPrev = 0;
           if (res.status == 200) {
             var allData = [];
-            res.body.data.forEach((response) => {
+            res.body.data.forEach(response => {
               this.perUserData1.push(response.num_ticks);
               this.perUserData2.push(response.num_postop);
               this.perUserData3.push(response.num_recall);
@@ -735,29 +735,29 @@ export class FollowupsComponent implements AfterViewInit {
               this.perUserData5.push(response.num_utas);
               this.perUserLabels.push(response.completed_by);
             });
-            this.perUserData[0]["data"] = this.perUserData1;
-            this.perUserData[1]["data"] = this.perUserData2;
-            this.perUserData[2]["data"] = this.perUserData3;
-            this.perUserData[3]["data"] = this.perUserData4;
-            this.perUserData[4]["data"] = this.perUserData5;
+            this.perUserData[0]['data'] = this.perUserData1;
+            this.perUserData[1]['data'] = this.perUserData2;
+            this.perUserData[2]['data'] = this.perUserData3;
+            this.perUserData[3]['data'] = this.perUserData4;
+            this.perUserData[4]['data'] = this.perUserData5;
             this.perUserTotal = res.body.total;
             this.perUserPrev = res.body.total_ta;
-            this.perUserStatus = "up";
+            this.perUserStatus = 'up';
             if (this.perUserPrev > this.perUserTotal) {
-              this.perUserStatus = "down";
+              this.perUserStatus = 'down';
             }
           }
         },
-        (error) => {
+        error => {
           this.perUserLoader = false;
           this.handleUnAuthorization();
         }
       );
   }
-  public outcomeType: any = "1";
+  public outcomeType: any = '1';
   public outcomePrev: any = 0;
   public outcomeTotal: any = 0;
-  public outcomeStatus: any = "up";
+  public outcomeStatus: any = 'up';
   public outcomeLoader: boolean = false;
   public singleTick = [];
   public singleRecall = [];
@@ -774,7 +774,7 @@ export class FollowupsComponent implements AfterViewInit {
         this.duration
       )
       .subscribe(
-        (res) => {
+        res => {
           this.outcomeLoader = false;
           this.singleTick = [];
           this.singleRecall = [];
@@ -786,8 +786,8 @@ export class FollowupsComponent implements AfterViewInit {
             this.outcomeTotal = res.body.total;
             this.outcomePrev = res.body.total_ta;
             /****** Tick ******/
-            if (typeof res.body.data.ticks != "undefined") {
-              res.body.data.ticks.forEach((response) => {
+            if (typeof res.body.data.ticks != 'undefined') {
+              res.body.data.ticks.forEach(response => {
                 if (response.status) {
                   var temp = {
                     name: response.status,
@@ -799,8 +799,8 @@ export class FollowupsComponent implements AfterViewInit {
             }
             /****** Tick ******/
             /****** recalls ******/
-            if (typeof res.body.data.recalls != "undefined") {
-              res.body.data.recalls.forEach((response) => {
+            if (typeof res.body.data.recalls != 'undefined') {
+              res.body.data.recalls.forEach(response => {
                 if (response.status) {
                   var temp = {
                     name: response.status,
@@ -812,8 +812,8 @@ export class FollowupsComponent implements AfterViewInit {
             }
             /****** recalls ******/
             /****** ftas ******/
-            if (typeof res.body.data.utas != "undefined") {
-              res.body.data.utas.forEach((response) => {
+            if (typeof res.body.data.utas != 'undefined') {
+              res.body.data.utas.forEach(response => {
                 if (
                   response.status &&
                   response.status_percent > 0 &&
@@ -827,8 +827,8 @@ export class FollowupsComponent implements AfterViewInit {
                 }
               });
             }
-            if (typeof res.body.data.ftas != "undefined") {
-              res.body.data.ftas.forEach((response) => {
+            if (typeof res.body.data.ftas != 'undefined') {
+              res.body.data.ftas.forEach(response => {
                 if (response.status) {
                   var temp = {
                     name: response.status,
@@ -839,13 +839,13 @@ export class FollowupsComponent implements AfterViewInit {
               });
             }
             /****** ftas ******/
-            this.outcomeStatus = "up";
+            this.outcomeStatus = 'up';
             if (this.outcomeTotal < this.outcomePrev) {
-              this.outcomeStatus = "down";
+              this.outcomeStatus = 'down';
             }
           }
         },
-        (error) => {
+        error => {
           this.outcomeLoader = false;
           this.handleUnAuthorization();
         }
@@ -857,7 +857,7 @@ export class FollowupsComponent implements AfterViewInit {
   public conversionTotal: number = 0;
   public conversionGoal: number = 0;
   public conversionPrev: number = 0;
-  public conversionStatus: any = "up";
+  public conversionStatus: any = 'up';
   public conversionLoader: boolean = true;
 
   getConversion() {
@@ -870,27 +870,27 @@ export class FollowupsComponent implements AfterViewInit {
         this.duration
       )
       .subscribe(
-        (res) => {
+        res => {
           this.conversionData = [{ data: [] }];
           this.conversionLabels = [];
           this.conversionLoader = false;
           if (res.status == 200) {
             var allConversionFtas = [];
-            res.body.data.forEach((data) => {
+            res.body.data.forEach(data => {
               allConversionFtas.push(Math.round(data.booked_percent));
               this.conversionLabels.push(data.type);
             });
-            this.conversionData[0]["data"] = allConversionFtas;
+            this.conversionData[0]['data'] = allConversionFtas;
             this.conversionTotal = res.body.total;
             this.conversionPrev = res.body.total_ta;
             this.conversionGoal = res.goals;
           }
-          this.conversionStatus = "up";
+          this.conversionStatus = 'up';
           if (this.conversionTotal < this.conversionPrev) {
-            this.conversionStatus = "down";
+            this.conversionStatus = 'down';
           }
         },
-        (error) => {
+        error => {
           this.conversionLoader = false;
           this.handleUnAuthorization();
         }
@@ -915,12 +915,12 @@ export class FollowupsComponent implements AfterViewInit {
   public conversionPerUserLabelsTicks: any = [];
   public conversionPerUserTotalTicks: number = 0;
   public conversionPerUserPrevTicks: number = 0;
-  public conversionPerUserStatusTicks: any = "up";
-  public conversionPerUserStatusRecalls: any = "up";
-  public conversionPerUserStatusFta: any = "up";
-  public conversionPerUserStatusUta: any = "up";
+  public conversionPerUserStatusTicks: any = 'up';
+  public conversionPerUserStatusRecalls: any = 'up';
+  public conversionPerUserStatusFta: any = 'up';
+  public conversionPerUserStatusUta: any = 'up';
   public conversionPerUserLoader: boolean = true;
-  public conversionPerType: string = "1";
+  public conversionPerType: string = '1';
 
   getConversionPerUser() {
     this.conversionPerUserLoader = true;
@@ -932,7 +932,7 @@ export class FollowupsComponent implements AfterViewInit {
         this.duration
       )
       .subscribe(
-        (res) => {
+        res => {
           this.conversionPerUserLoader = false;
           this.conversionPerUserDataFta = [{ data: [] }];
           this.conversionPerUserDataUta = [{ data: [] }];
@@ -965,66 +965,66 @@ export class FollowupsComponent implements AfterViewInit {
             this.conversionPerUserPrevFta = res.body.total_ta_fta;
             this.conversionPerUserPrevUta = res.body.total_ta_uta;
 
-            if (typeof res.body.data.ftas != "undefined") {
+            if (typeof res.body.data.ftas != 'undefined') {
               var allConversionFtas = [];
-              res.body.data.ftas.forEach((fta) => {
+              res.body.data.ftas.forEach(fta => {
                 allConversionFtas.push(Math.round(fta.booked_percent));
                 this.conversionPerUserLabelsFta.push(fta.completed_by);
               });
-              this.conversionPerUserDataFta[0]["data"] = allConversionFtas;
+              this.conversionPerUserDataFta[0]['data'] = allConversionFtas;
             }
 
-            if (typeof res.body.data.utas != "undefined") {
+            if (typeof res.body.data.utas != 'undefined') {
               var allConversionUtas = [];
-              res.body.data.utas.forEach((fta) => {
+              res.body.data.utas.forEach(fta => {
                 allConversionUtas.push(Math.round(fta.booked_percent));
                 this.conversionPerUserLabelsUta.push(fta.completed_by);
               });
-              this.conversionPerUserDataUta[0]["data"] = allConversionUtas;
+              this.conversionPerUserDataUta[0]['data'] = allConversionUtas;
             }
 
-            if (typeof res.body.data.recalls != "undefined") {
+            if (typeof res.body.data.recalls != 'undefined') {
               var allConversionrecalls = [];
-              res.body.data.recalls.forEach((recalls) => {
+              res.body.data.recalls.forEach(recalls => {
                 allConversionrecalls.push(Math.round(recalls.booked_percent));
                 this.conversionPerUserLabelsRecalls.push(recalls.completed_by);
               });
-              this.conversionPerUserDataRecalls[0]["data"] =
+              this.conversionPerUserDataRecalls[0]['data'] =
                 allConversionrecalls;
             }
-            if (typeof res.body.data.ticks != "undefined") {
+            if (typeof res.body.data.ticks != 'undefined') {
               var allConversionticks = [];
-              res.body.data.ticks.forEach((ticks) => {
+              res.body.data.ticks.forEach(ticks => {
                 allConversionticks.push(Math.round(ticks.booked_percent));
                 this.conversionPerUserLabelsTicks.push(ticks.completed_by);
               });
-              this.conversionPerUserDataTicks[0]["data"] = allConversionticks;
+              this.conversionPerUserDataTicks[0]['data'] = allConversionticks;
             }
 
-            this.conversionPerUserStatusTicks = "up";
+            this.conversionPerUserStatusTicks = 'up';
             if (
               this.conversionPerUserTotalTicks < this.conversionPerUserPrevTicks
             ) {
-              this.conversionPerUserStatusTicks = "down";
+              this.conversionPerUserStatusTicks = 'down';
             }
-            this.conversionPerUserStatusRecalls = "up";
+            this.conversionPerUserStatusRecalls = 'up';
             if (
               this.conversionPerUserTotalRecalls <
               this.conversionPerUserPrevRecalls
             ) {
-              this.conversionPerUserStatusRecalls = "down";
+              this.conversionPerUserStatusRecalls = 'down';
             }
-            this.conversionPerUserStatusFta = "up";
+            this.conversionPerUserStatusFta = 'up';
             if (
               this.conversionPerUserTotalFta < this.conversionPerUserPrevFta
             ) {
-              this.conversionPerUserStatusFta = "down";
+              this.conversionPerUserStatusFta = 'down';
             }
-            this.conversionPerUserStatusUta = "up";
+            this.conversionPerUserStatusUta = 'up';
             if (
               this.conversionPerUserTotalUta < this.conversionPerUserPrevUta
             ) {
-              this.conversionPerUserStatusUta = "down";
+              this.conversionPerUserStatusUta = 'down';
             }
             /*var allConversionPerUse = [];
         res.body.data.forEach( (response) => {
@@ -1034,7 +1034,7 @@ export class FollowupsComponent implements AfterViewInit {
         this.conversionPerUserData[0]['data'] = allConversionPerUse;       */
           }
         },
-        (error) => {
+        error => {
           this.conversionPerUserLoader = false;
           this.handleUnAuthorization();
         }
@@ -1046,7 +1046,7 @@ export class FollowupsComponent implements AfterViewInit {
   public completionRateTotal: number = 0;
   public completionRatePrev: number = 0;
   public completionRateGoal: number = 0;
-  public completionRateStatus: any = "up";
+  public completionRateStatus: any = 'up';
   public completionRateLoader: boolean = true;
   getCompletionRate() {
     this.completionRateLoader = true;
@@ -1058,7 +1058,7 @@ export class FollowupsComponent implements AfterViewInit {
         this.duration
       )
       .subscribe(
-        (res) => {
+        res => {
           this.completionRateLoader = false;
           this.completionRateData = [{ data: [] }];
           this.completionRateLabels = [];
@@ -1070,7 +1070,7 @@ export class FollowupsComponent implements AfterViewInit {
             this.completionRateTotal = res.body.total;
             this.completionRatePrev = res.body.total_ta;
             this.completionRateGoal = res.goals;
-            res.body.data.forEach((response) => {
+            res.body.data.forEach(response => {
               if (
                 parseInt(response.completion_rate) >= 0 &&
                 parseInt(response.num_total) > 0
@@ -1079,15 +1079,15 @@ export class FollowupsComponent implements AfterViewInit {
                 this.completionRateLabels.push(response.type);
               }
             });
-            this.completionRateData[0]["data"] = allCompletionRate;
+            this.completionRateData[0]['data'] = allCompletionRate;
 
-            this.completionRateStatus = "up";
+            this.completionRateStatus = 'up';
             if (this.completionRateTotal < this.completionRatePrev) {
-              this.completionRateStatus = "down";
+              this.completionRateStatus = 'down';
             }
           }
         },
-        (error) => {
+        error => {
           this.completionRateLoader = false;
           this.handleUnAuthorization();
         }
@@ -1097,10 +1097,10 @@ export class FollowupsComponent implements AfterViewInit {
   public charTips: any = [];
   getChartsTips() {
     this.chartstipsService.getCharts(9, this.clinic_id).subscribe({
-      next: (res) => {
+      next: res => {
         this.charTips = res.data;
       },
-      error: (error) => {},
+      error: error => {},
     });
   }
 
@@ -1115,11 +1115,11 @@ export class FollowupsComponent implements AfterViewInit {
   }
 
   handleUnAuthorization() {
-    if (this.user_type != "7") {
-      this._cookieService.put("username", "");
-      this._cookieService.put("email", "");
-      this._cookieService.put("userid", "");
-      this.router.navigateByUrl("/login");
+    if (this.user_type != '7') {
+      this._cookieService.put('username', '');
+      this._cookieService.put('email', '');
+      this._cookieService.put('userid', '');
+      this.router.navigateByUrl('/login');
     }
   }
 }

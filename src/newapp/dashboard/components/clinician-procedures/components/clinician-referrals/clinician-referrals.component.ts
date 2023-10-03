@@ -1,22 +1,21 @@
-import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
-import { ClinicianProcedureFacade } from "@/newapp/dashboard/facades/clinician-procedures.facade";
-import { DentistFacade } from "@/newapp/dentist/facades/dentists.facade";
-import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
-import { DateRangeMenus } from "@/newapp/shared/components/date-range-menu/date-range-menu.component";
-import { Component, OnInit, OnDestroy, Input } from "@angular/core";
-import { ChartOptions, LegendOptions, ChartDataset } from "chart.js";
-import { _DeepPartialObject } from "chart.js/dist/types/utils";
-import _ from "lodash";
-import { Subject, takeUntil, combineLatest, map } from "rxjs";
-import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
+import { ClinicianProcedureFacade } from '@/newapp/dashboard/facades/clinician-procedures.facade';
+
+import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
+import { _DeepPartialObject } from 'chart.js/dist/types/utils';
+import _ from 'lodash';
+import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
-  selector: "cp-clinician-referrals-chart",
-  templateUrl: "./clinician-referrals.component.html",
-  styleUrls: ["./clinician-referrals.component.scss"],
+  selector: 'cp-clinician-referrals-chart',
+  templateUrl: './clinician-referrals.component.html',
+  styleUrls: ['./clinician-referrals.component.scss'],
 })
 export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
-  @Input() toolTip = "";
+  @Input() toolTip = '';
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
@@ -36,35 +35,35 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
   get durationLabel$() {
     return this.layoutFacade.durationLabel$.pipe(
       takeUntil(this.destroy$),
-      map((val) => val)
+      map(val => val)
     );
   }
 
   get durationTrendLabel$() {
     return this.layoutFacade.durationTrendLabel$.pipe(
       takeUntil(this.destroy$),
-      map((l) => l)
+      map(l => l)
     );
   }
 
   get isLoading$() {
     return this.cpFacade.isLoadingCpReferrals$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v)
+      map(v => v)
     );
   }
 
   get isMultipleClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
       takeUntil(this.destroy$),
-      map((v) => typeof v == "string")
+      map(v => typeof v == 'string')
     );
   }
 
   get isTrend$() {
     return this.layoutFacade.trend$.pipe(
       takeUntil(this.destroy$),
-      map((t) => t !== "off")
+      map(t => t !== 'off')
     );
   }
 
@@ -86,14 +85,14 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$),
       map(([visibility]) => {
         switch (visibility) {
-          case "internal":
-            return "You have no internal referrals in the selected period";
-          case "external":
-            return "You have no external referrals in the selected period";
-          case "combined":
-            return "You have no referrals in the selected period";
+          case 'internal':
+            return 'You have no internal referrals in the selected period';
+          case 'external':
+            return 'You have no external referrals in the selected period';
+          case 'combined':
+            return 'You have no referrals in the selected period';
         }
-        return "";
+        return '';
       })
     );
   }
@@ -101,7 +100,7 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
   get visibility$() {
     return this.cpFacade.cpReferralsVisibility$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v)
+      map(v => v)
     );
   }
 
@@ -110,7 +109,7 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
       .observe([Breakpoints.Large, Breakpoints.Small])
       .pipe(
         takeUntil(this.destroy$),
-        map((result) => result.matches)
+        map(result => result.matches)
       );
   }
 
@@ -170,7 +169,7 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
     );
   }
 
-  setVisibility(val: "combined" | "internal" | "external") {
+  setVisibility(val: 'combined' | 'internal' | 'external') {
     this.cpFacade.setCpReferralsVisibility(val);
   }
 
@@ -180,7 +179,7 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
       this.isTrend$,
     ]).pipe(
       map(([isTrend]) => {
-        return isTrend ? "bar" : "doughnut";
+        return isTrend ? 'bar' : 'doughnut';
       })
     );
   }
@@ -203,7 +202,7 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: "rectRounded",
+        pointStyle: 'rectRounded',
         hoverBorderWidth: 7,
       },
     },
@@ -213,7 +212,7 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
     // barThickness: 10,
     animation: {
       duration: 500,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
     },
     scales: {
       x: {
@@ -230,7 +229,7 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
             if (Math.floor(label) === label) {
               return label;
             }
-            return "";
+            return '';
           },
         },
       },
@@ -238,11 +237,11 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
     plugins: {
       legend: {
         display: true,
-        position: "top",
+        position: 'top',
         ...this.legendLabelOptions,
       },
       tooltip: {
-        mode: "x",
+        mode: 'x',
         displayColors(ctx, options) {
           return !!ctx.tooltip;
         },
@@ -250,23 +249,23 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
           label: function (tooltipItems) {
             if (
               parseInt(tooltipItems.formattedValue) > 0 &&
-              tooltipItems.dataset.label != ""
+              tooltipItems.dataset.label != ''
             ) {
-              if (tooltipItems.dataset.label.indexOf("DentistMode-") >= 0) {
-                return tooltipItems.label + ": " + tooltipItems.formattedValue;
+              if (tooltipItems.dataset.label.indexOf('DentistMode-') >= 0) {
+                return tooltipItems.label + ': ' + tooltipItems.formattedValue;
               } else {
                 return (
                   tooltipItems.dataset.label +
-                  ": " +
+                  ': ' +
                   tooltipItems.formattedValue
                 );
               }
             }
-            return "";
+            return '';
           },
           title: function (tooltip) {
-            if (tooltip[0].dataset.label.indexOf("DentistMode-") >= 0) {
-              var dentist = tooltip[0].dataset.label.split("Mode-");
+            if (tooltip[0].dataset.label?.indexOf('DentistMode-') >= 0) {
+              var dentist = tooltip[0].dataset.label.split('Mode-');
               return dentist[1];
             } else {
               return tooltip[0].label;
@@ -277,7 +276,7 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
     },
   };
 
-  public pieChartOptions: ChartOptions<"pie"> = {
+  public pieChartOptions: ChartOptions<'pie'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -287,13 +286,13 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
             return `${tooltipItem.label}: ${tooltipItem.formattedValue}`;
           },
           title: function () {
-            return "";
+            return '';
           },
         },
       },
       legend: {
         display: true,
-        position: "right",
+        position: 'right',
         ...this.legendLabelOptions,
       },
     },

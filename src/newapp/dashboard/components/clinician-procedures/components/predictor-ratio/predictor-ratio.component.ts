@@ -1,21 +1,20 @@
-import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
-import { ClinicianProcedureFacade } from "@/newapp/dashboard/facades/clinician-procedures.facade";
-import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
-import { DateRangeMenus } from "@/newapp/shared/components/date-range-menu/date-range-menu.component";
-import { Component, OnInit, OnDestroy, Input } from "@angular/core";
-import { ChartOptions, LegendOptions, ChartDataset } from "chart.js";
-import { _DeepPartialObject } from "chart.js/dist/types/utils";
-import _ from "lodash";
-import { Subject, takeUntil, combineLatest, map } from "rxjs";
-import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
+import { ClinicianProcedureFacade } from '@/newapp/dashboard/facades/clinician-procedures.facade';
+import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
+import { _DeepPartialObject } from 'chart.js/dist/types/utils';
+import _ from 'lodash';
+import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
-  selector: "cp-predictor-ratio-chart",
-  templateUrl: "./predictor-ratio.component.html",
-  styleUrls: ["./predictor-ratio.component.scss"],
+  selector: 'cp-predictor-ratio-chart',
+  templateUrl: './predictor-ratio.component.html',
+  styleUrls: ['./predictor-ratio.component.scss'],
 })
 export class CpPredictorRatioComponent implements OnInit, OnDestroy {
-  @Input() toolTip = "";
+  @Input() toolTip = '';
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
@@ -25,48 +24,48 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
   bgColors = [];
 
   predictorRatioValue = 0;
-  predictorRatioPrev = "";
-  multifulRatio = "";
+  predictorRatioPrev = '';
+  multifulRatio = '';
 
   get durationLabel$() {
     return this.layoutFacade.durationLabel$.pipe(
       takeUntil(this.destroy$),
-      map((val) => val)
+      map(val => val)
     );
   }
 
   get durationTrendLabel$() {
     return this.layoutFacade.durationTrendLabel$.pipe(
       takeUntil(this.destroy$),
-      map((l) => l)
+      map(l => l)
     );
   }
 
   get duration$() {
     return this.layoutFacade.dateRange$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v.duration)
+      map(v => v.duration)
     );
   }
 
   get isLoading$() {
     return this.cpFacade.isLoadingCpPredictorRatio$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v)
+      map(v => v)
     );
   }
 
   get isMultipleClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
       takeUntil(this.destroy$),
-      map((v) => typeof v == "string")
+      map(v => typeof v == 'string')
     );
   }
 
   get isTrend$() {
     return this.layoutFacade.trend$.pipe(
       takeUntil(this.destroy$),
-      map((t) => t !== "off")
+      map(t => t !== 'off')
     );
   }
 
@@ -89,13 +88,13 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
       map(([visibility]) => {
         switch (visibility) {
           case 1:
-            return "You have no indirect or large direct fillings in the selected period";
+            return 'You have no indirect or large direct fillings in the selected period';
           case 2:
-            return "You have no RCTs or extractions in the selected period";
+            return 'You have no RCTs or extractions in the selected period';
           case 3:
-            return "You have no RCTs in the selected period";
+            return 'You have no RCTs in the selected period';
         }
-        return "";
+        return '';
       })
     );
   }
@@ -103,7 +102,7 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
   get visibility$() {
     return this.cpFacade.cpPredictorRatioVisibility$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v)
+      map(v => v)
     );
   }
 
@@ -112,7 +111,7 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
       .observe([Breakpoints.Large, Breakpoints.Small])
       .pipe(
         takeUntil(this.destroy$),
-        map((result) => result.matches)
+        map(result => result.matches)
       );
   }
 
@@ -195,7 +194,7 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: "rectRounded",
+        pointStyle: 'rectRounded',
         hoverBorderWidth: 7,
       },
     },
@@ -205,7 +204,7 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
     // barThickness: 10,
     animation: {
       duration: 500,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
     },
     scales: {
       x: {
@@ -222,7 +221,7 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
             if (Math.floor(label) === label) {
               return label;
             }
-            return "";
+            return '';
           },
         },
       },
@@ -230,11 +229,11 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
     plugins: {
       legend: {
         display: true,
-        position: "top",
+        position: 'top',
         ...this.legendLabelOptions,
       },
       tooltip: {
-        mode: "x",
+        mode: 'x',
         displayColors(ctx, options) {
           return !!ctx.tooltip;
         },
@@ -242,23 +241,23 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
           label: function (tooltipItems) {
             if (
               parseInt(tooltipItems.formattedValue) > 0 &&
-              tooltipItems.dataset.label != ""
+              tooltipItems.dataset.label != ''
             ) {
-              if (tooltipItems.dataset.label.indexOf("DentistMode-") >= 0) {
-                return tooltipItems.label + ": " + tooltipItems.formattedValue;
+              if (tooltipItems.dataset.label.indexOf('DentistMode-') >= 0) {
+                return tooltipItems.label + ': ' + tooltipItems.formattedValue;
               } else {
                 return (
                   tooltipItems.dataset.label +
-                  ": " +
+                  ': ' +
                   tooltipItems.formattedValue
                 );
               }
             }
-            return "";
+            return '';
           },
           title: function (tooltip) {
-            if (tooltip[0].dataset.label.indexOf("DentistMode-") >= 0) {
-              var dentist = tooltip[0].dataset.label.split("Mode-");
+            if (tooltip[0].dataset.label?.indexOf('DentistMode-') >= 0) {
+              var dentist = tooltip[0].dataset.label.split('Mode-');
               return dentist[1];
             } else {
               return tooltip[0].label;
@@ -276,7 +275,7 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: "rectRounded",
+        pointStyle: 'rectRounded',
         hoverBorderWidth: 7,
       },
       bar: {
@@ -289,7 +288,7 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
     // barThickness: 10,
     animation: {
       duration: 500,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
     },
     scales: {
       x: {
@@ -306,7 +305,7 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
             if (Math.floor(label) === label) {
               return label;
             }
-            return "";
+            return '';
           },
         },
       },
@@ -314,11 +313,11 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
     plugins: {
       legend: {
         display: true,
-        position: "top",
+        position: 'top',
         ...this.legendLabelOptions,
       },
       tooltip: {
-        mode: "x",
+        mode: 'x',
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
@@ -326,23 +325,23 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
           label: function (tooltipItems) {
             if (
               parseInt(tooltipItems.formattedValue) > 0 &&
-              tooltipItems.dataset.label != ""
+              tooltipItems.dataset.label != ''
             ) {
-              if (tooltipItems.dataset.label.indexOf("DentistMode-") >= 0) {
-                return tooltipItems.label + ": " + tooltipItems.formattedValue;
+              if (tooltipItems.dataset.label.indexOf('DentistMode-') >= 0) {
+                return tooltipItems.label + ': ' + tooltipItems.formattedValue;
               } else {
                 return (
                   tooltipItems.dataset.label +
-                  ": " +
+                  ': ' +
                   tooltipItems.formattedValue
                 );
               }
             }
-            return "";
+            return '';
           },
           title: function (tooltip) {
-            if (tooltip[0].dataset.label.indexOf("DentistMode-") >= 0) {
-              var dentist = tooltip[0].dataset.label.split("Mode-");
+            if (tooltip[0].dataset.label.indexOf('DentistMode-') >= 0) {
+              var dentist = tooltip[0].dataset.label.split('Mode-');
               return dentist[1];
             } else {
               return tooltip[0].label;

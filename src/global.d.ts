@@ -33,7 +33,7 @@ declare global {
   type T_MODE = 'clinic' | 'provider';
 
   type CA_API_ENDPOINTS =
-    | 'caDentistProduction'
+    | 'caDentistProduction' // 1
     | 'caDentistProductionDentist'
     | 'caDentistProductionOht'
     | 'caCollection'
@@ -42,14 +42,14 @@ declare global {
     | 'caCollectionExp'
     | 'caCollectionExpDentists'
     | 'caCollectionExpOht'
-    | 'caTxPlanAvgProposedFees'
+    | 'caTxPlanAvgProposedFees' // 4
     | 'caTxPlanAvgCompletedFees'
-    | 'caNumComplaints'
-    | 'caRecallRate'
+    | 'caNumComplaints' // 7
+    | 'caRecallRate' // 6
     | 'caReappointRate'
-    | 'caTxPlanCompRate'
-    | 'caNumNewPatients'
-    | 'caHourlyRate'
+    | 'caTxPlanCompRate' // 5
+    | 'caNumNewPatients' // 3
+    | 'caHourlyRate' // 2
     | 'caHourlyRateDentists'
     | 'caHourlyRateOht'
     | 'caCollectionHourlyRate'

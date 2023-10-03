@@ -1,21 +1,21 @@
-import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
-import { ClinicianProcedureFacade } from "@/newapp/dashboard/facades/clinician-procedures.facade";
-import { DentistFacade } from "@/newapp/dentist/facades/dentists.facade";
-import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
-import { Component, OnInit, OnDestroy, Input } from "@angular/core";
-import { ChartOptions, LegendOptions, ChartDataset } from "chart.js";
-import { _DeepPartialObject } from "chart.js/dist/types/utils";
-import _ from "lodash";
-import { Subject, takeUntil, combineLatest, map } from "rxjs";
-import { DomSanitizer } from "@angular/platform-browser";
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
+import { ClinicianProcedureFacade } from '@/newapp/dashboard/facades/clinician-procedures.facade';
+import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
+import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
+import { _DeepPartialObject } from 'chart.js/dist/types/utils';
+import _ from 'lodash';
+import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
-  selector: "cp-procedure-analysis-chart",
-  templateUrl: "./procedure-analysis.component.html",
-  styleUrls: ["./procedure-analysis.component.scss"],
+  selector: 'cp-procedure-analysis-chart',
+  templateUrl: './procedure-analysis.component.html',
+  styleUrls: ['./procedure-analysis.component.scss'],
 })
 export class CpAnalysisComponent implements OnInit, OnDestroy {
-  @Input() toolTip = "";
+  @Input() toolTip = '';
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
@@ -23,14 +23,14 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
   get isGeneral$() {
     return this.cpFacade.cpPredictorAnalysisVisibility$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v === "general")
+      map(v => v === 'general')
     );
   }
 
   get isSpecialList$() {
     return this.cpFacade.cpPredictorAnalysisVisibility$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v === "specialist")
+      map(v => v === 'specialist')
     );
   }
 
@@ -67,14 +67,14 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
   get isMultipleClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
       takeUntil(this.destroy$),
-      map((v) => typeof v == "string")
+      map(v => typeof v == 'string')
     );
   }
 
   get isTrend$() {
     return this.layoutFacade.trend$.pipe(
       takeUntil(this.destroy$),
-      map((t) => t !== "off")
+      map(t => t !== 'off')
     );
   }
 
@@ -85,7 +85,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
     ]).pipe(
       takeUntil(this.destroy$),
       map(([clinics, dentistId]) => {
-        return !(clinics.length == 1 && dentistId !== "all");
+        return !(clinics.length == 1 && dentistId !== 'all');
       })
     );
   }
@@ -101,8 +101,8 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
     ]).pipe(
       takeUntil(this.destroy$),
       map(([clinics, dentistId]) => {
-        if (clinics.length == 1 && dentistId !== "all") {
-          return "You have no specialist items in this period";
+        if (clinics.length == 1 && dentistId !== 'all') {
+          return 'You have no specialist items in this period';
         }
         return `You have no Crowns, Splints, RCTs, Perio, Stainless Steel Crowns, Composite Veneers, Implant Crowns, Whitening or Extractions in this period`;
       })
@@ -134,7 +134,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
           specialChartData,
           isMultiClinics,
         ]) => {
-          if (visibility === "general") {
+          if (visibility === 'general') {
             this.datasets = chartData.datasets;
             this.labels = chartData.labels;
             this.maxVal = chartData.maxData;
@@ -161,7 +161,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
     this.destroy.next();
   }
 
-  setVisibility(val: "general" | "specialist") {
+  setVisibility(val: 'general' | 'specialist') {
     this.cpFacade.setCpPredictorAnalysisVisibility(val);
   }
 
@@ -178,7 +178,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
           clinics,
           dentistId,
         ]) => {
-          if (clinics.length === 1 && dentistId !== "all") {
+          if (clinics.length === 1 && dentistId !== 'all') {
             // dentistMode
             return this.stackedChartOptions;
           } else if (clinics.length > 1) {
@@ -207,7 +207,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: "rectRounded",
+        pointStyle: 'rectRounded',
         hoverBorderWidth: 7,
       },
     },
@@ -217,7 +217,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
     // barThickness: 10,
     animation: {
       duration: 500,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
     },
     scales: {
       x: {
@@ -234,7 +234,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
             if (Math.floor(label) === label) {
               return label;
             }
-            return "";
+            return '';
           },
         },
       },
@@ -242,11 +242,11 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
     plugins: {
       legend: {
         display: true,
-        position: "top",
+        position: 'top',
         ...this.legendLabelOptions,
       },
       tooltip: {
-        mode: "x",
+        mode: 'x',
         displayColors(ctx, options) {
           return !!ctx.tooltip;
         },
@@ -254,23 +254,23 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
           label: function (tooltipItems) {
             if (
               parseInt(tooltipItems.formattedValue) > 0 &&
-              tooltipItems.dataset.label != ""
+              tooltipItems.dataset.label != ''
             ) {
-              if (tooltipItems.dataset.label.indexOf("DentistMode-") >= 0) {
-                return tooltipItems.label + ": " + tooltipItems.formattedValue;
+              if (tooltipItems.dataset.label.indexOf('DentistMode-') >= 0) {
+                return tooltipItems.label + ': ' + tooltipItems.formattedValue;
               } else {
                 return (
                   tooltipItems.dataset.label +
-                  ": " +
+                  ': ' +
                   tooltipItems.formattedValue
                 );
               }
             }
-            return "";
+            return '';
           },
           title: function (tooltip) {
-            if (tooltip[0].dataset.label.indexOf("DentistMode-") >= 0) {
-              var dentist = tooltip[0].dataset.label.split("Mode-");
+            if (tooltip[0].dataset.label?.indexOf('DentistMode-') >= 0) {
+              var dentist = tooltip[0].dataset.label.split('Mode-');
               return dentist[1];
             } else {
               return tooltip[0].label;
@@ -288,7 +288,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: "rectRounded",
+        pointStyle: 'rectRounded',
         hoverBorderWidth: 7,
       },
       bar: {
@@ -301,7 +301,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
     // barThickness: 10,
     animation: {
       duration: 500,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
     },
     scales: {
       x: {
@@ -318,7 +318,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
             if (Math.floor(label) === label) {
               return label;
             }
-            return "";
+            return '';
           },
         },
       },
@@ -326,11 +326,11 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
     plugins: {
       legend: {
         display: true,
-        position: "top",
+        position: 'top',
         ...this.legendLabelOptions,
       },
       tooltip: {
-        mode: "x",
+        mode: 'x',
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
@@ -338,23 +338,23 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
           label: function (tooltipItems) {
             if (
               parseInt(tooltipItems.formattedValue) > 0 &&
-              tooltipItems.dataset.label != ""
+              tooltipItems.dataset.label != ''
             ) {
-              if (tooltipItems.dataset.label.indexOf("DentistMode-") >= 0) {
-                return tooltipItems.label + ": " + tooltipItems.formattedValue;
+              if (tooltipItems.dataset.label.indexOf('DentistMode-') >= 0) {
+                return tooltipItems.label + ': ' + tooltipItems.formattedValue;
               } else {
                 return (
                   tooltipItems.dataset.label +
-                  ": " +
+                  ': ' +
                   tooltipItems.formattedValue
                 );
               }
             }
-            return "";
+            return '';
           },
           title: function (tooltip) {
-            if (tooltip[0].dataset.label.indexOf("DentistMode-") >= 0) {
-              var dentist = tooltip[0].dataset.label.split("Mode-");
+            if (tooltip[0].dataset.label.indexOf('DentistMode-') >= 0) {
+              var dentist = tooltip[0].dataset.label.split('Mode-');
               return dentist[1];
             } else {
               return tooltip[0].label;
@@ -367,42 +367,42 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
 
   generatePaGeneralTotal(palData) {
     const Crowns_Onlays = palData
-      .map((item) => parseInt(item.Crowns_Onlays))
+      .map(item => parseInt(item.Crowns_Onlays))
       .reduce((prev, curr) => prev + curr, 0);
     const Splints = palData
-      .map((item) => parseInt(item.Splints))
+      .map(item => parseInt(item.Splints))
       .reduce((prev, curr) => prev + curr, 0);
     const RCT = palData
-      .map((item) => parseInt(item.RCT))
+      .map(item => parseInt(item.RCT))
       .reduce((prev, curr) => prev + curr, 0);
     const Perio = palData
-      .map((item) => parseInt(item.Perio))
+      .map(item => parseInt(item.Perio))
       .reduce((prev, curr) => prev + curr, 0);
     const Surg_Ext = palData
-      .map((item) => parseInt(item.Surg_Ext))
+      .map(item => parseInt(item.Surg_Ext))
       .reduce((prev, curr) => prev + curr, 0);
     const Imp_Crowns = palData
-      .map((item) => parseInt(item.Imp_Crowns))
+      .map(item => parseInt(item.Imp_Crowns))
       .reduce((prev, curr) => prev + curr, 0);
     const SS_Crowns = palData
-      .map((item) => parseInt(item.SS_Crowns))
+      .map(item => parseInt(item.SS_Crowns))
       .reduce((prev, curr) => prev + curr, 0);
     const Comp_Veneers = palData
-      .map((item) => parseInt(item.Comp_Veneers))
+      .map(item => parseInt(item.Comp_Veneers))
       .reduce((prev, curr) => prev + curr, 0);
     const Whitening = palData
-      .map((item) => parseInt(item.Whitening))
+      .map(item => parseInt(item.Whitening))
       .reduce((prev, curr) => prev + curr, 0);
-    let html = "<td> Total </td>";
-    html += "<td>" + Crowns_Onlays + "</td>";
-    html += "<td>" + Splints + "</td>";
-    html += "<td>" + RCT + "</td>";
-    html += "<td>" + Perio + "</td>";
-    html += "<td>" + Surg_Ext + "</td>";
-    html += "<td>" + Imp_Crowns + "</td>";
-    html += "<td>" + SS_Crowns + "</td>";
-    html += "<td>" + Comp_Veneers + "</td>";
-    html += "<td>" + Whitening + "</td>";
+    let html = '<td> Total </td>';
+    html += '<td>' + Crowns_Onlays + '</td>';
+    html += '<td>' + Splints + '</td>';
+    html += '<td>' + RCT + '</td>';
+    html += '<td>' + Perio + '</td>';
+    html += '<td>' + Surg_Ext + '</td>';
+    html += '<td>' + Imp_Crowns + '</td>';
+    html += '<td>' + SS_Crowns + '</td>';
+    html += '<td>' + Comp_Veneers + '</td>';
+    html += '<td>' + Whitening + '</td>';
     return this.sanitized.bypassSecurityTrustHtml(html);
   }
 
@@ -412,34 +412,34 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
 
   generatePaSpecialTotal(palData) {
     const Implant_Surg = palData
-      .map((item) => parseInt(item.Implant_Surg))
+      .map(item => parseInt(item.Implant_Surg))
       .reduce((prev, curr) => prev + curr, 0);
     const Braces = palData
-      .map((item) => parseInt(item.Braces))
+      .map(item => parseInt(item.Braces))
       .reduce((prev, curr) => prev + curr, 0);
     const Aligners = palData
-      .map((item) => parseFloat(item.Aligners))
+      .map(item => parseFloat(item.Aligners))
       .reduce((prev, curr) => prev + curr, 0);
     const MAS = palData
-      .map((item) => parseInt(item.MAS))
+      .map(item => parseInt(item.MAS))
       .reduce((prev, curr) => prev + curr, 0);
     const Perio_Surg = palData
-      .map((item) => parseInt(item.Perio_Surg))
+      .map(item => parseInt(item.Perio_Surg))
       .reduce((prev, curr) => prev + curr, 0);
     const Endo_Re_treat = palData
-      .map((item) => parseInt(item.Endo_Re_treat))
+      .map(item => parseInt(item.Endo_Re_treat))
       .reduce((prev, curr) => prev + curr, 0);
     const Veneers_ind = palData
-      .map((item) => parseInt(item.Veneers_ind))
+      .map(item => parseInt(item.Veneers_ind))
       .reduce((prev, curr) => prev + curr, 0);
-    let html = "<td> Total </td>";
-    html += "<td>" + Implant_Surg + "</td>";
-    html += "<td>" + Braces + "</td>";
-    html += "<td>" + Aligners + "</td>";
-    html += "<td>" + MAS + "</td>";
-    html += "<td>" + Perio_Surg + "</td>";
-    html += "<td>" + Endo_Re_treat + "</td>";
-    html += "<td>" + Veneers_ind + "</td>";
+    let html = '<td> Total </td>';
+    html += '<td>' + Implant_Surg + '</td>';
+    html += '<td>' + Braces + '</td>';
+    html += '<td>' + Aligners + '</td>';
+    html += '<td>' + MAS + '</td>';
+    html += '<td>' + Perio_Surg + '</td>';
+    html += '<td>' + Endo_Re_treat + '</td>';
+    html += '<td>' + Veneers_ind + '</td>';
     return this.sanitized.bypassSecurityTrustHtml(html);
   }
 }

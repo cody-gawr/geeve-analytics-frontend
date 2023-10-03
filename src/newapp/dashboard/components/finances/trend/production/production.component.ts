@@ -20,39 +20,6 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 export class FinanceProdTrendComponent implements OnInit, OnDestroy {
   @Input() toolTip = '';
 
-  doughnutChartColors = [
-    '#6cd8ba',
-    '#b0fffa',
-    '#abb3ff',
-    '#feefb8',
-    '#91ADEA',
-    '#ffb4b5',
-    '#F2C6C6',
-    '#FDC6C0',
-    '#FEEEE1',
-    '#FFDD99',
-    '#A8DDDD',
-    '#F4F4A0',
-    '#C3DDFF',
-    '#9FDBDB',
-    '#CCFDCC',
-    '#B1F2EC',
-    '#D7ECF3',
-    '#C8CDF0',
-    '#F7C4F5',
-    '#BBEBFA',
-    '#D7ECF3',
-    '#BBE7FF',
-    '#9BD0F5',
-    '#36A2EB',
-    '#FF6384',
-    '#fe7b85',
-    '#87ada9',
-    '#386087',
-    '#54D2FF',
-    '#E58DD7',
-  ];
-
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
   profitChartNames = ['Production', 'Collection', 'Net Profit', 'Net Profit %'];
@@ -135,6 +102,9 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
+        enabled: false,
+        position: 'nearest',
+        external: externalTooltipHandler,
         callbacks: {
           label: (tooltipItems: TooltipItem<any>) => {
             let label = tooltipItems.label;
@@ -281,6 +251,9 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
+        enabled: false,
+        position: 'nearest',
+        external: externalTooltipHandler,
         callbacks: {
           label: function (tooltipItems) {
             return `${tooltipItems.label} : ${tooltipItems.formattedValue}%`;
