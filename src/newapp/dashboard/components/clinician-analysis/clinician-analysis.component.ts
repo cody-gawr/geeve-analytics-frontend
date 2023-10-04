@@ -31,6 +31,15 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
     );
   }
 
+  get isAllDentist$() {
+    return this.dentistFacade.currentDentistId$.pipe(
+      takeUntil(this.destroy$),
+      map(v => {
+        return v === 'all';
+      })
+    );
+  }
+
   constructor(
     private dashbordFacade: DashboardFacade,
     private clinicFacade: ClinicFacade,
@@ -59,7 +68,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
         const endDate = dateRange.end;
         const duration = dateRange.duration;
 
-        this.dashbordFacade.loadChartTips(2, clinicId);
+        this.dashbordFacade.loadChartTips(1, clinicId);
         const queryWhEnabled = route && parseInt(route.wh ?? '0') == 1 ? 1 : 0;
 
         const _params = {

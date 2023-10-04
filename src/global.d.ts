@@ -82,6 +82,8 @@ declare global {
     | 'caTxPlanCompRateTrend'
     | 'caRecallRateTrend';
 
+  type CA_PROD_CHART_NAME = 'Production' | 'Collection' | 'Collection-Exp';
+
   type CP_API_ENDPOINTS =
     | 'cpPredictorAnalysis'
     | 'cpPredictorSpecialistAnalysis'

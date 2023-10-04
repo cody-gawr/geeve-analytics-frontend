@@ -1,15 +1,15 @@
-import { Clinic } from "../../../models/clinic";
-import { createFeature, createReducer, createSelector, on } from "@ngrx/store";
-import { ClinicApiActions, ClinicPageActions } from "../actions";
+import { Clinic } from '../../../models/clinic';
+import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
+import { ClinicApiActions, ClinicPageActions } from '../actions';
 
 export interface ClinicState {
   success: boolean;
   isLoading: boolean;
-  clinics: Clinic[];
-  currentSingleClinicId: "all" | number | null;
+  clinics: Clinic[]; // All clinics
+  currentSingleClinicId: 'all' | number | null; // For signle selection
   currentMultiClinicIds: number[];
   error: string | null;
-  hasPrimeClinics: "yes" | "no";
+  hasPrimeClinics: 'yes' | 'no';
   isMultiSelection: boolean;
 }
 
@@ -20,22 +20,22 @@ const initialState: ClinicState = {
   currentMultiClinicIds: [],
   clinics: [],
   error: null,
-  hasPrimeClinics: "no",
+  hasPrimeClinics: 'no',
   isMultiSelection: null,
 };
 
 export const clinicFeature = createFeature({
-  name: "clinic",
+  name: 'clinic',
   reducer: createReducer(
     initialState,
     on(
       ClinicPageActions.setCurrentSingleClinicId,
       (state, { clinicId }): ClinicState => {
-        if (clinicId === "all") {
+        if (clinicId === 'all') {
           return {
             ...state,
             currentSingleClinicId: clinicId,
-            currentMultiClinicIds: state.clinics.slice().map((v) => v.id),
+            currentMultiClinicIds: state.clinics.slice().map(v => v.id),
           };
         } else {
           return {
@@ -131,21 +131,21 @@ export const selectCurrentClinics = createSelector(
   (isMulti, singleId, multiIds, clinics) => {
     if (isMulti == null) return [];
     if (isMulti) {
-      return clinics.filter((c) => multiIds && multiIds.includes(c.id));
+      return clinics.filter(c => multiIds && multiIds.includes(c.id));
     } else {
-      return singleId === "all"
+      return singleId === 'all'
         ? clinics
-        : clinics.filter((c) => c.id == <number>singleId);
+        : clinics.filter(c => c.id == <number>singleId);
     }
   }
 );
 
 export const selectCurrentClinicId = createSelector(
   selectCurrentClinics,
-  (clinics) => {
+  clinics => {
     if (clinics.length > 0) {
       return clinics.length > 1
-        ? clinics.map((c) => c.id).join(",")
+        ? clinics.map(c => c.id).join(',')
         : clinics[0].id;
     } else {
       return null;
@@ -155,21 +155,21 @@ export const selectCurrentClinicId = createSelector(
 
 export const selectIsExactCurrentClinics = createSelector(
   selectCurrentClinics,
-  (clinics) => {
-    return clinics.every((c) => c.pms == "exact");
+  clinics => {
+    return clinics.every(c => c.pms == 'exact');
   }
 );
 
 export const selectIsCoreCurrentClinics = createSelector(
   selectCurrentClinics,
-  (clinics) => {
-    return clinics.every((c) => c.pms == "core");
+  clinics => {
+    return clinics.every(c => c.pms == 'core');
   }
 );
 
 export const selectIsD4wCurrentClinics = createSelector(
   selectCurrentClinics,
-  (clinics) => {
-    return clinics.every((c) => c.pms == "d4w");
+  clinics => {
+    return clinics.every(c => c.pms == 'd4w');
   }
 );

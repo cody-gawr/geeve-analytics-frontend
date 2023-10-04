@@ -6,8 +6,8 @@ import { DentistApiActions, DentistPageActions } from '../actions';
 
 export interface DentistState {
   isLoadingData: Array<'dentGet'>;
-  dentists: Dentist[] | null;
-  currentDentistId: 'all' | number;
+  dentists: Dentist[] | null; // All dentists
+  currentDentistId: 'all' | number; // Selected one
   errors: Array<JeeveError>;
 }
 
@@ -15,7 +15,7 @@ const initialState: DentistState = {
   isLoadingData: [],
   currentDentistId: 'all',
   dentists: null,
-  errors: []
+  errors: [],
 };
 
 export const dentistFeature = createFeature({
@@ -26,9 +26,9 @@ export const dentistFeature = createFeature({
       const { isLoadingData, errors } = state;
       return {
         ...state,
-        errors: _.filter(errors, (n) => n.api != 'dentGet'),
+        errors: _.filter(errors, n => n.api != 'dentGet'),
         dentists: null,
-        isLoadingData: _.union(isLoadingData, ['dentGet'])
+        isLoadingData: _.union(isLoadingData, ['dentGet']),
       };
     }),
     on(
@@ -37,9 +37,9 @@ export const dentistFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != 'dentGet'),
+          errors: _.filter(errors, n => n.api != 'dentGet'),
           dentists: dentists,
-          isLoadingData: _.filter(isLoadingData, (n) => n != 'dentGet')
+          isLoadingData: _.filter(isLoadingData, n => n != 'dentGet'),
         };
       }
     ),
@@ -50,37 +50,36 @@ export const dentistFeature = createFeature({
         return {
           ...state,
           dentists: null,
-          isLoadingData: _.filter(isLoadingData, (n) => n != 'dentGet'),
-          errors: [...errors, { ...error, api: 'dentGet' }]
+          isLoadingData: _.filter(isLoadingData, n => n != 'dentGet'),
+          errors: [...errors, { ...error, api: 'dentGet' }],
         };
       }
     ),
     on(
       DentistPageActions.setCurrentDentistId,
-      (state, {dentistId}): DentistState => {
+      (state, { dentistId }): DentistState => {
         return {
           ...state,
-          currentDentistId: dentistId
-        }
+          currentDentistId: dentistId,
+        };
       }
     )
-  )
+  ),
 });
 
-export const { 
-  selectErrors, 
-  selectIsLoadingData, 
+export const {
+  selectErrors,
+  selectIsLoadingData,
   selectDentists,
-  selectCurrentDentistId
+  selectCurrentDentistId,
 } = dentistFeature;
 
 export const selectDentistsLoading = createSelector(
   selectIsLoadingData,
-  (loadingData): boolean => _.findIndex(loadingData, (d) => d === 'dentGet') >= 0
-)
+  (loadingData): boolean => _.findIndex(loadingData, d => d === 'dentGet') >= 0
+);
 
 export const selectDentistsError = createSelector(
   selectErrors,
-  (errors): JeeveError | undefined =>
-    _.find(errors, (e) => e.api == 'dentGet')
+  (errors): JeeveError | undefined => _.find(errors, e => e.api == 'dentGet')
 );

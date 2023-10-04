@@ -66,6 +66,7 @@ import { ClinicianAnalysisEffects } from './state/effects/clinician-analysis.eff
 import { ClinicianAnalysisService } from './services/clinician-analysis.service';
 import { ClinicianAnalysisFacade } from './facades/clinician-analysis.facade';
 import { ClinicianAnalysisComponent } from './components/clinician-analysis/clinician-analysis.component';
+import { CaProductionComponent } from './components/clinician-analysis/components/caProduction/caProduction.component';
 
 @NgModule({
   imports: [
@@ -132,6 +133,7 @@ import { ClinicianAnalysisComponent } from './components/clinician-analysis/clin
     CpClinicianReferralsComponent,
 
     ClinicianAnalysisComponent,
+    CaProductionComponent,
   ],
   providers: [
     DashboardService,

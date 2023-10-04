@@ -112,7 +112,7 @@ export class AppTopbarComponent implements OnInit {
           selectedClinics.length == 1 &&
           [2, 3, 5, 6, 7].indexOf(roleData?.type) >= 0 &&
           [
-            '/dashboards/cliniciananalysis',
+            '/newapp/dashboard/cliniciananalysis',
             '/newapp/dashboard/clinicianproceedures',
           ].includes(this.activatedUrl)
         );
