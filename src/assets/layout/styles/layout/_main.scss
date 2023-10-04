@@ -95,3 +95,18 @@ a {
     height: calc(100vh - 245px);
   }
 }
+
+.custom-toggle-buttons {
+  .mat-button-toggle-checked {
+    background: linear-gradient(
+      to bottom,
+      rgba(24, 166, 137, 1) 0%,
+      rgba(0, 111, 115, 1) 99%
+    ) !important;
+    color: white !important;
+  }
+
+  border-radius: 20px;
+  border: 0 !important;
+  font-size: 13px;
+}

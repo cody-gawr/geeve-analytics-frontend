@@ -1,0 +1,8 @@
+<div class="dashboard-header-box">
+  <date-range-menu class="date-range-container"></date-range-menu>
+  <div class="toggle-section">
+    <average-mode-toggle></average-mode-toggle>
+    <trend-mode-toggle></trend-mode-toggle>
+  </div>
+</div>
+<div *ngIf="(clinicId$ | async) !== null" class="dashboard-content-box"></div>

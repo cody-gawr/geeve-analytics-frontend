@@ -1,29 +1,22 @@
-import { createFeature, createReducer, createSelector, on } from "@ngrx/store";
-import * as _ from "lodash";
-import { JeeveError } from "@/newapp/models";
+import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
+import * as _ from 'lodash';
+import { JeeveError } from '@/newapp/models';
 import {
   ClinicianProcedureApiActions,
   ClinicianProcedurePageActions,
-} from "../actions";
+} from '../actions';
 import {
   CpPredictorAnalysisApiResponse,
   CpPredictorRatioApiResponse,
   CpPredictorSpecialistAnalysisApiResponse,
   CpReferralsApiResponse,
   CpRevPerProcedureApiResponse,
-} from "@/newapp/models/dashboard/clinician-procedure";
-import { selectCurrentClinics } from "@/newapp/clinic/state/reducers/clinic.reducer";
-import { DoughnutChartColors1 } from "@/newapp/shared/constants";
-
-type ClinicianProcedureEndpoints =
-  | "cpPredictorAnalysis"
-  | "cpPredictorSpecialistAnalysis"
-  | "cpRevPerProcedure"
-  | "cpPredictorRatio"
-  | "cpReferrals";
+} from '@/newapp/models/dashboard/clinician-procedure';
+import { selectCurrentClinics } from '@/newapp/clinic/state/reducers/clinic.reducer';
+import { DoughnutChartColors1 } from '@/newapp/shared/constants';
 
 export interface ClinicianProcedureState {
-  isLoadingData: Array<ClinicianProcedureEndpoints>;
+  isLoadingData: Array<CP_API_ENDPOINTS>;
   errors: Array<JeeveError>;
 
   cpPredictorAnalysisData: CpPredictorAnalysisApiResponse;
@@ -32,9 +25,9 @@ export interface ClinicianProcedureState {
   cpPredictorRatioData: CpPredictorRatioApiResponse;
   cpReferralsData: CpReferralsApiResponse;
 
-  cpPredictorAnalysisVisibility: "general" | "specialist";
+  cpPredictorAnalysisVisibility: 'general' | 'specialist';
   cpPredictorRatioVisibility: number;
-  cpReferralsVisibility: "internal" | "external" | "combined";
+  cpReferralsVisibility: 'internal' | 'external' | 'combined';
 }
 
 const initialState: ClinicianProcedureState = {
@@ -46,13 +39,13 @@ const initialState: ClinicianProcedureState = {
   cpPredictorRatioData: null,
   cpReferralsData: null,
 
-  cpPredictorAnalysisVisibility: "general",
+  cpPredictorAnalysisVisibility: 'general',
   cpPredictorRatioVisibility: 1,
-  cpReferralsVisibility: "combined",
+  cpReferralsVisibility: 'combined',
 };
 
 export const clinicianProcedureFeature = createFeature({
-  name: "clinician-procedure",
+  name: 'clinician-procedure',
   reducer: createReducer(
     initialState,
     // cpPredictorAnalysis
@@ -62,9 +55,9 @@ export const clinicianProcedureFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "cpPredictorAnalysis"),
+          errors: _.filter(errors, n => n.api != 'cpPredictorAnalysis'),
           cpPredictorAnalysisData: null,
-          isLoadingData: _.union(isLoadingData, ["cpPredictorAnalysis"]),
+          isLoadingData: _.union(isLoadingData, ['cpPredictorAnalysis']),
         };
       }
     ),
@@ -74,11 +67,11 @@ export const clinicianProcedureFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "cpPredictorAnalysis"),
+          errors: _.filter(errors, n => n.api != 'cpPredictorAnalysis'),
           cpPredictorAnalysisData,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "cpPredictorAnalysis"
+            n => n != 'cpPredictorAnalysis'
           ),
         };
       }
@@ -92,9 +85,9 @@ export const clinicianProcedureFeature = createFeature({
           cpPredictorAnalysisData: null,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "cpPredictorAnalysis"
+            n => n != 'cpPredictorAnalysis'
           ),
-          errors: [...errors, { ...error, api: "cpPredictorAnalysis" }],
+          errors: [...errors, { ...error, api: 'cpPredictorAnalysis' }],
         };
       }
     ),
@@ -107,11 +100,11 @@ export const clinicianProcedureFeature = createFeature({
           ...state,
           errors: _.filter(
             errors,
-            (n) => n.api != "cpPredictorSpecialistAnalysis"
+            n => n.api != 'cpPredictorSpecialistAnalysis'
           ),
           cpPredictorAnalysisData: null,
           isLoadingData: _.union(isLoadingData, [
-            "cpPredictorSpecialistAnalysis",
+            'cpPredictorSpecialistAnalysis',
           ]),
         };
       }
@@ -127,12 +120,12 @@ export const clinicianProcedureFeature = createFeature({
           ...state,
           errors: _.filter(
             errors,
-            (n) => n.api != "cpPredictorSpecialistAnalysis"
+            n => n.api != 'cpPredictorSpecialistAnalysis'
           ),
           cpPredictorSpecialistAnalysisData,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "cpPredictorSpecialistAnalysis"
+            n => n != 'cpPredictorSpecialistAnalysis'
           ),
         };
       }
@@ -146,11 +139,11 @@ export const clinicianProcedureFeature = createFeature({
           cpPredictorSpecialistAnalysisData: null,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "cpPredictorSpecialistAnalysis"
+            n => n != 'cpPredictorSpecialistAnalysis'
           ),
           errors: [
             ...errors,
-            { ...error, api: "cpPredictorSpecialistAnalysis" },
+            { ...error, api: 'cpPredictorSpecialistAnalysis' },
           ],
         };
       }
@@ -162,9 +155,9 @@ export const clinicianProcedureFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "cpRevPerProcedure"),
+          errors: _.filter(errors, n => n.api != 'cpRevPerProcedure'),
           cpRevPerProcedureData: null,
-          isLoadingData: _.union(isLoadingData, ["cpRevPerProcedure"]),
+          isLoadingData: _.union(isLoadingData, ['cpRevPerProcedure']),
         };
       }
     ),
@@ -174,12 +167,9 @@ export const clinicianProcedureFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "cpRevPerProcedure"),
+          errors: _.filter(errors, n => n.api != 'cpRevPerProcedure'),
           cpRevPerProcedureData,
-          isLoadingData: _.filter(
-            isLoadingData,
-            (n) => n != "cpRevPerProcedure"
-          ),
+          isLoadingData: _.filter(isLoadingData, n => n != 'cpRevPerProcedure'),
         };
       }
     ),
@@ -190,11 +180,8 @@ export const clinicianProcedureFeature = createFeature({
         return {
           ...state,
           cpRevPerProcedureData: null,
-          isLoadingData: _.filter(
-            isLoadingData,
-            (n) => n != "cpRevPerProcedure"
-          ),
-          errors: [...errors, { ...error, api: "cpRevPerProcedure" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'cpRevPerProcedure'),
+          errors: [...errors, { ...error, api: 'cpRevPerProcedure' }],
         };
       }
     ),
@@ -205,9 +192,9 @@ export const clinicianProcedureFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "cpPredictorRatio"),
+          errors: _.filter(errors, n => n.api != 'cpPredictorRatio'),
           cpPredictorRatioData: null,
-          isLoadingData: _.union(isLoadingData, ["cpPredictorRatio"]),
+          isLoadingData: _.union(isLoadingData, ['cpPredictorRatio']),
         };
       }
     ),
@@ -217,12 +204,9 @@ export const clinicianProcedureFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "cpPredictorRatio"),
+          errors: _.filter(errors, n => n.api != 'cpPredictorRatio'),
           cpPredictorRatioData,
-          isLoadingData: _.filter(
-            isLoadingData,
-            (n) => n != "cpPredictorRatio"
-          ),
+          isLoadingData: _.filter(isLoadingData, n => n != 'cpPredictorRatio'),
         };
       }
     ),
@@ -233,11 +217,8 @@ export const clinicianProcedureFeature = createFeature({
         return {
           ...state,
           cpPredictorRatioData: null,
-          isLoadingData: _.filter(
-            isLoadingData,
-            (n) => n != "cpPredictorRatio"
-          ),
-          errors: [...errors, { ...error, api: "cpPredictorRatio" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'cpPredictorRatio'),
+          errors: [...errors, { ...error, api: 'cpPredictorRatio' }],
         };
       }
     ),
@@ -248,9 +229,9 @@ export const clinicianProcedureFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "cpReferrals"),
+          errors: _.filter(errors, n => n.api != 'cpReferrals'),
           cpReferralsData: null,
-          isLoadingData: _.union(isLoadingData, ["cpReferrals"]),
+          isLoadingData: _.union(isLoadingData, ['cpReferrals']),
         };
       }
     ),
@@ -260,9 +241,9 @@ export const clinicianProcedureFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "cpReferrals"),
+          errors: _.filter(errors, n => n.api != 'cpReferrals'),
           cpReferralsData,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "cpReferrals"),
+          isLoadingData: _.filter(isLoadingData, n => n != 'cpReferrals'),
         };
       }
     ),
@@ -273,8 +254,8 @@ export const clinicianProcedureFeature = createFeature({
         return {
           ...state,
           cpReferralsData: null,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "cpReferrals"),
-          errors: [...errors, { ...error, api: "cpReferrals" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'cpReferrals'),
+          errors: [...errors, { ...error, api: 'cpReferrals' }],
         };
       }
     ),
@@ -327,35 +308,33 @@ export const {
 export const selectCpPredictorAnalysisError = createSelector(
   selectErrors,
   (errors): JeeveError | undefined =>
-    _.find(errors, (e) => e.api == "cpPredictorAnalysis")
+    _.find(errors, e => e.api == 'cpPredictorAnalysis')
 );
 
 export const selectIsLoadingCpPredictorAnalysis = createSelector(
   selectIsLoadingData,
-  (loadingData) =>
-    _.findIndex(loadingData, (l) => l == "cpPredictorAnalysis") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'cpPredictorAnalysis') >= 0
 );
 
 export const selectIsLoadingCpPredictorSpecialistAnalysis = createSelector(
   selectIsLoadingData,
-  (loadingData) =>
-    _.findIndex(loadingData, (l) => l == "cpPredictorSpecialistAnalysis") >= 0
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'cpPredictorSpecialistAnalysis') >= 0
 );
 
 export const selectIsLoadingCpRevPerProcedure = createSelector(
   selectIsLoadingData,
-  (loadingData) =>
-    _.findIndex(loadingData, (l) => l == "cpRevPerProcedure") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'cpRevPerProcedure') >= 0
 );
 
 export const selectIsLoadingCpPredictorRatio = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == "cpPredictorRatio") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'cpPredictorRatio') >= 0
 );
 
 export const selectIsLoadingCpReferrals = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == "cpReferrals") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'cpReferrals') >= 0
 );
 
 export const selectCpPredictorAnalysisChartData = createSelector(
@@ -375,54 +354,50 @@ export const selectCpPredictorAnalysisChartData = createSelector(
 
     if (clinics.length > 1) {
       const mapPropAnalysisType: Record<string, string> = {
-        crowns: "Crowns & Onlays",
-        splints: "Splints",
-        rct: "Root Canals",
-        perio: "Perio Charts",
-        extract: "Surgical Extractions",
-        ss_crowns: "Stainless Steel Crowns",
-        comp_veneers: "Composite Veneers",
-        imp_crowns: "Implant Crowns",
-        whitening: "Whitening",
+        crowns: 'Crowns & Onlays',
+        splints: 'Splints',
+        rct: 'Root Canals',
+        perio: 'Perio Charts',
+        extract: 'Surgical Extractions',
+        ss_crowns: 'Stainless Steel Crowns',
+        comp_veneers: 'Composite Veneers',
+        imp_crowns: 'Implant Crowns',
+        whitening: 'Whitening',
       };
 
       Object.keys(mapPropAnalysisType).forEach(() => {
         chartDatasets.push({
           data: [],
-          label: "",
+          label: '',
         });
       });
 
       _.chain(resData.data)
-        .groupBy("clinicId")
-        .map((items) => {
+        .groupBy('clinicId')
+        .map(items => {
           return {
             ...items[0],
-            whitening: _.sumBy(items, (item) =>
-              parseInt(<string>item.whitening)
-            ),
-            imp_crowns: _.sumBy(items, (item) =>
+            whitening: _.sumBy(items, item => parseInt(<string>item.whitening)),
+            imp_crowns: _.sumBy(items, item =>
               parseInt(<string>item.impCrowns)
             ),
-            crowns: _.sumBy(items, (item) => parseInt(<string>item.crowns)),
-            splints: _.sumBy(items, (item) => parseInt(<string>item.splints)),
-            rct: _.sumBy(items, (item) => parseInt(<string>item.rct)),
-            perio: _.sumBy(items, (item) => parseInt(<string>item.perio)),
-            extract: _.sumBy(items, (item) => parseInt(<string>item.extract)),
-            ss_crowns: _.sumBy(items, (item) =>
-              parseInt(<string>item.ssCrowns)
-            ),
-            comp_veneers: _.sumBy(items, (item) =>
+            crowns: _.sumBy(items, item => parseInt(<string>item.crowns)),
+            splints: _.sumBy(items, item => parseInt(<string>item.splints)),
+            rct: _.sumBy(items, item => parseInt(<string>item.rct)),
+            perio: _.sumBy(items, item => parseInt(<string>item.perio)),
+            extract: _.sumBy(items, item => parseInt(<string>item.extract)),
+            ss_crowns: _.sumBy(items, item => parseInt(<string>item.ssCrowns)),
+            comp_veneers: _.sumBy(items, item =>
               parseInt(<string>item.compVeneers)
             ),
           };
         })
         .value()
-        .forEach((item) => {
+        .forEach(item => {
           chartLabels.push(item.clinicName);
           Object.keys(mapPropAnalysisType).forEach((key, index) => {
-            chartDatasets[index]["data"].push(Math.trunc(item[key]));
-            chartDatasets[index]["label"] = mapPropAnalysisType[key];
+            chartDatasets[index]['data'].push(Math.trunc(item[key]));
+            chartDatasets[index]['label'] = mapPropAnalysisType[key];
           });
         });
       return {
@@ -431,15 +406,15 @@ export const selectCpPredictorAnalysisChartData = createSelector(
       };
     } else {
       chartDatasets = [
-        { data: [], label: "Crowns & Onlays" },
-        { data: [], label: "Splints" },
-        { data: [], label: "Root Canals" },
-        { data: [], label: "Perio Charts" },
-        { data: [], label: "Surgical Extractions" },
-        { data: [], label: "Stainless Steel Crowns" },
-        { data: [], label: "Composite Veneers" },
-        { data: [], label: "Implant Crowns" },
-        { data: [], label: "Whitening" },
+        { data: [], label: 'Crowns & Onlays' },
+        { data: [], label: 'Splints' },
+        { data: [], label: 'Root Canals' },
+        { data: [], label: 'Perio Charts' },
+        { data: [], label: 'Surgical Extractions' },
+        { data: [], label: 'Stainless Steel Crowns' },
+        { data: [], label: 'Composite Veneers' },
+        { data: [], label: 'Implant Crowns' },
+        { data: [], label: 'Whitening' },
       ];
       const stackedChartData1 = [],
         stackedChartData2 = [],
@@ -476,7 +451,7 @@ export const selectCpPredictorAnalysisChartData = createSelector(
             stackedChartData8.push(item.impCrowns);
             stackedChartData9.push(item.whitening);
             chartLabels.push(item.providerName);
-            if (item.providerName != "Anonymous") {
+            if (item.providerName != 'Anonymous') {
               ipKey = index;
             }
           }
@@ -498,34 +473,34 @@ export const selectCpPredictorAnalysisChartData = createSelector(
         paTableData.push(temp);
       });
 
-      chartDatasets[0]["data"] = stackedChartData1;
-      chartDatasets[1]["data"] = stackedChartData2;
-      chartDatasets[2]["data"] = stackedChartData3;
-      chartDatasets[3]["data"] = stackedChartData4;
-      chartDatasets[4]["data"] = stackedChartData5;
-      chartDatasets[5]["data"] = stackedChartData6;
-      chartDatasets[6]["data"] = stackedChartData7;
-      chartDatasets[7]["data"] = stackedChartData8;
-      chartDatasets[8]["data"] = stackedChartData9;
+      chartDatasets[0]['data'] = stackedChartData1;
+      chartDatasets[1]['data'] = stackedChartData2;
+      chartDatasets[2]['data'] = stackedChartData3;
+      chartDatasets[3]['data'] = stackedChartData4;
+      chartDatasets[4]['data'] = stackedChartData5;
+      chartDatasets[5]['data'] = stackedChartData6;
+      chartDatasets[6]['data'] = stackedChartData7;
+      chartDatasets[7]['data'] = stackedChartData8;
+      chartDatasets[8]['data'] = stackedChartData9;
 
       const stackedChartDataMax =
-        Math.max(...chartDatasets[0]["data"]) +
-        Math.max(...chartDatasets[1]["data"]) +
-        Math.max(...chartDatasets[2]["data"]) +
-        Math.max(...chartDatasets[3]["data"]) +
-        Math.max(...chartDatasets[4]["data"]) +
-        Math.max(...chartDatasets[5]["data"]) +
-        Math.max(...chartDatasets[6]["data"]) +
-        Math.max(...chartDatasets[7]["data"]) +
-        Math.max(...chartDatasets[8]["data"]);
+        Math.max(...chartDatasets[0]['data']) +
+        Math.max(...chartDatasets[1]['data']) +
+        Math.max(...chartDatasets[2]['data']) +
+        Math.max(...chartDatasets[3]['data']) +
+        Math.max(...chartDatasets[4]['data']) +
+        Math.max(...chartDatasets[5]['data']) +
+        Math.max(...chartDatasets[6]['data']) +
+        Math.max(...chartDatasets[7]['data']) +
+        Math.max(...chartDatasets[8]['data']);
 
       const bgColors = [
-        { backgroundColor: "#6cd8ba" },
-        { backgroundColor: "#b0fffa" },
-        { backgroundColor: "#abb3ff" },
-        { backgroundColor: "#feefb8" },
-        { backgroundColor: "#ffb4b5" },
-        { backgroundColor: "#fffcac" },
+        { backgroundColor: '#6cd8ba' },
+        { backgroundColor: '#b0fffa' },
+        { backgroundColor: '#abb3ff' },
+        { backgroundColor: '#feefb8' },
+        { backgroundColor: '#ffb4b5' },
+        { backgroundColor: '#fffcac' },
       ];
 
       return {
@@ -553,25 +528,25 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
       chartLabels = [];
     if (clinics.length > 1) {
       chartLabels = _.chain(resData.data)
-        .uniqBy((item) => item.clinicId)
-        .map((item) => item.clinicName)
+        .uniqBy(item => item.clinicId)
+        .map(item => item.clinicName)
         .value();
       const descriptionMap: Record<string, string> = {
-        imp_surg: "Implant Surg",
-        ortho_fix: "Braces",
-        ortho_align: "Aligners",
-        sleep: "MAS",
-        perio_surg: "Perio Surg",
-        endo_retreat: "Endo Re-treat",
-        veneers_ind: "Veneers (indirect)",
+        imp_surg: 'Implant Surg',
+        ortho_fix: 'Braces',
+        ortho_align: 'Aligners',
+        sleep: 'MAS',
+        perio_surg: 'Perio Surg',
+        endo_retreat: 'Endo Re-treat',
+        veneers_ind: 'Veneers (indirect)',
       };
       Object.entries(descriptionMap).forEach(
         ([property, description], index) => {
           const data: number[] = _.chain(resData.data)
-            .groupBy("clinicId")
-            .map((items) => {
+            .groupBy('clinicId')
+            .map(items => {
               return _.chain(items)
-                .sumBy((item) => Number(item[property]) || 0)
+                .sumBy(item => Number(item[property]) || 0)
                 .value();
             })
             .value();
@@ -590,13 +565,13 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
       };
     } else {
       chartDatasets = [
-        { data: [], label: "Implant Surg" },
-        { data: [], label: "Braces" },
-        { data: [], label: "Aligners" },
-        { data: [], label: "MAS" },
-        { data: [], label: "Perio Surg" },
-        { data: [], label: "Endo Re-treat" },
-        { data: [], label: "Veneers (indirect)" },
+        { data: [], label: 'Implant Surg' },
+        { data: [], label: 'Braces' },
+        { data: [], label: 'Aligners' },
+        { data: [], label: 'MAS' },
+        { data: [], label: 'Perio Surg' },
+        { data: [], label: 'Endo Re-treat' },
+        { data: [], label: 'Veneers (indirect)' },
       ];
       const stackedChartData1 = [],
         stackedChartData2 = [],
@@ -627,7 +602,7 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
             stackedChartData6.push(item.endoRetreat);
             stackedChartData7.push(item.veneersInd);
             chartLabels.push(item.providerName);
-            if (item.providerName != "Anonymous") {
+            if (item.providerName != 'Anonymous') {
               ipKey = index;
             }
           }
@@ -646,32 +621,32 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
 
         paSpecialTableData.push(temp);
       });
-      chartDatasets[0]["data"] = stackedChartData1;
-      chartDatasets[1]["data"] = stackedChartData2;
-      chartDatasets[2]["data"] = stackedChartData3;
-      chartDatasets[3]["data"] = stackedChartData4;
-      chartDatasets[4]["data"] = stackedChartData5;
-      chartDatasets[5]["data"] = stackedChartData6;
-      chartDatasets[6]["data"] = stackedChartData7;
+      chartDatasets[0]['data'] = stackedChartData1;
+      chartDatasets[1]['data'] = stackedChartData2;
+      chartDatasets[2]['data'] = stackedChartData3;
+      chartDatasets[3]['data'] = stackedChartData4;
+      chartDatasets[4]['data'] = stackedChartData5;
+      chartDatasets[5]['data'] = stackedChartData6;
+      chartDatasets[6]['data'] = stackedChartData7;
 
       const stackedChartDataMax =
-        Math.max(...chartDatasets[0]["data"]) +
-        Math.max(...chartDatasets[1]["data"]) +
-        Math.max(...chartDatasets[2]["data"]) +
-        Math.max(...chartDatasets[3]["data"]) +
-        Math.max(...chartDatasets[4]["data"]) +
-        Math.max(...chartDatasets[5]["data"]) +
-        Math.max(...chartDatasets[6]["data"]);
+        Math.max(...chartDatasets[0]['data']) +
+        Math.max(...chartDatasets[1]['data']) +
+        Math.max(...chartDatasets[2]['data']) +
+        Math.max(...chartDatasets[3]['data']) +
+        Math.max(...chartDatasets[4]['data']) +
+        Math.max(...chartDatasets[5]['data']) +
+        Math.max(...chartDatasets[6]['data']);
 
       const bgColors = [
-        { backgroundColor: "#6cd8ba" },
-        { backgroundColor: "#b0fffa" },
-        { backgroundColor: "#abb3ff" },
-        { backgroundColor: "#feefb8" },
-        { backgroundColor: "#ffb4b5" },
-        { backgroundColor: "#fffcac" },
-        { backgroundColor: "#6cd8ba" },
-        { backgroundColor: "#feefb8" },
+        { backgroundColor: '#6cd8ba' },
+        { backgroundColor: '#b0fffa' },
+        { backgroundColor: '#abb3ff' },
+        { backgroundColor: '#feefb8' },
+        { backgroundColor: '#ffb4b5' },
+        { backgroundColor: '#fffcac' },
+        { backgroundColor: '#6cd8ba' },
+        { backgroundColor: '#feefb8' },
       ];
       return {
         datasets: chartDatasets,
@@ -686,7 +661,7 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
 
 export const selectCpRevPerProcedureChartData = createSelector(
   selectCpRevPerProcedureData,
-  (resData) => {
+  resData => {
     if (!resData) {
       return {
         datasets: [],
@@ -695,7 +670,7 @@ export const selectCpRevPerProcedureChartData = createSelector(
     }
     const chartData = [],
       chartLabels = [];
-    resData.data.forEach((item) => {
+    resData.data.forEach(item => {
       chartData.push(Math.round(<number>item.total));
       if (item.itemName != null) {
         chartLabels.push(item.itemName);
@@ -706,34 +681,34 @@ export const selectCpRevPerProcedureChartData = createSelector(
     const chartDatasets = [
       {
         data: [],
-        label: "Total Revenue of Clinician Per Procedure",
+        label: 'Total Revenue of Clinician Per Procedure',
         shadowOffsetX: 3,
         shadowOffsetY: 3,
         shadowBlur: 5,
-        shadowColor: "rgba(0, 0, 0, 0.5)",
+        shadowColor: 'rgba(0, 0, 0, 0.5)',
         backgroundColor: [
-          "#119682",
-          "#eeeef8",
-          "#119682",
-          "#eeeef8",
-          "#119682",
-          "#eeeef8",
-          "#119682",
-          "#eeeef8",
-          "#119682",
-          "#eeeef8",
+          '#119682',
+          '#eeeef8',
+          '#119682',
+          '#eeeef8',
+          '#119682',
+          '#eeeef8',
+          '#119682',
+          '#eeeef8',
+          '#119682',
+          '#eeeef8',
         ],
         pointBevelWidth: 2,
-        pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
-        pointBevelShadowColor: "rgba(0, 0, 0, 0.5)",
+        pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+        pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
         pointShadowOffsetX: 3,
         pointShadowOffsetY: 3,
         pointShadowBlur: 10,
-        pointShadowColor: "rgba(0, 0, 0, 0.5)",
-        backgroundOverlayMode: "multiply",
+        pointShadowColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundOverlayMode: 'multiply',
       },
     ];
-    chartDatasets[0]["data"] = chartData;
+    chartDatasets[0]['data'] = chartData;
     return {
       datasets: chartDatasets,
       labels: chartLabels,
@@ -761,33 +736,33 @@ export const selectCpPredictorRatioChartData = createSelector(
       chartLabels3 = [];
 
     const cpPredictorRatioPrev1 =
-      resData.data.find((item) => item.type == "crown-largefilling")?.totalTa ||
-      "";
+      resData.data.find(item => item.type == 'crown-largefilling')?.totalTa ||
+      '';
 
     const cpPredictorRatioPrev2 =
-      resData.data.find((item) => item.type == "rct-extraction")?.totalTa || "";
+      resData.data.find(item => item.type == 'rct-extraction')?.totalTa || '';
 
     const cpPredictorRatioPrev3 =
-      resData.data.find((item) => item.type == "rctstarted-rctcompleted")
-        ?.totalTa || "";
+      resData.data.find(item => item.type == 'rctstarted-rctcompleted')
+        ?.totalTa || '';
 
     if (clinics.length > 1) {
       const types = [
-        "crown-largefilling",
-        "rct-extraction",
-        "rctstarted-rctcompleted",
+        'crown-largefilling',
+        'rct-extraction',
+        'rctstarted-rctcompleted',
       ];
       chartDatasets1 = [
-        { data: [], label: "" },
-        { data: [], label: "" },
+        { data: [], label: '' },
+        { data: [], label: '' },
       ];
       chartDatasets2 = [
-        { data: [], label: "" },
-        { data: [], label: "" },
+        { data: [], label: '' },
+        { data: [], label: '' },
       ];
       chartDatasets3 = [
-        { data: [], label: "" },
-        { data: [], label: "" },
+        { data: [], label: '' },
+        { data: [], label: '' },
       ];
       let ratio1 = 0,
         ratio2 = 0,
@@ -795,43 +770,43 @@ export const selectCpPredictorRatioChartData = createSelector(
         ratio4 = 0,
         ratio5 = 0,
         ratio6 = 0,
-        multifulratio1 = "",
-        multifulratio2 = "",
-        multifulratio3 = "";
+        multifulratio1 = '',
+        multifulratio2 = '',
+        multifulratio3 = '';
 
-      types.forEach((type) => {
+      types.forEach(type => {
         resData.data
-          .filter((item) => item.type == type)
-          .forEach((ele) => {
+          .filter(item => item.type == type)
+          .forEach(ele => {
             switch (type) {
-              case "crown-largefilling":
-                chartDatasets1[0]["data"].push(ele.firstValue);
-                chartDatasets1[1]["data"].push(ele.secondValue);
-                chartDatasets1[0]["label"] = "Indirect Restorations";
-                chartDatasets1[1]["label"] = "Large Direct Restorations";
+              case 'crown-largefilling':
+                chartDatasets1[0]['data'].push(ele.firstValue);
+                chartDatasets1[1]['data'].push(ele.secondValue);
+                chartDatasets1[0]['label'] = 'Indirect Restorations';
+                chartDatasets1[1]['label'] = 'Large Direct Restorations';
                 ratio1 += parseInt(<string>ele.firstValue) || 0;
                 ratio2 += parseInt(<string>ele.secondValue) || 0;
-                multifulratio1 = ratio1 + ":" + ratio2;
+                multifulratio1 = ratio1 + ':' + ratio2;
                 chartLabels1.push(ele.clinicName);
                 break;
-              case "rct-extraction":
-                chartDatasets2[0]["data"].push(ele.firstValue);
-                chartDatasets2[1]["data"].push(ele.secondValue);
-                chartDatasets2[0]["label"] = "RCT";
-                chartDatasets2[1]["label"] = "Extractions";
+              case 'rct-extraction':
+                chartDatasets2[0]['data'].push(ele.firstValue);
+                chartDatasets2[1]['data'].push(ele.secondValue);
+                chartDatasets2[0]['label'] = 'RCT';
+                chartDatasets2[1]['label'] = 'Extractions';
                 ratio3 += parseInt(<string>ele.firstValue) || 0;
                 ratio4 += parseInt(<string>ele.secondValue) || 0;
-                multifulratio2 = ratio3 + ":" + ratio4;
+                multifulratio2 = ratio3 + ':' + ratio4;
                 chartLabels2.push(ele.clinicName);
                 break;
-              case "rctstarted-rctcompleted":
-                chartDatasets3[0]["data"].push(ele.firstValue);
-                chartDatasets3[1]["data"].push(ele.secondValue);
-                chartDatasets3[0]["label"] = "RCT's Started";
-                chartDatasets3[1]["label"] = "RCT's Completed";
+              case 'rctstarted-rctcompleted':
+                chartDatasets3[0]['data'].push(ele.firstValue);
+                chartDatasets3[1]['data'].push(ele.secondValue);
+                chartDatasets3[0]['label'] = "RCT's Started";
+                chartDatasets3[1]['label'] = "RCT's Completed";
                 ratio5 += parseInt(<string>ele.firstValue) || 0;
                 ratio6 += parseInt(<string>ele.secondValue) || 0;
-                multifulratio3 = ratio5 + ":" + ratio6;
+                multifulratio3 = ratio5 + ':' + ratio6;
                 chartLabels3.push(ele.clinicName);
                 break;
               default:
@@ -869,12 +844,12 @@ export const selectCpPredictorRatioChartData = createSelector(
       }
     } else {
       (chartDatasets1 = [
-        { data: [], label: "Indirect Restorations" },
-        { data: [], label: "Large Direct Restorations" },
+        { data: [], label: 'Indirect Restorations' },
+        { data: [], label: 'Large Direct Restorations' },
       ]),
         (chartDatasets2 = [
-          { data: [], label: "RCT" },
-          { data: [], label: "Extractions" },
+          { data: [], label: 'RCT' },
+          { data: [], label: 'Extractions' },
         ]),
         (chartDatasets3 = [
           { data: [], label: "RCT's Started" },
@@ -883,24 +858,24 @@ export const selectCpPredictorRatioChartData = createSelector(
       let cpPredictorRatioAvr1 = 0,
         cpPredictorRatioAvr2 = 0,
         cpPredictorRatioAvr3 = 0;
-      resData.data.forEach((item) => {
-        let provider = item.providerName ?? "";
+      resData.data.forEach(item => {
+        let provider = item.providerName ?? '';
         switch (item.type) {
-          case "crown-largefilling":
-            chartDatasets1[0]["data"].push(parseInt(<string>item.firstValue));
-            chartDatasets1[1]["data"].push(parseInt(<string>item.secondValue));
+          case 'crown-largefilling':
+            chartDatasets1[0]['data'].push(parseInt(<string>item.firstValue));
+            chartDatasets1[1]['data'].push(parseInt(<string>item.secondValue));
             cpPredictorRatioAvr1 = parseInt(<string>item.ratio);
             chartLabels1.push(provider);
             break;
-          case "rct-extraction":
-            chartDatasets2[0]["data"].push(parseInt(<string>item.firstValue));
-            chartDatasets2[1]["data"].push(parseInt(<string>item.secondValue));
+          case 'rct-extraction':
+            chartDatasets2[0]['data'].push(parseInt(<string>item.firstValue));
+            chartDatasets2[1]['data'].push(parseInt(<string>item.secondValue));
             cpPredictorRatioAvr2 = parseInt(<string>item.ratio);
             chartLabels2.push(provider);
             break;
-          case "rctstarted-rctcompleted":
-            chartDatasets3[0]["data"].push(parseInt(<string>item.firstValue));
-            chartDatasets3[1]["data"].push(parseInt(<string>item.secondValue));
+          case 'rctstarted-rctcompleted':
+            chartDatasets3[0]['data'].push(parseInt(<string>item.firstValue));
+            chartDatasets3[1]['data'].push(parseInt(<string>item.secondValue));
             cpPredictorRatioAvr3 = parseInt(<string>item.ratio);
             chartLabels3.push(provider);
             break;
@@ -957,7 +932,7 @@ export const selectCpReferralsChartData = createSelector(
       pieChartExternalPrev = 0,
       pieChartCombinedPrev = 0;
 
-    resData.data.forEach((item) => {
+    resData.data.forEach(item => {
       if (parseFloat(<string>item.total) > 0) {
         if (parseFloat(<string>item.internal) > 0) {
           chartData1.push(item.internal);
@@ -987,7 +962,7 @@ export const selectCpReferralsChartData = createSelector(
     pieChartCombinedPrev =
       pieChartCombinedPrev + parseInt(<string>resData.totalTa.total);
 
-    if (visibility === "internal") {
+    if (visibility === 'internal') {
       return {
         datasets: [{ data: chartData1 }],
         labels: chartLabels1,
@@ -999,7 +974,7 @@ export const selectCpReferralsChartData = createSelector(
         referralsPrev3: pieChartExternalPrev,
         maxVal: Math.max(...chartData1),
       };
-    } else if (visibility === "external") {
+    } else if (visibility === 'external') {
       return {
         datasets: [{ data: chartData2 }],
         labels: chartLabels2,

@@ -1,0 +1,12 @@
+<div class="average-toggle-box">
+  <label>Average:</label>
+  <mat-button-toggle-group
+    class="custom-toggle-buttons"
+    name="Average"
+    aria-label="Average"
+    [value]="avgMode$ | async"
+    (change)="onChangeAvgMode($event)">
+    <mat-button-toggle value="off">Off</mat-button-toggle>
+    <mat-button-toggle value="on">On</mat-button-toggle>
+  </mat-button-toggle-group>
+</div>

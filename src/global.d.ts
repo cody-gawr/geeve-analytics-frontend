@@ -31,7 +31,7 @@ declare global {
     | 'Dentist Total'
     | 'Dentist Monthly';
   type T_MODE = 'clinic' | 'provider';
-
+  type C_AVG_MODE = 'off' | 'on';
   type CA_API_ENDPOINTS =
     | 'caDentistProduction' // 1
     | 'caDentistProductionDentist'
@@ -81,6 +81,13 @@ declare global {
     | 'caNumNewPatientsTrend'
     | 'caTxPlanCompRateTrend'
     | 'caRecallRateTrend';
+
+  type CP_API_ENDPOINTS =
+    | 'cpPredictorAnalysis'
+    | 'cpPredictorSpecialistAnalysis'
+    | 'cpRevPerProcedure'
+    | 'cpPredictorRatio'
+    | 'cpReferrals';
 
   interface FnProduction {
     clinicId: number | string;

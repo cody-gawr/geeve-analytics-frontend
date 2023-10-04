@@ -1,12 +1,12 @@
-import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
-import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
-import { Component, OnDestroy, OnInit, Input } from "@angular/core";
-import { Subject, takeUntil, map, combineLatest } from "rxjs";
+import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
+import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { Component, OnDestroy, OnInit, Input } from '@angular/core';
+import { Subject, takeUntil, map, combineLatest } from 'rxjs';
 
 @Component({
-  selector: "trend-mode-toggle",
-  templateUrl: "./trend-mode-toggle.component.html",
-  styleUrls: ["./trend-mode-toggle.component.scss"],
+  selector: 'trend-mode-toggle',
+  templateUrl: './trend-mode-toggle.component.html',
+  styleUrls: ['./trend-mode-toggle.component.scss'],
 })
 export class TrendModeToggleComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
@@ -18,7 +18,7 @@ export class TrendModeToggleComponent implements OnInit, OnDestroy {
   ) {}
 
   get trendMode$() {
-    return this.layoutFacade.trend$;
+    return this.layoutFacade.trend$.pipe(takeUntil(this.destroy$));
   }
 
   get isLoading$() {

@@ -1,20 +1,21 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { AngularMaterialModule } from "./angular-material.module";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { RouterModule } from "@angular/router";
-import { MatTableResponsiveModule } from "./directives/mat-table-responsive.module";
-import { TimeMaskDirective } from "./directives/time-mask.directive";
-import { StatsCardComponent } from "./components/stats-card/stats-card.component";
-import { DateRangeMenuComponent } from "./components/date-range-menu/date-range-menu.component";
-import { TrendModeToggleComponent } from "./components/trend-mode-toggle/trend-mode-toggle.component";
-import { SpinLoaderComponent } from "./components/spin-loader/spin-loader.component";
-import { TooltipDirective } from "./directives/tooltip/tooltip.directive";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { AngularMaterialModule } from './angular-material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { MatTableResponsiveModule } from './directives/mat-table-responsive.module';
+import { TimeMaskDirective } from './directives/time-mask.directive';
+import { StatsCardComponent } from './components/stats-card/stats-card.component';
+import { DateRangeMenuComponent } from './components/date-range-menu/date-range-menu.component';
+import { TrendModeToggleComponent } from './components/trend-mode-toggle/trend-mode-toggle.component';
+import { SpinLoaderComponent } from './components/spin-loader/spin-loader.component';
+import { TooltipDirective } from './directives/tooltip/tooltip.directive';
 import {
   TooltipComponent,
   TooltipContainerDirective,
-} from "./directives/tooltip/tooltip.component";
-import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+} from './directives/tooltip/tooltip.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AverageModeToggleComponent } from './components/average-mode-toggle/average-mode-toggle.component';
 
 const modules = [
   AngularMaterialModule,
@@ -29,6 +30,7 @@ const components = [
   StatsCardComponent,
   DateRangeMenuComponent,
   TrendModeToggleComponent,
+  AverageModeToggleComponent,
   SpinLoaderComponent,
 ];
 

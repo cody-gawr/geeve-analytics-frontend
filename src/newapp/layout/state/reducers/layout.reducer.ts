@@ -1,8 +1,8 @@
-import moment, { Moment, isMoment } from "moment";
-import { createFeature, createReducer, on, createSelector } from "@ngrx/store";
-import { layoutPageActions } from "../actions";
-import { getTodayMoment } from "@/newapp/shared/utils";
-import { DateRangeMenus } from "@/newapp/shared/components/date-range-menu/date-range-menu.component";
+import moment, { Moment, isMoment } from 'moment';
+import { createFeature, createReducer, on, createSelector } from '@ngrx/store';
+import { layoutPageActions } from '../actions';
+import { getTodayMoment } from '@/newapp/shared/utils';
+import { DateRangeMenus } from '@/newapp/shared/components/date-range-menu/date-range-menu.component';
 
 export interface LayoutState {
   enableDateRagne: boolean;
@@ -12,22 +12,24 @@ export interface LayoutState {
     duration: DATE_RANGE_DURATION;
   };
   trend: TREND_MODE;
+  average: C_AVG_MODE;
   activatedRouteTitle: string;
 }
 
 const initialState: LayoutState = {
   enableDateRagne: false,
   dateRange: {
-    start: getTodayMoment().startOf("month"),
+    start: getTodayMoment().startOf('month'),
     end: getTodayMoment(),
-    duration: "m",
+    duration: 'm',
   },
-  trend: "off",
-  activatedRouteTitle: "",
+  trend: 'off',
+  average: 'off',
+  activatedRouteTitle: '',
 };
 
 export const layoutFeature = createFeature({
-  name: "layout",
+  name: 'layout',
   reducer: createReducer(
     initialState,
     on(
@@ -49,6 +51,12 @@ export const layoutFeature = createFeature({
         trend,
       };
     }),
+    on(layoutPageActions.setAvgMode, (state, { cMode }): LayoutState => {
+      return {
+        ...state,
+        average: cMode,
+      };
+    }),
     on(
       layoutPageActions.setActivatedRouteTitle,
       (state, { title }): LayoutState => {
@@ -65,6 +73,7 @@ export const {
   selectDateRange,
   selectEnableDateRagne,
   selectTrend,
+  selectAverage,
   selectActivatedRouteTitle,
 } = layoutFeature;
 
@@ -75,7 +84,7 @@ export const selectIsFullMonthsDateRange = createSelector(
     const _endDate = isMoment(end) ? end : moment(end);
     return (
       _startDate.date() == 1 &&
-      (_endDate.date() == _endDate.clone().endOf("month").date() ||
+      (_endDate.date() == _endDate.clone().endOf('month').date() ||
         _endDate.date() == moment().date())
     );
   }
@@ -84,19 +93,19 @@ export const selectIsFullMonthsDateRange = createSelector(
 export const selectDurationLabel = createSelector(
   selectDateRange,
   ({ duration }) => {
-    const menu = DateRangeMenus.find((m) => m.range == duration);
+    const menu = DateRangeMenus.find(m => m.range == duration);
     if (menu) return menu.label;
-    else return "Current";
+    else return 'Current';
   }
 );
 
 export const selectDurationTrendLabel = createSelector(
   selectDurationLabel,
-  (l) => {
-    if (l.includes("Last") || l.includes("This")) {
-      return l.replace(/^Last/g, "Previous").replace(/^This/g, "Last");
+  l => {
+    if (l.includes('Last') || l.includes('This')) {
+      return l.replace(/^Last/g, 'Previous').replace(/^This/g, 'Last');
     } else {
-      return "Last " + l;
+      return 'Last ' + l;
     }
   }
 );

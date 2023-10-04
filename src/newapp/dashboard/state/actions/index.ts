@@ -8,16 +8,18 @@ import * as FrontDeskPageActions from './front-desk-page.actions';
 import * as FrontDeskApiActions from './front-desk-api.actions';
 import * as ClinicianProcedurePageActions from './clinician-procedure-page.actions';
 import * as ClinicianProcedureApiActions from './clinician-procedure-api.actions';
+import * as ClinicianAnalysisActions from './clinician-analysis.actions';
 
-export { 
-    DashboardApiActions,
-    DashboardPageActions,
-    FinancePageActions,
-    FinanceApiActions ,
-    MarketingPageActions,
-    MarketingApiActions,
-    FrontDeskPageActions,
-    FrontDeskApiActions,
-    ClinicianProcedurePageActions,
-    ClinicianProcedureApiActions
+export {
+  DashboardApiActions,
+  DashboardPageActions,
+  FinancePageActions,
+  FinanceApiActions,
+  MarketingPageActions,
+  MarketingApiActions,
+  FrontDeskPageActions,
+  FrontDeskApiActions,
+  ClinicianProcedurePageActions,
+  ClinicianProcedureApiActions,
+  ClinicianAnalysisActions,
 };

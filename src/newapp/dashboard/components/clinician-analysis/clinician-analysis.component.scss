@@ -1,0 +1,10 @@
+@import '../../../../assets/layout/styles/layout/mixin';
+
+.toggle-section {
+  display: flex;
+  gap: 10px;
+
+  @include respond-from('tablet-portrait') {
+    flex-direction: column;
+  }
+}

@@ -1,17 +1,18 @@
-import { Injectable } from "@angular/core";
-import { select, Store } from "@ngrx/store";
-import { Observable } from "rxjs";
+import { Injectable } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import {
   LayoutState,
   selectActivatedRouteTitle,
+  selectAverage,
   selectDateRange,
   selectDurationLabel,
   selectDurationTrendLabel,
   selectIsFullMonthsDateRange,
   selectTrend,
-} from "../state/reducers/layout.reducer";
-import { Moment } from "moment";
-import { layoutPageActions } from "../state/actions";
+} from '../state/reducers/layout.reducer';
+import { Moment } from 'moment';
+import { layoutPageActions } from '../state/actions';
 
 @Injectable()
 export class LayoutFacade {
@@ -25,6 +26,10 @@ export class LayoutFacade {
 
   public readonly trend$: Observable<TREND_MODE> = this.store.pipe(
     select(selectTrend)
+  );
+
+  public readonly average$: Observable<C_AVG_MODE> = this.store.pipe(
+    select(selectAverage)
   );
 
   public readonly isFullMonthsDateRange$ = this.store.pipe(
@@ -43,6 +48,10 @@ export class LayoutFacade {
 
   public setTrend(trend: TREND_MODE) {
     this.store.dispatch(layoutPageActions.setTrend({ trend }));
+  }
+
+  public setAverage(avg: C_AVG_MODE) {
+    this.store.dispatch(layoutPageActions.setAvgMode({ cMode: avg }));
   }
 
   public setActivatedRouteTitle(title: string) {
