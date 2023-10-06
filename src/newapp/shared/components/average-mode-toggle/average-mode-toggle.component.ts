@@ -16,13 +16,7 @@ export class AverageModeToggleComponent implements OnInit, OnDestroy {
   }
 
   get avgMode$() {
-    return this.layoutFacade.average$.pipe(
-      takeUntil(this.destroy$),
-      map(v => {
-        console.log(v);
-        return v;
-      })
-    );
+    return this.layoutFacade.average$.pipe(takeUntil(this.destroy$));
   }
 
   ngOnInit(): void {}

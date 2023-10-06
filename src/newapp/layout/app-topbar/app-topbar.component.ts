@@ -95,7 +95,7 @@ export class AppTopbarComponent implements OnInit {
             (this.activatedUrl == '/newapp/dashboard/finances' &&
               multiClinicEnabled.dash5Multi == 1)) &&
           ![4, 7].includes(userType);
-        this.clinicFacade.setMultiClinicSelection(value);
+
         return value;
       })
     );
@@ -149,15 +149,18 @@ export class AppTopbarComponent implements OnInit {
     private dentistFacade: DentistFacade,
     private toastr: ToastrService,
     private cookieService: CookieService
-  ) {
-    // this.dentistFacade.loadDentists();
-    // this.menuService.menuSource$
-    //   .pipe(
-    //     takeUntil(this.destroy$),
-    //     map((menu) => menu.key),
-    //   )
-    //   .subscribe((v) => {this.title = v});
+  ) {}
 
+  setCookieVal(val: string) {
+    this.cookieService.put('clinic_id', val);
+    const values = this.cookieService.get('clinic_dentist')?.split('_');
+    if (val && values) {
+      values[0] = val;
+      this.cookieService.put('clinic_dentist', values.join('_'));
+    }
+  }
+
+  ngOnInit() {
     combineLatest([
       this.isEnableDentistDropdown$,
       this.clinicFacade.currentClinics$,
@@ -250,17 +253,11 @@ export class AppTopbarComponent implements OnInit {
         this.selectedDentist = dentistId;
       })
     );
-  }
-  setCookieVal(val: string) {
-    this.cookieService.put('clinic_id', val);
-    const values = this.cookieService.get('clinic_dentist')?.split('_');
-    if (val && values) {
-      values[0] = val;
-      this.cookieService.put('clinic_dentist', values.join('_'));
-    }
-  }
 
-  ngOnInit() {}
+    this.isMultiClinics$.subscribe((value: boolean) =>
+      this.clinicFacade.setMultiClinicSelection(value)
+    );
+  }
 
   getClinicName$(clinicId: Array<number | 'all'>) {
     return this.clinicFacade.clinics$.pipe(

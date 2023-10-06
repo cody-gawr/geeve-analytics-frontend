@@ -1,23 +1,23 @@
-import { ClinicFacade } from "../../clinic/facades/clinic.facade";
-import { Clinic } from "../../models/clinic";
-import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { MatDrawerMode } from "@angular/material/sidenav";
-import { Subject, takeUntil, map, filter } from "rxjs";
-import { NavigationEnd, NavigationStart, Router } from "@angular/router";
+import { ClinicFacade } from '../../clinic/facades/clinic.facade';
+import { Clinic } from '../../models/clinic';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDrawerMode } from '@angular/material/sidenav';
+import { Subject, takeUntil, map, filter } from 'rxjs';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 
 @Component({
-  selector: "app-layout",
-  templateUrl: "./app-layout.component.html",
-  styleUrls: ["./app-layout.component.scss"],
+  selector: 'app-layout',
+  templateUrl: './app-layout.component.html',
+  styleUrls: ['./app-layout.component.scss'],
 })
 export class AppLayoutComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
-  sidenavMode: MatDrawerMode = "side";
+  sidenavMode: MatDrawerMode = 'side';
   isSidenavVisible = false;
   clinic: Clinic | null;
-  activatedUrl: string = "";
+  activatedUrl: string = '';
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -29,9 +29,9 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         map((event: any) => event.routerEvent ?? event),
-        filter((event) => event instanceof NavigationStart)
+        filter(event => event instanceof NavigationStart)
       )
-      .subscribe((event) => {
+      .subscribe(_ => {
         this.clinicFacade.setMultiClinicSelection(null);
       });
 
@@ -39,14 +39,14 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         map((event: any) => event.routerEvent ?? event),
-        filter((event) => event instanceof NavigationEnd)
+        filter(event => event instanceof NavigationEnd)
       )
-      .subscribe((event) => {
+      .subscribe(event => {
         const { url } = <NavigationEnd>event;
         // const path = this.router.parseUrl(url).root.children['primary']
         //   ? this.router.parseUrl(url).root.children['primary'].segments[0].path
         //   : this.defaultMenu;
-        this.activatedUrl = url.split("?")[0];
+        this.activatedUrl = url.split('?')[0];
       });
   }
 
@@ -58,18 +58,18 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
     this.breakpointObserver
       .observe([Breakpoints.XSmall, Breakpoints.Small, Breakpoints.Medium])
       .pipe(takeUntil(this.destroy$))
-      .subscribe((result) => {
+      .subscribe(result => {
         if (result.matches) {
-          this.sidenavMode = "over";
+          this.sidenavMode = 'over';
         } else {
-          this.sidenavMode = "side";
+          this.sidenavMode = 'side';
         }
       });
 
     this.breakpointObserver
       .observe([Breakpoints.Large, Breakpoints.XLarge])
       .pipe(takeUntil(this.destroy$))
-      .subscribe((result) => {
+      .subscribe(result => {
         if (result.matches) {
           this.isSidenavVisible = true;
         } else {
