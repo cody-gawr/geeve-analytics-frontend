@@ -136,11 +136,7 @@ export class ClinicianProceeduresComponent
   getAllClinics() {
     this.headerService.getClinic.subscribe(res => {
       if (res.status == 200) {
-        let temp = [];
-        res.body.data.forEach(item => {
-          temp.push(item.id);
-        });
-        this.clinics = [...temp];
+        this.clinics = res.body.data.map(item => item.id);
       }
     });
   }

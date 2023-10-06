@@ -601,15 +601,15 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     $('.header_filters').addClass('flex_direct_mar');
     $('.header_filters').removeClass('hide_header');
     var val = $('#currentClinic').attr('cid');
+    $('#title').html('Morning Huddle');
+    if (this.previousDays == '') {
+      this.previousDays = this.datepipe
+        .transform(new Date(), 'yyyy-MM-dd 00:00:00')
+        .replace(/\s/, 'T');
+    }
     console.log({ clinicId: val });
     if (val != undefined && val != 'all') {
       this.clinic_id = val;
-      $('#title').html('Morning Huddle');
-      if (this.previousDays == '') {
-        this.previousDays = this.datepipe
-          .transform(new Date(), 'yyyy-MM-dd 00:00:00')
-          .replace(/\s/, 'T');
-      }
       this.dailyTabSettLod = false;
       if (this.creditStatusTimer) clearInterval(this.creditStatusTimer);
       this.clinicianAnalysisService
