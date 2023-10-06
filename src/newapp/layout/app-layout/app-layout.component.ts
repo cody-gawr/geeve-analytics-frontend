@@ -50,10 +50,6 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
       });
   }
 
-  // get clinicDetailSidenavOpened$(): Observable<boolean> {
-  //   return this.appLayoutService.clinicDetailSidenavOpened$;
-  // }
-
   ngOnInit(): void {
     this.breakpointObserver
       .observe([Breakpoints.XSmall, Breakpoints.Small, Breakpoints.Medium])
@@ -76,10 +72,6 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
           this.isSidenavVisible = false;
         }
       });
-
-    // this.appLayoutService.currentClinic$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((clinic) => (this.clinic = clinic));
   }
 
   ngOnDestroy(): void {

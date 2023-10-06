@@ -47,11 +47,12 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
     private layoutFacade: LayoutFacade,
     private router: Router,
     private dentistFacade: DentistFacade
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
       this.clinicFacade.currentClinicId$,
       this.layoutFacade.dateRange$,
-      // this.dashbordFacade.connectedWith$,
       this.router.routerState.root.queryParams,
       this.layoutFacade.trend$,
       this.dentistFacade.currentDentistId$,
@@ -81,8 +82,6 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
         };
       });
   }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();

@@ -18,7 +18,7 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
   styleUrls: ['./caProduction.component.scss'],
 })
 export class CaProductionComponent implements OnInit, OnDestroy {
-  @Input() toolTip = '';
+  @Input() toolTip: string = '';
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();

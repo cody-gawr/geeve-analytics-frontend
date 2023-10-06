@@ -6,5 +6,5 @@
   </div>
 </div>
 <div *ngIf="(clinicId$ | async) !== null" class="dashboard-content-box">
-  <caProduction-chart [tooltip]="getChartTip(1) | async" class="chart-1" />
+  <caProduction-chart [toolTip]="getChartTip(1) | async" class="ca-chart" />
 </div>
