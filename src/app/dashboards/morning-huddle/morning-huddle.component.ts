@@ -55,7 +55,7 @@ import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/
 import * as _ from 'lodash';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { TermsConditionsDialog } from './terms-conditions-dialog/terms-conditions-dialog.component';
-import { HeaderService } from '@/app/layouts/full/header/header.service';
+
 @Component({
   selector: 'notes-add-dialog',
   templateUrl: './add-notes.html',
@@ -481,7 +481,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     private localStorageService: LocalStorageService,
     private morningHuddleService: MorningHuddleService,
     private _cookieService: CookieService,
-    private headerService: HeaderService,
     private router: Router,
     private toastr: ToastrService,
     public constants: AppConstants,
@@ -509,7 +508,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.getAllClinics();
     const q = new URLSearchParams(window.location.search);
     const tabIndex = parseInt(q.get('tab') ?? '0');
     this.changeTab(tabIndex);
@@ -535,15 +533,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.autoCall = setInterval(function () {
       self.refreshDataAuto();
     }, 1000 * 300);
-  }
-
-  public clinics = [];
-  getAllClinics() {
-    this.headerService.getClinic.subscribe(res => {
-      if (res.status == 200) {
-        this.clinics = res.body.data.map(item => item.id);
-      }
-    });
   }
 
   updateCreditStatus() {
@@ -602,15 +591,16 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     $('.header_filters').removeClass('hide_header');
     var val = $('#currentClinic').attr('cid');
     $('#title').html('Morning Huddle');
-    if (this.previousDays == '') {
-      this.previousDays = this.datepipe
-        .transform(new Date(), 'yyyy-MM-dd 00:00:00')
-        .replace(/\s/, 'T');
-    }
-    console.log({ clinicId: val });
+
     if (val != undefined && val != 'all') {
       this.clinic_id = val;
       this.dailyTabSettLod = false;
+      if (this.previousDays == '') {
+        this.previousDays = this.datepipe
+          .transform(new Date(), 'yyyy-MM-dd 00:00:00')
+          .replace(/\s/, 'T');
+      }
+
       if (this.creditStatusTimer) clearInterval(this.creditStatusTimer);
       this.clinicianAnalysisService
         .getClinicFollowUpSettings(this.clinic_id)
@@ -681,8 +671,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         this.getEquipmentList();
       }
       this.getChartsTips();
-    } else if (val == 'all') {
-      this.clinic_id = this.clinics;
     }
     this.getEndOfDays();
   }

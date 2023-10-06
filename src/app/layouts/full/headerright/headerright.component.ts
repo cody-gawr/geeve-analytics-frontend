@@ -515,7 +515,6 @@ export class AppHeaderrightComponent
   }
 
   get isSingleClinicAllEnabled() {
-    return true;
     return (
       this.route == '/dashboards/healthscreen' &&
       this.clinicsData.length > 1 &&
